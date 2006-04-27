@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="Jubler" default="default" basedir=".">
+    <description>Builds, tests, and runs the project Jubler.</description>
+    <import file="nbproject/build-impl.xml"/>
+    <!--
+
+    There exist several targets which are by default empty and which can be 
+    used for execution of your tasks. These targets are usually executed 
+    before and after some main targets. They are: 
+
+      -pre-init:                 called before initialization of project properties
+      -post-init:                called after initialization of project properties
+      -pre-compile:              called before javac compilation
+      -post-compile:             called after javac compilation
+      -pre-compile-single:       called before javac compilation of single file
+      -post-compile-single:      called after javac compilation of single file
+      -pre-compile-test:         called before javac compilation of JUnit tests
+      -post-compile-test:        called after javac compilation of JUnit tests
+      -pre-compile-test-single:  called before javac compilation of single JUnit test
+      -post-compile-test-single: called after javac compilation of single JUunit test
+      -pre-jar:                  called before JAR building
+      -post-jar:                 called after JAR building
+      -post-clean:               called after cleaning build products
+
+    (Targets beginning with '-' are not intended to be called on their own.)
+
+    Example of inserting an obfuscator after compilation could look like this:
+
+        <target name="-post-compile">
+            <obfuscate>
+                <fileset dir="${build.classes.dir}"/>
+            </obfuscate>
+        </target>
+
+    For list of available properties check the imported 
+    nbproject/build-impl.xml file. 
+
+
+    Another way to customize the build is by overriding existing main targets.
+    The targets of interest are: 
+
+      -init-macrodef-javac:     defines macro for javac compilation
+      -init-macrodef-junit:     defines macro for junit execution
+      -init-macrodef-debug:     defines macro for class debugging
+      -init-macrodef-java:      defines macro for class execution
+      -do-jar-with-manifest:    JAR building (if you are using a manifest)
+      -do-jar-without-manifest: JAR building (if you are not using a manifest)
+      run:                      execution of project 
+      -javadoc-build:           Javadoc generation
+      test-report:              JUnit report generation
+
+    An example of overriding the target for project execution could look like this:
+
+        <target name="run" depends="Jubler-impl.jar">
+            <exec dir="bin" executable="launcher.exe">
+                <arg file="${dist.jar}"/>
+            </exec>
+        </target>
+
+    Notice that the overridden target depends on the jar target and not only on 
+    the compile target as the regular run target does. Again, for a list of available 
+    properties which you can use, check the target you are overriding in the
+    nbproject/build-impl.xml file. 
+
+-->
+
+
+
+	<!-- Define new ant tasks -->
+
+	<taskdef name="izpack"
+		onerror="report"
+		classpath="../TOOLS/IzPack/standalone-compiler.jar"
+		classname="com.izforge.izpack.ant.IzPackTask"/>
+
+
+	<taskdef name="launch4j"
+		onerror="report"
+		classpath="../TOOLS/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
+		classname="net.sf.launch4j.ant.Launch4jTask"/>
+	
+	<taskdef name="jarbundler"
+		onerror="report"
+		classpath="../TOOLS/jarbundler/jarbundler-1.4.jar"
+		classname="com.loomcom.ant.tasks.jarbundler.JarBundler" />
+
+
+	<target name="i18n">
+		<exec dir="resources/i18n" executable="bash">
+			<arg line="compile"/>
+		</exec>
+	</target>
+
+	<target name="xdevelop" depends="i18n"> <exec dir="resources/ffdecode" executable="make"/> </target>
+
+	<target name="cleanmac">
+	</target>
+
+	<target name="distclean" depends="clean,cleanmac">
+		<delete>
+			<fileset dir="." includes="*.bz2"/>
+			<fileset dir="." includes="*.exe"/>
+			<fileset dir="." includes="*.jar"/>
+			<fileset dir="." includes="*.sh"/>
+			<fileset dir="." includes="*.dmg"/>
+			<fileset dir="." includes="*.log"/>
+			<fileset dir="resources/i18n" includes="jubler.pot"/>
+			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
+			<fileset dir="src" includes="lib"/>
+		</delete>
+		<delete dir="self"/>
+		<delete dir="dist/Jubler.app"/>
+		<delete dir="src/com/apple"/>
+		<exec dir="resources" executable="make">
+			<arg line="distclean"/>
+		</exec>
+	</target>
+	
+
+	<target name="distsource" depends="fullsrc,jublersrc"/>
+
+	<!-- Full source, including ffmpeg -->
+	<target name="fullsrc" depends="distclean">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<delete dir="/tmp/Jubler-${version}"/>
+		<copy preservelastmodified="yes" todir="/tmp/Jubler-${version}">
+			<fileset dir="../Jubler"/>
+		</copy>
+		<delete dir="/tmp/Jubler-${version}/resources/libraries"/>
+		<tar destfile="Jubler-fullsrc-${version}.tar.bz2" basedir="/tmp/" includes="Jubler-${version}/**" compression="bzip2"/>
+		<delete dir="/tmp/Jubler-${version}"/>
+	</target>
+	
+	<!-- Jubler related source only -->
+	<target name="jublersrc" depends="distclean">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<delete dir="/tmp/Jubler-${version}"/>
+		<copy preservelastmodified="yes" todir="/tmp/Jubler-${version}">
+			<fileset dir="../Jubler"/>
+		</copy>
+		<delete dir="/tmp/Jubler-${version}/resources/libraries"/>
+		<delete dir="/tmp/Jubler-${version}/resources/ffmpeg-cvs"/>
+		<delete file="/tmp/Jubler-${version}/Jubler-fullsrc-${version}.tar.bz2"/>
+		<tar destfile="Jubler-src-${version}.tar.bz2" basedir="/tmp/" includes="Jubler-${version}/**" compression="bzip2"/>
+		<delete dir="/tmp/Jubler-${version}"/>
+	</target>
+	
+
+	<target name="distbin" depends="distclean,i18n,jar,win32,linux,generic"/>
+
+	<!-- Windows Installer -->
+	<target name="win32" depends="i18n,jar">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<exec dir="resources/ffdecode" executable="make"> <arg line="win32"/> </exec>
+		<launch4j>
+			<config outfile="dist/Jubler.exe"
+				icon="resources/system/frame.ico"
+				headerType="0"
+				customProcName="true"
+				stayAlive="false"
+				jar="dist/Jubler.jar"
+				errTitle="Unable to find Java environmet">
+				<jre minVersion="1.5.0" />
+			</config>
+		</launch4j>
+		<copy file="resources/system/install-windows.xml" tofile="/tmp/install.xml" overwrite="yes"/>
+		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
+		<izpack input="/tmp/install.xml" output="Jubler-${version}.jar" installerType="standard" basedir="."/>
+		<delete file="/tmp/install.xml" />
+		<launch4j>
+			<config outfile="Jubler-${version}.exe"
+				icon="resources/system/install.ico"
+				headerType="0"
+				customProcName="true"
+				stayAlive="false"
+				jar="Jubler-${version}.jar"
+				errTitle="Unable to find Java environmet">
+				<jre minVersion="1.5.0" />
+			</config>
+		</launch4j>
+		<delete file="Jubler-${version}.jar"/>
+		<delete file="dist/Jubler.exe"/>
+	</target>
+
+	<!-- Linux installer -->
+	<target name="linux" depends="i18n,jar">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<mkdir dir="self"/>
+		<exec dir="resources/ffdecode" executable="make"> <arg line="linux"/> </exec>
+		<copy file="resources/system/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes" />
+		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
+		<izpack input="/tmp/install.xml" output="self/Jubler-install-linux.jar" installerType="standard" basedir="."/>
+		<delete file="/tmp/install.xml" />
+		<copy file="resources/system/findjava.sh" todir="self"/>
+		<copy file="resources/system/install.sh" todir="self"/>
+		<chmod file="self/install.sh" perm="a+x"/>
+		<exec dir="." executable="makeself">
+			<arg line="--bzip2 self Jubler-${version}-linux.sh 'Jubler installer' ./install.sh"/>
+		</exec>
+		<delete dir="self"/>
+	</target>
+
+	<!-- MacOSX installer -->
+	<target name="macosx" depends="distclean,i18n,jar">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<jarbundler
+			dir="dist"
+			jars="dist/Jubler.jar"
+			mainclass="com.panayotis.jubler.Main"
+			name="Jubler"
+			aboutmenuname="Jubler"
+			antialiasedgraphics="true"
+			antialiasedtext="true"
+			bundleid="com.panayotis.jubler"
+			infostring="Jubler ${version}, Multiplatform Subtitle Editor"
+			jvmversion="1.5+"
+			screenmenu="true"
+			version="${version}"
+			icon="resources/system/jubler.icns"
+		/>
+		<exec dir="resources/ffdecode" executable="make"> <arg line="darwin"/> </exec>
+		<exec dir="resources/system" executable="bash">
+ 	               <arg line="makedmg.sh ${version}"/>
+		</exec>
+	</target>
+	
+	<!-- Generic installer -->
+	<target name="generic" depends="i18n,jar">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<copy file="resources/system/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes"/>
+		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
+		<izpack input="/tmp/install.xml" output="Jubler-${version}-generic.jar" installerType="standard" basedir="."/>
+		<delete file="/tmp/install.xml" />
+	</target>
+
+
+	<target name="findsystem">
+		<condition property="isNotMac">
+			<not> <os family="mac"/> </not>
+		</condition>
+		<condition property="isMac">
+			<os family="mac"/>
+		</condition>
+	</target>
+	
+	<target name="noMacSystem" depends="findsystem" if="isNotMac">
+		<copy todir="src/com">
+			<fileset dir="resources/system/no_mac"/>
+		</copy>
+	</target>
+
+	<target name="MacSystem" depends="findsystem" if="isMac">
+		<delete dir="src/com/apple"/>
+	</target>
+
+	<target name="-pre-compile" depends="findsystem,noMacSystem,MacSystem"/>
+
+</project>

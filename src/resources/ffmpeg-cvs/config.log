@@ -1,0 +1,766 @@
+Σαβ Νοέ 26 04:04:56 EET 2005
+   ./configure  
+Δευ Νοέ 28 01:29:01 EET 2005
+   ./configure  
+Δευ Νοέ 28 01:36:53 EET 2005
+   ./configure  
+Δευ Νοέ 28 10:12:26 EET 2005
+   ./configure  
+Δευ Νοέ 28 10:39:43 EET 2005
+   ./configure  
+Δευ Νοέ 28 10:42:18 EET 2005
+   ./configure  
+Τρι Νοέ 29 01:44:20 EET 2005
+   ./configure  
+Τετ Νοέ 30 02:10:13 EET 2005
+   ./configure  
+Τετ Νοέ 30 17:42:39 EET 2005
+   ./configure  
+Πεμ Δεκ  1 03:06:02 EET 2005
+   ./configure  
+Πεμ Δεκ  1 03:09:08 EET 2005
+   ./configure  
+Πεμ Δεκ  1 13:32:20 EET 2005
+   ./configure  
+Πεμ Δεκ  1 18:03:46 EET 2005
+   ./configure  
+Σαβ Δεκ  3 16:20:11 EET 2005
+   ./configure  
+Σαβ Δεκ  3 17:00:18 EET 2005
+   ./configure  
+Δευ Δεκ  5 02:14:03 EET 2005
+   ./configure  
+Δευ Δεκ  5 17:28:56 EET 2005
+   ./configure  
+Δευ Δεκ  5 21:58:18 EET 2005
+   ./configure  
+Τρι Δεκ  6 02:07:17 EET 2005
+   ./configure  
+Τρι Δεκ  6 02:38:31 EET 2005
+   ./configure  
+Τετ Δεκ  7 11:25:33 EET 2005
+   ./configure  
+Τετ Δεκ  7 15:07:15 EET 2005
+   ./configure  
+Παρ Δεκ  9 18:27:53 EET 2005
+   ./configure  
+Δευ Δεκ 12 23:28:45 EET 2005
+   ./configure  
+Δευ Δεκ 12 23:45:26 EET 2005
+   ./configure  
+Τρι Δεκ 13 12:02:09 EET 2005
+   ./configure  
+Τετ Δεκ 14 02:03:04 EET 2005
+   ./configure  
+Τετ Δεκ 14 02:06:57 EET 2005
+   ./configure  
+Τετ Δεκ 14 03:10:36 EET 2005
+   ./configure  
+Πεμ Δεκ 15 00:40:46 EET 2005
+   ./configure  
+Παρ Δεκ 16 11:12:00 EET 2005
+   ./configure  
+Παρ Δεκ 16 17:36:26 EET 2005
+   ./configure  
+Παρ Δεκ 16 18:23:55 EET 2005
+   ./configure  
+Σαβ Δεκ 17 15:07:43 EET 2005
+   ./configure  
+Σαβ Δεκ 17 15:15:58 EET 2005
+   ./configure  
+Σαβ Δεκ 17 17:20:03 EET 2005
+   ./configure  
+Κυρ Δεκ 18 22:51:24 EET 2005
+   ./configure  
+Δευ Δεκ 19 02:45:56 EET 2005
+   ./configure  
+Δευ Δεκ 19 02:47:39 EET 2005
+   ./configure  
+Δευ Δεκ 19 02:52:44 EET 2005
+   ./configure  
+Δευ Δεκ 19 03:46:25 EET 2005
+   ./configure  
+Δευ Δεκ 19 03:47:34 EET 2005
+   ./configure  
+Δευ Δεκ 19 03:47:42 EET 2005
+   ./configure  
+Δευ Δεκ 19 03:49:24 EET 2005
+   ./configure  
+Δευ Δεκ 19 04:00:31 EET 2005
+   ./configure  
+Δευ Δεκ 19 04:12:07 EET 2005
+   ./configure  
+Δευ Δεκ 19 04:04:40 EET 2005
+   ./configure  
+Δευ Δεκ 19 11:29:32 EET 2005
+   ./configure  
+Mon Dec 19 14:31:28 EET 2005
+   ./configure  
+Δευ Δεκ 19 15:35:48 EET 2005
+   ./configure  
+Δευ Δεκ 19 16:55:52 EET 2005
+   ./configure  
+Τετ Δεκ 21 12:35:38 EET 2005
+   ./configure  
+Τετ Δεκ 21 21:58:42 EET 2005
+   ./configure  
+Πεμ Δεκ 22 02:15:35 EET 2005
+   ./configure  
+Πεμ Δεκ 22 02:45:23 EET 2005
+   ./configure  
+Πεμ Δεκ 22 03:03:00 EET 2005
+   ./configure  
+Πεμ Δεκ 22 03:03:44 EET 2005
+   ./configure  
+Πεμ Δεκ 22 03:18:35 EET 2005
+   ./configure  
+Πεμ Δεκ 22 12:21:58 EET 2005
+   ./configure  
+Πεμ Δεκ 22 13:08:22 EET 2005
+   ./configure  
+Πεμ Δεκ 22 16:47:40 EET 2005
+   ./configure  
+Πεμ Δεκ 22 18:39:34 EET 2005
+   ./configure  
+Παρ Δεκ 23 03:18:52 EET 2005
+   ./configure  
+Σαβ Δεκ 24 01:24:16 EET 2005
+   ./configure  --enable-gpl --enable-a52 --disable-debug --disable-zlib 
+Σαβ Δεκ 24 01:39:36 EET 2005
+   ./configure  
+Σαβ Δεκ 24 01:39:47 EET 2005
+   ./configure  --enable-gpl --enable-a52 --disable-debug 
+Σαβ Δεκ 24 02:11:32 EET 2005
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Σαβ Δεκ 24 02:55:19 EET 2005
+   ./configure  
+Σαβ Δεκ 24 16:11:07 EET 2005
+   ./configure  
+Κυρ Δεκ 25 00:24:37 EET 2005
+   ./configure  
+Δευ Δεκ 26 02:28:14 EET 2005
+   ./configure  
+Παρ Δεκ 30 16:31:29 EET 2005
+   ./configure  
+Παρ Δεκ 30 16:35:05 EET 2005
+   ./configure  
+Τετ Ιαν  4 15:23:47 EET 2006
+   ./configure  
+Τετ Ιαν  4 18:10:18 EET 2006
+   ./configure  
+Δευ Ιαν  9 14:22:12 EET 2006
+   ./configure  
+Δευ Ιαν  9 19:08:44 EET 2006
+   ./configure  
+Τρι Ιαν 10 16:50:09 EET 2006
+   ./configure  
+Τετ Ιαν 11 04:30:19 EET 2006
+   ./configure  
+Τετ Ιαν 11 04:47:30 EET 2006
+   ./configure  
+Τετ Ιαν 11 14:42:59 EET 2006
+   ./configure  
+Τετ Ιαν 11 17:16:39 EET 2006
+   ./configure  
+Παρ Ιαν 13 14:44:51 EET 2006
+   ./configure  
+Sun Jan 15 17:38:30 EET 2006
+   ./configure  
+Sun Jan 15 17:52:40 EET 2006
+   ./configure  
+Sun Jan 15 18:05:08 EET 2006
+   ./configure  
+Mon Jan 16 11:36:59 EET 2006
+   ./configure  
+Δευ Ιαν 16 11:40:53 EET 2006
+   ./configure  
+Δευ 16 Ιαν 2006 03:46:34 μμ EET
+   ./configure  
+Wed Jan 18 12:34:29 EET 2006
+   ./configure  
+Τετ 18 Ιαν 2006 05:17:07 μμ EET
+   ./configure  
+Τετ 18 Ιαν 2006 05:23:10 μμ EET
+   ./configure  
+Τετ 18 Ιαν 2006 05:26:20 μμ EET
+   ./configure  
+Thu Jan 19 14:21:58 EET 2006
+   ./configure  
+Thu Jan 19 16:41:13 EET 2006
+   ./configure  
+Παρ 20 Ιαν 2006 07:33:56 μμ EET
+   ./configure  
+Παρ 20 Ιαν 2006 08:24:12 μμ EET
+   ./configure  
+Παρ 20 Ιαν 2006 09:46:07 μμ EET
+   ./configure  
+Fri Jan 20 22:35:36 EET 2006
+   ./configure  
+Fri Jan 20 23:05:44 EET 2006
+   ./configure  
+Fri Jan 20 23:09:49 EET 2006
+   ./configure  
+Sat Jan 21 01:49:36 EET 2006
+   ./configure  
+Sat Jan 21 02:21:10 EET 2006
+   ./configure  
+Sat Jan 21 03:18:02 EET 2006
+   ./configure  
+Sun Jan 22 04:27:17 EET 2006
+   ./configure  
+Mon Jan 23 03:00:57 EET 2006
+   ./configure  
+Mon Jan 23 03:03:20 EET 2006
+   ./configure  
+Mon Jan 23 12:00:44 EET 2006
+   ./configure  
+Mon Jan 23 18:02:36 EET 2006
+   ./configure  
+Tue Jan 24 01:29:15 EET 2006
+   ./configure  
+Tue Jan 24 18:36:26 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --extra-cflags=-fno-common 
+Tue Jan 24 18:44:52 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --extra-cflags=-fno-common 
+Tue Jan 24 22:12:10 EET 2006
+   ./configure  
+Τρι Ιαν 24 22:29:56 EET 2006
+   ./configure  
+Τρι Ιαν 24 22:31:12 EET 2006
+   ./configure  
+Τρι Ιαν 24 22:31:24 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Τρι Ιαν 24 22:36:45 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug 
+Τρι Ιαν 24 22:45:10 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Τρι Ιαν 24 22:52:36 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Τρι Ιαν 24 22:56:10 EET 2006
+   ./configure  
+Τρι Ιαν 24 22:56:25 EET 2006
+   ./configure  
+Τρι Ιαν 24 22:56:42 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Τρι Ιαν 24 23:15:40 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:23:09 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:23:18 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Τρι Ιαν 24 23:27:16 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:44:19 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug 
+Τρι Ιαν 24 23:49:51 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:50:31 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:50:47 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:51:34 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:53:33 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:54:03 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:57:17 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:57:46 EET 2006
+   ./configure  
+Τρι Ιαν 24 23:58:43 EET 2006
+   ./configure  
+Τετ Ιαν 25 00:46:02 EET 2006
+   ./configure  
+Τετ Ιαν 25 00:57:08 EET 2006
+   ./configure  
+Wed Jan 25 00:44:39 EET 2006
+   ./configure  
+Fri Jan 27 17:55:27 EET 2006
+   ./configure  
+Mon Jan 30 13:46:18 EET 2006
+   ./configure  
+Mon Jan 30 13:47:01 EET 2006
+   ./configure  
+Δευ Ιαν 30 13:51:14 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Mon Jan 30 21:49:44 EET 2006
+   ./configure  
+Mon Jan 30 23:21:06 EET 2006
+   ./configure  
+Mon Jan 30 23:25:10 EET 2006
+   ./configure  
+Mon Jan 30 23:29:15 EET 2006
+   ./configure  
+Tue Jan 31 04:15:16 EET 2006
+   ./configure  
+Tue Jan 31 15:37:39 EET 2006
+   ./configure  
+Τρι 31 Ιαν 2006 05:25:47 μμ EET
+   ./configure  
+Tue Jan 31 18:22:02 EET 2006
+   ./configure  
+Thu Feb  2 01:54:31 EET 2006
+   ./configure  
+Thu Feb  2 16:37:24 EET 2006
+   ./configure  
+Fri Feb  3 13:38:19 EET 2006
+   ./configure  
+Fri Feb  3 15:53:54 EET 2006
+   ./configure  
+Sat Feb  4 21:04:42 EET 2006
+   ./configure  
+Tue Feb  7 02:45:50 EET 2006
+   ./configure  
+Tue Feb  7 02:47:09 EET 2006
+   ./configure  
+Tue Feb  7 02:47:57 EET 2006
+   ./configure  
+Thu Feb  9 03:47:45 EET 2006
+   ./configure  
+Thu Feb  9 10:56:16 EET 2006
+   ./configure  
+Thu Feb  9 13:27:06 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Thu Feb  9 16:43:58 EET 2006
+   ./configure  
+Thu Feb  9 21:09:38 EET 2006
+   ./configure  
+Thu Feb  9 22:17:55 EET 2006
+   ./configure  
+Fri Feb 10 03:11:16 EET 2006
+   ./configure  
+Fri Feb 10 13:00:48 EET 2006
+   ./configure  
+Fri Feb 10 18:40:31 EET 2006
+   ./configure  
+Sat Feb 11 03:56:54 EET 2006
+   ./configure  
+Sat Feb 11 20:33:55 EET 2006
+   ./configure  
+Sun Feb 12 15:59:43 EET 2006
+   ./configure  
+Sun Feb 12 16:00:50 EET 2006
+   ./configure  
+Mon Feb 13 11:20:42 EET 2006
+   ./configure  
+Mon Feb 13 15:56:52 EET 2006
+   ./configure  
+Mon Feb 13 23:12:56 EET 2006
+   ./configure  
+Tue Feb 14 19:30:33 EET 2006
+   ./configure  
+Wed Feb 15 19:21:01 EET 2006
+   ./configure  
+Wed Feb 15 19:27:52 EET 2006
+   ./configure  
+Thu Feb 16 02:44:23 EET 2006
+   ./configure  
+Thu Feb 16 02:47:04 EET 2006
+   ./configure  
+Thu Feb 16 12:17:10 EET 2006
+   ./configure  
+Thu Feb 16 18:55:48 EET 2006
+   ./configure  
+Thu Feb 16 19:08:59 EET 2006
+   ./configure  
+Thu Feb 16 23:39:37 EET 2006
+   ./configure  
+Fri Feb 17 00:31:33 EET 2006
+   ./configure  
+Fri Feb 17 00:37:54 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Fri Feb 17 00:57:43 EET 2006
+   ./configure  
+Παρ Φεβ 17 11:51:59 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug 
+Παρ Φεβ 17 14:00:23 EET 2006
+   ./configure  
+Fri Feb 17 15:28:11 EET 2006
+   ./configure  
+Fri Feb 17 15:31:43 EET 2006
+   ./configure  
+Fri Feb 17 15:34:30 CET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Fri Feb 17 15:35:12 CET 2006
+   ./configure  
+Fri Feb 17 15:39:18 EET 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Fri Feb 17 15:53:09 EET 2006
+   ./configure  
+Fri Feb 17 17:35:42 CET 2006
+   ./configure  
+Fri Feb 17 18:29:08 EET 2006
+   ./configure  
+Sat Feb 18 13:58:45 EET 2006
+   ./configure  
+Sun Feb 19 15:17:48 EET 2006
+   ./configure  
+Sun Feb 19 15:21:53 EET 2006
+   ./configure  
+Sun Feb 19 15:27:15 EET 2006
+   ./configure  
+Sun Feb 19 16:24:23 EET 2006
+   ./configure  
+Sun Feb 19 16:43:17 EET 2006
+   ./configure  
+Sun Feb 19 16:44:48 EET 2006
+   ./configure  
+Sun Feb 19 16:48:21 EET 2006
+   ./configure  
+Sun Feb 19 17:11:30 EET 2006
+   ./configure  
+Sun Feb 19 20:11:07 EET 2006
+   ./configure  
+Mon Feb 20 11:11:45 EET 2006
+   ./configure  
+Mon Feb 20 11:30:39 EET 2006
+   ./configure  
+Mon Feb 20 11:35:58 EET 2006
+   ./configure  
+Mon Feb 20 11:53:26 EET 2006
+   ./configure  
+Mon Feb 20 11:55:11 EET 2006
+   ./configure  
+Mon Feb 20 12:02:53 EET 2006
+   ./configure  
+Mon Feb 20 12:46:19 EET 2006
+   ./configure  
+Mon Feb 20 13:26:06 EET 2006
+   ./configure  
+Mon Feb 20 13:29:12 EET 2006
+   ./configure  
+Mon Feb 20 13:32:44 EET 2006
+   ./configure  
+Mon Feb 20 13:34:01 EET 2006
+   ./configure  
+Mon Feb 20 15:46:24 CET 2006
+   ./configure  
+Mon Feb 20 15:49:41 EET 2006
+   ./configure  
+Mon Feb 20 15:50:01 EET 2006
+   ./configure  
+Mon Feb 20 15:58:16 CET 2006
+   ./configure  
+Mon Feb 20 16:06:39 EET 2006
+   ./configure  
+Mon Feb 20 19:04:32 CET 2006
+   ./configure  
+Mon Feb 20 19:42:23 EET 2006
+   ./configure  
+Tue Feb 21 02:35:35 EET 2006
+   ./configure  
+Tue Feb 21 02:39:58 EET 2006
+   ./configure  
+Tue Feb 21 03:30:17 EET 2006
+   ./configure  
+Tue Feb 21 19:19:49 EET 2006
+   ./configure  
+Wed Feb 22 01:18:39 EET 2006
+   ./configure  
+Wed Feb 22 02:09:54 EET 2006
+   ./configure  
+Wed Feb 22 14:24:35 EET 2006
+   ./configure  
+Thu Feb 23 16:54:56 EET 2006
+   ./configure  
+Sat Feb 25 16:20:55 EET 2006
+   ./configure  
+Sun Feb 26 13:27:12 EET 2006
+   ./configure  
+Sun Feb 26 13:32:54 EET 2006
+   ./configure  
+Sun Feb 26 16:23:04 EET 2006
+   ./configure  --enable-gpl --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Mon Feb 27 14:00:02 EET 2006
+   ./configure  --enable-memalign-hack 
+Mon Feb 27 14:01:11 EET 2006
+   ./configure  --enable-memalign-hack 
+Mon Feb 27 15:20:51 EET 2006
+   ./configure  --enable-memalign-hack 
+Mon Feb 27 16:19:52 EET 2006
+   ./configure  --enable-memalign-hack 
+Tue Feb 28 02:13:12 EET 2006
+   ./configure  --disable-mmx --enable-memalign-hack 
+Tue Feb 28 02:13:45 EET 2006
+   ./configure  --disable-mmx --enable-memalign-hack 
+Tue Feb 28 02:20:43 EET 2006
+   ./configure  --enable-gpl --disable-mmx --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Tue Feb 28 02:27:40 EET 2006
+   ./configure  --disable-mmx --enable-memalign-hack --disable-debug --extra-cflags=-fno-common --enable-shared 
+Tue Feb 28 02:31:05 EET 2006
+   ./configure  --disable-mmx --enable-memalign-hack 
+Tue Feb 28 02:33:52 EET 2006
+   ./configure  --disable-mmx --enable-memalign-hack --extra-cflags=-fno-common --enable-shared 
+Tue Feb 28 02:36:08 EET 2006
+   ./configure  --disable-mmx --enable-memalign-hack --enable-shared 
+Tue Feb 28 02:39:36 EET 2006
+   ./configure  --disable-mmx --enable-shared 
+Tue Feb 28 02:40:06 EET 2006
+   ./configure  --disable-mmx 
+Tue Feb 28 02:40:18 EET 2006
+   ./configure  --disable-mmx 
+Tue Feb 28 02:42:58 EET 2006
+   ./configure  --disable-mmx --enable-shared 
+Tue Feb 28 02:43:13 EET 2006
+   ./configure  --disable-mmx --enable-shared 
+Tue Feb 28 10:36:29 EET 2006
+   ./configure  --enable-shared --disable-mmx 
+Tue Feb 28 10:36:55 EET 2006
+   ./configure  --enable-shared --disable-mmx --disable-iwmmxt 
+Tue Feb 28 10:38:26 EET 2006
+   ./configure  --enable-shared --disable-mmx 
+Tue Feb 28 10:39:10 EET 2006
+   ./configure  --enable-shared --disable-mmx --disable-altivec 
+Tue Feb 28 10:42:56 EET 2006
+   ./configure  --disable-mmx --enable-memalign-hack --enable-shared 
+Tue Feb 28 10:45:33 EET 2006
+   ./configure  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Wed Mar  1 00:39:59 EET 2006
+   ./configure  --enable-gpl --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc--enable-shared 
+Wed Mar  1 00:40:47 EET 2006
+   ./configure  --enable-gpl --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Mar  1 00:42:25 EET 2006
+   ./configure  --enable-gpl --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc--enable-shared 
+Wed Mar  1 00:42:55 EET 2006
+   ./configure  --enable-gpl --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc--enable-shared 
+Wed Mar  1 00:43:53 EET 2006
+   ./configure  --enable-gpl --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Mar  1 00:45:07 EET 2006
+   ./configure  --enable-gpl --enable-memalign-hack --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Mar  1 00:46:13 EET 2006
+   ./configure  --enable-gpl --cpu=ppc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Mar  1 00:50:36 EET 2006
+   ./configure  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Wed Mar  1 02:15:55 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:16:31 EET 2006
+   ./configure  --enable-memalign-hack --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:16:39 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:19:58 EET 2006
+   ./configure  --cpu=powerpc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:20:44 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:24:05 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:24:23 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:24:55 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:25:18 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:26:03 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:26:56 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:27:11 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:27:26 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:27:41 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:27:56 EET 2006
+   ./configure  --cpu=ppc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:28:39 EET 2006
+   ./configure  --cpu=powerpcpc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:28:50 EET 2006
+   ./configure  --cpu=powerpcc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:28:58 EET 2006
+   ./configure  --cpu=powerpc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:29:19 EET 2006
+   ./configure  --cpu=powerpc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 02:37:38 EET 2006
+   ./configure  --cpu=ppc 
+Wed Mar  1 02:38:59 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:39:08 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:40:24 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:40:55 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:41:23 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:41:40 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:42:08 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:42:54 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:43:24 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:43:43 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:44:23 EET 2006
+   ./configure.new  --cpu=ppc 
+Wed Mar  1 02:44:58 EET 2006
+   ./configure.new  --cpu=powerpc 
+Wed Mar  1 02:45:20 EET 2006
+   ./configure.new  --enable-memalign-hack 
+Wed Mar  1 02:48:01 EET 2006
+   ./configure  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Wed Mar  1 02:49:15 EET 2006
+   ./configure  --enable-gpl --cpu=powerpc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Mar  1 03:11:27 EET 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Wed Mar  1 03:12:40 EET 2006
+   ./configure.patched  --enable-gpl --cpu=powerpc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Mar  1 03:17:56 EET 2006
+   ./configure  --cpu=powerpc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 03:18:08 EET 2006
+   ./configure.patched  --cpu=powerpc --extra-cflags=-arch ppc --extra-ldflags=-arch ppc 
+Wed Mar  1 22:19:41 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack 
+Wed Mar  1 22:20:32 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack 
+Wed Mar  1 22:22:07 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=mingw32-gcc 
+Wed Mar  1 22:22:30 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=gcc 
+Wed Mar  1 22:32:35 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=gcc 
+Wed Mar  1 22:35:57 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=gcc 
+Wed Mar  1 22:36:19 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=gcc 
+Wed Mar  1 22:37:29 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=gcc 
+Wed Mar  1 22:39:24 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=gcc 
+Thu Mar  2 00:22:18 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=mingw32- --enable-memalign-hack --cc=gcc 
+Thu Mar  2 00:23:39 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=/usr/local/mingw32/bin/mingw32- --enable-memalign-hack --cc=gcc 
+Thu Mar  2 01:59:05 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc 
+Tue Mar  7 14:35:35 EET 2006
+   ./configure  
+Tue Mar  7 15:08:03 CET 2006
+   ./configure  
+Tue Mar  7 15:18:23 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug 
+Tue Mar  7 15:18:30 EET 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug 
+Tue Mar  7 15:22:17 EET 2006
+   ./configure  
+Tue Mar  7 15:23:22 EET 2006
+   ./configure  
+Τρι 07 Μάρ 2006 05:18:20 μμ CET
+   ./configure  
+Tue Mar  7 19:02:14 EET 2006
+   ./configure  
+Tue Mar  7 21:06:46 EET 2006
+   ./configure  
+Wed Mar  8 17:30:49 EET 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Wed Mar  8 17:32:36 EET 2006
+   ./configure.patched  --enable-gpl --cpu=powerpc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Fri Mar 10 17:58:13 EET 2006
+   ./configure  
+Thu Mar 16 15:05:11 EET 2006
+   ./configure  
+Thu Mar 16 16:01:35 EET 2006
+   ./configure  
+Thu Mar 16 16:19:03 EET 2006
+   ./configure  
+Fri Mar 17 03:27:52 EET 2006
+   ./configure  
+Fri Mar 17 12:25:18 EET 2006
+   ./configure  
+Fri Mar 17 19:10:01 EET 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Fri Mar 17 19:14:38 EET 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common 
+Fri Mar 17 19:15:12 EET 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug 
+Fri Mar 17 21:40:51 EET 2006
+   ./configure  
+Fri Mar 17 21:41:16 EET 2006
+   ./configure  
+Fri Mar 17 21:47:26 EET 2006
+   ./configure  
+Fri Mar 17 21:57:55 EET 2006
+   ./configure  
+Mon Mar 20 14:02:43 EET 2006
+   ./configure  
+Wed Mar 22 22:59:54 EET 2006
+   ./configure  
+Wed Mar 22 23:08:08 EET 2006
+   ./configure  
+Wed Mar 22 23:53:00 EET 2006
+   ./configure  
+Thu Mar 23 11:11:44 EET 2006
+   ./configure  
+Thu Mar 23 11:12:49 EET 2006
+   ./configure  
+Thu Mar 23 12:21:26 EET 2006
+   ./configure  
+Thu Mar 23 22:33:27 EET 2006
+   ./configure  
+Thu Mar 23 23:32:39 EET 2006
+   ./configure  
+Tue Mar 28 20:35:09 EEST 2006
+   ./configure  
+Tue Mar 28 21:13:22 EEST 2006
+   ./configure  
+Tue Mar 28 23:11:59 EEST 2006
+   ./configure  
+Wed Mar 29 11:25:56 EEST 2006
+   ./configure  
+Wed Mar 29 15:17:22 EEST 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Δευ Απρ  3 16:35:18 EEST 2006
+   ./configure  
+Mon Apr  3 17:19:51 EEST 2006
+   ./configure  
+Mon Apr  3 20:04:39 EEST 2006
+   ./configure  
+Tue Apr  4 21:02:40 EEST 2006
+   ./configure  
+Thu Apr  6 12:20:04 EEST 2006
+   ./configure  
+Thu Apr  6 12:21:14 EEST 2006
+   ./configure  
+Wed Apr 12 23:40:55 EEST 2006
+   ./configure  
+Wed Apr 26 15:30:54 EEST 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc 
+Wed Apr 26 15:35:54 EEST 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc 
+Wed Apr 26 15:41:33 EEST 2006
+   ./configure  --cross-prefix=i686-pc-mingw32- --enable-memalign-hack 
+Wed Apr 26 15:42:17 EEST 2006
+   ./configure  --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --enable-shared --cc=gcc 
+Wed Apr 26 15:43:47 EEST 2006
+   ./configure  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc 
+Wed Apr 26 15:44:20 EEST 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc 
+Wed Apr 26 16:21:44 EEST 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc 
+Wed Apr 26 16:29:40 EEST 2006
+   ./configure.patched  --enable-gpl --enable-shared --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc --disable-static 
+Wed Apr 26 16:31:10 EEST 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i686-pc-mingw32- --enable-memalign-hack --cc=gcc 
+Wed Apr 26 17:01:40 EEST 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Wed Apr 26 17:03:05 EEST 2006
+   ./configure.patched  --enable-gpl --cpu=powerpc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Apr 26 18:48:37 EEST 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Wed Apr 26 18:49:52 EEST 2006
+   ./configure.patched  --enable-gpl --cpu=powerpc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Wed Apr 26 18:59:06 EEST 2006
+   ./configure.patched  --enable-gpl --cpu=powerpc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
+Thu Apr 27 12:39:10 EEST 2006
+   ./configure  
+Thu Apr 27 13:14:48 EEST 2006
+   ./configure  
+Thu Apr 27 13:28:24 EEST 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug 
+Thu Apr 27 13:40:04 EEST 2006
+   ./configure.patched  --enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=i586-mingw32msvc- --enable-memalign-hack --cc=gcc 
+Thu Apr 27 16:46:16 EEST 2006
+   ./configure  
+Thu Apr 27 16:50:13 EEST 2006
+   ./configure  

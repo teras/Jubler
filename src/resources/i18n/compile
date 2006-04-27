@@ -1,0 +1,9 @@
+#!/bin/sh
+
+for i in *.po ; do
+	LNG=`echo $i | sed -e 's/\.po$//g'`
+	echo Creating class for language \"$LNG\"
+	msgfmt -d . --java2 --resource=com.panayotis.jubler.i18n.Messages_$LNG $i
+	mv com/panayotis/jubler/i18n/Messages_$LNG*.class ../../src/com/panayotis/jubler/i18n/
+	rm -fr com
+done
