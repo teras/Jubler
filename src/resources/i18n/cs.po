@@ -2,10 +2,10 @@
 # Panayotis Katsaloulis <panayotis@panayotis.com>, 2005.
 msgid	""
 msgstr	"Project-Id-Version: cs\n"
-	"Report-Msgid-Bugs-To: \n"
+	"Report-Msgid-Bugs-To: Conyx <conyx@seznam.cz>\n"
 	"POT-Creation-Date: 2006-02-19 18:17+0200\n"
-	"PO-Revision-Date: 2005-12-19 17:08+0100\n"
-	"Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
+	"PO-Revision-Date: 2005-05-01 21:52+0100\n"
+	"Last-Translator: Conyx <conyx@seznam.cz>\n"
 	"Language-Team:  <el@li.org>\n"
 	"MIME-Version: 1.0\n"
 	"Content-Type: text/plain; charset=UTF-8\n"
@@ -213,7 +213,7 @@ msgstr	"Nastavení"
 
 #: com/panayotis/jubler/Jubler.java:705
 msgid	"Quit"
-msgstr	""
+msgstr	"Ukončit"
 
 #: com/panayotis/jubler/Jubler.java:713
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:115
@@ -506,9 +506,8 @@ msgid	"About Jubler"
 msgstr	"O programu Jubler"
 
 #: com/panayotis/jubler/StaticJubler.java:44
-#, fuzzy
 msgid	"Quit Jubler"
-msgstr	"O programu Jubler"
+msgstr	"Ukončit Jubler"
 
 #: com/panayotis/jubler/format/AbstractSubFormat.java:72
 #: com/panayotis/jubler/subs/FileCommunicator.java:135
@@ -650,13 +649,12 @@ msgid	"Y offset"
 msgstr	"Y ofset"
 
 #: com/panayotis/jubler/options/AbstractPlayerOptions.java:75
-#, fuzzy
 msgid	"Advanced argument list:"
-msgstr	"Pokročilé volby"
+msgstr	"Rozvinutý seznam argumentů:"
 
 #: com/panayotis/jubler/options/AbstractPlayerOptions.java:82
 msgid	"Defaults"
-msgstr	""
+msgstr	"Výchozí"
 
 #: com/panayotis/jubler/options/AbstractPlayerOptions.java:95
 msgid	"Player window offset in pixels"
@@ -729,19 +727,16 @@ msgid	" Show save preferences while saving file"
 msgstr	" Ukázat možnosti uložení, když ukládám soubor"
 
 #: com/panayotis/jubler/options/JPreferences.java:236
-#, fuzzy
 msgid	"Clear current shortcut"
-msgstr	"Přehrát současný titulek"
+msgstr	"Vymazat současnou zkratku"
 
 #: com/panayotis/jubler/options/JPreferences.java:247
-#, fuzzy
 msgid	"Reset all to defaults"
 msgstr	"Nastavit na výchozí"
 
 #: com/panayotis/jubler/options/JPreferences.java:260
-#, fuzzy
 msgid	"Shortcuts"
-msgstr	"Třídit"
+msgstr	"Zkratky"
 
 #: com/panayotis/jubler/options/JRateChooser.java:66
 #, java-format
@@ -770,22 +765,20 @@ msgid	"Subtitle format of the output file (SRT is prefered)"
 msgstr	"Formát titulků ukládaného souboru (SRT je preferováno)"
 
 #: com/panayotis/jubler/options/JUnsaved.java:41
-#, fuzzy
 msgid	"The following files are unsaved:"
-msgstr	"Do následujícího času"
+msgstr	"Následující soubory nejsou uloženy:"
 
 #: com/panayotis/jubler/options/JUnsaved.java:44
 msgid	"Do you want to quit without saving?"
-msgstr	""
+msgstr	"Opravdu chcete skončit bez uložení?"
 
 #: com/panayotis/jubler/options/ShortcutsModel.java:49
-#, fuzzy
 msgid	"Command"
-msgstr	"Komentáře"
+msgstr	"Příkaz"
 
 #: com/panayotis/jubler/options/ShortcutsModel.java:49
 msgid	"Key"
-msgstr	""
+msgstr	"Klávesa"
 
 #: com/panayotis/jubler/player/AbstractPlayer.java:56
 msgid	"Player"
@@ -1027,7 +1020,7 @@ msgstr	"Chyba při načítání souboru {0}"
 
 #: com/panayotis/jubler/preview/decoders/FFMPEG.java:94
 msgid	"Count not create audio clip"
-msgstr	""
+msgstr	"Zvukový klip není vytvořen"
 
 #: com/panayotis/jubler/preview/decoders/FFMPEG.java:110
 msgid	"Open file error"
@@ -1039,7 +1032,7 @@ msgstr	"Nepodporované audio"
 
 #: com/panayotis/jubler/preview/decoders/FFMPEG.java:114
 msgid	"Line unavailable"
-msgstr	"Řádek nedostupný"
+msgstr	"Řádek není dostupný"
 
 #: com/panayotis/jubler/subs/FileCommunicator.java:94
 msgid	"Clone current"
@@ -1919,3 +1912,4 @@ msgstr	"Pravopis"
 
 #~ msgid	"Error while creating subtitle shades"
 #~ msgstr	"Chyba při tvorbě stínu titulku"
+

@@ -1,9 +1,9 @@
-/regdef.h/1.1/Mon Jul  1 04:26:07 2002//
-/asm.h/1.11/Thu Feb 16 22:36:37 2006//
-/dsputil_alpha.c/1.24/Thu Feb 16 22:36:37 2006//
-/motion_est_alpha.c/1.6/Thu Feb 16 22:36:37 2006//
-/mpegvideo_alpha.c/1.14/Thu Feb 16 22:36:37 2006//
-/simple_idct_alpha.c/1.7/Thu Feb 16 22:36:37 2006//
-/dsputil_alpha_asm.S/1.8/Mon Feb 20 14:05:28 2006//
-/motion_est_mvi_asm.S/1.4/Mon Feb 20 14:05:28 2006//
+/asm.h/1.11/Mon May  8 14:40:00 2006//
+/dsputil_alpha.c/1.24/Mon May  8 14:40:00 2006//
+/dsputil_alpha_asm.S/1.8/Mon May  8 14:40:00 2006//
+/motion_est_alpha.c/1.6/Mon May  8 14:40:00 2006//
+/motion_est_mvi_asm.S/1.4/Mon May  8 14:40:00 2006//
+/mpegvideo_alpha.c/1.14/Mon May  8 14:40:00 2006//
+/regdef.h/1.1/Mon May  8 14:40:00 2006//
+/simple_idct_alpha.c/1.7/Mon May  8 14:40:00 2006//
 D

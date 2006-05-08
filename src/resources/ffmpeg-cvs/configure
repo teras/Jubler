@@ -591,13 +591,13 @@ for opt do
   ;;
   --enable-small) optimize="small"
   ;;
-  --enable-amr_nb) amr_nb="yes"
+  --enable-amr_nb) amr="yes"; amr_nb="yes"; amr_nb_fixed="no"
   ;;
-  --enable-amr_nb-fixed) amr_nb_fixed="yes"
+  --enable-amr_nb-fixed) amr="yes"; amr_nb_fixed="yes"; amr_nb="no"
   ;;
-  --enable-amr_wb) amr_wb="yes"
+  --enable-amr_wb) amr="yes"; amr_wb="yes"
   ;;
-  --enable-amr_if2) amr_if2="yes"
+  --enable-amr_if2) amr="yes"; amr_if2="yes"
   ;;
   --enable-sunmlib) sunmlib="yes"
   ;;
@@ -1913,6 +1913,11 @@ fi
 echo "SRC_PATH=$source_path" >> config.mak
 echo "BUILD_ROOT=$PWD" >> config.mak
 
+if test "$amr" = "yes" ; then
+  echo "#define AMR 1" >> $TMPH
+  echo "AMR=yes" >> config.mak
+fi
+
 if test "$amr_wb" = "yes" ; then
   echo "#define AMR_WB 1" >> $TMPH
   echo "AMR_WB=yes" >> config.mak
@@ -1921,16 +1926,22 @@ if test "$amr_wb" = "yes" ; then
   echo "V5.1.0 from "
   echo "http://www.3gpp.org/ftp/Specs/archive/26_series/26.204/26204-510.zip"
   echo "and extracted the source to libavcodec/amrwb_float"
-  echo
 fi
 
 if test "$amr_nb" = "yes" ; then
   echo "#define AMR_NB 1" >> $TMPH
   echo "AMR_NB=yes" >> config.mak
   echo
+  echo "AMR NB FLOAT NOTICE ! Make sure you have downloaded TS26.104"
+  echo "REL-5 V5.1.0 from "
+  echo "http://www.3gpp.org/ftp/Specs/latest/Rel-5/26_series/26104-5??.zip"
+  echo "and extracted the source to libavcodec/amr_float"
+  echo "If you try this on alpha, you may need to change Word32 to int in amr/typedef.h"
+fi
+
 if test "$amr_nb_fixed" = "yes" ; then
-  echo "AMR_NB_FIXED=yes" >> config.mak
   echo "#define AMR_NB_FIXED 1" >> $TMPH
+  echo "AMR_NB_FIXED=yes" >> config.mak
   echo
   echo "AMR NB FIXED POINT NOTICE! Make sure you have downloaded TS26.073 "
   echo "REL-5 version 5.1.0 from "
@@ -1938,21 +1949,12 @@ if test "$amr_nb_fixed" = "yes" ; then
   echo "and extracted src to libavcodec/amr"
   echo "You must also add -DMMS_IO and remove -pedantic-errors to/from CFLAGS in libavcodec/amr/makefile."
   echo "i.e. CFLAGS = -Wall -I. \$(CFLAGS_\$(MODE)) -D\$(VAD) -DMMS_IO"
-  echo
-else
-  echo "AMR NB FLOAT NOTICE ! Make sure you have downloaded TS26.104"
-  echo "REL-5 V5.1.0 from "
-  echo "http://www.3gpp.org/ftp/Specs/latest/Rel-5/26_series/26104-5??.zip"
-  echo "and extracted the source to libavcodec/amr_float"
-  echo "If you try this on alpha, you may need to change Word32 to int in amr/typedef.h"
-  echo
 fi
 
 if test "$amr_if2" = "yes" ; then
   echo "AMR_CFLAGS=-DIF2=1" >> config.mak
 fi
 
-fi
 
 for codec in $CODEC_LIST ; do
     echo "#define CONFIG_`echo $codec | tr a-z A-Z` 1" >> $TMPH

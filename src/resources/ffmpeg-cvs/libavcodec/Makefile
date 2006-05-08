@@ -234,19 +234,29 @@ ifeq ($(CONFIG_ZMBV_DECODER),yes)
 	OBJS+= zmbv.o
 endif
 
-AMROBJS=
+
+ifeq ($(AMR),yes)
+OBJS+= amr.o
+endif
+
 ifeq ($(AMR_NB),yes)
-ifeq ($(AMR_NB_FIXED),yes)
-AMROBJS= amr.o
-AMREXTRALIBS+= amr/*.o
-AMRLIBS=amrlibs
-CLEANAMR=cleanamr
-else
-AMROBJS= amr.o
 OBJS+= amr_float/sp_dec.o amr_float/sp_enc.o amr_float/interf_dec.o amr_float/interf_enc.o
-CLEANAMR=cleanamrfloat
 endif
+
+ifeq ($(AMR_NB_FIXED),yes)
+EXTRAOBJS += amr/*.o
+EXTRADEPS=amrlibs
 endif
+
+ifeq ($(AMR_WB),yes)
+OBJS+= amrwb_float/dec_acelp.o amrwb_float/dec_dtx.o  amrwb_float/dec_gain.o  \
+       amrwb_float/dec_if.o    amrwb_float/dec_lpc.o  amrwb_float/dec_main.o  \
+       amrwb_float/dec_rom.o   amrwb_float/dec_util.o amrwb_float/enc_acelp.o \
+       amrwb_float/enc_dtx.o   amrwb_float/enc_gain.o amrwb_float/enc_if.o    \
+       amrwb_float/enc_lpc.o   amrwb_float/enc_main.o amrwb_float/enc_rom.o   \
+       amrwb_float/enc_util.o  amrwb_float/if_rom.o
+endif
+
 
 ifeq ($(HAVE_PTHREADS),yes)
 OBJS+= pthread.o
@@ -265,17 +275,6 @@ ifeq ($(HAVE_BEOSTHREADS),yes)
 OBJS+= beosthread.o
 endif
 
-ifeq ($(AMR_WB),yes)
-AMROBJS= amr.o
-OBJS+= amrwb_float/dec_acelp.o amrwb_float/dec_dtx.o amrwb_float/dec_gain.o \
-		amrwb_float/dec_if.o amrwb_float/dec_lpc.o amrwb_float/dec_main.o \
-		amrwb_float/dec_rom.o amrwb_float/dec_util.o amrwb_float/enc_acelp.o \
-		amrwb_float/enc_dtx.o amrwb_float/enc_gain.o amrwb_float/enc_if.o \
-		amrwb_float/enc_lpc.o amrwb_float/enc_main.o amrwb_float/enc_rom.o \
-		amrwb_float/enc_util.o amrwb_float/if_rom.o
-endif
-OBJS+= $(AMROBJS)
-CLEANAMRWB=cleanamrwbfloat
 ASM_OBJS=
 
 ifeq ($(HAVE_XVMC_ACCEL),yes)
@@ -418,11 +417,7 @@ LIBMAJOR=$(LAVCMAJOR)
 endif
 TESTS= imgresample-test dct-test motion-test fft-test
 
-EXTRAOBJS = $(AMREXTRALIBS)
-
 include $(SRC_PATH)/common.mak
-
-$(LIB): $(AMRLIBS)
 
 amrlibs:
 	$(MAKE) -C amr spclib fipoplib
@@ -431,7 +426,7 @@ tests: apiexample cpuid_test $(TESTS)
 
 dsputil.o: dsputil.c dsputil.h
 
-clean:: $(CLEANAMR)
+clean::
 	rm -f \
 	   i386/*.o i386/*~ \
 	   armv4l/*.o armv4l/*~ \
@@ -442,16 +437,10 @@ clean:: $(CLEANAMR)
 	   sh4/*.o sh4/*~ \
 	   sparc/*.o sparc/*~ \
 	   liba52/*.o liba52/*~ \
+	   amr_float/*.o \
 	   apiexample $(TESTS)
-
-cleanamr:
-	$(MAKE) -C amr clean
-
-cleanamrfloat:
-	rm -f amr_float/*.o
-
-cleanamrwbfloat:
-	$(MAKE) -C amrwb_float -f makefile.gcc clean
+	-$(MAKE) -C amr clean
+	-$(MAKE) -C amrwb_float -f makefile.gcc clean
 
 # api example program
 apiexample: apiexample.c $(LIB)
