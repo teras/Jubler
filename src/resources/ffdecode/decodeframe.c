@@ -170,9 +170,9 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 	/* *TERAS* This should be done at the beginning */
 	av_register_all();
 	
-	int err=0, i=0, len=0, got_picture, video_index=-1, pack_duration=0;
-	int retflag=TRUE, found_codec=FALSE;
-	jlong pack_pts=0;
+	int err=0, i=0, len=0, got_picture, video_index=-1, pack_duration=0, codec_is_open=-1;
+	int retflag=TRUE;
+	jlong pack_pts=0, comp_pts=0;
 	
 	AVFormatContext *fcx=NULL;
 	AVCodecContext *ccx=NULL;
@@ -203,7 +203,6 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 				if (codec) {
 					// codec is supported, proceed
 					video_index=i;
-					found_codec=TRUE;
 					break;
 				}
 			}
@@ -216,7 +215,7 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 	}
 	else {
 		// Open codec
-		if(avcodec_open(ccx, codec) < 0 ) {
+		if((codec_is_open = avcodec_open(ccx, codec)) < 0 ) {
 			printf("Could not open codec.\n");
 			retflag = FALSE;
 		}
@@ -241,8 +240,10 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 			// Make sure this packet belongs to the stream we want
 			if(pkt.stream_index==video_index){
 				// Rescale the times
-				pack_pts = av_rescale_q(pkt.pts, fcx->streams[video_index]->time_base, AV_TIME_BASE_Q);
+				if (pkt.pts != AV_NOPTS_VALUE) comp_pts = pkt.pts;
+				pack_pts = av_rescale_q(comp_pts, fcx->streams[video_index]->time_base, AV_TIME_BASE_Q);
 				pack_duration = av_rescale_q(pkt.duration, fcx->streams[video_index]->time_base, AV_TIME_BASE_Q);
+				comp_pts += pkt.duration;
 				// Decode this packet
 				len = avcodec_decode_video(ccx, frame, &got_picture, pkt.data, pkt.size);
 				if (len < 0) {
@@ -276,9 +277,9 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 	}
 
 	// Clean up
-	if (frame != FALSE) av_free(frame);
-	if (ccx != NULL && found_codec != FALSE)   avcodec_close(ccx);
-	if (fcx != NULL)   av_close_input_file(fcx);
+	if (frame != FALSE)     av_free(frame);
+	if (codec_is_open >= 0) avcodec_close(ccx);
+	if (fcx != NULL)        av_close_input_file(fcx);
 	
 	if (retflag != FALSE) {
 		return pict;

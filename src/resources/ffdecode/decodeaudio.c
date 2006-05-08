@@ -62,14 +62,14 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_cre
 
 
 jboolean decodeAudio(const char *input_filename, const char *output_filename, jlong seek_time_start, jlong seek_time_stop) {
-   AVCodec *codec=NULL;
+   AVCodec *codec=NULL, *vcodec=NULL;
 	AVPacket pkt;
-   AVCodecContext *c=NULL, *ccx=NULL;
+   AVCodecContext *ccx=NULL;
 	AVFormatContext *fcx=NULL, *ofcx=NULL;
 	AVOutputFormat *fmt=NULL;
 	AVStream *audio_st=NULL;
 	AVFormatParameters params;
-   int got_audio, len, err=0, audio_index=-1, i=0, pack_duration=0, packsize=0, codec_is_open=-1;
+   int got_audio, len, err=0, audio_index=-1, i=0, pack_duration=0, packsize=0, codec_is_open=-1, video_index=-1;
 	long int file_size=0, header_size=0;
 	jlong pack_pts=0;
    FILE *outfile=NULL;
@@ -104,6 +104,25 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 				}
 			}
    	}
+		/* Find the first supported video codec in the stream
+		 * This is only meant for seeking. When we have muxed
+		 * audio and video stream we have to seek by the video
+		 */
+		for(i=0; i<fcx->nb_streams; i++) {
+			if(fcx->streams[i]->codec->codec_type==CODEC_TYPE_VIDEO) {
+				/* Found a video stream, check if codec is supported */
+				vcodec = avcodec_find_decoder(fcx->streams[i]->codec->codec_id);
+				if(vcodec) {
+					/* codec is supported, proceed */
+					video_index = i;
+					break;
+				}
+			}
+		}
+		/* If we didn't find any supported video stream, it might mean
+		 * we are dealing with an audio only stream, so we can use the
+		 * audio_index for seeking */
+		if (video_index < 0) video_index = audio_index;
 	}
 
    /* Find codec id */
@@ -112,9 +131,8 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 	 	ret = JNI_FALSE;
    } 
 	else {
-		c= avcodec_alloc_context();
 		/* open it */
-   	if ((codec_is_open = avcodec_open(c, codec)) < 0) {
+   	if ((codec_is_open = avcodec_open(ccx, codec)) < 0) {
       	printf("could not open codec\n");
       	ret = JNI_FALSE;
    	}
@@ -125,9 +143,9 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 				if (seek_time_start <= fcx->duration && seek_time_stop <= fcx->duration) {
 					/* All ok */
 					/*  Seek to the nearest keyframe before the seek_time we asked */
-					/* Notice: always seek to stream 0 because if it is an avi 
+					/* Notice: always seek to video stream because if it is an avi 
 					 * we need to seek by the video stream. not the audio */
-					av_seek_frame(fcx, 0, av_rescale_q(seek_time_start, AV_TIME_BASE_Q, fcx->streams[0]->time_base), AVSEEK_FLAG_BACKWARD);
+					av_seek_frame(fcx, video_index, av_rescale_q(seek_time_start, AV_TIME_BASE_Q, fcx->streams[video_index]->time_base), AVSEEK_FLAG_BACKWARD);
 					/* Create WAV headers */
 
 					/* allocate the output media context */
@@ -231,7 +249,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 				pack_pts = av_rescale_q(pkt.pts, fcx->streams[audio_index]->time_base, AV_TIME_BASE_Q);
 				pack_duration = av_rescale_q(pkt.duration, fcx->streams[audio_index]->time_base, AV_TIME_BASE_Q);
 				/* Decode the paket */
-         	len = avcodec_decode_audio(c, (short *)outbuf, &got_audio, packptr, packsize);
+         	len = avcodec_decode_audio(ccx, (short *)outbuf, &got_audio, packptr, packsize);
 				
          	if (len < 0) {
              	printf("Error while decoding\n");
@@ -281,8 +299,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 
 	/* Clean up */
 	if(outfile != NULL)    fclose(outfile);
-	if(codec_is_open >= 0) avcodec_close(c);
-	if(c != NULL)          free(c);
+	if(codec_is_open >= 0) avcodec_close(ccx);
    if(outbuf != NULL)     av_free(outbuf);
 	if(fcx != NULL)        av_close_input_file(fcx);
 

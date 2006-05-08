@@ -48,7 +48,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_mak
 	float val;
 	AVCodec *codec=NULL;
    AVPacket pkt;
-   AVCodecContext *c=NULL, *ccx=NULL;
+   AVCodecContext *ccx=NULL;
    AVFormatContext *fcx=NULL;
    AVFormatParameters params;
    int got_audio=0, len=0, err=0, audio_index=-1, i=0, j=0, bytecounter=0, packsize=0, codec_is_open=-1;
@@ -122,9 +122,8 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_mak
 			ret = JNI_FALSE;
 		}
 		else {
-			c= avcodec_alloc_context();
 			/* open it */
-   		if ((codec_is_open = avcodec_open(c, codec)) < 0) {
+   		if ((codec_is_open = avcodec_open(ccx, codec)) < 0) {
 				printf("could not open codec\n");
 				ret = JNI_FALSE;
 			}
@@ -165,7 +164,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_mak
 					// Rescale the times
 					pack_pts = av_rescale_q(pkt.pts, fcx->streams[audio_index]->time_base, AV_TIME_BASE_Q);
 					// Decode the paket
-					len = avcodec_decode_audio(c, (short *)outbuf, &got_audio, pkt.data, pkt.size);
+					len = avcodec_decode_audio(ccx, (short *)outbuf, &got_audio, pkt.data, pkt.size);
 				
 					if (len < 0) {
 						printf("Error while decoding\n");
@@ -241,9 +240,10 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_mak
 	(*env)->ReleaseStringUTFChars(env, original, original_c);
 
 	/* Clean up */
+	if(maxsample != NULL)  free(maxsample);
+	if(minsample != NULL)  free(minsample);
 	if(cachefile != NULL)  fclose(cachefile);
-	if(codec_is_open >= 0) avcodec_close(c);
-	if(c != NULL)          free(c);
+	if(codec_is_open >= 0) avcodec_close(ccx);
 	if(outbuf != NULL)     av_free(outbuf);
 	if(fcx != NULL)        av_close_input_file(fcx);
 	
