@@ -6900,7 +6900,7 @@ static int decode_slice(H264Context *h){
             eos = get_cabac_terminate( &h->cabac );
 
             if( ret < 0 || h->cabac.bytestream > h->cabac.bytestream_end + 1) {
-                av_log(h->s.avctx, AV_LOG_ERROR, "error while decoding MB %d %d\n", s->mb_x, s->mb_y);
+                av_log(h->s.avctx, AV_LOG_ERROR, "error while decoding MB %d %d, bytestream (%d)\n", s->mb_x, s->mb_y, h->cabac.bytestream_end - h->cabac.bytestream);
                 ff_er_add_slice(s, s->resync_mb_x, s->resync_mb_y, s->mb_x, s->mb_y, (AC_ERROR|DC_ERROR|MV_ERROR)&part_mask);
                 return -1;
             }
@@ -7782,12 +7782,7 @@ static int decode_frame(AVCodecContext *avctx,
         /* Sort B-frames into display order */
         Picture *cur = s->current_picture_ptr;
         Picture *prev = h->delayed_output_pic;
-        int out_idx = 0;
-        int pics = 0;
-        int out_of_order;
-        int cross_idr = 0;
-        int dropped_frame = 0;
-        int i;
+        int i, pics, cross_idr, out_of_order, out_idx;
 
         if(h->sps.bitstream_restriction_flag
            && s->avctx->has_b_frames < h->sps.num_reorder_frames){
@@ -7795,16 +7790,19 @@ static int decode_frame(AVCodecContext *avctx,
             s->low_delay = 0;
         }
 
+        pics = 0;
         while(h->delayed_pic[pics]) pics++;
         h->delayed_pic[pics++] = cur;
         if(cur->reference == 0)
             cur->reference = 1;
 
+        cross_idr = 0;
         for(i=0; h->delayed_pic[i]; i++)
             if(h->delayed_pic[i]->key_frame || h->delayed_pic[i]->poc==0)
                 cross_idr = 1;
 
         out = h->delayed_pic[0];
+        out_idx = 0;
         for(i=1; h->delayed_pic[i] && !h->delayed_pic[i]->key_frame; i++)
             if(h->delayed_pic[i]->poc < out->poc){
                 out = h->delayed_pic[i];
@@ -7829,12 +7827,11 @@ static int decode_frame(AVCodecContext *avctx,
             out = prev;
 
         if(out_of_order || pics > s->avctx->has_b_frames){
-            dropped_frame = (out != h->delayed_pic[out_idx]);
             for(i=out_idx; h->delayed_pic[i]; i++)
                 h->delayed_pic[i] = h->delayed_pic[i+1];
         }
 
-        if(prev == out && !dropped_frame)
+        if(prev == out)
             *data_size = 0;
         else
             *data_size = sizeof(AVFrame);

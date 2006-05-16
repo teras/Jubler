@@ -1,3 +1,7 @@
+3.0.0?
+FFDecode bugs fixed, preview should be much more stable and accurate. Updated to
+the latest ffmpeg sources.
+
 3.0.0-rc4
 Fixed bugs: audio line not closing, saving file with an illegal character
 set, banner not closing, Jubler crashing when audio codec could not be opened,
