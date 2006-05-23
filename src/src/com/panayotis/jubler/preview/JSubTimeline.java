@@ -400,7 +400,7 @@ public class JSubTimeline extends JPanel {
     }
     public double getSelectionEnd() {
         double sel = 0;
-        if (sellist.size()>0) sel = sellist.get(sellist.size()-1).start;
+        if (sellist.size()>0) sel = sellist.get(sellist.size()-1).end;
         return view.getStart() + view.getDuration() * sel;
     }
     
