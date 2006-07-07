@@ -359,7 +359,7 @@ public class Subtitles extends AbstractTableModel {
         int size = getColumnCount();
         
         int MIN_COLUMN_WIDTH = 10;
-        int MAX_COLUMN_WIDTH = 200;
+        int MAX_COLUMN_WIDTH = 400;
         
         for (int i = 0 ; i < visiblecols.length ; i++) {
             if (visiblecols[i]) {
