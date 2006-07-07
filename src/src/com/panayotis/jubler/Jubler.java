@@ -28,61 +28,65 @@ package com.panayotis.jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.format.SubFileFilter;
+import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.SystemDependent;
 import com.panayotis.jubler.player.JVideoConsole;
-import javax.swing.JFileChooser;
+import com.panayotis.jubler.player.JVideofileSelector;
+import com.panayotis.jubler.player.VideoPlayer;
+import com.panayotis.jubler.player.players.AvailPlayers;
+import com.panayotis.jubler.preview.JSubPreview;
 import com.panayotis.jubler.subs.FileCommunicator;
-import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubRenderer;
-import com.panayotis.jubler.undo.UndoList;
-import com.panayotis.jubler.undo.UndoEntry;
+import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.time.Time;
-import com.panayotis.jubler.tools.JReplaceGlobal;
+import com.panayotis.jubler.time.gui.JTimeSingleSelection;
 import com.panayotis.jubler.tools.JDelSelection;
 import com.panayotis.jubler.tools.JFixer;
 import com.panayotis.jubler.tools.JMarker;
 import com.panayotis.jubler.tools.JPaster;
 import com.panayotis.jubler.tools.JRecodeTime;
+import com.panayotis.jubler.tools.JReparent;
+import com.panayotis.jubler.tools.JReplaceGlobal;
 import com.panayotis.jubler.tools.JRounder;
 import com.panayotis.jubler.tools.JShiftTime;
 import com.panayotis.jubler.tools.JSpeller;
+import com.panayotis.jubler.tools.JStyler;
 import com.panayotis.jubler.tools.JSubJoin;
-import com.panayotis.jubler.time.gui.JTimeSingleSelection;
+import com.panayotis.jubler.tools.JSynchronize;
+import com.panayotis.jubler.tools.externals.JExtSelector;
 import com.panayotis.jubler.tools.replace.JReplace;
+import com.panayotis.jubler.undo.UndoEntry;
+import com.panayotis.jubler.undo.UndoList;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Properties;
+import java.util.StringTokenizer;
 import java.util.Vector;
+import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
-import com.panayotis.jubler.information.JInformation;
-import com.panayotis.jubler.options.SystemDependent;
-import com.panayotis.jubler.player.JVideofileSelector;
-import com.panayotis.jubler.player.VideoPlayer;
-import com.panayotis.jubler.player.players.AvailPlayers;
-import com.panayotis.jubler.preview.JSubPreview;
-import com.panayotis.jubler.subs.JSubEditor;
-import com.panayotis.jubler.subs.style.SubStyle;
-import com.panayotis.jubler.tools.JReparent;
-import com.panayotis.jubler.tools.JStyler;
-import com.panayotis.jubler.tools.JSynchronize;
-import com.panayotis.jubler.tools.externals.JExtSelector;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-import javax.swing.AbstractButton;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
+
 
 /**
  *
@@ -2176,14 +2180,38 @@ public class Jubler extends JFrame {
     }
     
     
+    private boolean column_change;
+    private boolean getcolumnchange() { return column_change;}
+    private void setcolumnchange(boolean cc) {column_change=cc;}
     private void setTableProps() {
         final SubRenderer renderer = new SubRenderer();
+        
+        /* We have to track column change and act on the mouse up event.
+         * If we do the other way round, then some event are going ot be missed,
+         * since we don't know the event trigger sequence .
+         */
         
         SubTable = new JTable() {
             public TableCellRenderer getCellRenderer(int row, int column) {
                 return renderer;
             }
+            public void columnMarginChanged(ChangeEvent e)  {
+                super.columnMarginChanged(e);
+                setcolumnchange(true);
+            }
         };
+        
+        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
+            public void mousePressed(MouseEvent e) {
+                setcolumnchange(false);
+            }
+            
+            public void mouseReleased(MouseEvent e) {
+                if (getcolumnchange()) subs.saveColumnWidth(SubTable);
+                setcolumnchange(false);
+            }
+        });
+        
         SubsScrollPane.setViewportView(SubTable);
         
         

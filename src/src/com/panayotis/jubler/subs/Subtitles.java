@@ -26,12 +26,15 @@ package com.panayotis.jubler.subs;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.format.AvailSubFormats;
+import com.panayotis.jubler.options.OptionsIO;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import java.util.Hashtable;
+import java.util.Properties;
+import java.util.StringTokenizer;
 import javax.swing.JTable;
 
 
@@ -42,6 +45,9 @@ import javax.swing.JTable;
 public class Subtitles extends AbstractTableModel {
     private static final String colnames[] = {_("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
     private boolean [] visiblecols = {true, true, false, false};
+    private int defaultcolwidth[] = {100, 100, 50, 50};
+    private int prefcolwidth[] = new int [visiblecols.length];
+    
     
     private final static int FIRST_EDITABLE_COL = colnames.length;
     
@@ -59,12 +65,14 @@ public class Subtitles extends AbstractTableModel {
     
     
     public Subtitles() {
+        loadColumnWidth();
         sublist = new Vector<SubEntry>();
         attribs = new Hashtable<String,String>();
         styles = new SubStyleList();
     }
     
     public Subtitles(Subtitles old) {
+        loadColumnWidth();
         sublist = new Vector<SubEntry>();
         for (int i = 0 ; i < old.size() ; i++ ) {
             sublist.add(new SubEntry(old.elementAt(i)));
@@ -250,11 +258,11 @@ public class Subtitles extends AbstractTableModel {
     
     public SubStyleList getStyleList() { return styles; }
     
-    /* These methods are mostyl used to check if a valid videofile is selected and to store the videofile 
+    /* These methods are mostyl used to check if a valid videofile is selected and to store the videofile
      * for the videoconsole */
     public void setVideofile(String vfile) { videofile = vfile; }
     public String getVideofile() { return videofile; }
-
+    
     
     public void revalidateStyles() {
         for (SubEntry entry : sublist) {
@@ -316,20 +324,50 @@ public class Subtitles extends AbstractTableModel {
         return sublist.elementAt(row).getData(getVisibleColumn(col));
     }
     
+    public void saveColumnWidth(JTable t) {
+        Properties prefs = OptionsIO.getPrefFile();
+        StringBuffer widths = new StringBuffer();
+        int ccolumn = 0;
+        
+        for (int i = 0 ; i < visiblecols.length ; i++) {
+            if (visiblecols[i]) {
+                prefcolwidth[i] = t.getColumnModel().getColumn(ccolumn).getWidth();
+                ccolumn++;
+            }
+            widths.append(prefcolwidth[i]).append(',');
+        }
+        prefs.setProperty("System.ColumnWidth", widths.substring(0, widths.length()-1));
+        OptionsIO.savePrefFile(prefs);
+    }
+    
+    private void loadColumnWidth() {
+        for (int i = 0 ; i< defaultcolwidth.length; i++) {
+            prefcolwidth[i] = defaultcolwidth[i];
+        }
+        String widths = OptionsIO.getPrefFile().getProperty("System.ColumnWidth");
+        if (widths == null || widths.length()<1) return;
+        
+        StringTokenizer st = new StringTokenizer(widths ,",");
+        int pos = 0;
+        while (st.hasMoreTokens() && pos < prefcolwidth.length) {
+            prefcolwidth[pos++] = Integer.parseInt(st.nextToken());
+        }
+    }
     
     public void recalculateTableSize(JTable t) {
         int ccolumn = 0;
         int size = getColumnCount();
         
-        if (visiblecols[0]) setColumnWidth(t, ccolumn++, 10, 100, 100);
-        if (visiblecols[1]) setColumnWidth(t, ccolumn++, 10, 100, 100);
-        if (visiblecols[2]) setColumnWidth(t, ccolumn++, 10, 500, 50);
-        if (visiblecols[3]) setColumnWidth(t, ccolumn++, 10, 500, 50);
+        int MIN_COLUMN_WIDTH = 10;
+        int MAX_COLUMN_WIDTH = 200;
+        
+        for (int i = 0 ; i < visiblecols.length ; i++) {
+            if (visiblecols[i]) {
+                t.getColumnModel().getColumn(ccolumn).setMinWidth(MIN_COLUMN_WIDTH);
+                t.getColumnModel().getColumn(ccolumn).setMaxWidth(MAX_COLUMN_WIDTH);
+                t.getColumnModel().getColumn(ccolumn).setPreferredWidth(prefcolwidth[i]);
+                ccolumn++;
+            }
+        }
     }
-    private void setColumnWidth(JTable t, int col, int min, int max, int pref) {
-        t.getColumnModel().getColumn(col).setMinWidth(min);
-        t.getColumnModel().getColumn(col).setMaxWidth(max);
-        t.getColumnModel().getColumn(col).setPreferredWidth(pref);
-    }
-    
 }

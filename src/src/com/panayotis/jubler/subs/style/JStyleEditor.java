@@ -292,11 +292,11 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(2, 2, 2, 2)));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
         DirtyIndicator.setLayout(new java.awt.BorderLayout());
 
         DirtyIndicator.setBackground(java.awt.Color.green);
-        DirtyIndicator.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(1, 2, 1, 2)));
+        DirtyIndicator.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 2, 1, 2));
         StyleName.setToolTipText(_("The name of this style. Remember to hit [RETURN] to store the name"));
         StyleName.addActionListener(formListener);
         StyleName.addKeyListener(formListener);
@@ -309,7 +309,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
-        jPanel15.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(0, 10, 0, 0)));
+        jPanel15.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         Clone.setText(_("Clone"));
         Clone.setToolTipText(_("Create a new style based on the current one"));
         Clone.addActionListener(formListener);
@@ -336,7 +336,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         FontP.setLayout(new java.awt.BorderLayout());
 
-        FontP.setBorder(new javax.swing.border.TitledBorder(_("Font")));
+        FontP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Font")));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         FontSize.setToolTipText(_("Font size"));
@@ -355,7 +355,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
-        jPanel3.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(0, 6, 0, 0)));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         Bold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bold.png")));
         Bold.setToolTipText(_("Bold"));
         Bold.addActionListener(formListener);
@@ -386,7 +386,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 4, 0));
 
-        jPanel4.setBorder(new javax.swing.border.TitledBorder(_("Colors")));
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Colors")));
         Primary.setText(TriColorButton.labels[0]);
         Primary.setToolTipText(TriColorButton.tooltips[0]);
         Primary.addActionListener(formListener);
@@ -415,7 +415,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel13.setLayout(new java.awt.BorderLayout());
 
-        jPanel13.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.BevelBorder(javax.swing.border.BevelBorder.LOWERED), new javax.swing.border.EmptyBorder(new java.awt.Insets(2, 2, 2, 2))));
+        jPanel13.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
         TestText.setEditable(false);
         TestText.setText(setTestText());
         TestText.setToolTipText(_("Demo subtitles text"));
@@ -429,7 +429,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel5.setLayout(new java.awt.GridLayout(3, 1));
 
-        jPanel5.setBorder(new javax.swing.border.TitledBorder(_("Border")));
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Border")));
         BorderStyle.setToolTipText(_("Border style"));
         jPanel5.add(BorderStyle);
 
@@ -459,7 +459,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel6.setLayout(new java.awt.GridLayout(3, 2, 2, 0));
 
-        jPanel6.setBorder(new javax.swing.border.TitledBorder(_("Margins transformations")));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Margins transformations")));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel3.setText(_("Left"));
         jPanel6.add(jLabel3);
@@ -489,7 +489,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel7.setLayout(new java.awt.GridLayout(4, 2, 2, 0));
 
-        jPanel7.setBorder(new javax.swing.border.TitledBorder(_("Font transformations")));
+        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Font transformations")));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("  "+_("Angle"));
         jPanel7.add(jLabel6);
@@ -522,7 +522,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         JDirPanel.setLayout(new java.awt.BorderLayout());
 
-        JDirPanel.setBorder(new javax.swing.border.TitledBorder(_("Alignment")));
+        JDirPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Alignment")));
         jPanel12.add(JDirPanel);
 
         Advanced.add(jPanel12);
@@ -543,7 +543,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel18.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
-        jPanel18.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(4, 4, 4, 4)));
+        jPanel18.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         OKB.setText(_("OK"));
         OKB.addActionListener(formListener);
 
@@ -653,8 +653,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         public void windowOpened(java.awt.event.WindowEvent evt) {
         }
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         current = null;
@@ -785,11 +784,14 @@ public class JStyleEditor extends javax.swing.JDialog {
     
     
     private String setTestText() {
+        /* NOTE make following code idiot proof */
         String full = _("Welcome to the (Jubler) world!");
+        if (full.equals("")) full="()";
         int tagTextFinish;
         
         tagTextStart = full.indexOf('(');
         tagTextFinish = full.indexOf(')')-1;
+        
         tagTextLength = tagTextFinish - tagTextStart;
         return full.substring(0, tagTextStart) +
                 full.substring(tagTextStart+1, tagTextFinish+1) +

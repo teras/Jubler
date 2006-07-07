@@ -1,13 +1,14 @@
 3.0.0?
-FFDecode bugs fixed, preview should be much more stable and accurate. Updated to
-the latest ffmpeg sources.
+FFDecode bugs fixed, preview should be much more stable and accurate. Preview
+bug fixed, where wrong duration was reported. Column width is now saved.
+Updated to the latest ffmpeg sources.
 
 3.0.0-rc4
 Fixed bugs: audio line not closing, saving file with an illegal character
 set, banner not closing, Jubler crashing when audio codec could not be opened,
-Jubler didn't start under Linux. Mac OSX port is now universal binary. Synchronize
-subtitle texts and timestamps. Subtitle preview updates live on key events.
-Automatic version check through internet. Smaller code changes.
+Jubler didn't start under Linux. Mac OSX port is now universal binary.
+Synchronize subtitle texts and timestamps. Subtitle preview updates live on 
+key events. Automatic version check through internet. Smaller code changes.
 
 3.0.0-rc3
 Initial Mac OS X version. Big endian bugs fixed. "Quit" introduced. Menu
