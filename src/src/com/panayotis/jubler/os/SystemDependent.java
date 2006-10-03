@@ -183,9 +183,12 @@ public class SystemDependent {
         if (isMacOSX()) return 0;
         return 2;
     }
-    
+ 
+    public static String getCanonicalFilename(String filename) {
+        if (isWindows()) return filename.toLowerCase()+".exe";
+        return filename.toLowerCase();
+    }
 }
-
 
 
 

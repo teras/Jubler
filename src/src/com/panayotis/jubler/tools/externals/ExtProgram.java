@@ -37,6 +37,9 @@ public interface ExtProgram {
     
     /* Get the name of this external program, useful e.g. to save options or for labels */
     public abstract String getName();
+    
+    /* Get the actual filename of the executable - might be OS-specific */
+    public abstract String getFileName();
 
     /* Get the type of this external program, useful to save options */
     public abstract String getType();

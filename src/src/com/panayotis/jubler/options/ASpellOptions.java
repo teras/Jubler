@@ -40,8 +40,8 @@ public class ASpellOptions extends ExtOptions {
     Vector<String> dictionaries;
     
     /** Creates new form ASpellOptions */
-    public ASpellOptions(String type, String name) {
-        super(type, name);
+    public ASpellOptions(String type, String name, String programname) {
+        super(type, name, programname);
         initComponents();
         loadXtraOptions();
         

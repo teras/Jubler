@@ -53,7 +53,7 @@ public class AbstractPlayerOptions extends ExtOptions {
     
     /** Creates a new instance of AbstractPlayerOptions */
     public AbstractPlayerOptions(AbstractPlayer player) {
-        super(player.getType(), player.getName());
+        super(player.getType(), player.getName(), player.getFileName());
         args_default = player.getDefaultArguments();
         
         if (args_value == null || args_value.equals("")) args_value = args_default;

@@ -39,6 +39,8 @@ public class MPlayer extends AbstractPlayer {
     }
     
     public String getName() { return "MPlayer"; }
+    public String getFileName() { return SystemDependent.getCanonicalFilename(getName()); }
+
     
     public String getDefaultArguments() {
         return SystemDependent.getDefaultMPlayerArgs();

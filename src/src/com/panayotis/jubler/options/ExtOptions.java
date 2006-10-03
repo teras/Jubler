@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.options.OptionsIO;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.os.TreeWalker;
 import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -40,16 +41,18 @@ public class ExtOptions extends JPanel {
     private JFileChooser fdialog;
     
     protected String name;
+    protected String programname;
     protected String type;
     
     String filename;
     
     /** Creates new form MPlay */
-    public ExtOptions (String type, String name) {
+    public ExtOptions (String type, String name, String programname) {
         super();
 
         this.type = type;
         this.name = name;
+        this.programname = programname;
 
         initComponents();
         loadOptions();
@@ -100,7 +103,7 @@ public class ExtOptions extends JPanel {
     
     private void BrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseActionPerformed
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        FilenameT.setText(fdialog.getSelectedFile().getPath());
+        FilenameT.setText(TreeWalker.getFile(fdialog.getSelectedFile().getPath(), programname));
     }//GEN-LAST:event_BrowseActionPerformed
     
     
