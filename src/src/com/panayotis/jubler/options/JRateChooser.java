@@ -24,7 +24,7 @@
 
 package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;

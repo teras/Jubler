@@ -2,7 +2,7 @@
  * JStyler.java
  *
  * Created on 26 Ιούνιος 2005, 12:59 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -22,7 +22,7 @@
  */
 
 package com.panayotis.jubler.tools;
-import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.Jubler;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.style.SubStyle;
@@ -32,22 +32,30 @@ import com.panayotis.jubler.subs.style.SubStyle;
  * @author  teras
  */
 public class JStyler extends JTool {
-   
+    
     SubStyle style;
     
-    public JStyler (Subtitles subs, int[] selected) {
-        super (subs, selected, true);
+    public JStyler() {
+        super(true);
     }
-    
     
     public void initialize() {
         initComponents();
-        for ( SubStyle style : subs.getStyleList() ) {
-            StyleSel.addItem(style);
-        }
     }
     
-
+    protected void updateData(Jubler jub) {
+        super.updateData(jub);
+        
+        int selvalue = StyleSel.getSelectedIndex();
+        StyleSel.removeAllItems();
+        for ( SubStyle style : subs.getStyleList() )
+            StyleSel.addItem(style);
+        if ( selvalue < 0 )
+            selvalue = 0;
+        if ( selvalue < subs.getStyleList().size() )
+            StyleSel.setSelectedIndex(selvalue);
+    }
+    
     protected String getToolTitle() {
         return _("Set region style");
     }

@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.time.Time;
 import java.awt.Color;
 

@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools.spell.checkers;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.ExtOptions;
 import com.panayotis.jubler.tools.spell.SpellChecker;

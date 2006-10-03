@@ -41,8 +41,8 @@ public class JSpeller extends JTool {
    
     private JExtSelector selector;
         
-    public JSpeller (Subtitles subs, int[] selected) {
-        super (subs, selected, true);
+    public JSpeller () {
+        super (true);
     }
     
     

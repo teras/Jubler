@@ -37,8 +37,8 @@ public class JRounder extends JTool {
     int precise;
     
     /** Creates new form JRounder */
-    public JRounder(Subtitles subs, int [] selected ) {
-        super(subs, selected, true);
+    public JRounder() {
+        super(true);
     }
     
     public void initialize() {

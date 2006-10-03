@@ -49,27 +49,24 @@ public abstract class JTool extends JPanel {
     protected Jubler jparent;
     
     
-    public JTool(Subtitles subs, int[] selected, boolean freeform) {
+    public JTool (boolean freeform) {
         super();
-        this.subs = subs;
-        this.selected = selected;
         if ( freeform ) {
-            pos = new JTimeFullSelection(subs, selected);
+            pos = new JTimeFullSelection();
         } else {
-            pos = new JTimeRegion(subs, selected);
+            pos = new JTimeRegion();
         }
         initialize();
         add(pos, BorderLayout.CENTER);
     }
     
     
-    
-    
+    /* Update the values, display the dialog and execute this tool */
     public void execute(Jubler jub) {
-        jparent = jub;
         int res;
         UndoEntry undo;
-        
+
+        updateData(jub);
         res = JIDialog.question(jparent, this, getToolTitle());
         if ( res != JIDialog.OK_OPTION) return;
         
@@ -87,6 +84,13 @@ public abstract class JTool extends JPanel {
         jparent.tableHasChanged(selected);
     }
     
+    
+    protected void updateData (Jubler jub) {
+        subs = jub.getSubtitles();
+        selected = jub.getSelectedRows();
+        pos.updateData(subs, selected);
+        jparent = jub;
+    }
     
     protected abstract void initialize();
     protected abstract void storeSelections();

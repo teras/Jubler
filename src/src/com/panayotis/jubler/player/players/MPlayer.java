@@ -25,7 +25,7 @@
 package com.panayotis.jubler.player.players;
 import com.panayotis.jubler.player.AbstractPlayer;
 import com.panayotis.jubler.player.Viewport;
-import com.panayotis.jubler.options.SystemDependent;
+import com.panayotis.jubler.os.SystemDependent;
 import java.io.File;
 
 /**

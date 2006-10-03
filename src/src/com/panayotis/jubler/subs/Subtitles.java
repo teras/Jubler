@@ -32,6 +32,7 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
+import java.io.File;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -88,8 +89,10 @@ public class Subtitles extends AbstractTableModel {
         }
     }
     
-    
-    public void populate(String data, float FPS) {
+    /* @data loaded file with proper encoding
+     * @f file pointer, in case we need to directly read the original file
+     * FPS the frames per second */
+    public void populate(File f, String data, float FPS) {
         Subtitles load;
         AvailSubFormats formats;
         
@@ -98,7 +101,7 @@ public class Subtitles extends AbstractTableModel {
         formats = new AvailSubFormats();
         
         while ( load == null && formats.hasMoreElements()) {
-            load = formats.nextElement().parse(data, FPS);
+            load = formats.nextElement().parse(data, FPS, f);
         }
         appendSubs(load, true);
         setAllAttribs(load);

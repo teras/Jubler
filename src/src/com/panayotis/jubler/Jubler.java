@@ -31,13 +31,15 @@ import com.panayotis.jubler.format.SubFileFilter;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.OptionsIO;
-import com.panayotis.jubler.options.SystemDependent;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.Dropper;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.player.JVideoConsole;
 import com.panayotis.jubler.player.JVideofileSelector;
 import com.panayotis.jubler.player.VideoPlayer;
 import com.panayotis.jubler.player.players.AvailPlayers;
 import com.panayotis.jubler.preview.JSubPreview;
-import com.panayotis.jubler.subs.FileCommunicator;
+import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubEntry;
@@ -149,6 +151,19 @@ public class Jubler extends JFrame {
     /* Whether this file needs saving or not */
     private boolean unsaved_data = false;
     
+    
+    /* Jubler tools */
+    private JStyler styler;
+    private JShiftTime shift;
+    private JSpeller spell;
+    private JRounder round;
+    private JFixer fix;
+    private JReplaceGlobal delp;
+    private JDelSelection dels;
+    private JMarker mark;
+    private JRecodeTime recode;
+    private JSynchronize sync;
+    
     public final Image windowicon;
     
     
@@ -202,6 +217,19 @@ public class Jubler extends JFrame {
         /* We have to do this AFTER we process the menu items (since some would be missing */
         if (prefs==null) prefs = new JPreferences(this);
         StaticJubler.updateMenus(this);
+        
+        /* Initialize Tools */
+        shift = new JShiftTime();
+        styler = new JStyler();  //
+        spell = new JSpeller();
+        round = new JRounder();
+        fix = new JFixer();
+        delp = new JReplaceGlobal();
+        dels = new JDelSelection();
+        mark = new JMarker();
+        recode = new JRecodeTime();
+        sync = new JSynchronize();
+
         
         openWindow();
         updateRecentFile(null);
@@ -1277,7 +1305,6 @@ public class Jubler extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void SynchronizeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SynchronizeTMActionPerformed
-        JSynchronize sync = new JSynchronize(this, windows, SubTable.getSelectedRows());
         sync.execute(this);
     }//GEN-LAST:event_SynchronizeTMActionPerformed
     
@@ -1389,7 +1416,6 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_ChildNFMActionPerformed
     
     private void bySelectionSEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionSEMActionPerformed
-        JStyler styler = new JStyler(subs, SubTable.getSelectedRows());
         styler.execute(this);
     }//GEN-LAST:event_bySelectionSEMActionPerformed
     
@@ -1444,12 +1470,10 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_StepwiseREMActionPerformed
     
     private void SpellTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpellTMActionPerformed
-        JSpeller spell = new JSpeller(subs, SubTable.getSelectedRows());
         spell.execute(this);
     }//GEN-LAST:event_SpellTMActionPerformed
     
     private void RoundTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoundTMActionPerformed
-        JRounder round = new JRounder(subs, SubTable.getSelectedRows());
         round.execute(this);
     }//GEN-LAST:event_RoundTMActionPerformed
     
@@ -1579,7 +1603,6 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_FileNFMActionPerformed
     
     private void FixTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FixTMActionPerformed
-        JFixer fix = new JFixer(subs, SubTable.getSelectedRows());
         fix.execute(this);
     }//GEN-LAST:event_FixTMActionPerformed
     
@@ -1621,12 +1644,10 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_RevertFMActionPerformed
     
     private void GloballyREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GloballyREMActionPerformed
-        JReplaceGlobal delp = new JReplaceGlobal(subs, SubTable.getSelectedRows());
         delp.execute(this);
     }//GEN-LAST:event_GloballyREMActionPerformed
     
     private void bySelectionDEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionDEMActionPerformed
-        JDelSelection dels = new JDelSelection(subs, SubTable.getSelectedRows());
         dels.execute(this);
     }//GEN-LAST:event_bySelectionDEMActionPerformed
     
@@ -1659,7 +1680,6 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_OptionsTTMActionPerformed
     
     private void bySelectionMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionMEMActionPerformed
-        JMarker mark = new JMarker(subs, SubTable.getSelectedRows());
         mark.execute(this);
     }//GEN-LAST:event_bySelectionMEMActionPerformed
     
@@ -1773,12 +1793,10 @@ public class Jubler extends JFrame {
     
     
     private void RecodeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecodeTMActionPerformed
-        JRecodeTime recode = new JRecodeTime(subs, SubTable.getSelectedRows());
         recode.execute(this);
     }//GEN-LAST:event_RecodeTMActionPerformed
     
     private void ShiftTimeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShiftTimeTMActionPerformed
-        JShiftTime shift = new JShiftTime(subs, SubTable.getSelectedRows());
         shift.execute(this);
     }//GEN-LAST:event_ShiftTimeTMActionPerformed
     
@@ -2007,7 +2025,7 @@ public class Jubler extends JFrame {
         
         /* Convert file into subtitle data */
         newsubs = new Subtitles();
-        newsubs.populate(data, prefs.getLoadFPS());
+        newsubs.populate(f, data, prefs.getLoadFPS());
         if ( newsubs.size() == 0 ) {
             DEBUG.error(_("File not recognized!"));
             return;
@@ -2315,6 +2333,7 @@ public class Jubler extends JFrame {
     public Subtitles getSubtitles() { return subs; }
     public UndoList getUndoList() { return undo; }
     public JSubPreview getSubPreview() { return this.preview; }
+    public int[] getSelectedRows() { return SubTable.getSelectedRows();}
     
     public SubEntry getSelectedRow() {
         int row = getSelectedRowIdx();

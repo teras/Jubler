@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.format.types;
 
-import com.panayotis.jubler.format.AbstractSubFormat;
+import com.panayotis.jubler.format.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
@@ -36,7 +36,7 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
-public class MicroDVD extends AbstractSubFormat {
+public class MicroDVD extends AbstractTextSubFormat {
     
     private static final Pattern pat;
     
@@ -64,12 +64,11 @@ public class MicroDVD extends AbstractSubFormat {
     public String getName() {
         return "MicroDVD";
     }
+     
+    public String getExtendedName() {
+        return "MicroDVD SUB file";
+    } 
     
-    public String getDescription() {
-        return _("MicroDVD format");
-    }
-    
-      
     protected String makeSubEntry(SubEntry sub){
         StringBuffer res;
         res = new StringBuffer();

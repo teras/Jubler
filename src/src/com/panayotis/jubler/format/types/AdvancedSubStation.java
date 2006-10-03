@@ -68,11 +68,6 @@ public class AdvancedSubStation extends SubStationAlpha {
         return "AdvancedSubStation";
     }
     
-    public String getDescription() {
-        return _("Advanced SubStation format");
-    }
-    
-    
     protected String getExtraVersion() { return "+"; }
     protected String getLayer() { return "0"; }
     

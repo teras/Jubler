@@ -45,8 +45,8 @@ public class JRecodeTime extends JTool {
     
     
     /** Creates new form JRecodeTime */
-    public JRecodeTime(Subtitles subs, int[] selected) {
-        super(subs, selected, true);
+    public JRecodeTime() {
+        super(true);
     }
     
     public void initialize() {

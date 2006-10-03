@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.format.types;
 
-import com.panayotis.jubler.format.AbstractSubFormat;
+import com.panayotis.jubler.format.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
@@ -37,7 +37,7 @@ import com.panayotis.jubler.subs.Subtitles;
  *
  * @author teras
  */
-public class PlainText extends AbstractSubFormat {
+public class PlainText extends AbstractTextSubFormat {
     
     private static final Pattern pat;
     
@@ -70,7 +70,7 @@ public class PlainText extends AbstractSubFormat {
         return "PlainTxt";
     }
     
-    public String getDescription() {
+    public String getExtendedName() {
         return _("Plain text");
     }
     

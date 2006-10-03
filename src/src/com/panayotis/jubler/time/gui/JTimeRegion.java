@@ -2,7 +2,7 @@
  * jTimeRegion.java
  *
  * Created on 5 Ιούλιος 2005, 11:30 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -42,13 +42,9 @@ public class JTimeRegion extends JTimeArea {
     protected JTimeSpinner curFTime, givFTime;
     
     /** Creates new form jTimeRegion */
-    public JTimeRegion(Subtitles subs, int[] selected) {
-        super(subs, selected);
-        
-        Time first, last;
-        
+    public JTimeRegion() {
+        super();
         initComponents();
-        
         curSTime = new JTimeSpinner();
         givSTime = new JTimeSpinner();
         curFTime = new JTimeSpinner();
@@ -67,7 +63,13 @@ public class JTimeRegion extends JTimeArea {
         curFTime.setToolTipText(_("Use selected time as end of region"));
         givSTime.setToolTipText(_("Use given time as start of region"));
         givFTime.setToolTipText(_("Use given time as end of region"));
-        
+    }
+    
+    Time first, last;
+    
+    
+    public void updateData(Subtitles subs, int[] selected) {
+        super.updateData(subs, selected);
         initTime(findFirstInList(subs, selected), findLastInList(subs, selected));
     }
     

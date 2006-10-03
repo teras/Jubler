@@ -2,7 +2,7 @@
  * SubFormat.java
  *
  * Created on 13 Ιούλιος 2005, 7:44 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -24,21 +24,31 @@
 package com.panayotis.jubler.format;
 
 import com.panayotis.jubler.subs.Subtitles;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 
 /**
  *
  * @author teras
  */
-public interface SubFormat {
+public abstract class SubFormat {
     
     public abstract String getExtension();
-    public abstract String getDescription();
     public abstract String getName();
     
     /* convert a string into subtitles */
-    public abstract Subtitles parse(String input, float FPS);
+    public abstract Subtitles parse(String input, float FPS, File f);
     
     /* Export subtitles into a string stream */
-    public String produce(Subtitles subs, float FPS);
+    public abstract void produce(Subtitles subs, float FPS, BufferedWriter out) throws IOException;
+
+    public String getExtendedName() {
+        return getName();
+    }
     
+    public String getDescription() {
+        return getExtendedName() + "  (*." + getExtension() + ")";
+    }
+
 }

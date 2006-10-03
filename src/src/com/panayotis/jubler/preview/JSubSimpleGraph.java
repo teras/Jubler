@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.preview;
 
-import com.panayotis.jubler.options.SystemDependent;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Color;
 import java.awt.Dimension;

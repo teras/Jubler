@@ -24,8 +24,8 @@
 package com.panayotis.jubler.preview.decoders;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.DEBUG;
-import com.panayotis.jubler.options.SystemDependent;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;

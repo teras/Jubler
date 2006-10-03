@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.format.types;
 
-import com.panayotis.jubler.format.AbstractSubFormat;
+import com.panayotis.jubler.format.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
@@ -37,7 +37,7 @@ import com.panayotis.jubler.subs.Subtitles;
  *
  * @author teras
  */
-public class SubRip extends AbstractSubFormat {
+public class SubRip extends AbstractTextSubFormat {
     
     private static final Pattern pat;
     
@@ -70,11 +70,7 @@ public class SubRip extends AbstractSubFormat {
     public String getName() {
         return "SubRip";
     }
-    
-    public String getDescription() {
-        return _("SubRip format");
-    }
-    
+      
     protected String makeSubEntry(SubEntry sub){
         StringBuffer res;
         res = new StringBuffer();

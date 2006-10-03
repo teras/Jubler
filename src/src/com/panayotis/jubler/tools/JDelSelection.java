@@ -35,8 +35,8 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class JDelSelection extends JTool {
     
     /** Creates new form JDelSelection */
-    public JDelSelection(Subtitles subs, int[] selected) {
-        super(subs, selected, true);
+    public JDelSelection() {
+        super(true);
     }
     
     public void initialize() {

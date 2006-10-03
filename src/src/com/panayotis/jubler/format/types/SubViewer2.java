@@ -53,8 +53,8 @@ public class SubViewer2 extends SubViewer {
         return "SubViewer2";
     }
     
-    public String getDescription() {
-        return _("SubViewer V2 format");
+    public String getExtendedName() {
+        return _("SubViewer V2");
     }
     
     protected String subreplace(String sub) {

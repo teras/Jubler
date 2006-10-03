@@ -49,8 +49,8 @@ public class JFixer extends JTool {
     private double min_abs, min_cps, max_abs, max_cps, gap;
     
     /** Creates new form JFixer */
-    public JFixer(Subtitles subs, int[] selection) {
-        super(subs, selection, false);
+    public JFixer() {
+        super(false);
     }
     
     public void initialize() {

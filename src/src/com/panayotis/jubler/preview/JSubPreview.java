@@ -22,7 +22,7 @@
  */
 
 package com.panayotis.jubler.preview;
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;

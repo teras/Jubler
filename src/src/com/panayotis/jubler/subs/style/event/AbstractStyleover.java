@@ -25,7 +25,7 @@
 package com.panayotis.jubler.subs.style.event;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import java.util.ArrayList;
 import javax.swing.text.SimpleAttributeSet;

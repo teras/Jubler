@@ -26,6 +26,7 @@ package com.panayotis.jubler.format;
 import com.panayotis.jubler.format.types.AdvancedSubStation;
 import com.panayotis.jubler.format.types.MicroDVD;
 import com.panayotis.jubler.format.types.PlainText;
+import com.panayotis.jubler.format.types.ScanTitle;
 import com.panayotis.jubler.format.types.SubRip;
 import com.panayotis.jubler.format.types.SubStationAlpha;
 import com.panayotis.jubler.format.types.SubViewer;
@@ -40,14 +41,15 @@ public class AvailSubFormats {
     int current;
     
     static {
-        Formats = new SubFormat [7];
+        Formats = new SubFormat [8];
         Formats[0] = new AdvancedSubStation();
         Formats[1] = new SubStationAlpha();
         Formats[2] = new SubRip();
         Formats[3] = new SubViewer2();
         Formats[4] = new SubViewer();
         Formats[5] = new MicroDVD();
-        Formats[6] = new PlainText();
+        Formats[6] = new ScanTitle();
+        Formats[7] = new PlainText();
     }
     
     /** Creates a new instance of SubFormats */

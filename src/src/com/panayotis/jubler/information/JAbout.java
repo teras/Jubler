@@ -331,68 +331,7 @@ public class JAbout extends javax.swing.JPanel {
             "PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE\n" +
             "POSSIBILITY OF SUCH DAMAGES.\n" +
             "\n" +
-            "		     END OF TERMS AND CONDITIONS\n" +
-            "\n" +
-            "\n" +
-            "	    How to Apply These Terms to Your New Programs\n" +
-            "\n" +
-            "  If you develop a new program, and you want it to be of the greatest\n" +
-            "possible use to the public, the best way to achieve this is to make it\n" +
-            "free software which everyone can redistribute and change under these terms.\n" +
-            "\n" +
-            "  To do so, attach the following notices to the program.  It is safest\n" +
-            "to attach them to the start of each source file to most effectively\n" +
-            "convey the exclusion of warranty; and each file should have at least\n" +
-            "the \"copyright\" line and a pointer to where the full notice is found.\n" +
-            "\n" +
-            "    <one line to give the program's name and a brief idea of what it does.>\n" +
-            "    Copyright (C) 19yy  <name of author>\n" +
-            "\n" +
-            "    This program is free software; you can redistribute it and/or modify\n" +
-            "    it under the terms of the GNU General Public License as published by\n" +
-            "    the Free Software Foundation, version 2.\n" +
-            "   \n" +
-            "\n" +
-            "    This program is distributed in the hope that it will be useful,\n" +
-            "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
-            "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" +
-            "    GNU General Public License for more details.\n" +
-            "\n" +
-            "    You should have received a copy of the GNU General Public License\n" +
-            "    along with this program; if not, write to the Free Software\n" +
-            "    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n" +
-            "\n" +
-            "\n" +
-            "Also add information on how to contact you by electronic and paper mail.\n" +
-            "\n" +
-            "If the program is interactive, make it output a short notice like this\n" +
-            "when it starts in an interactive mode:\n" +
-            "\n" +
-            "    Gnomovision version 69, Copyright (C) 19yy name of author\n" +
-            "    Gnomovision comes with ABSOLUTELY NO WARRANTY; for details type `show w'.\n" +
-            "    This is free software, and you are welcome to redistribute it\n" +
-            "    under certain conditions; type `show c' for details.\n" +
-            "\n" +
-            "The hypothetical commands `show w' and `show c' should show the appropriate\n" +
-            "parts of the General Public License.  Of course, the commands you use may\n" +
-            "be called something other than `show w' and `show c'; they could even be\n" +
-            "mouse-clicks or menu items--whatever suits your program.\n" +
-            "\n" +
-            "You should also get your employer (if you work as a programmer) or your\n" +
-            "school, if any, to sign a \"copyright disclaimer\" for the program, if\n" +
-            "necessary.  Here is a sample; alter the names:\n" +
-            "\n" +
-            "  Yoyodyne, Inc., hereby disclaims all copyright interest in the program\n" +
-            "  `Gnomovision' (which makes passes at compilers) written by James Hacker.\n" +
-            "\n" +
-            "  <signature of Ty Coon>, 1 April 1989\n" +
-            "  Ty Coon, President of Vice\n" +
-            "\n" +
-            "This General Public License does not permit incorporating your program into\n" +
-            "proprietary programs.  If your program is a subroutine library, you may\n" +
-            "consider it more useful to permit linking proprietary applications with the\n" +
-            "library.  If this is what you want to do, use the GNU Library General\n" +
-            "Public License instead of this License.\n";
+            "		     END OF TERMS AND CONDITIONS\n";
     
     
     /** Creates new form JAbout */

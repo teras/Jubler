@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler;
 import com.panayotis.jubler.information.Version;
-import com.panayotis.jubler.options.SystemDependent;
+import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;

@@ -24,7 +24,7 @@
 package com.panayotis.jubler.preview.decoders;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.preview.JWavePreview;
 import java.awt.Image;
 import java.io.File;

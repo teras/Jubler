@@ -22,10 +22,11 @@ package com.panayotis.jubler.options;
  *
  */
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.os.SystemDependent;
 import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;

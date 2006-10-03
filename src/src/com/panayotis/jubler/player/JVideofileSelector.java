@@ -23,8 +23,8 @@
 
 package com.panayotis.jubler.player;
 
-import com.panayotis.jubler.DEBUG;
-import com.panayotis.jubler.subs.FileCommunicator;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.FileCommunicator;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;

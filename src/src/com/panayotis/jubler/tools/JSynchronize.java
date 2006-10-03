@@ -41,8 +41,12 @@ public class JSynchronize extends JTool {
     private int offset;
     
     /** Creates new form JSynchronize */
-    public JSynchronize(Jubler current, Vector<Jubler> list, int[] selected) {
-        super(current.getSubtitles(), selected, true);
+    public JSynchronize() {
+        super(true);
+    }
+    
+    public void updateData (Jubler current) {
+        super.updateData(current);
         
         target = current.getSubtitles();
         
@@ -50,13 +54,13 @@ public class JSynchronize extends JTool {
         Jubler cjubler;
         
         int cid = -1;
-        for ( int i = 0 ; i <list.size() ; i++) {
-            cjubler = list.elementAt(i);
-            jublerlist.add(cjubler);
-            JubSelector.addItem(cjubler.getFileName()+ ((cjubler==current)?"  "+_("-current-"):"") );
-            if (cjubler==current) cid = i;
-            
-        }
+//        for ( int i = 0 ; i <list.size() ; i++) {
+//            cjubler = list.elementAt(i);
+//            jublerlist.add(cjubler);
+//            JubSelector.addItem(cjubler.getFileName()+ ((cjubler==current)?"  "+_("-current-"):"") );
+//            if (cjubler==current) cid = i;
+//            
+//        }
         JubSelector.setSelectedIndex(cid);
     }
     

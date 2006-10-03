@@ -42,10 +42,10 @@ public class JShiftTime extends JTool {
     double shift;
     
     
-    public JShiftTime(Subtitles subs, int[] selected) {
-        super(subs, selected, true);
+    public JShiftTime() {
+        super(true);
     }
-    
+       
     public void initialize() {
         dt = new JTimeSpinner();
         initComponents();

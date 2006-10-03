@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.time.gui;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
@@ -42,22 +43,37 @@ public class JTimeFullSelection extends JTimeArea {
     JTimeRegion tregion;
     
     /** Creates new form JTimePosition */
-    public JTimeFullSelection(Subtitles subs, int[] selected) {
-        super(subs, selected);
-        
+    public JTimeFullSelection() {
+        super();
         initComponents();
-        
-        tregion = new JTimeRegion(subs, selected);
+        tregion = new JTimeRegion();
         TimePanel.add(tregion, BorderLayout.CENTER);
         tregion.setButtonsEnabled(false);
+    }
+    
+    
+    public void updateData(Subtitles subs, int[] selected) {
+        super.updateData(subs, selected );
+        tregion.updateData(subs, selected);
         
-        if (subs.getStyleList().size() < 2) byStyle.setEnabled(false);
+        int selvalue = StyleSel.getSelectedIndex();
         StyleSel.removeAllItems();
         for (SubStyle style : subs.getStyleList()) {
             StyleSel.addItem(style);
         }
+        if (subs.getStyleList().size()<2) {
+            byStyle.setEnabled(false);
+            StyleSel.setEnabled(false);
+            bySelection.setSelected(true);
+        } else {
+            byStyle.setEnabled(true);
+            StyleSel.setEnabled(true);
+            if ( selvalue < 0 )
+                selvalue = 0;
+            if ( selvalue < subs.getStyleList().size() )
+                StyleSel.setSelectedIndex(selvalue);
+        }
     }
-    
     
     public Vector<SubEntry> getAffectedSubs() {
         Vector<SubEntry> affected;
@@ -208,23 +224,23 @@ public class JTimeFullSelection extends JTimeArea {
 
     }
     // </editor-fold>//GEN-END:initComponents
-
+    
     private void byStyleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byStyleActionPerformed
         tregion.setButtonsEnabled(false);
         ColorSel.setEnabled(false);
-                StyleSel.setEnabled(true);
+        StyleSel.setEnabled(true);
     }//GEN-LAST:event_byStyleActionPerformed
     
     private void byRangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byRangeActionPerformed
         tregion.setButtonsEnabled(true);
         ColorSel.setEnabled(false);
-                StyleSel.setEnabled(false);
+        StyleSel.setEnabled(false);
     }//GEN-LAST:event_byRangeActionPerformed
     
     private void byColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byColorActionPerformed
         tregion.setButtonsEnabled(false);
         ColorSel.setEnabled(true);
-                StyleSel.setEnabled(false);
+        StyleSel.setEnabled(false);
     }//GEN-LAST:event_byColorActionPerformed
     
     private void bySelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionActionPerformed
@@ -236,6 +252,9 @@ public class JTimeFullSelection extends JTimeArea {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ColorSel;
+
+    public void updateUI() {
+    }
     private javax.swing.JPanel SelectionPanel;
     private javax.swing.JPanel StylePanel;
     private javax.swing.JComboBox StyleSel;

@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.style;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.awt.Color;

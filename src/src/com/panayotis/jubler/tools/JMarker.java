@@ -36,8 +36,8 @@ public class JMarker extends JTool {
    
     int mark;
     
-    public JMarker (Subtitles subs, int[] selected) {
-        super (subs, selected, true);
+    public JMarker () {
+        super (true);
     }
     
     

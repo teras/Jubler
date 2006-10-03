@@ -48,8 +48,8 @@ public class JReplaceGlobal extends JTool {
     /**
      * Creates new form JReplaceGlobal
      */
-    public JReplaceGlobal(Subtitles subs, int[] selected) {
-        super(subs, selected, true);
+    public JReplaceGlobal() {
+        super(true);
     }
     
     public void initialize() {

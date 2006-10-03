@@ -22,11 +22,11 @@
  */
 
 package com.panayotis.jubler.player.players;
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.player.Viewport;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.player.AbstractPlayer;
-import com.panayotis.jubler.options.SystemDependent;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

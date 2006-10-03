@@ -6,7 +6,7 @@
 
 package com.panayotis.jubler.subs.style.gui;
 
-import com.panayotis.jubler.options.SystemDependent;
+import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;

@@ -27,7 +27,7 @@ import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.format.AbstractSubFormat;
+import com.panayotis.jubler.format.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
@@ -52,7 +52,7 @@ import javax.swing.text.StyleConstants;
  *
  * @author teras
  */
-public class SubStationAlpha extends AbstractSubFormat {
+public class SubStationAlpha extends AbstractTextSubFormat {
     
     private static final Pattern pat, testpat;
     
@@ -106,11 +106,7 @@ public class SubStationAlpha extends AbstractSubFormat {
     public String getName() {
         return "SubStationAlpha";
     }
-    
-    public String getDescription() {
-        return _("SubStationAlpha format");
-    }
-    
+       
     
     private String timeformat(Time t) {
         String res = t.toString().substring(1).replace(',','.');
@@ -471,7 +467,7 @@ public class SubStationAlpha extends AbstractSubFormat {
             return compareTo((SubEv)other) == 0;
         }
         
-        /* NOTE! since we want ot add the events in reverse order, the sorting is done on reverse! */
+        /* Since we want ot add the events in reverse order, the sorting is done on reverse! */
         public int compareTo(SubEv other) {
             if (start < other.start) return 1;
             if (start > other.start) return -1;

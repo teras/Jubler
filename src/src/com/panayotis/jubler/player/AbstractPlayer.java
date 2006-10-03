@@ -23,10 +23,10 @@
 
 package com.panayotis.jubler.player;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.AbstractPlayerOptions;
 import com.panayotis.jubler.options.ExtOptions;
-import com.panayotis.jubler.subs.FileCommunicator;
+import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;

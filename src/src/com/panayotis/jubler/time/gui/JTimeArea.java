@@ -43,12 +43,14 @@ public abstract class JTimeArea extends JPanel {
     
     
     /** Creates a new instance of JTimeArea */
-    public JTimeArea(Subtitles subs, int [] selected) {
+    public JTimeArea() {
+        super();
+    }
+    
+    public void updateData(Subtitles subs, int [] selected) {
         this.subs = subs;
         this.selected = selected;
     }
-    
-    
     
     Time findFirstInList(Subtitles subs, int[] selected) {
         Time min, cur;
