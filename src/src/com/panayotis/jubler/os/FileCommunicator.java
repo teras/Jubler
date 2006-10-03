@@ -21,13 +21,13 @@
  *
  */
 
-package com.panayotis.jubler.subs;
+package com.panayotis.jubler.os;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.format.types.SubRip;
 import com.panayotis.jubler.format.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.DEBUG;
 import com.panayotis.jubler.format.AvailSubFormats;
+import com.panayotis.jubler.subs.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -165,16 +165,16 @@ public class FileCommunicator {
             //            encoder = Charset.forName(prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
             encoder = Charset.forName(encoding).newEncoder();
             BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(tempout), encoder));
-            out.write(saveformat.produce(subs, fps));
+            saveformat.produce(subs, fps, out);
             out.close();
             
             // Renaming new file
             outfile.delete();
             return tempout.renameTo(outfile);
         } catch (UnsupportedEncodingException e) {
-         //   e.printStackTrace();
+            //   e.printStackTrace();
         } catch (IOException e) {
-         //   e.printStackTrace();
+            //   e.printStackTrace();
         }
         if (tempout != null && tempout.exists()) tempout.delete();
         return false;

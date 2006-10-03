@@ -8,8 +8,9 @@
  * Open. You can then make changes to the template in the Source Editor.
  */
 
-package com.panayotis.jubler;
+package com.panayotis.jubler.os;
 
+import com.panayotis.jubler.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;

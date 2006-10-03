@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.options;
+package com.panayotis.jubler.os;
 
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;

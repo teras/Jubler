@@ -21,8 +21,9 @@
  *
  */
 
-package com.panayotis.jubler;
+package com.panayotis.jubler.os;
 
+import com.panayotis.jubler.*;
 import com.panayotis.jubler.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 

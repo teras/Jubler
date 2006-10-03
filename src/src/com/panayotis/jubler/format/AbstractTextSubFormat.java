@@ -1,5 +1,5 @@
 /*
- * AbstractFormat.java
+ * AbstractTextSubFormat.java
  *
  * Created on 22 Ιούνιος 2005, 3:17 πμ
  *
@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.format;
 
-import com.panayotis.jubler.DEBUG;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.subs.Subtitles;
@@ -31,12 +31,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
 
 /**
  *
  * @author teras
  */
-public abstract class AbstractSubFormat implements SubFormat {
+public abstract class AbstractTextSubFormat extends SubFormat {
     
     protected static final String nl = "\\\n";
     protected static final String space = "\\s*?";
@@ -60,16 +63,16 @@ public abstract class AbstractSubFormat implements SubFormat {
         return getPattern();
     }
     
-
     
-    public Subtitles parse(String input, float FPS) {
+    
+    public Subtitles parse(String input, float FPS, File f) {
         Time start, finish;
         String sub;
         
         try{
             if ( ! getTestPattern().matcher(input).find() ) return null;    // Not valid - test pattern does not match
             
-            DEBUG.info(_("Found file {0}", _(getDescription())));
+            DEBUG.info(_("Found file {0}", _(getExtendedName())));
             subtitle_list = new Subtitles();
             setFPS(FPS);
             input = initLoader(input, subtitle_list);
@@ -87,7 +90,7 @@ public abstract class AbstractSubFormat implements SubFormat {
     }
     
     
-    public String produce(Subtitles subs, float FPS) {
+    public void produce(Subtitles subs, float FPS, BufferedWriter out) throws IOException {
         StringBuffer res = new StringBuffer();
         
         setFPS(FPS);
@@ -95,7 +98,7 @@ public abstract class AbstractSubFormat implements SubFormat {
         for ( int i = 0 ; i < subs.size() ; i++ ) {
             res.append(makeSubEntry(subs.elementAt(i)));
         }
-        return res.toString().replace("\n","\r\n");
+        out.write(res.toString().replace("\n","\r\n"));
     }
     
     protected String makeHeader(Subtitles subs) { return ""; }
