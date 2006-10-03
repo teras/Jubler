@@ -28,7 +28,7 @@ import com.panayotis.jubler.tools.externals.ExtProgram;
  *
  * @author teras
  */
-public interface VideoPlayer extends ExtProgram {
+public abstract class VideoPlayer extends ExtProgram {
     
     /** Whether this player supports the pause command */
     public abstract boolean supportPause();
@@ -55,5 +55,5 @@ public interface VideoPlayer extends ExtProgram {
     public abstract Viewport getViewport();
     
     /** Use this method to center the video player on the screen, if desired */
-    public void setCentralLocation(int x, int y);
+    public abstract void setCentralLocation(int x, int y);
 }

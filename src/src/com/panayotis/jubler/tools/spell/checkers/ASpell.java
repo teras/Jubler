@@ -42,7 +42,7 @@ import com.panayotis.jubler.os.SystemDependent;
  *
  * @author teras
  */
-public class ASpell implements SpellChecker {
+public class ASpell extends SpellChecker {
     BufferedWriter send;
     BufferedReader get;
     
@@ -136,7 +136,6 @@ public class ASpell implements SpellChecker {
     
     public ExtOptions getOptionsPanel() { return opts; }
     public String getName() { return "ASpell"; }
-    public String getFileName() { return SystemDependent.getCanonicalFilename(getName()); }
     
     public String getType() { return "Speller"; }
     public String getLocalType() { return _("Speller"); }

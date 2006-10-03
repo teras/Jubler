@@ -24,13 +24,13 @@
 package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.options.ExtOptions;
-import javax.swing.JPanel;
+import com.panayotis.jubler.os.SystemDependent;
 
 /**
  *
  * @author teras
  */
-public interface ExtProgram {
+public abstract class ExtProgram {
     
     /** Get a JPanel having the GUI controls for the external program options */
     public abstract ExtOptions getOptionsPanel();
@@ -39,7 +39,9 @@ public interface ExtProgram {
     public abstract String getName();
     
     /* Get the actual filename of the executable - might be OS-specific */
-    public abstract String getFileName();
+    public String getFileName() {
+        return SystemDependent.getCanonicalFilename(getName());
+    }
 
     /* Get the type of this external program, useful to save options */
     public abstract String getType();

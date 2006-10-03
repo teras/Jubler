@@ -39,7 +39,7 @@ import java.util.StringTokenizer;
  *
  * @author teras
  */
-public abstract class AbstractPlayer implements VideoPlayer {
+public abstract class AbstractPlayer extends VideoPlayer {
     
     private AbstractPlayerOptions opts;
     private String subpath;

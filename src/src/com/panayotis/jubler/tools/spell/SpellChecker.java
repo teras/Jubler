@@ -31,7 +31,7 @@ import java.util.Vector;
  *
  * @author teras
  */
-public interface SpellChecker extends ExtProgram {
+public abstract class SpellChecker extends ExtProgram {
     
     public abstract boolean initialize();
     public abstract Vector<SpellError> checkSpelling(String text);
