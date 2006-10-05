@@ -774,3 +774,7 @@ Thu Apr 27 16:50:13 EEST 2006
    ./configure  --enable-memalign-hack --disable-mmx 
 Τρι Μαϊ 23 15:00:50 EEST 2006
    ./configure  --enable-memalign-hack --disable-mmx 
+Πεμ Οκτ  5 13:28:11 EEST 2006
+   ./configure.patched  --enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug --extra-cflags=-fno-common --enable-shared 
+Πεμ Οκτ  5 13:29:47 EEST 2006
+   ./configure.patched  --enable-gpl --cpu=powerpc --enable-a52 --disable-debug --extra-cflags=-fno-common -arch ppc --enable-shared 
