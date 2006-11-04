@@ -229,7 +229,7 @@ public class Jubler extends JFrame {
         mark = new JMarker();
         recode = new JRecodeTime();
         sync = new JSynchronize();
-
+        
         
         openWindow();
         updateRecentFile(null);
@@ -2070,7 +2070,7 @@ public class Jubler extends JFrame {
     
     
     
-    /* Set the filename of this project and anble the buttons */
+    /* Set the filename of this project and enanble the buttons */
     private void setFile(File f, boolean reset_selection) {
         RevertFM.setEnabled(true);
         ChildNFM.setEnabled(true);
@@ -2303,7 +2303,12 @@ public class Jubler extends JFrame {
         Info.setText(_("Number of subtitles : {0}    {1}", subs.size(),  (isUnsaved() ? "-" + _("Unsaved") + "-" : "") ));
         String title = "";
         if ( current_file != null ) {
-            if ( isUnsaved() ) title +="*";
+            if ( isUnsaved() ) {
+                title +="*";
+                getRootPane().putClientProperty("windowModified", Boolean.TRUE);
+            } else {
+                getRootPane().putClientProperty("windowModified", Boolean.FALSE);
+            }
             title += current_file.getName() + " - ";
         }
         title += "Jubler";
