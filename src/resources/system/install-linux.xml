@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 
 <!-- 
-	XML file for IzPack
+ XML file for IzPack
 -->
 
 <installation version="1.0">
@@ -13,21 +13,22 @@
             <author name="Panayotis Katsaloulis" email="panayotis@panayotis.com"/>
         </authors>
         <url>http://www.jubler.org/</url>
-		<javaversion>1.5</javaversion>
+  <javaversion>1.5</javaversion>
     </info>
     
     <guiprefs width="640" height="480" resizable="no"/>
     
     <locale>
         <langpack iso3="eng"/>
-		<langpack iso3="cze"/>
+  <langpack iso3="cze"/>
         <langpack iso3="deu"/>
         <langpack iso3="ell"/>
+        <langpack iso3="tur"/>
     </locale>
     
     <resources>
         <res id="LicencePanel.licence" src="LICENCE"/>
-		<res id="Installer.image" src="resources/system/install-logo.jpg" />
+  <res id="Installer.image" src="resources/system/install-logo.jpg" />
 		<res src="resources/system/lshortcuts.xml"
 		     id="shortcutSpec.xml"/>
     </resources>
@@ -37,7 +38,7 @@
         <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/> 
         <panel classname="InstallPanel"/>
-		<panel classname="ShortcutPanel"/>
+  <panel classname="ShortcutPanel"/>
         <panel classname="SimpleFinishPanel"/>
     </panels>
     
@@ -49,7 +50,7 @@
             <file src="README" targetdir="$INSTALL_PATH"/>
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
-			<file src="resources/system/frame.png" targetdir="$INSTALL_PATH/lib"/>
+   <file src="resources/system/frame.png" targetdir="$INSTALL_PATH/lib"/>
         </pack>
     </packs>
     

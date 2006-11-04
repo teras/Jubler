@@ -130,5 +130,6 @@ find_in_paths /opt
 find_in_paths /usr/local
 find_in_paths /usr
 find_in_paths /usr/lib
+find_in_paths /usr/lib/jvm
 
 exit 1
