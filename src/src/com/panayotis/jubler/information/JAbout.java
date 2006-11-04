@@ -36,16 +36,18 @@ public class JAbout extends javax.swing.JPanel {
     private final static String icon_theme = "Nuvola ( David Vignoni - http://www.icon-king.com)";
     
     private final static String[] transl={
+        "Tom\u00e1\u0161 Bambas, conyx@seznam.cz",
         "Christian Weiske, cweiske@cweiske.de",
-                "Tom\u00e1\u0161 Bambas, conyx@seznam.cz",
-                "Panayotis Katsaloulis, panayotis@panayotis.com"
+        "Panayotis Katsaloulis, panayotis@panayotis.com",
+        "Asım Sinan Yüksel, yuksel.asim.sinan@gmail.com"
     };
     
-   
+    
     private final static String [] langs={
+        _("Czech"),
         _("German"),
-                _("Czech"),
-                _("Greek")
+        _("Greek"),
+        _("Turkish")
     };
     
     private final static String licence = "\n(c) 2005, Panayotis Katsaloulis\n" +
@@ -359,7 +361,9 @@ public class JAbout extends javax.swing.JPanel {
         StringBuffer thanks = new StringBuffer();
         thanks.append(_("Special thanks")).append(":\n").append(_("{0} plugin", "libavcodec"));
         thanks.append(": Kyritsis Thanasis, djart@hellug.gr");
-        thanks.append("\n\n");
+        thanks.append("\n");
+        thanks.append(_("Jubler mascot"));
+        thanks.append(": Dimitris Karakatsanis, <dimkaras@ath.forthnet.gr>\n\n");
         
         thanks.append(_("Translators"));
         thanks.append(":\n");
@@ -367,7 +371,7 @@ public class JAbout extends javax.swing.JPanel {
             thanks.append(langs[i]).append(" : ").append(transl[i]).append('\n');
         }
         
-        thanks.append("\n\n").append(_("Icon theme")).append(" : ").append(icon_theme);
+        thanks.append("\n").append(_("Icon theme")).append(":\n").append(icon_theme);
         
         ThanksTA.setText(thanks.toString());
     }

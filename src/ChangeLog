@@ -1,7 +1,9 @@
 3.0.0?
 FFDecode bugs fixed, preview should be much more stable and accurate. Preview
-bug fixed, where wrong duration was reported. Column width is now saved.
-Updated to the latest ffmpeg sources.
+bug fixed, where wrong duration was reported. Tools remember last values.
+Column width is now saved. Updated to newer ffmpeg sources. Turkish
+translation added. Minor tweaks and code changes. New icons and splash
+screen.
 
 3.0.0-rc4
 Fixed bugs: audio line not closing, saving file with an illegal character
