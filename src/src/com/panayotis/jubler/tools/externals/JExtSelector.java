@@ -26,6 +26,7 @@ package com.panayotis.jubler.tools.externals;
 import com.panayotis.jubler.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.ExtOptions;
+import com.panayotis.jubler.os.DEBUG;
 
 
 
@@ -87,9 +88,13 @@ public class JExtSelector extends javax.swing.JPanel {
         int ret;
         ExtProgram prog = list.programAt(PList.getSelectedIndex());
         ExtOptions opts = prog.getOptionsPanel();
-        ret = JIDialog.question(this, opts, _("Options for {0}", prog.getName()));
-        if ( ret == JIDialog.OK_OPTION) opts.saveOptions();
-        else opts.resetOptions();
+        if (opts != null) {
+            ret = JIDialog.question(this, opts, _("Options for {0}", prog.getName()));
+            if ( ret == JIDialog.OK_OPTION) opts.saveOptions();
+            else opts.resetOptions();
+        } else {
+            DEBUG.warning(_("No options for this program"));
+        }
     }//GEN-LAST:event_BOptsActionPerformed
     
     
