@@ -94,7 +94,9 @@
 		</exec>
 	</target>
 
-	<target name="xdevelop" depends="i18n"> <exec dir="resources/ffdecode" executable="make"/> </target>
+	<target name="xdevelop" depends="i18n">
+		<exec dir="resources/ffdecode" executable="make"/>
+	</target>
 
 	<target name="cleanmac">
 	</target>
@@ -257,5 +259,9 @@
 	</target>
 
 	<target name="-pre-compile" depends="findsystem,noMacSystem,MacSystem"/>
+	
+	<target name="-post-compile">
+		<copy file="resources/system/freesans.ttf" todir="build/classes/lib"/>
+	</target>
 
 </project>

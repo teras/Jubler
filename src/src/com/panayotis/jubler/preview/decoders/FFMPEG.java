@@ -25,7 +25,7 @@ package com.panayotis.jubler.preview.decoders;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.os.SystemFileFinder;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -58,7 +58,7 @@ public final class FFMPEG extends NativeDecoder {
 //        SystemDependent.loadLibrary("avutil");
 //        library_is_present = SystemDependent.loadLibrary("ffdecoded");
 //        if (!library_is_present) 
-          library_is_present = SystemDependent.loadLibrary("ffdecode");
+          library_is_present = SystemFileFinder.loadLibrary("ffdecode");
     }
     
     /** Creates a new instance of FFMPEG */

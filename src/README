@@ -70,8 +70,8 @@ Requirements
 * MPlayer to view subtitles
 * ASpell to spell-check the subtitles
 
-Note Windows XP users: some prepackaged versions of MPlayer have disabled
-console output. In such case Jubler will not work together with MPayer.
+Note Windows users: it is importand to download the console (not GUI)
+version of MPlayer.
 
 
 How to run

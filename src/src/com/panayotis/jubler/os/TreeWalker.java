@@ -21,7 +21,10 @@ public class TreeWalker {
     *
     * return it's full path */
     public static String getFile( String rootpath, String filename) {
-        return searchFile(new File(rootpath), filename);
+        File root = new File(rootpath);
+        if (root.isFile())
+            return root.getAbsolutePath();
+        return searchFile(root, filename);
     }
     
     private static String searchFile(File root, String filename) {

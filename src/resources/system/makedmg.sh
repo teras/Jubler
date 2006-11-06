@@ -20,6 +20,7 @@ rm -rf $MP/Jubler.app
 cp -r ../../dist/Jubler.app $MP
 mkdir -p $MP/Jubler.app/Contents/Resources/Java/lib
 cp ../ffdecode/libffdecode.jnilib $MP/Jubler.app/Contents/Resources/Java/lib
+cp freesans.ttf $MP/Jubler.app/Contents/Resources/Java/lib
 hdiutil detach -force $MP
 
 echo Creating final image

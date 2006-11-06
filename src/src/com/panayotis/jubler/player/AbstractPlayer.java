@@ -27,6 +27,7 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.AbstractPlayerOptions;
 import com.panayotis.jubler.options.ExtOptions;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;
@@ -101,6 +102,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         replaceValues(cmds, "%y", Integer.toString(y));
         replaceValues(cmds, "%f", sub.getStyleList().get(0).get(Style.FONTNAME).toString());
         replaceValues(cmds, "%z", String.valueOf(sub.getStyleList().get(0).get(Style.FONTSIZE)));
+        replaceValues(cmds, "%j", SystemFileFinder.getJublerLibPath());
         
         StringBuffer cm = new StringBuffer();
         for (int i = 0 ; i < cmds.length ; i++) {

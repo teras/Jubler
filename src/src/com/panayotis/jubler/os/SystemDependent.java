@@ -83,45 +83,17 @@ public class SystemDependent {
         return 7;
     }
     
-    
-    public static boolean loadLibrary(String name) {
-        String classpath = System.getProperty("java.class.path");
-        StringTokenizer tok = new StringTokenizer(classpath, System.getProperty("path.separator"));
-        String libname = System.mapLibraryName(name);
-        
-        String path;
-        String pathseparator = System.getProperty("file.separator");
-        while (tok.hasMoreTokens()) {
-            path = tok.nextToken();
-            if (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")) {
-                int seppos = path.lastIndexOf(pathseparator);
-                if (seppos>=0) path = path.substring(0, seppos);
-                else path = ".";
-            }
-            if (!path.endsWith(pathseparator)) path = path + pathseparator;
-            path = path + "lib" +pathseparator + libname;
-            File filetest = new File(path);
-            if (filetest.exists()) {
-                try {
-                    System.load(filetest.getAbsolutePath());
-                    return true;
-                } catch (UnsatisfiedLinkError e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return false;
-    }
-    
-    
+       
     public static String getDefaultMPlayerArgs() {
         String fontconfig = "-fontconfig ";
         String fontname = "%f";
         if (!isLinux()) {
             fontconfig = "";
-        }
-        if (isWindows()) {
-            fontname = "c:\\Windows\\fonts\\arial.ttf";
+            if (isWindows()) {
+                fontname = "c:\\Windows\\fonts\\arial.ttf";
+            } else {
+                fontname = "%j/lib/freesans.ttf";
+            }
         }
         return "%p -slave -identify -ontop -utf8 -noquiet -nofs "+fontconfig+"-subfont-autoscale 0 -volstep 10"+
                 " -sub %s -ss %t -geometry +%x+%y -font "+fontname+" -subfont-text-scale %z  %v";
@@ -183,7 +155,7 @@ public class SystemDependent {
         if (isMacOSX()) return 0;
         return 2;
     }
- 
+    
     public static String getCanonicalFilename(String filename) {
         if (isWindows()) return filename.toLowerCase()+".exe";
         return filename.toLowerCase();

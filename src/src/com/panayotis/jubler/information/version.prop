@@ -1,3 +1,3 @@
-version=3.0.0
+version=3.0.0-prefinal
 release=100
-force.upgrade=true
+force.upgrade=false

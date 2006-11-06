@@ -74,7 +74,7 @@ public class AbstractPlayerOptions extends ExtOptions {
         HelpP.add(new JLabel());
         HelpP.add(new JLabel(_("Advanced argument list:")));
         HelpP.add(new JLabel("    %p=player %v=video_file %s=subtiles_file %t=start_time"));
-        HelpP.add(new JLabel("    %x=x_offset %y=y_offset %f=font_name %z=font_size"));
+        HelpP.add(new JLabel("    %x=x_offset %y=y_offset %f=font_name %z=font_size %j=Jubler_path"));
         
         JPanel ArgsP = new JPanel();
         ArgsP.setLayout(new BorderLayout());
