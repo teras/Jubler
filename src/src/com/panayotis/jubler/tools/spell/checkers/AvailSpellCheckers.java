@@ -33,6 +33,7 @@ public class AvailSpellCheckers extends ExtList<SpellChecker> {
     
     public AvailSpellCheckers () {
         add (new ASpell());
+        add (new ZemberekSpellChecker());
     }
     
 }
