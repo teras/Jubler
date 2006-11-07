@@ -94,7 +94,15 @@
 		</exec>
 	</target>
 
-	<target name="xdevelop" depends="i18n">
+	<target name="faq">
+		<exec dir="resources/help" executable="docbook2html">
+			<arg line="-u jubler-faq.xml"/>
+		</exec>
+		<mkdir dir="src/help"/>
+		<move file="resources/help/jubler-faq.html" todir="src/help"/>
+	</target>
+
+	<target name="xdevelop" depends="i18n,faq">
 		<exec dir="resources/ffdecode" executable="make"/>
 	</target>
 
@@ -111,6 +119,7 @@
 			<fileset dir="." includes="*.log"/>
 			<fileset dir="resources/i18n" includes="jubler.pot"/>
 			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
+			<fileset dir="src/help"/>
 			<fileset dir="src" includes="lib"/>
 		</delete>
 		<delete dir="self"/>

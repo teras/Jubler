@@ -23,12 +23,12 @@
 
 package com.panayotis.jubler.options;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.StaticJubler;
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Component;
-
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;

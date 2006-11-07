@@ -28,6 +28,7 @@ package com.panayotis.jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.format.SubFileFilter;
+import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.OptionsIO;
@@ -164,6 +165,8 @@ public class Jubler extends JFrame {
     private JRecodeTime recode;
     private JSynchronize sync;
     
+    private static HelpBrowser faqbrowse;
+    
     public final Image windowicon;
     
     
@@ -176,6 +179,7 @@ public class Jubler extends JFrame {
          * initialize. */
         /* prefs = new JPreferences(); */
         prefs = null;
+        faqbrowse = new HelpBrowser("help/jubler-faq.html");
     }
     
     
@@ -449,6 +453,7 @@ public class Jubler extends JFrame {
         OptionsTTM = new javax.swing.JMenuItem();
         VideoFileTTM = new javax.swing.JMenuItem();
         HelpM = new javax.swing.JMenu();
+        FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
 
         FormListener formListener = new FormListener();
@@ -1040,6 +1045,12 @@ public class Jubler extends JFrame {
         JublerMenuBar.add(ToolsM);
 
         HelpM.setText(_("Help"));
+        FAQHM.setText(_("FAQ"));
+        FAQHM.setName("HFQ");
+        FAQHM.addActionListener(formListener);
+
+        HelpM.add(FAQHM);
+
         AboutHM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SLASH, java.awt.event.InputEvent.CTRL_MASK));
         AboutHM.setText(_("About"));
         AboutHM.setName("HAB");
@@ -1202,11 +1213,11 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == JoinTM) {
                 Jubler.this.JoinTMActionPerformed(evt);
             }
-            else if (evt.getSource() == SynchronizeTM) {
-                Jubler.this.SynchronizeTMActionPerformed(evt);
-            }
             else if (evt.getSource() == ReparentTM) {
                 Jubler.this.ReparentTMActionPerformed(evt);
+            }
+            else if (evt.getSource() == SynchronizeTM) {
+                Jubler.this.SynchronizeTMActionPerformed(evt);
             }
             else if (evt.getSource() == ShiftTimeTM) {
                 Jubler.this.ShiftTimeTMActionPerformed(evt);
@@ -1277,6 +1288,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutTB) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
+            else if (evt.getSource() == FAQHM) {
+                Jubler.this.FAQHMActionPerformed(evt);
+            }
         }
 
         public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -1303,6 +1317,10 @@ public class Jubler extends JFrame {
         public void windowOpened(java.awt.event.WindowEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
+
+    private void FAQHMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAQHMActionPerformed
+        faqbrowse.setVisible(true);
+    }//GEN-LAST:event_FAQHMActionPerformed
     
     private void SynchronizeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SynchronizeTMActionPerformed
         sync.execute(this);
@@ -1860,6 +1878,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem DeleteP;
     private javax.swing.JMenu EditM;
     private javax.swing.JMenuItem EmptyLinesDEM;
+    private javax.swing.JMenuItem FAQHM;
     private javax.swing.JMenu FileM;
     private javax.swing.JMenuItem FileNFM;
     private javax.swing.JMenuItem FixTM;
@@ -2459,7 +2478,7 @@ public class Jubler extends JFrame {
     }
     
     private void hideSystemMenus() {
-        SystemDependent.hideSystemMenus(this, HelpM, PrefsFM, QuitFM);
+        SystemDependent.hideSystemMenus(AboutHM, PrefsFM, QuitFM);
     }
     
     public ArrayList<JMenuItem> getMenuList() {

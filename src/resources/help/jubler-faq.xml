@@ -1,0 +1,28 @@
+<?xml version='1.0'?>
+
+<book>
+
+<title>Jubler FAQ</title>
+
+<section id="mplayer.winosx"><title>Installing MPlayer under Windows or Mac OSX?</title>
+<para>In order to properly use MPlayer, you have to install somewhere the MPlayer files from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <b>not</b> download the GUI version, since mplayer uses it's own GUI. After downloading and expanding open Jubler, create a new document, go to "Tools" - "Test video" - "Player options". Click on "Options" - "Browse" and select where MPlayer application is. </para>
+</section>
+
+<section><title>Installing MPlayer under Linux or similar environment?</title>
+<para>You have again to download MPlayer from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Then, it is nessesary to put it somewhere in your $PATH. After that, Jubler should be able to find it automatically. If not, you can follow the information mentioned under <ulink url="#mplayer.winosx">Installing MPlayer under Windows or Mac OSX</ulink>.</para>
+</section>
+
+<section><title>Problems while loading a subtitle file</title>
+<para>Since the subtitle loader is still under development, it is possible that when loading a valid supported subtitle file, a message will pop up informing that it is unable to load this file. In such a case you can <ulink url="http://www.jubler.org">contact me or write in the forum</ulink> and send me the problematic subtitle file.</para>
+</section>
+
+<section><title>How is transparency produced?</title>
+<para>In subtitle preview, although outline & shadow color is per character, their transparency is calculated for the whole subtitle entry.</para>
+</section>
+
+<section><title>I have a question not mentioned here</title>
+<para>Please feel free to contact me through the <ulink url="http://www.jubler.org">forum or email</ulink>, and I will try to answer your question.
+</para>
+</section>
+
+</book>

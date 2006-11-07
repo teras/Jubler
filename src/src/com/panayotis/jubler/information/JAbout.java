@@ -39,7 +39,7 @@ public class JAbout extends javax.swing.JPanel {
         "Tom\u00e1\u0161 Bambas, conyx@seznam.cz",
         "Christian Weiske, cweiske@cweiske.de",
         "Panayotis Katsaloulis, panayotis@panayotis.com",
-        "Asım Sinan Yüksel, yuksel.asim.sinan@gmail.com"
+        "As\u0131m Sinan Y\u00FCksel, yuksel.asim.sinan@gmail.com"
     };
     
     
@@ -360,11 +360,13 @@ public class JAbout extends javax.swing.JPanel {
         
         StringBuffer thanks = new StringBuffer();
         thanks.append(_("Special thanks")).append(":\n").append(_("{0} plugin", "libavcodec"));
-        thanks.append(": Kyritsis Thanasis, djart@hellug.gr");
-        thanks.append("\n");
+        thanks.append(": Kyritsis Thanasis, djart@hellug.gr\n");
         thanks.append(_("Jubler mascot"));
-        thanks.append(": Dimitris Karakatsanis, <dimkaras@ath.forthnet.gr>\n\n");
+        thanks.append(": Dimitris Karakatsanis, <dimkaras@ath.forthnet.gr>\n");
+        thanks.append(_("{0} plugin", "zemberek"));
+        thanks.append(": Serkan Kaba, serkan_kaba@yahoo.com\n");
         
+        thanks.append("\n");
         thanks.append(_("Translators"));
         thanks.append(":\n");
         for (int i = 0 ; i < transl.length ; i++) {

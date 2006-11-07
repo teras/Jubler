@@ -54,7 +54,15 @@ public class SystemFileFinder {
         return false;
     }
     
-    public static String getJublerLibPath() {
-        return findFile("lib").getParent();
+    public static String getJublerAppPath() {
+        File f = findFile("Jubler.jar");
+        if (f!=null) return f.getParent();
+        else return "";
+    }
+    
+    public static String getJublerJarPath() {
+        File f = findFile("Jubler.jar");
+        if (f!=null) return f.getPath();
+        else return "";
     }
 }

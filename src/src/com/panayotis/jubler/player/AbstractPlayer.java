@@ -102,7 +102,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         replaceValues(cmds, "%y", Integer.toString(y));
         replaceValues(cmds, "%f", sub.getStyleList().get(0).get(Style.FONTNAME).toString());
         replaceValues(cmds, "%z", String.valueOf(sub.getStyleList().get(0).get(Style.FONTSIZE)));
-        replaceValues(cmds, "%j", SystemFileFinder.getJublerLibPath());
+        replaceValues(cmds, "%j", SystemFileFinder.getJublerAppPath());
         
         StringBuffer cm = new StringBuffer();
         for (int i = 0 ; i < cmds.length ; i++) {

@@ -53,11 +53,6 @@ public final class FFMPEG extends NativeDecoder {
     private static boolean library_is_present = false;
     
     static {
-//        SystemDependent.loadLibrary("avformat");
-//        SystemDependent.loadLibrary("avcodec");
-//        SystemDependent.loadLibrary("avutil");
-//        library_is_present = SystemDependent.loadLibrary("ffdecoded");
-//        if (!library_is_present) 
           library_is_present = SystemFileFinder.loadLibrary("ffdecode");
     }
     

@@ -1,9 +1,10 @@
-3.0.0?
+3.0.0-prefinal
 FFDecode bugs fixed, preview should be much more stable and accurate. Preview
 bug fixed, where wrong duration was reported. Tools remember last values.
-Column width is now saved. Updated to newer ffmpeg sources. Turkish
-translation added. Minor tweaks and code changes. New icons and splash
-screen.
+Column width is now saved. Now it is compatible with latest version of MPlayer.
+Updated to newer ffmpeg sources. Turkish translation added. Support for zemberek
+added. Preliminary built-in FAQ subsystem. Minor tweaks and code changes.
+New icons and splash screen.
 
 3.0.0-rc4
 Fixed bugs: audio line not closing, saving file with an illegal character

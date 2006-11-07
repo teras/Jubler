@@ -70,9 +70,6 @@ Requirements
 * MPlayer to view subtitles
 * ASpell to spell-check the subtitles
 
-Note Windows users: it is importand to download the console (not GUI)
-version of MPlayer.
-
 
 How to run
 ----------
@@ -84,27 +81,3 @@ command:
   java -jar Jubler.jar
 On some systems a double click is enough to start the application.
 
-
-
-Specific issues
----------------
-
-a) Problems while loading a subtitle file
-
-Since the support for SSA & ASS format is still under development (and also
-the others), it is possible that when loading a valid supported subtitle
-file, a message will pop up informing that it is unable to load this file.
-In such a case you can contact me and send me the problematic subtitle file.
-
-
-b) Distance of the lowest part of the screen is finally computed by taking
-into account the shadow and outline values.
-
-c) Although outline & shadow color is per character, their transparency is 
-calculated for the whole subtitle entry.
-
-
-************
-
-
-If you have any more questions, please contact me.
