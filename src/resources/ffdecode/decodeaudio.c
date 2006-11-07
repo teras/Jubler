@@ -68,7 +68,6 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 	AVFormatContext *fcx=NULL, *ofcx=NULL;
 	AVOutputFormat *fmt=NULL;
 	AVStream *audio_st=NULL;
-	AVFormatParameters params;
    int got_audio, len, err=0, audio_index=-1, i=0, pack_duration=0, packsize=0, codec_is_open=-1, video_index=-1;
 	long int file_size=0, header_size=0;
 	jlong pack_pts=0;
@@ -81,7 +80,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 	av_register_all();
 
    /* Open the input/output files */
-   err = av_open_input_file(&fcx, input_filename, NULL, 0, &params);
+   err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
    if(err<0){
 		printf("Can't open file: %s\n", input_filename);
 	 	ret = JNI_FALSE;

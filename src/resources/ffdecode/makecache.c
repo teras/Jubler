@@ -50,7 +50,6 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_mak
    AVPacket pkt;
    AVCodecContext *ccx=NULL;
    AVFormatContext *fcx=NULL;
-   AVFormatParameters params;
    int got_audio=0, len=0, err=0, audio_index=-1, i=0, j=0, bytecounter=0, packsize=0, codec_is_open=-1;
 	unsigned char *packptr;
 	unsigned char channels = 0;
@@ -86,7 +85,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_mak
 		ret = JNI_TRUE;
 	
 		// Open the input file.
-   	err = av_open_input_file(&fcx, audio_c, NULL, 0, &params);
+   	err = av_open_input_file(&fcx, audio_c, NULL, 0, NULL);
 		cachefile = fopen(cache_c, "wb");
    	if(err<0){
 	  		printf("Can't open file: '%s'\n", audio_c);

@@ -178,13 +178,12 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 	AVCodecContext *ccx=NULL;
 	AVCodec *codec=NULL;
 
-	AVFormatParameters params;
 	AVPicture *pict = malloc(sizeof(AVPicture));
 	AVPacket pkt;
 	AVFrame *frame=avcodec_alloc_frame();
 
 	/* Open the input file */
-	err = av_open_input_file(&fcx, input_filename, NULL, 0, &params);
+	err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
 	if(err<0){
 		printf("Can't open file: %s\n", input_filename);
 		retflag = FALSE;
@@ -293,12 +292,11 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 int file_info(char * input_filename) {
 	int err=0;
 	AVFormatContext * fcx=NULL;
-	AVFormatParameters params;
 	
 	av_register_all();
 
 	// Open the input file.
-	err = av_open_input_file(&fcx, input_filename, NULL, 0, &params);
+	err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
 	if(err<0){
 		printf("Can't open file: %s\n", input_filename);
 		return 1;
