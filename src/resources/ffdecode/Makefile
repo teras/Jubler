@@ -14,7 +14,7 @@ JAVA_HOME=$(shell /bin/sh ../system/findjava.sh -j -v 1.5)
 # Path of the ffmpeg source structure (already inside the source version of Jubler)
 FFMPEG=../ffmpeg-svn
 
-FFCONF=configure.patched
+FFCONF=configure
 
 # Path of Jubler distribution
 JUBLER=../..
@@ -157,7 +157,7 @@ ffmpeg:${LIBRARIES}/libavformat${LIBSUF}.a
 
 
 ${LIBRARIES}/libavformat${LIBSUF}.a:
-	cd ${FFMPEG} ; ./${FFCONF} ${FCOPTS} ; cd libavformat ; make ${MAKEOPTS}; cd ../libavcodec ; make ${MAKEOPTS}; cd ../libavutil ; make ${MAKEOPTS}
+	cd ${FFMPEG} ; ./${FFCONF} ${FCOPTS} ; cd libavformat && make ${MAKEOPTS} && cd ../libavcodec && make ${MAKEOPTS}&& cd ../libavutil && make ${MAKEOPTS}
 	mkdir -p ${LIBRARIES}
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
