@@ -2,8 +2,10 @@
  * ZemberekSpellChecker.java
  *
  * Created on 05/11/2006
- * 
+ *
  * @author Serkan Kaba <serkan_kaba@yahoo.com>
+ *
+ * Reflection API by Panayotis Katsaloulis <panayotis@panayotis.com>
  *
  * This file is part of Jubler.
  *
@@ -31,77 +33,95 @@ import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.ExtOptions;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
-
-import net.zemberek.erisim.Zemberek;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class ZemberekSpellChecker extends SpellChecker {
-
-    private Zemberek z;
-
+    
+    private Method kelimeDenetle, oner;
+    private Object zemberek;
+    
     public ZemberekSpellChecker() {
     }
-
+    
     public Vector<SpellError> checkSpelling(String text) {
-	Hashtable<String, Integer> lastPositions = new Hashtable<String, Integer>();
-	Vector<SpellError> ret = new Vector<SpellError>();
-	StringTokenizer tok = new StringTokenizer(text);
-	while (tok.hasMoreTokens()) {
-	    String word = tok.nextToken();
-	    int pos;
-	    if (lastPositions.containsKey(word))
-		pos = text.indexOf(word, lastPositions.get(word))
-			+ word.length();
-	    else
-		pos = text.indexOf(word);
-	    if (!z.kelimeDenetle(word)) {
-		Vector<String> sug = new Vector<String>();
-		String sugs[] = z.oner(word);
-		for (int i = 0; i < sugs.length; i++)
-		    sug.add(sugs[i]);
-		ret.add(new SpellError(pos, word, sug));
-	    }
-	    lastPositions.put(word, pos);
-	}
-	return ret;
+        Hashtable<String, Integer> lastPositions = new Hashtable<String, Integer>();
+        Vector<SpellError> ret = new Vector<SpellError>();
+        StringTokenizer tok = new StringTokenizer(text);
+        while (tok.hasMoreTokens()) {
+            String word = tok.nextToken();
+            int pos;
+            if (lastPositions.containsKey(word))
+                pos = text.indexOf(word, lastPositions.get(word))
+                + word.length();
+            else
+                pos = text.indexOf(word);
+            try {
+                boolean status = (Boolean)kelimeDenetle.invoke(zemberek, new Object[] {word});
+                if (!status) {
+                    Vector<String> sug = new Vector<String>();
+                    String sugs[] = (String[]) oner.invoke(zemberek, new Object[] {word});
+                    for (int i = 0; i < sugs.length; i++)
+                        sug.add(sugs[i]);
+                    ret.add(new SpellError(pos, word, sug));
+                }
+            } catch (IllegalAccessException e) {
+            } catch (InvocationTargetException e) {
+            }
+            lastPositions.put(word, pos);
+        }
+        return ret;
     }
-
+    
     public boolean initialize() {
         try {
-            z = new Zemberek();
+            Class zemclass = Class.forName("net.zemberek.erisim.Zemberek");
+            kelimeDenetle = zemclass.getDeclaredMethod("kelimeDenetle", new Class[] {String.class});
+            oner = zemclass.getDeclaredMethod("oner", new Class[] {String.class});
+            zemberek = zemclass.newInstance();
             return true;
-        } catch (NoClassDefFoundError e) {}
-	return false;
+        } catch (NoClassDefFoundError e) {
+        } catch (ClassNotFoundException e) {
+        } catch (NoSuchMethodException e) {
+        } catch (InstantiationException e) {
+        } catch (IllegalAccessException e) {
+        }
+        DEBUG.info(_("Unable to load plugin: {0}", "zemberek"));
+        return false;
     }
-
+    
     public boolean insertWord(String word) {
-	return false;
+        return false;
     }
-
+    
     public void stop() {
-	z = null;
+        zemberek = null;
+        kelimeDenetle = null;
+        oner = null;
     }
-
+    
     public boolean supportsInsert() {
-	return false;
+        return false;
     }
-
+    
     public ExtOptions getOptionsPanel() {
-	return null;
+        return null;
     }
-
+    
     public String getName() {
-	return "Zemberek";
+        return "Zemberek";
     }
-
+    
     public String getType() {
-	return "Speller";
+        return "Speller";
     }
-
+    
     public String getLocalType() {
-	return _("Speller");
+        return _("Speller");
     }
-
+    
 }
 
