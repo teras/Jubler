@@ -331,10 +331,7 @@ public class JAbout extends javax.swing.JPanel {
             "TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY\n" +
             "YOU OR THIRD PARTIES OR A FAILURE OF THE PROGRAM TO OPERATE WITH ANY OTHER\n" +
             "PROGRAMS), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE\n" +
-            "POSSIBILITY OF SUCH DAMAGES.\n" +
-            "\n" +
-            "		     END OF TERMS AND CONDITIONS\n";
-    
+            "POSSIBILITY OF SUCH DAMAGES.\n";
     
     /** Creates new form JAbout */
     public JAbout() {
