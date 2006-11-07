@@ -1,6 +1,6 @@
 distclean:
 	cd ffdecode ; make distclean
-	cd ffmpeg-cvs ; ./configure ; make distclean
+	cd ffmpeg-svn ; ./configure ; make distclean
 
 
 destroy:distclean

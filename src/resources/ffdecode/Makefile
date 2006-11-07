@@ -12,7 +12,7 @@ JAVA_HOME=$(shell /bin/sh ../system/findjava.sh -j -v 1.5)
 ##############################################################
 
 # Path of the ffmpeg source structure (already inside the source version of Jubler)
-FFMPEG=../ffmpeg-cvs
+FFMPEG=../ffmpeg-svn
 
 FFCONF=configure.patched
 

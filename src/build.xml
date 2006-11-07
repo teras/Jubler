@@ -153,7 +153,7 @@
 			<fileset dir="../Jubler"/>
 		</copy>
 		<delete dir="/tmp/Jubler-${version}/resources/libraries"/>
-		<delete dir="/tmp/Jubler-${version}/resources/ffmpeg-cvs"/>
+		<delete dir="/tmp/Jubler-${version}/resources/ffmpeg-svn"/>
 		<delete file="/tmp/Jubler-${version}/Jubler-fullsrc-${version}.tar.bz2"/>
 		<tar destfile="Jubler-src-${version}.tar.bz2" basedir="/tmp/" includes="Jubler-${version}/**" compression="bzip2"/>
 		<delete dir="/tmp/Jubler-${version}"/>
