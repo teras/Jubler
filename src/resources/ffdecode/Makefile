@@ -44,14 +44,13 @@ LIBSUF=_${SYSTEM}
 SRCS=$(shell ls 2>/dev/null *.c)
 OBJS=$(SRCS:.c=.o)
 
-
 ifeq (${SYSTEM},linux)
 	PREF=
 	ARCH=
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
 	XLIBS=-lz
-	FCOPTS=--enable-gpl --enable-a52 --disable-debug
+	FCOPTS=
 endif
 ifeq (${SYSTEM},win32)
 	PREF=i586-mingw32msvc-
@@ -60,7 +59,7 @@ ifeq (${SYSTEM},win32)
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=$(PROJ).dll
 	XLIBS=
-	FCOPTS=--enable-gpl --enable-a52 --disable-debug --enable-mingw32 --cross-prefix=${PREF} --enable-memalign-hack --cc=gcc
+	FCOPTS=--enable-mingw32 --cross-prefix=${PREF} --enable-memalign-hack
 endif
 ifeq (${SYSTEM},darwinppc)
 	PREF=
@@ -69,8 +68,7 @@ ifeq (${SYSTEM},darwinppc)
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
 	XLIBS=-lz
-#	FCOPTS=--enable-gpl --enable-memalign-hack --enable-a52 --disable-debug  --extra-cflags="-fno-common ${ARCH}" --enable-shared
-	FCOPTS=--enable-gpl --cpu=powerpc --enable-a52 --disable-debug  --extra-cflags="-fno-common ${ARCH}" --enable-shared
+	FCOPTS=--arch=ppc --extra-cflags="-fno-common ${ARCH}" --extra-ldflags="${ARCH}" --cross-compile
 endif
 ifeq (${SYSTEM},darwini386)
 	PREF=
@@ -79,8 +77,10 @@ ifeq (${SYSTEM},darwini386)
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
 	XLIBS=-lz
-	FCOPTS=--enable-gpl --disable-mmx --cpu=unknown --enable-a52 --disable-debug  --extra-cflags=-fno-common --enable-shared
+	FCOPTS=--disable-mmx --arch=unknown --extra-cflags=-fno-common
 endif
+
+FCONFCOMMON=--enable-shared --disable-debug --enable-gpl --enable-a52 --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-vhook
 
 CC=${PREF}gcc ${ARCH}
 RANLIB=${PREF}ranlib
@@ -157,7 +157,7 @@ ffmpeg:${LIBRARIES}/libavformat${LIBSUF}.a
 
 
 ${LIBRARIES}/libavformat${LIBSUF}.a:
-	cd ${FFMPEG} ; ./${FFCONF} ${FCOPTS} ; cd libavformat && make ${MAKEOPTS} && cd ../libavcodec && make ${MAKEOPTS}&& cd ../libavutil && make ${MAKEOPTS}
+	cd ${FFMPEG} ; ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} ; make
 	mkdir -p ${LIBRARIES}
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
