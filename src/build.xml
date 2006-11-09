@@ -130,7 +130,7 @@
 		</exec>
 	</target>
 	
-	<target name="destroylibs">
+	<target name="destroy" depends="distclean">
 		<delete dir="resources/libraries"/>
 	</target>
 
