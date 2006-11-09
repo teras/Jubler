@@ -49,8 +49,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.charset.UnmappableCharacterException;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
@@ -142,15 +141,20 @@ public class FileCommunicator {
     }
     
     
-    public static boolean save(File outfile, Subtitles subs, JPreferences prefs) {
+    public static String save(File outfile, Subtitles subs, JPreferences prefs) {
         CharsetEncoder encoder;
         File tempout = null;
+        String result = null;
         
         try {
             String encoding;
             SubFormat saveformat;
             float fps;
             tempout = new File(outfile.getPath()+".temp");
+            if ( (!tempout.getParentFile().canWrite()) ||
+                    (outfile.exists() && (!outfile.canWrite())) ) {
+                return _("File {0} is unwritable", outfile.getPath());
+            }
             
             if ( prefs == null ) {
                 encoding = "UTF-8";
@@ -165,19 +169,23 @@ public class FileCommunicator {
             //            encoder = Charset.forName(prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
             encoder = Charset.forName(encoding).newEncoder();
             BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(tempout), encoder));
+            
             saveformat.produce(subs, fps, out);
             out.close();
             
             // Renaming new file
             outfile.delete();
-            return tempout.renameTo(outfile);
+            if (!tempout.renameTo(outfile))
+                result = _("Error while updating file {0}", outfile.getPath());
         } catch (UnsupportedEncodingException e) {
-            //   e.printStackTrace();
+            result = _("Encoding error. Use proper encoding (e.g. UTF-8).");
+        } catch (UnmappableCharacterException e) {
+            result = _("Encoding error. Use proper encoding (e.g. UTF-8).");
         } catch (IOException e) {
-            //   e.printStackTrace();
+            result = _("Error while saving file {0}", outfile) + " : " + e.getClass().getName();
         }
         if (tempout != null && tempout.exists()) tempout.delete();
-        return false;
+        return result ;
     }
     
     

@@ -2019,13 +2019,14 @@ public class Jubler extends JFrame {
         ext = "."+prefs.getSaveFormat().getExtension();
         f = FileCommunicator.stripFileFromExtension(f);
         f = new File(f.getPath()+ext);
-        if ( FileCommunicator.save(f, subs, prefs) ) {
+        String result = FileCommunicator.save(f, subs, prefs);
+        if (result == null ) {
             /* Saving succesfull */
             undo.setSaveMark();
             setFile(f, false);
-            return;
+        } else {
+            DEBUG.error(result);
         }
-        DEBUG.error(_("Error while saving file {0}", f.getName()));
     }
     
     
