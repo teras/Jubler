@@ -5,13 +5,13 @@
 <title>Jubler FAQ</title>
 
 <section><title>I found a problem!</title>
-<para>I am always happy to listen to problems of Jubler, especially those not mentioned here. The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The prefered way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
+<para>I am always happy to listen to problems of Jubler, especially those not mentioned here. The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The preferred way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
 </section>
 
 <section><title>How to translate to my own language</title>
-<para>The instructions here are for Linux (or similar POSIX) environment. First of all you will need to download the source code of Jubler (preferably from the SVN). Then go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot. Open this ??.po file with either a localization editor (like kbable or poedit) or even with a text editor.</para>
+<para>The instructions here are for Linux (or similar POSIX) environment. First of all you will need to download the source code of Jubler (preferably from the SVN). Then go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot. Open this ??.po file with either a localization editor (like kbabel or poedit) or even with a text editor.</para>
 <para>When you have finished you can send this file to me in order to include it into the distribution. You can of course contact me earlier if you have any other questions.</para>
-<para>In order to check it yourself, you need to recompile java. You wil need at least JDK 1.5 and ant to compile it.</para>
+<para>In order to check it yourself, you need to recompile java. You will need at least JDK 1.5 and ant to compile it.</para>
 </section>
 
 <section id="mplayer.winosx"><title>Installing MPlayer under Windows or Mac OSX</title>
@@ -19,7 +19,7 @@
 </section>
 
 <section><title>Installing MPlayer under Linux or POSIX environment</title>
-<para>You have again to download MPlayer from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Then, it is nessesary to put it somewhere in your $PATH. After that, Jubler should be able to find it automatically. If not, you can follow the information mentioned under <ulink url="#mplayer.winosx">Installing MPlayer under Windows or Mac OSX</ulink>.</para>
+<para>You have again to download MPlayer from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Then, it is necessary to put it somewhere in your $PATH. After that, Jubler should be able to find it automatically. If not, you can follow the information mentioned under <ulink url="#mplayer.winosx">Installing MPlayer under Windows or Mac OSX</ulink>.</para>
 </section>
 
 <section><title>Problems while loading a subtitle file</title>
