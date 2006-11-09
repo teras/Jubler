@@ -3,7 +3,7 @@
 msgid	""
 msgstr	"Project-Id-Version: cs\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2006-11-09 22:42+0200\n"
+	"POT-Creation-Date: 2006-11-09 17:29+0200\n"
 	"PO-Revision-Date: 2005-05-01 21:52+0100\n"
 	"Last-Translator: Conyx <conyx@seznam.cz>\n"
 	"Language-Team:  <el@li.org>\n"
@@ -535,12 +535,8 @@ msgid	"SubViewer V2"
 msgstr	"SubViewer V2 formát"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:60
-msgid	"\": "
-msgstr	""
-
-#: com/panayotis/jubler/information/HelpBrowser.java:60
-#, fuzzy
-msgid	"Error while opening FAQ file \""
+#, fuzzy, java-format
+msgid	"Error while opening FAQ file \"{0}\""
 msgstr	"Chyba při načítání souboru {0}"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:87
@@ -2017,20 +2013,20 @@ msgstr	"Pravopis"
 msgid	"Unable to load plugin: {0}"
 msgstr	""
 
-#~ msgid	"SubViewer format"
-#~ msgstr	"SubViewer formát"
-
-#~ msgid	"SubStationAlpha format"
-#~ msgstr	"SubStationAlpha formát"
-
-#~ msgid	"SubRip format"
-#~ msgstr	"SubRip formát"
-
-#~ msgid	"MicroDVD format"
-#~ msgstr	"MicroDVD formát"
+#~ msgid	"Error while creating subtitle shades"
+#~ msgstr	"Chyba při tvorbě stínu titulku"
 
 #~ msgid	"Advanced SubStation format"
 #~ msgstr	"Rozvinutý SubStation formát"
 
-#~ msgid	"Error while creating subtitle shades"
-#~ msgstr	"Chyba při tvorbě stínu titulku"
+#~ msgid	"MicroDVD format"
+#~ msgstr	"MicroDVD formát"
+
+#~ msgid	"SubRip format"
+#~ msgstr	"SubRip formát"
+
+#~ msgid	"SubStationAlpha format"
+#~ msgstr	"SubStationAlpha formát"
+
+#~ msgid	"SubViewer format"
+#~ msgstr	"SubViewer formát"

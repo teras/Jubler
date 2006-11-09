@@ -1,7 +1,7 @@
 msgid	""
 msgstr	"Project-Id-Version: JublerTr v1.0\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2006-11-09 22:42+0200\n"
+	"POT-Creation-Date: 2006-11-09 17:29+0200\n"
 	"PO-Revision-Date: 2006-10-28 23:57+0200\n"
 	"Last-Translator: Asım Sinan YÜKSEL <yuksel.asim.sinan@gmail.com>\n"
 	"Language-Team: C-NoNe <yuksel.asim.sinan@gmail.com>\n"
@@ -533,12 +533,8 @@ msgid	"SubViewer V2"
 msgstr	"SubViewer V2 formatı"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:60
-msgid	"\": "
-msgstr	""
-
-#: com/panayotis/jubler/information/HelpBrowser.java:60
-#, fuzzy
-msgid	"Error while opening FAQ file \""
+#, fuzzy, java-format
+msgid	"Error while opening FAQ file \"{0}\""
 msgstr	"{0} dosyası yüklenirken hata oluştu"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:87
@@ -2013,20 +2009,20 @@ msgstr	"Yazım denetçisi"
 msgid	"Unable to load plugin: {0}"
 msgstr	""
 
-#~ msgid	"-current-"
-#~ msgstr	"-Şu anki-"
-
-#~ msgid	"SubViewer format"
-#~ msgstr	"SubViewer formatı"
-
-#~ msgid	"SubStationAlpha format"
-#~ msgstr	"SubStationAlpha formatı"
-
-#~ msgid	"SubRip format"
-#~ msgstr	"Subrip formatı"
+#~ msgid	"Advanced SubStation format"
+#~ msgstr	"Gelişmiş SubStation formatı"
 
 #~ msgid	"MicroDVD format"
 #~ msgstr	"MicroDVD formatı"
 
-#~ msgid	"Advanced SubStation format"
-#~ msgstr	"Gelişmiş SubStation formatı"
+#~ msgid	"SubRip format"
+#~ msgstr	"Subrip formatı"
+
+#~ msgid	"SubStationAlpha format"
+#~ msgstr	"SubStationAlpha formatı"
+
+#~ msgid	"SubViewer format"
+#~ msgstr	"SubViewer formatı"
+
+#~ msgid	"-current-"
+#~ msgstr	"-Şu anki-"

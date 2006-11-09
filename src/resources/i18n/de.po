@@ -7,7 +7,7 @@
 msgid	""
 msgstr	"Project-Id-Version: PACKAGE VERSION\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2006-11-09 22:42+0200\n"
+	"POT-Creation-Date: 2006-11-09 17:29+0200\n"
 	"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 	"Last-Translator: Christian Weiske <cweiske@cweiske.de>\n"
 	"Language-Team: German <cweiske@cweiske.de>\n"
@@ -560,12 +560,8 @@ msgid	"SubViewer V2"
 msgstr	"SubViewer V2-Format"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:60
-msgid	"\": "
-msgstr	""
-
-#: com/panayotis/jubler/information/HelpBrowser.java:60
-#, fuzzy
-msgid	"Error while opening FAQ file \""
+#, fuzzy, java-format
+msgid	"Error while opening FAQ file \"{0}\""
 msgstr	"Fehler beim Laden der Datei {0}"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:87
@@ -2110,42 +2106,42 @@ msgid	"Unable to load plugin: {0}"
 msgstr	""
 
 #, fuzzy
-#~ msgid	"SubViewer format"
-#~ msgstr	"SubViewer-Format"
-
-#~ msgid	"SubStationAlpha format"
-#~ msgstr	"SubStationAlpha-Format"
-
-#, fuzzy
-#~ msgid	"SubRip format"
-#~ msgstr	"SubRip format"
-
-#~ msgid	"MicroDVD format"
-#~ msgstr	"MicroDVD-Format"
-
-#~ msgid	"Advanced SubStation format"
-#~ msgstr	"Advanced SubStation-Format"
-
-#~ msgid	"Could not load file!"
-#~ msgstr	"Konnte Datei nicht laden!"
-
-#~ msgid	"Contact address: panayotis@panayotis.com"
-#~ msgstr	"Kontaktadresse: panayotis@panayotis.com"
-
-#~ msgid	"Edit player options"
-#~ msgstr	"Spielereinstellungen bearbeiten"
-
-#, fuzzy
-#~ msgid	"Subtitles"
-#~ msgstr	"Untertitel"
-
-#, fuzzy
-#~ msgid	"Error while loading audio file {0}"
+#~ msgid	"Error while creating subtitle shades"
 #~ msgstr	"Fehler beim Laden der Datei {0}"
 
 #~ msgid	"Reload"
 #~ msgstr	"Erneut laden"
 
 #, fuzzy
-#~ msgid	"Error while creating subtitle shades"
+#~ msgid	"Error while loading audio file {0}"
 #~ msgstr	"Fehler beim Laden der Datei {0}"
+
+#, fuzzy
+#~ msgid	"Subtitles"
+#~ msgstr	"Untertitel"
+
+#~ msgid	"Edit player options"
+#~ msgstr	"Spielereinstellungen bearbeiten"
+
+#~ msgid	"Contact address: panayotis@panayotis.com"
+#~ msgstr	"Kontaktadresse: panayotis@panayotis.com"
+
+#~ msgid	"Could not load file!"
+#~ msgstr	"Konnte Datei nicht laden!"
+
+#~ msgid	"Advanced SubStation format"
+#~ msgstr	"Advanced SubStation-Format"
+
+#~ msgid	"MicroDVD format"
+#~ msgstr	"MicroDVD-Format"
+
+#, fuzzy
+#~ msgid	"SubRip format"
+#~ msgstr	"SubRip format"
+
+#~ msgid	"SubStationAlpha format"
+#~ msgstr	"SubStationAlpha-Format"
+
+#, fuzzy
+#~ msgid	"SubViewer format"
+#~ msgstr	"SubViewer-Format"
