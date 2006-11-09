@@ -125,11 +125,14 @@
 		<delete dir="self"/>
 		<delete dir="dist/Jubler.app"/>
 		<delete dir="src/com/apple"/>
-		<exec dir="resources" executable="make">
+		<exec dir="resources/ffdecode" executable="make">
 			<arg line="distclean"/>
 		</exec>
 	</target>
 	
+	<target name="destroylibs">
+		<delete dir="resources/libraries"/>
+	</target>
 
 	<target name="distsource" depends="fullsrc,jublersrc"/>
 
