@@ -31,7 +31,8 @@ public class HelpBrowser extends javax.swing.JDialog {
         
         history = new ArrayList<String>();
         
-        String initpage = "jar:file:"+SystemFileFinder.getJublerJarPath()+"!/help/jubler-faq.html";
+        String initpage = "file:"+SystemFileFinder.getJublerAppPath()+"/help/jubler-faq.html";
+        System.out.println("file:"+SystemFileFinder.getJublerAppPath()+"/help/jubler-faq.html");
         setPage(initpage);
         history.add(initpage);
         
@@ -56,7 +57,7 @@ public class HelpBrowser extends javax.swing.JDialog {
             }
             HelpPane.setPage(url);
         } catch (IOException e) {
-            DEBUG.info(_("Error while opening JAR file, in order to display FAQ page: "+e.getClass().getName()));
+            DEBUG.info(_("Error while opening FAQ file \"" + url + "\": "+e.getClass().getName()));
         }
     }
     

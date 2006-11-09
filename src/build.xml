@@ -98,12 +98,13 @@
 		<exec dir="resources/help" executable="docbook2html">
 			<arg line="-u jubler-faq.xml"/>
 		</exec>
-		<mkdir dir="src/help"/>
-		<move file="resources/help/jubler-faq.html" todir="src/help"/>
+		<mkdir dir="dist/help"/>
+		<move file="resources/help/jubler-faq.html" todir="dist/help"/>
 	</target>
 
 	<target name="xdevelop" depends="i18n,faq">
 		<exec dir="resources/ffdecode" executable="make"/>
+		<copy file="dist/help/jubler-faq.html" todir="build/classes/help"/>
 	</target>
 
 	<target name="cleanmac">
@@ -119,7 +120,6 @@
 			<fileset dir="." includes="*.log"/>
 			<fileset dir="resources/i18n" includes="jubler.pot"/>
 			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
-			<fileset dir="src/help"/>
 			<fileset dir="src" includes="lib"/>
 		</delete>
 		<delete dir="self"/>
@@ -166,7 +166,7 @@
 	<target name="distbin" depends="distclean,i18n,jar,win32,linux,generic"/>
 
 	<!-- Windows Installer -->
-	<target name="win32" depends="i18n,jar">
+	<target name="win32" depends="distclean,i18n,jar">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<exec dir="resources/ffdecode" executable="make"> <arg line="win32"/> </exec>
 		<launch4j>
@@ -200,7 +200,7 @@
 	</target>
 
 	<!-- Linux installer -->
-	<target name="linux" depends="i18n,jar">
+	<target name="linux" depends="distclean,i18n,jar">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<mkdir dir="self"/>
 		<exec dir="resources/ffdecode" executable="make"> <arg line="linux"/> </exec>
@@ -242,7 +242,7 @@
 	</target>
 	
 	<!-- Generic installer -->
-	<target name="generic" depends="i18n,jar">
+	<target name="generic" depends="distclean,i18n,jar">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<copy file="resources/system/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes"/>
 		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
@@ -274,6 +274,9 @@
 	
 	<target name="-post-compile">
 		<copy file="resources/system/freesans.ttf" todir="build/classes/lib"/>
+	</target>
+	<target name="-pre-jar">
+		<delete dir="build/classes/lib"/>
 	</target>
 
 </project>
