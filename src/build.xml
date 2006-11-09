@@ -162,11 +162,8 @@
 		<delete dir="/tmp/Jubler-${version}"/>
 	</target>
 	
-
-	<target name="distbin" depends="distclean,i18n,jar,win32,linux,generic"/>
-
 	<!-- Windows Installer -->
-	<target name="win32" depends="distclean,i18n,jar">
+	<target name="win32" depends="distclean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<exec dir="resources/ffdecode" executable="make"> <arg line="win32"/> </exec>
 		<launch4j>
@@ -200,7 +197,7 @@
 	</target>
 
 	<!-- Linux installer -->
-	<target name="linux" depends="distclean,i18n,jar">
+	<target name="linux" depends="distclean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<mkdir dir="self"/>
 		<exec dir="resources/ffdecode" executable="make"> <arg line="linux"/> </exec>
@@ -218,7 +215,7 @@
 	</target>
 
 	<!-- MacOSX installer -->
-	<target name="macosx" depends="distclean,i18n,jar">
+	<target name="macosx" depends="distclean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<jarbundler
 			dir="dist"
@@ -242,7 +239,7 @@
 	</target>
 	
 	<!-- Generic installer -->
-	<target name="generic" depends="distclean,i18n,jar">
+	<target name="generic" depends="distclean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<copy file="resources/system/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes"/>
 		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />

@@ -53,6 +53,7 @@
             <file src="dist/Jubler.exe" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
             <file src="resources/system/install.ico" targetdir="$INSTALL_PATH/Uninstaller"/>
+			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
         </pack>
     </packs>
     

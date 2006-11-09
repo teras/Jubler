@@ -47,6 +47,7 @@
             <file src="README" targetdir="$INSTALL_PATH"/>
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
 			<file src="resources/system/freesans.ttf" targetdir="$INSTALL_PATH/lib"/>
+			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
         </pack>
     </packs>
     
