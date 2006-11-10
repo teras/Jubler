@@ -32,7 +32,6 @@ public class HelpBrowser extends javax.swing.JDialog {
         history = new ArrayList<String>();
         
         String initpage = "file:"+SystemFileFinder.getJublerAppPath()+"/help/jubler-faq.html";
-        System.out.println("file:"+SystemFileFinder.getJublerAppPath()+"/help/jubler-faq.html");
         setPage(initpage);
         history.add(initpage);
         

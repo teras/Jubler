@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.os;
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.format.types.SubRip;
 import com.panayotis.jubler.format.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
@@ -50,6 +51,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.nio.charset.UnmappableCharacterException;
+import java.util.ArrayList;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
@@ -85,45 +87,38 @@ public class FileCommunicator {
         OptionsIO.saveFileList(recent_files);
     }
     
-    /* Update the recents menu for this Jubler window */
-    public static void updateRecentMenu(JMenu recent_menu, Jubler cur_jubler, File selffile, Subtitles subs) {
-        boolean is_empty = true;
-        File current;
+    /* Update Recents menu */
+    public static void updateRecentsMenu() {
         
-        recent_menu.removeAll();
-        if (subs!=null) {
-            recent_menu.add(addNewMenu( _("Clone current"), true, true, cur_jubler, -1));
-            recent_menu.add(new JSeparator());
-        }
+        ArrayList<String> opened = StaticJubler.findOpenedFiles();
+        ArrayList<String> closed = new ArrayList<String>();
         
-        int counter = 1;
+        /* Find files in recent menu which are not opened yet */
+        boolean found;
+        String recfname;
+        File recf;
         for (int i = 0 ; i < recent_files.length ; i++) {
-            current = recent_files[i];
-            if (current!=null && (!current.equals(selffile)) ) {
-                is_empty = false;
-                recent_menu.add(addNewMenu(current.getPath(), false, true, cur_jubler, counter++));
+            found = false;
+            recf = recent_files[i];
+            
+            if (recf!=null) {
+                recfname = recf.getPath();
+
+                for (String op : opened) {
+                    if (recfname.equals(op)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) 
+                    closed.add(recfname);
             }
         }
         
-        if (is_empty) recent_menu.add( addNewMenu(_("-Not any recent items-"), false, false, cur_jubler,  -1));
+        /* Update menu */
+        StaticJubler.populateRecentsMenu(closed);
     }
-    private static JMenuItem addNewMenu(String text, boolean isclone, boolean enabled, Jubler jub, int counter) {
-        JMenuItem item = new JMenuItem(text);
-        item.setEnabled(enabled);
-        if(counter>=0) item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+counter, InputEvent.CTRL_MASK));
-        
-        final boolean isclone_f = isclone;
-        final String text_f = text;
-        final Jubler jub_f = jub;
-        item.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if(isclone_f) jub_f.recentMenuCallback(null);
-                else jub_f.recentMenuCallback(text_f);
-            }
-        });
-        return item;
-    }
-    
+
     
     
     public static String load(File infile, JPreferences prefs) {

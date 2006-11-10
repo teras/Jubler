@@ -309,14 +309,7 @@ public class Jubler extends JFrame {
     private void updateRecentFile(File recent) {
         last_opened_file = recent;
         FileCommunicator.updateRecentsList(recent);
-        if (subs==null) { // Initialization of a jubler window
-            FileCommunicator.updateRecentMenu(RecentsFM, this, last_opened_file, subs);
-        } else {    // A normal update is required
-            for (int i = 0 ; i < windows.size() ; i++) {
-                Jubler which = windows.get(i);
-                FileCommunicator.updateRecentMenu(which.RecentsFM, which, which.last_opened_file, subs);
-            }
-        }
+        FileCommunicator.updateRecentsMenu();
     }
     
     /* This method is called when an item in the recent menu is clicked */
@@ -1249,6 +1242,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == VideoFileTTM) {
                 Jubler.this.VideoFileTTMActionPerformed(evt);
             }
+            else if (evt.getSource() == FAQHM) {
+                Jubler.this.FAQHMActionPerformed(evt);
+            }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
@@ -1288,9 +1284,6 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutTB) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
-            else if (evt.getSource() == FAQHM) {
-                Jubler.this.FAQHMActionPerformed(evt);
-            }
         }
 
         public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -1317,7 +1310,7 @@ public class Jubler extends JFrame {
         public void windowOpened(java.awt.event.WindowEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void FAQHMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAQHMActionPerformed
         faqbrowse.setVisible(true);
     }//GEN-LAST:event_FAQHMActionPerformed
@@ -1915,7 +1908,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem PreviewTTM;
     private javax.swing.JMenuItem PreviousGEM;
     private javax.swing.JMenuItem QuitFM;
-    private javax.swing.JMenu RecentsFM;
+    javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RecodeTM;
     private javax.swing.JMenuItem RedoEM;
     private javax.swing.JButton RedoTB;
@@ -2118,6 +2111,10 @@ public class Jubler extends JFrame {
     public String getFileName() {
         return current_file.getName();
     }
+    public String lastOpenedFile() {
+        if (last_opened_file == null) return null;
+        return last_opened_file.getPath();
+    }
     
     private void closeWindow(boolean unsave_check) {
         if (isUnsaved() && unsave_check) {
@@ -2148,6 +2145,10 @@ public class Jubler extends JFrame {
             windows.elementAt(0).JoinTM.setEnabled(false);
             windows.elementAt(0).ReparentTM.setEnabled(false);
         }
+        
+        last_opened_file = null; //Needed to remove itself from the recents menu
+        FileCommunicator.updateRecentsMenu();
+        
         dispose();
     }
     
