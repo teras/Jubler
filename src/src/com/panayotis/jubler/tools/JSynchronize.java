@@ -45,7 +45,7 @@ public class JSynchronize extends JTool {
         super(true);
     }
     
-    public void updateData (Jubler current) {
+    public void updateData(Jubler current) {
         super.updateData(current);
         
         target = current.getSubtitles();
@@ -59,7 +59,7 @@ public class JSynchronize extends JTool {
 //            jublerlist.add(cjubler);
 //            JubSelector.addItem(cjubler.getFileName()+ ((cjubler==current)?"  "+_("-current-"):"") );
 //            if (cjubler==current) cid = i;
-//            
+//
 //        }
         JubSelector.setSelectedIndex(cid);
     }
@@ -74,7 +74,7 @@ public class JSynchronize extends JTool {
     }
     
     public void storeSelections() {
-            model = jublerlist.get(JubSelector.getSelectedIndex()).getSubtitles();
+        model = jublerlist.get(JubSelector.getSelectedIndex()).getSubtitles();
         copytime = InTimeS.isSelected();
         copytext = InTextS.isSelected();
         offset = ((Integer)OffsetS.getValue()).intValue();

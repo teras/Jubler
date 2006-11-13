@@ -33,20 +33,8 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author teras
  */
 public class VideoFileFilter extends MediaFileFilter {
-    private static final String exts[];
     
-    static {
-        exts = new String[9];
-        exts[0] = ".avi";
-        exts[1] = ".mpg";
-        exts[2] = ".mpeg";
-        exts[3] = ".m1v";
-        exts[4] = ".m2v";
-        exts[5] = ".mov";
-        exts[6] = ".mkv";
-        exts[7] = ".ogm";
-        exts[8] = ".bin";
-    }
+    private static final String exts[] = {".avi", ".mpg", ".mpeg", ".m1v", ".m2v", ".mov", ".mkv", ".ogm", ".divx", ".bin"};
     
     public String[] getExtensions() {
         return exts;
