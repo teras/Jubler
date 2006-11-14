@@ -20,7 +20,7 @@
     
     <locale>
         <langpack iso3="eng"/>
-  <langpack iso3="cze"/>
+		<langpack iso3="cze"/>
         <langpack iso3="deu"/>
         <langpack iso3="ell"/>
         <langpack iso3="tur"/>
@@ -51,7 +51,10 @@
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
 			<file src="resources/system/frame.png" targetdir="$INSTALL_PATH/lib"/>
+			<file src="resources/system/Jubler.sh" targetdir="$INSTALL_PATH"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
+			<parsable targetfile="$INSTALL_PATH/Jubler.sh"/>
+			<executable targetfile="$INSTALL_PATH/Jubler.sh" type="bin" stage="never" keep="true"/>
         </pack>
     </packs>
     

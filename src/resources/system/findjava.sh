@@ -48,13 +48,13 @@ debug () {
 
 # $1: the path to check if this is JDK or a simple java path
 check_for_JDK () {
-	if [ "$CHECK_JDK" == "" ] ; then
+	if [ ! "$CHECK_JDK" ] ; then
 		echo $1
 		exit 0
 	fi
 	JDKBIN=`dirname $1`
 	JDK=`dirname $JDKBIN`
-	if [ -e $JDK/include/jni.h ] ; then
+	if [ -e "$JDK/include/jni.h" ] ; then
 		export JAVA_HOME=$JDK
 		echo $JAVA_HOME
 		exit 0

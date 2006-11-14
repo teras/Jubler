@@ -21,7 +21,7 @@
 echo -n "Searching for Java..."
 JAVABIN=`/bin/sh ./findjava.sh -v 1.5 $@`
 
-if [ "$?" == "0" ] ; then
+if [ "$JAVABIN" ] ; then
 	echo "found in $JAVABIN"
 	$JAVABIN -jar ./Jubler-install-linux.jar
 	exit 0
@@ -30,11 +30,11 @@ fi
 # If java was found we should have exit now
 echo "not found!"
 echo -n Press [RETURN] to see additional information on how to resolve this issue.
-read
+read NL
 
 cat <<EOF
 
-The autofind script could not locate a a valid Java installation of version 1.5 in your system. If you don't have one, please go to http://www.java.com and download the latest JRE from there.
+The autofind script could not locate a valid Java installation of version 1.5 in your system. If you don't have one, please go to http://www.java.com and download the latest JRE from there.
 
 If the script was unable to find the Java distribution, then you have to declare the top-level installation directory, using the following command:
   export JAVA_HOME=/path/to/java/installation

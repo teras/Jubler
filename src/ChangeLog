@@ -4,7 +4,7 @@ bug fixed, where wrong duration was reported. Tools remember last values.
 Column width is now saved. Now it is compatible with latest version of MPlayer.
 Updated to newest ffmpeg sources. Turkish translation added. Support for zemberek
 added. Preliminary built-in FAQ subsystem. Minor tweaks and code changes.
-New icons and splash screen.
+New icons and splash screen. Ubuntu installation script fixes.
 
 3.0.0-rc4
 Fixed bugs: audio line not closing, saving file with an illegal character
