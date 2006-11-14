@@ -62,6 +62,7 @@ public class ASpell extends SpellChecker {
         try {
             ArrayList<String> cmd = new ArrayList<String>();
             cmd.add(opts.getExecFileName());
+            cmd.add("--encoding=utf-8");
             
             ASpellOptions.ASpellDict lang = opts.getLanguage();
             if ( lang != null ) {
@@ -76,8 +77,8 @@ public class ASpell extends SpellChecker {
             String[] c = cmd.toArray(new String[1]);
             proc = Runtime.getRuntime().exec(c);
             DEBUG.info(DEBUG.toString(c));
-            send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
-            get = new BufferedReader( new InputStreamReader(proc.getInputStream()));
+            send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));
+            get = new BufferedReader( new InputStreamReader(proc.getInputStream(), "UTF-8"));
             get.readLine();
             /* Read aspell information */
             send.write("!\n");  /* Enter terse mode */
