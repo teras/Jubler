@@ -53,4 +53,12 @@ public class DEBUG {
     public static void beep() {
         java.awt.Toolkit.getDefaultToolkit().beep();
     }
+    
+    public static String toString(String[] array) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0 ; i < array.length ; i++) {
+            buf.append(array[i]).append(' ');
+        }
+        return buf.substring(0, buf.length()-1);
+    }
 }

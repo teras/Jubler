@@ -37,7 +37,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.os.SystemDependent;
+import java.util.ArrayList;
+
 /**
  *
  * @author teras
@@ -59,18 +60,26 @@ public class ASpell extends SpellChecker {
     
     public boolean initialize() {
         try {
-            String cmd = opts.getExecFileName();
-            String lang = opts.getLanguage();
-            if ( lang != null && !lang.trim().equals("")) {
-                cmd += " -d " + lang;
-            }
-            cmd += " pipe";
+            ArrayList<String> cmd = new ArrayList<String>();
+            cmd.add(opts.getExecFileName());
             
-            proc = Runtime.getRuntime().exec(cmd);
-            DEBUG.info(cmd);
+            ASpellOptions.ASpellDict lang = opts.getLanguage();
+            if ( lang != null ) {
+                if (lang.path != null) {
+                    cmd.add("--dict-dir="+lang.path);
+                }
+                cmd.add("-d");
+                cmd.add(lang.lang);
+            }
+            cmd.add("pipe");
+            
+            String[] c = cmd.toArray(new String[1]);
+            proc = Runtime.getRuntime().exec(c);
+            DEBUG.info(DEBUG.toString(c));
             send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
             get = new BufferedReader( new InputStreamReader(proc.getInputStream()));
-            get.readLine(); /* Read aspell information */
+            get.readLine();
+            /* Read aspell information */
             send.write("!\n");  /* Enter terse mode */
             return true;
         } catch (IOException e) {
