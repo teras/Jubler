@@ -100,14 +100,16 @@ public class ASpellOptions extends ExtOptions {
         /* load dictionaries list from aspell */
         dictionaries.removeAllElements();
         getDictsFromPath(null);
+
         File cocoaspell = new File("/Library/Application Support/cocoAspell");
-        getDictsFromPath(cocoaspell);
-        
-        File [] childs = cocoaspell.listFiles();
-        for (int i = 0 ; i < childs.length ; i++ ) {
-            if (childs[i].isDirectory())
-                getDictsFromPath(childs[i]);
-        }
+		if (cocoaspell.exists() && cocoaspell.isDirectory()) {
+    	    getDictsFromPath(cocoaspell);
+        	File [] childs = cocoaspell.listFiles();
+        	for (int i = 0 ; i < childs.length ; i++ ) {
+            	if (childs[i].isDirectory())
+                	getDictsFromPath(childs[i]);
+        	}
+		}
     }
     
     private void getDictsFromPath( File path ) {
@@ -121,7 +123,7 @@ public class ASpellOptions extends ExtOptions {
             
             String d;
             while ( (d=get.readLine()) != null ) {
-                dictionaries.add(new ASpellDict(d, path.getPath()));
+                dictionaries.add(new ASpellDict(d, path));
             }
         } catch (IOException e) {
         }
@@ -159,9 +161,10 @@ public class ASpellOptions extends ExtOptions {
     public class ASpellDict {
         public String lang;
         public String path;
-        public ASpellDict(String lang, String path) {
+        public ASpellDict(String lang, File path) {
             this.lang = lang;
-            this.path = path;
+			this.path = null;
+			if (path!=null) this.path = path.getPath();
         }
         
         public String toString() {
