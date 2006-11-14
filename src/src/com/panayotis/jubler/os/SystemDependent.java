@@ -1,5 +1,5 @@
 /*
- * LookAndFeel.java
+ * SystemDependent.java
  *
  * Created on 7 Ιούλιος 2005, 2:34 πμ
  *
@@ -85,6 +85,10 @@ public class SystemDependent {
                 " -sub %s -ss %t -geometry +%x+%y -font "+fontname+" -subfont-text-scale %z  %v";
     }
     
+    /* Force ASpell to use UTF-8 encoding - broken on Windows */
+    public static boolean forceASpellEncoding() {
+        return !isWindows();
+    }
     
     public static String getRealExecFilename( String fname ) {
         if (fname.endsWith(".app") && fname.toLowerCase().indexOf("mplayer") >= 0 ) {

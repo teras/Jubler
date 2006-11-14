@@ -37,6 +37,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.os.SystemDependent;
 import java.util.ArrayList;
 
 /**
@@ -60,9 +61,11 @@ public class ASpell extends SpellChecker {
     
     public boolean initialize() {
         try {
+            boolean forceutf8 = SystemDependent.forceASpellEncoding();
+            
             ArrayList<String> cmd = new ArrayList<String>();
             cmd.add(opts.getExecFileName());
-            cmd.add("--encoding=utf-8");
+            if (forceutf8) cmd.add("--encoding=utf-8");
             
             ASpellOptions.ASpellDict lang = opts.getLanguage();
             if ( lang != null ) {
@@ -77,8 +80,15 @@ public class ASpell extends SpellChecker {
             String[] c = cmd.toArray(new String[1]);
             proc = Runtime.getRuntime().exec(c);
             DEBUG.info(DEBUG.toString(c));
-            send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));
-            get = new BufferedReader( new InputStreamReader(proc.getInputStream(), "UTF-8"));
+            
+            if (forceutf8) {
+                send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));
+                get = new BufferedReader( new InputStreamReader(proc.getInputStream(), "UTF-8"));
+            } else {
+                send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
+                get = new BufferedReader( new InputStreamReader(proc.getInputStream()));
+            }
+            
             get.readLine();
             /* Read aspell information */
             send.write("!\n");  /* Enter terse mode */
@@ -135,7 +145,7 @@ public class ASpell extends SpellChecker {
                 } else if ( part.equals("#")) {
                     sug = new Vector<String>();
                     orig = token.nextToken();
-                    pos = Integer.parseInt(token.nextToken());
+                    pos = Integer.parseInt(token.nextToken()) - 1;
                     ret.add(new SpellError(pos, orig, sug));
                 }
             }

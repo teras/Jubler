@@ -84,11 +84,11 @@ public class ASpellOptions extends ExtOptions {
     
     
     /* Find the selected language */
-    private void setSelectedLanguage(String lang) {
+    private void setSelectedLanguage(String lng) {
         ASpellDict current;
         for (int i = 0 ; i < dictionaries.size() ; i++) {
             current = dictionaries.get(i);
-            if (current.lang.equals(language)) {
+            if (current.lang.equals(lng)) {
                 LangList.setSelectedIndex(i);
                 LangList.ensureIndexIsVisible(i);
                 language = current;
