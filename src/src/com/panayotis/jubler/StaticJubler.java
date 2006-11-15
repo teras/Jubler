@@ -11,6 +11,7 @@ package com.panayotis.jubler;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.information.JAbout;
+import com.panayotis.jubler.information.JVersion;
 import com.panayotis.jubler.options.*;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -28,6 +29,8 @@ import javax.swing.KeyStroke;
  * @author teras
  */
 public class StaticJubler {
+    private static JVersion version;
+    
     
     public static void showAbout() {
         JIDialog.message(null, new JAbout(), _("About Jubler"), JIDialog.INFORMATION_MESSAGE);
@@ -92,9 +95,6 @@ public class StaticJubler {
     
     
     
-    //    public static void updateRecentMenu(, Jubler cur_jubler, File selffile) {
-    
-    
     /* Add to Recents menu not opened files */
     public static void populateRecentsMenu(ArrayList<String> files) {
         JMenu recent_menu;
@@ -137,4 +137,11 @@ public class StaticJubler {
         return item;
     }
     
+    
+    public static void initVersion() {
+        version = new JVersion();
+    }
+    public static String getCurrentVersion() {
+        return version.getCurrentVersion();
+    }
 }

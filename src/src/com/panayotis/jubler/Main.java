@@ -22,7 +22,6 @@
  */
 
 package com.panayotis.jubler;
-import com.panayotis.jubler.information.Version;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -62,7 +61,7 @@ public class Main {
         
         Thread t = new Thread() {
             public void run() {
-                Version.checkNewRelease();
+                StaticJubler.initVersion();
             }
         };
         t.start();
