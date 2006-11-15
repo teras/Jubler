@@ -249,10 +249,10 @@ OBJS-$(CONFIG_LIBVORBIS)               += oggvorbis.o
 OBJS-$(CONFIG_LIBGSM)                  += libgsm.o
 
 # currently using liba52 for ac3 decoding
-OBJS-$(CONFIG_AC3)                     += a52dec.o
+OBJS-$(CONFIG_A52)                     += a52dec.o
 
 # using builtin liba52 or runtime linked liba52.so.0
-OBJS-$(CONFIG_AC3)$(CONFIG_A52BIN)     += liba52/bit_allocate.o \
+OBJS-$(CONFIG_A52)$(CONFIG_A52BIN)     += liba52/bit_allocate.o \
                                           liba52/bitstream.o    \
                                           liba52/downmix.o      \
                                           liba52/imdct.o        \
@@ -294,7 +294,7 @@ OBJS-$(CONFIG_AMR_WB)                  += amrwb_float/dec_acelp.o \
 
 OBJS-$(CONFIG_AAC_PARSER)              += parser.o
 OBJS-$(CONFIG_AC3_PARSER)              += parser.o
-OBJS-$(CONFIG_CAVS_PARSER)             += parser.o
+OBJS-$(CONFIG_CAVSVIDEO_PARSER)        += cavs.o parser.o
 OBJS-$(CONFIG_DVBSUB_PARSER)           += dvbsubdec.o
 OBJS-$(CONFIG_DVDSUB_PARSER)           += dvdsubdec.o
 OBJS-$(CONFIG_H261_PARSER)             += h261.o
@@ -412,7 +412,7 @@ ifeq ($(TARGET_ARCH_X86),yes)
 TESTS+= cpuid_test dct-test motion-test
 endif
 
-include $(SRC_PATH)/common.mak
+include ../common.mak
 
 amrlibs:
 	$(MAKE) -C amr spclib fipoplib

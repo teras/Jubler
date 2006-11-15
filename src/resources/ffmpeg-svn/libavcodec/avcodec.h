@@ -206,7 +206,9 @@ enum CodecID {
     CODEC_ID_MP2= 0x15000,
     CODEC_ID_MP3, /* prefered ID for MPEG Audio layer 1, 2 or3 decoding */
     CODEC_ID_AAC,
+#if LIBAVCODEC_VERSION_INT < ((52<<16)+(0<<8)+0)
     CODEC_ID_MPEG4AAC,
+#endif
     CODEC_ID_AC3,
     CODEC_ID_DTS,
     CODEC_ID_VORBIS,
@@ -2660,6 +2662,8 @@ void av_bitstream_filter_close(AVBitStreamFilterContext *bsf);
 extern AVBitStreamFilter dump_extradata_bsf;
 extern AVBitStreamFilter remove_extradata_bsf;
 extern AVBitStreamFilter noise_bsf;
+extern AVBitStreamFilter mp3_header_compress_bsf;
+extern AVBitStreamFilter mp3_header_decompress_bsf;
 
 
 /* memory */

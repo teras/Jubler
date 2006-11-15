@@ -110,6 +110,8 @@
 
 /* IDs in the trackaudio master */
 #define MATROSKA_ID_AUDIOSAMPLINGFREQ 0xB5
+#define MATROSKA_ID_AUDIOOUTSAMPLINGFREQ 0x78B5
+
 #define MATROSKA_ID_AUDIOBITDEPTH 0x6264
 #define MATROSKA_ID_AUDIOCHANNELS 0x9F
 
@@ -220,8 +222,7 @@ static CodecTags codec_tags[]={
     {"A_AC3"            , CODEC_ID_AC3},
     {"A_DTS"            , CODEC_ID_DTS},
     {"A_VORBIS"         , CODEC_ID_VORBIS},
-    {"A_AAC/MPEG2/"     , CODEC_ID_AAC},
-    {"A_AAC/MPEG4/"     , CODEC_ID_AAC},
+    {"A_AAC"            , CODEC_ID_AAC},
     {"A_WAVPACK4"       , CODEC_ID_WAVPACK},
     {NULL               , CODEC_ID_NONE}
 /* TODO: AC3-9/10 (?), Real, Musepack, Quicktime */
@@ -273,6 +274,7 @@ typedef struct MatroskaAudioTrack {
 
     int channels,
         bitdepth,
+        internal_samplerate,
         samplerate;
     //..
 } MatroskaAudioTrack;
@@ -1433,6 +1435,16 @@ matroska_add_stream (MatroskaDemuxContext *matroska)
                             if ((res = ebml_read_float(matroska, &id,
                                                        &num)) < 0)
                                 break;
+                            audiotrack->internal_samplerate =
+                            audiotrack->samplerate = num;
+                            break;
+                        }
+
+                        case MATROSKA_ID_AUDIOOUTSAMPLINGFREQ: {
+                            double num;
+                            if ((res = ebml_read_float(matroska, &id,
+                                                       &num)) < 0)
+                                break;
                             audiotrack->samplerate = num;
                             break;
                         }
@@ -1930,7 +1942,7 @@ matroska_parse_seekhead (MatroskaDemuxContext *matroska)
                         /* check ID */
                         if (!(id = ebml_peek_id (matroska,
                                                  &matroska->level_up)))
-                            break;
+                            goto finish;
                         if (id != seek_id) {
                             av_log(matroska->ctx, AV_LOG_INFO,
                                    "We looked for ID=0x%x but got "
@@ -1942,7 +1954,7 @@ matroska_parse_seekhead (MatroskaDemuxContext *matroska)
 
                         /* read master + parse */
                         if ((res = ebml_read_master(matroska, &id)) < 0)
-                            break;
+                            goto finish;
                         switch (id) {
                             case MATROSKA_ID_CUES:
                                 if (!(res = matroska_parse_index(matroska)) ||
@@ -1959,8 +1971,6 @@ matroska_parse_seekhead (MatroskaDemuxContext *matroska)
                                 }
                                 break;
                         }
-                        if (res < 0)
-                            break;
 
                     finish:
                         /* remove dummy level */
@@ -2007,6 +2017,37 @@ matroska_parse_seekhead (MatroskaDemuxContext *matroska)
     }
 
     return res;
+}
+
+#define ARRAY_SIZE(x)  (sizeof(x)/sizeof(*x))
+
+static int
+matroska_aac_profile (char *codec_id)
+{
+    static const char *aac_profiles[] = {
+        "MAIN", "LC", "SSR"
+    };
+    int profile;
+
+    for (profile=0; profile<ARRAY_SIZE(aac_profiles); profile++)
+        if (strstr(codec_id, aac_profiles[profile]))
+            break;
+    return profile + 1;
+}
+
+static int
+matroska_aac_sri (int samplerate)
+{
+    static const int aac_sample_rates[] = {
+        96000, 88200, 64000, 48000, 44100, 32000,
+        24000, 22050, 16000, 12000, 11025,  8000,
+    };
+    int sri;
+
+    for (sri=0; sri<ARRAY_SIZE(aac_sample_rates); sri++)
+        if (aac_sample_rates[sri] == samplerate)
+            break;
+    return sri;
 }
 
 static int
@@ -2143,18 +2184,15 @@ matroska_read_header (AVFormatContext    *s,
         }
     }
 
-    if (res < 0)
-        return res;
-
     /* Have we found a cluster? */
-    if (res == 1) {
+    if (ebml_peek_id(matroska, NULL) == MATROSKA_ID_CLUSTER) {
         int i, j;
         MatroskaTrack *track;
         AVStream *st;
 
         for (i = 0; i < matroska->num_tracks; i++) {
             enum CodecID codec_id = CODEC_ID_NONE;
-            void *extradata = NULL;
+            uint8_t *extradata = NULL;
             int extradata_size = 0;
             track = matroska->tracks[i];
 
@@ -2165,7 +2203,8 @@ matroska_read_header (AVFormatContext    *s,
                 continue;
 
             for(j=0; codec_tags[j].str; j++){
-                if(!strcmp(codec_tags[j].str, track->codec_id)){
+                if(!strncmp(codec_tags[j].str, track->codec_id,
+                            strlen(codec_tags[j].str))){
                     codec_id= codec_tags[j].id;
                     break;
                 }
@@ -2202,6 +2241,26 @@ matroska_read_header (AVFormatContext    *s,
                 tag = (p[1] << 8) | p[0];
                 codec_id = codec_get_wav_id(tag);
 
+            }
+
+            else if (codec_id == CODEC_ID_AAC && !track->codec_priv_size) {
+                MatroskaAudioTrack *audiotrack = (MatroskaAudioTrack *) track;
+                int profile = matroska_aac_profile(track->codec_id);
+                int sri = matroska_aac_sri(audiotrack->internal_samplerate);
+                extradata = av_malloc(5);
+                if (extradata == NULL)
+                    return AVERROR_NOMEM;
+                extradata[0] = (profile << 3) | ((sri&0x0E) >> 1);
+                extradata[1] = ((sri&0x01) << 7) | (audiotrack->channels<<3);
+                if (strstr(track->codec_id, "SBR")) {
+                    sri = matroska_aac_sri(audiotrack->samplerate);
+                    extradata[2] = 0x56;
+                    extradata[3] = 0xE5;
+                    extradata[4] = 0x80 | (sri<<3);
+                    extradata_size = 5;
+                } else {
+                    extradata_size = 2;
+                }
             }
 
             if (codec_id == CODEC_ID_NONE) {
@@ -2264,9 +2323,10 @@ matroska_read_header (AVFormatContext    *s,
 
             /* What do we do with private data? E.g. for Vorbis. */
         }
+        res = 0;
     }
 
-    return 0;
+    return res;
 }
 
 static int
@@ -2321,7 +2381,7 @@ matroska_parse_blockgroup (MatroskaDemuxContext *matroska,
                     break;
                 origdata = data;
 
-                /* first byte(s): blocknum */
+                /* first byte(s): tracknum */
                 if ((n = matroska_ebmlnum_uint(data, size, &num)) < 0) {
                     av_log(matroska->ctx, AV_LOG_ERROR,
                            "EBML block data error\n");

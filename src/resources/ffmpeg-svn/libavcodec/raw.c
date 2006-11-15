@@ -37,7 +37,7 @@ typedef struct PixelFormatTag {
     unsigned int fourcc;
 } PixelFormatTag;
 
-const PixelFormatTag pixelFormatTags[] = {
+static const PixelFormatTag pixelFormatTags[] = {
     { PIX_FMT_YUV420P, MKTAG('I', '4', '2', '0') }, /* Planar formats */
     { PIX_FMT_YUV420P, MKTAG('I', 'Y', 'U', 'V') },
     { PIX_FMT_YUV420P, MKTAG('Y', 'V', '1', '2') },
@@ -97,7 +97,7 @@ static int raw_init_decoder(AVCodecContext *avctx)
         switch(avctx->bits_per_sample){
         case  8: avctx->pix_fmt= PIX_FMT_PAL8  ; break;
         case 15: avctx->pix_fmt= PIX_FMT_RGB555; break;
-        case 16: avctx->pix_fmt= PIX_FMT_RGB565; break;
+        case 16: avctx->pix_fmt= PIX_FMT_RGB555; break;
         case 24: avctx->pix_fmt= PIX_FMT_BGR24 ; break;
         case 32: avctx->pix_fmt= PIX_FMT_RGBA32; break;
         }

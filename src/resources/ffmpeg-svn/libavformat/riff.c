@@ -186,7 +186,7 @@ const CodecTag codec_wav_tags[] = {
     { CODEC_ID_WMAV1, 0x160 },
     { CODEC_ID_WMAV2, 0x161 },
     { CODEC_ID_AAC, 0x706d },
-    { CODEC_ID_MPEG4AAC, 0xff },
+    { CODEC_ID_AAC, 0xff },
     { CODEC_ID_VORBIS, ('V'<<8)+'o' }, //HACK/FIXME, does vorbis in WAV/AVI have an (in)official id?
     { CODEC_ID_SONIC, 0x2048 },
     { CODEC_ID_SONIC_LS, 0x2048 },
@@ -197,13 +197,10 @@ const CodecTag codec_wav_tags[] = {
     { CODEC_ID_IMC, 0x401 },
 
     /* FIXME: All of the IDs below are not 16 bit and thus illegal. */
-    { CODEC_ID_TTA, MKTAG('T', 'T', 'A', '1') },
-    { CODEC_ID_WAVPACK, MKTAG('W', 'V', 'P', 'K') },
-    { CODEC_ID_SHORTEN, MKTAG('s', 'h', 'r', 'n') },
-
     // for NuppelVideo (nuv.c)
     { CODEC_ID_PCM_S16LE, MKTAG('R', 'A', 'W', 'A') },
     { CODEC_ID_MP3, MKTAG('L', 'A', 'M', 'E') },
+    { CODEC_ID_MP3, MKTAG('M', 'P', '3', ' ') },
     { 0, 0 },
 };
 

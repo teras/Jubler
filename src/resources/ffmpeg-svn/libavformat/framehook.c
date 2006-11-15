@@ -23,7 +23,7 @@
 #include "avformat.h"
 #include "framehook.h"
 
-#ifdef CONFIG_HAVE_DLFCN
+#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
 #endif
 
@@ -41,7 +41,7 @@ static FrameHookEntry *first_hook;
 /* Returns 0 on OK */
 int frame_hook_add(int argc, char *argv[])
 {
-#ifdef HAVE_VHOOK
+#ifdef CONFIG_VHOOK
     void *loaded;
     FrameHookEntry *fhe, **fhep;
 

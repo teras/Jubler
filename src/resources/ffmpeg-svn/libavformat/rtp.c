@@ -34,11 +34,7 @@
 #include <netdb.h>
 
 #include "rtp_internal.h"
-
-//#define RTP_H264
-#ifdef RTP_H264
-    #include "rtp_h264.h"
-#endif
+#include "rtp_h264.h"
 
 //#define DEBUG
 
@@ -190,7 +186,7 @@ AVRtpPayloadType_t AVRtpPayloadTypes[]=
 RTPDynamicProtocolHandler *RTPFirstDynamicPayloadHandler= NULL;
 
 static RTPDynamicProtocolHandler mp4v_es_handler= {"MP4V-ES", CODEC_TYPE_VIDEO, CODEC_ID_MPEG4};
-static RTPDynamicProtocolHandler mpeg4_generic_handler= {"mpeg4-generic", CODEC_TYPE_AUDIO, CODEC_ID_MPEG4AAC};
+static RTPDynamicProtocolHandler mpeg4_generic_handler= {"mpeg4-generic", CODEC_TYPE_AUDIO, CODEC_ID_AAC};
 
 static void register_dynamic_payload_handler(RTPDynamicProtocolHandler *handler)
 {
@@ -202,9 +198,7 @@ void av_register_rtp_dynamic_payload_handlers()
 {
     register_dynamic_payload_handler(&mp4v_es_handler);
     register_dynamic_payload_handler(&mpeg4_generic_handler);
-#ifdef RTP_H264
     register_dynamic_payload_handler(&ff_h264_dynamic_handler);
-#endif
 }
 
 int rtp_get_codec_info(AVCodecContext *codec, int payload_type)
@@ -488,9 +482,7 @@ RTPDemuxContext *rtp_parse_open(AVFormatContext *s1, AVStream *st, URLContext *r
         case CODEC_ID_MP2:
         case CODEC_ID_MP3:
         case CODEC_ID_MPEG4:
-#ifdef RTP_H264
         case CODEC_ID_H264:
-#endif
             st->need_parsing = 1;
             break;
         default:
@@ -572,7 +564,7 @@ static void finalize_packet(RTPDemuxContext *s, AVPacket *pkt, uint32_t timestam
                 pkt->pts = addend + delta_timestamp;
             }
             break;
-        case CODEC_ID_MPEG4AAC:
+        case CODEC_ID_AAC:
         case CODEC_ID_H264:
         case CODEC_ID_MPEG4:
             pkt->pts = timestamp;
@@ -702,7 +694,7 @@ int rtp_parse_packet(RTPDemuxContext *s, AVPacket *pkt,
             // moved from below, verbatim.  this is because this section handles packets, and the lower switch handles
             // timestamps.
             // TODO: Put this into a dynamic packet handler...
-        case CODEC_ID_MPEG4AAC:
+        case CODEC_ID_AAC:
             if (rtp_parse_mp4_au(s, buf))
                 return -1;
             {

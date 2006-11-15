@@ -4,7 +4,7 @@
 #
 include config.mak
 
-VPATH=$(SRC_PATH)
+VPATH=$(SRC_PATH_BARE)
 
 CFLAGS=$(OPTFLAGS) -I$(BUILD_ROOT) -I$(SRC_PATH) -I$(SRC_PATH)/libavutil \
        -I$(SRC_PATH)/libavcodec -I$(SRC_PATH)/libavformat -I$(SRC_PATH)/libswscale \
@@ -45,13 +45,14 @@ else
 DEP_LIBS=libavcodec/$(LIBPREF)avcodec$(LIBSUF) libavformat/$(LIBPREF)avformat$(LIBSUF)
 endif
 
-ifeq ($(BUILD_VHOOK),yes)
+ifeq ($(CONFIG_VHOOK),yes)
 VHOOK=videohook
 INSTALLVHOOK=install-vhook
 endif
 
 ifeq ($(BUILD_DOC),yes)
 DOC=documentation
+INSTALLMAN=install-man
 endif
 
 OBJS = ffmpeg.o ffserver.o cmdutils.o ffplay.o
@@ -91,7 +92,7 @@ ffplay_g$(EXESUF): ffplay.o cmdutils.o .libs
 	$(STRIP) $@
 
 version.h:
-	$(SRC_PATH)/version.sh "$(SRC_PATH)"
+	$(SRC_PATH)/version.sh $(SRC_PATH)
 
 output_example$(EXESUF): output_example.o .libs
 	$(CC) $(LDFLAGS) -o $@ output_example.o $(EXTRALIBS)
@@ -116,7 +117,7 @@ videohook: .libs
 documentation:
 	$(MAKE) -C doc all
 
-install: install-progs install-libs install-headers install-man $(INSTALLVHOOK)
+install: install-progs install-libs install-headers $(INSTALLMAN) $(INSTALLVHOOK)
 
 ifeq ($(BUILD_SHARED),yes)
 install-progs: $(PROGS) install-libs
@@ -130,14 +131,9 @@ endif
 wininstaller: all install
 	makensis ffinstall.nsi
 
-# install man from source dir if available
 install-man:
-ifneq ($(CONFIG_MINGW),yes)
-	if [ -f doc/ffmpeg.1 ] ; then \
-	    install -d "$(mandir)/man1" ; \
-	    install -m 644 $(MANPAGES) "$(mandir)/man1" ; \
-	fi
-endif
+	install -d "$(mandir)/man1"
+	install -m 644 $(MANPAGES) "$(mandir)/man1"
 
 install-vhook:
 	$(MAKE) -C vhook install
@@ -193,9 +189,7 @@ uninstall-headers:
 	-rmdir "$(incdir)"
 	-rmdir "$(prefix)/include/postproc"
 
-dep:	depend
-
-depend: .depend
+depend dep: .depend
 	$(MAKE) -C libavutil   depend
 	$(MAKE) -C libavcodec  depend
 	$(MAKE) -C libavformat depend
@@ -205,12 +199,12 @@ endif
 ifeq ($(CONFIG_SWSCALER),yes)
 	$(MAKE) -C libswscale  depend
 endif
-ifeq ($(BUILD_VHOOK),yes)
+ifeq ($(CONFIG_VHOOK),yes)
 	$(MAKE) -C vhook       depend
 endif
 
 .depend: $(SRCS) version.h
-	$(CC) -MM $(CFLAGS) $(SDL_CFLAGS) $(SRCS) 1>.depend
+	$(CC) -MM $(CFLAGS) $(SDL_CFLAGS) $(filter-out %.h,$^) 1>.depend
 
 .libs: lib
 	@test -f .libs || touch .libs

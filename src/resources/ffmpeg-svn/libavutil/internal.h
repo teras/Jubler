@@ -30,15 +30,15 @@
 #    define PIC
 #endif
 
-#    ifndef ENODATA
-#        define ENODATA  61
-#    endif
+#ifndef ENODATA
+#    define ENODATA  61
+#endif
 
 #include "bswap.h"
 
 #include <stddef.h>
 #ifndef offsetof
-# define offsetof(T,F) ((unsigned int)((char *)&((T *)0)->F))
+#    define offsetof(T,F) ((unsigned int)((char *)&((T *)0)->F))
 #endif
 
 #ifdef __MINGW32__
@@ -51,59 +51,58 @@
 
 #    ifdef CONFIG_WINCE
 #        define perror(a)
+#        define abort()
 #    endif
 
 /* __MINGW32__ end */
 #elif defined (CONFIG_OS2)
 /* OS/2 EMX */
 
-#include <float.h>
+#    include <float.h>
 
 #endif /* !__MINGW32__ && CONFIG_OS2 */
 
-#    ifdef USE_FASTMEMCPY
-#        include "libvo/fastmemcpy.h"
-#    endif
+#ifdef USE_FASTMEMCPY
+#    include "libvo/fastmemcpy.h"
+#endif
 
 // Use rip-relative addressing if compiling PIC code on x86-64.
-#    if defined(__MINGW32__) || defined(__CYGWIN__) || \
-        defined(__OS2__) || (defined (__OpenBSD__) && !defined(__ELF__))
-#        if defined(ARCH_X86_64) && defined(PIC)
-#            define MANGLE(a) "_" #a"(%%rip)"
-#        else
-#            define MANGLE(a) "_" #a
-#        endif
+#if defined(__MINGW32__) || defined(__CYGWIN__) || \
+    defined(__OS2__) || (defined (__OpenBSD__) && !defined(__ELF__))
+#    if defined(ARCH_X86_64) && defined(PIC)
+#        define MANGLE(a) "_" #a"(%%rip)"
 #    else
-#        if defined(ARCH_X86_64) && defined(PIC)
-#            define MANGLE(a) #a"(%%rip)"
-#        elif defined(CONFIG_DARWIN)
-#            define MANGLE(a) "_" #a
-#        else
-#            define MANGLE(a) #a
-#        endif
+#        define MANGLE(a) "_" #a
 #    endif
+#else
+#    if defined(ARCH_X86_64) && defined(PIC)
+#        define MANGLE(a) #a"(%%rip)"
+#    elif defined(CONFIG_DARWIN)
+#        define MANGLE(a) "_" #a
+#    else
+#        define MANGLE(a) #a
+#    endif
+#endif
 
 /* debug stuff */
 
-#    if !defined(DEBUG) && !defined(NDEBUG)
-#        define NDEBUG
-#    endif
-#    include <assert.h>
+#if !defined(DEBUG) && !defined(NDEBUG)
+#    define NDEBUG
+#endif
+#include <assert.h>
 
 /* dprintf macros */
-#    ifdef DEBUG
-#        define dprintf(fmt,...) av_log(NULL, AV_LOG_DEBUG, fmt, __VA_ARGS__)
-#    else
-#        define dprintf(fmt,...)
-#    endif
+#ifdef DEBUG
+#    define dprintf(fmt,...) av_log(NULL, AV_LOG_DEBUG, fmt, __VA_ARGS__)
+#else
+#    define dprintf(fmt,...)
+#endif
 
-#    ifdef CONFIG_WINCE
-#            define abort()
-#    endif
+#define av_abort()      do { av_log(NULL, AV_LOG_ERROR, "Abort at %s:%d\n", __FILE__, __LINE__); abort(); } while (0)
 
-#    define av_abort()      do { av_log(NULL, AV_LOG_ERROR, "Abort at %s:%d\n", __FILE__, __LINE__); abort(); } while (0)
+/* math */
 
-extern const uint32_t inverse[256];
+extern const uint32_t ff_inverse[256];
 
 #if defined(ARCH_X86)
 #    define FASTDIV(a,b) \
@@ -112,7 +111,7 @@ extern const uint32_t inverse[256];
         asm volatile(\
             "mull %3"\
             :"=d"(ret),"=a"(dmy)\
-            :"1"(a),"g"(inverse[b])\
+            :"1"(a),"g"(ff_inverse[b])\
             );\
         ret;\
     })
@@ -123,17 +122,16 @@ extern const uint32_t inverse[256];
         asm volatile(\
             "umull %1, %0, %2, %3"\
             :"=&r"(ret),"=&r"(dmy)\
-            :"r"(a),"r"(inverse[b])\
+            :"r"(a),"r"(ff_inverse[b])\
             );\
         ret;\
     })
 #elif defined(CONFIG_FASTDIV)
-#    define FASTDIV(a,b)   ((uint32_t)((((uint64_t)a)*inverse[b])>>32))
+#    define FASTDIV(a,b)   ((uint32_t)((((uint64_t)a)*ff_inverse[b])>>32))
 #else
 #    define FASTDIV(a,b)   ((a)/(b))
 #endif
 
-/* math */
 extern FF_IMPORT_ATTR const uint8_t ff_sqrt_tab[128];
 
 static inline int ff_sqrt(int a)

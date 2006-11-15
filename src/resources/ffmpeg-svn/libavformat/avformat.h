@@ -236,6 +236,9 @@ typedef struct AVStream {
     AVCodecContext *codec; /* codec context */
     /**
      * real base frame rate of the stream.
+     * this is the lowest framerate with which all timestamps can be
+     * represented accurately (its the least common multiple of all
+     * framerates in the stream), Note, this value is just a guess!
      * for example if the timebase is 1/90000 and all frames have either
      * approximately 3600 or 1800 timer ticks then r_frame_rate will be 50/1
      */
@@ -442,6 +445,7 @@ int av_add_index_entry(AVStream *st,
                        int64_t pos, int64_t timestamp, int size, int distance, int flags);
 int av_seek_frame_binary(AVFormatContext *s, int stream_index, int64_t target_ts, int flags);
 void av_update_cur_dts(AVFormatContext *s, AVStream *ref_st, int64_t timestamp);
+int64_t av_gen_search(AVFormatContext *s, int stream_index, int64_t target_ts, int64_t pos_min, int64_t pos_max, int64_t pos_limit, int64_t ts_min, int64_t ts_max, int flags, int64_t *ts_ret, int64_t (*read_timestamp)(struct AVFormatContext *, int , int64_t *, int64_t ));
 
 /* media file output */
 int av_set_parameters(AVFormatContext *s, AVFormatParameters *ap);

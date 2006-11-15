@@ -469,7 +469,7 @@ void avcodec_register_all(void)
 #ifdef CONFIG_SONIC_DECODER
     register_avcodec(&sonic_decoder);
 #endif //CONFIG_SONIC_DECODER
-#ifdef CONFIG_AC3
+#ifdef CONFIG_A52
 #ifdef CONFIG_AC3_DECODER
     register_avcodec(&ac3_decoder);
 #endif //CONFIG_AC3_DECODER
@@ -869,5 +869,7 @@ void avcodec_register_all(void)
     av_register_bitstream_filter(&dump_extradata_bsf);
     av_register_bitstream_filter(&remove_extradata_bsf);
     av_register_bitstream_filter(&noise_bsf);
+    av_register_bitstream_filter(&mp3_header_compress_bsf);
+    av_register_bitstream_filter(&mp3_header_decompress_bsf);
 }
 
