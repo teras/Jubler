@@ -12,11 +12,10 @@ package com.panayotis.jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.options.*;
-import com.panayotis.jubler.os.SystemDependent;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JMenu;
@@ -124,7 +123,7 @@ public class StaticJubler {
     private static JMenuItem addNewMenu(String text, boolean isclone, boolean enabled, Jubler jub, int counter) {
         JMenuItem item = new JMenuItem(text);
         item.setEnabled(enabled);
-        if(counter>=0) item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+counter, SystemDependent.getDefaultKeyModifier()));
+        if(counter>=0) item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+counter, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         
         final boolean isclone_f = isclone;
         final String text_f = text;
