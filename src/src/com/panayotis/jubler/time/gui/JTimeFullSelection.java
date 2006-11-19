@@ -56,15 +56,17 @@ public class JTimeFullSelection extends JTimeArea {
         super.updateData(subs, selected );
         tregion.updateData(subs, selected);
         
+        // Update styles
         int selvalue = StyleSel.getSelectedIndex();
         StyleSel.removeAllItems();
         for (SubStyle style : subs.getStyleList()) {
             StyleSel.addItem(style);
         }
         if (subs.getStyleList().size()<2) {
+            if (byStyle.isSelected())
+                bySelection.setSelected(true);
             byStyle.setEnabled(false);
             StyleSel.setEnabled(false);
-            bySelection.setSelected(true);
         } else {
             byStyle.setEnabled(true);
             StyleSel.setEnabled(true);

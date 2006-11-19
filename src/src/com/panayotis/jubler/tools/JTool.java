@@ -1,5 +1,5 @@
 /*
- * JTimeRegionPanel.java
+ * JTool.java
  *
  * Created on 25 Ιούνιος 2005, 2:28 πμ
  *

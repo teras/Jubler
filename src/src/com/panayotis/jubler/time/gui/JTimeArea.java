@@ -72,21 +72,21 @@ public abstract class JTimeArea extends JPanel {
     
     
     Time findLastInList(Subtitles subs, int[] selected) {
-        Time min, cur;
-        double minsecs, cursecs;
+        Time max, cur;
+        double maxsecs, cursecs;
         int i;
         
-        minsecs = 0;
-        min = new Time(0d);
+        maxsecs = 0;
+        max = new Time(0d);
         for ( i = 0 ; i < selected.length ; i++) {
-            cur = subs.elementAt(selected[i]).getStartTime();
+            cur = subs.elementAt(selected[i]).getFinishTime();
             cursecs = cur.toSeconds();
-            if (cursecs > minsecs) {
-                minsecs = cursecs;
-                min = cur;
+            if (cursecs > maxsecs) {
+                maxsecs = cursecs;
+                max = cur;
             }
         }
-        return min;
+        return max;
     }
     
     
