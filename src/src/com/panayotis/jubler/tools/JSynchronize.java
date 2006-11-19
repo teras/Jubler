@@ -24,9 +24,9 @@
 package com.panayotis.jubler.tools;
 import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -35,7 +35,8 @@ import java.util.Vector;
  */
 public class JSynchronize extends JTool {
     
-    private ArrayList<Jubler> jublerlist;
+    private Jubler modeljubler;
+    
     private Subtitles target, model;
     private boolean copytime, copytext;
     private int offset;
@@ -49,19 +50,25 @@ public class JSynchronize extends JTool {
         super.updateData(current);
         
         target = current.getSubtitles();
-        
-        jublerlist = new ArrayList<Jubler>();
-        Jubler cjubler;
-        
+        Jubler cjubler, oldjubler;
         int cid = -1;
-//        for ( int i = 0 ; i <list.size() ; i++) {
-//            cjubler = list.elementAt(i);
-//            jublerlist.add(cjubler);
-//            JubSelector.addItem(cjubler.getFileName()+ ((cjubler==current)?"  "+_("-current-"):"") );
-//            if (cjubler==current) cid = i;
-//
-//        }
-        JubSelector.setSelectedIndex(cid);
+
+        JubSelector.removeAllItems();
+        int old_id = Jubler.windows.indexOf(modeljubler);
+        modeljubler = null; // Clear memory - variable not needed any more
+        
+        String label;
+        for ( int i = 0 ; i <Jubler.windows.size() ; i++) {
+            cjubler = Jubler.windows.elementAt(i);
+            label = cjubler.getFileName();
+            if (cjubler==current) {
+                label += "  "+_("-current-");
+                cid = i;
+            }
+            JubSelector.addItem(label);
+        }
+        if (old_id < 0) old_id = cid;
+        JubSelector.setSelectedIndex(old_id);
     }
     
     
@@ -74,7 +81,8 @@ public class JSynchronize extends JTool {
     }
     
     public void storeSelections() {
-        model = jublerlist.get(JubSelector.getSelectedIndex()).getSubtitles();
+        modeljubler = Jubler.windows.get(JubSelector.getSelectedIndex());
+        model = modeljubler.getSubtitles();
         copytime = InTimeS.isSelected();
         copytext = InTextS.isSelected();
         offset = ((Integer)OffsetS.getValue()).intValue();

@@ -38,7 +38,7 @@ public class JReparent extends javax.swing.JPanel {
     private ArrayList<Jubler> jublerlist;
     
     /** Creates new form JSplit */
-    public JReparent(Vector<Jubler> list, Jubler current, Jubler parent) {
+    public JReparent(Jubler current, Jubler parent) {
         initComponents();
         jublerlist = new ArrayList<Jubler>();
         
@@ -46,8 +46,8 @@ public class JReparent extends javax.swing.JPanel {
         Jubler cjubler;
         
         JubSelector.addItem(_("-No parent available-"));
-        for ( int i = 0 ; i <list.size() ; i++) {
-            cjubler = list.elementAt(i);
+        for ( int i = 0 ; i <Jubler.windows.size() ; i++) {
+            cjubler = Jubler.windows.elementAt(i);
             if ( cjubler != current ) {
                 jublerlist.add(cjubler);
                 if (cjubler==parent) selection = jublerlist.size();

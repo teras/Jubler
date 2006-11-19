@@ -103,8 +103,9 @@ import javax.swing.table.TableCellRenderer;
 
 public class Jubler extends JFrame {
     
+    public static JublerList windows;
+
     private static ArrayList<SubEntry> copybuffer;
-    static JublerList windows;
     static JPreferences prefs;
     
     /** File chooser dialog to open/ save subtitles */
@@ -1326,7 +1327,7 @@ public class Jubler extends JFrame {
     private void ReparentTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReparentTMActionPerformed
         JReparent rep;
         int res;
-        rep = new JReparent(windows, this, connect_to_other);
+        rep = new JReparent(this, connect_to_other);
         
         res = JIDialog.question(this, rep, _("Reparent subtitles file"));
         if ( res == JIDialog.OK_OPTION) {
