@@ -50,7 +50,7 @@ public class ZemberekSpellChecker extends SpellChecker {
     public Vector<SpellError> checkSpelling(String text) {
         Hashtable<String, Integer> lastPositions = new Hashtable<String, Integer>();
         Vector<SpellError> ret = new Vector<SpellError>();
-        StringTokenizer tok = new StringTokenizer(text);
+        StringTokenizer tok = new StringTokenizer(text, "!'#%&/()=?-_:.,;\"\r\n\t ");
         while (tok.hasMoreTokens()) {
             String word = tok.nextToken();
             int pos;

@@ -9,6 +9,8 @@
 
 package com.panayotis.jubler.os;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import java.io.File;
 import java.util.StringTokenizer;
 
@@ -27,6 +29,7 @@ public class SystemFileFinder {
         String path;
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
+            System.out.println(path);
             if (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")) {
                 int seppos = path.lastIndexOf(pathseparator);
                 if (seppos>=0) path = path.substring(0, seppos);
@@ -55,9 +58,13 @@ public class SystemFileFinder {
     }
     
     public static String getJublerAppPath() {
-        File f = findFile("lib");
+        File f = findFile("Jubler.jar");
+        if (f==null) f = findFile("Jubler.exe");
+        
         if (f!=null) return f.getParent();
-        else return "";
+        
+        DEBUG.info(_("Could not find Jubler path!!"));
+        return "";
     }
 
 }

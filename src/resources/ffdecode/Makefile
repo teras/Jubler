@@ -68,7 +68,7 @@ ifeq (${SYSTEM},darwinppc)
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
 	XLIBS=-lz
-	FCOPTS=--arch=ppc --extra-cflags="-fno-common ${ARCH}" --extra-ldflags="${ARCH}" --cross-compile --enable-shared
+	FCOPTS=--arch=powerpc --extra-cflags="-fno-common ${ARCH}" --extra-ldflags="${ARCH}" --cross-compile --enable-shared
 endif
 ifeq (${SYSTEM},darwini386)
 	PREF=
@@ -80,7 +80,7 @@ ifeq (${SYSTEM},darwini386)
 	FCOPTS=--disable-mmx --arch=unknown --extra-cflags=-fno-common --enable-shared
 endif
 
-FCONFCOMMON=--disable-debug --enable-gpl --enable-a52 --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-vhook
+FCONFCOMMON=--disable-debug --enable-gpl --enable-a52 --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-vhook --disable-ipv6 --disable-network --disable-dv1394 --disable-bktr --disable-v4l2 --disable-v4l --disable-audio-beos --disable-audio-oss
 
 CC=${PREF}gcc ${ARCH}
 RANLIB=${PREF}ranlib

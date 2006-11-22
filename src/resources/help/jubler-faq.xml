@@ -1,12 +1,8 @@
-<?xml version='1.0'?>
-
-<book>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN">
+<article>
 
 <title>Jubler FAQ</title>
-
-<section><title>I found a problem!</title>
-<para>I am always happy to listen to problems of Jubler, especially those not mentioned here. The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The preferred way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
-</section>
 
 <section><title>How to translate to my own language</title>
 <para>The instructions here are for Linux (or similar POSIX) environment. First of all you will need to download the source code of Jubler (preferably from the SVN). Then go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot. Open this ??.po file with either a localization editor (like kbabel or poedit) or even with a text editor.</para>
@@ -15,7 +11,7 @@
 </section>
 
 <section id="mplayer.winosx"><title>Installing MPlayer under Windows or Mac OSX</title>
-<para>In order to properly use MPlayer, you have to install somewhere the MPlayer files from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <b>not</b> download the GUI version, since mplayer uses it's own GUI. After downloading and expanding open Jubler, create a new document, go to "Tools" - "Test video" - "Player options". Click on "Options" - "Browse" and select where MPlayer application is. </para>
+<para>In order to properly use MPlayer, you have to install somewhere the MPlayer files from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <emphasis>not</emphasis> download the GUI version, since mplayer uses it's own GUI. After downloading and expanding open Jubler, create a new document, go to "Tools" - "Test video" - "Player options". Click on "Options" - "Browse" and select where MPlayer application is. </para>
 </section>
 
 <section><title>Installing MPlayer under Linux or POSIX environment</title>
@@ -26,8 +22,21 @@
 <para>Since the subtitle loader is still under development, it is possible that when loading a valid supported subtitle file, a message will pop up informing that it is unable to load this file. In such a case you can <ulink url="http://www.jubler.org">contact me or write in the forum</ulink> and send me the problematic subtitle file.</para>
 </section>
 
+<section><title>Problems while creating preview</title>
+<para>Sometimes when opening preview for a valid video file, a message informing that preview is not available may pop up. This is a known situation and to my knowledge there is no solution, than to restart the program. It probably has to do with library loading under Java. If you exit and reopen Jubler with the same parameters, then preview works as expected from now on.</para>
+</section>
+
 <section><title>How is transparency produced?</title>
 <para>In subtitle preview, although outline & shadow color is per character, their transparency is calculated for the whole subtitle entry.</para>
+</section>
+
+<section><title>What is Zemberek and how can I use it?</title>
+<para>Zemberek is a spell chekcing library for the turkish language. You have to download the binary distribution of zemberek <ulink url="https://zemberek.dev.java.net/">from its website</ulink> first. Version 0.6.4 was tested with this version of Jubler. Unzip the file, and copy zemberek-0.6.4.jar under JUBLER_HOME/lib/zemberek.jar. Then Jubler should be able to open this library. 
+</para>
+</section>
+
+<section><title>I found a problem!</title>
+<para>I am always happy to listen to problems of Jubler, especially those not mentioned here. The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The preferred way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
 </section>
 
 <section><title>I have a question not mentioned here</title>
@@ -35,4 +44,4 @@
 </para>
 </section>
 
-</book>
+</article>
