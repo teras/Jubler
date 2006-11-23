@@ -29,7 +29,6 @@ public class SystemFileFinder {
         String path;
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
-            System.out.println(path);
             if (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")) {
                 int seppos = path.lastIndexOf(pathseparator);
                 if (seppos>=0) path = path.substring(0, seppos);
@@ -63,7 +62,7 @@ public class SystemFileFinder {
         
         if (f!=null) return f.getParent();
         
-        DEBUG.info(_("Could not find Jubler path!!"));
+        DEBUG.info(_("Could not find Jubler path!"));
         return "";
     }
 

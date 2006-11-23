@@ -59,7 +59,7 @@ ifeq (${SYSTEM},win32)
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=$(PROJ).dll
 	XLIBS=
-	FCOPTS=--enable-mingw32 --cross-prefix=${PREF} --enable-memalign-hack
+	FCOPTS=--enable-mingw32 --cross-prefix=${PREF} --cross-compile --enable-memalign-hack
 endif
 ifeq (${SYSTEM},darwinppc)
 	PREF=
