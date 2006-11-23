@@ -1417,7 +1417,6 @@ public class Jubler extends JFrame {
         Jubler curjubler = new Jubler();
         
         Subtitles s = new Subtitles(subs);
-        SubEntry entry;
         for ( int i = 0 ; i < s.size() ; i++ ) {
             s.elementAt(i).setText("");
         }
@@ -2190,7 +2189,6 @@ public class Jubler extends JFrame {
     
     private boolean setValidVideofile() {
         boolean isok;
-        int ret;
         
         videoselector.setVideoFile(subs.getVideofile(), null, null, current_file);
         do {

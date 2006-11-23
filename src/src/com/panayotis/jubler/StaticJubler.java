@@ -98,7 +98,6 @@ public class StaticJubler {
     /* Add to Recents menu not opened files */
     public static void populateRecentsMenu(ArrayList<String> files) {
         JMenu recent_menu;
-        boolean clonable;
         for (Jubler j : Jubler.windows) {
             recent_menu = j.RecentsFM;
             
@@ -123,7 +122,8 @@ public class StaticJubler {
     private static JMenuItem addNewMenu(String text, boolean isclone, boolean enabled, Jubler jub, int counter) {
         JMenuItem item = new JMenuItem(text);
         item.setEnabled(enabled);
-        if(counter>=0) item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+counter, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+        if(counter>=0)
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+counter, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         
         final boolean isclone_f = isclone;
         final String text_f = text;
