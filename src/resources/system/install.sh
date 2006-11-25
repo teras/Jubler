@@ -20,9 +20,9 @@
 echo -n "Searching for Java..."
 JAVABIN=`/bin/sh ./findjava.sh -v 1.5 $@`
 
-if [ "$JAVABIN" ] ; then
+if [ -n "$JAVABIN" ] ; then
 	echo "found in $JAVABIN"
-	$JAVABIN -jar ./Jubler-install-linux.jar
+	"$JAVABIN" -jar ./Jubler-install-linux.jar
 	exit 0
 fi
 

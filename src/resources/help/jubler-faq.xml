@@ -4,6 +4,12 @@
 
 <title>Jubler FAQ</title>
 
+<mediaobject>
+  <imageobject>
+    <imagedata fileref="question.png" format="PNG"/>
+  </imageobject>
+</mediaobject>
+
 <section><title>How to translate to my own language</title>
 <para>The instructions here are for Linux (or similar POSIX) environment. First of all you will need to download the source code of Jubler (preferably from the SVN). Then go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot. Open this ??.po file with either a localization editor (like kbabel or poedit) or even with a text editor.</para>
 <para>When you have finished you can send this file to me in order to include it into the distribution. You can of course contact me earlier if you have any other questions.</para>

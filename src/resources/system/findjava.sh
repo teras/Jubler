@@ -22,7 +22,7 @@ VERSION=1.5
 
 
 # Get options
-while [ "$1"x != "x" ]; do
+while [ -n "$1" ]; do
 	case $1 in
 		-d)
 			DEBUG=yes
@@ -41,31 +41,34 @@ done
 
 
 debug () {
-	if [ "$DEBUG" ] ; then echo >&2 $@ ; fi
+	if [ -n "$DEBUG" ] ; then echo >&2 "$@" ; fi
 }
 
 
 # $1: the path to check if this is JDK or a simple java path
 check_for_JDK () {
-	if [ ! "$CHECK_JDK" ] ; then
+	if [ -z "$CHECK_JDK" ] ; then
+		debug ":) JRE found in $1"
 		echo $1
 		exit 0
 	fi
-	JDKBIN=`dirname $1`
-	JDK=`dirname $JDKBIN`
-	if [ -e "$JDK/include/jni.h" ] ; then
-		export JAVA_HOME=$JDK
+	JDKBIN=`dirname "$1"`
+	JDK=`dirname "$JDKBIN"`
+	if [ -f "$JDK/include/jni.h" ] ; then
+		JAVA_HOME=$JDK
+		export JAVA_HOME
+		debug ":) JDK found under $JAVA_HOME"
 		echo $JAVA_HOME
 		exit 0
 	fi
-	debug "  *** Java executable found but not proper JDK subsystem"
+	debug '** Java executable found but not proper JDK subsystem'
 }
 
 # #1 : The java binary to search for
 check_java_bin () {
-	debug Searching for $1
-	if [ -x $1 ] ; then
-		VERS=`$1 -version 2>&1 | grep 'java.version' | grep $VERSION`
+	debug "-- Searching for $1"
+	if [ -x "$1" ] ; then
+		VERS=`"$1" -version 2>&1 | grep 'java.version' | grep $VERSION`
 		if [ "$VERS" ] ; then
 			check_for_JDK $1
 		fi
@@ -75,15 +78,15 @@ check_java_bin () {
 
 # $1: java executable to check
 check_java () {
-	if [ ! -d $1 ] ; then return ; fi
-	check_java_bin $1/bin/java
+	if [ ! -d "$1" ] ; then return ; fi
+	check_java_bin "$1/bin/java"
 }
 
 
 # $1: possible java path list
 find_in_list () {
 	for i in $1; do
-		check_java $i
+		check_java "$i"
 	done
 }
 
@@ -109,26 +112,31 @@ find_in_system_path () {
 	check_java_bin $JAVA_HOME/bin/java
 	PATHLIST=`echo $PATH | tr ":" "\n"`
 	for i in $PATHLIST ; do
-		check_java_bin $i/java
+		check_java_bin "$i/java"
 	done
 	IFS=$OLDIFS
 }
 
 
-debug
-debug "Version=$VERSION JDK=$CHECK_JDK"
+debug "!! Information: Version=$VERSION, JDK=$CHECK_JDK"
 
 # Find java
-find_in_macosx
+debug ">> Search in system paths"
 find_in_system_path
+
+debug ">> Search in common java directories"
+find_in_macosx
 find_in_paths /usr/java
 find_in_paths /usr/share/java
 find_in_paths /usr/local/java
 find_in_paths /usr/lib/java
+find_in_paths /usr/lib/jvm
+
+debug ">> Looking in common locations"
 find_in_paths /opt
 find_in_paths /usr/local
 find_in_paths /usr
 find_in_paths /usr/lib
-find_in_paths /usr/lib/jvm
 
+debug "XX Unable to locate Java"
 exit 1

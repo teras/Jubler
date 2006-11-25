@@ -100,6 +100,7 @@
 		</exec>
 		<mkdir dir="dist/help"/>
 		<move file="resources/help/jubler-faq.html" todir="dist/help"/>
+		<copy file="resources/help/question.png" todir="dist/help"/>
 	</target>
 
 	<target name="xdevelop" depends="i18n,faq">
