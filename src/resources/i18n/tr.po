@@ -613,7 +613,7 @@ msgstr "Teşekkürler"
 #: com/panayotis/jubler/information/JAbout.java:364
 #, java-format
 msgid "{0} plugin"
-msgstr "{0} eklenti"
+msgstr "{0} eklentisi"
 
 #: com/panayotis/jubler/information/JAbout.java:362
 msgid "Jubler mascot"
