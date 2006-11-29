@@ -57,7 +57,7 @@
 </section>
 
 <section><title>Problems while creating preview</title>
-    <para>Sometimes when opening preview for a valid video file, a message informing that preview is not available may pop up. This is a known situation and to my knowledge there is no solution, than to restart the program. It probably has to do with library loading under Java. If you exit and reopen Jubler with the same parameters, then preview works as expected from now on.</para>
+    <para>Sometimes when opening preview for a valid video file, a message informing that preview is not available may pop up. This sometimes happens when there is a problem with the initialization of the ffdecode library from your Java environment. Usually closing the Preview window and open it again helps. When this doesn't help, a restart of Jubler solves this situation. I am really interested on these kind of problems, so when you can reproduce this error, please give me a note.</para>
 </section>
 
 <section><title>I found a problem!</title>

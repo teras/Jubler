@@ -28,7 +28,7 @@
     
     <resources>
         <res id="LicencePanel.licence" src="LICENCE"/>
-  <res id="Installer.image" src="resources/system/install-logo.jpg" />
+  <res id="Installer.image" src="resources/system/logo-install.jpg" />
     </resources>
     
     <panels>
@@ -48,6 +48,7 @@
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
 			<file src="resources/system/freesans.ttf" targetdir="$INSTALL_PATH/lib"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
+			<file src="resources/help/question.png" targetdir="$INSTALL_PATH/help"/>
         </pack>
     </packs>
     

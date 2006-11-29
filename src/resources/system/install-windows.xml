@@ -28,7 +28,7 @@
     
     <resources>
         <res id="LicencePanel.licence" src="LICENCE"/>
-  <res id="Installer.image" src="resources/system/install-logo.jpg" />
+  <res id="Installer.image" src="resources/system/logo-install.jpg"/>
   <res src="resources/system/wshortcuts.xml"
        id="shortcutSpec.xml"/>
     </resources>
@@ -54,6 +54,7 @@
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
             <file src="resources/system/install.ico" targetdir="$INSTALL_PATH/Uninstaller"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
+			<file src="resources/help/question.png" targetdir="$INSTALL_PATH/help"/>
         </pack>
     </packs>
     

@@ -28,7 +28,7 @@
     
     <resources>
         <res id="LicencePanel.licence" src="LICENCE"/>
-  <res id="Installer.image" src="resources/system/install-logo.jpg" />
+  <res id="Installer.image" src="resources/system/logo-install.jpg" />
 		<res src="resources/system/lshortcuts.xml"
 		     id="shortcutSpec.xml"/>
     </resources>
@@ -53,6 +53,7 @@
 			<file src="resources/system/frame.png" targetdir="$INSTALL_PATH/lib"/>
 			<file src="resources/system/Jubler.sh" targetdir="$INSTALL_PATH"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
+			<file src="resources/help/question.png" targetdir="$INSTALL_PATH/help"/>
 			<parsable targetfile="$INSTALL_PATH/Jubler.sh"/>
 			<executable targetfile="$INSTALL_PATH/Jubler.sh" type="bin" stage="never" keep="true"/>
         </pack>
