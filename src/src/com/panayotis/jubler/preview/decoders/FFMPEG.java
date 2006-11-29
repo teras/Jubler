@@ -75,6 +75,12 @@ public final class FFMPEG extends NativeDecoder {
         return image;
     }
     
+    public float getFPS() {
+        if (vfname==null) return -1;
+        if (!isDecoderValid()) return -1;
+        return grabFPS(vfname);
+    }
+    
     public void playAudioClip(double from, double to) {
         if (afname==null || (!isDecoderValid())) return;
         
@@ -132,6 +138,9 @@ public final class FFMPEG extends NativeDecoder {
     
     /* Create a wav file from the specified time stamps */
     private native boolean createClip(String audio, String wav, long from, long to);
+    
+    /* Get FPS from a video file */
+    private native float grabFPS(String vfile);
     
     public boolean isDecoderValid() {
         return library_is_present;

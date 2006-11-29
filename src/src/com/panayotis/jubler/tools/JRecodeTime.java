@@ -101,7 +101,9 @@ public class JRecodeTime extends JTool {
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         FromP = new javax.swing.JPanel();
+        FromFPSB = new javax.swing.JButton();
         ToP = new javax.swing.JPanel();
+        ToFPSB = new javax.swing.JButton();
         CustomB = new javax.swing.JRadioButton();
         CustomF = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -111,7 +113,7 @@ public class JRecodeTime extends JTool {
 
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
-        jPanel1.setBorder(new javax.swing.border.CompoundBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(15, 0, 0, 0)), new javax.swing.border.TitledBorder(_("Use the following factor"))));
+        jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(15, 0, 0, 0), javax.swing.BorderFactory.createTitledBorder(_("Use the following factor"))));
         Factor.add(AutoB);
         AutoB.setSelected(true);
         AutoB.setText(_("Automatically compute based on FPS"));
@@ -134,11 +136,33 @@ public class JRecodeTime extends JTool {
 
         FromP.setLayout(new java.awt.BorderLayout());
 
+        FromFPSB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/videofile.png")));
+        FromFPSB.setToolTipText(_("Get FPS from the video file"));
+        FromFPSB.setActionCommand("from");
+        FromFPSB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FPSBActionPerformed(evt);
+            }
+        });
+
+        FromP.add(FromFPSB, java.awt.BorderLayout.EAST);
+
         jPanel2.add(FromP, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel2);
 
         ToP.setLayout(new java.awt.BorderLayout());
+
+        ToFPSB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/videofile.png")));
+        ToFPSB.setToolTipText(_("Get FPS from the video file"));
+        ToFPSB.setActionCommand("to");
+        ToFPSB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FPSBActionPerformed(evt);
+            }
+        });
+
+        ToP.add(ToFPSB, java.awt.BorderLayout.EAST);
 
         jPanel3.add(ToP);
 
@@ -169,8 +193,11 @@ public class JRecodeTime extends JTool {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void FPSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FPSBActionPerformed
+        System.out.println("Get FPS for " + evt.getActionCommand());
+    }//GEN-LAST:event_FPSBActionPerformed
     
     private void AutoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoBActionPerformed
         FromR.setEnabled(true);
@@ -191,7 +218,9 @@ public class JRecodeTime extends JTool {
     private javax.swing.JRadioButton CustomB;
     private javax.swing.JTextField CustomF;
     private javax.swing.ButtonGroup Factor;
+    private javax.swing.JButton FromFPSB;
     private javax.swing.JPanel FromP;
+    private javax.swing.JButton ToFPSB;
     private javax.swing.JPanel ToP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

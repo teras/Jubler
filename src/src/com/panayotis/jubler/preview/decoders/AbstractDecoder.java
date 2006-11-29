@@ -39,6 +39,7 @@ public abstract class AbstractDecoder {
     protected String cfname = null; // The cached audio file
     
     public abstract Image getFrame(double time, boolean small);
+    public abstract float getFPS();
     public abstract boolean createAudioCache(String afile, String cfile);
     public abstract boolean isDecoderValid();
     
