@@ -2,7 +2,7 @@
  * JSpellChecker.java
  *
  * Created on 15 Ιούλιος 2005, 1:59 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -84,38 +84,40 @@ public class JSpellChecker extends JDialog {
             errors.removeElementAt(0);
         }
         
+        /* If the current error list is empty, refill it with next error bunch */
         while ( errors!=null && errors.isEmpty()) {
-            /* The current error list is empty, refill it with next error bunch */
-            
             pos_in_list++;
             if ( pos_in_list >= textlist.size()) {  /* No more lines to check */
-                errors = null;
-                break;
+                prepareExit();
+                return;
             }
             /* Get next (multi)line of text */
             errors  = checker.checkSpelling(textlist.elementAt(pos_in_list).getText());
-            
-            /* Check if this word has been seen before */
-            if ( errors != null) {
-                for (int i = errors.size()-1 ; i>= 0 ; i-- ) {
-                    String original = errors.elementAt(i).original; /* Get the misspelled word */
-                    if ( ignored.indexOf(original) >= 0 ) { /* The user said to ignore it */
-                        errors.remove(i);
-                    } else if (replaced.containsKey(original) ) { /* The user said to replace it */
-                        count_changes++;
-                        replaceText(replaced.get(original), i);
-                        errors.remove(i);
-                    }
-                }
-            }
         }
         
+        /* No more entries found, exiting spell checker */
         if (errors==null) {
-            /* No more entries found, exiting spell checker */
             prepareExit();
             return;
         }
         
+        /* Check if this word has been seen before */
+        for (int i = errors.size()-1 ; i>= 0 ; i-- ) {
+            String original = errors.elementAt(i).original; /* Get the misspelled word */
+            if ( ignored.indexOf(original) >= 0 ) { /* The user said to ignore it */
+                errors.remove(i);
+            } else if (replaced.containsKey(original) ) { /* The user said to replace it */
+                count_changes++;
+                replaceText(replaced.get(original), i);
+                errors.remove(i);
+            }
+        }
+        
+        /* Check if all errors found are already replaced */
+        if (errors.isEmpty()) {
+            prepareExit();
+            return;
+        }
         
         /* OK, we have taken into account this error, remove it from list */
         SpellError mistake = errors.elementAt(0);
@@ -137,7 +139,7 @@ public class JSpellChecker extends JDialog {
     
     private void setSentence( String txt, int pos, int len) {
         Sentence.setText(txt);
-
+        
         /* Change color of error to red */
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.ColorConstants.Foreground, Color.RED);
