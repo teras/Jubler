@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.format.AvailSubFormats;
+import com.panayotis.jubler.subs.format.AvailSubFormats;
 import com.panayotis.jubler.options.OptionsIO;
 import java.util.Collections;
 import java.util.Vector;
@@ -61,7 +61,7 @@ public class Subtitles extends AbstractTableModel {
     /** List of possible predefined styles */
     private SubStyleList styles;
     
-    /** Video filename for these subtitles 8*/
+    /** Video filename for these subtitles */
     private String videofile = null;
     
     

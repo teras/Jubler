@@ -27,7 +27,7 @@
 package com.panayotis.jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.format.SubFileFilter;
+import com.panayotis.jubler.subs.format.SubFileFilter;
 import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.options.JPreferences;
@@ -35,11 +35,11 @@ import com.panayotis.jubler.options.OptionsIO;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.player.JVideoConsole;
-import com.panayotis.jubler.player.JVideofileSelector;
-import com.panayotis.jubler.player.VideoPlayer;
-import com.panayotis.jubler.player.players.AvailPlayers;
-import com.panayotis.jubler.preview.JSubPreview;
+import com.panayotis.jubler.media.player.JVideoConsole;
+import com.panayotis.jubler.media.player.JVideofileSelector;
+import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.media.player.players.AvailPlayers;
+import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;

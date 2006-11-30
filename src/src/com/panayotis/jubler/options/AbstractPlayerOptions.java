@@ -24,7 +24,7 @@
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.player.*;
+import com.panayotis.jubler.media.player.AbstractPlayer;
 
 
 import com.panayotis.jubler.options.OptionsIO;

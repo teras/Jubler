@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.format.SubFormat;
+import com.panayotis.jubler.subs.format.SubFormat;
 import java.awt.BorderLayout;
 import java.nio.charset.Charset;
 import java.util.Iterator;

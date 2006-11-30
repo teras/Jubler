@@ -24,10 +24,10 @@
 package com.panayotis.jubler.os;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.StaticJubler;
-import com.panayotis.jubler.format.types.SubRip;
-import com.panayotis.jubler.format.SubFormat;
+import com.panayotis.jubler.subs.format.types.SubRip;
+import com.panayotis.jubler.subs.format.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.format.AvailSubFormats;
+import com.panayotis.jubler.subs.format.AvailSubFormats;
 import com.panayotis.jubler.subs.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -44,7 +44,7 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.player.MediaFileFilter;
+import com.panayotis.jubler.media.player.MediaFileFilter;
 import com.panayotis.jubler.options.OptionsIO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

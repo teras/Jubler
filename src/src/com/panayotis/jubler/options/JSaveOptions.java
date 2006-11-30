@@ -22,8 +22,8 @@
  */
 
 package com.panayotis.jubler.options;
-import com.panayotis.jubler.format.AvailSubFormats;
-import com.panayotis.jubler.format.SubFormat;
+import com.panayotis.jubler.subs.format.AvailSubFormats;
+import com.panayotis.jubler.subs.format.SubFormat;
 import java.awt.BorderLayout;
 import java.util.Properties;
 
