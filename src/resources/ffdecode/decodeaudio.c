@@ -168,6 +168,10 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 
 						/* add the audio stream using the default format codec and initialize the codec */
 						if (fmt->audio_codec != CODEC_ID_NONE) {
+							// stereo downmix
+							if (ccx->channels > 2) {
+								ccx->channels = 2;
+							}
 							audio_st = add_audio_stream(ofcx, fmt->audio_codec, ccx->sample_rate, ccx->channels);
 						}
 
@@ -248,6 +252,10 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 				pack_pts = av_rescale_q(pkt.pts, fcx->streams[audio_index]->time_base, AV_TIME_BASE_Q);
 				pack_duration = av_rescale_q(pkt.duration, fcx->streams[audio_index]->time_base, AV_TIME_BASE_Q);
 				/* Decode the paket */
+				// stereo downmix
+				if (ccx->channels > 2) {
+					ccx->channels = 2;
+				}
          	len = avcodec_decode_audio(ccx, (short *)outbuf, &got_audio, packptr, packsize);
 				
          	if (len < 0) {

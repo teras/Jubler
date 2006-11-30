@@ -36,6 +36,8 @@
 #include "defaults.h"
 #include "utilities.h"
 
+jfloat dump_fps(const char *input_filename);
+
 
 /*
  * Class:     com_panayotis_jubler_preview_decoders_FFMPEG
@@ -56,10 +58,51 @@ JNIEXPORT jfloat JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_grabF
 	/* translate Java strings into C strings */
 	video_c  = (*env)->GetStringUTFChars(env, video, 0);
 
-	
+	FPS = dump_fps(video_c);
+
 	/* free memory reserved for Java->C strings */
 	(*env)->ReleaseStringUTFChars(env, video, video_c);
 
 	return FPS;
+}
+
+
+jfloat dump_fps(const char *input_filename){
+	int err=0, i=0;
+	jfloat fps=-1;
+	jboolean ret = JNI_TRUE;
+	AVFormatContext * fcx=NULL;
+
+	av_register_all();
+
+	// Open the input file.
+	err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
+	if(err<0){
+		printf("Can't open file: %s\n", input_filename);
+		ret = JNI_FALSE;
+	}
+
+	if (ret != JNI_FALSE) {
+		// Find the stream info
+		err = av_find_stream_info(fcx);
+
+		// Give us information about the fps
+		for(i=0;i<fcx->nb_streams;i++) {
+			AVStream *st = fcx->streams[i];
+			if(st->codec->codec_type == CODEC_TYPE_VIDEO) {
+				if(st->r_frame_rate.den && st->r_frame_rate.num) {
+					fps = av_q2d(st->r_frame_rate);
+				}
+				else {
+					fps = 1/av_q2d(st->codec->time_base);
+				}
+				
+				break; // we only need the first supported stream
+			}
+		}
+	}
+
+	if(fcx != NULL) av_close_input_file(fcx);
+	return fps;
 }
 
