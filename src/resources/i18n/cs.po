@@ -307,7 +307,7 @@ msgstr	"Znovu rodič"
 #: com/panayotis/jubler/Jubler.java:964
 #: com/panayotis/jubler/tools/JSynchronize.java:73
 msgid	"Synchronize"
-msgstr	""
+msgstr	"Synchronizovat"
 
 #: com/panayotis/jubler/Jubler.java:972
 msgid	"Shift time"
@@ -332,7 +332,7 @@ msgstr	"Kontrola pravopisu"
 
 #: com/panayotis/jubler/Jubler.java:1007
 msgid	"Preview"
-msgstr	""
+msgstr	"Náhled"
 
 #: com/panayotis/jubler/Jubler.java:1016
 #: com/panayotis/jubler/time/gui/JTimeRegion.java:130
@@ -357,7 +357,7 @@ msgstr	"Nápověda"
 
 #: com/panayotis/jubler/Jubler.java:1048
 msgid	"FAQ"
-msgstr	""
+msgstr	"FAQ"
 
 #: com/panayotis/jubler/Jubler.java:1338
 msgid	"Reparent subtitles file"
@@ -473,11 +473,10 @@ msgid	"Quit confirmation"
 msgstr	"Potvrdit ukončení"
 
 #: com/panayotis/jubler/Jubler.java:2123
-#, fuzzy
 msgid	"Subtitles are not saved.\n"
 	"Do you really want to close this window?"
 msgstr	"Titulky nejsou uloženy.\n"
-	"Opravdu chcete skončit?"
+	"Opravdu chcete zavřít okno?"
 
 #: com/panayotis/jubler/Jubler.java:2194
 msgid	"Select video"
@@ -530,22 +529,21 @@ msgid	"Plain text"
 msgstr	"Čistý text"
 
 #: com/panayotis/jubler/format/types/SubViewer2.java:57
-#, fuzzy
 msgid	"SubViewer V2"
-msgstr	"SubViewer V2 formát"
+msgstr	"SubViewer V2"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:60
-#, fuzzy, java-format
+#, java-format
 msgid	"Error while opening FAQ file \"{0}\""
-msgstr	"Chyba při načítání souboru {0}"
+msgstr	"Chyba při načítání FAQ souboru \"{0}\""
 
 #: com/panayotis/jubler/information/HelpBrowser.java:87
 msgid	"Back"
-msgstr	""
+msgstr	"Zpět"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:88
 msgid	"Go to previous page"
-msgstr	""
+msgstr	"Jít na předchozí stránku"
 
 #: com/panayotis/jubler/information/JAbout.java:47
 msgid	"Czech"
@@ -561,7 +559,7 @@ msgstr	"Řečtina"
 
 #: com/panayotis/jubler/information/JAbout.java:50
 msgid	"Turkish"
-msgstr	""
+msgstr	"Turečtina"
 
 #: com/panayotis/jubler/information/JAbout.java:345
 msgid	"Subtitle Editor for Java"
@@ -587,7 +585,7 @@ msgstr	"{0} plugin"
 
 #: com/panayotis/jubler/information/JAbout.java:361
 msgid	"Jubler mascot"
-msgstr	""
+msgstr	"Maskot Jubleru"
 
 #: com/panayotis/jubler/information/JAbout.java:367
 msgid	"Translators"
@@ -647,34 +645,31 @@ msgstr	"Komentáře k těmto titulkům"
 
 #: com/panayotis/jubler/information/Version.java:87
 msgid	"Do not inform me again for this version"
-msgstr	""
+msgstr	"Neinformuj mě znovu o téhle verzi"
 
 #: com/panayotis/jubler/information/Version.java:99
 msgid	"New Jubler version found!"
-msgstr	""
+msgstr	"Byla nalezena nová verze Jubleru!"
 
 #: com/panayotis/jubler/information/Version.java:100
-#, fuzzy
 msgid	"Current version:"
-msgstr	"Stávající slovo"
+msgstr	"Stávající verze:"
 
 #: com/panayotis/jubler/information/Version.java:101
-#, fuzzy
 msgid	"Version found:"
-msgstr	"Verze"
+msgstr	"Nalezená verze:"
 
 #: com/panayotis/jubler/information/Version.java:105
 msgid	"It is important to upgrade from the following URL:"
-msgstr	""
+msgstr	"Je důležité upgradovat z následujícího URL:"
 
 #: com/panayotis/jubler/information/Version.java:107
 msgid	"Please consider upgrading from the following URL:"
-msgstr	""
+msgstr	"Prosím uvažujte o upgradu z následujícího URL:"
 
 #: com/panayotis/jubler/information/Version.java:115
-#, fuzzy
 msgid	"New version"
-msgstr	"Verze"
+msgstr	"Nová verze"
 
 #: com/panayotis/jubler/options/ASpellOptions.java:64
 msgid	"Language to use"
@@ -1001,14 +996,14 @@ msgid	"All Video files"
 msgstr	"Všechny video soubory"
 
 #: com/panayotis/jubler/player/players/MPlayerViewport.java:107
-#, fuzzy
 msgid	"Error while executing MPlayer. Executable not found."
-msgstr	"Chyba při spouštění MPlyeru"
+msgstr	"Chyba při spouštění MPlayeru. Spustitelný soubor nebyl nalezen."
 
 #: com/panayotis/jubler/player/players/MPlayerViewport.java:109
 msgid	"Error while executing MPlayer. Abnormal exit.\n"
 	"Please report the author about this behaviour."
-msgstr	""
+msgstr	"Chyba při spouštění MPlayeru. Abnormální ukončení.\n"
+	"Prosím podejte zprávu autorovi o tomto chování."
 
 #: com/panayotis/jubler/preview/JSubPreview.java:162
 msgid	"Selected subtitles"
@@ -1773,42 +1768,38 @@ msgid	"Leave gap"
 msgstr	"Nachat mezeru"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:126
-#, fuzzy
 msgid	"Synchronize data from the following subtitles"
-msgstr	"Použít následující titulky"
+msgstr	"Synchronizovat data z následujících titulků"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:129
-#, fuzzy
 msgid	"The subtitles file to use as a model"
-msgstr	"Titulkový soubor, který se má použít"
+msgstr	"Titulkový soubor, který se má použít jako modelový"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:134
-#, fuzzy
 msgid	"Model subtitles offset"
-msgstr	"Pouze přemístit titulky"
+msgstr	"Ofset modelových titulků"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:138
 msgid	"Relative offset of the model subtitles. It is based on index, not "
 	"time."
-msgstr	""
+msgstr	"Relativní ofset modelových titulků. Je založen na indexu, ne na čase."
 
 #: com/panayotis/jubler/tools/JSynchronize.java:144
 msgid	"Import timestamp"
-msgstr	""
+msgstr	"Importovat časové značky"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:145
-#, fuzzy
 msgid	"Use the timestamp of the subtitles as the time model for current "
 	"subtitles"
-msgstr	"Přidá titulky na konec stávajících titulků"
+msgstr	"Použije čas titulků jako model pro aktuální titulky"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:150
 msgid	"Import text"
-msgstr	""
+msgstr	"Importovat text"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:151
 msgid	"Copy the text of the other subtitles into this file"
-msgstr	""
+msgstr	"Zkopíruje text z vybraných titulků do aktuálního souboru"
 
 #: com/panayotis/jubler/tools/externals/JExtSelector.java:48
 #, java-format
@@ -1833,9 +1824,8 @@ msgid	"Options for {0}"
 msgstr	"Volby pro {0}"
 
 #: com/panayotis/jubler/tools/externals/JExtSelector.java:96
-#, fuzzy
 msgid	"No options for this program"
-msgstr	"Otevře nastavení pro tento program"
+msgstr	"Žádná nastavení pro tento program"
 
 #: com/panayotis/jubler/tools/replace/JReplace.java:75
 msgid	"End of subtitles"
@@ -2011,7 +2001,7 @@ msgstr	"Pravopis"
 #: com/panayotis/jubler/tools/spell/checkers/ZemberekSpellChecker.java:92
 #, java-format
 msgid	"Unable to load plugin: {0}"
-msgstr	""
+msgstr	"Nemohu načíst plugin: {0}"
 
 #~ msgid	"Error while creating subtitle shades"
 #~ msgstr	"Chyba při tvorbě stínu titulku"
