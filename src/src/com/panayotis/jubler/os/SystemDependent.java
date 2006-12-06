@@ -70,6 +70,18 @@ public class SystemDependent {
     }
     
     
+    public final static void setLookAndFeel() {
+        try {
+            if (isWindows() || isMacOSX()) {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
+        } catch ( ClassNotFoundException e ) {
+        } catch ( InstantiationException e ) {
+        } catch (IllegalAccessException e) {
+        } catch (UnsupportedLookAndFeelException e) {
+        }
+    }
+    
     public static String getDefaultMPlayerArgs() {
         String fontconfig = "-fontconfig ";
         String fontname = "%f";
