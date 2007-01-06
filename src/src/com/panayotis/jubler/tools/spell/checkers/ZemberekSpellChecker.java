@@ -55,8 +55,7 @@ public class ZemberekSpellChecker extends SpellChecker {
             String word = tok.nextToken();
             int pos;
             if (lastPositions.containsKey(word))
-                pos = text.indexOf(word, lastPositions.get(word))
-                + word.length();
+                pos = text.indexOf(word, lastPositions.get(word) + word.length());
             else
                 pos = text.indexOf(word);
             try {
