@@ -81,8 +81,8 @@ public class JPreferences extends JPanel implements OptionsHolder {
         smodel = new ShortcutsModel(jub.JublerMenuBar);
         
         initComponents();
-        jload = new JLoadOptions(jub);
-        jsave = new JSaveOptions(jub);
+        jload = new JLoadOptions();
+        jsave = new JSaveOptions();
         OptionsIO.loadSystemPreferences(this);
         
         LoadPanel.add(jload, BorderLayout.NORTH);
@@ -122,16 +122,17 @@ public class JPreferences extends JPanel implements OptionsHolder {
     /* The following two methods display the load/save panels in a dialog
      * and reattach them back to their position, after the selection was done.
      */
-    public void showLoadDialog(JFrame parent) {
+    public void showLoadDialog(Jubler parent) {
         flipflopPanel(parent, jload, LoadPanel, LSelect);
     }
-    public void showSaveDialog(JFrame parent) {
+    public void showSaveDialog(Jubler parent) {
         flipflopPanel(parent, jsave, SavePanel, SSelect);
     }
     
-    private void flipflopPanel(JFrame parent, JOptionsGUI obj, JPanel container, JCheckBox allow) {
+    private void flipflopPanel(Jubler parent, JOptionsGUI obj, JPanel container, JCheckBox allow) {
         if ( !allow.isSelected() ) return;
         
+        obj.updateJubler(parent);
         JIDialog.message(parent, obj, _("File preferences"), JIDialog.QUESTION_MESSAGE);
         container.add(obj, BorderLayout.NORTH);
     }

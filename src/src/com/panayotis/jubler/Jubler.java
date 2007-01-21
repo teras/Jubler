@@ -105,7 +105,7 @@ import javax.swing.table.TableCellRenderer;
 public class Jubler extends JFrame {
     
     public static JublerList windows;
-
+    
     private static ArrayList<SubEntry> copybuffer;
     static JPreferences prefs;
     
@@ -2039,43 +2039,39 @@ public class Jubler extends JFrame {
     public void loadFile(File f, boolean force_into_same_window ) {
         String data;
         Subtitles newsubs;
+        Jubler work;
         
-        File old_current_file = current_file;
-        current_file = FileCommunicator.stripFileFromExtension(f);  // Needed already, because FPS requires it
-        prefs.showLoadDialog(this); //Fileload dialog, if desired
+        if (subs==null || force_into_same_window) 
+            work = this;
+        else 
+            work = new Jubler();
+        
+        File old_current_file = work.current_file;
+        work.current_file = FileCommunicator.stripFileFromExtension(f);  // Needed already, because FPS requires it
+        work.prefs.showLoadDialog(work); //Fileload dialog, if desired
         
         /* Load file into memory */
-        data = FileCommunicator.load(f, prefs);
+        data = FileCommunicator.load(f, work.prefs);
         if ( data == null ) {
             DEBUG.error(_("Could not load file. Possibly an encoding error."));
-            current_file = old_current_file;
+            work.current_file = old_current_file;
             return;
         }
         
         /* Convert file into subtitle data */
         newsubs = new Subtitles();
-        newsubs.populate(f, data, prefs.getLoadFPS());
+        newsubs.populate(f, data, work.prefs.getLoadFPS());
         if ( newsubs.size() == 0 ) {
             DEBUG.error(_("File not recognized!"));
-            current_file = old_current_file;
+            work.current_file = old_current_file;
             return;
         }
         
-        /* This window is empty, load data into this window */
-        if ( subs == null || force_into_same_window) {
-            if (subs!=null) undo.addUndo(new UndoEntry(subs, _("Reload subtitles")));
-            undo.setSaveMark();
-            setSubs(newsubs);
-            if (!force_into_same_window) setFile(f, true);
-            current_file = old_current_file;
-            return;
-        }
-        
-        /* Load data into a different window */
-        Jubler newwindow = new Jubler(newsubs);
-        newwindow.setFile(f, true);
+        if (work.subs!=null) work.undo.addUndo(new UndoEntry(work.subs, _("Reload subtitles")));
+        work.undo.setSaveMark();
+        work.setSubs(newsubs);
+        if (!force_into_same_window) work.setFile(f, true);
     }
-    
     
     
     
@@ -2509,5 +2505,5 @@ public class Jubler extends JFrame {
     private void hideSystemMenus() {
         SystemDependent.hideSystemMenus(AboutHM, PrefsFM, QuitFM);
     }
-
+    
 }

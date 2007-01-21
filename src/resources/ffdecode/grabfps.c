@@ -38,7 +38,6 @@
 
 jfloat dump_fps(const char *input_filename);
 
-
 /*
  * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
  * Method:    grabFPS

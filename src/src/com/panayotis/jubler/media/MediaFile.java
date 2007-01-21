@@ -158,9 +158,9 @@ public class MediaFile {
     }
     
 
-    
+    // NOTE:  VERY VERY VERY BAD IMPLEMENTATION. DECODER SHOULD BE INSIDE MediaFile
     public float getFramesPerSecond(Jubler jub) {
-       return jub.getSubPreview().getFPS();
+       return jub.getSubPreview().getFPS(vfile);
     }
     
     

@@ -103,8 +103,8 @@ public class JSubPreview extends javax.swing.JPanel {
     }
     
     
-    public float getFPS() {
-        return decoder.getFPS();
+    public float getFPS(String vfile) {
+        return decoder.getFPS(vfile);
     }
     
     public void windowHasChanged(int[] subid) {

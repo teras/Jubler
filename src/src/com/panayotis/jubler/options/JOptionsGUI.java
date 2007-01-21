@@ -22,7 +22,7 @@
  */
 
 package com.panayotis.jubler.options;
-import java.util.Properties;
+import com.panayotis.jubler.Jubler;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 /**
@@ -45,4 +45,6 @@ public abstract class JOptionsGUI extends JPanel implements OptionsHolder {
     protected String getItemName(JComboBox box) {
         return box.getSelectedItem().toString();
     }
+    
+    public abstract void updateJubler (Jubler jub);
 }

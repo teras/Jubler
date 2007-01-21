@@ -78,7 +78,7 @@ public class JRateChooser extends JPanel {
         add(FromFPSB, java.awt.BorderLayout.EAST);
 
         FPSChooser.setEditable(true);
-        FPSChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15", "20", "23.976", "23.978", "24", "25", "29.97", "30" }));
+        FPSChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15", "20", "23.976", "24", "25", "29.97", "30" }));
         FPSChooser.setSelectedItem("25");
         FPSChooser.setToolTipText(_("Frames per second"));
         FPSChooser.addActionListener(new java.awt.event.ActionListener() {
@@ -105,7 +105,7 @@ public class JRateChooser extends JPanel {
     
     private void FromFPSBFPSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromFPSBFPSBActionPerformed
         float fps = jubler.getMediaFile().getFramesPerSecond(jubler);
-        FPSChooser.setSelectedItem(fps);
+        if (fps>0) FPSChooser.setSelectedItem(fps);
     }//GEN-LAST:event_FromFPSBFPSBActionPerformed
     
     

@@ -39,17 +39,18 @@ public class JSaveOptions extends JOptionsGUI {
     private JRateChooser CFPS;
     
     /** Creates new form JSavePrefs */
-    public JSaveOptions(Jubler jub) {
+    public JSaveOptions() {
         initComponents();
 
         CFPS = new JRateChooser();
-        CFPS.setJubler(jub);
         
         FPSPanel.add(CFPS, BorderLayout.CENTER);
         fillComponents();
     }
     
-    
+    public void updateJubler(Jubler jub) {
+        CFPS.setJubler(jub);
+    }
     
     private void fillComponents() {
         int i;

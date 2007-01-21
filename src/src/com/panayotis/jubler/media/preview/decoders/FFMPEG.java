@@ -75,10 +75,11 @@ public final class FFMPEG extends NativeDecoder {
         return image;
     }
     
-    public float getFPS() {
-        if (vfname==null) return -1;
-        if (!isDecoderValid()) return -1;
+    public float getFPS(String vfname) {
         return grabFPS(vfname);
+//        if (vfname==null) return -1;
+//        if (!isDecoderValid()) return -1;
+//        return grabFPS(vfname);
     }
     
     public void playAudioClip(double from, double to) {
