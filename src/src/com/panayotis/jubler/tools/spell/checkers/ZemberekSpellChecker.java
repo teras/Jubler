@@ -58,6 +58,7 @@ public class ZemberekSpellChecker extends SpellChecker {
                 pos = text.indexOf(word, lastPositions.get(word) + word.length());
             else
                 pos = text.indexOf(word);
+                lastPositions.put(word,pos);
             try {
                 boolean status = (Boolean)kelimeDenetle.invoke(zemberek, new Object[] {word});
                 if (!status) {
