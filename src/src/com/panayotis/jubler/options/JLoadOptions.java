@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.options;
+import com.panayotis.jubler.Jubler;
 import java.awt.BorderLayout;
 import java.util.Properties;
 
@@ -37,10 +38,11 @@ public class JLoadOptions extends JOptionsGUI {
     private JRateChooser CFPS;
     
     /** Creates new form JLoadPrefs */
-    public JLoadOptions() {
+    public JLoadOptions(Jubler jub) {
         initComponents();
 
         CFPS = new JRateChooser();
+        CFPS.setJubler(jub);
         FPSPanel.add(CFPS, BorderLayout.CENTER);
         fillComponents();
     }

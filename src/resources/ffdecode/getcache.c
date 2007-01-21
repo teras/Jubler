@@ -22,7 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "com_panayotis_jubler_preview_decoders_NativeDecoder.h"
+#include "com_panayotis_jubler_media_preview_decoders_NativeDecoder.h"
 #include "defaults.h"
 #include "utilities.h"
 
@@ -45,7 +45,7 @@ void populateMatrix(size_t start, size_t finish, char * data, size_t datatsize, 
 
 
 
-JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_preview_decoders_NativeDecoder_grabCache
+JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_NativeDecoder_grabCache
   (JNIEnv * env, jobject this, jstring cfile, jdouble from, jdouble to)
 {
 	/* translate Java strings into C strings */
@@ -74,7 +74,7 @@ JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_preview_decoders_NativeD
 
 
 
-JNIEXPORT void JNICALL Java_com_panayotis_jubler_preview_decoders_NativeDecoder_forgetCache
+JNIEXPORT void JNICALL Java_com_panayotis_jubler_media_preview_decoders_NativeDecoder_forgetCache
   (JNIEnv *env, jobject this, jstring cache) 
 {
 	int pointer;

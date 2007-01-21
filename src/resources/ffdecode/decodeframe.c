@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "com_panayotis_jubler_preview_decoders_FFMPEG.h"
+#include "com_panayotis_jubler_media_preview_decoders_FFMPEG.h"
 #include "defaults.h"
 #include "utilities.h"
 
@@ -42,7 +42,7 @@ AVPicture *decodeFrame (const char *input_filename, jlong timepos, jint *width, 
 int file_info(char *input_filename);
 
 
-JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_grabFrame
+JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFrame
   (JNIEnv * env, jobject this, jstring video, jlong time, jboolean issmall)
 {	
 	/* Pointers for c-like strings */

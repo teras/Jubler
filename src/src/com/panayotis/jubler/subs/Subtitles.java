@@ -59,11 +59,7 @@ public class Subtitles extends AbstractTableModel {
     private Vector <SubEntry> sublist;
     
     /** List of possible predefined styles */
-    private SubStyleList styles;
-    
-    /** Video filename for these subtitles */
-    private String videofile = null;
-    
+    private SubStyleList styles;  
     
     public Subtitles() {
         loadColumnWidth();
@@ -261,12 +257,7 @@ public class Subtitles extends AbstractTableModel {
     
     public SubStyleList getStyleList() { return styles; }
     
-    /* These methods are mostyl used to check if a valid videofile is selected and to store the videofile
-     * for the videoconsole */
-    public void setVideofile(String vfile) { videofile = vfile; }
-    public String getVideofile() { return videofile; }
-    
-    
+  
     public void revalidateStyles() {
         for (SubEntry entry : sublist) {
             SubStyle style = entry.getStyle();

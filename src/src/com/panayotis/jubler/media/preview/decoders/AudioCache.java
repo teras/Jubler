@@ -68,8 +68,11 @@ public class AudioCache {
     }
     
     /* Use this static method to check if a specific file is a regular file or an audio cache */
-    public static boolean isAudioCache(File fname) {
-        if (fname==null || (!fname.exists()) || fname.length() < 10) return false;
+    public static boolean isAudioCache(String fname) {
+        if (fname == null) return false;
+        
+        File cachefile = new File(fname);
+        if ( (!cachefile.exists()) || cachefile.length() < 10) return false;
         
         StringBuffer header = new StringBuffer();
         RandomAccessFile file;
@@ -93,7 +96,7 @@ public class AudioCache {
         return ".jacache";
     }
     
-    public static String getNameFromCache(File fname) {
+    public static String getNameFromCache(String fname) {
         if (!isAudioCache(fname)) return null;
         
         String name = null;

@@ -25,19 +25,15 @@ package com.panayotis.jubler.media.player.players;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.media.player.AbstractPlayer;
-import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.subs.style.SubStyle.Style;
-
+import com.panayotis.jubler.media.MediaFile;
 
 /**
  *
@@ -54,7 +50,7 @@ public class MPlayerViewport implements Viewport {
     private double position;
     private Thread updater;
     
-    private String avipath;
+    private MediaFile mfile;
     
     private MPlayer player;
     
@@ -67,12 +63,11 @@ public class MPlayerViewport implements Viewport {
     
     
     
-    public Time start(String avi, Subtitles sub, Time when) {
+    public Time start(MediaFile mfile, Subtitles sub, Time when) {
         
-      //  String subpath = AbstractPlayer.createTempSubFile(sub);
-        avipath = avi;
+        this.mfile = mfile;
         
-        String cmd[] = player.getCommandArguments(avi, sub, when);
+        String cmd[] = player.getCommandArguments(mfile.getVideoFile(), sub, when);
         fps = 0;
         length = 0;
         position = 0;
@@ -222,7 +217,7 @@ public class MPlayerViewport implements Viewport {
         quit();
         try {
             updater.join();
-            Time res = start( avipath, newsubs, new Time(getTime()-3));
+            Time res = start( mfile, newsubs, new Time(getTime()-3));
             return res != null;
         } catch (InterruptedException e) { }
         return false;

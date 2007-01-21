@@ -30,6 +30,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.format.SubFileFilter;
 import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.OptionsIO;
 import com.panayotis.jubler.os.DEBUG;
@@ -116,7 +117,16 @@ public class Jubler extends JFrame {
     /* Select a video player dialog */
     private JExtSelector playerselector;
     
+    /*
+     * Where the subtitles for this window is stored
+     */
     private Subtitles subs;
+    
+    /*
+     * Where the mediafile for this window is stored
+     */
+    private MediaFile mfile;
+    
     private JTable SubTable;
     private UndoList undo;
     
@@ -125,7 +135,7 @@ public class Jubler extends JFrame {
     
     /* The preview dialog, showing the subtitle, the waveform and some video clips */
     /* This object is public, since it's needed by JSubEditor to attach itself into this panel */
-    public JSubPreview preview;
+    private JSubPreview preview;
     
     /* The panel which displays the editor for a subtitle */
     public JSubEditor subeditor;
@@ -188,6 +198,7 @@ public class Jubler extends JFrame {
     /** Creates new form JubEdit */
     public Jubler() {
         subs = null;
+        mfile = new MediaFile();
         connected_consoles = new Vector<JVideoConsole>();
         
         undo = new UndoList(this);
@@ -387,6 +398,7 @@ public class Jubler extends JFrame {
         SaveAsFM = new javax.swing.JMenuItem();
         CloseFM = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
+        MediaFileFM = new javax.swing.JMenuItem();
         InfoFM = new javax.swing.JMenuItem();
         PrefsFM = new javax.swing.JMenuItem();
         QuitFM = new javax.swing.JMenuItem();
@@ -445,7 +457,6 @@ public class Jubler extends JFrame {
         CurrentTTM = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JSeparator();
         OptionsTTM = new javax.swing.JMenuItem();
-        VideoFileTTM = new javax.swing.JMenuItem();
         HelpM = new javax.swing.JMenu();
         FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
@@ -719,6 +730,14 @@ public class Jubler extends JFrame {
         FileM.add(CloseFM);
 
         FileM.add(jSeparator7);
+
+        MediaFileFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
+        MediaFileFM.setText(_("Change media file"));
+        MediaFileFM.setEnabled(false);
+        MediaFileFM.setName("FSM");
+        MediaFileFM.addActionListener(formListener);
+
+        FileM.add(MediaFileFM);
 
         InfoFM.setText(_("Information"));
         InfoFM.setEnabled(false);
@@ -1028,12 +1047,6 @@ public class Jubler extends JFrame {
 
         TestTM.add(OptionsTTM);
 
-        VideoFileTTM.setText(_("Change video file"));
-        VideoFileTTM.setName("TTV");
-        VideoFileTTM.addActionListener(formListener);
-
-        TestTM.add(VideoFileTTM);
-
         ToolsM.add(TestTM);
 
         JublerMenuBar.add(ToolsM);
@@ -1240,8 +1253,8 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == OptionsTTM) {
                 Jubler.this.OptionsTTMActionPerformed(evt);
             }
-            else if (evt.getSource() == VideoFileTTM) {
-                Jubler.this.VideoFileTTMActionPerformed(evt);
+            else if (evt.getSource() == MediaFileFM) {
+                Jubler.this.MediaFileFMActionPerformed(evt);
             }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
@@ -1359,9 +1372,9 @@ public class Jubler extends JFrame {
         tableHasChanged(selected);
     }//GEN-LAST:event_SortTBActionPerformed
     
-    private void VideoFileTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoFileTTMActionPerformed
+    private void MediaFileFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MediaFileFMActionPerformed
         setValidVideofile();
-    }//GEN-LAST:event_VideoFileTTMActionPerformed
+    }//GEN-LAST:event_MediaFileFMActionPerformed
     
     
     public void enablePreviewButton() {
@@ -1369,9 +1382,9 @@ public class Jubler extends JFrame {
         subeditor.setAttPrevSelectable(false);
     }
     private void PreviewTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBActionPerformed
-        if (subs.getVideofile()==null) setValidVideofile();
+        if (! mfile.isValidMediaFile()) setValidVideofile();
+        preview.setMediaFile(mfile);
         PreviewTB.setEnabled(false);
-        preview.setMediaFiles(videoselector.getVideoFile(), videoselector.getAudioFile(), videoselector.getCacheFile());
         preview.setVisible(true);
         subeditor.setAttPrevSelectable(true);
         preview.subsHaveChanged(SubTable.getSelectedRows());
@@ -1889,6 +1902,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu MarkEM;
     private javax.swing.JMenu MarkP;
     private javax.swing.JSeparator MarkSep;
+    private javax.swing.JMenuItem MediaFileFM;
     private javax.swing.JMenu NewFM;
     private javax.swing.JButton NewTB;
     private javax.swing.JMenuItem NextGEM;
@@ -1942,7 +1956,6 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
-    private javax.swing.JMenuItem VideoFileTTM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
     private javax.swing.JMenuItem bySelectionDEM;
@@ -2027,12 +2040,15 @@ public class Jubler extends JFrame {
         String data;
         Subtitles newsubs;
         
+        File old_current_file = current_file;
+        current_file = FileCommunicator.stripFileFromExtension(f);  // Needed already, because FPS requires it
         prefs.showLoadDialog(this); //Fileload dialog, if desired
         
         /* Load file into memory */
         data = FileCommunicator.load(f, prefs);
         if ( data == null ) {
             DEBUG.error(_("Could not load file. Possibly an encoding error."));
+            current_file = old_current_file;
             return;
         }
         
@@ -2041,6 +2057,7 @@ public class Jubler extends JFrame {
         newsubs.populate(f, data, prefs.getLoadFPS());
         if ( newsubs.size() == 0 ) {
             DEBUG.error(_("File not recognized!"));
+            current_file = old_current_file;
             return;
         }
         
@@ -2050,6 +2067,7 @@ public class Jubler extends JFrame {
             undo.setSaveMark();
             setSubs(newsubs);
             if (!force_into_same_window) setFile(f, true);
+            current_file = old_current_file;
             return;
         }
         
@@ -2062,12 +2080,12 @@ public class Jubler extends JFrame {
     
     
     private void testVideo(Time t) {
-        if (subs.getVideofile() == null) {
+        if (!mfile.isValidMediaFile()) {
             if (!setValidVideofile()) return;
         }
         JVideoConsole console = new JVideoConsole(this, (VideoPlayer)playerselector.getObject());
         connected_consoles.add(console);
-        console.start(subs.getVideofile(), subs, new Time(((long)t.toSeconds())-2));
+        console.start(mfile, subs, new Time(((long)t.toSeconds())-2));
     }
     
     public void removeConsole(JVideoConsole cons) {
@@ -2089,6 +2107,7 @@ public class Jubler extends JFrame {
         ChildNFM.setEnabled(true);
         SaveFM.setEnabled(true);
         SaveAsFM.setEnabled(true);
+        MediaFileFM.setEnabled(true);
         InfoFM.setEnabled(true);
         EditM.setEnabled(true);
         ToolsM.setEnabled(true);
@@ -2130,6 +2149,7 @@ public class Jubler extends JFrame {
         /* Clean up previewers */
         preview.cleanUp();
         preview.setVisible(false);
+        mfile.cleanUp();
         
         windows.remove(this);
         for (Jubler w : windows) {
@@ -2186,22 +2206,30 @@ public class Jubler extends JFrame {
         }
     }
     
+    public MediaFile getMediaFile() {
+        if (! mfile.isValidMediaFile()) setValidVideofile();
+        return mfile;
+    }
     
     private boolean setValidVideofile() {
         boolean isok;
         
-        videoselector.setVideoFile(subs.getVideofile(), null, null, current_file);
+        MediaFile newmedia = new MediaFile(mfile);
+        newmedia.guessFiles(current_file.getPath());
+        videoselector.setMediaFile(newmedia);
+        
         do {
             int res = JIDialog.question(this, videoselector, _("Select video"));
             if ( res != JIDialog.OK_OPTION) {
                 return false;
             }
-            isok = videoselector.getVideoFile().exists();
+            isok = newmedia.isValidMediaFile();
             if (!isok) {
                 JIDialog.message(this, _("This file does not exist.\nPlease provide a valid file name."), _("Error in videofile selection"), JIDialog.ERROR_MESSAGE);
             }
         } while (!isok);
-        subs.setVideofile(videoselector.getVideoFile().getPath());
+        
+        mfile = newmedia;
         return true;
     }
     
@@ -2357,7 +2385,7 @@ public class Jubler extends JFrame {
     public Image getIconImage() { return windowicon; }
     public Subtitles getSubtitles() { return subs; }
     public UndoList getUndoList() { return undo; }
-    public JSubPreview getSubPreview() { return this.preview; }
+    public JSubPreview getSubPreview() { return preview; }
     public int[] getSelectedRows() { return SubTable.getSelectedRows();}
     
     public SubEntry getSelectedRow() {
@@ -2481,67 +2509,5 @@ public class Jubler extends JFrame {
     private void hideSystemMenus() {
         SystemDependent.hideSystemMenus(AboutHM, PrefsFM, QuitFM);
     }
-    
-    public ArrayList<JMenuItem> getMenuList() {
-        ArrayList<JMenuItem> menulist = new ArrayList<JMenuItem>();
-        
-        menulist.add(FileNFM);
-        menulist.add(ChildNFM);
-        menulist.add(OpenFM);
-        menulist.add(RevertFM);
-        menulist.add(SaveFM);
-        menulist.add(SaveAsFM);
-        menulist.add(CloseFM);
-        menulist.add(InfoFM);
-        menulist.add(PrefsFM);
-        menulist.add(QuitFM);
-        
-        menulist.add(null);
-        
-        menulist.add(CutEM);
-        menulist.add(CopyEM);
-        menulist.add(PasteEM);
-        menulist.add(PasteSpecialEM);
-        menulist.add(bySelectionDEM);
-        menulist.add(EmptyLinesDEM);
-        menulist.add(StepwiseREM);
-        menulist.add(GloballyREM);
-        menulist.add(BeforeIEM);
-        menulist.add(AfterIEM);
-        menulist.add(PreviousGEM);
-        menulist.add(NextGEM);
-        menulist.add(TopGEM);
-        menulist.add(BottomGEM);
-        menulist.add(byTimeGEM);
-        menulist.add(NoneMEM);
-        menulist.add(PinkMEM);
-        menulist.add(YellowMEM);
-        menulist.add(CyanMEM);
-        menulist.add(bySelectionMEM);
-        menulist.add(bySelectionSEM);
-        menulist.add(UndoEM);
-        menulist.add(RedoEM);
-        
-        menulist.add(null);
-        
-        menulist.add(SplitTM);
-        menulist.add(JoinTM);
-        menulist.add(ReparentTM);
-        menulist.add(ShiftTimeTM);
-        menulist.add(RecodeTM);
-        menulist.add(RoundTM);
-        menulist.add(SpellTM);
-        menulist.add(PreviewTTM);
-        menulist.add(BeginningTTM);
-        menulist.add(CurrentTTM);
-        menulist.add(OptionsTTM);
-        menulist.add(VideoFileTTM);
-        
-        menulist.add(null);
-        
-        menulist.add(AboutHM);
-        
-        return menulist;
-    }
-    
+
 }

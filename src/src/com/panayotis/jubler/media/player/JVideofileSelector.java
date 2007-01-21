@@ -23,24 +23,18 @@
 
 package com.panayotis.jubler.media.player;
 
-import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.FileCommunicator;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.JFileChooser;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.media.preview.decoders.AudioCache;
-import javax.swing.filechooser.FileFilter;
+import com.panayotis.jubler.media.MediaFile;
 
 /**
  *
  * @author  teras
  */
 public class JVideofileSelector extends javax.swing.JPanel {
-    private File vfile;
-    private File afile;
-    private File cfile;
+    private MediaFile mfile;
     private JFileChooser fdialog;
     
     private AudioFileFilter afilter;
@@ -58,79 +52,35 @@ public class JVideofileSelector extends javax.swing.JPanel {
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
     
-    public void setVideoFile(String videofile, String audiofile, String cachefile, File guess) {
+    
+    private void updateFiles() {
+        VFName.setText(mfile.getVideoFile());
         
-        /* Set vfile */
-        if ( videofile!=null) vfile = new File(videofile);
-        else vfile = FileCommunicator.guessFile(guess, new VideoFileFilter());
-        
-        /* Create a special filter for the selected video file */
-        AudioFileFilter filter = new AudioFileFilter();
-        filter.setCheckForValidCache(vfile);
-        
-        /* Find the basic name of the selected "audio" file */
-        String gcache = vfile.getPath();
-        if (audiofile != null) gcache = audiofile;
-        int point = gcache.lastIndexOf('.');
-        if (point < 0 ) point = gcache.length();
-        
-        /* Set cfile */
-        if (cachefile!=null) cfile = new File(cachefile);
-        else cfile = FileCommunicator.guessFile(new File( gcache.substring(0,point)), filter);
-        
-        if (audiofile!=null) afile = new File(audiofile);
-        else {
-            String cachename = AudioCache.getNameFromCache(cfile);
-            if (cachename!=null && (!cachename.trim().equals(""))){
-                afile = new File(cfile.getParent(), cachename);
-                if (!afile.exists()) afile = null;
-            }
-        }
-        
-        
-        if (afile == null) {
-            boolean canwrite = false;
-            try {
-                canwrite = cfile.createNewFile();
-            } catch (IOException ex) {
-                //ex.printStackTrace();
-            }
-            if (canwrite) cfile.delete();
-            else {
-                gcache = vfile.getName();
-                point = gcache.lastIndexOf('.');
-                if (point < 0 ) point = gcache.length();
-                cfile = new File(System.getProperties().getProperty("java.io.tmpdir")+
-                        System.getProperties().getProperty("file.separator")+
-                        gcache.substring(0,point)+AudioCache.getExtension());
-            }
-        }
-        
-        if (afile==null || (vfile!= null && afile.getName().equals(vfile.getName())) ) {
+        if (mfile.isAudioFileUnused()) {
+            AFName.setText("");
+            AFName.setEnabled(false);
             ExternalAudioB.setSelected(false);
             AudioBrowse.setEnabled(false);
-            afile = null;
-        }
-        else {
+        } else {
+            AFName.setText(mfile.getAudioFile());
+            AFName.setEnabled(true);
             ExternalAudioB.setSelected(true);
             AudioBrowse.setEnabled(true);
         }
         
-        if (vfile!=null) VFName.setText(vfile.getPath());
-        else VFName.setText("");
-        
-        if (afile!=null) AFName.setText(afile.getPath());
-        else AFName.setText("");
-        
-        if (cfile!=null) CFName.setText(cfile.getPath());
-        else AFName.setText("");
+        CFName.setText(mfile.getCacheFile());
     }
     
     
-    public File getVideoFile() { return vfile; }
-    public File getCacheFile() { return cfile; }
-    public File getAudioFile() { 
-        if (ExternalAudioB.isSelected()) return afile;
+    
+    public void setMediaFile(MediaFile mfile) {
+        this.mfile = mfile;
+        updateFiles();
+    }
+    
+    
+    public File getAudioFileee() {
+        if (ExternalAudioB.isSelected()) return null; // afile
         return null;
     }
     
@@ -242,49 +192,42 @@ public class JVideofileSelector extends javax.swing.JPanel {
     // </editor-fold>//GEN-END:initComponents
     
     private void CacheBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CacheBrowseActionPerformed
-        fdialog.setSelectedFile(cfile);
-        afilter.setCheckForValidCache(vfile);
+        fdialog.setSelectedFile( new File(mfile.getCacheFile()) );
+        afilter.setCheckForValidCache(mfile.getVideoFile());
         fdialog.setFileFilter(afilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        if (cfile.isFile() && cfile.length()==0) cfile.delete();
-        cfile = fdialog.getSelectedFile();
-        setVideoFile(vfile.getPath(), null, cfile.getPath(), null);
+        mfile.setCacheFile(fdialog.getSelectedFile().getPath());
+        updateFiles();
     }//GEN-LAST:event_CacheBrowseActionPerformed
     
     private void AudioBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioBrowseActionPerformed
-        fdialog.setSelectedFile(afile);
+        fdialog.setSelectedFile( new File(mfile.getAudioFile()));
         afilter.setCheckForValidCache(null);
         fdialog.setFileFilter(afilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        File sel = fdialog.getSelectedFile();
-        
-        if (AudioCache.isAudioCache(sel)) {
-            setVideoFile(vfile.getPath(), null, sel.getPath(), null);
-            return;
-        }
-        setVideoFile(vfile.getPath(), sel.getPath(), null, null);
+        mfile.setAudioFile(fdialog.getSelectedFile().getPath());
+        updateFiles();
     }//GEN-LAST:event_AudioBrowseActionPerformed
     
     private void ExternalAudioBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExternalAudioBActionPerformed
         if (ExternalAudioB.isSelected()) {
-            if (afile==null) AudioBrowseActionPerformed(evt);
-            if (afile==null) {
-                ExternalAudioB.setSelected(false);
-                return;
-            }
-            AFName.setText(afile.getPath());
+            AudioBrowseActionPerformed(evt);
+            // updateFiles is already called by AudioBrowseActionPerformed
         } else{
-            AFName.setText("");
+            mfile.setAudioFileUnused();
+            updateFiles();
         }
-        AudioBrowse.setEnabled(ExternalAudioB.isSelected());
     }//GEN-LAST:event_ExternalAudioBActionPerformed
     
     private void VideoBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoBrowseActionPerformed
-        fdialog.setSelectedFile(vfile);
+        fdialog.setSelectedFile(new File(mfile.getVideoFile()));
         fdialog.setFileFilter(vfilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        setVideoFile(fdialog.getSelectedFile().getPath(), null, null, null);
+        mfile.setVideoFile(fdialog.getSelectedFile().getPath());
+        updateFiles();
     }//GEN-LAST:event_VideoBrowseActionPerformed
+    
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

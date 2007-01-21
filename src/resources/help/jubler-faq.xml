@@ -43,6 +43,10 @@
     <para>There are times where you want to keep the various time-stamps of subtitles steady and shift the subtitle texts - relative to their time-stamp. Here comes <ulink url="#synchronize">synchronize</ulink> to the rescue again. The only difference from the previous approach is that you select the "-current-" subtitle file and you enter the offset. You can either shift time-stamps or text.</para>
 </section>
 
+<section><title>How can I change the video file?</title>
+    <para>The position of this menu entry has changed in recent versions of Jubler. This option is under "File"->"Change media file".</para>
+</section>
+
 <section><title>How is transparency produced?</title>
     <para>In subtitle preview, although outline & shadow color is per character, their transparency is calculated for the whole subtitle entry.</para>
 </section>

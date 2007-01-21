@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.media.preview.JWavePreview;
@@ -52,11 +53,14 @@ public abstract class AbstractDecoder {
     private Thread cacher;
     private boolean isInterrupted;
     
-    public void setVideofile(File vfile) {
-        if (vfile!=null) vfname = vfile.getPath();
+    public void setMediaFile(MediaFile mfile) {
+        vfname = mfile.getVideoFile();
     }
     
-    public String setAudiofile(File vfile, File afile, File cfile, JWavePreview prev) {
+    public String setAudiofile(MediaFile mfile, JWavePreview prev) {
+        String afile = mfile.getAudioFile();
+        String cfile = mfile.getCacheFile();
+        
         if (cacher != null ) {
             DEBUG.error(_("Still creating cache. Use the Cancel button to abort."));
             return null;
@@ -68,16 +72,11 @@ public abstract class AbstractDecoder {
         }
         
         /* Find the actual audiostream */
-        String audiostream = null;
-        if (afile!=null) {
-            audiostream = afile.getPath();
-        } else {
-            audiostream = vfile.getPath();
-        }
+        String audiostream = afile;
         
         if (AudioCache.isAudioCache(cfile)) {
             forgetAudioCache();    /* We don't need the old cache anymore */
-            cfname = cfile.getPath();
+            cfname = cfile;
             afname = audiostream;
             DEBUG.info(_("Jubler audio cache detected for audio input: {0}", cfname));
             return null;
@@ -85,7 +84,7 @@ public abstract class AbstractDecoder {
         
         /* Now we know that we have to get audio from the stream */
         final String faudio = audiostream;
-        final String fcache = cfile.getPath();
+        final String fcache = cfile;
         audiopreview = prev;
         
         final JWavePreview p = prev;

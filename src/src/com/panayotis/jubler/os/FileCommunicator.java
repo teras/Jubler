@@ -213,21 +213,20 @@ public class FileCommunicator {
     
     /* The followng function is used in order to guess the filename of the avi/audio/jacache based
      *  on the name of the original file */
-    public static File guessFile(File origfile, MediaFileFilter filter) {
+    public static String guessFile(String origfilename, MediaFileFilter filter) {
         File dir;   /* the parent directory of the subtitle */
         File files[];   /* List of video files in the same directory as the subtitle */
         int matchcount;  /* best match so far */
         File match;     /* best file match so far */
-        String origfilename; /* Subtitles filename */
         String lsfilename, curfilename;    /* Subtitles filename (in lowercase) & file in the same directory */
         int size;
         int i,j;
         
-        origfilename = origfile.getPath();
         lsfilename = origfilename.toLowerCase();
         
-        dir  = origfile.getParentFile();
-        if (dir == null) return new File(origfilename + filter.getExtensions()[0]);
+        dir  = new File(origfilename).getParentFile();
+        if (dir == null) 
+            return origfilename + filter.getExtensions()[0];
         files = dir.listFiles(filter);
         
         /* From a list of possible filenames, get the one with the
@@ -248,8 +247,8 @@ public class FileCommunicator {
                 }
             }
         }
-        if (match != null) return match;
-        return new File(origfilename+filter.getExtensions()[0]);
+        if (match != null) return match.getPath();
+        return origfilename+filter.getExtensions()[0];
     }
     
     public static String getCurrentPath() {

@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "com_panayotis_jubler_preview_decoders_FFMPEG.h"
+#include "com_panayotis_jubler_media_preview_decoders_FFMPEG.h"
 #include "defaults.h"
 #include "utilities.h"
 
@@ -40,11 +40,11 @@ jfloat dump_fps(const char *input_filename);
 
 
 /*
- * Class:     com_panayotis_jubler_preview_decoders_FFMPEG
+ * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
  * Method:    grabFPS
  * Signature: (Ljava/lang/String;)F
  */
-JNIEXPORT jfloat JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_grabFPS
+JNIEXPORT jfloat JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFPS
   (JNIEnv * env, jobject this, jstring video)
 {
 

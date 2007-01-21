@@ -35,6 +35,7 @@ import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.OptionsIO;
 import java.awt.Color;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
@@ -144,7 +145,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         setLocation(x_value, y_value);
     }
     
-    public void start(String avifile, Subtitles subs, Time starttime ) {
+    public void start(MediaFile mfile, Subtitles subs, Time starttime ) {
         Time length;
         
         positionConsole();
@@ -154,7 +155,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         dt = 0;
         submark_state = 0;
         view = player.getViewport();
-        length = view.start(avifile, subs, starttime);
+        length = view.start(mfile, subs, starttime);
         
         if ( length == null) {
             stop();

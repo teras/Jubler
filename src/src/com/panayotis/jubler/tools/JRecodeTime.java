@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.tools;
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
@@ -62,6 +63,12 @@ public class JRecodeTime extends JTool {
     
     protected String getToolTitle() {
         return _("Recode time");
+    }
+    
+    public void execute (Jubler j) {
+        FromR.setJubler(j);
+        ToR.setJubler(j);
+        super.execute(j);
     }
     
     public void storeSelections () {

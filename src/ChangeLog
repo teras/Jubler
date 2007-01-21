@@ -1,4 +1,8 @@
-3.0.0-prefinal
+3.1.0
+Zemberek fixes. Read frames per second from the movie now supported. A lot
+of fine tuning.
+
+3.0.0
 FFDecode bugs fixed, preview should be much more stable and accurate. Preview
 bug fixed, where wrong duration was reported. Tools remember last values.
 Column width is now saved. Now it is compatible with latest version of MPlayer.

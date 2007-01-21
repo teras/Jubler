@@ -58,16 +58,3 @@ public class TimeFormatter extends MaskFormatter {
         return value.toString();
     }
 }
-
-
-class TimeFormatterFactory extends JFormattedTextField.AbstractFormatterFactory {
-    
-    public JFormattedTextField.AbstractFormatter getFormatter(JFormattedTextField tf)  {
-        try { 
-            return new TimeFormatter();
-        }
-        catch ( ParseException e) {}
-        return null;
-    }
-    
-}

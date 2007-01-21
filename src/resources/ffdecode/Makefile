@@ -33,7 +33,7 @@ LIBRARIES=../libraries
 
 
 PROJ=ffdecode
-OBJPATH="com.panayotis.jubler.preview.decoders.FFMPEG com.panayotis.jubler.preview.decoders.NativeDecoder"
+OBJPATH="com.panayotis.jubler.media.preview.decoders.FFMPEG com.panayotis.jubler.media.preview.decoders.NativeDecoder"
 LIBPATH=-L${LIBRARIES}
 LIBS=-lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm
 INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil

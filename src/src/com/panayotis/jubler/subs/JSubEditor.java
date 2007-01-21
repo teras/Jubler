@@ -298,7 +298,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
                 AttachPrevB.setVisible(true);
                 parent.SubEditP.remove(this);
                 parent.validate();
-                parent.preview.validate();
+                parent.getSubPreview().validate();
                 dlg.getContentPane().add(this);
                 dlg.pack();
                 dlg.setVisible(true);
@@ -307,7 +307,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
                 DetachB.setVisible(true);
                 AttachTxtB.setVisible(false);
                 AttachPrevB.setVisible(false);
-                parent.preview.attachEditor(this);
+                parent.getSubPreview().attachEditor(this);
                 parent.validate();
                 dlg.setVisible(false);
                 break;

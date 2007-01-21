@@ -30,7 +30,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "com_panayotis_jubler_preview_decoders_FFMPEG.h"
+#include "com_panayotis_jubler_media_preview_decoders_FFMPEG.h"
 #include "utilities.h"
 
 jboolean decodeAudio(const char *input_filename, const char *output_filename, jlong seek_time_start, jlong seek_time_stop);
@@ -39,7 +39,7 @@ void fput_le32(FILE *stream, long int val);
 size_t audio_out(char *, size_t, size_t, FILE *);
 
 
-JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_preview_decoders_FFMPEG_createClip
+JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_createClip
   (JNIEnv * env, jobject this, jstring audio, jstring wav, jlong start, jlong stop)
 {
 	const char * audio_c;

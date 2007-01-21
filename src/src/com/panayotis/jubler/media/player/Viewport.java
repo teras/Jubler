@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.media.player;
 
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 
@@ -33,7 +34,7 @@ import com.panayotis.jubler.time.Time;
  */
 public interface Viewport {
     
-    public abstract Time start(String avi, Subtitles subs, Time when);
+    public abstract Time start(MediaFile avi, Subtitles subs, Time when);
     
     public abstract boolean pause(boolean pause);
     public abstract boolean quit();

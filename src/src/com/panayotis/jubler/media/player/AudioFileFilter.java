@@ -54,7 +54,7 @@ public class AudioFileFilter extends MediaFileFilter {
         if (pathname.isDirectory()) return true;
         String fname = pathname.getName().toLowerCase();
         if (cachesource!=null) {
-            String name = AudioCache.getNameFromCache(pathname);
+            String name = AudioCache.getNameFromCache(pathname.getPath());
             if ( name!= null && name.equals(cachesource)) return true;
             return false;
         }
@@ -69,11 +69,11 @@ public class AudioFileFilter extends MediaFileFilter {
         return _("All Audio files");
     }
     
-    public void setCheckForValidCache(File cachesource) {
+    public void setCheckForValidCache(String cachesource) {
         if (cachesource==null) {
             this.cachesource = null;
             return;
         }
-        this.cachesource = cachesource.getName();
+        this.cachesource = new File(cachesource).getName(); // trick to get the filename from the full path
     }
 }

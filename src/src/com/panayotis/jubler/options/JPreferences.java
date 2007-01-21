@@ -81,8 +81,8 @@ public class JPreferences extends JPanel implements OptionsHolder {
         smodel = new ShortcutsModel(jub.JublerMenuBar);
         
         initComponents();
-        jload = new JLoadOptions();
-        jsave = new JSaveOptions();
+        jload = new JLoadOptions(jub);
+        jsave = new JSaveOptions(jub);
         OptionsIO.loadSystemPreferences(this);
         
         LoadPanel.add(jload, BorderLayout.NORTH);

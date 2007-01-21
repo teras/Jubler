@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.media.preview;
+import com.panayotis.jubler.media.MediaFile;
 import static com.panayotis.jubler.media.preview.JFramePreview.DT;
 
 import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
@@ -34,7 +35,6 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.File;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -114,9 +114,9 @@ public class JWavePreview extends JPanel {
         decoder.forgetAudioCache();
     }
     
-    public void setAudiofile(File vfile, File afile, File cfile) {
-        /* We do two things at once: 1) start creating of cahce files, 2) update the filename of the JAudioLOader */
-        loader.setFilename(decoder.setAudiofile(vfile, afile, cfile, this));
+    public void setMediaFile(MediaFile mfile) {
+        /* We do two things at once: 1) start creating of cache files, 2) update the filename of the JAudioLoader */
+        loader.setFilename(decoder.setAudiofile(mfile, this));
         updateWave();
     }
     

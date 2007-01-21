@@ -22,10 +22,10 @@
  */
 
 package com.panayotis.jubler.media.preview;
-import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.AbstractDecoder;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.subs.JSubEditor;
@@ -33,8 +33,6 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
-import java.awt.Image;
-import java.io.File;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -73,6 +71,7 @@ public class JSubPreview extends javax.swing.JPanel {
     
     private int cursor_action = 0;
     
+    private MediaFile last_media_file = null;
     
     
     /** Creates new form JSubPreview */
@@ -103,6 +102,10 @@ public class JSubPreview extends javax.swing.JPanel {
         dialog.pack();
     }
     
+    
+    public float getFPS() {
+        return decoder.getFPS();
+    }
     
     public void windowHasChanged(int[] subid) {
         ignore_slider_changes = true;
@@ -162,9 +165,12 @@ public class JSubPreview extends javax.swing.JPanel {
         TimePosL.setText(_("Selected subtitles") + " "  + new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString());
     }
     
-    public void setMediaFiles(File vfile, File afile, File cfile) {
-        frame.setVideofile(vfile);
-        wave.setAudiofile(vfile, afile, cfile);
+    public void setMediaFile(MediaFile mfile) {
+        if (mfile.equals(last_media_file)) return;
+        last_media_file = mfile;
+        
+        frame.setMediaFile(mfile);
+        wave.setMediaFile(mfile);
     }
     
     public void setVisible(boolean status) {

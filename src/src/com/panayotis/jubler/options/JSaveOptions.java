@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.options;
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.format.AvailSubFormats;
 import com.panayotis.jubler.subs.format.SubFormat;
 import java.awt.BorderLayout;
@@ -38,10 +39,12 @@ public class JSaveOptions extends JOptionsGUI {
     private JRateChooser CFPS;
     
     /** Creates new form JSavePrefs */
-    public JSaveOptions() {
+    public JSaveOptions(Jubler jub) {
         initComponents();
 
         CFPS = new JRateChooser();
+        CFPS.setJubler(jub);
+        
         FPSPanel.add(CFPS, BorderLayout.CENTER);
         fillComponents();
     }

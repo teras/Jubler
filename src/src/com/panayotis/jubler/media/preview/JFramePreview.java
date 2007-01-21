@@ -23,9 +23,9 @@
 
 package com.panayotis.jubler.media.preview;
 
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.AbstractDecoder;
 import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.subs.style.SubStyle.Style;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,7 +34,6 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.image.ImageObserver;
-import java.io.File;
 import javax.swing.JPanel;
 
 
@@ -83,8 +82,8 @@ public class JFramePreview extends JPanel {
         return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null)+24);
     }
     
-    public void setVideofile(File vfile) {
-        decoder.setVideofile(vfile);
+    public void setMediaFile(MediaFile mfile) {
+        decoder.setMediaFile(mfile);
     }
     
     public void setEnabled(boolean enabled) {
