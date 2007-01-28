@@ -40,7 +40,7 @@ public interface Viewport {
     public abstract boolean quit();
     public abstract boolean seek(int secs);
     public abstract boolean jump(int secs);
-    public abstract boolean delaySubs(float secs);
+    public abstract boolean delaySubs(float secs);  // Relative value
     public abstract boolean changeSubs(Subtitles subs);
     
     public abstract boolean setSpeed(float speed);

@@ -24,13 +24,11 @@
 package com.panayotis.jubler.tools;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.player.TimeSync;
 import com.panayotis.jubler.options.JRateChooser;
-import com.panayotis.jubler.time.Time;
 
 /**
  *
@@ -78,6 +76,10 @@ public class JRecodeTime extends JTool {
     }
     
     
+    public void checkNumber(double d) {
+        if (Double.isInfinite(center)||Double.isNaN(center)) 
+                throw new ArithmeticException ("Recode is not possible");
+    }
     
     public void updateData(Jubler j) {
         /* WE WILL NOT EXECUTE   */
@@ -96,8 +98,10 @@ public class JRecodeTime extends JTool {
             
             /* Set recode parameters */
             center = (t2.timediff*t1.timepos - t1.timediff*t2.timepos) / (t2.timediff-t1.timediff);
-            System.out.println("Center="+center);
+            checkNumber(center);
             factor = (t1.timepos-t2.timepos+t1.timediff-t2.timediff) / (t1.timepos-t2.timepos);
+            checkNumber(center);
+
             CustomC.setText(Double.toString(center));
             CustomF.setText(Double.toString(factor));
             

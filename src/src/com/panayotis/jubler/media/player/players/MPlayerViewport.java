@@ -184,7 +184,7 @@ public class MPlayerViewport implements Viewport {
         return sendCommand("seek "+secs+" 2");
     }
     
-    public boolean delaySubs(float secs){
+    public boolean delaySubs(float secs){   // Relative
         isPaused = false;
         return sendCommand("sub_delay "+secs);
     }

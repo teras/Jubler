@@ -2,7 +2,7 @@
  * JFixer.java
  *
  * Created on 5 Ιούλιος 2005, 12:34 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -71,7 +71,7 @@ public class JFixer extends JTool {
         
         
         /* Sort subtitles first */
-        if (SortB.isSelected()) 
+        if (SortB.isSelected())
             subs.sort(((JTimeRegion)pos).getStartTime(), ((JTimeRegion)pos).getFinishTime());
         
         /* What to do with the remaining duration */
@@ -93,10 +93,15 @@ public class JFixer extends JTool {
         }
     }
     
-    public void execute(Jubler jub) {
-        super.execute(jub);
-        if (SortB.isSelected()) 
-            subs.sort(((JTimeRegion)pos).getStartTime(), ((JTimeRegion)pos).getFinishTime());
+    public boolean execute(Jubler jub) {
+        boolean res = super.execute(jub);
+        if (res) {
+            if (SortB.isSelected()) {
+                subs.sort(((JTimeRegion)pos).getStartTime(), ((JTimeRegion)pos).getFinishTime());
+                return true;
+            }
+        }
+        return false;
     }
     
     protected void affect(int index) {
@@ -126,11 +131,9 @@ public class JFixer extends JTool {
         /* Make sure min & max have a valid value */
         if ( mindur < 0 && maxdur < 0) {
             mindur = maxdur = curdur;
-        }
-        else if ( mindur < 0 ) {
+        } else if ( mindur < 0 ) {
             mindur = (curdur > maxdur) ? maxdur : curdur;
-        }
-        else if ( maxdur < 0 ) {
+        } else if ( maxdur < 0 ) {
             maxdur = (curdur < mindur) ? mindur : curdur;
         }
         
@@ -168,7 +171,7 @@ public class JFixer extends JTool {
             }
             return;
         }
-
+        
         /* Try to cleverly rearrange the subtitles */
         
         /* Available space */

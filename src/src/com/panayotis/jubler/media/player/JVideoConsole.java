@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.media.player;
 
-import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -42,6 +41,7 @@ import com.panayotis.jubler.media.preview.JSubSimpleGraph;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.util.Properties;
+import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
 
@@ -71,7 +71,7 @@ public class JVideoConsole extends javax.swing.JDialog {
     
     private double start_mark_sub, finish_mark_sub;
     
-    double subsdelay; /* Keep the difference of the subtitles */
+    private double subsdelay; /* Keep the difference of the subtitles */
     
     private ImageIcon Audio[];
     
@@ -84,15 +84,13 @@ public class JVideoConsole extends javax.swing.JDialog {
         
         initComponents();
         initImageIcons();
+        resetSubsDelay();
         
         if ( !player.supportPause()) {
             PauseB.setEnabled(false);
         }
         if ( !player.supportSubDisplace()) {
-            BBSubsB.setEnabled(false);
-            BSubsB.setEnabled(false);
-            FSubsB.setEnabled(false);
-            FFSubsB.setEnabled(false);
+            SubMover.setEnabled(false);
         }
         if ( !player.supportSeek()) {
             TimeS.setEnabled(false);
@@ -156,7 +154,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         player.setCentralLocation(getX(), getY()+getHeight());
         setVisible(true);
         
-        subsdelay = 0;
+        resetSubsDelay();
         submark_state = 0;
         view = player.getViewport();
         length = view.start(mfile, subs, starttime);
@@ -175,12 +173,11 @@ public class JVideoConsole extends javax.swing.JDialog {
     
     
     private void stop() {
-        
-        if (subsdelay >0.001 || subsdelay < -0.001) {
-            String dtime = (subsdelay < 0) ? "" : "-" ;    // It's inverse, since delaying subtitles means bring time forth
-            dtime += new Time(Math.abs(subsdelay)).toString();
-            JIDialog.message(this, _("The subtitle differences\n were {0}", dtime), _("Subtitle time differences"), JIDialog.INFORMATION_MESSAGE);
-        }
+//        if (subsdelay >0.001 || subsdelay < -0.001) {
+//            String dtime = (subsdelay < 0) ? "" : "-" ;    // It's inverse, since delaying subtitles means bring time forth
+//            dtime += new Time(Math.abs(subsdelay)).toString();
+//            JIDialog.message(this, _("The subtitle differences\n were {0}", dtime), _("Subtitle time differences"), JIDialog.INFORMATION_MESSAGE);
+//        }
         timer.stop();
         setVisible(false);
         parent.removeConsole(this);
@@ -268,11 +265,11 @@ public class JVideoConsole extends javax.swing.JDialog {
         AudioL = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         TimeL = new javax.swing.JLabel();
+        dtL = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         SliderP = new javax.swing.JPanel();
         TimeS = new javax.swing.JSlider();
         jPanel11 = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         PauseB = new javax.swing.JToggleButton();
@@ -284,25 +281,22 @@ public class JVideoConsole extends javax.swing.JDialog {
         FFMovieB = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         SubPanel = new javax.swing.JPanel();
-        BBSubsB = new javax.swing.JButton();
-        BSubsB = new javax.swing.JButton();
-        FSubsB = new javax.swing.JButton();
-        FFSubsB = new javax.swing.JButton();
+        LoadSubsB = new javax.swing.JButton();
+        White = new javax.swing.JToggleButton();
+        Pink = new javax.swing.JToggleButton();
+        Yellow = new javax.swing.JToggleButton();
+        Cyan = new javax.swing.JToggleButton();
         jPanel5 = new javax.swing.JPanel();
         MarkB = new javax.swing.JToggleButton();
-        LoadSubsB = new javax.swing.JButton();
         jPanel14 = new javax.swing.JPanel();
-        jSlider1 = new javax.swing.JSlider();
         jPanel15 = new javax.swing.JPanel();
         GrabSub = new javax.swing.JButton();
         Sync1B = new javax.swing.JToggleButton();
         Sync2B = new javax.swing.JToggleButton();
         ApplyB = new javax.swing.JButton();
-        jPanel13 = new javax.swing.JPanel();
-        White = new javax.swing.JToggleButton();
-        Pink = new javax.swing.JToggleButton();
-        Yellow = new javax.swing.JToggleButton();
-        Cyan = new javax.swing.JToggleButton();
+        jPanel12 = new javax.swing.JPanel();
+        SubMover = new javax.swing.JSlider();
+        SmoverL = new javax.swing.JLabel();
         SubShow = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -379,6 +373,11 @@ public class JVideoConsole extends javax.swing.JDialog {
         TimeL.setToolTipText(_("Current playback time"));
         jPanel9.add(TimeL, java.awt.BorderLayout.CENTER);
 
+        dtL.setFont(new java.awt.Font("Monospaced", 0, 12));
+        dtL.setText(" ");
+        dtL.setToolTipText(_("Subtitles time difference"));
+        jPanel9.add(dtL, java.awt.BorderLayout.SOUTH);
+
         jPanel10.add(jPanel9, java.awt.BorderLayout.NORTH);
 
         getContentPane().add(jPanel10, java.awt.BorderLayout.EAST);
@@ -408,8 +407,6 @@ public class JVideoConsole extends javax.swing.JDialog {
         jPanel6.add(SliderP, java.awt.BorderLayout.NORTH);
 
         jPanel11.setLayout(new java.awt.BorderLayout());
-
-        jPanel12.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
@@ -484,52 +481,67 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         jPanel4.add(NavPanel, java.awt.BorderLayout.CENTER);
 
-        jPanel12.add(jPanel4, java.awt.BorderLayout.NORTH);
+        jPanel11.add(jPanel4, java.awt.BorderLayout.NORTH);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         SubPanel.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
         SubPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        BBSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bbsubs.png")));
-        BBSubsB.setToolTipText(_("Delay subtitles by 1 second"));
-        BBSubsB.addActionListener(new java.awt.event.ActionListener() {
+        LoadSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reload.png")));
+        LoadSubsB.setToolTipText(_("Load new subtitles into player"));
+        LoadSubsB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BBSubsBActionPerformed(evt);
+                LoadSubsBActionPerformed(evt);
             }
         });
 
-        SubPanel.add(BBSubsB);
+        SubPanel.add(LoadSubsB);
 
-        BSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bsubs.png")));
-        BSubsB.setToolTipText(_("Delay subtitles by 100 milliseconds"));
-        BSubsB.addActionListener(new java.awt.event.ActionListener() {
+        MarkGroup.add(White);
+        White.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pen.png")));
+        White.setToolTipText(_("Mark subttile as white"));
+        White.setActionCommand("0");
+        White.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BSubsBActionPerformed(evt);
+                selectMark(evt);
             }
         });
 
-        SubPanel.add(BSubsB);
+        SubPanel.add(White);
 
-        FSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/fsubs.png")));
-        FSubsB.setToolTipText(_("Forward subtitles by 100 milliseconds"));
-        FSubsB.addActionListener(new java.awt.event.ActionListener() {
+        MarkGroup.add(Pink);
+        Pink.setToolTipText(_("Mark subttile as pink"));
+        Pink.setActionCommand("1");
+        Pink.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FSubsBActionPerformed(evt);
+                selectMark(evt);
             }
         });
 
-        SubPanel.add(FSubsB);
+        SubPanel.add(Pink);
 
-        FFSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ffsubs.png")));
-        FFSubsB.setToolTipText(_("Forward subtitles by 1 second"));
-        FFSubsB.addActionListener(new java.awt.event.ActionListener() {
+        MarkGroup.add(Yellow);
+        Yellow.setToolTipText(_("Mark subttile as yellow"));
+        Yellow.setActionCommand("2");
+        Yellow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FFSubsBActionPerformed(evt);
+                selectMark(evt);
             }
         });
 
-        SubPanel.add(FFSubsB);
+        SubPanel.add(Yellow);
+
+        MarkGroup.add(Cyan);
+        Cyan.setToolTipText(_("Mark subttile as cyan"));
+        Cyan.setActionCommand("3");
+        Cyan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectMark(evt);
+            }
+        });
+
+        SubPanel.add(Cyan);
 
         jPanel2.add(SubPanel, java.awt.BorderLayout.CENTER);
 
@@ -547,23 +559,11 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         jPanel5.add(MarkB, java.awt.BorderLayout.CENTER);
 
-        LoadSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reload.png")));
-        LoadSubsB.setToolTipText(_("Load new subtitles into player"));
-        LoadSubsB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LoadSubsBActionPerformed(evt);
-            }
-        });
-
-        jPanel5.add(LoadSubsB, java.awt.BorderLayout.WEST);
-
         jPanel2.add(jPanel5, java.awt.BorderLayout.EAST);
 
-        jPanel12.add(jPanel2, java.awt.BorderLayout.CENTER);
+        jPanel11.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jPanel14.setLayout(new java.awt.BorderLayout());
-
-        jPanel14.add(jSlider1, java.awt.BorderLayout.WEST);
 
         jPanel15.setLayout(new java.awt.GridLayout(1, 4));
 
@@ -578,7 +578,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         jPanel15.add(GrabSub);
 
         Sync1B.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync1b.png")));
-        Sync1B.setToolTipText(_("Mark a second synchronized position of the subtitles."));
+        Sync1B.setToolTipText(_("Mark first synchronization position of the subtitles."));
         Sync1B.setActionCommand("sync1");
         Sync1B.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync1c.png")));
         Sync1B.addActionListener(new java.awt.event.ActionListener() {
@@ -590,7 +590,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         jPanel15.add(Sync1B);
 
         Sync2B.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync2b.png")));
-        Sync2B.setToolTipText(_("Mark a second synchronized position of the subtitles."));
+        Sync2B.setToolTipText(_("Mark second synchronization position of the subtitles."));
         Sync2B.setActionCommand("sync2");
         Sync2B.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync2c.png")));
         Sync2B.addActionListener(new java.awt.event.ActionListener() {
@@ -614,58 +614,24 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         jPanel14.add(jPanel15, java.awt.BorderLayout.CENTER);
 
-        jPanel12.add(jPanel14, java.awt.BorderLayout.SOUTH);
+        jPanel12.setLayout(new java.awt.BorderLayout());
 
-        jPanel11.add(jPanel12, java.awt.BorderLayout.CENTER);
-
-        jPanel13.setLayout(new java.awt.GridLayout(4, 1));
-
-        MarkGroup.add(White);
-        White.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pen.png")));
-        White.setToolTipText(_("Mark subttile as white"));
-        White.setActionCommand("0");
-        White.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectMark(evt);
+        SubMover.setSnapToTicks(true);
+        SubMover.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                SubMoverStateChanged(evt);
             }
         });
 
-        jPanel13.add(White);
+        jPanel12.add(SubMover, java.awt.BorderLayout.CENTER);
 
-        MarkGroup.add(Pink);
-        Pink.setToolTipText(_("Mark subttile as pink"));
-        Pink.setActionCommand("1");
-        Pink.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectMark(evt);
-            }
-        });
+        SmoverL.setText(" ");
+        SmoverL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        jPanel12.add(SmoverL, java.awt.BorderLayout.NORTH);
 
-        jPanel13.add(Pink);
+        jPanel14.add(jPanel12, java.awt.BorderLayout.WEST);
 
-        MarkGroup.add(Yellow);
-        Yellow.setToolTipText(_("Mark subttile as yellow"));
-        Yellow.setActionCommand("2");
-        Yellow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectMark(evt);
-            }
-        });
-
-        jPanel13.add(Yellow);
-
-        MarkGroup.add(Cyan);
-        Cyan.setToolTipText(_("Mark subttile as cyan"));
-        Cyan.setActionCommand("3");
-        Cyan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectMark(evt);
-            }
-        });
-
-        jPanel13.add(Cyan);
-
-        jPanel11.add(jPanel13, java.awt.BorderLayout.EAST);
+        jPanel11.add(jPanel14, java.awt.BorderLayout.SOUTH);
 
         jPanel6.add(jPanel11, java.awt.BorderLayout.CENTER);
 
@@ -685,6 +651,28 @@ public class JVideoConsole extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    private float last = 0;
+    
+    private void SubMoverStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SubMoverStateChanged
+        JSlider source = (JSlider)evt.getSource();
+        if (source.getValueIsAdjusting()) {
+            float value = (source.getValue() - 50) / 5.0f;
+            String label = value+" sec";
+            if (value >= 0) label = "+" + value;
+            SmoverL.setText(label);
+            
+            float diff = value-last;
+            checkValid(view.delaySubs(diff));
+            addSubsDelay(diff);
+            last = value;
+            
+        } else {
+            SubMover.getModel().setValue(50);
+            SmoverL.setText(" ");
+            last = 0;
+        }
+    }//GEN-LAST:event_SubMoverStateChanged
+    
     private void GrabSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GrabSubActionPerformed
         checkValid(view.pause(true));
         GrabSub.setEnabled(false);
@@ -695,20 +683,20 @@ public class JVideoConsole extends javax.swing.JDialog {
         
         checkValid(view.pause(true));
         res = parent.recodeSubtitles(sync1, sync2);
-        
         if (res) {
             destroySyncMark(true);
             destroySyncMark(false);
-            ApplyB.setEnabled(false);
-            subsdelay = 0;
+            resetSubsDelay();
             diagram.setSubtitles(parent.getSubtitles());
             
             player.setCentralLocation(getX(), getY()+getHeight());
             checkValid(view.changeSubs(parent.getSubtitles()));
+        } else {
+            /* An error occured */
+            checkValid(view.pause(false));
         }
         
-//        checkValid(view.pause(false));
-        
+        ApplyB.setEnabled(false);
     }//GEN-LAST:event_ApplyBActionPerformed
     
     private void SyncBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SyncBActionPerformed
@@ -824,26 +812,6 @@ public class JVideoConsole extends javax.swing.JDialog {
         checkValid(view.jump(-30));
     }//GEN-LAST:event_BBMovieBActionPerformed
     
-    private void FFSubsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FFSubsBActionPerformed
-        checkValid(view.delaySubs(1f));
-        subsdelay += 1;
-    }//GEN-LAST:event_FFSubsBActionPerformed
-    
-    private void FSubsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FSubsBActionPerformed
-        checkValid(view.delaySubs(0.1f));
-        subsdelay += 0.1;
-    }//GEN-LAST:event_FSubsBActionPerformed
-    
-    private void BSubsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSubsBActionPerformed
-        checkValid(view.delaySubs(-0.1f));
-        subsdelay += -0.1;
-    }//GEN-LAST:event_BSubsBActionPerformed
-    
-    private void BBSubsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBSubsBActionPerformed
-        checkValid(view.delaySubs(-1f));
-        subsdelay += -1;
-    }//GEN-LAST:event_BBSubsBActionPerformed
-    
     private void QuitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitBActionPerformed
         checkValid(false); /* Always think that the user wants to exit here */
     }//GEN-LAST:event_QuitBActionPerformed
@@ -885,7 +853,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         if (!GrabSub.isEnabled()) {
             /* This is after a grab subtitle time */
             float diff = (float)(newtime - view.getTime() - subsdelay);
-            subsdelay += diff;
+            addSubsDelay(diff);
             GrabSub.setEnabled(true);
             checkValid(view.delaySubs(diff));
             checkValid(view.seek((int)(newtime-subsdelay)));
@@ -908,8 +876,14 @@ public class JVideoConsole extends javax.swing.JDialog {
     }
     
     private void destroySyncMark(boolean is_first) {
-        if (is_first) sync1 = null;
-        else sync2 = null;
+        if (is_first) {
+            sync1 = null;
+            Sync1B.setSelected(false);
+        } else {
+            sync2 = null;
+            Sync2B.setSelected(false);
+        }
+        ApplyB.setEnabled(false);
     }
     
     
@@ -924,8 +898,18 @@ public class JVideoConsole extends javax.swing.JDialog {
         if (sync1!=null && sync2!=null) {
             ApplyB.setEnabled(true);
         }
-        
-        System.out.println(sync);
+    }
+    
+    private final void addSubsDelay(double value) {
+        subsdelay += value;
+        if (subsdelay<0)
+            dtL.setText("-"+new Time(-subsdelay).toString());
+        else
+            dtL.setText("+"+new Time(subsdelay).toString());
+    }
+    private final void resetSubsDelay() {
+        subsdelay = 0;
+        dtL.setText("+00:00:00,000");
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -933,14 +917,10 @@ public class JVideoConsole extends javax.swing.JDialog {
     private javax.swing.JLabel AudioL;
     private javax.swing.JSlider AudioS;
     private javax.swing.JButton BBMovieB;
-    private javax.swing.JButton BBSubsB;
     private javax.swing.JButton BMovieB;
-    private javax.swing.JButton BSubsB;
     private javax.swing.JToggleButton Cyan;
     private javax.swing.JButton FFMovieB;
-    private javax.swing.JButton FFSubsB;
     private javax.swing.JButton FMovieB;
-    private javax.swing.JButton FSubsB;
     private javax.swing.JButton GrabSub;
     private javax.swing.JButton LoadSubsB;
     private javax.swing.JToggleButton MarkB;
@@ -951,7 +931,9 @@ public class JVideoConsole extends javax.swing.JDialog {
     private javax.swing.JButton QuitB;
     private javax.swing.JButton ResetSpeedB;
     private javax.swing.JPanel SliderP;
+    private javax.swing.JLabel SmoverL;
     private javax.swing.JSlider SpeedS;
+    private javax.swing.JSlider SubMover;
     private javax.swing.JPanel SubPanel;
     private javax.swing.JTextField SubShow;
     private javax.swing.JToggleButton Sync1B;
@@ -960,11 +942,11 @@ public class JVideoConsole extends javax.swing.JDialog {
     private javax.swing.JSlider TimeS;
     private javax.swing.JToggleButton White;
     private javax.swing.JToggleButton Yellow;
+    private javax.swing.JLabel dtL;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel2;
@@ -975,7 +957,6 @@ public class JVideoConsole extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JSlider jSlider1;
     // End of variables declaration//GEN-END:variables
     
     private void initImageIcons() {

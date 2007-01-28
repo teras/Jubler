@@ -1818,8 +1818,16 @@ public class Jubler extends JFrame {
     
     
     public boolean recodeSubtitles(TimeSync first, TimeSync second) {
+        boolean res = true;
         recode.recodeUpdate(first, second);
-        return recode.execute(this);
+        try {
+            res = recode.execute(this);
+        } catch (ArithmeticException e) {
+            return false;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+        return res;
     }
     private void RecodeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecodeTMActionPerformed
         recode.execute(this);
