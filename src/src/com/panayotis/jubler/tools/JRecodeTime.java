@@ -2,7 +2,7 @@
  * JRecodeTime.java
  *
  * Created on 25 Ιούνιος 2005, 1:53 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -28,7 +28,9 @@ import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.player.TimeSync;
 import com.panayotis.jubler.options.JRateChooser;
+import com.panayotis.jubler.time.Time;
 
 /**
  *
@@ -38,9 +40,11 @@ public class JRecodeTime extends JTool {
     private double factor;
     private double center;
     
-    private JTimeSpinner CSpinner;
     private JRateChooser FromR, ToR;
-
+    
+    private TimeSync t1, t2;
+    
+    
     
     
     /** Creates new form JRecodeTime */
@@ -50,9 +54,6 @@ public class JRecodeTime extends JTool {
     
     public void initialize() {
         initComponents();
-        CSpinner = new JTimeSpinner();
-        CenterTime.add(CSpinner, BorderLayout.CENTER);
-        CSpinner.setToolTipText(_("The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."));
         pos.forceRangeSelection();
         
         FromR = new JRateChooser();
@@ -65,27 +66,68 @@ public class JRecodeTime extends JTool {
         return _("Recode time");
     }
     
-    public void execute (Jubler j) {
-        FromR.setJubler(j);
-        ToR.setJubler(j);
-        super.execute(j);
+    
+    public void recodeUpdate(TimeSync first, TimeSync second) {
+        if (first.smallerThan(second)) {
+            t1 = first;
+            t2 = second;
+        } else {
+            t1 = second;
+            t2 = first;
+        }
     }
     
-    public void storeSelections () {
-        center = CSpinner.getTimeValue().toSeconds();
+    
+    
+    public void updateData(Jubler j) {
+        /* WE WILL NOT EXECUTE   */
+        if (t1==null) {
+            /* normal execution */
+            super.updateData(j);
+        } else {
+            /* Directly execute from VideoConsole - do not follow normal procedure*/
+            subs = j.getSubtitles();
+            selected = new int[2];
+            selected[0] = subs.findSubEntry(t1.timepos, true);
+            selected[1] = subs.findSubEntry(t2.timepos, true);
+            
+            pos.updateData(subs, selected);
+            jparent = j;
+            
+            /* Set recode parameters */
+            center = (t2.timediff*t1.timepos - t1.timediff*t2.timepos) / (t2.timediff-t1.timediff);
+            System.out.println("Center="+center);
+            factor = (t1.timepos-t2.timepos+t1.timediff-t2.timediff) / (t1.timepos-t2.timepos);
+            CustomC.setText(Double.toString(center));
+            CustomF.setText(Double.toString(factor));
+            
+            /* Set default selections */
+            CustomB.setSelected(true);
+            
+            
+            t1 = null;
+            t2 = null;
+        }
+        /* Set other values */
+        FromR.setJubler(j);
+        ToR.setJubler(j);
+    }
+    
+    public void storeSelections() {
+        center = 0;
         factor = 1;
         try {
             if (AutoB.isSelected()) {
                 factor  = FromR.getFPSValue() / ToR.getFPSValue();
-            }
-            else {
+            } else {
                 factor = Double.parseDouble(CustomF.getText());
             }
+            center = Double.parseDouble(CustomC.getText());
         } catch (NumberFormatException e) {
         }
     }
-
-  protected void affect(int index) {
+    
+    protected void affect(int index) {
         SubEntry sub = affected_list.elementAt(index);
         sub.getStartTime().recodeTime(center, factor);
         sub.getFinishTime().recodeTime(center, factor);
@@ -108,9 +150,10 @@ public class JRecodeTime extends JTool {
         FromP = new javax.swing.JPanel();
         ToP = new javax.swing.JPanel();
         CustomB = new javax.swing.JRadioButton();
-        CustomF = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        CenterTime = new javax.swing.JPanel();
+        CustomF = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        CustomC = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -160,17 +203,21 @@ public class JRecodeTime extends JTool {
 
         jPanel1.add(CustomB);
 
+        jLabel1.setText(_("Recoding factor"));
+        jPanel1.add(jLabel1);
+
         CustomF.setText("1.0");
         CustomF.setToolTipText(_("The value of the custom factor which will do the recoding"));
         CustomF.setEnabled(false);
         jPanel1.add(CustomF);
 
-        jLabel1.setText(_("Center time"));
-        jPanel1.add(jLabel1);
+        jLabel3.setText(_("Central time"));
+        jPanel1.add(jLabel3);
 
-        CenterTime.setLayout(new java.awt.BorderLayout());
-
-        jPanel1.add(CenterTime);
+        CustomC.setText("1.0");
+        CustomC.setToolTipText(_("The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."));
+        CustomC.setEnabled(false);
+        jPanel1.add(CustomC);
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
 
@@ -191,14 +238,15 @@ public class JRecodeTime extends JTool {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton AutoB;
-    private javax.swing.JPanel CenterTime;
     private javax.swing.JRadioButton CustomB;
+    private javax.swing.JTextField CustomC;
     private javax.swing.JTextField CustomF;
     private javax.swing.ButtonGroup Factor;
     private javax.swing.JPanel FromP;
     private javax.swing.JPanel ToP;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

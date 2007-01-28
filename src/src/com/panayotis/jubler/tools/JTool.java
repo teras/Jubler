@@ -62,19 +62,19 @@ public abstract class JTool extends JPanel {
     
     
     /* Update the values, display the dialog and execute this tool */
-    public void execute(Jubler jub) {
+    public boolean execute(Jubler jub) {
         int res;
         UndoEntry undo;
 
         updateData(jub);
         res = JIDialog.question(jparent, this, getToolTitle());
-        if ( res != JIDialog.OK_OPTION) return;
+        if ( res != JIDialog.OK_OPTION) return false;
         
         jparent.getUndoList().addUndo( new UndoEntry(subs, getToolTitle()));
         SubEntry [] selected = jparent.getSelectedSubs();
         
         affected_list = pos.getAffectedSubs();
-        if ( affected_list.size() == 0 ) return;
+        if ( affected_list.size() == 0 ) return false;
         
         storeSelections();
         
@@ -82,6 +82,7 @@ public abstract class JTool extends JPanel {
             affect(i);
         }
         jparent.tableHasChanged(selected);
+        return true;
     }
     
     

@@ -38,6 +38,7 @@ import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.player.JVideoConsole;
 import com.panayotis.jubler.media.player.JVideofileSelector;
+import com.panayotis.jubler.media.player.TimeSync;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.media.player.players.AvailPlayers;
 import com.panayotis.jubler.media.preview.JSubPreview;
@@ -1816,6 +1817,10 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_SplitTMActionPerformed
     
     
+    public boolean recodeSubtitles(TimeSync first, TimeSync second) {
+        recode.recodeUpdate(first, second);
+        return recode.execute(this);
+    }
     private void RecodeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecodeTMActionPerformed
         recode.execute(this);
     }//GEN-LAST:event_RecodeTMActionPerformed
@@ -2041,9 +2046,9 @@ public class Jubler extends JFrame {
         Subtitles newsubs;
         Jubler work;
         
-        if (subs==null || force_into_same_window) 
+        if (subs==null || force_into_same_window)
             work = this;
-        else 
+        else
             work = new Jubler();
         
         File old_current_file = work.current_file;
@@ -2091,7 +2096,7 @@ public class Jubler extends JFrame {
     private void updateConsoles(double t) {
         if (disable_consoles_update) return;
         for (int i = 0 ; i < connected_consoles.size() ; i++ ) {
-            connected_consoles.elementAt(i).setTime(t-2);
+            connected_consoles.elementAt(i).setTime(t);
         }
     }
     

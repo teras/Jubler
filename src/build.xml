@@ -271,11 +271,8 @@
 
 	<target name="-pre-compile" depends="findsystem,noMacSystem,MacSystem"/>
 	
-	<target name="-post-compile">
-		<copy file="resources/system/freesans.ttf" todir="build/classes/lib"/>
-	</target>
-	<target name="-pre-jar">
-		<delete dir="build/classes/lib"/>
+	<target name="-post-jar">
+		<copy file="resources/system/freesans.ttf" todir="dist/lib"/>
 	</target>
 
 </project>
