@@ -293,7 +293,6 @@ public class JVideoConsole extends javax.swing.JDialog {
         GrabSub = new javax.swing.JButton();
         Sync1B = new javax.swing.JToggleButton();
         Sync2B = new javax.swing.JToggleButton();
-        ApplyB = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         SubMover = new javax.swing.JSlider();
         SmoverL = new javax.swing.JLabel();
@@ -601,17 +600,6 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         jPanel15.add(Sync2B);
 
-        ApplyB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/apply.png")));
-        ApplyB.setToolTipText(_("Synchronize subtitles based on the two time positions."));
-        ApplyB.setEnabled(false);
-        ApplyB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ApplyBActionPerformed(evt);
-            }
-        });
-
-        jPanel15.add(ApplyB);
-
         jPanel14.add(jPanel15, java.awt.BorderLayout.CENTER);
 
         jPanel12.setLayout(new java.awt.BorderLayout());
@@ -677,27 +665,6 @@ public class JVideoConsole extends javax.swing.JDialog {
         checkValid(view.pause(true));
         GrabSub.setEnabled(false);
     }//GEN-LAST:event_GrabSubActionPerformed
-    
-    private void ApplyBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ApplyBActionPerformed
-        boolean res;
-        
-        checkValid(view.pause(true));
-        res = parent.recodeSubtitles(sync1, sync2);
-        if (res) {
-            destroySyncMark(true);
-            destroySyncMark(false);
-            resetSubsDelay();
-            diagram.setSubtitles(parent.getSubtitles());
-            
-            player.setCentralLocation(getX(), getY()+getHeight());
-            checkValid(view.changeSubs(parent.getSubtitles()));
-        } else {
-            /* An error occured */
-            checkValid(view.pause(false));
-        }
-        
-        ApplyB.setEnabled(false);
-    }//GEN-LAST:event_ApplyBActionPerformed
     
     private void SyncBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SyncBActionPerformed
         boolean is_first = evt.getActionCommand().equals("sync1");
@@ -883,20 +850,32 @@ public class JVideoConsole extends javax.swing.JDialog {
             sync2 = null;
             Sync2B.setSelected(false);
         }
-        ApplyB.setEnabled(false);
     }
     
     
     private void createNewSyncMark(boolean is_first) {
-        
-        
         TimeSync sync = new TimeSync(view.getTime()+subsdelay, -subsdelay);
-        
         if (is_first) sync1 = sync;
         else sync2 = sync;
         
+        /* We are able to sync - automatically do the syncing !!! */
         if (sync1!=null && sync2!=null) {
-            ApplyB.setEnabled(true);
+            boolean res;
+            
+            checkValid(view.pause(true));
+            res = parent.recodeSubtitles(sync1, sync2);
+            if (res) {
+                destroySyncMark(true);
+                destroySyncMark(false);
+                resetSubsDelay();
+                diagram.setSubtitles(parent.getSubtitles());
+                
+                player.setCentralLocation(getX(), getY()+getHeight());
+                checkValid(view.changeSubs(parent.getSubtitles()));
+            } else {
+                /* An error occured */
+                checkValid(view.pause(false));
+            }
         }
     }
     
@@ -913,7 +892,6 @@ public class JVideoConsole extends javax.swing.JDialog {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton ApplyB;
     private javax.swing.JLabel AudioL;
     private javax.swing.JSlider AudioS;
     private javax.swing.JButton BBMovieB;
