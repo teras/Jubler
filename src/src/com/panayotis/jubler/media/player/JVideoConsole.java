@@ -646,7 +646,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         if (source.getValueIsAdjusting()) {
             float value = (source.getValue() - 50) / 5.0f;
             String label = value+" sec";
-            if (value >= 0) label = "+" + value;
+            if (value >= 0) label = "+" + label;
             SmoverL.setText(label);
             
             float diff = value-last;
@@ -695,6 +695,8 @@ public class JVideoConsole extends javax.swing.JDialog {
     
     private void PauseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PauseBActionPerformed
         checkValid(view.pause(PauseB.isSelected()));
+        if ( (!PauseB.isSelected()) && (!GrabSub.isEnabled()) )
+            GrabSub.setEnabled(true);
     }//GEN-LAST:event_PauseBActionPerformed
     
     private void AudioSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_AudioSStateChanged
@@ -837,7 +839,7 @@ public class JVideoConsole extends javax.swing.JDialog {
             }
         } else {
             /* This is after a normal click */
-            if (view.isPaused()) return;
+         //   if (view.isPaused()) return;
             checkValid(view.seek((int)(newtime+subsdelay-2)));
         }
     }
@@ -874,6 +876,7 @@ public class JVideoConsole extends javax.swing.JDialog {
                 checkValid(view.changeSubs(parent.getSubtitles()));
             } else {
                 /* An error occured */
+                destroySyncMark(is_first);
                 checkValid(view.pause(false));
             }
         }
