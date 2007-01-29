@@ -273,6 +273,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         PauseB = new javax.swing.JToggleButton();
+        LoadSubsB = new javax.swing.JButton();
         QuitB = new javax.swing.JButton();
         NavPanel = new javax.swing.JPanel();
         BBMovieB = new javax.swing.JButton();
@@ -281,7 +282,6 @@ public class JVideoConsole extends javax.swing.JDialog {
         FFMovieB = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         SubPanel = new javax.swing.JPanel();
-        LoadSubsB = new javax.swing.JButton();
         White = new javax.swing.JToggleButton();
         Pink = new javax.swing.JToggleButton();
         Yellow = new javax.swing.JToggleButton();
@@ -301,6 +301,12 @@ public class JVideoConsole extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(_("Video Console"));
         setResizable(false);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                formKeyTyped(evt);
+            }
+        });
+
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jPanel7.setLayout(new java.awt.BorderLayout());
@@ -423,6 +429,16 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         jPanel3.add(PauseB);
 
+        LoadSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reload.png")));
+        LoadSubsB.setToolTipText(_("Load new subtitles into player"));
+        LoadSubsB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoadSubsBActionPerformed(evt);
+            }
+        });
+
+        jPanel3.add(LoadSubsB);
+
         QuitB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/quit.png")));
         QuitB.setToolTipText(_("Quit Player"));
         QuitB.addActionListener(new java.awt.event.ActionListener() {
@@ -433,7 +449,7 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         jPanel3.add(QuitB);
 
-        jPanel4.add(jPanel3, java.awt.BorderLayout.WEST);
+        jPanel4.add(jPanel3, java.awt.BorderLayout.CENTER);
 
         NavPanel.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
@@ -478,7 +494,7 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         NavPanel.add(FFMovieB);
 
-        jPanel4.add(NavPanel, java.awt.BorderLayout.CENTER);
+        jPanel4.add(NavPanel, java.awt.BorderLayout.EAST);
 
         jPanel11.add(jPanel4, java.awt.BorderLayout.NORTH);
 
@@ -487,16 +503,6 @@ public class JVideoConsole extends javax.swing.JDialog {
         SubPanel.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
         SubPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        LoadSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reload.png")));
-        LoadSubsB.setToolTipText(_("Load new subtitles into player"));
-        LoadSubsB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LoadSubsBActionPerformed(evt);
-            }
-        });
-
-        SubPanel.add(LoadSubsB);
-
         MarkGroup.add(White);
         White.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pen.png")));
         White.setToolTipText(_("Mark subttile as white"));
@@ -638,6 +644,10 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
+        System.out.println(evt.toString());
+    }//GEN-LAST:event_formKeyTyped
     
     private float last = 0;
     
