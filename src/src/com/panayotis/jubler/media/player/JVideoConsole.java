@@ -301,12 +301,6 @@ public class JVideoConsole extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(_("Video Console"));
         setResizable(false);
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                formKeyTyped(evt);
-            }
-        });
-
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         jPanel7.setLayout(new java.awt.BorderLayout());
@@ -611,6 +605,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         SubMover.setSnapToTicks(true);
+        SubMover.setToolTipText(_("Shift subtitles on the fly"));
         SubMover.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 SubMoverStateChanged(evt);
@@ -644,10 +639,6 @@ public class JVideoConsole extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyTyped
-        System.out.println(evt.toString());
-    }//GEN-LAST:event_formKeyTyped
     
     private float last = 0;
     
