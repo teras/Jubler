@@ -2,7 +2,7 @@
  * JSavePrefs.java
  *
  * Created on 23 Ιούνιος 2005, 2:32 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -41,15 +41,16 @@ public class JSaveOptions extends JOptionsGUI {
     /** Creates new form JSavePrefs */
     public JSaveOptions() {
         initComponents();
-
+        
         CFPS = new JRateChooser();
         
         FPSPanel.add(CFPS, BorderLayout.CENTER);
         fillComponents();
     }
     
-    public void updateJubler(Jubler jub) {
+    public void updateVisuals(Jubler jub) {
         CFPS.setJubler(jub);
+        updateVisualFPS(null);  // get the current SubFormat
     }
     
     private void fillComponents() {
@@ -66,7 +67,7 @@ public class JSaveOptions extends JOptionsGUI {
     
     
     public float getFPS() {
-         return CFPS.getFPSValue();
+        return CFPS.getFPSValue();
     }
     
     public String getEncoding() {
@@ -98,22 +99,17 @@ public class JSaveOptions extends JOptionsGUI {
         
         SubFormat f = AvailSubFormats.findFromName(format);
         setCombo(CFormat, (f!=null)?f.getDescription():"UNKNOWN", "UNKNOWN");
+        updateVisualFPS(f);
     }
     
     
-    public void saveState() {
-        enc_state = getItemName(CEnc);
-        fps_state = CFPS.getFPS();
-        format_state = getItemName(CFormat);
+    /* Execute this method whenever the output format is changed (or this panel is displayed */
+    private void updateVisualFPS(SubFormat f) {
+        if (f==null) f = getFormat();
+        boolean supports_fps = f.supportsFPS();
+        FPSPanelL.setVisible(supports_fps);
+        FPSPanel.setVisible(supports_fps);
     }
-    
-    public void restoreState() {
-        setCombo(CEnc, enc_state, "US-ASCII");
-        setCombo(CFormat, format_state, "UNKNOWN");
-        CFPS.setFPS(fps_state);
-    }
-    
-    
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -122,45 +118,54 @@ public class JSaveOptions extends JOptionsGUI {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jLabel1 = new javax.swing.JLabel();
-        CEnc = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        FPSPanel = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        CFormatL = new javax.swing.JLabel();
         CFormat = new javax.swing.JComboBox();
+        CEncL = new javax.swing.JLabel();
+        CEnc = new javax.swing.JComboBox();
+        FPSPanelL = new javax.swing.JLabel();
+        FPSPanel = new javax.swing.JPanel();
 
         setLayout(new java.awt.GridLayout(3, 2));
 
-        jLabel1.setText(_("Encoding"));
-        add(jLabel1);
+        CFormatL.setText(_("Format"));
+        add(CFormatL);
+
+        CFormat.setToolTipText(_("Subtitle format of the output file (SRT is prefered)"));
+        CFormat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CFormatActionPerformed(evt);
+            }
+        });
+
+        add(CFormat);
+
+        CEncL.setText(_("Encoding"));
+        add(CEncL);
 
         CEnc.setToolTipText(_("Encoding of the saved file"));
         add(CEnc);
 
-        jLabel2.setText(_("FPS"));
-        add(jLabel2);
+        FPSPanelL.setText(_("FPS"));
+        add(FPSPanelL);
 
         FPSPanel.setLayout(new java.awt.BorderLayout());
 
         add(FPSPanel);
 
-        jLabel3.setText(_("Format"));
-        add(jLabel3);
-
-        CFormat.setToolTipText(_("Subtitle format of the output file (SRT is prefered)"));
-        add(CFormat);
-
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
+    
+    private void CFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CFormatActionPerformed
+        updateVisualFPS(null);
+    }//GEN-LAST:event_CFormatActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CEnc;
+    private javax.swing.JLabel CEncL;
     private javax.swing.JComboBox CFormat;
+    private javax.swing.JLabel CFormatL;
     private javax.swing.JPanel FPSPanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel FPSPanelL;
     // End of variables declaration//GEN-END:variables
     
 }

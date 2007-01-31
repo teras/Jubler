@@ -96,4 +96,8 @@ public class SubRip extends AbstractTextSubFormat {
         counter = 1;
         return super.makeHeader(subs);
     }
+
+    public boolean supportsFPS() {
+        return false;
+    }
 }

@@ -145,4 +145,8 @@ public class SubViewer extends AbstractTextSubFormat {
         
         return input;
     }
+
+    public boolean supportsFPS() {
+        return false;
+    }
 }

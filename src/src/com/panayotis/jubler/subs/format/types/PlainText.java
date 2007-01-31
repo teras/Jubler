@@ -83,4 +83,8 @@ public class PlainText extends AbstractTextSubFormat {
         current_time = 0;
         return super.initLoader(input, subs);
     }
+
+    public boolean supportsFPS() {
+        return false;
+    }
 }

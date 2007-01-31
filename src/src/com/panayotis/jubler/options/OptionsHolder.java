@@ -32,8 +32,4 @@ import java.util.Properties;
 public interface OptionsHolder {
     public abstract void loadPreferences(Properties props);
     public abstract void savePreferences(Properties props);
-    
-    public abstract void saveState();
-    public abstract void restoreState();
-    
 }

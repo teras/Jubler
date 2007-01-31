@@ -47,7 +47,7 @@ public class JLoadOptions extends JOptionsGUI {
     }
     
 
-    public void updateJubler(Jubler jub) {
+    public void updateVisuals(Jubler jub) {
         CFPS.setJubler(jub);
     }
     
@@ -95,20 +95,7 @@ public class JLoadOptions extends JOptionsGUI {
         props.setProperty("Load.FPS", CFPS.getFPS());
     }
     
-    public void saveState() {
-        enc1_state = getItemName(CEnc1);
-        enc2_state = getItemName(CEnc2);
-        enc3_state = getItemName(CEnc3);
-        fps_state = CFPS.getFPS();
-    }
-    
-    public void restoreState() {
-        setCombo(CEnc1, enc1_state, "US-ASCII");
-        setCombo(CEnc2, enc2_state, "US-ASCII");
-        setCombo(CEnc3, enc3_state, "US-ASCII");
-        CFPS.setFPS(fps_state);
-    }
-    
+      
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

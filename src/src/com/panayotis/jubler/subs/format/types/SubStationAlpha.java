@@ -84,6 +84,9 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         return testpat;
     }
     
+    public boolean supportsFPS() {
+        return false;
+    }
     
     
     protected SubEntry getSubEntry(Matcher m) {
@@ -106,7 +109,7 @@ public class SubStationAlpha extends AbstractTextSubFormat {
     public String getName() {
         return "SubStationAlpha";
     }
-       
+    
     
     private String timeformat(Time t) {
         String res = t.toString().substring(1).replace(',','.');

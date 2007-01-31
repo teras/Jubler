@@ -129,14 +129,17 @@ public class JPreferences extends JPanel implements OptionsHolder {
         flipflopPanel(parent, jsave, SavePanel, SSelect);
     }
     
+    /* This method is called when a load/save action is performed 
+     * To grasp when a JPreferences dialog is displayed, see 
+     * OptionsIO.loadSystemPreferences(JPreferences);
+     */
     private void flipflopPanel(Jubler parent, JOptionsGUI obj, JPanel container, JCheckBox allow) {
         if ( !allow.isSelected() ) return;
         
-        obj.updateJubler(parent);
+        obj.updateVisuals(parent);
         JIDialog.message(parent, obj, _("File preferences"), JIDialog.QUESTION_MESSAGE);
         container.add(obj, BorderLayout.NORTH);
     }
-    
     
     /* Save preferences stored in this frame */
     public void savePreferences(Properties props) {
@@ -150,28 +153,7 @@ public class JPreferences extends JPanel implements OptionsHolder {
         SSelect.setSelected(props.getProperty("System.ShowSaveDialog", "true").equals("true"));
     }
     
-    public void saveState() {
-        /* Private objects */
-        load_state = LSelect.isSelected();
-        save_state = SSelect.isSelected();
-        
-        /* Other objects */
-        jload.saveState();
-        jsave.saveState();
-        smodel.saveState();
-        
-    }
-    
-    public void restoreState() {
-        LSelect.setSelected(load_state);
-        SSelect.setSelected(save_state);
-        
-        /* Other objects */
-        jload.restoreState();
-        jsave.restoreState();
-        smodel.restoreState();
-    }
-    
+   
     public void setMenuShortcuts(JMenuBar bar) {
         smodel.applyMenuShortcuts(bar);
     }

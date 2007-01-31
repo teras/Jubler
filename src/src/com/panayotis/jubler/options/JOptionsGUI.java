@@ -46,5 +46,5 @@ public abstract class JOptionsGUI extends JPanel implements OptionsHolder {
         return box.getSelectedItem().toString();
     }
     
-    public abstract void updateJubler (Jubler jub);
+    public abstract void updateVisuals (Jubler jub);
 }

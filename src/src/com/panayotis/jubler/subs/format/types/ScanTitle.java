@@ -75,4 +75,10 @@ public class ScanTitle extends AbstractBinarySubFormat {
             subtitle_list.add(new SubEntry(subframestart/FPS, subframeend/FPS, subtext));
         //}
     }
+
+    public boolean supportsFPS() {
+        return true;
+    }
+    
+    
 }

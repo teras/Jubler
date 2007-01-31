@@ -51,4 +51,5 @@ public abstract class SubFormat {
         return getExtendedName() + "  (*." + getExtension() + ")";
     }
 
+    public abstract boolean supportsFPS();
 }

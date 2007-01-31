@@ -82,5 +82,9 @@ public class MicroDVD extends AbstractTextSubFormat {
         res.append("\n");
         return res.toString();
     }
+
+    public boolean supportsFPS() {
+        return true;
+    }
     
 }
