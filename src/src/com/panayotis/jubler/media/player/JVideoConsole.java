@@ -277,7 +277,7 @@ public class JVideoConsole extends javax.swing.JDialog {
                 break;
                 
             case SUBREC_FINALIZE:
-                if (start_mark_sub>=0 && finish_mark_sub>0) {
+                if (start_mark_sub>=0) {
                     finish_mark_sub = view.getTime();
                     String sub = SubShow.getText().trim().replace('|', '\n');
                     parent.setDisableConsoleUpdate(true);
@@ -649,7 +649,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         SubMover.setSnapToTicks(true);
-        SubMover.setToolTipText(_("Shift subtitles on the fly"));
+        SubMover.setToolTipText(_("Change subtitle delay on the fly"));
         SubMover.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 SubMoverStateChanged(evt);

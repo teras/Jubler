@@ -555,7 +555,7 @@
                       <Properties>
                         <Property name="snapToTicks" type="boolean" value="true"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Shift subtitles on the fly&quot;)" type="code"/>
+                          <Connection code="_(&quot;Change subtitle delay on the fly&quot;)" type="code"/>
                         </Property>
                       </Properties>
                       <Events>
