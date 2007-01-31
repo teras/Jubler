@@ -141,6 +141,8 @@ public class MPlayerViewport implements Viewport {
     }
     
     private boolean sendCommand(String com) {
+        if (!isActive) return true;    // Ignore commands if viewport is inactive
+        
         if (cmdpipe == null ) return false;
         try {
             cmdpipe.write(com+"\n");
@@ -222,4 +224,27 @@ public class MPlayerViewport implements Viewport {
         } catch (InterruptedException e) { }
         return false;
     }
+    
+    
+    private double active_last_time ;
+    private boolean isActive = true;    // In order to Quit the player, isActive SHOULD be true!
+    public boolean setActive( boolean status, Subtitles newsubs) {
+        if (status) {
+            isActive = true;
+            try {
+                if (newsubs==null) return false;
+                updater.join();
+                Time res = start( mfile, newsubs, new Time(active_last_time-3));
+                return res != null;
+            } catch (InterruptedException e) { }
+            active_last_time = -1;
+            return false;
+        } else {
+            active_last_time = getTime();
+            quit();
+            isActive = false;
+        }
+        return true;
+    }
+    
 }

@@ -34,14 +34,14 @@ import com.panayotis.jubler.options.JRateChooser;
  *
  * @author  teras
  */
-public class JRecodeTime extends JTool {
+public class JRecodeTime extends JToolRealTime {
     private double factor;
     private double center;
     
-    private JRateChooser FromR, ToR;
-    
+    private double given_factor, given_center;
     private TimeSync t1, t2;
     
+    private JRateChooser FromR, ToR;
     
     
     
@@ -52,12 +52,13 @@ public class JRecodeTime extends JTool {
     
     public void initialize() {
         initComponents();
-        pos.forceRangeSelection();
         
         FromR = new JRateChooser();
         FromP.add(FromR, BorderLayout.CENTER);
         ToR = new JRateChooser();
         ToP.add(ToR, BorderLayout.CENTER);
+        
+        t1 = t2 = null;
     }
     
     protected String getToolTitle() {
@@ -65,7 +66,7 @@ public class JRecodeTime extends JTool {
     }
     
     
-    public void recodeUpdate(TimeSync first, TimeSync second) {
+    public boolean setValues(TimeSync first, TimeSync second) {
         if (first.smallerThan(second)) {
             t1 = first;
             t2 = second;
@@ -73,16 +74,27 @@ public class JRecodeTime extends JTool {
             t1 = second;
             t2 = first;
         }
+        
+        given_center = (t2.timediff*t1.timepos - t1.timediff*t2.timepos) / (t2.timediff-t1.timediff);
+        if (Double.isInfinite(given_center)||Double.isNaN(given_center)) {
+            t1 = t2 = null;
+            given_center = given_factor = 0;
+            return false;
+        }
+        
+        given_factor = (t1.timepos-t2.timepos+t1.timediff-t2.timediff) / (t1.timepos-t2.timepos);
+        if (Double.isInfinite(given_factor)||Double.isNaN(given_factor)) {
+            t1 = t2 = null;
+            given_center = given_factor = 0;
+            return false;
+        }
+        
+        pos.forceRangeSelection();
+        return true;
     }
     
-    
-    public void checkNumber(double d) {
-        if (Double.isInfinite(center)||Double.isNaN(center)) 
-                throw new ArithmeticException ("Recode is not possible");
-    }
     
     public void updateData(Jubler j) {
-        /* WE WILL NOT EXECUTE   */
         if (t1==null) {
             /* normal execution */
             super.updateData(j);
@@ -97,20 +109,15 @@ public class JRecodeTime extends JTool {
             jparent = j;
             
             /* Set recode parameters */
-            center = (t2.timediff*t1.timepos - t1.timediff*t2.timepos) / (t2.timediff-t1.timediff);
-            checkNumber(center);
-            factor = (t1.timepos-t2.timepos+t1.timediff-t2.timediff) / (t1.timepos-t2.timepos);
-            checkNumber(center);
-
-            CustomC.setText(Double.toString(center));
-            CustomF.setText(Double.toString(factor));
+            CustomC.setText(Double.toString(given_center));
+            CustomF.setText(Double.toString(given_factor));
             
             /* Set default selections */
             CustomB.setSelected(true);
             
             
-            t1 = null;
-            t2 = null;
+            t1 = t2 = null;
+            given_center = given_factor = 0;
         }
         /* Set other values */
         FromR.setJubler(j);
@@ -218,7 +225,7 @@ public class JRecodeTime extends JTool {
         jLabel3.setText(_("Central time"));
         jPanel1.add(jLabel3);
 
-        CustomC.setText("1.0");
+        CustomC.setText("0.0");
         CustomC.setToolTipText(_("The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."));
         CustomC.setEnabled(false);
         jPanel1.add(CustomC);

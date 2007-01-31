@@ -31,4 +31,8 @@ public class TimeSync {
     public boolean smallerThan(TimeSync t) {
         return timepos < t.timepos;
     }
+    
+    public boolean isEqualDiff(TimeSync t) {
+        return Math.abs(timediff - t.timediff) < 0.001;
+    }
 }

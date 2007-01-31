@@ -35,6 +35,13 @@
     <para>On order to (un)set the parent of a file, go to "Tools" - "Reparent" and (de)select the parent file. If you want to start a translation from scratch, i.e. having a new file with the correct time-slots but without any text, go to "File" - "New" - "Child" and a new file will open, with it's parent to the current one. It would be wise to detach the subtitle edit box from the child, hide the subtitle edit box from the parent and enlarge the visible subtitle box to take the whole space underneath the subtitle windows.</para>
 </section>
 
+<section><title>How can I synchronize subtitles with two given timepoints</title>
+    <para>This can be performed using the Video Console. Let the movie play and then when you hear a subtitle, press the "T" button. The movie then pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the left of the "T" button) lights up. Then go to the end of the movie withough closing the Video Console. Again when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. Then the recode window will pop up. Use the custom parameters and press OK.</para>
+    <para>If the recode window did not show up, it means that the time points chosen are not valid and it is impossible to recode. You have to select another time position. The last selected position is deselected then.</para>
+    <para>If the subtitle time difference is the same on both time positions, then shift time is performed instead of recoding.</para>
+    <para>There is also another way of selecting the time positions. Instead of selecting the subtitle text from the main window, you can shift the subtitled using the bar on the lower left of the Console. Then when you thing that the subtitles are synchonized, press either synchonization buttons.</para>
+</section>
+
 <section id="synchronize"><title>How can I synchronize subtitles from an external file?</title>
     <para>In order to synchronize the subtitles of one file with the subtitles of another, you have to open both files in Jubler. Then go to the file you want to  work on and select tool "Synchronize". Select which subtitles you want to synchronize (possibly all of them), the "model" subtitles (from the other file), if there is any offset and if you want to synchronize time-stamps or text. After clicking OK the synchronization will be performed. Keep in mind that the offset is based on index of the subtitle and not on time.</para>
 </section>

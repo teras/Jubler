@@ -38,7 +38,6 @@ import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.player.JVideoConsole;
 import com.panayotis.jubler.media.player.JVideofileSelector;
-import com.panayotis.jubler.media.player.TimeSync;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.media.player.players.AvailPlayers;
 import com.panayotis.jubler.media.preview.JSubPreview;
@@ -64,6 +63,7 @@ import com.panayotis.jubler.tools.JSpeller;
 import com.panayotis.jubler.tools.JStyler;
 import com.panayotis.jubler.tools.JSubJoin;
 import com.panayotis.jubler.tools.JSynchronize;
+import com.panayotis.jubler.tools.JToolRealTime;
 import com.panayotis.jubler.tools.externals.JExtSelector;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
@@ -1817,18 +1817,9 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_SplitTMActionPerformed
     
     
-    public boolean recodeSubtitles(TimeSync first, TimeSync second) {
-        boolean res = true;
-        recode.recodeUpdate(first, second);
-        try {
-            res = recode.execute(this);
-        } catch (ArithmeticException e) {
-            return false;
-        } catch (ArrayIndexOutOfBoundsException e) {
-            return false;
-        }
-        return res;
-    }
+    public JToolRealTime getRecoder() { return recode; }
+    public JToolRealTime getShifter() { return shift; }
+   
     private void RecodeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecodeTMActionPerformed
         recode.execute(this);
     }//GEN-LAST:event_RecodeTMActionPerformed

@@ -140,7 +140,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="CustomC">
           <Properties>
-            <Property name="text" type="java.lang.String" value="1.0"/>
+            <Property name="text" type="java.lang.String" value="0.0"/>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="_(&quot;The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file.&quot;)" type="code"/>
             </Property>

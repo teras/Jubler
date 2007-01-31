@@ -2,7 +2,7 @@
  * JShiftTime.java
  *
  * Created on 24 Ιούνιος 2005, 11:49 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.tools;
 import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeFullSelection;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
@@ -31,30 +30,45 @@ import java.awt.BorderLayout;
 
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.player.TimeSync;
 
 /**
  *
  * @author  teras
  */
-public class JShiftTime extends JTool {
+public class JShiftTime extends JToolRealTime {
     private JTimeSpinner dt;
-    private JTimeFullSelection pos;
     double shift;
     
     
     public JShiftTime() {
         super(true);
     }
-       
+    
     public void initialize() {
         dt = new JTimeSpinner();
         initComponents();
         PNewTime.add(dt, BorderLayout.CENTER);
         dt.setToolTipText(_("The amount of time in order to shift the subtitles"));
     }
-
+    
     protected String getToolTitle() {
         return _("Shift time by absolute value");
+    }
+    
+    public boolean setValues(TimeSync first, TimeSync second) {
+        double time = first.timediff;
+        if (Math.abs(time) < 0.001) return false;
+        
+        if (time<0) {
+            CSign.setSelectedIndex(1);
+            time = -time;
+        } else {
+            CSign.setSelectedIndex(0);
+        }
+        dt.setTimeValue(new Time(time));
+        pos.forceRangeSelection();
+        return true;
     }
     
     public void storeSelections() {
@@ -62,7 +76,7 @@ public class JShiftTime extends JTool {
         if ( CSign.getSelectedIndex() == 1) shift = -shift;
     }
     
-  protected void affect(int index) {
+    protected void affect(int index) {
         SubEntry sub = affected_list.elementAt(index);
         sub.getStartTime().addTime(shift);
         sub.getFinishTime().addTime(shift);

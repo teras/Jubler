@@ -42,6 +42,7 @@ public interface Viewport {
     public abstract boolean jump(int secs);
     public abstract boolean delaySubs(float secs);  // Relative value
     public abstract boolean changeSubs(Subtitles subs);
+    public abstract boolean setActive(boolean status, Subtitles newsubs);
     
     public abstract boolean setSpeed(float speed);
     public abstract boolean setVolume(int volume);
