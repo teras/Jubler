@@ -1,7 +1,7 @@
 3.1.0
 Read frames per second from the movie now supported. Movie synchronization
-on the fly, based on time differences between time points supported. A lot of
-fine tuning. Zemberek updates.
+on the fly, based on time differences between time points supported. Updated
+recoring of subtitles on the fly. A lot of fine tuning. Zemberek updates.
 
 3.0.0
 FFDecode bugs fixed, preview should be much more stable and accurate. Preview
