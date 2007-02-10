@@ -31,9 +31,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.options.JPreferences;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 
 /**
  *
@@ -90,8 +96,21 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     }
     
     
-    public void produce(Subtitles subs, float FPS, BufferedWriter out) throws IOException {
+    
+    public void produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
+        CharsetEncoder encoder;
+        String encoding;
+        
         StringBuffer res = new StringBuffer();
+        float fps = getFPS(prefs);
+        
+        if ( prefs == null ) encoding = "UTF-8";
+        else encoding = prefs.getSaveEncoding();
+        
+        // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
+        encoder = Charset.forName(encoding).newEncoder();
+        
+        BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfile), encoder));
         
         setFPS(FPS);
         res.append(makeHeader(subs));
@@ -99,6 +118,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             res.append(makeSubEntry(subs.elementAt(i)));
         }
         out.write(res.toString().replace("\n","\r\n"));
+        out.close();
     }
     
     protected String makeHeader(Subtitles subs) { return ""; }

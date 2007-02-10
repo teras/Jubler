@@ -27,6 +27,8 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.format.SubFormat;
 import java.awt.BorderLayout;
 import java.nio.charset.Charset;
@@ -122,21 +124,21 @@ public class JPreferences extends JPanel implements OptionsHolder {
     /* The following two methods display the load/save panels in a dialog
      * and reattach them back to their position, after the selection was done.
      */
-    public void showLoadDialog(Jubler parent) {
-        flipflopPanel(parent, jload, LoadPanel, LSelect);
+    public void showLoadDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
+        flipflopPanel(parent, mfile, subs, jload, LoadPanel, LSelect);
     }
-    public void showSaveDialog(Jubler parent) {
-        flipflopPanel(parent, jsave, SavePanel, SSelect);
+    public void showSaveDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
+        flipflopPanel(parent, mfile, subs, jsave, SavePanel, SSelect);
     }
     
     /* This method is called when a load/save action is performed 
      * To grasp when a JPreferences dialog is displayed, see 
      * OptionsIO.loadSystemPreferences(JPreferences);
      */
-    private void flipflopPanel(Jubler parent, JOptionsGUI obj, JPanel container, JCheckBox allow) {
+    private void flipflopPanel(JFrame parent, MediaFile mfile, Subtitles subs, JOptionsGUI obj, JPanel container, JCheckBox allow) {
         if ( !allow.isSelected() ) return;
         
-        obj.updateVisuals(parent);
+        obj.updateVisuals(mfile, subs);
         JIDialog.message(parent, obj, _("File preferences"), JIDialog.QUESTION_MESSAGE);
         container.add(obj, BorderLayout.NORTH);
     }

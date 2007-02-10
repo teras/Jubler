@@ -60,7 +60,7 @@ public class JSynchronize extends JTool {
         String label;
         for ( int i = 0 ; i <Jubler.windows.size() ; i++) {
             cjubler = Jubler.windows.elementAt(i);
-            label = cjubler.getFileName();
+            label = cjubler.getSubtitles().getCurrentFileName();
             if (cjubler==current) {
                 label += "  "+_("-current-");
                 cid = i;

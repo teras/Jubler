@@ -22,7 +22,8 @@
  */
 
 package com.panayotis.jubler.options;
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 /**
@@ -46,5 +47,5 @@ public abstract class JOptionsGUI extends JPanel implements OptionsHolder {
         return box.getSelectedItem().toString();
     }
     
-    public abstract void updateVisuals (Jubler jub);
+    public abstract void updateVisuals (MediaFile mfile, Subtitles subs);
 }

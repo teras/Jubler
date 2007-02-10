@@ -23,11 +23,18 @@
 
 package com.panayotis.jubler.subs.format;
 
+import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 
 
 
@@ -51,4 +58,5 @@ public abstract class AbstractBinarySubFormat extends SubFormat {
     }
     
     protected abstract void parseBinary(float FPS, BufferedReader in);
+    
 }

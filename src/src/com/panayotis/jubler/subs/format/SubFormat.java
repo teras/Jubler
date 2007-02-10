@@ -23,8 +23,9 @@
 
 package com.panayotis.jubler.subs.format;
 
+import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.Subtitles;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 
@@ -40,9 +41,9 @@ public abstract class SubFormat {
     /* convert a string into subtitles */
     public abstract Subtitles parse(String input, float FPS, File f);
     
-    /* Export subtitles into a string stream */
-    public abstract void produce(Subtitles subs, float FPS, BufferedWriter out) throws IOException;
-
+    /* Export subtitles to file */
+    public abstract void produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException;
+    
     public String getExtendedName() {
         return getName();
     }
@@ -50,6 +51,11 @@ public abstract class SubFormat {
     public String getDescription() {
         return getExtendedName() + "  (*." + getExtension() + ")";
     }
-
+    
+    public float getFPS(JPreferences prefs) {
+        if ( prefs == null ) return 25f;
+        return prefs.getSaveFPS();
+    }
+    
     public abstract boolean supportsFPS();
 }

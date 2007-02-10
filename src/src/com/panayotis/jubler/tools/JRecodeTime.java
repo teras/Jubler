@@ -120,8 +120,8 @@ public class JRecodeTime extends JToolRealTime {
             given_center = given_factor = 0;
         }
         /* Set other values */
-        FromR.setJubler(j);
-        ToR.setJubler(j);
+        FromR.setDataFiles(j.getMediaFile(), j.getSubtitles());
+        ToR.setDataFiles(j.getMediaFile(), j.getSubtitles());
     }
     
     public void storeSelections() {

@@ -35,9 +35,9 @@
     <para>On order to (un)set the parent of a file, go to "Tools" - "Reparent" and (de)select the parent file. If you want to start a translation from scratch, i.e. having a new file with the correct time-slots but without any text, go to "File" - "New" - "Child" and a new file will open, with it's parent to the current one. It would be wise to detach the subtitle edit box from the child, hide the subtitle edit box from the parent and enlarge the visible subtitle box to take the whole space underneath the subtitle windows.</para>
 </section>
 
-<section><title>How can I synchronize subtitles with two given timepoints</title>
-    <para>This can be performed using the Video Console. Let the movie play and then when you hear a subtitle, press the "T" button. The movie then pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the left of the "T" button) lights up. Then go to the end of the movie withough closing the Video Console. Again when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. Then the recode window will pop up. Use the custom parameters and press OK.</para>
-    <para>If the recode window did not show up, it means that the time points chosen are not valid and it is impossible to recode. You have to select another time position. The last selected position is deselected then.</para>
+<section><title>How can I synchronize subtitles with two given time-points?</title>
+    <para>This can be performed using the Video Console. Let the movie play and when you hear a subtitle, press the "T" button. The playback pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the right of the "T" button) lights up. Then go to the movie end, withough closing the Video Console. Again, when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. The recode window will pop up. Use the custom parameters (they should be already selected) and press OK.</para>
+    <para>If the recode window did not show up, it means that the time-points chosen are not valid and it is impossible to recode. You have to select another time position. Therefore, the last selected position is deselected.</para>
     <para>If the subtitle time difference is the same on both time positions, then shift time is performed instead of recoding.</para>
     <para>There is also another way of selecting the time positions. Instead of selecting the subtitle text from the main window, you can shift the subtitled using the bar on the lower left of the Console. Then when you thing that the subtitles are synchonized, press either synchonization buttons.</para>
 </section>
@@ -54,6 +54,11 @@
     <para>The position of this menu entry has changed in recent versions of Jubler. This option is under "File"->"Change media file".</para>
 </section>
 
+<section><title>How can I create new subtitles while the movie is played?</title>
+    <para>This is performed with the Video Console window. In order for this mode to work is <emphasis>nessesary</emphasis> the Video Console window to have the focus, and especially the Text Box on the lower left of the window. Usually the application tries to request the focus to this widget, when the Video Console is selected. You can do this manually, after selecting the Video Console window, by clicking inside this Text Box.</para>
+    <para>To perform the actual subtitle recording, follow this procedure. When you hear a subtitle press the ENTER key, or press the notepad like icon, on the right of the Text Box. Then the icon of the notepad will turn red. When you want to mark the end of the recorded subtitle, press ENTER or the notepad icon again. The notepad button will be inactive and the focus will be on the Text Box. Type a text (if you want) and press ENTER again to accept it or ESCAPE to cancel. This method accepts subtitles with no text inside.</para>
+</section>
+    
 <section><title>How is transparency produced?</title>
     <para>In subtitle preview, although outline & shadow color is per character, their transparency is calculated for the whole subtitle entry.</para>
 </section>
@@ -72,7 +77,7 @@
 </section>
 
 <section><title>I found a problem!</title>
-    <para>I am always happy to listen to problems of Jubler, especially those not mentioned here. The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The preferred way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
+    <para>I am always happy to listen to problems of Jubler, especially those not mentioned here - although I am happier when you report success issues! The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The preferred way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
 </section>
 
 </article>

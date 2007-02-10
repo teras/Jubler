@@ -22,13 +22,14 @@
  */
 
 package com.panayotis.jubler.options;
-import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.format.AvailSubFormats;
 import com.panayotis.jubler.subs.format.SubFormat;
 import java.awt.BorderLayout;
 import java.util.Properties;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.Subtitles;
 /**
  *
  * @author  teras
@@ -48,8 +49,8 @@ public class JSaveOptions extends JOptionsGUI {
         fillComponents();
     }
     
-    public void updateVisuals(Jubler jub) {
-        CFPS.setJubler(jub);
+    public void updateVisuals(MediaFile mfile, Subtitles subs) {
+        CFPS.setDataFiles(mfile, subs);
         updateVisualFPS(null);  // get the current SubFormat
     }
     

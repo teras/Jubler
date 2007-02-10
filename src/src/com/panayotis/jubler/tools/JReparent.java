@@ -51,7 +51,7 @@ public class JReparent extends javax.swing.JPanel {
             if ( cjubler != current ) {
                 jublerlist.add(cjubler);
                 if (cjubler==parent) selection = jublerlist.size();
-                JubSelector.addItem(cjubler.getFileName());
+                JubSelector.addItem(cjubler.getSubtitles().getCurrentFileName());
             }
         }
         JubSelector.setSelectedIndex(selection);

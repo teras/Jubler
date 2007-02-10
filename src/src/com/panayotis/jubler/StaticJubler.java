@@ -13,6 +13,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.information.JVersion;
 import com.panayotis.jubler.options.*;
+import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,7 +50,7 @@ public class StaticJubler {
         Vector <String>unsaved = new Vector<String>();
         for (Jubler j : Jubler.windows) {
             if (j.isUnsaved()) {
-                unsaved.add(j.getFileName());
+                unsaved.add(j.getSubtitles().getCurrentFileName());
             }
         }
         if (unsaved.size()>0) {
@@ -72,22 +73,26 @@ public class StaticJubler {
     public static ArrayList<String>  findOpenedFiles() {
         ArrayList<String> files = new ArrayList<String>();
         
+        Subtitles subs;
         String jfile;
         boolean found;
         
         for (Jubler j : Jubler.windows) {
-            jfile = j.lastOpenedFile();
-            found = false;
-            
-            if (jfile!=null) {
-                for (String prevfile : files) {
-                    if (prevfile.equals(jfile)) {
-                        found = true;
-                        break;
+            subs = j.getSubtitles();
+            if (subs!=null) {
+                jfile = subs.getLastOpendFilePath();
+                found = false;
+                
+                if (jfile!=null) {
+                    for (String prevfile : files) {
+                        if (prevfile.equals(jfile)) {
+                            found = true;
+                            break;
+                        }
                     }
+                    if (!found)
+                        files.add(jfile);
                 }
-                if (!found)
-                    files.add(jfile);
             }
         }
         return files;

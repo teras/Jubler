@@ -24,19 +24,18 @@
 package com.panayotis.jubler.media.preview;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.media.preview.decoders.AbstractDecoder;
+import com.panayotis.jubler.media.MediaFile;
 
 /**
  *
  * @author  teras
  */
 public class JAudioLoader extends javax.swing.JPanel {
-    private AbstractDecoder decoder;
+    private MediaFile mfile;
     
     /** Creates new form JAudioLoader */
-    public JAudioLoader(AbstractDecoder decoder) {
+    public JAudioLoader() {
         initComponents();
-        this.decoder = decoder;
     }
     
     public void setValue(int value) {
@@ -46,6 +45,10 @@ public class JAudioLoader extends javax.swing.JPanel {
     public void setFilename(String fname) {
         FileL.setText(fname);
         validate();
+    }
+    
+    public void updateMediaFile(MediaFile mfile) {
+        this.mfile = mfile;
     }
     
     /** This method is called from within the constructor to
@@ -82,7 +85,8 @@ public class JAudioLoader extends javax.swing.JPanel {
     // </editor-fold>//GEN-END:initComponents
 
     private void AssignInterruptBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssignInterruptBActionPerformed
-        decoder.setInterruptStatus(true);
+        if (mfile!=null)
+            mfile.interruptCacheCreation(true);
     }//GEN-LAST:event_AssignInterruptBActionPerformed
     
     

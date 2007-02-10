@@ -21,13 +21,13 @@
  *
  */
 
-package com.panayotis.jubler.media.player;
+package com.panayotis.jubler.media;
 
+import com.panayotis.jubler.media.player.*;
 import java.io.File;
 import javax.swing.JFileChooser;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.media.MediaFile;
 
 /**
  *

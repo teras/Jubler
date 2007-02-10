@@ -6,10 +6,10 @@
 
 package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JPanel;
 
 
@@ -22,7 +22,8 @@ public class JRateChooser extends JPanel {
     public static final String DefaultFPSEntry = "25";
     private static final float DefaultValue = 25f;
     
-    private Jubler jubler;
+    private MediaFile mfile = null;
+    private Subtitles subs = null;
     
     /** Creates new form JRateChooser */
     public JRateChooser() {
@@ -38,8 +39,9 @@ public class JRateChooser extends JPanel {
         return 25f;
     }
     
-    public void setJubler(Jubler jubler) {
-        this.jubler = jubler;
+    public void setDataFiles(MediaFile m, Subtitles s) {
+        mfile = m;
+        subs = s;
     }
     
     public void setFPS(String fps) {
@@ -104,7 +106,10 @@ public class JRateChooser extends JPanel {
     }//GEN-LAST:event_FPSChooserActionPerformed
     
     private void FromFPSBFPSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromFPSBFPSBActionPerformed
-        float fps = jubler.getMediaFile().getFramesPerSecond(jubler);
+        if (mfile==null) return;
+        if (! mfile.validateMediaFile(subs, false)) return;
+        
+        float fps = mfile.getFPS();
         if (fps>0) FPSChooser.setSelectedItem(fps);
     }//GEN-LAST:event_FromFPSBFPSBActionPerformed
     

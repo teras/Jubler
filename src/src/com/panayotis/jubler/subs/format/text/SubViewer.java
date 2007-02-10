@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.types;
+package com.panayotis.jubler.subs.format.text;
 
 import com.panayotis.jubler.subs.format.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;

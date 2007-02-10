@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.types;
+package com.panayotis.jubler.subs.format.text;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 

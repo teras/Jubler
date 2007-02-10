@@ -22,11 +22,12 @@
  */
 
 package com.panayotis.jubler.options;
-import com.panayotis.jubler.Jubler;
 import java.awt.BorderLayout;
 import java.util.Properties;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.Subtitles;
 
 /**
  *
@@ -47,8 +48,8 @@ public class JLoadOptions extends JOptionsGUI {
     }
     
 
-    public void updateVisuals(Jubler jub) {
-        CFPS.setJubler(jub);
+    public void updateVisuals (MediaFile mfile, Subtitles subs) {
+        CFPS.setDataFiles(mfile, subs);
     }
     
     private void fillComponents() {

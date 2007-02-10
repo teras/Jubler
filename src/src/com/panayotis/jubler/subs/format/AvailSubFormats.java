@@ -23,14 +23,14 @@
 
 package com.panayotis.jubler.subs.format;
 
-import com.panayotis.jubler.subs.format.types.AdvancedSubStation;
-import com.panayotis.jubler.subs.format.types.MicroDVD;
-import com.panayotis.jubler.subs.format.types.PlainText;
-import com.panayotis.jubler.subs.format.types.ScanTitle;
-import com.panayotis.jubler.subs.format.types.SubRip;
-import com.panayotis.jubler.subs.format.types.SubStationAlpha;
-import com.panayotis.jubler.subs.format.types.SubViewer;
-import com.panayotis.jubler.subs.format.types.SubViewer2;
+import com.panayotis.jubler.subs.format.text.AdvancedSubStation;
+import com.panayotis.jubler.subs.format.binary.DVDMaestro;
+import com.panayotis.jubler.subs.format.text.MicroDVD;
+import com.panayotis.jubler.subs.format.text.PlainText;
+import com.panayotis.jubler.subs.format.text.SubRip;
+import com.panayotis.jubler.subs.format.text.SubStationAlpha;
+import com.panayotis.jubler.subs.format.text.SubViewer;
+import com.panayotis.jubler.subs.format.text.SubViewer2;
 
 /**
  *
@@ -48,7 +48,8 @@ public class AvailSubFormats {
         Formats[3] = new SubViewer2();
         Formats[4] = new SubViewer();
         Formats[5] = new MicroDVD();
-        Formats[6] = new ScanTitle();
+        Formats[6] = new DVDMaestro();
+     //   Formats[7] = new ScanTitle();
         Formats[7] = new PlainText();
     }
     

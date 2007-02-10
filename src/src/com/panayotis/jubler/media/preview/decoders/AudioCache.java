@@ -23,6 +23,8 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,8 +48,8 @@ public class AudioCache {
     }
     
     public AudioCache(float[] data) {
-        if (data==null) throw new NullPointerException("Trying to initialize AudioCache with null data");
-        if ( (data.length%(length*2))!=0 ) throw new ArrayIndexOutOfBoundsException("Trying to intialize AudioCache with wrong size "+data.length);
+        if (data==null) throw new NullPointerException(_("Trying to initialize AudioCache with null data"));
+        if ( (data.length%(length*2))!=0 ) throw new ArrayIndexOutOfBoundsException(_("Trying to intialize AudioCache with wrong size {0}",data.length));
         byte channels = (byte) (data.length / (length*2));
         cache = new float[channels][length][2];
         int pointer = 0;

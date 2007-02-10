@@ -21,13 +21,15 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.types;
+package com.panayotis.jubler.subs.format.binary;
 
+import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.format.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -48,18 +50,6 @@ public class ScanTitle extends AbstractBinarySubFormat {
         return "ScanTitle";
     }
     
-    public void produce(Subtitles subs, float FPS, BufferedWriter out) throws IOException {
-        // Add code to save subtitles in output buffer
-        // Example
-        
-        SubEntry entry;
-        out.write("Header");
-        for (int i = 0 ; i < subs.size() ; i++ ) {
-            entry = subs.elementAt(i);
-            out.write("whatever");
-        }
-    }
-    
     public void parseBinary(float FPS, BufferedReader in) {
         // Add code to load subtitles from input buffer
         // Example:
@@ -78,6 +68,9 @@ public class ScanTitle extends AbstractBinarySubFormat {
 
     public boolean supportsFPS() {
         return true;
+    }
+
+    public void produce(Subtitles subs, File out, JPreferences prefs, MediaFile media) throws IOException {
     }
     
     

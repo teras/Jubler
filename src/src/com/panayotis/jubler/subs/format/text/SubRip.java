@@ -1,5 +1,5 @@
 /*
- * PlainText.java
+ * SubRip.java
  *
  * Created on 26 Αύγουστος 2005, 11:08 πμ
  * 
@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.types;
+package com.panayotis.jubler.subs.format.text;
 
 import com.panayotis.jubler.subs.format.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
@@ -37,14 +37,17 @@ import com.panayotis.jubler.subs.Subtitles;
  *
  * @author teras
  */
-public class PlainText extends AbstractTextSubFormat {
+public class SubRip extends AbstractTextSubFormat {
     
     private static final Pattern pat;
     
-    private double current_time = 0;
+    private int counter = 0;
     
     static {
-        pat = Pattern.compile("(.*?)"+nl);
+        pat = Pattern.compile(
+                "(?s)(\\d+)\\s*"+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)\\s+-->"+
+                "\\s+(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+nl+"(.*?)"+nl+nl
+                );
     }
     
     protected Pattern getPattern () {
@@ -54,34 +57,44 @@ public class PlainText extends AbstractTextSubFormat {
     
     
     protected SubEntry getSubEntry(Matcher m) {
-        Time start = new Time(current_time);
-        current_time += 2;
-        Time finish = new Time(current_time);
-        current_time += 1;
-        return new SubEntry (start, finish, m.group(1));
+        Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
+        Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
+        return new SubEntry (start, finish, m.group(10));
     }
     
     
     public String getExtension() {
-        return "txt";
+        return "srt";
     }
     
     public String getName() {
-        return "PlainTxt";
+        return "SubRip";
     }
-    
-    public String getExtendedName() {
-        return _("Plain text");
-    }
-    
+      
     protected String makeSubEntry(SubEntry sub){
-        return sub.getText()+"\n";
+        StringBuffer res;
+        res = new StringBuffer();
+        
+        res.append(Integer.toString(counter++));
+        res.append("\n");
+        res.append(sub.getStartTime().toString());
+        res.append(" --> ");
+        res.append(sub.getFinishTime().toString());
+        res.append("\n");
+        res.append(sub.getText());
+        res.append("\n\n");
+        
+        return res.toString();
     }
     
     
     protected String initLoader(String input, Subtitles subs) {
-        current_time = 0;
         return super.initLoader(input, subs);
+    }
+
+    protected String makeHeader(Subtitles subs) {
+        counter = 1;
+        return super.makeHeader(subs);
     }
 
     public boolean supportsFPS() {

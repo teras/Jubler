@@ -24,7 +24,6 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.preview.decoders.AbstractDecoder;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import java.awt.Color;
@@ -53,17 +52,16 @@ public class JFramePreview extends JPanel {
     
     private Image frameimg;
     private SubImage subimg;
-    private AbstractDecoder decoder;
     private JSubPreview callback;
     private boolean small = false;
     
+    private MediaFile mfile;
     private SubEntry sub = null;
     
     private double last_time = -1;
     
     /** Creates a new instance of JVideoPreview */
-    public JFramePreview(AbstractDecoder decoder, JSubPreview callback) {
-        this.decoder = decoder;
+    public JFramePreview(JSubPreview callback) {
         this.callback = callback;
         
         demoimg = Toolkit.getDefaultToolkit().createImage(JFramePreview.class.getResource("/icons/demoframe.jpg"));
@@ -82,8 +80,8 @@ public class JFramePreview extends JPanel {
         return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null)+24);
     }
     
-    public void setMediaFile(MediaFile mfile) {
-        decoder.setMediaFile(mfile);
+    public void updateMediaFile(MediaFile mfile) {
+        this.mfile = mfile;
     }
     
     public void setEnabled(boolean enabled) {
@@ -118,7 +116,10 @@ public class JFramePreview extends JPanel {
             double time = sub.getStartTime().toSeconds();
             if (Math.abs(time-last_time) > DT || frameimg==demoimg) {
                 last_time = time;
-                newimg = decoder.getFrame(last_time, small);
+                if (mfile!=null)
+                    newimg = mfile.getFrame(last_time, small);
+                else
+                    newimg = null;
             }
             if (newimg!=null) {
                 needs_repacking = (frameimg==demoimg);

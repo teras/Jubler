@@ -3,17 +3,38 @@
  *
  * Created on November 30, 2006, 4:14 PM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This file is part of Jubler.
+ *
+ * Jubler is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2.
+ *
+ *
+ * Jubler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Jubler; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
  */
 
 package com.panayotis.jubler.media;
 
-import com.panayotis.jubler.Jubler;
+import static com.panayotis.jubler.i18n.I18N._;
+
+import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.media.player.AudioFileFilter;
 import com.panayotis.jubler.media.player.VideoFileFilter;
+import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioCache;
+import com.panayotis.jubler.media.preview.decoders.DecoderListener;
+import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.subs.Subtitles;
+import java.awt.Image;
 import java.io.File;
 
 /**
@@ -26,18 +47,65 @@ public class MediaFile {
     private String afile;   /* Audio file - prossibly same as video file */
     private String cfile;   /* Cache file */
     
+    /* Decoder framework to display frames, audio clips etc. */
+    private DecoderInterface decoder;
+    
+    /** File chooser dialog for video */
+    private JVideofileSelector videoselector;
+    
+    
     /** Creates a new instance of MediaFile */
     public MediaFile() {
-        vfile = "";
-        afile = "";
-        cfile = "";
+        setMediaFile("", "", "");
+        initialize();
     }
     
     public MediaFile(MediaFile m) {
-        vfile = m.vfile;
-        afile = m.afile;
-        cfile = m.cfile;
+        setMediaFile(m.vfile, m.afile, m.cfile);
+        initialize();
     }
+    
+    private void setMediaFile(String vf, String af, String cf) {
+        vfile = vf;
+        afile = af;
+        cfile = cf;
+    }
+    
+    private void initialize() {
+        decoder = new FFMPEG();
+        videoselector = new JVideofileSelector();
+    }
+    
+    public boolean validateMediaFile(Subtitles subs, boolean force_new) {
+        if ( (!force_new) && isValid() )
+            return true;
+        
+        boolean isok;
+        String old_v = vfile;
+        String old_a = afile;
+        String old_c = cfile;
+        
+        
+        if (!isValid())
+            guessFiles(subs.getCurrentFile().getPath());
+        
+        videoselector.setMediaFile(this);
+        do {
+            int res = JIDialog.question(null, videoselector, _("Select video"));
+            if ( res != JIDialog.OK_OPTION) {
+                setMediaFile(old_v, old_a, old_c);
+                return false;
+            }
+            isok = isValid();
+            if (!isok) {
+                JIDialog.message(null, _("This file does not exist.\nPlease provide a valid file name."), _("Error in videofile selection"), JIDialog.ERROR_MESSAGE);
+            }
+        } while (!isok);
+        
+        return true;
+    }
+    
+    
     
     public boolean equals(Object o) {
         if (o instanceof MediaFile) {
@@ -71,17 +139,9 @@ public class MediaFile {
         }
     }
     
-    public String getVideoFile() {
-        return vfile;
-    }
-    
-    public String getAudioFile() {
-        return afile;
-    }
-    
-    public String getCacheFile() {
-        return cfile;
-    }
+    public String getVideoFile() { return vfile; }
+    public String getAudioFile() { return afile; }
+    public String getCacheFile() { return cfile; }
     
     
     public void setVideoFile(String vfname) {
@@ -137,14 +197,14 @@ public class MediaFile {
     }
     
     public void cleanUp() {
-//        
+//
 //        File cachefile = new File(cfile);
 //        if (cachefile.exists() && cachefile.canWrite())
 //            cachefile.delete();
     }
     
     
-    public boolean isValidMediaFile() {
+    public boolean isValid() {
         return (fileExists(vfile));
     }
     
@@ -157,16 +217,33 @@ public class MediaFile {
         updateCacheFile(vfile);
     }
     
-
-    // NOTE:  VERY VERY VERY BAD IMPLEMENTATION. DECODER SHOULD BE INSIDE MediaFile
-    public float getFramesPerSecond(Jubler jub) {
-       return jub.getSubPreview().getFPS(vfile);
-    }
-    
-    
     private static final boolean fileExists(String fname) {
         if (fname==null || fname.equals("")) return false;
         return new File(fname).exists();
+    }
+    
+    
+    /* Decoder actions */
+    public boolean initAudioCache(DecoderListener listener) {
+        return decoder.createAudioCache(afile, cfile, listener);
+    }
+    public AudioCache getAudioCache(double from, double to) {
+        return decoder.getAudioCache(cfile, from, to);
+    }
+    public void forgetAudioCache() {
+        decoder.forgetAudioCache(cfile);
+    }
+    public Image getFrame(double time, boolean small) {
+        return decoder.getFrame(vfile, time, small);
+    }
+    public void playAudioClip(double from, double to) {
+        decoder.playAudioClip(afile, from, to);
+    }
+    public float getFPS() {
+        return decoder.getFPS(vfile);
+    }
+    public void interruptCacheCreation(boolean status) {
+        decoder.setInterruptStatus(status);
     }
     
     

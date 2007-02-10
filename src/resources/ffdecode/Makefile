@@ -33,7 +33,7 @@ LIBRARIES=../libraries
 
 
 PROJ=ffdecode
-OBJPATH="com.panayotis.jubler.media.preview.decoders.FFMPEG com.panayotis.jubler.media.preview.decoders.NativeDecoder"
+NATIVES=$(shell cd ../../src ; grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' )
 LIBPATH=-L${LIBRARIES}
 LIBS=-lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm
 INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
@@ -147,9 +147,10 @@ distclean:clean
 	rm -f *.dll *.so *.jnilib
 
 
+
 native:
 	cd ${JUBLER} && ant compile
-	cd ${JUBLER}/build/classes ; for JO in $(OBJPATH) ; do $(JAVAH) -jni $$JO ; done
+	cd ${JUBLER}/build/classes ; for JO in $(NATIVES) ; do $(JAVAH) -jni $$JO ; done
 	mv ${JUBLER}/build/classes/*.h .
 
 

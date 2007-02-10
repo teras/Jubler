@@ -26,7 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.preview.decoders.AbstractDecoder;
+import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
@@ -58,7 +58,6 @@ public class JSubPreview extends javax.swing.JPanel {
     private JRuler timecaption;
     private JFramePreview frame;
     private JWavePreview wave;
-    private AbstractDecoder decoder;
     
     private JSubPreviewDialog dialog;
     
@@ -78,13 +77,12 @@ public class JSubPreview extends javax.swing.JPanel {
     public JSubPreview(Jubler parent) {
         initComponents();
         
-        decoder = new FFMPEG();
         view = new ViewWindow();
         timecaption = new JRuler(view);
         timeline = new JSubTimeline(parent, view, this);
-        wave = new JWavePreview(decoder, timeline);
+        wave = new JWavePreview(timeline);
         timeline.setWavePreview(wave);
-        frame = new JFramePreview(decoder, this);
+        frame = new JFramePreview(this);
         
         dialog = new JSubPreviewDialog(parent, this);
         dialog.add(this, BorderLayout.CENTER);
@@ -97,15 +95,11 @@ public class JSubPreview extends javax.swing.JPanel {
         ViewPanel.add(frame, BorderLayout.NORTH);
         ViewPanel.add(wave, BorderLayout.CENTER);
         
-        if (decoder.isDecoderValid()) ErrorL.setVisible(false);
+        if (new FFMPEG().isDecoderValid()) ErrorL.setVisible(false);
         
         dialog.pack();
     }
     
-    
-    public float getFPS(String vfile) {
-        return decoder.getFPS(vfile);
-    }
     
     public void windowHasChanged(int[] subid) {
         ignore_slider_changes = true;
@@ -165,12 +159,12 @@ public class JSubPreview extends javax.swing.JPanel {
         TimePosL.setText(_("Selected subtitles") + " "  + new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString());
     }
     
-    public void setMediaFile(MediaFile mfile) {
+    public void updateMediaFile(MediaFile mfile) {
         if (mfile.equals(last_media_file)) return;
         last_media_file = mfile;
         
-        frame.setMediaFile(mfile);
-        wave.setMediaFile(mfile);
+        wave.updateMediaFile(mfile);
+        frame.updateMediaFile(mfile);
     }
     
     public void setVisible(boolean status) {

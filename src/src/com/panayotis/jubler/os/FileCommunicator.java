@@ -22,41 +22,28 @@
  */
 
 package com.panayotis.jubler.os;
-import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.StaticJubler;
-import com.panayotis.jubler.subs.format.types.SubRip;
+import com.panayotis.jubler.subs.format.text.SubRip;
 import com.panayotis.jubler.subs.format.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.format.AvailSubFormats;
 import com.panayotis.jubler.subs.*;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CodingErrorAction;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.MediaFileFilter;
 import com.panayotis.jubler.options.OptionsIO;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
-
 
 /**
  *
@@ -103,14 +90,14 @@ public class FileCommunicator {
             
             if (recf!=null) {
                 recfname = recf.getPath();
-
+                
                 for (String op : opened) {
                     if (recfname.equals(op)) {
                         found = true;
                         break;
                     }
                 }
-                if (!found) 
+                if (!found)
                     closed.add(recfname);
             }
         }
@@ -118,7 +105,7 @@ public class FileCommunicator {
         /* Update menu */
         StaticJubler.populateRecentsMenu(closed);
     }
-
+    
     
     
     public static String load(File infile, JPreferences prefs) {
@@ -136,15 +123,12 @@ public class FileCommunicator {
     }
     
     
-    public static String save(File outfile, Subtitles subs, JPreferences prefs) {
-        CharsetEncoder encoder;
+    public static String save(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) {
         File tempout = null;
         String result = null;
         
         try {
-            String encoding;
             SubFormat saveformat;
-            float fps;
             tempout = new File(outfile.getPath()+".temp");
             if ( (!tempout.getParentFile().canWrite()) ||
                     (outfile.exists() && (!outfile.canWrite())) ) {
@@ -152,21 +136,12 @@ public class FileCommunicator {
             }
             
             if ( prefs == null ) {
-                encoding = "UTF-8";
                 saveformat = new SubRip();
-                fps = 25;
             } else {
-                encoding = prefs.getSaveEncoding();
                 saveformat = prefs.getSaveFormat();
-                fps = prefs.getSaveFPS();
             }
             
-            //            encoder = Charset.forName(prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
-            encoder = Charset.forName(encoding).newEncoder();
-            BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(tempout), encoder));
-            
-            saveformat.produce(subs, fps, out);
-            out.close();
+            saveformat.produce(subs, tempout, prefs, media);
             
             // Renaming new file
             outfile.delete();
@@ -177,7 +152,7 @@ public class FileCommunicator {
         } catch (UnmappableCharacterException e) {
             result = _("Encoding error. Use proper encoding (e.g. UTF-8).");
         } catch (IOException e) {
-            result = _("Error while saving file {0}", outfile) + " : " + e.getClass().getName();
+            result = _("Error while saving file {0}", outfile) + " : \n" + e.getClass().getName()+"\n"+e.getMessage();
         }
         if (tempout != null && tempout.exists()) tempout.delete();
         return result ;
@@ -225,7 +200,7 @@ public class FileCommunicator {
         lsfilename = origfilename.toLowerCase();
         
         dir  = new File(origfilename).getParentFile();
-        if (dir == null) 
+        if (dir == null)
             return origfilename + filter.getExtensions()[0];
         files = dir.listFiles(filter);
         

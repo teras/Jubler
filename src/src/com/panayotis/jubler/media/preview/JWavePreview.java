@@ -26,8 +26,8 @@ import com.panayotis.jubler.media.MediaFile;
 import static com.panayotis.jubler.media.preview.JFramePreview.DT;
 
 import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
-import com.panayotis.jubler.media.preview.decoders.AbstractDecoder;
 import com.panayotis.jubler.media.preview.decoders.AudioCache;
+import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.subs.SubEntry;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -42,7 +42,7 @@ import javax.swing.JPanel;
  *
  * @author teras
  */
-public class JWavePreview extends JPanel {
+public class JWavePreview extends JPanel implements DecoderListener {
     
     private static final AudioCache demoaudio = new AudioCache(1, 1000);
     
@@ -54,20 +54,18 @@ public class JWavePreview extends JPanel {
     
     private final JSubTimeline timeline;
     
-    private AbstractDecoder decoder;
     private AudioCache audio;
-    
+    private MediaFile mfile;
     
     private JAudioLoader loader;
     
     private double start_time = -1, end_time = -1;
     
     /** Creates a new instance of JWavePreview */
-    public JWavePreview(AbstractDecoder decoder, JSubTimeline tline) {
-        this.decoder = decoder;
+    public JWavePreview(JSubTimeline tline) {
         timeline = tline;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        loader = new JAudioLoader(decoder);
+        loader = new JAudioLoader();
         
         addMouseMotionListener( new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
@@ -104,6 +102,7 @@ public class JWavePreview extends JPanel {
         remove(loader);
         loader.setVisible(false);
         setEnabled(true);
+  //      updateWave();
     }
     
     public void updateCacheCreation(float state) {
@@ -111,13 +110,16 @@ public class JWavePreview extends JPanel {
     }
     
     public void cleanUp() {
-        decoder.forgetAudioCache();
+        if (mfile!=null)
+            mfile.forgetAudioCache();
     }
     
-    public void setMediaFile(MediaFile mfile) {
-        /* We do two things at once: 1) start creating of cache files, 2) update the filename of the JAudioLoader */
-        loader.setFilename(decoder.setAudiofile(mfile, this));
-        updateWave();
+    public void updateMediaFile(MediaFile mfile) {
+        /*  start creation of cache files */
+        this.mfile = mfile;
+        loader.updateMediaFile(mfile);
+        //updateWave();
+        mfile.initAudioCache(this);
     }
     
     
@@ -138,14 +140,15 @@ public class JWavePreview extends JPanel {
     }
     
     private void updateWave() {
-        if (isEnabled()) audio = decoder.getAudioCache(start_time, end_time);
+        if (isEnabled() && mfile != null)
+            audio = mfile.getAudioCache(start_time, end_time);
         else audio = null;
         if (audio==null) audio = demoaudio;
         
         /* Remove old panels */
         if (panels!=null) {
             for (int i = 0 ; i < panels.length ; i++) {
-				if (panels[i]!=null) remove(panels[i]);
+                if (panels[i]!=null) remove(panels[i]);
             }
         }
         /* Create new panels */
@@ -159,10 +162,11 @@ public class JWavePreview extends JPanel {
     
     public void playbackWave() {
         if (timeline.getSelectedList().size() < 1 ) return;
+        if (mfile == null) return;
         
         int which = timeline.getSelectedList().get(0).pos;
         SubEntry entry = timeline.getJubler().getSubtitles().elementAt(which);
-        decoder.playAudioClip(entry.getStartTime().toSeconds(), entry.getFinishTime().toSeconds());
+        mfile.playAudioClip(entry.getStartTime().toSeconds(), entry.getFinishTime().toSeconds());
     }
     
     

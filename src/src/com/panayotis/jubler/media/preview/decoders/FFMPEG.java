@@ -53,18 +53,17 @@ public final class FFMPEG extends NativeDecoder {
     private static boolean library_is_present = false;
     
     static {
-          library_is_present = SystemFileFinder.loadLibrary("ffdecode");
+        library_is_present = SystemFileFinder.loadLibrary("ffdecode");
     }
     
     /** Creates a new instance of FFMPEG */
     public FFMPEG() {}
     
-    public Image getFrame(double time, boolean small) {
-        if (vfname==null) return null;
-        if (!isDecoderValid()) return null;
+    public Image getFrame(String video, double time, boolean small) {
+        if ( video==null || (!isDecoderValid()) ) return null;
         
         time *= 1000000;
-        int[] frame = grabFrame(vfname, (long)time, small);
+        int[] frame = grabFrame(video, (long)time, small);
         if (frame==null) return null;
         
         int[] bitmasks = {0xff0000, 0xff00, 0xff, 0xff000000};
@@ -75,15 +74,9 @@ public final class FFMPEG extends NativeDecoder {
         return image;
     }
     
-    public float getFPS(String vfname) {
-        return grabFPS(vfname);
-//        if (vfname==null) return -1;
-//        if (!isDecoderValid()) return -1;
-//        return grabFPS(vfname);
-    }
     
-    public void playAudioClip(double from, double to) {
-        if (afname==null || (!isDecoderValid())) return;
+    public void playAudioClip(String audio, double from, double to) {
+        if (audio==null || (!isDecoderValid())) return;
         
         from *= 1000000;
         to   *= 1000000;
@@ -91,7 +84,7 @@ public final class FFMPEG extends NativeDecoder {
         try {
             final File wavfile = File.createTempFile("jublerclip_",".wav");
             wav = wavfile;
-            if (!createClip(afname, wavfile.getPath(), (long)from, (long)to)) {
+            if (!createClip(audio, wavfile.getPath(), (long)from, (long)to)) {
                 /* Something went wrong */
                 cleanUp(_("Count not create audio clip"), wav);
                 return;
@@ -125,26 +118,23 @@ public final class FFMPEG extends NativeDecoder {
         if (f!=null && f.exists() && f.canWrite()) f.delete();
     }
     
-    public boolean createAudioCache(String afile, String cfile) {
-        if (afile==null || cfile==null) return false;
-        if (!isDecoderValid()) return false;
-        return makeCache(afile, cfile, new File(afile).getName());
+    public float getFPS(String vfile) {
+        if (!isDecoderValid()) return -1;
+        return grabFPS(vfile);
+    }
+    
+    public boolean isDecoderValid() {
+        return library_is_present;
     }
     
     /* Get the image for this timestamp */
     private native int[] grabFrame(String video, long time, boolean small);
     
-    /* Create a JACACHE file using an audio (or even video+audio) stream */
-    private native boolean makeCache(String afile, String cfile, String aname);
-    
     /* Create a wav file from the specified time stamps */
     private native boolean createClip(String audio, String wav, long from, long to);
     
     /* Get FPS from a video file */
-    private native float grabFPS(String vfile);
+    public native float grabFPS(String vfile);
     
-    public boolean isDecoderValid() {
-        return library_is_present;
-    }
     
 }

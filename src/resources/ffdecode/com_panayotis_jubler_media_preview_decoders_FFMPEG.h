@@ -17,14 +17,6 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
 
 /*
  * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
- * Method:    makeCache
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z
- */
-JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_makeCache
-  (JNIEnv *, jobject, jstring, jstring, jstring);
-
-/*
- * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
  * Method:    createClip
  * Signature: (Ljava/lang/String;Ljava/lang/String;JJ)Z
  */

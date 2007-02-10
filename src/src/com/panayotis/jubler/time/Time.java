@@ -84,11 +84,15 @@ public class Time implements Comparable<Time> {
     
     private void setTime(String h, String m, String s, String f) {
         short hour, min, sec, milli;
+        int flength;
         try {
             hour = Short.parseShort(h);
             min = Short.parseShort(m);
             sec = Short.parseShort(s);
-            milli = Short.parseShort("000"+f);
+            flength = f.length();
+            if (flength<3) 
+                f = f + "000".substring(flength);
+            milli = Short.parseShort(f);
             setTime(hour, min, sec, milli);
         } catch ( NumberFormatException e) {
             invalidate();

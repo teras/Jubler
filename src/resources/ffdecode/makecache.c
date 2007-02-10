@@ -34,11 +34,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "com_panayotis_jubler_media_preview_decoders_FFMPEG.h"
+#include "com_panayotis_jubler_media_preview_decoders_NativeDecoder.h"
 #include "defaults.h"
 #include "utilities.h"
 
-JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_makeCache
+JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_NativeDecoder_makeCache
   (JNIEnv * env, jobject this, jstring audio, jstring cache, jstring original)
 {
 	const char *audio_c;

@@ -59,13 +59,17 @@ public class Subtitles extends AbstractTableModel {
     private Vector <SubEntry> sublist;
     
     /** List of possible predefined styles */
-    private SubStyleList styles;  
+    private SubStyleList styles;
+    
+    /* The file representation of this subtitle */
+    private SubFile subfile;
     
     public Subtitles() {
         loadColumnWidth();
         sublist = new Vector<SubEntry>();
         attribs = new Hashtable<String,String>();
         styles = new SubStyleList();
+        subfile = new SubFile();
     }
     
     public Subtitles(Subtitles old) {
@@ -83,6 +87,8 @@ public class Subtitles extends AbstractTableModel {
         for (int i = 0 ; i < visiblecols.length ; i++) {
             visiblecols[i] = old.visiblecols[i];
         }
+        
+        subfile = new SubFile(old.subfile);
     }
     
     /* @data loaded file with proper encoding
@@ -98,6 +104,8 @@ public class Subtitles extends AbstractTableModel {
         
         while ( load == null && formats.hasMoreElements()) {
             load = formats.nextElement().parse(data, FPS, f);
+            if (load!=null && load.size() < 1)
+                load = null;
         }
         appendSubs(load, true);
         setAllAttribs(load);
@@ -238,7 +246,7 @@ public class Subtitles extends AbstractTableModel {
             entry = sublist.elementAt(i);
             if ( entry.isInTime(time)) return i;
             if (fuzzyMatch ) {
-                cdiff = time - entry.getStartTime().toSeconds();
+                cdiff = Math.abs(time - entry.getStartTime().toSeconds());
                 if ( cdiff > 0 && cdiff < fuzzyDiff) {
                     fuzzyDiff = cdiff;
                     fuzzyresult = i;
@@ -257,7 +265,7 @@ public class Subtitles extends AbstractTableModel {
     
     public SubStyleList getStyleList() { return styles; }
     
-  
+    
     public void revalidateStyles() {
         for (SubEntry entry : sublist) {
             SubStyle style = entry.getStyle();
@@ -265,6 +273,23 @@ public class Subtitles extends AbstractTableModel {
                 entry.setStyle(styles.elementAt(0));
             }
         }
+    }
+    
+    
+    /*
+     * Methods related to SubFile
+     *
+     */
+    public File getCurrentFile() { return subfile.getCurrentFile(); }
+    public void setCurrentFile(File f) { subfile.setCurrentFile(f); }
+    public String getCurrentFileName() { return subfile.getCurrentFile().getName(); }
+    
+    public File getLastOpenedFile() { return subfile.getLastOpenedFile(); }
+    public void setLastOpenedFile(File f) { subfile.setLastOpenedFile(f); }
+    public String getLastOpendFilePath() {
+        File last = subfile.getLastOpenedFile();
+        if (last==null) return null;
+        return last.getPath();
     }
     
     
