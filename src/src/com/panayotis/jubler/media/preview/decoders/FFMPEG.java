@@ -127,7 +127,7 @@ public final class FFMPEG extends NativeDecoder {
     public Dimension getDimension(String vfile) {
         if (!isDecoderValid()) return null;
         int[] res = grabDimension(vfile);
-        if (res==null || res.length<2) return null;
+        if (res==null || res.length<2 || res[0]<=0 || res[1]<=0 ) return null;
         Dimension d = new Dimension(res[0], res[1]);
         return d;
     }
