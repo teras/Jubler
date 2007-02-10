@@ -26,6 +26,7 @@ package com.panayotis.jubler.media.preview.decoders;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemFileFinder;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -122,6 +123,14 @@ public final class FFMPEG extends NativeDecoder {
         if (!isDecoderValid()) return -1;
         return grabFPS(vfile);
     }
+
+    public Dimension getDimension(String vfile) {
+        if (!isDecoderValid()) return null;
+        int[] res = grabDimension(vfile);
+        if (res==null || res.length<2) return null;
+        Dimension d = new Dimension(res[0], res[1]);
+        return d;
+    }
     
     public boolean isDecoderValid() {
         return library_is_present;
@@ -135,6 +144,8 @@ public final class FFMPEG extends NativeDecoder {
     
     /* Get FPS from a video file */
     public native float grabFPS(String vfile);
-    
+
+    /* Get the dimensions of a video file */
+    public native int[] grabDimension(String vfile);
     
 }

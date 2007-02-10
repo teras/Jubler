@@ -37,6 +37,51 @@
 #include "utilities.h"
 
 jfloat dump_fps(const char *input_filename);
+void get_dimension(jint* dimension, const char* input_filename);
+
+
+/*
+ * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
+ * Method:    grabDimension
+ * Signature: (Ljava/lang/String;)[I
+ */
+JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabDimension
+  (JNIEnv * env, jobject this, jstring video)
+{
+	/* Pointers for c-like strings */
+	const char *video_c;
+	/* Result integer table */
+	jintArray dimension = NULL;
+	jint* matrixdata = NULL;
+
+	/* initialize java array */
+	dimension = (*env)->NewIntArray(env, 2);
+    if (dimension==NULL) return NULL;
+
+	/* get array data position */
+    matrixdata = (*env)->GetIntArrayElements(env, dimension, 0);	
+
+	/* translate Java strings into C strings */
+	video_c  = (*env)->GetStringUTFChars(env, video, 0);
+	
+	get_dimension(matrixdata, video_c);
+
+	/* free memory reserved for Java->C strings */
+	(*env)->ReleaseStringUTFChars(env, video, video_c);
+
+	/* release integer data */
+	(*env)->ReleaseIntArrayElements(env, dimension, matrixdata, 0);
+
+	return dimension;
+}
+
+/* Get the actual dimension of a video file and store it in a two position integer */
+void get_dimension(jint* dim, const char* video_c)
+{
+
+}
+
+
 
 /*
  * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
