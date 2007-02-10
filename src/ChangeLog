@@ -1,3 +1,6 @@
+3.2.0
+Major internal changes
+
 3.1.0
 Read frames per second from the movie now supported. Movie synchronization
 on the fly, based on time differences between time points supported. Updated
