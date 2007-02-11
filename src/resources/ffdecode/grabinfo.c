@@ -78,7 +78,36 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
 /* Get the actual dimension of a video file and store it in a two position integer */
 void get_dimension(jint* dim, const char* video_c)
 {
+	int err=0, i=0;
+	AVFormatContext * fcx=NULL;
+	jboolean ret = JNI_TRUE;
 
+	av_register_all();
+
+	// Open the input file.
+	err = av_open_input_file(&fcx, video_c, NULL, 0, NULL);
+	if(err<0) {
+		printf("Can't open file: %s\n", video_c);
+		ret = JNI_FALSE;
+	}
+
+	if (ret != JNI_FALSE) {
+		// Find the stream info
+		err = av_find_stream_info(fcx);
+
+		// Give us information about the resolution and exit
+		for(i=0;i<fcx->nb_streams;i++) {
+			AVStream *st = fcx->streams[i];
+			if(st->codec->codec_type == CODEC_TYPE_VIDEO) {
+				dim[0] = st->codec->width;
+				dim[1] = st->codec->height;
+
+				break; // we only need the first supported stream
+			}
+		}
+	}
+
+	if(fcx != NULL) av_close_input_file(fcx);
 }
 
 
