@@ -165,7 +165,7 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
 
 
 
-AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint *width, jint *height)
+AVPicture* decodeFrame (const char *input_filename, jlong seek_time, jint *width, jint *height)
 {
 	/* *TERAS* This should be done at the beginning */
 	av_register_all();
@@ -219,6 +219,9 @@ AVPicture* decodeFrame (const char *input_filename, const jlong seek_time, jint 
 			retflag = FALSE;
 		}
 		else {
+			if (fcx->start_time != AV_NOPTS_VALUE) {
+				seek_time += fcx->start_time;
+			}
 			// Do a check that we don't seek beyond the movie duration
 			if(seek_time > fcx->duration) {
 				printf("Seek time cannot be greater than input's file duration\n");

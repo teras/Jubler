@@ -136,6 +136,10 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
       	ret = JNI_FALSE;
    	}
 		else {
+			if (fcx->start_time != AV_NOPTS_VALUE) {
+				seek_time_start += fcx->start_time;
+				seek_time_stop += fcx->start_time;
+			}
 			/* Check that timepos_start is smaller than timepos_stop */
 			if (seek_time_start < seek_time_stop) {
 				/* Check that timepos is inside duration */
