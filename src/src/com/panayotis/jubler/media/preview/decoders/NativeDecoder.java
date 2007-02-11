@@ -73,11 +73,10 @@ public abstract class NativeDecoder implements DecoderInterface {
                 if (status) {
                     forgetAudioCache(cf);    /* We don't need the old cache anymore */
                 }
-                feedback.stopCacheCreation();
-                
-                if(!status) DEBUG.error(_("Error while loading file {0}",  af));
+                cacher = null;  // Needed early, to "tip" the system that cache creatin has been finished
                 setInterruptStatus(false);
-                cacher = null;
+                if(!status) DEBUG.error(_("Error while loading file {0}",  af));
+                feedback.stopCacheCreation();
             }
         };
         cacher.start();

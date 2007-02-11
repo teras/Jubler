@@ -102,7 +102,7 @@ public class JWavePreview extends JPanel implements DecoderListener {
         remove(loader);
         loader.setVisible(false);
         setEnabled(true);
-  //      updateWave();
+        updateWave();
     }
     
     public void updateCacheCreation(float state) {
