@@ -45,10 +45,11 @@ import java.io.OutputStreamWriter;
 public class DVDMaestro extends AbstractBinarySubFormat {
     
     private static final String NL="\r\n";
-    private static final String digits="0000";
     
     private JSaveProgress progress;
     private JMaestroOptions moptions;
+    
+    private String digits;  // This is used when we want to prepend the subtitle id with zeros
     
     /** Creates a new instance of DVDMaestro */
     public DVDMaestro() {
@@ -85,6 +86,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         if (progress.isVisible())
             throw new IOException(_("The save process haven't finish yet"));
         
+        moptions.updateValues(given_subs, media);
         
         JIDialog.message(null,moptions, _("Maestro DVD options"), JIDialog.QUESTION_MESSAGE);
         
@@ -113,6 +115,11 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         buffer.append("Color	(0 1 0 0)").append(NL);
         buffer.append(NL);
         
+        /* create digits prependable string */
+        int digs = Integer.toString(subs.size()).length();
+        StringBuffer id = new StringBuffer();
+        for (int i = 0 ; i < digs ; i++) id.append('0');
+        digits = id.toString();
         
         for (int i = 0 ; i < subs.size() ; i++) {
             makeSubEntry(subs.elementAt(i), i, prefix, buffer);
@@ -139,6 +146,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
     
     private void makeSubEntry(SubEntry entry, int id, String prefix, StringBuffer buffer) {
         
+        System.out.println(id);
         String id_string = Integer.toString(id+1);
         id_string = digits.substring(id_string.length()) + id_string;
         buffer.append("Display_Area	(213 3 524 38)").append(NL);

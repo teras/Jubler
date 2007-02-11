@@ -154,7 +154,13 @@ public class ASpell extends SpellChecker {
         return ret;
     }
     
-    public ExtOptions getOptionsPanel() { return opts; }
+    /* Use this method also to refresh the speller list */
+    public ExtOptions getOptionsPanel() { 
+        opts.updateOptions();
+        return opts; 
+    }
+
+    
     public String getName() { return "ASpell"; }
     
     public String getType() { return "Speller"; }

@@ -34,6 +34,7 @@ import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 
@@ -245,6 +246,8 @@ public class MediaFile {
     public void interruptCacheCreation(boolean status) {
         decoder.setInterruptStatus(status);
     }
-    
+    public Dimension getDimension() {
+        return decoder.getDimension(vfile);
+    }
     
 }

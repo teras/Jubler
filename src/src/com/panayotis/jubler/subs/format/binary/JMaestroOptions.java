@@ -23,8 +23,11 @@
 
 package com.panayotis.jubler.subs.format.binary;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.JPreferences;
+import com.panayotis.jubler.subs.Subtitles;
+import java.awt.Dimension;
 
 /**
  *
@@ -37,9 +40,15 @@ public class JMaestroOptions extends javax.swing.JPanel {
         initComponents();
     }
     
-    public void updateValues(JPreferences prefs, MediaFile media) {
-        if (media!=null)
-            media.getFPS();
+    public void updateValues(Subtitles subs, MediaFile media) {
+        media.validateMediaFile(subs,false);
+        Dimension vsize = media.getDimension();
+        if (vsize==null) {
+            vsize = new Dimension(700,500);
+        }
+        
+        XSize.setValue(vsize.width);
+        YSize.setValue(vsize.height);
     }
     
     /** This method is called from within the constructor to
@@ -50,9 +59,9 @@ public class JMaestroOptions extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         jPanel2 = new javax.swing.JPanel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jSpinner2 = new javax.swing.JSpinner();
-        jComboBox1 = new javax.swing.JComboBox();
+        XSize = new javax.swing.JSpinner();
+        YSize = new javax.swing.JSpinner();
+        Format = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -63,24 +72,24 @@ public class JMaestroOptions extends javax.swing.JPanel {
         jPanel2.setLayout(new java.awt.GridLayout(3, 0, 0, 10));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 5));
-        jPanel2.add(jSpinner1);
+        jPanel2.add(XSize);
 
-        jPanel2.add(jSpinner2);
+        jPanel2.add(YSize);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel2.add(jComboBox1);
+        Format.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "PAL", "NTSC" }));
+        jPanel2.add(Format);
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jPanel1.setLayout(new java.awt.GridLayout(3, 0));
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText(_("Video width"));
         jPanel1.add(jLabel1);
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText(_("Video height"));
         jPanel1.add(jLabel2);
 
-        jLabel3.setText("jLabel3");
+        jLabel3.setText(_("Video standard"));
         jPanel1.add(jLabel3);
 
         add(jPanel1, java.awt.BorderLayout.WEST);
@@ -89,14 +98,14 @@ public class JMaestroOptions extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JComboBox Format;
+    private javax.swing.JSpinner XSize;
+    private javax.swing.JSpinner YSize;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JSpinner jSpinner2;
     // End of variables declaration//GEN-END:variables
     
 }

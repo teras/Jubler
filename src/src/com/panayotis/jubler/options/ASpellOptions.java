@@ -46,7 +46,6 @@ public class ASpellOptions extends ExtOptions {
         initComponents();
         
         dictionaries = new Vector<ASpellDict>();
-        loadXtraOptions();
         add(Visuals, BorderLayout.SOUTH);
     }
     
@@ -73,8 +72,8 @@ public class ASpellOptions extends ExtOptions {
     }
     // </editor-fold>//GEN-END:initComponents
     
-    protected void loadXtraOptions() {
-        populateDictionaries();
+    public void updateOptions() {
+        populateDictionaries();       // shouldn't needed any more - this method is called from Aspell.getOptionsPanel();
         LangList.setListData(dictionaries);
         
         /* Load preferred language */
@@ -96,7 +95,7 @@ public class ASpellOptions extends ExtOptions {
         }
     }
     
-    private void populateDictionaries() {
+    public void populateDictionaries() {
         /* load dictionaries list from aspell */
         dictionaries.removeAllElements();
         getDictsFromPath(null);

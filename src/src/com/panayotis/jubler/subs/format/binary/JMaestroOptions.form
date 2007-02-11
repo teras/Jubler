@@ -32,18 +32,16 @@
         <Property name="verticalGap" type="int" value="10"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JSpinner" name="jSpinner1">
+        <Component class="javax.swing.JSpinner" name="XSize">
         </Component>
-        <Component class="javax.swing.JSpinner" name="jSpinner2">
+        <Component class="javax.swing.JSpinner" name="YSize">
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="Format">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
+              <StringArray count="2">
+                <StringItem index="0" value="PAL"/>
+                <StringItem index="1" value="NTSC"/>
               </StringArray>
             </Property>
           </Properties>
@@ -64,17 +62,23 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel1"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="_(&quot;Video width&quot;)" type="code"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel2"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="_(&quot;Video height&quot;)" type="code"/>
+            </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jLabel3"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="_(&quot;Video standard&quot;)" type="code"/>
+            </Property>
           </Properties>
         </Component>
       </SubComponents>
