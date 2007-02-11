@@ -94,7 +94,7 @@ public class SystemDependent {
             }
         }
         return "%p -slave -identify -ontop -utf8 -noquiet -nofs "+fontconfig+"-subfont-autoscale 0 -volstep 10"+
-                " -sub %s -ss %t -geometry +%x+%y -font "+fontname+" -subfont-text-scale %z  %v";
+                " -sub %s -ss %t -geometry +%x+%y -font "+fontname+" -subfont-text-scale %z %(-audiofile %a%) %v";
     }
     
     /* Force ASpell to use UTF-8 encoding - broken on Windows */

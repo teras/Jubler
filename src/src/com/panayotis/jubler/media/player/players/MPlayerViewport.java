@@ -67,7 +67,7 @@ public class MPlayerViewport implements Viewport {
         
         this.mfile = mfile;
         
-        String cmd[] = player.getCommandArguments(mfile.getVideoFile(), sub, when);
+        String cmd[] = player.getCommandArguments(mfile, sub, when);
         fps = 0;
         length = 0;
         position = 0;

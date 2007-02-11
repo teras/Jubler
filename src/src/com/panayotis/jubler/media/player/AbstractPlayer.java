@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.style.SubStyle.Style;
 import com.panayotis.jubler.time.Time;
 import java.util.StringTokenizer;
@@ -65,7 +66,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         } catch (IOException e) {}
         DEBUG.error(_("Could not create temporary file to store the subtitles."));
     }
-
+    
     public void deleteSubFile() {
         new File(subpath).delete();
     }
@@ -81,13 +82,30 @@ public abstract class AbstractPlayer extends VideoPlayer {
         }
     }
     
-    public String[] getCommandArguments( String avi, Subtitles sub, Time when ) {
-        StringTokenizer st = new StringTokenizer(opts.getArguments(), " ");
+    public String[] getCommandArguments( MediaFile mfile, Subtitles sub, Time when ) {
+        
+        /* Frist, find out if we need different audio stream */
+        String options = opts.getArguments();
+        int begin, end;
+        begin = options.indexOf("%(");
+        end = options.lastIndexOf("%)");
+        if (begin >= 0 && end < options.length() && begin < end) {
+            if ( mfile.isAudioFileUnused() ) {
+                options = options.substring(0,begin) + options.substring(end+2,options.length());
+            } else {
+                options = options.substring(0,begin) + options.substring(begin+2,end) + options.substring(end+2,options.length());
+            }
+        }
+        options = options.replaceAll("%\\(","");
+        options = options.replaceAll("%\\)","");
+        
+        /* tokenize command line */
+        StringTokenizer st = new StringTokenizer(options, " ");
         String[] cmds = new String[st.countTokens()];
         initSubFile(sub);
-        
         String buf;
         int pos = 0;
+        
         for (int i = 0 ; i < cmds.length ; i++) {
             buf = st.nextToken();
             if (buf!=null && (!buf.equals("")) )
@@ -95,8 +113,9 @@ public abstract class AbstractPlayer extends VideoPlayer {
         }
         
         replaceValues(cmds, "%p", opts.getExecFileName());
-        replaceValues(cmds, "%v", avi);
-        replaceValues(cmds, "%s",subpath);
+        replaceValues(cmds, "%v", mfile.getVideoFile());
+        replaceValues(cmds, "%a", mfile.getAudioFile());
+        replaceValues(cmds, "%s", subpath);
         replaceValues(cmds, "%t", when.toString());
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));

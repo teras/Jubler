@@ -70,11 +70,12 @@ public class AbstractPlayerOptions extends ExtOptions {
         SpinP.add(dy);
         
         JPanel HelpP = new JPanel();
-        HelpP.setLayout(new GridLayout(4,1));
+        HelpP.setLayout(new GridLayout(5,1));
         HelpP.add(new JLabel());
         HelpP.add(new JLabel(_("Advanced argument list:")));
         HelpP.add(new JLabel("    %p=player %v=video_file %s=subtiles_file %t=start_time"));
-        HelpP.add(new JLabel("    %x=x_offset %y=y_offset %f=font_name %z=font_size %j=Jubler_path"));
+        HelpP.add(new JLabel("    %x=x_offset %y=y_offset %f=fontname %z=font_size %j=Jubler_path"));
+        HelpP.add(new JLabel("    %a=optional audio file   %( %)=begin & end of audio parameter"));
         
         JPanel ArgsP = new JPanel();
         ArgsP.setLayout(new BorderLayout());
