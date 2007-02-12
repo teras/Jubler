@@ -24,7 +24,7 @@
 package com.panayotis.jubler.subs.style;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.SubEntry;
 import java.util.Properties;
 
@@ -41,8 +41,7 @@ public class SubStyleList extends Vector<SubStyle> implements NameList {
         static {
             default_style = new SubStyle("Default");
             default_style.setDefault(true);
-            Properties prefs = OptionsIO.getPrefFile();
-            default_style.setValues(prefs.getProperty("Styles.Default"));
+            default_style.setValues(Options.getOption("Styles.Default", ""));
         }
 
     

@@ -1,5 +1,5 @@
 /*
- * PrefsHolder.java
+ * OptionsHolder.java
  *
  * Created on 24 Ιούνιος 2005, 2:43 μμ
  * 

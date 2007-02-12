@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 
 
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -103,20 +103,18 @@ public class AbstractPlayerOptions extends ExtOptions {
     
     protected void loadOptions() {
         super.loadOptions();
-        Properties prefs = OptionsIO.getPrefFile();
-        String values = prefs.getProperty("Player."+name+".WindowOffset", "(0,40)");
+        String values = Options.getOption("Player."+name+".WindowOffset", "(0,40)");
         int seperator = values.indexOf(',');
         x_value = Integer.parseInt(values.substring(1, seperator));
         y_value = Integer.parseInt(values.substring(seperator+1, values.length()-1));
-        args_value = prefs.getProperty("Player."+name+".Arguments");
+        args_value = Options.getOption("Player."+name+".Arguments", "");
     }
     
     public void saveOptions() {
         super.saveOptions();
-        Properties prefs = OptionsIO.getPrefFile();
-        prefs.setProperty("Player."+name+".WindowOffset", "("+dx.getValue() + "," + dy.getValue()+")");
-        prefs.setProperty("Player."+name+".Arguments", args.getText());
-        OptionsIO.savePrefFile(prefs);
+        Options.setOption("Player."+name+".WindowOffset", "("+dx.getValue() + "," + dy.getValue()+")");
+        Options.setOption("Player."+name+".Arguments", args.getText());
+        Options.saveOptions();
     }
     
     

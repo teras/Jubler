@@ -85,7 +85,7 @@ public class JPreferences extends JPanel implements OptionsHolder {
         initComponents();
         jload = new JLoadOptions();
         jsave = new JSaveOptions();
-        OptionsIO.loadSystemPreferences(this);
+        Options.loadSystemPreferences(this);
         
         LoadPanel.add(jload, BorderLayout.NORTH);
         SavePanel.add(jsave, BorderLayout.NORTH);
@@ -133,7 +133,7 @@ public class JPreferences extends JPanel implements OptionsHolder {
     
     /* This method is called when a load/save action is performed 
      * To grasp when a JPreferences dialog is displayed, see 
-     * OptionsIO.loadSystemPreferences(JPreferences);
+     * Options.loadSystemPreferences(JPreferences);
      */
     private void flipflopPanel(JFrame parent, MediaFile mfile, Subtitles subs, JOptionsGUI obj, JPanel container, JCheckBox allow) {
         if ( !allow.isSelected() ) return;

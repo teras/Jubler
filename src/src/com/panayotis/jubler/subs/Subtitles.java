@@ -26,7 +26,7 @@ package com.panayotis.jubler.subs;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.format.AvailSubFormats;
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
@@ -344,7 +344,6 @@ public class Subtitles extends AbstractTableModel {
     }
     
     public void saveColumnWidth(JTable t) {
-        Properties prefs = OptionsIO.getPrefFile();
         StringBuffer widths = new StringBuffer();
         int ccolumn = 0;
         
@@ -355,16 +354,16 @@ public class Subtitles extends AbstractTableModel {
             }
             widths.append(prefcolwidth[i]).append(',');
         }
-        prefs.setProperty("System.ColumnWidth", widths.substring(0, widths.length()-1));
-        OptionsIO.savePrefFile(prefs);
+        Options.setOption("System.ColumnWidth", widths.substring(0, widths.length()-1));
+        Options.saveOptions();
     }
     
     private void loadColumnWidth() {
         for (int i = 0 ; i< defaultcolwidth.length; i++) {
             prefcolwidth[i] = defaultcolwidth[i];
         }
-        String widths = OptionsIO.getPrefFile().getProperty("System.ColumnWidth");
-        if (widths == null || widths.length()<1) return;
+        String widths = Options.getOption("System.ColumnWidth", "");
+        if (widths == null || widths.equals("") || widths.length()<1) return;
         
         StringTokenizer st = new StringTokenizer(widths ,",");
         int pos = 0;

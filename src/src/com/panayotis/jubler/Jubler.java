@@ -32,7 +32,7 @@ import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
@@ -213,8 +213,7 @@ public class Jubler extends JFrame {
         filedialog = new JFileChooser();
         filedialog.setMultiSelectionEnabled(false);
         filedialog.addChoosableFileFilter(new SubFileFilter());
-        Properties prefprop = OptionsIO.getPrefFile();
-        filedialog.setSelectedFile(new File(prefprop.getProperty("System.LastDirPath") +"/." ) );
+        filedialog.setSelectedFile(new File(Options.getOption("System.LastDirPath", ".") +"/.") );
         
         playerselector = new JExtSelector(new AvailPlayers());
         
@@ -2175,14 +2174,13 @@ public class Jubler extends JFrame {
     private void backupWindowSize(boolean toDisk) {
         if (toDisk) {
             String vals = "(("+getX() + "," + getY() +"),(" + getWidth() + "," + getHeight() + "),"+getExtendedState()+")";
-            Properties prf = OptionsIO.getPrefFile();
-            prf.setProperty("System.WindowState", vals);
-            OptionsIO.savePrefFile(prf);
+            Options.setOption("System.WindowState", vals);
+            Options.saveOptions();
         } else {
             int [] values = new int[5];
             int pos = 0;
-            String props = OptionsIO.getPrefFile().getProperty("System.WindowState");
-            if (props==null) return;
+            String props = Options.getOption("System.WindowState", "");
+            if (props==null || props.equals("")) return;
             StringTokenizer st = new StringTokenizer(props ,"(),");
             while (st.hasMoreTokens() && pos < 5 ) {
                 values[pos++] = Integer.parseInt(st.nextToken());
@@ -2337,9 +2335,8 @@ public class Jubler extends JFrame {
     
     /* Save the position of the last directory opened */
     void savePathPosition() {
-        Properties pr = OptionsIO.getPrefFile();
-        pr.setProperty("System.LastDirPath", filedialog.getSelectedFile().getParent());
-        OptionsIO.savePrefFile(pr);
+        Options.setOption("System.LastDirPath", filedialog.getSelectedFile().getParent());
+        Options.saveOptions();
     }
     
     

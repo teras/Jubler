@@ -35,7 +35,7 @@ import javax.swing.Timer;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import java.awt.Color;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
 import com.panayotis.jubler.tools.JToolRealTime;
@@ -140,8 +140,7 @@ public class JVideoConsole extends javax.swing.JDialog {
     /* Where to put this dialog */
     private void positionConsole() {
         Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        Properties prefs = OptionsIO.getPrefFile();
-        String res = prefs.getProperty("VideoConsole.DefaultPosition", "("+ ((bounds.width + bounds.x - getRootPane().getWidth())/2)+ "," + bounds.y+")");
+        String res = Options.getOption("VideoConsole.DefaultPosition", "("+ ((bounds.width + bounds.x - getRootPane().getWidth())/2)+ "," + bounds.y+")");
         int seperator = res.indexOf(',');
         int x_value = Integer.parseInt(res.substring(1, seperator));
         int y_value = Integer.parseInt(res.substring(seperator+1, res.length()-1));
@@ -182,9 +181,8 @@ public class JVideoConsole extends javax.swing.JDialog {
         view = null;
         
         /* Save window position */
-        Properties prefs = OptionsIO.getPrefFile();
-        prefs.setProperty("VideoConsole.DefaultPosition", "("+ getX() + "," + getY() +")");
-        OptionsIO.savePrefFile(prefs);
+        Options.setOption("VideoConsole.DefaultPosition", "("+ getX() + "," + getY() +")");
+        Options.saveOptions();
     }
     
     public synchronized void requestQuit() {

@@ -8,7 +8,7 @@ package com.panayotis.jubler.information;
 
 import com.panayotis.jubler.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.SystemDependent;
 
 import java.io.IOException;
@@ -25,7 +25,6 @@ public class JVersion extends javax.swing.JPanel {
     
     private Properties version;
     private Properties webversion;
-    private Properties prefs;
     private int web_release;
     
     /** Creates new form JVersion */
@@ -37,8 +36,8 @@ public class JVersion extends javax.swing.JPanel {
         if (getVersion()) { /* A new VALID version was found */
             JIDialog.message(null, this, _("New version"), JIDialog.INFORMATION_MESSAGE);
             if (DisregardB.isSelected()) {
-                prefs.setProperty("System.Version.IgnoreUpdate", Integer.toString(web_release));
-                OptionsIO.savePrefFile(prefs);
+                Options.setOption("System.Version.IgnoreUpdate", Integer.toString(web_release));
+                Options.saveOptions();
             }
         }
     }
@@ -68,8 +67,7 @@ public class JVersion extends javax.swing.JPanel {
         if (c_release >= web_release) return false;
         
         boolean force = Boolean.parseBoolean(webversion.getProperty("force.upgrade", "false"));
-        prefs = OptionsIO.getPrefFile();
-        int ignore_prefs = Integer.parseInt(prefs.getProperty("System.Version.IgnoreUpdate", "0"));
+        int ignore_prefs = Integer.parseInt(Options.getOption("System.Version.IgnoreUpdate", "0"));
         
         
         DisregardB.setSelected(false);

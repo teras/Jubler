@@ -29,7 +29,7 @@ import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import java.awt.BorderLayout;
@@ -662,9 +662,8 @@ public class JStyleEditor extends javax.swing.JDialog {
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         getOtherValues(); /* First we need to gather the values from the control buttons */
         String vals = current.getValues();
-        Properties prefs = OptionsIO.getPrefFile();
-        prefs.setProperty("Styles.Default", vals);
-        OptionsIO.savePrefFile(prefs);
+        Options.setOption("Styles.Default", vals);
+        Options.saveOptions();
     }//GEN-LAST:event_SaveActionPerformed
     
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed

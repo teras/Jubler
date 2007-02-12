@@ -25,7 +25,7 @@ package com.panayotis.jubler.options;
 import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
 import java.util.Properties;
@@ -115,16 +115,14 @@ public class ExtOptions extends JPanel {
     // End of variables declaration//GEN-END:variables
     
     protected void loadOptions() {
-        Properties pr = OptionsIO.getPrefFile();
-        FilenameT.setText( pr.getProperty(type + "." + name + ".Path", name.toLowerCase()));
+        FilenameT.setText( Options.getOption(type + "." + name + ".Path", name.toLowerCase()));
         filename = FilenameT.getText();
     }
     
     public void saveOptions() {
         filename = FilenameT.getText();
-        Properties pr = OptionsIO.getPrefFile();
-        pr.setProperty(type + "." + name + ".Path", filename);
-        OptionsIO.savePrefFile(pr);
+        Options.setOption(type + "." + name + ".Path", filename);
+        Options.saveOptions();
     }
 
     public void resetOptions() {

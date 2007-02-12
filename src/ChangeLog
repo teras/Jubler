@@ -1,5 +1,7 @@
 3.2.0
-Major internal changes
+Mplayer support different audio stream. FFMPEG time offset fixes. ASpell
+updates supported languafes when opening preferences. Major internal changes
+and cleanups.
 
 3.1.0
 Read frames per second from the movie now supported. Movie synchronization

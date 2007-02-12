@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler;
+import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -43,6 +44,8 @@ public class Main {
      */
     public static void main(String args[]) {
         final MainSplash splash = new MainSplash("/icons/splash.jpg");
+        
+        AbstractPlayer.mixer();
         
         SystemDependent.setLookAndFeel();
         new Jubler();

@@ -41,7 +41,7 @@ import java.nio.charset.CodingErrorAction;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.MediaFileFilter;
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
 
@@ -50,7 +50,7 @@ import java.util.ArrayList;
  * @author teras
  */
 public class FileCommunicator {
-    private static File []recent_files = OptionsIO.loadFileList();
+    private static File []recent_files = Options.loadFileList();
     
     
     /* A new file was loaded/saved - add it to the recent list */
@@ -63,7 +63,7 @@ public class FileCommunicator {
                 for (int j = i-1 ; j >= 0 ; j--)
                     recent_files[j+1] = recent_files[j];
                 recent_files[0] = f;
-                OptionsIO.saveFileList(recent_files);
+                Options.saveFileList(recent_files);
                 return;
             }
         }
@@ -71,7 +71,7 @@ public class FileCommunicator {
             recent_files[i] = recent_files[i-1];
         }
         recent_files[0] = f;
-        OptionsIO.saveFileList(recent_files);
+        Options.saveFileList(recent_files);
     }
     
     /* Update Recents menu */

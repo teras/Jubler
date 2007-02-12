@@ -77,8 +77,7 @@ public class ASpellOptions extends ExtOptions {
         LangList.setListData(dictionaries);
         
         /* Load preferred language */
-        Properties pr = OptionsIO.getPrefFile();
-        setSelectedLanguage( pr.getProperty(type + "." + name + ".Language", "en") );
+        setSelectedLanguage( Options.getOption(type + "." + name + ".Language", "en") );
     }
     
     
@@ -136,9 +135,8 @@ public class ASpellOptions extends ExtOptions {
         if ( which < 0 ) language = null;
         else language = (ASpellDict)LangList.getModel().getElementAt(which);
         
-        Properties pr = OptionsIO.getPrefFile();
-        pr.setProperty(type + "." + name + ".Language", language.lang);
-        OptionsIO.savePrefFile(pr);
+        Options.setOption(type + "." + name + ".Language", language.lang);
+        Options.saveOptions();
     }
     
     public void resetOptions() {

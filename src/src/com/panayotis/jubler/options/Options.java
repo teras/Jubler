@@ -31,25 +31,31 @@ import java.util.Properties;
  *
  * @author teras
  */
-public class OptionsIO {
+public class Options {
     
-    public static final String preffile;
+    private final static Properties props;
+    private final static String preffile;
     
     static {
         preffile = System.getProperty("user.home") + System.getProperty("file.separator") + ".jublerrc";
-    }
-    
-    
-    public static Properties getPrefFile() {
-        Properties props = new Properties();
+        
+        props = new Properties();
         try {
             props.loadFromXML(new FileInputStream(preffile));
         } catch ( IOException e ) {
         }
-        return props;
     }
     
-    public static void savePrefFile(Properties props) {
+    
+    synchronized public static void setOption(String key, String value) {
+        props.setProperty(key, value);
+    }
+    
+    public static String getOption(String key, String deflt) {
+        return props.getProperty(key, deflt);
+    }
+    
+    synchronized public static void saveOptions() {
         try {
             props.storeToXML(new FileOutputStream(preffile), "Jubler file");
         } catch ( IOException e ) {
@@ -58,8 +64,8 @@ public class OptionsIO {
     }
     
     
+    
     public static void loadSystemPreferences(JPreferences prefs) {
-        Properties props = getPrefFile();
         prefs.jload.loadPreferences(props);
         prefs.jsave.loadPreferences(props);
         prefs.smodel.loadPreferences(props);
@@ -68,37 +74,34 @@ public class OptionsIO {
     
     
     public static void saveSystemPreferences(JPreferences prefs) {
-        Properties props = getPrefFile();
         prefs.jload.savePreferences(props);
         prefs.jsave.savePreferences(props);
         prefs.smodel.savePreferences(props);
         prefs.savePreferences(props);
-        savePrefFile(props);
+        saveOptions();
     }
     
     public static void saveFileList(File[]  list) {
-        Properties prop = getPrefFile();
         String fname;
         String key;
         for (int i = 0 ; i < 10 ; i++) {
             key = "System.Lastfile"+(i+1);
             if (!(list[i]==null) && list[i].exists() && list[i].isFile()) {
-                prop.setProperty(key, list[i].getPath());
+                props.setProperty(key, list[i].getPath());
             } else {
-                prop.remove(key);
+                props.remove(key);
             }
         }
-        OptionsIO.savePrefFile(prop);
+        saveOptions();
     }
     
     public static File[] loadFileList() {
-        Properties prop = getPrefFile();
         File[] ret = new File[10];
         String fname;
         int pointer = 0;
         File f;
         for (int i = 1 ; i < 11 ; i++) {
-            fname = prop.getProperty("System.Lastfile"+i,"");
+            fname = props.getProperty("System.Lastfile"+i,"");
             if (!fname.trim().equals("")) {
                 f = new File(fname);
                 if (f.exists() && f.canRead() && f.isFile())

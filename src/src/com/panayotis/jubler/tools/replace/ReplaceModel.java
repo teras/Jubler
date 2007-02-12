@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools.replace;
 
-import com.panayotis.jubler.options.OptionsIO;
+import com.panayotis.jubler.options.Options;
 import java.util.Properties;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
@@ -119,8 +119,8 @@ public class ReplaceModel extends AbstractTableModel {
     
     
     public void loadOptions() {
-        String data = OptionsIO.getPrefFile().getProperty("Replace.Global");
-        if ( data == null ) {
+        String data = Options.getOption("Replace.Global", "");
+        if ( data == null || data.equals("")) {
             reset();
             return;
         } else {
@@ -134,9 +134,8 @@ public class ReplaceModel extends AbstractTableModel {
         for (int i = 0 ; i < (replacelist.size()-1) ; i++ ) {
             data.append(replacelist.elementAt(i));
         }
-        Properties prefs = OptionsIO.getPrefFile();
-        prefs.setProperty("Replace.Global", data.toString());
-        OptionsIO.savePrefFile(prefs);
+        Options.setOption("Replace.Global", data.toString());
+        Options.saveOptions();
     }
     
     public void reset() {

@@ -40,10 +40,10 @@ public class StaticJubler {
     public static void showPreferences() {
         int ret;
         
-        OptionsIO.loadSystemPreferences(Jubler.prefs);
+        Options.loadSystemPreferences(Jubler.prefs);
         ret = JIDialog.question(null, Jubler.prefs, _("Preferences"));
-        if ( ret == JIDialog.OK_OPTION) OptionsIO.saveSystemPreferences(Jubler.prefs);
-        else OptionsIO.loadSystemPreferences(Jubler.prefs); // Make sure options are returned to their saved state
+        if ( ret == JIDialog.OK_OPTION) Options.saveSystemPreferences(Jubler.prefs);
+        else Options.loadSystemPreferences(Jubler.prefs); // Make sure options are returned to their saved state
     }
     
     public static void quitAll() {
