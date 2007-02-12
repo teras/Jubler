@@ -45,8 +45,6 @@ public class Main {
     public static void main(String args[]) {
         final MainSplash splash = new MainSplash("/icons/splash.jpg");
         
-        AbstractPlayer.mixer();
-        
         SystemDependent.setLookAndFeel();
         new Jubler();
         SystemDependent.initApplication();

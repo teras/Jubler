@@ -86,9 +86,6 @@ public class MPlayerViewport implements Viewport {
             /* wait up to the point where the length is displayed */
             while ( !(info=infopipe.readLine()).startsWith("ID_LENGTH"));
             length = getValue(info);
-            sendCommand("osd 0");
-            setVolume(5);
-            sendCommand("osd 2");
             
             updater = new Thread() {
                 public void run() {
