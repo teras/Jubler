@@ -24,6 +24,7 @@
 package com.panayotis.jubler.media.player;
 
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.console.PlayerFeedback;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 

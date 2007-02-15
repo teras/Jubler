@@ -40,7 +40,7 @@ import java.nio.charset.CodingErrorAction;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.player.MediaFileFilter;
+import com.panayotis.jubler.media.filters.MediaFileFilter;
 import com.panayotis.jubler.options.Options;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;

@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.media.player;
+package com.panayotis.jubler.media.console;
 
 /**
  *

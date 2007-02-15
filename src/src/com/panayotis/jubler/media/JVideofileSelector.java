@@ -23,7 +23,8 @@
 
 package com.panayotis.jubler.media;
 
-import com.panayotis.jubler.media.player.*;
+import com.panayotis.jubler.media.filters.AudioFileFilter;
+import com.panayotis.jubler.media.filters.VideoFileFilter;
 import java.io.File;
 import javax.swing.JFileChooser;
 

@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.media.player;
+package com.panayotis.jubler.media.console;
 
 import com.panayotis.jubler.subs.style.gui.tri.DarkIconFilter;
 import java.awt.Color;

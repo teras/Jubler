@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.media.player.TimeSync;
+import com.panayotis.jubler.media.console.TimeSync;
 
 /**
  *

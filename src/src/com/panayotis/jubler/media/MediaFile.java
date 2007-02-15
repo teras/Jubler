@@ -26,8 +26,8 @@ package com.panayotis.jubler.media;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.JIDialog;
-import com.panayotis.jubler.media.player.AudioFileFilter;
-import com.panayotis.jubler.media.player.VideoFileFilter;
+import com.panayotis.jubler.media.filters.AudioFileFilter;
+import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioCache;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;

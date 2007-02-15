@@ -21,8 +21,9 @@
  *
  */
 
-package com.panayotis.jubler.media.player.players;
+package com.panayotis.jubler.media.player;
 import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.media.player.mplayer.MPlayer;
 import com.panayotis.jubler.tools.externals.ExtList;
 
 /**

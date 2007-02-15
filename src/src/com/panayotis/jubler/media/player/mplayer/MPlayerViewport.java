@@ -21,7 +21,8 @@
  *
  */
 
-package com.panayotis.jubler.media.player.players;
+package com.panayotis.jubler.media.player.mplayer;
+import com.panayotis.jubler.media.player.*;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.subs.Subtitles;
@@ -34,7 +35,7 @@ import java.io.OutputStreamWriter;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.player.PlayerFeedback;
+import com.panayotis.jubler.media.console.PlayerFeedback;
 
 /**
  *

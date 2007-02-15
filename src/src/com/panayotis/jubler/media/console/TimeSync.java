@@ -7,7 +7,7 @@
  * and open the template in the editor.
  */
 
-package com.panayotis.jubler.media.player;
+package com.panayotis.jubler.media.console;
 
 /**
  *

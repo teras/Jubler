@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.media.player;
+package com.panayotis.jubler.media.filters;
 
 import java.io.File;
 

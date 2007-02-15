@@ -21,9 +21,11 @@
  *
  */
 
-package com.panayotis.jubler.media.player;
+package com.panayotis.jubler.media.console;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
