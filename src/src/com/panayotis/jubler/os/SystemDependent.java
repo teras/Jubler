@@ -26,14 +26,15 @@ package com.panayotis.jubler.os;
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
+import com.panayotis.jubler.Jubler;
 
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.StaticJubler;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Properties;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -218,5 +219,16 @@ class ApplicationHandler extends ApplicationAdapter {
     public void handleQuit(ApplicationEvent event) {
         StaticJubler.quitAll();
         event.setHandled(false);
+    }
+    
+    public void handleOpenFile(ApplicationEvent event) {
+        while (Jubler.windows==null || Jubler.windows.size()<=0 || (!Jubler.windows.elementAt(0).isVisible()) ) {
+            try {
+                Thread.currentThread().sleep(200);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+        Jubler.windows.elementAt(0).loadFile(new File(event.getFilename()), false);
     }
 }

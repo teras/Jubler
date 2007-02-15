@@ -84,8 +84,8 @@
 	
 	<taskdef name="jarbundler"
 		onerror="report"
-		classpath="../TOOLS/jarbundler/jarbundler-1.4.jar"
-		classname="com.loomcom.ant.tasks.jarbundler.JarBundler" />
+		classpath="../TOOLS/jarbundler/jarbundler-1.9.jar"
+		classname="net.sourceforge.jarbundler.JarBundler" />
 
 
 	<target name="i18n">
@@ -233,7 +233,13 @@
 			screenmenu="true"
 			version="${version}"
 			icon="resources/system/jubler.icns"
+		>
+		<documenttype
+			name="Subtitle Document"
+			extensions="srt sub ass ssa son"
+			role="Editor"
 		/>
+		</jarbundler>
 		<exec dir="resources/ffdecode" executable="make"> <arg line="darwin"/> </exec>
 		<exec dir="resources/system" executable="bash">
  	               <arg line="install-mac.sh ${version}"/>
