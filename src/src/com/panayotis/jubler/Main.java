@@ -22,7 +22,6 @@
  */
 
 package com.panayotis.jubler;
-import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -31,6 +30,7 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import javax.swing.JWindow;
 
 /**
@@ -46,8 +46,8 @@ public class Main {
         final MainSplash splash = new MainSplash("/icons/splash.jpg");
         
         SystemDependent.setLookAndFeel();
-        new Jubler();
         SystemDependent.initApplication();
+        parseArgs(args);
         splash.dispose();
         
         Thread t = new Thread() {
@@ -57,6 +57,21 @@ public class Main {
         };
         t.start();
     }
+
+    
+    private static void parseArgs(String [] args) {
+        Jubler root = new Jubler();
+        
+        File f;
+        for (int i = 0 ; i < args.length ; i++) {
+            f = new File(args[i]);
+            if (f.exists() && f.isFile() && f.canRead()) {
+                root.loadFile(f, false);
+            }
+        }
+    }
+
+
 }
 
 

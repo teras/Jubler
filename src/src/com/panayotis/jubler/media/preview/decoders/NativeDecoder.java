@@ -47,7 +47,7 @@ public abstract class NativeDecoder implements DecoderInterface {
         
         /* Make sanity checks */
         if (!isDecoderValid()) {
-            DEBUG.info(_("Decoder not active. Aborting audio cache creation."));
+            DEBUG.info(_("Decoder not active. Aborting audio cache creation."), DEBUG.INFO_ALWAYS);
             return false;
         }
         if (cacher != null ) {
@@ -55,12 +55,12 @@ public abstract class NativeDecoder implements DecoderInterface {
             return false;
         }
         if (cf==null) {
-            DEBUG.info(_("Unable to create a null cache file"));
+            DEBUG.info(_("Unable to create a null cache file"), DEBUG.INFO_ALWAYS);
             return false;    /* We HAVE to have defined the cached file */
         }
         if (AudioCache.isAudioCache(cf)) {
             // forgetAudioCache(cf);    /* We don't need the old cache anymore */
-            DEBUG.info(_("Jubler audio cache detected for audio input: {0}", cf));
+            DEBUG.info(_("Jubler audio cache detected for audio input: {0}", cf), DEBUG.INFO_ALWAYS);
             return true;
         }
         

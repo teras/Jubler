@@ -62,7 +62,7 @@ public class SystemFileFinder {
         
         if (f!=null) return f.getParent();
         
-        DEBUG.info(_("Could not find Jubler path!"));
+        DEBUG.info(_("Could not find Jubler path!"), DEBUG.INFO_ALWAYS);
         return "";
     }
 

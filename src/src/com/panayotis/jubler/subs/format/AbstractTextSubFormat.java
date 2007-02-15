@@ -78,7 +78,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         try{
             if ( ! getTestPattern().matcher(input).find() ) return null;    // Not valid - test pattern does not match
             
-            DEBUG.info(_("Found file {0}", _(getExtendedName())));
+            DEBUG.info(_("Found file {0}", _(getExtendedName())), DEBUG.INFO_ALWAYS);
             subtitle_list = new Subtitles();
             setFPS(FPS);
             input = initLoader(input, subtitle_list);

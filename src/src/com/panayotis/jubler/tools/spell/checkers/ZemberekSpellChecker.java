@@ -89,7 +89,7 @@ public class ZemberekSpellChecker extends SpellChecker {
         } catch (InstantiationException e) {
         } catch (IllegalAccessException e) {
         }
-        DEBUG.info(_("Unable to load plugin: {0}", "zemberek"));
+        DEBUG.info(_("Unable to load plugin: {0}", "zemberek"), DEBUG.INFO_ALWAYS);
         return false;
     }
     

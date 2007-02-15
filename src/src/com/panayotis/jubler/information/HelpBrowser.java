@@ -56,7 +56,7 @@ public class HelpBrowser extends javax.swing.JDialog {
             }
             HelpPane.setPage(url);
         } catch (IOException e) {
-            DEBUG.info(_("Error while opening FAQ file \"{0}\"", url) + " : "+e.getClass().getName());
+            DEBUG.info(_("Error while opening FAQ file \"{0}\"", url) + " : "+e.getClass().getName(), DEBUG.INFO_ALWAYS);
         }
     }
     
