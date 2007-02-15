@@ -41,7 +41,7 @@ import com.panayotis.jubler.media.preview.JSubSimpleGraph;
 import com.panayotis.jubler.tools.JToolRealTime;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
-import java.util.Properties;
+import javax.swing.JDialog;
 import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
@@ -50,7 +50,7 @@ import javax.swing.JToggleButton;
  *
  * @author  teras
  */
-public class JVideoConsole extends javax.swing.JDialog {
+public class JVideoConsole extends JDialog implements PlayerFeedback {
     private Viewport view;
     private VideoPlayer player;
     private Timer timer;
@@ -157,7 +157,7 @@ public class JVideoConsole extends javax.swing.JDialog {
         resetSubsDelay();
         submark_state = 0;
         view = player.getViewport();
-        length = view.start(mfile, subs, starttime);
+        length = view.start(mfile, subs, this, starttime);
         
         if ( length == null) {
             stop();
@@ -215,6 +215,11 @@ public class JVideoConsole extends javax.swing.JDialog {
             }
             ignore_slider_changes = false;
         }
+    }
+    
+    public void volumeUpdate(float vol) {
+        AudioS.setValue(Math.round(vol*10));
+        System.out.println(vol);
     }
     
     

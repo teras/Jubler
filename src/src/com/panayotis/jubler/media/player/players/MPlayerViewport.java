@@ -34,6 +34,7 @@ import java.io.OutputStreamWriter;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.player.PlayerFeedback;
 
 /**
  *
@@ -54,6 +55,8 @@ public class MPlayerViewport implements Viewport {
     
     private MPlayer player;
     
+    private PlayerFeedback feedback;
+    
     /** Creates a new instance of MPlayer */
     public MPlayerViewport(MPlayer player) {
         proc = null;
@@ -63,9 +66,10 @@ public class MPlayerViewport implements Viewport {
     
     
     
-    public Time start(MediaFile mfile, Subtitles sub, Time when) {
+    public Time start(MediaFile mfile, Subtitles sub, PlayerFeedback feedback, Time when) {
         
         this.mfile = mfile;
+        this.feedback = feedback;
         
         String cmd[] = player.getCommandArguments(mfile, sub, when);
         fps = 0;
@@ -86,10 +90,11 @@ public class MPlayerViewport implements Viewport {
             /* wait up to the point where the length is displayed */
             while ( !(info=infopipe.readLine()).startsWith("ID_LENGTH"));
             length = getValue(info);
+            sendCommand("get_property volume");
             
             updater = new Thread() {
                 public void run() {
-                    updatePosition();
+                    parseOutput();
                 }
             };
             updater.start();
@@ -107,7 +112,7 @@ public class MPlayerViewport implements Viewport {
     
     /* This part of the code is executed in the updater thread
      * It finishes when the EOF is found */
-    private void updatePosition() {
+    private void parseOutput () {
         String info;
         try {
             int first, second;
@@ -119,6 +124,10 @@ public class MPlayerViewport implements Viewport {
                     second=first;
                     while(info.charAt(++second)!=' ');
                     position = getDouble(info.substring(first, second).trim());
+                } else {
+                    if (info.startsWith("ANS_volume")) {
+                        feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf("=")+1))/100f);
+                    }
                 }
             }
         } catch (IOException e) {}
@@ -216,7 +225,7 @@ public class MPlayerViewport implements Viewport {
         quit();
         try {
             updater.join();
-            Time res = start( mfile, newsubs, new Time(getTime()-3));
+            Time res = start( mfile, newsubs, feedback,  new Time(getTime()-3));
             return res != null;
         } catch (InterruptedException e) { }
         return false;
@@ -231,7 +240,7 @@ public class MPlayerViewport implements Viewport {
             try {
                 if (newsubs==null) return false;
                 updater.join();
-                Time res = start( mfile, newsubs, new Time(active_last_time-3));
+                Time res = start( mfile, newsubs, feedback, new Time(active_last_time-3));
                 return res != null;
             } catch (InterruptedException e) { }
             active_last_time = -1;

@@ -34,7 +34,7 @@ import com.panayotis.jubler.time.Time;
  */
 public interface Viewport {
     
-    public abstract Time start(MediaFile avi, Subtitles subs, Time when);
+    public abstract Time start(MediaFile avi, Subtitles subs, PlayerFeedback feedback, Time when);
     
     public abstract boolean pause(boolean pause);
     public abstract boolean quit();
