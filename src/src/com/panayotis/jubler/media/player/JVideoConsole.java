@@ -61,7 +61,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     private int submark_state;
     
-    private boolean ignore_slider_changes;
+    private boolean ignore_slider_changes = false;
+    private boolean ignore_volume_changes = false;
     
     
     /* use this flag to stop entering the mark change event method, if the change has been done programmatically */
@@ -218,8 +219,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
     
     public void volumeUpdate(float vol) {
+        ignore_volume_changes = true;
         AudioS.setValue(Math.round(vol*10));
-        System.out.println(vol);
+        ignore_volume_changes = false;
     }
     
     
@@ -318,10 +320,10 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
-        Cyan = new javax.swing.JToggleButton();
-        Pink = new javax.swing.JToggleButton();
         White = new javax.swing.JToggleButton();
+        Pink = new javax.swing.JToggleButton();
         Yellow = new javax.swing.JToggleButton();
+        Cyan = new javax.swing.JToggleButton();
         SpeedS = new javax.swing.JSlider();
         AudioS = new javax.swing.JSlider();
         jPanel1 = new javax.swing.JPanel();
@@ -367,28 +369,6 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         jPanel13.setLayout(new java.awt.GridLayout(0, 1));
 
-        MarkGroup.add(Cyan);
-        Cyan.setToolTipText(_("Mark subttile as cyan"));
-        Cyan.setActionCommand("3");
-        Cyan.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectMark(evt);
-            }
-        });
-
-        jPanel13.add(Cyan);
-
-        MarkGroup.add(Pink);
-        Pink.setToolTipText(_("Mark subttile as pink"));
-        Pink.setActionCommand("1");
-        Pink.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectMark(evt);
-            }
-        });
-
-        jPanel13.add(Pink);
-
         MarkGroup.add(White);
         White.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pen.png")));
         White.setToolTipText(_("Mark subttile as white"));
@@ -401,6 +381,17 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         jPanel13.add(White);
 
+        MarkGroup.add(Pink);
+        Pink.setToolTipText(_("Mark subttile as pink"));
+        Pink.setActionCommand("1");
+        Pink.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectMark(evt);
+            }
+        });
+
+        jPanel13.add(Pink);
+
         MarkGroup.add(Yellow);
         Yellow.setToolTipText(_("Mark subttile as yellow"));
         Yellow.setActionCommand("2");
@@ -411,6 +402,17 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
 
         jPanel13.add(Yellow);
+
+        MarkGroup.add(Cyan);
+        Cyan.setToolTipText(_("Mark subttile as cyan"));
+        Cyan.setActionCommand("3");
+        Cyan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectMark(evt);
+            }
+        });
+
+        jPanel13.add(Cyan);
 
         jPanel8.add(jPanel13);
 
@@ -438,6 +440,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         AudioS.setPaintTicks(true);
         AudioS.setSnapToTicks(true);
         AudioS.setToolTipText(_("Change audio volume"));
+        AudioS.setValue(5);
         AudioS.setPreferredSize(new java.awt.Dimension(40, 80));
         AudioS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -771,7 +774,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }//GEN-LAST:event_PauseBActionPerformed
     
     private void AudioSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_AudioSStateChanged
+        if (ignore_volume_changes) return;
         if ( AudioS.getValueIsAdjusting()) return;
+        
         int value = AudioS.getValue();
         if (value == 0) {
             AudioL.setIcon(Audio[1]);
