@@ -18,7 +18,7 @@
 
 DEBUG=
 CHECK_JDK=
-VERSION=1.5
+VERSION='1.[56].[0123456789]'
 
 
 # Get options
