@@ -72,9 +72,9 @@ public class JPreferences extends JPanel implements OptionsHolder {
         }
         
         DefaultEncodings = new String[3];
-        DefaultEncodings[0] = "ISO-8859-1";
-        DefaultEncodings[1] = "UTF-8";
-        DefaultEncodings[2] = "UTF-16";
+        DefaultEncodings[0] = "UTF-8";
+        DefaultEncodings[1] = "UTF-16";
+        DefaultEncodings[2] = "ISO-8859-1";
     }
     
     
