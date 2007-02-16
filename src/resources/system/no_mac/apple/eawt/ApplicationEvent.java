@@ -30,8 +30,9 @@ package com.apple.eawt;
 public class ApplicationEvent {
     
     /** Creates a new instance of ApplicationEvent */
-    public ApplicationEvent() {
-    }
+    public ApplicationEvent() {}
     
     public void setHandled(boolean value){}
+
+	public String getFilename() { return ""; }
 }
