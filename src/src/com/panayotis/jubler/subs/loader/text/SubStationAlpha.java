@@ -21,13 +21,13 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.subs.format.AbstractTextSubFormat;
+import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;

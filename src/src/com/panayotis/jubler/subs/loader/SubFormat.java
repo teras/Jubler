@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format;
+package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;

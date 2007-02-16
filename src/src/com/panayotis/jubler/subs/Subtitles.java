@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.subs.format.AvailSubFormats;
+import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.Options;
 import java.util.Collections;
 import java.util.Vector;

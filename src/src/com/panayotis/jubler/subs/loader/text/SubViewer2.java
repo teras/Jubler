@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.text;
+package com.panayotis.jubler.subs.loader.text;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

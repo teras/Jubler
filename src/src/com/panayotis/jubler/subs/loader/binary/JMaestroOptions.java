@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.binary;
+package com.panayotis.jubler.subs.loader.binary;
 
 import static com.panayotis.jubler.i18n.I18N._;
 

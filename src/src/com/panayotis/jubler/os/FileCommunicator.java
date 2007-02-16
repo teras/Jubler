@@ -23,10 +23,10 @@
 
 package com.panayotis.jubler.os;
 import com.panayotis.jubler.StaticJubler;
-import com.panayotis.jubler.subs.format.text.SubRip;
-import com.panayotis.jubler.subs.format.SubFormat;
+import com.panayotis.jubler.subs.loader.text.SubRip;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.subs.format.AvailSubFormats;
+import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.*;
 import java.io.BufferedReader;
 import java.io.File;

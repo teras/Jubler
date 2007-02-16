@@ -21,11 +21,11 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.binary;
+package com.panayotis.jubler.subs.loader.binary;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.subs.format.AbstractBinarySubFormat;
+import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.BufferedReader;

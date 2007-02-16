@@ -1,7 +1,7 @@
 /*
- * SubRip.java
+ * MicroDVD.java
  *
- * Created on 26 Αύγουστος 2005, 11:08 πμ
+ * Created on 22 Ιούνιος 2005, 3:08 πμ
  * 
  * This file is part of Jubler.
  *
@@ -21,83 +21,70 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.text;
+package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.format.AbstractTextSubFormat;
+import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.subs.Subtitles;
 
 
 /**
  *
  * @author teras
  */
-public class SubRip extends AbstractTextSubFormat {
+public class MicroDVD extends AbstractTextSubFormat {
     
     private static final Pattern pat;
     
-    private int counter = 0;
-    
+    /** Creates a new instance of SubFormat */
     static {
-        pat = Pattern.compile(
-                "(?s)(\\d+)\\s*"+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)\\s+-->"+
-                "\\s+(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+nl+"(.*?)"+nl+nl
-                );
+        pat = Pattern.compile("\\{(\\d+)\\}\\s*\\{(\\d+)\\}(.*?)"+nl);
     }
     
-    protected Pattern getPattern () {
+    protected Pattern getPattern() {
         return pat;
     }
     
-    
-    
+
     protected SubEntry getSubEntry(Matcher m) {
-        Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
-        Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
-        return new SubEntry (start, finish, m.group(10));
+        Time start = new Time(m.group(1), FPS);
+        Time finish = new Time(m.group(2), FPS);
+        return new SubEntry (start, finish, m.group(3).replace("|","\n"));
     }
     
     
     public String getExtension() {
-        return "srt";
+        return "sub";
     }
     
     public String getName() {
-        return "SubRip";
+        return "MicroDVD";
     }
-      
+     
+    public String getExtendedName() {
+        return "MicroDVD SUB file";
+    } 
+    
     protected String makeSubEntry(SubEntry sub){
         StringBuffer res;
         res = new StringBuffer();
         
-        res.append(Integer.toString(counter++));
+        res.append("{");
+        res.append(Long.toString(sub.getStartTime().toFrame(FPS)));
+        res.append("}{");
+        res.append(Long.toString(sub.getFinishTime().toFrame(FPS)));
+        res.append("}");
+        res.append(sub.getText().replace('\n','|'));
         res.append("\n");
-        res.append(sub.getStartTime().toString());
-        res.append(" --> ");
-        res.append(sub.getFinishTime().toString());
-        res.append("\n");
-        res.append(sub.getText());
-        res.append("\n\n");
-        
         return res.toString();
-    }
-    
-    
-    protected String initLoader(String input, Subtitles subs) {
-        return super.initLoader(input, subs);
-    }
-
-    protected String makeHeader(Subtitles subs) {
-        counter = 1;
-        return super.makeHeader(subs);
     }
 
     public boolean supportsFPS() {
-        return false;
+        return true;
     }
+    
 }

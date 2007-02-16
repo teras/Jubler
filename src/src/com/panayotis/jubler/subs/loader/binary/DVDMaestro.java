@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.binary;
+package com.panayotis.jubler.subs.loader.binary;
 
 import com.panayotis.jubler.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -30,7 +30,7 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.format.AbstractBinarySubFormat;
+import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;

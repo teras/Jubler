@@ -19,7 +19,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format.binary;
+package com.panayotis.jubler.subs.loader.binary;
 
 import java.awt.Frame;
 import static com.panayotis.jubler.i18n.I18N._;

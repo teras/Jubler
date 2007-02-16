@@ -27,7 +27,7 @@
 package com.panayotis.jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.subs.format.SubFileFilter;
+import com.panayotis.jubler.subs.loader.SubFileFilter;
 import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.media.MediaFile;
@@ -37,7 +37,6 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.console.JVideoConsole;
-import com.panayotis.jubler.media.JVideofileSelector;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.preview.JSubPreview;
@@ -47,6 +46,7 @@ import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSingleSelection;
@@ -75,7 +75,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.AbstractButton;
@@ -128,9 +127,6 @@ public class Jubler extends JFrame {
     
     private JTable SubTable;
     private UndoList undo;
-    
-//    private File current_file;
-//    private File last_opened_file = null;
     
     /* The preview dialog, showing the subtitle, the waveform and some video clips */
     /* This object is public, since it's needed by JSubEditor to attach itself into this panel */
@@ -223,6 +219,7 @@ public class Jubler extends JFrame {
         
         preview = new JSubPreview(this);
         
+        WebFM.setVisible(false);
         setDropHandler();
         hideSystemMenus();
         
@@ -389,6 +386,8 @@ public class Jubler extends JFrame {
         FileNFM = new javax.swing.JMenuItem();
         ChildNFM = new javax.swing.JMenuItem();
         OpenFM = new javax.swing.JMenuItem();
+        WebFM = new javax.swing.JMenu();
+        RetrieveWFM = new javax.swing.JMenuItem();
         RevertFM = new javax.swing.JMenuItem();
         RecentsFM = new javax.swing.JMenu();
         SaveFM = new javax.swing.JMenuItem();
@@ -693,6 +692,16 @@ public class Jubler extends JFrame {
         OpenFM.addActionListener(formListener);
 
         FileM.add(OpenFM);
+
+        WebFM.setText(_("Web"));
+        RetrieveWFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        RetrieveWFM.setText(_("Retrieve"));
+        RetrieveWFM.setName("RFW");
+        RetrieveWFM.addActionListener(formListener);
+
+        WebFM.add(RetrieveWFM);
+
+        FileM.add(WebFM);
 
         RevertFM.setText(_("Revert"));
         RevertFM.setEnabled(false);
@@ -1133,6 +1142,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == CloseFM) {
                 Jubler.this.CloseFMActionPerformed(evt);
             }
+            else if (evt.getSource() == MediaFileFM) {
+                Jubler.this.MediaFileFMActionPerformed(evt);
+            }
             else if (evt.getSource() == InfoFM) {
                 Jubler.this.InfoFMActionPerformed(evt);
             }
@@ -1250,9 +1262,6 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == OptionsTTM) {
                 Jubler.this.OptionsTTMActionPerformed(evt);
             }
-            else if (evt.getSource() == MediaFileFM) {
-                Jubler.this.MediaFileFMActionPerformed(evt);
-            }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
             }
@@ -1295,6 +1304,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutTB) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
+            else if (evt.getSource() == RetrieveWFM) {
+                Jubler.this.RetrieveWFMActionPerformed(evt);
+            }
         }
 
         public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -1321,6 +1333,11 @@ public class Jubler extends JFrame {
         public void windowOpened(java.awt.event.WindowEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
+
+    private void RetrieveWFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrieveWFMActionPerformed
+        OpenSubtitles osubs = new OpenSubtitles();
+        osubs.printStream("The wall", "eng");
+    }//GEN-LAST:event_RetrieveWFMActionPerformed
     
     private void FAQHMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAQHMActionPerformed
         faqbrowse.setVisible(true);
@@ -1929,6 +1946,7 @@ public class Jubler extends JFrame {
     private javax.swing.JButton RedoTB;
     private javax.swing.JMenuItem ReparentTM;
     private javax.swing.JMenu ReplaceEM;
+    private javax.swing.JMenuItem RetrieveWFM;
     private javax.swing.JMenuItem RevertFM;
     private javax.swing.JMenuItem RoundTM;
     private javax.swing.JMenuItem SaveAsFM;
@@ -1957,6 +1975,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
+    private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
     private javax.swing.JMenuItem bySelectionDEM;

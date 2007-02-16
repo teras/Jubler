@@ -21,7 +21,7 @@
  *
  */
 
-package com.panayotis.jubler.subs.format;
+package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
