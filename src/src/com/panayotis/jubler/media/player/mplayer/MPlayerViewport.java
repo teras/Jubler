@@ -65,6 +65,7 @@ public class MPlayerViewport implements Viewport {
         this.player = player;
     }
     
+    private final static int SEEK_OFFSET = -3;
     
     
     public Time start(MediaFile mfile, Subtitles sub, PlayerFeedback feedback, Time when) {
@@ -190,6 +191,8 @@ public class MPlayerViewport implements Viewport {
     
     public boolean seek(int secs){
         isPaused = false;
+        secs += SEEK_OFFSET;
+        if (secs<0) secs = 0;
         return sendCommand("seek "+secs+" 2");
     }
     

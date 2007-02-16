@@ -892,7 +892,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         } else {
             /* This is after a normal click */
             //   if (view.isPaused()) return;
-            checkValid(view.seek((int)(newtime+subsdelay-2)));
+            checkValid(view.seek((int)(newtime+subsdelay)));
         }
     }
     
