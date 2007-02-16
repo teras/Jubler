@@ -25,14 +25,11 @@ package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.player.AbstractPlayer;
-
-
-import com.panayotis.jubler.options.Options;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -84,6 +81,7 @@ public class AbstractPlayerOptions extends ExtOptions {
         ArgsP.add(HelpP, BorderLayout.NORTH);
         ArgsP.add(args, BorderLayout.CENTER);
         ArgsP.add(deflt, BorderLayout.EAST);
+        ArgsP.add(new Label(" "), BorderLayout.SOUTH);
         
         deflt.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
