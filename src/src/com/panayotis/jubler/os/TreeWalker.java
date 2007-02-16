@@ -3,8 +3,22 @@
  *
  * Created on October 3, 2006, 3:07 AM
  *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * This file is part of Jubler.
+ *
+ * Jubler is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2.
+ *
+ *
+ * Jubler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Jubler; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
  */
 
 package com.panayotis.jubler.os;
@@ -17,28 +31,36 @@ import java.io.File;
  */
 public class TreeWalker {
     
-   /* Recursively try to find the requested file
-    *
-    * return it's full path */
-    public static String getFile( String rootpath, String filename) {
-        File root = new File(rootpath);
-        if (root.isFile())
-            return root.getAbsolutePath();
-        return searchFile(root, filename);
-    }
-    
-    private static String searchFile(File root, String filename) {
-        if (!root.isDirectory()) {
-            if (root.getName().equals(filename)) return root.getAbsolutePath();
-            return null;
+    public static File searchExecutable(File root, String filename) {
+        if (!root.exists()) return null;
+        
+        if (root.isFile()) {
+            if (!root.canRead()) return null;
+            if (!root.getName().equals(filename)) return null;
+            Process proc = null;
+            String[] cmd = new String[1];
+            cmd[0] = root.getAbsolutePath();
+            
+            try {
+                proc = Runtime.getRuntime().exec(cmd);
+                proc.waitFor();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return null;
+            }
+            if (proc==null) return null;
+            
+            /* All checks OK - valid executable! */
+            return root;
         } else {
             File[] childs = root.listFiles();
             for (int i = 0 ; i < childs.length ; i++) {
-                String filefound = searchFile(childs[i], filename);
-                if (filefound!=null) return filefound;
+                File res = searchExecutable(childs[i], filename);
+                if (res!=null) return res;
             }
         }
         return null;
     }
+    
     
 }

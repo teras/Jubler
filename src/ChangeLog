@@ -1,7 +1,8 @@
 3.2.0
-Jubler installs in systems with JRE 1.6. Mplayer support different audio stream.
-FFMPEG time offset fixes. ASpell updates supported languages when opening
-preferences. Major internal changes and cleanups.
+MPlayer fixes. Jubler installs in systems with JRE 1.6. MPlayer supports
+different audio stream. Video playback doesn't change system mixers. FFMPEG
+time offset fixes. ASpell updates supported languages when opening preferences.
+Major internal changes and cleanups.
 
 3.1.0
 Read frames per second from the movie now supported. Movie synchronization

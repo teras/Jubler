@@ -1,9 +1,8 @@
-package com.panayotis.jubler.options;
 /*
  * MPlay.java
  *
  * Created on 6 Ιούλιος 2005, 4:18 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -22,13 +21,12 @@ package com.panayotis.jubler.options;
  *
  */
 
-import com.panayotis.jubler.os.DEBUG;
-import static com.panayotis.jubler.i18n.I18N._;
+package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.options.Options;
+import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
-import java.util.Properties;
+import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
@@ -47,13 +45,13 @@ public class ExtOptions extends JPanel {
     String filename;
     
     /** Creates new form MPlay */
-    public ExtOptions (String type, String name, String programname) {
+    public ExtOptions(String type, String name, String programname) {
         super();
-
+        
         this.type = type;
         this.name = name;
         this.programname = programname;
-
+        
         initComponents();
         loadOptions();
         
@@ -61,7 +59,7 @@ public class ExtOptions extends JPanel {
         fdialog = new JFileChooser();
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
-        
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -103,7 +101,8 @@ public class ExtOptions extends JPanel {
     
     private void BrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseActionPerformed
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        FilenameT.setText(TreeWalker.getFile(fdialog.getSelectedFile().getPath(), programname));
+        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), programname);
+        if (newexe!=null) FilenameT.setText(newexe.getAbsolutePath());
     }//GEN-LAST:event_BrowseActionPerformed
     
     
@@ -124,7 +123,7 @@ public class ExtOptions extends JPanel {
         Options.setOption(type + "." + name + ".Path", filename);
         Options.saveOptions();
     }
-
+    
     public void resetOptions() {
         FilenameT.setText(filename);
     }
