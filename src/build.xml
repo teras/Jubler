@@ -238,6 +238,7 @@
 			name="Subtitle Document"
 			extensions="srt sub ass ssa son"
 			role="Editor"
+			iconfile="resources/system/subtitle.icns"
 		/>
 		</jarbundler>
 		<exec dir="resources/ffdecode" executable="make"> <arg line="darwin"/> </exec>
