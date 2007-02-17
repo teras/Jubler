@@ -175,7 +175,7 @@
 				stayAlive="false"
 				jar="dist/Jubler.jar"
 				errTitle="Unable to find Java environmet"
-				downloadUrl="http://java.com/download">
+				>
 				<jre minVersion="1.5.0" />
 			</config>
 		</launch4j>
