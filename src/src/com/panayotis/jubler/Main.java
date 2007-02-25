@@ -31,6 +31,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Vector;
 import javax.swing.JWindow;
 
 /**
@@ -39,16 +40,64 @@ import javax.swing.JWindow;
  */
 public class Main {
     
+    static private MainSplash splash;
+    static private Vector<String> sublist;
+    static Thread loader;
+    
+    
+    
+    
+    /* Asynchronous add files to load */
+    public static void asyncAddSubtitle(String sub) {
+        sublist.add(sub);
+        synchronized(loader) { loader.notify(); }
+    }
+    
+    
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        final MainSplash splash = new MainSplash("/icons/splash.jpg");
+        splash = new MainSplash("/icons/splash.jpg");
+        
+        sublist = new Vector<String>();
+        
+        /* Load all startup files in a separate process */
+        loader = new Thread() {
+            public void run() {
+                while(true) {
+                    try {
+                        /* Here we do the actual work */
+                        while (sublist.size()>0) {
+                            String sub = sublist.elementAt(0);
+                            sublist.remove(0);
+                            
+                            File f = new File(sub);
+                            if (f.exists() && f.isFile() && f.canRead()) {
+                                Jubler.windows.elementAt(0).loadFile(f, false);
+                            }
+                        }
+                        synchronized(this) { wait(); }
+                        
+                    } catch (InterruptedException ex) {
+                    } catch (ArrayIndexOutOfBoundsException ex) {
+                    }
+                }
+            }
+        };
+        
         
         SystemDependent.setLookAndFeel();
         SystemDependent.initApplication();
-        parseArgs(args);
+        
+        /* Parse arguments */
+        Jubler root = new Jubler();
+        for (int i = 0 ; i < args.length ; i++) {
+            asyncAddSubtitle(args[i]);
+        }
         splash.dispose();
+        loader.run();
         
         Thread t = new Thread() {
             public void run() {
@@ -57,22 +106,11 @@ public class Main {
         };
         t.start();
     }
-
     
-    private static void parseArgs(String [] args) {
-        Jubler root = new Jubler();
-        
-        File f;
-        for (int i = 0 ; i < args.length ; i++) {
-            f = new File(args[i]);
-            if (f.exists() && f.isFile() && f.canRead()) {
-                root.loadFile(f, false);
-            }
-        }
-    }
-
-
+    
 }
+
+
 
 
 
