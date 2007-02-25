@@ -31,6 +31,7 @@ import com.panayotis.jubler.Main;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.StaticJubler;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.Properties;
 import javax.swing.JMenuItem;
@@ -83,18 +84,25 @@ public class SystemDependent {
     }
     
     public static String getDefaultMPlayerArgs() {
-        String fontconfig = "-fontconfig ";
-        String fontname = "%f";
-        if (!isLinux()) {
-            fontconfig = "";
+        String fontconfig = "";
+        String font = "";
+
+        if (isLinux()) {
+            font = " -font %f";
+            fontconfig=" -fontconfig";
+        } else {
             if (isWindows()) {
-                fontname = "c:\\Windows\\fonts\\arial.ttf";
+                font=" -font c:\\Windows\\fonts\\arial.ttf";
             } else {
-                fontname = "%j/lib/freesans.ttf";
+                File freesans = new File(SystemFileFinder.getJublerAppPath()+"/lib/freesans.ttf");
+                if (freesans.exists()) {
+                    font = " -font %j/lib/freesans.ttf";
+                }
             }
         }
-        return "%p -slave -identify -ontop -utf8 -noquiet -nofs "+fontconfig+"-subfont-autoscale 0 -volstep 10"+
-                " -sub %s -ss %t -geometry +%x+%y -font "+fontname+" -subfont-text-scale %z %(-audiofile %a%) %v";
+
+        return "%p -slave -identify -ontop -utf8 -noquiet -nofs"+fontconfig+" -subfont-autoscale 0 -volstep 10"+
+                " -sub %s -ss %t -geometry +%x+%y"+font+" -subfont-text-scale %z %(-audiofile %a%) %v";
     }
     
     /* Force ASpell to use UTF-8 encoding - broken on Windows */
