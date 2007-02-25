@@ -105,7 +105,7 @@ public class JReplaceGlobal extends JTool {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(new javax.swing.border.TitledBorder(_("Text to be replaced")));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Regular expressions to be executed")));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(259, 80));
         TextList.setToolTipText(_("List of replacements to be done"));
         jScrollPane1.setViewportView(TextList);
@@ -124,13 +124,12 @@ public class JReplaceGlobal extends JTool {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
         int ret;
         Object [] options = {_("Use"), _("Cancel"), _("Reset to defaults")};
-        ret = JOptionPane.showOptionDialog(this, rlist, _("Edit replace list"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        ret = JOptionPane.showOptionDialog(this, rlist, _("Edit regular expression replace list"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
         switch ( ret) {
             case 0:
                 //do
