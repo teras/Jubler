@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=MimeType
+MimeType=application/sub-ass
+Icon=subtitle
+Patterns=*.ass;
+DefaultApp=jubler
+Comment=ASS subtitle

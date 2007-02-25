@@ -16,9 +16,11 @@
 # along with Jubler; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+JAVABIN=`/usr/lib/jubler/findjava.sh`
+if [ -z "$JAVABIN" ] ; then
+	echo Java binary not found. Exiting.
+	exit 1
+fi
 
-# The following command executes Jubler.jar
-# If java is in your path, this command is similar to:
-#     java -jar Jubler.jar
-#
-$JAVA_HOME/bin/java -jar $INSTALL_PATH/Jubler.jar
+cd /usr/lib/jubler
+"$JAVABIN" -jar Jubler.jar "$@"

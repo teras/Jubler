@@ -20,7 +20,7 @@
     
     <locale>
         <langpack iso3="eng"/>
-  <langpack iso3="cze"/>
+        <langpack iso3="cze"/>
         <langpack iso3="deu"/>
         <langpack iso3="ell"/>
         <langpack iso3="tur"/>
@@ -28,9 +28,7 @@
     
     <resources>
         <res id="LicencePanel.licence" src="LICENCE"/>
-  <res id="Installer.image" src="resources/system/logo-install.jpg"/>
-  <res src="resources/system/wshortcuts.xml"
-       id="shortcutSpec.xml"/>
+  <res id="Installer.image" src="resources/installers/common/logo-install.jpg" />
     </resources>
     
     <panels>
@@ -38,21 +36,17 @@
         <panel classname="LicencePanel"/>
         <panel classname="TargetPanel"/> 
         <panel classname="InstallPanel"/>
-  <panel classname="ShortcutPanel"/>
         <panel classname="SimpleFinishPanel"/>
     </panels>
     
- <native type="izpack" name="ShellLink.dll"/>
- 
     <packs>
         <pack name="Base" required="yes">
             <description>Jubler base files</description>
             <file src="ChangeLog" targetdir="$INSTALL_PATH"/>
             <file src="LICENCE" targetdir="$INSTALL_PATH"/>
             <file src="README" targetdir="$INSTALL_PATH"/>
-            <file src="dist/Jubler.exe" targetdir="$INSTALL_PATH"/>
-            <file src="dist/lib" targetdir="$INSTALL_PATH"/>
-            <file src="resources/system/install.ico" targetdir="$INSTALL_PATH/Uninstaller"/>
+            <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
+			<file src="resources/system/fonts/freesans.ttf" targetdir="$INSTALL_PATH/lib"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
 			<file src="resources/help/question.png" targetdir="$INSTALL_PATH/help"/>
         </pack>

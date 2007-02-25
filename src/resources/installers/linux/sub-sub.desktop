@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=MimeType
+MimeType=application/sub-sub
+Icon=subtitle
+Patterns=*.sub;
+DefaultApp=jubler
+Comment=SUB subtitle

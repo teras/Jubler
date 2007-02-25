@@ -28,8 +28,8 @@
     
     <resources>
         <res id="LicencePanel.licence" src="LICENCE"/>
-  <res id="Installer.image" src="resources/system/logo-install.jpg" />
-		<res src="resources/system/lshortcuts.xml"
+  <res id="Installer.image" src="resources/installers/common/logo-install.jpg" />
+		<res src="resources/installers/linux/dist/generic/lshortcuts.xml"
 		     id="shortcutSpec.xml"/>
     </resources>
     
@@ -50,12 +50,11 @@
             <file src="README" targetdir="$INSTALL_PATH"/>
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
-			<file src="resources/system/frame.png" targetdir="$INSTALL_PATH/lib"/>
-			<file src="resources/system/Jubler.sh" targetdir="$INSTALL_PATH"/>
+			<file src="resources/installers/linux/jubler.png" targetdir="$INSTALL_PATH/lib"/>
+			<file src="resources/installers/linux/jubler" targetdir="$INSTALL_PATH"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
 			<file src="resources/help/question.png" targetdir="$INSTALL_PATH/help"/>
-			<parsable targetfile="$INSTALL_PATH/Jubler.sh"/>
-			<executable targetfile="$INSTALL_PATH/Jubler.sh" type="bin" stage="never" keep="true"/>
+			<executable targetfile="$INSTALL_PATH/jubler" type="bin" stage="never" keep="true"/>
         </pack>
     </packs>
     

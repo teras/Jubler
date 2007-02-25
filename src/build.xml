@@ -115,6 +115,7 @@
 		<delete>
 			<fileset dir="." includes="*.bz2"/>
 			<fileset dir="." includes="*.exe"/>
+			<fileset dir="." includes="*.deb"/>
 			<fileset dir="." includes="*.jar"/>
 			<fileset dir="." includes="*.sh"/>
 			<fileset dir="." includes="*.dmg"/>
@@ -166,10 +167,11 @@
 	<!-- Windows Installer -->
 	<target name="win32" depends="distclean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
+
 		<exec dir="resources/ffdecode" executable="make"> <arg line="win32"/> </exec>
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
-				icon="resources/system/frame.ico"
+				icon="resources/installers/windows/frame.ico"
 				headerType="0"
 				customProcName="true"
 				stayAlive="false"
@@ -179,42 +181,95 @@
 				<jre minVersion="1.5.0" />
 			</config>
 		</launch4j>
-		<copy file="resources/system/install-windows.xml" tofile="/tmp/install.xml" overwrite="yes"/>
-		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
-		<izpack input="/tmp/install.xml" output="Jubler-${version}.jar" installerType="standard" basedir="."/>
-		<delete file="/tmp/install.xml" />
-		<launch4j>
-			<config outfile="Jubler-${version}.exe"
-				icon="resources/system/install.ico"
-				headerType="0"
-				customProcName="true"
-				stayAlive="false"
-				jar="Jubler-${version}.jar"
-				errTitle="Unable to find Java environmet">
-				<jre minVersion="1.5.0" />
-			</config>
-		</launch4j>
-		<delete file="Jubler-${version}.jar"/>
+		<exec executable="makensis" failonerror="true">
+			<arg line="-NOCD -DVERSION=${version} resources/installers/windows/jubler.nsi"/>
+		</exec>
 		<delete file="dist/Jubler.exe"/>
 	</target>
 
+
 	<!-- Linux installer -->
-	<target name="linux" depends="distclean,i18n,jar,faq">
+	<target name="linux" depends="linuxbasics,selfexp,deb,rpm"/>
+
+	<target name="linuxbasics" depends="distclean,i18n,jar,faq">
+		<exec dir="resources/ffdecode" executable="make"> <arg line="linux"/> </exec>
+	</target>
+
+	<!-- Debian Linux installer -->
+	<target name="debian" depends="linuxbasics,deb"/>
+	<target name="deb">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<exec executable="rm"><arg line="-f resources/installers/linux/dist/debian/usr/lib/jubler/help"/></exec>
+		<delete dir="resources/installers/linux/dist/debian/usr" includeemptydirs="yes"/>
+
+		<copy file="dist/Jubler.jar" todir="resources/installers/linux/dist/debian/usr/lib/jubler"/>
+		<copy file="resources/system/findjava.sh" todir="resources/installers/linux/dist/debian/usr/lib/jubler"/>
+		<chmod file="resources/installers/linux/dist/debian/usr/lib/jubler/findjava.sh" perm="a+x"/>
+		<copy file="dist/lib/libffdecode.so" todir="resources/installers/linux/dist/debian/usr/lib/jubler/lib"/>
+		<copy file="resources/installers/linux/jubler" todir="resources/installers/linux/dist/debian/usr/bin"/>
+		<chmod file="resources/installers/linux/dist/debian/usr/bin/jubler" perm="a+x"/>
+
+		<copy file="resources/installers/linux/copyright" todir="resources/installers/linux/dist/debian/usr/share/doc/jubler"/>
+		<copy file="README" todir="resources/installers/linux/dist/debian/usr/share/doc/jubler"/>
+		<copy file="ChangeLog" tofile="resources/installers/linux/dist/debian/usr/share/doc/jubler/changelog"/>
+		<exec executable="gzip" failonerror="true"><arg line="-9 resources/installers/linux/dist/debian/usr/share/doc/jubler/changelog"/></exec>
+		<copy file="resources/installers/linux/changelog.Debian" todir="resources/installers/linux/dist/debian/usr/share/doc/jubler"/>
+		<exec executable="gzip" failonerror="true"><arg line="-9 resources/installers/linux/dist/debian/usr/share/doc/jubler/changelog.Debian"/></exec>
+
+		<copy file="dist/help/jubler-faq.html" todir="resources/installers/linux/dist/debian/usr/share/doc/jubler/help"/>
+		<copy file="resources/help/question.png" todir="resources/installers/linux/dist/debian/usr/share/doc/jubler/help"/>
+		<exec executable="ln" failonerror="true"><arg line="-s ../../share/doc/jubler/help resources/installers/linux/dist/debian/usr/lib/jubler/help"/></exec>
+
+		<copy file="resources/installers/linux/jubler.1" todir="resources/installers/linux/dist/debian/usr/share/man/man1"/>
+		<exec executable="gzip" failonerror="true"><arg line="-9 resources/installers/linux/dist/debian/usr/share/man/man1/jubler.1"/></exec>
+		<copy file="resources/installers/linux/jubler.menu" tofile="resources/installers/linux/dist/debian/usr/share/menu/jubler"/>
+		<copy file="resources/installers/linux/jubler.xpm" todir="resources/installers/linux/dist/debian/usr/share/pixmaps"/>
+		<copy file="resources/installers/linux/jubler.png" todir="resources/installers/linux/dist/debian/usr/share/icons/hicolor/32x32/apps"/>
+		<copy file="resources/installers/linux/subtitle-128.png" tofile="resources/installers/linux/dist/debian/usr/share/icons/hicolor/128x128/mimetypes/subtitle.png"/>
+		<copy file="resources/installers/linux/subtitle-32.png" tofile="resources/installers/linux/dist/debian/usr/share/icons/hicolor/32x32/mimetypes/subtitle.png"/>
+
+		<copy file="resources/installers/linux/jubler.desktop" todir="resources/installers/linux/dist/debian/usr/share/applications"/>
+		<copy file="resources/installers/linux/sub-srt.desktop" todir="resources/installers/linux/dist/debian/usr/share/mimelnk/application"/>
+		<copy file="resources/installers/linux/sub-sub.desktop" todir="resources/installers/linux/dist/debian/usr/share/mimelnk/application"/>
+		<copy file="resources/installers/linux/sub-ass.desktop" todir="resources/installers/linux/dist/debian/usr/share/mimelnk/application"/>
+		<copy file="resources/installers/linux/sub-ssa.desktop" todir="resources/installers/linux/dist/debian/usr/share/mimelnk/application"/>
+				
+		<exec dir="resources/installers/linux/dist/debian" executable="find" failonerror="true" output="resources/installers/linux/dist/debian/DEBIAN/md5sums">
+			<arg line="usr -type f -exec md5sum {} ;"/>
+		</exec>
+
+		<exec executable="fakeroot" failonerror="true">
+			<arg line="dpkg-deb --build resources/installers/linux/dist/debian jubler-${version}.deb"/>
+		</exec>
+
+		<exec executable="rm"><arg line="-f resources/installers/linux/dist/debian/usr/lib/jubler/help"/></exec>
+		<delete dir="resources/installers/linux/dist/debian/usr" includeemptydirs="yes"/>
+		<delete file="resources/installers/linux/dist/debian/DEBIAN/md5sums"/>
+	</target>
+
+	<!-- RedHat Linux installer -->
+	<target name="redhat" depends="linuxbasics,rpm"/>
+	<target name="rpm">
+	</target>
+
+	<!-- IzPack Linux installer -->
+	<target name="genlinux" depends="linuxbasics,selfexp"/>
+	<target name="selfexp">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<mkdir dir="self"/>
-		<exec dir="resources/ffdecode" executable="make"> <arg line="linux"/> </exec>
-		<copy file="resources/system/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes" />
+		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes" />
 		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
 		<izpack input="/tmp/install.xml" output="self/Jubler-install-linux.jar" installerType="standard" basedir="."/>
 		<delete file="/tmp/install.xml" />
 		<copy file="resources/system/findjava.sh" todir="self"/>
-		<copy file="resources/system/install.sh" todir="self"/>
+		<copy file="resources/installers/linux/dist/generic/install.sh" todir="self"/>
 		<chmod file="self/install.sh" perm="a+x"/>
-		<exec dir="." executable="makeself">
+		<exec executable="makeself" failonerror="true">
 			<arg line="--bzip2 self Jubler-${version}-linux.sh 'Jubler installer' ./install.sh"/>
 		</exec>
 		<delete dir="self"/>
 	</target>
+
 
 	<!-- MacOSX installer -->
 	<target name="macosx" depends="distclean,i18n,jar,faq">
@@ -232,25 +287,48 @@
 			jvmversion="1.5+"
 			screenmenu="true"
 			version="${version}"
-			icon="resources/system/jubler.icns"
+			icon="resources/installers/macosx/jubler.icns"
 		>
 		<documenttype
 			name="Subtitle Document"
 			extensions="srt sub ass ssa son"
 			role="Editor"
-			iconfile="resources/system/subtitle.icns"
+			iconfile="resources/installers/macosx/subtitle.icns"
 		/>
 		</jarbundler>
-		<exec dir="resources/ffdecode" executable="make"> <arg line="darwin"/> </exec>
-		<exec dir="resources/system" executable="bash">
- 	               <arg line="install-mac.sh ${version}"/>
+		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="darwin"/> </exec>
+		
+		<delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
+		<bunzip2 src="resources/installers/macosx/Jubler-template.dmg.bz2" dest="/tmp/Jubler-template.dmg"/>
+		<exec executable="hdiutil" failonerror="true">
+			<arg line="attach -noautoopen -mountpoint /Volumes/Jubler-template /tmp/Jubler-template.dmg"/>
 		</exec>
+
+		<delete dir="/Volumes/Jubler-template/Jubler.app" includeemptydirs="yes"/>
+		<copy todir="/Volumes/Jubler-template/Jubler.app">
+			<fileset dir="dist/Jubler.app"/>
+		</copy>
+		<chmod file="/Volumes/Jubler-template/Jubler.app/Contents/MacOS/JavaApplicationStub" perm="a+x"/>
+		<copy file="resources/ffdecode/libffdecode.jnilib" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
+		<copy file="resources/system/fonts/freesans.ttf" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
+		<copy file="dist/help/jubler-faq.html" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help"/>
+		<copy file="resources/help/question.png" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help"/>
+
+		<exec executable="hdiutil" failonerror="true">
+			<arg line="detach -force /Volumes/Jubler-template"/>
+		</exec>
+		<exec executable="hdiutil" failonerror="true">
+			<arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o Jubler-${version}.dmg"/>
+		</exec>
+		<delete file="/tmp/Jubler-template.dmg"/>
 	</target>
 	
+
+
 	<!-- Generic installer -->
 	<target name="generic" depends="distclean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<copy file="resources/system/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes"/>
+		<copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes"/>
 		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
 		<izpack input="/tmp/install.xml" output="Jubler-${version}-generic.jar" installerType="standard" basedir="."/>
 		<delete file="/tmp/install.xml" />
@@ -279,7 +357,7 @@
 	<target name="-pre-compile" depends="findsystem,noMacSystem,MacSystem"/>
 	
 	<target name="-post-jar">
-		<copy file="resources/system/freesans.ttf" todir="dist/lib"/>
+		<copy file="resources/system/fonts/freesans.ttf" todir="dist/lib"/>
 	</target>
 
 </project>

@@ -9,7 +9,7 @@
      applications="no"
      startMenu="no"
      startup="no"
-	 iconFile="$INSTALL_PATH/lib/frame.png"
+	 iconFile="$INSTALL_PATH/lib/jubler.png"
 	 target="$JAVA_HOME/bin/java"
 	 commandLine="-jar &quot;$INSTALL_PATH/Jubler.jar&quot;"
      type="Application"

@@ -51,6 +51,7 @@ ifeq (${SYSTEM},linux)
 	LIBNAME=lib${PROJ}.so
 	XLIBS=-lz
 	FCOPTS=
+	STRIP=${PREF}strip -s
 endif
 ifeq (${SYSTEM},win32)
 	PREF=i586-mingw32msvc-
@@ -60,6 +61,7 @@ ifeq (${SYSTEM},win32)
 	LIBNAME=$(PROJ).dll
 	XLIBS=
 	FCOPTS=--enable-mingw32 --cross-prefix=${PREF} --cross-compile --enable-memalign-hack
+	STRIP=${PREF}strip -s
 endif
 ifeq (${SYSTEM},darwinppc)
 	PREF=
@@ -69,6 +71,7 @@ ifeq (${SYSTEM},darwinppc)
 	LIBNAME=${PROJ}.ppc
 	XLIBS=-lz
 	FCOPTS=--arch=powerpc --extra-cflags="-fno-common ${ARCH}" --extra-ldflags="${ARCH}" --cross-compile --enable-shared
+	STRIP=echo No stripping on 
 endif
 ifeq (${SYSTEM},darwini386)
 	PREF=
@@ -78,13 +81,13 @@ ifeq (${SYSTEM},darwini386)
 	LIBNAME=${PROJ}.i386
 	XLIBS=-lz
 	FCOPTS=--disable-mmx --arch=unknown --extra-cflags=-fno-common --enable-shared
+	STRIP=echo No stripping on 
 endif
 
 FCONFCOMMON=--disable-debug --enable-gpl --enable-a52 --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-vhook --disable-ipv6 --disable-network --disable-dv1394 --disable-bktr --disable-v4l2 --disable-v4l --disable-audio-beos --disable-audio-oss
 
 CC=${PREF}gcc ${ARCH}
 RANLIB=${PREF}ranlib
-STRIP=${PREF}strip
 
 
 MACLIBNAME=lib${PROJ}.jnilib
@@ -135,7 +138,7 @@ LIB:${LIBNAME}
 
 $(LIBNAME):ffmpeg $(OBJS) ranlib
 	$(LD) $(ARCH) -o $(LIBNAME) $(OBJS) $(LINKOPTS)
-#	$(STRIP) $(LIBNAME)
+	$(STRIP) $(LIBNAME)
 
 
 clean:
