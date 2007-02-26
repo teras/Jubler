@@ -167,8 +167,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 				
 					if (len < 0) {
 						printf("Error while decoding\n");
-						ret = JNI_FALSE;
-						break;
+						continue;
 					}
 
 					packsize -= len;

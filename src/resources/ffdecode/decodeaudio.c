@@ -264,8 +264,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 				
          	if (len < 0) {
              	printf("Error while decoding\n");
-				 	ret = JNI_FALSE;
-				 	break;
+					continue;
          	}
 				
 				packsize -= len;
