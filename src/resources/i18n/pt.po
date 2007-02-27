@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jubler\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-26 14:17-0300\n"
+"PO-Revision-Date: 2007-02-26 18:09-0300\n"
 "Last-Translator: Doutor.Zero <doutor.zero@gmail..com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_br@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -437,7 +437,7 @@ msgstr "Abrir as opções para este reprodutor"
 #: com/panayotis/jubler/tools/externals/JExtSelector.java:92
 #, java-format
 msgid "Options for {0}"
-msgstr "Opções para {0}"
+msgstr "Opções para o {0}"
 
 #: com/panayotis/jubler/tools/externals/JExtSelector.java:96
 msgid "No options for this program"
@@ -1059,7 +1059,7 @@ msgstr "Atalhos"
 #: com/panayotis/jubler/options/ExtOptions.java:58
 #, java-format
 msgid "{0} path"
-msgstr "caminho {0}"
+msgstr "Caminho do {0}"
 
 #: com/panayotis/jubler/options/ExtOptions.java:81
 msgid "The absolute path of the player. Use the Browse button to change it"
@@ -1524,7 +1524,7 @@ msgstr "Editar estilo"
 #: com/panayotis/jubler/Jubler.java:483
 #: com/panayotis/jubler/Jubler.java:896
 msgid "None"
-msgstr "Nenhum"
+msgstr "Nenhuma"
 
 #: com/panayotis/jubler/subs/SubEntry.java:84
 #: com/panayotis/jubler/Jubler.java:488
@@ -1713,7 +1713,7 @@ msgstr "Fechar o Jubler"
 
 #: com/panayotis/jubler/StaticJubler.java:112
 msgid "Clone current"
-msgstr "Clonar a atual"
+msgstr "Clonar o atual"
 
 #: com/panayotis/jubler/StaticJubler.java:117
 msgid "-Not any recent items-"
@@ -1766,7 +1766,7 @@ msgstr "Exibir colunas"
 #: com/panayotis/jubler/Jubler.java:539
 #: com/panayotis/jubler/Jubler.java:1024
 msgid "Test video"
-msgstr "Testar vídeo"
+msgstr "Testar o vídeo"
 
 #: com/panayotis/jubler/Jubler.java:574
 msgid "New"
