@@ -3,8 +3,9 @@
 Doube click on icons launch Jubler (in Mac OSX, Windows and Debian systems).
 MPlayer fixes. Jubler installs in systems with JRE 1.6. MPlayer supports
 different audio stream. Video playback doesn't change system mixers. FFMPEG
-time offset fixes. ASpell updates supported languages when opening preferences.
-Major internal changes and cleanups. Initial Debian package.
+time offset and WMV bug fixes. Better handling of audio caches. Updated to
+newer version of FFMPEG. ASpell updates supported languages when opening
+preferences. Major internal changes and cleanups. Initial Debian package.
 
 3.1.0
 

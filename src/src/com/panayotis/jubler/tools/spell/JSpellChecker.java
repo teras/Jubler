@@ -79,24 +79,29 @@ public class JSpellChecker extends JDialog {
     }
     
     public void findNextWord() {
+        System.out.print("{");
         /* Remove old error, we don't need it any more */
         if ( errors != null && !errors.isEmpty()) {
             errors.removeElementAt(0);
         }
-        
         /* If the current error list is empty, refill it with next error bunch */
         while ( errors!=null && errors.isEmpty()) {
             pos_in_list++;
             if ( pos_in_list >= textlist.size()) {  /* No more lines to check */
                 prepareExit();
+                System.out.println();
+                System.out.println("No more lines to check");
                 return;
             }
             /* Get next (multi)line of text */
             errors  = checker.checkSpelling(textlist.elementAt(pos_in_list).getText());
+            System.out.print(pos_in_list+",");
         }
         
         /* No more entries found, exiting spell checker */
         if (errors==null) {
+            System.out.println();
+            System.out.println("No more entries found");
             prepareExit();
             return;
         }
@@ -115,6 +120,8 @@ public class JSpellChecker extends JDialog {
         
         /* Check if all errors found are already replaced */
         if (errors.isEmpty()) {
+            System.out.println();
+            System.out.println("All errors already replaced");
             prepareExit();
             return;
         }
@@ -134,6 +141,7 @@ public class JSpellChecker extends JDialog {
         }
         
         /* Make this dialog visible, if it is not already */
+        System.out.print("}");
         setVisible(true);
     }
     
@@ -420,6 +428,7 @@ public class JSpellChecker extends JDialog {
     }//GEN-LAST:event_InsertBActionPerformed
     
     private void StopBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopBActionPerformed
+        System.out.println("Stop button");
         prepareExit();
     }//GEN-LAST:event_StopBActionPerformed
     

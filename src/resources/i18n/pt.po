@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Jubler\n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2007-02-26 18:09-0300\n"
+"PO-Revision-Date: 2007-02-27 11:51-0300\n"
 "Last-Translator: Doutor.Zero <doutor.zero@gmail..com>\n"
 "Language-Team: Brazilian Portuguese <kde-i18n-pt_br@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -1770,7 +1770,7 @@ msgstr "Testar o vídeo"
 
 #: com/panayotis/jubler/Jubler.java:574
 msgid "New"
-msgstr "Nova"
+msgstr "Novo"
 
 #: com/panayotis/jubler/Jubler.java:620
 #: com/panayotis/jubler/Jubler.java:944

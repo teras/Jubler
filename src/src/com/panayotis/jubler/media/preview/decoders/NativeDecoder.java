@@ -40,7 +40,7 @@ public abstract class NativeDecoder implements DecoderInterface {
     private boolean isInterrupted;
     
     
-    public boolean createAudioCache(String afile, String cfile, DecoderListener fback) {
+    public boolean initAudioCache(String afile, String cfile, DecoderListener fback) {
         final String af = afile;
         final String cf = cfile;
         feedback = fback;
@@ -54,12 +54,11 @@ public abstract class NativeDecoder implements DecoderInterface {
             DEBUG.error(_("Still creating cache. Use the Cancel button to abort."));
             return false;
         }
-        if (cf==null) {
+        if (cf==null || cf.equals("")) {
             DEBUG.info(_("Unable to create a null cache file"), DEBUG.INFO_ALWAYS);
             return false;    /* We HAVE to have defined the cached file */
         }
-        if (AudioCache.isAudioCache(cf)) {
-            // forgetAudioCache(cf);    /* We don't need the old cache anymore */
+        if (AudioPreview.isAudioPreview(cf)) {
             DEBUG.info(_("Jubler audio cache detected for audio input: {0}", cf), DEBUG.INFO_ALWAYS);
             return true;
         }
@@ -70,11 +69,9 @@ public abstract class NativeDecoder implements DecoderInterface {
                 /* This is the subrutine which produces tha cached data, in separated thread */
                 feedback.startCacheCreation();
                 boolean status = makeCache(af, cf, new File(af).getName());
-                if (status) {
-                    forgetAudioCache(cf);    /* We don't need the old cache anymore */
-                }
                 cacher = null;  // Needed early, to "tip" the system that cache creatin has been finished
                 setInterruptStatus(false);
+                
                 if(!status) DEBUG.error(_("Error while loading file {0}",  af));
                 feedback.stopCacheCreation();
             }
@@ -96,25 +93,35 @@ public abstract class NativeDecoder implements DecoderInterface {
         return isInterrupted;
     }
     
+    /* Use this method when the loaded audio cache is no more needed */
+    public void closeAudioCache(String cfile) {
+        /* Check if the file is null and remove it from disk */
+        File c = new File(cfile);
+        if (c.length()==0 && c.isFile() && c.canWrite()) {
+            c.delete();
+        }
+        
+        /* If cache is being created - abort creation */
+        if (cacher!=null) {
+            setInterruptStatus(true);  // Abort!
+        }
+        
+        /* Now clean up memory */
+        if (cfile!=null && (!cfile.equals("")) && isDecoderValid()) {
+            forgetCache(cfile); //
+        }
+        
+    }
     
-    public AudioCache getAudioCache(String cfile, double from, double to) {
+    
+    public AudioPreview getAudioPreview(String cfile, double from, double to) {
         if (!isDecoderValid()) return null;
         if (cfile==null) return null;
         if (cacher!=null) return null;  // Cache still being created
         
         float[] data = grabCache(cfile, from, to);
         if (data==null) return null;
-        return new AudioCache(data);
-    }
-    
-    public void forgetAudioCache(String cfile) {
-        if (!isDecoderValid()) return;
-        if (cfile==null) return;
-        if (cacher!=null) {
-            setInterruptStatus(true);  // Cache is being created
-        }
-        
-        forgetCache(cfile);
+        return new AudioPreview(data);
     }
     
     private native boolean makeCache(String afile, String cfile, String aname);

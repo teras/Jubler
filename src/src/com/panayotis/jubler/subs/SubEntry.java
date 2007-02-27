@@ -246,4 +246,8 @@ public class SubEntry implements Comparable<SubEntry> {
     public void resetOverStyle() {
         overstyle = null;
     }
+    
+    public String toString() {
+        return start.toString()+"->"+finish.toString()+" "+subtext;
+    }
 }

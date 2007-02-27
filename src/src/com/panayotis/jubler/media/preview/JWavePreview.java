@@ -26,7 +26,7 @@ import com.panayotis.jubler.media.MediaFile;
 import static com.panayotis.jubler.media.preview.JFramePreview.DT;
 
 import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
-import com.panayotis.jubler.media.preview.decoders.AudioCache;
+import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.subs.SubEntry;
 import java.awt.Color;
@@ -44,7 +44,7 @@ import javax.swing.JPanel;
  */
 public class JWavePreview extends JPanel implements DecoderListener {
     
-    private static final AudioCache demoaudio = new AudioCache(1, 1000);
+    private static final AudioPreview demoaudio = new AudioPreview(1, 1000);
     
     private final static Color [] background = {new Color(0,20,0), new Color(0,20,20)};
     private final static Color bordercolor = Color.WHITE;
@@ -54,7 +54,7 @@ public class JWavePreview extends JPanel implements DecoderListener {
     
     private final JSubTimeline timeline;
     
-    private AudioCache audio;
+    private AudioPreview audio;
     private MediaFile mfile;
     
     private JAudioLoader loader;
@@ -109,17 +109,11 @@ public class JWavePreview extends JPanel implements DecoderListener {
         loader.setValue((int)(state*100));
     }
     
-    public void cleanUp() {
-        if (mfile!=null)
-            mfile.forgetAudioCache();
-    }
-    
+
     public void updateMediaFile(MediaFile mfile) {
         /*  start creation of cache files */
         this.mfile = mfile;
         loader.updateMediaFile(mfile);
-        //updateWave();
-        mfile.initAudioCache(this);
     }
     
     
@@ -141,7 +135,7 @@ public class JWavePreview extends JPanel implements DecoderListener {
     
     private void updateWave() {
         if (isEnabled() && mfile != null)
-            audio = mfile.getAudioCache(start_time, end_time);
+            audio = mfile.getAudioPreview(start_time, end_time);
         else audio = null;
         if (audio==null) audio = demoaudio;
         

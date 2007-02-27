@@ -26,7 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
+import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
@@ -177,11 +177,7 @@ public class JSubPreview extends javax.swing.JPanel {
             frame.repaint();
             repack();
         }
-        else parent.enablePreviewButton();
-    }
-    
-    public void cleanUp() {
-        wave.cleanUp();
+        else parent.closedPreview();
     }
     
     public void forceRepaintFrame() {
@@ -210,6 +206,10 @@ public class JSubPreview extends javax.swing.JPanel {
     public boolean isActive() {
         if (dialog==null) return false;
         return dialog.isVisible();
+    }
+    
+    public DecoderListener getDecoderListener() {
+        return wave;
     }
     
     /** This method is called from within the constructor to

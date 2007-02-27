@@ -34,12 +34,12 @@ public interface DecoderInterface {
     
     public abstract boolean isDecoderValid();
 
-    public abstract boolean createAudioCache(String afile, String cfile, DecoderListener fback);
+    public abstract boolean initAudioCache(String afile, String cfile, DecoderListener fback);
     public abstract void setInterruptStatus(boolean interrupt);
     public abstract boolean getInterruptStatus();
+    public abstract void closeAudioCache(String cache);
 
-    public abstract AudioCache getAudioCache(String cache, double from, double to);
-    public abstract void forgetAudioCache(String cache);
+    public abstract AudioPreview getAudioPreview(String cache, double from, double to);
 
     public abstract Image getFrame(String video, double time, boolean small);
     public abstract float getFPS(String vfile);

@@ -1391,17 +1391,25 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_MediaFileFMActionPerformed
     
     
-    public void enablePreviewButton() {
+    public void closedPreview() {
         PreviewTB.setEnabled(true);
         subeditor.setAttPrevSelectable(false);
+        MediaFileFM.setEnabled(true);
+        
+        /* Cache is deleted *every time* the preview window is closed 
+         * This is also the case when the user just clicks on the "close" button
+         * of the application */
+        mfile.closeAudioCache();    // 
     }
     private void PreviewTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBActionPerformed
         mfile.validateMediaFile(subs, false);
+        mfile.initAudioCache(preview.getDecoderListener());
         
         preview.updateMediaFile(mfile);
         PreviewTB.setEnabled(false);
         preview.setVisible(true);
         subeditor.setAttPrevSelectable(true);
+        MediaFileFM.setEnabled(false);
         preview.subsHaveChanged(SubTable.getSelectedRows());
     }//GEN-LAST:event_PreviewTBActionPerformed
     
@@ -2153,9 +2161,7 @@ public class Jubler extends JFrame {
         }
         
         /* Clean up previewers */
-        preview.cleanUp();
         preview.setVisible(false);
-        mfile.cleanUp();
         
         windows.remove(this);
         for (Jubler w : windows) {

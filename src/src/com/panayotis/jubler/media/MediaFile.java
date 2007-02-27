@@ -29,7 +29,7 @@ import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.media.filters.AudioFileFilter;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
-import com.panayotis.jubler.media.preview.decoders.AudioCache;
+import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.os.FileCommunicator;
@@ -165,7 +165,7 @@ public class MediaFile {
         updateCacheFile(cfname);
         
         /* Set audio file, from the cache file */
-        String audioname = AudioCache.getNameFromCache(cfile);
+        String audioname = AudioPreview.getNameFromCache(cfile);
         if (audioname!=null && (!audioname.trim().equals(""))){
             File newafile = new File( (new File(cfname)).getParent(), audioname);
             if (newafile.exists()) afile = audioname;
@@ -177,9 +177,6 @@ public class MediaFile {
     private void updateCacheFile(String cfname) {
         if (cfname==null || cfname.equals("")) return;
         
-        // clean old cache file
-        cleanUp();
-        
         /* Find a write enabled cache file */
         File cf = new File(cfname);
         if (!( cf.getParentFile().canWrite() && ((!cf.exists()) || cf.canWrite()) )) {
@@ -188,23 +185,21 @@ public class MediaFile {
             if (point < 0 ) point = strippedfilename.length();
             cf = new File(System.getProperties().getProperty("java.io.tmpdir")+
                     System.getProperties().getProperty("file.separator")+
-                    strippedfilename.substring(0,point)+AudioCache.getExtension());
+                    strippedfilename.substring(0,point)+AudioPreview.getExtension());
         } else {
             int point = cfname.lastIndexOf('.');
             if (point < 0 ) point = cfname.length();
-            cf = new File( cfname.substring(0,point)+AudioCache.getExtension());
+            cf = new File( cfname.substring(0,point)+AudioPreview.getExtension());
         }
-        cfile = cf.getPath();
+        String newcachef = cf.getPath();
+        
+        if (newcachef.equals(cfile)) return;
+        
+        closeAudioCache();  // Close old cache file, if exists
+        cfile = newcachef;
     }
     
-    public void cleanUp() {
-//
-//        File cachefile = new File(cfile);
-//        if (cachefile.exists() && cachefile.canWrite())
-//            cachefile.delete();
-    }
-    
-    
+
     public boolean isValid() {
         return (fileExists(vfile));
     }
@@ -226,13 +221,13 @@ public class MediaFile {
     
     /* Decoder actions */
     public boolean initAudioCache(DecoderListener listener) {
-        return decoder.createAudioCache(afile, cfile, listener);
+        return decoder.initAudioCache(afile, cfile, listener);
     }
-    public AudioCache getAudioCache(double from, double to) {
-        return decoder.getAudioCache(cfile, from, to);
+    public AudioPreview getAudioPreview(double from, double to) {
+        return decoder.getAudioPreview(cfile, from, to);
     }
-    public void forgetAudioCache() {
-        decoder.forgetAudioCache(cfile);
+    public void closeAudioCache() {
+        decoder.closeAudioCache(cfile);
     }
     public Image getFrame(double time, boolean small) {
         return decoder.getFrame(vfile, time, small);

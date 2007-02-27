@@ -1,5 +1,5 @@
 /*
- * AudioCache.java
+ * AudioPreview.java
  *
  * Created on 6 Οκτώβριος 2005, 2:43 μμ
  *
@@ -34,7 +34,7 @@ import java.io.RandomAccessFile;
  *
  * @author teras
  */
-public class AudioCache {
+public class AudioPreview {
     
     public static final int nameoffset = 11;
     
@@ -43,13 +43,13 @@ public class AudioCache {
     /* channels, position, positive/negative */
     private float[][][] cache;
     
-    public AudioCache(int channels, int length) {
+    public AudioPreview(int channels, int length) {
         cache = new float[channels][length][2];
     }
     
-    public AudioCache(float[] data) {
-        if (data==null) throw new NullPointerException(_("Trying to initialize AudioCache with null data"));
-        if ( (data.length%(length*2))!=0 ) throw new ArrayIndexOutOfBoundsException(_("Trying to intialize AudioCache with wrong size {0}",data.length));
+    public AudioPreview(float[] data) {
+        if (data==null) throw new NullPointerException(_("Trying to initialize audio preview with null data"));
+        if ( (data.length%(length*2))!=0 ) throw new ArrayIndexOutOfBoundsException(_("Trying to intialize audio preview with wrong size {0}",data.length));
         byte channels = (byte) (data.length / (length*2));
         cache = new float[channels][length][2];
         int pointer = 0;
@@ -70,7 +70,7 @@ public class AudioCache {
     }
     
     /* Use this static method to check if a specific file is a regular file or an audio cache */
-    public static boolean isAudioCache(String fname) {
+    public static boolean isAudioPreview(String fname) {
         if (fname == null) return false;
         
         File cachefile = new File(fname);
@@ -99,7 +99,7 @@ public class AudioCache {
     }
     
     public static String getNameFromCache(String fname) {
-        if (!isAudioCache(fname)) return null;
+        if (!isAudioPreview(fname)) return null;
         
         String name = null;
         RandomAccessFile file;
