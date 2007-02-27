@@ -97,7 +97,7 @@ public class Main {
             asyncAddSubtitle(args[i]);
         }
         splash.dispose();
-        loader.run();
+        loader.start();
         
         Thread t = new Thread() {
             public void run() {
