@@ -47,6 +47,7 @@ public class ASpellOptions extends ExtOptions {
         
         dictionaries = new Vector<ASpellDict>();
         add(Visuals, BorderLayout.SOUTH);
+        updateOptions();
     }
     
     /** This method is called from within the constructor to
