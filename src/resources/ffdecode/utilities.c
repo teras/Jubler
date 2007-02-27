@@ -18,6 +18,7 @@
 
 
 #include "utilities.h"
+#include <stdarg.h>
 
 
 void storeBigEndian(unsigned short int number, FILE * outfile) {
@@ -57,3 +58,12 @@ int isLittleEndian() {
 	return 0;
 }
 
+void DEBUG(const char *section, const char *expr, ...) {
+#undef printf
+	va_list list;
+	va_start (list, expr);
+	printf("[%s] ", section);
+	vprintf(expr, list);
+    va_end(list);
+#define printf Use_DEBUG_instead_of_printf .
+}

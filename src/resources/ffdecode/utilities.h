@@ -22,9 +22,13 @@
 
 #include <stdio.h>
 
+#define printf Use_DEBUG_instead_of_printf .
+
 void storeBigEndian(unsigned short int number, FILE * outfile);
 unsigned short int retrieveBigEndian(FILE * outfile);
 
 int isLittleEndian();
+
+void DEBUG(const char *section, const char *expr, ...);
 
 #endif

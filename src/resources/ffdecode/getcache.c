@@ -58,16 +58,22 @@ JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_N
 	(*env)->ReleaseStringUTFChars(env, cfile, cache_c);
 			
 	/* If we couldn't get a pointer for a data cache, we have to exit */
-	if (entry==NULL) return NULL;
+	if (entry==NULL) {
+		DEBUG("grabCache", "Could not get a pointer for a data cache.\n");
+		return NULL;
+	}
 	
 	jfloatArray cmatrix = (*env)->NewFloatArray(env, CACHELENGTH * entry->channels * 2);
-	if (cmatrix==NULL) return NULL;
+	if (cmatrix==NULL) {
+		DEBUG("grabCache", "Could not reserve memory for new array.\n");
+		return NULL;
+	}
 	jfloat *cache = (*env)->GetFloatArrayElements(env, cmatrix, 0);
 
 	populateMatrix(from * RESOLUTION, to * RESOLUTION, entry->data, entry-> datasize, entry->channels, cache);
 	/* Release the matrix data pointer */
 	(*env)->ReleaseFloatArrayElements(env, cmatrix, cache, 0);
-							
+	
 	return cmatrix;
 }
 
@@ -110,7 +116,7 @@ JNIEXPORT void JNICALL Java_com_panayotis_jubler_media_preview_decoders_NativeDe
 		last--;
 
 		if (last>pointer) {
-			printf("Moving file: ");
+			DEBUG("forgetCache", "Moving file.\n");
 			dict[pointer].name = dict[last].name;
 			dict[pointer].data = dict[last].data;
 			dict[pointer].namesize = dict[last].namesize;
@@ -123,7 +129,7 @@ JNIEXPORT void JNICALL Java_com_panayotis_jubler_media_preview_decoders_NativeDe
 			dict[last].datasize = 0;
 			dict[last].channels = 0;
 		}
-		printf("Cleaning up #%i (from %i) cache file %s\n", pointer, last, cache_c);
+		DEBUG("forgetCache", "Cleaning up #%i (from %i) cache file '%s'.\n", pointer, last, cache_c);
 	}
 	
 	/* free memory reserved for Java->C strings, we don't need it anymore */
@@ -188,16 +194,20 @@ struct dictionary * lookup(const char * fname) {
 	}
 	
 	if (pointer>=DICTLENGTH) {	/* We don't have any more space left to store this cache file */
-		printf("Audio cache lookup table is full, please increase DICTLENGTH in getcache.c\n");
+		DEBUG("lookup", "Audio cache lookup table is full, please increase DICTLENGTH in defaults.h .\n");
 		return NULL;
 	}
 	
 	dict[pointer].name = malloc(fname_size+1);	/* first store filename */
-	if (dict[pointer].name==NULL) return NULL;
+	if (dict[pointer].name==NULL) {
+		DEBUG("lookup", "Could not allocate memory to store filename '%s'.\n", fname);
+		return NULL;
+	}
 	strncpy(dict[pointer].name, fname, fname_size+1);
 	
 	loadCache(&dict[pointer]); 	/* Then load cache into memory */
 	if (dict[pointer].data == NULL ) {
+		DEBUG("lookup", "Unable to load cache.\n");
 		free(dict[pointer].name);
 		dict[pointer].name = NULL;
 		return NULL;
@@ -216,7 +226,7 @@ void loadCache(struct dictionary * dict) {
 	
 	/* find cache size */
 	if ( (in = fopen(dict->name, "rb")) == NULL ) {
-		printf("Could not open file %s.\n", dict->name);
+		DEBUG("loadCache", "Could not open file '%s'.\n", dict->name);
 		return;
 	}
 	
@@ -242,7 +252,7 @@ void loadCache(struct dictionary * dict) {
 	if (dict->data!=NULL) {
 		bytes_read = fread(dict->data, 1, dict->datasize, in);	/* load cache into memory */
 		if (bytes_read!=dict->datasize) {
-			printf("WARNING: wanted & read bytes differ. Wave preview might not be complete.\n");
+			DEBUG("loadCache", "WARNING: wanted & read bytes differ. Wave preview might not be complete.\n");
 		}
 		dict->datasize = bytes_read;
 	}

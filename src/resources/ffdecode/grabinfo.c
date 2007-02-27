@@ -87,7 +87,7 @@ void get_dimension(jint* dim, const char* video_c)
 	// Open the input file.
 	err = av_open_input_file(&fcx, video_c, NULL, 0, NULL);
 	if(err<0) {
-		printf("Can't open file: %s\n", video_c);
+		DEBUG("get_dimension", "Could not open file '%s'.\n", video_c);
 		ret = JNI_FALSE;
 	}
 
@@ -151,7 +151,7 @@ jfloat dump_fps(const char *input_filename){
 	// Open the input file.
 	err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
 	if(err<0){
-		printf("Can't open file: %s\n", input_filename);
+		DEBUG("dump_fps", "Could not open file '%s'.\n", input_filename);
 		ret = JNI_FALSE;
 	}
 

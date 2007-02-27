@@ -82,7 +82,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
    /* Open the input/output files */
    err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
    if(err<0){
-		printf("Can't open file: %s\n", input_filename);
+		DEBUG("decodeAudio", "Could not open file '%s'.\n", input_filename);
 	 	ret = JNI_FALSE;
    }
 
@@ -126,13 +126,13 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 
    /* Find codec id */
    if(audio_index < 0){
-	 	printf("Audio stream with supported codec not found.\n");
+	 	DEBUG("decodeAudio", "Audio stream with supported codec not found.\n");
 	 	ret = JNI_FALSE;
    } 
 	else {
 		/* open it */
    	if ((codec_is_open = avcodec_open(ccx, codec)) < 0) {
-      	printf("could not open codec\n");
+      	DEBUG("decodeAudio", "Could not open codec.\n");
       	ret = JNI_FALSE;
    	}
 		else {
@@ -155,14 +155,14 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 					ofcx = av_alloc_format_context();
 
 					if (!ofcx) {
-						printf("Memory error\n");
+						DEBUG("decodeAudio", "Memory error!\n");
 						ret = JNI_FALSE;
 					}
 
 					/* use wav as the output format of the file */	
 					fmt = guess_format("wav", NULL, NULL);
 					if (!fmt) {
-						printf("Could not find suitable output format\n");
+						DEBUG("decodeAudio", "Could not find suitable output format.\n");
 						ret = JNI_FALSE;
 					}
 					
@@ -181,21 +181,21 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 
 						/* set the output parameters (must be done even if no parameters) */
 						if (av_set_parameters(ofcx, NULL) < 0) {
-							printf("Invalid output format parameters\n");
+							DEBUG("decodeAudio", "Invalid output format parameters.\n");
 							ret = JNI_FALSE;
 						}
 						else {
 							/* open the output file, if needed */
 							if (!(fmt->flags & AVFMT_NOFILE)) {
 								if (url_fopen(&ofcx->pb, output_filename, URL_WRONLY) < 0) {
-									fprintf(stderr, "Could not open '%s'\n", output_filename);
+									DEBUG("decodeAudio", "Could not open file '%s'.\n", output_filename);
 									ret = JNI_FALSE;
 								}
 							}
 
 							/* write the stream header, if any */
 							if (av_write_header(ofcx) < 0) {
-								printf("Could not write header for output file\n") ;
+								DEBUG("decodeAudio", "Could not write header for output file.\n") ;
 								ret = JNI_FALSE;
 							}
 							else {
@@ -222,7 +222,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 					if (ret != JNI_FALSE) {
 						outfile = fopen(output_filename, "r+b");
 						if (!outfile) {
-							printf("Could not open '%s'\n", output_filename);
+							DEBUG("decodeAudio", "Could not open file '%s'\n", output_filename);
 							ret = JNI_FALSE;
 						}
 						else {
@@ -233,12 +233,12 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 					}
 				}
 				else {
-					printf("Seek start/stop time cannot be greater than input file's duration.\nExiting...\n");
+					DEBUG("decodeAudio", "Seek start/stop time cannot be greater than input file's duration.\n");
 					ret = JNI_FALSE;
 				}
 			}
 			else {
-				printf("Seek start time is not smaller than seek stop time.\nExiting ...\n");
+				DEBUG("decodeAudio", "Seek start time is not smaller than seek stop time.\n");
 				ret = JNI_FALSE;
 			}
 		}
@@ -263,7 +263,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
          	len = avcodec_decode_audio(ccx, (short *)outbuf, &got_audio, packptr, packsize);
 				
          	if (len < 0) {
-             	printf("Error while decoding\n");
+             	DEBUG("decodeAudio", "Error while decoding.\n");
 					continue;
          	}
 				
@@ -324,7 +324,7 @@ AVStream *add_audio_stream(AVFormatContext *oc, int codec_id, int sample_rate, i
 
 	st = av_new_stream(oc, 1);
 	if (!st) {
-		printf("Could not alloc stream\n");
+		DEBUG("add_audio_stream", "Could not allocate stream.\n");
 		retflag = JNI_FALSE;
 	}
 

@@ -88,11 +88,11 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
    	err = av_open_input_file(&fcx, audio_c, NULL, 0, NULL);
 		cachefile = fopen(cache_c, "wb");
    	if(err<0){
-	  		printf("Can't open file: '%s'\n", audio_c);
+	  		DEBUG("makeCache", "Could not open audio file '%s'.\n", audio_c);
       	ret = JNI_FALSE;
    	}
    	if (!cachefile) {
-			printf("Could not open '%s'\n", cache_c);
+			DEBUG("makeCache", "Could not open cache file '%s'.\n", cache_c);
 			ret = JNI_FALSE;
    	}
 
@@ -117,13 +117,13 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 
 		/* Find codec id */
 		if(audio_index < 0){
-			printf("Audio stream with supported codec not found.\n");
+			DEBUG("makeCache", "Audio stream with supported codec not found.\n");
 			ret = JNI_FALSE;
 		}
 		else {
 			/* open it */
    		if ((codec_is_open = avcodec_open(ccx, codec)) < 0) {
-				printf("could not open codec\n");
+				DEBUG("makeCache", "Could not open codec.\n");
 				ret = JNI_FALSE;
 			}
 			else {
@@ -166,7 +166,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 					len = avcodec_decode_audio(ccx, (short *)outbuf, &got_audio, pkt.data, pkt.size);
 				
 					if (len < 0) {
-						printf("Error while decoding\n");
+						DEBUG("makeCache", "Error while decoding.\n");
 						continue;
 					}
 
@@ -216,7 +216,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 						val = (float) pack_pts / fcx->duration;
 						/* Check if interrupt has been assigned */
 						if ((*env)->CallBooleanMethod(env, this, iid)) {
-							printf("Creation of cache file interrupted!\n");
+							DEBUG("makeCache", "Creation of cache file interrupted!\n");
 							ret = JNI_FALSE;
 							nobrk = JNI_FALSE;
 							break;

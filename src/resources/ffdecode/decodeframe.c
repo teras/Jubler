@@ -130,7 +130,7 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
 					r >>= shift;
 					g >>= shift;
 					b >>= shift;
-					if (r>0xff || g>0xff || b>0xff)	printf("Q");
+					if (r>0xff || g>0xff || b>0xff)	DEBUG("grabFrame", "Overflow of color variables.\n");
 					mdata[mpos]=0xff000000|(r<<16)|(g<<8)|b;
 					mpos++;
 
@@ -147,13 +147,13 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
 			/* Release the matrix data pointer */
 			(*env)->ReleaseIntArrayElements(env, matrix, matrixdata, 0);
 		} else {
-			printf("Can not create array into memory\n");
+			DEBUG("grabFrame", "Can not create array into memory.\n");
 		}
 		/* Release the picture data */
 		avpicture_free(pict);
 		free(pict);
 	} else {
-		printf("Could not load frame.\n");
+		DEBUG("grabFrame", "Could not load frame.\n");
 	}
 
 	/* free memory reserved for Java->C strings */
@@ -185,7 +185,7 @@ AVPicture* decodeFrame (const char *input_filename, jlong seek_time, jint *width
 	/* Open the input file */
 	err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
 	if(err<0){
-		printf("Can't open file: %s\n", input_filename);
+		DEBUG("decodeFrame", "Could not open file '%s'.\n", input_filename);
 		retflag = FALSE;
 	}
 
@@ -209,13 +209,13 @@ AVPicture* decodeFrame (const char *input_filename, jlong seek_time, jint *width
 	}
 
 	if(video_index < 0){
-		printf("Video stream with supported codec not found.\n");
+		DEBUG("decodeFrame", "Video stream with supported codec not found.\n");
 		retflag = FALSE;
 	}
 	else {
 		// Open codec
 		if((codec_is_open = avcodec_open(ccx, codec)) < 0 ) {
-			printf("Could not open codec.\n");
+			DEBUG("decodeFrame", "Could not open codec.\n");
 			retflag = FALSE;
 		}
 		else {
@@ -224,7 +224,7 @@ AVPicture* decodeFrame (const char *input_filename, jlong seek_time, jint *width
 			}
 			// Do a check that we don't seek beyond the movie duration
 			if(seek_time > fcx->duration) {
-				printf("Seek time cannot be greater than input's file duration\n");
+				DEBUG("decodeFrame", "Seek time cannot be greater than input's file duration.\n");
 				retflag = FALSE; 
 			}
 			else {
@@ -249,7 +249,7 @@ AVPicture* decodeFrame (const char *input_filename, jlong seek_time, jint *width
 				// Decode this packet
 				len = avcodec_decode_video(ccx, frame, &got_picture, pkt.data, pkt.size);
 				if (len < 0) {
-					printf("Error while decoding\n");
+					DEBUG("decodeFrame", "Error while decoding.\n");
 					retflag = FALSE;
 					break;
 				}
@@ -301,7 +301,7 @@ int file_info(char * input_filename) {
 	// Open the input file.
 	err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
 	if(err<0){
-		printf("Can't open file: %s\n", input_filename);
+		DEBUG("file_info", "Could not open file '%s'.\n", input_filename);
 		return 1;
 	}
 
