@@ -37,17 +37,22 @@ struct dictionary {
 
 
 static struct dictionary dict[DICTLENGTH];
+static int dictionary_is_initialized = 0 ;
 
 
 struct dictionary * lookup(const char * fname);
 void loadCache(struct dictionary * dict);
 void populateMatrix(size_t start, size_t finish, char * data, size_t datatsize, char channels, jfloat * cache);
-
-
+void zeroDict(struct dictionary * dictentry);
+void isDictInitialized();
+int findDictionaryIndex(const char * fname);
 
 JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_NativeDecoder_grabCache
   (JNIEnv * env, jobject this, jstring cfile, jdouble from, jdouble to)
 {
+	/* First make sure that dict has been initialized */
+	isDictInitialized();
+
 	/* translate Java strings into C strings */
 	const char * cache_c  = (*env)->GetStringUTFChars(env, cfile, 0);
 	
@@ -59,7 +64,6 @@ JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_N
 			
 	/* If we couldn't get a pointer for a data cache, we have to exit */
 	if (entry==NULL) {
-		DEBUG("grabCache", "Could not get a pointer for a data cache.\n");
 		return NULL;
 	}
 	
@@ -85,51 +89,37 @@ JNIEXPORT void JNICALL Java_com_panayotis_jubler_media_preview_decoders_NativeDe
 {
 	int pointer;
 	
+	/* First make sure that dict has been initialized */
+	isDictInitialized();
+
 	/* translate Java strings into C strings */
 	const char * cache_c  = (*env)->GetStringUTFChars(env, cache, 0);
 
 	/* Find if the required cache is already loaded */
-	size_t fname_size = strlen(cache_c);
-	for (pointer = 0 ; pointer < DICTLENGTH && dict[pointer].namesize>0 ; pointer++ ) {
-		if (fname_size==dict[pointer].namesize) {	/* If it has the same size (fast) */
-			if (strncmp(dict[pointer].name, cache_c, fname_size) == 0 ) {	/* And the same name, slower */
-				break;
-			}
-		}
-	}
-	
-	/* The cache was found */
-	if (pointer<DICTLENGTH) {
+	pointer = findDictionaryIndex(cache_c);
+	if (pointer>=0) {	/* The cache was found */
 		int last;
 
 		/* Free up memory */
 		free(dict[pointer].name);
 		free(dict[pointer].data);
-		dict[pointer].name = NULL;
-		dict[pointer].data = NULL;
-		dict[pointer].namesize = 0;
-		dict[pointer].datasize = 0;
-		dict[pointer].channels = 0;
+		zeroDict(dict + pointer);
 
 		/* Find last valid entry */
 		for (last = pointer+1 ; last < DICTLENGTH && dict[last].namesize>0 ; last++ );
 		last--;
 
+		DEBUG("forgetCache", "Cleaning up #%i (from %i) cache file '%s'.\n", pointer+1, last+1, cache_c);
 		if (last>pointer) {
-			DEBUG("forgetCache", "Moving file.\n");
+			DEBUG("forgetCache", "Moving file from #%i to #%i.\n", last+1, pointer+1);
 			dict[pointer].name = dict[last].name;
 			dict[pointer].data = dict[last].data;
 			dict[pointer].namesize = dict[last].namesize;
 			dict[pointer].datasize = dict[last].datasize;
 			dict[pointer].channels = dict[last].channels;
-
-			dict[last].name = NULL;
-			dict[last].data = NULL;
-			dict[last].namesize = 0;
-			dict[last].datasize = 0;
-			dict[last].channels = 0;
+			zeroDict(dict+last);
+			last--;
 		}
-		DEBUG("forgetCache", "Cleaning up #%i (from %i) cache file '%s'.\n", pointer, last, cache_c);
 	}
 	
 	/* free memory reserved for Java->C strings, we don't need it anymore */
@@ -183,21 +173,16 @@ void populateMatrix(size_t samplestart, size_t samplefinish, char * data, size_t
 struct dictionary * lookup(const char * fname) {
 	int pointer;
 
-	/* Find if the required cache is already loaded */
-	size_t fname_size = strlen(fname);
-	for (pointer = 0 ; pointer < DICTLENGTH && dict[pointer].namesize>0 ; pointer++ ) {
-		if (fname_size==dict[pointer].namesize) {	/* If it has the same size (fast) */
-			if (strncmp(dict[pointer].name, fname, fname_size) == 0 ) {	/* And the same name, slower */
-				return &dict[pointer];	/* We have already loaded this cache file! */
-			}
-		}
-	}
+	pointer = findDictionaryIndex(fname);
+	if (pointer>=0) return &dict[pointer];
 	
-	if (pointer>=DICTLENGTH) {	/* We don't have any more space left to store this cache file */
+	if (pointer < (-DICTLENGTH) ) {	/* We don't have any more space left to store this cache file */
 		DEBUG("lookup", "Audio cache lookup table is full, please increase DICTLENGTH in defaults.h .\n");
 		return NULL;
 	}
+	pointer = -pointer-1;	// revert the value of original pointer
 	
+	size_t fname_size = strlen(fname);
 	dict[pointer].name = malloc(fname_size+1);	/* first store filename */
 	if (dict[pointer].name==NULL) {
 		DEBUG("lookup", "Could not allocate memory to store filename '%s'.\n", fname);
@@ -263,3 +248,45 @@ void loadCache(struct dictionary * dict) {
 	
 	fclose(in);
 }
+
+/* Set zeros to this dictionary entry */
+void zeroDict(struct dictionary * dictentry) {
+		dictentry->name = NULL;
+		dictentry->data = NULL;
+		dictentry->namesize = 0;
+		dictentry->datasize = 0;
+		dictentry->channels = 0;
+}
+
+
+/* Make sure that dictionary "dict" is already initialized to NULL values */
+void isDictInitialized() {
+	int i;
+	if (dictionary_is_initialized) return;
+	for( i = 0 ; i < DICTLENGTH ; i++ ) 
+		zeroDict(dict+i);
+	dictionary_is_initialized = 1;
+}
+
+
+/* Find a filename in the dictionary.
+ Return "-pointer" if the filename was not found,
+    where "pointer" is the last position on the table
+    found to have data
+*/
+int findDictionaryIndex(const char * fname) {
+	int pointer;
+	int found = 0;
+	size_t fname_size = strlen(fname);
+	for (pointer = 0 ; pointer < DICTLENGTH && dict[pointer].namesize>0 ; pointer++ ) {
+		if (fname_size==dict[pointer].namesize) {	/* If it has the same size (fast) */
+			if (strncmp(dict[pointer].name, fname, fname_size) == 0 ) {	/* And the same name, slower */
+				found = 1;
+				break;
+			}
+		}
+	}
+	if (found) return pointer;
+	return -pointer-1;
+}
+

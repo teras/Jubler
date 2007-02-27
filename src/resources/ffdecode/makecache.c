@@ -131,7 +131,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 				channels = ccx->channels;
 				ratewindow = (float)ccx->sample_rate / RESOLUTION;
 				maxbyte = (sampledcounter) * channels * step * ratewindow;
-   			maxsample = malloc(channels);
+   				maxsample = malloc(channels);
 				minsample = malloc(channels);
 
 				/* Initialize these arrays */
@@ -247,8 +247,4 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 	
 	return ret;
 }
-
-
-
-
 
