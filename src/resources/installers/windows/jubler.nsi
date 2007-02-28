@@ -1,75 +1,6 @@
 ; jubler.nsi
 ;--------------------------------
 
-
-; MACROS FOR FILE ASSOCIATION
-
-; fileassoc.nsh
-; File association helper macros
-; Written by Saivert
-;
-; Features automatic backup system and UPDATEFILEASSOC macro for
-; shell change notification.
-;
-; |> How to use <|
-; To associate a file with an application so you can double-click it in explorer, use
-; the APP_ASSOCIATE macro like this:
-;
-;   Example:
-;   !insertmacro APP_ASSOCIATE "txt" "myapp.textfile" "$INSTDIR\myapp.exe,0" \
-;     "Open with myapp" "$INSTDIR\myapp.exe $\"%1$\""
-;
-; And finally: To remove the association from the registry use the APP_UNASSOCIATE
-; macro. Here is another example just to wrap it up:
-;   !insertmacro APP_UNASSOCIATE "txt" "myapp.textfile"
-;
- 
-!macro APP_ASSOCIATE EXT FILECLASS DESCRIPTION ICON COMMANDTEXT COMMAND
-  ; Backup the previously associated file class
-  ReadRegStr $R0 HKCR ".${EXT}" ""
-  WriteRegStr HKCR ".${EXT}" "${FILECLASS}_backup" "$R0"
- 
-  WriteRegStr HKCR ".${EXT}" "" "${FILECLASS}"
- 
-  WriteRegStr HKCR "${FILECLASS}" "" `${DESCRIPTION}`
-  WriteRegStr HKCR "${FILECLASS}\DefaultIcon" "" `${ICON}`
-  WriteRegStr HKCR "${FILECLASS}\shell" "" "open"
-  WriteRegStr HKCR "${FILECLASS}\shell\open" "" `${COMMANDTEXT}`
-  WriteRegStr HKCR "${FILECLASS}\shell\open\command" "" `${COMMAND}`
-!macroend
- 
-!macro APP_UNASSOCIATE EXT FILECLASS
-  ; Backup the previously associated file class
-  ReadRegStr $R0 HKCR ".${EXT}" `${FILECLASS}_backup`
-  WriteRegStr HKCR ".${EXT}" "" "$R0"
- 
-  DeleteRegKey HKCR `${FILECLASS}`
-!macroend
- 
- 
-; !defines for use with SHChangeNotify
-!ifdef SHCNE_ASSOCCHANGED
-!undef SHCNE_ASSOCCHANGED
-!endif
-!define SHCNE_ASSOCCHANGED 0x08000000
-!ifdef SHCNF_FLUSH
-!undef SHCNF_FLUSH
-!endif
-!define SHCNF_FLUSH        0x1000
- 
-!macro UPDATEFILEASSOC
-; Using the system.dll plugin to call the SHChangeNotify Win32 API function so we
-; can update the shell.
-  System::Call "shell32::SHChangeNotify(i,i,i,i) (${SHCNE_ASSOCCHANGED}, ${SHCNF_FLUSH}, 0, 0)"
-!macroend
- 
-;EOF
-
-; END OF MACROS FOR FILE ASSOCIATION
-
-
-
-
 !include "MUI.nsh"
 
 ; The name of the installer
@@ -85,6 +16,9 @@ InstallDir "$PROGRAMFILES\Jubler"
 ; overwrite the old one automatically)
 InstallDirRegKey HKLM "Software\Jubler" "Install_Dir"
 
+
+SetCompressor /SOLID lzma
+
 ;--------------------------------
 
 !define MUI_BGCOLOR aabbaa
@@ -98,6 +32,7 @@ InstallDirRegKey HKLM "Software\Jubler" "Install_Dir"
 LicenseForceSelection checkbox
 
 
+!include "resources/installers/windows/assoc.nsh"
 
 ;--------------------
 ; Pages
@@ -163,46 +98,65 @@ Section "Jubler editor" SecJubler
 SectionEnd
 
 
-
+; Create Start menu shortcuts
 ;--------------------------------
-; Shortcuts etc.
-
-
 Section "Start Menu Shortcuts" SecStartMenu
-
   CreateDirectory "$SMPROGRAMS\Jubler"
   CreateShortCut "$SMPROGRAMS\Jubler\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\Jubler\Jubler subtitle editor.lnk" "$INSTDIR\Jubler.exe" "" "$INSTDIR\Jubler.exe" 0
-
 SectionEnd
 
+
+; Create Desktop shortcuts
 ;--------------------------------
-
 Section "Desktop Icon" SecDesktop
-
   CreateShortCut "$DESKTOP\Jubler subtitle editor.lnk" "$INSTDIR\Jubler.exe" "" "$INSTDIR\Jubler.exe" 0
+SectionEnd
+
+
+
+; JRE Installation
+;--------------------------------
+!define JRE_VERSION "1.6"
+!define JRE_URL "http://www.jubler.org/support/jre-6-windows-i586.exe"
+Section "Java Runtime Environment" SecJRE
+
+  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
+  StrCmp $2 ${JRE_VERSION} done	; We have already the correct version of JRE
+
+  StrCpy $2 "$TEMP\Java Runtime Environment 6.exe"
+  nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
+  Pop $R0 ;Get the return value
+  StrCmp $R0 "success" done
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Download failed ($R0).$\nRemember to manually download Java 6 before launching Jubler."
+    Quit
+  done:
+  HideWindow
+  ExecWait $2 $0
+  MessageBox MB_OK "Return value is $0"
+  BringToFront
+  Delete $2
 
 SectionEnd
 
+; Mplayer Installation
 
 
 
 ;--------------------------------
 
 LangString DESC_SecJublerMain ${LANG_ENGLISH} "Required Jubler subtitle editor program files."
+LangString DESC_SecJRE ${LANG_ENGLISH} "Test for Java Runtime Environment and download if needed."
 LangString DESC_SecStartMenu ${LANG_ENGLISH} "Add Start Menu Icons."
 LangString DESC_SecDesktop ${LANG_ENGLISH} "Add Desktop Icon."
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecJubler} $(DESC_SecJublerMain)
+  !insertmacro MUI_DESCRIPTION_TEXT ${SecJRE} $(DESC_SecJRE)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenu} $(DESC_SecStartMenu)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} $(DESC_SecDesktop)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END
-
-
-
-
 
 
 ;--------------------------------

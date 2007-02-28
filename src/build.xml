@@ -178,7 +178,7 @@
 				jar="dist/Jubler.jar"
 				errTitle="Unable to find Java environmet"
 				>
-				<jre minVersion="1.5.0" />
+				<jre minVersion="1.6.0" />
 			</config>
 		</launch4j>
 		<exec executable="makensis" failonerror="true">
