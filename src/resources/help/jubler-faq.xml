@@ -16,9 +16,9 @@
 </section>
 
 <section><title>How to translate to my own language</title>
-    <para>The instructions here are for Linux (or similar POSIX) environment. First of all you will need to download the source code of Jubler (preferably from the SVN). Then go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot. Open this ??.po file with either a localization editor (like kbabel or poedit) or even with a text editor.</para>
+    <para>The instructions here are for Linux (or similar POSIX) environment. First of all you will need to download the source code of Jubler (preferably from the SVN). Then go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot . Open this ??.po file with either a localization editor (like kbabel or poedit) or even with a text editor.</para>
+    <para>Leave the file in the directory resources/i18n and go to the home directory of Jubler. Type here this command "ant i18n && ant run". You should be able to see your language file being processed among the other files. When the compilation finishes, you should see Jubler application start with your newer localized environment. Of course your locale should be the one being tested. [ You need JDK 1.5 and ant tool to perform these steps. ]</para>
     <para>When you have finished you can send this file to me in order to include it into the distribution. You can of course contact me earlier if you have any other questions.</para>
-    <para>In order to check it yourself, you need to recompile java. You will need at least JDK 1.5 and ant to compile it.</para>
 </section>
 
 <section id="mplayer.winosx"><title>Installing MPlayer under Windows or Mac OSX</title>
@@ -36,10 +36,10 @@
 </section>
 
 <section><title>How can I synchronize subtitles with two given time-points?</title>
-    <para>This can be performed using the Video Console. Let the movie play and when you hear a subtitle, press the "T" button. The playback pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the right of the "T" button) lights up. Then go to the movie end, withough closing the Video Console. Again, when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. The recode window will pop up. Use the custom parameters (they should be already selected) and press OK.</para>
+    <para>This can be performed using the Video Console. Let the movie play and when you hear a subtitle, press the "T" button. The playback pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the right of the "T" button) lights up. Then go to the movie end, without closing the Video Console. Again, when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. The recode window will pop up. Use the custom parameters (they should be already selected) and press OK.</para>
     <para>If the recode window did not show up, it means that the time-points chosen are not valid and it is impossible to recode. You have to select another time position. Therefore, the last selected position is deselected.</para>
     <para>If the subtitle time difference is the same on both time positions, then shift time is performed instead of recoding.</para>
-    <para>There is also another way of selecting the time positions. Instead of selecting the subtitle text from the main window, you can shift the subtitled using the bar on the lower left of the Console. Then when you thing that the subtitles are synchonized, press either synchonization buttons.</para>
+    <para>There is also another way of selecting the time positions. Instead of selecting the subtitle text from the main window, you can shift the subtitled using the bar on the lower left of the Console. Then when you thing that the subtitles are synchronized, press either synchronization buttons.</para>
 </section>
 
 <section id="synchronize"><title>How can I synchronize subtitles from an external file?</title>
@@ -55,7 +55,7 @@
 </section>
 
 <section><title>How can I create new subtitles while the movie is played?</title>
-    <para>This is performed with the Video Console window. In order for this mode to work is <emphasis>nessesary</emphasis> the Video Console window to have the focus, and especially the Text Box on the lower left of the window. Usually the application tries to request the focus to this widget, when the Video Console is selected. You can do this manually, after selecting the Video Console window, by clicking inside this Text Box.</para>
+    <para>This is performed with the Video Console window. In order for this mode to work is <emphasis>necessary</emphasis> the Video Console window to have the focus, and especially the Text Box on the lower left of the window. Usually the application tries to request the focus to this widget, when the Video Console is selected. You can do this manually, after selecting the Video Console window, by clicking inside this Text Box.</para>
     <para>To perform the actual subtitle recording, follow this procedure. When you hear a subtitle press the ENTER key, or press the notepad like icon, on the right of the Text Box. Then the icon of the notepad will turn red. When you want to mark the end of the recorded subtitle, press ENTER or the notepad icon again. The notepad button will be inactive and the focus will be on the Text Box. Type a text (if you want) and press ENTER again to accept it or ESCAPE to cancel. This method accepts subtitles with no text inside.</para>
 </section>
     
