@@ -35,7 +35,6 @@ import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GraphicsEnvironment;
-import java.util.Properties;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.text.SimpleAttributeSet;
@@ -44,7 +43,6 @@ import com.panayotis.jubler.subs.style.gui.JAlphaColorDialog;
 import com.panayotis.jubler.subs.style.gui.JDirection;
 import com.panayotis.jubler.subs.style.gui.tri.TriColorButton;
 import javax.swing.JButton;
-
 
 /**
  *
@@ -419,7 +417,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         TestText.setEditable(false);
         TestText.setText(setTestText());
         TestText.setToolTipText(_("Demo subtitles text"));
-        jPanel13.add(TestText, java.awt.BorderLayout.NORTH);
+        jPanel13.add(TestText, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel13);
 
