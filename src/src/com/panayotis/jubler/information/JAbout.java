@@ -34,12 +34,13 @@ import javax.swing.text.StyleConstants;
  */
 public class JAbout extends javax.swing.JPanel {
     
-    private final static String icon_theme = "Nuvola ( David Vignoni - http://www.icon-king.com)";
+    private final static String icon_theme = "Nuvola (David Vignoni - http://www.icon-king.com)";
     
     private final static String[] transl={
         "Tom\u00e1\u0161 Bambas, conyx@seznam.cz",
         "Christian Weiske, cweiske@cweiske.de",
         "Panayotis Katsaloulis, panayotis@panayotis.com",
+        "doutor.zero@gmail.com",
         "As\u0131m Sinan Y\u00FCksel, yuksel.asim.sinan@gmail.com"
     };
     
@@ -48,6 +49,7 @@ public class JAbout extends javax.swing.JPanel {
         _("Czech"),
         _("German"),
         _("Greek"),
+        _("Portuguese (Brazilian)"),
         _("Turkish")
     };
     
@@ -352,13 +354,13 @@ public class JAbout extends javax.swing.JPanel {
         
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
-        InfoF.setText(abouttext);
-        InfoF.getStyledDocument().setParagraphAttributes(0, abouttext.length(), set, false);
+        InfoT.setText(abouttext);
+        InfoT.getStyledDocument().setParagraphAttributes(0, abouttext.length(), set, false);
         
         
         StringBuffer thanks = new StringBuffer();
-        thanks.append(_("Special thanks")).append(":\n").append(_("{0} plugin", "libavcodec"));
-        thanks.append(": Kyritsis Thanasis, djart@hellug.gr\n");
+        thanks.append(_("Special thanks")).append(":\n").append(_("{0} plugin", "ffmpeg"));
+        thanks.append(": Kyritsis Thanasis, djart@hellug.gr\n\n");
         thanks.append(_("Jubler mascot"));
         thanks.append(": Dimitris Karakatsanis, <dimkaras@ath.forthnet.gr>\n");
         thanks.append(_("{0} plugin", "zemberek"));
@@ -373,7 +375,7 @@ public class JAbout extends javax.swing.JPanel {
         
         thanks.append("\n").append(_("Icon theme")).append(":\n").append(icon_theme);
         
-        ThanksTA.setText(thanks.toString());
+        ThanksT.setText(thanks.toString());
     }
     
     /** This method is called from within the constructor to
@@ -384,28 +386,28 @@ public class JAbout extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        InfoF = new javax.swing.JTextPane();
+        InfoT = new javax.swing.JTextPane();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        ThanksTA = new javax.swing.JTextArea();
+        ThanksT = new javax.swing.JTextPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         LicenceT = new javax.swing.JTextArea();
 
         setLayout(new java.awt.BorderLayout());
 
-        InfoF.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        InfoF.setEditable(false);
-        InfoF.setFont(new java.awt.Font("Dialog", 1, 14));
-        jTabbedPane1.addTab(_("About"), InfoF);
+        InfoT.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
+        InfoT.setEditable(false);
+        InfoT.setFont(new java.awt.Font("Dialog", 1, 14));
+        jTabbedPane1.addTab(_("About"), InfoT);
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        ThanksTA.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        ThanksTA.setEditable(false);
-        ThanksTA.setFont(new java.awt.Font("Dialog", 1, 12));
-        ThanksTA.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(10, 10, 10, 10)));
-        jScrollPane2.setViewportView(ThanksTA);
+        ThanksT.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
+        ThanksT.setBorder(null);
+        ThanksT.setEditable(false);
+        ThanksT.setFont(new java.awt.Font("Dialog", 1, 14));
+        jScrollPane2.setViewportView(ThanksT);
 
         jPanel3.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
@@ -425,14 +427,13 @@ public class JAbout extends javax.swing.JPanel {
 
         add(jTabbedPane1, java.awt.BorderLayout.NORTH);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextPane InfoF;
+    private javax.swing.JTextPane InfoT;
     private javax.swing.JTextArea LicenceT;
-    private javax.swing.JTextArea ThanksTA;
+    private javax.swing.JTextPane ThanksT;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
