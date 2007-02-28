@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JublerTr v1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-21 14:02+0200\n"
-"PO-Revision-Date: 2006-11-21 14:31+0200\n"
-"Last-Translator: Serkan Kaba <serkan_kaba@yahoo.com>\n"
+"POT-Creation-Date: 2007-02-28 14:46+0200\n"
+"PO-Revision-Date: 2007-02-28 15:09+0200\n"
+"Last-Translator: Asım Sinan YÜKSEL <yuksel.asim.sinan@gmail.com>\n"
 "Language-Team: C-NoNe <yuksel.asim.sinan@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -14,16 +14,16 @@ msgstr ""
 
 #: com/panayotis/jubler/JIDialog.java:37
 #: com/panayotis/jubler/JIDialog.java:38
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:547
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:545
 #: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:100
 msgid "OK"
 msgstr "Tamam"
 
 #: com/panayotis/jubler/JIDialog.java:38
-#: com/panayotis/jubler/preview/JAudioLoader.java:70
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:552
+#: com/panayotis/jubler/media/preview/JAudioLoader.java:73
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:550
 #: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:105
-#: com/panayotis/jubler/tools/JReplaceGlobal.java:132
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:131
 msgid "Cancel"
 msgstr "İptal"
 
@@ -35,358 +35,366 @@ msgstr "Hayır"
 msgid "Yes"
 msgstr "Evet"
 
-#: com/panayotis/jubler/Jubler.java:263
+#: com/panayotis/jubler/Jubler.java:268
 msgid "Change subtitle"
 msgstr "Altyazıyı değiştir"
 
-#: com/panayotis/jubler/Jubler.java:285
+#: com/panayotis/jubler/Jubler.java:290
 msgid "Insert subtitle"
 msgstr "Altyazı ekle"
 
-#: com/panayotis/jubler/Jubler.java:320
+#: com/panayotis/jubler/Jubler.java:325
 msgid "_clone"
 msgstr "_kopyala"
 
-#: com/panayotis/jubler/Jubler.java:455
-#: com/panayotis/jubler/Jubler.java:589
+#: com/panayotis/jubler/Jubler.java:462
+#: com/panayotis/jubler/Jubler.java:596
 msgid "Cut"
 msgstr "Kes"
 
-#: com/panayotis/jubler/Jubler.java:460
-#: com/panayotis/jubler/Jubler.java:596
+#: com/panayotis/jubler/Jubler.java:467
+#: com/panayotis/jubler/Jubler.java:603
 msgid "Copy"
 msgstr "Kopyala"
 
-#: com/panayotis/jubler/Jubler.java:465
-#: com/panayotis/jubler/Jubler.java:603
+#: com/panayotis/jubler/Jubler.java:472
+#: com/panayotis/jubler/Jubler.java:610
 msgid "Paste"
 msgstr "Yapıştır"
 
-#: com/panayotis/jubler/Jubler.java:470
-#: com/panayotis/jubler/Jubler.java:774
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:319
+#: com/panayotis/jubler/Jubler.java:477
+#: com/panayotis/jubler/Jubler.java:799
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:317
 #: com/panayotis/jubler/tools/replace/JReplaceList.java:106
 msgid "Delete"
 msgstr "Sil"
 
-#: com/panayotis/jubler/Jubler.java:475
-#: com/panayotis/jubler/Jubler.java:870
+#: com/panayotis/jubler/Jubler.java:482
+#: com/panayotis/jubler/Jubler.java:895
 msgid "Mark"
 msgstr "İşaretle"
 
-#: com/panayotis/jubler/Jubler.java:476
-#: com/panayotis/jubler/Jubler.java:871
+#: com/panayotis/jubler/Jubler.java:483
+#: com/panayotis/jubler/Jubler.java:896
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid "None"
 msgstr "Hiçbiri"
 
-#: com/panayotis/jubler/Jubler.java:481
-#: com/panayotis/jubler/Jubler.java:877
+#: com/panayotis/jubler/Jubler.java:488
+#: com/panayotis/jubler/Jubler.java:902
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid "Pink"
 msgstr "Pembe"
 
-#: com/panayotis/jubler/Jubler.java:486
-#: com/panayotis/jubler/Jubler.java:883
+#: com/panayotis/jubler/Jubler.java:493
+#: com/panayotis/jubler/Jubler.java:908
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid "Yellow"
 msgstr "Sarı"
 
-#: com/panayotis/jubler/Jubler.java:491
-#: com/panayotis/jubler/Jubler.java:889
+#: com/panayotis/jubler/Jubler.java:498
+#: com/panayotis/jubler/Jubler.java:914
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid "Cyan"
 msgstr "Camgöbeği rengi"
 
-#: com/panayotis/jubler/Jubler.java:498
-#: com/panayotis/jubler/Jubler.java:522
-#: com/panayotis/jubler/Jubler.java:905
+#: com/panayotis/jubler/Jubler.java:505
+#: com/panayotis/jubler/Jubler.java:529
+#: com/panayotis/jubler/Jubler.java:930
 #: com/panayotis/jubler/subs/JSubEditor.java:484
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid "Style"
 msgstr "Stil"
 
-#: com/panayotis/jubler/Jubler.java:503
+#: com/panayotis/jubler/Jubler.java:510
 msgid "Show columns"
 msgstr "Sütunları göster"
 
-#: com/panayotis/jubler/Jubler.java:504
+#: com/panayotis/jubler/Jubler.java:511
 #: com/panayotis/jubler/subs/JSubEditor.java:399
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid "Start"
 msgstr "Başlangıç"
 
-#: com/panayotis/jubler/Jubler.java:510
+#: com/panayotis/jubler/Jubler.java:517
 #: com/panayotis/jubler/subs/JSubEditor.java:402
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid "End"
 msgstr "Son"
 
-#: com/panayotis/jubler/Jubler.java:516
+#: com/panayotis/jubler/Jubler.java:523
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid "Layer"
 msgstr "Katman"
 
-#: com/panayotis/jubler/Jubler.java:532
-#: com/panayotis/jubler/Jubler.java:999
+#: com/panayotis/jubler/Jubler.java:539
+#: com/panayotis/jubler/Jubler.java:1024
 msgid "Test video"
 msgstr "Videoyu test et"
 
-#: com/panayotis/jubler/Jubler.java:567
+#: com/panayotis/jubler/Jubler.java:574
 msgid "New"
 msgstr "Yeni"
 
-#: com/panayotis/jubler/Jubler.java:573
-#: com/panayotis/jubler/options/JPreferences.java:207
+#: com/panayotis/jubler/Jubler.java:580
+#: com/panayotis/jubler/options/JPreferences.java:192
 msgid "Load"
 msgstr "Yükle"
 
-#: com/panayotis/jubler/Jubler.java:579
-#: com/panayotis/jubler/Jubler.java:700
-#: com/panayotis/jubler/options/JPreferences.java:215
+#: com/panayotis/jubler/Jubler.java:586
+#: com/panayotis/jubler/Jubler.java:717
+#: com/panayotis/jubler/options/JPreferences.java:200
 msgid "Save"
 msgstr "Kaydet"
 
-#: com/panayotis/jubler/Jubler.java:613
-#: com/panayotis/jubler/Jubler.java:919
-#: com/panayotis/jubler/Jubler.java:1981
+#: com/panayotis/jubler/Jubler.java:620
+#: com/panayotis/jubler/Jubler.java:944
+#: com/panayotis/jubler/Jubler.java:2021
 msgid "Undo"
 msgstr "Geri Al"
 
-#: com/panayotis/jubler/Jubler.java:620
-#: com/panayotis/jubler/Jubler.java:927
-#: com/panayotis/jubler/Jubler.java:1985
+#: com/panayotis/jubler/Jubler.java:627
+#: com/panayotis/jubler/Jubler.java:952
+#: com/panayotis/jubler/Jubler.java:2025
 msgid "Redo"
 msgstr "Yinele"
 
-#: com/panayotis/jubler/Jubler.java:630
+#: com/panayotis/jubler/Jubler.java:637
 msgid "Sort subtitles"
 msgstr "Altyazıları sırala"
 
-#: com/panayotis/jubler/Jubler.java:640
+#: com/panayotis/jubler/Jubler.java:647
 msgid "Preview the subtitles"
 msgstr "Altyazıları önizle"
 
-#: com/panayotis/jubler/Jubler.java:647
+#: com/panayotis/jubler/Jubler.java:654
 msgid "Test subtitles from current position"
 msgstr "Şimdiki pozisyondan itibaren altyazıları test et"
 
-#: com/panayotis/jubler/Jubler.java:657
-#: com/panayotis/jubler/Jubler.java:1049
-#: com/panayotis/jubler/information/JAbout.java:400
+#: com/panayotis/jubler/Jubler.java:664
+#: com/panayotis/jubler/Jubler.java:1068
+#: com/panayotis/jubler/information/JAbout.java:402
 msgid "About"
 msgstr "Hakkında"
 
-#: com/panayotis/jubler/Jubler.java:664
-#: com/panayotis/jubler/Jubler.java:667
+#: com/panayotis/jubler/Jubler.java:671
+#: com/panayotis/jubler/Jubler.java:674
 msgid "File"
 msgstr "Dosya"
 
-#: com/panayotis/jubler/Jubler.java:665
+#: com/panayotis/jubler/Jubler.java:672
 msgid "New..."
 msgstr "Yeni..."
 
-#: com/panayotis/jubler/Jubler.java:673
+#: com/panayotis/jubler/Jubler.java:680
 msgid "Child"
 msgstr "Alt Öğe"
 
-#: com/panayotis/jubler/Jubler.java:683
+#: com/panayotis/jubler/Jubler.java:690
 msgid "Open"
 msgstr "Aç"
 
-#: com/panayotis/jubler/Jubler.java:689
+#: com/panayotis/jubler/Jubler.java:696
+msgid "Web"
+msgstr "Web"
+
+#: com/panayotis/jubler/Jubler.java:698
+msgid "Retrieve"
+msgstr "Al"
+
+#: com/panayotis/jubler/Jubler.java:706
 msgid "Revert"
 msgstr "Eski duruma dön"
 
-#: com/panayotis/jubler/Jubler.java:696
+#: com/panayotis/jubler/Jubler.java:713
 msgid "Recent files"
 msgstr "Son kullanılanlar"
 
-#: com/panayotis/jubler/Jubler.java:707
+#: com/panayotis/jubler/Jubler.java:724
 msgid "Save as ..."
 msgstr "Farklı Kaydet"
 
-#: com/panayotis/jubler/Jubler.java:715
+#: com/panayotis/jubler/Jubler.java:732
 #: com/panayotis/jubler/tools/replace/JReplace.java:207
 msgid "Close"
 msgstr "Kapat"
 
-#: com/panayotis/jubler/Jubler.java:723
-#: com/panayotis/jubler/Jubler.java:1452
+#: com/panayotis/jubler/Jubler.java:741
+msgid "Change media file"
+msgstr "Video dosyasını değiştir"
+
+#: com/panayotis/jubler/Jubler.java:748
+#: com/panayotis/jubler/Jubler.java:1487
 msgid "Information"
 msgstr "Bilgi"
 
-#: com/panayotis/jubler/Jubler.java:731
-#: com/panayotis/jubler/StaticJubler.java:43
+#: com/panayotis/jubler/Jubler.java:756
+#: com/panayotis/jubler/StaticJubler.java:44
 msgid "Preferences"
 msgstr "Tercihler"
 
-#: com/panayotis/jubler/Jubler.java:738
+#: com/panayotis/jubler/Jubler.java:763
 msgid "Quit"
 msgstr "Çık"
 
-#: com/panayotis/jubler/Jubler.java:746
+#: com/panayotis/jubler/Jubler.java:771
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:115
 msgid "Edit"
 msgstr "Düzenle"
 
-#: com/panayotis/jubler/Jubler.java:748
-#: com/panayotis/jubler/Jubler.java:1596
+#: com/panayotis/jubler/Jubler.java:773
+#: com/panayotis/jubler/Jubler.java:1631
 msgid "Cut subtitles"
 msgstr "Altyazıları kes"
 
-#: com/panayotis/jubler/Jubler.java:754
+#: com/panayotis/jubler/Jubler.java:779
 msgid "Copy subtitles"
 msgstr "Altyazıları kopyala"
 
-#: com/panayotis/jubler/Jubler.java:760
-#: com/panayotis/jubler/Jubler.java:1576
+#: com/panayotis/jubler/Jubler.java:785
+#: com/panayotis/jubler/Jubler.java:1611
 msgid "Paste subtitles"
 msgstr "Altyazıları yapıştır"
 
-#: com/panayotis/jubler/Jubler.java:766
-#: com/panayotis/jubler/Jubler.java:1550
+#: com/panayotis/jubler/Jubler.java:791
+#: com/panayotis/jubler/Jubler.java:1585
 msgid "Paste special"
 msgstr "Özel yapıştır"
 
-#: com/panayotis/jubler/Jubler.java:775
-#: com/panayotis/jubler/Jubler.java:897
-#: com/panayotis/jubler/Jubler.java:908
+#: com/panayotis/jubler/Jubler.java:800
+#: com/panayotis/jubler/Jubler.java:922
+#: com/panayotis/jubler/Jubler.java:933
 msgid "By Selection"
 msgstr "Seçime göre"
 
-#: com/panayotis/jubler/Jubler.java:781
+#: com/panayotis/jubler/Jubler.java:806
 msgid "Empty Lines"
 msgstr "Boş satırlar"
 
-#: com/panayotis/jubler/Jubler.java:789
+#: com/panayotis/jubler/Jubler.java:814
 #: com/panayotis/jubler/tools/replace/JReplace.java:194
 #: com/panayotis/jubler/tools/replace/JReplace.java:230
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:290
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:287
 msgid "Replace"
 msgstr "Değiştir"
 
-#: com/panayotis/jubler/Jubler.java:791
+#: com/panayotis/jubler/Jubler.java:816
 msgid "Find & replace"
 msgstr "Bul&Değiştir"
 
-#: com/panayotis/jubler/Jubler.java:798
+#: com/panayotis/jubler/Jubler.java:823
 msgid "Globally"
 msgstr "Genel"
 
-#: com/panayotis/jubler/Jubler.java:806
+#: com/panayotis/jubler/Jubler.java:831
 msgid "Insert"
 msgstr "Ekle"
 
-#: com/panayotis/jubler/Jubler.java:808
+#: com/panayotis/jubler/Jubler.java:833
 msgid "Before"
 msgstr "Önce"
 
-#: com/panayotis/jubler/Jubler.java:816
+#: com/panayotis/jubler/Jubler.java:841
 msgid "After"
 msgstr "Sonra"
 
-#: com/panayotis/jubler/Jubler.java:825
+#: com/panayotis/jubler/Jubler.java:850
 msgid "Go to..."
 msgstr "Git..."
 
-#: com/panayotis/jubler/Jubler.java:827
+#: com/panayotis/jubler/Jubler.java:852
 msgid "Previous entry"
 msgstr "Bir önceki giriş"
 
-#: com/panayotis/jubler/Jubler.java:835
+#: com/panayotis/jubler/Jubler.java:860
 msgid "Next entry"
 msgstr "Sonraki giriş"
 
-#: com/panayotis/jubler/Jubler.java:843
+#: com/panayotis/jubler/Jubler.java:868
 msgid "First entry"
 msgstr "ilk giriş"
 
-#: com/panayotis/jubler/Jubler.java:851
+#: com/panayotis/jubler/Jubler.java:876
 msgid "Last entry"
 msgstr "Son giriş"
 
-#: com/panayotis/jubler/Jubler.java:860
+#: com/panayotis/jubler/Jubler.java:885
 msgid "Selection by time"
 msgstr "Zamana göre seçim"
 
-#: com/panayotis/jubler/Jubler.java:936
+#: com/panayotis/jubler/Jubler.java:961
 msgid "Tools"
 msgstr "Araçlar"
 
-#: com/panayotis/jubler/Jubler.java:938
+#: com/panayotis/jubler/Jubler.java:963
 msgid "Split file"
 msgstr "Dosyayı böl"
 
-#: com/panayotis/jubler/Jubler.java:944
+#: com/panayotis/jubler/Jubler.java:969
 msgid "Join files"
 msgstr "Dosyaları birleştir"
 
-#: com/panayotis/jubler/Jubler.java:951
+#: com/panayotis/jubler/Jubler.java:976
 msgid "Reparent"
 msgstr "Yeniden ana öğe yap"
 
-#: com/panayotis/jubler/Jubler.java:958
+#: com/panayotis/jubler/Jubler.java:983
 #: com/panayotis/jubler/tools/JSynchronize.java:80
 msgid "Synchronize"
 msgstr "Senkronla"
 
-#: com/panayotis/jubler/Jubler.java:966
+#: com/panayotis/jubler/Jubler.java:991
 msgid "Shift time"
 msgstr "Zamanı kaydır"
 
-#: com/panayotis/jubler/Jubler.java:972
+#: com/panayotis/jubler/Jubler.java:997
 msgid "Recode"
 msgstr "Yeniden kodla"
 
-#: com/panayotis/jubler/Jubler.java:978
+#: com/panayotis/jubler/Jubler.java:1003
 msgid "Time fix"
 msgstr "Zaman düzeltme"
 
-#: com/panayotis/jubler/Jubler.java:984
+#: com/panayotis/jubler/Jubler.java:1009
 msgid "Round times"
 msgstr "Zamanları yuvarla"
 
-#: com/panayotis/jubler/Jubler.java:993
+#: com/panayotis/jubler/Jubler.java:1018
 #: com/panayotis/jubler/tools/JSpeller.java:58
 msgid "Spell check"
 msgstr "Yazım denetimi"
 
-#: com/panayotis/jubler/Jubler.java:1001
+#: com/panayotis/jubler/Jubler.java:1026
 msgid "Preview"
 msgstr "Önizleme"
 
-#: com/panayotis/jubler/Jubler.java:1010
+#: com/panayotis/jubler/Jubler.java:1035
 #: com/panayotis/jubler/time/gui/JTimeRegion.java:130
 msgid "From the beginning"
 msgstr "En baştan"
 
-#: com/panayotis/jubler/Jubler.java:1017
+#: com/panayotis/jubler/Jubler.java:1042
 msgid "From current position"
 msgstr "Şimdiki pozisyondan"
 
-#: com/panayotis/jubler/Jubler.java:1025
-#: com/panayotis/jubler/Jubler.java:1691
+#: com/panayotis/jubler/Jubler.java:1050
+#: com/panayotis/jubler/Jubler.java:1726
 msgid "Player options"
 msgstr "Oynatıcı seçenekleri"
 
-#: com/panayotis/jubler/Jubler.java:1031
-msgid "Change video file"
-msgstr "Video dosyasını değiştir"
-
-#: com/panayotis/jubler/Jubler.java:1041
+#: com/panayotis/jubler/Jubler.java:1060
 msgid "Help"
 msgstr "Yardım"
 
-#: com/panayotis/jubler/Jubler.java:1042
+#: com/panayotis/jubler/Jubler.java:1061
 msgid "FAQ"
 msgstr "SSS"
 
-#: com/panayotis/jubler/Jubler.java:1332
+#: com/panayotis/jubler/Jubler.java:1359
 msgid "Reparent subtitles file"
 msgstr "Altyazı dosyasını yeniden ana öğe yap"
 
-#: com/panayotis/jubler/Jubler.java:1345
+#: com/panayotis/jubler/Jubler.java:1372
 msgid ""
 "Cyclic dependency while setting new parent.\n"
 "Parenting will be cancelled"
@@ -394,105 +402,105 @@ msgstr ""
 "Yeni ana öğeyi ayarlarken periyodik bağımlılık.\n"
 "Parenting iptal edilecek"
 
-#: com/panayotis/jubler/Jubler.java:1356
+#: com/panayotis/jubler/Jubler.java:1383
 msgid "Sort"
 msgstr "Sırala"
 
-#: com/panayotis/jubler/Jubler.java:1381
+#: com/panayotis/jubler/Jubler.java:1417
 msgid "Go to the specified time"
 msgstr "Belirli bir zamana git"
 
-#: com/panayotis/jubler/Jubler.java:1382
+#: com/panayotis/jubler/Jubler.java:1418
 msgid "Into which time moment do you want to go to"
 msgstr "Hangi zamana gitmek istiyorsunuz"
 
-#: com/panayotis/jubler/Jubler.java:1384
+#: com/panayotis/jubler/Jubler.java:1420
 msgid "Go to subtitle"
 msgstr "Altyazıya git"
 
-#: com/panayotis/jubler/Jubler.java:1426
+#: com/panayotis/jubler/Jubler.java:1461
 msgid "_child"
 msgstr "_altoge"
 
-#: com/panayotis/jubler/Jubler.java:1444
+#: com/panayotis/jubler/Jubler.java:1479
 msgid "Change information"
 msgstr "Bilgi değiştir"
 
-#: com/panayotis/jubler/Jubler.java:1543
+#: com/panayotis/jubler/Jubler.java:1578
 msgid "Paste special options"
 msgstr "Özel seçenekleri yapıştır"
 
-#: com/panayotis/jubler/Jubler.java:1614
+#: com/panayotis/jubler/Jubler.java:1649
 msgid "Untitled"
 msgstr "İsimsiz"
 
-#: com/panayotis/jubler/Jubler.java:1646
+#: com/panayotis/jubler/Jubler.java:1681
 msgid "Delete subtitles"
 msgstr "Altyazıları sil"
 
-#: com/panayotis/jubler/Jubler.java:1675
-#: com/panayotis/jubler/Jubler.java:1685
+#: com/panayotis/jubler/Jubler.java:1710
+#: com/panayotis/jubler/Jubler.java:1720
 msgid "Remove empty lines"
 msgstr "Boş satırları kaldır"
 
-#: com/panayotis/jubler/Jubler.java:1685
+#: com/panayotis/jubler/Jubler.java:1720
 msgid "No lines affected"
 msgstr "Hiçbir satır etkilenmedi"
 
-#: com/panayotis/jubler/Jubler.java:1739
+#: com/panayotis/jubler/Jubler.java:1774
 msgid "Join two subtitles"
 msgstr "İki altyazıyı birleştir"
 
-#: com/panayotis/jubler/Jubler.java:1745
+#: com/panayotis/jubler/Jubler.java:1780
 msgid "Join subtitles"
 msgstr "Altyazıları birleştir"
 
-#: com/panayotis/jubler/Jubler.java:1768
+#: com/panayotis/jubler/Jubler.java:1803
 msgid "Splitting time"
 msgstr "Bölme zamanı"
 
-#: com/panayotis/jubler/Jubler.java:1771
+#: com/panayotis/jubler/Jubler.java:1806
 msgid "Use the following time (inclusive) in order to create the new splitted subtitles"
 msgstr "Yeni bölünmüş altyazı oluşturmak için aşağıdaki zamanı kullan"
 
-#: com/panayotis/jubler/Jubler.java:1773
+#: com/panayotis/jubler/Jubler.java:1808
 msgid "Split subtitles in two"
 msgstr "Altyazıları ikiye ayır"
 
-#: com/panayotis/jubler/Jubler.java:1779
+#: com/panayotis/jubler/Jubler.java:1814
 msgid "Split subtitles"
 msgstr "Altyazıları böl"
 
-#: com/panayotis/jubler/Jubler.java:1818
+#: com/panayotis/jubler/Jubler.java:1856
 msgid "Save Subtitles"
 msgstr "Altyazıları kaydet"
 
-#: com/panayotis/jubler/Jubler.java:1845
+#: com/panayotis/jubler/Jubler.java:1883
 msgid "Load Subtitles"
 msgstr "Altyazıları yükle"
 
-#: com/panayotis/jubler/Jubler.java:2002
+#: com/panayotis/jubler/Jubler.java:2042
 #, java-format
 msgid "Mark subtitles as {0}"
 msgstr "Altyazıları {0} olarak işaretle"
 
-#: com/panayotis/jubler/Jubler.java:2036
+#: com/panayotis/jubler/Jubler.java:2085
 msgid "Could not load file. Possibly an encoding error."
 msgstr "Dosya yüklenemedi.Muhtemelen kodlama hatası."
 
-#: com/panayotis/jubler/Jubler.java:2044
+#: com/panayotis/jubler/Jubler.java:2092
 msgid "File not recognized!"
 msgstr "Dosya tanınmadı!"
 
-#: com/panayotis/jubler/Jubler.java:2050
+#: com/panayotis/jubler/Jubler.java:2096
 msgid "Reload subtitles"
 msgstr "Altyazıları yeniden yükle"
 
-#: com/panayotis/jubler/Jubler.java:2122
+#: com/panayotis/jubler/Jubler.java:2154
 msgid "Quit confirmation"
 msgstr "Onayı iptal et"
 
-#: com/panayotis/jubler/Jubler.java:2122
+#: com/panayotis/jubler/Jubler.java:2154
 msgid ""
 "Subtitles are not saved.\n"
 "Do you really want to close this window?"
@@ -500,69 +508,35 @@ msgstr ""
 "Altyazılar kaydedilmedi.\n"
 "Gerçekten pencereyi kapatmak istiyor musunuz?"
 
-#: com/panayotis/jubler/Jubler.java:2197
-msgid "Select video"
-msgstr "Video seç"
-
-#: com/panayotis/jubler/Jubler.java:2203
-msgid "Error in videofile selection"
-msgstr "Video dosyası seçiminde hata"
-
-#: com/panayotis/jubler/Jubler.java:2203
-msgid ""
-"This file does not exist.\n"
-"Please provide a valid file name."
-msgstr ""
-"Dosya mevcut değil.\n"
-"Lütfen geçerli bir dosya ismi girin."
-
-#: com/panayotis/jubler/Jubler.java:2325
+#: com/panayotis/jubler/Jubler.java:2335
 #, java-format
 msgid "Number of subtitles : {0}    {1}"
 msgstr "Altyazı sayıs ı: {0}    {1}"
 
-#: com/panayotis/jubler/Jubler.java:2325
+#: com/panayotis/jubler/Jubler.java:2335
 msgid "Unsaved"
 msgstr "Kaydedilmemiş"
 
-#: com/panayotis/jubler/Jubler.java:2473
+#: com/panayotis/jubler/Jubler.java:2484
 #, java-format
 msgid "Change style into {0}"
 msgstr "Stili {0} olarak değiştir"
 
-#: com/panayotis/jubler/StaticJubler.java:36
+#: com/panayotis/jubler/StaticJubler.java:37
 msgid "About Jubler"
 msgstr "Jubler Hakkında"
 
-#: com/panayotis/jubler/StaticJubler.java:56
+#: com/panayotis/jubler/StaticJubler.java:57
 msgid "Quit Jubler"
 msgstr "Jubler'den Çık"
 
-#: com/panayotis/jubler/StaticJubler.java:108
+#: com/panayotis/jubler/StaticJubler.java:112
 msgid "Clone current"
 msgstr "Şu ankini kopyala"
 
-#: com/panayotis/jubler/StaticJubler.java:113
+#: com/panayotis/jubler/StaticJubler.java:117
 msgid "-Not any recent items-"
 msgstr "-Son kullanılan yok-"
-
-#: com/panayotis/jubler/format/AbstractTextSubFormat.java:75
-#: com/panayotis/jubler/os/FileCommunicator.java:131
-#, java-format
-msgid "Found file {0}"
-msgstr "Bulunan dosya {0}"
-
-#: com/panayotis/jubler/format/SubFileFilter.java:47
-msgid "Subtitle files"
-msgstr "Altyazı dosyaları"
-
-#: com/panayotis/jubler/format/types/PlainText.java:74
-msgid "Plain text"
-msgstr "Düz metin"
-
-#: com/panayotis/jubler/format/types/SubViewer2.java:57
-msgid "SubViewer V2"
-msgstr "SubViewer V2"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:59
 #, java-format
@@ -577,61 +551,65 @@ msgstr "Geri"
 msgid "Go to previous page"
 msgstr "Önceki sayfaya git"
 
-#: com/panayotis/jubler/information/JAbout.java:48
+#: com/panayotis/jubler/information/JAbout.java:49
 msgid "Czech"
 msgstr "Çekçe"
 
-#: com/panayotis/jubler/information/JAbout.java:49
+#: com/panayotis/jubler/information/JAbout.java:50
 msgid "German"
 msgstr "Almanca"
 
-#: com/panayotis/jubler/information/JAbout.java:50
+#: com/panayotis/jubler/information/JAbout.java:51
 msgid "Greek"
 msgstr "Yunanca"
 
-#: com/panayotis/jubler/information/JAbout.java:51
+#: com/panayotis/jubler/information/JAbout.java:52
+msgid "Portuguese (Brazilian)"
+msgstr "Portekiz(Brezilyalı)"
+
+#: com/panayotis/jubler/information/JAbout.java:53
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: com/panayotis/jubler/information/JAbout.java:346
+#: com/panayotis/jubler/information/JAbout.java:348
 msgid "Subtitle Editor for Java"
 msgstr "Java Altyazı Editörü"
 
-#: com/panayotis/jubler/information/JAbout.java:347
+#: com/panayotis/jubler/information/JAbout.java:349
 msgid "Version"
 msgstr "Sürüm"
 
-#: com/panayotis/jubler/information/JAbout.java:351
+#: com/panayotis/jubler/information/JAbout.java:353
 msgid "Contact address"
 msgstr "İletişim adresi"
 
-#: com/panayotis/jubler/information/JAbout.java:360
+#: com/panayotis/jubler/information/JAbout.java:362
 msgid "Special thanks"
 msgstr "Teşekkürler"
 
-#: com/panayotis/jubler/information/JAbout.java:360
-#: com/panayotis/jubler/information/JAbout.java:364
+#: com/panayotis/jubler/information/JAbout.java:362
+#: com/panayotis/jubler/information/JAbout.java:366
 #, java-format
 msgid "{0} plugin"
 msgstr "{0} eklentisi"
 
-#: com/panayotis/jubler/information/JAbout.java:362
+#: com/panayotis/jubler/information/JAbout.java:364
 msgid "Jubler mascot"
 msgstr "Jubler maskotu"
 
-#: com/panayotis/jubler/information/JAbout.java:368
+#: com/panayotis/jubler/information/JAbout.java:370
 msgid "Translators"
 msgstr "Çevirenler"
 
-#: com/panayotis/jubler/information/JAbout.java:374
+#: com/panayotis/jubler/information/JAbout.java:376
 msgid "Icon theme"
 msgstr "Simge teması"
 
-#: com/panayotis/jubler/information/JAbout.java:412
+#: com/panayotis/jubler/information/JAbout.java:414
 msgid "Thanks"
 msgstr "Teşekkürler"
 
-#: com/panayotis/jubler/information/JAbout.java:424
+#: com/panayotis/jubler/information/JAbout.java:426
 msgid "Licence"
 msgstr "Lisans"
 
@@ -675,165 +653,451 @@ msgstr "Yorumlar"
 msgid "Comments about these subtitles"
 msgstr "Bu altyazı hakkındaki yorumlar"
 
-#: com/panayotis/jubler/information/JVersion.java:38
+#: com/panayotis/jubler/information/JVersion.java:37
 msgid "New version"
 msgstr "Yeni Sürüm"
 
-#: com/panayotis/jubler/information/JVersion.java:83
+#: com/panayotis/jubler/information/JVersion.java:81
 msgid "Current version:"
 msgstr "Şu anki sürüm"
 
-#: com/panayotis/jubler/information/JVersion.java:84
+#: com/panayotis/jubler/information/JVersion.java:82
 msgid "Version found:"
 msgstr "Bulunan sürüm:"
 
-#: com/panayotis/jubler/information/JVersion.java:87
+#: com/panayotis/jubler/information/JVersion.java:85
 msgid "It is important to upgrade from the following URL:"
 msgstr "Aşağıdaki URL'den sürümü yükseltmek önemli"
 
-#: com/panayotis/jubler/information/JVersion.java:89
+#: com/panayotis/jubler/information/JVersion.java:87
 msgid "Please consider upgrading from the following URL:"
 msgstr "Aşağıdaki URL'den sürümü yükseltmeyi göz önünde bulundurun"
 
-#: com/panayotis/jubler/information/JVersion.java:116
+#: com/panayotis/jubler/information/JVersion.java:114
 msgid "New Jubler version found!"
 msgstr "Yeni Jubler sürümü bulundu"
 
-#: com/panayotis/jubler/information/JVersion.java:134
+#: com/panayotis/jubler/information/JVersion.java:132
 msgid "Go"
 msgstr "Git"
 
-#: com/panayotis/jubler/information/JVersion.java:147
+#: com/panayotis/jubler/information/JVersion.java:145
 msgid "Do not inform me again for this version"
 msgstr "Bu sürüm için beni tekrar bilgilendirme"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:114
+msgid "Use the following video file"
+msgstr "Aşağıdaki video dosyasını kullan"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:121
+msgid "Filename of the video file. Use the \"Browse\" button to change it."
+msgstr "Video dosyasının dosya ismi.Dosyayı değiştirmek için \"Göz At\" düğmesini kullan"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:124
+#: com/panayotis/jubler/media/JVideofileSelector.java:146
+#: com/panayotis/jubler/media/JVideofileSelector.java:177
+#: com/panayotis/jubler/options/ExtOptions.java:84
+msgid "Browse"
+msgstr "Göz At"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:125
+msgid "Change the video filename"
+msgstr "Video dosya ismini değiştir"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:143
+msgid "Filename of the external audio file (could be also an audio cache). Use the \"Browse\" button to change it."
+msgstr "Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı değiştirmek için \"Göz At\" düğmesini kullan"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:147
+msgid "Change the external audio filename"
+msgstr "Harici ses dosyasını değiştir"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:157
+msgid "Use a different audio stream"
+msgstr "Farklı ses akımı kullan"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:158
+msgid ""
+"Use an audio stream outside from this video file.\n"
+"(E.g. a WAV file or a previously cached audio stream)"
+msgstr ""
+"Bu video dosyası dışındaki bir ses akımını kullan.\n"
+"Örnek: bir WAV dosyası ya da daha önceden önbelleğe alınmış ses akımı."
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:174
+msgid "Filename of the previous audio cache. Use the \"Browse\" button to change it."
+msgstr "Önceki ses önbellek dosyası.Dosyayı değiştirmek için \"Göz At\" düğmesini kullan"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:178
+msgid "Change the audio cache filename"
+msgstr "Ses önbellek dosya ismini değiştir."
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:187
+msgid "Filename of the cached audio stream"
+msgstr "Önbelleğe alınmış ses akımının dosya ismi"
+
+#: com/panayotis/jubler/media/MediaFile.java:95
+msgid "Select video"
+msgstr "Video seç"
+
+#: com/panayotis/jubler/media/MediaFile.java:102
+msgid "Error in videofile selection"
+msgstr "Video dosyası seçiminde hata"
+
+#: com/panayotis/jubler/media/MediaFile.java:102
+msgid ""
+"This file does not exist.\n"
+"Please provide a valid file name."
+msgstr ""
+"Dosya mevcut değil.\n"
+"Lütfen geçerli bir dosya ismi girin."
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:126
+msgid "Map of subtitles"
+msgstr "Altyazıların eşlemi"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:363
+msgid "Video Console"
+msgstr "Video Konsolu"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:376
+msgid "Mark subttile as white"
+msgstr "Altyazıyı beyaz renkte işaretle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:387
+msgid "Mark subttile as pink"
+msgstr "Altyazıyı pembe renkte işaretle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:398
+msgid "Mark subttile as yellow"
+msgstr "Altyazıyı sarı renkte işaretle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:409
+msgid "Mark subttile as cyan"
+msgstr "Altyazıyı camgöbeği renginde işaretle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:427
+msgid "Change playback speed"
+msgstr "Geri oynatma hızını değiştir"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:444
+msgid "Change audio volume"
+msgstr "Ses miktarını değiştir"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:460
+msgid "Add new subtitle on the fly"
+msgstr "Anında yeni altyazı ekle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:497
+msgid "Playback position"
+msgstr "Geri oynatma pozisyonu"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:516
+msgid "Current playback time"
+msgstr "Şimdiki geri oynatma zamanı"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:522
+msgid "Subtitles time difference"
+msgstr "Altyazı zaman farklılıkları"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:537
+msgid "Play/Pause video playback"
+msgstr "Video geri oynatmayı Oynat/Duraklat "
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:548
+msgid "Load new subtitles into player"
+msgstr "Oynatıcıya yeni altyazı yükle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:558
+msgid "Quit Player"
+msgstr "Oynatıcıdan Çık"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:573
+msgid "Go backwards by 30 seconds"
+msgstr "30 saniye geri git"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:583
+msgid "Go backwards by 10 secons"
+msgstr "10 saniye geri git"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:593
+msgid "Go forwards by 10 seconds"
+msgstr "10 saniye ileri git"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:603
+msgid "Go forwards by 30 seconds"
+msgstr "20 saniye ileri git"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:622
+msgid "Select subtitle from the main window, to synchronize subtitles with current time."
+msgstr "Şu anki zamanla altyazıları senkronlamak için, altyazıları ana pencereden seç"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:632
+msgid "Mark first synchronization position of the subtitles."
+msgstr "Altyazının ilk senkron noktasını işaretle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:644
+msgid "Mark second synchronization position of the subtitles."
+msgstr "Altyazıların ikinci senkron noktasını işaretleyin."
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:660
+msgid "Change subtitle delay on the fly"
+msgstr "Anında zaman gecikmesini düzenle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:682
+msgid "Subtitle text"
+msgstr "Altyazı metni"
+
+#: com/panayotis/jubler/media/filters/AudioFileFilter.java:69
+msgid "All Audio files"
+msgstr "Tüm Ses dosyaları"
+
+#: com/panayotis/jubler/media/filters/VideoFileFilter.java:53
+msgid "All Video files"
+msgstr "Tüm Video dosyaları"
+
+#: com/panayotis/jubler/media/player/AbstractPlayer.java:58
+msgid "Player"
+msgstr "Oynatıcı"
+
+#: com/panayotis/jubler/media/player/AbstractPlayer.java:67
+msgid "Could not create temporary file to store the subtitles."
+msgstr "Altyazıları kaydetmek için geçici dosya oluşturulamadı"
+
+#: com/panayotis/jubler/media/player/mplayer/MPlayerViewport.java:106
+msgid "Error while executing MPlayer. Executable not found."
+msgstr "MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya bulunamadı."
+
+#: com/panayotis/jubler/media/player/mplayer/MPlayerViewport.java:108
+msgid ""
+"Error while executing MPlayer. Abnormal exit.\n"
+"Please report the author about this behaviour."
+msgstr ""
+"MPlayer çalıştırılırken hata oluştu.Anormal sonlandırma.\n"
+"Lütfen bu durumu yazara bildirin."
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:159
+msgid "Selected subtitles"
+msgstr "Seçili altyazılar"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:250
+msgid "FFDecode library is not present!"
+msgstr "FFDecode kütüphanesi yok!"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:287
+msgid "Enable/disable video frame preview"
+msgstr "Video frame önizlemeyi etkinleştir/devre dışı bırak"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:299
+msgid "Zoom frame to original value"
+msgstr "Frame'i asıl değerine yaklaştır"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:317
+msgid "Enable/disable waveform preview"
+msgstr "Dalga şekli önizlemeyi etkinleştir/devre dışı bırak"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:329
+msgid "Play current subtitle"
+msgstr "Şu anki altyazıyı oynat"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:347
+msgid "Automatically perform operation depending on the mouse position"
+msgstr "Fare pozisyonuna bağlı olarak işlemi otomatik yürüt"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:360
+msgid "Select subtitles only"
+msgstr "Sadece altyazıları seç"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:373
+msgid "Move subtitles only"
+msgstr "Sadece altyazıları hareket ettir"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:386
+msgid "Resize subtitles only"
+msgstr "Sadece altyazıları yeniden boyutlandır"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:403
+msgid "Zoom in timeline"
+msgstr "Zaman çizelgesine yaklaş"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:415
+msgid "Zoom out timeline"
+msgstr "Zaman çizelgesinden uzaklaş"
+
+#: com/panayotis/jubler/media/preview/JSubPreviewDialog.java:57
+msgid "Subtitles preview"
+msgstr "Altyazı önizleme"
+
+#: com/panayotis/jubler/media/preview/decoders/AudioPreview.java:51
+msgid "Trying to initialize audio preview with null data"
+msgstr "Boş veri ile ses önizlemesi başlatılmaya çalışılıyor."
+
+#: com/panayotis/jubler/media/preview/decoders/AudioPreview.java:52
+#, java-format
+msgid "Trying to intialize audio preview with wrong size {0}"
+msgstr "Hatalı boyutla{0} ses önizlemesi başlatılmaya çalışılıyor."
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:90
+msgid "Count not create audio clip"
+msgstr "Ses klibi oluşturulamadı"
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:109
+msgid "Open file error"
+msgstr "Dosya açma hatası"
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:111
+msgid "Unsupported audio"
+msgstr "Desteklenmeyen ses"
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:113
+msgid "Line unavailable"
+msgstr "Satır mevcut değil"
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:50
+msgid "Decoder not active. Aborting audio cache creation."
+msgstr "Şifre çözücü aktif değil.Ses önbellek oluşturulması durduruluyor."
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:54
+msgid "Still creating cache. Use the Cancel button to abort."
+msgstr "Hala önbellek oluşturuluyor.Bitirmeden durdurmak için İptal tuşuna basın"
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:58
+msgid "Unable to create a null cache file"
+msgstr "Boş önbellek dosyası oluşturulamadı"
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:62
+#, java-format
+msgid "Jubler audio cache detected for audio input: {0}"
+msgstr "Jubler ses önbelleği ses girişi buldu: {0}"
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:75
+#, java-format
+msgid "Error while loading file {0}"
+msgstr "{0} dosyası yüklenirken hata oluştu"
 
 #: com/panayotis/jubler/options/ASpellOptions.java:66
 msgid "Language to use"
 msgstr "Kullanılacak dil"
 
-#: com/panayotis/jubler/options/AbstractPlayerOptions.java:67
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:63
 msgid "X offset"
 msgstr "X Ofseti"
 
-#: com/panayotis/jubler/options/AbstractPlayerOptions.java:68
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:64
 msgid "Y offset"
 msgstr "Y Ofseti"
 
-#: com/panayotis/jubler/options/AbstractPlayerOptions.java:75
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:71
 msgid "Advanced argument list:"
 msgstr "Gelişmiş argüman listesi:"
 
-#: com/panayotis/jubler/options/AbstractPlayerOptions.java:82
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:79
 msgid "Defaults"
 msgstr "Varsayılanlar"
 
-#: com/panayotis/jubler/options/AbstractPlayerOptions.java:95
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:93
 msgid "Player window offset in pixels"
 msgstr "Piksel bazında Oynatıcı penceresi ofseti"
 
-#: com/panayotis/jubler/options/ExtOptions.java:60
+#: com/panayotis/jubler/options/ExtOptions.java:58
 #, java-format
 msgid "{0} path"
 msgstr "{0} yol"
 
-#: com/panayotis/jubler/options/ExtOptions.java:83
+#: com/panayotis/jubler/options/ExtOptions.java:81
 msgid "The absolute path of the player. Use the Browse button to change it"
 msgstr "Oynatıcının tam yolu.Değiştirmek için Göz At düğmesine basın"
 
-#: com/panayotis/jubler/options/ExtOptions.java:86
-#: com/panayotis/jubler/player/JVideofileSelector.java:173
-#: com/panayotis/jubler/player/JVideofileSelector.java:195
-#: com/panayotis/jubler/player/JVideofileSelector.java:226
-msgid "Browse"
-msgstr "Göz At"
-
-#: com/panayotis/jubler/options/ExtOptions.java:87
+#: com/panayotis/jubler/options/ExtOptions.java:85
 msgid "Open a file dialog to select the filename of the player"
 msgstr "Oynatıcının dosya ismini seçmek için dosya diyaloğunu aç"
 
-#: com/panayotis/jubler/options/JLoadOptions.java:125
+#: com/panayotis/jubler/options/JLoadOptions.java:118
 msgid "First Encoding"
 msgstr "İlk Kodlama"
 
-#: com/panayotis/jubler/options/JLoadOptions.java:128
+#: com/panayotis/jubler/options/JLoadOptions.java:121
 msgid "Select the encoding to be searched first"
 msgstr "İlk aranacak kodlamayı seçin"
 
-#: com/panayotis/jubler/options/JLoadOptions.java:131
+#: com/panayotis/jubler/options/JLoadOptions.java:124
 msgid "Second Encoding"
 msgstr "İkinci Kodlama"
 
-#: com/panayotis/jubler/options/JLoadOptions.java:134
+#: com/panayotis/jubler/options/JLoadOptions.java:127
 msgid "Select the encoding to be searched second"
 msgstr "İkinci aranacak kodlamayı seçin"
 
-#: com/panayotis/jubler/options/JLoadOptions.java:137
+#: com/panayotis/jubler/options/JLoadOptions.java:130
 msgid "Third Encoding"
 msgstr "Üçüncü Kodlama"
 
-#: com/panayotis/jubler/options/JLoadOptions.java:140
+#: com/panayotis/jubler/options/JLoadOptions.java:133
 msgid "Select the encoding to be searched last"
 msgstr "Üçüncü aranacak kodlamayı seçin"
 
-#: com/panayotis/jubler/options/JLoadOptions.java:143
-#: com/panayotis/jubler/options/JSaveOptions.java:136
+#: com/panayotis/jubler/options/JLoadOptions.java:136
+#: com/panayotis/jubler/options/JSaveOptions.java:149
 msgid "FPS"
 msgstr "FPS"
 
-#: com/panayotis/jubler/options/JPreferences.java:135
+#: com/panayotis/jubler/options/JPreferences.java:142
 msgid "File preferences"
 msgstr "Doysa tercihleri"
 
-#: com/panayotis/jubler/options/JPreferences.java:203
+#: com/panayotis/jubler/options/JPreferences.java:188
 msgid " Show load preferences while loading file"
 msgstr "Dosya yüklenirken yükleme tercihlerini göster"
 
-#: com/panayotis/jubler/options/JPreferences.java:204
-#: com/panayotis/jubler/options/JPreferences.java:212
+#: com/panayotis/jubler/options/JPreferences.java:189
+#: com/panayotis/jubler/options/JPreferences.java:197
 msgid "Show preferences every time the user loads a subtitle file"
 msgstr "Kullanıcının altyazı dosyasını her yükleyişinde tercihleri göster"
 
-#: com/panayotis/jubler/options/JPreferences.java:211
+#: com/panayotis/jubler/options/JPreferences.java:196
 msgid " Show save preferences while saving file"
 msgstr "Dosyayı kaydederken kaydetme tercihlerini göster"
 
-#: com/panayotis/jubler/options/JPreferences.java:236
+#: com/panayotis/jubler/options/JPreferences.java:221
 msgid "Clear current shortcut"
 msgstr "Şu anki kısayolu temizle"
 
-#: com/panayotis/jubler/options/JPreferences.java:247
+#: com/panayotis/jubler/options/JPreferences.java:232
 msgid "Reset all to defaults"
 msgstr "Hepsini varsayıla ayarla"
 
-#: com/panayotis/jubler/options/JPreferences.java:260
+#: com/panayotis/jubler/options/JPreferences.java:245
 msgid "Shortcuts"
 msgstr "Kısayollar"
 
-#: com/panayotis/jubler/options/JRateChooser.java:66
-#, java-format
-msgid "Frames per second {0}"
+#: com/panayotis/jubler/options/JRateChooser.java:73
+msgid "Get FPS from the video file"
+msgstr "FPS'yi video dosyasından al"
+
+#: com/panayotis/jubler/options/JRateChooser.java:85
+msgid "Frames per second"
 msgstr "Saniyedeki frame sayısı {0}"
 
-#: com/panayotis/jubler/options/JRateChooser.java:101
+#: com/panayotis/jubler/options/JRateChooser.java:104
 #, java-format
 msgid "Not a valid number: {0}"
 msgstr "Geçerli bir sayı değil: {0}"
 
-#: com/panayotis/jubler/options/JSaveOptions.java:130
-msgid "Encoding"
-msgstr "Kodlama"
-
-#: com/panayotis/jubler/options/JSaveOptions.java:133
-msgid "Encoding of the saved file"
-msgstr "Kaydedilen dosyanın kodlaması"
-
-#: com/panayotis/jubler/options/JSaveOptions.java:143
+#: com/panayotis/jubler/options/JSaveOptions.java:131
 msgid "Format"
 msgstr "Format"
 
-#: com/panayotis/jubler/options/JSaveOptions.java:146
+#: com/panayotis/jubler/options/JSaveOptions.java:134
 msgid "Subtitle format of the output file (SRT is prefered)"
 msgstr "Çıkış dosyasının altyazı formatı(SRT tercih edilir)"
+
+#: com/panayotis/jubler/options/JSaveOptions.java:143
+msgid "Encoding"
+msgstr "Kodlama"
+
+#: com/panayotis/jubler/options/JSaveOptions.java:146
+msgid "Encoding of the saved file"
+msgstr "Kaydedilen dosyanın kodlaması"
 
 #: com/panayotis/jubler/options/JUnsaved.java:41
 msgid "The following files are unsaved:"
@@ -851,296 +1115,47 @@ msgstr "Komut"
 msgid "Key"
 msgstr "Anahtar"
 
-#: com/panayotis/jubler/os/DEBUG.java:41
+#: com/panayotis/jubler/os/DEBUG.java:48
 msgid "Error"
 msgstr "Hata"
 
-#: com/panayotis/jubler/os/DEBUG.java:46
+#: com/panayotis/jubler/os/DEBUG.java:53
 msgid "Warning!"
 msgstr "Uyarı!"
 
-#: com/panayotis/jubler/os/FileCommunicator.java:151
+#: com/panayotis/jubler/os/FileCommunicator.java:118
+#: com/panayotis/jubler/subs/loader/AbstractTextSubFormat.java:81
+#, java-format
+msgid "Found file {0}"
+msgstr "Bulunan dosya {0}"
+
+#: com/panayotis/jubler/os/FileCommunicator.java:135
 #, java-format
 msgid "File {0} is unwritable"
 msgstr "{0} dosyası yazılamaz"
 
-#: com/panayotis/jubler/os/FileCommunicator.java:174
+#: com/panayotis/jubler/os/FileCommunicator.java:149
 #, java-format
 msgid "Error while updating file {0}"
 msgstr "{0} dosyasını güncellerken hata oluştu"
 
-#: com/panayotis/jubler/os/FileCommunicator.java:176
-#: com/panayotis/jubler/os/FileCommunicator.java:178
+#: com/panayotis/jubler/os/FileCommunicator.java:151
+#: com/panayotis/jubler/os/FileCommunicator.java:153
 msgid "Encoding error. Use proper encoding (e.g. UTF-8)."
 msgstr "Kodlama hatası. Düzgün bir kodlama kullanın (Örn: UTF-8)"
 
-#: com/panayotis/jubler/os/FileCommunicator.java:180
+#: com/panayotis/jubler/os/FileCommunicator.java:155
 #, java-format
 msgid "Error while saving file {0}"
 msgstr "{0} dosyasını kaydederken hata oluştu"
 
-#: com/panayotis/jubler/player/AbstractPlayer.java:57
-msgid "Player"
-msgstr "Oynatıcı"
+#: com/panayotis/jubler/os/SystemDependent.java:191
+msgid "Could not find web browser"
+msgstr "Web tarayıcısı bulunamadı."
 
-#: com/panayotis/jubler/player/AbstractPlayer.java:66
-msgid "Could not create temporary file to store the subtitles."
-msgstr "Altyazıları kaydetmek için geçici dosya oluşturulamadı"
-
-#: com/panayotis/jubler/player/AudioFileFilter.java:69
-msgid "All Audio files"
-msgstr "Tüm Ses dosyaları"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:119
-msgid "Map of subtitles"
-msgstr "Altyazıların eşlemi"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:177
-msgid "Subtitle time differences"
-msgstr "Altyazı zaman farklılıkları"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:177
-#, java-format
-msgid ""
-"The subtitle differences\n"
-" were {0}"
-msgstr ""
-"Altyazı farklılıkları\n"
-" {0}"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:292
-msgid "Video Console"
-msgstr "Video Konsolu"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:307
-msgid "Change playback speed"
-msgstr "Geri oynatma hızını değiştir"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:324
-msgid "Change audio volume"
-msgstr "Ses miktarını değiştir"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:362
-msgid "Current playback time"
-msgstr "Şimdiki geri oynatma zamanı"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:376
-msgid "Playback position"
-msgstr "Geri oynatma pozisyonu"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:403
-msgid "Play/Pause video playback"
-msgstr "Video geri oynatmayı Oynat/Duraklat "
-
-#: com/panayotis/jubler/player/JVideoConsole.java:414
-msgid "Quit Player"
-msgstr "Oynatıcıdan Çık"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:429
-msgid "Go backwards by 30 seconds"
-msgstr "30 saniye geri git"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:439
-msgid "Go backwards by 10 secons"
-msgstr "10 saniye geri git"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:449
-msgid "Go forwards by 10 seconds"
-msgstr "10 saniye ileri git"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:459
-msgid "Go forwards by 30 seconds"
-msgstr "20 saniye ileri git"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:478
-msgid "Delay subtitles by 1 second"
-msgstr "Altyazıları 1 saniye geciktir."
-
-#: com/panayotis/jubler/player/JVideoConsole.java:488
-msgid "Delay subtitles by 100 milliseconds"
-msgstr "Altyazıları 100 milisaniye geciktir."
-
-#: com/panayotis/jubler/player/JVideoConsole.java:498
-msgid "Forward subtitles by 100 milliseconds"
-msgstr "Altyazıları 100 milisaniye ileri al."
-
-#: com/panayotis/jubler/player/JVideoConsole.java:508
-msgid "Forward subtitles by 1 second"
-msgstr "Altyazıları 1 saniye ileri al."
-
-#: com/panayotis/jubler/player/JVideoConsole.java:523
-msgid "Add new subtitle on the fly"
-msgstr "Anında yeni altyazı ekle"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:534
-msgid "Load new subtitles into player"
-msgstr "Oynatıcıya yeni altyazı yükle"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:553
-msgid "Mark subttile as white"
-msgstr "Altyazıyı beyaz renkte işaretle"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:564
-msgid "Mark subttile as pink"
-msgstr "Altyazıyı pembe renkte işaretle"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:575
-msgid "Mark subttile as yellow"
-msgstr "Altyazıyı sarı renkte işaretle"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:586
-msgid "Mark subttile as cyan"
-msgstr "Altyazıyı camgöbeği renginde işaretle"
-
-#: com/panayotis/jubler/player/JVideoConsole.java:602
-msgid "Subtitle text"
-msgstr "Altyazı metni"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:163
-msgid "Use the following video file"
-msgstr "Aşağıdaki video dosyasını kullan"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:170
-msgid "Filename of the video file. Use the \"Browse\" button to change it."
-msgstr "Video dosyasının dosya ismi.Dosyayı değiştirmek için \"Göz At\" düğmesini kullan"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:174
-msgid "Change the video filename"
-msgstr "Video dosya ismini değiştir"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:192
-msgid "Filename of the external audio file (could be also an audio cache). Use the \"Browse\" button to change it."
-msgstr "Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı değiştirmek için \"Göz At\" düğmesini kullan"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:196
-msgid "Change the external audio filename"
-msgstr "Harici ses dosyasını değiştir"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:206
-msgid "Use a different audio stream"
-msgstr "Farklı ses akımı kullan"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:207
-msgid ""
-"Use an audio stream outside from this video file.\n"
-"(E.g. a WAV file or a previously cached audio stream)"
-msgstr ""
-"Bu video dosyası dışındaki bir ses akımını kullan.\n"
-"Örnek: bir WAV dosyası ya da daha önceden önbelleğe alınmış ses akımı."
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:223
-msgid "Filename of the previous audio cache. Use the \"Browse\" button to change it."
-msgstr "Önceki ses önbellek dosyası.Dosyayı değiştirmek için \"Göz At\" düğmesini kullan"
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:227
-msgid "Change the audio cache filename"
-msgstr "Ses önbellek dosya ismini değiştir."
-
-#: com/panayotis/jubler/player/JVideofileSelector.java:236
-msgid "Filename of the cached audio stream"
-msgstr "Önbelleğe alınmış ses akımının dosya ismi"
-
-#: com/panayotis/jubler/player/VideoFileFilter.java:53
-msgid "All Video files"
-msgstr "Tüm Video dosyaları"
-
-#: com/panayotis/jubler/player/players/MPlayerViewport.java:107
-msgid "Error while executing MPlayer. Executable not found."
-msgstr "MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya bulunamadı."
-
-#: com/panayotis/jubler/player/players/MPlayerViewport.java:109
-msgid ""
-"Error while executing MPlayer. Abnormal exit.\n"
-"Please report the author about this behaviour."
-msgstr ""
-"MPlayer çalıştırılırken hata oluştu.Anormal sonlandırma.\n"
-"Lütfen bu durumu yazara bildirin."
-
-#: com/panayotis/jubler/preview/JSubPreview.java:162
-msgid "Selected subtitles"
-msgstr "Seçili altyazılar"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:250
-msgid "FFDecode library is not present!"
-msgstr "FFDecode kütüphanesi yok!"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:287
-msgid "Enable/disable video frame preview"
-msgstr "Video frame önizlemeyi etkinleştir/devre dışı bırak"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:299
-msgid "Zoom frame to original value"
-msgstr "Frame'i asıl değerine yaklaştır"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:317
-msgid "Enable/disable waveform preview"
-msgstr "Dalga şekli önizlemeyi etkinleştir/devre dışı bırak"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:329
-msgid "Play current subtitle"
-msgstr "Şu anki altyazıyı oynat"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:347
-msgid "Automatically perform operation depending on the mouse position"
-msgstr "Fare pozisyonuna bağlı olarak işlemi otomatik yürüt"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:360
-msgid "Select subtitles only"
-msgstr "Sadece altyazıları seç"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:373
-msgid "Move subtitles only"
-msgstr "Sadece altyazıları hareket ettir"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:386
-msgid "Resize subtitles only"
-msgstr "Sadece altyazıları yeniden boyutlandır"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:403
-msgid "Zoom in timeline"
-msgstr "Zaman çizelgesine yaklaş"
-
-#: com/panayotis/jubler/preview/JSubPreview.java:415
-msgid "Zoom out timeline"
-msgstr "Zaman çizelgesinden uzaklaş"
-
-#: com/panayotis/jubler/preview/JSubPreviewDialog.java:57
-msgid "Subtitles preview"
-msgstr "Altyazı önizleme"
-
-#: com/panayotis/jubler/preview/decoders/AbstractDecoder.java:60
-msgid "Still creating cache. Use the Cancel button to abort."
-msgstr "Hala önbellek oluşturuluyor.Bitirmeden durdurmak için İptal tuşuna basın"
-
-#: com/panayotis/jubler/preview/decoders/AbstractDecoder.java:65
-msgid "Unable to create a null cache file"
-msgstr "Boş önbellek dosyası oluşturulamadı"
-
-#: com/panayotis/jubler/preview/decoders/AbstractDecoder.java:81
-#, java-format
-msgid "Jubler audio cache detected for audio input: {0}"
-msgstr "Jubler ses önbelleği ses girişi buldu: {0}"
-
-#: com/panayotis/jubler/preview/decoders/AbstractDecoder.java:112
-#, java-format
-msgid "Error while loading file {0}"
-msgstr "{0} dosyası yüklenirken hata oluştu"
-
-#: com/panayotis/jubler/preview/decoders/FFMPEG.java:89
-msgid "Count not create audio clip"
-msgstr "Ses klibi oluşturulamadı"
-
-#: com/panayotis/jubler/preview/decoders/FFMPEG.java:108
-msgid "Open file error"
-msgstr "Dosya açma hatası"
-
-#: com/panayotis/jubler/preview/decoders/FFMPEG.java:110
-msgid "Unsupported audio"
-msgstr "Desteklenmeyen ses"
-
-#: com/panayotis/jubler/preview/decoders/FFMPEG.java:112
-msgid "Line unavailable"
-msgstr "Satır mevcut değil"
+#: com/panayotis/jubler/os/SystemFileFinder.java:65
+msgid "Could not find Jubler path!"
+msgstr "Jubler yolu bulunamadı."
 
 #: com/panayotis/jubler/subs/JSubEditor.java:218
 msgid "Start time of the subtitle"
@@ -1202,183 +1217,220 @@ msgstr "Stili düzenler"
 msgid "Subtitle"
 msgstr "Altyazı"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:84
+#: com/panayotis/jubler/subs/loader/SubFileFilter.java:47
+msgid "Subtitle files"
+msgstr "Altyazı dosyaları"
+
+#: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:87
+msgid "The save process haven't finish yet"
+msgstr "Kaydetme işlemi henüz bitmedi"
+
+#: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:91
+msgid "Maestro DVD options"
+msgstr "Maystro DVD seçenekleri"
+
+#: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:86
+msgid "Video width"
+msgstr "Video genişliği"
+
+#: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:89
+msgid "Video height"
+msgstr "Video yüksekliği"
+
+#: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:92
+msgid "Video standard"
+msgstr "Video Standartı"
+
+#: com/panayotis/jubler/subs/loader/binary/JSaveProgress.java:68
+#: com/panayotis/jubler/subs/loader/binary/JSaveProgress.java:75
+msgid "Save progress"
+msgstr "İşlemi kaydet"
+
+#: com/panayotis/jubler/subs/loader/text/PlainText.java:74
+msgid "Plain text"
+msgstr "Düz metin"
+
+#: com/panayotis/jubler/subs/loader/text/SubViewer2.java:57
+msgid "SubViewer V2"
+msgstr "SubViewer V2"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:82
 #: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:47
 msgid "Outline"
 msgstr "Taslak"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:85
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:83
 msgid "Opaque box"
 msgstr "Saydam kutu"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:140
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:138
 msgid "Hide the advanced options for this style"
 msgstr "Bu stil için gelişmiş seçenekleri sakla"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:143
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:141
 msgid "Display the advanced options for this style"
 msgstr "Bu stil için gelişmiş seçenekleri göster"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:289
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:287
 msgid "Style Editor"
 msgstr "Stil Düzenleyici"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:300
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:298
 msgid "The name of this style. Remember to hit [RETURN] to store the name"
 msgstr "Bu stilin adı.İsmi kaydetmek için [RETURN] duşuna basmayı unutma"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:313
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:311
 msgid "Clone"
 msgstr "Kopyala"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:314
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:312
 msgid "Create a new style based on the current one"
 msgstr "Şimdikini baz alarak yeni stil oluştur"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:320
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:318
 msgid "Delete the current style"
 msgstr "Şu anki stili sil"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:328
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:326
 msgid "Save default style"
 msgstr "Varsayılan stili kaydet"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:339
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:337
 msgid "Font"
 msgstr "Yazı Tipi"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:342
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:340
 msgid "Font size"
 msgstr "Yazı tipi boyutu"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:349
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:347
 msgid "Font name"
 msgstr "Yazı tipi ismi"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:360
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:358
 msgid "Bold"
 msgstr "Kalın"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:366
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:364
 msgid "Italic"
 msgstr "Eğik"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:372
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:370
 msgid "Underline"
 msgstr "Altı çizli"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:378
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:376
 msgid "Strikethrough"
 msgstr "Üstü çizili"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:389
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:387
 msgid "Colors"
 msgstr "Renkler"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:421
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:419
 msgid "Demo subtitles text"
 msgstr "Demo altyazı metinleri"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:432
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:430
 msgid "Border"
 msgstr "Kenar"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:433
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:431
 msgid "Border style"
 msgstr "Kenar Stili"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:439
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:437
 msgid "Size"
 msgstr "Boyut"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:442
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:440
 msgid "Border size"
 msgstr "Kenar Boyutu"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:450
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:448
 #: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:47
 msgid "Shadow"
 msgstr "Gölge"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:453
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:451
 msgid "Shadow size"
 msgstr "Gölge boyutu"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:462
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:460
 msgid "Margins transformations"
 msgstr "Konum dönüşümleri"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:464
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:462
 #: com/panayotis/jubler/subs/style/gui/JDirection.java:234
 msgid "Left"
 msgstr "Sol"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:467
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:465
 msgid "Left margin"
 msgstr "Sol konum"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:471
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:469
 #: com/panayotis/jubler/subs/style/gui/JDirection.java:266
 msgid "Right"
 msgstr "Sağ"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:474
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:472
 msgid "Right margin"
 msgstr "Sağ konum"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:478
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:476
 msgid "Vertical"
 msgstr "Dikey"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:481
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:479
 msgid "Vertical margin"
 msgstr "Dikey konum"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:492
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:490
 msgid "Font transformations"
 msgstr "Yazı tipi dönüşümleri"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:494
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:492
 msgid "Angle"
 msgstr "Açı"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:497
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:495
 msgid "Font angle"
 msgstr "Yazı tipi açısı"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:501
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:499
 msgid "Spacing"
 msgstr "Aralık"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:504
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:502
 msgid "Spacing in font"
 msgstr "Yazı tipi aralığı"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:508
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:506
 msgid "X Scale"
 msgstr "X Ölçeği"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:511
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:509
 msgid "Scaling % on X axis"
 msgstr "X Ekseninde % Ölçeklendirme"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:515
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:513
 msgid "Y Scale"
 msgstr "Y Ölçeği"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:518
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:516
 msgid "Scaling % on Y axis"
 msgstr "Y Ekseninde % Ölçeği"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:525
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:523
 msgid "Alignment"
 msgstr "Hizalama"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:534
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:532
 msgid "Advanced options"
 msgstr "Gelişmiş seçenekler"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:671
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:668
 msgid ""
 "Are you sure you want to delete this style?\n"
 "All subtitles having this style will fall back to default"
@@ -1386,11 +1438,11 @@ msgstr ""
 "Bu stili silmek istedğinizden emin misiniz?\n"
 " Bu stile sahip tüm altyazılar varsayılan stile dönecek"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:671
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:668
 msgid "Delete style"
 msgstr "Stili sil"
 
-#: com/panayotis/jubler/subs/style/JStyleEditor.java:788
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:785
 msgid "Welcome to the (Jubler) world!"
 msgstr "(Jubler) dünyasına hoş geldiniz!"
 
@@ -1465,7 +1517,7 @@ msgid "Unspecified"
 msgstr "Belirtilmemiş"
 
 #: com/panayotis/jubler/time/gui/JDuration.java:78
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:265
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:262
 msgid "Ignore"
 msgstr "Yoksay"
 
@@ -1617,27 +1669,27 @@ msgstr "Seçileni sil"
 msgid "Fix time inconsistencies"
 msgstr "Zaman uyumsuzluklarını onar"
 
-#: com/panayotis/jubler/tools/JFixer.java:237
+#: com/panayotis/jubler/tools/JFixer.java:240
 msgid "Sort first  (strongly recommended)"
 msgstr "Önce sırala(şiddetle tavsiye edilir)"
 
-#: com/panayotis/jubler/tools/JFixer.java:241
+#: com/panayotis/jubler/tools/JFixer.java:244
 msgid "Prevent overlapping"
 msgstr "Örtüşmeyi önle"
 
-#: com/panayotis/jubler/tools/JFixer.java:253
+#: com/panayotis/jubler/tools/JFixer.java:256
 msgid "Push subtitles instead of rearranging"
 msgstr "Yeniden düzenlemek yerine altyazıları itele"
 
-#: com/panayotis/jubler/tools/JFixer.java:262
+#: com/panayotis/jubler/tools/JFixer.java:265
 msgid "Leave gap between subtitles (in milliseconds)"
 msgstr "Altyazılar arasında boşluk bırak(Milisaniye cinsinden)"
 
-#: com/panayotis/jubler/tools/JFixer.java:285
+#: com/panayotis/jubler/tools/JFixer.java:288
 msgid "Minimum subtitle duration"
 msgstr "Minimum altyazı süresi"
 
-#: com/panayotis/jubler/tools/JFixer.java:290
+#: com/panayotis/jubler/tools/JFixer.java:293
 msgid "Maximum subtitle duration"
 msgstr "Maksimum altyazı süresi"
 
@@ -1669,41 +1721,45 @@ msgstr "Eğer yapıştırılan altyazının varsayılan rengini değiştimek ist
 msgid "The color to use for the pasted subtitles"
 msgstr "Yapıştırılan altyazılar için kullanılacak renk"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:56
-msgid "The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."
-msgstr "Yeniden kodlamanın gerçekleştiği merkezi zaman noktası.Genelde tüm dosyadan bağımsız olarak 0 yapılır."
-
-#: com/panayotis/jubler/tools/JRecodeTime.java:66
+#: com/panayotis/jubler/tools/JRecodeTime.java:65
 msgid "Recode time"
 msgstr "Yeniden kodlama zamanı"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:114
+#: com/panayotis/jubler/tools/JRecodeTime.java:173
 msgid "Use the following factor"
 msgstr "Aşağıdaki faktörü kullan"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:117
+#: com/panayotis/jubler/tools/JRecodeTime.java:176
 msgid "Automatically compute based on FPS"
 msgstr "FPS'ye bağlı olarak otomatik hesapla"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:118
+#: com/panayotis/jubler/tools/JRecodeTime.java:177
 msgid "Use the following FPS in order to automatically compute the desired recoding"
 msgstr "Yeniden kodlamayı  otomatik hesaplamak için aşağıdaki FPS'yi kullan"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:148
+#: com/panayotis/jubler/tools/JRecodeTime.java:207
 msgid "Custom"
 msgstr "Özel"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:149
+#: com/panayotis/jubler/tools/JRecodeTime.java:208
 msgid "Use a custom factor in order to perform the recoding"
 msgstr "Yeniden kodlamay gerçekleştirmek için özel faktör kullan"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:159
+#: com/panayotis/jubler/tools/JRecodeTime.java:217
+msgid "Recoding factor"
+msgstr "Yeniden kodlama faktörü"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:221
 msgid "The value of the custom factor which will do the recoding"
 msgstr "Yeniden kodlama yapılacak özel faktör değeri"
 
-#: com/panayotis/jubler/tools/JRecodeTime.java:163
-msgid "Center time"
-msgstr "Merkez zamanı"
+#: com/panayotis/jubler/tools/JRecodeTime.java:225
+msgid "Central time"
+msgstr "Merkezi zaman"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:229
+msgid "The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."
+msgstr "Yeniden kodlamanın gerçekleştiği merkezi zaman noktası.Genelde tüm dosyadan bağımsız olarak 0 yapılır."
 
 #: com/panayotis/jubler/tools/JReparent.java:48
 msgid "-No parent available-"
@@ -1722,25 +1778,25 @@ msgid "Global replace"
 msgstr "Genel değiştirme"
 
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:108
-msgid "Text to be replaced"
-msgstr "Değiştirilecek metin"
+msgid "Regular expressions to be executed"
+msgstr "İşlenecek düzenli ifadeler"
 
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:110
 msgid "List of replacements to be done"
 msgstr "Yapılacak değiştirmelerin listesi"
 
-#: com/panayotis/jubler/tools/JReplaceGlobal.java:132
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:131
 msgid "Reset to defaults"
 msgstr "Varsayılana dön"
 
-#: com/panayotis/jubler/tools/JReplaceGlobal.java:132
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:131
 #: com/panayotis/jubler/tools/replace/ReplaceModel.java:83
 msgid "Use"
 msgstr "Kullan"
 
-#: com/panayotis/jubler/tools/JReplaceGlobal.java:133
-msgid "Edit replace list"
-msgstr "Değiştirme listesini düzenle"
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:132
+msgid "Edit regular expression replace list"
+msgstr "Düzenli ifadeleri değiştirme listesini düzenle"
 
 #: com/panayotis/jubler/tools/JRounder.java:49
 msgid "Round timing"
@@ -1754,19 +1810,19 @@ msgstr "Ondalık sayısı"
 msgid "Decimal digits"
 msgstr "Ondalık rakamlar"
 
-#: com/panayotis/jubler/tools/JShiftTime.java:53
+#: com/panayotis/jubler/tools/JShiftTime.java:52
 msgid "The amount of time in order to shift the subtitles"
 msgstr "Altyazıları kaydırmak için gerekli zaman miktarı"
 
-#: com/panayotis/jubler/tools/JShiftTime.java:57
+#: com/panayotis/jubler/tools/JShiftTime.java:56
 msgid "Shift time by absolute value"
 msgstr "Mutlak değer ile zamanı kaydır"
 
-#: com/panayotis/jubler/tools/JShiftTime.java:85
+#: com/panayotis/jubler/tools/JShiftTime.java:99
 msgid "Shift Subtitles"
 msgstr "Altyazıları kaydır"
 
-#: com/panayotis/jubler/tools/JShiftTime.java:87
+#: com/panayotis/jubler/tools/JShiftTime.java:101
 msgid "Either increase or decrease the time"
 msgstr "Zamanı azalt ya da çoğalt"
 
@@ -1894,7 +1950,7 @@ msgid "Find"
 msgstr "Bul"
 
 #: com/panayotis/jubler/tools/replace/JReplace.java:149
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:229
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:226
 msgid "Replace with"
 msgstr "Değiştir"
 
@@ -1962,80 +2018,80 @@ msgstr "Asıl değer"
 msgid "New value"
 msgstr "Yeni değer"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:219
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:216
 msgid "The context of the misspelled word"
 msgstr "Yanlış yazılmış kelime içeriği"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:226
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:223
 msgid "Current word"
 msgstr "Şu anki kelime"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:238
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:235
 msgid "The misspelled word we need to change"
 msgstr "Değiştirmemiz gereken hatalı kelime"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:250
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:247
 msgid "The word to change the misspelled word into"
 msgstr "Hatalı kelime ile değiştirilecek kelime"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:266
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:263
 msgid "Ignore this word"
 msgstr "Bu kelimeyi yoksay"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:275
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:272
 msgid "Always ignore"
 msgstr "Her zaman yoksay"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:276
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:273
 msgid "Ignore all instances of this word"
 msgstr "Bu kelimenin tüm örneklerini yoksay"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:291
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:288
 msgid "Replace this word"
 msgstr "Bu kelimeyi değiştir"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:300
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:297
 msgid "Always replace"
 msgstr "Her zaman değiştir"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:301
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:298
 msgid "Replace all instances of this word"
 msgstr "Bu kelimenin tüm örneklerini değiştir"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:314
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:311
 msgid "Insert current"
 msgstr "Şu ankini ekle"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:315
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:312
 msgid "Insert this current word in spellers dictionary"
 msgstr "Bu kelimeyi yazım denetim sözlüğüne ekle"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:327
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:324
 msgid "Stop"
 msgstr "Dur"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:328
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:325
 msgid "Finish spell checking"
 msgstr "Yazım denetimini bitir"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:346
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:343
 msgid "Suggestions"
 msgstr "Öneriler"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:351
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:348
 msgid "Suggested words to change the given word to"
 msgstr "Verilen kelimeyle değiştirilmesi önerilen kelime"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:475
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:472
 #, java-format
 msgid "Number of affected words: {0}"
 msgstr "Etkilenen kelime sayısı: {0}"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:476
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:473
 msgid "No changes have been done"
 msgstr "Hiç değişiklik yapılmadı"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:477
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:474
 msgid "Speller changes"
 msgstr "Yazım denetimi değiliklikleri"
 
@@ -2043,7 +2099,7 @@ msgstr "Yazım denetimi değiliklikleri"
 msgid "Error while executing ASpell"
 msgstr "Yazdım denetiminde hata"
 
-#: com/panayotis/jubler/tools/spell/checkers/ASpell.java:161
+#: com/panayotis/jubler/tools/spell/checkers/ASpell.java:167
 #: com/panayotis/jubler/tools/spell/checkers/ZemberekSpellChecker.java:123
 msgid "Speller"
 msgstr "Yazım denetçisi"
@@ -2053,14 +2109,28 @@ msgstr "Yazım denetçisi"
 msgid "Unable to load plugin: {0}"
 msgstr "{0} eklentisi yüklenemedi"
 
-#~ msgid	"SubViewer format"
-#~ msgstr	"SubViewer formatı"
-#~ msgid	"SubStationAlpha format"
-#~ msgstr	"SubStationAlpha formatı"
-#~ msgid	"SubRip format"
-#~ msgstr	"Subrip formatı"
-#~ msgid	"MicroDVD format"
-#~ msgstr	"MicroDVD formatı"
 #~ msgid	"Advanced SubStation format"
 #~ msgstr	"Gelişmiş SubStation formatı"
+#~ msgid	"MicroDVD format"
+#~ msgstr	"MicroDVD formatı"
+#~ msgid	"SubRip format"
+#~ msgstr	"Subrip formatı"
+#~ msgid	"SubStationAlpha format"
+#~ msgstr	"SubStationAlpha formatı"
+#~ msgid	"SubViewer format"
+#~ msgstr	"SubViewer formatı"
+#~ msgid	"The subtitle differences\n"
+#~ 	" were {0}"
+#~ msgstr	"Altyazı farklılıkları\n"
+#~ 	" {0}"
+#~ msgid	"Delay subtitles by 1 second"
+#~ msgstr	"Altyazıları 1 saniye geciktir."
+#~ msgid	"Delay subtitles by 100 milliseconds"
+#~ msgstr	"Altyazıları 100 milisaniye geciktir."
+#~ msgid	"Forward subtitles by 100 milliseconds"
+#~ msgstr	"Altyazıları 100 milisaniye ileri al."
+#~ msgid	"Forward subtitles by 1 second"
+#~ msgstr	"Altyazıları 1 saniye ileri al."
+#~ msgid	"Text to be replaced"
+#~ msgstr	"Değiştirilecek metin"
 
