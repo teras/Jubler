@@ -75,9 +75,6 @@ public abstract class JTool extends JPanel {
         
         affected_list = pos.getAffectedSubs();
         if ( affected_list.size() == 0 ) return false;
-        System.out.println("Affected subs: "+affected_list.size());
-        System.out.println("First: "+affected_list.elementAt(0).toString());
-        System.out.println("Last: "+affected_list.elementAt(affected_list.size()-1).toString());
         
         storeSelections();
         

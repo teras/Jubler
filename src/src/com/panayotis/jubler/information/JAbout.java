@@ -40,7 +40,7 @@ public class JAbout extends javax.swing.JPanel {
         "Tom\u00e1\u0161 Bambas, conyx@seznam.cz",
         "Christian Weiske, cweiske@cweiske.de",
         "Panayotis Katsaloulis, panayotis@panayotis.com",
-        "doutor.zero@gmail.com",
+        "Doutor.Zero, doutor.zero@gmail.com",
         "As\u0131m Sinan Y\u00FCksel, yuksel.asim.sinan@gmail.com"
     };
     
