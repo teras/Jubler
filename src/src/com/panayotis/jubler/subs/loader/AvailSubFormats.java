@@ -41,16 +41,16 @@ public class AvailSubFormats {
     int current;
     
     static {
-        Formats = new SubFormat [8];
+        Formats = new SubFormat [7];
         Formats[0] = new AdvancedSubStation();
         Formats[1] = new SubStationAlpha();
         Formats[2] = new SubRip();
         Formats[3] = new SubViewer2();
         Formats[4] = new SubViewer();
         Formats[5] = new MicroDVD();
-        Formats[6] = new DVDMaestro();
+     //   Formats[6] = new DVDMaestro();
      //   Formats[7] = new ScanTitle();
-        Formats[7] = new PlainText();
+        Formats[6] = new PlainText();
     }
     
     /** Creates a new instance of SubFormats */
