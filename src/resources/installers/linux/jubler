@@ -16,11 +16,23 @@
 # along with Jubler; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-JAVABIN=`/usr/lib/jubler/findjava.sh`
+if [ -e /usr/lib/jubler/findjava.sh ] ; then
+	JUBLERPATH=/usr/lib/jubler
+	JAVABIN=`/usr/lib/jubler/findjava.sh`
+else
+	JUBLERPATH=`dirname $0`
+	if [ -e "$JUBLERPATH/lib/findjava.sh" ] ; then
+		JAVABIN=`"$JUBLERPATH/lib/findjava.sh"`
+	else
+		echo "The installation is corrupted. Please install again."
+		exit 2;
+	fi
+fi
+
 if [ -z "$JAVABIN" ] ; then
 	echo Java binary not found. Exiting.
 	exit 1
 fi
 
-cd /usr/lib/jubler
+cd "$JUBLERPATH"
 "$JAVABIN" -jar Jubler.jar "$@"
