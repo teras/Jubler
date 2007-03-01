@@ -51,10 +51,12 @@
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
 			<file src="resources/installers/linux/jubler.png" targetdir="$INSTALL_PATH/lib"/>
+			<file src="resources/system/findjava.sh" targetdir="$INSTALL_PATH/lib"/>
 			<file src="resources/installers/linux/jubler" targetdir="$INSTALL_PATH"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
 			<file src="resources/help/question.png" targetdir="$INSTALL_PATH/help"/>
 			<executable targetfile="$INSTALL_PATH/jubler" type="bin" stage="never" keep="true"/>
+			<executable targetfile="$INSTALL_PATH/lib/findjava.sh" type="bin" stage="never" keep="true"/>
         </pack>
     </packs>
     
