@@ -65,8 +65,6 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 	jboolean nobrk = JNI_TRUE;
 	
 	int ENDIANESS = isLittleEndian();
-
-	outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
 	
 	av_register_all();
 	
@@ -95,6 +93,11 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 			DEBUG("makeCache", "Could not open cache file '%s'.\n", cache_c);
 			ret = JNI_FALSE;
    	}
+		outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
+		if(outbuf==NULL) {
+			DEBUG("makeCache", "Could not allocate memory for outbuf.\n");
+			ret = JNI_FALSE;
+		}
 
 		if (ret != JNI_FALSE) {
 			// Find the stream info.
@@ -131,21 +134,31 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 				channels = ccx->channels;
 				ratewindow = (float)ccx->sample_rate / RESOLUTION;
 				maxbyte = (sampledcounter) * channels * step * ratewindow;
-   				maxsample = malloc(channels);
-				minsample = malloc(channels);
-
-				/* Initialize these arrays */
-				for (j=1;j<=channels;j++) {
-					minsample[j-1] = 127;
-					maxsample[j-1] = -128;
+   			maxsample = malloc(channels);
+				if(maxsample==NULL) {
+					DEBUG("makeCache", "Could not allocate memory for maxsample.\n");
+					ret = JNI_FALSE;
 				}
-				/* Let's write the header, for start */
-				fprintf(cachefile, "JACACHE\1");	/* Store magic key and version number */
-				fwrite(&channels, 1, 1, cachefile);	/* Store number of channels */
-				storeBigEndian(RESOLUTION, cachefile);	/* Store samples per second in big endian fashion */
-				storeBigEndian((unsigned short int)strlen(original_c), cachefile);	/* Store filename string size in big endian fashion */
-				fprintf(cachefile, "%s", original_c); /* Store UTF8 filename string */
-				/* End of header */
+				minsample = malloc(channels);
+				if(minsample==NULL) {
+					DEBUG("makeCache", "Could not allocate memory for minsample.\n");
+					ret = JNI_FALSE;
+				}
+
+				if (ret != JNI_FALSE) {
+					/* Initialize these arrays */
+					for (j=1;j<=channels;j++) {
+						minsample[j-1] = 127;
+						maxsample[j-1] = -128;
+					}
+					/* Let's write the header, for start */
+					fprintf(cachefile, "JACACHE\1");	/* Store magic key and version number */
+					fwrite(&channels, 1, 1, cachefile);	/* Store number of channels */
+					storeBigEndian(RESOLUTION, cachefile);	/* Store samples per second in big endian fashion */
+					storeBigEndian((unsigned short int)strlen(original_c), cachefile);	/* Store filename string size in big endian fashion */
+					fprintf(cachefile, "%s", original_c); /* Store UTF8 filename string */
+					/* End of header */
+				}
 			}
 		}
 

@@ -75,8 +75,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
    char *outbuf;
 	unsigned char *packptr;
 	jboolean ret = JNI_TRUE, nobrk = JNI_TRUE;
-   outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
-
+   
 	av_register_all();
 
    /* Open the input/output files */
@@ -85,6 +84,12 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 		DEBUG("decodeAudio", "Could not open file '%s'.\n", input_filename);
 	 	ret = JNI_FALSE;
    }
+
+	outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
+	if(outbuf==NULL) {
+		DEBUG("decodeAudio", "Could not allocate memory for outbuf.\n");
+		ret = JNI_FALSE;
+	}
 
 	if (ret != JNI_FALSE) {
    	/* Find the stream info */

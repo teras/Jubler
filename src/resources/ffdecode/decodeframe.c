@@ -188,6 +188,10 @@ AVPicture* decodeFrame (const char *input_filename, jlong seek_time, jint *width
 		DEBUG("decodeFrame", "Could not open file '%s'.\n", input_filename);
 		retflag = FALSE;
 	}
+	if(pict==NULL) {
+		DEBUG("decodeFrame", "Could not allocate memory for pict.\n");
+		retflag = FALSE;
+	}
 
 	if (retflag != FALSE) {
 		// Find the stream info.
