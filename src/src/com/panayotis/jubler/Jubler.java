@@ -1333,7 +1333,7 @@ public class Jubler extends JFrame {
         public void windowOpened(java.awt.event.WindowEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void RetrieveWFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrieveWFMActionPerformed
         OpenSubtitles osubs = new OpenSubtitles();
         osubs.printStream("The wall", "eng");
@@ -1396,10 +1396,10 @@ public class Jubler extends JFrame {
         subeditor.setAttPrevSelectable(false);
         MediaFileFM.setEnabled(true);
         
-        /* Cache is deleted *every time* the preview window is closed 
+        /* Cache is deleted *every time* the preview window is closed
          * This is also the case when the user just clicks on the "close" button
          * of the application */
-        mfile.closeAudioCache();    // 
+        mfile.closeAudioCache();    //
     }
     private void PreviewTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBActionPerformed
         mfile.validateMediaFile(subs, false);
@@ -1790,7 +1790,7 @@ public class Jubler extends JFrame {
             }
             
             setSubs(newsubs);
-            other.closeWindow(false);
+            other.closeWindow(false, true);
         }
     }//GEN-LAST:event_JoinTMActionPerformed
     
@@ -1863,7 +1863,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_SaveAsFMActionPerformed
     
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        closeWindow(true);
+        closeWindow(true, false);
     }//GEN-LAST:event_formWindowClosing
     
     private void SaveFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFMActionPerformed
@@ -1876,7 +1876,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_PrefsFMActionPerformed
     
     private void CloseFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseFMActionPerformed
-        closeWindow(true);
+        closeWindow(true, true);
     }//GEN-LAST:event_CloseFMActionPerformed
     
     private void OpenFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFMActionPerformed
@@ -2063,16 +2063,16 @@ public class Jubler extends JFrame {
         }
     }
     
-
+    
     public void loadFile(File f, boolean force_into_same_window ) {
         String data;
         Subtitles newsubs;
         Jubler work;
-
+        
         /* Find where to display this subtitle file */
         if (subs==null || force_into_same_window) work = this;
         else work = new Jubler();
-
+        
         /* Initialize Subtitles */
         newsubs = new Subtitles();
         newsubs.setCurrentFile(FileCommunicator.stripFileFromExtension(f)); // getFPS requires it
@@ -2085,7 +2085,7 @@ public class Jubler extends JFrame {
             DEBUG.error(_("Could not load file. Possibly an encoding error."));
             return;
         }
-
+        
         /* Convert file into subtitle data */
         newsubs.populate(f, data, work.prefs.getLoadFPS());
         if ( newsubs.size() == 0 ) {
@@ -2149,7 +2149,7 @@ public class Jubler extends JFrame {
     
     
     
-    private void closeWindow(boolean unsave_check) {
+    private void closeWindow(boolean unsave_check, boolean keep_application_alive) {
         if (isUnsaved() && unsave_check) {
             int res = JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation"), JIDialog.ERROR_MESSAGE, true);
             if ( res == JIDialog.NO_OPTION) return;
@@ -2169,19 +2169,24 @@ public class Jubler extends JFrame {
                 w.connect_to_other = null;
             }
         }
-        if ( windows.size() == 0 ) {
-            backupWindowSize(true);
-            System.exit(0);
-        }
         if ( windows.size() == 1 ) {
             windows.elementAt(0).JoinTM.setEnabled(false);
             windows.elementAt(0).ReparentTM.setEnabled(false);
         }
-        
         if (subs!=null) subs.setLastOpenedFile(null); //Needed to remove itself from the recents menu
         FileCommunicator.updateRecentsMenu();
         
+        if ( windows.size() == 0 ) {
+            backupWindowSize(true);
+            if (keep_application_alive && subs!=null) {
+                new Jubler();
+            } else {
+                System.exit(0);
+            }
+        }
+        
         dispose();
+        
     }
     
     private void openWindow() {
