@@ -360,7 +360,7 @@ public class JAbout extends javax.swing.JPanel {
         
         StringBuffer thanks = new StringBuffer();
         thanks.append(_("Special thanks")).append(":\n").append(_("{0} plugin", "ffmpeg"));
-        thanks.append(": Kyritsis Thanasis, djart@hellug.gr\n\n");
+        thanks.append(": Thanos Kyritsis, djart@linux.gr\n\n");
         thanks.append(_("Jubler mascot"));
         thanks.append(": Dimitris Karakatsanis, <dimkaras@ath.forthnet.gr>\n");
         thanks.append(_("{0} plugin", "zemberek"));
