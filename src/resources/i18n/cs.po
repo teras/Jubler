@@ -4,7 +4,7 @@ msgid	""
 msgstr	"Project-Id-Version: cs\n"
 	"Report-Msgid-Bugs-To: \n"
 	"POT-Creation-Date: 2007-02-28 14:46+0200\n"
-	"PO-Revision-Date: 2005-05-01 21:52+0100\n"
+	"PO-Revision-Date: 2007-03-04 14:26+0100\n"
 	"Last-Translator: Conyx <conyx@seznam.cz>\n"
 	"Language-Team:  <el@li.org>\n"
 	"MIME-Version: 1.0\n"
@@ -179,11 +179,11 @@ msgstr	"Otevřít"
 
 #: com/panayotis/jubler/Jubler.java:696
 msgid	"Web"
-msgstr	""
+msgstr	"Web"
 
 #: com/panayotis/jubler/Jubler.java:698
 msgid	"Retrieve"
-msgstr	""
+msgstr	"Získat"
 
 #: com/panayotis/jubler/Jubler.java:706
 msgid	"Revert"
@@ -203,9 +203,8 @@ msgid	"Close"
 msgstr	"Zavřít"
 
 #: com/panayotis/jubler/Jubler.java:741
-#, fuzzy
 msgid	"Change media file"
-msgstr	"Změnit video soubor"
+msgstr	"Změnit mediální soubor"
 
 #: com/panayotis/jubler/Jubler.java:748 com/panayotis/jubler/Jubler.java:1487
 msgid	"Information"
@@ -539,7 +538,7 @@ msgstr	"Řečtina"
 
 #: com/panayotis/jubler/information/JAbout.java:52
 msgid	"Portuguese (Brazilian)"
-msgstr	""
+msgstr	"Portugalština (Brazilská)"
 
 #: com/panayotis/jubler/information/JAbout.java:53
 msgid	"Turkish"
@@ -653,7 +652,7 @@ msgstr	"Byla nalezena nová verze Jubleru!"
 
 #: com/panayotis/jubler/information/JVersion.java:132
 msgid	"Go"
-msgstr	""
+msgstr	"Jdi"
 
 #: com/panayotis/jubler/information/JVersion.java:145
 msgid	"Do not inform me again for this version"
@@ -771,9 +770,8 @@ msgid	"Current playback time"
 msgstr	"Aktuální čas přehrávání"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:522
-#, fuzzy
 msgid	"Subtitles time difference"
-msgstr	"Časové rozdíly titulku"
+msgstr	"Časový rozdíl titulků"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:537
 msgid	"Play/Pause video playback"
@@ -806,21 +804,19 @@ msgstr	"Jdi vpřed o 30 sekund"
 #: com/panayotis/jubler/media/console/JVideoConsole.java:622
 msgid	"Select subtitle from the main window, to synchronize subtitles with "
 	"current time."
-msgstr	""
+msgstr	"Vybere titulek z hlavního okna k synchronizaci s aktuálním časem."
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:632
-#, fuzzy
 msgid	"Mark first synchronization position of the subtitles."
-msgstr	"Zamkne délku trvání titulku"
+msgstr	"Označí první synchronizační pozici titulků."
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:644
 msgid	"Mark second synchronization position of the subtitles."
-msgstr	""
+msgstr	"Označí druhou synchronizační pozici titulků"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:660
-#, fuzzy
 msgid	"Change subtitle delay on the fly"
-msgstr	"Přidej nové titulky za běhu"
+msgstr	"Změní zpoždění titulků (za běhu)"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:682
 msgid	"Subtitle text"
@@ -906,12 +902,12 @@ msgstr	"Náhled titulků"
 
 #: com/panayotis/jubler/media/preview/decoders/AudioPreview.java:51
 msgid	"Trying to initialize audio preview with null data"
-msgstr	""
+msgstr	"Zkoušíte inicializovat audio náhled s neplatnými daty"
 
 #: com/panayotis/jubler/media/preview/decoders/AudioPreview.java:52
 #, java-format
 msgid	"Trying to intialize audio preview with wrong size {0}"
-msgstr	""
+msgstr	"Zkoušíte inicializovat audio náhled se špatnou velikostí {0}"
 
 #: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:90
 msgid	"Count not create audio clip"
@@ -931,7 +927,7 @@ msgstr	"Řádek není dostupný"
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:50
 msgid	"Decoder not active. Aborting audio cache creation."
-msgstr	""
+msgstr	"Dekodér není aktivní. Ruším vytváření audio cache."
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:54
 msgid	"Still creating cache. Use the Cancel button to abort."
@@ -1047,14 +1043,12 @@ msgid	"Shortcuts"
 msgstr	"Zkratky"
 
 #: com/panayotis/jubler/options/JRateChooser.java:73
-#, fuzzy
 msgid	"Get FPS from the video file"
-msgstr	"Změnit video soubor"
+msgstr	"Získá FPS z video souboru"
 
 #: com/panayotis/jubler/options/JRateChooser.java:85
-#, fuzzy
 msgid	"Frames per second"
-msgstr	"Snímků za sekundu {0}"
+msgstr	"Snímků za sekundu"
 
 #: com/panayotis/jubler/options/JRateChooser.java:104
 #, java-format
@@ -1110,17 +1104,17 @@ msgstr	"Nalezen soubor {0}"
 #: com/panayotis/jubler/os/FileCommunicator.java:135
 #, java-format
 msgid	"File {0} is unwritable"
-msgstr	""
+msgstr	"Soubor {0} je nezapisovatelný"
 
 #: com/panayotis/jubler/os/FileCommunicator.java:149
-#, fuzzy, java-format
+#, java-format
 msgid	"Error while updating file {0}"
-msgstr	"Chyba při ukládání souboru {0}"
+msgstr	"Chyba při aktualizaci souboru {0}"
 
 #: com/panayotis/jubler/os/FileCommunicator.java:151
 #: com/panayotis/jubler/os/FileCommunicator.java:153
 msgid	"Encoding error. Use proper encoding (e.g. UTF-8)."
-msgstr	""
+msgstr	"Chyba při kódování. Použíte vhodné kódování (např. UTF-8)"
 
 #: com/panayotis/jubler/os/FileCommunicator.java:155
 #, java-format
@@ -1129,11 +1123,11 @@ msgstr	"Chyba při ukládání souboru {0}"
 
 #: com/panayotis/jubler/os/SystemDependent.java:191
 msgid	"Could not find web browser"
-msgstr	""
+msgstr	"Nemohu najít webový prohlížeč"
 
 #: com/panayotis/jubler/os/SystemFileFinder.java:65
 msgid	"Could not find Jubler path!"
-msgstr	""
+msgstr	"Nemohu najít cestu k Jubleru!"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:218
 msgid	"Start time of the subtitle"
@@ -1201,29 +1195,28 @@ msgstr	"Soubory s titulky"
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:87
 msgid	"The save process haven't finish yet"
-msgstr	""
+msgstr	"Proces ukládání ještě neskončil"
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:91
-#, fuzzy
 msgid	"Maestro DVD options"
-msgstr	"Volby přehrávače"
+msgstr	"Maestro DVD volby"
 
 #: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:86
 msgid	"Video width"
-msgstr	""
+msgstr	"Šířka videa"
 
 #: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:89
 msgid	"Video height"
-msgstr	""
+msgstr	"Výška videa"
 
 #: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:92
 msgid	"Video standard"
-msgstr	""
+msgstr	"Video standard"
 
 #: com/panayotis/jubler/subs/loader/binary/JSaveProgress.java:68
 #: com/panayotis/jubler/subs/loader/binary/JSaveProgress.java:75
 msgid	"Save progress"
-msgstr	""
+msgstr	"Pokrok ukládání"
 
 #: com/panayotis/jubler/subs/loader/text/PlainText.java:74
 msgid	"Plain text"
@@ -1702,7 +1695,7 @@ msgstr	"Barva použitá pro vkládané titulky"
 
 #: com/panayotis/jubler/tools/JRecodeTime.java:65
 msgid	"Recode time"
-msgstr	"Rekódovat čas"
+msgstr	"Překódovat čas"
 
 #: com/panayotis/jubler/tools/JRecodeTime.java:173
 msgid	"Use the following factor"
@@ -1727,24 +1720,22 @@ msgid	"Use a custom factor in order to perform the recoding"
 msgstr	"Použije vlastní faktor, aby provedl překódování"
 
 #: com/panayotis/jubler/tools/JRecodeTime.java:217
-#, fuzzy
 msgid	"Recoding factor"
-msgstr	"Použít následující faktor"
+msgstr	"Kódovací faktor"
 
 #: com/panayotis/jubler/tools/JRecodeTime.java:221
 msgid	"The value of the custom factor which will do the recoding"
 msgstr	"Hodnota vlastního faktoru, který bude provádět překódování"
 
 #: com/panayotis/jubler/tools/JRecodeTime.java:225
-#, fuzzy
 msgid	"Central time"
 msgstr	"Centrální čas"
 
 #: com/panayotis/jubler/tools/JRecodeTime.java:229
 msgid	"The central time point which the recoding occurs. Usually left to 0 "
 	"to apply evenly to the whole file."
-msgstr	"Centrální časový bod nastalého rekódování. Obvykle ponecháno na 0 k "
-	"rovnoměrné aplikaci na celý soubor"
+msgstr	"Centrální časový bod nastalého překódování. Obvykle ponecháno na 0 k "
+	"rovnoměrné aplikaci na celý soubor."
 
 #: com/panayotis/jubler/tools/JReparent.java:48
 msgid	"-No parent available-"
@@ -1764,7 +1755,7 @@ msgstr	"Globální nahrazení"
 
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:108
 msgid	"Regular expressions to be executed"
-msgstr	""
+msgstr	"Regulární výrazy k zpracování"
 
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:110
 msgid	"List of replacements to be done"
@@ -1780,9 +1771,8 @@ msgid	"Use"
 msgstr	"Použít"
 
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:132
-#, fuzzy
 msgid	"Edit regular expression replace list"
-msgstr	"Upravit seznam substitucí"
+msgstr	"Upravit seznam regulárních výrazů nahrazení"
 
 #: com/panayotis/jubler/tools/JRounder.java:49
 msgid	"Round timing"
@@ -1857,9 +1847,8 @@ msgid	"Leave gap"
 msgstr	"Nachat mezeru"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:65
-#, fuzzy
 msgid	"-current-"
-msgstr	"Klonovat současný"
+msgstr	"-aktuální-"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:134
 msgid	"Synchronize data from the following subtitles"
