@@ -174,6 +174,8 @@ public class Jubler extends JFrame {
     private JMarker mark;
     private JRecodeTime recode;
     private JSynchronize sync;
+    private JSubSplit split;
+
     
     private static HelpBrowser faqbrowse;
     
@@ -243,7 +245,7 @@ public class Jubler extends JFrame {
         mark = new JMarker();
         recode = new JRecodeTime();
         sync = new JSynchronize();
-        
+        split = new JSubSplit();
         
         openWindow();
         updateRecentFile(null);
@@ -1800,9 +1802,7 @@ public class Jubler extends JFrame {
     
     
     private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitTMActionPerformed
-        JSubSplit split = new JSubSplit();
         int row, res;
-
         
         row = SubTable.getSelectedRow();
         if (row < 0 ) split.setTime(new Time(0d));
@@ -1831,13 +1831,14 @@ public class Jubler extends JFrame {
                 }
             }
             
+            Subtitles oldsubs = subs;
             setSubs(subs1);
             
             Jubler newwindow = new Jubler(subs2);
             newwindow.undo.invalidateSaveMark();
             
-            newwindow.setFile(new File(subs.getCurrentFile()+"_2"), true);
-            setFile(new File(subs.getCurrentFile()+"_1"), false);
+            newwindow.setFile(new File(oldsubs.getCurrentFile()+"_2"), true);
+            setFile(new File(oldsubs.getCurrentFile()+"_1"), false);
         }
     }//GEN-LAST:event_SplitTMActionPerformed
     
@@ -2221,7 +2222,7 @@ public class Jubler extends JFrame {
             if (pos == 5) { // Everything is OK - 5 numerical values read
                 System.out.println(values[0] +" "+ (values[0]+10) );
                 setLocationByPlatform(false);
-                setBounds( (values[0]-400), (values[1]+10), values[2], values[3]);
+                setBounds( (values[0]), (values[1]), values[2], values[3]);
                 setExtendedState(values[4]);
             }
         }
