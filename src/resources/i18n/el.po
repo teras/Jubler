@@ -7,7 +7,7 @@
 msgid	""
 msgstr	"Project-Id-Version: el\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-02-28 14:46+0200\n"
+	"POT-Creation-Date: 2007-03-05 03:24+0200\n"
 	"PO-Revision-Date: 2006-11-09 17:32+0200\n"
 	"Last-Translator: \n"
 	"Language-Team:  <en@li.org>\n"
@@ -39,464 +39,454 @@ msgstr	"Όχι"
 msgid	"Yes"
 msgstr	"Ναι"
 
-#: com/panayotis/jubler/Jubler.java:268
+#: com/panayotis/jubler/Jubler.java:274
 msgid	"Change subtitle"
 msgstr	"Αλλαγή υποτίτλου"
 
-#: com/panayotis/jubler/Jubler.java:290
+#: com/panayotis/jubler/Jubler.java:296
 msgid	"Insert subtitle"
 msgstr	"Εισαγωγή υποτίτλου"
 
-#: com/panayotis/jubler/Jubler.java:325
+#: com/panayotis/jubler/Jubler.java:331
 msgid	"_clone"
 msgstr	"_κλώνος"
 
-#: com/panayotis/jubler/Jubler.java:462 com/panayotis/jubler/Jubler.java:596
+#: com/panayotis/jubler/Jubler.java:468 com/panayotis/jubler/Jubler.java:602
 msgid	"Cut"
 msgstr	"Αποκοπή"
 
-#: com/panayotis/jubler/Jubler.java:467 com/panayotis/jubler/Jubler.java:603
+#: com/panayotis/jubler/Jubler.java:473 com/panayotis/jubler/Jubler.java:609
 msgid	"Copy"
 msgstr	"Αντιγραφή"
 
-#: com/panayotis/jubler/Jubler.java:472 com/panayotis/jubler/Jubler.java:610
+#: com/panayotis/jubler/Jubler.java:478 com/panayotis/jubler/Jubler.java:616
 msgid	"Paste"
 msgstr	"Επικόλληση"
 
-#: com/panayotis/jubler/Jubler.java:477 com/panayotis/jubler/Jubler.java:799
+#: com/panayotis/jubler/Jubler.java:483 com/panayotis/jubler/Jubler.java:805
 #: com/panayotis/jubler/subs/style/JStyleEditor.java:317
 #: com/panayotis/jubler/tools/replace/JReplaceList.java:106
 msgid	"Delete"
 msgstr	"Διαγραφή"
 
-#: com/panayotis/jubler/Jubler.java:482 com/panayotis/jubler/Jubler.java:895
+#: com/panayotis/jubler/Jubler.java:488 com/panayotis/jubler/Jubler.java:901
 msgid	"Mark"
 msgstr	"Σημείωση"
 
-#: com/panayotis/jubler/Jubler.java:483 com/panayotis/jubler/Jubler.java:896
+#: com/panayotis/jubler/Jubler.java:489 com/panayotis/jubler/Jubler.java:902
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid	"None"
 msgstr	"Καμία"
 
-#: com/panayotis/jubler/Jubler.java:488 com/panayotis/jubler/Jubler.java:902
+#: com/panayotis/jubler/Jubler.java:494 com/panayotis/jubler/Jubler.java:908
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid	"Pink"
 msgstr	"Ροζ"
 
-#: com/panayotis/jubler/Jubler.java:493 com/panayotis/jubler/Jubler.java:908
+#: com/panayotis/jubler/Jubler.java:499 com/panayotis/jubler/Jubler.java:914
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid	"Yellow"
 msgstr	"Κίτρινο"
 
-#: com/panayotis/jubler/Jubler.java:498 com/panayotis/jubler/Jubler.java:914
+#: com/panayotis/jubler/Jubler.java:504 com/panayotis/jubler/Jubler.java:920
 #: com/panayotis/jubler/subs/SubEntry.java:84
 msgid	"Cyan"
 msgstr	"Κυανό"
 
-#: com/panayotis/jubler/Jubler.java:505 com/panayotis/jubler/Jubler.java:529
-#: com/panayotis/jubler/Jubler.java:930
+#: com/panayotis/jubler/Jubler.java:511 com/panayotis/jubler/Jubler.java:535
+#: com/panayotis/jubler/Jubler.java:936
 #: com/panayotis/jubler/subs/JSubEditor.java:484
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid	"Style"
 msgstr	"Μορφή"
 
-#: com/panayotis/jubler/Jubler.java:510
+#: com/panayotis/jubler/Jubler.java:516
 msgid	"Show columns"
 msgstr	"Εμφάνιση στοιλών"
 
-#: com/panayotis/jubler/Jubler.java:511
+#: com/panayotis/jubler/Jubler.java:517
 #: com/panayotis/jubler/subs/JSubEditor.java:399
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid	"Start"
 msgstr	"Αρχή"
 
-#: com/panayotis/jubler/Jubler.java:517
+#: com/panayotis/jubler/Jubler.java:523
 #: com/panayotis/jubler/subs/JSubEditor.java:402
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid	"End"
 msgstr	"Τέλος"
 
-#: com/panayotis/jubler/Jubler.java:523
+#: com/panayotis/jubler/Jubler.java:529
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid	"Layer"
 msgstr	"Στρώμα"
 
-#: com/panayotis/jubler/Jubler.java:539 com/panayotis/jubler/Jubler.java:1024
+#: com/panayotis/jubler/Jubler.java:545 com/panayotis/jubler/Jubler.java:1030
 msgid	"Test video"
 msgstr	"Δοκιμή video"
 
-#: com/panayotis/jubler/Jubler.java:574
+#: com/panayotis/jubler/Jubler.java:580
 msgid	"New"
 msgstr	"Νέο"
 
-#: com/panayotis/jubler/Jubler.java:580
+#: com/panayotis/jubler/Jubler.java:586
 #: com/panayotis/jubler/options/JPreferences.java:192
 msgid	"Load"
 msgstr	"Φόρτωσε"
 
-#: com/panayotis/jubler/Jubler.java:586 com/panayotis/jubler/Jubler.java:717
+#: com/panayotis/jubler/Jubler.java:592 com/panayotis/jubler/Jubler.java:723
 #: com/panayotis/jubler/options/JPreferences.java:200
 msgid	"Save"
 msgstr	"Αποθήκευσε"
 
-#: com/panayotis/jubler/Jubler.java:620 com/panayotis/jubler/Jubler.java:944
-#: com/panayotis/jubler/Jubler.java:2021
+#: com/panayotis/jubler/Jubler.java:626 com/panayotis/jubler/Jubler.java:950
+#: com/panayotis/jubler/Jubler.java:2025
 msgid	"Undo"
 msgstr	"Ακύρωση"
 
-#: com/panayotis/jubler/Jubler.java:627 com/panayotis/jubler/Jubler.java:952
-#: com/panayotis/jubler/Jubler.java:2025
+#: com/panayotis/jubler/Jubler.java:633 com/panayotis/jubler/Jubler.java:958
+#: com/panayotis/jubler/Jubler.java:2029
 msgid	"Redo"
 msgstr	"Επανάληψη"
 
-#: com/panayotis/jubler/Jubler.java:637
+#: com/panayotis/jubler/Jubler.java:643
 msgid	"Sort subtitles"
 msgstr	"Ταξινόμηση υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:647
+#: com/panayotis/jubler/Jubler.java:653
 msgid	"Preview the subtitles"
 msgstr	"Προεπισκόπιση υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:654
+#: com/panayotis/jubler/Jubler.java:660
 msgid	"Test subtitles from current position"
 msgstr	"Δοκιμή υποτίτλων από την τρέχουσα θέση"
 
-#: com/panayotis/jubler/Jubler.java:664 com/panayotis/jubler/Jubler.java:1068
-#: com/panayotis/jubler/information/JAbout.java:402
+#: com/panayotis/jubler/Jubler.java:670 com/panayotis/jubler/Jubler.java:1074
+#: com/panayotis/jubler/information/JAbout.java:404
 msgid	"About"
 msgstr	"Σχετικά"
 
-#: com/panayotis/jubler/Jubler.java:671 com/panayotis/jubler/Jubler.java:674
+#: com/panayotis/jubler/Jubler.java:677 com/panayotis/jubler/Jubler.java:680
 msgid	"File"
 msgstr	"Αρχείο"
 
-#: com/panayotis/jubler/Jubler.java:672
+#: com/panayotis/jubler/Jubler.java:678
 msgid	"New..."
 msgstr	"Νέο..."
 
-#: com/panayotis/jubler/Jubler.java:680
+#: com/panayotis/jubler/Jubler.java:686
 msgid	"Child"
 msgstr	"Θυγατρικό"
 
-#: com/panayotis/jubler/Jubler.java:690
+#: com/panayotis/jubler/Jubler.java:696
 msgid	"Open"
 msgstr	"Άνοιγμα"
 
-#: com/panayotis/jubler/Jubler.java:696
+#: com/panayotis/jubler/Jubler.java:702
 msgid	"Web"
 msgstr	"Δίκτυο"
 
-#: com/panayotis/jubler/Jubler.java:698
+#: com/panayotis/jubler/Jubler.java:704
 msgid	"Retrieve"
 msgstr	"Λήψη"
 
-#: com/panayotis/jubler/Jubler.java:706
+#: com/panayotis/jubler/Jubler.java:712
 msgid	"Revert"
 msgstr	"Επαναφορά"
 
-#: com/panayotis/jubler/Jubler.java:713
+#: com/panayotis/jubler/Jubler.java:719
 msgid	"Recent files"
 msgstr	"Πρόσφατα αρχεία"
 
-#: com/panayotis/jubler/Jubler.java:724
+#: com/panayotis/jubler/Jubler.java:730
 msgid	"Save as ..."
 msgstr	"Αποθήκευση ως ..."
 
-#: com/panayotis/jubler/Jubler.java:732
+#: com/panayotis/jubler/Jubler.java:738
 #: com/panayotis/jubler/tools/replace/JReplace.java:207
 msgid	"Close"
 msgstr	"Κλείσιμο"
 
-#: com/panayotis/jubler/Jubler.java:741
+#: com/panayotis/jubler/Jubler.java:747
 msgid	"Change media file"
 msgstr	"Αλλαγή του αρχείου πολυμέσων"
 
-#: com/panayotis/jubler/Jubler.java:748 com/panayotis/jubler/Jubler.java:1487
+#: com/panayotis/jubler/Jubler.java:754 com/panayotis/jubler/Jubler.java:1493
 msgid	"Information"
 msgstr	"Πληροφορίες"
 
-#: com/panayotis/jubler/Jubler.java:756
+#: com/panayotis/jubler/Jubler.java:762
 #: com/panayotis/jubler/StaticJubler.java:44
 msgid	"Preferences"
 msgstr	"Προτιμήσεις"
 
-#: com/panayotis/jubler/Jubler.java:763
+#: com/panayotis/jubler/Jubler.java:769
 msgid	"Quit"
 msgstr	"Έξοδος"
 
-#: com/panayotis/jubler/Jubler.java:771
+#: com/panayotis/jubler/Jubler.java:777
 #: com/panayotis/jubler/tools/JReplaceGlobal.java:115
 msgid	"Edit"
 msgstr	"Επεξεργασία"
 
-#: com/panayotis/jubler/Jubler.java:773 com/panayotis/jubler/Jubler.java:1631
+#: com/panayotis/jubler/Jubler.java:779 com/panayotis/jubler/Jubler.java:1637
 msgid	"Cut subtitles"
 msgstr	"Αποκοπή υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:779
+#: com/panayotis/jubler/Jubler.java:785
 msgid	"Copy subtitles"
 msgstr	"Αντιγραφή υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:785 com/panayotis/jubler/Jubler.java:1611
+#: com/panayotis/jubler/Jubler.java:791 com/panayotis/jubler/Jubler.java:1617
 msgid	"Paste subtitles"
 msgstr	"Επικόλληση υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:791 com/panayotis/jubler/Jubler.java:1585
+#: com/panayotis/jubler/Jubler.java:797 com/panayotis/jubler/Jubler.java:1591
 msgid	"Paste special"
 msgstr	"Ειδική επικόλληση"
 
-#: com/panayotis/jubler/Jubler.java:800 com/panayotis/jubler/Jubler.java:922
-#: com/panayotis/jubler/Jubler.java:933
+#: com/panayotis/jubler/Jubler.java:806 com/panayotis/jubler/Jubler.java:928
+#: com/panayotis/jubler/Jubler.java:939
 msgid	"By Selection"
 msgstr	"Κατ'επιλογή"
 
-#: com/panayotis/jubler/Jubler.java:806
+#: com/panayotis/jubler/Jubler.java:812
 msgid	"Empty Lines"
 msgstr	"Άδειες γραμμές"
 
-#: com/panayotis/jubler/Jubler.java:814
+#: com/panayotis/jubler/Jubler.java:820
 #: com/panayotis/jubler/tools/replace/JReplace.java:194
 #: com/panayotis/jubler/tools/replace/JReplace.java:230
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:287
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:289
 msgid	"Replace"
 msgstr	"Αντικατάσταση"
 
-#: com/panayotis/jubler/Jubler.java:816
+#: com/panayotis/jubler/Jubler.java:822
 msgid	"Find & replace"
 msgstr	"Εύρεση & αντικατάσταση"
 
-#: com/panayotis/jubler/Jubler.java:823
+#: com/panayotis/jubler/Jubler.java:829
 msgid	"Globally"
 msgstr	"Συνολικά"
 
-#: com/panayotis/jubler/Jubler.java:831
+#: com/panayotis/jubler/Jubler.java:837
 msgid	"Insert"
 msgstr	"Εισαγωγή"
 
-#: com/panayotis/jubler/Jubler.java:833
+#: com/panayotis/jubler/Jubler.java:839
 msgid	"Before"
 msgstr	"Πριν"
 
-#: com/panayotis/jubler/Jubler.java:841
+#: com/panayotis/jubler/Jubler.java:847
 msgid	"After"
 msgstr	"Μετά"
 
-#: com/panayotis/jubler/Jubler.java:850
+#: com/panayotis/jubler/Jubler.java:856
 msgid	"Go to..."
 msgstr	"Πήγαινε..."
 
-#: com/panayotis/jubler/Jubler.java:852
+#: com/panayotis/jubler/Jubler.java:858
 msgid	"Previous entry"
 msgstr	"Προηγούμενο"
 
-#: com/panayotis/jubler/Jubler.java:860
+#: com/panayotis/jubler/Jubler.java:866
 msgid	"Next entry"
 msgstr	"Επόμενο"
 
-#: com/panayotis/jubler/Jubler.java:868
+#: com/panayotis/jubler/Jubler.java:874
 msgid	"First entry"
 msgstr	"Πρώτο"
 
-#: com/panayotis/jubler/Jubler.java:876
+#: com/panayotis/jubler/Jubler.java:882
 msgid	"Last entry"
 msgstr	"Τελευταίο"
 
-#: com/panayotis/jubler/Jubler.java:885
+#: com/panayotis/jubler/Jubler.java:891
 msgid	"Selection by time"
 msgstr	"Επιλογή με βάση το χρόνο"
 
-#: com/panayotis/jubler/Jubler.java:961
+#: com/panayotis/jubler/Jubler.java:967
 msgid	"Tools"
 msgstr	"Εργαλεία"
 
-#: com/panayotis/jubler/Jubler.java:963
+#: com/panayotis/jubler/Jubler.java:969
 msgid	"Split file"
 msgstr	"Διαχωρισμός αρχείων"
 
-#: com/panayotis/jubler/Jubler.java:969
+#: com/panayotis/jubler/Jubler.java:975
 msgid	"Join files"
 msgstr	"Σύνδεση αρχείων"
 
-#: com/panayotis/jubler/Jubler.java:976
+#: com/panayotis/jubler/Jubler.java:982
 msgid	"Reparent"
 msgstr	"Αλλαγή πατρικού"
 
-#: com/panayotis/jubler/Jubler.java:983
+#: com/panayotis/jubler/Jubler.java:989
 #: com/panayotis/jubler/tools/JSynchronize.java:80
 msgid	"Synchronize"
 msgstr	"Συγχρονισμός"
 
-#: com/panayotis/jubler/Jubler.java:991
+#: com/panayotis/jubler/Jubler.java:997
 msgid	"Shift time"
 msgstr	"Μετακύλιση χρόνου"
 
-#: com/panayotis/jubler/Jubler.java:997
+#: com/panayotis/jubler/Jubler.java:1003
 msgid	"Recode"
 msgstr	"Επανυπολογισμός χρόνου"
 
-#: com/panayotis/jubler/Jubler.java:1003
+#: com/panayotis/jubler/Jubler.java:1009
 msgid	"Time fix"
 msgstr	"Διόρθωση χρόνου"
 
-#: com/panayotis/jubler/Jubler.java:1009
+#: com/panayotis/jubler/Jubler.java:1015
 msgid	"Round times"
 msgstr	"Στρογγυλοποίηση χρόνου"
 
-#: com/panayotis/jubler/Jubler.java:1018
+#: com/panayotis/jubler/Jubler.java:1024
 #: com/panayotis/jubler/tools/JSpeller.java:58
 msgid	"Spell check"
 msgstr	"Διόρθωση λαθών"
 
-#: com/panayotis/jubler/Jubler.java:1026
+#: com/panayotis/jubler/Jubler.java:1032
 msgid	"Preview"
 msgstr	"Προεπισκόπιση"
 
-#: com/panayotis/jubler/Jubler.java:1035
+#: com/panayotis/jubler/Jubler.java:1041
 #: com/panayotis/jubler/time/gui/JTimeRegion.java:130
 msgid	"From the beginning"
 msgstr	"Από την αρχή"
 
-#: com/panayotis/jubler/Jubler.java:1042
+#: com/panayotis/jubler/Jubler.java:1048
 msgid	"From current position"
 msgstr	"Από την τρέχουσα θέση"
 
-#: com/panayotis/jubler/Jubler.java:1050 com/panayotis/jubler/Jubler.java:1726
+#: com/panayotis/jubler/Jubler.java:1056 com/panayotis/jubler/Jubler.java:1732
 msgid	"Player options"
 msgstr	"Ιδιότητες αναπαραγωγής"
 
-#: com/panayotis/jubler/Jubler.java:1060
+#: com/panayotis/jubler/Jubler.java:1066
 msgid	"Help"
 msgstr	"Βοήθεια"
 
-#: com/panayotis/jubler/Jubler.java:1061
+#: com/panayotis/jubler/Jubler.java:1067
 msgid	"FAQ"
 msgstr	"Συχνές ερωτήσεις"
 
-#: com/panayotis/jubler/Jubler.java:1359
+#: com/panayotis/jubler/Jubler.java:1365
 msgid	"Reparent subtitles file"
 msgstr	"Αλλαγή πατρικού αρχείου υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:1372
+#: com/panayotis/jubler/Jubler.java:1378
 msgid	"Cyclic dependency while setting new parent.\n"
 	"Parenting will be cancelled"
 msgstr	"Βρέθηκε κυκλική αναφορά κατά τη αλλαγή του πατρικού.\n"
 	"Η αλλαγή αυτή θα ακυρωθεί."
 
-#: com/panayotis/jubler/Jubler.java:1383
+#: com/panayotis/jubler/Jubler.java:1389
 msgid	"Sort"
 msgstr	"Ταξινόμηση"
 
-#: com/panayotis/jubler/Jubler.java:1417
+#: com/panayotis/jubler/Jubler.java:1423
 msgid	"Go to the specified time"
 msgstr	"Πήγαινε στο καθορισμένο χρόνο"
 
-#: com/panayotis/jubler/Jubler.java:1418
+#: com/panayotis/jubler/Jubler.java:1424
 msgid	"Into which time moment do you want to go to"
 msgstr	"Σε ποια χρονική στιγμή επιθυμείτε να πάτε"
 
-#: com/panayotis/jubler/Jubler.java:1420
+#: com/panayotis/jubler/Jubler.java:1426
 msgid	"Go to subtitle"
 msgstr	"Πήγαινε στον υπότιτλο"
 
-#: com/panayotis/jubler/Jubler.java:1461
+#: com/panayotis/jubler/Jubler.java:1467
 msgid	"_child"
 msgstr	"_θυγατρικό"
 
-#: com/panayotis/jubler/Jubler.java:1479
+#: com/panayotis/jubler/Jubler.java:1485
 msgid	"Change information"
 msgstr	"Αλλαγή πληροφορίας"
 
-#: com/panayotis/jubler/Jubler.java:1578
+#: com/panayotis/jubler/Jubler.java:1584
 msgid	"Paste special options"
 msgstr	"Χαρακτηριστικά ειδικής επικόλλησης"
 
-#: com/panayotis/jubler/Jubler.java:1649
+#: com/panayotis/jubler/Jubler.java:1655
 msgid	"Untitled"
 msgstr	"Ανώνυμο"
 
-#: com/panayotis/jubler/Jubler.java:1681
+#: com/panayotis/jubler/Jubler.java:1687
 msgid	"Delete subtitles"
 msgstr	"Διαγραφή υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:1710 com/panayotis/jubler/Jubler.java:1720
+#: com/panayotis/jubler/Jubler.java:1716 com/panayotis/jubler/Jubler.java:1726
 msgid	"Remove empty lines"
 msgstr	"Διαγραφή κενών γραμμών"
 
-#: com/panayotis/jubler/Jubler.java:1720
+#: com/panayotis/jubler/Jubler.java:1726
 msgid	"No lines affected"
 msgstr	"Δεν επηρεάστηκαν γραμμές"
 
-#: com/panayotis/jubler/Jubler.java:1774
+#: com/panayotis/jubler/Jubler.java:1780
 msgid	"Join two subtitles"
 msgstr	"Σύνδεση δύο υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:1780
+#: com/panayotis/jubler/Jubler.java:1786
 msgid	"Join subtitles"
 msgstr	"Σύνδεση υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:1803
-msgid	"Splitting time"
-msgstr	"Χρόνος διαχωρισμού"
-
-#: com/panayotis/jubler/Jubler.java:1806
-msgid	"Use the following time (inclusive) in order to create the new "
-	"splitted subtitles"
-msgstr	"Χρήση έως και τον επόμενο χρόνο για την κατασκευή νέων διαχωρισμένων "
-	"υποτίτλων"
-
-#: com/panayotis/jubler/Jubler.java:1808
+#: com/panayotis/jubler/Jubler.java:1811
 msgid	"Split subtitles in two"
 msgstr	"Διαχωρισμός υποτίτλων στα δύο"
 
-#: com/panayotis/jubler/Jubler.java:1814
+#: com/panayotis/jubler/Jubler.java:1817
 msgid	"Split subtitles"
 msgstr	"Διαχωρισμός υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:1856
+#: com/panayotis/jubler/Jubler.java:1860
 msgid	"Save Subtitles"
 msgstr	"Αποθήκευση υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:1883
+#: com/panayotis/jubler/Jubler.java:1887
 msgid	"Load Subtitles"
 msgstr	"Φόρτωση υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:2042
+#: com/panayotis/jubler/Jubler.java:2046
 #, java-format
 msgid	"Mark subtitles as {0}"
 msgstr	"Σημείωση υποτίτλων ως {0}"
 
-#: com/panayotis/jubler/Jubler.java:2085
+#: com/panayotis/jubler/Jubler.java:2089
 msgid	"Could not load file. Possibly an encoding error."
 msgstr	"Αδυναμία φόρτωσης αρχείο. Πιθανό λάθος κωδικοποίησης."
 
-#: com/panayotis/jubler/Jubler.java:2092
+#: com/panayotis/jubler/Jubler.java:2096
 msgid	"File not recognized!"
 msgstr	"Μη αναγνωρίσιμος τύπος αρχείου!"
 
-#: com/panayotis/jubler/Jubler.java:2096
+#: com/panayotis/jubler/Jubler.java:2100
 msgid	"Reload subtitles"
 msgstr	"Επαναφόρτωση υποτίτλων"
 
-#: com/panayotis/jubler/Jubler.java:2154
+#: com/panayotis/jubler/Jubler.java:2158
 msgid	"Quit confirmation"
 msgstr	"Επιβεβαίωση εξόδου"
 
-#: com/panayotis/jubler/Jubler.java:2154
+#: com/panayotis/jubler/Jubler.java:2158
 msgid	"Subtitles are not saved.\n"
 	"Do you really want to close this window?"
 msgstr	"Οι υπότιτλοι δεν αποθηκεύτηκαν.\n"
 	"Θέλετε πραγματικά να κλείσετε αυτό το παράθυρο;"
 
-#: com/panayotis/jubler/Jubler.java:2335
+#: com/panayotis/jubler/Jubler.java:2346
 #, java-format
 msgid	"Number of subtitles : {0}    {1}"
 msgstr	"Αριθμός υποτίτλων : {0}    {1}"
 
-#: com/panayotis/jubler/Jubler.java:2335
+#: com/panayotis/jubler/Jubler.java:2346
 msgid	"Unsaved"
 msgstr	"Αναποθήκευτο"
 
-#: com/panayotis/jubler/Jubler.java:2484
+#: com/panayotis/jubler/Jubler.java:2495
 #, java-format
 msgid	"Change style into {0}"
 msgstr	"Αλλαγή μορφής σε {0}"
@@ -530,65 +520,69 @@ msgstr	"Πίσω"
 msgid	"Go to previous page"
 msgstr	"Πήγενε στη προηγούμενη σελίδα"
 
-#: com/panayotis/jubler/information/JAbout.java:49
+#: com/panayotis/jubler/information/JAbout.java:50
 msgid	"Czech"
 msgstr	"Τσέχικα"
 
-#: com/panayotis/jubler/information/JAbout.java:50
+#: com/panayotis/jubler/information/JAbout.java:51
 msgid	"German"
 msgstr	"Γερμανικά"
 
-#: com/panayotis/jubler/information/JAbout.java:51
+#: com/panayotis/jubler/information/JAbout.java:52
 msgid	"Greek"
 msgstr	"Ελληνικά"
 
-#: com/panayotis/jubler/information/JAbout.java:52
+#: com/panayotis/jubler/information/JAbout.java:53
 msgid	"Portuguese (Brazilian)"
 msgstr	"Πορτογαλλικά (Βραζιλίας)"
 
-#: com/panayotis/jubler/information/JAbout.java:53
+#: com/panayotis/jubler/information/JAbout.java:54
+msgid	"Spanish"
+msgstr	"Ισπανικά"
+
+#: com/panayotis/jubler/information/JAbout.java:55
 msgid	"Turkish"
 msgstr	"Τουρκικά"
 
-#: com/panayotis/jubler/information/JAbout.java:348
+#: com/panayotis/jubler/information/JAbout.java:350
 msgid	"Subtitle Editor for Java"
 msgstr	"Διορθωτής υποτίτλων σε Java"
 
-#: com/panayotis/jubler/information/JAbout.java:349
+#: com/panayotis/jubler/information/JAbout.java:351
 msgid	"Version"
 msgstr	"Έκδοση"
 
-#: com/panayotis/jubler/information/JAbout.java:353
+#: com/panayotis/jubler/information/JAbout.java:355
 msgid	"Contact address"
 msgstr	"Διεύθυνση επικοινωνίας"
 
-#: com/panayotis/jubler/information/JAbout.java:362
+#: com/panayotis/jubler/information/JAbout.java:364
 msgid	"Special thanks"
 msgstr	"Ειδικές ευχαριστίες"
 
-#: com/panayotis/jubler/information/JAbout.java:362
-#: com/panayotis/jubler/information/JAbout.java:366
+#: com/panayotis/jubler/information/JAbout.java:364
+#: com/panayotis/jubler/information/JAbout.java:368
 #, java-format
 msgid	"{0} plugin"
 msgstr	"Πρόσθετο {0}"
 
-#: com/panayotis/jubler/information/JAbout.java:364
+#: com/panayotis/jubler/information/JAbout.java:366
 msgid	"Jubler mascot"
 msgstr	" Μασκώτ του Jubler"
 
-#: com/panayotis/jubler/information/JAbout.java:370
+#: com/panayotis/jubler/information/JAbout.java:372
 msgid	"Translators"
 msgstr	"Μεταφραστές"
 
-#: com/panayotis/jubler/information/JAbout.java:376
+#: com/panayotis/jubler/information/JAbout.java:378
 msgid	"Icon theme"
 msgstr	"Θέμα εικονιδίων"
 
-#: com/panayotis/jubler/information/JAbout.java:414
+#: com/panayotis/jubler/information/JAbout.java:416
 msgid	"Thanks"
 msgstr	"Ευχαριστίες"
 
-#: com/panayotis/jubler/information/JAbout.java:426
+#: com/panayotis/jubler/information/JAbout.java:428
 msgid	"Licence"
 msgstr	"Άδεια"
 
@@ -937,7 +931,8 @@ msgstr	"Ο ήχος δεν είναι διαθέσιμος"
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:50
 msgid	"Decoder not active. Aborting audio cache creation."
-msgstr	"Ο αποκωδικοποιητής δεν είναι ενεργός. Ακύρωση διαδικασίας κατασκευής προεπισκόπισης."
+msgstr	"Ο αποκωδικοποιητής δεν είναι ενεργός. Ακύρωση διαδικασίας κατασκευής "
+	"προεπισκόπισης."
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:54
 msgid	"Still creating cache. Use the Cancel button to abort."
@@ -1502,7 +1497,7 @@ msgid	"Unspecified"
 msgstr	"Απροσδιόριστο"
 
 #: com/panayotis/jubler/time/gui/JDuration.java:78
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:262
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:264
 msgid	"Ignore"
 msgstr	"Αδιαφόρησε"
 
@@ -1861,6 +1856,16 @@ msgstr	"Τοποθέτησε τους υπότιτλους στο τέλος τ�
 msgid	"Leave gap"
 msgstr	"Άφησε κενό"
 
+#: com/panayotis/jubler/tools/JSubSplit.java:44
+msgid	"Use the following time (inclusive) in order to create the new "
+	"splitted subtitles"
+msgstr	"Χρήση έως και τον επόμενο χρόνο για την κατασκευή νέων διαχωρισμένων "
+	"υποτίτλων"
+
+#: com/panayotis/jubler/tools/JSubSplit.java:75
+msgid	"Splitting time"
+msgstr	"Χρόνος διαχωρισμού"
+
 #: com/panayotis/jubler/tools/JSynchronize.java:65
 msgid	"-current-"
 msgstr	"-τρέχων-"
@@ -1943,7 +1948,7 @@ msgid	"Find"
 msgstr	"Εύρεση"
 
 #: com/panayotis/jubler/tools/replace/JReplace.java:149
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:226
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:228
 msgid	"Replace with"
 msgstr	"Αντικατάσταση με"
 
@@ -2013,80 +2018,80 @@ msgstr	"Αρχική τιμή"
 msgid	"New value"
 msgstr	"Νέα τιμή"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:216
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:218
 msgid	"The context of the misspelled word"
 msgstr	"Τα συμφραζόμενα της λανθασμένης λέξης"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:223
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:225
 msgid	"Current word"
 msgstr	"Τρέχουσα λέξη"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:235
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:237
 msgid	"The misspelled word we need to change"
 msgstr	"Η λανθασμένη λέξη που πρόκειται να αλλαχθεί"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:247
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:249
 msgid	"The word to change the misspelled word into"
 msgstr	"Η λέξη που θα αντικαταστήσει τη λανθασμένη"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:263
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:265
 msgid	"Ignore this word"
 msgstr	"Αδιαφόρησε για αυτή τη λέξη"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:272
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:274
 msgid	"Always ignore"
 msgstr	"Πάντα αδιαφόρησε"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:273
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:275
 msgid	"Ignore all instances of this word"
 msgstr	"Αδιαφόρησε για όλες τις εμφανίσεις αυτής της λέξης"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:288
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:290
 msgid	"Replace this word"
 msgstr	"Αντικατέστησε αυτή τη λέξη"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:297
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:299
 msgid	"Always replace"
 msgstr	"Πάντα αντικατέστησε"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:298
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:300
 msgid	"Replace all instances of this word"
 msgstr	"Αντικατέστησε όλες τις εμφανίσεις αυτής της λέξης"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:311
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:313
 msgid	"Insert current"
 msgstr	"Εισαγωγή τρέχουσας"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:312
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:314
 msgid	"Insert this current word in spellers dictionary"
 msgstr	"Εισήγαγε την τρέχουσα λέξη στο λεξικό"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:324
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:326
 msgid	"Stop"
 msgstr	"Τέρμα"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:325
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:327
 msgid	"Finish spell checking"
 msgstr	"Τερματισμός διαδικασίας αναγνώρισης λαθών"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:343
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:345
 msgid	"Suggestions"
 msgstr	"Προτάσεις"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:348
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:350
 msgid	"Suggested words to change the given word to"
 msgstr	"Προτεινόμενες λέξεις προκειμένου να αλλαχθεί η τρέχουσα λέξη"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:472
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:474
 #, java-format
 msgid	"Number of affected words: {0}"
 msgstr	"Αριθμός λέξεων που μεταβλήθηκαν: {0}"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:473
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:475
 msgid	"No changes have been done"
 msgstr	"Δεν έγιναν αλλαγές"
 
-#: com/panayotis/jubler/tools/spell/JSpellChecker.java:474
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:476
 msgid	"Speller changes"
 msgstr	"Αλλαγές στον διορθωτή"
 
@@ -2104,22 +2109,22 @@ msgstr	"Διορθωτή λαθών"
 msgid	"Unable to load plugin: {0}"
 msgstr	"Αδυναμία φόρτωσης του πρόσθετου: {0}"
 
-#~ msgid	"The subtitle differences\n"
-#~ 	" were {0}"
-#~ msgstr	"Οι διαφορές στο χρόνο\n"
-#~ 	"είναι {0}"
-
-#~ msgid	"Delay subtitles by 1 second"
-#~ msgstr	"Καθυστέρηση υποτίτλων κατά 1 sec"
+#~ msgid	"Forward subtitles by 100 milliseconds"
+#~ msgstr	"Προώθηση υποτίτλων κατά 100 msec"
 
 #~ msgid	"Delay subtitles by 100 milliseconds"
 #~ msgstr	"Καθυστέρηση υποτίτλων κατά 100 msec"
 
-#~ msgid	"Forward subtitles by 100 milliseconds"
-#~ msgstr	"Προώθηση υποτίτλων κατά 100 msec"
+#~ msgid	"Delay subtitles by 1 second"
+#~ msgstr	"Καθυστέρηση υποτίτλων κατά 1 sec"
 
 #~ msgid	"Forward subtitles by 1 second"
 #~ msgstr	"Προώθηση υποτίτλων κατά 1 sec"
 
 #~ msgid	"Text to be replaced"
 #~ msgstr	"Κείμενο που θα αντικατασταθεί"
+
+#~ msgid	"The subtitle differences\n"
+#~ 	" were {0}"
+#~ msgstr	"Οι διαφορές στο χρόνο\n"
+#~ 	"είναι {0}"
