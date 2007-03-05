@@ -1,7 +1,7 @@
 /*
- * JTimeSingleSelection.java
+ * JSubSplit.java
  *
- * Created on 25 Ιούνιος 2005, 3:31 μμ
+ * Created on March 5, 2007, 2:48 AM
  *
  * This file is part of Jubler.
  *
@@ -21,46 +21,41 @@
  *
  */
 
-package com.panayotis.jubler.time.gui;
-import com.panayotis.jubler.time.Time;
-import java.awt.BorderLayout;
+package com.panayotis.jubler.tools;
 
 import static com.panayotis.jubler.i18n.I18N._;
+
+import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.time.gui.JTimeSingleSelection;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 /**
  *
  * @author  teras
  */
-public class JTimeSingleSelection extends javax.swing.JPanel {
-    private JTimeSpinner splitpos;
-    private String DialogLabel;
+public class JSubSplit extends javax.swing.JPanel {
+    private JTimeSingleSelection split;
     
-    /** Creates new form JJoin */
-    public JTimeSingleSelection(Time t, String DialogLabel) {
-        this(DialogLabel);
-        setTime(t);
-    }
-    
-    public JTimeSingleSelection(String DialogLabel) {
-        splitpos = new JTimeSpinner();
-        this.DialogLabel = DialogLabel;
+    /** Creates new form JSubSplit */
+    public JSubSplit() {
         initComponents();
-        add(splitpos, BorderLayout.CENTER);
-    }
-    
-    public void setToolTip(String txt) {
-        splitpos.setToolTipText(txt);
-    }
-    public void setLabel(String txt) {
+        split = new JTimeSingleSelection("");
+        split.setToolTip(_("Use the following time (inclusive) in order to create the new splitted subtitles"));
         
+        TimeContainer.add(split, BorderLayout.CENTER);
     }
     
     public void setTime(Time t) {
-        splitpos.setValue(t);
+        split.setTime(t);
+    }
+
+    public JPanel getTimeContainer() {
+        return TimeContainer;
     }
     
     public Time getTime() {
-        return (Time)splitpos.getValue();
+        return split.getTime();
     }
     
     /** This method is called from within the constructor to
@@ -70,15 +65,24 @@ public class JTimeSingleSelection extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+        TimeContainer = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
-        setBorder(new javax.swing.border.TitledBorder(DialogLabel));
-    }
-    // </editor-fold>//GEN-END:initComponents
+        TimeContainer.setLayout(new java.awt.BorderLayout());
+
+        jLabel1.setText(_("Splitting time"));
+        TimeContainer.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        add(TimeContainer, java.awt.BorderLayout.NORTH);
+
+    }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel TimeContainer;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -62,12 +62,14 @@ import com.panayotis.jubler.tools.JShiftTime;
 import com.panayotis.jubler.tools.JSpeller;
 import com.panayotis.jubler.tools.JStyler;
 import com.panayotis.jubler.tools.JSubJoin;
+import com.panayotis.jubler.tools.JSubSplit;
 import com.panayotis.jubler.tools.JSynchronize;
 import com.panayotis.jubler.tools.JToolRealTime;
 import com.panayotis.jubler.tools.externals.JExtSelector;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
+import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -82,8 +84,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -1796,14 +1800,13 @@ public class Jubler extends JFrame {
     
     
     private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitTMActionPerformed
-        JTimeSingleSelection split;
+        JSubSplit split = new JSubSplit();
         int row, res;
+
         
         row = SubTable.getSelectedRow();
-        String title = _("Splitting time");
-        if (row < 0 ) split = new JTimeSingleSelection(new Time(0d), title);
-        else split = new JTimeSingleSelection(subs.elementAt(row).getStartTime(), title);
-        split.setToolTip(_("Use the following time (inclusive) in order to create the new splitted subtitles"));
+        if (row < 0 ) split.setTime(new Time(0d));
+        else split.setTime(subs.elementAt(row).getStartTime());
         
         res = JIDialog.question(this, split, _("Split subtitles in two"));
         if ( res == JIDialog.OK_OPTION) {
@@ -2202,11 +2205,11 @@ public class Jubler extends JFrame {
     
     /** @param toDisk :  store to properties if true, get from properties if false */
     private void backupWindowSize(boolean toDisk) {
-        if (toDisk) {
+        if (toDisk) { // save topreferences this window size
             String vals = "(("+getX() + "," + getY() +"),(" + getWidth() + "," + getHeight() + "),"+getExtendedState()+")";
             Options.setOption("System.WindowState", vals);
             Options.saveOptions();
-        } else {
+        } else {    // read from preferences and set this window size
             int [] values = new int[5];
             int pos = 0;
             String props = Options.getOption("System.WindowState", "");
@@ -2215,8 +2218,10 @@ public class Jubler extends JFrame {
             while (st.hasMoreTokens() && pos < 5 ) {
                 values[pos++] = Integer.parseInt(st.nextToken());
             }
-            if (pos == 5) {
-                setBounds(values[0], values[1], values[2], values[3]);
+            if (pos == 5) { // Everything is OK - 5 numerical values read
+                System.out.println(values[0] +" "+ (values[0]+10) );
+                setLocationByPlatform(false);
+                setBounds( (values[0]-400), (values[1]+10), values[2], values[3]);
                 setExtendedState(values[4]);
             }
         }
