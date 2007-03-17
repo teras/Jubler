@@ -254,6 +254,55 @@
 	<target name="rpm">
 	</target>
 
+	<!-- Slackware Linux installer -->
+	<target name="slackware" depends="linuxbasics,tgz"/>
+	<target name="tgz">
+
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<exec executable="rm"><arg line="-rf /tmp/package-jubler"/></exec>
+
+		<copy file="dist/Jubler.jar" todir="/tmp/package-jubler/usr/lib/jubler"/>
+		<copy file="resources/system/findjava.sh" todir="/tmp/package-jubler/usr/lib/jubler"/>
+		<chmod file="/tmp/package-jubler/usr/lib/jubler/findjava.sh" perm="a+x"/>
+		<copy file="dist/lib/libffdecode.so" todir="/tmp/package-jubler/usr/lib/jubler/lib"/>
+		<chmod file="/tmp/package-jubler/usr/lib/jubler/lib/libffdecode.so" perm="a+x"/>
+		<copy file="resources/installers/linux/jubler" todir="/tmp/package-jubler/usr/bin"/>
+		<chmod file="/tmp/package-jubler/usr/bin/jubler" perm="a+x"/>
+
+		<copy file="resources/installers/linux/copyright" todir="/tmp/package-jubler/usr/doc/jubler-${version}"/>
+		<copy file="README" todir="/tmp/package-jubler/usr/doc/jubler-${version}"/>
+		<copy file="ChangeLog" todir="/tmp/package-jubler/usr/doc/jubler-${version}"/>
+
+		<copy file="dist/help/jubler-faq.html" todir="/tmp/package-jubler/usr/doc/jubler-${version}/help"/>
+		<copy file="resources/help/question.png" todir="/tmp/package-jubler/usr/doc/jubler-${version}/help"/>
+		<exec executable="ln" failonerror="true"><arg line="-s ../../doc/jubler-${version}/help /tmp/package-jubler/usr/lib/jubler/help"/></exec>
+
+		<copy file="resources/installers/linux/jubler.1" todir="/tmp/package-jubler/usr/man/man1"/>
+		<exec executable="gzip" failonerror="true"><arg line="-9 /tmp/package-jubler/usr/man/man1/jubler.1"/></exec>
+		
+		<!-- <copy file="resources/installers/linux/jubler.menu" tofile="/tmp/package-jubler/usr/share/menu/jubler"/> -->
+		<copy file="resources/installers/linux/jubler.xpm" todir="/tmp/package-jubler/usr/share/pixmaps"/>
+		<copy file="resources/installers/linux/jubler.png" todir="/tmp/package-jubler/usr/share/icons/hicolor/32x32/apps"/>
+		<copy file="resources/installers/linux/subtitle-128.png" tofile="/tmp/package-jubler/usr/share/icons/hicolor/128x128/mimetypes/subtitle.png"/>
+		<copy file="resources/installers/linux/subtitle-32.png" tofile="/tmp/package-jubler/usr/share/icons/hicolor/32x32/mimetypes/subtitle.png"/>
+
+		<copy file="resources/installers/linux/jubler.desktop" todir="/tmp/package-jubler/usr/share/applications"/>
+		<copy file="resources/installers/linux/sub-srt.desktop" todir="/tmp/package-jubler/opt/kde/share/mimelnk/application"/>
+		<copy file="resources/installers/linux/sub-sub.desktop" todir="/tmp/package-jubler/opt/kde/share/mimelnk/application"/>
+		<copy file="resources/installers/linux/sub-ass.desktop" todir="/tmp/package-jubler/opt/kde/share/mimelnk/application"/>
+		<copy file="resources/installers/linux/sub-ssa.desktop" todir="/tmp/package-jubler/opt/kde/share/mimelnk/application"/>
+		
+		<!-- <mkdir dir="/tmp/package-jubler/install"/>-->
+		<copy todir="/tmp/package-jubler">
+			<fileset dir="resources/installers/linux/dist/slackware"/>
+		</copy>
+
+		<exec dir="/tmp/package-jubler" executable="makepkg" failonerror="true">
+			<arg line="-l y -c n /tmp/jubler-${version}-i586-1.tgz"/>
+		</exec>
+
+	</target>
+
 	<!-- IzPack Linux installer -->
 	<target name="genlinux" depends="linuxbasics,selfexp"/>
 	<target name="selfexp">
