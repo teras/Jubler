@@ -38,6 +38,7 @@ public class JAbout extends javax.swing.JPanel {
     
     private final static String[] transl={
         "Tom\u00e1\u0161 Bambas, conyx@seznam.cz",
+        "Julien Escoffier, jubler@jcpdt7j.com",
         "Christian Weiske, cweiske@cweiske.de",
         "Panayotis Katsaloulis, panayotis@panayotis.com",
         "Doutor.Zero, doutor.zero@gmail.com",
@@ -48,6 +49,7 @@ public class JAbout extends javax.swing.JPanel {
     
     private final static String [] langs={
         _("Czech"),
+        _("French"),
         _("German"),
         _("Greek"),
         _("Portuguese (Brazilian)"),

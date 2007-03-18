@@ -1,0 +1,2123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR Julien Escoffier <jubler@jcpdt7j.com>, 2007.
+# 
+#, fuzzy
+msgid ""
+""
+msgstr "Project-Id-Version: Jubler french 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-03-17 11:45+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Julien Escoffier <jubler@jcpdt7j.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: com/panayotis/jubler/JIDialog.java:37
+#: com/panayotis/jubler/JIDialog.java:38
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:545
+#: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:100
+msgid "OK"
+msgstr "OK"
+
+#: com/panayotis/jubler/JIDialog.java:38
+#: com/panayotis/jubler/media/preview/JAudioLoader.java:73
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:550
+#: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:105
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:131
+msgid "Cancel"
+msgstr "Annuler"
+
+#: com/panayotis/jubler/JIDialog.java:39
+msgid "No"
+msgstr "Non"
+
+#: com/panayotis/jubler/JIDialog.java:39
+msgid "Yes"
+msgstr "Oui"
+
+#: com/panayotis/jubler/Jubler.java:274
+msgid "Change subtitle"
+msgstr "Modifier le sous-titre"
+
+#: com/panayotis/jubler/Jubler.java:296
+msgid "Insert subtitle"
+msgstr "Insérer un sous-titre"
+
+#: com/panayotis/jubler/Jubler.java:331
+msgid "_clone"
+msgstr "Cloner"
+
+#: com/panayotis/jubler/Jubler.java:468
+#: com/panayotis/jubler/Jubler.java:602
+msgid "Cut"
+msgstr "Couper"
+
+#: com/panayotis/jubler/Jubler.java:473
+#: com/panayotis/jubler/Jubler.java:609
+msgid "Copy"
+msgstr "Copier"
+
+#: com/panayotis/jubler/Jubler.java:478
+#: com/panayotis/jubler/Jubler.java:616
+msgid "Paste"
+msgstr "Coller"
+
+#: com/panayotis/jubler/Jubler.java:483
+#: com/panayotis/jubler/Jubler.java:805
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:317
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:106
+msgid "Delete"
+msgstr "Supprimer"
+
+#: com/panayotis/jubler/Jubler.java:488
+#: com/panayotis/jubler/Jubler.java:901
+msgid "Mark"
+msgstr "Marquer"
+
+#: com/panayotis/jubler/Jubler.java:489
+#: com/panayotis/jubler/Jubler.java:902
+#: com/panayotis/jubler/subs/SubEntry.java:84
+msgid "None"
+msgstr "Aucun"
+
+#: com/panayotis/jubler/Jubler.java:494
+#: com/panayotis/jubler/Jubler.java:908
+#: com/panayotis/jubler/subs/SubEntry.java:84
+msgid "Pink"
+msgstr "Rose"
+
+#: com/panayotis/jubler/Jubler.java:499
+#: com/panayotis/jubler/Jubler.java:914
+#: com/panayotis/jubler/subs/SubEntry.java:84
+msgid "Yellow"
+msgstr "Jaune"
+
+#: com/panayotis/jubler/Jubler.java:504
+#: com/panayotis/jubler/Jubler.java:920
+#: com/panayotis/jubler/subs/SubEntry.java:84
+msgid "Cyan"
+msgstr "Cyan"
+
+#: com/panayotis/jubler/Jubler.java:511
+#: com/panayotis/jubler/Jubler.java:535
+#: com/panayotis/jubler/Jubler.java:936
+#: com/panayotis/jubler/subs/JSubEditor.java:484
+#: com/panayotis/jubler/subs/Subtitles.java:47
+msgid "Style"
+msgstr "Style"
+
+#: com/panayotis/jubler/Jubler.java:516
+msgid "Show columns"
+msgstr "Afficher les colonnes"
+
+#: com/panayotis/jubler/Jubler.java:517
+#: com/panayotis/jubler/subs/JSubEditor.java:399
+#: com/panayotis/jubler/subs/Subtitles.java:47
+msgid "Start"
+msgstr "Début"
+
+#: com/panayotis/jubler/Jubler.java:523
+#: com/panayotis/jubler/subs/JSubEditor.java:402
+#: com/panayotis/jubler/subs/Subtitles.java:47
+msgid "End"
+msgstr "Fin"
+
+#: com/panayotis/jubler/Jubler.java:529
+#: com/panayotis/jubler/subs/Subtitles.java:47
+msgid "Layer"
+msgstr "Couche"
+
+#: com/panayotis/jubler/Jubler.java:545
+#: com/panayotis/jubler/Jubler.java:1030
+msgid "Test video"
+msgstr "Tester la vidéo"
+
+#: com/panayotis/jubler/Jubler.java:580
+msgid "New"
+msgstr "Nouveau"
+
+#: com/panayotis/jubler/Jubler.java:586
+#: com/panayotis/jubler/options/JPreferences.java:192
+msgid "Load"
+msgstr "Charger"
+
+#: com/panayotis/jubler/Jubler.java:592
+#: com/panayotis/jubler/Jubler.java:723
+#: com/panayotis/jubler/options/JPreferences.java:200
+msgid "Save"
+msgstr "Enregistrer"
+
+#: com/panayotis/jubler/Jubler.java:626
+#: com/panayotis/jubler/Jubler.java:950
+#: com/panayotis/jubler/Jubler.java:2025
+msgid "Undo"
+msgstr "Annuler"
+
+#: com/panayotis/jubler/Jubler.java:633
+#: com/panayotis/jubler/Jubler.java:958
+#: com/panayotis/jubler/Jubler.java:2029
+msgid "Redo"
+msgstr "Refaire"
+
+#: com/panayotis/jubler/Jubler.java:643
+msgid "Sort subtitles"
+msgstr "Trier les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:653
+msgid "Preview the subtitles"
+msgstr "Prévisualiser les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:660
+msgid "Test subtitles from current position"
+msgstr "Tester les sous-titres depuis la position actuelle"
+
+#: com/panayotis/jubler/Jubler.java:670
+#: com/panayotis/jubler/Jubler.java:1074
+#: com/panayotis/jubler/information/JAbout.java:406
+msgid "About"
+msgstr "A propos"
+
+#: com/panayotis/jubler/Jubler.java:677
+#: com/panayotis/jubler/Jubler.java:680
+msgid "File"
+msgstr "Fichier"
+
+#: com/panayotis/jubler/Jubler.java:678
+msgid "New..."
+msgstr "Nouveau..."
+
+#: com/panayotis/jubler/Jubler.java:686
+msgid "Child"
+msgstr "Enfant"
+
+#: com/panayotis/jubler/Jubler.java:696
+msgid "Open"
+msgstr "Ouvrir"
+
+#: com/panayotis/jubler/Jubler.java:702
+msgid "Web"
+msgstr "Web"
+
+#: com/panayotis/jubler/Jubler.java:704
+msgid "Retrieve"
+msgstr "Retrouver"
+
+#: com/panayotis/jubler/Jubler.java:712
+msgid "Revert"
+msgstr "Revenir à la version précédente"
+
+#: com/panayotis/jubler/Jubler.java:719
+msgid "Recent files"
+msgstr "Fichiers récents"
+
+#: com/panayotis/jubler/Jubler.java:730
+msgid "Save as ..."
+msgstr "Enregistrer sous..."
+
+#: com/panayotis/jubler/Jubler.java:738
+#: com/panayotis/jubler/tools/replace/JReplace.java:207
+msgid "Close"
+msgstr "Fermer"
+
+#: com/panayotis/jubler/Jubler.java:747
+msgid "Change media file"
+msgstr "Changer de fichier media"
+
+#: com/panayotis/jubler/Jubler.java:754
+#: com/panayotis/jubler/Jubler.java:1493
+msgid "Information"
+msgstr "Information"
+
+#: com/panayotis/jubler/Jubler.java:762
+#: com/panayotis/jubler/StaticJubler.java:44
+msgid "Preferences"
+msgstr "Préférences"
+
+#: com/panayotis/jubler/Jubler.java:769
+msgid "Quit"
+msgstr "Quitter"
+
+#: com/panayotis/jubler/Jubler.java:777
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:115
+msgid "Edit"
+msgstr "Edition"
+
+#: com/panayotis/jubler/Jubler.java:779
+#: com/panayotis/jubler/Jubler.java:1637
+msgid "Cut subtitles"
+msgstr "Couper"
+
+#: com/panayotis/jubler/Jubler.java:785
+msgid "Copy subtitles"
+msgstr "Copier"
+
+#: com/panayotis/jubler/Jubler.java:791
+#: com/panayotis/jubler/Jubler.java:1617
+msgid "Paste subtitles"
+msgstr "Coller"
+
+#: com/panayotis/jubler/Jubler.java:797
+#: com/panayotis/jubler/Jubler.java:1591
+msgid "Paste special"
+msgstr "Coller (spécial)"
+
+#: com/panayotis/jubler/Jubler.java:806
+#: com/panayotis/jubler/Jubler.java:928
+#: com/panayotis/jubler/Jubler.java:939
+msgid "By Selection"
+msgstr "la sélection"
+
+#: com/panayotis/jubler/Jubler.java:812
+msgid "Empty Lines"
+msgstr "lignes vides"
+
+#: com/panayotis/jubler/Jubler.java:820
+#: com/panayotis/jubler/tools/replace/JReplace.java:194
+#: com/panayotis/jubler/tools/replace/JReplace.java:230
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:289
+msgid "Replace"
+msgstr "Remplacer"
+
+#: com/panayotis/jubler/Jubler.java:822
+msgid "Find & replace"
+msgstr "Rechercher & Remplacer"
+
+#: com/panayotis/jubler/Jubler.java:829
+msgid "Globally"
+msgstr "Partout"
+
+#: com/panayotis/jubler/Jubler.java:837
+msgid "Insert"
+msgstr "Insérer"
+
+#: com/panayotis/jubler/Jubler.java:839
+msgid "Before"
+msgstr "Avant"
+
+#: com/panayotis/jubler/Jubler.java:847
+msgid "After"
+msgstr "Après"
+
+#: com/panayotis/jubler/Jubler.java:856
+msgid "Go to..."
+msgstr "Aller à..."
+
+#: com/panayotis/jubler/Jubler.java:858
+msgid "Previous entry"
+msgstr "Ligne précédente"
+
+#: com/panayotis/jubler/Jubler.java:866
+msgid "Next entry"
+msgstr "Ligne suivante"
+
+#: com/panayotis/jubler/Jubler.java:874
+msgid "First entry"
+msgstr "Première ligne"
+
+#: com/panayotis/jubler/Jubler.java:882
+msgid "Last entry"
+msgstr "Dernière ligne"
+
+#: com/panayotis/jubler/Jubler.java:891
+msgid "Selection by time"
+msgstr "Sélection par temps"
+
+#: com/panayotis/jubler/Jubler.java:967
+msgid "Tools"
+msgstr "Outils"
+
+#: com/panayotis/jubler/Jubler.java:969
+msgid "Split file"
+msgstr "Séparer le fichier"
+
+#: com/panayotis/jubler/Jubler.java:975
+msgid "Join files"
+msgstr "Joindre des fichiers"
+
+#: com/panayotis/jubler/Jubler.java:982
+msgid "Reparent"
+msgstr "Rétablir la parenté"
+
+#: com/panayotis/jubler/Jubler.java:989
+#: com/panayotis/jubler/tools/JSynchronize.java:80
+msgid "Synchronize"
+msgstr "Synchroniser"
+
+#: com/panayotis/jubler/Jubler.java:997
+msgid "Shift time"
+msgstr "Décaler le temps"
+
+#: com/panayotis/jubler/Jubler.java:1003
+msgid "Recode"
+msgstr "Réencoder"
+
+#: com/panayotis/jubler/Jubler.java:1009
+msgid "Time fix"
+msgstr "Réparer le temps"
+
+#: com/panayotis/jubler/Jubler.java:1015
+msgid "Round times"
+msgstr "Arrondir le temps"
+
+#: com/panayotis/jubler/Jubler.java:1024
+#: com/panayotis/jubler/tools/JSpeller.java:58
+msgid "Spell check"
+msgstr "Vérifier l'orthographe"
+
+#: com/panayotis/jubler/Jubler.java:1032
+msgid "Preview"
+msgstr "Prévisualiser"
+
+#: com/panayotis/jubler/Jubler.java:1041
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:130
+msgid "From the beginning"
+msgstr "Depuis le début"
+
+#: com/panayotis/jubler/Jubler.java:1048
+msgid "From current position"
+msgstr "Depuis la position actuelle"
+
+#: com/panayotis/jubler/Jubler.java:1056
+#: com/panayotis/jubler/Jubler.java:1732
+msgid "Player options"
+msgstr "Options du lecteur"
+
+#: com/panayotis/jubler/Jubler.java:1066
+msgid "Help"
+msgstr "Aide"
+
+#: com/panayotis/jubler/Jubler.java:1067
+msgid "FAQ"
+msgstr "FAQ"
+
+#: com/panayotis/jubler/Jubler.java:1365
+msgid "Reparent subtitles file"
+msgstr "Rétablir la parenté - Fichier de sous-titre"
+
+#: com/panayotis/jubler/Jubler.java:1378
+msgid "Cyclic dependency while setting new parent.\n"
+"Parenting will be cancelled"
+msgstr "Dépendance cyclique pendant l'assignation du nouveau parent.\n"
+"Le rétablissement de la parenté sera annulé"
+
+#: com/panayotis/jubler/Jubler.java:1389
+msgid "Sort"
+msgstr "Trier"
+
+#: com/panayotis/jubler/Jubler.java:1423
+msgid "Go to the specified time"
+msgstr "Aller au temps spécifié"
+
+#: com/panayotis/jubler/Jubler.java:1424
+msgid "Into which time moment do you want to go to"
+msgstr "A quel moment voulez-vous aller"
+
+#: com/panayotis/jubler/Jubler.java:1426
+msgid "Go to subtitle"
+msgstr "Aller au sous-titre"
+
+#: com/panayotis/jubler/Jubler.java:1467
+msgid "_child"
+msgstr "enfant"
+
+#: com/panayotis/jubler/Jubler.java:1485
+msgid "Change information"
+msgstr "Changer l'information"
+
+#: com/panayotis/jubler/Jubler.java:1584
+msgid "Paste special options"
+msgstr "Options pour le collage spécial"
+
+#: com/panayotis/jubler/Jubler.java:1655
+msgid "Untitled"
+msgstr "Sans-titre"
+
+#: com/panayotis/jubler/Jubler.java:1687
+msgid "Delete subtitles"
+msgstr "Supprimer les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:1716
+#: com/panayotis/jubler/Jubler.java:1726
+msgid "Remove empty lines"
+msgstr "Supprimer les lignes vides"
+
+#: com/panayotis/jubler/Jubler.java:1726
+msgid "No lines affected"
+msgstr "Aucune ligne modifiée"
+
+#: com/panayotis/jubler/Jubler.java:1780
+msgid "Join two subtitles"
+msgstr "Joindre deux sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:1786
+msgid "Join subtitles"
+msgstr "Joindre les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:1811
+msgid "Split subtitles in two"
+msgstr "Séparer les sous-titres en deux"
+
+#: com/panayotis/jubler/Jubler.java:1817
+msgid "Split subtitles"
+msgstr "Séparer les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:1860
+msgid "Save Subtitles"
+msgstr "Enregistrer les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:1887
+msgid "Load Subtitles"
+msgstr "CHarger les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:2046
+#, java-format
+msgid "Mark subtitles as {0}"
+msgstr "Marquer les sous-titres comme {0}"
+
+#: com/panayotis/jubler/Jubler.java:2089
+msgid "Could not load file. Possibly an encoding error."
+msgstr "Impossible de charger le fichier. Probablement une erreur d'encodage."
+
+#: com/panayotis/jubler/Jubler.java:2096
+msgid "File not recognized!"
+msgstr "Fichier non-reconnu!"
+
+#: com/panayotis/jubler/Jubler.java:2100
+msgid "Reload subtitles"
+msgstr "Recharger les sous-titres"
+
+#: com/panayotis/jubler/Jubler.java:2158
+msgid "Quit confirmation"
+msgstr "Confirmer quitter"
+
+#: com/panayotis/jubler/Jubler.java:2158
+msgid "Subtitles are not saved.\n"
+"Do you really want to close this window?"
+msgstr "Les sous-titres ne sont pas enregistrés.\n"
+"Voulez-vous vraiment fermer cette fenêtre?"
+
+#: com/panayotis/jubler/Jubler.java:2346
+#, java-format
+msgid "Number of subtitles : {0}    {1}"
+msgstr "Nombre de sous-titres : {0}    {1}"
+
+#: com/panayotis/jubler/Jubler.java:2346
+msgid "Unsaved"
+msgstr "non-enregistré"
+
+#: com/panayotis/jubler/Jubler.java:2495
+#, java-format
+msgid "Change style into {0}"
+msgstr "Changer le style en {0}"
+
+#: com/panayotis/jubler/StaticJubler.java:37
+msgid "About Jubler"
+msgstr "A propos de Jubler"
+
+#: com/panayotis/jubler/StaticJubler.java:57
+msgid "Quit Jubler"
+msgstr "Quitter Jubler"
+
+#: com/panayotis/jubler/StaticJubler.java:112
+msgid "Clone current"
+msgstr "Clone"
+
+#: com/panayotis/jubler/StaticJubler.java:117
+msgid "-Not any recent items-"
+msgstr "-aucun fichier récent-"
+
+#: com/panayotis/jubler/information/HelpBrowser.java:59
+#, java-format
+msgid "Error while opening FAQ file \"{0}\""
+msgstr "Erreur à l'ouverture du fichier de la FAQ \"{0}\""
+
+#: com/panayotis/jubler/information/HelpBrowser.java:86
+msgid "Back"
+msgstr "Retour"
+
+#: com/panayotis/jubler/information/HelpBrowser.java:87
+msgid "Go to previous page"
+msgstr "Aller à la page précédente"
+
+#: com/panayotis/jubler/information/JAbout.java:51
+msgid "Czech"
+msgstr "Tchèque"
+
+#: com/panayotis/jubler/information/JAbout.java:52
+msgid "French"
+msgstr "Français"
+
+#: com/panayotis/jubler/information/JAbout.java:53
+msgid "German"
+msgstr "Allemand"
+
+#: com/panayotis/jubler/information/JAbout.java:54
+msgid "Greek"
+msgstr "Grec"
+
+#: com/panayotis/jubler/information/JAbout.java:55
+msgid "Portuguese (Brazilian)"
+msgstr "Portugais (Brésilien)"
+
+#: com/panayotis/jubler/information/JAbout.java:56
+msgid "Spanish"
+msgstr "Espagnol"
+
+#: com/panayotis/jubler/information/JAbout.java:57
+msgid "Turkish"
+msgstr "Turc"
+
+#: com/panayotis/jubler/information/JAbout.java:352
+msgid "Subtitle Editor for Java"
+msgstr "Editeur de sous-titre pour Java"
+
+#: com/panayotis/jubler/information/JAbout.java:353
+msgid "Version"
+msgstr "Version"
+
+#: com/panayotis/jubler/information/JAbout.java:357
+msgid "Contact address"
+msgstr "Adresse de contact"
+
+#: com/panayotis/jubler/information/JAbout.java:366
+msgid "Special thanks"
+msgstr "Remerciements spéciaux"
+
+#: com/panayotis/jubler/information/JAbout.java:366
+#: com/panayotis/jubler/information/JAbout.java:370
+#, java-format
+msgid "{0} plugin"
+msgstr "{0} plugin"
+
+#: com/panayotis/jubler/information/JAbout.java:368
+msgid "Jubler mascot"
+msgstr "Mascotte de Jubler"
+
+#: com/panayotis/jubler/information/JAbout.java:374
+msgid "Translators"
+msgstr "Traducteurs"
+
+#: com/panayotis/jubler/information/JAbout.java:380
+msgid "Icon theme"
+msgstr "Design des icônes"
+
+#: com/panayotis/jubler/information/JAbout.java:418
+msgid "Thanks"
+msgstr "Remerciements"
+
+#: com/panayotis/jubler/information/JAbout.java:430
+msgid "Licence"
+msgstr "Licence"
+
+#: com/panayotis/jubler/information/JInformation.java:82
+msgid "File path"
+msgstr "Chemin du fichier"
+
+#: com/panayotis/jubler/information/JInformation.java:85
+msgid "Title"
+msgstr "Titre"
+
+#: com/panayotis/jubler/information/JInformation.java:88
+msgid "Author"
+msgstr "Auteur"
+
+#: com/panayotis/jubler/information/JInformation.java:91
+msgid "Source"
+msgstr "Source"
+
+#: com/panayotis/jubler/information/JInformation.java:98
+msgid "The file path of this subtitle"
+msgstr "CHemin du fichier de sous-titre"
+
+#: com/panayotis/jubler/information/JInformation.java:101
+msgid "Title for this subtitle file"
+msgstr "Titre du fichier de sous-titre"
+
+#: com/panayotis/jubler/information/JInformation.java:104
+msgid "Author of this subtitle file"
+msgstr "Auteur de ce fichier de sous-titre"
+
+#: com/panayotis/jubler/information/JInformation.java:107
+msgid "Original source of this subtitle file"
+msgstr "Source originale de ce fichier de sous-titre"
+
+#: com/panayotis/jubler/information/JInformation.java:116
+msgid "Comments"
+msgstr "Commentaires"
+
+#: com/panayotis/jubler/information/JInformation.java:118
+msgid "Comments about these subtitles"
+msgstr "Commentaires à propos de ces sous-titres"
+
+#: com/panayotis/jubler/information/JVersion.java:37
+msgid "New version"
+msgstr "Nouvelle version"
+
+#: com/panayotis/jubler/information/JVersion.java:81
+msgid "Current version:"
+msgstr "Version actuelle:"
+
+#: com/panayotis/jubler/information/JVersion.java:82
+msgid "Version found:"
+msgstr "Version trouvée"
+
+#: com/panayotis/jubler/information/JVersion.java:85
+msgid "It is important to upgrade from the following URL:"
+msgstr "Il est important de mettre à jour depuis l'adresse suivante:"
+
+#: com/panayotis/jubler/information/JVersion.java:87
+msgid "Please consider upgrading from the following URL:"
+msgstr "Veuillez mettre à jour depuis l'adresse suivante SVP:"
+
+#: com/panayotis/jubler/information/JVersion.java:114
+msgid "New Jubler version found!"
+msgstr "Une nouvelle version de Jubler a été trouvée!"
+
+#: com/panayotis/jubler/information/JVersion.java:132
+msgid "Go"
+msgstr "OK"
+
+#: com/panayotis/jubler/information/JVersion.java:145
+msgid "Do not inform me again for this version"
+msgstr "Ne plus m'informer sur cette version"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:114
+msgid "Use the following video file"
+msgstr "Utiliser le fichier video suivant"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:121
+msgid "Filename of the video file. Use the \"Browse\" button to change it."
+msgstr "Nom du fichier video. Utilisez le bouton \"Browse\" pour en changer."
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:124
+#: com/panayotis/jubler/media/JVideofileSelector.java:146
+#: com/panayotis/jubler/media/JVideofileSelector.java:177
+#: com/panayotis/jubler/options/ExtOptions.java:84
+msgid "Browse"
+msgstr "Parcourir"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:125
+msgid "Change the video filename"
+msgstr "Modifie le nom du fichier video"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:143
+msgid "Filename of the external audio file (could be also an audio cache). "
+"Use the \"Browse\" button to change it."
+msgstr "Nom du fichier audio externe (peut aussi être un fichier de cache audio). "
+"Utilisez le bouton \"Browse\" pour en changer."
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:147
+msgid "Change the external audio filename"
+msgstr "Modifie le nom du fichier audio externe "
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:157
+msgid "Use a different audio stream"
+msgstr "Utiliser un flux audio distinct"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:158
+msgid "Use an audio stream outside from this video file.\n"
+"(E.g. a WAV file or a previously cached audio stream)"
+msgstr "Permet d'utiliser un flux audio différent du fichier video.\n"
+"(Exemple: un fichier WAV ou un fichier de cache audio...)"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:174
+msgid "Filename of the previous audio cache. Use the \"Browse\" button to "
+"change it."
+msgstr "Nom du fichier de cache audio. Utilisez le bouton \"Browse\" pour "
+"en changer."
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:178
+msgid "Change the audio cache filename"
+msgstr "Modifie le nom du fichier de cache audio"
+
+#: com/panayotis/jubler/media/JVideofileSelector.java:187
+msgid "Filename of the cached audio stream"
+msgstr "Nom du flux audio mis en cache"
+
+#: com/panayotis/jubler/media/MediaFile.java:95
+msgid "Select video"
+msgstr "Sélectionne la video"
+
+#: com/panayotis/jubler/media/MediaFile.java:102
+msgid "Error in videofile selection"
+msgstr "Erreur lors de la sélection du fichier video"
+
+#: com/panayotis/jubler/media/MediaFile.java:102
+msgid "This file does not exist.\n"
+"Please provide a valid file name."
+msgstr "Ce fichier n'existe pas.\n"
+"Veuillez saisir un nom de fichier valide."
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:126
+msgid "Map of subtitles"
+msgstr "Carte des sous-titres"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:363
+msgid "Video Console"
+msgstr "Console video"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:376
+msgid "Mark subttile as white"
+msgstr "Marquer les sous-titres en blanc"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:387
+msgid "Mark subttile as pink"
+msgstr "Marquer les sous-titres en rose"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:398
+msgid "Mark subttile as yellow"
+msgstr "Marquer les sous-titres en jaune"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:409
+msgid "Mark subttile as cyan"
+msgstr "Marquer les sous-titres en cyan"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:427
+msgid "Change playback speed"
+msgstr "Modifie la vitesse de lecture"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:444
+msgid "Change audio volume"
+msgstr "Modifie le volume audio"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:460
+msgid "Add new subtitle on the fly"
+msgstr "Ajoute un sous-titre à la volée"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:497
+msgid "Playback position"
+msgstr "Position de lecture"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:516
+msgid "Current playback time"
+msgstr "Position de lecture actuelle"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:522
+msgid "Subtitles time difference"
+msgstr "Différence temporelle des sous-titres"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:537
+msgid "Play/Pause video playback"
+msgstr "Lecture/Pause de la video"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:548
+msgid "Load new subtitles into player"
+msgstr "Charger de nouveaux sous-titres dans le lecteur"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:558
+msgid "Quit Player"
+msgstr "Quitter le lecteur"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:573
+msgid "Go backwards by 30 seconds"
+msgstr "Retour arrière de 30 secondes"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:583
+msgid "Go backwards by 10 secons"
+msgstr "Retour arrière de 10 secondes"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:593
+msgid "Go forwards by 10 seconds"
+msgstr "Avance rapide de 10 secondes"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:603
+msgid "Go forwards by 30 seconds"
+msgstr "Avance rapide de 30 secondes"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:622
+msgid "Select subtitle from the main window, to synchronize subtitles with "
+"current time."
+msgstr "Sélectionne le sous-titre depuis la fenêtre principale pour synhroniser les sous-titres avec "
+"la position temporelle actuelle."
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:632
+msgid "Mark first synchronization position of the subtitles."
+msgstr "Marque la première position de synchronisation des sous-titres"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:644
+msgid "Mark second synchronization position of the subtitles."
+msgstr "Marque la deuxième position de synchronisation des sous-titres"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:660
+msgid "Change subtitle delay on the fly"
+msgstr "Modifie le délai du sous-titre à la volée"
+
+#: com/panayotis/jubler/media/console/JVideoConsole.java:682
+msgid "Subtitle text"
+msgstr "Texte du sous-titre"
+
+#: com/panayotis/jubler/media/filters/AudioFileFilter.java:69
+msgid "All Audio files"
+msgstr "Tous les fichiers audio"
+
+#: com/panayotis/jubler/media/filters/VideoFileFilter.java:53
+msgid "All Video files"
+msgstr "Tous les fichiers video"
+
+#: com/panayotis/jubler/media/player/AbstractPlayer.java:58
+msgid "Player"
+msgstr "Lecteur"
+
+#: com/panayotis/jubler/media/player/AbstractPlayer.java:67
+msgid "Could not create temporary file to store the subtitles."
+msgstr "Impossible de créer le fichier temporaire pour stocker les sous-titres."
+
+#: com/panayotis/jubler/media/player/mplayer/MPlayerViewport.java:106
+msgid "Error while executing MPlayer. Executable not found."
+msgstr "Erreur lors de l'ouverture de MPlayer. Fichier executable introuvable."
+
+#: com/panayotis/jubler/media/player/mplayer/MPlayerViewport.java:108
+msgid "Error while executing MPlayer. Abnormal exit.\n"
+"Please report the author about this behaviour."
+msgstr "Erreur lors de l'ouverture de MPlayer. Terminaison imprévue.\n"
+"Merci d'informer l'auteur de cette erreur."
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:159
+msgid "Selected subtitles"
+msgstr "Sous-titres sélectionnés"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:250
+msgid "FFDecode library is not present!"
+msgstr "La librairie FFDecode est introuvable!"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:287
+msgid "Enable/disable video frame preview"
+msgstr "Afficher/Masquer la prévisualisation video"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:299
+msgid "Zoom frame to original value"
+msgstr "Cadre de zoom à sa taille d'origine"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:317
+msgid "Enable/disable waveform preview"
+msgstr "Afficher/Masquer la prévisualisation de la forme d'onde audio"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:329
+msgid "Play current subtitle"
+msgstr "Jouer le sous-titre courant"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:347
+msgid "Automatically perform operation depending on the mouse position"
+msgstr "Exécuter automatiquement l'opération selon la position de la souris"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:360
+msgid "Select subtitles only"
+msgstr "Ne sélectionner que les sous-titres"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:373
+msgid "Move subtitles only"
+msgstr "Ne déplacer que les sous-titres"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:386
+msgid "Resize subtitles only"
+msgstr "Ne redimensionner que les sous-titres"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:403
+msgid "Zoom in timeline"
+msgstr "Zoom avant de la timeline"
+
+#: com/panayotis/jubler/media/preview/JSubPreview.java:415
+msgid "Zoom out timeline"
+msgstr "Zoom arrière de la timeline"
+
+#: com/panayotis/jubler/media/preview/JSubPreviewDialog.java:57
+msgid "Subtitles preview"
+msgstr "Prévisualisation des sous-titres"
+
+#: com/panayotis/jubler/media/preview/decoders/AudioPreview.java:51
+msgid "Trying to initialize audio preview with null data"
+msgstr "Tentative d'initialisation de la preview audio à partir de données nulles"
+
+#: com/panayotis/jubler/media/preview/decoders/AudioPreview.java:52
+#, java-format
+msgid "Trying to intialize audio preview with wrong size {0}"
+msgstr "Tentative d'initialisation de la preview audio avec une taille incorrecte {0}"
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:90
+msgid "Count not create audio clip"
+msgstr "Impossible de créer le clip audio"
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:109
+msgid "Open file error"
+msgstr "Erreur d'ouverture de fichier"
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:111
+msgid "Unsupported audio"
+msgstr "Audio non-supporté"
+
+#: com/panayotis/jubler/media/preview/decoders/FFMPEG.java:113
+msgid "Line unavailable"
+msgstr "Ligne introuvable"
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:50
+msgid "Decoder not active. Aborting audio cache creation."
+msgstr "Le décideur n'est pas actif. Annulation de la création du cache audio."
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:54
+msgid "Still creating cache. Use the Cancel button to abort."
+msgstr "Création du cache en cours. Utilisez le bouton d'annulation pour annuler."
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:58
+msgid "Unable to create a null cache file"
+msgstr "Impossible de créer un fichier de cache vide."
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:62
+#, java-format
+msgid "Jubler audio cache detected for audio input: {0}"
+msgstr "Cache audio de type Jubler detecté pour l'entrée audio: {0}"
+
+#: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:75
+#, java-format
+msgid "Error while loading file {0}"
+msgstr "Erreur au chargement du fichier {0}"
+
+#: com/panayotis/jubler/options/ASpellOptions.java:66
+msgid "Language to use"
+msgstr "Langue à utiliser"
+
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:63
+msgid "X offset"
+msgstr "Décalage X"
+
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:64
+msgid "Y offset"
+msgstr "Décalage Y"
+
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:71
+msgid "Advanced argument list:"
+msgstr "Liste avancée des arguments:"
+
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:79
+msgid "Defaults"
+msgstr "Valeurs par défaut"
+
+#: com/panayotis/jubler/options/AbstractPlayerOptions.java:93
+msgid "Player window offset in pixels"
+msgstr "Décalage en pixels de la fenêtre du lecteur"
+
+#: com/panayotis/jubler/options/ExtOptions.java:58
+#, java-format
+msgid "{0} path"
+msgstr "{0} chemin"
+
+#: com/panayotis/jubler/options/ExtOptions.java:81
+msgid "The absolute path of the player. Use the Browse button to change it"
+msgstr "Le chemin complet du lecteur. Utilisez le bouton Parcourir pour le modifier."
+
+#: com/panayotis/jubler/options/ExtOptions.java:85
+msgid "Open a file dialog to select the filename of the player"
+msgstr "Affiche un dialogue pour sélectionner le fichier exécutable du lecteur"
+
+#: com/panayotis/jubler/options/JLoadOptions.java:118
+msgid "First Encoding"
+msgstr "Premier encodage"
+
+#: com/panayotis/jubler/options/JLoadOptions.java:121
+msgid "Select the encoding to be searched first"
+msgstr "Sélectionne l'encodage à rechercher en premier"
+
+#: com/panayotis/jubler/options/JLoadOptions.java:124
+msgid "Second Encoding"
+msgstr "Deuxième encodage"
+
+#: com/panayotis/jubler/options/JLoadOptions.java:127
+msgid "Select the encoding to be searched second"
+msgstr "Sélectionne l'encodage à rechercher en deuxième"
+
+#: com/panayotis/jubler/options/JLoadOptions.java:130
+msgid "Third Encoding"
+msgstr "Troisième encodage"
+
+#: com/panayotis/jubler/options/JLoadOptions.java:133
+msgid "Select the encoding to be searched last"
+msgstr "Sélectionne l'encodage à rechercher en dernier"
+
+#: com/panayotis/jubler/options/JLoadOptions.java:136
+#: com/panayotis/jubler/options/JSaveOptions.java:149
+msgid "FPS"
+msgstr "FPS"
+
+#: com/panayotis/jubler/options/JPreferences.java:142
+msgid "File preferences"
+msgstr "Préférences fichier"
+
+#: com/panayotis/jubler/options/JPreferences.java:188
+msgid " Show load preferences while loading file"
+msgstr " Afficher les préférences d'ouverture lors de l'ouverture d'un fichier"
+
+#: com/panayotis/jubler/options/JPreferences.java:189
+#: com/panayotis/jubler/options/JPreferences.java:197
+msgid "Show preferences every time the user loads a subtitle file"
+msgstr "Afficher les préférences à chaque ouverture d'un fichier sous-titre"
+
+#: com/panayotis/jubler/options/JPreferences.java:196
+msgid " Show save preferences while saving file"
+msgstr " Afficher les préférences d'enregistrement lors de l'enregistrement d'un fichier"
+
+#: com/panayotis/jubler/options/JPreferences.java:221
+msgid "Clear current shortcut"
+msgstr "Supprimer le raccourci"
+
+#: com/panayotis/jubler/options/JPreferences.java:232
+msgid "Reset all to defaults"
+msgstr "Remettre les valeurs par défauts"
+
+#: com/panayotis/jubler/options/JPreferences.java:245
+msgid "Shortcuts"
+msgstr "Raccourcis"
+
+#: com/panayotis/jubler/options/JRateChooser.java:73
+msgid "Get FPS from the video file"
+msgstr "Obtenir les FPS depuis le fichier video"
+
+#: com/panayotis/jubler/options/JRateChooser.java:85
+msgid "Frames per second"
+msgstr "Images par secondes"
+
+#: com/panayotis/jubler/options/JRateChooser.java:104
+#, java-format
+msgid "Not a valid number: {0}"
+msgstr "Numéro invalide: {0}"
+
+#: com/panayotis/jubler/options/JSaveOptions.java:131
+msgid "Format"
+msgstr "Format"
+
+#: com/panayotis/jubler/options/JSaveOptions.java:134
+msgid "Subtitle format of the output file (SRT is prefered)"
+msgstr "Format de sous-titre du fichier de sortie (SRT conseillé)"
+
+#: com/panayotis/jubler/options/JSaveOptions.java:143
+msgid "Encoding"
+msgstr "Encodage"
+
+#: com/panayotis/jubler/options/JSaveOptions.java:146
+msgid "Encoding of the saved file"
+msgstr "Encodage du fichier enregistré"
+
+#: com/panayotis/jubler/options/JUnsaved.java:41
+msgid "The following files are unsaved:"
+msgstr "Les fichiers suivants ne sont pas enregistrés:"
+
+#: com/panayotis/jubler/options/JUnsaved.java:44
+msgid "Do you want to quit without saving?"
+msgstr "Voulez-vous quitter sans enregistrer?"
+
+#: com/panayotis/jubler/options/ShortcutsModel.java:50
+msgid "Command"
+msgstr "Commande"
+
+#: com/panayotis/jubler/options/ShortcutsModel.java:50
+msgid "Key"
+msgstr "Touche"
+
+#: com/panayotis/jubler/os/DEBUG.java:48
+msgid "Error"
+msgstr "Erreur"
+
+#: com/panayotis/jubler/os/DEBUG.java:53
+msgid "Warning!"
+msgstr "Alerte!"
+
+#: com/panayotis/jubler/os/FileCommunicator.java:118
+#: com/panayotis/jubler/subs/loader/AbstractTextSubFormat.java:81
+#, java-format
+msgid "Found file {0}"
+msgstr "Fichier trouvé {0}"
+
+#: com/panayotis/jubler/os/FileCommunicator.java:135
+#, java-format
+msgid "File {0} is unwritable"
+msgstr "Le fichier {0} est en lecture seule"
+
+#: com/panayotis/jubler/os/FileCommunicator.java:149
+#, java-format
+msgid "Error while updating file {0}"
+msgstr "Erreur lors de la mise à jour du fichier {0}"
+
+#: com/panayotis/jubler/os/FileCommunicator.java:151
+#: com/panayotis/jubler/os/FileCommunicator.java:153
+msgid "Encoding error. Use proper encoding (e.g. UTF-8)."
+msgstr "Erreur à l'encodage. Utilisez un encodage adéquat (par exemple UTF-8)"
+
+#: com/panayotis/jubler/os/FileCommunicator.java:155
+#, java-format
+msgid "Error while saving file {0}"
+msgstr "Erreur lors de l'enregistrement du fichier {0}"
+
+#: com/panayotis/jubler/os/SystemDependent.java:191
+msgid "Could not find web browser"
+msgstr "Impossible de trouver le navigateur web"
+
+#: com/panayotis/jubler/os/SystemFileFinder.java:65
+msgid "Could not find Jubler path!"
+msgstr "Impossible de trouver le chemin de Jubler!"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:218
+msgid "Start time of the subtitle"
+msgstr "Moment où sous-titre débute"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:219
+msgid "Stop time of the subtitle"
+msgstr "Moment où le sous-titre termine"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:220
+msgid "Duration of the subtitle"
+msgstr "Durée du sous-titre"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:405
+msgid "Duration"
+msgstr "Durée"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:416
+msgid "Lock the start time of the subtitle"
+msgstr "Verrrouiller le moment de début du sous-titre"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:432
+msgid "Lock the stop time of the subtitle"
+msgstr "Verrrouiller le moment de fin du sous-titre"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:449
+msgid "Lock the duration of the subtitle"
+msgstr "Verrrouiller la durée du sous-titre"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:512
+msgid "Detach subtitle editor panel"
+msgstr "Rendre flottante la barre d'édition des sous-titres"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:523
+msgid "Attach subtitle editor panel to main Jubler window"
+msgstr "Ancrer la barre d'édition des sous-titres à la fenêtre principale de Jubler"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:534
+msgid "Attach subtitle editor panel to preview window"
+msgstr "Ancrer la barre d'édition des sous-titres à la fenêtre de prévisualisation"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:662
+msgid "Are you sure you want to delete the override styles of this subtitle?"
+msgstr "Etes-vous sûr(e) de vouloir supprimer le style supérieur de ce sous-titre?"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:662
+msgid "Delete current subtitle style"
+msgstr "Supprimer le style de ce sous-titre?"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:664
+msgid "Cleanup style"
+msgstr "Nettoyer le style?"
+
+#: com/panayotis/jubler/subs/JSubEditor.java:686
+msgid "Edit style"
+msgstr "Modifier le style"
+
+#: com/panayotis/jubler/subs/Subtitles.java:47
+msgid "Subtitle"
+msgstr "Sous-titre"
+
+#: com/panayotis/jubler/subs/loader/SubFileFilter.java:47
+msgid "Subtitle files"
+msgstr "Fichiers de sous-titre"
+
+#: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:87
+msgid "The save process haven't finish yet"
+msgstr "L'enregistrement n'est pas terminé"
+
+#: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:91
+msgid "Maestro DVD options"
+msgstr "Options DVD Maestro"
+
+#: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:86
+msgid "Video width"
+msgstr "Largeur video"
+
+#: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:89
+msgid "Video height"
+msgstr "Hauteur video"
+
+#: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:92
+msgid "Video standard"
+msgstr "Standard video"
+
+#: com/panayotis/jubler/subs/loader/binary/JSaveProgress.java:68
+#: com/panayotis/jubler/subs/loader/binary/JSaveProgress.java:75
+msgid "Save progress"
+msgstr "Avancement de l'enregistrement"
+
+#: com/panayotis/jubler/subs/loader/text/PlainText.java:74
+msgid "Plain text"
+msgstr "Texte normal"
+
+#: com/panayotis/jubler/subs/loader/text/SubViewer2.java:57
+msgid "SubViewer V2"
+msgstr "SubViewer V2"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:82
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:47
+msgid "Outline"
+msgstr "Contour"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:83
+msgid "Opaque box"
+msgstr "Fond opaque"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:138
+msgid "Hide the advanced options for this style"
+msgstr "Masquer les optionas avancées de ce style"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:141
+msgid "Display the advanced options for this style"
+msgstr "Afficher les optionas avancées de ce style"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:287
+msgid "Style Editor"
+msgstr "Editeur de style"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:298
+msgid "The name of this style. Remember to hit [RETURN] to store the name"
+msgstr "le nom de ce style. Pensez à le valider par la touche [Entrée]"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:311
+msgid "Clone"
+msgstr "Cloner"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:312
+msgid "Create a new style based on the current one"
+msgstr "Créer un nouveau style basé sur le style courant"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:318
+msgid "Delete the current style"
+msgstr "Supprimer le style courant"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:326
+msgid "Save default style"
+msgstr "Enregistrer le style par défaut"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:337
+msgid "Font"
+msgstr "Police"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:340
+msgid "Font size"
+msgstr "Taille de la police"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:347
+msgid "Font name"
+msgstr "Nom de la police"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:358
+msgid "Bold"
+msgstr "Gras"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:364
+msgid "Italic"
+msgstr "Italique"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:370
+msgid "Underline"
+msgstr "Souligné"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:376
+msgid "Strikethrough"
+msgstr "Barré"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:387
+msgid "Colors"
+msgstr "Couleurs"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:419
+msgid "Demo subtitles text"
+msgstr "Texte de démo"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:430
+msgid "Border"
+msgstr "Bordure"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:431
+msgid "Border style"
+msgstr "Style de la bordure"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:437
+msgid "Size"
+msgstr "Taille"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:440
+msgid "Border size"
+msgstr "Taille de la bordure"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:448
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:47
+msgid "Shadow"
+msgstr "Ombre"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:451
+msgid "Shadow size"
+msgstr "Taille de l'ombre"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:460
+msgid "Margins transformations"
+msgstr "Transformations des marges"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:462
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:234
+msgid "Left"
+msgstr "Gauche"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:465
+msgid "Left margin"
+msgstr "Marge gauche"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:469
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:266
+msgid "Right"
+msgstr "Droite"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:472
+msgid "Right margin"
+msgstr "Marge droite"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:476
+msgid "Vertical"
+msgstr "Verticale"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:479
+msgid "Vertical margin"
+msgstr "Marge verticale"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:490
+msgid "Font transformations"
+msgstr "Transformations de la police"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:492
+msgid "Angle"
+msgstr "Angle"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:495
+msgid "Font angle"
+msgstr "Angle de la police"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:499
+msgid "Spacing"
+msgstr "Espacement"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:502
+msgid "Spacing in font"
+msgstr "Espacement de la police"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:506
+msgid "X Scale"
+msgstr "Exhelle X"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:509
+msgid "Scaling % on X axis"
+msgstr "% d'echelle sur l'axe des X"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:513
+msgid "Y Scale"
+msgstr "Exhelle Y"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:516
+msgid "Scaling % on Y axis"
+msgstr "% d'echelle sur l'axe des Y"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:523
+msgid "Alignment"
+msgstr "Alignement"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:532
+msgid "Advanced options"
+msgstr "Options avancées"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:668
+msgid "Are you sure you want to delete this style?\n"
+"All subtitles having this style will fall back to default"
+msgstr "Etes vous sûr(e) de vouloir supprimer ce style?\n"
+"Tous les sous-titres qui utilisent ce style reprendront le style par défaut."
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:668
+msgid "Delete style"
+msgstr "Supprimer le style"
+
+#: com/panayotis/jubler/subs/style/JStyleEditor.java:785
+msgid "Welcome to the (Jubler) world!"
+msgstr "Bienvenue dans le monde (de Jubler) !"
+
+#: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:93
+msgid "Color Chooser"
+msgstr "Sélecteur de couleur"
+
+#: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:110
+msgid "Reset"
+msgstr "Initialiser"
+
+#: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:121
+msgid "Alpha Channel"
+msgstr "Couche Alpha"
+
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:186
+msgid "Top left"
+msgstr "Haut gauche"
+
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:202
+msgid "Top"
+msgstr "Haut"
+
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:218
+msgid "Top right"
+msgstr "Haut droit"
+
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:250
+msgid "Center"
+msgstr "Centre"
+
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:282
+msgid "Bottom left"
+msgstr "Bas gauche"
+
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:298
+msgid "Bottom"
+msgstr "Bas"
+
+#: com/panayotis/jubler/subs/style/gui/JDirection.java:314
+msgid "Bottom right"
+msgstr "Bas droit"
+
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:47
+msgid "Primary"
+msgstr "Première"
+
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:47
+msgid "Secondary"
+msgstr "Deuxième"
+
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:49
+msgid "Set the primary color of the style"
+msgstr "Définir la première couleur du style"
+
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:50
+msgid "Set the secondary color of the style"
+msgstr "Définir la deuxième couleur du style"
+
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:51
+msgid "Set the outline color of the style"
+msgstr "Définir la couleur du contour du style"
+
+#: com/panayotis/jubler/subs/style/gui/tri/TriColorButton.java:52
+msgid "Set the shadow (or the background) color of the style"
+msgstr "Définir la couleur de l'ombre (ou du fond) du style"
+
+#: com/panayotis/jubler/subs/style/gui/tri/TriComboBox.java:46
+#: com/panayotis/jubler/subs/style/gui/tri/TriComboBox.java:51
+#: com/panayotis/jubler/subs/style/gui/tri/TriComboBox.java:61
+msgid "Unspecified"
+msgstr "Non-spécifié"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:78
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:264
+msgid "Ignore"
+msgstr "Ignorer"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:79
+msgid "Do not use this"
+msgstr "Ne pas utiliser ceci"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:89
+msgid "Absolute time  (in milliseconds)"
+msgstr "Temps absolu  (en millisecondes)"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:90
+msgid "Define the duration time in absolute milliseconds"
+msgstr "Définit la durée en millisecondes"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:100
+msgid "Time in milliseconds"
+msgstr "Temps en millisecondes"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:105
+msgid "Characters per second  (in milliseconds)"
+msgstr "Caractères par seconde (en millisecondes)"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:106
+msgid "Define the duration per character in milliseconds"
+msgstr "Définit la durée en caractères par millisecondes"
+
+#: com/panayotis/jubler/time/gui/JDuration.java:116
+msgid "Duration in milliseconds"
+msgstr "Durée en millisecondes"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:147
+msgid "Select subtitles to work on"
+msgstr "Sélectionner les sous-titres à éditer"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:154
+msgid "By user selection"
+msgstr "Sélection utilisateur"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:155
+msgid "Select subtitles depending on user selection"
+msgstr "Sélectionnera les sous-titres selon la sélection utilisateur"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:169
+msgid "By color marking"
+msgstr "Par couleur"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:170
+msgid "Select subtitles depending on their color"
+msgstr "Sélectionnera les sous-titres selon leur couleur"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:180
+msgid "The subtitle color to use for selection"
+msgstr "Couleur des sous-titre à sélectionner"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:189
+msgid "By theme"
+msgstr "Par thème"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:190
+msgid "Select subtitles depending on their theme"
+msgstr "Sélectionnera les sous-titres selon leur thème"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:199
+msgid "The theme to use for selection"
+msgstr "Thème à sélectionner"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:208
+msgid "By region"
+msgstr "Par région"
+
+#: com/panayotis/jubler/time/gui/JTimeFullSelection.java:209
+msgid "Select subtitles depending on a specified region"
+msgstr "Sélectionnera les sous-titres selon une région définie"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:62
+msgid "Use selected time as start of region"
+msgstr "Utilise la position temporelle courante comme début de région"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:63
+msgid "Use selected time as end of region"
+msgstr "Utilise la position temporelle courante comme fin de région"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:64
+msgid "Use given time as start of region"
+msgstr "Utilise la position temporelle spécifiée comme début de région"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:65
+msgid "Use given time as end of region"
+msgstr "Utilise la position temporelle spécifiée comme fin de région"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:127
+msgid "Start time"
+msgstr "Début"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:131
+msgid "The beginning of the region is the start of the file"
+msgstr "Le début de la région sera le début du fichier"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:141
+msgid "From current time"
+msgstr "Depuis position courante"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:142
+msgid "The beginning of the region is the selected time"
+msgstr "Le début de la région est le moment sélectionné"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:156
+msgid "From the following time"
+msgstr "Depuis position suivante"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:157
+msgid "The beginning of the region is the given time"
+msgstr "Le début de la région est le moment spécifié"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:174
+msgid "End time"
+msgstr "Fin"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:177
+msgid "To the end"
+msgstr "Jusqu'à la fin"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:178
+msgid "The end of the region is the end of the file"
+msgstr "La fin de la région sera la fin du fichier"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:188
+msgid "To current time"
+msgstr "Jusqu'à position courante"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:189
+msgid "The end of the region is the selected time"
+msgstr "La fin de la région est le temps sélectionné"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:203
+msgid "To the following time"
+msgstr "Jusqu'au moment suivant"
+
+#: com/panayotis/jubler/time/gui/JTimeRegion.java:204
+msgid "The end of the region is the given time"
+msgstr "La fin de la région est le temps spécifié"
+
+#: com/panayotis/jubler/tools/JDelSelection.java:47
+msgid "Delete selection"
+msgstr "Supprimer la sélection"
+
+#: com/panayotis/jubler/tools/JFixer.java:67
+msgid "Fix time inconsistencies"
+msgstr "Réparer les erreurs de temps"
+
+#: com/panayotis/jubler/tools/JFixer.java:240
+msgid "Sort first  (strongly recommended)"
+msgstr "Commencer par trier (fortement recommandé)"
+
+#: com/panayotis/jubler/tools/JFixer.java:244
+msgid "Prevent overlapping"
+msgstr "Empêcher le chevauchement"
+
+#: com/panayotis/jubler/tools/JFixer.java:256
+msgid "Push subtitles instead of rearranging"
+msgstr "Pousser les sous-titres plutôt que les réarranger"
+
+#: com/panayotis/jubler/tools/JFixer.java:265
+msgid "Leave gap between subtitles (in milliseconds)"
+msgstr "Laisser un espace entre sous-titres (en millisecondes)"
+
+#: com/panayotis/jubler/tools/JFixer.java:288
+msgid "Minimum subtitle duration"
+msgstr "Durée minimum de sous-titre"
+
+#: com/panayotis/jubler/tools/JFixer.java:293
+msgid "Maximum subtitle duration"
+msgstr "Durée maximum de sous-titre"
+
+#: com/panayotis/jubler/tools/JMarker.java:53
+msgid "Mark region"
+msgstr "Marquer une région"
+
+#: com/panayotis/jubler/tools/JMarker.java:81
+msgid "Color to use"
+msgstr "Couleur à utiliser"
+
+#: com/panayotis/jubler/tools/JMarker.java:84
+msgid "Select the mark color from the drop down list"
+msgstr "Sélectionner la couleur de marquage depuis la liste déroulante"
+
+#: com/panayotis/jubler/tools/JPaster.java:76
+msgid "Where to start pasting subtitles"
+msgstr "Où commencer à coller les sous-titres"
+
+#: com/panayotis/jubler/tools/JPaster.java:81
+msgid "Change Color"
+msgstr "Changer la couleur"
+
+#: com/panayotis/jubler/tools/JPaster.java:82
+msgid "Enable this option if you want to change the default color of the "
+"pasted subtitles"
+msgstr "Cochez cette option si vous voulez changer la couleur par défaut de sous-titres collés"
+
+#: com/panayotis/jubler/tools/JPaster.java:91
+msgid "The color to use for the pasted subtitles"
+msgstr "La couleur à utiliser pour les sous-titres collés"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:65
+msgid "Recode time"
+msgstr "Réencoder le temps"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:173
+msgid "Use the following factor"
+msgstr "Utiliser le facteur suivant"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:176
+msgid "Automatically compute based on FPS"
+msgstr "Calcul automatique basé sur les FPS"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:177
+msgid "Use the following FPS in order to automatically compute the desired "
+"recoding"
+msgstr "Utilisera les FPS suivants pour calculer automatiquement le réencodage temporel"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:207
+msgid "Custom"
+msgstr "Personnalisé"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:208
+msgid "Use a custom factor in order to perform the recoding"
+msgstr "Utilisera un facteur personnalisé pour réencoder"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:217
+msgid "Recoding factor"
+msgstr "Facteur de réencodage"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:221
+msgid "The value of the custom factor which will do the recoding"
+msgstr "La valeur du facteur de réencodage"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:225
+msgid "Central time"
+msgstr "Temps central"
+
+#: com/panayotis/jubler/tools/JRecodeTime.java:229
+msgid "The central time point which the recoding occurs. Usually left to 0 "
+"to apply evenly to the whole file."
+msgstr "Le point central à partir duquel le réencodage arrive. Habituellement 0 "
+"pour être appliqué uniformément au fichier entier."
+
+#: com/panayotis/jubler/tools/JReparent.java:48
+msgid "-No parent available-"
+msgstr "-aucun parent disponible-"
+
+#: com/panayotis/jubler/tools/JReparent.java:77
+msgid "The new parent subtitles file"
+msgstr "Le nouveau fichier parent de sous-titres"
+
+#: com/panayotis/jubler/tools/JReparent.java:80
+msgid "Provide the desired parent for this subtitles file"
+msgstr "Indique le parent pour ce fichier de sous-titre"
+
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:64
+msgid "Global replace"
+msgstr "Remplacer partout"
+
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:108
+msgid "Regular expressions to be executed"
+msgstr "Expressions régulières à remplacer"
+
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:110
+msgid "List of replacements to be done"
+msgstr "List des remplacements à effectuer"
+
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:131
+msgid "Reset to defaults"
+msgstr "Valeurs par défaut"
+
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:131
+#: com/panayotis/jubler/tools/replace/ReplaceModel.java:83
+msgid "Use"
+msgstr "Utiliser"
+
+#: com/panayotis/jubler/tools/JReplaceGlobal.java:132
+msgid "Edit regular expression replace list"
+msgstr "Modifier la liste des expressions régulières de remplacement"
+
+#: com/panayotis/jubler/tools/JRounder.java:49
+msgid "Round timing"
+msgstr "Arrondir les codes temporels"
+
+#: com/panayotis/jubler/tools/JRounder.java:97
+msgid "Number of decimals"
+msgstr "Nombre de décimales"
+
+#: com/panayotis/jubler/tools/JRounder.java:105
+msgid "Decimal digits"
+msgstr "Chiffres décimaux"
+
+#: com/panayotis/jubler/tools/JShiftTime.java:52
+msgid "The amount of time in order to shift the subtitles"
+msgstr "Quantité de temps pour décaler les sous-titres"
+
+#: com/panayotis/jubler/tools/JShiftTime.java:56
+msgid "Shift time by absolute value"
+msgstr "Décaler le temps par valeur absolue"
+
+#: com/panayotis/jubler/tools/JShiftTime.java:99
+msgid "Shift Subtitles"
+msgstr "Décaler le temps"
+
+#: com/panayotis/jubler/tools/JShiftTime.java:101
+msgid "Either increase or decrease the time"
+msgstr "Augmentez ou diminuez le temps"
+
+#: com/panayotis/jubler/tools/JStyler.java:60
+msgid "Set region style"
+msgstr "Définir le style de la région"
+
+#: com/panayotis/jubler/tools/JStyler.java:88
+msgid "Style to use"
+msgstr "Style à utiliser"
+
+#: com/panayotis/jubler/tools/JStyler.java:91
+msgid "Select the desired style from the drop down list"
+msgstr "Sélectionner le style désiré depuis la liste déroulante"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:56
+msgid "Use the selected amount of time as space between the two subtitles"
+msgstr "Utiliser la quantité de temps specifiée comme interval entre les deux sous-titres"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:89
+msgid "Use the following subtitles"
+msgstr "Utiliser les sous-titres suivants"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:90
+msgid "Subtitles file to use"
+msgstr "Fichier de sous-titres à utiliser"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:94
+msgid "Prepend subtitles"
+msgstr "Ajouter les sous-titres au début"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:95
+msgid "Put subtitles in the beginning of the current subtitles"
+msgstr "Place des sous-titres au début des sous-titres courant"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:100
+msgid "Append Subtitles"
+msgstr "Ajouter des sous-titres à la fin"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:101
+msgid "Put subtitles at the end of the current subtitles"
+msgstr "Place des sous-titres à la fin des sous-titres courant"
+
+#: com/panayotis/jubler/tools/JSubJoin.java:108
+msgid "Leave gap"
+msgstr "Laisser l'espace"
+
+#: com/panayotis/jubler/tools/JSubSplit.java:44
+msgid "Use the following time (inclusive) in order to create the new "
+"splitted subtitles"
+msgstr "Utiliser le temps suivant (inclusif) lors de la création de sous-titres séparés"
+
+#: com/panayotis/jubler/tools/JSubSplit.java:75
+msgid "Splitting time"
+msgstr "Moment de séparation"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:65
+msgid "-current-"
+msgstr "-courant-"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:134
+msgid "Synchronize data from the following subtitles"
+msgstr "Synchroniser les données depuis les sous-titres suivants"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:137
+msgid "The subtitles file to use as a model"
+msgstr "Le fichier de sous-titres à utiliser comme modèle"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:142
+msgid "Model subtitles offset"
+msgstr "Décalage du modèle de sous-titre"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:146
+msgid "Relative offset of the model subtitles. It is based on index, not "
+"time."
+msgstr "Décalage relatif du modèle de sous-titre (basé sur l'index, pas sur le temps)"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:152
+msgid "Import timestamp"
+msgstr "Importe horodateur (timestamp)"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:153
+msgid "Use the timestamp of the subtitles as the time model for current "
+"subtitles"
+msgstr "Utilise l'horodateur du sous-titre comme modèle de temps pour les sous-titres courant"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:158
+msgid "Import text"
+msgstr "Importer du texte"
+
+#: com/panayotis/jubler/tools/JSynchronize.java:159
+msgid "Copy the text of the other subtitles into this file"
+msgstr "Copie le texte des autres sous-titres dans ce fichier"
+
+#: com/panayotis/jubler/tools/externals/JExtSelector.java:48
+#, java-format
+msgid "Select a {0} from the following list"
+msgstr "Select a {0} depuis la liste suivante"
+
+#: com/panayotis/jubler/tools/externals/JExtSelector.java:68
+msgid "Select a video player in order to use it"
+msgstr "Sélectionnez un lecteur video pour vous l'utiliser"
+
+#: com/panayotis/jubler/tools/externals/JExtSelector.java:74
+msgid "Options"
+msgstr "Options"
+
+#: com/panayotis/jubler/tools/externals/JExtSelector.java:75
+msgid "Open the options for this player"
+msgstr "Ouvrir les options pour ce lecteur"
+
+#: com/panayotis/jubler/tools/externals/JExtSelector.java:92
+#, java-format
+msgid "Options for {0}"
+msgstr "Optins pour {0}"
+
+#: com/panayotis/jubler/tools/externals/JExtSelector.java:96
+msgid "No options for this program"
+msgstr "Pas d'options pour ce programme"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:75
+msgid "End of subtitles"
+msgstr "Fin des sous-titres"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:75
+msgid "End of subtitles reached.\n"
+"Start from the beginnning."
+msgstr "Fin des sous-titres atteinte.\n"
+"Commencez depuis le début."
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:146
+#: com/panayotis/jubler/tools/replace/JReplace.java:184
+msgid "Find"
+msgstr "Rechercher"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:149
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:228
+msgid "Replace with"
+msgstr "Remplacer par"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:159
+msgid "The context of the found text"
+msgstr "Contexte du texte trouvé"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:163
+msgid "What to search for"
+msgstr "Texte recherché"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:166
+msgid "Replace found text with this"
+msgstr "Remplacer le texte trouvé par ceci"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:173
+msgid "Ignore case"
+msgstr "Ignorer la casse"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:185
+msgid "Find the next occurence of the searched text"
+msgstr "Trouver l'occurrence siuvante du texte recherché"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:195
+msgid "Replace the found text and find the next occurence of the searched "
+"text"
+msgstr "Remplacer le texte trouvé puis rechercher l'occurrence suivante "
+"du texte recherché"
+
+#: com/panayotis/jubler/tools/replace/JReplace.java:208
+msgid "Close this dialog box"
+msgstr "Ferme cette fenêtre"
+
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:74
+msgid "Select All"
+msgstr "Tout sélectionner"
+
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:75
+msgid "Use all above replacing scenarios"
+msgstr "Utiliser tous les scénarios de remplacement ci-dessus"
+
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:84
+msgid "Clear All"
+msgstr "Tout dégager"
+
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:85
+msgid "Use none of the above replacing scenarios"
+msgstr "N'utiliser aucun des scénarios de remplacement ci-dessus"
+
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:94
+msgid "Inverse"
+msgstr "Inverser"
+
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:95
+msgid "Inverse the selection of the scenarios above"
+msgstr "Inverser la sélection des scénarios ci-dessus"
+
+#: com/panayotis/jubler/tools/replace/JReplaceList.java:107
+msgid "Delete the selected scenario"
+msgstr "Supprimer le scénario sélectionné"
+
+#: com/panayotis/jubler/tools/replace/ReplaceModel.java:85
+msgid "Original value"
+msgstr "Valeur originale"
+
+#: com/panayotis/jubler/tools/replace/ReplaceModel.java:87
+msgid "New value"
+msgstr "Nouvelle valeur"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:218
+msgid "The context of the misspelled word"
+msgstr "Contexte du mot mal orthographié"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:225
+msgid "Current word"
+msgstr "Mot courant"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:237
+msgid "The misspelled word we need to change"
+msgstr "Mot mal orthographié devant être changé"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:249
+msgid "The word to change the misspelled word into"
+msgstr "Le mot devant remplacer le mot mal ortographié"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:265
+msgid "Ignore this word"
+msgstr "Ignorer ce mot"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:274
+msgid "Always ignore"
+msgstr "Toujours ignorer"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:275
+msgid "Ignore all instances of this word"
+msgstr "Ignore toutes les instances de mot"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:290
+msgid "Replace this word"
+msgstr "Remplace ce mot"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:299
+msgid "Always replace"
+msgstr "Toujours remplacer"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:300
+msgid "Replace all instances of this word"
+msgstr "Remplacer toutes les instances de ce mot"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:313
+msgid "Insert current"
+msgstr "Insère le mot courant"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:314
+msgid "Insert this current word in spellers dictionary"
+msgstr "Insère le mot courant dans le dictionnaire"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:326
+msgid "Stop"
+msgstr "Stop"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:327
+msgid "Finish spell checking"
+msgstr "Terminer la vérification"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:345
+msgid "Suggestions"
+msgstr "Suggestions"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:350
+msgid "Suggested words to change the given word to"
+msgstr "Mots suggérés en remplacement du mot"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:474
+#, java-format
+msgid "Number of affected words: {0}"
+msgstr "Nombre de mots affectés {0}"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:475
+msgid "No changes have been done"
+msgstr "Aucun changement a été fait"
+
+#: com/panayotis/jubler/tools/spell/JSpellChecker.java:476
+msgid "Speller changes"
+msgstr "Changement du vérificateur"
+
+#: com/panayotis/jubler/tools/spell/checkers/ASpell.java:97
+msgid "Error while executing ASpell"
+msgstr "Erreur lors de l'éxécution de ASpell"
+
+#: com/panayotis/jubler/tools/spell/checkers/ASpell.java:167
+#: com/panayotis/jubler/tools/spell/checkers/ZemberekSpellChecker.java:123
+msgid "Speller"
+msgstr "Vérificateur"
+
+#: com/panayotis/jubler/tools/spell/checkers/ZemberekSpellChecker.java:92
+#, java-format
+msgid "Unable to load plugin: {0}"
+msgstr "Impossible de charger le plugin: {0}"

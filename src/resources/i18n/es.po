@@ -7,7 +7,7 @@
 msgid	""
 msgstr	"Project-Id-Version: es\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-03-05 03:24+0200\n"
+	"POT-Creation-Date: 2007-03-17 11:45+0200\n"
 	"PO-Revision-Date: 2007-03-04 18:32+0100\n"
 	"Last-Translator: Alfredo Quesada Sánchez <freddy@dif.um.es>\n"
 	"Language-Team:  <es@li.org>\n"
@@ -161,7 +161,7 @@ msgid	"Test subtitles from current position"
 msgstr	"Probar subtítulos desde la posición actual"
 
 #: com/panayotis/jubler/Jubler.java:670 com/panayotis/jubler/Jubler.java:1074
-#: com/panayotis/jubler/information/JAbout.java:404
+#: com/panayotis/jubler/information/JAbout.java:406
 msgid	"About"
 msgstr	"Acerca de"
 
@@ -520,69 +520,73 @@ msgstr	"Volver"
 msgid	"Go to previous page"
 msgstr	"Ir a la página anterior"
 
-#: com/panayotis/jubler/information/JAbout.java:50
+#: com/panayotis/jubler/information/JAbout.java:51
 msgid	"Czech"
 msgstr	"Checo"
 
-#: com/panayotis/jubler/information/JAbout.java:51
+#: com/panayotis/jubler/information/JAbout.java:52
+msgid	"French"
+msgstr	""
+
+#: com/panayotis/jubler/information/JAbout.java:53
 msgid	"German"
 msgstr	"Alemán"
 
-#: com/panayotis/jubler/information/JAbout.java:52
+#: com/panayotis/jubler/information/JAbout.java:54
 msgid	"Greek"
 msgstr	"Griego"
 
-#: com/panayotis/jubler/information/JAbout.java:53
+#: com/panayotis/jubler/information/JAbout.java:55
 msgid	"Portuguese (Brazilian)"
 msgstr	"Portugés (Brasileño)"
 
-#: com/panayotis/jubler/information/JAbout.java:54
+#: com/panayotis/jubler/information/JAbout.java:56
 msgid	"Spanish"
 msgstr	"Español"
 
-#: com/panayotis/jubler/information/JAbout.java:55
+#: com/panayotis/jubler/information/JAbout.java:57
 msgid	"Turkish"
 msgstr	"Turco"
 
-#: com/panayotis/jubler/information/JAbout.java:350
+#: com/panayotis/jubler/information/JAbout.java:352
 msgid	"Subtitle Editor for Java"
 msgstr	"Subtitle Editor para Java"
 
-#: com/panayotis/jubler/information/JAbout.java:351
+#: com/panayotis/jubler/information/JAbout.java:353
 msgid	"Version"
 msgstr	"Versión"
 
-#: com/panayotis/jubler/information/JAbout.java:355
+#: com/panayotis/jubler/information/JAbout.java:357
 msgid	"Contact address"
 msgstr	"Dirección de contacto"
 
-#: com/panayotis/jubler/information/JAbout.java:364
+#: com/panayotis/jubler/information/JAbout.java:366
 msgid	"Special thanks"
 msgstr	"Agradecimientos especiales"
 
-#: com/panayotis/jubler/information/JAbout.java:364
-#: com/panayotis/jubler/information/JAbout.java:368
+#: com/panayotis/jubler/information/JAbout.java:366
+#: com/panayotis/jubler/information/JAbout.java:370
 #, java-format
 msgid	"{0} plugin"
 msgstr	"{0} plugin"
 
-#: com/panayotis/jubler/information/JAbout.java:366
+#: com/panayotis/jubler/information/JAbout.java:368
 msgid	"Jubler mascot"
 msgstr	"Mascota de Jubler"
 
-#: com/panayotis/jubler/information/JAbout.java:372
+#: com/panayotis/jubler/information/JAbout.java:374
 msgid	"Translators"
 msgstr	"Traductores"
 
-#: com/panayotis/jubler/information/JAbout.java:378
+#: com/panayotis/jubler/information/JAbout.java:380
 msgid	"Icon theme"
 msgstr	"Tema de iconos"
 
-#: com/panayotis/jubler/information/JAbout.java:416
+#: com/panayotis/jubler/information/JAbout.java:418
 msgid	"Thanks"
 msgstr	"Gracias"
 
-#: com/panayotis/jubler/information/JAbout.java:428
+#: com/panayotis/jubler/information/JAbout.java:430
 msgid	"Licence"
 msgstr	"Licencia"
 
