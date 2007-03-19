@@ -526,7 +526,7 @@ msgstr	"Τσέχικα"
 
 #: com/panayotis/jubler/information/JAbout.java:52
 msgid	"French"
-msgstr	""
+msgstr	"Γαλλικά"
 
 #: com/panayotis/jubler/information/JAbout.java:53
 msgid	"German"
