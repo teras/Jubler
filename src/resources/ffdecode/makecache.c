@@ -61,7 +61,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 	float ratewindow = 0;
    unsigned int offset=0, maxbyte=0, sampledcounter=1;
    FILE *cachefile=NULL;
-   uint8_t *outbuf;
+	uint8_t *outbuf=NULL;
 	jboolean nobrk = JNI_TRUE;
 	
 	int ENDIANESS = isLittleEndian();
@@ -176,7 +176,8 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
 					// Rescale the times
 					pack_pts = av_rescale_q(pkt.pts, fcx->streams[audio_index]->time_base, AV_TIME_BASE_Q);
 					// Decode the paket
-					len = avcodec_decode_audio(ccx, (short *)outbuf, &got_audio, pkt.data, pkt.size);
+					got_audio = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+					len = avcodec_decode_audio2(ccx, (short *)outbuf, &got_audio, pkt.data, pkt.size);
 				
 					if (len < 0) {
 						DEBUG("makeCache", "Error while decoding.\n");

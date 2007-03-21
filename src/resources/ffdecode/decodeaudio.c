@@ -72,7 +72,7 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 	long int file_size=0, header_size=0;
 	jlong pack_pts=0;
    FILE *outfile=NULL;
-   char *outbuf;
+	char *outbuf=NULL;
 	unsigned char *packptr;
 	jboolean ret = JNI_TRUE, nobrk = JNI_TRUE;
    
@@ -84,7 +84,6 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 		DEBUG("decodeAudio", "Could not open file '%s'.\n", input_filename);
 	 	ret = JNI_FALSE;
    }
-
 	outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
 	if(outbuf==NULL) {
 		DEBUG("decodeAudio", "Could not allocate memory for outbuf.\n");
@@ -265,7 +264,8 @@ jboolean decodeAudio(const char *input_filename, const char *output_filename, jl
 				if (ccx->channels > 2) {
 					ccx->channels = 2;
 				}
-         	len = avcodec_decode_audio(ccx, (short *)outbuf, &got_audio, packptr, packsize);
+				got_audio = AVCODEC_MAX_AUDIO_FRAME_SIZE;
+         	len = avcodec_decode_audio2(ccx, (short *)outbuf, &got_audio, packptr, packsize);
 				
          	if (len < 0) {
              	DEBUG("decodeAudio", "Error while decoding.\n");
