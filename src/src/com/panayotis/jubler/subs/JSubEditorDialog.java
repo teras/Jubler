@@ -23,6 +23,8 @@
 
 package com.panayotis.jubler.subs;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.Jubler;
 import java.awt.BorderLayout;
 
@@ -53,7 +55,7 @@ public class JSubEditorDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Subtitle editor");
+        setTitle(_("Subtitle editor"));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -61,8 +63,7 @@ public class JSubEditorDialog extends javax.swing.JDialog {
         });
 
         pack();
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         remove(editor);

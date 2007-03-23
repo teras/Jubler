@@ -466,6 +466,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jScrollPane1.setPreferredSize(new java.awt.Dimension(203, 70));
         SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
         SubText.setFont(new java.awt.Font("Dialog", 1, 14));
+        SubText.setToolTipText(_("Editor of the subtitle text"));
         SubText.setPreferredSize(new java.awt.Dimension(200, 30));
         SubText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
@@ -482,9 +483,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         L4.setText(_("Style"));
-        L4.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(0, 2, 0, 5)));
+        L4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 2, 0, 5));
         jPanel6.add(L4, java.awt.BorderLayout.WEST);
 
+        StyleListC.setToolTipText(_("Style list"));
         StyleListC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StyleListCActionPerformed(evt);
@@ -494,6 +496,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel6.add(StyleListC, java.awt.BorderLayout.CENTER);
 
         EditB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edittheme.png")));
+        EditB.setToolTipText(_("Edit current style"));
         EditB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditBActionPerformed(evt);
@@ -546,9 +549,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        jPanel1.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(0, 12, 0, 10)));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 10));
         TimeB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/time.png")));
         TimeB.setSelected(true);
+        TimeB.setToolTipText(_("Display/hide subtitle timings"));
         TimeB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TimeBActionPerformed(evt);
@@ -558,6 +562,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel1.add(TimeB);
 
         FontB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/font.png")));
+        FontB.setToolTipText(_("Display/hide font attributes"));
         FontB.setActionCommand("font");
         FontB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -568,6 +573,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel1.add(FontB);
 
         ColorB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/color.png")));
+        ColorB.setToolTipText(_("Display/hide color attributes"));
         ColorB.setActionCommand("color");
         ColorB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -578,6 +584,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel1.add(ColorB);
 
         MetricsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sizes.png")));
+        MetricsB.setToolTipText(_("Displa/hide metric attributes"));
         MetricsB.setActionCommand("metrics");
         MetricsB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -592,6 +599,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel2.setLayout(new java.awt.GridLayout(0, 2, 2, 0));
 
         TrashB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/trash.png")));
+        TrashB.setToolTipText(_("Delete styles of this subtitle"));
         TrashB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TrashBActionPerformed(evt);
@@ -602,6 +610,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         ShowStyleB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/hidestyle.png")));
         ShowStyleB.setSelected(true);
+        ShowStyleB.setToolTipText(_("Display/hide styles for this subtitle"));
         ShowStyleB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/showstyle.png")));
         ShowStyleB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -617,8 +626,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         add(StyleP, java.awt.BorderLayout.NORTH);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     
     private void AttachPrevBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttachPrevBActionPerformed
         setAttached(ATTACHED_TO_PREVIEW);
