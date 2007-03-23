@@ -54,12 +54,12 @@ public class I18N {
     
     public static String ngettext(String single, String plural, long n, Object... args ) {
         String format = GettextResource.ngettext(b, single, plural, n);
-        return MessageFormat.format(format, args);
+        return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
     
     public static String _(String msg, Object... args) {
         String format = GettextResource.gettext(b, msg);
-        return MessageFormat.format(format, args);
+        return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
     
     private static void setLang(String langcode) {
