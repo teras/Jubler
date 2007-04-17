@@ -248,7 +248,7 @@ msgstr	"Ειδική επικόλληση"
 #: com/panayotis/jubler/Jubler.java:806 com/panayotis/jubler/Jubler.java:928
 #: com/panayotis/jubler/Jubler.java:939
 msgid	"By Selection"
-msgstr	"Κατ'επιλογή"
+msgstr	"Κατ' επιλογή"
 
 #: com/panayotis/jubler/Jubler.java:812
 msgid	"Empty Lines"
@@ -1806,7 +1806,7 @@ msgstr	"Ο χρόνος όπου θα μετακινηθούν οι υπότιτ
 
 #: com/panayotis/jubler/tools/JShiftTime.java:56
 msgid	"Shift time by absolute value"
-msgstr	"Μετακίνηση υποτίτλων κατ'απόλυτη τιμή"
+msgstr	"Μετακίνηση υποτίτλων κατ' απόλυτη τιμή"
 
 #: com/panayotis/jubler/tools/JShiftTime.java:99
 msgid	"Shift Subtitles"
