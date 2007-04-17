@@ -18,7 +18,7 @@
 
 
 echo -n "Searching for Java..."
-JAVABIN=`/bin/sh ./findjava.sh -v 1.5 $@`
+JAVABIN=`/bin/sh ./findjava.sh $@`
 
 if [ -n "$JAVABIN" ] ; then
 	echo "found in $JAVABIN"
