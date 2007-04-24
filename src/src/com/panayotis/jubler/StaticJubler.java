@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -31,6 +32,75 @@ import javax.swing.KeyStroke;
  */
 public class StaticJubler {
     private static JVersion version;
+    
+    private static int screen_x, screen_y, screen_width, screen_height, screen_state;
+    private static final int SCREEN_DELTAX = 20;
+    private static final int SCREEN_DELTAY = 20;
+    
+    static {
+        loadWindowPosition();
+    }
+    
+    
+    
+    public static void setWindowPosition(Jubler current_window, boolean save) {
+        screen_x = current_window.getX();
+        screen_y = current_window.getY();
+        screen_width = current_window.getWidth();
+        screen_height = current_window.getHeight();
+        screen_state = current_window.getExtendedState();
+        if (save && screen_width > 0) {
+            String vals = "(("+screen_x + "," + screen_y +"),(" + screen_width + "," + screen_height + "),"+ screen_state +")";
+            Options.setOption("System.WindowState", vals);
+            Options.saveOptions();
+            System.out.println("SET: "+screen_x +" "+ screen_y + " " + screen_width + " " + screen_height);
+        }
+        jumpWindowPosition(true);
+    }
+    
+    public static void putWindowPosition(Jubler new_window) {
+        if (screen_width <= 0) return;
+        
+        new_window.setLocationByPlatform(false);
+        System.out.println("PUT: "+screen_x +" "+ screen_y + " " + screen_width + " " + screen_height);
+        new_window.setBounds( screen_x, screen_y, screen_width, screen_height);
+        new_window.setExtendedState(screen_state);
+        jumpWindowPosition(true);
+    }
+    
+    
+    public static void jumpWindowPosition(boolean forth) {
+        if (forth) {
+            screen_x += SCREEN_DELTAX;
+            screen_y += SCREEN_DELTAY;
+        } else {
+            screen_x -= SCREEN_DELTAX;
+            screen_y -= SCREEN_DELTAY;
+        }
+    }
+    
+    public static void loadWindowPosition() {
+        int [] values = new int[5];
+        int pos = 0;
+        
+        for (int i = 0 ; i < 5 ; i++) {
+            values[i] = -1;
+        }
+        
+        String props = Options.getOption("System.WindowState", "");
+        if (props!=null && (!props.equals("")) ) {
+            StringTokenizer st = new StringTokenizer(props ,"(),");
+            while (st.hasMoreTokens() && pos < 5 ) {
+                values[pos++] = Integer.parseInt(st.nextToken());
+            }
+        }
+        screen_x      = values[0];
+        screen_y      = values[1];
+        screen_width  = values[2];
+        screen_height = values[3];
+        screen_state  = values[4];
+        
+    }
     
     
     public static void showAbout() {

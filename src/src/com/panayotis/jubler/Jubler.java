@@ -206,7 +206,6 @@ public class Jubler extends JFrame {
         windowicon = new ImageIcon(getClass().getResource("/icons/frame.png")).getImage();
         
         initComponents();
-        backupWindowSize(false);
         
         setTableProps();
         
@@ -221,7 +220,6 @@ public class Jubler extends JFrame {
         
         subeditor = new JSubEditor(this);
         subeditor.setAttached(subeditor.ATTACHED_TO_TEXT);
-        backupWindowSize(false);
         
         preview = new JSubPreview(this);
         
@@ -247,6 +245,7 @@ public class Jubler extends JFrame {
         sync = new JSynchronize();
         split = new JSubSplit();
         
+        StaticJubler.putWindowPosition(this);
         openWindow();
         updateRecentFile(null);
     }
@@ -2073,6 +2072,8 @@ public class Jubler extends JFrame {
         Subtitles newsubs;
         Jubler work;
         
+        StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
+        
         /* Find where to display this subtitle file */
         if (subs==null || force_into_same_window) work = this;
         else work = new Jubler();
@@ -2181,8 +2182,9 @@ public class Jubler extends JFrame {
         FileCommunicator.updateRecentsMenu();
         
         if ( windows.size() == 0 ) {
-            backupWindowSize(true);
+            StaticJubler.setWindowPosition(this, true);
             if (keep_application_alive && subs!=null) {
+                StaticJubler.jumpWindowPosition(false);
                 new Jubler();
             } else {
                 System.exit(0);
@@ -2204,29 +2206,6 @@ public class Jubler extends JFrame {
         setVisible(true);
     }
     
-    /** @param toDisk :  store to properties if true, get from properties if false */
-    private void backupWindowSize(boolean toDisk) {
-        if (toDisk) { // save topreferences this window size
-            String vals = "(("+getX() + "," + getY() +"),(" + getWidth() + "," + getHeight() + "),"+getExtendedState()+")";
-            Options.setOption("System.WindowState", vals);
-            Options.saveOptions();
-        } else {    // read from preferences and set this window size
-            int [] values = new int[5];
-            int pos = 0;
-            String props = Options.getOption("System.WindowState", "");
-            if (props==null || props.equals("")) return;
-            StringTokenizer st = new StringTokenizer(props ,"(),");
-            while (st.hasMoreTokens() && pos < 5 ) {
-                values[pos++] = Integer.parseInt(st.nextToken());
-            }
-            if (pos == 5) { // Everything is OK - 5 numerical values read
-                System.out.println(values[0] +" "+ (values[0]+10) );
-                setLocationByPlatform(false);
-                setBounds( (values[0]), (values[1]), values[2], values[3]);
-                setExtendedState(values[4]);
-            }
-        }
-    }
     
     public void setSubs(Subtitles newsubs) {
         SubEntry[] selected = getSelectedSubs();
