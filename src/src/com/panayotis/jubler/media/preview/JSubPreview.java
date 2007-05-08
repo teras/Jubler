@@ -71,7 +71,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private int cursor_action = 0;
     
     private MediaFile last_media_file = null;
-    
+        
     
     /** Creates new form JSubPreview */
     public JSubPreview(Jubler parent) {
@@ -239,9 +239,13 @@ public class JSubPreview extends javax.swing.JPanel {
         Move = new javax.swing.JToggleButton();
         Resize = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
-        TimeZoomIn = new javax.swing.JButton();
-        TimeZoomOut = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
         TimePosL = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        ZoomS = new javax.swing.JSlider();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -280,6 +284,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
         ToolPanel.setLayout(new javax.swing.BoxLayout(ToolPanel, javax.swing.BoxLayout.Y_AXIS));
 
+        ToolPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
         jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
 
         VideoShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/frameoff.png")));
@@ -399,39 +404,67 @@ public class JSubPreview extends javax.swing.JPanel {
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        TimeZoomIn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomin.png")));
-        TimeZoomIn.setToolTipText(_("Zoom in timeline"));
-        TimeZoomIn.setActionCommand("I");
-        TimeZoomIn.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        TimeZoomIn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoomArea(evt);
-            }
-        });
-
-        jPanel3.add(TimeZoomIn);
-
-        TimeZoomOut.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomout.png")));
-        TimeZoomOut.setToolTipText(_("Zoom out timeline"));
-        TimeZoomOut.setActionCommand("O");
-        TimeZoomOut.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        TimeZoomOut.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                zoomArea(evt);
-            }
-        });
-
-        jPanel3.add(TimeZoomOut);
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/newsub.png")));
+        jButton1.setToolTipText(_("New subtitle after current one"));
+        jButton1.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        jPanel3.add(jButton1);
 
         ToolPanel.add(jPanel3);
 
         add(ToolPanel, java.awt.BorderLayout.WEST);
 
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
         TimePosL.setText(" ");
-        TimePosL.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        add(TimePosL, java.awt.BorderLayout.SOUTH);
+        jPanel5.add(TimePosL, java.awt.BorderLayout.CENTER);
+
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        ZoomS.setMaximum(59);
+        ZoomS.setMinimum(1);
+        ZoomS.setSnapToTicks(true);
+        ZoomS.setToolTipText(_("Subtitle zoom factor"));
+        ZoomS.setValue(30);
+        ZoomS.setInverted(true);
+        ZoomS.setPreferredSize(new java.awt.Dimension(100, 29));
+        ZoomS.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ZoomSStateChanged(evt);
+            }
+        });
+
+        jPanel6.add(ZoomS, java.awt.BorderLayout.CENTER);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomout.png")));
+        jLabel1.setToolTipText(_("Zoom out"));
+        jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomin.png")));
+        jLabel2.setToolTipText(_("Zoom in"));
+        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 15));
+        jPanel6.add(jLabel2, java.awt.BorderLayout.EAST);
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.EAST);
+
+        add(jPanel5, java.awt.BorderLayout.SOUTH);
 
     }// </editor-fold>//GEN-END:initComponents
+
+//     double factor = 2d;
+//        if (evt.getActionCommand().charAt(0)=='I') factor = 0.5;
+//        double center = timeline.getCenterOfSelection();
+//        double offset = view.getDuration()*factor/2d;
+//        if (offset<(ViewWindow.MINIMUM_DURATION/2)) offset = ViewWindow.MINIMUM_DURATION/2;
+//        view.setWindow(center-offset, center+offset, false);
+//        windowHasChanged(null);
+    
+    private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
+        double center = timeline.getCenterOfSelection();
+        double offset = view.getVideoDuration() * ZoomS.getValue() / (ZoomS.getMaximum()*2d);
+        System.out.println(ZoomS.getValue()*1f / ZoomS.getMaximum());
+        view.setWindow(center-offset, center+offset, false);
+        windowHasChanged(null);
+    }//GEN-LAST:event_ZoomSStateChanged
     
     private void AudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPlayActionPerformed
         wave.playbackWave();
@@ -459,17 +492,7 @@ public class JSubPreview extends javax.swing.JPanel {
         view.setWindow(evt.getValue()/10d, evt.getValue()/10d+view.getDuration(), false);
         windowHasChanged(null);
     }//GEN-LAST:event_sliderAdjustmentValueChanged
-    
-    private void zoomArea(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zoomArea
-        double factor = 2d;
-        if (evt.getActionCommand().charAt(0)=='I') factor = 0.5;
-        double center = timeline.getCenterOfSelection();
-        double offset = view.getDuration()*factor/2d;
-        if (offset<(ViewWindow.MINIMUM_DURATION/2)) offset = ViewWindow.MINIMUM_DURATION/2;
-        view.setWindow(center-offset, center+offset, false);
-        windowHasChanged(null);
-    }//GEN-LAST:event_zoomArea
-    
+        
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -484,17 +507,21 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JToggleButton Resize;
     private javax.swing.JToggleButton Select;
     private javax.swing.JLabel TimePosL;
-    private javax.swing.JButton TimeZoomIn;
-    private javax.swing.JButton TimeZoomOut;
     private javax.swing.JPanel TimelineP;
     private javax.swing.JPanel ToolPanel;
     private javax.swing.JToggleButton VideoShow;
     private javax.swing.JToggleButton VideoZoom;
     public javax.swing.JPanel ViewPanel;
+    private javax.swing.JSlider ZoomS;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables
     

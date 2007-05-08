@@ -468,7 +468,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel1.add(MarkB);
 
         ResetSpeedB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/speed.png")));
-        ResetSpeedB.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        ResetSpeedB.setToolTipText(_("Reset playback speed to default value"));
+        ResetSpeedB.setMargin(new java.awt.Insets(2, 2, 2, 2));
         ResetSpeedB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ResetSpeedBActionPerformed(evt);
@@ -719,9 +720,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private float last = 0;
     
     private void SubMoverStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SubMoverStateChanged
-        JSlider source = (JSlider)evt.getSource();
-        if (source.getValueIsAdjusting()) {
-            float value = (source.getValue() - 50) / 5.0f;
+        if (SubMover.getValueIsAdjusting()) {
+            float value = (SubMover.getValue() - 50) / 5.0f;
             String label = value+" sec";
             if (value >= 0) label = "+" + label;
             SmoverL.setText(label);

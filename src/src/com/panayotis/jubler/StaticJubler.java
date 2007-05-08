@@ -53,7 +53,6 @@ public class StaticJubler {
             String vals = "(("+screen_x + "," + screen_y +"),(" + screen_width + "," + screen_height + "),"+ screen_state +")";
             Options.setOption("System.WindowState", vals);
             Options.saveOptions();
-            System.out.println("SET: "+screen_x +" "+ screen_y + " " + screen_width + " " + screen_height);
         }
         jumpWindowPosition(true);
     }
@@ -62,7 +61,6 @@ public class StaticJubler {
         if (screen_width <= 0) return;
         
         new_window.setLocationByPlatform(false);
-        System.out.println("PUT: "+screen_x +" "+ screen_y + " " + screen_width + " " + screen_height);
         new_window.setBounds( screen_x, screen_y, screen_width, screen_height);
         new_window.setExtendedState(screen_state);
         jumpWindowPosition(true);

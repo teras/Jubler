@@ -46,7 +46,6 @@ public class Main {
     
     
     
-    
     /* Asynchronous add files to load */
     public static void asyncAddSubtitle(String sub) {
         sublist.add(sub);

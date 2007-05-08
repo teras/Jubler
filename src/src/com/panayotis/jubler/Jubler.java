@@ -69,7 +69,6 @@ import com.panayotis.jubler.tools.externals.JExtSelector;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
-import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -77,17 +76,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -175,7 +171,7 @@ public class Jubler extends JFrame {
     private JRecodeTime recode;
     private JSynchronize sync;
     private JSubSplit split;
-
+    
     
     private static HelpBrowser faqbrowse;
     
@@ -330,7 +326,7 @@ public class Jubler extends JFrame {
             jub.initNewFile(subs.getCurrentFile().getPath()+_("_clone"));
             /* The user wants to clone current file */
         } else {
-            loadFile(new File(filename), false);
+            loadFileFromHere(new File(filename), false);
         }
     }
     
@@ -1692,7 +1688,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_DeletePActionPerformed
     
     private void RevertFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevertFMActionPerformed
-        loadFile(subs.getLastOpenedFile(), true);
+        loadFileFromHere(subs.getLastOpenedFile(), true);
     }//GEN-LAST:event_RevertFMActionPerformed
     
     private void GloballyREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GloballyREMActionPerformed
@@ -1886,7 +1882,7 @@ public class Jubler extends JFrame {
         filedialog.setDialogTitle(_("Load Subtitles"));
         if ( filedialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION ) return;
         savePathPosition();
-        loadFile(filedialog.getSelectedFile(), false);
+        loadFileFromHere(filedialog.getSelectedFile(), false);
     }//GEN-LAST:event_OpenFMActionPerformed
     
     
@@ -2066,13 +2062,15 @@ public class Jubler extends JFrame {
         }
     }
     
+    private void loadFileFromHere(File f, boolean force_into_same_window) {
+        StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
+        loadFile( f, force_into_same_window );
+    }
     
     public void loadFile(File f, boolean force_into_same_window ) {
         String data;
         Subtitles newsubs;
         Jubler work;
-        
-        StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
         
         /* Find where to display this subtitle file */
         if (subs==null || force_into_same_window) work = this;
