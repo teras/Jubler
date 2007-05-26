@@ -58,7 +58,11 @@
     <para>This is performed with the Video Console window. In order for this mode to work is <emphasis>necessary</emphasis> the Video Console window to have the focus, and especially the Text Box on the lower left of the window. Usually the application tries to request the focus to this widget, when the Video Console is selected. You can do this manually, after selecting the Video Console window, by clicking inside this Text Box.</para>
     <para>To perform the actual subtitle recording, follow this procedure. When you hear a subtitle press the ENTER key, or press the notepad like icon, on the right of the Text Box. Then the icon of the notepad will turn red. When you want to mark the end of the recorded subtitle, press ENTER or the notepad icon again. The notepad button will be inactive and the focus will be on the Text Box. Type a text (if you want) and press ENTER again to accept it or ESCAPE to cancel. This method accepts subtitles with no text inside.</para>
 </section>
-    
+ 
+<section><title>The mousewheel changes time too fast. Can I reduce this speed?</title>
+	<para>Yes you can! Press the ALT button while rotating the mousewheel and the speed will reduce from 1 second to 0.1 second per click.</para>
+</section>
+
 <section><title>How is transparency produced?</title>
     <para>In subtitle preview, although outline & shadow color is per character, their transparency is calculated for the whole subtitle entry.</para>
 </section>
