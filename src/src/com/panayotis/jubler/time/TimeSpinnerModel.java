@@ -32,20 +32,21 @@ import com.panayotis.jubler.time.Time;
  */
 public class TimeSpinnerModel extends AbstractSpinnerModel {
         
-    Time time;
-    int i;
+    private Time time;
+    private int i;
+    private double speed = 1;
     
     public TimeSpinnerModel() {
         time = new Time(0d);
     }
     
     public Object getPreviousValue() {
-        time.addTime(-1d);
+        time.addTime(-speed);
         return time;
     }
     
     public Object getNextValue() {
-        time.addTime(1d);
+        time.addTime(speed);
         return time;
     }
     
@@ -60,8 +61,12 @@ public class TimeSpinnerModel extends AbstractSpinnerModel {
         }
     }
     
-    public void addValue(double value) {
-        time.addTime(value);
+    public void increaseValue(int value) {
+        time.addTime(value*speed);
         fireStateChanged();
+    }
+    
+    public void setSpeed(double newspeed) {
+        speed = newspeed;
     }
 }

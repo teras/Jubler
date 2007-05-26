@@ -26,8 +26,7 @@ package com.panayotis.jubler.time.gui;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.TimeSpinnerEditor;
 import com.panayotis.jubler.time.TimeSpinnerModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JSpinner;
@@ -37,28 +36,51 @@ import javax.swing.JSpinner;
  * @author teras
  */
 public class JTimeSpinner extends JSpinner {
-    private boolean mouse_still_down = false;
+  //  private boolean mouse_still_down = false;
     
     /** Creates a new instance of JTimeSpinner */
     public JTimeSpinner() {
         super();
-        final TimeSpinnerModel model = new TimeSpinnerModel();
         
+    //    setUI(new mySpinnerUI());
+        
+        final TimeSpinnerModel model = new TimeSpinnerModel();
         setModel(model);
+        
         setEditor(new TimeSpinnerEditor(this));
+        
         addMouseWheelListener( new MouseWheelListener() {
             public void mouseWheelMoved(MouseWheelEvent e) {
-                model.addValue(e.getWheelRotation());
+                if ( e.getModifiers() == InputEvent.ALT_MASK ) model.setSpeed(0.1);
+                else model.setSpeed(1);
+                model.increaseValue(e.getWheelRotation());
+                model.setSpeed(1);
             }
         });
+        
+//        addMouseListener(new MouseAdapter() {
+//            public void mousePressed(MouseEvent e) {
+//                System.out.println("From here:" + e.getMouseModifiersText(e.getModifiers()));
+//            }
+//        });
+//        
+//        addKeyListener(new KeyAdapter() {
+//            public void keyPressed(KeyEvent e) {
+//                if (e.getKeyCode()==e.VK_ALT)
+//                    model.setSpeed(0.1f);
+//                System.out.println("##");
+//            }
+//            
+//            public void keyReleased(KeyEvent e) {
+//                if (e.getKeyCode()==e.VK_ALT)
+//                    model.setSpeed(1f);
+//                System.out.println("##");
+//            }
+//        });
     }
     
     public Time getTimeValue() {
         return (Time)getModel().getValue();
-    }
-    
-    public boolean getMouseStillDown() {
-        return mouse_still_down;
     }
     
     public void setTimeValue( Time t ){
@@ -66,3 +88,33 @@ public class JTimeSpinner extends JSpinner {
         this.getChangeListeners();
     }
 }
+
+
+//class mySpinnerUI extends BasicSpinnerUI {
+//    
+//    protected Component createNextButton() {
+//        
+//        Component c = super.createNextButton();
+//        
+//        c.addMouseListener(new MouseAdapter() {
+//            public void mousePressed(MouseEvent e) {
+//                System.out.println(e.getMouseModifiersText(e.getModifiers()));
+//            }
+//        });
+//        
+//        return c;
+//    }
+//    
+//    protected Component createPreviousButton() {
+//        
+//        Component c = super.createPreviousButton();
+//        
+//        c.addMouseListener(new MouseAdapter() {
+//            public void mousePressed(MouseEvent e) {
+//                System.out.println(e.getMouseModifiersText(e.getModifiers()));
+//            }
+//        });
+//        
+//        return c;
+//    }
+//}
