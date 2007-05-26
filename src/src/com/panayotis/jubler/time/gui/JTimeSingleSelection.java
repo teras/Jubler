@@ -45,7 +45,7 @@ public class JTimeSingleSelection extends javax.swing.JPanel {
         splitpos = new JTimeSpinner();
         this.DialogLabel = DialogLabel;
         initComponents();
-        add(splitpos, BorderLayout.CENTER);
+        ViewP.add(splitpos, BorderLayout.CENTER);
     }
     
     public void setToolTip(String txt) {
@@ -70,15 +70,24 @@ public class JTimeSingleSelection extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+        ViewP = new javax.swing.JPanel();
+        TimeLabel = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
-        setBorder(new javax.swing.border.TitledBorder(DialogLabel));
-    }
-    // </editor-fold>//GEN-END:initComponents
+        ViewP.setLayout(new java.awt.BorderLayout());
+
+        TimeLabel.setText(DialogLabel);
+        ViewP.add(TimeLabel, java.awt.BorderLayout.NORTH);
+
+        add(ViewP, java.awt.BorderLayout.NORTH);
+
+    }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel TimeLabel;
+    private javax.swing.JPanel ViewP;
     // End of variables declaration//GEN-END:variables
     
 }
