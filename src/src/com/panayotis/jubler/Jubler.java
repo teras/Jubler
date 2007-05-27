@@ -1131,6 +1131,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == OpenFM) {
                 Jubler.this.OpenFMActionPerformed(evt);
             }
+            else if (evt.getSource() == RetrieveWFM) {
+                Jubler.this.RetrieveWFMActionPerformed(evt);
+            }
             else if (evt.getSource() == RevertFM) {
                 Jubler.this.RevertFMActionPerformed(evt);
             }
@@ -1304,9 +1307,6 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == AboutTB) {
                 Jubler.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == RetrieveWFM) {
-                Jubler.this.RetrieveWFMActionPerformed(evt);
             }
         }
 
@@ -1526,7 +1526,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_RoundTMActionPerformed
     
     
-    private void insertSubEntry(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertSubEntry
+    public void addNewSubtitle(boolean is_after) {
         double prevtime, nexttime;
         double curdur, gap, avail, requested, center, start;
         
@@ -1535,7 +1535,7 @@ public class Jubler extends JFrame {
         curdur = 2;
         gap = 0.5;
         
-        if (evt.getActionCommand().charAt(0)=='a') {
+        if (is_after) {
             if ( row == -1 ) row = subs.size()-1;
         } else {
             if ( row != -1 ) row --;
@@ -1563,6 +1563,10 @@ public class Jubler extends JFrame {
         start = center - curdur/2;
         int where = addSubEntry( new SubEntry(new Time(start), new Time(start+curdur), "") );
         setSelectedSub(where, true);
+    }
+    
+    private void insertSubEntry(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_insertSubEntry
+        addNewSubtitle(evt.getActionCommand().charAt(0)=='a');
     }//GEN-LAST:event_insertSubEntry
     
     private void PasteSpecialEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteSpecialEMActionPerformed

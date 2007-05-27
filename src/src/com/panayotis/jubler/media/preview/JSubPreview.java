@@ -239,7 +239,7 @@ public class JSubPreview extends javax.swing.JPanel {
         Move = new javax.swing.JToggleButton();
         Resize = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        NewSub = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         TimePosL = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
@@ -404,10 +404,16 @@ public class JSubPreview extends javax.swing.JPanel {
         jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/newsub.png")));
-        jButton1.setToolTipText(_("New subtitle after current one"));
-        jButton1.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        jPanel3.add(jButton1);
+        NewSub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/newsub.png")));
+        NewSub.setToolTipText(_("New subtitle after current one"));
+        NewSub.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        NewSub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewSubActionPerformed(evt);
+            }
+        });
+
+        jPanel3.add(NewSub);
 
         ToolPanel.add(jPanel3);
 
@@ -420,8 +426,6 @@ public class JSubPreview extends javax.swing.JPanel {
 
         jPanel6.setLayout(new java.awt.BorderLayout());
 
-        ZoomS.setMaximum(59);
-        ZoomS.setMinimum(1);
         ZoomS.setSnapToTicks(true);
         ZoomS.setToolTipText(_("Subtitle zoom factor"));
         ZoomS.setValue(30);
@@ -441,7 +445,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomin.png")));
         jLabel2.setToolTipText(_("Zoom in"));
-        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 15));
+        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
         jPanel6.add(jLabel2, java.awt.BorderLayout.EAST);
 
         jPanel5.add(jPanel6, java.awt.BorderLayout.EAST);
@@ -450,19 +454,17 @@ public class JSubPreview extends javax.swing.JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
-//     double factor = 2d;
-//        if (evt.getActionCommand().charAt(0)=='I') factor = 0.5;
-//        double center = timeline.getCenterOfSelection();
-//        double offset = view.getDuration()*factor/2d;
-//        if (offset<(ViewWindow.MINIMUM_DURATION/2)) offset = ViewWindow.MINIMUM_DURATION/2;
-//        view.setWindow(center-offset, center+offset, false);
-//        windowHasChanged(null);
+    private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
+        parent.addNewSubtitle(true);
+    }//GEN-LAST:event_NewSubActionPerformed
+
     
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
         double center = timeline.getCenterOfSelection();
-        double offset = view.getVideoDuration() * ZoomS.getValue() / (ZoomS.getMaximum()*2d);
-        System.out.println(ZoomS.getValue()*1f / ZoomS.getMaximum());
-        view.setWindow(center-offset, center+offset, false);
+        /* minimum diration is 2 seconds */
+        double base = Math.pow(view.getVideoDuration()/2d, 1d/ZoomS.getMaximum());
+        double half_duration = Math.pow(base, ZoomS.getValue());
+        view.setWindow(center-half_duration, center+half_duration, false);
         windowHasChanged(null);
     }//GEN-LAST:event_ZoomSStateChanged
     
@@ -504,6 +506,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel EditorPanel;
     private javax.swing.JLabel ErrorL;
     private javax.swing.JToggleButton Move;
+    private javax.swing.JButton NewSub;
     private javax.swing.JToggleButton Resize;
     private javax.swing.JToggleButton Select;
     private javax.swing.JLabel TimePosL;
@@ -513,7 +516,6 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JToggleButton VideoZoom;
     public javax.swing.JPanel ViewPanel;
     private javax.swing.JSlider ZoomS;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

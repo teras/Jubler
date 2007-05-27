@@ -319,7 +319,7 @@
             <Property name="axis" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="NewSub">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icons/newsub.png"/>
@@ -331,6 +331,9 @@
                   <Insets value="[2, 2, 2, 2]"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NewSubActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -366,8 +369,6 @@
           <SubComponents>
             <Component class="javax.swing.JSlider" name="ZoomS">
               <Properties>
-                <Property name="maximum" type="int" value="59"/>
-                <Property name="minimum" type="int" value="1"/>
                 <Property name="snapToTicks" type="boolean" value="true"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Subtitle zoom factor&quot;)" type="code"/>
@@ -412,7 +413,7 @@
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                    <EmptyBorder bottom="0" left="0" right="15" top="0"/>
+                    <EmptyBorder bottom="0" left="0" right="16" top="0"/>
                   </Border>
                 </Property>
               </Properties>
