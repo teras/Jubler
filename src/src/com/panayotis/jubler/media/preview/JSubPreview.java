@@ -64,6 +64,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private Jubler parent;
     
     private boolean ignore_slider_changes = false;
+    private boolean ignore_zoomfactor_changes = false;
     
     /* Here we store the start/end/videoduration values of the window*/
     private ViewWindow view;
@@ -71,7 +72,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private int cursor_action = 0;
     
     private MediaFile last_media_file = null;
-        
+    
     
     /** Creates new form JSubPreview */
     public JSubPreview(Jubler parent) {
@@ -106,6 +107,12 @@ public class JSubPreview extends javax.swing.JPanel {
         slider.setMaximum((int)(view.getVideoDuration()*10));
         slider.setVisibleAmount((int)(view.getDuration()*10));
         slider.setValue((int)(view.getStart()*10));
+        
+        if (!ignore_zoomfactor_changes) {
+            int pos = (int)(ZoomS.getMaximum() * Math.log(view.getDuration())/Math.log(view.getVideoDuration()));
+            ZoomS.setValue(pos);
+        }
+        
         timeline.windowHasChanged(subid);
         wave.setTime(view.getStart(), view.getStart()+view.getDuration());
         if (subid!=null && subid.length>0) frame.setSubEntry(parent.getSubtitles().elementAt(subid[0]));
@@ -176,8 +183,7 @@ public class JSubPreview extends javax.swing.JPanel {
         if (status) {
             frame.repaint();
             repack();
-        }
-        else parent.closedPreview();
+        } else parent.closedPreview();
     }
     
     public void forceRepaintFrame() {
@@ -453,19 +459,23 @@ public class JSubPreview extends javax.swing.JPanel {
         add(jPanel5, java.awt.BorderLayout.SOUTH);
 
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
         parent.addNewSubtitle(true);
     }//GEN-LAST:event_NewSubActionPerformed
-
+    
     
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
+        if (ignore_slider_changes) return;
+        ignore_zoomfactor_changes = true;
+        
         double center = timeline.getCenterOfSelection();
         /* minimum diration is 2 seconds */
-        double base = Math.pow(view.getVideoDuration()/2d, 1d/ZoomS.getMaximum());
-        double half_duration = Math.pow(base, ZoomS.getValue());
+        double half_duration = Math.pow(view.getVideoDuration()/2d, ((double)ZoomS.getValue())/ZoomS.getMaximum());
         view.setWindow(center-half_duration, center+half_duration, false);
         windowHasChanged(null);
+        
+        ignore_zoomfactor_changes = false;
     }//GEN-LAST:event_ZoomSStateChanged
     
     private void AudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPlayActionPerformed
@@ -494,7 +504,7 @@ public class JSubPreview extends javax.swing.JPanel {
         view.setWindow(evt.getValue()/10d, evt.getValue()/10d+view.getDuration(), false);
         windowHasChanged(null);
     }//GEN-LAST:event_sliderAdjustmentValueChanged
-        
+    
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
