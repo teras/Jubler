@@ -34,7 +34,6 @@ import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GraphicsEnvironment;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.text.SimpleAttributeSet;
@@ -82,11 +81,9 @@ public class JStyleEditor extends javax.swing.JDialog {
         BorderStyle.addItem(_("Outline"));
         BorderStyle.addItem(_("Opaque box"));
         
-        String [] fontnames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-        for ( int i = 0 ; i < fontnames.length ; i++) {
-            FontName.addItem(fontnames[i]);
+        for ( String name : SubStyle.FontNames) {
+            FontName.addItem(name);
         }
-        
         for( Integer size : SubStyle.FontSizes) {
             FontSize.addItem(size);
         }

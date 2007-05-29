@@ -27,6 +27,9 @@ import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,9 +45,10 @@ public class SubStyle {
     public static enum Style {FONTNAME, FONTSIZE, BOLD, ITALIC, UNDERLINE, STRIKETHROUGH,
     PRIMARY, SECONDARY, OUTLINE, SHADOW, BORDERSTYLE, BORDERSIZE, SHADOWSIZE,
     LEFTMARGIN, RIGHTMARGIN, VERTICAL, ANGLE, SPACING, XSCALE, YSCALE, DIRECTION, UNKNOWN};
-
-     public static final Integer [] FontSizes = {8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 48, 56, 64, 72};
-
+    
+    public static final Integer [] FontSizes = {8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 48, 56, 64, 72};
+    
+    public static final String [] FontNames;
     
     private static final Pattern loadpattern;
     
@@ -56,6 +60,24 @@ public class SubStyle {
                 "(.*?)\\|(.*?)\\|(.*?)\\|(.*?)\\|(.*?)\\|"+
                 "(.*)"
                 );
+        
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        String[] fnames;
+        try {
+            fnames = env.getAvailableFontFamilyNames();
+        } catch (Exception e) {
+            Font[] fnt = env.getAllFonts();
+            TreeSet<String> names = new TreeSet<String>();
+            
+            for (int i = 0 ; i < fnt.length ; i++ ) {
+                names.add(fnt[i].getFamily());
+            }
+            
+            String[] model = new String[1];
+            fnames = names.toArray(model);
+        }
+        FontNames = fnames;
+        
     }
     
     
@@ -138,7 +160,7 @@ public class SubStyle {
             }
         }
     }
-        
+    
     
     public String getValues() {
         StringBuffer out = new StringBuffer();
@@ -154,8 +176,8 @@ public class SubStyle {
     
     public void set(Style which, Object what) {
         int where = which.ordinal();
-       // if (values[where].getClass().getName().equals(what.getClass().getName()) ) {
-            values[where] = what;
+        // if (values[where].getClass().getName().equals(what.getClass().getName()) ) {
+        values[where] = what;
 //            return;
 //        }
 //        DEBUG.error("Wrong cast in SubStyle set");

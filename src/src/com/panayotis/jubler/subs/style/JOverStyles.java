@@ -40,7 +40,6 @@ import com.panayotis.jubler.subs.style.gui.tri.TriDummy;
 import com.panayotis.jubler.subs.style.gui.tri.TriObject;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GraphicsEnvironment;
 import javax.swing.JComponent;
 
 /**
@@ -62,7 +61,7 @@ public class JOverStyles extends javax.swing.JPanel {
         
         visuals = new JComponent[Style.values().length];
         
-        FontAttP.add(visuals[0] = new TriComboBox(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames()), BorderLayout.CENTER);
+        FontAttP.add(visuals[0] = new TriComboBox(SubStyle.FontNames), BorderLayout.CENTER);
         FontAttP.add(visuals[1] = new TriComboBox(SubStyle.FontSizes), BorderLayout.EAST);
         
         TextAttP.add( visuals[2] = new TriToggleButton("/icons/bold.png") );
