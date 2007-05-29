@@ -97,7 +97,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     
     
     
-    public void produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
+    public boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
         CharsetEncoder encoder;
         String encoding;
         
@@ -119,6 +119,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         }
         out.write(res.toString().replace("\n","\r\n"));
         out.close();
+        return true;
     }
     
     protected String makeHeader(Subtitles subs) { return ""; }

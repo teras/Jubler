@@ -141,12 +141,12 @@ public class FileCommunicator {
                 saveformat = prefs.getSaveFormat();
             }
             
-            saveformat.produce(subs, tempout, prefs, media);
+            if (saveformat.produce(subs, tempout, prefs, media)) {  // produce & check if should rename file
+                outfile.delete();
+                if (!tempout.renameTo(outfile))
+                    result = _("Error while updating file {0}", outfile.getPath());
+            }
             
-            // Renaming new file
-            outfile.delete();
-            if (!tempout.renameTo(outfile))
-                result = _("Error while updating file {0}", outfile.getPath());
         } catch (UnsupportedEncodingException e) {
             result = _("Encoding error. Use proper encoding (e.g. UTF-8).");
         } catch (UnmappableCharacterException e) {
@@ -230,7 +230,7 @@ public class FileCommunicator {
         return System.getProperties().getProperty("user.dir") + System.getProperties().getProperty("file.separator");
     }
     
-    public static File stripFileFromExtension(File f) {
+    public static File stripFileFromVideoExtension(File f) {
         String ext;
         String fname = f.getPath().toLowerCase();
         for ( int i = 0 ; i < AvailSubFormats.Formats.length ; i++ ) {
@@ -239,6 +239,15 @@ public class FileCommunicator {
                 return new File(f.getPath().substring(0, fname.length()-ext.length()));
         }
         return f;
+    }
+    
+    public static File stripFileFromExtension(File f) {
+        String fname = f.getPath();
+        int pos = fname.lastIndexOf(".");
+        if (pos>0) {
+            fname= fname.substring(0,pos);
+        }
+        return new File(fname);
     }
     
 }

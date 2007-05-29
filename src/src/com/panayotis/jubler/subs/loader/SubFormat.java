@@ -41,8 +41,10 @@ public abstract class SubFormat {
     /* convert a string into subtitles */
     public abstract Subtitles parse(String input, float FPS, File f);
     
-    /* Export subtitles to file */
-    public abstract void produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException;
+    /* Export subtitles to file 
+     * Return whether the file should be moved & renamed or not 
+     */
+    public abstract boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException;
     
     public String getExtendedName() {
         return getName();

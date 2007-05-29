@@ -2054,7 +2054,7 @@ public class Jubler extends JFrame {
     private void saveFile(File f) {
         String ext;
         ext = "."+prefs.getSaveFormat().getExtension();
-        f = FileCommunicator.stripFileFromExtension(f);
+        f = FileCommunicator.stripFileFromVideoExtension(f);
         f = new File(f.getPath()+ext);
         String result = FileCommunicator.save(subs, f, prefs, mfile);
         if (result == null ) {
@@ -2082,7 +2082,7 @@ public class Jubler extends JFrame {
         
         /* Initialize Subtitles */
         newsubs = new Subtitles();
-        newsubs.setCurrentFile(FileCommunicator.stripFileFromExtension(f)); // getFPS requires it
+        newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
         
         /* Load file into memory */
         work.prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
@@ -2148,7 +2148,7 @@ public class Jubler extends JFrame {
         PreviewTB.setEnabled(true);
         TestTB.setEnabled(true);
         
-        subs.setCurrentFile(FileCommunicator.stripFileFromExtension(f));
+        subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
         updateRecentFile(f);
         showInfo();
         if(reset_selection) setSelectedSub(0, true);

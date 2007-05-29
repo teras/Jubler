@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.subs.loader.text.AdvancedSubStation;
 import com.panayotis.jubler.subs.loader.text.MPL2;
 import com.panayotis.jubler.subs.loader.text.MicroDVD;
@@ -42,7 +43,7 @@ public class AvailSubFormats {
     int current;
     
     static {
-        Formats = new SubFormat [9];
+        Formats = new SubFormat [10];
         Formats[0] = new AdvancedSubStation();
         Formats[1] = new SubStationAlpha();
         Formats[2] = new SubRip();
@@ -52,7 +53,7 @@ public class AvailSubFormats {
         Formats[6] = new MPL2();
         Formats[7] = new Spruce();
         Formats[8] = new PlainText();
-     //   Formats[6] = new DVDMaestro();
+        Formats[9] = new DVDMaestro();
      //   Formats[7] = new ScanTitle();
     }
     

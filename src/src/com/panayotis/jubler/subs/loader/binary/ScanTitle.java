@@ -70,7 +70,8 @@ public class ScanTitle extends AbstractBinarySubFormat {
         return true;
     }
 
-    public void produce(Subtitles subs, File out, JPreferences prefs, MediaFile media) throws IOException {
+    public boolean produce(Subtitles subs, File out, JPreferences prefs, MediaFile media) throws IOException {
+        return true;
     }
     
     

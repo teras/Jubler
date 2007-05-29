@@ -37,10 +37,13 @@ public class JSaveProgress extends javax.swing.JDialog {
     }
     
     
-    void start(int size) {
+    void start(int size, String label) {
         setVisible(true);
+        SaveLabel.setText(label);
+        setTitle("Saving "+label);
         SaveBar.setMaximum(size);
         SaveBar.setValue(0);
+        pack();
     }
     
     void updateID(int id) {
@@ -58,15 +61,19 @@ public class JSaveProgress extends javax.swing.JDialog {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+        StaticLabel = new javax.swing.JLabel();
         SaveLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         SaveBar = new javax.swing.JProgressBar();
 
-        getContentPane().setLayout(new java.awt.GridLayout(2, 1));
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(_("Save progress"));
         setResizable(false);
+        StaticLabel.setText("Saving into:");
+        getContentPane().add(StaticLabel);
+
         getContentPane().add(SaveLabel);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
@@ -85,6 +92,7 @@ public class JSaveProgress extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JProgressBar SaveBar;
     private javax.swing.JLabel SaveLabel;
+    private javax.swing.JLabel StaticLabel;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
     

@@ -51,6 +51,16 @@ public class JMaestroOptions extends javax.swing.JPanel {
         YSize.setValue(vsize.height);
     }
     
+    public String getVideoFormat() {
+        return Format.getSelectedItem().toString();
+    }
+    public int getVideoWidth() {
+        return (Integer)XSize.getValue();
+    }
+    public int getVideoHeight() {
+        return (Integer)YSize.getValue();
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
