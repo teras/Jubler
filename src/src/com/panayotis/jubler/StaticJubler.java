@@ -34,8 +34,8 @@ public class StaticJubler {
     private static JVersion version;
     
     private static int screen_x, screen_y, screen_width, screen_height, screen_state;
-    private static final int SCREEN_DELTAX = 20;
-    private static final int SCREEN_DELTAY = 20;
+    private static final int SCREEN_DELTAX = 24;
+    private static final int SCREEN_DELTAY = 24;
     
     static {
         loadWindowPosition();
