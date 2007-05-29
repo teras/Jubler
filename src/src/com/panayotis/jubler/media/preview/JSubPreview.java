@@ -109,7 +109,7 @@ public class JSubPreview extends javax.swing.JPanel {
         slider.setValue((int)(view.getStart()*10));
         
         if (!ignore_zoomfactor_changes) {
-            int pos = (int)(ZoomS.getMaximum() * Math.log(view.getDuration())/Math.log(view.getVideoDuration()));
+            int pos = (int)Math.round(ZoomS.getMaximum() * Math.log(view.getDuration())/Math.log(view.getVideoDuration()));
             ZoomS.setValue(pos);
         }
         
