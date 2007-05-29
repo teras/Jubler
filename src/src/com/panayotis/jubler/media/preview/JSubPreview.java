@@ -177,8 +177,8 @@ public class JSubPreview extends javax.swing.JPanel {
     public void setVisible(boolean status) {
 //        super.setVisible(status);
         dialog.setVisible(status);
-        frame.setEnabled(status);
-        wave.setEnabled(status);
+        frame.setEnabled(status && VideoShow.isSelected());
+        wave.setEnabled(status && AudioShow.isSelected());
         
         if (status) {
             frame.repaint();

@@ -6,7 +6,7 @@ Fixed autoload for Java 1.6 in Linux. Added missing tooltips. Fixed gettext
 bug with ' character. Improved ffmpeg support. Keep application alive if
 "Close window" is selected. New window will not fully overlap old one.
 Spanish, french and serbian translations introduced. Czech translation
-corrections.
+corrections. Various bug fixes.
 
 
 3.2.0
