@@ -24,6 +24,7 @@
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
 import java.io.File;
@@ -103,6 +104,7 @@ public class ExtOptions extends JPanel {
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
         File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), programname);
         if (newexe!=null) FilenameT.setText(newexe.getAbsolutePath());
+        else DEBUG.error(_("Unable to find valid executable for {0}.",name));
     }//GEN-LAST:event_BrowseActionPerformed
     
     

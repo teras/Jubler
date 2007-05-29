@@ -49,6 +49,7 @@ public class TreeWalker {
                 return null;
             }
             if (proc==null) return null;
+            if (proc.exitValue()!=0) return null;
             
             /* All checks OK - valid executable! */
             return root;
