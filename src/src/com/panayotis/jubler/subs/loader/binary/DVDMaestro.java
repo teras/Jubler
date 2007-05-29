@@ -33,13 +33,16 @@ import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
+import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.time.Time;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -107,92 +110,99 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         
         
         final Subtitles subs = given_subs;
-        final String outfilename = dir.getPath()+
-                System.getProperties().getProperty("file.separator")+
-                dir.getName();
+        final String outfilepath = dir.getPath() + System.getProperties().getProperty("file.separator");
+        final String outfilename = dir.getName();
         
         moptions.updateValues(given_subs, media);
         
         JIDialog.message(null,moptions, _("Maestro DVD options"), JIDialog.QUESTION_MESSAGE);
+//        final float fps = getFPS(prefs);
         
-        /* First of all, start writing the bitmapped files */
         
+        /* Start writing the files in a separate thread */
         Thread t = new Thread() {
             public void run() {
                 progress.start(subs.size(), outfilename);
+                StringBuffer buffer = new StringBuffer();
+                
+                /* Make header */
+                buffer.append("t_format 2").append(NL);
+                buffer.append("Display_Start non_forced").append(NL);
+                buffer.append("TV_Type ").append(moptions.getVideoFormat()).append(NL);
+                buffer.append("Tape_Type NON_DROP").append(NL);
+                buffer.append("Pixel_Area (0 477)").append(NL);
+                buffer.append("Directory").append(NL);
+                
+                buffer.append("Display_Area (0 0 ");
+                buffer.append(moptions.getVideoWidth()-1).append(" ");
+                buffer.append(moptions.getVideoHeight()-1).append(")").append(NL);
+                
+                buffer.append("Contrast	(15 15 15 0)").append(NL);
+                buffer.append(NL);
+                buffer.append("#").append(NL);
+                buffer.append("# Palette entries:").append(NL);
+                buffer.append("# 00 : RGB(255,255,255)").append(NL);
+                buffer.append("# 01 : RGB( 64, 64, 64)").append(NL);
+                buffer.append(NL);
+                buffer.append("SP_NUMBER	START	END	FILE_NAME").append(NL);
+                buffer.append("Color	(0 1 0 0)").append(NL);
+                buffer.append(NL);
+                
+                /* create digits prependable string */
+                int digs = Integer.toString(subs.size()).length();
+                StringBuffer id = new StringBuffer();
+                for (int i = 0 ; i < digs ; i++) id.append('0');
+                digits = id.toString();
+                
+                String c_filename, id_string;
                 for (int i = 0 ; i < subs.size() ; i++) {
                     progress.updateID(i);
-                    makeSubPicture(subs.elementAt(i), i, outfilename);
+                    id_string = Integer.toString(i+1);
+                    id_string = digits.substring(id_string.length()) + id_string;
+        
+                    c_filename = outfilename+"_"+id_string+".png";
+                    makeSubPicture(subs.elementAt(i), i, outfilepath+c_filename);
+                    makeSubEntry(subs.elementAt(i), i, c_filename, buffer);
                 }
+                
+                /* Write textual part to disk */
+                try {
+                    BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfilepath+outfilename+".son")));
+                    out.write(buffer.toString());
+                    out.close();
+                } catch (IOException ex) {
+                    DEBUG.error(_("Unable to create subtitle file {0}.", outfilepath+outfilename+".son"));
+                }
+                
                 progress.stop();
             }
         };
         t.start();
         
         
-        /* Now start writing the textual part */
-        final float fps = getFPS(prefs);
         
-        StringBuffer buffer = new StringBuffer();
-        
-        /* Make header */
-        buffer.append("t_format 2").append(NL);
-        buffer.append("Display_Start non_forced").append(NL);
-        buffer.append("TV_Type ").append(moptions.getVideoFormat()).append(NL);
-        buffer.append("Tape_Type NON_DROP").append(NL);
-        buffer.append("Pixel_Area (0 477)").append(NL);
-        buffer.append("Directory").append(NL);
-        
-        buffer.append("Display_Area (0 0 ");
-        buffer.append(moptions.getVideoWidth()-1).append(" ");
-        buffer.append(moptions.getVideoHeight()-1).append(")").append(NL);
-        
-        buffer.append("Contrast	(15 15 15 0)").append(NL);
-        buffer.append(NL);
-        buffer.append("#").append(NL);
-        buffer.append("# Palette entries:").append(NL);
-        buffer.append("# 00 : RGB(255,255,255)").append(NL);
-        buffer.append("# 01 : RGB( 64, 64, 64)").append(NL);
-        buffer.append(NL);
-        buffer.append("SP_NUMBER	START	END	FILE_NAME").append(NL);
-        buffer.append("Color	(0 1 0 0)").append(NL);
-        buffer.append(NL);
-        
-        /* create digits prependable string */
-        int digs = Integer.toString(subs.size()).length();
-        StringBuffer id = new StringBuffer();
-        for (int i = 0 ; i < digs ; i++) id.append('0');
-        digits = id.toString();
-        
-        for (int i = 0 ; i < subs.size() ; i++) {
-            makeSubEntry(subs.elementAt(i), i, outfilename, buffer);
-        }
-        
-        BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfilename+".son")));
-        out.write(buffer.toString());
-        out.close();
-        
-        return false;   // Never move files
+        return false;   // There is no need to move any files
     }
     
-    private void makeSubEntry(SubEntry entry, int id, String prefix, StringBuffer buffer) {
-        
-        System.out.println(id);
+    private void makeSubEntry(SubEntry entry, int id, String filename, StringBuffer buffer) {
         String id_string = Integer.toString(id+1);
         id_string = digits.substring(id_string.length()) + id_string;
         buffer.append("Display_Area	(213 3 524 38)").append(NL);
         buffer.append(id_string).append(" ");
         buffer.append(timeformat(entry.getStartTime())).append(" ");
         buffer.append(timeformat(entry.getFinishTime())).append(" ");
-        buffer.append(prefix).append("_").append(id_string).append(".tif").append(NL);
+        buffer.append(filename).append(NL);
     }
     
-    private void makeSubPicture(SubEntry entry, int id, String prefix) {
+    private boolean makeSubPicture(SubEntry entry, int id, String filename)  {
+        SubImage simg = new SubImage(entry);
+        BufferedImage img = simg.getImage();
         try {
-            Thread.currentThread().sleep(100);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+            ImageIO.write(img, "png", new File(filename));
+        } catch (IOException ex) {
+            return false;
         }
+        return true;
     }
     
     
