@@ -27,8 +27,11 @@ import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.TimeSpinnerEditor;
 import com.panayotis.jubler.time.TimeSpinnerModel;
 import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import javax.swing.JButton;
 import javax.swing.JSpinner;
 
 /**
@@ -36,19 +39,31 @@ import javax.swing.JSpinner;
  * @author teras
  */
 public class JTimeSpinner extends JSpinner {
-  //  private boolean mouse_still_down = false;
     
     /** Creates a new instance of JTimeSpinner */
     public JTimeSpinner() {
         super();
         
-    //    setUI(new mySpinnerUI());
-        
         final TimeSpinnerModel model = new TimeSpinnerModel();
         setModel(model);
         
+        /* Modify the speed of the spinner, if the "alt" key is pressed" */
+        JButton c;
+        for (int i = 0 ; i < getComponentCount(); i ++ ) {  // It's a hack, but can't do anything else :-(
+            if (getComponent(i) instanceof JButton) {
+                c = (JButton)getComponent(i);
+                c.addMouseListener(new MouseAdapter() {
+                    public void mousePressed(MouseEvent e) {
+                        if( (e.getModifiers()&e.ALT_MASK) > 0) model.setSpeed(0.1);
+                        else model.setSpeed(1);
+                    }
+                });
+            }
+        }
+        
         setEditor(new TimeSpinnerEditor(this));
         
+        /* Get mousewheel event, and modify speed if the alt key is pressed */
         addMouseWheelListener( new MouseWheelListener() {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if ( e.getModifiers() == InputEvent.ALT_MASK ) model.setSpeed(0.1);
@@ -58,26 +73,8 @@ public class JTimeSpinner extends JSpinner {
             }
         });
         
-//        addMouseListener(new MouseAdapter() {
-//            public void mousePressed(MouseEvent e) {
-//                System.out.println("From here:" + e.getMouseModifiersText(e.getModifiers()));
-//            }
-//        });
-//        
-//        addKeyListener(new KeyAdapter() {
-//            public void keyPressed(KeyEvent e) {
-//                if (e.getKeyCode()==e.VK_ALT)
-//                    model.setSpeed(0.1f);
-//                System.out.println("##");
-//            }
-//            
-//            public void keyReleased(KeyEvent e) {
-//                if (e.getKeyCode()==e.VK_ALT)
-//                    model.setSpeed(1f);
-//                System.out.println("##");
-//            }
-//        });
     }
+    
     
     public Time getTimeValue() {
         return (Time)getModel().getValue();
@@ -89,32 +86,3 @@ public class JTimeSpinner extends JSpinner {
     }
 }
 
-
-//class mySpinnerUI extends BasicSpinnerUI {
-//    
-//    protected Component createNextButton() {
-//        
-//        Component c = super.createNextButton();
-//        
-//        c.addMouseListener(new MouseAdapter() {
-//            public void mousePressed(MouseEvent e) {
-//                System.out.println(e.getMouseModifiersText(e.getModifiers()));
-//            }
-//        });
-//        
-//        return c;
-//    }
-//    
-//    protected Component createPreviousButton() {
-//        
-//        Component c = super.createPreviousButton();
-//        
-//        c.addMouseListener(new MouseAdapter() {
-//            public void mousePressed(MouseEvent e) {
-//                System.out.println(e.getMouseModifiersText(e.getModifiers()));
-//            }
-//        });
-//        
-//        return c;
-//    }
-//}
