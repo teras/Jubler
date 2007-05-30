@@ -342,7 +342,7 @@
 		>
 		<documenttype
 			name="Subtitle Document"
-			extensions="srt sub ass ssa son"
+			extensions="srt sub ass ssa stl son"
 			role="Editor"
 			iconfile="resources/installers/macosx/subtitle.icns"
 		/>

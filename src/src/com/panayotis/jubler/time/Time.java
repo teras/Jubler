@@ -55,17 +55,16 @@ public class Time implements Comparable<Time> {
     public Time(String h, String m, String s, String f) {
         setTime(h, m, s, f);
     }
-
+    
     /* Time in hours, minutes, seconds & frames */
-    public Time (String h, String m, String s, String f, float fps) {
+    public Time(String h, String m, String s, String f, float fps) {
         setTime(h, m, s, f, fps);
     }
     
     public Time(Time time) {
         setTime(time);
     }
-    
-    
+
     
     
     public boolean isValid() {
@@ -102,7 +101,7 @@ public class Time implements Comparable<Time> {
             invalidate();
         }
     }
-
+    
     private void setTime(String h, String m, String s, String f) {
         short hour, min, sec, milli;
         int flength;

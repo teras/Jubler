@@ -35,16 +35,28 @@ import java.io.IOException;
  */
 public abstract class SubFormat {
     
+    protected float FPS;
+    private String ENCODING;
+
     public abstract String getExtension();
     public abstract String getName();
+            
+    public final boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
+        if (prefs==null) {
+            FPS = 25f;
+            ENCODING = "UTF-8";
+        } else {
+            FPS = prefs.getSaveFPS();
+            ENCODING = prefs.getSaveEncoding();
+        }
+        return produce(subs, outfile, media);
+    }
     
-    /* convert a string into subtitles */
-    public abstract Subtitles parse(String input, float FPS, File f);
     
     /* Export subtitles to file
      * Return whether the file should be moved & renamed or not
      */
-    public abstract boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException;
+    public abstract boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException;
     
     public String getExtendedName() {
         return getName();
@@ -53,16 +65,14 @@ public abstract class SubFormat {
     public String getDescription() {
         return getExtendedName() + "  (*." + getExtension() + ")";
     }
-    
-    public float getFPS(JPreferences prefs) {
-        if ( prefs == null ) return 25f;
-        return prefs.getSaveFPS();
+
+    public String getEncoding() {
+        return ENCODING;
     }
     
-    public String getEncoding(JPreferences prefs) {
-        if ( prefs == null ) return "UTF-8";
-        return prefs.getSaveEncoding();
-    }
+    /* convert a string into subtitles */
+    public abstract Subtitles parse(String input, float FPS, File f);
+    
     
     public abstract boolean supportsFPS();
 }

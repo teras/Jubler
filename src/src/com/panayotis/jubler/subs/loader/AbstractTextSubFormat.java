@@ -49,7 +49,6 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     
     protected static final String nl = "\\\n";
     protected static final String space = "\\s*?";
-    protected float FPS  = 25f;
     
     protected Subtitles subtitle_list;
     
@@ -97,9 +96,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     
     
     
-    public boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
-        setFPS(getFPS(prefs));
-
+    public boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException {
         StringBuffer res = new StringBuffer();
         res.append(makeHeader(subs));
         for ( int i = 0 ; i < subs.size() ; i++ ) {
@@ -107,7 +104,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         }
 
         // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
-        CharsetEncoder encoder = Charset.forName(getEncoding(prefs)).newEncoder();
+        CharsetEncoder encoder = Charset.forName(getEncoding()).newEncoder();
 
         BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfile), encoder));
         out.write(res.toString().replace("\n","\r\n"));

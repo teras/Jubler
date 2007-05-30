@@ -88,7 +88,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
     private JPreferences prefs;
     private File outfile;
     
-    public boolean produce(Subtitles given_subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
+    public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
         if (progress.isVisible())
             throw new IOException(_("The save process did not finish yet"));
         
@@ -116,8 +116,6 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         moptions.updateValues(given_subs, media);
         
         JIDialog.message(null,moptions, _("Maestro DVD options"), JIDialog.QUESTION_MESSAGE);
-//        final float fps = getFPS(prefs);
-        
         
         /* Start writing the files in a separate thread */
         Thread t = new Thread() {
@@ -189,8 +187,8 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         id_string = digits.substring(id_string.length()) + id_string;
         buffer.append("Display_Area	(213 3 524 38)").append(NL);
         buffer.append(id_string).append(" ");
-        buffer.append(timeformat(entry.getStartTime())).append(" ");
-        buffer.append(timeformat(entry.getFinishTime())).append(" ");
+        buffer.append(entry.getStartTime().toSecondsFrame(FPS)).append(" ");
+        buffer.append(entry.getFinishTime().toSecondsFrame(FPS)).append(" ");
         buffer.append(filename).append(NL);
     }
     
@@ -205,12 +203,6 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         return true;
     }
     
-    
-    private String timeformat(Time t) {
-        String res = t.toString().substring(1).replace(',',':');
-        res = res.substring(0, res.length()-1);
-        return res;
-    }
 }
 
 
