@@ -41,8 +41,8 @@ public abstract class SubFormat {
     /* convert a string into subtitles */
     public abstract Subtitles parse(String input, float FPS, File f);
     
-    /* Export subtitles to file 
-     * Return whether the file should be moved & renamed or not 
+    /* Export subtitles to file
+     * Return whether the file should be moved & renamed or not
      */
     public abstract boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException;
     
@@ -57,6 +57,11 @@ public abstract class SubFormat {
     public float getFPS(JPreferences prefs) {
         if ( prefs == null ) return 25f;
         return prefs.getSaveFPS();
+    }
+    
+    public String getEncoding(JPreferences prefs) {
+        if ( prefs == null ) return "UTF-8";
+        return prefs.getSaveEncoding();
     }
     
     public abstract boolean supportsFPS();

@@ -98,25 +98,18 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     
     
     public boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
-        CharsetEncoder encoder;
-        String encoding;
-        
+        setFPS(getFPS(prefs));
+
         StringBuffer res = new StringBuffer();
-        float fps = getFPS(prefs);
-        
-        if ( prefs == null ) encoding = "UTF-8";
-        else encoding = prefs.getSaveEncoding();
-        
-        // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
-        encoder = Charset.forName(encoding).newEncoder();
-        
-        BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfile), encoder));
-        
-        setFPS(FPS);
         res.append(makeHeader(subs));
         for ( int i = 0 ; i < subs.size() ; i++ ) {
             res.append(makeSubEntry(subs.elementAt(i)));
         }
+
+        // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
+        CharsetEncoder encoder = Charset.forName(getEncoding(prefs)).newEncoder();
+
+        BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfile), encoder));
         out.write(res.toString().replace("\n","\r\n"));
         out.close();
         return true;

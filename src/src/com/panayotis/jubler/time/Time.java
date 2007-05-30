@@ -30,8 +30,8 @@ package com.panayotis.jubler.time;
  * @author teras
  */
 public class Time implements Comparable<Time> {
-    private long secs = -1;
-    private short milli = -1;
+    protected long secs = -1;
+    protected short milli = -1;
     
     public static final long MAX_TIME=3600*24;
     
@@ -54,6 +54,11 @@ public class Time implements Comparable<Time> {
     /* Time in hours, minutes, seconds & milliseconds */
     public Time(String h, String m, String s, String f) {
         setTime(h, m, s, f);
+    }
+
+    /* Time in hours, minutes, seconds & frames */
+    public Time (String h, String m, String s, String f, float fps) {
+        setTime(h, m, s, f, fps);
     }
     
     public Time(Time time) {
@@ -82,6 +87,22 @@ public class Time implements Comparable<Time> {
         setTime( (toSeconds()-beg)*fac + beg );
     }
     
+    
+    private void setTime(String h, String m, String s, String f, float fps) {
+        short hour, min, sec, milli, fr;
+        int flength;
+        try {
+            hour = Short.parseShort(h);
+            min = Short.parseShort(m);
+            sec = Short.parseShort(s);
+            fr = Short.parseShort(f);
+            milli = (short)Math.round(fr*1000f/fps);
+            setTime(hour, min, sec, milli);
+        } catch ( NumberFormatException e) {
+            invalidate();
+        }
+    }
+
     private void setTime(String h, String m, String s, String f) {
         short hour, min, sec, milli;
         int flength;
@@ -90,7 +111,7 @@ public class Time implements Comparable<Time> {
             min = Short.parseShort(m);
             sec = Short.parseShort(s);
             flength = f.length();
-            if (flength<3) 
+            if (flength<3)
                 f = f + "000".substring(flength);
             milli = Short.parseShort(f);
             setTime(hour, min, sec, milli);
@@ -148,7 +169,7 @@ public class Time implements Comparable<Time> {
     
     public String toString() {
         StringBuffer res;
-        short hour, min, sec, mil;
+        short hour, min, sec;
         long time;
         
         res = new StringBuffer();
@@ -175,6 +196,38 @@ public class Time implements Comparable<Time> {
         return res.toString();
     }
     
+    
+    public String toSecondsFrame(float FPS) {
+        StringBuffer res;
+        short hour, min, sec, frm;
+        long time;
+        
+        res = new StringBuffer();
+        time = secs;
+        
+        hour = (short)(time/3600);
+        time -= hour * 3600;
+        min = (short)(time/60);
+        time -= min * 60;
+        sec = (short)time;
+        
+        if ( hour < 10) res.append("0");
+        res.append(hour);
+        res.append(":");
+        if (min < 10) res.append("0");
+        res.append(min);
+        res.append(":");
+        if (sec < 10) res.append("0");
+        res.append(sec);
+        res.append(":");
+        
+        frm = (short)Math.round( milli*FPS/1000f );
+        if (frm < 10 ) res.append("0");
+        res.append(frm);
+        return res.toString();
+    }
+    
+    
     public double toSeconds() {
         double ret = (double)secs;
         ret += milli/1000d;
@@ -184,6 +237,5 @@ public class Time implements Comparable<Time> {
     public long toFrame(float FPS) {
         return Math.round(toSeconds() * FPS);
     }
-    
     
 }

@@ -51,8 +51,8 @@ public class Spruce extends AbstractTextSubFormat {
     
     
     protected SubEntry getSubEntry(Matcher m) {
-        Time start = new Time(m.group(1), m.group(2), m.group(3), m.group(4));
-        Time finish = new Time(m.group(5), m.group(6), m.group(7), m.group(8));
+        Time start = new Time(m.group(1), m.group(2), m.group(3), m.group(4), FPS);
+        Time finish = new Time(m.group(5), m.group(6), m.group(7), m.group(8), FPS);
         return new SubEntry(start, finish, m.group(9).replace("|","\n"));
     }
     
@@ -75,13 +75,9 @@ public class Spruce extends AbstractTextSubFormat {
         res = new StringBuffer();
         
         time = sub.getStartTime().toString().replace(',',':');
-        res.append(time.substring(0, time.length()-1));
-        
+        res.append(sub.getStartTime().toSecondsFrame(FPS));
         res.append(" , ");
-        
-        time = sub.getFinishTime().toString().replace(',',':');
-        res.append(time.substring(0, time.length()-1));
-        
+        res.append(sub.getFinishTime().toSecondsFrame(FPS));
         res.append(" , ");
         res.append(sub.getText().replace('\n','|'));
         res.append("\n");
@@ -89,7 +85,7 @@ public class Spruce extends AbstractTextSubFormat {
     }
     
     public boolean supportsFPS() {
-        return false;
+        return true;
     }
     
 }
