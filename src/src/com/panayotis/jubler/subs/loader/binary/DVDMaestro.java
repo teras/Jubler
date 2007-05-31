@@ -72,7 +72,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
     }
     
     public String getExtendedName() {
-        return "DVD Maestro";
+        return "DVD Maestro (PNGs)";
     }
     
     
