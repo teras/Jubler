@@ -22,13 +22,8 @@
  */
 
 package com.panayotis.jubler.tools;
-import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.tools.externals.JExtSelector;
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.tools.spell.JSpellChecker;
-import com.panayotis.jubler.tools.spell.SpellChecker;
-import com.panayotis.jubler.tools.spell.checkers.ASpell;
-import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
-import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -39,8 +34,6 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 public class JSpeller extends JTool {
    
-    private JExtSelector selector;
-        
     public JSpeller () {
         super (true);
     }
@@ -48,9 +41,6 @@ public class JSpeller extends JTool {
     
     public void initialize() {
         initComponents();
-        
-        selector = new JExtSelector(new AvailSpellCheckers());
-        add(selector, BorderLayout.SOUTH);
     }
     
 
@@ -58,10 +48,8 @@ public class JSpeller extends JTool {
         return _("Spell check");
     }
 
-    /* WARNING!!! CASTING!!!!*/
     protected void storeSelections() {
-        SpellChecker checker = (SpellChecker)selector.getObject();
-        JSpellChecker checkvisual = new JSpellChecker(jparent, checker, affected_list);
+        JSpellChecker checkvisual = new JSpellChecker(jparent, Jubler.prefs.getSpellChecker(), affected_list);
         checkvisual.findNextWord();
     }
     
@@ -77,10 +65,7 @@ public class JSpeller extends JTool {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setLayout(new java.awt.BorderLayout());
-
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -2,7 +2,7 @@
  * JExtSelector.java
  *
  * Created on 16 Ιούλιος 2005, 1:51 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -27,6 +27,8 @@ import com.panayotis.jubler.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.ExtOptions;
 import com.panayotis.jubler.os.DEBUG;
+import java.awt.CardLayout;
+import javax.swing.JPanel;
 
 
 
@@ -44,6 +46,8 @@ public class JExtSelector extends javax.swing.JPanel {
         
         for ( int i = 0 ; i < list.size() ; i++ ) {
             PList.addItem(list.nameAt(i));
+            ExtOptions opts = list.programAt(i).getOptionsPanel();
+            ParamsP.add( (opts==null ? new JPanel() : opts), Integer.toString(i));
         }
         SelectorL.setText(_("Select a {0} from the following list", _(list.programAt(0).getType()).toLowerCase() ));
     }
@@ -59,48 +63,56 @@ public class JExtSelector extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        PList = new javax.swing.JComboBox();
+        ExtSelectorP = new javax.swing.JPanel();
         SelectorL = new javax.swing.JLabel();
-        BOpts = new javax.swing.JButton();
+        PList = new javax.swing.JComboBox();
+        ParamsP = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
-        PList.setToolTipText(_("Select a video player in order to use it"));
-        add(PList, java.awt.BorderLayout.CENTER);
+        ExtSelectorP.setLayout(new java.awt.BorderLayout());
 
         SelectorL.setText("[selector]");
-        add(SelectorL, java.awt.BorderLayout.NORTH);
+        ExtSelectorP.add(SelectorL, java.awt.BorderLayout.NORTH);
 
-        BOpts.setText(_("Options"));
-        BOpts.setToolTipText(_("Open the options for this player"));
-        BOpts.addActionListener(new java.awt.event.ActionListener() {
+        PList.setToolTipText(_("Select a video player in order to use it"));
+        PList.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BOptsActionPerformed(evt);
+                PListActionPerformed(evt);
             }
         });
 
-        add(BOpts, java.awt.BorderLayout.EAST);
+        ExtSelectorP.add(PList, java.awt.BorderLayout.CENTER);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+        add(ExtSelectorP, java.awt.BorderLayout.NORTH);
 
-    private void BOptsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BOptsActionPerformed
-        int ret;
-        ExtProgram prog = list.programAt(PList.getSelectedIndex());
-        ExtOptions opts = prog.getOptionsPanel();
-        if (opts != null) {
-            ret = JIDialog.question(this, opts, _("Options for {0}", prog.getName()));
-            if ( ret == JIDialog.OK_OPTION) opts.saveOptions();
-            else opts.resetOptions();
-        } else {
-            DEBUG.warning(_("No options for this program"));
-        }
-    }//GEN-LAST:event_BOptsActionPerformed
+        ParamsP.setLayout(new java.awt.CardLayout());
+
+        ParamsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
+        add(ParamsP, java.awt.BorderLayout.CENTER);
+
+    }// </editor-fold>//GEN-END:initComponents
     
+    private void PListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PListActionPerformed
+        ((CardLayout)ParamsP.getLayout()).show(ParamsP, Integer.toString(PList.getSelectedIndex()));
+    }//GEN-LAST:event_PListActionPerformed
+    
+//    int ret;
+//    ExtProgram prog = list.programAt(PList.getSelectedIndex());
+//    ExtOptions opts = prog.getOptionsPanel();
+//    if (opts != null) {
+//        ret = JIDialog.question(this, opts, _("Options for {0}", prog.getName()));
+//        if ( ret == JIDialog.OK_OPTION) opts.saveOptions();
+//        else opts.resetOptions();
+//    } else {
+//        DEBUG.warning(_("No options for this program"));
+//    }
+        
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BOpts;
+    private javax.swing.JPanel ExtSelectorP;
     private javax.swing.JComboBox PList;
+    private javax.swing.JPanel ParamsP;
     private javax.swing.JLabel SelectorL;
     // End of variables declaration//GEN-END:variables
     

@@ -28,8 +28,13 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.player.AvailPlayers;
+import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
+import com.panayotis.jubler.tools.externals.JExtSelector;
+import com.panayotis.jubler.tools.spell.SpellChecker;
+import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
 import java.nio.charset.Charset;
 import java.util.Iterator;
@@ -55,6 +60,8 @@ public class JPreferences extends JPanel implements OptionsHolder {
     
     public JLoadOptions jload;
     public JSaveOptions jsave;
+    public JExtSelector player;
+    public JExtSelector speller;
     public ShortcutsModel smodel;
     
     private boolean load_state, save_state;
@@ -100,6 +107,12 @@ public class JPreferences extends JPanel implements OptionsHolder {
             }
         });
         ShortT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        /* player options */
+        player = new JExtSelector(new AvailPlayers());
+        speller = new JExtSelector(new AvailSpellCheckers());
+        PlayerPanel.add(player, BorderLayout.NORTH);
+        SpellerPanel.add(speller, BorderLayout.NORTH);
     }
     
     
@@ -120,6 +133,12 @@ public class JPreferences extends JPanel implements OptionsHolder {
         return jsave.getFormat();
     }
     
+    public VideoPlayer getVideoPlayer() {
+        return (VideoPlayer)player.getObject();
+    }
+    public SpellChecker getSpellChecker() {
+        return (SpellChecker)speller.getObject();
+    }
     
     /* The following two methods display the load/save panels in a dialog
      * and reattach them back to their position, after the selection was done.
@@ -172,6 +191,8 @@ public class JPreferences extends JPanel implements OptionsHolder {
         LSelect = new javax.swing.JCheckBox();
         SavePanel = new javax.swing.JPanel();
         SSelect = new javax.swing.JCheckBox();
+        PlayerPanel = new javax.swing.JPanel();
+        SpellerPanel = new javax.swing.JPanel();
         ShortcutsPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         ShortT = new javax.swing.JTable();
@@ -183,13 +204,19 @@ public class JPreferences extends JPanel implements OptionsHolder {
 
         setLayout(new java.awt.BorderLayout());
 
+        Tabs.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TabsStateChanged(evt);
+            }
+        });
+
         LoadPanel.setLayout(new java.awt.BorderLayout());
 
         LSelect.setText(_(" Show load preferences while loading file"));
         LSelect.setToolTipText(_("Show preferences every time the user loads a subtitle file"));
         LoadPanel.add(LSelect, java.awt.BorderLayout.SOUTH);
 
-        Tabs.addTab(_("Load"), LoadPanel);
+        Tabs.addTab(_("Load"), null, LoadPanel, _("Load subtitles options"));
 
         SavePanel.setLayout(new java.awt.BorderLayout());
 
@@ -197,7 +224,15 @@ public class JPreferences extends JPanel implements OptionsHolder {
         SSelect.setToolTipText(_("Show preferences every time the user loads a subtitle file"));
         SavePanel.add(SSelect, java.awt.BorderLayout.SOUTH);
 
-        Tabs.addTab(_("Save"), SavePanel);
+        Tabs.addTab(_("Save"), null, SavePanel, _("Save subtitles options"));
+
+        PlayerPanel.setLayout(new java.awt.BorderLayout());
+
+        Tabs.addTab(_("MediaPlayer"), null, PlayerPanel, _("Media player options"));
+
+        SpellerPanel.setLayout(new java.awt.BorderLayout());
+
+        Tabs.addTab(_("SpellCheck"), SpellerPanel);
 
         ShortcutsPanel.setLayout(new java.awt.BorderLayout());
 
@@ -248,6 +283,10 @@ public class JPreferences extends JPanel implements OptionsHolder {
 
     }// </editor-fold>//GEN-END:initComponents
 
+    private void TabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabsStateChanged
+        System.out.println("KO");
+    }//GEN-LAST:event_TabsStateChanged
+
     private void ClearSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearSBActionPerformed
         smodel.removeShortcut();
     }//GEN-LAST:event_ClearSBActionPerformed
@@ -269,11 +308,13 @@ public class JPreferences extends JPanel implements OptionsHolder {
     private javax.swing.JButton ClearSB;
     private javax.swing.JCheckBox LSelect;
     private javax.swing.JPanel LoadPanel;
+    private javax.swing.JPanel PlayerPanel;
     private javax.swing.JButton ResetSB;
     private javax.swing.JCheckBox SSelect;
     private javax.swing.JPanel SavePanel;
     private javax.swing.JTable ShortT;
     private javax.swing.JPanel ShortcutsPanel;
+    private javax.swing.JPanel SpellerPanel;
     private javax.swing.JTabbedPane Tabs;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

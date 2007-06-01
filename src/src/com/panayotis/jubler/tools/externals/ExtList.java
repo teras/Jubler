@@ -38,8 +38,4 @@ public class ExtList<E> extends Vector<ExtProgram> {
         return elementAt(i);
     }
     
-//      /* Check also JExtSelector !!! */
-//    public E objectAt(int i) {
-//        return (E)elementAt(i);
-//    }
 }

@@ -112,9 +112,6 @@ public class Jubler extends JFrame {
     /** File chooser dialog to open/ save subtitles */
     private JFileChooser filedialog;
     
-    /* Select a video player dialog */
-    private JExtSelector playerselector;
-    
     /*
      * Where the subtitles for this window is stored
      */
@@ -211,8 +208,6 @@ public class Jubler extends JFrame {
         filedialog.setMultiSelectionEnabled(false);
         filedialog.addChoosableFileFilter(new SubFileFilter());
         filedialog.setSelectedFile(new File(Options.getOption("System.LastDirPath", ".") +"/.") );
-        
-        playerselector = new JExtSelector(new AvailPlayers());
         
         subeditor = new JSubEditor(this);
         subeditor.setAttached(subeditor.ATTACHED_TO_TEXT);
@@ -452,8 +447,6 @@ public class Jubler extends JFrame {
         jSeparator12 = new javax.swing.JSeparator();
         BeginningTTM = new javax.swing.JMenuItem();
         CurrentTTM = new javax.swing.JMenuItem();
-        jSeparator6 = new javax.swing.JSeparator();
-        OptionsTTM = new javax.swing.JMenuItem();
         HelpM = new javax.swing.JMenu();
         FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
@@ -1046,14 +1039,6 @@ public class Jubler extends JFrame {
 
         TestTM.add(CurrentTTM);
 
-        TestTM.add(jSeparator6);
-
-        OptionsTTM.setText(_("Player options"));
-        OptionsTTM.setName("TTO");
-        OptionsTTM.addActionListener(formListener);
-
-        TestTM.add(OptionsTTM);
-
         ToolsM.add(TestTM);
 
         JublerMenuBar.add(ToolsM);
@@ -1262,9 +1247,6 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == CurrentTTM) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == OptionsTTM) {
-                Jubler.this.OptionsTTMActionPerformed(evt);
             }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
@@ -1726,11 +1708,7 @@ public class Jubler extends JFrame {
         }
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed
     
-    
-    private void OptionsTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptionsTTMActionPerformed
-        JIDialog.question(this, playerselector, _("Player options"));
-    }//GEN-LAST:event_OptionsTTMActionPerformed
-    
+        
     private void bySelectionMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionMEMActionPerformed
         mark.execute(this);
     }//GEN-LAST:event_bySelectionMEMActionPerformed
@@ -1938,7 +1916,6 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem NoneMEM;
     private javax.swing.JMenuItem NoneMP;
     private javax.swing.JMenuItem OpenFM;
-    private javax.swing.JMenuItem OptionsTTM;
     private javax.swing.JMenuItem PasteEM;
     private javax.swing.JMenuItem PasteP;
     private javax.swing.JMenuItem PasteSpecialEM;
@@ -2006,7 +1983,6 @@ public class Jubler extends JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
@@ -2111,7 +2087,7 @@ public class Jubler extends JFrame {
     private void testVideo(Time t) {
         if (!mfile.validateMediaFile(subs, false))
             return;
-        JVideoConsole console = new JVideoConsole(this, (VideoPlayer)playerselector.getObject());
+        JVideoConsole console = new JVideoConsole(this, prefs.getVideoPlayer());
         connected_consoles.add(console);
         console.start(mfile, subs, new Time(((long)t.toSeconds())-2));
     }
