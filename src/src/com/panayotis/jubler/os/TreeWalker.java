@@ -31,12 +31,13 @@ import java.io.File;
  */
 public class TreeWalker {
     
+    /* filename is already in lower case... */
     public static File searchExecutable(File root, String filename) {
         if (!root.exists()) return null;
         
         if (root.isFile()) {
             if (!root.canRead()) return null;
-            if (!root.getName().equals(filename)) return null;
+            if (!root.getName().toLowerCase().equals(filename)) return null;
             Process proc = null;
             String[] cmd = new String[1];
             cmd[0] = root.getAbsolutePath();
