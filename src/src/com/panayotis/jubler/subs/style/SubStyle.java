@@ -65,12 +65,14 @@ public class SubStyle {
         String[] fnames;
         try {
             fnames = env.getAvailableFontFamilyNames();
-        } catch (Exception e) {
+        } catch (Exception e1) {
             Font[] fnt = env.getAllFonts();
             TreeSet<String> names = new TreeSet<String>();
             
             for (int i = 0 ; i < fnt.length ; i++ ) {
-                names.add(fnt[i].getFamily());
+                try {
+                    names.add(fnt[i].getFamily());
+                } catch (Exception e2) {}
             }
             
             String[] model = new String[1];
