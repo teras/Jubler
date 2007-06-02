@@ -3,7 +3,7 @@
 #######################################################
 
 # Paths of include files
-JAVA_HOME=$(shell /bin/sh ../system/findjava.sh -j -v 1.5)
+JAVA_HOME=$(shell /bin/sh ../system/findjava.sh -j)
 
 
 
