@@ -89,13 +89,13 @@
 
 
 	<target name="i18n">
-		<exec dir="resources/i18n" executable="bash">
+		<exec dir="resources/i18n" executable="bash" failonerror="true">
 			<arg line="compile"/>
 		</exec>
 	</target>
 
 	<target name="faq">
-		<exec dir="resources/help" executable="docbook2html">
+		<exec dir="resources/help" executable="docbook2html" failonerror="true">
 			<arg line="-u jubler-faq.xml"/>
 		</exec>
 		<mkdir dir="dist/help"/>
@@ -104,7 +104,7 @@
 	</target>
 
 	<target name="xdevelop" depends="i18n,faq">
-		<exec dir="resources/ffdecode" executable="make"/>
+		<exec dir="resources/ffdecode" executable="make" failonerror="true"/>
 		<copy file="dist/help/jubler-faq.html" todir="build/classes/help"/>
 	</target>
 
@@ -127,7 +127,7 @@
 		<delete dir="self"/>
 		<delete dir="dist/Jubler.app"/>
 		<delete dir="src/com/apple"/>
-		<exec dir="resources/ffdecode" executable="make">
+		<exec dir="resources/ffdecode" executable="make" failonerror="true">
 			<arg line="distclean"/>
 		</exec>
 	</target>
@@ -136,39 +136,35 @@
 		<delete dir="resources/libraries"/>
 	</target>
 
-	<target name="distsource" depends="fullsrc,jublersrc"/>
-
-	<!-- Full source, including ffmpeg -->
-	<target name="fullsrc" depends="distclean">
+	<!-- Copy the full Jubler source tree in tmp -->
+	<target name="copytree" depends="distclean">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<delete dir="/tmp/Jubler-${version}"/>
-		<copy preservelastmodified="yes" todir="/tmp/Jubler-${version}">
-			<fileset dir="../Jubler"/>
-		</copy>
+		<mkdir dir="/tmp/Jubler-${version}"/>
+		<exec executable="cp" failonerror="true">
+			<arg line="-R -p ChangeLog LICENCE README build.xml manifest.mf nbproject resources src /tmp/Jubler-${version}/"/>
+		</exec>
 		<delete dir="/tmp/Jubler-${version}/resources/libraries"/>
-		<tar destfile="Jubler-fullsrc-${version}.tar.bz2" basedir="/tmp/" includes="Jubler-${version}/**" compression="bzip2"/>
-		<delete dir="/tmp/Jubler-${version}"/>
 	</target>
-	
-	<!-- Jubler related source only -->
-	<target name="jublersrc" depends="distclean">
+
+	<!-- Create source tarballs of Jubler -->
+	<target name="distsource" depends="copytree">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<delete dir="/tmp/Jubler-${version}"/>
-		<copy preservelastmodified="yes" todir="/tmp/Jubler-${version}">
-			<fileset dir="../Jubler"/>
-		</copy>
-		<delete dir="/tmp/Jubler-${version}/resources/libraries"/>
+		<echo message="TAR full sources"/>
+		<exec executable="tar" dir="/tmp" failonerror="true">
+			<arg line="jcf ${basedir}/Jubler-${version}.tar.bz2 --exclude .svn Jubler-${version}"/>
+		</exec>
 		<delete dir="/tmp/Jubler-${version}/resources/ffmpeg-svn"/>
-		<delete file="/tmp/Jubler-${version}/Jubler-fullsrc-${version}.tar.bz2"/>
 		<tar destfile="Jubler-src-${version}.tar.bz2" basedir="/tmp/" includes="Jubler-${version}/**" compression="bzip2"/>
 		<delete dir="/tmp/Jubler-${version}"/>
 	</target>
+	
 	
 	<!-- Windows Installer -->
 	<target name="win32" depends="distclean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 
-		<exec dir="resources/ffdecode" executable="make"> <arg line="win32"/> </exec>
+		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -192,14 +188,14 @@
 	<target name="linux" depends="linuxbasics,selfexp,deb,rpm"/>
 
 	<target name="linuxbasics" depends="distclean,i18n,jar,faq">
-		<exec dir="resources/ffdecode" executable="make"> <arg line="linux"/> </exec>
+		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="linux"/> </exec>
 	</target>
 
 	<!-- Debian Linux installer -->
 	<target name="debian" depends="linuxbasics,deb"/>
 	<target name="deb">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<exec executable="rm"><arg line="-rf /tmp/jubler-linux"/></exec>
+		<exec executable="rm" failonerror="true"><arg line="-rf /tmp/jubler-linux"/></exec>
 
 		<copy file="dist/Jubler.jar" todir="/tmp/jubler-linux/usr/lib/jubler"/>
 		<copy file="resources/system/findjava.sh" todir="/tmp/jubler-linux/usr/lib/jubler"/>
@@ -259,7 +255,7 @@
 	<target name="tgz">
 
 		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<exec executable="rm"><arg line="-rf /tmp/package-jubler"/></exec>
+		<exec executable="rm" failonerror="true"><arg line="-rf /tmp/package-jubler"/></exec>
 
 		<copy file="dist/Jubler.jar" todir="/tmp/package-jubler/usr/lib/jubler"/>
 		<copy file="resources/system/findjava.sh" todir="/tmp/package-jubler/usr/lib/jubler"/>
