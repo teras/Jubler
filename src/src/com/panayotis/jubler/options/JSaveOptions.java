@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.options;
+import com.panayotis.jubler.options.gui.JRateChooser;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.awt.BorderLayout;
@@ -30,18 +31,26 @@ import java.util.Properties;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 /**
  *
  * @author  teras
  */
-public class JSaveOptions extends JOptionsGUI {
+public class JSaveOptions extends JFileOptions {
     
     private String enc_state, fps_state, format_state;
     private JRateChooser CFPS;
     
     /** Creates new form JSavePrefs */
     public JSaveOptions() {
+        super();
         initComponents();
+        
+        /* Fix DialogVisible */
+        add(DialogVisible, java.awt.BorderLayout.SOUTH);
+        DialogVisible.setText(_(" Show save preferences while saving file"));
+        DialogVisible.setToolTipText(_("Show preferences every time the user saves a subtitle file"));
         
         CFPS = new JRateChooser();
         
@@ -63,7 +72,6 @@ public class JSaveOptions extends JOptionsGUI {
         for ( i = 0 ; i < JPreferences.AvailEncodings.length ; i++) {
             CEnc.addItem(JPreferences.AvailEncodings[i]);
         }
-        
     }
     
     
@@ -82,6 +90,7 @@ public class JSaveOptions extends JOptionsGUI {
     public void savePreferences(Properties props) {
         props.setProperty("Save.Encoding", getItemName(CEnc));
         props.setProperty("Save.FPS", CFPS.getFPS());
+        props.setProperty("System.ShowSaveDialog", DialogVisible.isSelected() ? "true" : "false");
         
         SubFormat f = AvailSubFormats.findFromDescription(getItemName(CFormat));
         props.setProperty("Save.Format", (f!=null)?f.getName():"UNKNOWN");
@@ -101,7 +110,13 @@ public class JSaveOptions extends JOptionsGUI {
         SubFormat f = AvailSubFormats.findFromName(format);
         setCombo(CFormat, (f!=null)?f.getDescription():"UNKNOWN", "UNKNOWN");
         updateVisualFPS(f);
+        
+        DialogVisible.setSelected(props.getProperty("System.ShowSaveDialog", "true").equals("true"));
     }
+    
+    public String getTabName() { return _("Save"); }
+    public String getTabTooltip() { return _("Save subtitles options"); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/save.png")); }
     
     
     /* Execute this method whenever the output format is changed (or this panel is displayed */
@@ -119,6 +134,7 @@ public class JSaveOptions extends JOptionsGUI {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+        OptsP = new javax.swing.JPanel();
         CFormatL = new javax.swing.JLabel();
         CFormat = new javax.swing.JComboBox();
         CEncL = new javax.swing.JLabel();
@@ -126,10 +142,13 @@ public class JSaveOptions extends JOptionsGUI {
         FPSPanelL = new javax.swing.JLabel();
         FPSPanel = new javax.swing.JPanel();
 
-        setLayout(new java.awt.GridLayout(3, 2));
+        setLayout(new java.awt.BorderLayout());
 
+        OptsP.setLayout(new java.awt.GridLayout(3, 2));
+
+        OptsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
         CFormatL.setText(_("Format"));
-        add(CFormatL);
+        OptsP.add(CFormatL);
 
         CFormat.setToolTipText(_("Subtitle format of the output file (SRT is prefered)"));
         CFormat.addActionListener(new java.awt.event.ActionListener() {
@@ -138,20 +157,22 @@ public class JSaveOptions extends JOptionsGUI {
             }
         });
 
-        add(CFormat);
+        OptsP.add(CFormat);
 
         CEncL.setText(_("Encoding"));
-        add(CEncL);
+        OptsP.add(CEncL);
 
         CEnc.setToolTipText(_("Encoding of the saved file"));
-        add(CEnc);
+        OptsP.add(CEnc);
 
         FPSPanelL.setText(_("FPS"));
-        add(FPSPanelL);
+        OptsP.add(FPSPanelL);
 
         FPSPanel.setLayout(new java.awt.BorderLayout());
 
-        add(FPSPanel);
+        OptsP.add(FPSPanel);
+
+        add(OptsP, java.awt.BorderLayout.NORTH);
 
     }// </editor-fold>//GEN-END:initComponents
     
@@ -167,6 +188,7 @@ public class JSaveOptions extends JOptionsGUI {
     private javax.swing.JLabel CFormatL;
     private javax.swing.JPanel FPSPanel;
     private javax.swing.JLabel FPSPanelL;
+    private javax.swing.JPanel OptsP;
     // End of variables declaration//GEN-END:variables
     
 }

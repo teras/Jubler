@@ -29,16 +29,20 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.Vector;
 
-import static com.panayotis.jubler.i18n.I18N._;/**
+import static com.panayotis.jubler.i18n.I18N._;
+
+
+/**
  *
  * @author  teras
  */
 import java.io.File;
 import java.util.ArrayList;
-public class ASpellOptions extends ExtOptions {
+public class ASpellOptions extends JExtBasicOptions {
     
-    private ASpellDict language;
     Vector<ASpellDict> dictionaries;
+    
+    private static final String default_language = "en";
     
     /** Creates new form ASpellOptions */
     public ASpellOptions(String type, String name, String programname) {
@@ -46,8 +50,9 @@ public class ASpellOptions extends ExtOptions {
         initComponents();
         
         dictionaries = new Vector<ASpellDict>();
-        add(Visuals, BorderLayout.SOUTH);
-        updateOptions();
+        updateDictionaries();
+        
+        add(BrowserP, BorderLayout.NORTH);
     }
     
     /** This method is called from within the constructor to
@@ -57,30 +62,34 @@ public class ASpellOptions extends ExtOptions {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         LangList = new javax.swing.JList();
 
         setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
         jLabel1.setText(_("Language to use"));
-        add(jLabel1, java.awt.BorderLayout.NORTH);
+        jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jScrollPane1.setViewportView(LangList);
 
-        add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+        add(jPanel1, java.awt.BorderLayout.CENTER);
+
+    }// </editor-fold>//GEN-END:initComponents
     
-    public void updateOptions() {
-        populateDictionaries();       // shouldn't needed any more - this method is called from Aspell.getOptionsPanel();
-        LangList.setListData(dictionaries);
-        
-        /* Load preferred language */
-        setSelectedLanguage( Options.getOption(type + "." + name + ".Language", "en") );
+    protected boolean activatedBrowseButton() {
+        boolean success = super.activatedBrowseButton();
+        if (success) updateDictionaries();
+        return success;
     }
-    
+    public void activateProgramPanel() {
+        updateDictionaries();
+    }
     
     /* Find the selected language */
     private void setSelectedLanguage(String lng) {
@@ -90,14 +99,19 @@ public class ASpellOptions extends ExtOptions {
             if (current.lang.equals(lng)) {
                 LangList.setSelectedIndex(i);
                 LangList.ensureIndexIsVisible(i);
-                language = current;
+                return;
             }
         }
+        /* Select first dictionary, if nothing ws found */
+        if (LangList.getSelectedIndex()<0 && LangList.getModel().getSize() > 0)
+            LangList.setSelectedIndex(0);
     }
     
-    public void populateDictionaries() {
-        /* load dictionaries list from aspell */
+    public void updateDictionaries() {
+        String old_lang = getLanguageName();
         dictionaries.removeAllElements();
+        
+        /* load dictionaries list from aspell */
         getDictsFromPath(null);
         
         File cocoaspell = new File("/Library/Application Support/cocoAspell");
@@ -109,7 +123,12 @@ public class ASpellOptions extends ExtOptions {
                     getDictsFromPath(childs[i]);
             }
         }
+        /* Now update list */
+        LangList.setListData(dictionaries);
+        /* ... and update selected language */
+        setSelectedLanguage(old_lang);
     }
+    
     
     private void getDictsFromPath( File path ) {
         ArrayList<String> cmd = new ArrayList<String>();
@@ -129,29 +148,33 @@ public class ASpellOptions extends ExtOptions {
     }
     
     
-    public void saveOptions() {
-        super.saveOptions();
-        
-        int which = LangList.getSelectedIndex();
-        if ( which < 0 ) language = null;
-        else language = (ASpellDict)LangList.getModel().getElementAt(which);
-        
-        Options.setOption(type + "." + name + ".Language", language.lang);
-        Options.saveOptions();
+    protected void savePreferences(Properties props) {
+        super.savePreferences(props);
+        props.setProperty(type + "." + name + ".Language", getLanguageName());
     }
     
-    public void resetOptions() {
-        super.resetOptions();
-        LangList.setSelectedValue(language, true);
+    public void loadPreferences(Properties props) {
+        super.loadPreferences(props);
+        setSelectedLanguage(props.getProperty(type + "." + name + ".Language", default_language));
     }
+    
     
     public ASpellDict getLanguage() {
-        return language;
+        int which = LangList.getSelectedIndex();
+        if ( which >= 0 )
+            return (ASpellDict)LangList.getModel().getElementAt(which);
+        return null;
+    }
+    public String getLanguageName() {
+        ASpellDict language = getLanguage();
+        if (language==null) return default_language;
+        return language.lang;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList LangList;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     

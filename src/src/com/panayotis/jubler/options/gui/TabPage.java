@@ -1,8 +1,8 @@
 /*
- * OptionsHolder.java
+ * TabPage.java
  *
- * Created on 24 Ιούνιος 2005, 2:43 μμ
- * 
+ * Created on June 1, 2007, 2:38 PM
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -21,17 +21,18 @@
  *
  */
 
-package com.panayotis.jubler.options;
+package com.panayotis.jubler.options.gui;
 
-import com.panayotis.jubler.options.gui.TabPage;
-import java.util.Properties;
+import javax.swing.Icon;
+import javax.swing.JPanel;
 
 /**
  *
  * @author teras
  */
-public interface OptionsHolder extends TabPage {
-    public abstract void loadPreferences(Properties props);
-    public abstract void savePreferences(Properties props);
-
+public interface TabPage {
+    public abstract JPanel getTabPanel();
+    public abstract String getTabName();
+    public abstract String getTabTooltip();
+    public abstract Icon getTabIcon();
 }

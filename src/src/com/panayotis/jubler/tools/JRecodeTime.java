@@ -28,7 +28,7 @@ import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.console.TimeSync;
-import com.panayotis.jubler.options.JRateChooser;
+import com.panayotis.jubler.options.gui.JRateChooser;
 
 /**
  *

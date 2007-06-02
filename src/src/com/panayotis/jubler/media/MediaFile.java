@@ -176,7 +176,6 @@ public class MediaFile {
     
     private void updateCacheFile(String cfname) {
         if (cfname==null || cfname.equals("")) return;
-        
         /* Find a write enabled cache file */
         File cf = new File(cfname);
         if (!( cf.getParentFile().canWrite() && ((!cf.exists()) || cf.canWrite()) )) {

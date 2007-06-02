@@ -26,104 +26,156 @@ package com.panayotis.jubler.options;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
+import java.util.Properties;
 import javax.swing.SpinnerNumberModel;
+
 /**
  *
- * @author teras
+ * @author  teras
  */
-public class AbstractPlayerOptions extends ExtOptions {
-    private JSpinner dx, dy;
-    private JTextField args;
-    private String args_value;
-    private String args_default;
-    private int x_value, y_value;
+public class AbstractPlayerOptions extends JExtBasicOptions {
     
-    /** Creates a new instance of AbstractPlayerOptions */
+  //  private String args_value;
+    private String args_default;
+ //   private int x_value, y_value;
+    
+    /** Creates new form AbstractPlayerOptions */
     public AbstractPlayerOptions(AbstractPlayer player) {
         super(player.getType(), player.getName(), player.getFileName());
         args_default = player.getDefaultArguments();
         
-        if (args_value == null || args_value.equals("")) args_value = args_default;
+        initComponents();
         
-        JPanel SpinP = new JPanel();
-        SpinP.setLayout(new GridLayout(2,2));
-        SpinnerModel sxmodel = new SpinnerNumberModel(0, -1000, 1000, 1);
-        SpinnerModel symodel = new SpinnerNumberModel(0, -1000, 1000, 1);
-        dx =  new JSpinner(sxmodel);
-        dy =  new JSpinner(symodel);
-        SpinP.add(new JLabel(_("X offset")));
-        SpinP.add(new JLabel(_("Y offset")));
-        SpinP.add(dx);
-        SpinP.add(dy);
-        
-        JPanel HelpP = new JPanel();
-        HelpP.setLayout(new GridLayout(5,1));
-        HelpP.add(new JLabel());
-        HelpP.add(new JLabel(_("Advanced argument list:")));
-        HelpP.add(new JLabel("    %p=player %v=video_file %s=subtiles_file %t=start_time"));
-        HelpP.add(new JLabel("    %x=x_offset %y=y_offset %f=fontname %z=font_size %j=Jubler_path"));
-        HelpP.add(new JLabel("    %a=optional audio file   %( %)=begin & end of audio parameter"));
-        
-        JPanel ArgsP = new JPanel();
-        ArgsP.setLayout(new BorderLayout());
-        args = new JTextField(40);
-        JButton deflt = new JButton(_("Defaults"));
-        ArgsP.add(HelpP, BorderLayout.NORTH);
-        ArgsP.add(args, BorderLayout.CENTER);
-        ArgsP.add(deflt, BorderLayout.EAST);
-        ArgsP.add(new JLabel(" "), BorderLayout.SOUTH);
-        
-        deflt.addActionListener( new ActionListener() {
-            public void actionPerformed(ActionEvent ev) {
-                args.setText(args_default);
-            }
-        });
-        
-        JPanel ExtrasP = new JPanel();
-        ExtrasP.setLayout(new BorderLayout());
-        ExtrasP.add(new JLabel(_("Player window offset in pixels")), BorderLayout.NORTH);
-        ExtrasP.add(SpinP, BorderLayout.CENTER);
-        ExtrasP.add(ArgsP, BorderLayout.SOUTH);
-        
-        resetOptions();
-        add(ExtrasP, BorderLayout.NORTH);
+        add(BrowserP, BorderLayout.NORTH);
     }
     
-    protected void loadOptions() {
-        super.loadOptions();
-        String values = Options.getOption("Player."+name+".WindowOffset", "(0,40)");
+    protected void loadPreferences(Properties props) {
+        super.loadPreferences(props);
+        String values = props.getProperty("Player."+name+".WindowOffset", "(0,40)");
         int seperator = values.indexOf(',');
-        x_value = Integer.parseInt(values.substring(1, seperator));
-        y_value = Integer.parseInt(values.substring(seperator+1, values.length()-1));
-        args_value = Options.getOption("Player."+name+".Arguments", "");
+        dx.setValue(Integer.parseInt(values.substring(1, seperator)));
+        dy.setValue(Integer.parseInt(values.substring(seperator+1, values.length()-1)));
+        args.setText(props.getProperty("Player."+name+".Arguments", args_default));
     }
     
-    public void saveOptions() {
-        super.saveOptions();
-        Options.setOption("Player."+name+".WindowOffset", "("+dx.getValue() + "," + dy.getValue()+")");
-        Options.setOption("Player."+name+".Arguments", args.getText());
-        Options.saveOptions();
+    public void savePreferences(Properties props) {
+        super.savePreferences(props);
+        props.setProperty("Player."+name+".WindowOffset", "("+dx.getValue() + "," + dy.getValue()+")");
+        props.setProperty("Player."+name+".Arguments", args.getText());
     }
     
-    
-    public void resetOptions() {
-        super.resetOptions();
-        dx.setValue(x_value);
-        dy.setValue(y_value);
-        args.setText(args_value);
-    }
     
     
     public int getXOffset() { return (Integer)dx.getValue(); }
     public int getYOffset() { return (Integer)dy.getValue(); }
     public String getArguments() { return args.getText(); }
+    
+    
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+    private void initComponents() {
+        ParametersP = new javax.swing.JPanel();
+        OffsetL = new javax.swing.JLabel();
+        OffsetP = new javax.swing.JPanel();
+        XOffsetL = new javax.swing.JLabel();
+        YOffsetL = new javax.swing.JLabel();
+        dx = new javax.swing.JSpinner();
+        dy = new javax.swing.JSpinner();
+        ArgsP = new javax.swing.JPanel();
+        HelpP = new javax.swing.JPanel();
+        Help1L = new javax.swing.JLabel();
+        Help2L = new javax.swing.JLabel();
+        Help3L = new javax.swing.JLabel();
+        Help4L = new javax.swing.JLabel();
+        args = new javax.swing.JTextField();
+        deflt = new javax.swing.JButton();
+
+        setLayout(new java.awt.BorderLayout());
+
+        ParametersP.setLayout(new java.awt.BorderLayout());
+
+        OffsetL.setText(_("Player window offset in pixels"));
+        ParametersP.add(OffsetL, java.awt.BorderLayout.NORTH);
+
+        OffsetP.setLayout(new java.awt.GridLayout(2, 2));
+
+        XOffsetL.setText(_("X offset"));
+        OffsetP.add(XOffsetL);
+
+        YOffsetL.setText(_("Y offset"));
+        OffsetP.add(YOffsetL);
+
+        dx.setModel( new SpinnerNumberModel(0, -1000, 1000, 1));
+        OffsetP.add(dx);
+
+        dy.setModel( new SpinnerNumberModel(0, -1000, 1000, 1));
+        OffsetP.add(dy);
+
+        ParametersP.add(OffsetP, java.awt.BorderLayout.CENTER);
+
+        ArgsP.setLayout(new java.awt.BorderLayout());
+
+        ArgsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        HelpP.setLayout(new java.awt.GridLayout(0, 1));
+
+        Help1L.setText(_("Advanced argument list:"));
+        HelpP.add(Help1L);
+
+        Help2L.setText("    %p=player %v=video_file %s=subtiles_file %t=start_time");
+        HelpP.add(Help2L);
+
+        Help3L.setText("    %x=x_offset %y=y_offset %f=fontname %z=font_size %j=Jubler_path");
+        HelpP.add(Help3L);
+
+        Help4L.setText("    %a=optional audio file   %( %)=begin & end of audio parameter");
+        HelpP.add(Help4L);
+
+        ArgsP.add(HelpP, java.awt.BorderLayout.NORTH);
+
+        args.setColumns(40);
+        ArgsP.add(args, java.awt.BorderLayout.CENTER);
+
+        deflt.setText(_("Defaults"));
+        deflt.setToolTipText(_("Use default player parameters"));
+        deflt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                defltActionPerformed(evt);
+            }
+        });
+
+        ArgsP.add(deflt, java.awt.BorderLayout.EAST);
+
+        ParametersP.add(ArgsP, java.awt.BorderLayout.SOUTH);
+
+        add(ParametersP, java.awt.BorderLayout.CENTER);
+
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void defltActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defltActionPerformed
+        args.setText(args_default);
+    }//GEN-LAST:event_defltActionPerformed
+    
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel ArgsP;
+    private javax.swing.JLabel Help1L;
+    private javax.swing.JLabel Help2L;
+    private javax.swing.JLabel Help3L;
+    private javax.swing.JLabel Help4L;
+    private javax.swing.JPanel HelpP;
+    private javax.swing.JLabel OffsetL;
+    private javax.swing.JPanel OffsetP;
+    private javax.swing.JPanel ParametersP;
+    private javax.swing.JLabel XOffsetL;
+    private javax.swing.JLabel YOffsetL;
+    private javax.swing.JTextField args;
+    private javax.swing.JButton deflt;
+    private javax.swing.JSpinner dx;
+    private javax.swing.JSpinner dy;
+    // End of variables declaration//GEN-END:variables
+    
 }

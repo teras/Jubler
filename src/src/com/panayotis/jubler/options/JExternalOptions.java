@@ -1,5 +1,5 @@
 /*
- * JExtSelector.java
+ * JExternalOptions.java
  *
  * Created on 16 Ιούλιος 2005, 1:51 μμ
  *
@@ -21,13 +21,14 @@
  *
  */
 
-package com.panayotis.jubler.tools.externals;
+package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.options.ExtOptions;
-import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.tools.externals.*;
 import java.awt.CardLayout;
+import java.util.Properties;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
@@ -36,17 +37,19 @@ import javax.swing.JPanel;
  *
  * @author  teras
  */
-public class JExtSelector extends javax.swing.JPanel {
+public class JExternalOptions extends JPanel implements OptionsHolder {
     ExtList list;
     
-    /** Creates new form JExtSelector */
-    public JExtSelector(ExtList list) {
+    /**
+     * Creates new form JExternalOptions
+     */
+    public JExternalOptions(ExtList list) {
         initComponents();
         this.list = list;
         
         for ( int i = 0 ; i < list.size() ; i++ ) {
             PList.addItem(list.nameAt(i));
-            ExtOptions opts = list.programAt(i).getOptionsPanel();
+            JExtBasicOptions opts = list.programAt(i).getOptionsPanel();
             ParamsP.add( (opts==null ? new JPanel() : opts), Integer.toString(i));
         }
         SelectorL.setText(_("Select a {0} from the following list", _(list.programAt(0).getType()).toLowerCase() ));
@@ -95,19 +98,35 @@ public class JExtSelector extends javax.swing.JPanel {
     
     private void PListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PListActionPerformed
         ((CardLayout)ParamsP.getLayout()).show(ParamsP, Integer.toString(PList.getSelectedIndex()));
+        activateProgramPanel();
     }//GEN-LAST:event_PListActionPerformed
     
-//    int ret;
-//    ExtProgram prog = list.programAt(PList.getSelectedIndex());
-//    ExtOptions opts = prog.getOptionsPanel();
-//    if (opts != null) {
-//        ret = JIDialog.question(this, opts, _("Options for {0}", prog.getName()));
-//        if ( ret == JIDialog.OK_OPTION) opts.saveOptions();
-//        else opts.resetOptions();
-//    } else {
-//        DEBUG.warning(_("No options for this program"));
-//    }
-        
+    public void loadPreferences(Properties props) {
+        JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
+        if (opts!=null) opts.loadPreferences(props);
+    }
+    
+    public void savePreferences(Properties props) {
+        JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
+        if (opts!=null) opts.savePreferences(props);
+    }
+    
+    /* Not only display Tab, but also update this tab to be displayed */
+    public JPanel getTabPanel() {
+        activateProgramPanel();
+        return this;
+    }
+    
+    /* Use this method to update the program panel (e.g. in aspell */
+    private void activateProgramPanel() {
+        JExtBasicOptions opanel = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
+        if (opanel!=null) opanel.activateProgramPanel();
+    }
+    
+    public String getTabName() { return list.programAt(0).getType(); }
+    public String getTabTooltip() { return _("{0} options", list.programAt(0).getType()); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource(list.programAt(0).getIconName())); }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ExtSelectorP;

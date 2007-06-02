@@ -32,7 +32,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.options.ExtOptions;
+import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
@@ -107,7 +107,7 @@ public class ZemberekSpellChecker extends SpellChecker {
         return false;
     }
     
-    public ExtOptions getOptionsPanel() {
+    public JExtBasicOptions getOptionsPanel() {
         return null;
     }
     

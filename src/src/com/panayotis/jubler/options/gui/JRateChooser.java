@@ -4,7 +4,7 @@
  * Created on November 30, 2006, 1:12 PM
  */
 
-package com.panayotis.jubler.options;
+package com.panayotis.jubler.options.gui;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;

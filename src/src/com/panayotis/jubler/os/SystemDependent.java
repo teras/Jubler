@@ -26,6 +26,7 @@ package com.panayotis.jubler.os;
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.Main;
 
 
@@ -219,7 +220,7 @@ class ApplicationHandler extends ApplicationAdapter {
     }
     
     public void handlePreferences(ApplicationEvent event) {
-        StaticJubler.showPreferences();
+        Jubler.prefs.showPreferencesDialog();
         event.setHandled(true);
     }
     

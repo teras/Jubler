@@ -10,9 +10,11 @@
 package com.panayotis.jubler;
 
 import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.information.JVersion;
 import com.panayotis.jubler.options.*;
+import com.panayotis.jubler.options.gui.JUnsaved;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -105,14 +107,6 @@ public class StaticJubler {
         JIDialog.message(null, new JAbout(), _("About Jubler"), JIDialog.INFORMATION_MESSAGE);
     }
     
-    public static void showPreferences() {
-        int ret;
-        
-        Options.loadSystemPreferences(Jubler.prefs);
-        ret = JIDialog.question(null, Jubler.prefs, _("Preferences"));
-        if ( ret == JIDialog.OK_OPTION) Options.saveSystemPreferences(Jubler.prefs);
-        else Options.loadSystemPreferences(Jubler.prefs); // Make sure options are returned to their saved state
-    }
     
     public static void quitAll() {
         Vector <String>unsaved = new Vector<String>();

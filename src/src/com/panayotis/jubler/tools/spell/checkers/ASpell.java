@@ -25,7 +25,7 @@ package com.panayotis.jubler.tools.spell.checkers;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
-import com.panayotis.jubler.options.ExtOptions;
+import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
 import java.io.BufferedReader;
@@ -154,15 +154,8 @@ public class ASpell extends SpellChecker {
         return ret;
     }
     
-    /* Use this method also to refresh the speller list */
-    public ExtOptions getOptionsPanel() { 
-        opts.updateOptions();
-        return opts; 
-    }
-
-    
+    public JExtBasicOptions getOptionsPanel() { return opts; }
     public String getName() { return "ASpell"; }
-    
     public String getType() { return "Speller"; }
     public String getLocalType() { return _("Speller"); }
     

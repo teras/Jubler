@@ -2,7 +2,7 @@
  * JLoadPrefs.java
  *
  * Created on 23 Ιούνιος 2005, 2:27 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -22,33 +22,42 @@
  */
 
 package com.panayotis.jubler.options;
+import com.panayotis.jubler.options.gui.JRateChooser;
 import java.awt.BorderLayout;
 import java.util.Properties;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author  teras
  */
-public class JLoadOptions extends JOptionsGUI {
+public class JLoadOptions extends JFileOptions {
     
     private String enc1_state, enc2_state, enc3_state, fps_state;
     private JRateChooser CFPS;
     
     /** Creates new form JLoadPrefs */
     public JLoadOptions() {
+        super();
         initComponents();
-
+        
+        /* Fix DialogVisible */
+        add(DialogVisible, java.awt.BorderLayout.SOUTH);
+        DialogVisible.setText(_(" Show load preferences while loading file"));
+        DialogVisible.setToolTipText(_("Show preferences every time the user loads a subtitle file"));
+        
         CFPS = new JRateChooser();
         FPSPanel.add(CFPS, BorderLayout.CENTER);
         fillComponents();
     }
     
-
-    public void updateVisuals (MediaFile mfile, Subtitles subs) {
+    
+    public void updateVisuals(MediaFile mfile, Subtitles subs) {
         CFPS.setDataFiles(mfile, subs);
     }
     
@@ -82,11 +91,12 @@ public class JLoadOptions extends JOptionsGUI {
         e2 = props.getProperty("Load.Encoding2", JPreferences.DefaultEncodings[1]);
         e3 = props.getProperty("Load.Encoding3", JPreferences.DefaultEncodings[2]);
         fps = props.getProperty("Load.FPS", JRateChooser.DefaultFPSEntry);
-        
         setCombo(CEnc1, e1, "US-ASCII");
         setCombo(CEnc2, e2, "US-ASCII");
         setCombo(CEnc3, e3, "US-ASCII");
         CFPS.setFPS(fps);
+        
+        DialogVisible.setSelected(props.getProperty("System.ShowLoadDialog", "true").equals("true"));
     }
     
     public void savePreferences(Properties props) {
@@ -94,9 +104,13 @@ public class JLoadOptions extends JOptionsGUI {
         props.setProperty("Load.Encoding2", getItemName(CEnc2));
         props.setProperty("Load.Encoding3", getItemName(CEnc3));
         props.setProperty("Load.FPS", CFPS.getFPS());
+        props.setProperty("System.ShowLoadDialog", DialogVisible.isSelected() ? "true" : "false");
     }
     
-      
+    public String getTabName() { return _("Load"); }
+    public String getTabTooltip() { return _("Load subtitles options"); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/load.png")); }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -104,55 +118,61 @@ public class JLoadOptions extends JOptionsGUI {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jLabel1 = new javax.swing.JLabel();
+        OptsP = new javax.swing.JPanel();
+        CEnc1L = new javax.swing.JLabel();
         CEnc1 = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
+        CEnc2L = new javax.swing.JLabel();
         CEnc2 = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
+        CEnc3L = new javax.swing.JLabel();
         CEnc3 = new javax.swing.JComboBox();
-        jLabel6 = new javax.swing.JLabel();
+        FPSL = new javax.swing.JLabel();
         FPSPanel = new javax.swing.JPanel();
 
-        setLayout(new java.awt.GridLayout(4, 2));
+        setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText(_("First Encoding"));
-        add(jLabel1);
+        OptsP.setLayout(new java.awt.GridLayout(4, 2));
+
+        OptsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
+        CEnc1L.setText(_("First Encoding"));
+        OptsP.add(CEnc1L);
 
         CEnc1.setToolTipText(_("Select the encoding to be searched first"));
-        add(CEnc1);
+        OptsP.add(CEnc1);
 
-        jLabel2.setText(_("Second Encoding"));
-        add(jLabel2);
+        CEnc2L.setText(_("Second Encoding"));
+        OptsP.add(CEnc2L);
 
         CEnc2.setToolTipText(_("Select the encoding to be searched second"));
-        add(CEnc2);
+        OptsP.add(CEnc2);
 
-        jLabel3.setText(_("Third Encoding"));
-        add(jLabel3);
+        CEnc3L.setText(_("Third Encoding"));
+        OptsP.add(CEnc3L);
 
         CEnc3.setToolTipText(_("Select the encoding to be searched last"));
-        add(CEnc3);
+        OptsP.add(CEnc3);
 
-        jLabel6.setText(_("FPS"));
-        add(jLabel6);
+        FPSL.setText(_("FPS"));
+        OptsP.add(FPSL);
 
         FPSPanel.setLayout(new java.awt.BorderLayout());
 
-        add(FPSPanel);
+        OptsP.add(FPSPanel);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+        add(OptsP, java.awt.BorderLayout.NORTH);
+
+    }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CEnc1;
+    private javax.swing.JLabel CEnc1L;
     private javax.swing.JComboBox CEnc2;
+    private javax.swing.JLabel CEnc2L;
     private javax.swing.JComboBox CEnc3;
+    private javax.swing.JLabel CEnc3L;
+    private javax.swing.JLabel FPSL;
     private javax.swing.JPanel FPSPanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel OptsP;
     // End of variables declaration//GEN-END:variables
     
 }

@@ -197,6 +197,10 @@ public class FileCommunicator {
         int size;
         int i,j;
         
+        if (origfilename==null || origfilename.equals("")) {
+            origfilename = getCurrentPath()+_("Untitled");
+        }
+        
         lsfilename = origfilename.toLowerCase();
         
         dir  = new File(origfilename).getParentFile();

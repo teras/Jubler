@@ -1,5 +1,5 @@
 /*
- * PrefsIO.java
+ * Options.java
  *
  * Created on 23 Ιούνιος 2005, 4:43 μμ
  *
@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.options;
+import com.panayotis.jubler.options.gui.TabPage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -63,21 +64,17 @@ public class Options {
         }
     }
     
-    
-    
+
     public static void loadSystemPreferences(JPreferences prefs) {
-        prefs.jload.loadPreferences(props);
-        prefs.jsave.loadPreferences(props);
-        prefs.smodel.loadPreferences(props);
-        prefs.loadPreferences(props);
+        for (TabPage opt : prefs.Tabs.getTabArray()) {
+            ((OptionsHolder)opt).loadPreferences(props);
+        }
     }
     
-    
     public static void saveSystemPreferences(JPreferences prefs) {
-        prefs.jload.savePreferences(props);
-        prefs.jsave.savePreferences(props);
-        prefs.smodel.savePreferences(props);
-        prefs.savePreferences(props);
+        for (TabPage opt : prefs.Tabs.getTabArray()) {
+            ((OptionsHolder)opt).savePreferences(props);
+        }
         saveOptions();
     }
     

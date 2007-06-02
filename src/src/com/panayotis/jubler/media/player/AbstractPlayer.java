@@ -25,7 +25,7 @@ package com.panayotis.jubler.media.player;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.AbstractPlayerOptions;
-import com.panayotis.jubler.options.ExtOptions;
+import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jubler.subs.Subtitles;
@@ -131,7 +131,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         return cmds;
     }
     
-    public ExtOptions getOptionsPanel() { return opts; }
+    public JExtBasicOptions getOptionsPanel() { return opts; }
     
     public void setCentralLocation(int x, int y) {
         this.x = x + opts.getXOffset();

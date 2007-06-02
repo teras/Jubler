@@ -37,8 +37,6 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.console.JVideoConsole;
-import com.panayotis.jubler.media.player.VideoPlayer;
-import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
@@ -65,7 +63,6 @@ import com.panayotis.jubler.tools.JSubJoin;
 import com.panayotis.jubler.tools.JSubSplit;
 import com.panayotis.jubler.tools.JSynchronize;
 import com.panayotis.jubler.tools.JToolRealTime;
-import com.panayotis.jubler.tools.externals.JExtSelector;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
@@ -1853,7 +1850,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_SaveFMActionPerformed
     
     private void PrefsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrefsFMActionPerformed
-        StaticJubler.showPreferences();
+        prefs.showPreferencesDialog();
     }//GEN-LAST:event_PrefsFMActionPerformed
     
     private void CloseFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseFMActionPerformed
@@ -2187,6 +2184,7 @@ public class Jubler extends JFrame {
     
     public void setSubs(Subtitles newsubs) {
         SubEntry[] selected = getSelectedSubs();
+        if ( subs!=null && newsubs.getCurrentFile()==null ) newsubs.setCurrentFile(subs.getCurrentFile());
         subs = newsubs;
         SubTable.setModel(subs);
         tableHasChanged(selected);

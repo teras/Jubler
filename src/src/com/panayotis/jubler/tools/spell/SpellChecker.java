@@ -2,7 +2,7 @@
  * SpellChecker.java
  *
  * Created on 15 Ιούλιος 2005, 1:52 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -40,5 +40,7 @@ public abstract class SpellChecker extends ExtProgram {
     public abstract boolean insertWord(String word);
     
     public abstract boolean supportsInsert();
+    
+    public String getIconName() { return "/icons/spellcheck_small.png"; }
     
 }

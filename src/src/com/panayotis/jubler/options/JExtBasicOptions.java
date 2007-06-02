@@ -1,5 +1,5 @@
 /*
- * MPlay.java
+ * JExtBasicOptions.java
  *
  * Created on 6 Ιούλιος 2005, 4:18 πμ
  *
@@ -28,6 +28,7 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
 import java.io.File;
+import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
@@ -36,17 +37,15 @@ import javax.swing.JPanel;
  *
  * @author  teras
  */
-public class ExtOptions extends JPanel {
+public class JExtBasicOptions extends JPanel {
     private JFileChooser fdialog;
     
     protected String name;
     protected String programname;
     protected String type;
     
-    String filename;
-    
     /** Creates new form MPlay */
-    public ExtOptions(String type, String name, String programname) {
+    public JExtBasicOptions(String type, String name, String programname) {
         super();
         
         this.type = type;
@@ -54,7 +53,6 @@ public class ExtOptions extends JPanel {
         this.programname = programname;
         
         initComponents();
-        loadOptions();
         
         FileL.setText(_("{0} path", name));
         fdialog = new JFileChooser();
@@ -68,19 +66,20 @@ public class ExtOptions extends JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        Visuals = new javax.swing.JPanel();
+        BrowserP = new javax.swing.JPanel();
         FilenameT = new javax.swing.JTextField();
         Browse = new javax.swing.JButton();
         FileL = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
-        Visuals.setLayout(new java.awt.BorderLayout());
+        BrowserP.setLayout(new java.awt.BorderLayout());
 
+        BrowserP.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 8, 0));
         FilenameT.setColumns(20);
         FilenameT.setEditable(false);
         FilenameT.setToolTipText(_("The absolute path of the player. Use the Browse button to change it"));
-        Visuals.add(FilenameT, java.awt.BorderLayout.CENTER);
+        BrowserP.add(FilenameT, java.awt.BorderLayout.CENTER);
 
         Browse.setText(_("Browse"));
         Browse.setToolTipText(_("Open a file dialog to select the filename of the player"));
@@ -90,47 +89,56 @@ public class ExtOptions extends JPanel {
             }
         });
 
-        Visuals.add(Browse, java.awt.BorderLayout.EAST);
+        BrowserP.add(Browse, java.awt.BorderLayout.EAST);
 
         FileL.setText("[path]");
-        Visuals.add(FileL, java.awt.BorderLayout.NORTH);
+        BrowserP.add(FileL, java.awt.BorderLayout.NORTH);
 
-        add(Visuals, java.awt.BorderLayout.SOUTH);
+        add(BrowserP, java.awt.BorderLayout.NORTH);
 
+    }// </editor-fold>//GEN-END:initComponents
+    
+    /* Use an external method, so that this actins can be monitored (e.g. in spell check */
+    protected boolean activatedBrowseButton() {
+        if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return false;
+        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), programname.toLowerCase());
+        if (newexe!=null) {
+            FilenameT.setText(newexe.getAbsolutePath());
+            return true;
+        }
+        else {
+            DEBUG.error(_("Unable to find valid executable for {0}.",name));
+            return false;
+        }
     }
-    // </editor-fold>//GEN-END:initComponents
     
     private void BrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseActionPerformed
-        if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), programname);
-        if (newexe!=null) FilenameT.setText(newexe.getAbsolutePath());
-        else DEBUG.error(_("Unable to find valid executable for {0}.",name));
+        activatedBrowseButton();
     }//GEN-LAST:event_BrowseActionPerformed
     
+    /* Use this method tyo grab feedback when the options card of this program gets activated */
+    public void activateProgramPanel() {}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Browse;
+    protected javax.swing.JPanel BrowserP;
     private javax.swing.JLabel FileL;
     private javax.swing.JTextField FilenameT;
-    protected javax.swing.JPanel Visuals;
     // End of variables declaration//GEN-END:variables
     
-    protected void loadOptions() {
-        FilenameT.setText( Options.getOption(type + "." + name + ".Path", name.toLowerCase()));
-        filename = FilenameT.getText();
+    protected void loadPreferences(Properties props) {
+        FilenameT.setText( props.getProperty(type + "." + name + ".Path", name.toLowerCase()) );
     }
     
-    public void saveOptions() {
-        filename = FilenameT.getText();
-        Options.setOption(type + "." + name + ".Path", filename);
-        Options.saveOptions();
-    }
-    
-    public void resetOptions() {
-        FilenameT.setText(filename);
+    protected void savePreferences(Properties props) {
+        props.setProperty(type + "." + name + ".Path", FilenameT.getText());
     }
     
     public String getExecFileName() {
-        return SystemDependent.getRealExecFilename(filename);
+        return SystemDependent.getRealExecFilename(FilenameT.getText());
+    }
+    
+    public JPanel getOptionsPanel() {
+        return this;
     }
 }

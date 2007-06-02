@@ -1,7 +1,7 @@
 /*
- * JPrefsFrame.java
+ * JPreferences.java
  *
- * Created on 3 Ιούλιος 2005, 2:45 μμ
+ * Created on June 1, 2007, 1:57 PM
  *
  * This file is part of Jubler.
  *
@@ -25,46 +25,45 @@ package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.options.gui.JResizableTabs;
+import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
-import com.panayotis.jubler.tools.externals.JExtSelector;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Properties;
 import java.util.SortedMap;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 
 /**
  *
  * @author  teras
  */
-public class JPreferences extends JPanel implements OptionsHolder {
-    
+public class JPreferences extends javax.swing.JDialog {
     public static final String []AvailEncodings;
     public static final String []DefaultEncodings;
     
-    public JLoadOptions jload;
-    public JSaveOptions jsave;
-    public JExtSelector player;
-    public JExtSelector speller;
-    public ShortcutsModel smodel;
+    /* GUI element to hold various preferences 
+     * it is "friendly", since it is needed in Options 
+     */
+    JResizableTabs Tabs;
     
-    private boolean load_state, save_state;
+    /* Shortcuts to panels */
+    private JLoadOptions jload;
+    private JSaveOptions jsave;
+    private JExternalOptions jplay;
+    private JExternalOptions jspell;
+    private JShortcutsOptions jcut;
+    
+    private boolean dialog_status;
     
     static {
         SortedMap encs = Charset.availableCharsets();
@@ -87,32 +86,17 @@ public class JPreferences extends JPanel implements OptionsHolder {
     
     /** Creates new form JPreferences */
     public JPreferences(Jubler jub) {
-        smodel = new ShortcutsModel(jub.JublerMenuBar);
         
-        initComponents();
-        jload = new JLoadOptions();
-        jsave = new JSaveOptions();
+        Tabs = new JResizableTabs(this);
+        Tabs.addTab(jload = new JLoadOptions());
+        Tabs.addTab(jsave = new JSaveOptions());
+        Tabs.addTab(jplay = new JExternalOptions(new AvailPlayers()));
+        Tabs.addTab(jspell = new JExternalOptions(new AvailSpellCheckers()));
+        Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Options.loadSystemPreferences(this);
         
-        LoadPanel.add(jload, BorderLayout.NORTH);
-        SavePanel.add(jsave, BorderLayout.NORTH);
-        
-        ShortT.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                //Ignore extra messages.
-                if (e.getValueIsAdjusting()) return;
-                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                if (lsm.isSelectionEmpty()) return;
-                smodel.setSelection(ShortT.getSelectedRow());
-            }
-        });
-        ShortT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
-        /* player options */
-        player = new JExtSelector(new AvailPlayers());
-        speller = new JExtSelector(new AvailSpellCheckers());
-        PlayerPanel.add(player, BorderLayout.NORTH);
-        SpellerPanel.add(speller, BorderLayout.NORTH);
+        initComponents();
+        add(Tabs, BorderLayout.CENTER);
     }
     
     
@@ -134,50 +118,34 @@ public class JPreferences extends JPanel implements OptionsHolder {
     }
     
     public VideoPlayer getVideoPlayer() {
-        return (VideoPlayer)player.getObject();
+        return (VideoPlayer)jplay.getObject();
     }
     public SpellChecker getSpellChecker() {
-        return (SpellChecker)speller.getObject();
+        return (SpellChecker)jspell.getObject();
     }
     
-    /* The following two methods display the load/save panels in a dialog
-     * and reattach them back to their position, after the selection was done.
-     */
+    public void setMenuShortcuts(JMenuBar bar) {
+        jcut.applyMenuShortcuts(bar);
+    }
+    
     public void showLoadDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
-        flipflopPanel(parent, mfile, subs, jload, LoadPanel, LSelect);
+        jload.showDialog(parent, mfile, subs);
     }
     public void showSaveDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
-        flipflopPanel(parent, mfile, subs, jsave, SavePanel, SSelect);
+        jsave.showDialog(parent, mfile, subs);
     }
     
-    /* This method is called when a load/save action is performed 
-     * To grasp when a JPreferences dialog is displayed, see 
-     * Options.loadSystemPreferences(JPreferences);
-     */
-    private void flipflopPanel(JFrame parent, MediaFile mfile, Subtitles subs, JOptionsGUI obj, JPanel container, JCheckBox allow) {
-        if ( !allow.isSelected() ) return;
+    public void showPreferencesDialog() {
+        dialog_status = false;
+        Options.loadSystemPreferences(this);
         
-        obj.updateVisuals(mfile, subs);
-        JIDialog.message(parent, obj, _("File preferences"), JIDialog.QUESTION_MESSAGE);
-        container.add(obj, BorderLayout.NORTH);
+        Tabs.updateTab(0);
+
+        setVisible(true);
+        if ( dialog_status ) Options.saveSystemPreferences(this);
+        else Options.loadSystemPreferences(this); // Make sure options are returned to their saved state
     }
     
-    /* Save preferences stored in this frame */
-    public void savePreferences(Properties props) {
-        props.setProperty("System.ShowLoadDialog", LSelect.isSelected() ? "true" : "false");
-        props.setProperty("System.ShowSaveDialog", SSelect.isSelected() ? "true" : "false");
-    }
-    
-    /* Save preferences stored in this frame */
-    public void loadPreferences(Properties props) {
-        LSelect.setSelected(props.getProperty("System.ShowLoadDialog", "true").equals("true"));
-        SSelect.setSelected(props.getProperty("System.ShowSaveDialog", "true").equals("true"));
-    }
-    
-   
-    public void setMenuShortcuts(JMenuBar bar) {
-        smodel.applyMenuShortcuts(bar);
-    }
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -186,140 +154,63 @@ public class JPreferences extends JPanel implements OptionsHolder {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        Tabs = new javax.swing.JTabbedPane();
-        LoadPanel = new javax.swing.JPanel();
-        LSelect = new javax.swing.JCheckBox();
-        SavePanel = new javax.swing.JPanel();
-        SSelect = new javax.swing.JCheckBox();
-        PlayerPanel = new javax.swing.JPanel();
-        SpellerPanel = new javax.swing.JPanel();
-        ShortcutsPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ShortT = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        ClearSB = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        ResetSB = new javax.swing.JButton();
+        LowerP = new javax.swing.JPanel();
+        ButtonsP = new javax.swing.JPanel();
+        AcceptB = new javax.swing.JButton();
+        CancelB = new javax.swing.JButton();
 
-        setLayout(new java.awt.BorderLayout());
+        setTitle(_("Jubler Preferences"));
+        setModal(true);
+        setResizable(false);
+        LowerP.setLayout(new java.awt.BorderLayout());
 
-        Tabs.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                TabsStateChanged(evt);
-            }
-        });
+        ButtonsP.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
-        LoadPanel.setLayout(new java.awt.BorderLayout());
-
-        LSelect.setText(_(" Show load preferences while loading file"));
-        LSelect.setToolTipText(_("Show preferences every time the user loads a subtitle file"));
-        LoadPanel.add(LSelect, java.awt.BorderLayout.SOUTH);
-
-        Tabs.addTab(_("Load"), null, LoadPanel, _("Load subtitles options"));
-
-        SavePanel.setLayout(new java.awt.BorderLayout());
-
-        SSelect.setText(_(" Show save preferences while saving file"));
-        SSelect.setToolTipText(_("Show preferences every time the user loads a subtitle file"));
-        SavePanel.add(SSelect, java.awt.BorderLayout.SOUTH);
-
-        Tabs.addTab(_("Save"), null, SavePanel, _("Save subtitles options"));
-
-        PlayerPanel.setLayout(new java.awt.BorderLayout());
-
-        Tabs.addTab(_("MediaPlayer"), null, PlayerPanel, _("Media player options"));
-
-        SpellerPanel.setLayout(new java.awt.BorderLayout());
-
-        Tabs.addTab(_("SpellCheck"), SpellerPanel);
-
-        ShortcutsPanel.setLayout(new java.awt.BorderLayout());
-
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 200));
-        ShortT.setModel(smodel);
-        ShortT.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                ShortTKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                ShortTKeyReleased(evt);
-            }
-        });
-
-        jScrollPane1.setViewportView(ShortT);
-
-        ShortcutsPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        ClearSB.setText(_("Clear current shortcut"));
-        ClearSB.addActionListener(new java.awt.event.ActionListener() {
+        ButtonsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 6, 16));
+        AcceptB.setText(_("Accept"));
+        AcceptB.setToolTipText(_("Accept and save preferences"));
+        AcceptB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ClearSBActionPerformed(evt);
+                AcceptBActionPerformed(evt);
             }
         });
 
-        jPanel3.add(ClearSB);
+        ButtonsP.add(AcceptB);
 
-        jPanel2.add(jPanel3, java.awt.BorderLayout.EAST);
-
-        ResetSB.setText(_("Reset all to defaults"));
-        ResetSB.addActionListener(new java.awt.event.ActionListener() {
+        CancelB.setText(_("Cancel"));
+        CancelB.setToolTipText(_("Cancel changes and revert to previous values"));
+        CancelB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResetSBActionPerformed(evt);
+                CancelBActionPerformed(evt);
             }
         });
 
-        jPanel4.add(ResetSB);
+        ButtonsP.add(CancelB);
 
-        jPanel2.add(jPanel4, java.awt.BorderLayout.WEST);
+        LowerP.add(ButtonsP, java.awt.BorderLayout.EAST);
 
-        ShortcutsPanel.add(jPanel2, java.awt.BorderLayout.SOUTH);
+        getContentPane().add(LowerP, java.awt.BorderLayout.SOUTH);
 
-        Tabs.addTab(_("Shortcuts"), ShortcutsPanel);
-
-        add(Tabs, java.awt.BorderLayout.CENTER);
-
+        pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void TabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabsStateChanged
-        System.out.println("KO");
-    }//GEN-LAST:event_TabsStateChanged
-
-    private void ClearSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearSBActionPerformed
-        smodel.removeShortcut();
-    }//GEN-LAST:event_ClearSBActionPerformed
-
-    private void ResetSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetSBActionPerformed
-        smodel.resetAllShortcuts();
-    }//GEN-LAST:event_ResetSBActionPerformed
     
-    private void ShortTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ShortTKeyReleased
-        smodel.keyReleased(evt.getKeyCode());
-    }//GEN-LAST:event_ShortTKeyReleased
+    private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
+        dialog_status = false;
+        setVisible(false);
+    }//GEN-LAST:event_CancelBActionPerformed
     
-    private void ShortTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ShortTKeyPressed
-        smodel.keyPressed(evt.getKeyCode());
-    }//GEN-LAST:event_ShortTKeyPressed
+    private void AcceptBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptBActionPerformed
+        dialog_status = true;
+        setVisible(false);
+    }//GEN-LAST:event_AcceptBActionPerformed
+        
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton ClearSB;
-    private javax.swing.JCheckBox LSelect;
-    private javax.swing.JPanel LoadPanel;
-    private javax.swing.JPanel PlayerPanel;
-    private javax.swing.JButton ResetSB;
-    private javax.swing.JCheckBox SSelect;
-    private javax.swing.JPanel SavePanel;
-    private javax.swing.JTable ShortT;
-    private javax.swing.JPanel ShortcutsPanel;
-    private javax.swing.JPanel SpellerPanel;
-    private javax.swing.JTabbedPane Tabs;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton AcceptB;
+    private javax.swing.JPanel ButtonsP;
+    private javax.swing.JButton CancelB;
+    private javax.swing.JPanel LowerP;
     // End of variables declaration//GEN-END:variables
     
 }

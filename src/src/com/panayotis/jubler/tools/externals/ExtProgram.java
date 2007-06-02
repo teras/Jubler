@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools.externals;
 
-import com.panayotis.jubler.options.ExtOptions;
+import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.SystemDependent;
 
 /**
@@ -33,7 +33,7 @@ import com.panayotis.jubler.os.SystemDependent;
 public abstract class ExtProgram {
     
     /** Get a JPanel having the GUI controls for the external program options */
-    public abstract ExtOptions getOptionsPanel();
+    public abstract JExtBasicOptions getOptionsPanel();
     
     /* Get the name of this external program, useful e.g. to save options or for labels */
     public abstract String getName();
@@ -48,4 +48,7 @@ public abstract class ExtProgram {
     
     /* Get the localized type of this external program, useful for labels */
     public abstract String getLocalType();
+    
+    /* Use this method to get the icon of this program */
+    public abstract String getIconName();
 }

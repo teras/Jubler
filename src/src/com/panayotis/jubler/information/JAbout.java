@@ -42,6 +42,7 @@ public class JAbout extends javax.swing.JPanel {
         "Christian Weiske, cweiske@cweiske.de",
         "Panayotis Katsaloulis, panayotis@panayotis.com",
         "Doutor.Zero, doutor.zero@gmail.com",
+        "Nikola Karanovic, dzonithebatee@yahoo.com",
         "Alfredo Quesada S\u00E1nchez, freddy2_es@yahoo.com",
         "As\u0131m Sinan Y\u00FCksel, yuksel.asim.sinan@gmail.com"
     };
@@ -53,6 +54,7 @@ public class JAbout extends javax.swing.JPanel {
         _("German"),
         _("Greek"),
         _("Portuguese (Brazilian)"),
+        _("Serbian"),
         _("Spanish"),
         _("Turkish")
     };
