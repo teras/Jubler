@@ -24,9 +24,11 @@
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
+import com.panayotis.jubler.tools.externals.wizard.JWizard;
 import java.io.File;
 import java.util.Properties;
 import javax.swing.JFileChooser;
@@ -70,6 +72,7 @@ public class JExtBasicOptions extends JPanel {
         FilenameT = new javax.swing.JTextField();
         Browse = new javax.swing.JButton();
         FileL = new javax.swing.JLabel();
+        WizardB = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -94,9 +97,22 @@ public class JExtBasicOptions extends JPanel {
         FileL.setText("[path]");
         BrowserP.add(FileL, java.awt.BorderLayout.NORTH);
 
+        WizardB.setText(_("Wizard"));
+        WizardB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                WizardBActionPerformed(evt);
+            }
+        });
+
+        BrowserP.add(WizardB, java.awt.BorderLayout.WEST);
+
         add(BrowserP, java.awt.BorderLayout.NORTH);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
+        new JWizard(name, programname, type).setVisible(true);
+    }//GEN-LAST:event_WizardBActionPerformed
     
     /* Use an external method, so that this actins can be monitored (e.g. in spell check */
     protected boolean activatedBrowseButton() {
@@ -124,6 +140,7 @@ public class JExtBasicOptions extends JPanel {
     protected javax.swing.JPanel BrowserP;
     private javax.swing.JLabel FileL;
     private javax.swing.JTextField FilenameT;
+    private javax.swing.JButton WizardB;
     // End of variables declaration//GEN-END:variables
     
     protected void loadPreferences(Properties props) {

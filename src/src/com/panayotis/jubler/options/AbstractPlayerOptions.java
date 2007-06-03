@@ -35,9 +35,7 @@ import javax.swing.SpinnerNumberModel;
  */
 public class AbstractPlayerOptions extends JExtBasicOptions {
     
-  //  private String args_value;
     private String args_default;
- //   private int x_value, y_value;
     
     /** Creates new form AbstractPlayerOptions */
     public AbstractPlayerOptions(AbstractPlayer player) {
