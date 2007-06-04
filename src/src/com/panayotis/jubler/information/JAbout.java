@@ -379,9 +379,16 @@ public class JAbout extends javax.swing.JPanel {
             thanks.append(langs[i]).append(" : ").append(transl[i]).append('\n');
         }
         
+        thanks.append("\n");
+        thanks.append(_("Packagers\n"));
+        thanks.append("Slackware: Thanos Kyritsis, djart@linux.gr\n");
+        thanks.append("Fedora: Marcin Zaj\u0105czkowski mszpak@wp.pl\n");
+        
         thanks.append("\n").append(_("Icon theme")).append(":\n").append(icon_theme);
         
         ThanksT.setText(thanks.toString());
+        ThanksT.setSelectionStart(0);
+        ThanksT.setSelectionEnd(0);
     }
     
     /** This method is called from within the constructor to
@@ -409,6 +416,7 @@ public class JAbout extends javax.swing.JPanel {
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
+        jScrollPane2.setPreferredSize(new java.awt.Dimension(450, 300));
         ThanksT.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         ThanksT.setBorder(null);
         ThanksT.setEditable(false);

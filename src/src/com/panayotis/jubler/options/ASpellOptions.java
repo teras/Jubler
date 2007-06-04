@@ -82,8 +82,8 @@ public class ASpellOptions extends JExtBasicOptions {
 
     }// </editor-fold>//GEN-END:initComponents
     
-    protected boolean activatedBrowseButton() {
-        boolean success = super.activatedBrowseButton();
+     protected boolean activatedWizard() {
+        boolean success = super.activatedWizard();
         if (success) updateDictionaries();
         return success;
     }

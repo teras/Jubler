@@ -141,6 +141,7 @@ public class JWizard extends JDialog {
         WelcomeText.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         WelcomeText.setColumns(20);
         WelcomeText.setEditable(false);
+        WelcomeText.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         WelcomeText.setRows(3);
         WelcomeText.setText(_("Jubler needs {0} executable\nto continue with the requested action.", name));
         jPanel2.add(WelcomeText, java.awt.BorderLayout.CENTER);
@@ -261,7 +262,7 @@ public class JWizard extends JDialog {
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
-              //  FilenameT.setText("koko");
+               // FilenameT.setText("koko");
                 
                 ContinueB.setEnabled(true);
                 AutoProgress.setVisible(false);
@@ -303,10 +304,12 @@ public class JWizard extends JDialog {
                     break;
                 }
                 cardid++;
-                // NO BREAK HERE! CONTINUE WITH NEXT COMMANDS
+                CancelB.setEnabled(false);
+                ContinueB.setText(_("Finish"));
+                break;
             case 3:
                 CancelB.setEnabled(false);
-                ContinueB.setText(_("Exit"));
+                ContinueB.setText(_("Finish"));
                 break;
             case 4:
                 setVisible(false);

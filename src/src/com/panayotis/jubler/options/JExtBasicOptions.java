@@ -70,7 +70,6 @@ public class JExtBasicOptions extends JPanel {
     private void initComponents() {
         BrowserP = new javax.swing.JPanel();
         FilenameT = new javax.swing.JTextField();
-        Browse = new javax.swing.JButton();
         FileL = new javax.swing.JLabel();
         WizardB = new javax.swing.JButton();
 
@@ -84,59 +83,43 @@ public class JExtBasicOptions extends JPanel {
         FilenameT.setToolTipText(_("The absolute path of the player. Use the Browse button to change it"));
         BrowserP.add(FilenameT, java.awt.BorderLayout.CENTER);
 
-        Browse.setText(_("Browse"));
-        Browse.setToolTipText(_("Open a file dialog to select the filename of the player"));
-        Browse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BrowseActionPerformed(evt);
-            }
-        });
-
-        BrowserP.add(Browse, java.awt.BorderLayout.EAST);
-
         FileL.setText("[path]");
         BrowserP.add(FileL, java.awt.BorderLayout.NORTH);
 
         WizardB.setText(_("Wizard"));
+        WizardB.setToolTipText(_("Start the Wizard, to locate the executable path name"));
         WizardB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 WizardBActionPerformed(evt);
             }
         });
 
-        BrowserP.add(WizardB, java.awt.BorderLayout.WEST);
+        BrowserP.add(WizardB, java.awt.BorderLayout.EAST);
 
         add(BrowserP, java.awt.BorderLayout.NORTH);
 
     }// </editor-fold>//GEN-END:initComponents
 
-    private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
-        new JWizard(name, programname, type).setVisible(true);
-    }//GEN-LAST:event_WizardBActionPerformed
-    
-    /* Use an external method, so that this actins can be monitored (e.g. in spell check */
-    protected boolean activatedBrowseButton() {
-        if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return false;
-        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), programname.toLowerCase());
-        if (newexe!=null) {
-            FilenameT.setText(newexe.getAbsolutePath());
+    protected boolean activatedWizard() {
+        JWizard wiz = new JWizard(name, programname, type);
+        wiz.setVisible(true);
+        String fname = wiz.getExecFilename();
+        if (fname!=null) {
+            FilenameT.setText(fname);
             return true;
         }
-        else {
-            DEBUG.error(_("Unable to find valid executable for {0}.",name));
-            return false;
-        }
+        return false;
     }
     
-    private void BrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseActionPerformed
-        activatedBrowseButton();
-    }//GEN-LAST:event_BrowseActionPerformed
-    
-    /* Use this method tyo grab feedback when the options card of this program gets activated */
+    private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
+        activatedWizard();
+    }//GEN-LAST:event_WizardBActionPerformed
+
+        
+    /* Use this method to grab feedback when the options card of this program gets activated */
     public void activateProgramPanel() {}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Browse;
     protected javax.swing.JPanel BrowserP;
     private javax.swing.JLabel FileL;
     private javax.swing.JTextField FilenameT;
