@@ -38,20 +38,7 @@ public class TreeWalker {
         if (root.isFile()) {
             if (!root.canRead()) return null;
             if (!root.getName().toLowerCase().equals(filename)) return null;
-            Process proc = null;
-            String[] cmd = new String[1];
-            cmd[0] = root.getAbsolutePath();
-            
-            try {
-                proc = Runtime.getRuntime().exec(cmd);
-                proc.waitFor();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return null;
-            }
-            if (proc==null) return null;
-            if (proc.exitValue()!=0) return null;
-            
+            if (!execIsValid(root)) return null;
             /* All checks OK - valid executable! */
             return root;
         } else {
@@ -64,5 +51,24 @@ public class TreeWalker {
         return null;
     }
     
+    
+    private static boolean execIsValid(File exec) {
+        if (!SystemDependent.shouldWaitForProccess()) return true;
+        
+        Process proc = null;
+        String[] cmd = new String[1];
+        cmd[0] = exec.getAbsolutePath();    // Use this trick to avoid spaces problems inside the filename
+        
+        try {
+            proc = Runtime.getRuntime().exec(cmd);
+            proc.waitFor();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        if (proc==null) return false;
+        if (proc.exitValue()!=0) return false;
+        return true;
+    }
     
 }

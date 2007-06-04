@@ -87,7 +87,7 @@ public class SystemDependent {
     public static String getDefaultMPlayerArgs() {
         String fontconfig = "";
         String font = "";
-
+        
         if (isLinux()) {
             font = " -font %f";
             fontconfig=" -fontconfig";
@@ -101,10 +101,20 @@ public class SystemDependent {
                 }
             }
         }
-
+        
         return "%p -slave -identify -ontop -utf8 -noquiet -nofs"+fontconfig+" -subfont-autoscale 0 -volstep 10"+
                 " -sub %s -ss %t -geometry +%x+%y"+font+" -subfont-text-scale %z %(-audiofile %a%) %v";
     }
+    
+    /* Use this method while checking plugins.
+     * For some strange reason, windows does not like executing a program
+     * just to make sure that it is valid.
+     * In Unix-like O.S. there shouldn't be a problem.
+     */
+    public static boolean shouldWaitForProccess() {
+        return !isWindows();
+    }
+    
     
     /* Force ASpell to use UTF-8 encoding - broken on Windows */
     public static boolean forceASpellEncoding() {
