@@ -121,13 +121,6 @@ public class SystemDependent {
         return !isWindows();
     }
     
-    public static String getRealExecFilename( String fname ) {
-        if (fname.endsWith(".app") && fname.toLowerCase().indexOf("mplayer") >= 0 ) {
-            fname += "/Contents/Resources/mplayer.app/Contents/MacOS/mplayer";
-        }
-        return fname;
-    }
-    
     
     public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
         if (isMacOSX()) {

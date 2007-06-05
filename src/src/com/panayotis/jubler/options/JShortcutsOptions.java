@@ -75,7 +75,8 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
     public JPanel getTabPanel() { return this; }
     public String getTabName() { return _("Menu Shortcuts"); }
     public String getTabTooltip() { return _("Set the menu keyboard shortcuts"); }
-    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/shortcut.png")); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/shortcut_small.png")); }
+    public void tabChanged() {}
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -152,7 +153,7 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
     private void ShortTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ShortTKeyPressed
         smodel.keyPressed(evt.getKeyCode());
     }//GEN-LAST:event_ShortTKeyPressed
-    
+  
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ClearSB;

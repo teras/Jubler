@@ -50,7 +50,7 @@ public class ASpellOptions extends JExtBasicOptions {
         initComponents();
         
         dictionaries = new Vector<ASpellDict>();
-        updateDictionaries();
+        updateOptionsPanel();
         
         add(BrowserP, BorderLayout.NORTH);
     }
@@ -82,32 +82,8 @@ public class ASpellOptions extends JExtBasicOptions {
 
     }// </editor-fold>//GEN-END:initComponents
     
-     protected boolean activatedWizard() {
-        boolean success = super.activatedWizard();
-        if (success) updateDictionaries();
-        return success;
-    }
-    public void activateProgramPanel() {
-        updateDictionaries();
-    }
-    
-    /* Find the selected language */
-    private void setSelectedLanguage(String lng) {
-        ASpellDict current;
-        for (int i = 0 ; i < dictionaries.size() ; i++) {
-            current = dictionaries.get(i);
-            if (current.lang.equals(lng)) {
-                LangList.setSelectedIndex(i);
-                LangList.ensureIndexIsVisible(i);
-                return;
-            }
-        }
-        /* Select first dictionary, if nothing ws found */
-        if (LangList.getSelectedIndex()<0 && LangList.getModel().getSize() > 0)
-            LangList.setSelectedIndex(0);
-    }
-    
-    public void updateDictionaries() {
+
+    public void updateOptionsPanel() {
         String old_lang = getLanguageName();
         dictionaries.removeAllElements();
         
@@ -128,6 +104,24 @@ public class ASpellOptions extends JExtBasicOptions {
         /* ... and update selected language */
         setSelectedLanguage(old_lang);
     }
+    
+    
+    /* Find the selected language */
+    private void setSelectedLanguage(String lng) {
+        ASpellDict current;
+        for (int i = 0 ; i < dictionaries.size() ; i++) {
+            current = dictionaries.get(i);
+            if (current.lang.equals(lng)) {
+                LangList.setSelectedIndex(i);
+                LangList.ensureIndexIsVisible(i);
+                return;
+            }
+        }
+        /* Select first dictionary, if nothing ws found */
+        if (LangList.getSelectedIndex()<0 && LangList.getModel().getSize() > 0)
+            LangList.setSelectedIndex(0);
+    }
+    
     
     
     private void getDictsFromPath( File path ) {
@@ -155,6 +149,7 @@ public class ASpellOptions extends JExtBasicOptions {
     
     public void loadPreferences(Properties props) {
         super.loadPreferences(props);
+        updateOptionsPanel();
         setSelectedLanguage(props.getProperty(type + "." + name + ".Language", default_language));
     }
     

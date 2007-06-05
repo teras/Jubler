@@ -74,8 +74,10 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder  {
         DialogVisible.setVisible(false);
         JIDialog.message(parent, this, _("File preferences"), JIDialog.QUESTION_MESSAGE);
         DialogVisible.setVisible(true);
-     }
+    }
     
+    /* We simply ignore this message */
+    public void tabChanged() {}
     
     /** This method is called from within the constructor to
      * initialize the form.

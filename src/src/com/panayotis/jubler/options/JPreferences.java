@@ -29,7 +29,7 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.player.VideoPlayer;
-import com.panayotis.jubler.options.gui.JResizableTabs;
+import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
@@ -54,7 +54,7 @@ public class JPreferences extends javax.swing.JDialog {
     /* GUI element to hold various preferences 
      * it is "friendly", since it is needed in Options 
      */
-    JResizableTabs Tabs;
+    JOptionTabs Tabs;
     
     /* Shortcuts to panels */
     private JLoadOptions jload;
@@ -87,7 +87,7 @@ public class JPreferences extends javax.swing.JDialog {
     /** Creates new form JPreferences */
     public JPreferences(Jubler jub) {
         
-        Tabs = new JResizableTabs(this);
+        Tabs = new JOptionTabs(this);
         Tabs.addTab(jload = new JLoadOptions());
         Tabs.addTab(jsave = new JSaveOptions());
         Tabs.addTab(jplay = new JExternalOptions(new AvailPlayers()));
@@ -97,6 +97,8 @@ public class JPreferences extends javax.swing.JDialog {
         
         initComponents();
         add(Tabs, BorderLayout.CENTER);
+        pack();
+        setLocationRelativeTo(null);
     }
     
     
@@ -138,9 +140,7 @@ public class JPreferences extends javax.swing.JDialog {
     public void showPreferencesDialog() {
         dialog_status = false;
         Options.loadSystemPreferences(this);
-        
-        Tabs.updateTab(0);
-
+        Tabs.initTabs();
         setVisible(true);
         if ( dialog_status ) Options.saveSystemPreferences(this);
         else Options.loadSystemPreferences(this); // Make sure options are returned to their saved state

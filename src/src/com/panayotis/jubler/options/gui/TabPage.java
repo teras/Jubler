@@ -35,4 +35,7 @@ public interface TabPage {
     public abstract String getTabName();
     public abstract String getTabTooltip();
     public abstract Icon getTabIcon();
+    
+    /* Fire this method if the tab should be updated */
+    public abstract void tabChanged();
 }

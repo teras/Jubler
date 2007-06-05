@@ -56,7 +56,6 @@ public class JExtBasicOptions extends JPanel {
         
         initComponents();
         
-        FileL.setText(_("{0} path", name));
         fdialog = new JFileChooser();
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
@@ -83,7 +82,7 @@ public class JExtBasicOptions extends JPanel {
         FilenameT.setToolTipText(_("The absolute path of the player. Use the Browse button to change it"));
         BrowserP.add(FilenameT, java.awt.BorderLayout.CENTER);
 
-        FileL.setText("[path]");
+        FileL.setText(_("{0} path", name));
         BrowserP.add(FileL, java.awt.BorderLayout.NORTH);
 
         WizardB.setText(_("Wizard"));
@@ -100,25 +99,18 @@ public class JExtBasicOptions extends JPanel {
 
     }// </editor-fold>//GEN-END:initComponents
 
-    protected boolean activatedWizard() {
+    
+    private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
         JWizard wiz = new JWizard(name, programname, type);
         wiz.setVisible(true);
         String fname = wiz.getExecFilename();
         if (fname!=null) {
             FilenameT.setText(fname);
-            return true;
+            updateOptionsPanel();
         }
-        return false;
-    }
-    
-    private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
-        activatedWizard();
     }//GEN-LAST:event_WizardBActionPerformed
 
         
-    /* Use this method to grab feedback when the options card of this program gets activated */
-    public void activateProgramPanel() {}
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JPanel BrowserP;
     private javax.swing.JLabel FileL;
@@ -135,10 +127,13 @@ public class JExtBasicOptions extends JPanel {
     }
     
     public String getExecFileName() {
-        return SystemDependent.getRealExecFilename(FilenameT.getText());
+        return FilenameT.getText();
     }
     
     public JPanel getOptionsPanel() {
         return this;
     }
+    
+    /* Use this method every time an update to the panel is needed */
+    protected void updateOptionsPanel() {}
 }

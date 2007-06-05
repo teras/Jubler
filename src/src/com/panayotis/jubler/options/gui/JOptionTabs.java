@@ -1,5 +1,5 @@
 /*
- * JResizableTabs.java
+ * JOptionTabs.java
  *
  * Created on June 1, 2007, 2:29 PM
  *
@@ -30,58 +30,40 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 
 /**
  *
  * @author  teras
  */
-public class JResizableTabs extends JPanel {
+public class JOptionTabs extends JPanel {
     
     private ArrayList<TabPage> tabs;
-    private ArrayList<JToggleButton> buttons;
     private Window parent;
     
-    /** Creates new form JResizableTabs */
-    public JResizableTabs(Window parent) {
+    /**
+     * Creates new form JOptionTabs
+     */
+    public JOptionTabs(Window parent) {
         initComponents();
         tabs = new ArrayList<TabPage>();
-        buttons = new ArrayList<JToggleButton>();
         this.parent = parent;
     }
     
     public void addTab(TabPage page) {
         tabs.add(page);
-        
-        JToggleButton cb = new JToggleButton(page.getTabName(), page.getTabIcon());
-        cb.setToolTipText(page.getTabTooltip());
-        cb.setMargin(new Insets(8,8,8,8));
-        TabsBG.add(cb);
-        TabsSelector.add(cb);
-        
-        cb.addActionListener(new ActionListener() {
-            private final int id = tabs.size()-1;
-            
-            public void actionPerformed(ActionEvent e) {
-                updateTab(id);
-            }
-        });
-        
-        buttons.add(cb);
+        TabP.addTab(page.getTabName(), page.getTabIcon(), page.getTabPanel(), page.getTabTooltip());
+
     }
     
     public ArrayList<TabPage> getTabArray() {
         return tabs;
     }
     
-    public void updateTab(int id) {
-        ViewP.removeAll();
-        ViewP.add(tabs.get(id).getTabPanel(), BorderLayout.CENTER);
-        buttons.get(id).setSelected(true);
-        parent.pack();
-        parent.setLocationRelativeTo(null);
+    public void initTabs() {
+        TabP.setSelectedIndex(0);
     }
-    
     
     /** This method is called from within the constructor to
      * initialize the form.
@@ -91,29 +73,29 @@ public class JResizableTabs extends JPanel {
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
         TabsBG = new javax.swing.ButtonGroup();
-        TabsSelector = new javax.swing.JPanel();
-        ViewP = new javax.swing.JPanel();
+        TabP = new javax.swing.JTabbedPane();
 
         setLayout(new java.awt.BorderLayout());
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        TabsSelector.setLayout(new java.awt.GridLayout());
+        TabP.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TabPStateChanged(evt);
+            }
+        });
 
-        TabsSelector.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.LOWERED));
-        add(TabsSelector, java.awt.BorderLayout.NORTH);
-
-        ViewP.setLayout(new java.awt.BorderLayout());
-
-        ViewP.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 0, 8));
-        add(ViewP, java.awt.BorderLayout.CENTER);
+        add(TabP, java.awt.BorderLayout.CENTER);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void TabPStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TabPStateChanged
+        tabs.get(TabP.getSelectedIndex()).tabChanged();
+    }//GEN-LAST:event_TabPStateChanged
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane TabP;
     private javax.swing.ButtonGroup TabsBG;
-    private javax.swing.JPanel TabsSelector;
-    private javax.swing.JPanel ViewP;
     // End of variables declaration//GEN-END:variables
     
 }

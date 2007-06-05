@@ -109,7 +109,7 @@ public class JLoadOptions extends JFileOptions {
     
     public String getTabName() { return _("Load"); }
     public String getTabTooltip() { return _("Load subtitles options"); }
-    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/load.png")); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/load_small.png")); }
     
     /** This method is called from within the constructor to
      * initialize the form.

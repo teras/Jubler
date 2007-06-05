@@ -51,4 +51,5 @@ public abstract class ExtProgram {
     
     /* Use this method to get the icon of this program */
     public abstract String getIconName();
+
 }

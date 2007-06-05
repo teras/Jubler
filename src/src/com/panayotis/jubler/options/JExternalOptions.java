@@ -59,6 +59,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         return list.elementAt(PList.getSelectedIndex());
     }
     
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -98,7 +99,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     
     private void PListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PListActionPerformed
         ((CardLayout)ParamsP.getLayout()).show(ParamsP, Integer.toString(PList.getSelectedIndex()));
-        activateProgramPanel();
+        tabChanged();
     }//GEN-LAST:event_PListActionPerformed
     
     public void loadPreferences(Properties props) {
@@ -111,16 +112,12 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         if (opts!=null) opts.savePreferences(props);
     }
     
-    /* Not only display Tab, but also update this tab to be displayed */
-    public JPanel getTabPanel() {
-        activateProgramPanel();
-        return this;
-    }
+    public JPanel getTabPanel() { return this; }
     
-    /* Use this method to update the program panel (e.g. in aspell */
-    private void activateProgramPanel() {
-        JExtBasicOptions opanel = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
-        if (opanel!=null) opanel.activateProgramPanel();
+
+    public void tabChanged() {
+        JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
+        if (opts!=null) opts.updateOptionsPanel();
     }
     
     public String getTabName() { return list.programAt(0).getType(); }

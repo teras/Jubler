@@ -46,7 +46,9 @@
         </Component>
         <Component class="javax.swing.JLabel" name="FileL">
           <Properties>
-            <Property name="text" type="java.lang.String" value="[path]"/>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="_(&quot;{0} path&quot;, name)" type="code"/>
+            </Property>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

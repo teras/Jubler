@@ -116,7 +116,7 @@ public class JSaveOptions extends JFileOptions {
     
     public String getTabName() { return _("Save"); }
     public String getTabTooltip() { return _("Save subtitles options"); }
-    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/save.png")); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/save_small.png")); }
     
     
     /* Execute this method whenever the output format is changed (or this panel is displayed */
