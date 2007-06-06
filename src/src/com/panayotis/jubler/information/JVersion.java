@@ -14,26 +14,34 @@ import com.panayotis.jubler.os.SystemDependent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
+import javax.swing.JPanel;
 
 /**
  *
  * @author  teras
  */
-public class JVersion extends javax.swing.JPanel {
+public class JVersion extends JPanel {
     
     private static final String DownloadPage = "http://www.jubler.org/download.html";
     
-    private Properties version;
+    private static Properties version;
     private Properties webversion;
     private int web_release;
+    
+    static {
+        version = new Properties();
+        try {
+            version.load(JVersion.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
+        } catch(IOException e) {
+        }
+    }
     
     /** Creates new form JVersion */
     public JVersion() {
         initComponents();
-        version = new Properties();
         webversion = new Properties();
-
-        if (getVersion()) { /* A new VALID version was found */
+        
+        if (getVersionFromWeb()) { /* A new VALID version was found */
             JIDialog.message(null, this, _("New version"), JIDialog.INFORMATION_MESSAGE);
             if (DisregardB.isSelected()) {
                 Options.setOption("System.Version.IgnoreUpdate", Integer.toString(web_release));
@@ -43,7 +51,7 @@ public class JVersion extends javax.swing.JPanel {
     }
     
     
-    public String getCurrentVersion() {
+    public static String getCurrentVersion() {
         return version.getProperty("version", "-");
     }
     public String getWebVersion() {
@@ -51,13 +59,11 @@ public class JVersion extends javax.swing.JPanel {
     }
     
     
-    public boolean getVersion() {
+    private boolean getVersionFromWeb() {
         try {
-            version.load(JVersion.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
-            
             webversion.load(new URL("http://www.panayotis.com/versions/jubler").openStream());
         } catch (IOException e) {
-             return false;
+            return false;
         }
         
         
@@ -148,7 +154,7 @@ public class JVersion extends javax.swing.JPanel {
         add(DisregardB);
 
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void GoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GoBActionPerformed
         SystemDependent.openURL(DownloadPage);
     }//GEN-LAST:event_GoBActionPerformed

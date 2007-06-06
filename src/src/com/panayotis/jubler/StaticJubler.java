@@ -209,6 +209,6 @@ public class StaticJubler {
         version = new JVersion();
     }
     public static String getCurrentVersion() {
-        return version.getCurrentVersion();
+        return JVersion.getCurrentVersion();
     }
 }
