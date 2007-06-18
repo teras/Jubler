@@ -54,7 +54,13 @@ public class JOptionTabs extends JPanel {
     public void addTab(TabPage page) {
         tabs.add(page);
         TabP.addTab(page.getTabName(), page.getTabIcon(), page.getTabPanel(), page.getTabTooltip());
+    }
 
+    public void setVisibleTab(int index) {
+        if (index<0 || index >= tabs.size()) return;
+        
+        TabPage page = tabs.get(index);
+        TabP.insertTab(page.getTabName(), page.getTabIcon(), page.getTabPanel(), page.getTabTooltip(), index);
     }
     
     public ArrayList<TabPage> getTabArray() {

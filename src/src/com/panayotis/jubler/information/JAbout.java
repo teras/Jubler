@@ -100,7 +100,7 @@ public class JAbout extends javax.swing.JPanel {
         }
         
         thanks.append("\n");
-        thanks.append(_("Packagers\n"));
+        thanks.append(_("Packagers")).append("\n");
         thanks.append("Slackware: Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n");
         thanks.append("Fedora: Marcin Zaj\u0105czkowski ").append(parseMail("wp.pl", "mszpak")).append("\n");
         
