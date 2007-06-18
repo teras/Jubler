@@ -39,7 +39,7 @@ public class TreeWalker {
     public static File searchExecutable(String application, String deflt) {
         Vector<ExtPath> paths = new Vector<ExtPath>();
         paths.add(new ExtPath(deflt, ExtPath.FILE_ONLY));
-    //    SystemDependent.appendSpotlightApplication(application, paths);
+        SystemDependent.appendSpotlightApplication(application, paths);
         SystemDependent.appendPathApplication(paths);
         SystemDependent.appendLocateApplication(application, paths);
         

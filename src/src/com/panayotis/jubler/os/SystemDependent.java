@@ -266,7 +266,7 @@ public class SystemDependent {
         // Add some system dependent paths
         res.add(new ExtPath("/sw/bin", 1));
         res.add(new ExtPath("/usr/local/bin", 1));
-        res.add(new ExtPath("C:\\Program Files", 2));
+        res.add(new ExtPath("C:\\Program Files", 3));
         res.add(new ExtPath(System.getProperty("user.home"), 3));
     }
     
