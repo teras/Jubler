@@ -39,7 +39,8 @@ public class DEBUG {
     public final static int INFO_DEBUG = 1;
     
     
-    public static int current_level = INFO_ALWAYS;
+//    public static int current_level = INFO_ALWAYS;
+    public static int current_level = INFO_DEBUG;
     
     
     /** Creates a new instance of DEBUG */

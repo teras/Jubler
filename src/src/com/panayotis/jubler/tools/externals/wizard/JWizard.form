@@ -413,7 +413,9 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="CancelB">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cancel"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="_(&quot;Cancel&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CancelBActionPerformed"/>
@@ -421,7 +423,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="ContinueB">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Continue"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="_(&quot;Continue&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ContinueBActionPerformed"/>

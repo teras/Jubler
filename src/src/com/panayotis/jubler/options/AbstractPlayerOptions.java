@@ -39,7 +39,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
     
     /** Creates new form AbstractPlayerOptions */
     public AbstractPlayerOptions(AbstractPlayer player) {
-        super(player.getType(), player.getName(), player.getFileName());
+        super(player.getType(), player.getName());
         args_default = player.getDefaultArguments();
         
         initComponents();

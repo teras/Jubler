@@ -26,6 +26,7 @@ package com.panayotis.jubler.tools.externals.wizard;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
 import java.awt.CardLayout;
 import java.awt.Frame;
@@ -43,18 +44,16 @@ public class JWizard extends JDialog {
     private JExtBasicOptions ext;
     
     private String name;
-    private String programname;
-    private String type;
+    private String deflt;
     
     private JFileChooser fdialog;
     
     /** Creates new form JWizard */
-    public JWizard(String name, String programname, String type) {
+    public JWizard(String name, String deflt) {
         super((Frame)null, true);
         
-        this.type = type;
         this.name = name;
-        this.programname = programname;
+        this.deflt = deflt;
         
         fdialog = new JFileChooser();
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -226,7 +225,7 @@ public class JWizard extends JDialog {
         LowerP.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 8, 12));
         ButtonsP.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
 
-        CancelB.setText("Cancel");
+        CancelB.setText(_("Cancel"));
         CancelB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelBActionPerformed(evt);
@@ -235,7 +234,7 @@ public class JWizard extends JDialog {
 
         ButtonsP.add(CancelB);
 
-        ContinueB.setText("Continue");
+        ContinueB.setText(_("Continue"));
         ContinueB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ContinueBActionPerformed(evt);
@@ -257,20 +256,17 @@ public class JWizard extends JDialog {
     private void autoFind() {
         Thread auto = new Thread() {
             public void run() {
-                try {
-                    Thread.currentThread().sleep(1000);
-                } catch (InterruptedException ex) {
-                    ex.printStackTrace();
-                }
-               // FilenameT.setText("koko");
+                File f = TreeWalker.searchExecutable(name, deflt);
                 
                 ContinueB.setEnabled(true);
                 AutoProgress.setVisible(false);
-                if (FilenameT.getText().equals("")) {
+                if (f==null) {
                     AutoL.setText(_("Unable to find executable"));
+                    CancelB.setEnabled(true);
                 } else {
                     AutoL.setText(_("Executable found"));
                     CancelB.setEnabled(false);
+                    FilenameT.setText(f.getPath());
                 }
             }
         };
@@ -280,23 +276,29 @@ public class JWizard extends JDialog {
     private void BrowseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseBActionPerformed
         BrowseStatusL.setVisible(false);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), programname.toLowerCase());
+        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), SystemDependent.getCanonicalFilename(name), SystemDependent.getBundleOrFileID());
         if (newexe!=null) {
-            FilenameT.setText(newexe.getAbsolutePath());
+            FilenameT.setText(newexe.getPath());
             ContinueB.setEnabled(true);
         } else {
             BrowseStatusL.setVisible(true);
+            FilenameT.setText("");
+            ContinueB.setEnabled(false);
         }
     }//GEN-LAST:event_BrowseBActionPerformed
     
     private void ContinueBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueBActionPerformed
         switch (cardid) {
             case 1:
-                ContinueB.setEnabled(false);
-                if (ManualB.isSelected())
+                if (ManualB.isSelected()) {
                     cardid++;
-                else
+                    ContinueB.setEnabled(TreeWalker.execIsValid(new File(deflt)));
+                    FilenameT.setText(deflt);
+                } else {
+                    CancelB.setEnabled(false);
+                    ContinueB.setEnabled(false);
                     autoFind();
+                }
                 break;
             case 2:
                 if (FilenameT.getText().equals("")) {

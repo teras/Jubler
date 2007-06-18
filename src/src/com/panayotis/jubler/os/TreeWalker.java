@@ -23,7 +23,11 @@
 
 package com.panayotis.jubler.os;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
+import com.panayotis.jubler.tools.externals.ExtPath;
 import java.io.File;
+import java.util.Vector;
 
 /**
  *
@@ -31,10 +35,28 @@ import java.io.File;
  */
 public class TreeWalker {
     
-    /* filename is already in lower case... */
-    public static File searchExecutable(File root, String filename) {
-        if (!root.exists()) return null;
+    
+    public static File searchExecutable(String application, String deflt) {
+        Vector<ExtPath> paths = new Vector<ExtPath>();
+        paths.add(new ExtPath(deflt, ExtPath.FILE_ONLY));
+    //    SystemDependent.appendSpotlightApplication(application, paths);
+        SystemDependent.appendPathApplication(paths);
+        SystemDependent.appendLocateApplication(application, paths);
         
+        for (ExtPath path: paths) {
+            DEBUG.info(_("Wizard is looking inside {0}", path.getPath()), DEBUG.INFO_DEBUG);
+            File f = new File(path.getPath());
+            if (path.searchForFile() && (!f.isFile()) ) continue;   // If we want a file and this is not, ignore this entry
+            File res = searchExecutable(f, SystemDependent.getCanonicalFilename(application), path.getRecStatus());
+            if (res!=null) return res;
+        }
+        return null;
+    }
+    
+    
+    /* filename is already in lower case... */
+    public static File searchExecutable(File root, String filename, int recursive) {
+        if (!root.exists()) return null;
         if (root.isFile()) {
             if (!root.canRead()) return null;
             if (!root.getName().toLowerCase().equals(filename)) return null;
@@ -42,9 +64,11 @@ public class TreeWalker {
             /* All checks OK - valid executable! */
             return root;
         } else {
+            if (recursive<=ExtPath.FILE_ONLY) return null;   // No more recursive should be done
+            recursive--;
             File[] childs = root.listFiles();
             for (int i = 0 ; i < childs.length ; i++) {
-                File res = searchExecutable(childs[i], filename);
+                File res = searchExecutable(childs[i], filename, recursive);
                 if (res!=null) return res;
             }
         }
@@ -52,7 +76,7 @@ public class TreeWalker {
     }
     
     
-    private static boolean execIsValid(File exec) {
+    public static boolean execIsValid(File exec) {
         if (!SystemDependent.shouldWaitForProccess()) return true;
         
         Process proc = null;
@@ -63,7 +87,6 @@ public class TreeWalker {
             proc = Runtime.getRuntime().exec(cmd);
             proc.waitFor();
         } catch (Exception ex) {
-            ex.printStackTrace();
             return false;
         }
         if (proc==null) return false;

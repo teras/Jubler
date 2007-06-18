@@ -43,16 +43,14 @@ public class JExtBasicOptions extends JPanel {
     private JFileChooser fdialog;
     
     protected String name;
-    protected String programname;
     protected String type;
     
     /** Creates new form MPlay */
-    public JExtBasicOptions(String type, String name, String programname) {
+    public JExtBasicOptions(String type, String name) {
         super();
         
         this.type = type;
         this.name = name;
-        this.programname = programname;
         
         initComponents();
         
@@ -101,7 +99,7 @@ public class JExtBasicOptions extends JPanel {
 
     
     private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
-        JWizard wiz = new JWizard(name, programname, type);
+        JWizard wiz = new JWizard(name, FilenameT.getText());
         wiz.setVisible(true);
         String fname = wiz.getExecFilename();
         if (fname!=null) {

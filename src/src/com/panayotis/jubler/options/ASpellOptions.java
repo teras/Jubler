@@ -45,8 +45,8 @@ public class ASpellOptions extends JExtBasicOptions {
     private static final String default_language = "en";
     
     /** Creates new form ASpellOptions */
-    public ASpellOptions(String type, String name, String programname) {
-        super(type, name, programname);
+    public ASpellOptions(String type, String name) {
+        super(type, name);
         initComponents();
         
         dictionaries = new Vector<ASpellDict>();

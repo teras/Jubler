@@ -32,9 +32,14 @@ import com.panayotis.jubler.Main;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.tools.externals.ExtPath;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.Properties;
+import java.util.StringTokenizer;
+import java.util.Vector;
 import javax.swing.JMenuItem;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -84,27 +89,6 @@ public class SystemDependent {
         }
     }
     
-    public static String getDefaultMPlayerArgs() {
-        String fontconfig = "";
-        String font = "";
-        
-        if (isLinux()) {
-            font = " -font %f";
-            fontconfig=" -fontconfig";
-        } else {
-            if (isWindows()) {
-                font=" -font c:\\Windows\\fonts\\arial.ttf";
-            } else {
-                File freesans = new File(SystemFileFinder.getJublerAppPath()+"/lib/freesans.ttf");
-                if (freesans.exists()) {
-                    font = " -font %j/lib/freesans.ttf";
-                }
-            }
-        }
-        
-        return "%p -slave -identify -ontop -utf8 -noquiet -nofs"+fontconfig+" -subfont-autoscale 0 -volstep 10"+
-                " -sub %s -ss %t -geometry +%x+%y"+font+" -subfont-text-scale %z %(-audiofile %a%) %v";
-    }
     
     /* Use this method while checking plugins.
      * For some strange reason, windows does not like executing a program
@@ -115,11 +99,6 @@ public class SystemDependent {
         return !isWindows();
     }
     
-    
-    /* Force ASpell to use UTF-8 encoding - broken on Windows */
-    public static boolean forceASpellEncoding() {
-        return !isWindows();
-    }
     
     
     public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
@@ -175,6 +154,11 @@ public class SystemDependent {
         return filename.toLowerCase();
     }
     
+    public static int getBundleOrFileID() {
+        if (isMacOSX()) return ExtPath.BUNDLE_ONLY;
+        return ExtPath.FILE_ONLY;
+    }
+    
     public static void openURL(String url) {
         try {
             if (isMacOSX()) {
@@ -201,6 +185,90 @@ public class SystemDependent {
         }
     }
     
+    public static String getDefaultMPlayerArgs() {
+        String fontconfig = "";
+        String font = "";
+        
+        if (isLinux()) {
+            font = " -font %f";
+            fontconfig=" -fontconfig";
+        } else {
+            if (isWindows()) {
+                font=" -font c:\\Windows\\fonts\\arial.ttf";
+            } else {
+                File freesans = new File(SystemFileFinder.getJublerAppPath()+"/lib/freesans.ttf");
+                if (freesans.exists()) {
+                    font = " -font %j/lib/freesans.ttf";
+                }
+            }
+        }
+        
+        return "%p -slave -identify -ontop -utf8 -noquiet -nofs"+fontconfig+" -subfont-autoscale 0 -volstep 10"+
+                " -sub %s -ss %t -geometry +%x+%y"+font+" -subfont-text-scale %z %(-audiofile %a%) %v";
+    }
+   
+    
+    /* Force ASpell to use UTF-8 encoding - broken on Windows */
+    public static boolean forceASpellEncoding() {
+        return !isWindows();
+    }
+  
+    
+    /* This method is valid only under Mac OSX.
+     * It uses Spotlight to find a desired application.
+     * Under other platforms does not do anything
+     */
+    public static void appendSpotlightApplication(String name, Vector<ExtPath> res) {
+        if (!isMacOSX()) return;
+        if (name==null) return;
+        Process proc = null;
+        String[] cmd = new String[2];
+        cmd[0] = "mdfind";
+        cmd[1] = "kMDItemDisplayName == '"+name+" OSX'";   // Use this trick to avoid spaces problems inside the filename
+        try {
+            String line;
+            proc = Runtime.getRuntime().exec(cmd);
+            proc.waitFor();
+            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            while ( (line = in.readLine()) != null) {
+                res.add(new ExtPath(line, ExtPath.BUNDLE_ONLY));
+            }
+        } catch (Exception ex) {}
+    }
+    
+    public static void appendLocateApplication(String name, Vector<ExtPath> res) {
+        if (isWindows()) return;
+        if (name==null) return;
+        
+        name = name.toLowerCase();
+        Process proc = null;
+        String[] cmd = new String[2];
+        cmd[0] = "locate";
+        cmd[1] = name;
+        String pathterm = System.getProperty("file.separator");
+        try {
+            String line;
+            proc = Runtime.getRuntime().exec(cmd);
+            proc.waitFor();
+            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            while ( (line = in.readLine()) != null) {
+                if (line.endsWith(pathterm+name))
+                    res.add(new ExtPath(line, ExtPath.FILE_ONLY));
+            }
+        } catch (Exception ex) {}
+    }
+    
+    public static void appendPathApplication(Vector<ExtPath> res) {
+        StringTokenizer st = new StringTokenizer(System.getenv("PATH"), System.getProperty("path.separator"));
+        while (st.hasMoreTokens())
+            res.add(new ExtPath(st.nextToken(), 1));
+
+        // Add some system dependent paths
+        res.add(new ExtPath("/sw/bin", 1));
+        res.add(new ExtPath("/usr/local/bin", 1));
+        res.add(new ExtPath("C:\\Program Files", 2));
+        res.add(new ExtPath(System.getProperty("user.home"), 3));
+    }
     
 }
 

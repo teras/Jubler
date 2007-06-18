@@ -158,8 +158,8 @@ public class JPreferences extends javax.swing.JDialog {
     private void initComponents() {
         LowerP = new javax.swing.JPanel();
         ButtonsP = new javax.swing.JPanel();
-        AcceptB = new javax.swing.JButton();
         CancelB = new javax.swing.JButton();
+        AcceptB = new javax.swing.JButton();
 
         setTitle(_("Jubler Preferences"));
         setModal(true);
@@ -169,16 +169,6 @@ public class JPreferences extends javax.swing.JDialog {
         ButtonsP.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
         ButtonsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 6, 16));
-        AcceptB.setText(_("Accept"));
-        AcceptB.setToolTipText(_("Accept and save preferences"));
-        AcceptB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AcceptBActionPerformed(evt);
-            }
-        });
-
-        ButtonsP.add(AcceptB);
-
         CancelB.setText(_("Cancel"));
         CancelB.setToolTipText(_("Cancel changes and revert to previous values"));
         CancelB.addActionListener(new java.awt.event.ActionListener() {
@@ -188,6 +178,16 @@ public class JPreferences extends javax.swing.JDialog {
         });
 
         ButtonsP.add(CancelB);
+
+        AcceptB.setText(_("Accept"));
+        AcceptB.setToolTipText(_("Accept and save preferences"));
+        AcceptB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AcceptBActionPerformed(evt);
+            }
+        });
+
+        ButtonsP.add(AcceptB);
 
         LowerP.add(ButtonsP, java.awt.BorderLayout.EAST);
 

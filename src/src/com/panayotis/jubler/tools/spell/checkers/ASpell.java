@@ -56,7 +56,7 @@ public class ASpell extends SpellChecker {
      * Creates a new instance of ASpell
      */
     public ASpell() {
-        opts = new ASpellOptions(getType(), getName(), getFileName());
+        opts = new ASpellOptions(getType(), getName());
     }
     
     public boolean initialize() {
