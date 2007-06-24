@@ -24,7 +24,6 @@
 package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
-import com.panayotis.jubler.os.SystemDependent;
 
 /**
  *
@@ -46,5 +45,5 @@ public abstract class ExtProgram {
     
     /* Use this method to get the icon of this program */
     public abstract String getIconName();
-
+    
 }

@@ -96,19 +96,13 @@ public class JExtBasicOptions extends JPanel {
         add(BrowserP, java.awt.BorderLayout.NORTH);
 
     }// </editor-fold>//GEN-END:initComponents
-
+    
     
     private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
-        JWizard wiz = new JWizard(name, FilenameT.getText());
-        wiz.setVisible(true);
-        String fname = wiz.getExecFilename();
-        if (fname!=null) {
-            FilenameT.setText(fname);
-            updateOptionsPanel();
-        }
+        searchForExecutable();
     }//GEN-LAST:event_WizardBActionPerformed
-
-        
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JPanel BrowserP;
     private javax.swing.JLabel FileL;
@@ -116,12 +110,12 @@ public class JExtBasicOptions extends JPanel {
     private javax.swing.JButton WizardB;
     // End of variables declaration//GEN-END:variables
     
-    protected void loadPreferences(Properties props) {
-        FilenameT.setText( props.getProperty(type + "." + name + ".Path", name.toLowerCase()) );
+    protected void loadPreferences() {
+        FilenameT.setText( Options.getOption(type + "." + name + ".Path", name.toLowerCase()) );
     }
     
-    protected void savePreferences(Properties props) {
-        props.setProperty(type + "." + name + ".Path", FilenameT.getText());
+    protected void savePreferences() {
+        Options.setOption(type + "." + name + ".Path", FilenameT.getText());
     }
     
     public String getExecFileName() {
@@ -134,4 +128,28 @@ public class JExtBasicOptions extends JPanel {
     
     /* Use this method every time an update to the panel is needed */
     protected void updateOptionsPanel() {}
+    
+    
+    /* Use this method when we want to search for the executable path */
+    private boolean searchForExecutable() {
+        JWizard wiz = new JWizard(name, FilenameT.getText());
+        wiz.setVisible(true);
+        String fname = wiz.getExecFilename();
+        if (fname!=null) {
+            FilenameT.setText(fname);
+            updateOptionsPanel();
+            return true;
+        }
+        return false;
+    }
+    
+    /** Request the executable path and save this information */
+    public boolean requestExecutable() {
+        boolean found = searchForExecutable();
+        if (found) {
+            savePreferences();
+            Options.saveOptions();
+        }
+        return found;
+    }
 }

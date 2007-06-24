@@ -110,7 +110,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         
         
         final Subtitles subs = given_subs;
-        final String outfilepath = dir.getPath() + System.getProperties().getProperty("file.separator");
+        final String outfilepath = dir.getPath() + System.getProperty("file.separator");
         final String outfilename = dir.getName();
         
         moptions.updateValues(given_subs, media);

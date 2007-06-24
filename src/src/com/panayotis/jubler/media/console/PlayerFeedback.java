@@ -30,6 +30,9 @@ package com.panayotis.jubler.media.console;
 public interface PlayerFeedback {
     
     /* Volume has been changed (values between 0..1)*/
-   public void volumeUpdate(float vol);
+    public void volumeUpdate(float vol);
+    
+    /* The Video Player requested a quit action - i.e. no more streaming */
+    public void requestQuit();
     
 }

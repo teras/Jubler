@@ -22,7 +22,6 @@
  */
 
 package com.panayotis.jubler.media.player.mplayer;
-import com.panayotis.jubler.media.player.*;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.subs.Subtitles;
@@ -36,6 +35,7 @@ import java.io.OutputStreamWriter;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.console.PlayerFeedback;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
 
 /**
  *
@@ -48,15 +48,22 @@ public class MPlayerViewport implements Viewport {
     
     private boolean isPaused;
     
-    private double fps, length;
+    private double length;
     private double position;
     private Thread updater;
     
-    private MediaFile mfile;
     
     private MPlayer player;
     
+    private MediaFile mfile;
+    private Subtitles sub;
     private PlayerFeedback feedback;
+    private Time when;
+    
+    /* Use this flag when a "quit" is not really fatal, like a subtitle reloading. 
+     * This flag automatically turns back to true, whenever a quit has been detected.
+     */
+    private boolean quit_is_fatal = true;
     
     /** Creates a new instance of MPlayer */
     public MPlayerViewport(MPlayer player) {
@@ -67,14 +74,15 @@ public class MPlayerViewport implements Viewport {
     
     private final static int SEEK_OFFSET = -3;
     
-    
-    public Time start(MediaFile mfile, Subtitles sub, PlayerFeedback feedback, Time when) {
-        
+    public void setParameters(MediaFile mfile, Subtitles sub, PlayerFeedback feedback, Time when) {
         this.mfile = mfile;
+        this.sub = sub;
         this.feedback = feedback;
+        this.when = when;
+    }
         
+    public void start() throws ExtProgramException {
         String cmd[] = player.getCommandArguments(mfile, sub, when);
-        fps = 0;
         length = 0;
         position = 0;
         isPaused = false;
@@ -85,10 +93,9 @@ public class MPlayerViewport implements Viewport {
             cmdpipe = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
             infopipe = new BufferedReader( new InputStreamReader(proc.getInputStream()));
             
-            if (infopipe == null || cmdpipe == null || proc == null ) return null;
-            /* wait up to the point where the FPS is displayed */
-            while ( !(info=infopipe.readLine()).startsWith("ID_VIDEO_FPS"));
-            fps = getValue(info);
+            if (infopipe == null || cmdpipe == null || proc == null ) 
+                throw new ExtProgramException(new NullPointerException());
+            
             /* wait up to the point where the length is displayed */
             while ( !(info=infopipe.readLine()).startsWith("ID_LENGTH"));
             length = getValue(info);
@@ -101,20 +108,19 @@ public class MPlayerViewport implements Viewport {
             };
             updater.start();
             
-            return new Time(length);
-        } catch (IOException e) {
-            DEBUG.error(_("Error while executing MPlayer. Executable not found."));
-        } catch (NullPointerException e) {
-            DEBUG.error(_("Error while executing MPlayer. Abnormal exit.\nPlease report the author about this behaviour."));
+            player.deleteSubFile();
+            return;
+        } catch (Exception e) {
+            throw new ExtProgramException(e);
+        } finally {
+            player.deleteSubFile();
         }
-        player.deleteSubFile();
-        return null;
     }
     
     
     /* This part of the code is executed in the updater thread
      * It finishes when the EOF is found */
-    private void parseOutput () {
+    private void parseOutput() {
         String info;
         try {
             int first, second;
@@ -133,8 +139,14 @@ public class MPlayerViewport implements Viewport {
                 }
             }
         } catch (IOException e) {}
+        if (quit_is_fatal) feedback.requestQuit();
+        else quit_is_fatal = true;  // revert flag to it's original value
     }
     
+    
+    public Time getLength() {
+        return new Time(length);
+    }
     
     private double getValue(String info) {
         int pos = info.indexOf('=') + 1;
@@ -226,12 +238,16 @@ public class MPlayerViewport implements Viewport {
     }
     
     public boolean changeSubs(Subtitles newsubs){
+        quit_is_fatal = false;
         quit();
         try {
             updater.join();
-            Time res = start( mfile, newsubs, feedback,  new Time(getTime()-3));
-            return res != null;
-        } catch (InterruptedException e) { }
+            setParameters(mfile, newsubs, feedback, new Time(getTime()-3));
+            start();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
     
@@ -244,17 +260,18 @@ public class MPlayerViewport implements Viewport {
             try {
                 if (newsubs==null) return false;
                 updater.join();
-                Time res = start( mfile, newsubs, feedback, new Time(active_last_time-3));
-                return res != null;
-            } catch (InterruptedException e) { }
+                setParameters(mfile, newsubs, feedback, new Time(active_last_time-3));
+                start();
+                return true;
+            } catch (Exception e) {}
             active_last_time = -1;
             return false;
         } else {
             active_last_time = getTime();
+            quit_is_fatal = false;
             quit();
             isActive = false;
         }
         return true;
     }
-    
 }

@@ -102,14 +102,14 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         tabChanged();
     }//GEN-LAST:event_PListActionPerformed
     
-    public void loadPreferences(Properties props) {
+    public void loadPreferences() {
         JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
-        if (opts!=null) opts.loadPreferences(props);
+        if (opts!=null) opts.loadPreferences();
     }
     
-    public void savePreferences(Properties props) {
+    public void savePreferences() {
         JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
-        if (opts!=null) opts.savePreferences(props);
+        if (opts!=null) opts.savePreferences();
     }
     
     public JPanel getTabPanel() { return this; }

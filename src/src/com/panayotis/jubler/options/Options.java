@@ -34,31 +34,31 @@ import java.util.Properties;
  */
 public class Options {
     
-    private final static Properties props;
+    private final static Properties opts;
     private final static String preffile;
     
     static {
         preffile = System.getProperty("user.home") + System.getProperty("file.separator") + ".jublerrc";
         
-        props = new Properties();
+        opts = new Properties();
         try {
-            props.loadFromXML(new FileInputStream(preffile));
+            opts.loadFromXML(new FileInputStream(preffile));
         } catch ( IOException e ) {
         }
     }
     
     
     synchronized public static void setOption(String key, String value) {
-        props.setProperty(key, value);
+        opts.setProperty(key, value);
     }
     
     public static String getOption(String key, String deflt) {
-        return props.getProperty(key, deflt);
+        return opts.getProperty(key, deflt);
     }
     
     synchronized public static void saveOptions() {
         try {
-            props.storeToXML(new FileOutputStream(preffile), "Jubler file");
+            opts.storeToXML(new FileOutputStream(preffile), "Jubler file");
         } catch ( IOException e ) {
             e.printStackTrace();
         }
@@ -67,13 +67,13 @@ public class Options {
 
     public static void loadSystemPreferences(JPreferences prefs) {
         for (TabPage opt : prefs.Tabs.getTabArray()) {
-            ((OptionsHolder)opt).loadPreferences(props);
+            ((OptionsHolder)opt).loadPreferences();
         }
     }
     
     public static void saveSystemPreferences(JPreferences prefs) {
         for (TabPage opt : prefs.Tabs.getTabArray()) {
-            ((OptionsHolder)opt).savePreferences(props);
+            ((OptionsHolder)opt).savePreferences();
         }
         saveOptions();
     }
@@ -84,9 +84,9 @@ public class Options {
         for (int i = 0 ; i < 10 ; i++) {
             key = "System.Lastfile"+(i+1);
             if (!(list[i]==null) && list[i].exists() && list[i].isFile()) {
-                props.setProperty(key, list[i].getPath());
+                setOption(key, list[i].getPath());
             } else {
-                props.remove(key);
+                opts.remove(key);
             }
         }
         saveOptions();
@@ -98,7 +98,7 @@ public class Options {
         int pointer = 0;
         File f;
         for (int i = 1 ; i < 11 ; i++) {
-            fname = props.getProperty("System.Lastfile"+i,"");
+            fname = getOption("System.Lastfile"+i,"");
             if (!fname.trim().equals("")) {
                 f = new File(fname);
                 if (f.exists() && f.canRead() && f.isFile())

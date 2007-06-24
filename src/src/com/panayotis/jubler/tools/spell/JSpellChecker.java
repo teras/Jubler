@@ -33,6 +33,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import java.io.IOException;
 
 
 /**
@@ -56,11 +57,22 @@ public class JSpellChecker extends JDialog {
     public JSpellChecker(JFrame parent, SpellChecker checker, Vector<SubEntry> list) {
         super(parent, true);
         
-        if (!checker.initialize()) {
-            prepareExit();
-            return;
+        while(true) {
+            try {
+                checker.start();
+                break;
+            } catch (Exception ex) {
+                if (! (ex.getCause() instanceof IOException) ) {
+                    stop();
+                    return;
+                } else {
+                    if (!checker.getOptionsPanel().requestExecutable()) {
+                        stop();
+                        return;
+                    }
+                }
+            }
         }
-        
         
         initComponents();
         jparent = parent;
@@ -95,6 +107,9 @@ public class JSpellChecker extends JDialog {
     
     
     public void findNextWord() {
+        /* If the system is not properly initialized, means we should NOT spell check */
+        if (errors==null) return;
+        
         /* Remove last error - if any.
          * We need to do it here, since some methods require the last error
          * to be the first in the list of possible errors.
@@ -112,7 +127,7 @@ public class JSpellChecker extends JDialog {
         }
         if (errors.isEmpty()) {
             /* No more entries found, exiting spell checker */
-            prepareExit();
+            stop();
             return;
         }
         
@@ -386,7 +401,7 @@ public class JSpellChecker extends JDialog {
     }//GEN-LAST:event_SugListMouseClicked
     
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        prepareExit();
+        stop();
     }//GEN-LAST:event_formWindowClosing
     
     private void IgnoreBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IgnoreBActionPerformed
@@ -417,7 +432,7 @@ public class JSpellChecker extends JDialog {
     }//GEN-LAST:event_InsertBActionPerformed
     
     private void StopBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopBActionPerformed
-        prepareExit();
+        stop();
     }//GEN-LAST:event_StopBActionPerformed
     
     private void replaceText(String txt, int index) {
@@ -466,7 +481,7 @@ public class JSpellChecker extends JDialog {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     
-    private void prepareExit() {
+    private void stop() {
         if ( checker!= null) checker.stop();
         if (!isVisible()) return ; /* we have already hidden this dialog */
         setVisible(false);

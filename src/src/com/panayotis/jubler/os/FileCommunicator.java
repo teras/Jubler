@@ -231,7 +231,7 @@ public class FileCommunicator {
     }
     
     public static String getCurrentPath() {
-        return System.getProperties().getProperty("user.dir") + System.getProperties().getProperty("file.separator");
+        return System.getProperty("user.dir") + System.getProperty("file.separator");
     }
     
     public static File stripFileFromVideoExtension(File f) {

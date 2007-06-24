@@ -1,8 +1,8 @@
 /*
- * OptionsHolder.java
+ * ExtProgramException.java
  *
- * Created on 24 Ιούνιος 2005, 2:43 μμ
- * 
+ * Created on June 23, 2007, 7:58 PM
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -21,17 +21,19 @@
  *
  */
 
-package com.panayotis.jubler.options;
-
-import com.panayotis.jubler.options.gui.TabPage;
-import java.util.Properties;
+package com.panayotis.jubler.tools.externals;
 
 /**
  *
  * @author teras
  */
-public interface OptionsHolder extends TabPage {
-    public abstract void loadPreferences();
-    public abstract void savePreferences();
-
+public class ExtProgramException extends Exception{
+    
+     
+    /**
+     * Creates a new instance of ExtProgramException
+     */
+    public ExtProgramException(Throwable cause) {
+        super(cause);
+    }
 }

@@ -53,19 +53,18 @@ public class SystemDependent {
     private final static String OS;
     
     static {
-        Properties props = System.getProperties();
-        OS = props.getProperty("os.name").toLowerCase();
+         OS = System.getProperty("os.name").toLowerCase();
     }
     
     private static boolean isLinux() {
-        return OS.toLowerCase().indexOf("linux") >= 0;
+        return OS.indexOf("linux") >= 0;
     }
     
     private static boolean isWindows() {
-        return OS.toLowerCase().indexOf("windows") >= 0;
+        return OS.indexOf("windows") >= 0;
     }
     private static boolean isMacOSX() {
-        return OS.toLowerCase().indexOf("mac") >= 0;
+        return OS.indexOf("mac") >= 0;
     }
     
     public static int getSliderLOffset() {
@@ -297,7 +296,7 @@ class ApplicationHandler extends ApplicationAdapter {
     
     public void handleQuit(ApplicationEvent event) {
         StaticJubler.quitAll();
-        event.setHandled(false);
+        event.setHandled(true);
     }
     
     public void handleOpenFile(ApplicationEvent event) {

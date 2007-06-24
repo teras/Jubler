@@ -40,7 +40,8 @@ public class HelpBrowser extends javax.swing.JDialog {
                 if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED){
                     String currentURL = evt.getURL().toString();
                     setPage(currentURL);
-                    history.add(currentURL);
+                    if (!currentURL.startsWith("http"))
+                        history.add(currentURL);
                     BackB.setEnabled(true);
                 }
             }

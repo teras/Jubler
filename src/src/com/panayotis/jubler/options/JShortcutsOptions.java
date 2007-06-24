@@ -64,12 +64,12 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
         smodel.applyMenuShortcuts(bar);
     }
     
-    public void loadPreferences(Properties props) {
-        smodel.loadPreferences(props);
+    public void loadPreferences() {
+        smodel.loadPreferences();
     }
     
-    public void savePreferences(Properties props) {
-        smodel.savePreferences(props);
+    public void savePreferences() {
+        smodel.savePreferences();
     }
     
     public JPanel getTabPanel() { return this; }

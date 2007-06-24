@@ -87,22 +87,22 @@ public class JSaveOptions extends JFileOptions {
         return AvailSubFormats.findFromDescription(getItemName(CFormat));
     }
     
-    public void savePreferences(Properties props) {
-        props.setProperty("Save.Encoding", getItemName(CEnc));
-        props.setProperty("Save.FPS", CFPS.getFPS());
-        props.setProperty("System.ShowSaveDialog", DialogVisible.isSelected() ? "true" : "false");
+    public void savePreferences() {
+        Options.setOption("Save.Encoding", getItemName(CEnc));
+        Options.setOption("Save.FPS", CFPS.getFPS());
+        Options.setOption("System.ShowSaveDialog", DialogVisible.isSelected() ? "true" : "false");
         
         SubFormat f = AvailSubFormats.findFromDescription(getItemName(CFormat));
-        props.setProperty("Save.Format", (f!=null)?f.getName():"UNKNOWN");
+        Options.setOption("Save.Format", (f!=null)?f.getName():"UNKNOWN");
     }
     
     
-    public void loadPreferences(Properties props) {
+    public void loadPreferences() {
         String enc, fps, format;
         
-        enc = props.getProperty("Save.Encoding", JPreferences.DefaultEncodings[0]);
-        fps = props.getProperty("Save.FPS", JRateChooser.DefaultFPSEntry);
-        format = props.getProperty("Save.Format", AvailSubFormats.Formats[0].getName());
+        enc = Options.getOption("Save.Encoding", JPreferences.DefaultEncodings[0]);
+        fps = Options.getOption("Save.FPS", JRateChooser.DefaultFPSEntry);
+        format = Options.getOption("Save.Format", AvailSubFormats.Formats[0].getName());
         
         setCombo(CEnc, enc, "US-ASCII");
         CFPS.setFPS(fps);
@@ -111,7 +111,7 @@ public class JSaveOptions extends JFileOptions {
         setCombo(CFormat, (f!=null)?f.getDescription():"UNKNOWN", "UNKNOWN");
         updateVisualFPS(f);
         
-        DialogVisible.setSelected(props.getProperty("System.ShowSaveDialog", "true").equals("true"));
+        DialogVisible.setSelected(Options.getOption("System.ShowSaveDialog", "true").equals("true"));
     }
     
     public String getTabName() { return _("Save"); }

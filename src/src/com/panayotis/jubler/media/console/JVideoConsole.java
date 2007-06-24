@@ -37,14 +37,17 @@ import javax.swing.Timer;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.options.Options;
 import java.awt.Color;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.JToolRealTime;
+import com.panayotis.jubler.tools.externals.wizard.JWizard;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.io.IOException;
 import javax.swing.JDialog;
-import javax.swing.JSlider;
 import javax.swing.JToggleButton;
 
 
@@ -155,17 +158,33 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         
         positionConsole();
         player.setCentralLocation(getX(), getY()+getHeight());
-        setVisible(true);
         
         resetSubsDelay();
         submark_state = 0;
         view = player.getViewport();
-        length = view.start(mfile, subs, this, starttime);
-        
-        if ( length == null) {
-            stop();
-            return;
+        view.setParameters(mfile, subs, this, starttime);
+
+        while (true) {
+            try {
+                view.start();
+                break;
+            } catch (ExtProgramException ex) {
+                if (! (ex.getCause() instanceof IOException) ) {
+                    DEBUG.error(_("Abnormal exit - please report the author about this behaviour.")+"\n"+ex.getCause());
+                    stop();
+                    return;
+                } else {
+                    if (!player.getOptionsPanel().requestExecutable()) {
+                        stop();
+                        return;
+                    }
+                }
+            }
         }
+        
+        /* Everything OK - go on */
+        length  = view.getLength();
+        setVisible(true);
         
         diagram.setLength((int)length.toSeconds());
         ignore_slider_changes = true;

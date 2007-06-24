@@ -47,19 +47,19 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         add(BrowserP, BorderLayout.NORTH);
     }
     
-    protected void loadPreferences(Properties props) {
-        super.loadPreferences(props);
-        String values = props.getProperty("Player."+name+".WindowOffset", "(0,40)");
+    protected void loadPreferences() {
+        super.loadPreferences();
+        String values = Options.getOption("Player."+name+".WindowOffset", "(0,40)");
         int seperator = values.indexOf(',');
         dx.setValue(Integer.parseInt(values.substring(1, seperator)));
         dy.setValue(Integer.parseInt(values.substring(seperator+1, values.length()-1)));
-        args.setText(props.getProperty("Player."+name+".Arguments", args_default));
+        args.setText(Options.getOption("Player."+name+".Arguments", args_default));
     }
     
-    public void savePreferences(Properties props) {
-        super.savePreferences(props);
-        props.setProperty("Player."+name+".WindowOffset", "("+dx.getValue() + "," + dy.getValue()+")");
-        props.setProperty("Player."+name+".Arguments", args.getText());
+    public void savePreferences() {
+        super.savePreferences();
+        Options.setOption("Player."+name+".WindowOffset", "("+dx.getValue() + "," + dy.getValue()+")");
+        Options.setOption("Player."+name+".Arguments", args.getText());
     }
     
     

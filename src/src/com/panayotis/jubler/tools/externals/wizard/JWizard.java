@@ -98,6 +98,7 @@ public class JWizard extends JDialog {
         ContinueB = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(_("External plugin Wizard"));
         setModal(true);
         setResizable(false);
@@ -264,30 +265,16 @@ public class JWizard extends JDialog {
                     AutoL.setText(_("Unable to find executable"));
                     CancelB.setEnabled(true);
                 } else {
-                    AutoL.setText(_("Executable found"));
-                    CancelB.setEnabled(false);
                     FilenameT.setText(f.getPath());
+                    clickContinue();
                 }
             }
         };
         auto.start();
     }
     
-    private void BrowseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseBActionPerformed
-        BrowseStatusL.setVisible(false);
-        if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), SystemDependent.getCanonicalFilename(name), SystemDependent.getBundleOrFileID());
-        if (newexe!=null) {
-            FilenameT.setText(newexe.getPath());
-            ContinueB.setEnabled(true);
-        } else {
-            BrowseStatusL.setVisible(true);
-            FilenameT.setText("");
-            ContinueB.setEnabled(false);
-        }
-    }//GEN-LAST:event_BrowseBActionPerformed
     
-    private void ContinueBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueBActionPerformed
+    private void clickContinue() {
         switch (cardid) {
             case 1:
                 if (ManualB.isSelected()) {
@@ -317,9 +304,29 @@ public class JWizard extends JDialog {
                 setVisible(false);
         }
         ((CardLayout)CardsP.getLayout()).show(CardsP,"card"+(++cardid));
+    }
+    
+    
+    private void BrowseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseBActionPerformed
+        BrowseStatusL.setVisible(false);
+        if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
+        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), SystemDependent.getCanonicalFilename(name), SystemDependent.getBundleOrFileID());
+        if (newexe!=null) {
+            FilenameT.setText(newexe.getPath());
+            ContinueB.setEnabled(true);
+        } else {
+            BrowseStatusL.setVisible(true);
+            FilenameT.setText("");
+            ContinueB.setEnabled(false);
+        }
+    }//GEN-LAST:event_BrowseBActionPerformed
+    
+    private void ContinueBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueBActionPerformed
+        clickContinue();
     }//GEN-LAST:event_ContinueBActionPerformed
     
     private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
+        FilenameT.setText("");
         setVisible(false);
     }//GEN-LAST:event_CancelBActionPerformed
     

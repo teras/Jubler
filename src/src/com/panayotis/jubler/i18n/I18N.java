@@ -39,9 +39,8 @@ public class I18N {
     private static final String PATH = "com.panayotis.jubler.i18n.Messages";
     
     static {
-        Properties props = System.getProperties();
-        String lang = props.getProperty("user.language");
-        String country = props.getProperty("user.country");
+        String lang = System.getProperty("user.language");
+        String country = System.getProperty("user.country");
         
         setLang("_"+lang+"_"+country);
         if (b==null) {

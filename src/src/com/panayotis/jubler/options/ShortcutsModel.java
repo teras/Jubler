@@ -224,19 +224,19 @@ public class ShortcutsModel extends AbstractTableModel {
         fireTableDataChanged();
     }
     
-    public void savePreferences(Properties props) {
+    public void savePreferences() {
         StringBuffer keys = new StringBuffer();
         for (Shortcut s: list) {
             if (s!=null && s.key_id != KeyEvent.CHAR_UNDEFINED) {
                 keys.append(',').append(s.toString());
             }
         }
-        props.setProperty("Shortcut.keys",keys.substring(1));
+        Options.setOption("Shortcut.keys",keys.substring(1));
         StaticJubler.updateAllMenus();
     }
     
-    public void loadPreferences(Properties props) {
-        String keys = props.getProperty("Shortcut.keys","");
+    public void loadPreferences() {
+        String keys = Options.getOption("Shortcut.keys","");
         if (keys.equals("")) {
             list = cloneList(deflist, false);
             return;

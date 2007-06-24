@@ -142,15 +142,15 @@ public class ASpellOptions extends JExtBasicOptions {
     }
     
     
-    protected void savePreferences(Properties props) {
-        super.savePreferences(props);
-        props.setProperty(type + "." + name + ".Language", getLanguageName());
+    protected void savePreferences() {
+        super.savePreferences();
+        Options.setOption(type + "." + name + ".Language", getLanguageName());
     }
     
-    public void loadPreferences(Properties props) {
-        super.loadPreferences(props);
+    public void loadPreferences() {
+        super.loadPreferences();
         updateOptionsPanel();
-        setSelectedLanguage(props.getProperty(type + "." + name + ".Language", default_language));
+        setSelectedLanguage(Options.getOption(type + "." + name + ".Language", default_language));
     }
     
     

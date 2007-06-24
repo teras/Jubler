@@ -23,6 +23,8 @@
 
 package com.panayotis.jubler.tools.spell.checkers;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
@@ -35,9 +37,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.util.ArrayList;
 
 /**
@@ -59,7 +60,7 @@ public class ASpell extends SpellChecker {
         opts = new ASpellOptions(getType(), getName());
     }
     
-    public boolean initialize() {
+    public void start() throws ExtProgramException {
         try {
             boolean forceutf8 = SystemDependent.forceASpellEncoding();
             
@@ -92,11 +93,9 @@ public class ASpell extends SpellChecker {
             get.readLine();
             /* Read aspell information */
             send.write("!\n");  /* Enter terse mode */
-            return true;
         } catch (IOException e) {
-            DEBUG.error(_("Error while executing ASpell"));
+            throw new ExtProgramException(e);
         }
-        return false;
     }
     
     public void stop() {
@@ -155,8 +154,5 @@ public class ASpell extends SpellChecker {
     }
     
     public JExtBasicOptions getOptionsPanel() { return opts; }
-    public String getName() { return "ASpell"; }
-    public String getType() { return "Speller"; }
-    public String getLocalType() { return _("Speller"); }
-    
+    public String getName() { return "ASpell"; }    
 }

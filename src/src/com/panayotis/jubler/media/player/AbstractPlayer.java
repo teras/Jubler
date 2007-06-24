@@ -68,7 +68,8 @@ public abstract class AbstractPlayer extends VideoPlayer {
     }
     
     public void deleteSubFile() {
-        new File(subpath).delete();
+        File f = new File(subpath);
+        if (f.exists()) f.delete();
     }
     
     private void replaceValues(String[]args, String pattern, String value) {

@@ -21,12 +21,10 @@
     <para>When you have finished you can send this file to me in order to include it into the distribution. You can of course contact me earlier if you have any other questions.</para>
 </section>
 
-<section id="mplayer.winosx"><title>Installing MPlayer under Windows or Mac OSX</title>
-    <para>In order to properly use MPlayer, you have to install somewhere the MPlayer files from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <emphasis>not</emphasis> download the GUI version, since mplayer uses it's own GUI. After downloading and expanding open Jubler, create a new document, go to "Tools" - "Test video" - "Player options". Click on "Options" - "Browse" and select where MPlayer application is. </para>
-</section>
-
-<section><title>Installing MPlayer under Linux or POSIX environment</title>
-    <para>You have again to download MPlayer from <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Then, it is necessary to put it somewhere in your $PATH. After that, Jubler should be able to find it automatically. If not, you can follow the information mentioned under <ulink url="#mplayer.winosx">Installing MPlayer under Windows or Mac OSX</ulink>.</para>
+<section><title>Installing MPlayer/ASpell tools</title>
+    <para>In order to use any external tool, you have to manually download the tool and install it in your system. You need to follow the usual installation procedure of your operating system for proper installation. When Jubler needs this tool, it will launch a Wizard to search for the location of the external tool.</para>
+	<para>MPlayer can be downloaded form the  <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <emphasis>not</emphasis> download the GUI version, since Jubler uses it's own GUI.</para>
+	<para>ASpell can be found for <ulink url="http://lala">POSIX/Linux environment</ulink>, <ulink url="http://koko">Mac OS X</ulink> and <ulink url="http://mimi">Windows</ulink>. Do not forget to download the apropriate <ulink url="http://tata">language definitions</ulink> afterwards.</para>
 </section>
 
 <section><title>How can I enter translation mode?</title>
@@ -54,6 +52,10 @@
     <para>The position of this menu entry has changed in recent versions of Jubler. This option is under "File"->"Change media file".</para>
 </section>
 
+<section><title>How can I change the default font while previewing a subtitle?</title>
+	<para>You have to click on the <emphasis>Edit current style</emphasis> button, on the upper right corner of the subtitle editing area. A window will pop up, with various options, like font size, colors, etc. Please note that, due to MPlayer limitations, most of these options will not change the subtitle output while previewing with MPlayer. Still, values like font size are useful.</para>
+</section>
+
 <section><title>How can I create new subtitles while the movie is played?</title>
     <para>This is performed with the Video Console window. In order for this mode to work is <emphasis>necessary</emphasis> the Video Console window to have the focus, and especially the Text Box on the lower left of the window. Usually the application tries to request the focus to this widget, when the Video Console is selected. You can do this manually, after selecting the Video Console window, by clicking inside this Text Box.</para>
     <para>To perform the actual subtitle recording, follow this procedure. When you hear a subtitle press the ENTER key, or press the notepad like icon, on the right of the Text Box. Then the icon of the notepad will turn red. When you want to mark the end of the recorded subtitle, press ENTER or the notepad icon again. The notepad button will be inactive and the focus will be on the Text Box. Type a text (if you want) and press ENTER again to accept it or ESCAPE to cancel. This method accepts subtitles with no text inside.</para>
@@ -61,6 +63,7 @@
  
 <section><title>The mousewheel changes time too fast. Can I reduce this speed?</title>
 	<para>Yes you can! Press the ALT button while rotating the mousewheel and the speed will reduce from 1 second to 0.1 second per click.</para>
+	<para>You can have the same efect, if you click on the up/down arrows while holding again the ALT button.</para>
 </section>
 
 <section><title>How is transparency produced?</title>

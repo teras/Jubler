@@ -23,7 +23,10 @@
 
 package com.panayotis.jubler.tools.spell;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.tools.externals.ExtProgram;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.util.Vector;
 
 
@@ -33,7 +36,7 @@ import java.util.Vector;
  */
 public abstract class SpellChecker extends ExtProgram {
     
-    public abstract boolean initialize();
+    public abstract void start() throws ExtProgramException ;
     public abstract Vector<SpellError> checkSpelling(String text);
     public abstract void stop();
     
@@ -42,5 +45,6 @@ public abstract class SpellChecker extends ExtProgram {
     public abstract boolean supportsInsert();
     
     public String getIconName() { return "/icons/spellcheck_small.png"; }
-    
+    public String getType() { return "Speller"; }
+    public String getLocalType() { return _("Speller"); } 
 }

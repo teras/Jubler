@@ -34,6 +34,7 @@ import java.util.Vector;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
 import java.lang.reflect.InvocationTargetException;
@@ -44,8 +45,7 @@ public class ZemberekSpellChecker extends SpellChecker {
     private Method kelimeDenetle, oner;
     private Object zemberek;
     
-    public ZemberekSpellChecker() {
-    }
+    public ZemberekSpellChecker() {}
     
     public Vector<SpellError> checkSpelling(String text) {
         Hashtable<String, Integer> lastPositions = new Hashtable<String, Integer>();
@@ -76,21 +76,16 @@ public class ZemberekSpellChecker extends SpellChecker {
         return ret;
     }
     
-    public boolean initialize() {
+    public void start() throws ExtProgramException {
         try {
             Class zemclass = Class.forName("net.zemberek.erisim.Zemberek");
             kelimeDenetle = zemclass.getDeclaredMethod("kelimeDenetle", new Class[] {String.class});
             oner = zemclass.getDeclaredMethod("oner", new Class[] {String.class});
             zemberek = zemclass.newInstance();
-            return true;
-        } catch (NoClassDefFoundError e) {
-        } catch (ClassNotFoundException e) {
-        } catch (NoSuchMethodException e) {
-        } catch (InstantiationException e) {
-        } catch (IllegalAccessException e) {
+            return;
+        } catch (Throwable t) {
+            throw new ExtProgramException(t);
         }
-        DEBUG.info(_("Unable to load plugin: {0}", "zemberek"), DEBUG.INFO_ALWAYS);
-        return false;
     }
     
     public boolean insertWord(String word) {
@@ -103,25 +98,9 @@ public class ZemberekSpellChecker extends SpellChecker {
         oner = null;
     }
     
-    public boolean supportsInsert() {
-        return false;
-    }
-    
-    public JExtBasicOptions getOptionsPanel() {
-        return null;
-    }
-    
-    public String getName() {
-        return "Zemberek";
-    }
-    
-    public String getType() {
-        return "Speller";
-    }
-    
-    public String getLocalType() {
-        return _("Speller");
-    }
+    public boolean supportsInsert() { return false; }
+    public JExtBasicOptions getOptionsPanel() { return null; }
+    public String getName() { return "Zemberek"; }
     
 }
 

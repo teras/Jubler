@@ -182,8 +182,8 @@ public class MediaFile {
             String strippedfilename = cf.getName();
             int point = strippedfilename.lastIndexOf('.');
             if (point < 0 ) point = strippedfilename.length();
-            cf = new File(System.getProperties().getProperty("java.io.tmpdir")+
-                    System.getProperties().getProperty("file.separator")+
+            cf = new File(System.getProperty("java.io.tmpdir")+
+                    System.getProperty("file.separator")+
                     strippedfilename.substring(0,point)+AudioPreview.getExtension());
         } else {
             int point = cfname.lastIndexOf('.');

@@ -27,6 +27,7 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.console.PlayerFeedback;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
 
 
 /**
@@ -35,7 +36,8 @@ import com.panayotis.jubler.time.Time;
  */
 public interface Viewport {
     
-    public abstract Time start(MediaFile avi, Subtitles subs, PlayerFeedback feedback, Time when);
+    public abstract void setParameters(MediaFile avi, Subtitles subs, PlayerFeedback feedback, Time when);
+    public abstract void start() throws ExtProgramException;
     
     public abstract boolean pause(boolean pause);
     public abstract boolean quit();
@@ -49,6 +51,7 @@ public interface Viewport {
     public abstract boolean setVolume(int volume);
     
     public abstract double getTime();
+    public abstract Time getLength();
     public abstract boolean isPaused();
     
 }

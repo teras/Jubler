@@ -83,28 +83,28 @@ public class JLoadOptions extends JFileOptions {
         return encs;
     }
     
-    public void loadPreferences(Properties props) {
+    public void loadPreferences() {
         String e1, e2, e3;
         String fps;
         
-        e1 = props.getProperty("Load.Encoding1", JPreferences.DefaultEncodings[0]);
-        e2 = props.getProperty("Load.Encoding2", JPreferences.DefaultEncodings[1]);
-        e3 = props.getProperty("Load.Encoding3", JPreferences.DefaultEncodings[2]);
-        fps = props.getProperty("Load.FPS", JRateChooser.DefaultFPSEntry);
+        e1 = Options.getOption("Load.Encoding1", JPreferences.DefaultEncodings[0]);
+        e2 = Options.getOption("Load.Encoding2", JPreferences.DefaultEncodings[1]);
+        e3 = Options.getOption("Load.Encoding3", JPreferences.DefaultEncodings[2]);
+        fps = Options.getOption("Load.FPS", JRateChooser.DefaultFPSEntry);
         setCombo(CEnc1, e1, "US-ASCII");
         setCombo(CEnc2, e2, "US-ASCII");
         setCombo(CEnc3, e3, "US-ASCII");
         CFPS.setFPS(fps);
         
-        DialogVisible.setSelected(props.getProperty("System.ShowLoadDialog", "true").equals("true"));
+        DialogVisible.setSelected(Options.getOption("System.ShowLoadDialog", "true").equals("true"));
     }
     
-    public void savePreferences(Properties props) {
-        props.setProperty("Load.Encoding1", getItemName(CEnc1));
-        props.setProperty("Load.Encoding2", getItemName(CEnc2));
-        props.setProperty("Load.Encoding3", getItemName(CEnc3));
-        props.setProperty("Load.FPS", CFPS.getFPS());
-        props.setProperty("System.ShowLoadDialog", DialogVisible.isSelected() ? "true" : "false");
+    public void savePreferences() {
+        Options.setOption("Load.Encoding1", getItemName(CEnc1));
+        Options.setOption("Load.Encoding2", getItemName(CEnc2));
+        Options.setOption("Load.Encoding3", getItemName(CEnc3));
+        Options.setOption("Load.FPS", CFPS.getFPS());
+        Options.setOption("System.ShowLoadDialog", DialogVisible.isSelected() ? "true" : "false");
     }
     
     public String getTabName() { return _("Load"); }
