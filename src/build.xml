@@ -295,11 +295,11 @@
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<antcall target="tgz">
 			<param name="mimelinks" value="/opt/kde/share/mimelnk/application"/>
-			<param name="distver" value="1"/>
+			<param name="distver" value="1_slack11.0"/>
 		</antcall>
 		<antcall target="tgz">
 			<param name="mimelinks" value="/usr/share/mimelnk/application"/>
-			<param name="distver" value="2"/>
+			<param name="distver" value="1"/>
 		</antcall>
 	</target>
 
@@ -343,7 +343,7 @@
 		</copy>
 
 		<exec dir="/tmp/package-jubler" executable="makepkg" failonerror="true">
-			<arg line="-l y -c n /tmp/jubler-${version}-i586-${distver}.tgz"/>
+			<arg line="-l y -c n /tmp/jubler-${version}-i686-${distver}.tgz"/>
 		</exec>
 
 	</target>
