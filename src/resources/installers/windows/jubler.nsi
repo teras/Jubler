@@ -133,7 +133,6 @@ Section "Java Runtime Environment" SecJRE
   done:
   HideWindow
   ExecWait $2 $0
-  MessageBox MB_OK "Return value is $0"
   BringToFront
   Delete $2
 
