@@ -47,16 +47,16 @@ else
 	COMPFLAGS=${CFLAGS}
 endif
 
-ifeq (${STATIC},yes)
-	FFMPEGREQ=ffmpeg
-	RANLIBREQ=ranlib
-	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm ${XLIBS}
-	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
-else
+ifeq (${STATIC},no)
 	FFMPEGREQ=
 	RANLIBREQ=
 	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec}
 	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec}
+else
+	FFMPEGREQ=ffmpeg
+	RANLIBREQ=ranlib
+	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm ${XLIBS}
+	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
 endif
 
 ifeq (${SYSTEM},linux)
@@ -118,7 +118,7 @@ develop:
 
 
 linux:distclean
-	make -e library SYSTEM=linux STATIC=yes
+	make -e library SYSTEM=linux
 	rm -rf ${JUBLER}/src/lib
 
 linuxdyn:distclean
