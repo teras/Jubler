@@ -86,7 +86,7 @@ public class JAbout extends javax.swing.JPanel {
         
         StringBuffer thanks = new StringBuffer();
         thanks.append(_("Special thanks")).append(":\n").append(_("{0} plugin", "ffmpeg"));
-        thanks.append(": Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n");
+        thanks.append(": Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n\n");
         thanks.append(_("Jubler mascot"));
         thanks.append(": Dimitris Karakatsanis ").append(parseMail("ath.forthnet.gr","dimkaras")).append("\n");
         thanks.append(_("{0} plugin", "zemberek"));
@@ -101,8 +101,9 @@ public class JAbout extends javax.swing.JPanel {
         
         thanks.append("\n");
         thanks.append(_("Packagers")).append("\n");
-        thanks.append("Slackware: Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n");
         thanks.append("Fedora: Marcin Zaj\u0105czkowski ").append(parseMail("wp.pl", "mszpak")).append("\n");
+        thanks.append("Gentoo: Serkan Kaba ").append(parseMail("yahoo.com","serkan_kaba")).append("\n");
+        thanks.append("Slackware: Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n");
         
         thanks.append("\n").append(_("Icon theme")).append(":\n").append(icon_theme);
         
