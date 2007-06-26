@@ -3,7 +3,7 @@
 #######################################################
 
 # Paths of include files
-JAVA_HOME=$(shell /bin/sh ../system/findjava.sh -j)
+JAVA_HOME=${shell /bin/sh ../system/findjava.sh -j}
 
 
 
@@ -11,7 +11,10 @@ JAVA_HOME=$(shell /bin/sh ../system/findjava.sh -j)
 # Usually you don't need to change anything after this point #
 ##############################################################
 
-# Path of the ffmpeg source structure (already inside the source version of Jubler)
+# Name of the produced library
+PROJ=ffdecode
+
+# Path of the local ffmpeg source structure (already inside the source version of Jubler)
 FFMPEG=../ffmpeg-svn
 
 FFCONF=configure
@@ -32,24 +35,34 @@ MAKEOPTS=-j3
 LIBRARIES=../libraries
 
 
-PROJ=ffdecode
-NATIVES=$(shell cd ../../src ; grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' )
-LIBPATH=-L${LIBRARIES}
-LIBS=-lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm
-INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
+NATIVES=${shell cd ../../src ; grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' }
+SRCS=${shell ls 2>/dev/null *.c}
+OBJS=${SRCS:.c=.o}
 
 LINKOPTS=${LIBPATH} ${LIBS} ${XLIBS}
 LIBSUF=_${SYSTEM}
 
-SRCS=$(shell ls 2>/dev/null *.c)
-OBJS=$(SRCS:.c=.o)
+
+ifeq (${STATIC},yes)
+	FFMPEGREQ=ffmpeg
+	RANLIBREQ=ranlib
+	LIBPATH=-L${LIBRARIES}
+	LIBS=-lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm
+	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
+else
+	FFMPEGREQ=
+	RANLIBREQ=
+	LIBPATH=
+	LIBS=-lavformat -lavcodec -lm
+	INCS=-I/usr/include/ffmpeg
+endif
 
 ifeq (${SYSTEM},linux)
+	XLIBS=-lz
 	PREF=
 	ARCH=
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
-	XLIBS=-lz
 	FCOPTS=
 	STRIP=${PREF}strip -s
 endif
@@ -58,7 +71,7 @@ ifeq (${SYSTEM},win32)
 #	PREF=i686-pc-mingw32-
 	ARCH=
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
-	LIBNAME=$(PROJ).dll
+	LIBNAME=${PROJ}.dll
 	XLIBS=
 	FCOPTS=--enable-mingw32 --cross-prefix=${PREF} --cross-compile --enable-memalign-hack
 	STRIP=${PREF}strip -s
@@ -95,7 +108,7 @@ MACLIBNAME=lib${PROJ}.jnilib
 .SUFFIXES:.o .c
 
 .c.o:
-	$(CC) -c -O3 -Wall ${INCS} -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/$(SYSTEM) -std=c99 -pedantic -o $@ $?
+	${CC} -c -O3 -Wall ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -std=c99 -pedantic -o $@ $?
 
 
 develop:
@@ -103,9 +116,12 @@ develop:
 
 
 linux:distclean
-	make -e library SYSTEM=linux
+	make -e library SYSTEM=linux STATIC=yes
 	rm -rf ${JUBLER}/src/lib
 
+linuxdyn:distclean
+	make -e library SYSTEM=linux STATIC=no
+	rm -rf ${Jubler}/src/lib
 
 win32:distclean
 	make -e library SYSTEM=win32
@@ -125,20 +141,20 @@ darwinppc:distclean
 darwini386:distclean
 	make -e LIB SYSTEM=darwini386
 
-library:clean $(LIBNAME) libinstall
+library:clean ${LIBNAME} libinstall
 
 libinstall:
 	mkdir -p ${JUBLER}/dist/lib
 	mkdir -p ${JUBLER}/src/lib
-	cd ${JUBLER}/dist/lib ; if [ ! -e $(LIBNAME) ] ; then ln -s ../../${FFDECODE}/$(LIBNAME) . ; fi
-	cd ${JUBLER}/src/lib ; if [ ! -e $(LIBNAME) ] ; then ln -s ../../${FFDECODE}/$(LIBNAME) . ; fi
+	cd ${JUBLER}/dist/lib ; if [ ! -e ${LIBNAME} ] ; then ln -s ../../${FFDECODE}/${LIBNAME} . ; fi
+	cd ${JUBLER}/src/lib ; if [ ! -e ${LIBNAME} ] ; then ln -s ../../${FFDECODE}/${LIBNAME} . ; fi
 
 
 LIB:${LIBNAME}
 
-$(LIBNAME):ffmpeg $(OBJS) ranlib
-	$(LD) $(ARCH) -o $(LIBNAME) $(OBJS) $(LINKOPTS)
-	$(STRIP) $(LIBNAME)
+${LIBNAME}:${FFMPEGREQ} ${OBJS} ${RANLIBREQ}
+	${LD} ${ARCH} -o ${LIBNAME} ${OBJS} ${LINKOPTS}
+	${STRIP} ${LIBNAME}
 
 
 clean:
@@ -153,7 +169,7 @@ distclean:clean
 
 native:
 	cd ${JUBLER} && ant compile
-	cd ${JUBLER}/build/classes ; for JO in $(NATIVES) ; do $(JAVAH) -jni $$JO ; done
+	cd ${JUBLER}/build/classes ; for JO in ${NATIVES} ; do ${JAVAH} -jni $$JO ; done
 	mv ${JUBLER}/build/classes/*.h .
 
 
