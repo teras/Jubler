@@ -2,9 +2,7 @@
 # Change the following variables to match your system #
 #######################################################
 
-# Paths of include files
-JAVA_HOME=${shell /bin/sh ../system/findjava.sh -j}
-
+# Variables should be automatically found!
 
 
 ##############################################################
@@ -14,10 +12,14 @@ JAVA_HOME=${shell /bin/sh ../system/findjava.sh -j}
 # Name of the produced library
 PROJ=ffdecode
 
+# Paths of include files
+JAVA_HOME=${shell /bin/sh ../system/findjava.sh -j}
+
 # Path of the local ffmpeg source structure (already inside the source version of Jubler)
 FFMPEG=../ffmpeg-svn
 
-FFCONF=configure
+# Use this path for static libraries
+LIBRARIES=../libraries
 
 # Path of Jubler distribution
 JUBLER=../..
@@ -28,33 +30,33 @@ FFDECODE=resources/ffdecode
 # Where javah lives
 JAVAH=${JAVA_HOME}/bin/javah
 
-# Use three threads instead of one
+# Various options
+FFCONF=configure
+LIBSUF=_${SYSTEM}
 MAKEOPTS=-j3
 
-#Use this path to check for libraries
-LIBRARIES=../libraries
-
-
+# Find requested files
 NATIVES=${shell cd ../../src ; grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' }
 SRCS=${shell ls 2>/dev/null *.c}
 OBJS=${SRCS:.c=.o}
 
-LINKOPTS=${LIBPATH} ${LIBS} ${XLIBS}
-LIBSUF=_${SYSTEM}
 
+ifeq (${CFLAGS},)
+	COMPFLAGS=-std=c99 -pedantic -O3 -Wall
+else
+	COMPFLAGS=${CFLAGS}
+endif
 
 ifeq (${STATIC},yes)
 	FFMPEGREQ=ffmpeg
 	RANLIBREQ=ranlib
-	LIBPATH=-L${LIBRARIES}
-	LIBS=-lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm
+	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm ${XLIBS}
 	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
 else
 	FFMPEGREQ=
 	RANLIBREQ=
-	LIBPATH=
-	LIBS=-lavformat -lavcodec -lm
-	INCS=-I/usr/include/ffmpeg
+	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec}
+	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec}
 endif
 
 ifeq (${SYSTEM},linux)
@@ -108,7 +110,7 @@ MACLIBNAME=lib${PROJ}.jnilib
 .SUFFIXES:.o .c
 
 .c.o:
-	${CC} -c -O3 -Wall ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -std=c99 -pedantic -o $@ $?
+	${CC} ${COMPFLAGS} ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -c -o $@ $?
 
 
 develop:
@@ -153,7 +155,7 @@ libinstall:
 LIB:${LIBNAME}
 
 ${LIBNAME}:${FFMPEGREQ} ${OBJS} ${RANLIBREQ}
-	${LD} ${ARCH} -o ${LIBNAME} ${OBJS} ${LINKOPTS}
+	${LD} ${ARCH} -o ${LIBNAME} ${OBJS} ${LIBS}
 	${STRIP} ${LIBNAME}
 
 
