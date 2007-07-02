@@ -148,8 +148,8 @@ library:clean ${LIBNAME} libinstall
 libinstall:
 	mkdir -p ${JUBLER}/dist/lib
 	mkdir -p ${JUBLER}/src/lib
-	cd ${JUBLER}/dist/lib && if [ ! -e ${LIBNAME} ] && then ln -s ../../${FFDECODE}/${LIBNAME} . && fi
-	cd ${JUBLER}/src/lib && if [ ! -e ${LIBNAME} ] && then ln -s ../../${FFDECODE}/${LIBNAME} . && fi
+	cd ${JUBLER}/dist/lib && if [ ! -e ${LIBNAME} ] ; then ln -s ../../${FFDECODE}/${LIBNAME} . ; fi
+	cd ${JUBLER}/src/lib && if [ ! -e ${LIBNAME} ] ; then ln -s ../../${FFDECODE}/${LIBNAME} . ; fi
 
 
 LIB:${LIBNAME}
@@ -171,7 +171,7 @@ distclean:clean
 
 native:
 	cd ${JUBLER} && ant compile
-	cd ${JUBLER}/build/classes && for JO in ${NATIVES} && do ${JAVAH} -jni $$JO && done
+	cd ${JUBLER}/build/classes && for JO in ${NATIVES} ; do ${JAVAH} -jni $$JO ; done
 	mv ${JUBLER}/build/classes/*.h .
 
 
