@@ -2377,7 +2377,7 @@ public class Jubler extends JFrame {
         SubTable.clearSelection();
         int ret = -1;
         
-        if (which.length>0) {
+        if (which != null && which.length>0) {
             ret = which[0];
             if ((which[0]+5) < subs.size() && which[0] >= 0 ) SubTable.changeSelection(which[0]+5, -1, false, false);   // Show 5 advancing subtitles
             SubTable.clearSelection();

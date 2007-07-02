@@ -759,6 +759,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     private void GrabSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GrabSubActionPerformed
         checkValid(view.pause(true));
+        parent.setSelectedSub(null, false);
         GrabSub.setEnabled(false);
     }//GEN-LAST:event_GrabSubActionPerformed
     
