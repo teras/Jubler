@@ -33,10 +33,10 @@ import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.JExtBasicOptions;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -58,7 +58,7 @@ public class ZemberekSpellChecker extends SpellChecker {
                 pos = text.indexOf(word, lastPositions.get(word) + word.length());
             else
                 pos = text.indexOf(word);
-                lastPositions.put(word,pos);
+            lastPositions.put(word,pos);
             try {
                 boolean status = (Boolean)kelimeDenetle.invoke(zemberek, new Object[] {word});
                 if (!status) {
@@ -78,10 +78,14 @@ public class ZemberekSpellChecker extends SpellChecker {
     
     public void start() throws ExtProgramException {
         try {
-            Class zemclass = Class.forName("net.zemberek.erisim.Zemberek");
-            kelimeDenetle = zemclass.getDeclaredMethod("kelimeDenetle", new Class[] {String.class});
-            oner = zemclass.getDeclaredMethod("oner", new Class[] {String.class});
-            zemberek = zemclass.newInstance();
+            Class zemberekClass = Class.forName("net.zemberek.erisim.Zemberek");
+            Class dilAyarlariClass=Class.forName("net.zemberek.yapi.DilAyarlari");
+            Class turkiyeTurkcesiClass=Class.forName("net.zemberek.tr.yapi.TurkiyeTurkcesi");
+            kelimeDenetle = zemberekClass.getDeclaredMethod("kelimeDenetle", String.class);
+            oner = zemberekClass.getDeclaredMethod("oner", String.class);
+            Constructor zemberekConstructor=zemberekClass.getDeclaredConstructor(dilAyarlariClass);
+            Object turkiyeTurkcesi=turkiyeTurkcesiClass.newInstance();
+            zemberek = zemberekConstructor.newInstance(turkiyeTurkcesi);
             return;
         } catch (Throwable t) {
             throw new ExtProgramException(t);
