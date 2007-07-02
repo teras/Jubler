@@ -36,7 +36,7 @@ LIBSUF=_${SYSTEM}
 MAKEOPTS=-j3
 
 # Find requested files
-NATIVES=${shell cd ../../src ; grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' }
+NATIVES=${shell cd ../../src && grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' }
 SRCS=${shell ls 2>/dev/null *.c}
 OBJS=${SRCS:.c=.o}
 
@@ -148,8 +148,8 @@ library:clean ${LIBNAME} libinstall
 libinstall:
 	mkdir -p ${JUBLER}/dist/lib
 	mkdir -p ${JUBLER}/src/lib
-	cd ${JUBLER}/dist/lib ; if [ ! -e ${LIBNAME} ] ; then ln -s ../../${FFDECODE}/${LIBNAME} . ; fi
-	cd ${JUBLER}/src/lib ; if [ ! -e ${LIBNAME} ] ; then ln -s ../../${FFDECODE}/${LIBNAME} . ; fi
+	cd ${JUBLER}/dist/lib && if [ ! -e ${LIBNAME} ] && then ln -s ../../${FFDECODE}/${LIBNAME} . && fi
+	cd ${JUBLER}/src/lib && if [ ! -e ${LIBNAME} ] && then ln -s ../../${FFDECODE}/${LIBNAME} . && fi
 
 
 LIB:${LIBNAME}
@@ -171,7 +171,7 @@ distclean:clean
 
 native:
 	cd ${JUBLER} && ant compile
-	cd ${JUBLER}/build/classes ; for JO in ${NATIVES} ; do ${JAVAH} -jni $$JO ; done
+	cd ${JUBLER}/build/classes && for JO in ${NATIVES} && do ${JAVAH} -jni $$JO && done
 	mv ${JUBLER}/build/classes/*.h .
 
 
@@ -179,12 +179,12 @@ ffmpeg:${LIBRARIES}/libavformat${LIBSUF}.a
 
 
 ${LIBRARIES}/libavformat${LIBSUF}.a:
-	cd ${FFMPEG} ; ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} ; make
+	cd ${FFMPEG} && ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} && make
 	mkdir -p ${LIBRARIES}
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/libavutil.a ${LIBRARIES}/libavutil${LIBSUF}.a
-	cd ${FFMPEG} ; make distclean
+	cd ${FFMPEG} && make distclean
 
 
 ranlib:
