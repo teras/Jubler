@@ -53,7 +53,7 @@ public class SystemDependent {
     private final static String OS;
     
     static {
-         OS = System.getProperty("os.name").toLowerCase();
+        OS = System.getProperty("os.name").toLowerCase();
     }
     
     private static boolean isLinux() {
@@ -205,13 +205,13 @@ public class SystemDependent {
         return "%p -slave -identify -ontop -utf8 -noquiet -nofs"+fontconfig+" -subfont-autoscale 0 -volstep 10"+
                 " -sub %s -ss %t -geometry +%x+%y"+font+" -subfont-text-scale %z %(-audiofile %a%) %v";
     }
-   
+    
     
     /* Force ASpell to use UTF-8 encoding - broken on Windows */
     public static boolean forceASpellEncoding() {
         return !isWindows();
     }
-  
+    
     
     /* This method is valid only under Mac OSX.
      * It uses Spotlight to find a desired application.
@@ -223,14 +223,15 @@ public class SystemDependent {
         Process proc = null;
         String[] cmd = new String[2];
         cmd[0] = "mdfind";
-        cmd[1] = "kMDItemDisplayName == '"+name+" OSX'";   // Use this trick to avoid spaces problems inside the filename
+        cmd[1] = "kMDItemDisplayName == '"+name+"*'";   // Use this trick to avoid spaces problems inside the filename
         try {
             String line;
             proc = Runtime.getRuntime().exec(cmd);
             proc.waitFor();
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             while ( (line = in.readLine()) != null) {
-                res.add(new ExtPath(line, ExtPath.BUNDLE_ONLY));
+                if (line.endsWith(".app"))
+                    res.add(new ExtPath(line, ExtPath.BUNDLE_ONLY));
             }
         } catch (Exception ex) {}
     }
@@ -261,7 +262,7 @@ public class SystemDependent {
         StringTokenizer st = new StringTokenizer(System.getenv("PATH"), System.getProperty("path.separator"));
         while (st.hasMoreTokens())
             res.add(new ExtPath(st.nextToken(), 1));
-
+        
         // Add some system dependent paths
         res.add(new ExtPath("/sw/bin", 1));
         res.add(new ExtPath("/usr/local/bin", 1));
