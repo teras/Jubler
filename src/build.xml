@@ -76,7 +76,6 @@
 		classpath="../TOOLS/IzPack/standalone-compiler.jar"
 		classname="com.izforge.izpack.ant.IzPackTask"/>
 
-
 	<taskdef name="launch4j"
 		onerror="report"
 		classpath="../TOOLS/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
@@ -86,6 +85,7 @@
 		onerror="report"
 		classpath="../TOOLS/jarbundler/jarbundler-1.9.jar"
 		classname="net.sourceforge.jarbundler.JarBundler" />
+
 
 
 	<target name="i18n">
@@ -108,10 +108,7 @@
 		<copy file="dist/help/jubler-faq.html" todir="build/classes/help"/>
 	</target>
 
-	<target name="cleanmac">
-	</target>
-
-	<target name="distclean" depends="clean,cleanmac">
+	<target name="distclean" depends="clean">
 		<delete>
 			<fileset dir="." includes="*.bz2"/>
 			<fileset dir="." includes="*.exe"/>
@@ -185,138 +182,52 @@
 
 
 	<!-- Linux installer -->
-	<target name="linux" depends="linuxbasics,selfexp,deb,rpm"/>
-
-	<target name="linuxbasics" depends="distclean,i18n,jar,faq">
+	
+	<!-- Linux with static ffdecode library -->
+	<target name="linuxmake" depends="distclean,i18n,jar,faq">
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="linux"/> </exec>
 	</target>
 
-	<!-- Debian Linux installer -->
-	<target name="debian" depends="linuxbasics,deb"/>
-	<target name="deb">
-		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<exec executable="rm" failonerror="true"><arg line="-rf /tmp/jubler-linux"/></exec>
-
-		<copy file="dist/Jubler.jar" todir="/tmp/jubler-linux/usr/lib/jubler"/>
-		<copy file="resources/system/findjava.sh" todir="/tmp/jubler-linux/usr/lib/jubler"/>
-		<chmod file="/tmp/jubler-linux/usr/lib/jubler/findjava.sh" perm="a+x"/>
-		<copy file="dist/lib/libffdecode.so" todir="/tmp/jubler-linux/usr/lib/jubler/lib"/>
-		<copy file="resources/installers/linux/jubler" todir="/tmp/jubler-linux/usr/bin"/>
-		<chmod file="/tmp/jubler-linux/usr/bin/jubler" perm="a+x"/>
-
-		<copy file="resources/installers/linux/copyright" todir="/tmp/jubler-linux/usr/share/doc/jubler"/>
-		<copy file="README" todir="/tmp/jubler-linux/usr/share/doc/jubler"/>
-		<copy file="ChangeLog" tofile="/tmp/jubler-linux/usr/share/doc/jubler/changelog"/>
-		<exec executable="gzip" failonerror="true"><arg line="-9 /tmp/jubler-linux/usr/share/doc/jubler/changelog"/></exec>
-		<copy file="resources/installers/linux/changelog.Debian" todir="/tmp/jubler-linux/usr/share/doc/jubler"/>
-		<exec executable="gzip" failonerror="true"><arg line="-9 /tmp/jubler-linux/usr/share/doc/jubler/changelog.Debian"/></exec>
-
-		<copy file="dist/help/jubler-faq.html" todir="/tmp/jubler-linux/usr/share/doc/jubler/help"/>
-		<copy file="resources/help/question.png" todir="/tmp/jubler-linux/usr/share/doc/jubler/help"/>
-		<exec executable="ln" failonerror="true"><arg line="-s ../../share/doc/jubler/help /tmp/jubler-linux/usr/lib/jubler/help"/></exec>
-
-		<copy file="resources/installers/linux/jubler.1" todir="/tmp/jubler-linux/usr/share/man/man1"/>
-		<exec executable="gzip" failonerror="true"><arg line="-9 /tmp/jubler-linux/usr/share/man/man1/jubler.1"/></exec>
-		<copy file="resources/installers/linux/jubler.menu" tofile="/tmp/jubler-linux/usr/share/menu/jubler"/>
-		<copy file="resources/installers/linux/jubler.xpm" todir="/tmp/jubler-linux/usr/share/pixmaps"/>
-		<copy file="resources/installers/linux/jubler.png" todir="/tmp/jubler-linux/usr/share/icons/hicolor/32x32/apps"/>
-		<copy file="resources/installers/linux/subtitle-128.png" tofile="/tmp/jubler-linux/usr/share/icons/hicolor/128x128/mimetypes/subtitle.png"/>
-		<copy file="resources/installers/linux/subtitle-32.png" tofile="/tmp/jubler-linux/usr/share/icons/hicolor/32x32/mimetypes/subtitle.png"/>
-
-		<copy file="resources/installers/linux/jubler.desktop" todir="/tmp/jubler-linux/usr/share/applications"/>
-		<copy file="resources/installers/linux/sub-srt.desktop" todir="/tmp/jubler-linux/usr/share/mimelnk/application"/>
-		<copy file="resources/installers/linux/sub-sub.desktop" todir="/tmp/jubler-linux/usr/share/mimelnk/application"/>
-		<copy file="resources/installers/linux/sub-ass.desktop" todir="/tmp/jubler-linux/usr/share/mimelnk/application"/>
-		<copy file="resources/installers/linux/sub-ssa.desktop" todir="/tmp/jubler-linux/usr/share/mimelnk/application"/>
-		
-		<mkdir dir="/tmp/jubler-linux/DEBIAN"/>
-		<exec dir="/tmp/jubler-linux" executable="find" failonerror="true" output="/tmp/jubler-linux/DEBIAN/md5sums">
-			<arg line="usr -type f -exec md5sum {} ;"/>
-		</exec>
-		<copy todir="/tmp/jubler-linux/DEBIAN">
-			<fileset dir="resources/installers/linux/dist/debian"/>
-		</copy>
-		<chmod file="/tmp/jubler-linux/DEBIAN/postinst" perm="755"/>
-		<chmod file="/tmp/jubler-linux/DEBIAN/postrm" perm="755"/>
-
-		<exec executable="fakeroot" failonerror="true">
-			<arg line="dpkg-deb --build /tmp/jubler-linux jubler-${version}.deb"/>
-		</exec>
-
+	<!-- Linux with dynamic ffdecode library -->
+	<target name="linuxmakedyn" depends="distclean,i18n,jar,faq">
+		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="linuxdyn"/> </exec>
 	</target>
 
-	<!-- Fedora installer -->
-	<target name="redhat" depends="fedora"/>
-	<target name="fedora" depends="linuxbasics,rpm"/>
-	<target name="rpm">
 
+
+	<target name="linuxproperties">
+		<!-- Propery files -->
+		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<property environment="env"/>
 
-		<condition property="prefix" value="${env.DESTDIR}${env.PREFIX}/" else="./resources/installers/linux/dist/fedora/usr/">
-			<and>
-				<isset property="env.DESTDIR"/>
-				<isset property="env.PREFIX"/>
-			</and>
+		<!-- Basic properties -->
+		<condition property="destdir" value="${env.DESTDIR}" else="/tmp/package-jubler-${version}">
+			<isset property="env.DESTDIR"/>
+		</condition>
+		<condition property="prefix" value="${destdir}${env.PREFIX}" else="${destdir}/usr">
+			<isset property="env.PREFIX"/>
 		</condition>
 
-		<!-- for %{version} -->
-		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<property name="libp" value="/lib"/>
-		<property name="binp" value="/bin"/>
-
-		<mkdir dir="${prefix}${libdir}/jubler/lib"/>
-		<copy file="dist/Jubler.jar" todir="${prefix}${libdir}/jubler/"/>
-		<copy file="resources/system/findjava.sh" todir="${prefix}${libdir}/jubler/"/>
-		<chmod file="${prefix}${libdir}/jubler/findjava.sh" perm="a+x"/>
-		<copy file="dist/lib/libffdecode.so" todir="${prefix}${libdir}/jubler/lib"/>
-		<mkdir dir="${prefix}${bin}"/>
-		<copy file="resources/installers/linux/jubler" todir="${prefix}${bin}"/>
-		<chmod file="${prefix}${bin}/jubler" perm="a+x"/>
-
-		<mkdir dir="${prefix}/share/doc/jubler-${version}/help"/>
-		<copy file="resources/installers/linux/copyright" todir="${prefix}/share/doc/jubler-${version}"/>
-		<copy file="README" todir="${prefix}/share/doc/jubler-${version}"/>
-		<copy file="ChangeLog" todir="${prefix}/share/doc/jubler-${version}"/>
-
-		<copy file="dist/help/jubler-faq.html" todir="${prefix}/share/doc/jubler-${version}/help"/>
-		<copy file="resources/help/question.png" todir="${prefix}/share/doc/jubler-${version}/help"/>
-		<exec executable="ln" failonerror="true"><arg line="-s ../../share/doc/jubler-${version}/help ${prefix}${libdir}/jubler/help"/></exec>
-
-		<copy file="resources/installers/linux/jubler.1" todir="${prefix}/share/man/man1"/>
-		<!-- man is gzipped by rpm -->
-		<copy file="resources/installers/linux/jubler.menu" tofile="${prefix}/share/menu/jubler"/>
-		<copy file="resources/installers/linux/jubler.xpm" todir="${prefix}/share/pixmaps"/>
-		<copy file="resources/installers/linux/jubler.png" todir="${prefix}/share/icons/hicolor/32x32/apps"/>
-		<copy file="resources/installers/linux/subtitle-128.png" tofile="${prefix}/share/icons/hicolor/128x128/mimetypes/subtitle.png"/>
-		<copy file="resources/installers/linux/subtitle-32.png" tofile="${prefix}/share/icons/hicolor/32x32/mimetypes/subtitle.png"/>
-
-	</target>
-
-	<!-- Slackware Linux installer -->
-	<target name="slackware" depends="linuxbasics">
-		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<property name="destdir" value="/tmp/package-jubler"/>
-		<property name="prefix" value="${destdir}/usr"/>
+		<!-- Helpful properties definitions -->
 		<property name="libdir" value="${prefix}/lib/jubler"/>
 		<property name="bindir" value="${prefix}/bin"/>
 		<property name="docdir" value="${prefix}/doc/jubler-${version}"/>
 		<property name="reldocdir" value="../../doc/jubler-${version}/help"/>
 		<property name="mandir" value="${prefix}/man/man1"/>
 		<property name="sharedir" value="${prefix}/share"/>
-
-		<antcall target="tgz">
-			<param name="mimedir" value="${destdir}/opt/kde/share/mimelnk/application"/>
-			<param name="distver" value="1_slack11.0"/>
-		</antcall>
-		<antcall target="tgz">
-			<param name="mimedir" value="${sharedir}/mimelnk/application"/>
-			<param name="distver" value="1"/>
-		</antcall>
+		<property name="libp" value="/lib"/>
+		<property name="binp" value="/bin"/>
+		<condition property="mimedir" value="${destdir}${othermimedir}" else="${sharedir}/mimelnk/application">
+			<isset property="othermimedir"/>
+		</condition>
 	</target>
 
-	<target name="tgz">
-		<!-- Basic Jubler files -->
+
+	<target name="linuxinstall" depends="linuxproperties">
+		<!-- Cleanup -->
 		<exec executable="rm" failonerror="true"><arg line="-rf ${destdir}"/></exec>
+
+		<!-- Basic Jubler files -->
 		<copy file="dist/Jubler.jar" todir="${libdir}"/>
 		<copy file="resources/system/findjava.sh" todir="${libdir}"/>
 		<chmod file="${libdir}/findjava.sh" perm="a+x"/>
@@ -333,10 +244,10 @@
 		<copy file="resources/help/question.png" todir="${docdir}/help"/>
 		<exec executable="ln" failonerror="true"><arg line="-s ${reldocdir} ${libdir}/help"/></exec>
 		<copy file="resources/installers/linux/jubler.1" todir="${mandir}"/>
-		<exec executable="gzip" failonerror="true"><arg line="-9 ${mandir}/jubler.1"/></exec>
+		<exec executable="gzip" failonerror="true"><arg line="-v -9 ${mandir}/jubler.1"/></exec>
 		
 		<!-- Icon files -->
-		<!-- <copy file="resources/installers/linux/jubler.menu" tofile="${prefix}/usr/share/menu/jubler"/> -->
+		<copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
 		<copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
 		<copy file="resources/installers/linux/jubler.png" todir="${sharedir}/icons/hicolor/32x32/apps"/>
 		<copy file="resources/installers/linux/subtitle-128.png" tofile="${sharedir}/icons/hicolor/128x128/mimetypes/subtitle.png"/>
@@ -348,23 +259,64 @@
 		<copy file="resources/installers/linux/sub-sub.desktop" todir="${mimedir}"/>
 		<copy file="resources/installers/linux/sub-ass.desktop" todir="${mimedir}"/>
 		<copy file="resources/installers/linux/sub-ssa.desktop" todir="${mimedir}"/>
+	</target>
+
+	<!-- Slackware Linux installer -->
+	<target name="slackware" depends="linuxmake">
+		<antcall target="linuxinstall">
+			<param name="othermimedir" value="/opt/kde/share/mimelnk/application"/>
+		</antcall>
+		<antcall target="slackpackage">
+			<param name="distver" value="1_slack11.0"/>
+		</antcall>
 		
-		<!-- Package creating commands -->
-		<!-- <mkdir dir="${prefix}/install"/>-->
+		<antcall target="linuxinstall"/>
+		<antcall target="slackpackage">
+			<param name="distver" value="1"/>
+		</antcall>
+	</target>
+	<!-- Slackware package creation =--> 
+	<target name="slackpackage" depends="linuxproperties">
 		<copy todir="${destdir}">
 			<fileset dir="resources/installers/linux/dist/slackware"/>
 		</copy>
-		<exec dir="${destdir}" executable="makepkg" failonerror="true">
-			<arg line="-l y -c n /tmp/jubler-${version}-i686-${distver}.tgz"/>
+		<exec dir="${destdir}" executable="echo" failonerror="true">
+			<arg line="makepkg -l y -c n /tmp/jubler-${version}-i686-${distver}.tgz"/>
 		</exec>
+	</target>
+	
 
+	<!-- Fedora Linux installer -->
+	<target name="redhat" depends="fedora"/>
+	<target name="fedora" depends="linuxmakedyn,linuxproperties">
+		<antcall target="linuxinstall"/>
+		<gunzip src="${mandir}/jubler.1.gz"/>
+	</target>
+
+
+	<!-- Debian Linux installer -->
+	<target name="debian" depends="linuxmakedyn,linuxproperties">
+		<antcall target="linuxinstall"/>
+		
+		<mkdir dir="${destdir}/DEBIAN"/>
+		<exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
+			<arg line="usr -type f -exec md5sum {} ;"/>
+		</exec>
+		<copy todir="${destdir}/DEBIAN">
+			<fileset dir="resources/installers/linux/dist/debian"/>
+		</copy>
+		<chmod file="${destdir}/DEBIAN/postinst" perm="755"/>
+		<chmod file="${destdir}/DEBIAN/postrm" perm="755"/>
+
+		<exec executable="fakeroot" failonerror="true">
+			<arg line="dpkg-deb --build ${destdir} jubler-${version}.deb"/>
+		</exec>
 	</target>
 
 
 
 	<!-- IzPack Linux installer -->
-	<target name="genlinux" depends="linuxbasics,selfexp"/>
-	<target name="selfexp">
+	<target name="genlinux" depends="linuxmake">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<mkdir dir="self"/>
 		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes" />
