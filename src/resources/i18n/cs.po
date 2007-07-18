@@ -4,7 +4,7 @@ msgid	""
 msgstr	"Project-Id-Version: cs\n"
 	"Report-Msgid-Bugs-To: \n"
 	"POT-Creation-Date: 2007-07-03 12:48+0300\n"
-	"PO-Revision-Date: 2007-03-04 14:26+0100\n"
+	"PO-Revision-Date: 2007-07-10 11:33+0100\n"
 	"Last-Translator: Conyx <conyx@seznam.cz>\n"
 	"Language-Team:  <el@li.org>\n"
 	"MIME-Version: 1.0\n"
@@ -156,7 +156,7 @@ msgstr	"Náhled titulků"
 
 #: com/panayotis/jubler/Jubler.java:645
 msgid	"Test subtitles from current position"
-msgstr	"Testovat titulky z aktuální pozice"
+msgstr	"Testovat titulky od aktuální pozice"
 
 #: com/panayotis/jubler/Jubler.java:655 com/panayotis/jubler/Jubler.java:1051
 #: com/panayotis/jubler/information/JAbout.java:140
@@ -519,7 +519,7 @@ msgstr	"Čeština"
 
 #: com/panayotis/jubler/information/JAbout.java:55
 msgid	"French"
-msgstr	""
+msgstr	"Francouzština"
 
 #: com/panayotis/jubler/information/JAbout.java:56
 msgid	"German"
@@ -534,13 +534,12 @@ msgid	"Portuguese (Brazilian)"
 msgstr	"Portugalština (Brazilská)"
 
 #: com/panayotis/jubler/information/JAbout.java:59
-#, fuzzy
 msgid	"Serbian"
-msgstr	"Němčina"
+msgstr	"Srbština"
 
 #: com/panayotis/jubler/information/JAbout.java:60
 msgid	"Spanish"
-msgstr	""
+msgstr	"Španělština"
 
 #: com/panayotis/jubler/information/JAbout.java:61
 msgid	"Turkish"
@@ -578,7 +577,7 @@ msgstr	"Překladatelé"
 
 #: com/panayotis/jubler/information/JAbout.java:103
 msgid	"Packagers"
-msgstr	""
+msgstr	"Tvůrci balíčků"
 
 #: com/panayotis/jubler/information/JAbout.java:108
 msgid	"Icon theme"
@@ -736,10 +735,8 @@ msgid	"Map of subtitles"
 msgstr	"Mapa titulků"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:173
-#, fuzzy
 msgid	"Abnormal exit - please report the author about this behaviour."
-msgstr	"Chyba při spouštění MPlayeru. Abnormální ukončení.\n"
-	"Prosím podejte zprávu autorovi o tomto chování."
+msgstr	"Abnormální ukončení - prosím podejte zprávu autorovi o tomto chování."
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:382
 msgid	"Video Console"
@@ -774,9 +771,8 @@ msgid	"Add new subtitle on the fly"
 msgstr	"Přidej nové titulky za běhu"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:490
-#, fuzzy
 msgid	"Reset playback speed to default value"
-msgstr	"Nastavit na výchozí"
+msgstr	"Nastavit rychlost přehrávání na výchozí hodnotu"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:517
 msgid	"Playback position"
@@ -896,24 +892,20 @@ msgid	"Resize subtitles only"
 msgstr	"Pouze změnit velikost titulků"
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:414
-#, fuzzy
 msgid	"New subtitle after current one"
-msgstr	"Testovat titulky z aktuální pozice"
+msgstr	"Nový titulek za současným"
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:436
-#, fuzzy
 msgid	"Subtitle zoom factor"
-msgstr	"Editor titulků pro Javu"
+msgstr	"Zoom faktor titulku"
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:449
-#, fuzzy
 msgid	"Zoom out"
-msgstr	"Zmenšit časový přehled"
+msgstr	"Zoom out"
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:453
-#, fuzzy
 msgid	"Zoom in"
-msgstr	"Zvětšit časový přehled"
+msgstr	"Zoom in"
 
 #: com/panayotis/jubler/media/preview/JSubPreviewDialog.java:57
 msgid	"Subtitles preview"
@@ -992,7 +984,7 @@ msgstr	"Výchozí"
 
 #: com/panayotis/jubler/options/AbstractPlayerOptions.java:141
 msgid	"Use default player parameters"
-msgstr	""
+msgstr	"Použít výchozí parametry přehrávače"
 
 #: com/panayotis/jubler/options/JExtBasicOptions.java:80
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:188
@@ -1006,11 +998,11 @@ msgstr	"{0} cesta"
 
 #: com/panayotis/jubler/options/JExtBasicOptions.java:86
 msgid	"Wizard"
-msgstr	""
+msgstr	"Průvodce"
 
 #: com/panayotis/jubler/options/JExtBasicOptions.java:87
 msgid	"Start the Wizard, to locate the executable path name"
-msgstr	""
+msgstr	"Spustit průvodce pro zaměření spustitelného souboru"
 
 #: com/panayotis/jubler/options/JExternalOptions.java:55
 #, java-format
@@ -1022,9 +1014,9 @@ msgid	"Select a video player in order to use it"
 msgstr	"Vyberte program který se má použít"
 
 #: com/panayotis/jubler/options/JExternalOptions.java:124
-#, fuzzy, java-format
+#, java-format
 msgid	"{0} options"
-msgstr	"{0} plugin"
+msgstr	"{0} volby"
 
 #: com/panayotis/jubler/options/JFileOptions.java:75
 msgid	"File preferences"
@@ -1039,9 +1031,8 @@ msgid	"Show preferences every time the user loads a subtitle file"
 msgstr	"Ukáže možnosti vždycky, když uživatel načítá titulky"
 
 #: com/panayotis/jubler/options/JLoadOptions.java:111
-#, fuzzy
 msgid	"Load subtitles options"
-msgstr	"Načíst titulky"
+msgstr	"Načíst volby titulků"
 
 #: com/panayotis/jubler/options/JLoadOptions.java:136
 msgid	"First Encoding"
@@ -1073,36 +1064,32 @@ msgid	"FPS"
 msgstr	"FPS"
 
 #: com/panayotis/jubler/options/JPreferences.java:164
-#, fuzzy
 msgid	"Jubler Preferences"
-msgstr	"Možnosti souboru"
+msgstr	"Možnosti Jubleru"
 
 #: com/panayotis/jubler/options/JPreferences.java:173
 msgid	"Cancel changes and revert to previous values"
-msgstr	""
+msgstr	"Stornovat změny a vrátit původní hodnoty"
 
 #: com/panayotis/jubler/options/JPreferences.java:182
 msgid	"Accept"
-msgstr	""
+msgstr	"Přijmout"
 
 #: com/panayotis/jubler/options/JPreferences.java:183
-#, fuzzy
 msgid	"Accept and save preferences"
-msgstr	"Možnosti souboru"
+msgstr	"Přijmout a uložit možnosti"
 
 #: com/panayotis/jubler/options/JSaveOptions.java:52
 msgid	" Show save preferences while saving file"
 msgstr	" Ukázat možnosti uložení, když ukládám soubor"
 
 #: com/panayotis/jubler/options/JSaveOptions.java:53
-#, fuzzy
 msgid	"Show preferences every time the user saves a subtitle file"
-msgstr	"Ukáže možnosti vždycky, když uživatel načítá titulky"
+msgstr	"Ukáže možnosti vždycky, když uživatel ukládá titulkový soubor"
 
 #: com/panayotis/jubler/options/JSaveOptions.java:118
-#, fuzzy
 msgid	"Save subtitles options"
-msgstr	"Pouze přemístit titulky"
+msgstr	"Uložit volby titulků"
 
 #: com/panayotis/jubler/options/JSaveOptions.java:150
 msgid	"Format"
@@ -1121,13 +1108,12 @@ msgid	"Encoding of the saved file"
 msgstr	"Kódování ukládaného souboru"
 
 #: com/panayotis/jubler/options/JShortcutsOptions.java:76
-#, fuzzy
 msgid	"Menu Shortcuts"
-msgstr	"Zkratky"
+msgstr	"Zkratky Menu"
 
 #: com/panayotis/jubler/options/JShortcutsOptions.java:77
 msgid	"Set the menu keyboard shortcuts"
-msgstr	""
+msgstr	"Nastavit klávesové zkratky menu"
 
 #: com/panayotis/jubler/options/JShortcutsOptions.java:115
 msgid	"Clear current shortcut"
@@ -1211,7 +1197,7 @@ msgstr	"Nemohu najít cestu k Jubleru!"
 #: com/panayotis/jubler/os/TreeWalker.java:47
 #, java-format
 msgid	"Wizard is looking inside {0}"
-msgstr	""
+msgstr	"Průvodce hledá v {0}"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:218
 msgid	"Start time of the subtitle"
@@ -1242,19 +1228,16 @@ msgid	"Lock the duration of the subtitle"
 msgstr	"Zamkne délku trvání titulku"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:469
-#, fuzzy
 msgid	"Editor of the subtitle text"
-msgstr	"Autor titulkového souboru"
+msgstr	"Editor textu titulku"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:489
-#, fuzzy
 msgid	"Style list"
-msgstr	"Editor stylu"
+msgstr	"Seznam stylů"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:499
-#, fuzzy
 msgid	"Edit current style"
-msgstr	"Upravit styl"
+msgstr	"Upravit aktuální styl"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:515
 msgid	"Detach subtitle editor panel"
@@ -1270,29 +1253,27 @@ msgstr	"Připojit panel s editorem titulku k oknu s náhledem"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:555
 msgid	"Display/hide subtitle timings"
-msgstr	""
+msgstr	"Zobrazit/skrýt časování titulku"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:565
 msgid	"Display/hide font attributes"
-msgstr	""
+msgstr	"Zobrazit/skrýt atributy písma"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:576
 msgid	"Display/hide color attributes"
-msgstr	""
+msgstr	"Zobrazit/skrýt atributy barvy"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:587
 msgid	"Displa/hide metric attributes"
-msgstr	""
+msgstr	"Zobrazit/skrýt metrické atributy"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:602
-#, fuzzy
 msgid	"Delete styles of this subtitle"
-msgstr	"Cesta k souboru"
+msgstr	"Vymazat styly tohoto titulku"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:613
-#, fuzzy
 msgid	"Display/hide styles for this subtitle"
-msgstr	"Název pro tento titulkový soubor"
+msgstr	"Zobrazit/skrýt styly tohoto titulku"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:670
 msgid	"Are you sure you want to delete the override styles of this subtitle?"
@@ -1311,9 +1292,8 @@ msgid	"Edit style"
 msgstr	"Upravit styl"
 
 #: com/panayotis/jubler/subs/JSubEditorDialog.java:58
-#, fuzzy
 msgid	"Subtitle editor"
-msgstr	"Text titulku"
+msgstr	"Editor titulku"
 
 #: com/panayotis/jubler/subs/Subtitles.java:47
 msgid	"Subtitle"
@@ -1324,32 +1304,29 @@ msgid	"Subtitle files"
 msgstr	"Soubory s titulky"
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:93
-#, fuzzy
 msgid	"The save process did not finish yet"
 msgstr	"Proces ukládání ještě neskončil"
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:100
 msgid	"A file exists with the same name."
-msgstr	""
+msgstr	"Existuje soubor se stejným jménem."
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:103
-#, fuzzy
 msgid	"Directory is not writable."
-msgstr	"Soubor {0} je nezapisovatelný"
+msgstr	"Do složky nelze zapisovat."
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:107
-#, fuzzy
 msgid	"Unable to create directory."
-msgstr	"Nemohu vytvořit nulový soubor cache"
+msgstr	"Nemohu vytvořit složku."
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:118
 msgid	"Maestro DVD options"
 msgstr	"Maestro DVD volby"
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:172
-#, fuzzy, java-format
+#, java-format
 msgid	"Unable to create subtitle file {0}."
-msgstr	"Nemohu vytvořit nulový soubor cache"
+msgstr	"Nemohu vytvořit titulkový soubor {0}."
 
 #: com/panayotis/jubler/subs/loader/binary/JMaestroOptions.java:96
 msgid	"Video width"
@@ -2045,45 +2022,46 @@ msgstr	"Zkopíruje text z vybraných titulků do aktuálního souboru"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:102
 msgid	"External plugin Wizard"
-msgstr	""
+msgstr	"Extérní plugin - Průvodce"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:114
 #, java-format
 msgid	"{0} executable was not found."
-msgstr	""
+msgstr	"Nebyl nalezen spustitelný {0}"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:122
 msgid	"How should this issue been resolved?"
-msgstr	""
+msgstr	"Jak má být tento problém vyřešen?"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:128
 msgid	"Automatically search for the executable"
-msgstr	""
+msgstr	"Automaticky hledat spustitelný soubor"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:134
 msgid	"Manually browse for the executable"
-msgstr	""
+msgstr	"Manuálně vybrat spustitelný soubor"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:146
 #, java-format
 msgid	"Jubler needs {0} executable\n"
 	"to continue with the requested action."
-msgstr	""
+msgstr	"Jubler potřebuje spustitelný {0}\n"
+	"k pokračování v požadované akci."
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:159
 #, java-format
 msgid	"Automatic location of {0} executable"
-msgstr	""
+msgstr	"Automatická lokace spustitelného {0}"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:164
 #, java-format
 msgid	"Trying to locate {0} executable..."
-msgstr	""
+msgstr	"Zkouším zaměřit spustitelný {0}..."
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:181
 #, java-format
 msgid	"Manual selection of {0} executable."
-msgstr	""
+msgstr	"Ruční výběr spustitelného {0}."
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:192
 msgid	"Open a file dialog to select the filename of the player"
@@ -2091,26 +2069,25 @@ msgstr	"Otevře dialog k výběru souboru přehrávače"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:202
 msgid	"Invalid executable!"
-msgstr	""
+msgstr	"Neplatný spustitelný soubor!"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:215
 #, java-format
 msgid	"{0} executable has been resolved"
-msgstr	""
+msgstr	"Spustitelný soubor {0} byl rozlišen"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:238
-#, fuzzy
 msgid	"Continue"
-msgstr	"Klonovat"
+msgstr	"Pokračovat"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:265
 msgid	"Unable to find executable"
-msgstr	""
+msgstr	"Nemohu najít spustitelný soubor"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:297
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:301
 msgid	"Finish"
-msgstr	""
+msgstr	"Dokončit"
 
 #: com/panayotis/jubler/tools/replace/JReplace.java:75
 msgid	"End of subtitles"
@@ -2278,64 +2255,3 @@ msgstr	"Pravopisné změny"
 msgid	"Speller"
 msgstr	"Pravopis"
 
-#~ msgid	"Forward subtitles by 100 milliseconds"
-#~ msgstr	"Posuň titulky o 100 milisekund"
-
-#~ msgid	"Delay subtitles by 100 milliseconds"
-#~ msgstr	"Zpozdi titulky o 100 milisekund"
-
-#~ msgid	"Delay subtitles by 1 second"
-#~ msgstr	"Zpozdi titulky o 1 sekundu"
-
-#~ msgid	"The subtitle differences\n"
-#~ 	" were {0}"
-#~ msgstr	"Rozdíly titulku byly {0}"
-
-#~ msgid	"SubStationAlpha format"
-#~ msgstr	"SubStationAlpha formát"
-
-#~ msgid	"Advanced SubStation format"
-#~ msgstr	"Rozvinutý SubStation formát"
-
-#~ msgid	"Forward subtitles by 1 second"
-#~ msgstr	"Posuň titulky o 1 sekundu"
-
-#~ msgid	"SubRip format"
-#~ msgstr	"SubRip formát"
-
-#~ msgid	"SubViewer format"
-#~ msgstr	"SubViewer formát"
-
-#~ msgid	"Error while creating subtitle shades"
-#~ msgstr	"Chyba při tvorbě stínu titulku"
-
-#~ msgid	"Text to be replaced"
-#~ msgstr	"Text, který bude nahrazen"
-
-#~ msgid	"MicroDVD format"
-#~ msgstr	"MicroDVD formát"
-
-#~ msgid	"Player options"
-#~ msgstr	"Volby přehrávače"
-
-#~ msgid	"Error while executing MPlayer. Executable not found."
-#~ msgstr	"Chyba při spouštění MPlayeru. Spustitelný soubor nebyl "
-#~ 	"nalezen."
-
-#~ msgid	"Options"
-#~ msgstr	"Nastavení"
-
-#~ msgid	"Open the options for this player"
-#~ msgstr	"Otevře nastavení pro tento program"
-
-#~ msgid	"Options for {0}"
-#~ msgstr	"Volby pro {0}"
-
-#~ msgid	"No options for this program"
-#~ msgstr	"Žádná nastavení pro tento program"
-
-#~ msgid	"Error while executing ASpell"
-#~ msgstr	"Chyba při spouštění ASpell"
-
-#~ msgid	"Unable to load plugin: {0}"
-#~ msgstr	"Nemohu načíst plugin: {0}"
