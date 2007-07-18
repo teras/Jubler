@@ -24,7 +24,7 @@
 <section><title>Installing MPlayer/ASpell tools</title>
     <para>In order to use any external tool, you have to manually download the tool and install it in your system. You need to follow the usual installation procedure of your operating system for proper installation. When Jubler needs this tool, it will launch a Wizard to search for the location of the external tool.</para>
 	<para>MPlayer can be downloaded form the  <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <emphasis>not</emphasis> download the GUI version, since Jubler uses it's own GUI.</para>
-	<para>ASpell can be found for <ulink url="http://lala">POSIX/Linux environment</ulink>, <ulink url="http://koko">Mac OS X</ulink> and <ulink url="http://mimi">Windows</ulink>. Do not forget to download the apropriate <ulink url="http://tata">language definitions</ulink> afterwards.</para>
+	<para>ASpell can be found for <ulink url="http://aspell.net/">POSIX/Linux environment</ulink>, <ulink url="http://people.ict.usc.edu/~leuski/cocoaspell/">Mac OS X</ulink> and <ulink url="http://aspell.net/win32/">Windows</ulink>. Do not forget to download the apropriate <ulink url="http://ftp.gnu.org/gnu/aspell/dict/0index.html">language definitions</ulink> afterwards.</para>
 </section>
 
 <section><title>How can I enter translation mode?</title>
