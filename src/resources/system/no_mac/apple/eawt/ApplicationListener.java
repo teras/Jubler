@@ -1,7 +1,7 @@
 /*
- * Application.java
+ * ApplicationListener.java
  *
- * Created on 13 Φεβρουάριος 2006, 4:06 μμ
+ * Created on 21 July 2007,  7:42 PM
  *
  * This file is part of Jubler.
  *
@@ -27,13 +27,14 @@ package com.apple.eawt;
  *
  * @author teras
  */
-public class Application {
+public interface ApplicationListener {
     
-    /** Creates a new instance of Application */
-    public Application() {}
-    
-    public void setEnabledPreferencesMenu(boolean value){}
-    
-    public void addApplicationListener( ApplicationListener a){}
+ public abstract void handleAbout(ApplicationEvent event);
+ public abstract void handleOpenApplication(ApplicationEvent event);
+ public abstract void handleOpenFile(ApplicationEvent event);
+ public abstract void handlePreferences(ApplicationEvent event);
+ public abstract void handlePrintFile(ApplicationEvent event);
+ public abstract void handleQuit(ApplicationEvent event);
+ public abstract void handleReOpenApplication(ApplicationEvent event);
     
 }

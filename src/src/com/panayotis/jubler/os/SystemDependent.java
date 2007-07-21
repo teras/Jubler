@@ -23,14 +23,14 @@
 
 package com.panayotis.jubler.os;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.apple.eawt.Application;
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
+
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.Main;
-
-
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.tools.externals.ExtPath;
 import java.io.BufferedReader;
