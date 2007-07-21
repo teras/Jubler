@@ -3,9 +3,9 @@ Version: 3.2
 Section: text
 Priority: optional
 Architecture: i386
-Depends: sun-java5-jre | sun-java6-jre
+Depends: sun-java5-jre | sun-java6-jre, libavformat1d, libavcodec1d, libavcodec1d
 Recommends: aspell, mplayer
-Installed-Size: 3200
+Installed-Size: 900
 Maintainer: Panayotis Katsaloulis <panayotis@panayotis.com>
 Description: A tool to edit text-based subtitles. It can be used an authoring
  software for new subtitles or as a tool to convert, transform, correct and

@@ -23,6 +23,9 @@
         <langpack iso3="cze"/>
         <langpack iso3="deu"/>
         <langpack iso3="ell"/>
+        <langpack iso3="fra"/>
+        <langpack iso3="por"/>
+        <langpack iso3="spa"/>
         <langpack iso3="tur"/>
     </locale>
     
