@@ -12,7 +12,7 @@ authoring software for new subtitles or as a tool to convert,
 transform, correct and refine existing subtitles.
 
 It is open source under a liberal (GNU) public licence. It is written
-in Java 5.0(a.k.a. Java 1.5.0 ) in order to be really multi-platform.
+in Java 5.0 (a.k.a. Java 1.5.0 ) in order to be really multi-platform.
 It has been tested under Linux, Windows XP and Mac OS. 
 
 
@@ -21,9 +21,10 @@ Features
 
 General features
 
-* It supports Advanced SubStation, SubStation Alpha, SubRip.
-  SubViewer (1 and 2) and MicroDVD file formats, although it is easy
-  to extend it to support other file types.
+* It support$s Advanced SubStation, SubStation Alpha, SubRip,
+  SubViewer (1 and 2), MicroDVD, MPL2 and Spruce DVD Maestro
+  file formats, although it is easy to extend it to support
+  other file types.
 * All encodings supported by Java platform are also supported here
   (like UTF-8). The user is able to select a list of preferred
   encodings in order to load the localized subtitle files.

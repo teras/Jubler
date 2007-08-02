@@ -211,10 +211,10 @@
 		<!-- Helpful properties definitions -->
 		<property name="libdir" value="${prefix}/lib/jubler"/>
 		<property name="bindir" value="${prefix}/bin"/>
-		<property name="docdir" value="${prefix}/doc/jubler-${version}"/>
-		<property name="reldocdir" value="../../doc/jubler-${version}/help"/>
-		<property name="mandir" value="${prefix}/man/man1"/>
 		<property name="sharedir" value="${prefix}/share"/>
+		<property name="reldocdir" value="../../doc/jubler-${version}/help"/>
+		<property name="docdir" value="${sharedir}/doc/jubler-${version}"/>
+		<property name="mandir" value="${sharedir}/man/man1"/>
 		<property name="libp" value="/lib"/>
 		<property name="binp" value="/bin"/>
 		<condition property="mimedir" value="${destdir}${othermimedir}" else="${sharedir}/mimelnk/application">
@@ -290,7 +290,6 @@
 	<target name="redhat" depends="fedora"/>
 	<target name="fedora" depends="linuxmakedyn,linuxproperties">
 		<antcall target="linuxinstall"/>
-		<gunzip src="${mandir}/jubler.1.gz"/>
 	</target>
 
 
