@@ -40,12 +40,7 @@ NATIVES=${shell cd ../../src && grep -r ' native ' * | grep -v '/.svn/' | gawk -
 SRCS=${shell ls 2>/dev/null *.c}
 OBJS=${SRCS:.c=.o}
 
-
-ifeq (${CFLAGS},)
-	COMPFLAGS=-std=c99 -pedantic -O3 -Wall
-else
-	COMPFLAGS=${CFLAGS}
-endif
+COMPFLAGS=${CFLAGS} -std=c99 -pedantic -O3 -Wall -fPIC
 
 ifeq (${STATIC},no)
 	FFMPEGREQ=
