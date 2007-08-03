@@ -212,7 +212,7 @@
 		<property name="libdir" value="${prefix}/lib/jubler"/>
 		<property name="bindir" value="${prefix}/bin"/>
 		<property name="sharedir" value="${prefix}/share"/>
-		<property name="reldocdir" value="../../doc/jubler-${version}/help"/>
+		<property name="reldocdir" value="../../share/doc/jubler-${version}/help"/>
 		<property name="docdir" value="${sharedir}/doc/jubler-${version}"/>
 		<property name="mandir" value="${sharedir}/man/man1"/>
 		<property name="libp" value="/lib"/>
