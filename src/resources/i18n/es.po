@@ -2160,7 +2160,7 @@ msgstr "No se ha podido encontrar el ejecutable"
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:297
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:301
 msgid "Finish"
-msgstr "Finés"
+msgstr "Fin"
 
 #: com/panayotis/jubler/tools/replace/JReplace.java:75
 msgid "End of subtitles"
