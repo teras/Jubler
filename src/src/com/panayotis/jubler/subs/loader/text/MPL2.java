@@ -42,7 +42,7 @@ public class MPL2 extends AbstractTextSubFormat {
     
     /** Creates a new instance of SubFormat */
     static {
-        pat = Pattern.compile("\\[(\\d+)\\]\\s*\\[(\\d+)\\] (.*?)"+nl);
+        pat = Pattern.compile("\\[(\\d+)\\]"+sp+"\\[(\\d+)\\]"+sp+"(.*?)"+nl);
     }
     
     protected Pattern getPattern() {

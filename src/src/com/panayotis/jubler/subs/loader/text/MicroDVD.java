@@ -42,7 +42,7 @@ public class MicroDVD extends AbstractTextSubFormat {
     
     /** Creates a new instance of SubFormat */
     static {
-        pat = Pattern.compile("\\{(\\d+)\\}\\s*\\{(\\d+)\\}(.*?)"+nl);
+        pat = Pattern.compile("\\{(\\d+)\\}"+sp+"\\{(\\d+)\\}(.*?)"+nl);
     }
     
     protected Pattern getPattern() {

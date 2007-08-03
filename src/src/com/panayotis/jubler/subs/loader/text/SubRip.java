@@ -45,8 +45,8 @@ public class SubRip extends AbstractTextSubFormat {
     
     static {
         pat = Pattern.compile(
-                "(?s)(\\d+)\\s*"+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)\\s+-->"+
-                "\\s+(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+nl+"(.*?)"+nl+nl
+                "(?s)(\\d+)"+sp+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"-->"+
+                sp+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+nl+"(.*?)"+nl+nl
                 );
     }
     

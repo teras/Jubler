@@ -40,7 +40,7 @@ public class SubViewer2 extends SubViewer {
     static {
         testpat = Pattern.compile("(?i)(?s)\\[INFORMATION\\].*?"+
                 "(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d),(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d)"+
-                space+nl+"(.*?)\\[br\\](.*?)"+nl+nl
+                sp+nl+"(.*?)\\[br\\](.*?)"+nl+nl
                 );
     }
     

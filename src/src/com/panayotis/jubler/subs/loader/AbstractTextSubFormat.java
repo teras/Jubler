@@ -48,7 +48,7 @@ import java.nio.charset.CharsetEncoder;
 public abstract class AbstractTextSubFormat extends SubFormat {
     
     protected static final String nl = "\\\n";
-    protected static final String space = "\\s*?";
+    protected static final String sp = "[ \\t]*";
     
     protected Subtitles subtitle_list;
     

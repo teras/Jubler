@@ -42,7 +42,7 @@ public class Spruce extends AbstractTextSubFormat {
     
     /** Creates a new instance of SubFormat */
     static {
-        pat = Pattern.compile("(\\d\\d):(\\d\\d):(\\d\\d):(\\d\\d)\\s*,\\s*(\\d\\d):(\\d\\d):(\\d\\d):(\\d\\d)\\s*,\\s*(.*?)"+nl);
+        pat = Pattern.compile("(\\d\\d):(\\d\\d):(\\d\\d):(\\d\\d)"+sp+","+sp+"(\\d\\d):(\\d\\d):(\\d\\d):(\\d\\d)"+sp+","+sp+"(.*?)"+nl);
     }
     
     protected Pattern getPattern() {

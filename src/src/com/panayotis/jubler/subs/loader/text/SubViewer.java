@@ -46,12 +46,12 @@ public class SubViewer extends AbstractTextSubFormat {
     static {
         pat = Pattern.compile(
                 "(?s)(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d),(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d)"+
-                space+nl+"(.*?)"+nl+nl
+                sp+nl+"(.*?)"+nl+nl
                 );
         
         testpat = Pattern.compile("(?i)(?s)\\[INFORMATION\\].*?"+
                 "(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d),(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d)"+
-                space+nl+"(.*?)"+nl+nl
+                sp+nl+"(.*?)"+nl+nl
                 );
         
         title = Pattern.compile("(?i)\\[TITLE\\](.*?)"+nl);

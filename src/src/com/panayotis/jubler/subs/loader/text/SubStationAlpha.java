@@ -69,9 +69,9 @@ public class SubStationAlpha extends AbstractTextSubFormat {
                 + "Dialogue:.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?"+nl
                 );
         
-        title = Pattern.compile("(?i)Title:" + space + "(.*?)"+nl);
-        author = Pattern.compile("(?i)Original Script:" + space + "(.*?)"+nl);
-        source = Pattern.compile("(?i)Update Details:" + space + "(.*?)"+nl);
+        title = Pattern.compile("(?i)Title:" + sp + "(.*?)"+nl);
+        author = Pattern.compile("(?i)Original Script:" + sp + "(.*?)"+nl);
+        source = Pattern.compile("(?i)Update Details:" + sp + "(.*?)"+nl);
         comments = Pattern.compile(";(.*?)"+nl);
         styles = Pattern.compile("(?i)Style:(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)"+nl);
     }
