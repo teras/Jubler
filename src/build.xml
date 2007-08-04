@@ -395,27 +395,9 @@
 		<delete file="/tmp/install.xml" />
 	</target>
 
-
-	<target name="findsystem">
-		<condition property="isNotMac">
-			<not> <os family="mac"/> </not>
-		</condition>
-		<condition property="isMac">
-			<os family="mac"/>
-		</condition>
+	<target name="-pre-compile">
+		<copy todir="src/com"> <fileset dir="resources/system/no_mac"/> </copy>
 	</target>
-	
-	<target name="noMacSystem" depends="findsystem" if="isNotMac">
-		<copy todir="src/com">
-			<fileset dir="resources/system/no_mac"/>
-		</copy>
-	</target>
-
-	<target name="MacSystem" depends="findsystem" if="isMac">
-		<delete dir="src/com/apple"/>
-	</target>
-
-	<target name="-pre-compile" depends="findsystem,noMacSystem,MacSystem"/>
 	<target name="-post-compile">
 		<delete dir="build/classes/com/apple" failonerror="false"/>
 	</target>	
