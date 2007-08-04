@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.os;
 import com.panayotis.jubler.StaticJubler;
-import com.panayotis.jubler.subs.loader.text.SubRip;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
@@ -136,7 +135,7 @@ public class FileCommunicator {
             }
             
             if ( prefs == null ) {
-                saveformat = new SubRip();
+                saveformat = JPreferences.DefaultSubFormat;   
             } else {
                 saveformat = prefs.getSaveFormat();
             }

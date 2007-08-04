@@ -30,14 +30,13 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
-import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
+import com.panayotis.jubler.subs.loader.text.SubStationAlpha;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.SortedMap;
 import javax.swing.JFrame;
@@ -50,6 +49,7 @@ import javax.swing.JMenuBar;
 public class JPreferences extends javax.swing.JDialog {
     public static final String []AvailEncodings;
     public static final String []DefaultEncodings;
+    public static final SubFormat DefaultSubFormat;
     
     /* GUI element to hold various preferences 
      * it is "friendly", since it is needed in Options 
@@ -81,6 +81,8 @@ public class JPreferences extends javax.swing.JDialog {
         DefaultEncodings[0] = "UTF-8";
         DefaultEncodings[1] = "ISO-8859-1";
         DefaultEncodings[2] = "UTF-16";
+        
+        DefaultSubFormat = new SubStationAlpha();
     }
     
     
