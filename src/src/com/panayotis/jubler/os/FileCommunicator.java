@@ -185,7 +185,7 @@ public class FileCommunicator {
     
     
     
-    /* The followng function is used in order to guess the filename of the avi/audio/jacache based
+    /* The following function is used in order to guess the filename of the avi/audio/jacache based
      *  on the name of the original file */
     public static String guessFile(String origfilename, MediaFileFilter filter) {
         File dir;   /* the parent directory of the subtitle */
