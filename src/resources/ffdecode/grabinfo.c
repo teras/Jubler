@@ -55,7 +55,7 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
 	jint* matrixdata = NULL;
 
 	/* initialize java array */
-	dimension = (*env)->NewIntArray(env, 2);
+	dimension = (*env)->NewIntArray(env, 3);
     if (dimension==NULL) return NULL;
 
 	/* get array data position */
