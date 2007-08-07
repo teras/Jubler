@@ -1,3 +1,9 @@
+3.3.1
+
+Linux man & doc paths fixed. Better support of MPL2 subtitles. Bug fixes and
+updates.
+
+
 3.3.0
 
 Automatic detection of MPlayer/ASpell executables. Preview window GUI updates.
