@@ -60,6 +60,7 @@ public class Dropper extends TransferHandler {
         return false;
     }
     
+    @SuppressWarnings("unchecked")
     private AbstractList<File> getFileListString(Transferable t, DataFlavor flavor) {
         try {
             Object data = t.getTransferData(flavor);
