@@ -51,7 +51,6 @@ public interface Viewport {
     public abstract boolean setVolume(int volume);
     
     public abstract double getTime();
-    public abstract Time getLength();
     public abstract boolean isPaused();
     
 }

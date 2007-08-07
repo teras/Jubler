@@ -154,8 +154,6 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
     
     public void start(MediaFile mfile, Subtitles subs, Time starttime ) {
-        Time length;
-        
         positionConsole();
         player.setCentralLocation(getX(), getY()+getHeight());
         
@@ -182,16 +180,15 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
             }
         }
         
-        /* Everything OK - go on */
-        length  = view.getLength();
-        setVisible(true);
-        
-        diagram.setLength((int)length.toSeconds());
+        int length = mfile.getVideoFile().getLength();
+        diagram.setLength(length);
         ignore_slider_changes = true;
-        TimeS.setMaximum((int)length.toSeconds());
+        TimeS.setMaximum(length);
         request_quit = false;
         timer.start();
         
+        /* Everything OK - go on */
+        setVisible(true);
         SubShow.requestFocusInWindow(); // Make sure that SubShow has the focus, in order to grab the key events
     }
     

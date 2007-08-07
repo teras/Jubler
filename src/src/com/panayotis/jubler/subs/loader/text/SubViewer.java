@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 
 
@@ -112,7 +113,7 @@ public class SubViewer extends AbstractTextSubFormat {
         return sub;
     }
     
-    protected String makeHeader(Subtitles subs) {
+    protected String makeHeader(Subtitles subs, MediaFile media) {
         StringBuffer header = new StringBuffer();
         
         header.append("[INFORMATION]\n[TITLE]");

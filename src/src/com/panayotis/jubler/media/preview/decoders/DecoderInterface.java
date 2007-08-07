@@ -43,7 +43,7 @@ public interface DecoderInterface {
 
     public abstract Image getFrame(String video, double time, boolean small);
     public abstract float getFPS(String vfile);
-    public abstract Dimension getDimension(String vfile);
+    public abstract int[] getDimensions(String vfile);
     
     public abstract void playAudioClip(String audio, double from, double to);
     

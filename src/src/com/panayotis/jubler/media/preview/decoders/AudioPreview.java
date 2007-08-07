@@ -24,6 +24,7 @@
 package com.panayotis.jubler.media.preview.decoders;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.CacheFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -98,21 +99,22 @@ public class AudioPreview {
         return ".jacache";
     }
     
-    public static String getNameFromCache(String fname) {
-        if (!isAudioPreview(fname)) return null;
+    public static String getNameFromCache(File cf) {
+        if (!isAudioPreview(cf.getPath())) return null;
         
         String name = null;
         RandomAccessFile file;
         try {
-            file = new RandomAccessFile(fname, "r");
+            file = new RandomAccessFile(cf, "r");
             file.seek(nameoffset);
-            name = file.readUTF();
+            name = file.readUTF().trim();
             file.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (name.equals("")) name = null;
         return name;
     }
 }

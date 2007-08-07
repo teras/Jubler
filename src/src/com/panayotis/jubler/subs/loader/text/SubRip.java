@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 
 
@@ -92,9 +93,9 @@ public class SubRip extends AbstractTextSubFormat {
         return super.initLoader(input, subs);
     }
 
-    protected String makeHeader(Subtitles subs) {
+    protected String makeHeader(Subtitles subs, MediaFile media) {
         counter = 1;
-        return super.makeHeader(subs);
+        return super.makeHeader(subs, media);
     }
 
     public boolean supportsFPS() {

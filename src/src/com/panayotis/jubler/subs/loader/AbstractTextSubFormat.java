@@ -32,7 +32,6 @@ import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.JPreferences;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -98,7 +97,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     
     public boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException {
         StringBuffer res = new StringBuffer();
-        res.append(makeHeader(subs));
+        res.append(makeHeader(subs, media));
         for ( int i = 0 ; i < subs.size() ; i++ ) {
             res.append(makeSubEntry(subs.elementAt(i)));
         }
@@ -112,5 +111,5 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         return true;
     }
     
-    protected String makeHeader(Subtitles subs) { return ""; }
+    protected String makeHeader(Subtitles subs, MediaFile media) { return ""; }
 }

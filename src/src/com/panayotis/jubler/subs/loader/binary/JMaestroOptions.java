@@ -42,13 +42,9 @@ public class JMaestroOptions extends javax.swing.JPanel {
     
     public void updateValues(Subtitles subs, MediaFile media) {
         media.validateMediaFile(subs,false);
-        Dimension vsize = media.getDimension();
-        if (vsize==null) {
-            vsize = new Dimension(700,500);
-        }
         
-        XSize.setValue(vsize.width);
-        YSize.setValue(vsize.height);
+        XSize.setValue(media.getVideoFile().getWidth());
+        YSize.setValue(media.getVideoFile().getWidth());
     }
     
     public String getVideoFormat() {

@@ -26,6 +26,7 @@ package com.panayotis.jubler.subs.loader.text;
 import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.MediaFile;
 
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
@@ -40,6 +41,7 @@ import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverEvent;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -261,7 +263,7 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         return c;
     }
     
-    protected String makeHeader(Subtitles subs) {
+    protected String makeHeader(Subtitles subs, MediaFile media) {
         StringBuffer header = new StringBuffer();
         
         header.append("[Script Info]\n");
@@ -274,15 +276,16 @@ public class SubStationAlpha extends AbstractTextSubFormat {
             header.append('\n');
         }
         
-        header.append("Title: ");
-        header.append(subs.getAttrib("title"));
-        header.append("\nOriginal Script: ");
-        header.append(subs.getAttrib("author"));
-        header.append("\nUpdate Details: ");
-        header.append(subs.getAttrib("source"));
-        header.append("\nScriptType: v4.00");
-        header.append(getExtraVersion());
-        header.append("\nCollisions: Normal\nPlayResY: 681\nPlayDepth: 0\nTimer: 100,0000\n");
+        header.append("Title: ").append(subs.getAttrib("title"));
+        header.append("\nOriginal Script: ").append(subs.getAttrib("author"));
+        header.append("\nUpdate Details: ").append(subs.getAttrib("source"));
+        header.append("\nScriptType: v4.00").append(getExtraVersion());
+        header.append("\nCollisions: Normal\n");
+
+        header.append("PlayResX: ").append(media.getVideoFile().getWidth());
+        header.append("\nPlayResY: ").append(media.getVideoFile().getHeight());
+        
+        header.append("\nPlayDepth: 0\nTimer: 100,0000\n");
         
         header.append("\n[V4 Styles");
         header.append(getExtraVersion());

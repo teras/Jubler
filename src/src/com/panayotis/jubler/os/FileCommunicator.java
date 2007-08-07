@@ -22,6 +22,9 @@
  */
 
 package com.panayotis.jubler.os;
+
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
@@ -36,9 +39,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
-
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.media.filters.MediaFileFilter;
 import com.panayotis.jubler.options.Options;
 import java.nio.charset.UnmappableCharacterException;
@@ -180,54 +182,7 @@ public class FileCommunicator {
         res.append('\n');   // Add this for various subtitle filters to work correctly
         return res.toString();
     }
-    
-    
-    
-    
-    
-    /* The following function is used in order to guess the filename of the avi/audio/jacache based
-     *  on the name of the original file */
-    public static String guessFile(String origfilename, MediaFileFilter filter) {
-        File dir;   /* the parent directory of the subtitle */
-        File files[];   /* List of video files in the same directory as the subtitle */
-        int matchcount;  /* best match so far */
-        File match;     /* best file match so far */
-        String lsfilename, curfilename;    /* Subtitles filename (in lowercase) & file in the same directory */
-        int size;
-        int i,j;
-        
-        if (origfilename==null || origfilename.equals("")) {
-            origfilename = getCurrentPath()+_("Untitled");
-        }
-        
-        lsfilename = origfilename.toLowerCase();
-        
-        dir  = new File(origfilename).getParentFile();
-        if (dir == null)
-            return origfilename + filter.getExtensions()[0];
-        files = dir.listFiles(filter);
-        
-        /* From a list of possible filenames, get the one with the
-         * best match */
-        matchcount = 0;
-        match = null;
-        for ( i = 0 ; i < files.length ; i++ ) {
-            if ( !files[i].isDirectory()) {
-                j = 0;
-                curfilename = files[i].getPath().toLowerCase();
-                size = (lsfilename.length() > curfilename.length()) ? curfilename.length() : lsfilename.length();
-                while ( j < size  &&  lsfilename.charAt(j) == curfilename.charAt(j)) {
-                    j++;
-                }
-                if (matchcount < j) {
-                    matchcount = j;
-                    match = files[i];
-                }
-            }
-        }
-        if (match != null) return match.getPath();
-        return origfilename+filter.getExtensions()[0];
-    }
+     
     
     public static String getCurrentPath() {
         return System.getProperty("user.dir") + System.getProperty("file.separator");

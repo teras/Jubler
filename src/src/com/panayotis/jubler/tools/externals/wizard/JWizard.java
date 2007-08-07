@@ -279,7 +279,7 @@ public class JWizard extends JDialog {
             case 1:
                 if (ManualB.isSelected()) {
                     cardid++;
-                    ContinueB.setEnabled(TreeWalker.execIsValid(new File(deflt)));
+                    ContinueB.setEnabled(TreeWalker.execIsValid(new File(deflt), name.toLowerCase()));
                     FilenameT.setText(deflt);
                 } else {
                     CancelB.setEnabled(false);
@@ -310,7 +310,7 @@ public class JWizard extends JDialog {
     private void BrowseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseBActionPerformed
         BrowseStatusL.setVisible(false);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), SystemDependent.getCanonicalFilename(name), SystemDependent.getBundleOrFileID());
+        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), name.toLowerCase(), SystemDependent.getBundleOrFileID());
         if (newexe!=null) {
             FilenameT.setText(newexe.getPath());
             ContinueB.setEnabled(true);

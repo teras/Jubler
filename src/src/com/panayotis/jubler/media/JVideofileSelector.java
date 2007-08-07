@@ -55,21 +55,21 @@ public class JVideofileSelector extends javax.swing.JPanel {
     
     
     private void updateFiles() {
-        VFName.setText(mfile.getVideoFile());
+        VFName.setText(mfile.getVideoFile().getPath());
         
-        if (mfile.isAudioFileUnused()) {
+        if (mfile.getAudioFile().isSameAsVideo()) {
             AFName.setText("");
             AFName.setEnabled(false);
             ExternalAudioB.setSelected(false);
             AudioBrowse.setEnabled(false);
         } else {
-            AFName.setText(mfile.getAudioFile());
+            AFName.setText(mfile.getAudioFile().getPath());
             AFName.setEnabled(true);
             ExternalAudioB.setSelected(true);
             AudioBrowse.setEnabled(true);
         }
         
-        CFName.setText(mfile.getCacheFile());
+        CFName.setText(mfile.getCacheFile().getPath());
     }
     
     
@@ -193,20 +193,20 @@ public class JVideofileSelector extends javax.swing.JPanel {
     // </editor-fold>//GEN-END:initComponents
     
     private void CacheBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CacheBrowseActionPerformed
-        fdialog.setSelectedFile( new File(mfile.getCacheFile()) );
+        fdialog.setSelectedFile( mfile.getCacheFile());
         afilter.setCheckForValidCache(mfile.getVideoFile());
         fdialog.setFileFilter(afilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        mfile.setCacheFile(fdialog.getSelectedFile().getPath());
+        mfile.setCacheFile(fdialog.getSelectedFile());
         updateFiles();
     }//GEN-LAST:event_CacheBrowseActionPerformed
     
     private void AudioBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioBrowseActionPerformed
-        fdialog.setSelectedFile( new File(mfile.getAudioFile()));
+        fdialog.setSelectedFile( mfile.getAudioFile());
         afilter.setCheckForValidCache(null);
         fdialog.setFileFilter(afilter);
-        if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        mfile.setAudioFile(fdialog.getSelectedFile().getPath());
+        if ( fdialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+            mfile.setAudioFile(fdialog.getSelectedFile());
         updateFiles();
     }//GEN-LAST:event_AudioBrowseActionPerformed
     
@@ -221,10 +221,10 @@ public class JVideofileSelector extends javax.swing.JPanel {
     }//GEN-LAST:event_ExternalAudioBActionPerformed
     
     private void VideoBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoBrowseActionPerformed
-        fdialog.setSelectedFile(new File(mfile.getVideoFile()));
+        fdialog.setSelectedFile(mfile.getVideoFile());
         fdialog.setFileFilter(vfilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        mfile.setVideoFile(fdialog.getSelectedFile().getPath());
+        mfile.setVideoFile(fdialog.getSelectedFile());
         updateFiles();
     }//GEN-LAST:event_VideoBrowseActionPerformed
     

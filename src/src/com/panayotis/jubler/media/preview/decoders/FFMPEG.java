@@ -124,12 +124,11 @@ public final class FFMPEG extends NativeDecoder {
         return grabFPS(vfile);
     }
 
-    public Dimension getDimension(String vfile) {
+    public int[] getDimensions(String vfile) {
         if (!isDecoderValid()) return null;
         int[] res = grabDimension(vfile);
-        if (res==null || res.length<2 || res[0]<=0 || res[1]<=0 ) return null;
-        Dimension d = new Dimension(res[0], res[1]);
-        return d;
+        if (res==null || res.length<3 || res[0]<=0 || res[1]<=0 || res[2]<=0 ) return null;
+        return res;
     }
     
     public boolean isDecoderValid() {

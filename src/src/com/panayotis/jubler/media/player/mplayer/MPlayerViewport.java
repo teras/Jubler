@@ -22,7 +22,6 @@
  */
 
 package com.panayotis.jubler.media.player.mplayer;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
@@ -35,7 +34,9 @@ import java.io.OutputStreamWriter;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.console.PlayerFeedback;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
+import java.awt.Dimension;
 
 /**
  *
@@ -48,7 +49,6 @@ public class MPlayerViewport implements Viewport {
     
     private boolean isPaused;
     
-    private double length;
     private double position;
     private Thread updater;
     
@@ -60,7 +60,7 @@ public class MPlayerViewport implements Viewport {
     private PlayerFeedback feedback;
     private Time when;
     
-    /* Use this flag when a "quit" is not really fatal, like a subtitle reloading. 
+    /* Use this flag when a "quit" is not really fatal, like a subtitle reloading.
      * This flag automatically turns back to true, whenever a quit has been detected.
      */
     private boolean quit_is_fatal = true;
@@ -80,25 +80,20 @@ public class MPlayerViewport implements Viewport {
         this.feedback = feedback;
         this.when = when;
     }
-        
+    
     public void start() throws ExtProgramException {
         String cmd[] = player.getCommandArguments(mfile, sub, when);
-        length = 0;
         position = 0;
         isPaused = false;
         
         try {
-            String info = "";
             Process proc = Runtime.getRuntime().exec(cmd);
             cmdpipe = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
             infopipe = new BufferedReader( new InputStreamReader(proc.getInputStream()));
             
-            if (infopipe == null || cmdpipe == null || proc == null ) 
+            if (infopipe == null || cmdpipe == null || proc == null )
                 throw new ExtProgramException(new NullPointerException());
             
-            /* wait up to the point where the length is displayed */
-            while ( !(info=infopipe.readLine()).startsWith("ID_LENGTH"));
-            length = getValue(info);
             sendCommand("get_property volume");
             
             updater = new Thread() {
@@ -107,17 +102,16 @@ public class MPlayerViewport implements Viewport {
                 }
             };
             updater.start();
-            
-            player.deleteSubFile();
             return;
         } catch (Exception e) {
             throw new ExtProgramException(e);
         } finally {
-            player.deleteSubFile();
+            System.out.println("KOOOO");
+          //  player.deleteSubFile();
         }
     }
     
-    
+     
     /* This part of the code is executed in the updater thread
      * It finishes when the EOF is found */
     private void parseOutput() {
@@ -134,7 +128,7 @@ public class MPlayerViewport implements Viewport {
                     position = getDouble(info.substring(first, second).trim());
                 } else {
                     if (info.startsWith("ANS_volume")) {
-                        feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf("=")+1))/100f);
+                        feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=')+1))/100f);
                     }
                 }
             }
@@ -144,21 +138,13 @@ public class MPlayerViewport implements Viewport {
     }
     
     
-    public Time getLength() {
-        return new Time(length);
-    }
-    
-    private double getValue(String info) {
-        int pos = info.indexOf('=') + 1;
-        return getDouble(info.substring(pos));
-    }
-    
-    private double getDouble(String info) {
+    private static double getDouble(String info) {
         try {
             return Double.parseDouble(info);
         } catch (NumberFormatException e) {}
         return 0;
     }
+   
     
     private boolean sendCommand(String com) {
         if (!isActive) return true;    // Ignore commands if viewport is inactive

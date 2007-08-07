@@ -34,7 +34,6 @@ import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 
@@ -44,9 +43,9 @@ import java.io.File;
  */
 public class MediaFile {
     
-    private String vfile;   /* Video file */
-    private String afile;   /* Audio file - prossibly same as video file */
-    private String cfile;   /* Cache file */
+    private VideoFile vfile;   /* Video file */
+    private AudioFile afile;   /* Audio file - prossibly same as video file */
+    private CacheFile cfile;   /* Cache file */
     
     /* Decoder framework to display frames, audio clips etc. */
     private DecoderInterface decoder;
@@ -57,47 +56,49 @@ public class MediaFile {
     
     /** Creates a new instance of MediaFile */
     public MediaFile() {
-        setMediaFile("", "", "");
-        initialize();
+        this(null, null, null);
     }
     
     public MediaFile(MediaFile m) {
-        setMediaFile(m.vfile, m.afile, m.cfile);
-        initialize();
+        this(m.vfile, m.afile, m.cfile);
     }
     
-    private void setMediaFile(String vf, String af, String cf) {
+    public MediaFile(VideoFile vf, AudioFile af, CacheFile cf) {
         vfile = vf;
         afile = af;
         cfile = cf;
-    }
-    
-    private void initialize() {
         decoder = new FFMPEG();
         videoselector = new JVideofileSelector();
     }
     
+    
     public boolean validateMediaFile(Subtitles subs, boolean force_new) {
-        if ( (!force_new) && isValid() )
+        if ( (!force_new) && isValid(vfile) )
             return true;
         
+        VideoFile old_v = vfile;
+        AudioFile old_a = afile;
+        CacheFile old_c = cfile;
+        
+        /* Guess files from subtitle file - only for initialization */
+        if (!isValid(vfile)) {
+            vfile = VideoFile.guessFile(subs.getCurrentFile(), new VideoFileFilter(), decoder);
+            if (!isValid(afile)) setAudioFileUnused();
+            if (!isValid(cfile)) updateCacheFile(afile);
+        }
+        
+        /* Now let the user select which files are the proper media files */
         boolean isok;
-        String old_v = vfile;
-        String old_a = afile;
-        String old_c = cfile;
-        
-        
-        if (!isValid())
-            guessFiles(subs.getCurrentFile().getPath());
-        
         videoselector.setMediaFile(this);
         do {
             int res = JIDialog.question(null, videoselector, _("Select video"));
             if ( res != JIDialog.OK_OPTION) {
-                setMediaFile(old_v, old_a, old_c);
+                vfile = old_v;
+                afile = old_a;
+                cfile = old_c;
                 return false;
             }
-            isok = isValid();
+            isok = isValid(vfile);
             if (!isok) {
                 JIDialog.message(null, _("This file does not exist.\nPlease provide a valid file name."), _("Error in videofile selection"), JIDialog.ERROR_MESSAGE);
             }
@@ -105,7 +106,9 @@ public class MediaFile {
         
         return true;
     }
-    
+    private boolean isValid(File f) {
+        return (f!= null && f.exists());
+    }
     
     
     public boolean equals(Object o) {
@@ -116,68 +119,48 @@ public class MediaFile {
         return super.equals(o);
     }
     
-    public void guessFiles(String guess) {
+    
+    
+    public VideoFile getVideoFile() { return vfile; }
+    public AudioFile getAudioFile() { return afile; }
+    public CacheFile getCacheFile() { return cfile; }
+    DecoderInterface getDecoder() { return decoder; }
+    
+    
+    public void setVideoFile(File vf) {
+        if (vf==null||(!vf.exists())) return;
         
-        if (vfile.equals("")){
-            vfile = FileCommunicator.guessFile(guess, new VideoFileFilter());
-        }
+        vfile = new VideoFile(vf, decoder);
         
-        if (afile.equals("")) {
-            setAudioFileUnused();
-        }
-        
-        if (cfile.equals("")){
-            /* Find the base name (without extension) of the selected "audio" file */
-            int point = afile.lastIndexOf('.');
-            if (point < 0 ) point = afile.length();
-            
-            /* Create a special filter for the selected video file */
-            AudioFileFilter filter = new AudioFileFilter();
-            filter.setCheckForValidCache(vfile);
-            
-            /* Set cfile */
-            updateCacheFile(FileCommunicator.guessFile( afile.substring(0,point), filter));
-        }
+        if (afile.isSameAsVideo())
+            setAudioFile(vfile);
     }
     
-    public String getVideoFile() { return vfile; }
-    public String getAudioFile() { return afile; }
-    public String getCacheFile() { return cfile; }
-    
-    
-    public void setVideoFile(String vfname) {
-        if (!fileExists(vfname)) return;
-        if (isAudioFileUnused()) setAudioFile(vfname);
+    public void setAudioFile(File af) {
+        if (af==null||(!af.exists())) return;
         
-        /* This SHOULD come after audio check, or else it thinks that a different audio stream is required */
-        vfile = vfname;
+        afile = new AudioFile(af, vfile);
+        updateCacheFile(afile);
     }
     
-    public void setAudioFile(String afname) {
-        if (!fileExists(afname)) return;
-        afile = afname;
-        
-        updateCacheFile(afname);
-    }
-    
-    public void setCacheFile(String cfname) {
-        if (cfname==null || cfname.equals("")) return;
-        updateCacheFile(cfname);
+    public void setCacheFile(File cf) {
+        if (cf==null) return;
+        updateCacheFile(cf);
         
         /* Set audio file, from the cache file */
-        String audioname = AudioPreview.getNameFromCache(cfile);
-        if (audioname!=null && (!audioname.trim().equals(""))){
-            File newafile = new File( (new File(cfname)).getParent(), audioname);
-            if (newafile.exists()) afile = audioname;
+        String audioname = AudioPreview.getNameFromCache(cf);
+        if (audioname!=null){
+            AudioFile newafile = new AudioFile(cf.getParent(), audioname, vfile);
+            if (newafile.exists()) afile = newafile;
         }
         
     }
     
     
-    private void updateCacheFile(String cfname) {
-        if (cfname==null || cfname.equals("")) return;
+    private void updateCacheFile(File cf) {
+        if (cf==null) return;
+        
         /* Find a write enabled cache file */
-        File cf = new File(cfname);
         if (!( cf.getParentFile().canWrite() && ((!cf.exists()) || cf.canWrite()) )) {
             String strippedfilename = cf.getName();
             int point = strippedfilename.lastIndexOf('.');
@@ -186,62 +169,47 @@ public class MediaFile {
                     System.getProperty("file.separator")+
                     strippedfilename.substring(0,point)+AudioPreview.getExtension());
         } else {
-            int point = cfname.lastIndexOf('.');
-            if (point < 0 ) point = cfname.length();
-            cf = new File( cfname.substring(0,point)+AudioPreview.getExtension());
+            int point = cf.getPath().lastIndexOf('.');
+            if (point < 0 ) point = cf.getPath().length();
+            cf = new File( cf.getPath().substring(0,point)+AudioPreview.getExtension());
         }
-        String newcachef = cf.getPath();
-        
-        if (newcachef.equals(cfile)) return;
+        if (cfile!=null && cfile.getPath().equals(cf.getPath())) return;   // Same cache
         
         closeAudioCache();  // Close old cache file, if exists
-        cfile = newcachef;
-    }
-    
-
-    public boolean isValid() {
-        return (fileExists(vfile));
-    }
-    
-    public boolean isAudioFileUnused() {
-        return vfile.equals(afile);
+        cfile = new CacheFile(cf.getPath());
     }
     
     public void setAudioFileUnused() {
-        afile = vfile;
+        afile = new AudioFile(vfile, vfile);
         updateCacheFile(vfile);
-    }
-    
-    private static final boolean fileExists(String fname) {
-        if (fname==null || fname.equals("")) return false;
-        return new File(fname).exists();
     }
     
     
     /* Decoder actions */
     public boolean initAudioCache(DecoderListener listener) {
-        return decoder.initAudioCache(afile, cfile, listener);
+        return decoder.initAudioCache(afile.getPath(), cfile.getPath(), listener);
     }
     public AudioPreview getAudioPreview(double from, double to) {
-        return decoder.getAudioPreview(cfile, from, to);
+        return decoder.getAudioPreview(cfile.getPath(), from, to);
     }
     public void closeAudioCache() {
-        decoder.closeAudioCache(cfile);
+        if (cfile!=null)
+            decoder.closeAudioCache(cfile.getPath());
     }
     public Image getFrame(double time, boolean small) {
-        return decoder.getFrame(vfile, time, small);
+        if (vfile==null) return null;
+        return decoder.getFrame(vfile.getPath(), time, small);
     }
     public void playAudioClip(double from, double to) {
-        decoder.playAudioClip(afile, from, to);
+        if (afile!=null)
+            decoder.playAudioClip(afile.getPath(), from, to);
     }
     public float getFPS() {
-        return decoder.getFPS(vfile);
+        if (vfile==null) return -1;
+        return decoder.getFPS(vfile.getPath());
     }
     public void interruptCacheCreation(boolean status) {
         decoder.setInterruptStatus(status);
-    }
-    public Dimension getDimension() {
-        return decoder.getDimension(vfile);
     }
     
 }

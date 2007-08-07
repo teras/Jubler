@@ -34,7 +34,7 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 public class VideoFileFilter extends MediaFileFilter {
     
-    private static final String exts[] = {".avi", ".mpg", ".mpeg", ".m1v", ".m2v", ".mov", ".mkv", ".ogm", ".divx", ".bin", ".wmv", ".flv"};
+    private static final String exts[] = {".avi", ".mpg", ".mpeg", ".m1v", ".m2v", ".mov", ".mkv", ".ogm", ".divx", ".bin", ".wmv", ".flv", ".mp4"};
     
     public String[] getExtensions() {
         return exts;

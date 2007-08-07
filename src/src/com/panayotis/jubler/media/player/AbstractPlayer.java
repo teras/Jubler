@@ -58,10 +58,12 @@ public abstract class AbstractPlayer extends VideoPlayer {
     public String getType() { return "Player"; }
     public String getLocalType() { return _("Player"); }
     
-    private void initSubFile(Subtitles subs) {
+    
+    /* Create Subtitle File for testing*/
+    private void initSubFile(Subtitles subs, MediaFile mfile) {
         try {
             File subtemp = File.createTempFile("jubler_", "."+JPreferences.DefaultSubFormat.getExtension());
-            FileCommunicator.save(subs, subtemp, null, null);
+            FileCommunicator.save(subs, subtemp, null, mfile);
             subpath = subtemp.getPath();
             return;
         } catch (IOException e) {}
@@ -92,7 +94,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         begin = options.indexOf("%(");
         end = options.lastIndexOf("%)");
         if (begin >= 0 && end < options.length() && begin < end) {
-            if ( mfile.isAudioFileUnused() ) {
+            if ( mfile.getAudioFile().isSameAsVideo()) {
                 options = options.substring(0,begin) + options.substring(end+2,options.length());
             } else {
                 options = options.substring(0,begin) + options.substring(begin+2,end) + options.substring(end+2,options.length());
@@ -104,7 +106,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         /* tokenize command line */
         StringTokenizer st = new StringTokenizer(options, " ");
         String[] cmds = new String[st.countTokens()];
-        initSubFile(sub);
+        initSubFile(sub, mfile);
         String buf;
         int pos = 0;
         
@@ -115,8 +117,8 @@ public abstract class AbstractPlayer extends VideoPlayer {
         }
         
         replaceValues(cmds, "%p", opts.getExecFileName());
-        replaceValues(cmds, "%v", mfile.getVideoFile());
-        replaceValues(cmds, "%a", mfile.getAudioFile());
+        replaceValues(cmds, "%v", mfile.getVideoFile().getPath());
+        replaceValues(cmds, "%a", mfile.getAudioFile().getPath());
         replaceValues(cmds, "%s", subpath);
         replaceValues(cmds, "%t", when.toString());
         replaceValues(cmds, "%x", Integer.toString(x));
