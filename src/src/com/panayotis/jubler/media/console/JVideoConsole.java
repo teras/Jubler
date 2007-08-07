@@ -180,7 +180,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
             }
         }
         
-        int length = mfile.getVideoFile().getLength();
+        int length = (int)Math.ceil(mfile.getVideoFile().getLength());
         diagram.setLength(length);
         ignore_slider_changes = true;
         TimeS.setMaximum(length);

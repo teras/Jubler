@@ -25,18 +25,10 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMP
 
 /*
  * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
- * Method:    grabFPS
- * Signature: (Ljava/lang/String;)F
+ * Method:    grabInformation
+ * Signature: (Ljava/lang/String;)[F
  */
-JNIEXPORT jfloat JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFPS
-  (JNIEnv *, jobject, jstring);
-
-/*
- * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
- * Method:    grabDimension
- * Signature: (Ljava/lang/String;)[I
- */
-JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabDimension
+JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabInformation
   (JNIEnv *, jobject, jstring);
 
 #ifdef __cplusplus

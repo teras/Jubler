@@ -37,7 +37,7 @@
 #include "utilities.h"
 
 jfloat dump_fps(const char *input_filename);
-void get_dimension(jint* dimension, const char* input_filename);
+void get_information(jfloat* dimension, const char* input_filename);
 
 
 /*
@@ -45,38 +45,38 @@ void get_dimension(jint* dimension, const char* input_filename);
  * Method:    grabDimension
  * Signature: (Ljava/lang/String;)[I
  */
-JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabDimension
+JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabInformation
   (JNIEnv * env, jobject this, jstring video)
 {
 	/* Pointers for c-like strings */
 	const char *video_c;
 	/* Result integer table */
-	jintArray dimension = NULL;
-	jint* matrixdata = NULL;
+	jfloatArray dimension = NULL;
+	jfloat* matrixdata = NULL;
 
 	/* initialize java array */
-	dimension = (*env)->NewIntArray(env, 3);
+	dimension = (*env)->NewFloatArray(env, 4);
     if (dimension==NULL) return NULL;
 
 	/* get array data position */
-    matrixdata = (*env)->GetIntArrayElements(env, dimension, 0);	
+    matrixdata = (*env)->GetFloatArrayElements(env, dimension, 0);	
 
 	/* translate Java strings into C strings */
 	video_c  = (*env)->GetStringUTFChars(env, video, 0);
 	
-	get_dimension(matrixdata, video_c);
+	get_information(matrixdata, video_c);
 
 	/* free memory reserved for Java->C strings */
 	(*env)->ReleaseStringUTFChars(env, video, video_c);
 
 	/* release integer data */
-	(*env)->ReleaseIntArrayElements(env, dimension, matrixdata, 0);
+	(*env)->ReleaseFloatArrayElements(env, dimension, matrixdata, 0);
 
 	return dimension;
 }
 
 /* Get the actual dimension of a video file and store it in a two position integer */
-void get_dimension(jint* dim, const char* video_c)
+void get_information(jfloat* dim, const char* video_c)
 {
 	int err=0, i=0;
 	AVFormatContext * fcx=NULL;
@@ -87,7 +87,7 @@ void get_dimension(jint* dim, const char* video_c)
 	// Open the input file.
 	err = av_open_input_file(&fcx, video_c, NULL, 0, NULL);
 	if(err<0) {
-		DEBUG("get_dimension", "Could not open file '%s'.\n", video_c);
+		DEBUG("get_information", "Could not open file '%s'.\n", video_c);
 		ret = JNI_FALSE;
 	}
 
@@ -101,81 +101,20 @@ void get_dimension(jint* dim, const char* video_c)
 			if(st->codec->codec_type == CODEC_TYPE_VIDEO) {
 				dim[0] = st->codec->width;
 				dim[1] = st->codec->height;
-
-				break; // we only need the first supported stream
-			}
-		}
-	}
-
-	if(fcx != NULL) av_close_input_file(fcx);
-}
-
-
-
-/*
- * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
- * Method:    grabFPS
- * Signature: (Ljava/lang/String;)F
- */
-JNIEXPORT jfloat JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFPS
-  (JNIEnv * env, jobject this, jstring video)
-{
-
-	/* Pointers for c-like strings */
-	const char *video_c;
+#warn FIXME: add length to get_information block
 	
-	/* Here we'll store the FPS */
-	jfloat FPS = -1;
-	
-
-	/* translate Java strings into C strings */
-	video_c  = (*env)->GetStringUTFChars(env, video, 0);
-
-	FPS = dump_fps(video_c);
-
-	/* free memory reserved for Java->C strings */
-	(*env)->ReleaseStringUTFChars(env, video, video_c);
-
-	return FPS;
-}
-
-
-jfloat dump_fps(const char *input_filename){
-	int err=0, i=0;
-	jfloat fps=-1;
-	jboolean ret = JNI_TRUE;
-	AVFormatContext * fcx=NULL;
-
-	av_register_all();
-
-	// Open the input file.
-	err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
-	if(err<0){
-		DEBUG("dump_fps", "Could not open file '%s'.\n", input_filename);
-		ret = JNI_FALSE;
-	}
-
-	if (ret != JNI_FALSE) {
-		// Find the stream info
-		err = av_find_stream_info(fcx);
-
-		// Give us information about the fps
-		for(i=0;i<fcx->nb_streams;i++) {
-			AVStream *st = fcx->streams[i];
-			if(st->codec->codec_type == CODEC_TYPE_VIDEO) {
+				/* Calc FPS */
 				if(st->r_frame_rate.den && st->r_frame_rate.num) {
-					fps = av_q2d(st->r_frame_rate);
+					dim[3] = av_q2d(st->r_frame_rate);
 				}
 				else {
-					fps = 1/av_q2d(st->codec->time_base);
+					dim[3] = 1/av_q2d(st->codec->time_base);
 				}
-				
 				break; // we only need the first supported stream
 			}
 		}
 	}
 
 	if(fcx != NULL) av_close_input_file(fcx);
-	return fps;
 }
 

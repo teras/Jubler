@@ -23,7 +23,9 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 
-import java.awt.Dimension;
+import com.panayotis.jubler.media.AudioFile;
+import com.panayotis.jubler.media.CacheFile;
+import com.panayotis.jubler.media.VideoFile;
 import java.awt.Image;
 
 /**
@@ -34,17 +36,16 @@ public interface DecoderInterface {
     
     public abstract boolean isDecoderValid();
 
-    public abstract boolean initAudioCache(String afile, String cfile, DecoderListener fback);
+    public abstract boolean initAudioCache(AudioFile afile, CacheFile cfile, DecoderListener fback);
     public abstract void setInterruptStatus(boolean interrupt);
     public abstract boolean getInterruptStatus();
-    public abstract void closeAudioCache(String cache);
+    public abstract void closeAudioCache(CacheFile cache);
 
-    public abstract AudioPreview getAudioPreview(String cache, double from, double to);
+    public abstract AudioPreview getAudioPreview(CacheFile cache, double from, double to);
 
-    public abstract Image getFrame(String video, double time, boolean small);
-    public abstract float getFPS(String vfile);
-    public abstract int[] getDimensions(String vfile);
+    public abstract Image getFrame(VideoFile video, double time, boolean small);
+    public abstract void retrieveInformation(VideoFile vfile);
     
-    public abstract void playAudioClip(String audio, double from, double to);
+    public abstract void playAudioClip(AudioFile audio, double from, double to);
     
 }

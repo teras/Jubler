@@ -26,13 +26,11 @@ package com.panayotis.jubler.media;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.JIDialog;
-import com.panayotis.jubler.media.filters.AudioFileFilter;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
-import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Image;
 import java.io.File;
@@ -114,7 +112,18 @@ public class MediaFile {
     public boolean equals(Object o) {
         if (o instanceof MediaFile) {
             MediaFile m = (MediaFile)o;
-            return vfile.equals(m.vfile) && afile.equals(m.afile) && cfile.equals(m.cfile);
+            
+            /* We have to do all these tests to prevent null pointer exceptions */
+            if (vfile==null && m.vfile!=null) return false;
+            if ( !(vfile==m.vfile || vfile.equals(m.vfile)) ) return false;
+            
+            if (afile==null && m.afile!=null) return false;
+            if ( !(afile==m.afile || afile.equals(m.afile)) ) return false;
+            
+            if (cfile==null && m.cfile!=null) return false;
+            if ( !(cfile==m.cfile || cfile.equals(m.cfile)) ) return false;
+            
+            return true;
         }
         return super.equals(o);
     }
@@ -187,26 +196,22 @@ public class MediaFile {
     
     /* Decoder actions */
     public boolean initAudioCache(DecoderListener listener) {
-        return decoder.initAudioCache(afile.getPath(), cfile.getPath(), listener);
+        return decoder.initAudioCache(afile, cfile, listener);
     }
     public AudioPreview getAudioPreview(double from, double to) {
-        return decoder.getAudioPreview(cfile.getPath(), from, to);
+        return decoder.getAudioPreview(cfile, from, to);
     }
     public void closeAudioCache() {
         if (cfile!=null)
-            decoder.closeAudioCache(cfile.getPath());
+            decoder.closeAudioCache(cfile);
     }
     public Image getFrame(double time, boolean small) {
         if (vfile==null) return null;
-        return decoder.getFrame(vfile.getPath(), time, small);
+        return decoder.getFrame(vfile, time, small);
     }
     public void playAudioClip(double from, double to) {
         if (afile!=null)
-            decoder.playAudioClip(afile.getPath(), from, to);
-    }
-    public float getFPS() {
-        if (vfile==null) return -1;
-        return decoder.getFPS(vfile.getPath());
+            decoder.playAudioClip(afile, from, to);
     }
     public void interruptCacheCreation(boolean status) {
         decoder.setInterruptStatus(status);

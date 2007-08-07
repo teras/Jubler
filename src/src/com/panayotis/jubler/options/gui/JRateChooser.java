@@ -126,7 +126,7 @@ public class JRateChooser extends JPanel {
         if (mfile==null) return;
         if (! mfile.validateMediaFile(subs, false)) return;
         
-        float fps = mfile.getFPS();
+        float fps = mfile.getVideoFile().getFPS();
         if (fps>0) FPSChooser.setSelectedItem(fps);
     }//GEN-LAST:event_FromFPSBFPSBActionPerformed
     

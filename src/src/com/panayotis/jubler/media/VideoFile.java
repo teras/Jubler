@@ -44,7 +44,8 @@ public class VideoFile extends File {
     /* Various metrics about this video file */
     private int width = -1;
     private int height = -1;
-    private int length = -1;
+    private float length = -1;
+    private float fps;
     
     /** Creates a new instance of VideoFile */
     public VideoFile(String vfile, DecoderInterface decoder) {
@@ -57,34 +58,36 @@ public class VideoFile extends File {
     }
     
     
+    public void setInformation(int width, int height, float length, float fps) {
+        this.width = width;
+        this.height = height;
+        this.length = length;
+        this.fps = fps;
+    }
+
+    
     public int getWidth() { return width; }
     public int getHeight() { return height; }
-    public int getLength() { return length; }
+    public float getLength() { return length; }
+    public float getFPS() { return fps; }
     
     
     public void getVideoProperties(DecoderInterface decoder) {
-//        if (decoder!=null && decoder.isDecoderValid()) {
-//            int[] vals = decoder.getDimensions(getPath());
-//            if (vals!=null) {
-//                width = vals[0];
-//                height = vals[1];
-//                length = vals[2];
-//            }
-//        }
-        System.out.print(getPath()+" ");
+        if (decoder!=null) decoder.retrieveInformation(this);
         if (width<0) {
             
             /* Use MPlayer if no decoder is valid */
             String cmd[] = { Options.getOption("Player.MPlayer.Path",""), "-vo", "null", "-ao", "null", "-identify", "-endpos", "0", getPath() };
             Process proc;
             try {
-                System.out.print("MPlayer ");
                 proc = Runtime.getRuntime().exec(cmd);
                 BufferedReader infopipe = new BufferedReader( new InputStreamReader(proc.getInputStream()));
                 String line;
                 while ( (line=infopipe.readLine()) != null) {
-                    if (line.startsWith("ID_VIDEO_HEIGHT")) height= getValue(line.substring(line.indexOf('=')+1));
-                    if (line.startsWith("ID_VIDEO_WIDTH")) width = getValue(line.substring(line.indexOf('=')+1));
+                    if (line.startsWith("ID_VIDEO_HEIGHT")) height= Math.round(getValue(line.substring(line.indexOf('=')+1)));
+                    if (line.startsWith("ID_VIDEO_WIDTH")) width = Math.round(getValue(line.substring(line.indexOf('=')+1)));
+                    if (line.startsWith("ID_VIDEO_FPS"))
+                        fps = getValue(line.substring(line.indexOf('=')+1));
                     if (line.startsWith("ID_LENGTH")) {
                         length = getValue(line.substring(line.indexOf('=')+1));
                         break;
@@ -95,14 +98,14 @@ public class VideoFile extends File {
                 height = -1;
                 width = -1;
                 length = -1;
+                fps = -1;
             }
         }
-        System.out.println("Height:"+height);
     }
     
-    private static int getValue(String info) {
+    private static float getValue(String info) {
         try {
-            return Integer.parseInt(info);
+            return Float.parseFloat(info);
         } catch (NumberFormatException e) {}
         return 0;
     }

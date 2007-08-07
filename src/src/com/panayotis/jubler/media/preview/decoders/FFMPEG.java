@@ -24,9 +24,10 @@
 package com.panayotis.jubler.media.preview.decoders;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.media.AudioFile;
+import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemFileFinder;
-import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -60,11 +61,11 @@ public final class FFMPEG extends NativeDecoder {
     /** Creates a new instance of FFMPEG */
     public FFMPEG() {}
     
-    public Image getFrame(String video, double time, boolean small) {
-        if ( video==null || (!isDecoderValid()) ) return null;
+    public Image getFrame(VideoFile vfile, double time, boolean small) {
+        if ( vfile==null || (!isDecoderValid()) ) return null;
         
         time *= 1000000;
-        int[] frame = grabFrame(video, (long)time, small);
+        int[] frame = grabFrame(vfile.getPath(), (long)time, small);
         if (frame==null) return null;
         
         int[] bitmasks = {0xff0000, 0xff00, 0xff, 0xff000000};
@@ -76,8 +77,8 @@ public final class FFMPEG extends NativeDecoder {
     }
     
     
-    public void playAudioClip(String audio, double from, double to) {
-        if (audio==null || (!isDecoderValid())) return;
+    public void playAudioClip(AudioFile afile, double from, double to) {
+        if (afile==null || (!isDecoderValid())) return;
         
         from *= 1000000;
         to   *= 1000000;
@@ -85,7 +86,7 @@ public final class FFMPEG extends NativeDecoder {
         try {
             final File wavfile = File.createTempFile("jublerclip_",".wav");
             wav = wavfile;
-            if (!createClip(audio, wavfile.getPath(), (long)from, (long)to)) {
+            if (!createClip(afile.getPath(), wavfile.getPath(), (long)from, (long)to)) {
                 /* Something went wrong */
                 cleanUp(_("Count not create audio clip"), wav);
                 return;
@@ -119,16 +120,12 @@ public final class FFMPEG extends NativeDecoder {
         if (f!=null && f.exists() && f.canWrite()) f.delete();
     }
     
-    public float getFPS(String vfile) {
-        if (!isDecoderValid()) return -1;
-        return grabFPS(vfile);
-    }
-
-    public int[] getDimensions(String vfile) {
-        if (!isDecoderValid()) return null;
-        int[] res = grabDimension(vfile);
-        if (res==null || res.length<3 || res[0]<=0 || res[1]<=0 || res[2]<=0 ) return null;
-        return res;
+    public void retrieveInformation(VideoFile vfile) {
+        if (!isDecoderValid()) return;
+        
+        float[] info = grabInformation(vfile.getPath());
+        if (info == null) return;
+        vfile.setInformation(Math.round(info[0]), Math.round(info[1]), info[2], info[3]);
     }
     
     public boolean isDecoderValid() {
@@ -140,11 +137,9 @@ public final class FFMPEG extends NativeDecoder {
     
     /* Create a wav file from the specified time stamps */
     private native boolean createClip(String audio, String wav, long from, long to);
-    
-    /* Get FPS from a video file */
-    public native float grabFPS(String vfile);
 
     /* Get the dimensions of a video file */
-    public native int[] grabDimension(String vfile);
+    public native float[] grabInformation(String vfile);
+    
     
 }

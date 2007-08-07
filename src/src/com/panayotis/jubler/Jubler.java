@@ -94,11 +94,6 @@ import javax.swing.table.TableCellRenderer;
  * @author  teras
  */
 
-
-
-
-
-
 public class Jubler extends JFrame {
     
     public static JublerList windows;

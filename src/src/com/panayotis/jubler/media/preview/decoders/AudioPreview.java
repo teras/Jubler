@@ -71,16 +71,15 @@ public class AudioPreview {
     }
     
     /* Use this static method to check if a specific file is a regular file or an audio cache */
-    public static boolean isAudioPreview(String fname) {
-        if (fname == null) return false;
+    public static boolean isAudioPreview(File cfile) {
+        if (cfile == null) return false;
         
-        File cachefile = new File(fname);
-        if ( (!cachefile.exists()) || cachefile.length() < 10) return false;
+        if ( (!cfile.exists()) || cfile.length() < 10) return false;
         
         StringBuffer header = new StringBuffer();
         RandomAccessFile file;
         try {
-            file = new RandomAccessFile(fname, "r");
+            file = new RandomAccessFile(cfile, "r");
             for (int i = 0 ; i < 7 ; i++) {
                 header.append((char)file.readByte());
             }
@@ -100,7 +99,7 @@ public class AudioPreview {
     }
     
     public static String getNameFromCache(File cf) {
-        if (!isAudioPreview(cf.getPath())) return null;
+        if (!isAudioPreview(cf)) return null;
         
         String name = null;
         RandomAccessFile file;

@@ -23,8 +23,8 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 import static com.panayotis.jubler.i18n.I18N._;
-
-import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.AudioFile;
+import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.os.DEBUG;
 import java.io.File;
 
@@ -40,9 +40,9 @@ public abstract class NativeDecoder implements DecoderInterface {
     private boolean isInterrupted;
     
     
-    public boolean initAudioCache(String afile, String cfile, DecoderListener fback) {
-        final String af = afile;
-        final String cf = cfile;
+    public boolean initAudioCache(AudioFile afile, CacheFile cfile, DecoderListener fback) {
+        final File af = afile;
+        final File cf = cfile;
         feedback = fback;
         
         /* Make sanity checks */
@@ -54,12 +54,16 @@ public abstract class NativeDecoder implements DecoderInterface {
             DEBUG.error(_("Still creating cache. Use the Cancel button to abort."));
             return false;
         }
-        if (cf==null || cf.equals("")) {
-            DEBUG.info(_("Unable to create a null cache file"), DEBUG.INFO_ALWAYS);
+        if (afile==null) {
+            DEBUG.info(_("Unable to create cache to unknown audio file"), DEBUG.INFO_ALWAYS);
             return false;    /* We HAVE to have defined the cached file */
         }
-        if (AudioPreview.isAudioPreview(cf)) {
-            DEBUG.info(_("Jubler audio cache detected for audio input: {0}", cf), DEBUG.INFO_ALWAYS);
+        if (cfile==null) {
+            DEBUG.info(_("Unable to create unset cache file"), DEBUG.INFO_ALWAYS);
+            return false;    /* We HAVE to have defined the cached file */
+        }
+        if (AudioPreview.isAudioPreview(cfile)) {
+            DEBUG.info(_("Jubler audio cache detected for audio input: {0}", cfile.getPath()), DEBUG.INFO_ALWAYS);
             return true;
         }
         
@@ -68,11 +72,11 @@ public abstract class NativeDecoder implements DecoderInterface {
             public void run() {
                 /* This is the subrutine which produces tha cached data, in separated thread */
                 feedback.startCacheCreation();
-                boolean status = makeCache(af, cf, new File(af).getName());
+                boolean status = makeCache(af.getPath(), cf.getPath(), af.getName());
                 cacher = null;  // Needed early, to "tip" the system that cache creatin has been finished
                 setInterruptStatus(false);
                 
-                if(!status) DEBUG.error(_("Error while loading file {0}",  af));
+                if(!status) DEBUG.error(_("Error while loading file {0}",  af.getPath()));
                 feedback.stopCacheCreation();
             }
         };
@@ -94,11 +98,10 @@ public abstract class NativeDecoder implements DecoderInterface {
     }
     
     /* Use this method when the loaded audio cache is no more needed */
-    public void closeAudioCache(String cfile) {
+    public void closeAudioCache(CacheFile cfile) {
         /* Check if the file is null and remove it from disk */
-        File c = new File(cfile);
-        if (c.length()==0 && c.isFile() && c.canWrite()) {
-            c.delete();
+        if (cfile.length()==0 && cfile.isFile() && cfile.canWrite()) {
+            cfile.delete();
         }
         
         /* If cache is being created - abort creation */
@@ -107,19 +110,19 @@ public abstract class NativeDecoder implements DecoderInterface {
         }
         
         /* Now clean up memory */
-        if (cfile!=null && (!cfile.equals("")) && isDecoderValid()) {
-            forgetCache(cfile); //
+        if (cfile!=null && isDecoderValid()) {
+            forgetCache(cfile.getPath()); //
         }
         
     }
     
     
-    public AudioPreview getAudioPreview(String cfile, double from, double to) {
+    public AudioPreview getAudioPreview(CacheFile cfile, double from, double to) {
         if (!isDecoderValid()) return null;
         if (cfile==null) return null;
         if (cacher!=null) return null;  // Cache still being created
         
-        float[] data = grabCache(cfile, from, to);
+        float[] data = grabCache(cfile.getPath(), from, to);
         if (data==null) return null;
         return new AudioPreview(data);
     }
