@@ -51,9 +51,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class SystemDependent {
     
     private final static String OS;
+    public final static String PROG_EXT;
     
     static {
         OS = System.getProperty("os.name").toLowerCase();
+        
+        if (isWindows()) PROG_EXT=".exe";
+        else PROG_EXT="";
     }
     
     private static boolean isLinux() {

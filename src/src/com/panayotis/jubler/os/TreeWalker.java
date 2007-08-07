@@ -61,7 +61,7 @@ public class TreeWalker {
         if (!root.exists()) return null;
         if (root.isFile()) {
             if (!root.canRead()) return null;
-            if (!root.getName().toLowerCase().startsWith(program)) return null;
+            if (!root.getName().toLowerCase().equals(program+SystemDependent.PROG_EXT)) return null;
             if (!execIsValid(root, program)) return null;
             /* All checks OK - valid executable! */
             return root;
