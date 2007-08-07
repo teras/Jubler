@@ -289,14 +289,6 @@ is divided into following sections:
                 <j2seproject1:attribute name="Main-Class" value="${main.class}"/>
             </j2seproject1:manifest>
         </j2seproject1:jar>
-        <echo>To run this application from the command line without Ant, try:</echo>
-        <property name="build.classes.dir.resolved" location="${build.classes.dir}"/>
-        <property name="dist.jar.resolved" location="${dist.jar}"/>
-        <pathconvert property="run.classpath.with.dist.jar">
-            <path path="${run.classpath}"/>
-            <map from="${build.classes.dir.resolved}" to="${dist.jar.resolved}"/>
-        </pathconvert>
-        <echo>java -cp "${run.classpath.with.dist.jar}" ${main.class}</echo>
     </target>
     <target name="-do-jar-with-libraries" depends="init,compile,-pre-pre-jar,-pre-jar" if="manifest.available+main.class+mkdist.available">
         <property name="build.classes.dir.resolved" location="${build.classes.dir}"/>
@@ -319,9 +311,6 @@ is divided into following sections:
                 <attribute name="Class-Path" value="${jar.classpath}"/>
             </manifest>
         </copylibs>
-        <echo>To run this application from the command line without Ant, try:</echo>
-        <property name="dist.jar.resolved" location="${dist.jar}"/>
-        <echo>java -jar "${dist.jar.resolved}"</echo>
     </target>
     <target name="-post-jar">
         <!-- Empty placeholder for easier customization. -->
