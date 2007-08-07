@@ -89,17 +89,6 @@ public class SystemDependent {
     }
     
     
-    /* Use this method while checking plugins.
-     * For some strange reason, windows does not like executing a program
-     * just to make sure that it is valid.
-     * In Unix-like O.S. there shouldn't be a problem.
-     */
-    public static boolean shouldWaitForProccess() {
-        return !isWindows();
-    }
-    
-    
-    
     public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
         if (isMacOSX()) {
             about.setVisible(false);
@@ -146,11 +135,6 @@ public class SystemDependent {
     public static int getDefaultKeyModifier() {
         if (isMacOSX()) return 0;
         return 2;
-    }
-    
-    public static String getCanonicalFilename(String filename) {
-        if (isWindows()) return filename.toLowerCase()+".exe";
-        return filename.toLowerCase();
     }
     
     public static int getBundleOrFileID() {
@@ -249,7 +233,6 @@ public class SystemDependent {
         try {
             String line;
             proc = Runtime.getRuntime().exec(cmd);
-            proc.waitFor();
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             while ( (line = in.readLine()) != null) {
                 if (line.endsWith(pathterm+name))
