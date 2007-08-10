@@ -71,6 +71,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
     }
     
     public void deleteSubFile() {
+        if (subpath==null) return;
         File f = new File(subpath);
         if (f.exists()) f.delete();
     }
@@ -123,8 +124,6 @@ public abstract class AbstractPlayer extends VideoPlayer {
         replaceValues(cmds, "%t", when.toString());
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));
-        replaceValues(cmds, "%f", sub.getStyleList().get(0).get(Style.FONTNAME).toString());
-        replaceValues(cmds, "%z", String.valueOf(sub.getStyleList().get(0).get(Style.FONTSIZE)));
         replaceValues(cmds, "%j", SystemFileFinder.getJublerAppPath());
         
         StringBuffer cm = new StringBuffer();

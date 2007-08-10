@@ -66,6 +66,7 @@ public class SubStyle {
         try {
             fnames = env.getAvailableFontFamilyNames();
         } catch (Exception e1) {
+            DEBUG.info("Using failsafe routine for font loading.", DEBUG.INFO_ALWAYS);
             Font[] fnt = env.getAllFonts();
             TreeSet<String> names = new TreeSet<String>();
             

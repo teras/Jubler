@@ -161,7 +161,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         submark_state = 0;
         view = player.getViewport();
         view.setParameters(mfile, subs, this, starttime);
-
+        
         while (true) {
             try {
                 view.start();
@@ -198,6 +198,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         setVisible(false);
         parent.removeConsole(this);
         view = null;
+        player.cleanUp();
         
         /* Save window position */
         Options.setOption("VideoConsole.DefaultPosition", "("+ getX() + "," + getY() +")");

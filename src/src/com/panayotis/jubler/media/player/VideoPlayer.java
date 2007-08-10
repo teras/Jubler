@@ -58,4 +58,7 @@ public abstract class VideoPlayer extends ExtProgram {
     public abstract void setCentralLocation(int x, int y);
     
     public String getIconName() { return "/icons/player_small.png"; }
+
+    /* Player is exiting, clean up */
+    public abstract void cleanUp();
 }

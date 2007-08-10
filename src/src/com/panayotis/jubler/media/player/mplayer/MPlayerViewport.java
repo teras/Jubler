@@ -82,6 +82,8 @@ public class MPlayerViewport implements Viewport {
     }
     
     public void start() throws ExtProgramException {
+        player.cleanUp();   // Make sure player is in it's initial position (i.e. no subtitle files hanging around)
+        
         String cmd[] = player.getCommandArguments(mfile, sub, when);
         position = 0;
         isPaused = false;
@@ -90,11 +92,16 @@ public class MPlayerViewport implements Viewport {
             Process proc = Runtime.getRuntime().exec(cmd);
             cmdpipe = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
             infopipe = new BufferedReader( new InputStreamReader(proc.getInputStream()));
+//            BufferedReader errorpipe = new BufferedReader( new InputStreamReader(proc.getErrorStream()));
             
             if (infopipe == null || cmdpipe == null || proc == null )
                 throw new ExtProgramException(new NullPointerException());
             
             sendCommand("get_property volume");
+            
+//            String line;
+//            while ((line=errorpipe.readLine())!=null) System.out.println(line);
+//            while ((line=info.readLine())!=null) System.out.println(line);
             
             updater = new Thread() {
                 public void run() {
@@ -104,9 +111,8 @@ public class MPlayerViewport implements Viewport {
             updater.start();
             return;
         } catch (Exception e) {
+            player.cleanUp();
             throw new ExtProgramException(e);
-        } finally {
-            player.deleteSubFile();
         }
     }
     
