@@ -23,11 +23,14 @@
 
 
 package com.panayotis.jubler.media.player.mplayer;
-import com.panayotis.jubler.media.player.*;
+
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
+import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import java.io.File;
 
 /**
  *
@@ -54,5 +57,15 @@ public class MPlayer extends AbstractPlayer {
     public boolean supportChangeSubs() { return true; }
     
     public Viewport getViewport() { return new MPlayerViewport(this); }
+    
+    public static void updateParameters() {
+        int version = Options.getVersion();
+        String params = Options.getOption("Player.MPlayer.Arguments","");
+        if ( version<2 && (!params.equals("")) ) {
+            Options.setOption("Player.MPlayer.Arguments", SystemDependent.getDefaultMPlayerArgs());
+            DEBUG.warning(_("MPlayer parameters have been updated."));
+        }
+        Options.updateVersion();
+    }
     
 }

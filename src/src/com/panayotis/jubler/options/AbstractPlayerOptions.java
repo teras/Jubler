@@ -123,10 +123,10 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         Help1L.setText(_("Advanced argument list:"));
         HelpP.add(Help1L);
 
-        Help2L.setText("    %p=player %v=video_file %s=subtiles_file %t=start_time");
+        Help2L.setText("    %p=player %v=video_file %s=subtiles_file");
         HelpP.add(Help2L);
 
-        Help3L.setText("    %x=x_offset %y=y_offset %f=fontname %z=font_size %j=Jubler_path");
+        Help3L.setText("    %t=start_time %j=Jubler_path %x=x_offset %y=y_offset");
         HelpP.add(Help3L);
 
         Help4L.setText("    %a=optional audio file   %( %)=begin & end of audio parameter");
@@ -152,7 +152,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         add(ParametersP, java.awt.BorderLayout.CENTER);
 
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void defltActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defltActionPerformed
         args.setText(args_default);
     }//GEN-LAST:event_defltActionPerformed

@@ -173,12 +173,10 @@ public class SystemDependent {
     }
     
     public static String getDefaultMPlayerArgs() {
-        String fontconfig = "";
         String font = "";
         
         if (isLinux()) {
-            font = " -font %f";
-            fontconfig=" -fontconfig";
+            font = " -fontconfig";
         } else {
             if (isWindows()) {
                 font=" -font c:\\Windows\\fonts\\arial.ttf";
@@ -190,8 +188,9 @@ public class SystemDependent {
             }
         }
         
-        return "%p -slave -identify -ontop -utf8 -noquiet -nofs"+fontconfig+" -subfont-autoscale 0 -volstep 10"+
-                " -sub %s -ss %t -geometry +%x+%y"+font+" -subfont-text-scale %z %(-audiofile %a%) %v";
+        return "%p -noautosub -noquiet -nofs -slave -idle -identify -ontop "+
+                "-utf8 -volstep 10 -sub %s -ss %t -geometry +%x+%y "+
+                "%(-audiofile %a%) -ass" + font + " %v";
     }
     
     

@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler;
+import com.panayotis.jubler.media.player.mplayer.MPlayer;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -78,7 +79,6 @@ public class Main {
                             }
                         }
                         synchronized(this) { wait(); }
-                        
                     } catch (InterruptedException ex) {
                     } catch (ArrayIndexOutOfBoundsException ex) {
                     }
@@ -104,6 +104,9 @@ public class Main {
             }
         };
         t.start();
+        
+        MPlayer.updateParameters();
+        
     }
     
     

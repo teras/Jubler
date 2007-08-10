@@ -37,6 +37,8 @@ public class Options {
     private final static Properties opts;
     private final static String preffile;
     
+    public final static int CURRENT_VERSION = 2;
+    
     static {
         preffile = System.getProperty("user.home") + System.getProperty("file.separator") + ".jublerrc";
         
@@ -106,5 +108,15 @@ public class Options {
             }
         }
         return ret;
+    }
+    
+    public static int getVersion() {
+        int version = Integer.parseInt(getOption("Preferences.Version", "1"));
+        return version;
+    }
+    
+    public static void updateVersion() {
+        setOption("Preferences.Version", Integer.toString(CURRENT_VERSION));
+        saveOptions();
     }
 }

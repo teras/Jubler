@@ -106,12 +106,11 @@ public class MPlayerViewport implements Viewport {
         } catch (Exception e) {
             throw new ExtProgramException(e);
         } finally {
-            System.out.println("KOOOO");
-          //  player.deleteSubFile();
+            player.deleteSubFile();
         }
     }
     
-     
+    
     /* This part of the code is executed in the updater thread
      * It finishes when the EOF is found */
     private void parseOutput() {
@@ -144,7 +143,7 @@ public class MPlayerViewport implements Viewport {
         } catch (NumberFormatException e) {}
         return 0;
     }
-   
+    
     
     private boolean sendCommand(String com) {
         if (!isActive) return true;    // Ignore commands if viewport is inactive
