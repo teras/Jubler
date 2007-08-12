@@ -68,8 +68,5 @@ public class MPlayer extends AbstractPlayer {
         Options.updateVersion();
     }
 
-    public void cleanUp() {
-        deleteSubFile();
-    }
-    
+   
 }

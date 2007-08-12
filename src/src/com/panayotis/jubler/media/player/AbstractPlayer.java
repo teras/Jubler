@@ -70,7 +70,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         DEBUG.error(_("Could not create temporary file to store the subtitles."));
     }
     
-    public void deleteSubFile() {
+     public void cleanUp() {
         if (subpath==null) return;
         File f = new File(subpath);
         if (f.exists()) f.delete();
