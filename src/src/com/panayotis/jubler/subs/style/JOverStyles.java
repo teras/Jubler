@@ -41,6 +41,7 @@ import com.panayotis.jubler.subs.style.gui.tri.TriObject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 /**
  *
@@ -88,7 +89,6 @@ public class JOverStyles extends javax.swing.JPanel {
         
         FontP.setVisible(false);
         ColorP.setVisible(false);
-        MetricsP.setVisible(false);
         
         this.parent = parent;
     }
@@ -103,13 +103,12 @@ public class JOverStyles extends javax.swing.JPanel {
     public void setPanelVisible(String what, boolean isVisible) {
         if (what.endsWith("font")) FontP.setVisible(isVisible);
         if (what.endsWith("color")) ColorP.setVisible(isVisible);
-        if (what.endsWith("metrics")) MetricsP.setVisible(isVisible);
         validate();
     }
     
     
     
-    public void updateVisualData(SubStyle style, AbstractStyleover[] over, int start, int end, String subtext) {
+    public void updateVisualData(SubStyle style, AbstractStyleover[] over, int start, int end, String subtext, JLabel Stats) {
         for (int i = 0 ; i < visuals.length ; i++) {
             Object basic = style.get(i);
             Object data;
@@ -120,6 +119,29 @@ public class JOverStyles extends javax.swing.JPanel {
             }
             ((TriObject)visuals[i]).setData(data);
         }
+        
+        /* Update statistics of this label */
+        int maxlength = 0;
+        int col = 0;
+        int lines = 1;
+        int length = subtext.length();
+        for (int idx = 0 ; idx < length ; idx++) {
+            if (subtext.charAt(idx)=='\n') {
+                lines++;
+                if (col > maxlength) maxlength = col;
+                col = 0;
+            } else {
+                col++;
+            }
+        }
+        if (col > maxlength) maxlength = col;
+        System.out.println("TLC");
+        /* Update information label */
+        StringBuffer txt = new StringBuffer();
+        txt.append("T:").append(subtext.length());
+        txt.append(" L:").append(lines);
+        txt.append(" C:").append(maxlength);
+        Stats.setText(txt.toString());
     }
     
     
@@ -134,7 +156,6 @@ public class JOverStyles extends javax.swing.JPanel {
         FontAttP = new javax.swing.JPanel();
         TextAttP = new javax.swing.JPanel();
         ColorP = new javax.swing.JPanel();
-        MetricsP = new javax.swing.JPanel();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -146,7 +167,7 @@ public class JOverStyles extends javax.swing.JPanel {
 
         TextAttP.setLayout(new java.awt.GridLayout(1, 0));
 
-        TextAttP.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(0, 6, 0, 0)));
+        TextAttP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         FontP.add(TextAttP, java.awt.BorderLayout.EAST);
 
         add(FontP);
@@ -155,10 +176,7 @@ public class JOverStyles extends javax.swing.JPanel {
 
         add(ColorP);
 
-        add(MetricsP);
-
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     
     
     
@@ -166,7 +184,6 @@ public class JOverStyles extends javax.swing.JPanel {
     private javax.swing.JPanel ColorP;
     private javax.swing.JPanel FontAttP;
     private javax.swing.JPanel FontP;
-    private javax.swing.JPanel MetricsP;
     private javax.swing.JPanel TextAttP;
     // End of variables declaration//GEN-END:variables
     

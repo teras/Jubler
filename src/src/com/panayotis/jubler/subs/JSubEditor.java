@@ -649,7 +649,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
             end = swap;
         }
         if (entry==null || overstyle==null) return;
-        overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), start, end, entry.getText());
+        overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), start, end, entry.getText(), parent.Stats);
     }//GEN-LAST:event_SubTextCaretUpdate
     
     private void TimeBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TimeBActionPerformed

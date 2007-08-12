@@ -350,6 +350,7 @@ public class Jubler extends JFrame {
         SubEditP = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         Info = new javax.swing.JLabel();
+        Stats = new javax.swing.JLabel();
         JublerTools = new javax.swing.JToolBar();
         NewTB = new javax.swing.JButton();
         LoadTB = new javax.swing.JButton();
@@ -548,7 +549,12 @@ public class Jubler extends JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         Info.setLabelFor(ShiftTimeTM);
         Info.setText(" ");
-        jPanel5.add(Info, java.awt.BorderLayout.SOUTH);
+        jPanel5.add(Info, java.awt.BorderLayout.CENTER);
+
+        Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        Stats.setText("T:0 L:1 C:0");
+        Stats.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
+        jPanel5.add(Stats, java.awt.BorderLayout.EAST);
 
         LowerPartP.add(jPanel5, java.awt.BorderLayout.SOUTH);
 
@@ -1941,6 +1947,7 @@ public class Jubler extends JFrame {
     private javax.swing.JButton SortTB;
     private javax.swing.JMenuItem SpellTM;
     private javax.swing.JMenuItem SplitTM;
+    public javax.swing.JLabel Stats;
     private javax.swing.JMenuItem StepwiseREM;
     private javax.swing.JMenu StyleEM;
     private javax.swing.JMenu StyleP;
