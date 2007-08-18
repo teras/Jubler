@@ -80,9 +80,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         
     }
     
-    public boolean supportsFPS() {
-        return true;
-    }
+    public boolean supportsFPS() { return true; }
     
     private Subtitles subs;
     private JPreferences prefs;

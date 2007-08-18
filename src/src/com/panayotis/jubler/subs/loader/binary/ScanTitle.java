@@ -66,9 +66,7 @@ public class ScanTitle extends AbstractBinarySubFormat {
         //}
     }
 
-    public boolean supportsFPS() {
-        return true;
-    }
+    public boolean supportsFPS() { return true; }
 
     public boolean produce(Subtitles subs, File out, MediaFile media) throws IOException {
         return true;

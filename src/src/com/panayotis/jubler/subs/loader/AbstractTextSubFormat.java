@@ -53,7 +53,6 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     protected Subtitles subtitle_list;
     
     /* Initialization functions */
-    protected String initLoader(String input) { return input+"\n"; }
     private void setFPS(float FPS) { this.FPS=FPS; }
     
     /* Loading functions */
@@ -62,7 +61,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     protected abstract Pattern getPattern();
     
     /* Saving functions */
-    protected abstract String makeSubEntry(SubEntry sub);
+    protected abstract void appendSubEntry(SubEntry sub, StringBuffer str);
     
     protected Pattern getTestPattern() {
         return getPattern();
@@ -87,8 +86,10 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             SubEntry entry;
             while(m.find()){
                 entry = getSubEntry(m);
-                entry.updateMaxCharStatus(attr, entry.getMetrics().maxlength);
-                subtitle_list.add(entry);
+                if (entry !=null) {
+                    entry.updateMaxCharStatus(attr, entry.getMetrics().maxlength);
+                    subtitle_list.add(entry);
+                }
             }
             if ( subtitle_list.isEmpty()) return null;
             return subtitle_list;
@@ -98,14 +99,17 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         }
     }
     
+    protected String initLoader(String input) { return input+"\n"; }
+    protected void cleanupLoader(Subtitles sub) {}
     
     
     public boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException {
         StringBuffer res = new StringBuffer();
-        res.append(makeHeader(subs, media));
+        initSaver(subs, media, res);
         for ( int i = 0 ; i < subs.size() ; i++ ) {
-            res.append(makeSubEntry(subs.elementAt(i)));
+            appendSubEntry(subs.elementAt(i), res);
         }
+        cleanupSaver(res);
         
         // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
         CharsetEncoder encoder = Charset.forName(getEncoding()).newEncoder();
@@ -116,8 +120,8 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         return true;
     }
     
-    protected String makeHeader(Subtitles subs, MediaFile media) { return ""; }
-    
+    protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {}
+    protected void cleanupSaver(StringBuffer footer) {}
     
     protected void updateAttributes(String input, Pattern title, Pattern author, Pattern source, Pattern comments) {
         Matcher m;

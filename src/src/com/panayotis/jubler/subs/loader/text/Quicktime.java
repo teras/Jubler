@@ -38,53 +38,72 @@ import com.panayotis.jubler.subs.Subtitles;
  *
  * @author teras
  */
-public class SubRip extends AbstractTextSubFormat {
+public class Quicktime extends AbstractTextSubFormat {
     
-    private static final Pattern pat;
+    private static final Pattern pat, test_pat;
     
-    private int counter = 0;
+    private Time start, finish;
     
     static {
         pat = Pattern.compile(
-                "(?s)(\\d+)"+sp+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"-->"+
-                sp+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+nl+"(.*?)"+nl+nl
+                "\\[(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d+)\\]"+nl+"(.*?)"+nl
                 );
+        test_pat = Pattern.compile("^\\{QTtext\\}");
     }
     
     protected Pattern getPattern () {
         return pat;
     }
-    
+     protected Pattern getTestPattern() {
+        return test_pat;
+    }
     
     
     protected SubEntry getSubEntry(Matcher m) {
-        Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
-        Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
-        return new SubEntry (start, finish, m.group(10));
+        Time start = new Time(m.group(1), m.group(2), m.group(3), m.group(4));
+        String text = m.group(5).trim();
+        if (text.equals("")) return null;
+        return new SubEntry (start, start, m.group(5));
     }
     
     
     public String getExtension() {
-        return "srt";
+        return "txt";
     }
     
     public String getName() {
-        return "SubRip";
+        return "Quicktime";
     }
-      
-    protected void appendSubEntry(SubEntry sub, StringBuffer str){
-        str.append(Integer.toString(counter++));
-        str.append("\n");
-        str.append(sub.getStartTime().toString());
-        str.append(" --> ");
-        str.append(sub.getFinishTime().toString());
-        str.append("\n");
-        str.append(sub.getText());
-        str.append("\n\n");
+     public String getExtendedName() {
+        return _("Quicktime Texttrack");
     }
     
+    protected String initLoader(String input) {
+        return super.initLoader(input);
+    }
+
+    
+    
     protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
-        counter = 1;
+        header.append("{QTtext}\n");
+        start = null;
+        finish = null;
+    }
+    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+        if (start==null) {
+            start = sub.getStartTime();
+            if (start.toSeconds()>0d) {
+                str.append("[00:00:00.000]\n\n");
+            }
+        }
+        str.append('[');
+        str.append(sub.getStartTime().toString().replace(',', '.'));
+        str.append("]\n");
+        str.append(sub.getText().replace('\n', ' ')).append('\n');
+        finish = sub.getFinishTime();
+    }
+    protected void cleanupSaver(StringBuffer footer) {
+        footer.append('[').append(finish.toString().replace(',', '.')).append("]\n");
     }
 
     public boolean supportsFPS() { return false; }

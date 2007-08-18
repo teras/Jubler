@@ -68,24 +68,16 @@ public class Spruce extends AbstractTextSubFormat {
         return "Spruce DVDMaestro";
     }
     
-    protected String makeSubEntry(SubEntry sub){
-        StringBuffer res;
-        String time;
-        
-        res = new StringBuffer();
-        
-        time = sub.getStartTime().toString().replace(',',':');
-        res.append(sub.getStartTime().toSecondsFrame(FPS));
-        res.append(" , ");
-        res.append(sub.getFinishTime().toSecondsFrame(FPS));
-        res.append(" , ");
-        res.append(sub.getText().replace('\n','|'));
-        res.append("\n");
-        return res.toString();
+    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+        String time = sub.getStartTime().toString().replace(',',':');
+        str.append(sub.getStartTime().toSecondsFrame(FPS));
+        str.append(" , ");
+        str.append(sub.getFinishTime().toSecondsFrame(FPS));
+        str.append(" , ");
+        str.append(sub.getText().replace('\n','|'));
+        str.append("\n");
     }
     
-    public boolean supportsFPS() {
-        return true;
-    }
+    public boolean supportsFPS() { return true; }
     
 }

@@ -87,37 +87,30 @@ public class SubViewer extends AbstractTextSubFormat {
     }
      
     
-    protected String makeSubEntry(SubEntry sub){
-        StringBuffer res;
+    protected void appendSubEntry(SubEntry sub, StringBuffer str){
         String t;
-        
-        res = new StringBuffer();
-        
+
         t = sub.getStartTime().toString().replace(',','.');
         t = t.substring(0, t.length()-1);
-        res.append(t);
+        str.append(t);
         
-        res.append(',');
+        str.append(',');
         
         t = sub.getFinishTime().toString().replace(',','.');
         t = t.substring(0, t.length()-1);
-        res.append(t);
+        str.append(t);
         
-        res.append("\n");
-        res.append(subreplace(sub.getText()));
-        res.append("\n\n");
-        
-        return res.toString();
+        str.append("\n");
+        str.append(subreplace(sub.getText()));
+        str.append("\n\n");
     }
     
     protected String subreplace(String sub) {
         return sub;
     }
     
-    protected String makeHeader(Subtitles subs, MediaFile media) {
-        StringBuffer header = new StringBuffer();
+    protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
         SubAttribs attr = subs.getAttribs();
-        
         header.append("[INFORMATION]\n[TITLE]");
         header.append(attr.getTitle());
         header.append("\n[AUTHOR]");
@@ -127,7 +120,6 @@ public class SubViewer extends AbstractTextSubFormat {
         header.append("\n[FILEPATH]\n[DELAY]0\n[COMMENT]");
         header.append(attr.getComments().replace('\n', '|'));
         header.append("\n[END INFORMATION]\n[SUBTITLE]\n[COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial\n");
-        return header.toString();
     }
     
     protected String initLoader(String input) {
@@ -136,7 +128,5 @@ public class SubViewer extends AbstractTextSubFormat {
         return input;
     }
 
-    public boolean supportsFPS() {
-        return false;
-    }
+    public boolean supportsFPS() { return false; }
 }

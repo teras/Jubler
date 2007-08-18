@@ -86,9 +86,7 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         return testpat;
     }
     
-    public boolean supportsFPS() {
-        return false;
-    }
+    public boolean supportsFPS() { return false; }
     
     
     protected SubEntry getSubEntry(Matcher m) {
@@ -120,24 +118,21 @@ public class SubStationAlpha extends AbstractTextSubFormat {
     }
     
     
-    protected String makeSubEntry(SubEntry sub){
-        StringBuffer res;
-        res = new StringBuffer();
-        res.append("Dialogue: ");
-        res.append(getLayer()).append(',');
-        res.append(timeformat(sub.getStartTime()));
-        res.append(',');
-        res.append(timeformat(sub.getFinishTime())).append(',');
+    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+        str.append("Dialogue: ");
+        str.append(getLayer()).append(',');
+        str.append(timeformat(sub.getStartTime()));
+        str.append(',');
+        str.append(timeformat(sub.getFinishTime())).append(',');
         if (sub.getStyle() == null ) {
-            res.append("*Default");
+            str.append("*Default");
         } else {
-            if ( sub.getStyle().isDefault()) res.append('*');
-            res.append(sub.getStyle().Name);
+            if ( sub.getStyle().isDefault()) str.append('*');
+            str.append(sub.getStyle().Name);
         }
-        res.append(",,0000,0000,0000,,");
-        res.append(rebuildSubText(sub));
-        res.append("\n");
-        return res.toString();
+        str.append(",,0000,0000,0000,,");
+        str.append(rebuildSubText(sub));
+        str.append("\n");
     }
     
     
@@ -263,8 +258,7 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         return c;
     }
     
-    protected String makeHeader(Subtitles subs, MediaFile media) {
-        StringBuffer header = new StringBuffer();
+    protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
         
         header.append("[Script Info]\n");
         
@@ -294,8 +288,6 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         appendStyles(subs, header);
         
         header.append("\n[Events]\nFormat: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n");
-        
-        return header.toString();
     }
     
     protected String initLoader(String input) {

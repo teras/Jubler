@@ -74,8 +74,8 @@ public class PlainText extends AbstractTextSubFormat {
         return _("Plain text");
     }
     
-    protected String makeSubEntry(SubEntry sub){
-        return sub.getText()+"\n";
+    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+        str.append(sub.getText()).append('\n');
     }
     
     
@@ -84,7 +84,5 @@ public class PlainText extends AbstractTextSubFormat {
         return super.initLoader(input);
     }
 
-    public boolean supportsFPS() {
-        return false;
-    }
+    public boolean supportsFPS() { return false; }
 }

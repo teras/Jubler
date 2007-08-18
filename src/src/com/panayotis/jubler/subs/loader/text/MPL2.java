@@ -69,22 +69,16 @@ public class MPL2 extends AbstractTextSubFormat {
         return "MPL2 Subtitle file";
     } 
     
-    protected String makeSubEntry(SubEntry sub){
-        StringBuffer res;
-        res = new StringBuffer();
-        
-        res.append("[");
-        res.append(Long.toString(sub.getStartTime().toFrame(FPS)));
-        res.append("][");
-        res.append(Long.toString(sub.getFinishTime().toFrame(FPS)));
-        res.append("] ");
-        res.append(sub.getText().replace('\n','|'));
-        res.append("\n");
-        return res.toString();
+    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+        str.append("[");
+        str.append(Long.toString(sub.getStartTime().toFrame(FPS)));
+        str.append("][");
+        str.append(Long.toString(sub.getFinishTime().toFrame(FPS)));
+        str.append("] ");
+        str.append(sub.getText().replace('\n','|'));
+        str.append("\n");
     }
 
-    public boolean supportsFPS() {
-        return true;
-    }
+    public boolean supportsFPS() { return true; }
     
 }
