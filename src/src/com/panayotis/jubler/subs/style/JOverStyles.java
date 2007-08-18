@@ -41,7 +41,6 @@ import com.panayotis.jubler.subs.style.gui.tri.TriObject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 /**
  *
@@ -108,7 +107,7 @@ public class JOverStyles extends javax.swing.JPanel {
     
     
     
-    public void updateVisualData(SubStyle style, AbstractStyleover[] over, int start, int end, String subtext, JLabel Stats) {
+    public void updateVisualData(SubStyle style, AbstractStyleover[] over, int start, int end, String subtext) {
         for (int i = 0 ; i < visuals.length ; i++) {
             Object basic = style.get(i);
             Object data;
@@ -119,29 +118,6 @@ public class JOverStyles extends javax.swing.JPanel {
             }
             ((TriObject)visuals[i]).setData(data);
         }
-        
-        /* Update statistics of this label */
-        int maxlength = 0;
-        int col = 0;
-        int lines = 1;
-        int length = subtext.length();
-        for (int idx = 0 ; idx < length ; idx++) {
-            if (subtext.charAt(idx)=='\n') {
-                lines++;
-                if (col > maxlength) maxlength = col;
-                col = 0;
-            } else {
-                col++;
-            }
-        }
-        if (col > maxlength) maxlength = col;
-        System.out.println("TLC");
-        /* Update information label */
-        StringBuffer txt = new StringBuffer();
-        txt.append("T:").append(subtext.length());
-        txt.append(" L:").append(lines);
-        txt.append(" C:").append(maxlength);
-        Stats.setText(txt.toString());
     }
     
     

@@ -41,7 +41,9 @@ import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
+import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
@@ -66,7 +68,9 @@ import com.panayotis.jubler.tools.JToolRealTime;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
+import java.awt.Color;
 import java.awt.Image;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -264,12 +268,29 @@ public class Jubler extends JFrame {
         
         int row = SubTable.getSelectedRow();
         if (row < 0 ) return;
-        keepUndo(subs.elementAt(row));
-        subs.elementAt(row).setText(subeditor.getSubText());
+        SubEntry entry = subs.elementAt(row);
+        keepUndo(entry);
+        String subtext = subeditor.getSubText();
+        entry.setText(subtext);
+        updateStatsLabel(entry);
         rowHasChanged(row, false);
     }
     
-    
+    private void updateStatsLabel(SubEntry entry) {
+        /* Update information label */
+        SubMetrics m = entry.getMetrics();
+        StringBuffer lbl = new StringBuffer();
+        lbl.append("T:").append(m.length);
+        lbl.append(" L:").append(m.lines);
+        lbl.append(" C:").append(m.maxlength);
+        Stats.setText(lbl.toString());
+        
+        if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength)) {
+            Stats.setForeground(Color.RED);
+        } else {
+            Stats.setForeground(SystemColor.controlText);
+        }
+    }
     
     
     public int addSubEntry(SubEntry entry) {
@@ -355,6 +376,7 @@ public class Jubler extends JFrame {
         NewTB = new javax.swing.JButton();
         LoadTB = new javax.swing.JButton();
         SaveTB = new javax.swing.JButton();
+        InfoTB = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         CutTB = new javax.swing.JButton();
         CopyTB = new javax.swing.JButton();
@@ -367,8 +389,6 @@ public class Jubler extends JFrame {
         jLabel8 = new javax.swing.JLabel();
         PreviewTB = new javax.swing.JButton();
         TestTB = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        AboutTB = new javax.swing.JButton();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
         NewFM = new javax.swing.JMenu();
@@ -383,7 +403,6 @@ public class Jubler extends JFrame {
         SaveAsFM = new javax.swing.JMenuItem();
         CloseFM = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
-        MediaFileFM = new javax.swing.JMenuItem();
         InfoFM = new javax.swing.JMenuItem();
         PrefsFM = new javax.swing.JMenuItem();
         QuitFM = new javax.swing.JMenuItem();
@@ -552,7 +571,7 @@ public class Jubler extends JFrame {
         jPanel5.add(Info, java.awt.BorderLayout.CENTER);
 
         Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Stats.setText("T:0 L:1 C:0");
+        Stats.setText("-");
         Stats.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
         jPanel5.add(Stats, java.awt.BorderLayout.EAST);
 
@@ -581,7 +600,14 @@ public class Jubler extends JFrame {
 
         JublerTools.add(SaveTB);
 
-        jLabel4.setText(" ");
+        InfoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png")));
+        InfoTB.setToolTipText(_("Project Information"));
+        InfoTB.setEnabled(false);
+        InfoTB.addActionListener(formListener);
+
+        JublerTools.add(InfoTB);
+
+        jLabel4.setText("  ");
         JublerTools.add(jLabel4);
 
         CutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cut.png")));
@@ -605,7 +631,7 @@ public class Jubler extends JFrame {
 
         JublerTools.add(PasteTB);
 
-        jLabel5.setText(" ");
+        jLabel5.setText("  ");
         JublerTools.add(jLabel5);
 
         UndoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/undo.png")));
@@ -632,7 +658,7 @@ public class Jubler extends JFrame {
 
         JublerTools.add(SortTB);
 
-        jLabel8.setText(" ");
+        jLabel8.setText("  ");
         JublerTools.add(jLabel8);
 
         PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png")));
@@ -648,15 +674,6 @@ public class Jubler extends JFrame {
         TestTB.addActionListener(formListener);
 
         JublerTools.add(TestTB);
-
-        jLabel7.setText(" ");
-        JublerTools.add(jLabel7);
-
-        AboutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/about.png")));
-        AboutTB.setToolTipText(_("About"));
-        AboutTB.addActionListener(formListener);
-
-        JublerTools.add(AboutTB);
 
         getContentPane().add(JublerTools, java.awt.BorderLayout.NORTH);
 
@@ -729,14 +746,7 @@ public class Jubler extends JFrame {
 
         FileM.add(jSeparator7);
 
-        MediaFileFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_M, java.awt.event.InputEvent.CTRL_MASK));
-        MediaFileFM.setText(_("Change media file"));
-        MediaFileFM.setEnabled(false);
-        MediaFileFM.setName("FSM");
-        MediaFileFM.addActionListener(formListener);
-
-        FileM.add(MediaFileFM);
-
+        InfoFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         InfoFM.setText(_("Information"));
         InfoFM.setEnabled(false);
         InfoFM.setName("FIN");
@@ -1129,9 +1139,6 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == CloseFM) {
                 Jubler.this.CloseFMActionPerformed(evt);
             }
-            else if (evt.getSource() == MediaFileFM) {
-                Jubler.this.MediaFileFMActionPerformed(evt);
-            }
             else if (evt.getSource() == InfoFM) {
                 Jubler.this.InfoFMActionPerformed(evt);
             }
@@ -1261,6 +1268,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == SaveTB) {
                 Jubler.this.SaveFMActionPerformed(evt);
             }
+            else if (evt.getSource() == InfoTB) {
+                Jubler.this.InfoFMActionPerformed(evt);
+            }
             else if (evt.getSource() == CutTB) {
                 Jubler.this.CutEMActionPerformed(evt);
             }
@@ -1284,9 +1294,6 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == TestTB) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == AboutTB) {
-                Jubler.this.AboutHMActionPerformed(evt);
             }
         }
 
@@ -1367,15 +1374,11 @@ public class Jubler extends JFrame {
         tableHasChanged(selected);
     }//GEN-LAST:event_SortTBActionPerformed
     
-    private void MediaFileFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MediaFileFMActionPerformed
-        mfile.validateMediaFile(subs, true);
-    }//GEN-LAST:event_MediaFileFMActionPerformed
-    
     
     public void closedPreview() {
         PreviewTB.setEnabled(true);
         subeditor.setAttPrevSelectable(false);
-        MediaFileFM.setEnabled(true);
+        mfile.videoselector.setEnabled(true);
         
         /* Cache is deleted *every time* the preview window is closed
          * This is also the case when the user just clicks on the "close" button
@@ -1390,7 +1393,7 @@ public class Jubler extends JFrame {
         PreviewTB.setEnabled(false);
         preview.setVisible(true);
         subeditor.setAttPrevSelectable(true);
-        MediaFileFM.setEnabled(false);
+        mfile.videoselector.setEnabled(false);
         preview.subsHaveChanged(SubTable.getSelectedRows());
     }//GEN-LAST:event_PreviewTBActionPerformed
     
@@ -1448,46 +1451,15 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_bySelectionSEMActionPerformed
     
     private void InfoFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoFMActionPerformed
-        JInformation info = new JInformation();
-        String oldtitle, oldauthor, oldcomments, oldsource;
-        boolean hasChanged = false;
-        
-        oldtitle = subs.getAttrib("title");
-        oldauthor = subs.getAttrib("author");
-        oldcomments = subs.getAttrib("comments");
-        oldsource = subs.getAttrib("source");
-        
+        JInformation info = new JInformation(this);
+        SubAttribs oldattr = subs.getAttribs();
         UndoEntry entry = new UndoEntry(subs, _("Change information"));
         
-        info.setFilename(subs.getCurrentFileName());
-        info.setTitle(oldtitle);
-        info.setAuthor(oldauthor);
-        info.setComments(oldcomments);
-        info.setSource(oldsource);
+        info.setVisible(true);
+        subs.setAttribs(info.getAttribs());
+        tableHasChanged(getSelectedSubs());
         
-        JIDialog.message(this, info, _("Information"), JIDialog.INFORMATION_MESSAGE);
-        
-        if (!oldtitle.equals(info.getTitle())) {
-            hasChanged= true;
-            subs.setAttrib("title", info.getTitle());
-        }
-        
-        if (!oldauthor.equals(info.getAuthor())) {
-            hasChanged= true;
-            subs.setAttrib("author", info.getAuthor());
-        }
-        
-        if (!oldcomments.equals(info.getComments())) {
-            hasChanged= true;
-            subs.setAttrib("comments", info.getComments());
-        }
-        
-        if (!oldsource.equals(info.getSource())) {
-            hasChanged= true;
-            subs.setAttrib("source", info.getSource());
-        }
-        
-        if (hasChanged) {
+        if (!subs.getAttribs().equals(oldattr)) {
             undo.addUndo(entry);
         }
     }//GEN-LAST:event_InfoFMActionPerformed
@@ -1706,7 +1678,7 @@ public class Jubler extends JFrame {
         }
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed
     
-        
+    
     private void bySelectionMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionMEMActionPerformed
         mark.execute(this);
     }//GEN-LAST:event_bySelectionMEMActionPerformed
@@ -1868,7 +1840,6 @@ public class Jubler extends JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
-    private javax.swing.JButton AboutTB;
     private javax.swing.JMenuItem AfterIEM;
     private javax.swing.JPanel BasicPanel;
     private javax.swing.JMenuItem BeforeIEM;
@@ -1898,6 +1869,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu HelpM;
     private javax.swing.JLabel Info;
     private javax.swing.JMenuItem InfoFM;
+    private javax.swing.JButton InfoTB;
     private javax.swing.JMenu InsertEM;
     private javax.swing.JMenuItem JoinTM;
     public javax.swing.JMenuBar JublerMenuBar;
@@ -1907,7 +1879,6 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu MarkEM;
     private javax.swing.JMenu MarkP;
     private javax.swing.JSeparator MarkSep;
-    private javax.swing.JMenuItem MediaFileFM;
     private javax.swing.JMenu NewFM;
     private javax.swing.JButton NewTB;
     private javax.swing.JMenuItem NextGEM;
@@ -1947,7 +1918,7 @@ public class Jubler extends JFrame {
     private javax.swing.JButton SortTB;
     private javax.swing.JMenuItem SpellTM;
     private javax.swing.JMenuItem SplitTM;
-    public javax.swing.JLabel Stats;
+    private javax.swing.JLabel Stats;
     private javax.swing.JMenuItem StepwiseREM;
     private javax.swing.JMenu StyleEM;
     private javax.swing.JMenu StyleP;
@@ -1972,7 +1943,6 @@ public class Jubler extends JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
@@ -2110,12 +2080,12 @@ public class Jubler extends JFrame {
         ChildNFM.setEnabled(true);
         SaveFM.setEnabled(true);
         SaveAsFM.setEnabled(true);
-        MediaFileFM.setEnabled(true);
         InfoFM.setEnabled(true);
         EditM.setEnabled(true);
         ToolsM.setEnabled(true);
         
         SaveTB.setEnabled(true);
+        InfoTB.setEnabled(true);
         CutTB.setEnabled(true);
         CopyTB.setEnabled(true);
         PasteTB.setEnabled(true);
@@ -2417,7 +2387,7 @@ public class Jubler extends JFrame {
         
         updateConsoles(sel.getStartTime().toSeconds());
         subeditor.focusOnText();
-        
+        updateStatsLabel(sel);
         subeditor.ignoreSubChanges(false);
     }
     

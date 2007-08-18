@@ -25,31 +25,51 @@ package com.panayotis.jubler.information;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
+import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.subs.SubAttribs;
+import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.SubMetrics;
+import java.awt.BorderLayout;
+
+import javax.swing.JDialog;
+
 /**
  *
  * @author  teras
  */
-public class JInformation extends javax.swing.JPanel {
+public class JInformation extends JDialog {
     
-    /** Creates new form JInformation */
-    public JInformation() {
+    /** Creates new form JProperties */
+    public JInformation(Jubler parent) {
+        super(parent, true);
         initComponents();
+        MaxColC.removeItemAt(0);
+        
+        SubAttribs attr = parent.getSubtitles().getAttribs();
+        TitleT.setText(attr.getTitle());
+        AuthorT.setText(attr.getAuthor());
+        SourceT.setText(attr.getSource());
+        CommentsT.setText(attr.getComments());
+        FilePathT.setText(parent.getSubtitles().getCurrentFile().getPath());
+        
+        NumberT.setText(Integer.toString(parent.getSubtitles().size()));
+        SubMetrics m = parent.getSubtitles().getMaxMetrics();
+        MaxSubSizeT.setText(Integer.toString(m.length));
+        MaxLengthT.setText(Integer.toString(m.maxlength));
+        MaxLinesT.setText(Integer.toString(m.lines));
+        
+        //   parent.getMediaFile().videoselector.setMediaFile(parent.getMediaFile());
+        VSelectorP.add(parent.getMediaFile().videoselector, BorderLayout.CENTER);
+        
+        MaxInfUserB.setSelected(attr.isMaxCharsEnabled());
+        updateMaxCharsWidgets();
+        MaxColC.setSelectedIndex(attr.getMaxColor()-1);
+        MaxCharsS.setValue(attr.getMaxCharacters());
+        
+        pack();
+        setLocationRelativeTo(null);
     }
     
-    public void setFilename(String fname) { PathL.setText(fname); }
-    
-    public void setTitle(String title) { TitleT.setText(title); }
-    public String getTitle() { return TitleT.getText(); }
-    
-    public void setAuthor(String author) { AuthorT.setText(author); }
-    public String getAuthor() { return AuthorT.getText(); }
-    
-    public void setComments(String comments) { CommentsT.setText(comments); }
-    public String getComments() { return CommentsT.getText(); }
-    
-    public void setSource(String source) { SourceT.setText(source); }
-    public String getSource() { return SourceT.getText(); }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -57,46 +77,84 @@ public class JInformation extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
-        jPanel1 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        FilePathL = new javax.swing.JLabel();
-        TitleL = new javax.swing.JLabel();
-        AuthorL = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        PathL = new javax.swing.JLabel();
-        TitleT = new javax.swing.JTextField();
-        AuthorT = new javax.swing.JTextField();
-        SourceT = new javax.swing.JTextField();
+        PTabs = new javax.swing.JTabbedPane();
+        InfoP = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         CommentsT = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        TitleL = new javax.swing.JLabel();
+        AuthorL = new javax.swing.JLabel();
+        SourceL = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        TitleT = new javax.swing.JTextField();
+        AuthorT = new javax.swing.JTextField();
+        SourceT = new javax.swing.JTextField();
+        MediaP = new javax.swing.JPanel();
+        VSelectorP = new javax.swing.JPanel();
+        SubFileInfoP = new javax.swing.JPanel();
+        FilePathL = new javax.swing.JLabel();
+        FilePathT = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        StatsP = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        NumberL = new javax.swing.JLabel();
+        NumberT = new javax.swing.JLabel();
+        MaxSubSizeL = new javax.swing.JLabel();
+        MaxSubSizeT = new javax.swing.JLabel();
+        MaxLengthL = new javax.swing.JLabel();
+        MaxLengthT = new javax.swing.JLabel();
+        MaxLinesL = new javax.swing.JLabel();
+        MaxLinesT = new javax.swing.JLabel();
+        jPanel10 = new javax.swing.JPanel();
+        MaxInfUserB = new javax.swing.JCheckBox();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        MaxColL = new javax.swing.JLabel();
+        MaxColC = new javax.swing.JComboBox();
+        jPanel12 = new javax.swing.JPanel();
+        MaxCharsL = new javax.swing.JLabel();
+        MaxCharsS = new javax.swing.JSlider();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        OKB = new javax.swing.JButton();
 
-        setLayout(new java.awt.BorderLayout());
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(_("Project Properties"));
+        setResizable(false);
+        InfoP.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Comments")));
+        jPanel2.setPreferredSize(new java.awt.Dimension(350, 150));
+        CommentsT.setToolTipText(_("Comments about these subtitles"));
+        jScrollPane1.setViewportView(CommentsT);
+
+        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        InfoP.add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setLayout(new java.awt.GridLayout(0, 1));
 
-        jPanel4.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(0, 10, 0, 10)));
-        FilePathL.setText(_("File path"));
-        jPanel4.add(FilePathL);
-
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
         TitleL.setText(_("Title"));
         jPanel4.add(TitleL);
 
         AuthorL.setText(_("Author"));
         jPanel4.add(AuthorL);
 
-        jLabel1.setText(_("Source"));
-        jPanel4.add(jLabel1);
+        SourceL.setText(_("Source"));
+        jPanel4.add(SourceL);
 
         jPanel1.add(jPanel4, java.awt.BorderLayout.WEST);
 
         jPanel3.setLayout(new java.awt.GridLayout(0, 1));
-
-        PathL.setToolTipText(_("The file path of this subtitle"));
-        jPanel3.add(PathL);
 
         TitleT.setToolTipText(_("Title for this subtitle file"));
         jPanel3.add(TitleT);
@@ -109,37 +167,212 @@ public class JInformation extends javax.swing.JPanel {
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        add(jPanel1, java.awt.BorderLayout.NORTH);
+        InfoP.add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        PTabs.addTab(_("Information"), InfoP);
 
-        jPanel2.setBorder(new javax.swing.border.TitledBorder(_("Comments")));
-        jPanel2.setPreferredSize(new java.awt.Dimension(350, 150));
-        CommentsT.setToolTipText(_("Comments about these subtitles"));
-        jScrollPane1.setViewportView(CommentsT);
+        MediaP.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        VSelectorP.setLayout(new java.awt.BorderLayout());
 
-        add(jPanel2, java.awt.BorderLayout.CENTER);
+        SubFileInfoP.setLayout(new java.awt.BorderLayout());
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+        SubFileInfoP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 8, 0));
+        FilePathL.setText(_("Subtitle File"));
+        SubFileInfoP.add(FilePathL, java.awt.BorderLayout.WEST);
+
+        FilePathT.setEditable(false);
+        FilePathT.setToolTipText(_("The file of this subtitle"));
+        SubFileInfoP.add(FilePathT, java.awt.BorderLayout.SOUTH);
+
+        VSelectorP.add(SubFileInfoP, java.awt.BorderLayout.NORTH);
+
+        MediaP.add(VSelectorP, java.awt.BorderLayout.NORTH);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jButton1.setText(_("Guess media files"));
+        jPanel7.add(jButton1, java.awt.BorderLayout.WEST);
+
+        MediaP.add(jPanel7, java.awt.BorderLayout.SOUTH);
+
+        PTabs.addTab(_("Media"), MediaP);
+
+        StatsP.setLayout(new java.awt.BorderLayout());
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jPanel8.setLayout(new java.awt.GridLayout(0, 2, 0, 4));
+
+        NumberL.setLabelFor(NumberT);
+        NumberL.setText(_("Number of subtitles"));
+        jPanel8.add(NumberL);
+
+        jPanel8.add(NumberT);
+
+        MaxSubSizeL.setLabelFor(MaxLengthT);
+        MaxSubSizeL.setText(_("Maximum subtitle length"));
+        jPanel8.add(MaxSubSizeL);
+
+        jPanel8.add(MaxSubSizeT);
+
+        MaxLengthL.setLabelFor(MaxLengthT);
+        MaxLengthL.setText(_("Maximum subtitle characters per line"));
+        jPanel8.add(MaxLengthL);
+
+        jPanel8.add(MaxLengthT);
+
+        MaxLinesL.setLabelFor(MaxLinesT);
+        MaxLinesL.setText(_("Maximum subtitle lines"));
+        jPanel8.add(MaxLinesL);
+
+        jPanel8.add(MaxLinesT);
+
+        jPanel9.add(jPanel8, java.awt.BorderLayout.NORTH);
+
+        jPanel10.setLayout(new java.awt.BorderLayout());
+
+        jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 1, 0, 1));
+        MaxInfUserB.setSelected(true);
+        MaxInfUserB.setText(_("Inform user on exceeding subtitle length"));
+        MaxInfUserB.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        MaxInfUserB.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        MaxInfUserB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MaxInfUserBActionPerformed(evt);
+            }
+        });
+
+        jPanel10.add(MaxInfUserB, java.awt.BorderLayout.NORTH);
+
+        jPanel11.setLayout(new java.awt.BorderLayout());
+
+        jPanel13.setLayout(new java.awt.BorderLayout());
+
+        MaxColL.setText(_("Color to use"));
+        MaxColL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
+        jPanel13.add(MaxColL, java.awt.BorderLayout.WEST);
+
+        MaxColC.setModel(new javax.swing.DefaultComboBoxModel(SubEntry.MarkNames));
+        jPanel13.add(MaxColC, java.awt.BorderLayout.CENTER);
+
+        jPanel11.add(jPanel13, java.awt.BorderLayout.WEST);
+
+        jPanel10.add(jPanel11, java.awt.BorderLayout.CENTER);
+
+        jPanel12.setLayout(new java.awt.BorderLayout());
+
+        MaxCharsL.setText(_("Maximum number of characters per line"));
+        jPanel12.add(MaxCharsL, java.awt.BorderLayout.CENTER);
+
+        MaxCharsS.setMajorTickSpacing(10);
+        MaxCharsS.setMinimum(10);
+        MaxCharsS.setMinorTickSpacing(1);
+        MaxCharsS.setPaintLabels(true);
+        MaxCharsS.setPaintTicks(true);
+        MaxCharsS.setSnapToTicks(true);
+        MaxCharsS.setToolTipText(_("The maximum number of characters per line which are permitted"));
+        MaxCharsS.setValue(40);
+        jPanel12.add(MaxCharsS, java.awt.BorderLayout.SOUTH);
+
+        jPanel10.add(jPanel12, java.awt.BorderLayout.SOUTH);
+
+        jPanel9.add(jPanel10, java.awt.BorderLayout.CENTER);
+
+        StatsP.add(jPanel9, java.awt.BorderLayout.NORTH);
+
+        PTabs.addTab(_("Statistics"), StatsP);
+
+        getContentPane().add(PTabs, java.awt.BorderLayout.CENTER);
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
+        jPanel6.setLayout(new java.awt.GridLayout(1, 2));
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 6, 16));
+        OKB.setText(_("OK"));
+        OKB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OKBActionPerformed(evt);
+            }
+        });
+
+        jPanel6.add(OKB);
+
+        jPanel5.add(jPanel6, java.awt.BorderLayout.EAST);
+
+        getContentPane().add(jPanel5, java.awt.BorderLayout.SOUTH);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
     
+    private void MaxInfUserBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxInfUserBActionPerformed
+        updateMaxCharsWidgets();
+    }//GEN-LAST:event_MaxInfUserBActionPerformed
+    
+    private void OKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKBActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_OKBActionPerformed
+    
+    public SubAttribs getAttribs() {
+        return new SubAttribs(TitleT.getText(), AuthorT.getText(), SourceT.getText(), CommentsT.getText(),
+                MaxInfUserB.isSelected() ? MaxCharsS.getValue() : - MaxCharsS.getValue(),
+                MaxColC.getSelectedIndex()+1 );
+    }
+    
+    
+    private void updateMaxCharsWidgets() {
+        boolean status = MaxInfUserB.isSelected();
+        MaxColC.setEnabled(status);
+        MaxColL.setEnabled(status);
+        MaxCharsS.setEnabled(status);
+        MaxCharsL.setEnabled(status);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AuthorL;
     private javax.swing.JTextField AuthorT;
     private javax.swing.JTextArea CommentsT;
     private javax.swing.JLabel FilePathL;
-    private javax.swing.JLabel PathL;
+    private javax.swing.JTextField FilePathT;
+    private javax.swing.JPanel InfoP;
+    private javax.swing.JLabel MaxCharsL;
+    private javax.swing.JSlider MaxCharsS;
+    private javax.swing.JComboBox MaxColC;
+    private javax.swing.JLabel MaxColL;
+    private javax.swing.JCheckBox MaxInfUserB;
+    private javax.swing.JLabel MaxLengthL;
+    private javax.swing.JLabel MaxLengthT;
+    private javax.swing.JLabel MaxLinesL;
+    private javax.swing.JLabel MaxLinesT;
+    private javax.swing.JLabel MaxSubSizeL;
+    private javax.swing.JLabel MaxSubSizeT;
+    private javax.swing.JPanel MediaP;
+    private javax.swing.JLabel NumberL;
+    private javax.swing.JLabel NumberT;
+    private javax.swing.JButton OKB;
+    private javax.swing.JTabbedPane PTabs;
+    private javax.swing.JLabel SourceL;
     private javax.swing.JTextField SourceT;
+    private javax.swing.JPanel StatsP;
+    private javax.swing.JPanel SubFileInfoP;
     private javax.swing.JLabel TitleL;
     private javax.swing.JTextField TitleT;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel VSelectorP;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     

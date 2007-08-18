@@ -73,6 +73,17 @@ public class JVideofileSelector extends javax.swing.JPanel {
     }
     
     
+    public void setEnabled(boolean status) {
+        VideoBrowse.setEnabled(status);
+        ExternalAudioB.setEnabled(status);
+        if (status && mfile!= null && mfile.getAudioFile() != null && (!mfile.getAudioFile().isSameAsVideo()) ) {
+            AudioBrowse.setEnabled(true);
+        } else {
+            AudioBrowse.setEnabled(false);
+        }
+        CacheBrowse.setEnabled(status);
+    }
+   
     
     public void setMediaFile(MediaFile mfile) {
         this.mfile = mfile;
@@ -94,7 +105,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
     private void initComponents() {
         AudioGroup = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        VFileL = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         VFName = new javax.swing.JTextField();
         VideoBrowse = new javax.swing.JButton();
@@ -105,14 +116,14 @@ public class JVideofileSelector extends javax.swing.JPanel {
         jPanel5 = new javax.swing.JPanel();
         CFName = new javax.swing.JTextField();
         CacheBrowse = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        CFileL = new javax.swing.JLabel();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(_("Use the following video file"));
-        jPanel2.add(jLabel2, java.awt.BorderLayout.NORTH);
+        VFileL.setText(_("Use the following video file"));
+        jPanel2.add(VFileL, java.awt.BorderLayout.NORTH);
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
@@ -137,10 +148,10 @@ public class JVideofileSelector extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(6, 0, 0, 0)));
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 0, 0, 0));
         AFName.setColumns(40);
         AFName.setEditable(false);
-        AFName.setToolTipText(_("Filename of the external audio file (could be also an audio cache). Use the \"Browse\" button to change it."));
+        AFName.setToolTipText(_("Filename of the external audio file. Use the \"Browse\" button to change it."));
         jPanel4.add(AFName, java.awt.BorderLayout.CENTER);
 
         AudioBrowse.setText(_("Browse"));
@@ -168,7 +179,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jPanel5.setBorder(new javax.swing.border.EmptyBorder(new java.awt.Insets(8, 0, 0, 0)));
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
         CFName.setColumns(40);
         CFName.setEditable(false);
         CFName.setToolTipText(_("Filename of the previous audio cache. Use the \"Browse\" button to change it."));
@@ -184,13 +195,12 @@ public class JVideofileSelector extends javax.swing.JPanel {
 
         jPanel5.add(CacheBrowse, java.awt.BorderLayout.EAST);
 
-        jLabel1.setText(_("Filename of the cached audio stream"));
-        jPanel5.add(jLabel1, java.awt.BorderLayout.NORTH);
+        CFileL.setText(_("Filename of the cached audio stream"));
+        jPanel5.add(CFileL, java.awt.BorderLayout.NORTH);
 
         add(jPanel5);
 
-    }
-    // </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>//GEN-END:initComponents
     
     private void CacheBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CacheBrowseActionPerformed
         fdialog.setSelectedFile( mfile.getCacheFile());
@@ -236,12 +246,12 @@ public class JVideofileSelector extends javax.swing.JPanel {
     private javax.swing.JButton AudioBrowse;
     private javax.swing.ButtonGroup AudioGroup;
     private javax.swing.JTextField CFName;
+    private javax.swing.JLabel CFileL;
     private javax.swing.JButton CacheBrowse;
     private javax.swing.JCheckBox ExternalAudioB;
     private javax.swing.JTextField VFName;
+    private javax.swing.JLabel VFileL;
     private javax.swing.JButton VideoBrowse;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

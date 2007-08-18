@@ -89,8 +89,8 @@ public class SubRip extends AbstractTextSubFormat {
     }
     
     
-    protected String initLoader(String input, Subtitles subs) {
-        return super.initLoader(input, subs);
+    protected String initLoader(String input) {
+        return super.initLoader(input);
     }
 
     protected String makeHeader(Subtitles subs, MediaFile media) {

@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.Subtitles;
 
 
@@ -115,35 +116,23 @@ public class SubViewer extends AbstractTextSubFormat {
     
     protected String makeHeader(Subtitles subs, MediaFile media) {
         StringBuffer header = new StringBuffer();
+        SubAttribs attr = subs.getAttribs();
         
         header.append("[INFORMATION]\n[TITLE]");
-        header.append(subs.getAttrib("title"));
+        header.append(attr.getTitle());
         header.append("\n[AUTHOR]");
-        header.append(subs.getAttrib("author"));
+        header.append(attr.getAuthor());
         header.append("\n[SOURCE]");
-        header.append(subs.getAttrib("source"));
+        header.append(attr.getSource());
         header.append("\n[FILEPATH]\n[DELAY]0\n[COMMENT]");
-        header.append(subs.getAttrib("comments").replace('\n', ' '));
+        header.append(attr.getComments().replace('\n', '|'));
         header.append("\n[END INFORMATION]\n[SUBTITLE]\n[COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial\n");
         return header.toString();
     }
     
-    protected String initLoader(String input, Subtitles subs) {
-        input = super.initLoader(input, subs);
-        Matcher m;
-        
-        m = title.matcher(input);
-        if (m.find()) subs.setAttrib("title", m.group(1).trim());
-        
-        m = author.matcher(input);
-        if (m.find()) subs.setAttrib("author", m.group(1).trim());
-        
-        m = source.matcher(input);
-        if (m.find()) subs.setAttrib("source", m.group(1).trim());
-        
-        m = comments.matcher(input);
-        if (m.find()) subs.setAttrib("comments", m.group(1).trim());
-        
+    protected String initLoader(String input) {
+        input = super.initLoader(input);
+        updateAttributes(input, title, author, source, comments);
         return input;
     }
 

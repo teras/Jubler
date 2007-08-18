@@ -49,7 +49,7 @@ public class MediaFile {
     private DecoderInterface decoder;
     
     /** File chooser dialog for video */
-    private JVideofileSelector videoselector;
+    public JVideofileSelector videoselector;
     
     
     /** Creates a new instance of MediaFile */

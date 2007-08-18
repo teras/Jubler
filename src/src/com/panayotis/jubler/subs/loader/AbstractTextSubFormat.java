@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubAttribs;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,7 +53,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     protected Subtitles subtitle_list;
     
     /* Initialization functions */
-    protected String initLoader(String input, Subtitles subs) { return input+"\n"; }
+    protected String initLoader(String input) { return input+"\n"; }
     private void setFPS(float FPS) { this.FPS=FPS; }
     
     /* Loading functions */
@@ -79,11 +80,15 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             DEBUG.info(_("Found file {0}", _(getExtendedName())), DEBUG.INFO_ALWAYS);
             subtitle_list = new Subtitles();
             setFPS(FPS);
-            input = initLoader(input, subtitle_list);
+            input = initLoader(input);
+            SubAttribs attr = subtitle_list.getAttribs();   // This method should be called after initLoader()
+            
             Matcher m = getPattern().matcher(input);
             SubEntry entry;
             while(m.find()){
-                subtitle_list.add(getSubEntry(m));
+                entry = getSubEntry(m);
+                entry.updateMaxCharStatus(attr, entry.getMetrics().maxlength);
+                subtitle_list.add(entry);
             }
             if ( subtitle_list.isEmpty()) return null;
             return subtitle_list;
@@ -101,10 +106,10 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         for ( int i = 0 ; i < subs.size() ; i++ ) {
             res.append(makeSubEntry(subs.elementAt(i)));
         }
-
+        
         // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
         CharsetEncoder encoder = Charset.forName(getEncoding()).newEncoder();
-
+        
         BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfile), encoder));
         out.write(res.toString().replace("\n","\r\n"));
         out.close();
@@ -112,4 +117,35 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     }
     
     protected String makeHeader(Subtitles subs, MediaFile media) { return ""; }
+    
+    
+    protected void updateAttributes(String input, Pattern title, Pattern author, Pattern source, Pattern comments) {
+        Matcher m;
+        String attrs[] = new String[4];
+        
+        m = title.matcher(input);
+        if (m.find()) attrs[0] =m.group(1).trim();
+        
+        m = author.matcher(input);
+        if (m.find()) attrs[1] = m.group(1).trim();
+        
+        m = source.matcher(input);
+        if (m.find()) attrs[2] = m.group(1).trim();
+        
+        m = comments.matcher(input);
+        StringBuffer com_b = new StringBuffer();
+        while (m.find()) {
+            if (!(m.start()!=0 && input.charAt(m.start()-1)!='\n'))
+                com_b.append(m.group(1).trim()).append('\n');
+        }
+        String com = com_b.toString().replace('|', '\n');
+        if (com.length() > 0 ) attrs[3] = com.substring(0, com.length()-1);
+        
+        for (int i = 0 ; i < attrs.length ; i++) {
+            if (attrs[i] != null && attrs[i].equals(""))
+                attrs[i] = null;
+        }
+        
+        subtitle_list.setAttribs(new SubAttribs(attrs[0], attrs[1], attrs[2], attrs[3]));
+    }
 }

@@ -93,6 +93,8 @@ Section "Jubler editor" SecJubler
   !insertmacro APP_ASSOCIATE "ssa" "jubler.subfile.ssa" "SSA Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
   !insertmacro APP_ASSOCIATE "sub" "jubler.subfile.sub" "SUB Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
   !insertmacro APP_ASSOCIATE "srt" "jubler.subfile.srt" "SRT Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "stl" "jubler.subfile.stl" "STL Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "son" "jubler.subfile.son" "SON Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
 ;  !insertmacro UPDATEFILEASSOC
 
 SectionEnd
@@ -191,6 +193,8 @@ Section "Uninstall"
   !insertmacro APP_UNASSOCIATE "ssa" "jubler.subfile.ssa"
   !insertmacro APP_UNASSOCIATE "sub" "jubler.subfile.sub"
   !insertmacro APP_UNASSOCIATE "srt" "jubler.subfile.srt"
+  !insertmacro APP_UNASSOCIATE "stl" "jubler.subfile.stl"
+  !insertmacro APP_UNASSOCIATE "son" "jubler.subfile.son"
 ;  !insertmacro UPDATEFILEASSOC
 
 SectionEnd

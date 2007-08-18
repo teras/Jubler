@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.Options;
+import java.awt.Dimension;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
@@ -53,7 +54,7 @@ public class Subtitles extends AbstractTableModel {
     private final static int FIRST_EDITABLE_COL = colnames.length;
     
     /** Attributes of these subtiles */
-    private Hashtable<String,String> attribs;
+    private SubAttribs attribs;
     
     /** List of subtitles */
     private Vector <SubEntry> sublist;
@@ -67,8 +68,8 @@ public class Subtitles extends AbstractTableModel {
     public Subtitles() {
         loadColumnWidth();
         sublist = new Vector<SubEntry>();
-        attribs = new Hashtable<String,String>();
         styles = new SubStyleList();
+        attribs = new SubAttribs();
         subfile = new SubFile();
     }
     
@@ -80,9 +81,7 @@ public class Subtitles extends AbstractTableModel {
         }
         
         styles = new SubStyleList(old.styles);
-        
-        attribs = new Hashtable<String,String>();
-        setAllAttribs(old);
+        attribs = new SubAttribs(old.attribs);
         
         for (int i = 0 ; i < visiblecols.length ; i++) {
             visiblecols[i] = old.visiblecols[i];
@@ -108,7 +107,7 @@ public class Subtitles extends AbstractTableModel {
                 load = null;
         }
         appendSubs(load, true);
-        setAllAttribs(load);
+        attribs = new SubAttribs(load.attribs);
     }
     
     
@@ -158,14 +157,6 @@ public class Subtitles extends AbstractTableModel {
             } else { /* It doesn't exits, just append it */
                 styles.add(newstyle);
             }
-        }
-    }
-    
-    
-    private void setAllAttribs(Subtitles other) {
-        if (other==null) return;
-        for (String key: other.attribs.keySet()) {
-            setAttrib(key, other.getAttrib(key));
         }
     }
     
@@ -231,6 +222,20 @@ public class Subtitles extends AbstractTableModel {
         return sublist.size();
     }
     
+    /* Calculate maximum character length & maximum lines */
+    public SubMetrics getMaxMetrics() {
+        SubMetrics max = null;
+        SubMetrics current;
+        for (int i = 0 ; i < size() ; i++) {
+            current = elementAt(i).getMetrics();
+            if (max==null) max = current;
+            else max.updateToMaxValues(current);
+        }
+        return max;
+    }
+    
+    
+    
     public int indexOf(SubEntry entry) {
         return sublist.indexOf(entry);
     }
@@ -256,15 +261,7 @@ public class Subtitles extends AbstractTableModel {
         return fuzzyresult;
     }
     
-    public String getAttrib(String attr) {
-        String res = attribs.get(attr);
-        if (res==null) res = "";
-        return res;
-    }
-    public void setAttrib(String attr, String value) { attribs.put(attr,  value); }
-    
     public SubStyleList getStyleList() { return styles; }
-    
     
     public void revalidateStyles() {
         for (SubEntry entry : sublist) {
@@ -275,6 +272,15 @@ public class Subtitles extends AbstractTableModel {
         }
     }
     
+    
+    public SubAttribs getAttribs() { return attribs; }
+    /* Not only update attributes, but also mark all the entries with long texts */
+    public void setAttribs(SubAttribs newattr) { 
+        attribs = newattr;
+        for (SubEntry entry : sublist) {
+            entry.updateMaxCharStatus(attribs, entry.getMetrics().maxlength);
+        }
+    }
     
     /*
      * Methods related to SubFile
@@ -293,6 +299,8 @@ public class Subtitles extends AbstractTableModel {
     }
     
     
+    
+    /* Methods related to JTable */
     public void setVisibleColumn(int which, boolean how) {
         visiblecols[which]=how;
     }
@@ -388,4 +396,5 @@ public class Subtitles extends AbstractTableModel {
             }
         }
     }
+    
 }

@@ -404,6 +404,7 @@
 
 	<target name="-post-jar">
 		<copy file="resources/system/fonts/freesans.ttf" todir="dist/lib"/>
+		<delete file="dist/README.txt"/>
 	</target>
 
 </project>

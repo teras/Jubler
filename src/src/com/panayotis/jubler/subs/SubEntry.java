@@ -32,7 +32,6 @@ import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
-import com.panayotis.jubler.subs.style.event.StyleoverParagraph;
 import com.panayotis.jubler.subs.style.event.StyleoverCharacter;
 import com.panayotis.jubler.subs.style.event.StyleoverFull;
 import javax.swing.JTextPane;
@@ -250,4 +249,34 @@ public class SubEntry implements Comparable<SubEntry> {
     public String toString() {
         return start.toString()+"->"+finish.toString()+" "+subtext;
     }
+    
+    /* Calculate statistics of this subtitle */
+    public SubMetrics getMetrics() {
+        SubMetrics m = new SubMetrics();
+        m.length = subtext.length();
+        
+        int curcol = 0;
+        for (int idx = 0 ; idx < m.length ; idx++) {
+            if (subtext.charAt(idx)=='\n') {
+                m.lines++;
+                if (curcol > m.maxlength) m.maxlength = curcol;
+                curcol = 0;
+            } else {
+                curcol++;
+            }
+        }
+        if (curcol > m.maxlength) m.maxlength = curcol;
+        return m;
+    }
+    
+    public boolean updateMaxCharStatus(SubAttribs attr, int maxlength) {
+        if (attr.isMaxCharsEnabled() && maxlength>attr.getMaxCharacters()) {
+            setMark(attr.getMaxColor());
+            return true;
+        }
+        if (mark==attr.getMaxColor())
+            setMark(0);
+        return false;
+    }
+    
 }

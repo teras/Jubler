@@ -23,8 +23,8 @@
 
 package com.panayotis.jubler.subs;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.SystemColor;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -41,6 +41,7 @@ public class SubRenderer extends DefaultTableCellRenderer {
         
         entry = ((Subtitles)table.getModel()).elementAt(row);
         setBackground( entry.MarkColors[entry.getMark()] );
+        setForeground(Color.BLACK);
         super.getTableCellRendererComponent(table, value, selected, focused, row, column);
         return this;
     }

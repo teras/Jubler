@@ -27,6 +27,7 @@ import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubAttribs;
 
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
@@ -41,7 +42,6 @@ import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverEvent;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
@@ -268,7 +268,8 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         
         header.append("[Script Info]\n");
         
-        String com = subs.getAttrib("comments");
+        SubAttribs attr = subs.getAttribs();
+        String com = attr.getComments();
         if (!com.trim().equals("")) {
             com = com.replace("\n", "\n; ");
             header.append("; ");
@@ -276,9 +277,9 @@ public class SubStationAlpha extends AbstractTextSubFormat {
             header.append('\n');
         }
         
-        header.append("Title: ").append(subs.getAttrib("title"));
-        header.append("\nOriginal Script: ").append(subs.getAttrib("author"));
-        header.append("\nUpdate Details: ").append(subs.getAttrib("source"));
+        header.append("Title: ").append(attr.getTitle());
+        header.append("\nOriginal Script: ").append(attr.getAuthor());
+        header.append("\nUpdate Details: ").append(attr.getSource());
         header.append("\nScriptType: v4.00").append(getExtraVersion());
         header.append("\nCollisions: Normal\n");
 
@@ -297,29 +298,10 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         return header.toString();
     }
     
-    protected String initLoader(String input, Subtitles subs) {
-        input = super.initLoader(input, subs);
-        Matcher m;
-        
-        m = title.matcher(input);
-        if (m.find()) subs.setAttrib("title", m.group(1).trim());
-        
-        m = author.matcher(input);
-        if (m.find()) subs.setAttrib("author", m.group(1).trim());
-        
-        m = source.matcher(input);
-        if (m.find()) subs.setAttrib("source", m.group(1).trim());
-        
-        m = comments.matcher(input);
-        StringBuffer com_b = new StringBuffer();
-        while (m.find()) {
-            if (!(m.start()!=0 && input.charAt(m.start()-1)!='\n'))
-                com_b.append(m.group(1).trim()).append('\n');
-        }
-        String com = com_b.toString();
-        if (com.length() > 0 ) subs.setAttrib("comments", com.substring(0, com.length()-1));
-        
-        getStyles(input, subs);
+    protected String initLoader(String input) {
+        input = super.initLoader(input);
+        getStyles(input);
+        updateAttributes(input, title, author, source, comments);
         return input;
     }
     
@@ -405,9 +387,9 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         
     }
     
-    protected void getStyles(String input, Subtitles subs) {
+    protected void getStyles(String input) {
         Matcher m = styles.matcher(input);
-        SubStyleList list = subs.getStyleList();
+        SubStyleList list = subtitle_list.getStyleList();
         list.clearList();
         
         SubStyle st;

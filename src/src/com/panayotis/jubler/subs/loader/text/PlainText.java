@@ -79,9 +79,9 @@ public class PlainText extends AbstractTextSubFormat {
     }
     
     
-    protected String initLoader(String input, Subtitles subs) {
+    protected String initLoader(String input) {
         current_time = 0;
-        return super.initLoader(input, subs);
+        return super.initLoader(input);
     }
 
     public boolean supportsFPS() {
