@@ -79,15 +79,10 @@ public class MediaFile {
         CacheFile old_c = cfile;
         
         /* Guess files from subtitle file - only for initialization */
-        if (!isValid(vfile)) {
-            vfile = VideoFile.guessFile(subs.getCurrentFile(), new VideoFileFilter(), decoder);
-            if (!isValid(afile)) setAudioFileUnused();
-            if (!isValid(cfile)) updateCacheFile(afile);
-        }
+        guessMediaFiles(subs);
         
         /* Now let the user select which files are the proper media files */
         boolean isok;
-        videoselector.setMediaFile(this);
         do {
             int res = JIDialog.question(null, videoselector, _("Select video"));
             if ( res != JIDialog.OK_OPTION) {
@@ -106,6 +101,14 @@ public class MediaFile {
     }
     private boolean isValid(File f) {
         return (f!= null && f.exists());
+    }
+    public void guessMediaFiles(Subtitles subs) {
+        if (!isValid(vfile)) {
+            vfile = VideoFile.guessFile(subs.getCurrentFile(), new VideoFileFilter(), decoder);
+            if (!isValid(afile)) setAudioFileUnused();
+            if (!isValid(cfile)) updateCacheFile(afile);
+        }
+        videoselector.setMediaFile(this);
     }
     
     

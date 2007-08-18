@@ -37,7 +37,7 @@ public class SubAttribs {
     private int maxcolor;
     
     private static final int DEFAULT_MAXCOLOR = 1;
-    private static final int DEFAULT_MAXCHARS = 30;
+    private static final int DEFAULT_MAXCHARS = 40;
     
     /** Creates a new instance of SubAttribs */
     public SubAttribs() {

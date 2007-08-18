@@ -26,9 +26,11 @@ package com.panayotis.jubler.information;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
+import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
 
 import javax.swing.JDialog;
@@ -38,10 +40,16 @@ import javax.swing.JDialog;
  * @author  teras
  */
 public class JInformation extends JDialog {
+    private Subtitles subs;
+    private MediaFile media;
     
     /** Creates new form JProperties */
     public JInformation(Jubler parent) {
         super(parent, true);
+        
+        subs = parent.getSubtitles();
+        media = parent.getMediaFile();
+        
         initComponents();
         MaxColC.removeItemAt(0);
         
@@ -125,8 +133,15 @@ public class JInformation extends JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(_("Project Properties"));
         setResizable(false);
+        PTabs.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                PTabsStateChanged(evt);
+            }
+        });
+
         InfoP.setLayout(new java.awt.BorderLayout());
 
+        InfoP.setName("info");
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Comments")));
@@ -173,6 +188,7 @@ public class JInformation extends JDialog {
 
         MediaP.setLayout(new java.awt.BorderLayout());
 
+        MediaP.setName("media");
         VSelectorP.setLayout(new java.awt.BorderLayout());
 
         SubFileInfoP.setLayout(new java.awt.BorderLayout());
@@ -200,6 +216,7 @@ public class JInformation extends JDialog {
 
         StatsP.setLayout(new java.awt.BorderLayout());
 
+        StatsP.setName("stats");
         jPanel9.setLayout(new java.awt.BorderLayout());
 
         jPanel8.setLayout(new java.awt.GridLayout(0, 2, 0, 4));
@@ -305,6 +322,12 @@ public class JInformation extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void PTabsStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_PTabsStateChanged
+        if (PTabs.getSelectedComponent().getName().equals("media")) {
+            media.guessMediaFiles(subs);
+        }
+    }//GEN-LAST:event_PTabsStateChanged
     
     private void MaxInfUserBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxInfUserBActionPerformed
         updateMaxCharsWidgets();
