@@ -104,8 +104,6 @@ public class JInformation extends JDialog {
         SubFileInfoP = new javax.swing.JPanel();
         FilePathL = new javax.swing.JLabel();
         FilePathT = new javax.swing.JTextField();
-        jPanel7 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         StatsP = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -204,13 +202,6 @@ public class JInformation extends JDialog {
         VSelectorP.add(SubFileInfoP, java.awt.BorderLayout.NORTH);
 
         MediaP.add(VSelectorP, java.awt.BorderLayout.NORTH);
-
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jButton1.setText(_("Guess media files"));
-        jPanel7.add(jButton1, java.awt.BorderLayout.WEST);
-
-        MediaP.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
         PTabs.addTab(_("Media"), MediaP);
 
@@ -382,7 +373,6 @@ public class JInformation extends JDialog {
     private javax.swing.JLabel TitleL;
     private javax.swing.JTextField TitleT;
     private javax.swing.JPanel VSelectorP;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -393,7 +383,6 @@ public class JInformation extends JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
