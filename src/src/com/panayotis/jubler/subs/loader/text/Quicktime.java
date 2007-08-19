@@ -98,7 +98,7 @@ public class Quicktime extends AbstractTextSubFormat {
     
     
     protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
-        header.append("{QTtext}{timeScale:1000}{timeStamps:absolute}\n");
+        header.append("{QTtext}{timeScale:1000}{timeStamps:absolute}{usemoviebackcolor:on}\n");
         start = null;
         finish = null;
         if (media.getVideoFile()!=null)
@@ -106,21 +106,29 @@ public class Quicktime extends AbstractTextSubFormat {
         else mediafinish = new Time(0);
     }
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
-        if (start==null) {
-            start = sub.getStartTime();
-            if (start.toSeconds()>0d) {
-                str.append("[00:00:00.000]\n");
-            }
+        /* Display initial zero time */
+        start = sub.getStartTime();
+        if (finish==null) {
+            finish = new Time(0);   // Virtual "old" finish
+            if (start.compareTo(finish)>0) printTime(str, finish);
         }
-        str.append('[');
-        str.append(sub.getStartTime().toString().replace(',', '.'));
-        str.append("]\n");
+        /* Check compaired to "old" finish time */
+        if (start.compareTo(finish)>0)
+            printTime(str, start);
+        /* Print subtitle */
         str.append(sub.getText().replace('\n', ' ')).append('\n');
+        /* Get "new" finish time */
         finish = sub.getFinishTime();
+        /* Display finish time, if it is different from start time */
+        if (start.compareTo(finish)<0) printTime(str, finish);
+    }
+    private void printTime(StringBuffer buf, Time t) {
+            buf.append('[');
+            buf.append(t.toString().replace(',', '.'));
+            buf.append("]\n");
     }
     protected void cleanupSaver(StringBuffer footer) {
-        if (finish.compareTo(mediafinish)<0) finish = mediafinish;
-        footer.append('[').append(finish.toString().replace(',', '.')).append("]\n");
+        if (finish.compareTo(mediafinish)<0) printTime(footer, mediafinish);
     }
     
     public boolean supportsFPS() { return false; }
