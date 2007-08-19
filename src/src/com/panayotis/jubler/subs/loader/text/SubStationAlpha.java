@@ -276,11 +276,13 @@ public class SubStationAlpha extends AbstractTextSubFormat {
         header.append("\nUpdate Details: ").append(attr.getSource());
         header.append("\nScriptType: v4.00").append(getExtraVersion());
         header.append("\nCollisions: Normal\n");
-
-        header.append("PlayResX: ").append(media.getVideoFile().getWidth());
-        header.append("\nPlayResY: ").append(media.getVideoFile().getHeight());
         
-        header.append("\nPlayDepth: 0\nTimer: 100,0000\n");
+        if (media.getVideoFile()!=null) {
+            header.append("PlayResX: ").append(media.getVideoFile().getWidth());
+            header.append("\nPlayResY: ").append(media.getVideoFile().getHeight()).append('\n');
+        }
+        
+        header.append("PlayDepth: 0\nTimer: 100,0000\n");
         
         header.append("\n[V4 Styles");
         header.append(getExtraVersion());
