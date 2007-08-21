@@ -223,13 +223,10 @@ public class Subtitles extends AbstractTableModel {
     }
     
     /* Calculate maximum character length & maximum lines */
-    public SubMetrics getMaxMetrics() {
-        SubMetrics max = null;
-        SubMetrics current;
+    public TotalSubMetrics getTotalMetrics() {
+        TotalSubMetrics max = new TotalSubMetrics();
         for (int i = 0 ; i < size() ; i++) {
-            current = elementAt(i).getMetrics();
-            if (max==null) max = current;
-            else max.updateToMaxValues(current);
+           max.updateToMaxValues(elementAt(i).getMetrics());
         }
         return max;
     }

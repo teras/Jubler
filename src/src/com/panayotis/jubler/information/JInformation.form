@@ -293,9 +293,6 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="NumberL">
                       <Properties>
-                        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="NumberT"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Number of subtitles&quot;)" type="code"/>
                         </Property>
@@ -303,11 +300,26 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="NumberT">
                     </Component>
+                    <Component class="javax.swing.JLabel" name="TotalSubSizeL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="_(&quot;Total subtitle characters&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="TotalSubSizeT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="TotalLinesL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="_(&quot;Total subtitle lines&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="TotalLinesT">
+                    </Component>
                     <Component class="javax.swing.JLabel" name="MaxSubSizeL">
                       <Properties>
-                        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="MaxLengthT"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Maximum subtitle length&quot;)" type="code"/>
                         </Property>
@@ -315,29 +327,23 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="MaxSubSizeT">
                     </Component>
-                    <Component class="javax.swing.JLabel" name="MaxLengthL">
-                      <Properties>
-                        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="MaxLengthT"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Maximum subtitle characters per line&quot;)" type="code"/>
-                        </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="MaxLengthT">
-                    </Component>
                     <Component class="javax.swing.JLabel" name="MaxLinesL">
                       <Properties>
-                        <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="MaxLinesT"/>
-                        </Property>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Maximum subtitle lines&quot;)" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="MaxLinesT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxLengthL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="_(&quot;Maximum subtitle characters per line&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxLengthT">
                     </Component>
                   </SubComponents>
                 </Container>

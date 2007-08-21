@@ -29,8 +29,8 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.TotalSubMetrics;
 import java.awt.BorderLayout;
 
 import javax.swing.JDialog;
@@ -61,10 +61,12 @@ public class JInformation extends JDialog {
         FilePathT.setText(parent.getSubtitles().getCurrentFile().getPath());
         
         NumberT.setText(Integer.toString(parent.getSubtitles().size()));
-        SubMetrics m = parent.getSubtitles().getMaxMetrics();
+        TotalSubMetrics m = parent.getSubtitles().getTotalMetrics();
+        TotalSubSizeT.setText(Integer.toString(m.totallength));
+        TotalLinesT.setText(Integer.toString(m.totallines));
         MaxSubSizeT.setText(Integer.toString(m.length));
-        MaxLengthT.setText(Integer.toString(m.maxlength));
         MaxLinesT.setText(Integer.toString(m.lines));
+        MaxLengthT.setText(Integer.toString(m.maxlength));
         
         //   parent.getMediaFile().videoselector.setMediaFile(parent.getMediaFile());
         VSelectorP.add(parent.getMediaFile().videoselector, BorderLayout.CENTER);
@@ -109,12 +111,16 @@ public class JInformation extends JDialog {
         jPanel8 = new javax.swing.JPanel();
         NumberL = new javax.swing.JLabel();
         NumberT = new javax.swing.JLabel();
+        TotalSubSizeL = new javax.swing.JLabel();
+        TotalSubSizeT = new javax.swing.JLabel();
+        TotalLinesL = new javax.swing.JLabel();
+        TotalLinesT = new javax.swing.JLabel();
         MaxSubSizeL = new javax.swing.JLabel();
         MaxSubSizeT = new javax.swing.JLabel();
-        MaxLengthL = new javax.swing.JLabel();
-        MaxLengthT = new javax.swing.JLabel();
         MaxLinesL = new javax.swing.JLabel();
         MaxLinesT = new javax.swing.JLabel();
+        MaxLengthL = new javax.swing.JLabel();
+        MaxLengthT = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         MaxInfUserB = new javax.swing.JCheckBox();
         jPanel11 = new javax.swing.JPanel();
@@ -212,29 +218,35 @@ public class JInformation extends JDialog {
 
         jPanel8.setLayout(new java.awt.GridLayout(0, 2, 0, 4));
 
-        NumberL.setLabelFor(NumberT);
         NumberL.setText(_("Number of subtitles"));
         jPanel8.add(NumberL);
 
         jPanel8.add(NumberT);
 
-        MaxSubSizeL.setLabelFor(MaxLengthT);
+        TotalSubSizeL.setText(_("Total subtitle characters"));
+        jPanel8.add(TotalSubSizeL);
+
+        jPanel8.add(TotalSubSizeT);
+
+        TotalLinesL.setText(_("Total subtitle lines"));
+        jPanel8.add(TotalLinesL);
+
+        jPanel8.add(TotalLinesT);
+
         MaxSubSizeL.setText(_("Maximum subtitle length"));
         jPanel8.add(MaxSubSizeL);
 
         jPanel8.add(MaxSubSizeT);
 
-        MaxLengthL.setLabelFor(MaxLengthT);
-        MaxLengthL.setText(_("Maximum subtitle characters per line"));
-        jPanel8.add(MaxLengthL);
-
-        jPanel8.add(MaxLengthT);
-
-        MaxLinesL.setLabelFor(MaxLinesT);
         MaxLinesL.setText(_("Maximum subtitle lines"));
         jPanel8.add(MaxLinesL);
 
         jPanel8.add(MaxLinesT);
+
+        MaxLengthL.setText(_("Maximum subtitle characters per line"));
+        jPanel8.add(MaxLengthL);
+
+        jPanel8.add(MaxLengthT);
 
         jPanel9.add(jPanel8, java.awt.BorderLayout.NORTH);
 
@@ -372,6 +384,10 @@ public class JInformation extends JDialog {
     private javax.swing.JPanel SubFileInfoP;
     private javax.swing.JLabel TitleL;
     private javax.swing.JTextField TitleT;
+    private javax.swing.JLabel TotalLinesL;
+    private javax.swing.JLabel TotalLinesT;
+    private javax.swing.JLabel TotalSubSizeL;
+    private javax.swing.JLabel TotalSubSizeT;
     private javax.swing.JPanel VSelectorP;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
