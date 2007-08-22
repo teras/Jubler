@@ -68,7 +68,6 @@ public class JInformation extends JDialog {
         MaxLinesT.setText(Integer.toString(m.lines));
         MaxLengthT.setText(Integer.toString(m.maxlength));
         
-        //   parent.getMediaFile().videoselector.setMediaFile(parent.getMediaFile());
         VSelectorP.add(parent.getMediaFile().videoselector, BorderLayout.CENTER);
         
         MaxInfUserB.setSelected(attr.isMaxCharsEnabled());
