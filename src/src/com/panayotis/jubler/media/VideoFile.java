@@ -28,8 +28,8 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.filters.MediaFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
-import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -41,11 +41,18 @@ import java.io.InputStreamReader;
  */
 public class VideoFile extends File {
     
-    /* Various metrics about this video file */
-    private int width = -1;
-    private int height = -1;
-    private float length = -1;
-    private float fps;
+    /* Default video properties */
+    private final static int DEFAULT_WIDTH = 320;
+    private final static int DEFAULT_HEIGHT = 288;
+    private final static int DEFAULT_LENGTH = 60;
+    private final static int DEFAULT_FPS = 25;
+    private final static int INVALID = -1;
+    
+    /* Various video file properties */
+    private int width = INVALID;
+    private int height = INVALID;
+    private float length = INVALID;
+    private float fps = INVALID;
     
     /** Creates a new instance of VideoFile */
     public VideoFile(String vfile, DecoderInterface decoder) {
@@ -95,11 +102,15 @@ public class VideoFile extends File {
                 }
                 proc.destroy();
             } catch (IOException ex) {
-                height = -1;
-                width = -1;
-                length = -1;
-                fps = -1;
+                length = fps = height = width = INVALID;
             }
+        }
+        if (width<0) {
+            height = DEFAULT_HEIGHT;
+            width = DEFAULT_WIDTH;
+            length = DEFAULT_LENGTH;
+            fps = DEFAULT_FPS;
+            DEBUG.info(_("Could not retrieve actual video properties. Using defaults."), DEBUG.INFO_ALWAYS);
         }
     }
     

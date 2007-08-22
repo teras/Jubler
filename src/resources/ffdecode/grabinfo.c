@@ -95,7 +95,7 @@ void get_information(jfloat* dim, const char* video_c)
 		// Find the stream info
 		err = av_find_stream_info(fcx);
 		if (fcx->duration != AV_NOPTS_VALUE) 
-			dim[2] = fcx->duration / AV_TIME_BASE;
+			dim[2] = ((float)fcx->duration) / AV_TIME_BASE;
 		else
 			dim[2] = 0;
 
