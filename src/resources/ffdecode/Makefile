@@ -60,7 +60,7 @@ ifeq (${SYSTEM},linux)
 	ARCH=
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
-	FCOPTS=
+	FCOPTS=--extra-cflags="-fPIC"
 	STRIP=${PREF}strip -s
 endif
 ifeq (${SYSTEM},win32)

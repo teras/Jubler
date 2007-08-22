@@ -400,6 +400,7 @@
 	</target>
 	<target name="-post-compile">
 		<delete dir="build/classes/com/apple" failonerror="false"/>
+		<delete dir="src/com/apple" failonerror="false"/>
 	</target>	
 
 	<target name="-post-jar">
