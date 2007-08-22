@@ -188,7 +188,7 @@ public class SystemDependent {
             }
         }
         
-        return "%p -noautosub -noquiet -nofs -slave -idle -identify -ontop -utf8 "+
+        return "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 "+
                 "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y "+
                 "%(-audiofile %a%) -ass" + font + " %v";
     }
