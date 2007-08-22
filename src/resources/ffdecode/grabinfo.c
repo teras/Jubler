@@ -94,6 +94,10 @@ void get_information(jfloat* dim, const char* video_c)
 	if (ret != JNI_FALSE) {
 		// Find the stream info
 		err = av_find_stream_info(fcx);
+		if (fcx->duration != AV_NOPTS_VALUE) 
+			dim[2] = fcx->duration / AV_TIME_BASE;
+		else
+			dim[2] = 0;
 
 		// Give us information about the resolution and exit
 		for(i=0;i<fcx->nb_streams;i++) {
@@ -101,7 +105,6 @@ void get_information(jfloat* dim, const char* video_c)
 			if(st->codec->codec_type == CODEC_TYPE_VIDEO) {
 				dim[0] = st->codec->width;
 				dim[1] = st->codec->height;
-#warn FIXME: add length to get_information block
 	
 				/* Calc FPS */
 				if(st->r_frame_rate.den && st->r_frame_rate.num) {
