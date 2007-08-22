@@ -26,7 +26,6 @@ package com.panayotis.jubler.subs.loader.text;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
-import com.sun.tools.doclets.internal.toolkit.util.Group;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
