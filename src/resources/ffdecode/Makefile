@@ -32,7 +32,7 @@ JAVAH=${JAVA_HOME}/bin/javah
 
 # Various options
 FFCONF=configure
-LIBSUF=_${SYSTEM}
+LIBSUF=_${SYSTEM}.${ARCH}
 MAKEOPTS=-j3
 
 # Find requested files
@@ -57,7 +57,8 @@ endif
 ifeq (${SYSTEM},linux)
 	XLIBS=-lz
 	PREF=
-	ARCH=
+	ARCH=${shell uname -m}
+	COMPARCH=
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
 	FCOPTS=--extra-cflags="-fPIC"
@@ -65,8 +66,8 @@ ifeq (${SYSTEM},linux)
 endif
 ifeq (${SYSTEM},win32)
 	PREF=i586-mingw32msvc-
-#	PREF=i686-pc-mingw32-
-	ARCH=
+	ARCH=i386
+	COMPARCH=
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
 	XLIBS=
@@ -74,29 +75,30 @@ ifeq (${SYSTEM},win32)
 	STRIP=${PREF}strip -s
 endif
 ifeq (${SYSTEM},darwinppc)
+	XLIBS=-lz
 	PREF=
-	ARCH=-arch ppc
+	ARCH=ppc
+	COMPARCH=-arch ppc
 	#LD=${CC} -bundle
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
-	XLIBS=-lz
-	FCOPTS=--arch=powerpc --extra-cflags="-fno-common ${ARCH}" --extra-ldflags="${ARCH}" --cross-compile --enable-shared
+	FCOPTS=--arch=powerpc --extra-cflags="-fno-common ${COMPARCH}" --extra-ldflags="${COMPARCH}" --cross-compile --enable-shared
 	STRIP=echo No stripping on 
 endif
 ifeq (${SYSTEM},darwini386)
+	XLIBS=-lz
 	PREF=
-	ARCH=
-	#LD=${CC} -bundle
+	ARCH=i386
+	COMPARCH=
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
-	XLIBS=-lz
 	FCOPTS=--disable-mmx --arch=unknown --extra-cflags=-fno-common --enable-shared
 	STRIP=echo No stripping on 
 endif
 
 FCONFCOMMON=--disable-debug --enable-gpl --enable-a52 --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-vhook --disable-ipv6 --disable-network --disable-dv1394 --disable-bktr --disable-v4l2 --disable-v4l --disable-audio-beos --disable-audio-oss
 
-CC=${PREF}gcc ${ARCH}
+CC=${PREF}gcc ${COMPARCH}
 RANLIB=${PREF}ranlib
 
 
@@ -150,7 +152,7 @@ libinstall:
 LIB:${LIBNAME}
 
 ${LIBNAME}:${FFMPEGREQ} ${OBJS} ${RANLIBREQ}
-	${LD} ${ARCH} -o ${LIBNAME} ${OBJS} ${LIBS}
+	${LD} ${COMPARCH} -o ${LIBNAME} ${OBJS} ${LIBS}
 	${STRIP} ${LIBNAME}
 
 
@@ -174,7 +176,7 @@ ffmpeg:${LIBRARIES}/libavformat${LIBSUF}.a
 
 
 ${LIBRARIES}/libavformat${LIBSUF}.a:
-	cd ${FFMPEG} && ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} && make
+	cd ${FFMPEG} && ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} && make -j5
 	mkdir -p ${LIBRARIES}
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
