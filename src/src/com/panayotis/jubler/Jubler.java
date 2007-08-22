@@ -1752,8 +1752,8 @@ public class Jubler extends JFrame {
         int row, res;
         
         row = SubTable.getSelectedRow();
-        if (row < 0 ) split.setTime(new Time(0d));
-        else split.setTime(subs.elementAt(row).getStartTime());
+        if (row<0) row = 0;
+        split.setSubtitle(subs, row);
         
         res = JIDialog.question(this, split, _("Split subtitles in two"));
         if ( res == JIDialog.OK_OPTION) {

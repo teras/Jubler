@@ -24,11 +24,11 @@
 package com.panayotis.jubler.tools;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.subs.Subtitles;
 
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSingleSelection;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
 
 /**
  *
@@ -37,21 +37,21 @@ import javax.swing.JPanel;
 public class JSubSplit extends javax.swing.JPanel {
     private JTimeSingleSelection split;
     
+    private Subtitles subs;
+    
     /** Creates new form JSubSplit */
     public JSubSplit() {
         initComponents();
-        split = new JTimeSingleSelection("");
+        split = new JTimeSingleSelection(_("Splitting time"));
         split.setToolTip(_("Use the following time (inclusive) in order to create the new splitted subtitles"));
         
         TimeContainer.add(split, BorderLayout.CENTER);
     }
     
-    public void setTime(Time t) {
-        split.setTime(t);
-    }
-
-    public JPanel getTimeContainer() {
-        return TimeContainer;
+    public void setSubtitle(Subtitles subs, int index) {
+        this.subs = subs;
+        SplitS.setValue(100*index/subs.size());
+        split.setTime(subs.elementAt(index).getStartTime());
     }
     
     public Time getTime() {
@@ -65,24 +65,57 @@ public class JSubSplit extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
     private void initComponents() {
+        jPanel1 = new javax.swing.JPanel();
         TimeContainer = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        SplitS = new javax.swing.JSlider();
 
         setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setLayout(new java.awt.BorderLayout());
+
         TimeContainer.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText(_("Splitting time"));
-        TimeContainer.add(jLabel1, java.awt.BorderLayout.NORTH);
+        jPanel1.add(TimeContainer, java.awt.BorderLayout.NORTH);
 
-        add(TimeContainer, java.awt.BorderLayout.NORTH);
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 0, 0, 0));
+        jLabel1.setText(_("Split at given subtitle line (in percent)"));
+        jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
+
+        SplitS.setMajorTickSpacing(10);
+        SplitS.setMinorTickSpacing(1);
+        SplitS.setPaintLabels(true);
+        SplitS.setPaintTicks(true);
+        SplitS.setPaintTrack(false);
+        SplitS.setToolTipText(_("Percentage of subtitles to divide"));
+        SplitS.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                SplitSStateChanged(evt);
+            }
+        });
+
+        jPanel2.add(SplitS, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
+
+        add(jPanel1, java.awt.BorderLayout.NORTH);
 
     }// </editor-fold>//GEN-END:initComponents
+
+    private void SplitSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SplitSStateChanged
+        split.setTime(subs.elementAt(SplitS.getValue() * (subs.size()-1) / 100).getStartTime());
+    }//GEN-LAST:event_SplitSStateChanged
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JSlider SplitS;
     private javax.swing.JPanel TimeContainer;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
     
 }
