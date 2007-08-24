@@ -31,8 +31,8 @@ import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.loader.SubFormat;
-import com.panayotis.jubler.subs.loader.text.SubStationAlpha;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
@@ -82,7 +82,7 @@ public class JPreferences extends javax.swing.JDialog {
         DefaultEncodings[1] = "ISO-8859-1";
         DefaultEncodings[2] = "UTF-16";
         
-        DefaultSubFormat = new SubStationAlpha();
+        DefaultSubFormat = AvailSubFormats.findFromName("SubStationAlpha");
     }
     
     
