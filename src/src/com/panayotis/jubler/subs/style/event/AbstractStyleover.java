@@ -157,6 +157,8 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
      *   the style is discarded and the "right" attribute is used
      */
     public void addEvent(Object event, int start, int end, Object basic, String txt) {
+        if (event==null) return;
+        
         int index_in_array;
         
         cleanupEvents(basic, txt);
@@ -216,6 +218,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
     
     /* This method is used to insert an event, when we are already sure that it's safe enough (e.g. when loading a subtitles file */
     public void add(Object value, int start) {
+        if (value==null) return;
         add(new AbstractStyleover.Entry(new StyleoverEvent(value, start), null));
     }
     
