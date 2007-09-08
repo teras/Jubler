@@ -2,7 +2,7 @@
  * SubRip.java
  *
  * Created on 26 Αύγουστος 2005, 11:08 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -23,7 +23,10 @@
 
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
+import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
+import com.panayotis.jubler.subs.loader.text.format.StyledTextSubFormat;
+import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
+
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
@@ -32,15 +35,17 @@ import java.util.regex.Pattern;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
+import java.util.Vector;
 
 
 /**
  *
  * @author teras
  */
-public class SubRip extends AbstractTextSubFormat {
+public class SubRip extends StyledTextSubFormat {
     
-    private static final Pattern pat;
+    private static final Pattern pat, stylepat;
+    private static final Vector<StyledFormat> sdict;
     
     private int counter = 0;
     
@@ -49,18 +54,33 @@ public class SubRip extends AbstractTextSubFormat {
                 "(?s)(\\d+)"+sp+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"-->"+
                 sp+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+nl+"(.*?)"+nl+nl
                 );
+        stylepat = Pattern.compile("<(.*?)>");
+        
+        sdict = new Vector<StyledFormat>();
+        sdict.add(new StyledFormat(ITALIC, "i", true));
+        sdict.add(new StyledFormat(ITALIC, "/i", false));
+        sdict.add(new StyledFormat(BOLD, "b", true));
+        sdict.add(new StyledFormat(BOLD, "/b", false));
+        sdict.add(new StyledFormat(UNDERLINE, "u", true));
+        sdict.add(new StyledFormat(UNDERLINE, "/u", false));
+        sdict.add(new StyledFormat(STRIKETHROUGH, "s", true));
+        sdict.add(new StyledFormat(STRIKETHROUGH, "/s", false));
     }
     
-    protected Pattern getPattern () {
-        return pat;
-    }
+    protected Pattern getPattern() { return pat; }
+    protected Pattern getStylePattern() { return stylepat; }
+    protected String getTokenizer() { return "><"; } // Should not be useful
+    protected Vector<StyledFormat> getStylesDictionary() { return sdict; }
     
     
     
     protected SubEntry getSubEntry(Matcher m) {
         Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
         Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
-        return new SubEntry (start, finish, m.group(10));
+        SubEntry entry = new SubEntry(start, finish, m.group(10));
+        entry.setStyle(subtitle_list.getStyleList().get(0));
+        parseSubText(entry);
+        return entry;
     }
     
     
@@ -71,7 +91,7 @@ public class SubRip extends AbstractTextSubFormat {
     public String getName() {
         return "SubRip";
     }
-      
+    
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
         str.append(Integer.toString(counter++));
         str.append("\n");
@@ -79,13 +99,13 @@ public class SubRip extends AbstractTextSubFormat {
         str.append(" --> ");
         str.append(sub.getFinishTime().toString());
         str.append("\n");
-        str.append(sub.getText());
+        str.append(rebuildSubText(sub));
         str.append("\n\n");
     }
     
     protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
         counter = 1;
     }
-
+    
     public boolean supportsFPS() { return false; }
 }

@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.subs.loader.text;
+import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 
@@ -31,11 +32,11 @@ import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
+import java.util.HashMap;
+import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.text.StyleConstants;
-
-
 
 
 /**
@@ -45,6 +46,8 @@ import javax.swing.text.StyleConstants;
 public class AdvancedSubStation extends SubStationAlpha {
     
     private static final Pattern testpat, styles;
+    private static final Vector<StyledFormat> styles_dict;
+    private static final HashMap<String, Direction> ass_directions;
     
     /** Creates a new instance of SubFormat */
     static {
@@ -53,85 +56,54 @@ public class AdvancedSubStation extends SubStationAlpha {
                 );
         
         styles = Pattern.compile("(?i)Style:(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)"+nl);
+        
+        ass_directions=new HashMap<String, Direction>(9);
+        ass_directions.put("8", TOP);
+        ass_directions.put("9", TOPRIGHT);
+        ass_directions.put("6", RIGHT);
+        ass_directions.put("3", BOTTOMRIGHT);
+        ass_directions.put("2", BOTTOM);
+        ass_directions.put("1", BOTTOMLEFT);
+        ass_directions.put("4", LEFT);
+        ass_directions.put("7", TOPLEFT);
+        ass_directions.put("5", CENTER);
+        
+        styles_dict=new Vector<StyledFormat>();
+        styles_dict.add(new StyledFormat(ITALIC, "i0", false));
+        styles_dict.add(new StyledFormat(ITALIC, "i1", true));
+        styles_dict.add(new StyledFormat(BOLD, "b0", false));
+        styles_dict.add(new StyledFormat(BOLD, "b1", true));
+        styles_dict.add(new StyledFormat(UNDERLINE, "u0", false));
+        styles_dict.add(new StyledFormat(UNDERLINE, "u1", true));
+        styles_dict.add(new StyledFormat(STRIKETHROUGH, "s0", false));
+        styles_dict.add(new StyledFormat(STRIKETHROUGH, "s1", true));
+        styles_dict.add(new StyledFormat(FONTNAME, "fn", null));
+        styles_dict.add(new StyledFormat(FONTSIZE, "fs", null));
+        styles_dict.add(new StyledFormat(PRIMARY, "1c", StyledFormat.COLOR_REVERSE));
+        styles_dict.add(new StyledFormat(PRIMARY, "c",     StyledFormat.COLOR_REVERSE, false));
+        styles_dict.add(new StyledFormat(PRIMARY, "1a", StyledFormat.COLOR_ALPHA_REVERSE));
+        styles_dict.add(new StyledFormat(PRIMARY, "alpha", StyledFormat.COLOR_ALPHA_REVERSE, false));
+        styles_dict.add(new StyledFormat(SECONDARY, "2c", StyledFormat.COLOR_REVERSE));
+        styles_dict.add(new StyledFormat(SECONDARY, "2a", StyledFormat.COLOR_ALPHA_REVERSE));
+        styles_dict.add(new StyledFormat(OUTLINE, "3c", StyledFormat.COLOR_REVERSE));
+        styles_dict.add(new StyledFormat(OUTLINE, "3a", StyledFormat.COLOR_ALPHA_REVERSE));
+        styles_dict.add(new StyledFormat(SHADOW, "4c", StyledFormat.COLOR_REVERSE));
+        styles_dict.add(new StyledFormat(SHADOW, "4a", StyledFormat.COLOR_ALPHA_REVERSE));
+        styles_dict.add(new StyledFormat(DIRECTION, "an", ass_directions));
+        styles_dict.add(new StyledFormat(DIRECTION, "a", ssa_directions, false));
+        styles_dict.add(new StyledFormat(UNKNOWN, "", null));   // Add this line if you want this style to save unknwn formats. It has to be LAST since it matches ALL tags
     }
     
-    protected Pattern getTestPattern() {
-        return testpat;
-    }
+    protected Pattern getTestPattern() { return testpat; }
+    protected Vector<StyledFormat> getStylesDictionary() { return styles_dict; }
     
+    public String getExtension() { return "ass"; }
+    public String getName() { return "AdvancedSubStation"; }
+
     
-    public String getExtension() {
-        return "ass";
-    }
-    
-    public String getName() {
-        return "AdvancedSubStation";
-    }
     
     protected String getExtraVersion() { return "+"; }
     protected String getLayer() { return "0"; }
-    
-    protected int directionToInt(Direction dir) {
-        switch (dir) {
-            case TOP:
-                return 8;
-            case TOPRIGHT:
-                return 9;
-            case RIGHT:
-                return 6;
-            case BOTTOMRIGHT:
-                return 3;
-            case BOTTOMLEFT:
-                return 1;
-            case LEFT:
-                return 4;
-            case TOPLEFT:
-                return 7;
-            case CENTER:
-                return 5;
-        }
-        /* By default return BOTTOM */
-        return 2;
-    }
-    
-    protected Direction intToDirection(int i) {
-        switch (i) {
-            case 8:
-                return TOP;
-            case 9:
-                return TOPRIGHT;
-            case 6:
-                return RIGHT;
-            case 3:
-                return BOTTOMRIGHT;
-            case 1:
-                return BOTTOMLEFT;
-            case 4:
-                return LEFT;
-            case 7:
-                return TOPLEFT;
-            case 5:
-                return CENTER;
-        }
-        /* By default return bottom */
-        return BOTTOM;
-    }
-    
-    protected String getTagFromStyle(Object style) {
-        if (style==StyleConstants.FontFamily) return "\\fn";
-        else if (style==StyleConstants.FontSize) return "\\fs";
-        else if (style==StyleConstants.Bold) return "\\b";
-        else if (style==StyleConstants.Italic) return "\\i";
-        else if (style==StyleConstants.Underline) return "\\u";
-        else if (style==StyleConstants.StrikeThrough) return "\\s";
-        else if (style==StyleConstants.Foreground) return "\\1c";
-        else if (style.equals("secondary")) return "\\2c";
-        else if (style.equals("outline")) return "\\3c";
-        else if (style==StyleConstants.Background) return "\\4c";
-        else if (style==StyleConstants.Alignment) return "\\a";
-        else if (style.equals("unknown")) return "\\";
-        return null;
-    }
     
     
     protected void appendStyles(Subtitles subs, StringBuffer header) {
@@ -157,7 +129,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             header.append((((Integer)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
             header.append(style.get(BORDERSIZE)).append(',');
             header.append(style.get(SHADOWSIZE)).append(',');
-            header.append(directionToInt((Direction)style.get(DIRECTION))).append(',');
+            //   header.append(convertFromDirection((Direction)style.get(DIRECTION))).append(',');
             header.append(style.get(LEFTMARGIN)).append(',');
             header.append(style.get(RIGHTMARGIN)).append(',');
             header.append(style.get(VERTICAL)).append(',');
@@ -193,7 +165,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             st.set(BORDERSTYLE, (m.group(16).equals("1"))? 0 : 1);
             st.set(BORDERSIZE, new Integer(m.group(17)));
             st.set(SHADOWSIZE, new Integer(m.group(18)));
-            st.set(DIRECTION, intToDirection(Integer.parseInt(m.group(19))));
+            //     st.set(DIRECTION, convertToDirection(m.group(19)));
             st.set(LEFTMARGIN, new Integer(m.group(20)));
             st.set(RIGHTMARGIN, new Integer(m.group(21)));
             st.set(VERTICAL, new Integer(m.group(22)));

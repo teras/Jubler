@@ -1,10 +1,6 @@
-3.3.1
+3.4.0
 
-Subtitle statistics. Improved splitting interface. Updated Media files
-configuration. Display number of lines & characters per line while editing.
-MPlayer display subtitle updates. Linux man & doc paths fixed. Support for
-Quicktime Texttrack subtitles. Better support of MPL2 subtitles. Bug fixes
-and updates.
+SRT supports font formatting. Subtitle statistics. Improved splitting interface. Updated Media files configuration. Display number of lines & characters per line while editing.  MPlayer display subtitle updates. Linux man & doc paths fixed. Support for Quicktime Texttrack subtitles. Better support of MPL2 subtitles. Bug fixes and updates.
 
 
 3.3.0

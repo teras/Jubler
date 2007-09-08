@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.os;
 
-import com.panayotis.jubler.*;
+import com.panayotis.jubler.Jubler;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;

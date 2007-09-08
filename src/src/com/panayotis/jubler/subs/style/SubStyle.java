@@ -25,6 +25,8 @@ package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.subs.loader.text.format.StyledFormat.*;
+
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.awt.Color;
 import java.awt.Font;
@@ -42,9 +44,19 @@ public class SubStyle {
     
     public static enum Direction {TOP, TOPRIGHT, RIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT, LEFT, TOPLEFT, CENTER}
     
-    public static enum Style {FONTNAME, FONTSIZE, BOLD, ITALIC, UNDERLINE, STRIKETHROUGH,
-    PRIMARY, SECONDARY, OUTLINE, SHADOW, BORDERSTYLE, BORDERSIZE, SHADOWSIZE,
-    LEFTMARGIN, RIGHTMARGIN, VERTICAL, ANGLE, SPACING, XSCALE, YSCALE, DIRECTION, UNKNOWN};
+    public static enum Style {FONTNAME, FONTSIZE,
+    BOLD, ITALIC, UNDERLINE, STRIKETHROUGH,
+    PRIMARY, SECONDARY, OUTLINE, SHADOW,
+    BORDERSTYLE, BORDERSIZE, SHADOWSIZE,
+    LEFTMARGIN, RIGHTMARGIN, VERTICAL, ANGLE, SPACING,
+    XSCALE, YSCALE, DIRECTION, UNKNOWN};
+    
+    public static int[] StyleType = { FORMAT_STRING, FORMAT_INTEGER,
+    FORMAT_FLAG, FORMAT_FLAG, FORMAT_FLAG, FORMAT_FLAG,
+    FORMAT_COLOR, FORMAT_COLOR, FORMAT_COLOR, FORMAT_COLOR,
+    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, 
+    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER,
+    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_DIRECTION, FORMAT_UNDEFINED};
     
     public static final Integer [] FontSizes = {8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 48, 56, 64, 72};
     
