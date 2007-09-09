@@ -125,7 +125,9 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     default:
                                         rgb = parseNumber(tag);
                                 }
-                                entry.addOverStyle(sf.style, new AlphaColor(rgb|(alpha<<24)), se.start);
+                                AlphaColor newcol = new AlphaColor(rgb|(alpha<<24));
+                                cols.put(sf.style, newcol);
+                                entry.addOverStyle(sf.style, newcol, se.start);
                                 break;
                             case FORMAT_DIRECTION:
                                 entry.setOverStyle(sf.style, ((HashMap<String, Direction>)sf.value).get(tag), se.start, se.start);

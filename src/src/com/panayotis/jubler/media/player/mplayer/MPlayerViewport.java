@@ -101,7 +101,7 @@ public class MPlayerViewport implements Viewport {
             
 //            String line;
 //            while ((line=errorpipe.readLine())!=null) System.out.println(line);
-//            while ((line=info.readLine())!=null) System.out.println(line);
+//            while ((line=infopipe.readLine())!=null) System.out.println(line);
             
             updater = new Thread() {
                 public void run() {
