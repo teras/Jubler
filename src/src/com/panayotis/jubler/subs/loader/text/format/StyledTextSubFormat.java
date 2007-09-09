@@ -56,7 +56,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     /* Get the dictionary of the supported styles */
     protected abstract Vector<StyledFormat> getStylesDictionary();
     
-    
+    @SuppressWarnings("unchecked")
     protected void parseSubText(SubEntry entry) {
         StringBuffer sbuf = new StringBuffer(entry.getText());
         Matcher m = getStylePattern().matcher(sbuf);
@@ -175,12 +175,22 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                 }
                                 break;
                             case FORMAT_COLOR:
-//                                String alpha = (tag.charAt(1)=='c') ? "alpha" : tag.charAt(1)+"a";  // This is actually valid only for the Advanvced sub station, but we put it here too since it does no harm
-//                                String bgr = Integer.toHexString(reverseOrder(((AlphaColor)ev.value).getRGB() & 0xffffff));
-//                                String a = Integer.toHexString(fixAlpha(((AlphaColor)ev.value).getAlpha()));
-//                                bgr = "000000".substring(0, 6-bgr.length()) + bgr;
-//                                a = "00".substring(0, 2-a.length()) + a;
-//                                data = "&H"+bgr+"&\\"+alpha+"&H"+a+"&";
+                                AlphaColor acol = (AlphaColor)ev.value;
+                                String data;
+                                switch((Integer)sf.value) {
+                                    case COLOR_REVERSE:
+                                        data = produceNumber(reverseByteOrder(acol.getRGB()&0xffffff), true, 6);
+                                        break;
+                                    case COLOR_ALPHA_NORMAL:
+                                        data = produceNumber(acol.getAlpha(), true, 2);
+                                        break;
+                                    case COLOR_ALPHA_REVERSE:
+                                        data = produceNumber(invertAlpha(acol.getAlpha()), true, 2);
+                                        break;
+                                    default:
+                                        data = produceNumber(acol.getRGB()&0xffffff, true, 6);
+                                }
+                                events.add(new SubEv(sf.tag+data, ev.position));
                                 break;
                             default:
                                 events.add(new SubEv(sf.tag+ev.value.toString(), ev.position));
@@ -217,4 +227,13 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         }
         return Integer.parseInt(value);
     }
+    protected String produceNumber(int number, boolean hex, int length) {
+        if (hex) {
+            String n = Integer.toHexString(number).toUpperCase();
+            n = zeros.substring(0, length-n.length()) + n;
+            return "&H"+n+"&";
+        }
+        return Integer.toString(number);
+    }
+    private final static String zeros = "0000000000000000";
 }
