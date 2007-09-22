@@ -23,19 +23,19 @@
 
 package com.panayotis.jubler.subs;
 
-import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.time.Time;
-import java.awt.Color;
-
 import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverCharacter;
 import com.panayotis.jubler.subs.style.event.StyleoverFull;
+import com.panayotis.jubler.time.Time;
+import java.awt.Color;
 import javax.swing.JTextPane;
 import javax.swing.text.StyleConstants;
+
 
 
 /**

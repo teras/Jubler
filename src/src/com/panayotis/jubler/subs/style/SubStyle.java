@@ -54,7 +54,7 @@ public class SubStyle {
     public static int[] StyleType = { FORMAT_STRING, FORMAT_INTEGER,
     FORMAT_FLAG, FORMAT_FLAG, FORMAT_FLAG, FORMAT_FLAG,
     FORMAT_COLOR, FORMAT_COLOR, FORMAT_COLOR, FORMAT_COLOR,
-    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, 
+    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER,
     FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER,
     FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_DIRECTION, FORMAT_UNDEFINED};
     
@@ -73,6 +73,7 @@ public class SubStyle {
                 "(.*)"
                 );
         
+        /* Load font names in a safe manner */
         GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
         String[] fnames;
         try {
