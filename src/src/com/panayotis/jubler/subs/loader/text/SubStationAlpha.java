@@ -84,7 +84,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
         ssa_directions.put("9", LEFT);
         ssa_directions.put("5", TOPLEFT);
         ssa_directions.put("10", CENTER);
-
+        
         styles_dict=new Vector<StyledFormat>();
         styles_dict.add(new StyledFormat(ITALIC, "i0", false));
         styles_dict.add(new StyledFormat(ITALIC, "i1", true));
@@ -101,8 +101,14 @@ public class SubStationAlpha extends StyledTextSubFormat {
     
     protected Pattern getPattern() { return pat; }
     protected Pattern getTestPattern() { return testpat; }
+    
     protected Pattern getStylePattern() { return stylepattern; }
     protected String getTokenizer() { return "\\"; }
+    protected String getEventIntro() { return "{"; }
+    protected String getEventFinal() { return "}"; }
+    protected String getEventMark() { return getTokenizer(); }
+    protected boolean isEventCompact() { return true; }
+    
     protected Vector<StyledFormat> getStylesDictionary() { return styles_dict; }
     
     public boolean supportsFPS() { return false; }
@@ -198,12 +204,12 @@ public class SubStationAlpha extends StyledTextSubFormat {
     protected int booleanToInt(Object b) {
         return (((Boolean)b).booleanValue())?-1:0;
     }
-   
+    
     
     protected boolean strToBoolean(String val) { return !val.equals("0"); }
     
     
-   
+    
     
     protected void appendStyles(Subtitles subs, StringBuffer header) {
         header.append("Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding\n");
@@ -221,7 +227,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
             header.append((((Integer)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
             header.append(style.get(BORDERSIZE)).append(',');
             header.append(style.get(SHADOWSIZE)).append(',');
-     //       header.append(convertFromDirection((Direction)style.get(DIRECTION))).append(',');
+            //       header.append(convertFromDirection((Direction)style.get(DIRECTION))).append(',');
             header.append(style.get(LEFTMARGIN)).append(',');
             header.append(style.get(RIGHTMARGIN)).append(',');
             header.append(style.get(VERTICAL)).append(',');
@@ -251,7 +257,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
             st.set(BORDERSTYLE, (m.group(10).equals("1"))? 0 : 1);
             st.set(BORDERSIZE, new Integer(m.group(11)));
             st.set(SHADOWSIZE, new Integer(m.group(12)));
-      //      st.set(DIRECTION, convertToDirection(m.group(13)));
+            //      st.set(DIRECTION, convertToDirection(m.group(13)));
             st.set(LEFTMARGIN, new Integer(m.group(14)));
             st.set(RIGHTMARGIN, new Integer(m.group(15)));
             st.set(VERTICAL, new Integer(m.group(16)));

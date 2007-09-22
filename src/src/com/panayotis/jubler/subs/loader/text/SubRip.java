@@ -68,8 +68,15 @@ public class SubRip extends StyledTextSubFormat {
     }
     
     protected Pattern getPattern() { return pat; }
+    
     protected Pattern getStylePattern() { return stylepat; }
     protected String getTokenizer() { return "><"; } // Should not be useful
+    protected String getEventIntro() { return "<"; }
+    protected String getEventFinal() { return ">"; }
+    protected String getEventMark() { return ""; }
+    protected boolean isEventCompact() { return false; }
+    
+    
     protected Vector<StyledFormat> getStylesDictionary() { return sdict; }
     
     

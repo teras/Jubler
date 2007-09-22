@@ -35,8 +35,8 @@ import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.TreeSet;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,8 +50,17 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     /* Get the pattern that matches the style events */
     protected abstract Pattern getStylePattern();
     
-    /* Get the string that matches the seperator between events at the same time position */
+    /* Get the String that matches the seperator between events at the same time position */
     protected abstract String getTokenizer();
+    
+    /* Get the String which introduces and finalizes new event */
+    protected abstract String getEventIntro();
+    protected abstract String getEventFinal();
+    /* Define whether this format is compact (i.e. multiple events are under the same intro+final markers */
+    protected abstract boolean isEventCompact();
+    
+    /* The special character that an event has - sometimes the same as getTokenizer */
+    protected abstract String getEventMark();
     
     /* Get the dictionary of the supported styles */
     protected abstract Vector<StyledFormat> getStylesDictionary();
@@ -147,7 +156,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     
     @SuppressWarnings("unchecked")
     protected String rebuildSubText(SubEntry entry) {
-        ArrayList<SubEv> events = new ArrayList<SubEv>();
+        TreeSet<SubEv> events = new TreeSet<SubEv>();
         AbstractStyleover over;
         StyleoverEvent ev;
         
@@ -162,13 +171,13 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                         ev = over.getVisibleEvent(j);           // Get the value data
                         switch(sf.type) {
                             case FORMAT_FLAG:
-                                if (sf.value==ev.value)
+                                if (sf.value.equals(ev.value) )
                                     events.add(new SubEv(sf.tag, ev.position));
                                 break;
                             case FORMAT_DIRECTION:
                                 HashMap<String, Direction> dir = (HashMap<String, Direction>)sf.value;
                                 for (Entry<String, Direction> en : dir.entrySet()) {
-                                    if (en.getValue()==ev.value) {
+                                    if (en.getValue().equals(ev.value) ) {
                                         events.add(new SubEv(sf.tag+en.getKey(), ev.position) );
                                         break;
                                     }
@@ -202,12 +211,12 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         
         StringBuffer btxt = new StringBuffer(entry.getText());
         for (SubEv cevent : events) {
-            if (btxt.charAt(cevent.start)!='{') btxt.insert(cevent.start, "{}");
-            btxt.insert(cevent.start+1, cevent.value);
+            if ( (!isEventCompact()) || (! btxt.substring(cevent.start).startsWith(getEventIntro())) )
+                btxt.insert(cevent.start, getEventIntro()+getEventFinal());
+            btxt.insert(cevent.start+getEventIntro().length(), getEventMark()+cevent.value);
         }
         return btxt.toString();
     }
-    
     
     
     
