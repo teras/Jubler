@@ -151,7 +151,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
             str.append(sub.getStyle().Name);
         }
         str.append(",,0000,0000,0000,,");
-        str.append(rebuildSubText(sub));
+        str.append(rebuildSubText(sub).replace("\n", "\\N"));
         str.append("\n");
     }
     
