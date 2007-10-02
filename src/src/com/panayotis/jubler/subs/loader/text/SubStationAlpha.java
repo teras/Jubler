@@ -110,6 +110,8 @@ public class SubStationAlpha extends StyledTextSubFormat {
     protected String getEventMark() { return getTokenizer(); }
     protected boolean isEventCompact() { return true; }
     
+    protected float getFontFactor() { return 1.42f; }
+    
     protected Vector<StyledFormat> getStylesDictionary() { return styles_dict; }
     
     public boolean supportsFPS() { return false; }
@@ -218,7 +220,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
             header.append("Style: ");
             header.append(style.Name).append(',');
             header.append(style.get(FONTNAME)).append(',');
-            header.append(style.get(FONTSIZE)).append(',');
+            header.append( (int) (((Integer)style.get(FONTSIZE)) * getFontFactor()) ).append(',');
             header.append(setReverse(style.get(PRIMARY), false)).append(',');
             header.append(setReverse(style.get(SECONDARY), false)).append(',');
             header.append(setReverse(style.get(OUTLINE), false)).append(',');
@@ -248,7 +250,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
         while (m.find()) {
             st = new SubStyle(m.group(1).trim());
             st.set(FONTNAME, m.group(2));
-            st.set(FONTSIZE, new Integer(m.group(3)));
+            st.set(FONTSIZE, (int) (Integer.parseInt(m.group(3)) / getFontFactor()) );
             st.set(PRIMARY, getReverse(m.group(4), m.group(17)));
             st.set(SECONDARY, getReverse(m.group(5), m.group(17)));
             st.set(OUTLINE, getReverse(m.group(6), m.group(17)));

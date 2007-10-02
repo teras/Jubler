@@ -65,6 +65,8 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     /* Get the dictionary of the supported styles */
     protected abstract Vector<StyledFormat> getStylesDictionary();
     
+    /* Since ASS/SSA uses OS/2 font metrics, we need to recalculate the font size with a factor */
+    protected float getFontFactor() { return 1; }
 
     @SuppressWarnings("unchecked")
     protected void parseSubText(SubEntry entry) {
@@ -110,7 +112,9 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                         tag = tok.substring(sf.tag.length());
                         switch(sf.type) {
                             case FORMAT_INTEGER:
-                                entry.addOverStyle(sf.style, parseNumber(tag), se.start);
+                                int numb = parseNumber(tag);
+                                if (sf.style.equals(Style.FONTSIZE)) numb /= getFontFactor() ;  // A hack to decrease font size
+                                entry.addOverStyle(sf.style, numb, se.start);
                                 break;
                             case FORMAT_FLOAT:
                                 entry.addOverStyle(sf.style, Float.parseFloat(tag), se.start);
@@ -199,7 +203,10 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                 events.add(new SubEv(sf.tag+data, ev.position));
                                 break;
                             default:
-                                events.add(new SubEv(sf.tag+ev.value.toString(), ev.position));
+                                String value = ev.value.toString();
+                                 if (sf.style.equals(Style.FONTSIZE)) 
+                                     value = String.valueOf( ((Integer)ev.value) * getFontFactor() ) ;  // A hack to increase font size
+                                events.add(new SubEv(sf.tag+ev.value, ev.position));
                         }
                     }
                 }
