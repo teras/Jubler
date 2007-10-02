@@ -110,7 +110,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
     protected String getEventMark() { return getTokenizer(); }
     protected boolean isEventCompact() { return true; }
     
-    protected float getFontFactor() { return 1.42f; }
+    protected float getFontFactor() { return 1.3f; }
     
     protected Vector<StyledFormat> getStylesDictionary() { return styles_dict; }
     
