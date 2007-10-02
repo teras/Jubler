@@ -244,12 +244,13 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     private final static String zeros = "0000000000000000";
     
     protected static final String getDirectionKey(HashMap<String, Direction> dict, Direction dir) {
+        if (dir==null) dir = Direction.BOTTOM;
         for (Entry<String, Direction> en : dict.entrySet()) {
             if (en.getValue().equals(dir) ) {
                 return en.getKey();
             }
         }
-        return null;
+        return "";
     }
     
 }
