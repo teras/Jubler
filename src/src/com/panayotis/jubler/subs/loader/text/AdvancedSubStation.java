@@ -99,7 +99,7 @@ public class AdvancedSubStation extends SubStationAlpha {
     
     public String getExtension() { return "ass"; }
     public String getName() { return "AdvancedSubStation"; }
-
+    
     
     
     protected String getExtraVersion() { return "+"; }
@@ -129,7 +129,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             header.append((((Integer)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
             header.append(style.get(BORDERSIZE)).append(',');
             header.append(style.get(SHADOWSIZE)).append(',');
-            //   header.append(convertFromDirection((Direction)style.get(DIRECTION))).append(',');
+            header.append(getDirectionKey(ass_directions, (Direction)style.get(DIRECTION))).append(',');
             header.append(style.get(LEFTMARGIN)).append(',');
             header.append(style.get(RIGHTMARGIN)).append(',');
             header.append(style.get(VERTICAL)).append(',');
@@ -165,7 +165,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             st.set(BORDERSTYLE, (m.group(16).equals("1"))? 0 : 1);
             st.set(BORDERSIZE, new Integer(m.group(17)));
             st.set(SHADOWSIZE, new Integer(m.group(18)));
-            //     st.set(DIRECTION, convertToDirection(m.group(19)));
+            st.set(DIRECTION, ass_directions.get(m.group(13)));
             st.set(LEFTMARGIN, new Integer(m.group(20)));
             st.set(RIGHTMARGIN, new Integer(m.group(21)));
             st.set(VERTICAL, new Integer(m.group(22)));

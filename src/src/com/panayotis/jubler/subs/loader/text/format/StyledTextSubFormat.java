@@ -65,6 +65,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     /* Get the dictionary of the supported styles */
     protected abstract Vector<StyledFormat> getStylesDictionary();
     
+
     @SuppressWarnings("unchecked")
     protected void parseSubText(SubEntry entry) {
         StringBuffer sbuf = new StringBuffer(entry.getText());
@@ -175,13 +176,9 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     events.add(new SubEv(sf.tag, ev.position));
                                 break;
                             case FORMAT_DIRECTION:
-                                HashMap<String, Direction> dir = (HashMap<String, Direction>)sf.value;
-                                for (Entry<String, Direction> en : dir.entrySet()) {
-                                    if (en.getValue().equals(ev.value) ) {
-                                        events.add(new SubEv(sf.tag+en.getKey(), ev.position) );
-                                        break;
-                                    }
-                                }
+                                String dirkey = getDirectionKey( (HashMap<String, Direction>)sf.value, (Direction)ev.value );
+                                if (dirkey!=null)
+                                        events.add(new SubEv(sf.tag+dirkey, ev.position) );
                                 break;
                             case FORMAT_COLOR:
                                 AlphaColor acol = (AlphaColor)ev.value;
@@ -245,4 +242,14 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         return Integer.toString(number);
     }
     private final static String zeros = "0000000000000000";
+    
+    protected static final String getDirectionKey(HashMap<String, Direction> dict, Direction dir) {
+        for (Entry<String, Direction> en : dict.entrySet()) {
+            if (en.getValue().equals(dir) ) {
+                return en.getKey();
+            }
+        }
+        return null;
+    }
+    
 }

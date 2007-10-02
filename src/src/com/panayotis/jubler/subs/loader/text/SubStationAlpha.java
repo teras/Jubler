@@ -40,6 +40,7 @@ import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 /**
@@ -227,7 +228,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
             header.append((((Integer)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
             header.append(style.get(BORDERSIZE)).append(',');
             header.append(style.get(SHADOWSIZE)).append(',');
-            //       header.append(convertFromDirection((Direction)style.get(DIRECTION))).append(',');
+            header.append(getDirectionKey(ssa_directions, (Direction)style.get(DIRECTION))).append(',');
             header.append(style.get(LEFTMARGIN)).append(',');
             header.append(style.get(RIGHTMARGIN)).append(',');
             header.append(style.get(VERTICAL)).append(',');
@@ -257,7 +258,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
             st.set(BORDERSTYLE, (m.group(10).equals("1"))? 0 : 1);
             st.set(BORDERSIZE, new Integer(m.group(11)));
             st.set(SHADOWSIZE, new Integer(m.group(12)));
-            //      st.set(DIRECTION, convertToDirection(m.group(13)));
+            st.set(DIRECTION, ssa_directions.get(m.group(13)));
             st.set(LEFTMARGIN, new Integer(m.group(14)));
             st.set(RIGHTMARGIN, new Integer(m.group(15)));
             st.set(VERTICAL, new Integer(m.group(16)));

@@ -82,7 +82,7 @@ public class JPreferences extends javax.swing.JDialog {
         DefaultEncodings[1] = "ISO-8859-1";
         DefaultEncodings[2] = "UTF-16";
         
-        DefaultSubFormat = AvailSubFormats.findFromName("SubStationAlpha");
+        DefaultSubFormat = AvailSubFormats.findFromName("AdvancedSubStation");
     }
     
     

@@ -84,7 +84,7 @@ public class VideoFile extends File {
         if (width<0) {
             
             /* Use MPlayer if no decoder is valid */
-            String cmd[] = { Options.getOption("Player.MPlayer.Path",""), "-vo", "null", "-ao", "null", "-identify", "-endpos", "0", getPath() };
+            String cmd[] = { Options.getOption("Player.MPlayer.Path","mplayer"), "-vo", "null", "-ao", "null", "-identify", "-endpos", "0", getPath() };
             Process proc;
             try {
                 proc = Runtime.getRuntime().exec(cmd);
