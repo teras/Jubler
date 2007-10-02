@@ -368,9 +368,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         FFMovieB = new javax.swing.JButton();
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
-        GrabSub = new javax.swing.JButton();
         Sync1B = new javax.swing.JToggleButton();
         Sync2B = new javax.swing.JToggleButton();
+        GrabSub = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         SubMover = new javax.swing.JSlider();
         SmoverL = new javax.swing.JLabel();
@@ -634,17 +634,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel14.setLayout(new java.awt.BorderLayout());
 
         jPanel14.setRequestFocusEnabled(false);
-        jPanel15.setLayout(new java.awt.GridLayout(1, 4));
-
-        GrabSub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/textpick.png")));
-        GrabSub.setToolTipText(_("Select subtitle from the main window, to synchronize subtitles with current time."));
-        GrabSub.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GrabSubActionPerformed(evt);
-            }
-        });
-
-        jPanel15.add(GrabSub);
+        jPanel15.setLayout(new java.awt.GridLayout());
 
         Sync1B.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync1b.png")));
         Sync1B.setToolTipText(_("Mark first synchronization position of the subtitles."));
@@ -670,7 +660,17 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         jPanel15.add(Sync2B);
 
-        jPanel14.add(jPanel15, java.awt.BorderLayout.CENTER);
+        jPanel14.add(jPanel15, java.awt.BorderLayout.EAST);
+
+        GrabSub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/textpick.png")));
+        GrabSub.setToolTipText(_("Select subtitle from the main window, to synchronize subtitles with current time."));
+        GrabSub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GrabSubActionPerformed(evt);
+            }
+        });
+
+        jPanel14.add(GrabSub, java.awt.BorderLayout.WEST);
 
         jPanel12.setLayout(new java.awt.BorderLayout());
 
@@ -689,7 +689,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         SmoverL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         jPanel12.add(SmoverL, java.awt.BorderLayout.NORTH);
 
-        jPanel14.add(jPanel12, java.awt.BorderLayout.WEST);
+        jPanel14.add(jPanel12, java.awt.BorderLayout.CENTER);
 
         jPanel11.add(jPanel14, java.awt.BorderLayout.SOUTH);
 
