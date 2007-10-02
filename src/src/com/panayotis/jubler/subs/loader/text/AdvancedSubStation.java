@@ -113,7 +113,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             header.append("Style: ");
             header.append(style.Name).append(',');
             header.append(style.get(FONTNAME)).append(',');
-            header.append( (int) (((Integer)style.get(FONTSIZE)) * getFontFactor()) ).append(',');
+            header.append( Math.round(((Integer)style.get(FONTSIZE)) * getFontFactor()) ).append(',');
             header.append(setReverse(style.get(PRIMARY), true)).append(',');
             header.append(setReverse(style.get(SECONDARY), true)).append(',');
             header.append(setReverse(style.get(OUTLINE), true)).append(',');
@@ -149,7 +149,7 @@ public class AdvancedSubStation extends SubStationAlpha {
         while (m.find()) {
             st = new SubStyle(m.group(1).trim());
             st.set(FONTNAME, m.group(2));
-            st.set(FONTSIZE, (int) (Integer.parseInt(m.group(3)) / getFontFactor()) );
+            st.set(FONTSIZE, Math.round( Integer.parseInt(m.group(3)) / getFontFactor()) );
             st.set(PRIMARY, getReverse(m.group(4), null));
             st.set(SECONDARY, getReverse(m.group(5), null));
             st.set(OUTLINE, getReverse(m.group(6), null));

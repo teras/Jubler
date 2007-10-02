@@ -205,8 +205,8 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                             default:
                                 String value = ev.value.toString();
                                  if (sf.style.equals(Style.FONTSIZE)) 
-                                     value = String.valueOf( ((Integer)ev.value) * getFontFactor() ) ;  // A hack to increase font size
-                                events.add(new SubEv(sf.tag+ev.value, ev.position));
+                                     value = String.valueOf( Math.round( ((Integer)ev.value) * getFontFactor() ) ) ;  // A hack to increase font size
+                                events.add(new SubEv(sf.tag+value, ev.position));
                         }
                     }
                 }
