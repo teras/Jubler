@@ -34,5 +34,4 @@ if [ -z "$JAVABIN" ] ; then
 	exit 1
 fi
 
-cd "$JUBLERPATH"
-"$JAVABIN" -jar Jubler.jar "$@"
+"$JAVABIN" -jar "$JUBLERPATH/Jubler.jar" "$@"
