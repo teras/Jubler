@@ -60,6 +60,12 @@ public class JSubTimeline extends JPanel {
     private static final int RESIZELEFT = RESIZE|LEFT;
     private static final int RESIZERIGHT = RESIZE|RIGHT;
     
+    /* DEfine which of the two groups were used */
+    private static final int SELECTED_GROUP = 32;
+    private static final int VISIBLE_GROUP = 64;
+    
+    private static final int NOGROUP_MASK = 127 ^ (SELECTED_GROUP|VISIBLE_GROUP);
+    
     /* List of actions to be able to do */
     public static final int SELECT_ACTION = SELECT;
     public static final int MOVE_ACTION = SELECT | MOVE;
@@ -76,7 +82,7 @@ public class JSubTimeline extends JPanel {
     private ArrayList<SubInfo> sellist;
     private ArrayList<SubInfo> overlaps;
     
-    /* If this flag is true, then ignore new selections */
+    /* If this flag is true, then ignore new selections (visual feedback cutter) */
     private boolean ignore_new_selection_list = false;
     
     /* Here we store the start/end/videoduration values of the window*/
@@ -147,16 +153,55 @@ public class JSubTimeline extends JPanel {
     
     public void mouseUpdateCursor(MouseEvent e) {
         X_position = e.getX();
-        if (checkListForAction(vislist)!=NONE) return;
-        if (checkListForAction(sellist)!=NONE) return;
-        setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        findAction();
     }
     
     
+    private void updateCursor(int cursortype) {
+        switch (cursortype&NOGROUP_MASK) {
+            case NONE:
+                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                break;
+            case RESIZELEFT:
+                setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
+                break;
+            case RESIZERIGHT:
+                setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+                break;
+            case SELECT:
+                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                break;
+        }
+    }
+    
+    private int findAction() {
+        int saction, vaction;
+        
+        saction = checkAListForAction(sellist);  // First check the selected list
+        if (saction==NONE) {                    // No action found
+            vaction = checkAListForAction(vislist);        // Check selected list *if* there is action there
+            updateCursor(vaction) ;             // Set cursor to vaction
+            return (vaction!=NONE) ? vaction|VISIBLE_GROUP : NONE;
+        }
+        if ( (saction&RESIZE)!=0 ) {            // Resize is very strong - if resize was found then here we are
+            updateCursor(saction);
+            return saction|SELECTED_GROUP;
+        }
+        
+        SubInfo infback = last_selected_subinfo;// Store this variable in case visual list is not THAT important
+        vaction = checkAListForAction(vislist);  // Check visual list what action it is there
+        if ( (vaction&RESIZE)!=0 ) {            // Take into account the visual list ONLY if the selected action is Resize (which is very strong)
+            updateCursor(vaction);
+            return vaction|VISIBLE_GROUP;
+        }
+        last_selected_subinfo = infback;        // Ignore visual action - use selected action
+        updateCursor(saction);
+        return saction|SELECTED_GROUP;
+    }
     
     /** Check if a subinfo is inside this list AND it's position is relative to the mouse
      *  cursor (so we need to take action like moving or resizing */
-    private int checkListForAction(ArrayList<SubInfo> sourcelist) {
+    private int checkAListForAction(ArrayList<SubInfo> sourcelist) {
         SubInfo inf;
         int i;
         
@@ -167,13 +212,11 @@ public class JSubTimeline extends JPanel {
                 /* First check if we're on the left position of a subinfo */
                 if (checkForEdge(inf.start)) {
                     last_selected_subinfo = inf;
-                    setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
                     return RESIZELEFT;
                 }
                 /* Then check if we're on the right position of a subinfo */
                 if (checkForEdge(inf.end)) {
                     last_selected_subinfo = inf;
-                    setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
                     return RESIZERIGHT;
                 }
             }
@@ -186,12 +229,12 @@ public class JSubTimeline extends JPanel {
                 /* At the end check if we'return in the center of a subinfo */
                 if (pos >= inf.start && pos <= inf.end) {
                     last_selected_subinfo = inf;
-                    setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                     return SELECT;
                 }
             }
         }
         /* No - we're nowhere near. Return nothing */
+        last_selected_subinfo = null;
         return NONE;
     }
     
@@ -208,31 +251,25 @@ public class JSubTimeline extends JPanel {
         
         X_position = e.getX();
         
-        /* The control button is used to determine if the selction will be inversed or not */
+        /* The control button is used to determine if the selection will be inversed or not */
         keep_selection_list_on_mouseup = ( (e.getModifiersEx()&InputEvent.CTRL_DOWN_MASK) != 0 );
         
         /* First check that we have clicked on an already selected subinfo */
-        selection_mode = checkListForAction(sellist);
-        last_subinfo_was_selected = false;
-        if (selection_mode!=NONE) {
-            last_subinfo_was_selected = true;
-        } else {
-            /* Then check that we have clicked on a new subinfo (which means that we have to reset the selected ones */
-            selection_mode = checkListForAction(vislist);
-            if (selection_mode != NONE) {
-                /* Found a click on a non selected subtitle */
-                ignore_new_selection_list = true;
-                if (!keep_selection_list_on_mouseup) sellist.clear();
-                sellist.add(last_selected_subinfo);
-                windowHasChanged(null);
-                ignore_new_selection_list = false;
-            }
-        }
-        
-        
-        /* Nothing was found - exiting */
+        selection_mode = findAction();
+        /* If nothing was found, exit */
         if (selection_mode==NONE) return;
         
+        last_subinfo_was_selected = (selection_mode & SELECTED_GROUP) > 0;  // Check if last selected sub is already selected
+        
+        if (!last_subinfo_was_selected) {   // Found a click on a non selected subtitle
+            ignore_new_selection_list = true;
+            if (!keep_selection_list_on_mouseup) sellist.clear();
+            sellist.add(last_selected_subinfo);
+            windowHasChanged(null);
+            ignore_new_selection_list = false;
+        }
+        
+        selection_mode=selection_mode & NOGROUP_MASK;
         /* If resizing is performed, find the central point */
         if (selection_mode==RESIZERIGHT) {
             central_point = Double.MAX_VALUE;
@@ -282,6 +319,11 @@ public class JSubTimeline extends JPanel {
             for (SubInfo inf : sellist) {
                 inf.start = inf.start*factor + dstart;
                 inf.end = inf.end*factor + dstart;
+                if (inf.start>inf.end) {
+                    double buffer = inf.start;
+                    inf.start = inf.end;
+                    inf.end = buffer;
+                }
             }
             X_position = e.getX();
         }
