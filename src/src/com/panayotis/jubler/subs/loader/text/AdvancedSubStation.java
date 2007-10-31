@@ -111,7 +111,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             header.append("Style: ");
             header.append(style.Name).append(',');
             header.append(style.get(FONTNAME)).append(',');
-            header.append( Math.round(((Integer)style.get(FONTSIZE)) * getFontFactor()) ).append(',');
+            header.append( Math.round(((Number)style.get(FONTSIZE)).doubleValue() * getFontFactor()) ).append(',');
             header.append(setReverse(style.get(PRIMARY), true)).append(',');
             header.append(setReverse(style.get(SECONDARY), true)).append(',');
             header.append(setReverse(style.get(OUTLINE), true)).append(',');
@@ -124,7 +124,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             header.append(style.get(YSCALE)).append(',');
             header.append(style.get(SPACING)).append(',');
             header.append(style.get(ANGLE)).append(',');
-            header.append((((Integer)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
+            header.append((((Number)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
             header.append(style.get(BORDERSIZE)).append(',');
             header.append(style.get(SHADOWSIZE)).append(',');
             header.append(getDirectionKey(ass_directions, (Direction)style.get(DIRECTION))).append(',');
@@ -137,36 +137,36 @@ public class AdvancedSubStation extends SubStationAlpha {
     }
     
     
-    protected void getStyles(String input, Subtitles subs) {
+    protected void getStyles(String input) {
         Matcher m = styles.matcher(input);
-        SubStyleList list = subs.getStyleList();
+        SubStyleList list = subtitle_list.getStyleList();
         list.clearList();
         
         SubStyle st;
         AlphaColor pri;
         while (m.find()) {
             st = new SubStyle(m.group(1).trim());
-            st.set(FONTNAME, m.group(2));
-            st.set(FONTSIZE, Math.round( Integer.parseInt(m.group(3)) / getFontFactor()) );
-            st.set(PRIMARY, getReverse(m.group(4), null));
-            st.set(SECONDARY, getReverse(m.group(5), null));
-            st.set(OUTLINE, getReverse(m.group(6), null));
-            st.set(SHADOW, getReverse(m.group(7), null));
-            st.set(BOLD, strToBoolean(m.group(8)));
-            st.set(ITALIC, strToBoolean(m.group(9)));
-            st.set(UNDERLINE, strToBoolean(m.group(10)));
-            st.set(STRIKETHROUGH, strToBoolean(m.group(11)));
-            st.set(XSCALE, new Integer(m.group(12)));
-            st.set(YSCALE, new Integer(m.group(13)));
-            st.set(SPACING, new Integer(m.group(14)));
-            st.set(ANGLE, new Integer(m.group(15)));
-            st.set(BORDERSTYLE, (m.group(16).equals("1"))? 0 : 1);
-            st.set(BORDERSIZE, new Integer(m.group(17)));
-            st.set(SHADOWSIZE, new Integer(m.group(18)));
-            st.set(DIRECTION, ass_directions.get(m.group(13)));
-            st.set(LEFTMARGIN, new Integer(m.group(20)));
-            st.set(RIGHTMARGIN, new Integer(m.group(21)));
-            st.set(VERTICAL, new Integer(m.group(22)));
+            st.set(FONTNAME, FONTNAME.init(m.group(2)) );
+            st.set(FONTSIZE, FONTSIZE.init(Math.round( Integer.parseInt(m.group(3)) / getFontFactor()) ) );
+            st.set(PRIMARY, PRIMARY.init(getReverse(m.group(4), null)));
+            st.set(SECONDARY, SECONDARY.init(getReverse(m.group(5), null)));
+            st.set(OUTLINE, OUTLINE.init(getReverse(m.group(6), null)));
+            st.set(SHADOW, SHADOW.init(getReverse(m.group(7), null)));
+            st.set(BOLD, BOLD.init(m.group(8)));
+            st.set(ITALIC, PRIMARY.init(m.group(9)));
+            st.set(UNDERLINE, UNDERLINE.init(m.group(10)));
+            st.set(STRIKETHROUGH, STRIKETHROUGH.init(m.group(11)));
+            st.set(XSCALE, XSCALE.init(m.group(12)));
+            st.set(YSCALE, YSCALE.init(m.group(13)));
+            st.set(SPACING, SPACING.init(m.group(14)));
+            st.set(ANGLE, ANGLE.init(m.group(15)));
+            st.set(BORDERSTYLE, BORDERSTYLE.init(m.group(16)));
+            st.set(BORDERSIZE, BORDERSIZE.init(m.group(17)));
+            st.set(SHADOWSIZE, SHADOWSIZE.init(m.group(18)));
+            st.set(DIRECTION, DIRECTION.init(ass_directions.get(m.group(13))));
+            st.set(LEFTMARGIN, LEFTMARGIN.init(m.group(20)));
+            st.set(RIGHTMARGIN, RIGHTMARGIN.init(m.group(21)));
+            st.set(VERTICAL, VERTICAL.init(m.group(22)));
             
             if (st.Name.equals("Default")) {
                 list.elementAt(0).setValues(st);

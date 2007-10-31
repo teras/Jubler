@@ -148,17 +148,17 @@ public class JStyleEditor extends javax.swing.JDialog {
     /* We call it "other", since it does not gather font attributes (they are already gathered */
     private void getOtherValues() {
         if (current == null) return;
-        current.set(BORDERSTYLE, BorderStyle.getSelectedIndex());
-        current.set(BORDERSIZE, (Integer)BorderSize.getModel().getValue());
-        current.set(SHADOWSIZE, (Integer)ShadowSize.getModel().getValue());
-        current.set(LEFTMARGIN, (Integer)LeftMargin.getModel().getValue());
-        current.set(RIGHTMARGIN, (Integer)RightMargin.getModel().getValue());
-        current.set(VERTICAL, (Integer)Vertical.getModel().getValue());
-        current.set(ANGLE, (Integer)Angle.getModel().getValue());
-        current.set(SPACING, (Integer)Spacing.getModel().getValue());
-        current.set(XSCALE, (Integer)XScale.getModel().getValue());
-        current.set(YSCALE, (Integer)YScale.getModel().getValue());
-        current.set(DIRECTION, jdir.getDirection());
+        current.set(BORDERSTYLE, BORDERSTYLE.init(BorderStyle.getSelectedIndex()) );
+        current.set(BORDERSIZE, BORDERSIZE.init(BorderSize.getModel().getValue()) );
+        current.set(SHADOWSIZE, SHADOWSIZE.init(ShadowSize.getModel().getValue()) );
+        current.set(LEFTMARGIN, LEFTMARGIN.init(LeftMargin.getModel().getValue()) );
+        current.set(RIGHTMARGIN, RIGHTMARGIN.init(RightMargin.getModel().getValue()) );
+        current.set(VERTICAL, VERTICAL.init(Vertical.getModel().getValue()) );
+        current.set(ANGLE, ANGLE.init(Angle.getModel().getValue()) );
+        current.set(SPACING, SPACING.init(Spacing.getModel().getValue()) );
+        current.set(XSCALE, XSCALE.init(XScale.getModel().getValue()) );
+        current.set(YSCALE, YSCALE.init(YScale.getModel().getValue()) );
+        current.set(DIRECTION, DIRECTION.init(jdir.getDirection()) );
     }
     
     private void setValues() {
@@ -190,17 +190,17 @@ public class JStyleEditor extends javax.swing.JDialog {
         ShadowI.setAlphaColor((AlphaColor)current.get(SHADOW));
         
         BorderStyle.setSelectedIndex((Integer)current.get(BORDERSTYLE));
-        BorderSize.getModel().setValue((Integer)current.get(BORDERSIZE));
-        ShadowSize.getModel().setValue((Integer)current.get(SHADOWSIZE));
+        BorderSize.getModel().setValue(current.get(BORDERSIZE));
+        ShadowSize.getModel().setValue(current.get(SHADOWSIZE));
         
-        LeftMargin.getModel().setValue((Integer)current.get(LEFTMARGIN));
-        RightMargin.getModel().setValue((Integer)current.get(RIGHTMARGIN));
-        Vertical.getModel().setValue((Integer)current.get(VERTICAL));
+        LeftMargin.getModel().setValue(current.get(LEFTMARGIN));
+        RightMargin.getModel().setValue(current.get(RIGHTMARGIN));
+        Vertical.getModel().setValue(current.get(VERTICAL));
         
-        Angle.getModel().setValue((Integer)current.get(ANGLE));
-        Spacing.getModel().setValue((Integer)current.get(SPACING));
-        XScale.getModel().setValue((Integer)current.get(XSCALE));
-        YScale.getModel().setValue((Integer)current.get(YSCALE));
+        Angle.getModel().setValue(current.get(ANGLE));
+        Spacing.getModel().setValue(current.get(SPACING));
+        XScale.getModel().setValue(current.get(XSCALE));
+        YScale.getModel().setValue(current.get(YSCALE));
         
         jdir.setDirection((SubStyle.Direction)current.get(DIRECTION));
         
@@ -726,7 +726,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         if (ignore_values_change || current == null) return;
         current.set(FONTNAME, FontName.getModel().getSelectedItem().toString());
         try {
-            current.set(FONTSIZE, Integer.parseInt(FontSize.getModel().getSelectedItem().toString()));
+            current.set(FONTSIZE, FONTSIZE.init(FontSize.getModel().getSelectedItem().toString()));
         } catch (NumberFormatException e) {}
         
         current.set(BOLD, Bold.isSelected());

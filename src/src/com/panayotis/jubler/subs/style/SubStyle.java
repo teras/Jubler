@@ -44,6 +44,7 @@ public class SubStyle {
     
     public static enum Direction {TOP, TOPRIGHT, RIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT, LEFT, TOPLEFT, CENTER};
     
+    /* since this is stored already in an array, we will not use StyleType.init() */
     public static final Integer [] FontSizes = {8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 48, 56, 64, 72};
     
     public static final String [] FontNames;
@@ -98,32 +99,32 @@ public class SubStyle {
         
         /* This is a prototype of the default style values */
         values = new Object[StyleType.values().length];
-        values[FONTNAME.ordinal()] = new String("Arial");
-        values[FONTSIZE.ordinal()] = new Integer(24);
-        values[BOLD.ordinal()] = new Boolean(false);
-        values[ITALIC.ordinal()] = new Boolean(false);
-        values[UNDERLINE.ordinal()] = new Boolean(false);
-        values[STRIKETHROUGH.ordinal()] = new Boolean(false);
+        values[FONTNAME.ordinal()] = FONTNAME.init("Arial");
+        values[FONTSIZE.ordinal()] = FONTSIZE.init(24);
+        values[BOLD.ordinal()] = BOLD.init(false);
+        values[ITALIC.ordinal()] = ITALIC.init(false);
+        values[UNDERLINE.ordinal()] = UNDERLINE.init(false);
+        values[STRIKETHROUGH.ordinal()] = STRIKETHROUGH.init(false);
         
-        values[PRIMARY.ordinal()] = new AlphaColor(Color.WHITE,  255);
-        values[SECONDARY.ordinal()] = new AlphaColor(Color.YELLOW,  255);
-        values[OUTLINE.ordinal()] = new AlphaColor(Color.BLACK,  180);
-        values[SHADOW.ordinal()] = new AlphaColor(Color.DARK_GRAY,  180);
+        values[PRIMARY.ordinal()] = PRIMARY.init(new AlphaColor(Color.WHITE,  255));
+        values[SECONDARY.ordinal()] = SECONDARY.init(new AlphaColor(Color.YELLOW,  255));
+        values[OUTLINE.ordinal()] = OUTLINE.init(new AlphaColor(Color.BLACK,  180));
+        values[SHADOW.ordinal()] = SHADOW.init(new AlphaColor(Color.DARK_GRAY,  180));
         
-        values[BORDERSTYLE.ordinal()] = new Integer(0);
-        values[BORDERSIZE.ordinal()] = new Integer(2);
-        values[SHADOWSIZE.ordinal()] = new Integer(2);
+        values[BORDERSTYLE.ordinal()] = BORDERSTYLE.init(0);
+        values[BORDERSIZE.ordinal()] = BORDERSIZE.init(2);
+        values[SHADOWSIZE.ordinal()] = SHADOWSIZE.init(2);
         
-        values[LEFTMARGIN.ordinal()] = new Integer(20);
-        values[RIGHTMARGIN.ordinal()] = new Integer(20);
-        values[VERTICAL.ordinal()] = new Integer(20);
+        values[LEFTMARGIN.ordinal()] = LEFTMARGIN.init(20);
+        values[RIGHTMARGIN.ordinal()] = RIGHTMARGIN.init(20);
+        values[VERTICAL.ordinal()] = VERTICAL.init(20);
         
-        values[ANGLE.ordinal()] = new Integer(0);
-        values[SPACING.ordinal()] = new Integer(0);
-        values[XSCALE.ordinal()] = new Integer(100);
-        values[YSCALE.ordinal()] = new Integer(100);
-        values[DIRECTION.ordinal()] = Direction.BOTTOM;
-        values[UNKNOWN.ordinal()] = "";
+        values[ANGLE.ordinal()] = ANGLE.init(0);
+        values[SPACING.ordinal()] = SPACING.init(0);
+        values[XSCALE.ordinal()] = XSCALE.init(100);
+        values[YSCALE.ordinal()] = YSCALE.init(100);
+        values[DIRECTION.ordinal()] = DIRECTION.init(Direction.BOTTOM);
+        values[UNKNOWN.ordinal()] = UNKNOWN.init("");
     }
     
     public void setName(String newname, SubStyleList list) {
@@ -150,16 +151,7 @@ public class SubStyle {
         String current;
         for (int i = 0 ; i < values.length-1 ; i++ ) {  // Ignore last "unknown" event
             current = m.group(i+1);
-            try {
-                if (values[i] instanceof String) values[i] = current;
-                else if (values[i] instanceof Integer ) values[i] = new Integer(current);
-                else if (values[i] instanceof Boolean ) values[i] = new Boolean(current);
-                else if (values[i] instanceof AlphaColor ) values[i] = new AlphaColor(current);
-                else if (values[i] instanceof Direction ) values[i] = Direction.valueOf(current);
-                else DEBUG.error("UNKNOWN CLASS in SubStyle: "+values[i]);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            values[i] = StyleType.values()[i].init(current);
         }
     }
     

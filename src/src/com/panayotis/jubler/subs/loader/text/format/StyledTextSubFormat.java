@@ -121,7 +121,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     entry.addOverStyle(sf.style, numb, se.start);
                                     break;
                                 case FORMAT_REAL:
-                                    entry.addOverStyle(sf.style, Float.parseFloat(tag), se.start);
+                                    entry.addOverStyle(sf.style, sf.style.init(tag), se.start);
                                     break;
                                 case FORMAT_FLAG:
                                     entry.addOverStyle(sf.style, sf.value, se.start);
@@ -130,7 +130,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     ccol = cols.get(sf.style);
                                     int rgb = ccol.getRGB()&0xffffff;
                                     int alpha = ccol.getAlpha();
-                                    switch((Integer)sf.value) {
+                                    switch((Byte)sf.value) {
                                         case COLOR_REVERSE:
                                             rgb = reverseByteOrder((int)parseNumber(tag));
                                             break;
@@ -195,7 +195,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                             case FORMAT_COLOR:
                                 AlphaColor acol = (AlphaColor)ev.value;
                                 String data;
-                                switch((Integer)sf.value) {
+                                switch((Byte)sf.value) {
                                     case COLOR_REVERSE:
                                         data = produceNumber(reverseByteOrder(acol.getRGB()&0xffffff), true, 6);
                                         break;
