@@ -24,9 +24,10 @@
 package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverCharacter;
@@ -50,7 +51,7 @@ public class SubEntry implements Comparable<SubEntry> {
         
         /* this is a template of the handler of the AbstractStyleover Event
          * If such a handler is not valid, then it won't be possible to properly add an event */
-        styleover_template = new AbstractStyleover[SubStyle.Style.values().length];
+        styleover_template = new AbstractStyleover[StyleType.values().length];
         styleover_template[FONTNAME.ordinal()] = new StyleoverCharacter(StyleConstants.FontFamily);
         styleover_template[FONTSIZE.ordinal()] = new StyleoverCharacter(StyleConstants.FontSize);
         styleover_template[BOLD.ordinal()] = new StyleoverCharacter(StyleConstants.Bold);
@@ -194,15 +195,15 @@ public class SubEntry implements Comparable<SubEntry> {
         }
     }
     
-    public void addOverStyle(SubStyle.Style type, Object value, int start) {
+    public void addOverStyle(StyleType type, Object value, int start) {
         getStyleover(type).add(value, start);
     }
     
-    public void setOverStyle(SubStyle.Style type, Object value, int start, int end) {
+    public void setOverStyle(StyleType type, Object value, int start, int end) {
         getStyleover(type).addEvent(value,  start, end, style.get(type.ordinal()), subtext);
     }
     
-    private AbstractStyleover getStyleover(SubStyle.Style type) {
+    private AbstractStyleover getStyleover(StyleType type) {
         // Create style array, if it doesn't exist
         if (overstyle==null) overstyle = new AbstractStyleover[styleover_template.length];
         
@@ -216,8 +217,8 @@ public class SubEntry implements Comparable<SubEntry> {
     }
     
     public void applyAttributesToDocument(JTextPane pane) {
-        pane.setBackground((Color)style.get(SubStyle.Style.SHADOW));
-        pane.setCaretColor((Color)style.get(SubStyle.Style.SECONDARY));
+        pane.setBackground((Color)style.get(StyleType.SHADOW));
+        pane.setCaretColor((Color)style.get(StyleType.SECONDARY));
         for (int i = 0 ; i < styleover_template.length ; i++ ) {
             if (overstyle==null || overstyle[i] == null)
                 StyleoverCharacter.applyAttributesToDocument(pane.getStyledDocument(), style.get(i), styleover_template[i], subtext.length());

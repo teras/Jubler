@@ -24,7 +24,7 @@
 package com.panayotis.jubler.subs.style.gui.tri;
 
 import com.panayotis.jubler.subs.style.StyleChangeListener;
-import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.subs.style.StyleType;
 import javax.swing.JPanel;
 
 /**
@@ -37,9 +37,9 @@ public class TriDummy  extends JPanel implements TriObject {
     public TriDummy() {
     }
     
-    private SubStyle.Style styletype;
+    private StyleType styletype;
     private StyleChangeListener listener;
-    public void setStyle(SubStyle.Style style) { styletype = style; }
+    public void setStyle(StyleType style) { styletype = style; }
     public void setListener(StyleChangeListener listener) { this.listener = listener; }
     public void setData(Object data) {}
 }

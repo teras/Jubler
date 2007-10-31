@@ -32,5 +32,5 @@ import com.panayotis.jubler.subs.SubEntry;
 public interface StyleChangeListener {
     
     
-    public void changeStyle( SubStyle.Style type, Object value);
+    public void changeStyle( StyleType type, Object value);
 }

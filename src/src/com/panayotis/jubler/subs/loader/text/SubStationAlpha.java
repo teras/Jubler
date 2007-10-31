@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
 import com.panayotis.jubler.subs.loader.text.format.StyledTextSubFormat;
-import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
@@ -261,8 +261,8 @@ public class SubStationAlpha extends StyledTextSubFormat {
             st.set(BORDERSIZE, new Integer(m.group(11)));
             st.set(SHADOWSIZE, new Integer(m.group(12)));
             st.set(DIRECTION, ssa_directions.get(m.group(13)));
-            st.set(LEFTMARGIN, new Integer(m.group(14)));
-            st.set(RIGHTMARGIN, new Integer(m.group(15)));
+//            st.set(LEFTMARGIN, new Integer(m.group(14)));
+//            st.set(RIGHTMARGIN, new Integer(m.group(15)));
             st.set(VERTICAL, new Integer(m.group(16)));
             
             if (st.Name.equals("Default")) {
@@ -276,10 +276,10 @@ public class SubStationAlpha extends StyledTextSubFormat {
     
     /* If the Alpha channel is stored in the BGR, then the Alpha parameter should be NULL */
     protected AlphaColor getReverse(String revRGB, String Alpha ) {
-        long lrgb = Long.parseLong(revRGB);
-        int rgb = (int)lrgb & 0xffffff;
+        long lrgb = parseNumber(revRGB);
+        int rgb = (int)(lrgb & 0xffffff);
         int alpha = ((int)lrgb&0xff000000) >> 24;
-        if (Alpha!=null) alpha = Integer.parseInt(Alpha);
+        if (Alpha!=null) alpha = (int)parseNumber(Alpha);
         alpha = invertAlpha(alpha) << 24;
         return new AlphaColor( alpha | reverseByteOrder(rgb) );
     }

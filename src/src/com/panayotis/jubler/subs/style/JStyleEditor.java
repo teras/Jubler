@@ -24,7 +24,7 @@
 package com.panayotis.jubler.subs.style;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.JIDialog;

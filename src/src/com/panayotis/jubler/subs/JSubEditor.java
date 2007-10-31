@@ -30,6 +30,7 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.style.JOverStyles;
 import com.panayotis.jubler.subs.style.JStyleEditor;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
+import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
@@ -741,7 +742,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     }//GEN-LAST:event_Lock1ActionPerformed
     
     
-    public void changeStyle(SubStyle.Style type, Object value) {
+    public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
         entry.setOverStyle(type, value, SubText.getSelectionStart(), SubText.getSelectionEnd());
         SwingUtilities.invokeLater(stylethread);

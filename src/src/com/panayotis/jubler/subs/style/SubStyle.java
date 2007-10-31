@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
-import static com.panayotis.jubler.subs.loader.text.format.StyledFormat.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.awt.Color;
@@ -42,21 +42,7 @@ import java.util.regex.Pattern;
 public class SubStyle {
     
     
-    public static enum Direction {TOP, TOPRIGHT, RIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT, LEFT, TOPLEFT, CENTER}
-    
-    public static enum Style {FONTNAME, FONTSIZE,
-    BOLD, ITALIC, UNDERLINE, STRIKETHROUGH,
-    PRIMARY, SECONDARY, OUTLINE, SHADOW,
-    BORDERSTYLE, BORDERSIZE, SHADOWSIZE,
-    LEFTMARGIN, RIGHTMARGIN, VERTICAL, ANGLE, SPACING,
-    XSCALE, YSCALE, DIRECTION, UNKNOWN};
-    
-    public static int[] StyleType = { FORMAT_STRING, FORMAT_INTEGER,
-    FORMAT_FLAG, FORMAT_FLAG, FORMAT_FLAG, FORMAT_FLAG,
-    FORMAT_COLOR, FORMAT_COLOR, FORMAT_COLOR, FORMAT_COLOR,
-    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER,
-    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_INTEGER,
-    FORMAT_INTEGER, FORMAT_INTEGER, FORMAT_DIRECTION, FORMAT_UNDEFINED};
+    public static enum Direction {TOP, TOPRIGHT, RIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT, LEFT, TOPLEFT, CENTER};
     
     public static final Integer [] FontSizes = {8, 9, 10, 11, 12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 32, 36, 40, 48, 56, 64, 72};
     
@@ -111,33 +97,33 @@ public class SubStyle {
         this.Name = name;
         
         /* This is a prototype of the default style values */
-        values = new Object[Style.values().length];
-        values[Style.FONTNAME.ordinal()] = new String("Arial");
-        values[Style.FONTSIZE.ordinal()] = new Integer(24);
-        values[Style.BOLD.ordinal()] = new Boolean(false);
-        values[Style.ITALIC.ordinal()] = new Boolean(false);
-        values[Style.UNDERLINE.ordinal()] = new Boolean(false);
-        values[Style.STRIKETHROUGH.ordinal()] = new Boolean(false);
+        values = new Object[StyleType.values().length];
+        values[FONTNAME.ordinal()] = new String("Arial");
+        values[FONTSIZE.ordinal()] = new Integer(24);
+        values[BOLD.ordinal()] = new Boolean(false);
+        values[ITALIC.ordinal()] = new Boolean(false);
+        values[UNDERLINE.ordinal()] = new Boolean(false);
+        values[STRIKETHROUGH.ordinal()] = new Boolean(false);
         
-        values[Style.PRIMARY.ordinal()] = new AlphaColor(Color.WHITE,  255);
-        values[Style.SECONDARY.ordinal()] = new AlphaColor(Color.YELLOW,  255);
-        values[Style.OUTLINE.ordinal()] = new AlphaColor(Color.BLACK,  180);
-        values[Style.SHADOW.ordinal()] = new AlphaColor(Color.DARK_GRAY,  180);
+        values[PRIMARY.ordinal()] = new AlphaColor(Color.WHITE,  255);
+        values[SECONDARY.ordinal()] = new AlphaColor(Color.YELLOW,  255);
+        values[OUTLINE.ordinal()] = new AlphaColor(Color.BLACK,  180);
+        values[SHADOW.ordinal()] = new AlphaColor(Color.DARK_GRAY,  180);
         
-        values[Style.BORDERSTYLE.ordinal()] = new Integer(0);
-        values[Style.BORDERSIZE.ordinal()] = new Integer(2);
-        values[Style.SHADOWSIZE.ordinal()] = new Integer(2);
+        values[BORDERSTYLE.ordinal()] = new Integer(0);
+        values[BORDERSIZE.ordinal()] = new Integer(2);
+        values[SHADOWSIZE.ordinal()] = new Integer(2);
         
-        values[Style.LEFTMARGIN.ordinal()] = new Integer(20);
-        values[Style.RIGHTMARGIN.ordinal()] = new Integer(20);
-        values[Style.VERTICAL.ordinal()] = new Integer(20);
+        values[LEFTMARGIN.ordinal()] = new Integer(20);
+        values[RIGHTMARGIN.ordinal()] = new Integer(20);
+        values[VERTICAL.ordinal()] = new Integer(20);
         
-        values[Style.ANGLE.ordinal()] = new Integer(0);
-        values[Style.SPACING.ordinal()] = new Integer(0);
-        values[Style.XSCALE.ordinal()] = new Integer(100);
-        values[Style.YSCALE.ordinal()] = new Integer(100);
-        values[Style.DIRECTION.ordinal()] = Direction.BOTTOM;
-        values[Style.UNKNOWN.ordinal()] = "";
+        values[ANGLE.ordinal()] = new Integer(0);
+        values[SPACING.ordinal()] = new Integer(0);
+        values[XSCALE.ordinal()] = new Integer(100);
+        values[YSCALE.ordinal()] = new Integer(100);
+        values[DIRECTION.ordinal()] = Direction.BOTTOM;
+        values[UNKNOWN.ordinal()] = "";
     }
     
     public void setName(String newname, SubStyleList list) {
@@ -149,7 +135,7 @@ public class SubStyle {
     
     public void setValues(SubStyle old) {
         Name = old.Name;
-        values = new Object[Style.values().length];
+        values = new Object[StyleType.values().length];
         for (int i = 0 ; i < values.length ; i++) {
             values[i] = old.values[i];
         }
@@ -187,10 +173,10 @@ public class SubStyle {
         return out.substring(1);
     }
     
-    public Object get(Style which) { return values[which.ordinal()]; }
+    public Object get(StyleType which) { return values[which.ordinal()]; }
     public Object get(int which) { return values[which]; }
     
-    public void set(Style which, Object what) {
+    public void set(StyleType which, Object what) {
         int where = which.ordinal();
         // if (values[where].getClass().getName().equals(what.getClass().getName()) ) {
         values[where] = what;

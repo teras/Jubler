@@ -25,10 +25,9 @@
 package com.panayotis.jubler.subs.style;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.subs.style.SubStyle.Style;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
@@ -41,6 +40,7 @@ import com.panayotis.jubler.subs.style.gui.tri.TriObject;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JComponent;
+import javax.swing.text.Style;
 
 /**
  *
@@ -59,7 +59,7 @@ public class JOverStyles extends javax.swing.JPanel {
     public JOverStyles(Jubler parent) {
         initComponents();
         
-        visuals = new JComponent[Style.values().length];
+        visuals = new JComponent[StyleType.values().length];
         
         FontAttP.add(visuals[0] = new TriComboBox(SubStyle.FontNames), BorderLayout.CENTER);
         FontAttP.add(visuals[1] = new TriComboBox(SubStyle.FontSizes), BorderLayout.EAST);
@@ -79,11 +79,11 @@ public class JOverStyles extends javax.swing.JPanel {
             visuals[i] = new TriDummy();
         }
         
-        TextAttP.add( visuals[Style.DIRECTION.ordinal()] = new TriDirectionButton(parent));
+        TextAttP.add( visuals[DIRECTION.ordinal()] = new TriDirectionButton(parent));
         
         
         for (int i = 0 ; i < visuals.length ; i++) {
-            ((TriObject)visuals[i]).setStyle(SubStyle.Style.values()[i]);
+            ((TriObject)visuals[i]).setStyle(StyleType.values()[i]);
         }
         
         FontP.setVisible(false);

@@ -24,13 +24,13 @@
 package com.panayotis.jubler.subs.style.preview;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
-import com.panayotis.jubler.subs.style.SubStyle.Style;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverEvent;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
@@ -149,9 +149,9 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
         
         /* Draw actual subtitle */
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-        for(StyledTextLine line:this) 
-             if (line!=null && line.subchars!= null && line.subchars[0]!=null) 
-                 g.drawString(line.subchars[0], line.dx, line.advance-line.descent);
+        for(StyledTextLine line:this)
+            if (line!=null && line.subchars!= null && line.subchars[0]!=null)
+                g.drawString(line.subchars[0], line.dx, line.advance-line.descent);
     }
     
     private BufferedImage getOutlineImage(int txtindex, float outwidth, boolean center_draw) {
@@ -162,8 +162,8 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
         mask = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_ARGB);
         g = mask.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        for(StyledTextLine line:this) 
-            if (line!=null && line.subchars!= null && line.subchars[txtindex]!=null) 
+        for(StyledTextLine line:this)
+            if (line!=null && line.subchars!= null && line.subchars[txtindex]!=null)
                 g.drawString(line.subchars[txtindex], line.dx, line.advance-line.descent); // Draw shadow mask
         
         /* Draw outline */
@@ -262,7 +262,7 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
         }
         
         
-        private AbstractStyleover getStyleover(AbstractStyleover[] overs, Style style) {
+        private AbstractStyleover getStyleover(AbstractStyleover[] overs, StyleType style) {
             if (overs==null) return null;
             return overs[style.ordinal()];
         }

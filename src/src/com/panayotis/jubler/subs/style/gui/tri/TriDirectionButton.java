@@ -27,7 +27,7 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
-import com.panayotis.jubler.subs.style.SubStyle.Style;
+import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.gui.DirectionListener;
 import com.panayotis.jubler.subs.style.gui.JDirectionDialog;
 import javax.swing.ImageIcon;
@@ -64,7 +64,7 @@ public class TriDirectionButton extends JButton implements TriObject, DirectionL
     }
     
     private StyleChangeListener listener;
-    public void setStyle(SubStyle.Style style) {} // We already know the style!
+    public void setStyle(StyleType style) {} // We already know the style!
     public void setListener(StyleChangeListener listener) { this.listener = listener; }
     
     private boolean ignore_element_changes = false;
@@ -83,7 +83,7 @@ public class TriDirectionButton extends JButton implements TriObject, DirectionL
         direction.setVisible(false);
         setIcon(direction.getIcon());
         dir = direction.getDirection();
-        listener.changeStyle(Style.DIRECTION, dir);
+        listener.changeStyle(StyleType.DIRECTION, dir);
     }
     
     public void focusLost() {

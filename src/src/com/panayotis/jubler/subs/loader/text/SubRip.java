@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
 import com.panayotis.jubler.subs.loader.text.format.StyledTextSubFormat;
-import static com.panayotis.jubler.subs.style.SubStyle.Style.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;

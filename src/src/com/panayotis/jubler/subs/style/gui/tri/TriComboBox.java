@@ -26,7 +26,7 @@ package com.panayotis.jubler.subs.style.gui.tri;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.style.StyleChangeListener;
-import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.subs.style.StyleType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
@@ -63,9 +63,9 @@ public class TriComboBox extends JComboBox implements TriObject {
         ignore_element_changes = false;
     }
     
-    protected SubStyle.Style styletype;
+    protected StyleType styletype;
     protected StyleChangeListener listener;
-    public void setStyle(SubStyle.Style style) { styletype = style; }
+    public void setStyle(StyleType style) { styletype = style; }
     public void setListener(StyleChangeListener listener) { this.listener = listener; }
     
     

@@ -24,7 +24,7 @@
 package com.panayotis.jubler.subs.style.gui.tri;
 
 import com.panayotis.jubler.subs.style.StyleChangeListener;
-import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.subs.style.StyleType;
 
 /**
  *
@@ -37,7 +37,7 @@ public interface TriObject {
     
     /* For visual objects which can hold more than one style (i.e. bold, italic), use this function to 
      * inform the widget which is the style they manage */
-    public void setStyle(SubStyle.Style info);
+    public void setStyle(StyleType info);
     
     /* When the user clicks on a selection, then *this* listener will be informed for the change */
     public void setListener(StyleChangeListener listener);

@@ -35,7 +35,6 @@ import java.io.IOException;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.subs.style.SubStyle.Style;
 import com.panayotis.jubler.time.Time;
 import java.util.StringTokenizer;
 /**

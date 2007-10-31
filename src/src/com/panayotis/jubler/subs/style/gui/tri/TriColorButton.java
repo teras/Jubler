@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
-import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaColorDialog;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
@@ -73,15 +73,15 @@ public class TriColorButton extends JButton implements TriObject {
     }
     
     
-    private SubStyle.Style styletype;
+    private StyleType styletype;
     private StyleChangeListener listener;
     public void setListener(StyleChangeListener listener) { this.listener = listener; }
     
     
-    public void setStyle(SubStyle.Style style) {
+    public void setStyle(StyleType style) {
         styletype = style;
-        setText( labels[style.ordinal()-SubStyle.Style.PRIMARY.ordinal()] );
-        setToolTipText( tooltips[style.ordinal()-SubStyle.Style.PRIMARY.ordinal()] );
+        setText( labels[style.ordinal()-StyleType.PRIMARY.ordinal()] );
+        setToolTipText( tooltips[style.ordinal()-StyleType.PRIMARY.ordinal()] );
     }
     
     private boolean ignore_element_changes = false;

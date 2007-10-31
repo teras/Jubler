@@ -108,33 +108,12 @@
 		<copy file="dist/help/jubler-faq.html" todir="build/classes/help"/>
 	</target>
 
-	<target name="distclean" depends="clean">
-		<delete>
-			<fileset dir="." includes="*.bz2"/>
-			<fileset dir="." includes="*.exe"/>
-			<fileset dir="." includes="*.deb"/>
-			<fileset dir="." includes="*.jar"/>
-			<fileset dir="." includes="*.sh"/>
-			<fileset dir="." includes="*.dmg"/>
-			<fileset dir="." includes="*.log"/>
-			<fileset dir="resources/i18n" includes="jubler.pot"/>
-			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
-			<fileset dir="src" includes="lib"/>
-		</delete>
-		<delete dir="self"/>
-		<delete dir="dist/Jubler.app"/>
-		<delete dir="src/com/apple"/>
-		<exec dir="resources/ffdecode" executable="make" failonerror="true">
-			<arg line="distclean"/>
-		</exec>
-	</target>
-	
-	<target name="destroy" depends="distclean">
+	<target name="destroy" depends="clean">
 		<delete dir="resources/libraries"/>
 	</target>
 
 	<!-- Copy the full Jubler source tree in tmp -->
-	<target name="copytree" depends="distclean">
+	<target name="copytree" depends="clean">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<delete dir="/tmp/Jubler-${version}"/>
 		<mkdir dir="/tmp/Jubler-${version}"/>
@@ -158,7 +137,7 @@
 	
 	
 	<!-- Windows Installer -->
-	<target name="win32" depends="distclean,i18n,jar,faq">
+	<target name="win32" depends="clean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
@@ -184,12 +163,12 @@
 	<!-- Linux installer -->
 	
 	<!-- Linux with static ffdecode library -->
-	<target name="linuxmake" depends="distclean,i18n,jar,faq">
+	<target name="linuxmake" depends="clean,i18n,jar,faq">
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="linux"/> </exec>
 	</target>
 
 	<!-- Linux with dynamic ffdecode library -->
-	<target name="linuxmakedyn" depends="distclean,i18n,jar,faq">
+	<target name="linuxmakedyn" depends="clean,i18n,jar,faq">
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="linuxdyn"/> </exec>
 	</target>
 
@@ -333,7 +312,7 @@
 
 
 	<!-- MacOSX installer -->
-	<target name="macosx" depends="distclean,i18n,jar,faq">
+	<target name="macosx" depends="clean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<jarbundler
 			dir="dist"
@@ -387,7 +366,7 @@
 
 
 	<!-- Generic installer -->
-	<target name="generic" depends="distclean,i18n,jar,faq">
+	<target name="generic" depends="clean,i18n,jar,faq">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes"/>
 		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
@@ -406,6 +385,27 @@
 	<target name="-post-jar">
 		<copy file="resources/system/fonts/freesans.ttf" todir="dist/lib"/>
 		<delete file="dist/README.txt"/>
+	</target>
+
+	<target name="-post-clean">
+		<delete>
+			<fileset dir="." includes="*.bz2"/>
+			<fileset dir="." includes="*.exe"/>
+			<fileset dir="." includes="*.deb"/>
+			<fileset dir="." includes="*.jar"/>
+			<fileset dir="." includes="*.sh"/>
+			<fileset dir="." includes="*.dmg"/>
+			<fileset dir="." includes="*.log"/>
+			<fileset dir="resources/i18n" includes="jubler.pot"/>
+			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
+			<fileset dir="src" includes="lib"/>
+		</delete>
+		<delete dir="self"/>
+		<delete dir="dist/Jubler.app"/>
+		<delete dir="src/com/apple"/>
+		<exec dir="resources/ffdecode" executable="make" failonerror="true">
+			<arg line="distclean"/>
+		</exec>
 	</target>
 
 </project>
