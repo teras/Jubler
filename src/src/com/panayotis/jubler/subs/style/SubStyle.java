@@ -170,11 +170,12 @@ public class SubStyle {
     
     public void set(StyleType which, Object what) {
         int where = which.ordinal();
-        // if (values[where].getClass().getName().equals(what.getClass().getName()) ) {
-        values[where] = what;
-//            return;
-//        }
-//        DEBUG.error("Wrong cast in SubStyle set");
+        
+        /* Overloading doesn't really work well in this case, so we have to force it */
+        if (what instanceof String)
+            values[where] = which.init((String)what);
+        else
+            values[where] = which.init(what);
     }
     
     

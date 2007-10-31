@@ -148,17 +148,17 @@ public class JStyleEditor extends javax.swing.JDialog {
     /* We call it "other", since it does not gather font attributes (they are already gathered */
     private void getOtherValues() {
         if (current == null) return;
-        current.set(BORDERSTYLE, BORDERSTYLE.init(BorderStyle.getSelectedIndex()) );
-        current.set(BORDERSIZE, BORDERSIZE.init(BorderSize.getModel().getValue()) );
-        current.set(SHADOWSIZE, SHADOWSIZE.init(ShadowSize.getModel().getValue()) );
-        current.set(LEFTMARGIN, LEFTMARGIN.init(LeftMargin.getModel().getValue()) );
-        current.set(RIGHTMARGIN, RIGHTMARGIN.init(RightMargin.getModel().getValue()) );
-        current.set(VERTICAL, VERTICAL.init(Vertical.getModel().getValue()) );
-        current.set(ANGLE, ANGLE.init(Angle.getModel().getValue()) );
-        current.set(SPACING, SPACING.init(Spacing.getModel().getValue()) );
-        current.set(XSCALE, XSCALE.init(XScale.getModel().getValue()) );
-        current.set(YSCALE, YSCALE.init(YScale.getModel().getValue()) );
-        current.set(DIRECTION, DIRECTION.init(jdir.getDirection()) );
+        current.set(BORDERSTYLE, BorderStyle.getSelectedIndex());
+        current.set(BORDERSIZE, BorderSize.getModel().getValue());
+        current.set(SHADOWSIZE, ShadowSize.getModel().getValue());
+        current.set(LEFTMARGIN, LeftMargin.getModel().getValue());
+        current.set(RIGHTMARGIN, RightMargin.getModel().getValue());
+        current.set(VERTICAL, Vertical.getModel().getValue());
+        current.set(ANGLE, Angle.getModel().getValue());
+        current.set(SPACING, Spacing.getModel().getValue());
+        current.set(XSCALE, XScale.getModel().getValue());
+        current.set(YSCALE, YScale.getModel().getValue());
+        current.set(DIRECTION, jdir.getDirection());
     }
     
     private void setValues() {
@@ -726,7 +726,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         if (ignore_values_change || current == null) return;
         current.set(FONTNAME, FontName.getModel().getSelectedItem().toString());
         try {
-            current.set(FONTSIZE, FONTSIZE.init(FontSize.getModel().getSelectedItem().toString()));
+            current.set(FONTSIZE, FontSize.getModel().getSelectedItem().toString());
         } catch (NumberFormatException e) {}
         
         current.set(BOLD, Bold.isSelected());

@@ -146,27 +146,27 @@ public class AdvancedSubStation extends SubStationAlpha {
         AlphaColor pri;
         while (m.find()) {
             st = new SubStyle(m.group(1).trim());
-            st.set(FONTNAME, FONTNAME.init(m.group(2)) );
-            st.set(FONTSIZE, FONTSIZE.init(Math.round( Integer.parseInt(m.group(3)) / getFontFactor()) ) );
-            st.set(PRIMARY, PRIMARY.init(getReverse(m.group(4), null)));
-            st.set(SECONDARY, SECONDARY.init(getReverse(m.group(5), null)));
-            st.set(OUTLINE, OUTLINE.init(getReverse(m.group(6), null)));
-            st.set(SHADOW, SHADOW.init(getReverse(m.group(7), null)));
-            st.set(BOLD, BOLD.init(m.group(8)));
-            st.set(ITALIC, ITALIC.init(m.group(9)));
-            st.set(UNDERLINE, UNDERLINE.init(m.group(10)));
-            st.set(STRIKETHROUGH, STRIKETHROUGH.init(m.group(11)));
-            st.set(XSCALE, XSCALE.init(m.group(12)));
-            st.set(YSCALE, YSCALE.init(m.group(13)));
-            st.set(SPACING, SPACING.init(m.group(14)));
-            st.set(ANGLE, ANGLE.init(m.group(15)));
-            st.set(BORDERSTYLE, BORDERSTYLE.init(m.group(16)));
-            st.set(BORDERSIZE, BORDERSIZE.init(m.group(17)));
-            st.set(SHADOWSIZE, SHADOWSIZE.init(m.group(18)));
-            st.set(DIRECTION, DIRECTION.init(ass_directions.get(m.group(13))));
-            st.set(LEFTMARGIN, LEFTMARGIN.init(m.group(20)));
-            st.set(RIGHTMARGIN, RIGHTMARGIN.init(m.group(21)));
-            st.set(VERTICAL, VERTICAL.init(m.group(22)));
+            st.set(FONTNAME, m.group(2));
+            st.set(FONTSIZE, Math.round( Integer.parseInt(m.group(3)) / getFontFactor()) );
+            st.set(PRIMARY, getReverse(m.group(4), null));
+            st.set(SECONDARY, getReverse(m.group(5), null));
+            st.set(OUTLINE, getReverse(m.group(6), null));
+            st.set(SHADOW, getReverse(m.group(7), null));
+            st.set(BOLD, m.group(8));
+            st.set(ITALIC, m.group(9));
+            st.set(UNDERLINE, m.group(10));
+            st.set(STRIKETHROUGH, m.group(11));
+            st.set(XSCALE, m.group(12));
+            st.set(YSCALE, m.group(13));
+            st.set(SPACING, m.group(14));
+            st.set(ANGLE, m.group(15));
+            st.set(BORDERSTYLE, m.group(16));
+            st.set(BORDERSIZE, m.group(17));
+            st.set(SHADOWSIZE, m.group(18));
+            st.set(DIRECTION, ass_directions.get(m.group(13)));
+            st.set(LEFTMARGIN, m.group(20));
+            st.set(RIGHTMARGIN, m.group(21));
+            st.set(VERTICAL, m.group(22));
             
             if (st.Name.equals("Default")) {
                 list.elementAt(0).setValues(st);
