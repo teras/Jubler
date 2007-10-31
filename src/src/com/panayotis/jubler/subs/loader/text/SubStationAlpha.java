@@ -258,11 +258,8 @@ public class SubStationAlpha extends StyledTextSubFormat {
             st.set(BORDERSIZE, BORDERSIZE.init(m.group(11)));
             st.set(SHADOWSIZE, SHADOWSIZE.init(m.group(12)));
             st.set(DIRECTION, DIRECTION.init(ssa_directions.get(m.group(13))));
-            System.out.println("1?" + m.group(14));
             st.set(LEFTMARGIN, LEFTMARGIN.init(m.group(14)));
-            System.out.println("2?"+m.group(15));
             st.set(RIGHTMARGIN, RIGHTMARGIN.init(m.group(15)));
-            System.out.println("3?"+m.group(16));
             st.set(VERTICAL, VERTICAL.init(m.group(16)));
             
             if (st.Name.equals("Default")) {

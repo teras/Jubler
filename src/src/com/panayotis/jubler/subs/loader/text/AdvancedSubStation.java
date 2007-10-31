@@ -153,7 +153,7 @@ public class AdvancedSubStation extends SubStationAlpha {
             st.set(OUTLINE, OUTLINE.init(getReverse(m.group(6), null)));
             st.set(SHADOW, SHADOW.init(getReverse(m.group(7), null)));
             st.set(BOLD, BOLD.init(m.group(8)));
-            st.set(ITALIC, PRIMARY.init(m.group(9)));
+            st.set(ITALIC, ITALIC.init(m.group(9)));
             st.set(UNDERLINE, UNDERLINE.init(m.group(10)));
             st.set(STRIKETHROUGH, STRIKETHROUGH.init(m.group(11)));
             st.set(XSCALE, XSCALE.init(m.group(12)));

@@ -53,33 +53,33 @@ public class JOverStyles extends javax.swing.JPanel {
     private JAlphaIcon PrimaryI, SecondaryI, OutlineI, ShadowI;
     
     
-    private JComponent[] visuals;
+    private TriObject[] visuals;
     
     /** Creates new form JOverStyles */
     public JOverStyles(Jubler parent) {
         initComponents();
         
-        visuals = new JComponent[StyleType.values().length];
+        visuals = new TriObject[StyleType.values().length];
         
-        FontAttP.add(visuals[0] = new TriComboBox(SubStyle.FontNames), BorderLayout.CENTER);
-        FontAttP.add(visuals[1] = new TriComboBox(SubStyle.FontSizes), BorderLayout.EAST);
+        FontAttP.add((JComponent)(visuals[0] = new TriComboBox(SubStyle.FontNames)), BorderLayout.CENTER);
+        FontAttP.add((JComponent)(visuals[1] = new TriComboBox(SubStyle.FontSizes)), BorderLayout.EAST);
         
-        TextAttP.add( visuals[2] = new TriToggleButton("/icons/bold.png") );
-        TextAttP.add( visuals[3] = new TriToggleButton("/icons/italics.png"));
-        TextAttP.add( visuals[4] = new TriToggleButton("/icons/underline.png"));
-        TextAttP.add( visuals[5] = new TriToggleButton("/icons/strike.png"));
+        TextAttP.add((JComponent)(visuals[2] = new TriToggleButton("/icons/bold.png")));
+        TextAttP.add((JComponent)(visuals[3] = new TriToggleButton("/icons/italics.png")));
+        TextAttP.add((JComponent)(visuals[4] = new TriToggleButton("/icons/underline.png")));
+        TextAttP.add((JComponent)(visuals[5] = new TriToggleButton("/icons/strike.png")));
         
-        ColorP.add( visuals[6] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent));
-        ColorP.add( visuals[7] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent));
-        ColorP.add( visuals[8] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent));
-        ColorP.add( visuals[9] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent));
+        ColorP.add((JComponent)(visuals[6] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        ColorP.add((JComponent)(visuals[7] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        ColorP.add((JComponent)(visuals[8] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        ColorP.add((JComponent)(visuals[9] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
         
         
         for (int i = 10 ; i < visuals.length ; i++) {
             visuals[i] = new TriDummy();
         }
         
-        TextAttP.add( visuals[DIRECTION.ordinal()] = new TriDirectionButton(parent));
+        TextAttP.add((JComponent)(visuals[DIRECTION.ordinal()] = new TriDirectionButton(parent)));
         
         
         for (int i = 0 ; i < visuals.length ; i++) {
@@ -116,7 +116,7 @@ public class JOverStyles extends javax.swing.JPanel {
             } else {
                 data = over[i].getValue(start, end, basic, subtext);
             }
-            ((TriObject)visuals[i]).setData(data);
+            visuals[i].setData(data);
         }
     }
     
