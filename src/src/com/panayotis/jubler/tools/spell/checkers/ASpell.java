@@ -80,7 +80,7 @@ public class ASpell extends SpellChecker {
             
             String[] c = cmd.toArray(new String[1]);
             proc = Runtime.getRuntime().exec(c);
-            DEBUG.info(DEBUG.toString(c), DEBUG.INFO_ALWAYS);
+            DEBUG.info(DEBUG.toString(c));
             
             if (forceutf8) {
                 send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));

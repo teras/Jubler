@@ -22,11 +22,12 @@
  */
 
 package com.panayotis.jubler.subs.loader.text;
-import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
+
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.subs.style.StyleType.*;
-
 import static com.panayotis.jubler.i18n.I18N._;
+
+import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
@@ -75,6 +76,16 @@ public class AdvancedSubStation extends SubStationAlpha {
         styles_dict.add(new StyledFormat(UNDERLINE, "u1", true));
         styles_dict.add(new StyledFormat(STRIKETHROUGH, "s0", false));
         styles_dict.add(new StyledFormat(STRIKETHROUGH, "s1", true));
+        
+        /* Use these entries to grab a priori unsupported special tags
+         * We need these functions since tags are identified with a .startsWith() method;
+         * It *has* to be un-storable, in order to be stored only *once*, 
+         *   in the last wildcard entry (UNKNOWN, "", null)
+         */
+        styles_dict.add(new StyledFormat(UNKNOWN, "fsc", null, false));
+        styles_dict.add(new StyledFormat(UNKNOWN, "fsp", null, false));
+        
+        /* Remaining tags */
         styles_dict.add(new StyledFormat(FONTNAME, "fn", null));
         styles_dict.add(new StyledFormat(FONTSIZE, "fs", null));
         styles_dict.add(new StyledFormat(PRIMARY, "1c", StyledFormat.COLOR_REVERSE));
@@ -101,36 +112,36 @@ public class AdvancedSubStation extends SubStationAlpha {
     
     
     protected String getExtraVersion() { return "+"; }
-    protected String getLayer() { return "0"; }
+    protected String getLayerTitle() { return "Layer"; }
     
     
     protected void appendStyles(Subtitles subs, StringBuffer header) {
-        header.append("Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColor, BackColour," +
+        header.append("Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour," +
                 " Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\n");
         for (SubStyle style : subs.getStyleList()) {
             header.append("Style: ");
             header.append(style.Name).append(',');
             header.append(style.get(FONTNAME)).append(',');
             header.append( Math.round(((Number)style.get(FONTSIZE)).doubleValue() * getFontFactor()) ).append(',');
-            header.append(setReverse(style.get(PRIMARY), true)).append(',');
-            header.append(setReverse(style.get(SECONDARY), true)).append(',');
-            header.append(setReverse(style.get(OUTLINE), true)).append(',');
-            header.append(setReverse(style.get(SHADOW), true)).append(',');
+            header.append(AlphaColorToString(style.get(PRIMARY), true)).append(',');
+            header.append(AlphaColorToString(style.get(SECONDARY), true)).append(',');
+            header.append(AlphaColorToString(style.get(OUTLINE), true)).append(',');
+            header.append(AlphaColorToString(style.get(SHADOW), true)).append(',');
             header.append(booleanToInt(style.get(BOLD))).append(',');
             header.append(booleanToInt(style.get(ITALIC))).append(',');
             header.append(booleanToInt(style.get(UNDERLINE))).append(',');
             header.append(booleanToInt(style.get(STRIKETHROUGH))).append(',');
-            header.append(style.get(XSCALE)).append(',');
-            header.append(style.get(YSCALE)).append(',');
-            header.append(style.get(SPACING)).append(',');
-            header.append(style.get(ANGLE)).append(',');
+            header.append(XSCALE.get(style)).append(',');
+            header.append(YSCALE.get(style)).append(',');
+            header.append(SPACING.get(style)).append(',');
+            header.append(ANGLE.get(style)).append(',');
             header.append((((Number)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
-            header.append(style.get(BORDERSIZE)).append(',');
-            header.append(style.get(SHADOWSIZE)).append(',');
+            header.append(BORDERSIZE.get(style)).append(',');
+            header.append(SHADOWSIZE.get(style)).append(',');
             header.append(getDirectionKey(ass_directions, (Direction)style.get(DIRECTION))).append(',');
-            header.append(style.get(LEFTMARGIN)).append(',');
-            header.append(style.get(RIGHTMARGIN)).append(',');
-            header.append(style.get(VERTICAL)).append(',');
+            header.append(LEFTMARGIN.get(style)).append(',');
+            header.append(RIGHTMARGIN.get(style)).append(',');
+            header.append(VERTICAL.get(style)).append(',');
             header.append(0).append('\n');
         }
         
@@ -140,7 +151,7 @@ public class AdvancedSubStation extends SubStationAlpha {
     protected void getStyles(String input) {
         Matcher m = styles.matcher(input);
         SubStyleList list = subtitle_list.getStyleList();
-        list.clearList();
+        SubStyle deflt = list.clearList();
         
         SubStyle st;
         AlphaColor pri;
@@ -148,10 +159,10 @@ public class AdvancedSubStation extends SubStationAlpha {
             st = new SubStyle(m.group(1).trim());
             st.set(FONTNAME, m.group(2));
             st.set(FONTSIZE, Math.round( Integer.parseInt(m.group(3)) / getFontFactor()) );
-            st.set(PRIMARY, getReverse(m.group(4), null));
-            st.set(SECONDARY, getReverse(m.group(5), null));
-            st.set(OUTLINE, getReverse(m.group(6), null));
-            st.set(SHADOW, getReverse(m.group(7), null));
+            st.set(PRIMARY, StringToAlphaColor(m.group(4), null));
+            st.set(SECONDARY, StringToAlphaColor(m.group(5), null));
+            st.set(OUTLINE, StringToAlphaColor(m.group(6), null));
+            st.set(SHADOW, StringToAlphaColor(m.group(7), null));
             st.set(BOLD, m.group(8));
             st.set(ITALIC, m.group(9));
             st.set(UNDERLINE, m.group(10));
@@ -160,20 +171,17 @@ public class AdvancedSubStation extends SubStationAlpha {
             st.set(YSCALE, m.group(13));
             st.set(SPACING, m.group(14));
             st.set(ANGLE, m.group(15));
-            st.set(BORDERSTYLE, m.group(16));
+            st.set(BORDERSTYLE, (m.group(16).equals("3") ? 1 : 0) );
             st.set(BORDERSIZE, m.group(17));
             st.set(SHADOWSIZE, m.group(18));
-            st.set(DIRECTION, ass_directions.get(m.group(13)));
+            st.set(DIRECTION, ass_directions.get(m.group(19)));
             st.set(LEFTMARGIN, m.group(20));
             st.set(RIGHTMARGIN, m.group(21));
             st.set(VERTICAL, m.group(22));
             
-            if (st.Name.equals("Default")) {
-                list.elementAt(0).setValues(st);
-            } else {
-                list.add(st);
-            }
+            list.add(st);
         }
+        if (list.size()==0) list.add(deflt);
     }
     
 }

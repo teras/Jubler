@@ -46,7 +46,7 @@ public class TreeWalker {
         SystemDependent.appendLocateApplication(application, paths);
         
         for (ExtPath path: paths) {
-            DEBUG.info(_("Wizard is looking inside {0}", path.getPath()), DEBUG.INFO_DEBUG);
+            DEBUG.debug(_("Wizard is looking inside {0}", path.getPath()));
             File f = new File(path.getPath());
             if (path.searchForFile() && (!f.isFile()) ) continue;   // If we want a file and this is not, ignore this entry
             File res = searchExecutable(f, application.toLowerCase(), path.getRecStatus());

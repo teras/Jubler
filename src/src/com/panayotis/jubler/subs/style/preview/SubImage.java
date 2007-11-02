@@ -298,8 +298,8 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
             if (dir==BOTTOMLEFT || dir==BOTTOM || dir==BOTTOMRIGHT) vertical_justify = BOTTOM_JUSTIFY;
             
             /* Find general options */
-            outlength = (Integer)applyAttributes(new PreviewSingle(style.get(BORDERSIZE),  getStyleover(overs, BORDERSIZE)));
-            shadowlength = (Integer)applyAttributes(new PreviewSingle(style.get(SHADOWSIZE),  getStyleover(overs, SHADOWSIZE)));
+            outlength = (Float)applyAttributes(new PreviewSingle(style.get(BORDERSIZE),  getStyleover(overs, BORDERSIZE)));
+            shadowlength = (Float)applyAttributes(new PreviewSingle(style.get(SHADOWSIZE),  getStyleover(overs, SHADOWSIZE)));
             
             /* Create text strings with current font values*/
             subchars = new AttributedCharacterIterator[substr.length];

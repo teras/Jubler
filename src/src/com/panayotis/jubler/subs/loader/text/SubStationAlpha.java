@@ -96,6 +96,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
         styles_dict.add(new StyledFormat(PRIMARY, "c", StyledFormat.COLOR_REVERSE));
         styles_dict.add(new StyledFormat(PRIMARY, "alpha", StyledFormat.COLOR_ALPHA_REVERSE));
         styles_dict.add(new StyledFormat(DIRECTION, "a", ssa_directions));
+        
         styles_dict.add(new StyledFormat(UNKNOWN, "", null));   // Add this line if you want this style to save unknwn formats. It has to be LAST since it matches ALL tags
     }
     
@@ -143,7 +144,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
     
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
         str.append("Dialogue: ");
-        str.append(getLayer()).append(',');
+        str.append("0").append(',');    // Layer - Marked
         str.append(timeformat(sub.getStartTime()));
         str.append(',');
         str.append(timeformat(sub.getFinishTime())).append(',');
@@ -197,12 +198,14 @@ public class SubStationAlpha extends StyledTextSubFormat {
         header.append(" Styles]\n");
         appendStyles(subs, header);
         
-        header.append("\n[Events]\nFormat: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n");
+        header.append("\n[Events]\nFormat: ");
+        header.append(getLayerTitle());
+        header.append(", Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n");
     }
     
     
     protected String getExtraVersion() { return ""; }
-    protected String getLayer() { return "Marked=0"; }
+    protected String getLayerTitle() { return "Marked"; }
     
     protected int booleanToInt(Object b) {
         return (((Boolean)b).booleanValue())?-1:0;
@@ -218,19 +221,19 @@ public class SubStationAlpha extends StyledTextSubFormat {
             header.append(style.Name).append(',');
             header.append(style.get(FONTNAME)).append(',');
             header.append( Math.round(((Integer)style.get(FONTSIZE)) * getFontFactor()) ).append(',');
-            header.append(setReverse(style.get(PRIMARY), false)).append(',');
-            header.append(setReverse(style.get(SECONDARY), false)).append(',');
-            header.append(setReverse(style.get(OUTLINE), false)).append(',');
-            header.append(setReverse(style.get(SHADOW), true)).append(',');
+            header.append(AlphaColorToString(style.get(PRIMARY), false)).append(',');
+            header.append(AlphaColorToString(style.get(SECONDARY), false)).append(',');
+            header.append(AlphaColorToString(style.get(OUTLINE), false)).append(',');
+            header.append(AlphaColorToString(style.get(SHADOW), false)).append(',');
             header.append(booleanToInt(style.get(BOLD))).append(',');
             header.append(booleanToInt(style.get(ITALIC))).append(',');
             header.append((((Integer)style.get(BORDERSTYLE)).intValue()==0)?1:3).append(',');
-            header.append(style.get(BORDERSIZE)).append(',');
-            header.append(style.get(SHADOWSIZE)).append(',');
+            header.append(BORDERSIZE.get(style)).append(',');
+            header.append(SHADOWSIZE.get(style)).append(',');
             header.append(getDirectionKey(ssa_directions, (Direction)style.get(DIRECTION))).append(',');
-            header.append(style.get(LEFTMARGIN)).append(',');
-            header.append(style.get(RIGHTMARGIN)).append(',');
-            header.append(style.get(VERTICAL)).append(',');
+            header.append(LEFTMARGIN.get(style)).append(',');
+            header.append(RIGHTMARGIN.get(style)).append(',');
+            header.append(VERTICAL.get(style)).append(',');
             header.append(((AlphaColor)style.get(PRIMARY)).getAlpha()).append(',');
             header.append(0).append('\n');
         }
@@ -240,7 +243,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
     protected void getStyles(String input) {
         Matcher m = styles.matcher(input);
         SubStyleList list = subtitle_list.getStyleList();
-        list.clearList();
+        SubStyle deflt = list.clearList();
         
         SubStyle st;
         AlphaColor pri;
@@ -248,13 +251,13 @@ public class SubStationAlpha extends StyledTextSubFormat {
             st = new SubStyle(m.group(1).trim());
             st.set(FONTNAME, m.group(2));
             st.set(FONTSIZE, Math.round( Integer.parseInt(m.group(3)) / getFontFactor()) );
-            st.set(PRIMARY, getReverse(m.group(4), m.group(17)));
-            st.set(SECONDARY, getReverse(m.group(5), m.group(17)));
-            st.set(OUTLINE, getReverse(m.group(6), m.group(17)));
-            st.set(SHADOW, getReverse(m.group(7), null));
+            st.set(PRIMARY, StringToAlphaColor(m.group(4), m.group(17)));
+            st.set(SECONDARY, StringToAlphaColor(m.group(5), m.group(17)));
+            st.set(OUTLINE, StringToAlphaColor(m.group(6), m.group(17)));
+            st.set(SHADOW, StringToAlphaColor(m.group(7), null));
             st.set(BOLD, m.group(8));
             st.set(ITALIC, m.group(9));
-            st.set(BORDERSTYLE, m.group(10));
+            st.set(BORDERSTYLE, (m.group(10).equals("3") ? 1 : 0) );
             st.set(BORDERSIZE, m.group(11));
             st.set(SHADOWSIZE, m.group(12));
             st.set(DIRECTION, ssa_directions.get(m.group(13)));
@@ -262,17 +265,14 @@ public class SubStationAlpha extends StyledTextSubFormat {
             st.set(RIGHTMARGIN, m.group(15));
             st.set(VERTICAL, m.group(16));
             
-            if (st.Name.equals("Default")) {
-                list.elementAt(0).setValues(st);
-            } else {
-                list.add(st);
-            }
+            list.add(st);
         }
+        if (list.size()==0) list.add(deflt);
     }
     
     
     /* If the Alpha channel is stored in the BGR, then the Alpha parameter should be NULL */
-    protected AlphaColor getReverse(String revRGB, String Alpha ) {
+    protected AlphaColor StringToAlphaColor(String revRGB, String Alpha ) {
         long lrgb = parseNumber(revRGB);
         int rgb = (int)(lrgb & 0xffffff);
         int alpha = ((int)lrgb&0xff000000) >> 24;
@@ -280,10 +280,11 @@ public class SubStationAlpha extends StyledTextSubFormat {
         alpha = invertAlpha(alpha) << 24;
         return new AlphaColor( alpha | reverseByteOrder(rgb) );
     }
-    protected int setReverse(Object acolor, boolean store_alpha) {
-        int rgb = ((AlphaColor)acolor).getRGB() & 0xffffff;
-        int alpha = store_alpha ? ( invertAlpha(((AlphaColor)acolor).getAlpha()) << 24 ) : 0;
-        return ( alpha | reverseByteOrder(rgb));
+    protected String AlphaColorToString(Object acolor, boolean store_alpha) {
+        long rgb = reverseByteOrder(((AlphaColor)acolor).getRGB() & 0xffffff);
+        long alpha = store_alpha ? ((long)invertAlpha(((AlphaColor)acolor).getAlpha())) << 24 : 0;
+        int length = store_alpha ? 8 : 6;
+        return produceHexNumber( alpha|rgb, false, length);
     }
     
 }

@@ -128,7 +128,7 @@ public class ShortcutsModel extends AbstractTableModel {
             }
         } catch (IndexOutOfBoundsException e) {
             for (int i = 0 ; i < list.size() ; i++) {
-                DEBUG.info(list.get(i) + " - " + deflist.get(i), DEBUG.INFO_ALWAYS);
+                DEBUG.info(list.get(i) + " - " + deflist.get(i));
             }
             return "??";
         }

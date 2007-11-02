@@ -87,4 +87,13 @@ public class AlphaColor extends Color {
         String alp = Integer.toHexString(alpha);
         return "00".substring(0, 2-alp.length()) + alp + "000000".substring(0, 6-res.length()) + res;
     }
+    
+    public boolean equals(Object other) {
+      if (other==null) return false;
+      if (other instanceof AlphaColor) {
+          if ( ((AlphaColor)other).alpha != alpha ) return false;
+          return super.equals(other);
+      }
+      return false;
+    }
 }

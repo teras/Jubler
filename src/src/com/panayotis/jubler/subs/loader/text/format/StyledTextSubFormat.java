@@ -155,7 +155,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     
                             }
                         } catch (Exception e) {
-                            DEBUG.info(_("Exception while loading: " + e.getMessage()), DEBUG.INFO_ALWAYS);
+                            DEBUG.info(_("Exception {0} while loading style {1}: {2}", e.getClass().getName(), sf.style.name(), e.getMessage()));
                         }
                         break;
                     }
@@ -197,16 +197,16 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                 String data;
                                 switch((Byte)sf.value) {
                                     case COLOR_REVERSE:
-                                        data = produceNumber(reverseByteOrder(acol.getRGB()&0xffffff), true, 6);
+                                        data = produceHexNumber(reverseByteOrder(acol.getRGB()&0xffffff), true, 6);
                                         break;
                                     case COLOR_ALPHA_NORMAL:
-                                        data = produceNumber(acol.getAlpha(), true, 2);
+                                        data = produceHexNumber(acol.getAlpha(), true, 2);
                                         break;
                                     case COLOR_ALPHA_REVERSE:
-                                        data = produceNumber(invertAlpha(acol.getAlpha()), true, 2);
+                                        data = produceHexNumber(invertAlpha(acol.getAlpha()), true, 2);
                                         break;
                                     default:
-                                        data = produceNumber(acol.getRGB()&0xffffff, true, 6);
+                                        data = produceHexNumber(acol.getRGB()&0xffffff, true, 6);
                                 }
                                 events.add(new SubEv(sf.tag+data, ev.position));
                                 break;
@@ -254,15 +254,13 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         return ret;
     }
     
-    protected String produceNumber(long number, boolean hex, int length) {
-        if (hex) {
-            String n = Long.toHexString(number).toUpperCase();
-            n = zeros.substring(0, length-n.length()) + n;
-            return "&H"+n+"&";
-        }
-        return Long.toString(number);
+    protected String produceHexNumber(long number, boolean trailing_and, int length) {
+        String n = Long.toHexString(number).toUpperCase();
+        n = zeros.substring(0, length-n.length()) + n;
+        return "&H"+n+(trailing_and ? "&" : "");
     }
     private final static String zeros = "0000000000000000";
+    
     
     protected static final String getDirectionKey(HashMap<String, Direction> dict, Direction dir) {
         if (dir==null) dir = Direction.BOTTOM;

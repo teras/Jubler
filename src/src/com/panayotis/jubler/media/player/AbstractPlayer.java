@@ -129,7 +129,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         for (int i = 0 ; i < cmds.length ; i++) {
             cm.append(cmds[i]).append(' ');
         }
-        DEBUG.info(cm.toString(), DEBUG.INFO_ALWAYS);
+        DEBUG.info(cm.toString());
         return cmds;
     }
     

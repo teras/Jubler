@@ -257,8 +257,10 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
         }
     }
     
-    
+    /* NOTE: since we can not handle unknown events, this method does NOTHING to this kind of events */
     public void cleanupEvents(Object basic, String subtext) {
+        if (styletype==null) return;    // Unsupported StyleType
+        
         Object data = basic, olddata = null;
         AbstractStyleover.Entry entry, lastentry = null;
         /* First clean up double entries in the same position */
@@ -311,8 +313,10 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
     }
     
     
-    
+    /* NOTE: since we can not handle unknown events, this method does NOTHING to this kind of events */
     public static void applyAttributesToDocument(StyledDocument doc, Object defaultval, AbstractStyleover over, int textsize) {
+        if (over.styletype==null) return;
+        
         SimpleAttributeSet set;
         int from = 0;
         Object value = defaultval;

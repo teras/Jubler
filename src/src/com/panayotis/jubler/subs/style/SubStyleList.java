@@ -86,10 +86,10 @@ public class SubStyleList extends Vector<SubStyle> implements NameList {
         return elementAt(findStyleIndex(name));
     }
     
-    public void clearList() {
+    public SubStyle clearList() {
         SubStyle d = elementAt(0);
         removeAllElements();
-        add(d);
+        return d;
     }
     
 }

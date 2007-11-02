@@ -77,7 +77,7 @@ public class SubEntry implements Comparable<SubEntry> {
         styleover_template[XSCALE.ordinal()] = new StyleoverFull("xscale");
         styleover_template[YSCALE.ordinal()] = new StyleoverFull("yscale");
         styleover_template[DIRECTION.ordinal()] = new StyleoverFull(StyleConstants.Alignment);
-        styleover_template[UNKNOWN.ordinal()] = new StyleoverCharacter("unknown");
+        styleover_template[UNKNOWN.ordinal()] = new StyleoverCharacter(null);
     }
     
     /* Markings */
@@ -177,7 +177,7 @@ public class SubEntry implements Comparable<SubEntry> {
     
     void setData(int col, Object data) {
         DEBUG.error("BUG IN PROGRAM: SET DATA WAS SELECTED\nPlease contact author");
-        if ( col==3) subtext = data.toString();
+        if (col==3) subtext = data.toString();
     }
     
     public boolean isInTime(double t) {

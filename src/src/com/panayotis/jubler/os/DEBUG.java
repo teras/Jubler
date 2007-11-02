@@ -2,7 +2,7 @@
  * DEBUG.java
  *
  * Created on 14 Δεκέμβριος 2004, 4:30 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -35,13 +35,6 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 public class DEBUG {
     
-    public final static int INFO_ALWAYS = 0;
-    public final static int INFO_DEBUG = 1;
-    
-    
-//    public static int current_level = INFO_ALWAYS;
-    public static int current_level = INFO_DEBUG;
-    
     
     /** Creates a new instance of DEBUG */
     public static void error(String err) {
@@ -54,9 +47,12 @@ public class DEBUG {
         JIDialog.message(null, warn, _("Warning!"), JIDialog.WARNING_MESSAGE);
     }
     
-    public static void info(String info, int level) {
-        if (level<=current_level)
-            System.out.println(info);
+    public static void info(String info) {
+        System.out.println(info);
+    }
+    
+    public static void debug(String debug) {
+        System.out.println(debug);
     }
     
     public static void beep() {

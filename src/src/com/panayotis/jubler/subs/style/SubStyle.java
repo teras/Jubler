@@ -26,9 +26,6 @@ package com.panayotis.jubler.subs.style;
 import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.StyleType.*;
-
-import com.panayotis.jubler.subs.style.gui.AlphaColor;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.TreeSet;
@@ -66,7 +63,7 @@ public class SubStyle {
         try {
             fnames = env.getAvailableFontFamilyNames();
         } catch (Exception e1) {
-            DEBUG.info("Using failsafe routine for font loading.", DEBUG.INFO_ALWAYS);
+            DEBUG.info("Using failsafe routine for font loading.");
             Font[] fnt = env.getAllFonts();
             TreeSet<String> names = new TreeSet<String>();
             
@@ -97,34 +94,13 @@ public class SubStyle {
     public SubStyle(String name) {
         this.Name = name;
         
-        /* This is a prototype of the default style values */
-        values = new Object[StyleType.values().length];
-        values[FONTNAME.ordinal()] = FONTNAME.init("Arial");
-        values[FONTSIZE.ordinal()] = FONTSIZE.init(24);
-        values[BOLD.ordinal()] = BOLD.init(false);
-        values[ITALIC.ordinal()] = ITALIC.init(false);
-        values[UNDERLINE.ordinal()] = UNDERLINE.init(false);
-        values[STRIKETHROUGH.ordinal()] = STRIKETHROUGH.init(false);
+        /* Initialize default values */
+        StyleType[] types = StyleType.values();
+        values = new Object[types.length];
         
-        values[PRIMARY.ordinal()] = PRIMARY.init(new AlphaColor(Color.WHITE,  255));
-        values[SECONDARY.ordinal()] = SECONDARY.init(new AlphaColor(Color.YELLOW,  255));
-        values[OUTLINE.ordinal()] = OUTLINE.init(new AlphaColor(Color.BLACK,  180));
-        values[SHADOW.ordinal()] = SHADOW.init(new AlphaColor(Color.DARK_GRAY,  180));
-        
-        values[BORDERSTYLE.ordinal()] = BORDERSTYLE.init(0);
-        values[BORDERSIZE.ordinal()] = BORDERSIZE.init(2);
-        values[SHADOWSIZE.ordinal()] = SHADOWSIZE.init(2);
-        
-        values[LEFTMARGIN.ordinal()] = LEFTMARGIN.init(20);
-        values[RIGHTMARGIN.ordinal()] = RIGHTMARGIN.init(20);
-        values[VERTICAL.ordinal()] = VERTICAL.init(20);
-        
-        values[ANGLE.ordinal()] = ANGLE.init(0);
-        values[SPACING.ordinal()] = SPACING.init(0);
-        values[XSCALE.ordinal()] = XSCALE.init(100);
-        values[YSCALE.ordinal()] = YSCALE.init(100);
-        values[DIRECTION.ordinal()] = DIRECTION.init(Direction.BOTTOM);
-        values[UNKNOWN.ordinal()] = UNKNOWN.init("");
+        for (int i = 0 ; i < types.length ; i++) {
+            values[i] = types[i].getDefault();
+        }
     }
     
     public void setName(String newname, SubStyleList list) {
@@ -169,8 +145,11 @@ public class SubStyle {
     public Object get(int which) { return values[which]; }
     
     public void set(StyleType which, Object what) {
+        if (what==null) {
+            DEBUG.info(_("Null value found while setting Style {0} - ignoring.", which.name()));
+            return;
+        }
         int where = which.ordinal();
-        
         /* Overloading doesn't really work well in this case, so we have to force it */
         if (what instanceof String)
             values[where] = which.init((String)what);
