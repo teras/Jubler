@@ -283,7 +283,7 @@ class ApplicationHandler extends ApplicationAdapter {
     
     public void handleQuit(ApplicationEvent event) {
         StaticJubler.quitAll();
-        event.setHandled(true);
+        event.setHandled(false);
     }
     
     public void handleOpenFile(ApplicationEvent event) {
