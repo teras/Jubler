@@ -37,6 +37,10 @@ import com.panayotis.jubler.os.SystemDependent;
  * @author teras
  */
 public class MPlayer extends AbstractPlayer {
+
+    private final static String Defargs = "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 "+
+                "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y "+
+                "%(-audiofile %a%) -ass %v";
     
     public MPlayer() {
         super();
@@ -44,9 +48,6 @@ public class MPlayer extends AbstractPlayer {
     
     public String getName() { return "MPlayer"; }
     
-    public String getDefaultArguments() {
-        return SystemDependent.getDefaultMPlayerArgs();
-    }
     
     public boolean supportPause() { return true; }
     public boolean supportSubDisplace() { return true; }
@@ -58,15 +59,21 @@ public class MPlayer extends AbstractPlayer {
     
     public Viewport getViewport() { return new MPlayerViewport(this); }
     
+    /* This is a hack to force update MPlayer Parameters */
     public static void updateParameters() {
         int version = Options.getVersion();
         String params = Options.getOption("Player.MPlayer.Arguments","");
         if ( version<2 && (!params.equals("")) ) {
-            Options.setOption("Player.MPlayer.Arguments", SystemDependent.getDefaultMPlayerArgs());
+            Options.setOption("Player.MPlayer.Arguments", Defargs);
             DEBUG.warning(_("MPlayer parameters have been updated."));
         }
         Options.updateVersion();
     }
+
+    public String getDefaultArguments() {
+        return Defargs;
+    }
+
 
    
 }

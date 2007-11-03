@@ -172,27 +172,6 @@ public class SystemDependent {
         }
     }
     
-    public static String getDefaultMPlayerArgs() {
-        String font = "";
-        
-        if (isLinux()) {
-            font = " -fontconfig";
-        } else {
-            if (isWindows()) {
-                font=" -font c:\\Windows\\fonts\\arial.ttf";
-            } else {
-                File freesans = new File(SystemFileFinder.getJublerAppPath()+"/lib/freesans.ttf");
-                if (freesans.exists()) {
-                    font = " -font %j/lib/freesans.ttf";
-                }
-            }
-        }
-        
-        return "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 "+
-                "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y "+
-                "%(-audiofile %a%) -ass" + font + " %v";
-    }
-    
     
     /* Force ASpell to use UTF-8 encoding - broken on Windows */
     public static boolean forceASpellEncoding() {
