@@ -168,7 +168,8 @@ public class Jubler extends JFrame {
     
     private static HelpBrowser faqbrowse;
     
-    public final Image windowicon;
+    /* Window frame icon */
+    public final static Image FrameIcon;
     
     
     static {
@@ -181,6 +182,7 @@ public class Jubler extends JFrame {
         /* prefs = new JPreferences(); */
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
+        FrameIcon = new ImageIcon(Jubler.class.getResource("/icons/frame.png")).getImage();
     }
     
     
@@ -192,9 +194,10 @@ public class Jubler extends JFrame {
         connected_consoles = new Vector<JVideoConsole>();
         
         undo = new UndoList(this);
-        windowicon = new ImageIcon(getClass().getResource("/icons/frame.png")).getImage();
+        
         
         initComponents();
+        setIconImage(FrameIcon);
         
         setTableProps();
         
@@ -2302,8 +2305,6 @@ public class Jubler extends JFrame {
         Options.saveOptions();
     }
     
-    
-    public Image getIconImage() { return windowicon; }
     public Subtitles getSubtitles() { return subs; }
     public MediaFile getMediaFile() { return mfile; }
     public UndoList getUndoList() { return undo; }
