@@ -1345,11 +1345,9 @@ public class Jubler extends JFrame {
     
     private void ReparentTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReparentTMActionPerformed
         JReparent rep;
-        int res;
         rep = new JReparent(this, connect_to_other);
         
-        res = JIDialog.action(this, rep, _("Reparent subtitles file"));
-        if ( res == JIDialog.OK_OPTION) {
+        if ( JIDialog.action(this, rep, _("Reparent subtitles file")) ) {
             Jubler newp = rep.getDesiredParent();
             if (newp == null) {
                 /* the user cancelled the parenting */
@@ -1405,8 +1403,7 @@ public class Jubler extends JFrame {
         JTimeSingleSelection go = new JTimeSingleSelection(new Time(3600d), _("Go to the specified time"));
         go.setToolTip(_("Into which time moment do you want to go to"));
         
-        int res = JIDialog.action(this, go, _("Go to subtitle"));
-        if ( res == JIDialog.OK_OPTION) {
+        if ( JIDialog.action(this, go, _("Go to subtitle")) ) {
             setSelectedSub(subs.findSubEntry(go.getTime().toSeconds(), true), true);
         }
     }//GEN-LAST:event_byTimeGEMActionPerformed
@@ -1530,14 +1527,13 @@ public class Jubler extends JFrame {
         
         JPaster paster;
         SubEntry entry;
-        int res, row;
+        int row;
         
         row = SubTable.getSelectedRow();
         if (row < 0 ) paster = new JPaster(new Time(0d));
         else paster = new JPaster(subs.elementAt(row).getStartTime());
         
-        res = JIDialog.action(this, paster, _("Paste special options"));
-        if ( res == JIDialog.OK_OPTION) {
+        if ( JIDialog.action(this, paster, _("Paste special options")) ) {
             int newmark = paster.getMark();
             double timeoffset = paster.getStartTime().toSeconds();
             double smallest = Time.MAX_TIME;
@@ -1723,13 +1719,9 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_CurrentTTMActionPerformed
     
     private void JoinTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinTMActionPerformed
-        JSubJoin join;
-        int res;
+        JSubJoin join = new JSubJoin(windows, this);
         
-        join = new JSubJoin(windows, this);
-        
-        res = JIDialog.action(this, join, _("Join two subtitles"));
-        if ( res == JIDialog.OK_OPTION) {
+        if ( JIDialog.action(this, join, _("Join two subtitles")) ) {
             Subtitles newsubs;
             Jubler other;
             double dt;
@@ -1753,14 +1745,13 @@ public class Jubler extends JFrame {
     
     
     private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitTMActionPerformed
-        int row, res;
+        int row;
         
         row = SubTable.getSelectedRow();
         if (row<0) row = 0;
         split.setSubtitle(subs, row);
         
-        res = JIDialog.action(this, split, _("Split subtitles in two"));
-        if ( res == JIDialog.OK_OPTION) {
+        if ( JIDialog.action(this, split, _("Split subtitles in two")) ) {
             Subtitles subs1, subs2;
             SubEntry csub;
             double stime;
@@ -2107,8 +2098,8 @@ public class Jubler extends JFrame {
     
     private void closeWindow(boolean unsave_check, boolean keep_application_alive) {
         if (isUnsaved() && unsave_check) {
-            int res = JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation"));
-            if ( res == JIDialog.NO_OPTION) return;
+            if ( !JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation")) )
+                return;
         }
         
         /* Close all running consoles */

@@ -63,12 +63,11 @@ public abstract class JTool extends JPanel {
     
     /* Update the values, display the dialog and execute this tool */
     public boolean execute(Jubler jub) {
-        int res;
         UndoEntry undo;
 
         updateData(jub);
-        res = JIDialog.action(jparent, this, getToolTitle());
-        if ( res != JIDialog.OK_OPTION) return false;
+        if ( ! JIDialog.action(jparent, this, getToolTitle()) ) 
+            return false;
         
         jparent.getUndoList().addUndo( new UndoEntry(subs, getToolTitle()));
         SubEntry [] selectedsubs = jparent.getSelectedSubs();

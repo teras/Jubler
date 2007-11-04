@@ -72,8 +72,7 @@ public class JReplace extends javax.swing.JDialog {
             row ++;
             nextpos = 0;
             if ( row == subs.size()) {
-                int ret = JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles"));
-                if ( ret != JIDialog.OK_OPTION) {
+                if ( ! JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles")) ) {
                     prepareExit();
                     return;
                 }

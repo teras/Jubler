@@ -84,8 +84,7 @@ public class MediaFile {
         /* Now let the user select which files are the proper media files */
         boolean isok;
         do {
-            int res = JIDialog.action(null, videoselector, _("Select video"));
-            if ( res != JIDialog.OK_OPTION) {
+            if ( ! JIDialog.action(null, videoselector, _("Select video")) ) {
                 vfile = old_v;
                 afile = old_a;
                 cfile = old_c;

@@ -67,7 +67,7 @@ public class MPlayer extends AbstractPlayer {
         if ( version<2 && (!params.equals("")) ) {
             Options.setOption("Player.MPlayer.Arguments", Defargs);
             JIDialog.warning(null, _("MPlayer parameters have been updated."), _("MPlayer options"));
-        }
+        }   
         Options.updateVersion();
     }
 

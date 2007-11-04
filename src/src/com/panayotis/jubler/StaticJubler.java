@@ -131,8 +131,8 @@ public class StaticJubler {
             }
         }
         if (unsaved.size()>0) {
-            int ret = JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler"));
-            if (ret!=JIDialog.YES_OPTION) return;
+            if ( ! JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler")))
+                return;
         }
         if (Jubler.windows.size()>0)
             StaticJubler.setWindowPosition(Jubler.windows.get(Jubler.windows.size()-1), true);

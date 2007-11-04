@@ -111,12 +111,12 @@ public class Options {
     }
     
     public static int getVersion() {
-        int version = Integer.parseInt(getOption("Preferences.Version", "1"));
+        int version = Integer.parseInt(getOption("System.Preferences.Version", "1"));
         return version;
     }
     
     public static void updateVersion() {
-        setOption("Preferences.Version", Integer.toString(CURRENT_VERSION));
+        setOption("System.Preferences.Version", Integer.toString(CURRENT_VERSION));
         saveOptions();
     }
 }

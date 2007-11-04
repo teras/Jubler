@@ -662,8 +662,8 @@ public class JStyleEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_SaveActionPerformed
     
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        int ret = JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style"));
-        if ( ret != JIDialog.OK_OPTION ) return;
+        if ( ! JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style"))) 
+            return;
         delete_button_selected = true;
         setVisible(null);
     }//GEN-LAST:event_DeleteActionPerformed

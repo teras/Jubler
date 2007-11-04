@@ -38,23 +38,23 @@ public class JIDialog extends JOptionPane {
     public static final Object[] ok_cancel_opts = {_("OK"), _("Cancel")};
     public static final Object[] yes_no_opts = {_("Yes"), _("No")};
 
-    public static int info(Component parent, Object message, String title) {
-        return showMessage(parent, message, title, INFORMATION_MESSAGE, ok_opts);
+    public static void info(Component parent, Object message, String title) {
+        showMessage(parent, message, title, INFORMATION_MESSAGE, ok_opts);
     }
-    public static int action(Component parent, Object message, String title) {
+    public static boolean action(Component parent, Object message, String title) {
         return showMessage(parent, message, title, INFORMATION_MESSAGE, ok_cancel_opts);
     }
-    public static int question(Component parent, Object message, String title) {
+    public static boolean question(Component parent, Object message, String title) {
         return showMessage(parent, message, title, WARNING_MESSAGE, yes_no_opts);
     }
-    public static int warning(Component parent, Object message, String title) {
-        return showMessage(parent, message, title, WARNING_MESSAGE, ok_opts);
+    public static void warning(Component parent, Object message, String title) {
+        showMessage(parent, message, title, WARNING_MESSAGE, ok_opts);
     }
-    public static int error(Component parent, Object message, String title) {
-        return showMessage(parent, message, title, ERROR_MESSAGE, ok_opts);
+    public static void error(Component parent, Object message, String title) {
+        showMessage(parent, message, title, ERROR_MESSAGE, ok_opts);
     }
     
-    private static int showMessage(Component parent, Object message, String title, int type, Object[] buttons) {
-        return showOptionDialog(parent, message, title, DEFAULT_OPTION, type, null, buttons, buttons[0]);
+    private static boolean showMessage(Component parent, Object message, String title, int type, Object[] buttons) {
+        return showOptionDialog(parent, message, title, DEFAULT_OPTION, type, null, buttons, buttons[0]) == OK_OPTION;
     }
 }
