@@ -6,7 +6,7 @@
 
 package com.panayotis.jubler.information;
 
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.SystemDependent;
@@ -42,7 +42,7 @@ public class JVersion extends JPanel {
         webversion = new Properties();
         
         if (getVersionFromWeb()) { /* A new VALID version was found */
-            JIDialog.message(null, this, _("New version"), JIDialog.INFORMATION_MESSAGE);
+            JIDialog.info(null, this, _("New version"));
             if (DisregardB.isSelected()) {
                 Options.setOption("System.Version.IgnoreUpdate", Integer.toString(web_release));
                 Options.saveOptions();
@@ -60,6 +60,10 @@ public class JVersion extends JPanel {
     
     
     private boolean getVersionFromWeb() {
+        /* First check if today we have already checked version */
+        Options.getOption("System.Version.LastCheck", "");
+        
+        /* Load proeprties from the web */
         try {
             webversion.load(new URL("http://www.panayotis.com/versions/jubler").openStream());
         } catch (IOException e) {

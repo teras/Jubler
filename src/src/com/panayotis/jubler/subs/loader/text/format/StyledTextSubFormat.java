@@ -155,7 +155,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     
                             }
                         } catch (Exception e) {
-                            DEBUG.info(_("Exception {0} while loading style {1}: {2}", e.getClass().getName(), sf.style.name(), e.getMessage()));
+                            DEBUG.debug(_("Exception {0} while loading style {1}: {2}", e.getClass().getName(), sf.style.name(), e.getMessage()));
                         }
                         break;
                     }

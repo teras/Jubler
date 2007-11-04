@@ -6,7 +6,7 @@
 
 package com.panayotis.jubler.tools.replace;
 
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.undo.UndoEntry;
@@ -72,7 +72,7 @@ public class JReplace extends javax.swing.JDialog {
             row ++;
             nextpos = 0;
             if ( row == subs.size()) {
-                int ret = JIDialog.question(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles"));
+                int ret = JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles"));
                 if ( ret != JIDialog.OK_OPTION) {
                     prepareExit();
                     return;

@@ -110,7 +110,7 @@ public class VideoFile extends File {
             width = DEFAULT_WIDTH;
             length = DEFAULT_LENGTH;
             fps = DEFAULT_FPS;
-            DEBUG.info(_("Could not retrieve actual video properties. Using defaults."));
+            DEBUG.debug(_("Could not retrieve actual video properties. Using defaults."));
         }
     }
     

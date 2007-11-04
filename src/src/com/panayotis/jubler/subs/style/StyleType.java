@@ -81,13 +81,13 @@ public enum StyleType {
                 try {
                     return ((Number)val).intValue();
                 } catch (NumberFormatException e) {}
-                DEBUG.info(_("Error while parsing integral number {0}",val));
+                DEBUG.debug(_("Error while parsing integral number {0}",val));
                 return new Integer(0);
             case FORMAT_REAL:
                 try {
                     return ((Number)val).floatValue();
                 } catch (NumberFormatException e) {}
-                DEBUG.info(_("Error while parsing real number {0}",val));
+                DEBUG.debug(_("Error while parsing real number {0}",val));
                 return new Double(0f);
         }
         return val;
@@ -102,13 +102,13 @@ public enum StyleType {
                 try {
                     return Integer.valueOf(val);
                 } catch (NumberFormatException e) {}
-                DEBUG.info(_("Error while parsing integral number {0}",val));
+                DEBUG.debug(_("Error while parsing integral number {0}",val));
                 return  getDefault();
             case FORMAT_REAL:
                 try {
                     return Float.valueOf(val);
                 } catch (NumberFormatException e) {}
-                DEBUG.info(_("Error while parsing real number {0}",val));
+                DEBUG.debug(_("Error while parsing real number {0}",val));
                 return getDefault();
             case FORMAT_FLAG:
                 if (val.equals("0")) val = "false";

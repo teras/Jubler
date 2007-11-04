@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -67,7 +67,7 @@ public abstract class JTool extends JPanel {
         UndoEntry undo;
 
         updateData(jub);
-        res = JIDialog.question(jparent, this, getToolTitle());
+        res = JIDialog.action(jparent, this, getToolTitle());
         if ( res != JIDialog.OK_OPTION) return false;
         
         jparent.getUndoList().addUndo( new UndoEntry(subs, getToolTitle()));

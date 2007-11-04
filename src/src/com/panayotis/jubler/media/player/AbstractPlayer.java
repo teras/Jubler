@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.media.player;
 
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.AbstractPlayerOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
@@ -66,7 +67,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
             subpath = subtemp.getPath();
             return;
         } catch (IOException e) {}
-        DEBUG.error(_("Could not create temporary file to store the subtitles."));
+        JIDialog.error(null, _("Could not create temporary file to store the subtitles."), _("Media Player Error"));
     }
     
      public void cleanUp() {
@@ -129,7 +130,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         for (int i = 0 ; i < cmds.length ; i++) {
             cm.append(cmds[i]).append(' ');
         }
-        DEBUG.info(cm.toString());
+        DEBUG.debug(cm.toString());
         return cmds;
     }
     

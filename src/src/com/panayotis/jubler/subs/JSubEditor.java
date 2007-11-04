@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs;
 
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
@@ -668,7 +668,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     }//GEN-LAST:event_panelsetVisible
     
     private void TrashBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TrashBActionPerformed
-        int res = JIDialog.question(parent, _("Are you sure you want to delete the override styles of this subtitle?"), _("Delete current subtitle style"), true);
+        int res = JIDialog.question(parent, _("Are you sure you want to delete the override styles of this subtitle?"), _("Delete current subtitle style"));
         if (res==0) {
             UndoEntry undo = new UndoEntry(parent.getSubtitles(), _("Cleanup style"));
             entry.resetOverStyle();

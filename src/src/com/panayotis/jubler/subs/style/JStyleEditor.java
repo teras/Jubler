@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
@@ -662,7 +662,7 @@ public class JStyleEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_SaveActionPerformed
     
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        int ret = JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style"), JIDialog.WARNING_MESSAGE, true);
+        int ret = JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style"));
         if ( ret != JIDialog.OK_OPTION ) return;
         delete_button_selected = true;
         setVisible(null);

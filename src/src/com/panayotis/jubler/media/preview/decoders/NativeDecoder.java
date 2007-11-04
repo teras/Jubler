@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler.media.preview.decoders;
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.CacheFile;
@@ -47,23 +48,23 @@ public abstract class NativeDecoder implements DecoderInterface {
         
         /* Make sanity checks */
         if (!isDecoderValid()) {
-            DEBUG.info(_("Decoder not active. Aborting audio cache creation."));
+            DEBUG.debug(_("Decoder not active. Aborting audio cache creation."));
             return false;
         }
         if (cacher != null ) {
-            DEBUG.error(_("Still creating cache. Use the Cancel button to abort."));
+            JIDialog.error(null, _("Still creating cache. Use the Cancel button to abort."), _("Caching still in progress"));
             return false;
         }
         if (afile==null) {
-            DEBUG.info(_("Unable to create cache to unknown audio file"));
+            DEBUG.debug(_("Unable to create cache to unknown audio file"));
             return false;    /* We HAVE to have defined the cached file */
         }
         if (cfile==null) {
-            DEBUG.info(_("Unable to create unset cache file"));
+            DEBUG.debug(_("Unable to create unset cache file"));
             return false;    /* We HAVE to have defined the cached file */
         }
         if (AudioPreview.isAudioPreview(cfile)) {
-            DEBUG.info(_("Jubler audio cache detected for audio input: {0}", cfile.getPath()));
+            DEBUG.debug(_("Jubler audio cache detected for audio input: {0}", cfile.getPath()));
             return true;
         }
         
@@ -76,7 +77,7 @@ public abstract class NativeDecoder implements DecoderInterface {
                 cacher = null;  // Needed early, to "tip" the system that cache creatin has been finished
                 setInterruptStatus(false);
                 
-                if(!status) DEBUG.error(_("Error while loading file {0}",  af.getPath()));
+                if(!status) JIDialog.error(null, _("Error while loading file {0}",  af.getPath()), "Error while creating cache");
                 feedback.stopCacheCreation();
             }
         };

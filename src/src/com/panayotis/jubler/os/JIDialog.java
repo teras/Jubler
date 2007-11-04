@@ -20,8 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
-package com.panayotis.jubler;
+package com.panayotis.jubler.os;
 
 import java.awt.Component;
 import javax.swing.JOptionPane;
@@ -34,30 +33,28 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author teras
  */
 public class JIDialog extends JOptionPane {
+
     public static final Object[] ok_opts = {_("OK")};
     public static final Object[] ok_cancel_opts = {_("OK"), _("Cancel")};
     public static final Object[] yes_no_opts = {_("Yes"), _("No")};
-    
-    public static void message(Component parent, Object message, String title, int type) {
-        showOptionDialog(parent, message, title, DEFAULT_OPTION, type, null, ok_opts, ok_opts[0]);
-    }
-    
-    public static int question (Component parent, Object message, String title) {
-        return question(parent, message, title, false);
-    }
 
-    public static int question(Component parent, Object message, String title, boolean is_yes_no) {
-        return question(parent, message, title, QUESTION_MESSAGE, is_yes_no);
+    public static int info(Component parent, Object message, String title) {
+        return showMessage(parent, message, title, INFORMATION_MESSAGE, ok_opts);
+    }
+    public static int action(Component parent, Object message, String title) {
+        return showMessage(parent, message, title, INFORMATION_MESSAGE, ok_cancel_opts);
+    }
+    public static int question(Component parent, Object message, String title) {
+        return showMessage(parent, message, title, WARNING_MESSAGE, yes_no_opts);
+    }
+    public static int warning(Component parent, Object message, String title) {
+        return showMessage(parent, message, title, WARNING_MESSAGE, ok_opts);
+    }
+    public static int error(Component parent, Object message, String title) {
+        return showMessage(parent, message, title, ERROR_MESSAGE, ok_opts);
     }
     
-    public static int question (Component parent, Object message, String title, int type, boolean is_yes_no ) {
-        if (is_yes_no) {
-            return showOptionDialog(parent, message, title, DEFAULT_OPTION, type, null, yes_no_opts, yes_no_opts[0]);
-        }
-        else {
-            return showOptionDialog(parent, message, title, DEFAULT_OPTION, type, null, ok_cancel_opts, ok_cancel_opts[0]);
-            
-        }
+    private static int showMessage(Component parent, Object message, String title, int type, Object[] buttons) {
+        return showOptionDialog(parent, message, title, DEFAULT_OPTION, type, null, buttons, buttons[0]);
     }
-
 }

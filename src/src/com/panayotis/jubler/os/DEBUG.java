@@ -24,7 +24,6 @@
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.*;
-import com.panayotis.jubler.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 
@@ -35,28 +34,17 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 public class DEBUG {
     
-    
-    /** Creates a new instance of DEBUG */
-    public static void error(String err) {
-        beep();
-        JIDialog.message(null, err,  _("Error"), JIDialog.ERROR_MESSAGE);
-    }
-    
-    public static void warning(String warn) {
-        beep();
-        JIDialog.message(null, warn, _("Warning!"), JIDialog.WARNING_MESSAGE);
-    }
-    
-    public static void info(String info) {
-        System.out.println(info);
+//    public static void warning(String warn) {
+//        beep();
+//        JIDialog.warning(null, warn, _("Warning!"));
+//    }
+//    
+    public static void beep() {
+        java.awt.Toolkit.getDefaultToolkit().beep();
     }
     
     public static void debug(String debug) {
         System.out.println(debug);
-    }
-    
-    public static void beep() {
-        java.awt.Toolkit.getDefaultToolkit().beep();
     }
     
     public static String toString(String[] array) {

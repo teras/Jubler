@@ -26,6 +26,7 @@ package com.panayotis.jubler.options.gui;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JPanel;
 
@@ -118,7 +119,7 @@ public class JRateChooser extends JPanel {
             Float.parseFloat(action);
             FPSChooser.setSelectedItem(action);
         } catch (NumberFormatException e) {
-            DEBUG.warning(_("Not a valid number: {0}", action));
+            JIDialog.error(this, "Not a valid number: {0}", _("Wrong FPS"));
         }
     }//GEN-LAST:event_FPSChooserActionPerformed
     

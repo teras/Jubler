@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.MediaFile;
@@ -72,7 +72,7 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder  {
         
         updateVisuals(mfile, subs);
         DialogVisible.setVisible(false);
-        JIDialog.message(parent, this, _("File preferences"), JIDialog.QUESTION_MESSAGE);
+        JIDialog.info(parent, this, _("File preferences"));
         DialogVisible.setVisible(true);
     }
     

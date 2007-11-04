@@ -30,6 +30,7 @@ import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
 
 /**
@@ -65,7 +66,7 @@ public class MPlayer extends AbstractPlayer {
         String params = Options.getOption("Player.MPlayer.Arguments","");
         if ( version<2 && (!params.equals("")) ) {
             Options.setOption("Player.MPlayer.Arguments", Defargs);
-            DEBUG.warning(_("MPlayer parameters have been updated."));
+            JIDialog.warning(null, _("MPlayer parameters have been updated."), _("MPlayer options"));
         }
         Options.updateVersion();
     }

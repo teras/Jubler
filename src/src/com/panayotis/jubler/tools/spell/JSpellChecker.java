@@ -22,7 +22,7 @@
  */
 
 package com.panayotis.jubler.tools.spell;
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
 import java.awt.Color;
 import java.util.Hashtable;
@@ -488,6 +488,6 @@ public class JSpellChecker extends JDialog {
         dispose();
         String msg = _("Number of affected words: {0}", count_changes);
         if ( count_changes == 0) msg = _("No changes have been done");
-        JIDialog.message(jparent, msg, _("Speller changes"), JIDialog.INFORMATION_MESSAGE);
+        JIDialog.info(jparent, msg, _("Speller changes"));
     }
 }

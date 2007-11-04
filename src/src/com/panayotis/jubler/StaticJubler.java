@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler;
 
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.information.JAbout;
@@ -118,7 +119,7 @@ public class StaticJubler {
     
     
     public static void showAbout() {
-        JIDialog.message(null, new JAbout(), _("About Jubler"), JIDialog.INFORMATION_MESSAGE);
+        JIDialog.info(null, new JAbout(), _("About Jubler"));
     }
     
     
@@ -130,7 +131,7 @@ public class StaticJubler {
             }
         }
         if (unsaved.size()>0) {
-            int ret = JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler"), true);
+            int ret = JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler"));
             if (ret!=JIDialog.YES_OPTION) return;
         }
         if (Jubler.windows.size()>0)

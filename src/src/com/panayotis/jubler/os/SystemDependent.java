@@ -168,7 +168,7 @@ public class SystemDependent {
                     Runtime.getRuntime().exec(new String[] {browser, url});
             }
         } catch (Exception e) {
-            DEBUG.warning("URL selected: " + url);
+            JIDialog.warning(null, "Exception "+e.getClass().getName()+" while loading URL " + url, _("Error while opening URL"));
         }
     }
     

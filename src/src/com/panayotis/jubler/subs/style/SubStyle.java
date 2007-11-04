@@ -63,7 +63,7 @@ public class SubStyle {
         try {
             fnames = env.getAvailableFontFamilyNames();
         } catch (Exception e1) {
-            DEBUG.info("Using failsafe routine for font loading.");
+            DEBUG.debug("Using failsafe routine for font loading.");
             Font[] fnt = env.getAllFonts();
             TreeSet<String> names = new TreeSet<String>();
             
@@ -146,7 +146,7 @@ public class SubStyle {
     
     public void set(StyleType which, Object what) {
         if (what==null) {
-            DEBUG.info(_("Null value found while setting Style {0} - ignoring.", which.name()));
+            DEBUG.debug(_("Null value found while setting Style {0} - ignoring.", which.name()));
             return;
         }
         int where = which.ordinal();

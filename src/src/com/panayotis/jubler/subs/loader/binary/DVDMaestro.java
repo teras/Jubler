@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.loader.binary;
 
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 
@@ -34,7 +34,6 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.style.preview.SubImage;
-import com.panayotis.jubler.time.Time;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -107,13 +106,13 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         }
         
         
-        final Subtitles subs = given_subs;
+        subs = given_subs;
         final String outfilepath = dir.getPath() + System.getProperty("file.separator");
         final String outfilename = dir.getName();
         
         moptions.updateValues(given_subs, media);
         
-        JIDialog.message(null,moptions, _("Maestro DVD options"), JIDialog.QUESTION_MESSAGE);
+        JIDialog.action(null,moptions, _("Maestro DVD options"));
         
         /* Start writing the files in a separate thread */
         Thread t = new Thread() {
@@ -167,7 +166,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
                     out.write(buffer.toString());
                     out.close();
                 } catch (IOException ex) {
-                    DEBUG.error(_("Unable to create subtitle file {0}.", outfilepath+outfilename+".son"));
+                    JIDialog.error(null, _("Unable to create subtitle file {0}.", outfilepath+outfilename+".son"), "DVDMaestro error");
                 }
                 
                 progress.stop();

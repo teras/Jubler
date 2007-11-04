@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
@@ -176,7 +177,7 @@ public class SubEntry implements Comparable<SubEntry> {
     
     
     void setData(int col, Object data) {
-        DEBUG.error("BUG IN PROGRAM: SET DATA WAS SELECTED\nPlease contact author");
+        JIDialog.error(null, "BUG IN PROGRAM: SET DATA WAS SELECTED\nPlease contact author", _("Error!"));
         if (col==3) subtext = data.toString();
     }
     

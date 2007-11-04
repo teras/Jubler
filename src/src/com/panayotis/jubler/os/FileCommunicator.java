@@ -116,7 +116,7 @@ public class FileCommunicator {
         for (int i = 0 ; i < encs.length ; i++ ) {
             res = loadFromFile(infile, encs[i]);
             if ( res != null) {
-                DEBUG.info(_("Found file {0}", encs[i]));
+                DEBUG.debug(_("Found file {0}", encs[i]));
                 return res;
             }
         }

@@ -67,7 +67,7 @@ public class ShortcutsModel extends AbstractTableModel {
             addMenuList("", bar.getMenu(i));
         }
         String err = isValidCodes();
-        if (err!=null) DEBUG.error("Error in shortcut entry:"+err);
+        if (err!=null) DEBUG.debug("Error in shortcut entry:"+err);
     }
     
     private void addMenuList(String prefix, JMenu menu) {
@@ -128,7 +128,7 @@ public class ShortcutsModel extends AbstractTableModel {
             }
         } catch (IndexOutOfBoundsException e) {
             for (int i = 0 ; i < list.size() ; i++) {
-                DEBUG.info(list.get(i) + " - " + deflist.get(i));
+                DEBUG.debug(list.get(i) + " - " + deflist.get(i));
             }
             return "??";
         }

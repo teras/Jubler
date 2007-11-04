@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.media.console;
 
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.media.player.Viewport;
@@ -41,9 +42,7 @@ import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.options.Options;
 import java.awt.Color;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.JToolRealTime;
-import com.panayotis.jubler.tools.externals.wizard.JWizard;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.IOException;
@@ -168,7 +167,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                 break;
             } catch (ExtProgramException ex) {
                 if (! (ex.getCause() instanceof IOException) ) {
-                    DEBUG.error(_("Abnormal exit - please report the author about this behaviour.")+"\n"+ex.getCause());
+                    JIDialog.error(this, _("Abnormal exit - please report the author about this behaviour.")+"\n"+ex.getCause(), _("Movie Player Error"));
                     stop();
                     return;
                 } else {

@@ -25,7 +25,7 @@ package com.panayotis.jubler.media;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.JIDialog;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
@@ -84,7 +84,7 @@ public class MediaFile {
         /* Now let the user select which files are the proper media files */
         boolean isok;
         do {
-            int res = JIDialog.question(null, videoselector, _("Select video"));
+            int res = JIDialog.action(null, videoselector, _("Select video"));
             if ( res != JIDialog.OK_OPTION) {
                 vfile = old_v;
                 afile = old_a;
@@ -93,7 +93,7 @@ public class MediaFile {
             }
             isok = isValid(vfile);
             if (!isok) {
-                JIDialog.message(null, _("This file does not exist.\nPlease provide a valid file name."), _("Error in videofile selection"), JIDialog.ERROR_MESSAGE);
+                JIDialog.warning(null, _("This file does not exist.\nPlease provide a valid file name."), _("Error in videofile selection"));
             }
         } while (!isok);
         

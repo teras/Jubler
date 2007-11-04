@@ -25,6 +25,7 @@
 
 
 package com.panayotis.jubler;
+import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.SubFileFilter;
@@ -1347,7 +1348,7 @@ public class Jubler extends JFrame {
         int res;
         rep = new JReparent(this, connect_to_other);
         
-        res = JIDialog.question(this, rep, _("Reparent subtitles file"));
+        res = JIDialog.action(this, rep, _("Reparent subtitles file"));
         if ( res == JIDialog.OK_OPTION) {
             Jubler newp = rep.getDesiredParent();
             if (newp == null) {
@@ -1360,7 +1361,7 @@ public class Jubler extends JFrame {
                 while ( (pointer=pointer.connect_to_other) != null ) {
                     if (pointer==this) {
                         /*  A circle was found */
-                        DEBUG.error(_("Cyclic dependency while setting new parent.\nParenting will be cancelled"));
+                        JIDialog.error(this, _("Cyclic dependency while setting new parent.\nParenting will be cancelled"), _("Reparent error"));
                         return;
                     }
                 }
@@ -1404,7 +1405,7 @@ public class Jubler extends JFrame {
         JTimeSingleSelection go = new JTimeSingleSelection(new Time(3600d), _("Go to the specified time"));
         go.setToolTip(_("Into which time moment do you want to go to"));
         
-        int res = JIDialog.question(this, go, _("Go to subtitle"));
+        int res = JIDialog.action(this, go, _("Go to subtitle"));
         if ( res == JIDialog.OK_OPTION) {
             setSelectedSub(subs.findSubEntry(go.getTime().toSeconds(), true), true);
         }
@@ -1535,7 +1536,7 @@ public class Jubler extends JFrame {
         if (row < 0 ) paster = new JPaster(new Time(0d));
         else paster = new JPaster(subs.elementAt(row).getStartTime());
         
-        res = JIDialog.question(this, paster, _("Paste special options"));
+        res = JIDialog.action(this, paster, _("Paste special options"));
         if ( res == JIDialog.OK_OPTION) {
             int newmark = paster.getMark();
             double timeoffset = paster.getStartTime().toSeconds();
@@ -1677,7 +1678,7 @@ public class Jubler extends JFrame {
             undo.addUndo(u);
             tableHasChanged(selected);
         } else {
-            JIDialog.message(this, _("No lines affected"), _("Remove empty lines"), JIDialog.INFORMATION_MESSAGE);
+            JIDialog.info(this, _("No lines affected"), _("Remove empty lines"));
         }
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed
     
@@ -1727,7 +1728,7 @@ public class Jubler extends JFrame {
         
         join = new JSubJoin(windows, this);
         
-        res = JIDialog.question(this, join, _("Join two subtitles"));
+        res = JIDialog.action(this, join, _("Join two subtitles"));
         if ( res == JIDialog.OK_OPTION) {
             Subtitles newsubs;
             Jubler other;
@@ -1758,7 +1759,7 @@ public class Jubler extends JFrame {
         if (row<0) row = 0;
         split.setSubtitle(subs, row);
         
-        res = JIDialog.question(this, split, _("Split subtitles in two"));
+        res = JIDialog.action(this, split, _("Split subtitles in two"));
         if ( res == JIDialog.OK_OPTION) {
             Subtitles subs1, subs2;
             SubEntry csub;
@@ -2010,7 +2011,7 @@ public class Jubler extends JFrame {
             undo.setSaveMark();
             setFile(f, false);
         } else {
-            DEBUG.error(result);
+            JIDialog.error(this, result, _("Error while saving file"));
         }
     }
     
@@ -2037,14 +2038,14 @@ public class Jubler extends JFrame {
         
         data = FileCommunicator.load(f, work.prefs);
         if ( data == null ) {
-            DEBUG.error(_("Could not load file. Possibly an encoding error."));
+            JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while laoding file"));
             return;
         }
         
         /* Convert file into subtitle data */
         newsubs.populate(f, data, work.prefs.getLoadFPS());
         if ( newsubs.size() == 0 ) {
-            DEBUG.error(_("File not recognized!"));
+            JIDialog.error(this, _("File not recognized!"), _("Error while laoding file"));
             return;
         }
         
@@ -2106,7 +2107,7 @@ public class Jubler extends JFrame {
     
     private void closeWindow(boolean unsave_check, boolean keep_application_alive) {
         if (isUnsaved() && unsave_check) {
-            int res = JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation"), JIDialog.ERROR_MESSAGE, true);
+            int res = JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation"));
             if ( res == JIDialog.NO_OPTION) return;
         }
         
