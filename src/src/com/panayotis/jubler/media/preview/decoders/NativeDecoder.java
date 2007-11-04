@@ -91,11 +91,17 @@ public abstract class NativeDecoder implements DecoderInterface {
     private void updateViewport(float position) {
         feedback.updateCacheCreation(position);
     }
-    public void setInterruptStatus(boolean interrupt) {
-        isInterrupted = interrupt;
+    /* This is also a callback function to use the standard DEBUG object in C */
+    private void debug(String debug) {
+        DEBUG.debug(debug);
     }
+
+    /* This method is used again as a callback, to see if the user clicked on the cancel button */
     public boolean getInterruptStatus() {
         return isInterrupted;
+    }
+    public void setInterruptStatus(boolean interrupt) {
+        isInterrupted = interrupt;
     }
     
     /* Use this method when the loaded audio cache is no more needed */

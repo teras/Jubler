@@ -21,6 +21,7 @@
 #define UTILITIES_H
 
 #include <stdio.h>
+#include <jni.h>
 
 #define printf Use_DEBUG_instead_of_printf .
 
@@ -29,6 +30,6 @@ unsigned short int retrieveBigEndian(FILE * outfile);
 
 int isLittleEndian();
 
-void DEBUG(const char *section, const char *expr, ...);
+void DEBUG(JNIEnv *env, jobject obj, const char *section, const char *expr, ...);
 
 #endif

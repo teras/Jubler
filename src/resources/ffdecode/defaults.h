@@ -27,7 +27,7 @@
 #define CACHELENGTH 1000
 
 /* Samples per second */
-#define RESOLUTION 1000 
+#define RESOLUTION 1000
 
 
 //#define DATA_LITTLE_ENDIAN 1
