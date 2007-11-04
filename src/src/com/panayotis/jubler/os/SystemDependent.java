@@ -37,7 +37,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.JMenuItem;
@@ -172,6 +171,28 @@ public class SystemDependent {
         }
     }
     
+    /* Get MPlayer parameters */
+    public static String getDefaultMPlayerArgs() {	 
+         String font = "";	 
+ 	 
+         if (isLinux()) {	 
+             font = " -fontconfig";	 
+         } else {	 
+             if (isWindows()) {	 
+                 font=" -font c:\\Windows\\fonts\\arial.ttf";	 
+             } else {	 
+                 File freesans = new File(SystemFileFinder.getJublerAppPath()+"/lib/freesans.ttf");	 
+                 if (freesans.exists()) {	 
+                     font = " -font %j/lib/freesans.ttf";	 
+                 }	 
+             }	 
+         }	 
+ 	 
+         return "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 "+	 
+                 "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y "+	 
+                 "%(-audiofile %a%) -ass" + font + " %v";	 
+     }	 
+ 
     
     /* Force ASpell to use UTF-8 encoding - broken on Windows */
     public static boolean forceASpellEncoding() {

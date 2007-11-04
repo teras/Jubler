@@ -39,16 +39,15 @@ import com.panayotis.jubler.os.SystemDependent;
  */
 public class MPlayer extends AbstractPlayer {
 
-    private final static String Defargs = "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 "+
-                "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y "+
-                "%(-audiofile %a%) -ass %v";
-    
     public MPlayer() {
         super();
     }
     
     public String getName() { return "MPlayer"; }
     
+    public String getDefaultArguments() {	 
+         return SystemDependent.getDefaultMPlayerArgs();	 
+     }
     
     public boolean supportPause() { return true; }
     public boolean supportSubDisplace() { return true; }
@@ -65,16 +64,10 @@ public class MPlayer extends AbstractPlayer {
         int version = Options.getVersion();
         String params = Options.getOption("Player.MPlayer.Arguments","");
         if ( version<2 && (!params.equals("")) ) {
-            Options.setOption("Player.MPlayer.Arguments", Defargs);
+            Options.setOption("Player.MPlayer.Arguments", SystemDependent.getDefaultMPlayerArgs());
             JIDialog.warning(null, _("MPlayer parameters have been updated."), _("MPlayer options"));
         }   
         Options.updateVersion();
     }
 
-    public String getDefaultArguments() {
-        return Defargs;
-    }
-
-
-   
 }
