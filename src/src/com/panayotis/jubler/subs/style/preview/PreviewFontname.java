@@ -24,10 +24,8 @@
 package com.panayotis.jubler.subs.style.preview;
 
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
-import com.panayotis.jubler.subs.style.event.StyleoverEvent;
 import java.awt.font.TextAttribute;
 import java.text.AttributedCharacterIterator.Attribute;
-import java.text.AttributedString;
 
 /**
  *
