@@ -350,7 +350,6 @@
 		</copy>
 		<chmod file="/Volumes/Jubler-template/Jubler.app/Contents/MacOS/JavaApplicationStub" perm="a+x"/>
 		<copy file="resources/ffdecode/libffdecode.jnilib" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
-		<copy file="resources/system/fonts/freesans.ttf" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
 		<copy file="dist/help/jubler-faq.html" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help"/>
 		<copy file="resources/help/question.png" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help"/>
 
@@ -383,7 +382,6 @@
 	</target>	
 
 	<target name="-post-jar">
-		<copy file="resources/system/fonts/freesans.ttf" todir="dist/lib"/>
 		<delete file="dist/README.txt"/>
 	</target>
 
