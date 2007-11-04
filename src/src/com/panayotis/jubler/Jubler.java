@@ -34,7 +34,6 @@ import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.Options;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.console.JVideoConsole;
@@ -210,7 +209,7 @@ public class Jubler extends JFrame {
         filedialog.setSelectedFile(new File(Options.getOption("System.LastDirPath", ".") +"/.") );
         
         subeditor = new JSubEditor(this);
-        subeditor.setAttached(subeditor.ATTACHED_TO_TEXT);
+        subeditor.setAttached(JSubEditor.ATTACHED_TO_TEXT);
         
         preview = new JSubPreview(this);
         
@@ -2025,16 +2024,16 @@ public class Jubler extends JFrame {
         newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
         
         /* Load file into memory */
-        work.prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
+        prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
         
-        data = FileCommunicator.load(f, work.prefs);
+        data = FileCommunicator.load(f, prefs);
         if ( data == null ) {
             JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while laoding file"));
             return;
         }
         
         /* Convert file into subtitle data */
-        newsubs.populate(f, data, work.prefs.getLoadFPS());
+        newsubs.populate(f, data, prefs.getLoadFPS());
         if ( newsubs.size() == 0 ) {
             JIDialog.error(this, _("File not recognized!"), _("Error while laoding file"));
             return;
