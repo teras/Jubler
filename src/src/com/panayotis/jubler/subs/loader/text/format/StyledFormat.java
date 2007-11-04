@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.subs.loader.text.format;
 
-import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.StyleType;
 
 /**

@@ -71,7 +71,7 @@ public abstract class JTool extends JPanel {
         if ( res != JIDialog.OK_OPTION) return false;
         
         jparent.getUndoList().addUndo( new UndoEntry(subs, getToolTitle()));
-        SubEntry [] selected = jparent.getSelectedSubs();
+        SubEntry [] selectedsubs = jparent.getSelectedSubs();
         
         affected_list = pos.getAffectedSubs();
         if ( affected_list.size() == 0 ) return false;
@@ -81,7 +81,7 @@ public abstract class JTool extends JPanel {
         for (int i = 0 ; i < affected_list.size() ; i++ ) {
             affect(i);
         }
-        jparent.tableHasChanged(selected);
+        jparent.tableHasChanged(selectedsubs);
         return true;
     }
     

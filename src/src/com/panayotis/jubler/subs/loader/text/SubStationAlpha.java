@@ -40,7 +40,6 @@ import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.Vector;
 
 /**
