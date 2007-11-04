@@ -24,7 +24,6 @@
 package com.panayotis.jubler.media.preview.decoders;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.media.CacheFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
