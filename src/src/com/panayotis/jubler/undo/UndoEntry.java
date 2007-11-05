@@ -24,7 +24,6 @@
 package com.panayotis.jubler.undo;
 
 import com.panayotis.jubler.subs.Subtitles;
-import javax.swing.JTable;
 
 /**
  *

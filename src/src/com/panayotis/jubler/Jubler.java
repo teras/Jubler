@@ -2042,7 +2042,7 @@ public class Jubler extends JFrame {
         if (work.subs!=null) work.undo.addUndo(new UndoEntry(work.subs, _("Reload subtitles")));
         work.undo.setSaveMark();
         work.setSubs(newsubs);
-        if (!force_into_same_window) work.setFile(f, true);
+        work.setFile(f, true);
     }
     
     
