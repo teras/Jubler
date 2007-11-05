@@ -51,8 +51,8 @@ public class MPL2 extends AbstractTextSubFormat {
     
 
     protected SubEntry getSubEntry(Matcher m) {
-        Time start = new Time(m.group(1), FPS);
-        Time finish = new Time(m.group(2), FPS);
+        Time start = new Time(Double.valueOf(m.group(1)) / 10d );
+        Time finish = new Time(Double.valueOf(m.group(2)) / 10d);
         return new SubEntry (start, finish, m.group(3).replace("|","\n"));
     }
     
@@ -71,14 +71,14 @@ public class MPL2 extends AbstractTextSubFormat {
     
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
         str.append("[");
-        str.append(Long.toString(sub.getStartTime().toFrame(FPS)));
+        str.append(Math.round(sub.getStartTime().toSeconds() * 10));
         str.append("][");
-        str.append(Long.toString(sub.getFinishTime().toFrame(FPS)));
+        str.append(Math.round(sub.getFinishTime().toSeconds() * 10) );
         str.append("] ");
         str.append(sub.getText().replace('\n','|'));
         str.append("\n");
     }
 
-    public boolean supportsFPS() { return true; }
+    public boolean supportsFPS() { return false; }
     
 }
