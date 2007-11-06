@@ -1482,14 +1482,18 @@ public class Jubler extends JFrame {
         double prevtime, nexttime;
         double curdur, gap, avail, requested, center, start;
         
-        int row = SubTable.getSelectedRow();
-        
         curdur = 2;
         gap = 0.5;
-        
+
+        int row = -1;
         if (is_after) {
+            int[] allrows = SubTable.getSelectedRows();
+            if (allrows.length>0) {
+                row = allrows[allrows.length-1];
+            }
             if ( row == -1 ) row = subs.size()-1;
         } else {
+            row = SubTable.getSelectedRow();
             if ( row != -1 ) row --;
         }
         
