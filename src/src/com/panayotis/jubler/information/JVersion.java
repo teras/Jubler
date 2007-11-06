@@ -3,7 +3,6 @@
  *
  * Created on 15 Νοέμβριος 2006, 2:56 πμ
  */
-
 package com.panayotis.jubler.information;
 
 import com.panayotis.jubler.os.JIDialog;
@@ -13,6 +12,7 @@ import com.panayotis.jubler.os.SystemDependent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Properties;
 import javax.swing.JPanel;
 
@@ -21,26 +21,24 @@ import javax.swing.JPanel;
  * @author  teras
  */
 public class JVersion extends JPanel {
-    
+
     private static final String DownloadPage = "http://www.jubler.org/download.html";
-    
     private static Properties version;
     private Properties webversion;
     private int web_release;
-    
     static {
         version = new Properties();
         try {
             version.load(JVersion.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
-        } catch(IOException e) {
+        } catch (IOException e) {
         }
     }
-    
+
     /** Creates new form JVersion */
     public JVersion() {
         initComponents();
         webversion = new Properties();
-        
+
         if (getVersionFromWeb()) { /* A new VALID version was found */
             JIDialog.info(null, this, _("New version"));
             if (DisregardB.isSelected()) {
@@ -49,58 +47,75 @@ public class JVersion extends JPanel {
             }
         }
     }
-    
-    
+
     public static String getCurrentVersion() {
         return version.getProperty("version", "-");
     }
+
     public String getWebVersion() {
         return webversion.getProperty("version", "-");
     }
-    
-    
+
     private boolean getVersionFromWeb() {
         /* First check if today we have already checked version */
-        Options.getOption("System.Version.LastCheck", "");
-        
-        /* Load proeprties from the web */
+        long now = Calendar.getInstance().getTimeInMillis();
+        try {
+            long last = Long.parseLong(Options.getOption("System.Version.LastCheck", "0"));
+            long next = last + 1000 * 60 * 60 * 24;
+            if (now < next) {
+                return false;
+            }   // We don't need to check it, yet
+        } catch (NumberFormatException e) { // if something went wrong, just check web version
+        }
+
+        /* Load properties from the web */
         try {
             webversion.load(new URL("http://www.panayotis.com/versions/jubler").openStream());
         } catch (IOException e) {
             return false;
         }
-        
-        
+
+        /* Today we did check the version from internet. 
+         * No matter what, we store that data, so we won't check again, for 24h
+         */
+        Options.setOption("System.Version.LastCheck", Long.toString(now));
+        Options.saveOptions();
+
         web_release = Integer.parseInt(webversion.getProperty("release", "0"));
-        
+
         int c_release = Integer.parseInt(version.getProperty("release", "0"));
-        if (c_release >= web_release) return false;
-        
+        if (c_release >= web_release) {
+            return false;
+        }
+
         boolean force = Boolean.parseBoolean(webversion.getProperty("force.upgrade", "false"));
         int ignore_prefs = Integer.parseInt(Options.getOption("System.Version.IgnoreUpdate", "0"));
-        
-        
+
+
         DisregardB.setSelected(false);
-        if ((!force) && (ignore_prefs >= web_release) ) return false;
-        
-        if (force) DisregardB.setEnabled(false);
-        
+        if ((!force) && (ignore_prefs >= web_release)) {
+            return false;
+        }
+
+        if (force) {
+            DisregardB.setEnabled(false);
+        }
+
         URLT.setText(DownloadPage);
         URLT.setEditable(false);
-        
-        CVersionL.setText(_("Current version:")+" " + getCurrentVersion());
-        NVersionL.setText(_("Version found:")+" " + getWebVersion());
-        
-        if (force)
+
+        CVersionL.setText(_("Current version:") + " " + getCurrentVersion());
+        NVersionL.setText(_("Version found:") + " " + getWebVersion());
+
+        if (force) {
             PriorityL.setText(_("It is important to upgrade from the following URL:"));
-        else
+        } else {
             PriorityL.setText(_("Please consider upgrading from the following URL:"));
-        
+        }
+
         return true;
     }
-    
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -158,12 +173,10 @@ public class JVersion extends JPanel {
         add(DisregardB);
 
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void GoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GoBActionPerformed
         SystemDependent.openURL(DownloadPage);
     }//GEN-LAST:event_GoBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Blank1L;
     private javax.swing.JLabel Blank2L;
@@ -176,5 +189,5 @@ public class JVersion extends JPanel {
     private javax.swing.JTextField URLT;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-    
+
 }

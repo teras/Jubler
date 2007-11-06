@@ -1,5 +1,5 @@
 /*
- * SCellRenderer.java
+ * SubRenderer.java
  *
  * Created on 20 Δεκέμβριος 2004, 1:40 πμ
  * 
