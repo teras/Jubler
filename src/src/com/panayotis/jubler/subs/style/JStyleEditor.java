@@ -49,7 +49,6 @@ import javax.swing.JButton;
  */
 public class JStyleEditor extends javax.swing.JDialog {
     private JAlphaIcon PrimaryI, SecondaryI, OutlineI, ShadowI;
-    private JAlphaIcon AlphaI;
     
     private JAlphaColorDialog color;
     private JDirection jdir;
@@ -58,10 +57,14 @@ public class JStyleEditor extends javax.swing.JDialog {
     private SubStyle current;
     private Jubler parent;
     
-    private String last_valid_name;
-    
     private boolean ignore_values_change = false;
+    
+    /* delete_button_selected  is used as a feedback so that main program will know that the delete button was pressed */
     private boolean delete_button_selected = false;
+    
+    /* is_cloned is used when the "Clone" button is pressed, so we will know that
+     * the current style is cloned (and should be deleted) */
+    private boolean is_cloned = false;
     
     /* The following variables mark the start and end of the text we want to mark with secondary color */
     int tagTextStart, tagTextLength;
@@ -127,6 +130,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         setValues();
         Clone.setEnabled(true);
         delete_button_selected = false;
+        is_cloned = false;
         setVisible(true);
     }
     
@@ -165,7 +169,6 @@ public class JStyleEditor extends javax.swing.JDialog {
         ignore_values_change = true;
         
         StyleName.setText(current.Name);
-        last_valid_name = current.Name;
         DirtyIndicator.setBackground(Color.GREEN);
         if (current.isDefault()) {
             StyleName.setEditable(false);
@@ -664,11 +667,12 @@ public class JStyleEditor extends javax.swing.JDialog {
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
         if ( ! JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style"))) 
             return;
-        delete_button_selected = true;
+        delete_button_selected = true;  // Delete will be handled by JSubEditor, not here (like Cancel)
         setVisible(null);
     }//GEN-LAST:event_DeleteActionPerformed
     
     private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
+        if (is_cloned) parent.getSubtitles().getStyleList().remove(current);
         current = null;
         setVisible(null);
     }//GEN-LAST:event_CancelBActionPerformed
@@ -707,7 +711,6 @@ public class JStyleEditor extends javax.swing.JDialog {
         }
         current.setName(newname, parent.getSubtitles().getStyleList());
         StyleName.setText(current.Name);
-        last_valid_name = current.Name;
     }//GEN-LAST:event_StyleNameActionPerformed
     
     private void CloneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloneActionPerformed
@@ -720,6 +723,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         list.add(current);
         setValues();
         Clone.setEnabled(false);
+        is_cloned = true;
     }//GEN-LAST:event_CloneActionPerformed
     
     private void setText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setText
