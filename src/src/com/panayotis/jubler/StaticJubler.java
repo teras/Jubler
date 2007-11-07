@@ -119,7 +119,7 @@ public class StaticJubler {
     
     
     public static void showAbout() {
-        JIDialog.info(null, new JAbout(), _("About Jubler"));
+        JIDialog.about(null, new JAbout(), _("About Jubler"), "/icons/jubler-logo.png");
     }
     
     

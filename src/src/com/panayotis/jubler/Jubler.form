@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.0" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Menu class="javax.swing.JPopupMenu" name="SubsPop">
+    <Container class="javax.swing.JPopupMenu" name="SubsPop">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="CutP">
           <Properties>
@@ -100,8 +104,8 @@
             </Property>
           </Properties>
         </Menu>
-        <MenuItem class="javax.swing.JSeparator" name="jSeparator1">
-        </MenuItem>
+        <Component class="javax.swing.JSeparator" name="jSeparator1">
+        </Component>
         <Menu class="javax.swing.JMenu" name="ShowColP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -155,8 +159,8 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <MenuItem class="javax.swing.JSeparator" name="jSeparator11">
-        </MenuItem>
+        <Component class="javax.swing.JSeparator" name="jSeparator11">
+        </Component>
         <MenuItem class="javax.swing.JMenuItem" name="PlayVideoP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -168,7 +172,7 @@
           </Events>
         </MenuItem>
       </SubComponents>
-    </Menu>
+    </Container>
     <Menu class="javax.swing.JMenuBar" name="JublerMenuBar">
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
@@ -196,7 +200,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;File&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="FNF"/>
+                    <Property name="name" type="java.lang.String" value="FNF" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FileNFMActionPerformed"/>
@@ -208,7 +212,7 @@
                       <Connection code="_(&quot;Child&quot;)" type="code"/>
                     </Property>
                     <Property name="enabled" type="boolean" value="false"/>
-                    <Property name="name" type="java.lang.String" value="FNC"/>
+                    <Property name="name" type="java.lang.String" value="FNC" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ChildNFMActionPerformed"/>
@@ -224,7 +228,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Open&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="FOP"/>
+                <Property name="name" type="java.lang.String" value="FOP" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OpenFMActionPerformed"/>
@@ -245,7 +249,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Retrieve&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="RFW"/>
+                    <Property name="name" type="java.lang.String" value="RFW" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RetrieveWFMActionPerformed"/>
@@ -259,7 +263,7 @@
                   <Connection code="_(&quot;Revert&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="FRE"/>
+                <Property name="name" type="java.lang.String" value="FRE" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RevertFMActionPerformed"/>
@@ -284,7 +288,7 @@
                   <Connection code="_(&quot;Save&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="FSV"/>
+                <Property name="name" type="java.lang.String" value="FSV" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveFMActionPerformed"/>
@@ -296,7 +300,7 @@
                   <Connection code="_(&quot;Save as ...&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="FSA"/>
+                <Property name="name" type="java.lang.String" value="FSA" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveAsFMActionPerformed"/>
@@ -310,7 +314,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Close&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="FCL"/>
+                <Property name="name" type="java.lang.String" value="FCL" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CloseFMActionPerformed"/>
@@ -327,7 +331,7 @@
                   <Connection code="_(&quot;Information&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="FIN"/>
+                <Property name="name" type="java.lang.String" value="FIN" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InfoFMActionPerformed"/>
@@ -341,7 +345,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Preferences&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="FPR"/>
+                <Property name="name" type="java.lang.String" value="FPR" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PrefsFMActionPerformed"/>
@@ -355,7 +359,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Quit&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="FQU"/>
+                <Property name="name" type="java.lang.String" value="FQU" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="QuitFMActionPerformed"/>
@@ -376,7 +380,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Cut subtitles&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="ECU"/>
+                <Property name="name" type="java.lang.String" value="ECU" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CutEMActionPerformed"/>
@@ -387,7 +391,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Copy subtitles&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="ECO"/>
+                <Property name="name" type="java.lang.String" value="ECO" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CopyEMActionPerformed"/>
@@ -398,7 +402,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Paste subtitles&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="EPA"/>
+                <Property name="name" type="java.lang.String" value="EPA" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasteEMActionPerformed"/>
@@ -409,7 +413,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Paste special&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="EPS"/>
+                <Property name="name" type="java.lang.String" value="EPS" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasteSpecialEMActionPerformed"/>
@@ -429,7 +433,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;By Selection&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EDS"/>
+                    <Property name="name" type="java.lang.String" value="EDS" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionDEMActionPerformed"/>
@@ -440,7 +444,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Empty Lines&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EDE"/>
+                    <Property name="name" type="java.lang.String" value="EDE" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmptyLinesDEMActionPerformed"/>
@@ -463,7 +467,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Find &amp; replace&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="ERS"/>
+                    <Property name="name" type="java.lang.String" value="ERS" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StepwiseREMActionPerformed"/>
@@ -477,7 +481,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Globally&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="ERG"/>
+                    <Property name="name" type="java.lang.String" value="ERG" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GloballyREMActionPerformed"/>
@@ -501,7 +505,7 @@
                       <Connection code="_(&quot;Before&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="b"/>
-                    <Property name="name" type="java.lang.String" value="EIB"/>
+                    <Property name="name" type="java.lang.String" value="EIB" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertSubEntry"/>
@@ -516,7 +520,7 @@
                       <Connection code="_(&quot;After&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="a"/>
-                    <Property name="name" type="java.lang.String" value="EIA"/>
+                    <Property name="name" type="java.lang.String" value="EIA" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertSubEntry"/>
@@ -540,7 +544,7 @@
                       <Connection code="_(&quot;Previous entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="p"/>
-                    <Property name="name" type="java.lang.String" value="EGP"/>
+                    <Property name="name" type="java.lang.String" value="EGP" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
@@ -555,7 +559,7 @@
                       <Connection code="_(&quot;Next entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="n"/>
-                    <Property name="name" type="java.lang.String" value="EGN"/>
+                    <Property name="name" type="java.lang.String" value="EGN" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
@@ -570,7 +574,7 @@
                       <Connection code="_(&quot;First entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="t"/>
-                    <Property name="name" type="java.lang.String" value="EGT"/>
+                    <Property name="name" type="java.lang.String" value="EGT" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
@@ -585,7 +589,7 @@
                       <Connection code="_(&quot;Last entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="b"/>
-                    <Property name="name" type="java.lang.String" value="EGB"/>
+                    <Property name="name" type="java.lang.String" value="EGB" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
@@ -598,7 +602,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Selection by time&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EGM"/>
+                    <Property name="name" type="java.lang.String" value="EGM" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="byTimeGEMActionPerformed"/>
@@ -620,7 +624,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;None&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EMN"/>
+                    <Property name="name" type="java.lang.String" value="EMN" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NoneMEMActionPerformed"/>
@@ -631,7 +635,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Pink&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EMP"/>
+                    <Property name="name" type="java.lang.String" value="EMP" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PinkMEMActionPerformed"/>
@@ -642,7 +646,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Yellow&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EMY"/>
+                    <Property name="name" type="java.lang.String" value="EMY" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="YellowMEMActionPerformed"/>
@@ -653,7 +657,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Cyan&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EMC"/>
+                    <Property name="name" type="java.lang.String" value="EMC" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CyanMEMActionPerformed"/>
@@ -666,7 +670,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;By Selection&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="EMS"/>
+                    <Property name="name" type="java.lang.String" value="EMS" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionMEMActionPerformed"/>
@@ -688,7 +692,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;By Selection&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="ESS"/>
+                    <Property name="name" type="java.lang.String" value="ESS" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionSEMActionPerformed"/>
@@ -707,7 +711,7 @@
                   <Connection code="_(&quot;Undo&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="EUN"/>
+                <Property name="name" type="java.lang.String" value="EUN" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UndoEMActionPerformed"/>
@@ -722,7 +726,7 @@
                   <Connection code="_(&quot;Redo&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="ERE"/>
+                <Property name="name" type="java.lang.String" value="ERE" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RedoEMActionPerformed"/>
@@ -743,7 +747,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Split file&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="TSP"/>
+                <Property name="name" type="java.lang.String" value="TSP" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SplitTMActionPerformed"/>
@@ -755,7 +759,7 @@
                   <Connection code="_(&quot;Join files&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="TJO"/>
+                <Property name="name" type="java.lang.String" value="TJO" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JoinTMActionPerformed"/>
@@ -767,7 +771,7 @@
                   <Connection code="_(&quot;Reparent&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="TPA"/>
+                <Property name="name" type="java.lang.String" value="TPA" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReparentTMActionPerformed"/>
@@ -778,7 +782,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Synchronize&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="TSY"/>
+                <Property name="name" type="java.lang.String" value="TSY" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SynchronizeTMActionPerformed"/>
@@ -791,7 +795,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Shift time&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="TSH"/>
+                <Property name="name" type="java.lang.String" value="TSH" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ShiftTimeTMActionPerformed"/>
@@ -802,7 +806,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Recode&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="TCO"/>
+                <Property name="name" type="java.lang.String" value="TCO" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RecodeTMActionPerformed"/>
@@ -813,7 +817,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Time fix&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="TFI"/>
+                <Property name="name" type="java.lang.String" value="TFI" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FixTMActionPerformed"/>
@@ -824,7 +828,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Round times&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="TRO"/>
+                <Property name="name" type="java.lang.String" value="TRO" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RoundTMActionPerformed"/>
@@ -840,7 +844,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Spell check&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="TLL"/>
+                <Property name="name" type="java.lang.String" value="TLL" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SpellTMActionPerformed"/>
@@ -861,7 +865,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Preview&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="TTP"/>
+                    <Property name="name" type="java.lang.String" value="TTP" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewTBActionPerformed"/>
@@ -877,7 +881,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;From the beginning&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="TTB"/>
+                    <Property name="name" type="java.lang.String" value="TTB" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BeginningTTMActionPerformed"/>
@@ -891,7 +895,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;From current position&quot;)" type="code"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="TTC"/>
+                    <Property name="name" type="java.lang.String" value="TTC" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CurrentTTMActionPerformed"/>
@@ -913,7 +917,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;FAQ&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="HFQ"/>
+                <Property name="name" type="java.lang.String" value="HFQ" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FAQHMActionPerformed"/>
@@ -927,7 +931,7 @@
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;About&quot;)" type="code"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="HAB"/>
+                <Property name="name" type="java.lang.String" value="HAB" noResource="true"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AboutHMActionPerformed"/>
@@ -953,7 +957,9 @@
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
   </Events>
   <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="1"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>

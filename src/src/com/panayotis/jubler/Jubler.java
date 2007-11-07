@@ -2345,9 +2345,16 @@ public class Jubler extends JFrame {
         SubTable.clearSelection();
         int ret = -1;
         
-        if (which != null && which.length>0) {
+        /* Set selected subtitles and make sure that they are visible */
+        if (which != null && which.length>0 && subs.size()>0) {
             ret = which[0];
-            if ((which[0]+5) < subs.size() && which[0] >= 0 ) SubTable.changeSelection(which[0]+5, -1, false, false);   // Show 5 advancing subtitles
+            
+            /* First force subtitles to show *first* subtitle selection entry */
+            int showmore = ret + 5;
+            if (showmore>=subs.size()) showmore = subs.size()-1;
+            SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+        
+            /* Show actually selected subtitles */
             SubTable.clearSelection();
             for (int i = 0 ; i < which.length ; i++ ) {
                 if (which[i] >= subs.size()) which[i] = subs.size() -1;   // Make sure we don't go past the end of subtitles
