@@ -13,7 +13,8 @@ transform, correct and refine existing subtitles.
 
 It is open source under a liberal (GNU) public licence. It is written
 in Java 5.0 (a.k.a. Java 1.5.0 ) in order to be really multi-platform.
-It has been tested under Linux, Windows XP and Mac OS. 
+It has been tested under Linux (Intel 32 & 64 bit), Windows XP and Mac
+OS X (PPC and Intel). 
 
 
 Features
@@ -29,8 +30,8 @@ General features
   (like UTF-8). The user is able to select a list of preferred
   encodings in order to load the localized subtitle files.
 * GUI internationalization support through gettext utilities.
-* Styles are supported (when saving in SubStation formats). These
-  styles are either specific either per subtitle or per character.
+* Styles are supported (when saving in SubStation formats or SRT).
+  These styles are either specific either per subtitle or per character.
 * Translating mode (parent & child editors) is supported
 * Graphical preview of the subtitles using the FFMPEG library.
   Current frame, waveform preview and waveform listening is supported.
@@ -41,12 +42,12 @@ General features
   time
 * Mark subtitles with different colors, either when editing or real
   time when playing the video
+* Automatically mark any subtitles above a given threshold size
 * Spell checking, with support for dictionary selection
 * Test the subtitles on the movie and navigate with a full graphical
   interface
 * Select areas in the movie just in time and add new subtitles
-* Easy installation underfor Linux & Windows platforms and a generic
-  installation for all other platforms (without FFMPEG support)
+* Easy installation under all platforms.
   
 Key editing features:
 

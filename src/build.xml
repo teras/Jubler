@@ -374,10 +374,16 @@
 		<delete file="/tmp/install.xml" />
 	</target>
 
+	<!-- This script updates the release id number from the SVN -->
+	<target name="releaseid">
+		<exec executable="resources/system/version/update.sh" failonerror="true" />
+		<echo message="Updated ReleaseID from SVN"/>
+	</target>
+
 	<target name="-pre-compile">
 		<copy todir="src/com"> <fileset dir="resources/system/no_mac"/> </copy>
 	</target>
-	<target name="-post-compile">
+	<target name="-post-compile" depends="releaseid">
 		<delete dir="build/classes/com/apple" failonerror="false"/>
 		<delete dir="src/com/apple" failonerror="false"/>
 	</target>	
