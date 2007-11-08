@@ -41,7 +41,7 @@ public class JIDialog extends JOptionPane {
 
     public static void about(Component parent, Object message, String title, String iconpath) {
         ImageIcon icon = new ImageIcon(JIDialog.class.getResource(iconpath));
-        showMessage(parent, message, title, INFORMATION_MESSAGE, null, ok_opts);
+        showMessage(parent, message, title, PLAIN_MESSAGE, icon, ok_opts);
     }
     public static void info(Component parent, Object message, String title) {
         showMessage(parent, message, title, INFORMATION_MESSAGE, null, ok_opts);
