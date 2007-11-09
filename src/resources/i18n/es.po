@@ -7,7 +7,7 @@
 msgid	""
 msgstr	"Project-Id-Version: es\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
 	"PO-Revision-Date: 2007-07-24 18:55+0200\n"
 	"Last-Translator: Alfredo Quesada Sánchez <freddy@dif.um.es>\n"
 	"Language-Team:  <es@li.org>\n"
@@ -447,7 +447,7 @@ msgstr	"No se ha podido cargar el fichero. Posiblemente se deba a un error "
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"Error al cargar el fichero {0}"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -2432,20 +2432,20 @@ msgstr	"Cambios realizados por el corrector ortográfico"
 msgid	"Speller"
 msgstr	"Corrector ortográfico"
 
+#~ msgid	"Warning!"
+#~ msgstr	"¡Atención!"
+
+#~ msgid	"Not a valid number: {0}"
+#~ msgstr	"Número inválido: {0}"
+
+#~ msgid	"Change media file"
+#~ msgstr	"Cambiar el fichero multimedia"
+
+#~ msgid	"File path"
+#~ msgstr	"Ruta del fichero"
+
 #~ msgid	"Filename of the external audio file (could be also an audio "
 #~ 	"cache). Use the \"Browse\" button to change it."
 #~ msgstr	"Nombre del fichero de audio externo (podría ser también un "
 #~ 	"fichero de  caché de audio). Use el botón \"Examinar\" para "
 #~ 	"cambiarlo."
-
-#~ msgid	"File path"
-#~ msgstr	"Ruta del fichero"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Cambiar el fichero multimedia"
-
-#~ msgid	"Not a valid number: {0}"
-#~ msgstr	"Número inválido: {0}"
-
-#~ msgid	"Warning!"
-#~ msgstr	"¡Atención!"

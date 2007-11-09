@@ -7,9 +7,9 @@
 msgid	""
 msgstr	"Project-Id-Version: el\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
-	"PO-Revision-Date: 2007-11-04 11:11+0200\n"
-	"Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
+	"PO-Revision-Date: 2007-11-09 11:21+0200\n"
+	"Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
 	"Language-Team:  <en@li.org>\n"
 	"MIME-Version: 1.0\n"
 	"Content-Type: text/plain; charset=UTF-8\n"
@@ -446,7 +446,7 @@ msgstr	"Αδυναμία φόρτωσης αρχείο. Πιθανό λάθος 
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"Λάθος κατά την φόρτωση του αρχείου {0}"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -930,9 +930,8 @@ msgid	"Media Player Error"
 msgstr	""
 
 #: com/panayotis/jubler/media/player/mplayer/MPlayer.java:67
-#, fuzzy
 msgid	"MPlayer options"
-msgstr	"Επιλογές Maestro DVD"
+msgstr	"Επιλογές MPlayer"
 
 #: com/panayotis/jubler/media/player/mplayer/MPlayer.java:67
 msgid	"MPlayer parameters have been updated."
@@ -1299,9 +1298,8 @@ msgid	"Could not find web browser"
 msgstr	"Αδυναμία έναρξης φυλλομετρητή"
 
 #: com/panayotis/jubler/os/SystemDependent.java:170
-#, fuzzy
 msgid	"Error while opening URL"
-msgstr	"Λάθος κατά την φόρτωση των ερωτήσεων \"{0}\""
+msgstr	"Λάθος κατά την φόρτωση της διεύθυνσης"
 
 #: com/panayotis/jubler/os/SystemFileFinder.java:79
 msgid	"Could not find Jubler path!"
@@ -1410,9 +1408,8 @@ msgid	"Subtitle editor"
 msgstr	"Διορθωτής υποτίτλου"
 
 #: com/panayotis/jubler/subs/SubEntry.java:180
-#, fuzzy
 msgid	"Error!"
-msgstr	"Λάθος"
+msgstr	"Λάθος!"
 
 #: com/panayotis/jubler/subs/Subtitles.java:48
 msgid	"Subtitle"
@@ -2410,19 +2407,19 @@ msgstr	"Αλλαγές στον διορθωτή"
 msgid	"Speller"
 msgstr	"Διορθωτή λαθών"
 
-#~ msgid	"Filename of the external audio file (could be also an audio "
-#~ 	"cache). Use the \"Browse\" button to change it."
-#~ msgstr	"Όνομα αρχείου ήχου (μπορεί να είναι και προαποθηκευμένο) . "
-#~ 	"Χρησιμοποιήστε το κουμπί \"Περιήγηση\" για να το αλλάξετε."
-
-#~ msgid	"File path"
-#~ msgstr	"Διαδρομή αρχείου"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Αλλαγή του αρχείου πολυμέσων"
+#~ msgid	"Warning!"
+#~ msgstr	"Προσοχή!"
 
 #~ msgid	"Not a valid number: {0}"
 #~ msgstr	"Μη αποδεκτός αριθμός: {0}"
 
-#~ msgid	"Warning!"
-#~ msgstr	"Προσοχή!"
+#~ msgid	"Change media file"
+#~ msgstr	"Αλλαγή του αρχείου πολυμέσων"
+
+#~ msgid	"File path"
+#~ msgstr	"Διαδρομή αρχείου"
+
+#~ msgid	"Filename of the external audio file (could be also an audio "
+#~ 	"cache). Use the \"Browse\" button to change it."
+#~ msgstr	"Όνομα αρχείου ήχου (μπορεί να είναι και προαποθηκευμένο) . "
+#~ 	"Χρησιμοποιήστε το κουμπί \"Περιήγηση\" για να το αλλάξετε."

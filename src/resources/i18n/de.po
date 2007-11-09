@@ -7,7 +7,7 @@
 msgid	""
 msgstr	"Project-Id-Version: PACKAGE VERSION\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
 	"PO-Revision-Date: 2007-07-03 16:45+0200\n"
 	"Last-Translator: Christian Weiske <cweiske@cweiske.de>\n"
 	"Language-Team: German <cweiske@cweiske.de>\n"
@@ -461,7 +461,7 @@ msgstr	"Konnte Datei nicht laden. Wahrscheinlich ein Fehler in der Kodierung."
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"Fehler beim Laden der Datei {0}"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -2533,22 +2533,22 @@ msgstr	"Änderungen"
 msgid	"Speller"
 msgstr	"Prüfprogramm"
 
+#~ msgid	"Warning!"
+#~ msgstr	"Warnung!"
+
+#~ msgid	"Not a valid number: {0}"
+#~ msgstr	"Ungültige Zahl: {0}"
+
 #, fuzzy
-#~ msgid	"Filename of the external audio file (could be also an audio "
-#~ 	"cache). Use the \"Browse\" button to change it."
-#~ msgstr	"Dateiname der externen Audiodatei. Benutze \"Durchsuchen\" "
-#~ 	"um sie zu ändern."
+#~ msgid	"Change media file"
+#~ msgstr	"Mediendatei ändern"
 
 #, fuzzy
 #~ msgid	"File path"
 #~ msgstr	"Dateipfad"
 
 #, fuzzy
-#~ msgid	"Change media file"
-#~ msgstr	"Mediendatei ändern"
-
-#~ msgid	"Not a valid number: {0}"
-#~ msgstr	"Ungültige Zahl: {0}"
-
-#~ msgid	"Warning!"
-#~ msgstr	"Warnung!"
+#~ msgid	"Filename of the external audio file (could be also an audio "
+#~ 	"cache). Use the \"Browse\" button to change it."
+#~ msgstr	"Dateiname der externen Audiodatei. Benutze \"Durchsuchen\" "
+#~ 	"um sie zu ändern."

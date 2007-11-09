@@ -7,7 +7,7 @@
 msgid	""
 msgstr	"Project-Id-Version: Jubler\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
 	"PO-Revision-Date: 2007-05-05 18:47:28+0300\n"
 	"Last-Translator: Nikola Karanovic <dzonithebatee@yahoo.com>\n"
 	"Language-Team: LANGUAGE <LL@li.org>\n"
@@ -444,7 +444,7 @@ msgstr	"Fajl nije ucitan. Moguca greska pri enkodiranju"
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"Greska pri ucitavanju fajla {0}"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -2427,32 +2427,32 @@ msgstr	"Speler"
 #~ msgstr	"Ime externog audio fajla (moze biti i audio kes). Koristi "
 #~ 	"\"Biraj\" dugme za promenu."
 
-#~ msgid	"File path"
-#~ msgstr	"Putanja Fajla"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Promeni media fajl"
-
-#~ msgid	"Error while executing MPlayer. Executable not found."
-#~ msgstr	"Greska pri pokretanju MPlayer-a. Izvrsni fajl nije nadjen."
-
-#~ msgid	"Open the options for this player"
-#~ msgstr	"Otvori opcije plejera"
-
-#~ msgid	"Options for {0}"
-#~ msgstr	"Opcije za {0}"
-
-#~ msgid	"Unable to load plugin: {0}"
-#~ msgstr	"Nije ucitan plugin: {0}"
-
-#~ msgid	"Error while executing ASpell"
-#~ msgstr	"Greska pri pokretanju ASpell-a"
-
-#~ msgid	"No options for this program"
-#~ msgstr	"Nema opcija za ovaj program"
+#~ msgid	"Warning!"
+#~ msgstr	"Upozorenje!"
 
 #~ msgid	"Not a valid number: {0}"
 #~ msgstr	"Neprihvatljiv broj: {0}"
 
-#~ msgid	"Warning!"
-#~ msgstr	"Upozorenje!"
+#~ msgid	"No options for this program"
+#~ msgstr	"Nema opcija za ovaj program"
+
+#~ msgid	"Error while executing ASpell"
+#~ msgstr	"Greska pri pokretanju ASpell-a"
+
+#~ msgid	"Unable to load plugin: {0}"
+#~ msgstr	"Nije ucitan plugin: {0}"
+
+#~ msgid	"Options for {0}"
+#~ msgstr	"Opcije za {0}"
+
+#~ msgid	"Open the options for this player"
+#~ msgstr	"Otvori opcije plejera"
+
+#~ msgid	"Error while executing MPlayer. Executable not found."
+#~ msgstr	"Greska pri pokretanju MPlayer-a. Izvrsni fajl nije nadjen."
+
+#~ msgid	"Change media file"
+#~ msgstr	"Promeni media fajl"
+
+#~ msgid	"File path"
+#~ msgstr	"Putanja Fajla"

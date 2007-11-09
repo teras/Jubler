@@ -1,7 +1,7 @@
 msgid	""
 msgstr	"Project-Id-Version: JublerTr v1.0\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
 	"PO-Revision-Date: 2007-07-03 12:12+0200\n"
 	"Last-Translator: \n"
 	"Language-Team: C-NoNe <yuksel.asim.sinan@gmail.com>\n"
@@ -441,7 +441,7 @@ msgstr	"Dosya yüklenemedi.Muhtemelen kodlama hatası."
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"{0} dosyası yüklenirken hata oluştu"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -2412,73 +2412,73 @@ msgstr	"Yazım denetçisi"
 #~ msgid	"MicroDVD format"
 #~ msgstr	"MicroDVD formatı"
 
-#~ msgid	"Advanced SubStation format"
-#~ msgstr	"Gelişmiş SubStation formatı"
+#~ msgid	"Not a valid number: {0}"
+#~ msgstr	"Geçerli bir sayı değil: {0}"
 
-#~ msgid	"Unable to load plugin: {0}"
-#~ msgstr	"{0} eklentisi yüklenemedi"
+#~ msgid	"SubRip format"
+#~ msgstr	"Subrip formatı"
 
-#~ msgid	"Error while executing ASpell"
-#~ msgstr	"Yazdım denetiminde hata"
+#~ msgid	"File path"
+#~ msgstr	"Dosya yolu"
 
-#~ msgid	"No options for this program"
-#~ msgstr	"Bu programın seçenekleri yoktur"
-
-#~ msgid	"Options for {0}"
-#~ msgstr	"{0} için seçenekler"
-
-#~ msgid	"Open the options for this player"
-#~ msgstr	"Bu oynatıcı için seçenekleri aç"
-
-#~ msgid	"Options"
-#~ msgstr	"Seçenekler"
-
-#~ msgid	"Error while executing MPlayer. Executable not found."
-#~ msgstr	"MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
-#~ 	"bulunamadı."
-
-#~ msgid	"SubStationAlpha format"
-#~ msgstr	"SubStationAlpha formatı"
-
-#~ msgid	"SubViewer format"
-#~ msgstr	"SubViewer formatı"
-
-#~ msgid	"Delay subtitles by 1 second"
-#~ msgstr	"Altyazıları 1 saniye geciktir."
-
-#~ msgid	"Delay subtitles by 100 milliseconds"
-#~ msgstr	"Altyazıları 100 milisaniye geciktir."
-
-#~ msgid	"Forward subtitles by 100 milliseconds"
-#~ msgstr	"Altyazıları 100 milisaniye ileri al."
-
-#~ msgid	"Forward subtitles by 1 second"
-#~ msgstr	"Altyazıları 1 saniye ileri al."
-
-#~ msgid	"Filename of the external audio file (could be also an audio "
-#~ 	"cache). Use the \"Browse\" button to change it."
-#~ msgstr	"Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı "
-#~ 	"değiştirmek için \"Göz At\" düğmesini kullan"
-
-#~ msgid	"Text to be replaced"
-#~ msgstr	"Değiştirilecek metin"
+#~ msgid	"Change media file"
+#~ msgstr	"Video dosyasını değiştir"
 
 #~ msgid	"The subtitle differences\n"
 #~ 	" were {0}"
 #~ msgstr	"Altyazı farklılıkları\n"
 #~ 	" {0}"
 
-#~ msgid	"Change media file"
-#~ msgstr	"Video dosyasını değiştir"
+#~ msgid	"Text to be replaced"
+#~ msgstr	"Değiştirilecek metin"
 
-#~ msgid	"File path"
-#~ msgstr	"Dosya yolu"
+#~ msgid	"Filename of the external audio file (could be also an audio "
+#~ 	"cache). Use the \"Browse\" button to change it."
+#~ msgstr	"Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı "
+#~ 	"değiştirmek için \"Göz At\" düğmesini kullan"
 
-#~ msgid	"SubRip format"
-#~ msgstr	"Subrip formatı"
+#~ msgid	"Forward subtitles by 1 second"
+#~ msgstr	"Altyazıları 1 saniye ileri al."
 
-#~ msgid	"Not a valid number: {0}"
-#~ msgstr	"Geçerli bir sayı değil: {0}"
+#~ msgid	"Forward subtitles by 100 milliseconds"
+#~ msgstr	"Altyazıları 100 milisaniye ileri al."
 
 #~ msgid	"Warning!"
 #~ msgstr	"Uyarı!"
+
+#~ msgid	"Delay subtitles by 1 second"
+#~ msgstr	"Altyazıları 1 saniye geciktir."
+
+#~ msgid	"SubViewer format"
+#~ msgstr	"SubViewer formatı"
+
+#~ msgid	"SubStationAlpha format"
+#~ msgstr	"SubStationAlpha formatı"
+
+#~ msgid	"Error while executing MPlayer. Executable not found."
+#~ msgstr	"MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
+#~ 	"bulunamadı."
+
+#~ msgid	"Options"
+#~ msgstr	"Seçenekler"
+
+#~ msgid	"Open the options for this player"
+#~ msgstr	"Bu oynatıcı için seçenekleri aç"
+
+#~ msgid	"Options for {0}"
+#~ msgstr	"{0} için seçenekler"
+
+#~ msgid	"No options for this program"
+#~ msgstr	"Bu programın seçenekleri yoktur"
+
+#~ msgid	"Error while executing ASpell"
+#~ msgstr	"Yazdım denetiminde hata"
+
+#~ msgid	"Unable to load plugin: {0}"
+#~ msgstr	"{0} eklentisi yüklenemedi"
+
+#~ msgid	"Advanced SubStation format"
+#~ msgstr	"Gelişmiş SubStation formatı"
+
+#~ msgid	"Delay subtitles by 100 milliseconds"
+#~ msgstr	"Altyazıları 100 milisaniye geciktir."

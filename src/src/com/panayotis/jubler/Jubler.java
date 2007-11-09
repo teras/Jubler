@@ -2032,14 +2032,14 @@ public class Jubler extends JFrame {
         
         data = FileCommunicator.load(f, prefs);
         if ( data == null ) {
-            JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while laoding file"));
+            JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
             return;
         }
         
         /* Convert file into subtitle data */
         newsubs.populate(f, data, prefs.getLoadFPS());
         if ( newsubs.size() == 0 ) {
-            JIDialog.error(this, _("File not recognized!"), _("Error while laoding file"));
+            JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
             return;
         }
         

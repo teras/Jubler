@@ -3,7 +3,7 @@
 msgid	""
 msgstr	"Project-Id-Version: cs\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
 	"PO-Revision-Date: 2007-07-10 11:33+0100\n"
 	"Last-Translator: Conyx <conyx@seznam.cz>\n"
 	"Language-Team:  <el@li.org>\n"
@@ -442,7 +442,7 @@ msgstr	"Nemohu načíst soubor. Možná chyba kódování."
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"Chyba při načítání souboru {0}"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -2403,19 +2403,19 @@ msgstr	"Pravopisné změny"
 msgid	"Speller"
 msgstr	"Pravopis"
 
-#~ msgid	"Filename of the external audio file (could be also an audio "
-#~ 	"cache). Use the \"Browse\" button to change it."
-#~ msgstr	"Jméno extérního audio souboru (může být také audio cache). "
-#~ 	"Pro změnu použijte \"Procházet\""
-
-#~ msgid	"File path"
-#~ msgstr	"Soubor"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Změnit mediální soubor"
+#~ msgid	"Warning!"
+#~ msgstr	"Varování!"
 
 #~ msgid	"Not a valid number: {0}"
 #~ msgstr	"Nesprávné číslo: {0}"
 
-#~ msgid	"Warning!"
-#~ msgstr	"Varování!"
+#~ msgid	"Change media file"
+#~ msgstr	"Změnit mediální soubor"
+
+#~ msgid	"File path"
+#~ msgstr	"Soubor"
+
+#~ msgid	"Filename of the external audio file (could be also an audio "
+#~ 	"cache). Use the \"Browse\" button to change it."
+#~ msgstr	"Jméno extérního audio souboru (může být také audio cache). "
+#~ 	"Pro změnu použijte \"Procházet\""

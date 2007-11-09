@@ -3,7 +3,7 @@
 msgid	""
 msgstr	"Project-Id-Version: teste\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
 	"PO-Revision-Date: 2007-07-07 21:49-0300\n"
 	"Last-Translator: doutor.zero <doutor.zero@gmail.com>\n"
 	"Language-Team: Português do Brasil <pt@li.org>\n"
@@ -446,7 +446,7 @@ msgstr	"Não foi possível carregar o arquivo. Possivelmente por um erro de "
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"Erro ao carregar o arquivo {0}"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -2423,35 +2423,35 @@ msgstr	"Verificador"
 #~ msgstr	"Nome do arquivo de áudio externo (pode também ser um cache "
 #~ 	"de áudio). Use o botão \"Navegar\" para alterá-lo."
 
-#~ msgid	"Unable to load plugin: {0}"
-#~ msgstr	"Não foi possível carregar o plugin: {0}"
-
-#~ msgid	"File path"
-#~ msgstr	"Caminho do arquivo"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Alterar arquivo de mídia"
-
-#~ msgid	"Error while executing MPlayer. Executable not found."
-#~ msgstr	"Erro ao executar o MPlayer. O executável não foi encontrado."
-
-#~ msgid	"Options"
-#~ msgstr	"Opções"
-
-#~ msgid	"Error while executing ASpell"
-#~ msgstr	"Erro ao executar o ASpell"
-
-#~ msgid	"No options for this program"
-#~ msgstr	"Nenhuma opção para esse programa"
-
-#~ msgid	"Options for {0}"
-#~ msgstr	"Opções para o {0}"
-
-#~ msgid	"Open the options for this player"
-#~ msgstr	"Abrir as opções para este reprodutor"
+#~ msgid	"Warning!"
+#~ msgstr	"Atenção!"
 
 #~ msgid	"Not a valid number: {0}"
 #~ msgstr	"Não é um número válido: {0}"
 
-#~ msgid	"Warning!"
-#~ msgstr	"Atenção!"
+#~ msgid	"Open the options for this player"
+#~ msgstr	"Abrir as opções para este reprodutor"
+
+#~ msgid	"Options for {0}"
+#~ msgstr	"Opções para o {0}"
+
+#~ msgid	"No options for this program"
+#~ msgstr	"Nenhuma opção para esse programa"
+
+#~ msgid	"Error while executing ASpell"
+#~ msgstr	"Erro ao executar o ASpell"
+
+#~ msgid	"Options"
+#~ msgstr	"Opções"
+
+#~ msgid	"Error while executing MPlayer. Executable not found."
+#~ msgstr	"Erro ao executar o MPlayer. O executável não foi encontrado."
+
+#~ msgid	"Change media file"
+#~ msgstr	"Alterar arquivo de mídia"
+
+#~ msgid	"File path"
+#~ msgstr	"Caminho do arquivo"
+
+#~ msgid	"Unable to load plugin: {0}"
+#~ msgstr	"Não foi possível carregar o plugin: {0}"

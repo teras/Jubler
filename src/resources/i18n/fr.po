@@ -7,7 +7,7 @@
 msgid	""
 msgstr	"Project-Id-Version: Jubler French 1.0\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2007-11-09 10:52+0200\n"
+	"POT-Creation-Date: 2007-11-09 11:22+0200\n"
 	"PO-Revision-Date: 2007-03-20 15:52+0100\n"
 	"Last-Translator: Julien Escoffier <jubler@jcpdt7j.com>\n"
 	"Language-Team: LANGUAGE <LL@li.org>\n"
@@ -445,7 +445,7 @@ msgstr	"Impossible de charger le fichier. Probablement une erreur d'encodage."
 
 #: com/panayotis/jubler/Jubler.java:2035 com/panayotis/jubler/Jubler.java:2042
 #, fuzzy
-msgid	"Error while laoding file"
+msgid	"Error while loading file"
 msgstr	"Erreur au chargement du fichier {0}"
 
 #: com/panayotis/jubler/Jubler.java:2042
@@ -2454,36 +2454,36 @@ msgstr	"Vérificateur"
 #~ msgstr	"Nom du fichier audio externe (peut aussi être un fichier de "
 #~ 	"cache audio). Utilisez le bouton \"Parcourir\" pour en changer."
 
-#~ msgid	"Unable to load plugin: {0}"
-#~ msgstr	"Impossible de charger le plugin: {0}"
+#~ msgid	"Warning!"
+#~ msgstr	"Alerte!"
 
-#~ msgid	"File path"
-#~ msgstr	"Chemin du fichier"
+#~ msgid	"Not a valid number: {0}"
+#~ msgstr	"Numéro invalide: {0}"
 
-#~ msgid	"Change media file"
-#~ msgstr	"Changer de fichier media"
+#~ msgid	"Open the options for this player"
+#~ msgstr	"Ouvrir les options pour ce lecteur"
+
+#~ msgid	"Options for {0}"
+#~ msgstr	"Options {0}"
+
+#~ msgid	"No options for this program"
+#~ msgstr	"Pas d'options pour ce programme"
+
+#~ msgid	"Error while executing ASpell"
+#~ msgstr	"Erreur lors de l'éxécution de ASpell"
+
+#~ msgid	"Options"
+#~ msgstr	"Options"
 
 #~ msgid	"Error while executing MPlayer. Executable not found."
 #~ msgstr	"Erreur lors de l'ouverture de MPlayer. Fichier executable "
 #~ 	"introuvable."
 
-#~ msgid	"Options"
-#~ msgstr	"Options"
+#~ msgid	"Change media file"
+#~ msgstr	"Changer de fichier media"
 
-#~ msgid	"Error while executing ASpell"
-#~ msgstr	"Erreur lors de l'éxécution de ASpell"
+#~ msgid	"File path"
+#~ msgstr	"Chemin du fichier"
 
-#~ msgid	"No options for this program"
-#~ msgstr	"Pas d'options pour ce programme"
-
-#~ msgid	"Options for {0}"
-#~ msgstr	"Options {0}"
-
-#~ msgid	"Open the options for this player"
-#~ msgstr	"Ouvrir les options pour ce lecteur"
-
-#~ msgid	"Not a valid number: {0}"
-#~ msgstr	"Numéro invalide: {0}"
-
-#~ msgid	"Warning!"
-#~ msgstr	"Alerte!"
+#~ msgid	"Unable to load plugin: {0}"
+#~ msgstr	"Impossible de charger le plugin: {0}"
