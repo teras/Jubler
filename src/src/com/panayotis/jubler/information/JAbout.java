@@ -34,6 +34,7 @@ import javax.swing.text.StyleConstants;
  */
 public class JAbout extends javax.swing.JPanel {
     
+    private String  debugwin = _("Debug window");
     
     
     private final static String icon_theme = "Nuvola (David Vignoni - http://www.icon-king.com)";
