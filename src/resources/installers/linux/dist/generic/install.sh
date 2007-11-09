@@ -33,7 +33,7 @@ read NL
 
 cat <<EOF
 
-The autofind script could not locate a valid Java installation of version 1.5 in your system. If you don't have one, please go to http://www.java.com and download the latest JRE from there.
+The autofind script could not locate a valid Java installation of version 1.5 or 6 in your system. If you don't have one, please go to http://www.java.com and download the latest JRE from there.
 
 If the script was unable to find the Java distribution, then you have to declare the top-level installation directory, using the following command:
   export JAVA_HOME=/path/to/java/installation

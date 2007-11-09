@@ -8,7 +8,7 @@
 
     <info>
         <appname>Jubler</appname>
-        <appversion>PVERSION</appversion>
+        <appversion>@VERSION@</appversion>
         <authors>
             <author name="Panayotis Katsaloulis" email="panayotis@panayotis.com"/>
         </authors>

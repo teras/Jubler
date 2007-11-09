@@ -135,9 +135,22 @@
 		<delete dir="/tmp/Jubler-${version}"/>
 	</target>
 	
-	
+	<!-- Update to the latest release version -->
+	<target name="version-update">
+		<exec executable="svn" outputproperty="svnoutput"> <arg line="info"/> </exec>
+		<exec executable="grep" inputstring="${svnoutput}" outputproperty="grepoutput"> <arg line="Revision"/> </exec>
+		<exec executable="gawk" inputstring="${grepoutput}" outputproperty="releaseid"> <arg line="'{print $2}'"/> </exec>
+		<copy file="resources/system/version.prop" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+			<filterset><filter token="RELEASE" value="${releaseid}"/></filterset>
+		</copy>
+	</target>
+
+	<!-- Common tasks for ALL packagers -->
+	<target name="release" depends="clean,i18n,version-update,jar,faq" />
+
+
 	<!-- Windows Installer -->
-	<target name="win32" depends="clean,i18n,jar,faq">
+	<target name="win32" depends="release">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
@@ -163,16 +176,14 @@
 	<!-- Linux installer -->
 	
 	<!-- Linux with static ffdecode library -->
-	<target name="linuxmake" depends="clean,i18n,jar,faq">
+	<target name="linuxffdecode">
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="linux"/> </exec>
 	</target>
 
 	<!-- Linux with dynamic ffdecode library -->
-	<target name="linuxmakedyn" depends="clean,i18n,jar,faq">
+	<target name="linuxffdecodedyn">
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="linuxdyn"/> </exec>
 	</target>
-
-
 
 	<target name="linuxproperties">
 		<!-- Propery files -->
@@ -240,8 +251,11 @@
 		<copy file="resources/installers/linux/sub-ssa.desktop" todir="${mimedir}"/>
 	</target>
 
+
+	<!-- DISTRIBUTION SPECIFIC TARGETS -->
+
 	<!-- Slackware Linux installer -->
-	<target name="slackware" depends="linuxmake">
+	<target name="slackware" depends="release,linuxffdecode">
 		<antcall target="linuxinstall">
 			<param name="othermimedir" value="/opt/kde/share/mimelnk/application"/>
 		</antcall>
@@ -260,59 +274,70 @@
 			<fileset dir="resources/installers/linux/dist/slackware"/>
 		</copy>
 		<exec dir="${destdir}" executable="echo" failonerror="true">
-			<arg line="makepkg -l y -c n /tmp/jubler-${version}-i686-${distver}.tgz"/>
+			<arg line="makepkg -l y -c n /tmp/jubler-${version}-${os.arch}-${distver}.tgz"/>
 		</exec>
 	</target>
 	
 
 	<!-- Fedora Linux installer -->
 	<target name="redhat" depends="fedora"/>
-	<target name="fedora" depends="linuxmakedyn,linuxproperties">
-		<antcall target="linuxinstall"/>
-	</target>
+	<target name="fedora" depends="release,linuxffdecodedyn,linuxinstall"/>
 
 
 	<!-- Debian Linux installer -->
-	<target name="debian" depends="linuxmakedyn,linuxproperties">
-		<antcall target="linuxinstall"/>
-		
+	<target name="debian" depends="release,linuxffdecodedyn,linuxinstall">
 		<mkdir dir="${destdir}/DEBIAN"/>
 		<exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
 			<arg line="usr -type f -exec md5sum {} ;"/>
 		</exec>
 		<copy todir="${destdir}/DEBIAN">
 			<fileset dir="resources/installers/linux/dist/debian"/>
+			<filterset>
+				<filter token="VERSION" value="${version}"/>
+				<filter token="ARCH" value="${os.arch}"/>
+			</filterset>
 		</copy>
 		<chmod file="${destdir}/DEBIAN/postinst" perm="755"/>
 		<chmod file="${destdir}/DEBIAN/postrm" perm="755"/>
 
 		<exec executable="fakeroot" failonerror="true">
-			<arg line="dpkg-deb --build ${destdir} jubler-${version}.deb"/>
+			<arg line="dpkg-deb --build ${destdir} jubler_${version}_${os.arch}.deb"/>
 		</exec>
 	</target>
 
-
-
 	<!-- IzPack Linux installer -->
-	<target name="genlinux" depends="linuxmake">
-		<property file="src/com/panayotis/jubler/information/version.prop" />
+	<target name="genlinux" depends="release,linuxffdecode,linuxproperties">
 		<mkdir dir="self"/>
-		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes" />
-		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
+		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes">
+			<filterset><filter token="VERSION" value="${version}"/></filterset>
+		</copy>
 		<izpack input="/tmp/install.xml" output="self/Jubler-install-linux.jar" installerType="standard" basedir="."/>
 		<delete file="/tmp/install.xml" />
 		<copy file="resources/system/findjava.sh" todir="self"/>
 		<copy file="resources/installers/linux/dist/generic/install.sh" todir="self"/>
 		<chmod file="self/install.sh" perm="a+x"/>
 		<exec executable="makeself" failonerror="true">
-			<arg line="--bzip2 self Jubler-${version}-linux.sh 'Jubler installer' ./install.sh"/>
+			<arg line="--bzip2 self Jubler-${version}-linux_${os.arch}.sh 'Jubler installer' ./install.sh"/>
 		</exec>
 		<delete dir="self"/>
 	</target>
 
 
+
+	<!-- Generic installer -->
+	<target name="generic" depends="release">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes">
+			<filterset><filter token="VERSION" value="${version}"/></filterset>
+		</copy>
+		<izpack input="/tmp/install.xml" output="Jubler-${version}-generic.jar" installerType="standard" basedir="."/>
+		<delete file="/tmp/install.xml" />
+	</target>
+
+
+
 	<!-- MacOSX installer -->
-	<target name="macosx" depends="clean,i18n,jar,faq">
+	<target name="macosx" depends="release">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<jarbundler
 			dir="dist"
@@ -364,26 +389,11 @@
 	</target>
 	
 
-
-	<!-- Generic installer -->
-	<target name="generic" depends="clean,i18n,jar,faq">
-		<property file="src/com/panayotis/jubler/information/version.prop" />
-		<copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes"/>
-		<replace file="/tmp/install.xml" token="PVERSION" value="${version}" />
-		<izpack input="/tmp/install.xml" output="Jubler-${version}-generic.jar" installerType="standard" basedir="."/>
-		<delete file="/tmp/install.xml" />
-	</target>
-
-	<!-- This script updates the release id number from the SVN -->
-	<target name="releaseid">
-		<exec executable="resources/system/version/update.sh" failonerror="true" />
-		<echo message="Updated ReleaseID from SVN"/>
-	</target>
-
+	
 	<target name="-pre-compile">
 		<copy todir="src/com"> <fileset dir="resources/system/no_mac"/> </copy>
 	</target>
-	<target name="-post-compile" depends="releaseid">
+	<target name="-post-compile">
 		<delete dir="build/classes/com/apple" failonerror="false"/>
 		<delete dir="src/com/apple" failonerror="false"/>
 	</target>	

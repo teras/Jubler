@@ -1,8 +1,8 @@
 Package: jubler
-Version: 3.4
+Version: @VERSION@
 Section: text
 Priority: optional
-Architecture: i386
+Architecture: @ARCH@
 Depends: sun-java5-jre | sun-java6-jre, libavformat1d, libavcodec1d, libavcodec1d
 Recommends: aspell, mplayer
 Installed-Size: 900

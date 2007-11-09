@@ -1,6 +1,13 @@
 3.4.0
 
-SRT supports font formatting. Subtitle statistics. Better handling of preview bars. Improved splitting interface. Updated Media files configuration. Display number of lines & characters per line while editing. MPlayer display formatted subtitles - use of ASS format instead of SRT. Linux man & doc paths fixed. Support for Quicktime Texttrack subtitles. Fixed an error with MPL2 subtitles. Frame icon now properly display under Windows/Linux. Quit confirmation dialogue properly works under Mac. Check for new version only once per day. Better display of selected subtitles. Various bug fixes and updates.
+SRT supports font formatting. Subtitle statistics. Better handling of preview
+bars. Improved splitting interface. Updated Media files configuration. Display
+number of lines & characters per line while editing. MPlayer display formatted
+subtitles - use of ASS format instead of SRT. Linux man & doc paths fixed.
+Support for Quicktime Texttrack subtitles. Fixed an error with MPL2 subtitles.
+Frame icon now properly display under Windows/Linux. Quit confirmation
+dialogue properly works under Mac. Check for new version only once per day.
+Better display of selected subtitles. Various bug fixes and updates.
 
 3.3.0
 
