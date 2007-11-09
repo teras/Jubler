@@ -207,9 +207,7 @@
 		<property name="mandir" value="${sharedir}/man/man1"/>
 		<property name="libp" value="/lib"/>
 		<property name="binp" value="/bin"/>
-		<condition property="mimedir" value="${destdir}${othermimedir}" else="${sharedir}/mimelnk/application">
-			<isset property="othermimedir"/>
-		</condition>
+		<property name="mimedir" value="${sharedir}/mimelnk/application"/>
 	</target>
 
 
@@ -255,26 +253,12 @@
 	<!-- DISTRIBUTION SPECIFIC TARGETS -->
 
 	<!-- Slackware Linux installer -->
-	<target name="slackware" depends="release,linuxffdecode">
-		<antcall target="linuxinstall">
-			<param name="othermimedir" value="/opt/kde/share/mimelnk/application"/>
-		</antcall>
-		<antcall target="slackpackage">
-			<param name="distver" value="1_slack11.0"/>
-		</antcall>
-		
-		<antcall target="linuxinstall"/>
-		<antcall target="slackpackage">
-			<param name="distver" value="1"/>
-		</antcall>
-	</target>
-	<!-- Slackware package creation =--> 
-	<target name="slackpackage" depends="linuxproperties">
+	<target name="slackware" depends="release,linuxffdecode,linuxinstall">
 		<copy todir="${destdir}">
 			<fileset dir="resources/installers/linux/dist/slackware"/>
 		</copy>
 		<exec dir="${destdir}" executable="echo" failonerror="true">
-			<arg line="makepkg -l y -c n /tmp/jubler-${version}-${os.arch}-${distver}.tgz"/>
+			<arg line="makepkg -l y -c n /tmp/jubler-${version}-${os.arch}-1.tgz"/>
 		</exec>
 	</target>
 	
