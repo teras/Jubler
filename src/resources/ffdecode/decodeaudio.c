@@ -86,7 +86,6 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
         DEBUG(env, this, "decodeAudio", "Could not allocate memory for outbuf.");
         ret = JNI_FALSE;
     }
-    
     if (ret != JNI_FALSE) {
         /* Find the stream info */
         av_find_stream_info(fcx);
@@ -312,7 +311,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
     /* Clean up */
     if(outfile != NULL)    fclose(outfile);
     if(codec_is_open >= 0) avcodec_close(ccx);
-    if(outbuf != NULL)     av_free(outbuf);
+    if(outbuf != NULL)     free(outbuf);
     if(fcx != NULL)        av_close_input_file(fcx);
     
     return ret;

@@ -254,7 +254,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
     if(minsample != NULL)  free(minsample);
     if(cachefile != NULL)  fclose(cachefile);
     if(codec_is_open >= 0) avcodec_close(ccx);
-    if(outbuf != NULL)     av_free(outbuf);
+    if(outbuf != NULL)     free(outbuf);
     if(fcx != NULL)        av_close_input_file(fcx);
     
     return ret;
