@@ -60,12 +60,9 @@ Section "Jubler editor" SecJubler
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
   File dist\Jubler.exe
-  File ChangeLog
-  Rename ChangeLog ChangeLog.txt
-  File LICENCE
-  Rename LICENCE LICENCE.txt
-  File README
-  Rename README README.txt
+  File dist\ChangeLog.txt
+  File dist\LICENCE.txt
+  File dist\README.txt
    
   ; Create library
   SetOutPath $INSTDIR\lib

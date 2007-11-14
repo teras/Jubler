@@ -27,15 +27,12 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.Options;
-import java.awt.Dimension;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import java.io.File;
-import java.util.Hashtable;
-import java.util.Properties;
 import java.util.StringTokenizer;
 import javax.swing.JTable;
 

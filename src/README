@@ -13,8 +13,8 @@ transform, correct and refine existing subtitles.
 
 It is open source under a liberal (GNU) public licence. It is written
 in Java 5.0 (a.k.a. Java 1.5.0 ) in order to be really multi-platform.
-It has been tested under Linux (Intel 32 & 64 bit), Windows XP and Mac
-OS X (PPC and Intel). 
+It has been tested under Linux (Intel 32 & 64 bit), Windows (XP and 
+Vista) and Mac OS X (PPC and Intel). 
 
 
 Features

@@ -166,10 +166,16 @@
 				<jre minVersion="1.6.0" />
 			</config>
 		</launch4j>
+		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
+		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
+		<exec executable="sed" input="ChangeLog" output="dist/ChangeLog.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="makensis" failonerror="true">
 			<arg line="-NOCD -DVERSION=${version} resources/installers/windows/jubler.nsi"/>
 		</exec>
 		<delete file="dist/Jubler.exe"/>
+		<delete file="dist/README.txt"/>
+		<delete file="dist/LICENCE.txt"/>
+		<delete file="dist/ChangeLog.txt"/>
 	</target>
 
 

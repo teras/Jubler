@@ -7,7 +7,8 @@ subtitles - use of ASS format instead of SRT. Linux man & doc paths fixed.
 Support for Quicktime Texttrack subtitles. Fixed an error with MPL2 subtitles.
 Frame icon now properly display under Windows/Linux. Quit confirmation
 dialogue properly works under Mac. Check for new version only once per day.
-Better display of selected subtitles. Various bug fixes and updates.
+Better display of selected subtitles. Fixed serious memory allocation error
+in Windows. Various bug fixes and updates.
 
 3.3.0
 

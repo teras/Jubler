@@ -15,8 +15,7 @@
 ; the APP_ASSOCIATE macro like this:
 ;
 ;   Example:
-;   !insertmacro APP_ASSOCIATE "txt" "myapp.textfile" "$INSTDIR\myapp.exe,0" \
-;     "Open with myapp" "$INSTDIR\myapp.exe $\"%1$\""
+;   !insertmacro APP_ASSOCIATE "txt" "myapp.textfile" "$INSTDIR\myapp.exe,0" "Open with myapp" "$INSTDIR\myapp.exe $\"%1$\""
 ;
 ; And finally: To remove the association from the registry use the APP_UNASSOCIATE
 ; macro. Here is another example just to wrap it up:
