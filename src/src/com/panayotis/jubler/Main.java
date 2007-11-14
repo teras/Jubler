@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler;
 import com.panayotis.jubler.media.player.mplayer.MPlayer;
+import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -59,6 +60,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
+        ExceptionHandler eh = new ExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(eh);
+
         splash = new MainSplash("/icons/splash.jpg");
         
         sublist = new Vector<String>();
