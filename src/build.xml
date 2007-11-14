@@ -157,12 +157,24 @@
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
-				headerType="0"
+				headerType="gui"
 				customProcName="true"
-				stayAlive="false"
+				stayAlive="true"
 				jar="dist/Jubler.jar"
 				errTitle="Unable to find Java environmet"
 				>
+				<versionInfo
+					fileVersion="${version}.0"
+					txtfileVersion="${version}"
+					fileDescription="Jubler Subtitle Editor"
+					copyright="GNU GPL V2"
+					productVersion="${version}.0"
+					txtProductVersion="${version}"
+					productName="Jubler Subtitle Editor"
+					companyName="http://www.panayotis.com"
+					internalName="Jubler"
+					originalFilename="Jubler.exe"
+				/>
 				<jre minVersion="1.6.0" />
 			</config>
 		</launch4j>
