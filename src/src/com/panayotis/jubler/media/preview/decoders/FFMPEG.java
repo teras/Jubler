@@ -112,6 +112,8 @@ public final class FFMPEG extends NativeDecoder {
             cleanUp(_("Unsupported audio"), wav);
         } catch (LineUnavailableException e) {
             cleanUp(_("Line unavailable"), wav);
+        } catch (Exception e) {
+            cleanUp(e.getClass().getName(), wav);
         }
     }
     
