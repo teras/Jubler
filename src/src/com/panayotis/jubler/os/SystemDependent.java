@@ -179,7 +179,7 @@ public class SystemDependent {
              font = " -fontconfig";	 
          } else {	 
              if (isWindows()) {	 
-                 font=" -font c:\\Windows\\fonts\\arial.ttf";	 
+                 font=" -font " + System.getenv("SystemRoot")+"\\fonts\\arial.ttf";	 
              } else {	 
                  File freesans = new File(SystemFileFinder.getJublerAppPath()+"/lib/freesans.ttf");	 
                  if (freesans.exists()) {	 
