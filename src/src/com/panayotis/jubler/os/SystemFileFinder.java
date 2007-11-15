@@ -73,10 +73,9 @@ public class SystemFileFinder {
     public static String getJublerAppPath() {
         File f = findFile("Jubler.jar");
         if (f==null) f = findFile("Jubler.exe");
+        if (f==null) f = findFile("com");
         
         if (f!=null) return f.getParent();
-        
-        DEBUG.debug(_("Could not find Jubler path!"));
         return "";
     }
 

@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.os;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -36,7 +37,10 @@ public class DEBUG {
     private static String NL = System.getProperty("line.separator");
     static {
         try {
-            log = new FileWriter("jubler.log");
+            String parent;
+            parent = SystemFileFinder.getJublerAppPath();
+            if (parent.equals("")) parent = System.getProperty("user.home");
+            log = new FileWriter(new File(parent, "jubler.log"));
         } catch (IOException e) {
         }
     }
@@ -46,6 +50,8 @@ public class DEBUG {
     }
 
     public static void debug(String debug) {
+        if (debug==null || debug.equals("")) return;
+        
         System.out.println(debug);
         try {
             if (log != null) {
