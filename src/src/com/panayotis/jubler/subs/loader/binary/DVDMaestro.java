@@ -30,6 +30,7 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
@@ -96,7 +97,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
             if (!dir.isDirectory()) {
                 throw new IOException(_("A file exists with the same name."));
             }
-            if (!dir.canWrite()) {
+            if (!SystemDependent.canWrite(dir)) {
                 throw new IOException(_("Directory is not writable."));
             }
         } else {

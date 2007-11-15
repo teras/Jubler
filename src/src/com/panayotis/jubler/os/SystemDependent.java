@@ -35,6 +35,8 @@ import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.tools.externals.ExtPath;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.StringTokenizer;
@@ -256,6 +258,51 @@ public class SystemDependent {
         res.add(new ExtPath(System.getProperty("user.home"), 3));
     }
     
+    /* A dirty dirty dirty trick to be able to find the actual canWrite attribute under Windows */
+    public static boolean canWrite(File f) {
+        if (!isWindows()) {
+            return f.canWrite();
+        }
+        /* Do this horrible trick to make sure that a file is REALLY writable... */
+        boolean ret = false;
+        if (f.isFile()) {
+            if (f.exists()) {
+                File newfile = new File(f.getPath() + ".canWrite");
+                boolean renameTo = f.renameTo(newfile);
+                if (renameTo) {
+                    newfile.renameTo(f);
+                    ret = true;
+                }
+            } else {
+                ret = newfile_canwrite(f);
+            }
+        } else if (f.isDirectory()) {
+            ret = newfile_canwrite(new File(f, "canWrite"));
+        }
+        return ret;
+    }
+    private static boolean newfile_canwrite(File f) {
+        FileWriter qw = null;
+        boolean ret = false;
+        try {
+            qw = new FileWriter(f);
+            qw.write(" ");
+            ret = true;
+        } catch (IOException ex) {
+        } finally {
+            try {
+                if (qw != null) {
+                    qw.close();
+                }
+            } catch (IOException ex) {
+            } finally {
+                if (f.exists()) {
+                    f.delete();
+                }
+            }
+        }
+        return ret;
+    }
 }
 
 

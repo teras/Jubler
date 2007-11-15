@@ -107,10 +107,8 @@ public abstract class NativeDecoder implements DecoderInterface {
     /* Use this method when the loaded audio cache is no more needed */
     public void closeAudioCache(CacheFile cfile) {
         /* Check if the file is null and remove it from disk */
-        if (cfile.length()==0 && cfile.isFile() && cfile.canWrite()) {
-            cfile.delete();
-        }
-        
+        if (cfile.length()==0 && cfile.isFile()) cfile.delete();
+
         /* If cache is being created - abort creation */
         if (cacher!=null) {
             setInterruptStatus(true);  // Abort!

@@ -31,6 +31,7 @@ import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Image;
 import java.io.File;
@@ -172,7 +173,7 @@ public class MediaFile {
         if (cf==null) return;
         
         /* Find a write enabled cache file */
-        if (!( cf.getParentFile().canWrite() && ((!cf.exists()) || cf.canWrite()) )) {
+        if (!( SystemDependent.canWrite(cf.getParentFile()) && ((!cf.exists()) || SystemDependent.canWrite(cf)))) {
             String strippedfilename = cf.getName();
             int point = strippedfilename.lastIndexOf('.');
             if (point < 0 ) point = strippedfilename.length();

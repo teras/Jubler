@@ -120,7 +120,7 @@ public final class FFMPEG extends NativeDecoder {
     
     private void cleanUp(String msg, File f) {
         DEBUG.debug(msg);
-        if (f!=null && f.exists() && f.canWrite()) f.delete();
+        if (f!=null && f.exists()) f.delete();
     }
     
     public void retrieveInformation(VideoFile vfile) {

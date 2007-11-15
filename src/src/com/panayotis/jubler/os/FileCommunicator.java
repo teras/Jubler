@@ -29,7 +29,6 @@ import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
-import com.panayotis.jubler.subs.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,9 +39,8 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.VideoFile;
-import com.panayotis.jubler.media.filters.MediaFileFilter;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
 
@@ -131,8 +129,8 @@ public class FileCommunicator {
         try {
             SubFormat saveformat;
             tempout = new File(outfile.getPath()+".temp");
-            if ( (!tempout.getParentFile().canWrite()) ||
-                    (outfile.exists() && (!outfile.canWrite())) ) {
+            if ( !SystemDependent.canWrite(tempout.getParentFile()) ||
+                    (outfile.exists() && (!SystemDependent.canWrite(outfile)) ) ) {
                 return _("File {0} is unwritable", outfile.getPath());
             }
             
