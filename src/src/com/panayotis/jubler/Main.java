@@ -42,20 +42,6 @@ import javax.swing.JWindow;
  */
 public class Main {
     
-    static private MainSplash splash;
-    static private Vector<String> sublist;
-    static Thread loader;
-    
-    
-    
-    /* Asynchronous add files to load */
-    public static void asyncAddSubtitle(String sub) {
-        sublist.add(sub);
-        synchronized(loader) { loader.notify(); }
-    }
-    
-    
-    
     /**
      * @param args the command line arguments
      */
@@ -65,10 +51,13 @@ public class Main {
         Thread.setDefaultUncaughtExceptionHandler(eh);
 
         splash = new MainSplash("/icons/splash.jpg");
+        SystemDependent.setLookAndFeel();
         
-        sublist = new Vector<String>();
+        MPlayer.updateParameters(); // Update MPlayer parameters
         
-        /* Load all startup files in a separate process */
+        /* Load all startup files in a separate process 
+         * We need this definition early, so that it would be possible to  reference it
+         */
         loader = new Thread() {
             public void run() {
                 while(true) {
@@ -90,33 +79,39 @@ public class Main {
                 }
             }
         };
-        
-        
-        SystemDependent.setLookAndFeel();
-        SystemDependent.initApplication();
-        
         /* Parse arguments */
-        Jubler root = new Jubler();
+        sublist = new Vector<String>();
         for (int i = 0 ; i < args.length ; i++) {
             asyncAddSubtitle(args[i]);
         }
-        splash.dispose();
-        loader.start();
-        
-        Thread t = new Thread() {
+        /* Load arguments, in a mac way */
+        SystemDependent.initApplication();
+
+        /* Check current version in a new thread */
+        Thread versioncheck = new Thread() {
             public void run() {
                 StaticJubler.initVersion();
             }
         };
-        t.start();
-        
-        MPlayer.updateParameters();
-        
-    }
-    
-    
-}
 
+        new Jubler();   // Display initial Jubler window
+        splash.dispose();   // Hide splash screen
+        loader.start();     // initialize loader
+        versioncheck.start();
+                
+    }
+        
+    static private MainSplash splash;
+    static private Vector<String> sublist;
+    static Thread loader;
+    
+    /* Asynchronous add files to load */
+    public static void asyncAddSubtitle(String sub) {
+        sublist.add(sub);
+        synchronized(loader) { loader.notify(); }
+    }
+
+}
 
 
 

@@ -76,6 +76,7 @@ public class ZemberekSpellChecker extends SpellChecker {
         return ret;
     }
     
+    @SuppressWarnings("unchecked")
     public void start() throws ExtProgramException {
         try {
             Class zemberekClass = Class.forName("net.zemberek.erisim.Zemberek");
