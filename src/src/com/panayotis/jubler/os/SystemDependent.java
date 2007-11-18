@@ -309,7 +309,7 @@ public class SystemDependent {
     public final static String getConfigPath() {
         String home = System.getProperty("user.home") + System.getProperty("file.separator");
         
-        if (isWindows()) return System.getenv("APPDATA")+"\\jubler\\config.txt";
+        if (isWindows()) return System.getenv("APPDATA")+"\\Jubler\\config.txt";
         if (isMacOSX()) return home+"Library/Preferences/com.panayotis.jubler.config";
         return home+".jubler/config";
     }
@@ -317,7 +317,7 @@ public class SystemDependent {
     public final static String getLogPath() {
         String home = System.getProperty("user.home") + System.getProperty("file.separator");
         
-        if (isWindows()) return System.getenv("APPDATA")+"\\jubler\\log.txt";
+        if (isWindows()) return System.getenv("APPDATA")+"\\Jubler\\log.txt";
         if (isMacOSX()) return home+"Library/Logs/Jubler.log";
         return home+".jubler/output.log";
     }
