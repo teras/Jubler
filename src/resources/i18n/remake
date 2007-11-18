@@ -11,7 +11,7 @@ fi
 for i in $WHAT ; do
 	LNG=`echo $i | sed -e 's/\.po$//g'`
 	echo Remaking po file for language \"$LNG\"
-	msgmerge --update --indent --sort-by-file --backup=none $LNG.po jubler.pot 
+	msgmerge --no-fuzzy-matching --update --indent --sort-by-file --backup=none $LNG.po jubler.pot 
 done
 
 rm -rf jubler.pot
