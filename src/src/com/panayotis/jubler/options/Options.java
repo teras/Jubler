@@ -22,7 +22,12 @@
  */
 
 package com.panayotis.jubler.options;
+
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.options.gui.TabPage;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.SystemDependent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -40,13 +45,46 @@ public class Options {
     public final static int CURRENT_VERSION = 2;
     
     static {
-        preffile = System.getProperty("user.home") + System.getProperty("file.separator") + ".jublerrc";
-        
         opts = new Properties();
+        preffile = updateConfigFile();
         try {
             opts.loadFromXML(new FileInputStream(preffile));
         } catch ( IOException e ) {
         }
+        updateParameters();
+    }
+
+    private static String updateConfigFile() {
+        /* Make sure that we have put config files in their new "home" */
+        File newconfig = new File(SystemDependent.getConfigPath());
+        File oldconfig = new File(System.getProperty("user.home") + System.getProperty("file.separator") + ".jublerrc");
+        newconfig.getParentFile().mkdirs();
+ 
+        if (oldconfig.exists()) {
+            if (!newconfig.exists()) {
+                boolean success = oldconfig.renameTo(newconfig);
+                if (!success) {
+                    DEBUG.debug(_("Unable to move configuration file to {0}", newconfig.getPath()));
+                } else {
+                    DEBUG.debug(_("Configation filed moved to {0}", newconfig.getPath()));
+                }
+            }
+        }
+        return newconfig.getPath();
+    } 
+
+    private static void updateParameters() {
+        int version = Integer.parseInt(getOption("System.Preferences.Version", "1"));
+        String params = getOption("Player.MPlayer.Arguments","");
+        if ( version<2 && (!params.equals("")) ) {
+            setOption("Player.MPlayer.Arguments", SystemDependent.getDefaultMPlayerArgs());
+            File oldpref = new File(preffile+".old");
+            if (oldpref.exists()) oldpref.delete();
+            new File(preffile).renameTo(oldpref);
+            DEBUG.debug(_("Updated configuration file. Old configuration moved to {0}", oldpref.getPath()));
+        }   
+        setOption("System.Preferences.Version", Integer.toString(CURRENT_VERSION));
+        saveOptions();
     }
     
     
@@ -109,14 +147,5 @@ public class Options {
         }
         return ret;
     }
-    
-    public static int getVersion() {
-        int version = Integer.parseInt(getOption("System.Preferences.Version", "1"));
-        return version;
-    }
-    
-    public static void updateVersion() {
-        setOption("System.Preferences.Version", Integer.toString(CURRENT_VERSION));
-        saveOptions();
-    }
+
 }

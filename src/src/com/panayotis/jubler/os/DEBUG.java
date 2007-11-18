@@ -37,10 +37,9 @@ public class DEBUG {
     private static String NL = System.getProperty("line.separator");
     static {
         try {
-            String parent;
-            parent = SystemFileFinder.getJublerAppPath();
-            if (parent.equals("")) parent = System.getProperty("user.home");
-            log = new FileWriter(new File(parent, "jubler.log"));
+            File logfile = new File(SystemDependent.getLogPath());
+            logfile.getParentFile().mkdirs();
+            log = new FileWriter(logfile);
         } catch (IOException e) {
         }
     }

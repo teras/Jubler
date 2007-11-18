@@ -58,15 +58,4 @@ public class MPlayer extends AbstractPlayer {
     
     public Viewport getViewport() { return new MPlayerViewport(this); }
     
-    /* This is a hack to force update MPlayer Parameters */
-    public static void updateParameters() {
-        int version = Options.getVersion();
-        String params = Options.getOption("Player.MPlayer.Arguments","");
-        if ( version<2 && (!params.equals("")) ) {
-            Options.setOption("Player.MPlayer.Arguments", SystemDependent.getDefaultMPlayerArgs());
-            JIDialog.warning(null, _("MPlayer parameters have been updated."), _("MPlayer options"));
-        }   
-        Options.updateVersion();
-    }
-
 }

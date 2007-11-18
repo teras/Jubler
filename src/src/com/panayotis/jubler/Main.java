@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler;
 import com.panayotis.jubler.media.player.mplayer.MPlayer;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
@@ -52,9 +53,7 @@ public class Main {
 
         splash = new MainSplash("/icons/splash.jpg");
         SystemDependent.setLookAndFeel();
-        
-        MPlayer.updateParameters(); // Update MPlayer parameters
-        
+                
         /* Load all startup files in a separate process 
          * We need this definition early, so that it would be possible to  reference it
          */
