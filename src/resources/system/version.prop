@@ -1,3 +1,4 @@
 version=3.4.0
+longversion=3.4.0.0
 release=@RELEASE@
-force.upgrade=false
+force.upgrade=true
