@@ -28,8 +28,6 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
-import com.panayotis.jubler.options.Options;
-import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
 
 /**

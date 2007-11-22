@@ -22,8 +22,6 @@
  */
 
 package com.panayotis.jubler;
-import com.panayotis.jubler.media.player.mplayer.MPlayer;
-import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;

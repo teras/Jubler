@@ -33,6 +33,7 @@ import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
@@ -167,7 +168,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                 break;
             } catch (ExtProgramException ex) {
                 if (! (ex.getCause() instanceof IOException) ) {
-                    JIDialog.error(this, _("Abnormal exit - please report the author about this behaviour.")+"\n"+ex.getCause(), _("Movie Player Error"));
+                    JIDialog.error(this, _("Abnormal player exit")+"\n"+ex.getCause(), _("Movie Player Error"));
                     stop();
                     return;
                 } else {
@@ -713,15 +714,15 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     private void SubShowKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_SubShowKeyReleased
         int keycode = evt.getKeyCode();
-        if (keycode == evt.VK_ENTER || keycode == evt.VK_ESCAPE) {  // Ignore all other key events
+        if (keycode == KeyEvent.VK_ENTER || keycode == KeyEvent.VK_ESCAPE) {  // Ignore all other key events
             if (SubShow.isEditable()) {
-                if (keycode == evt.VK_ESCAPE)
+                if (keycode == KeyEvent.VK_ESCAPE)
                     setSubRecStatus(SUBREC_ABORT);
                 else
                     setSubRecStatus(SUBREC_FINALIZE);
                 
             } else {
-                if (keycode == evt.VK_ENTER) {
+                if (keycode == KeyEvent.VK_ENTER) {
                     if (MarkB.isSelected()) {
                         setSubRecStatus(SUBREC_TYPING);
                     } else {

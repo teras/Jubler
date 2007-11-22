@@ -1,6 +1,7 @@
 3.4.1
 
-Support of correct MIME type under Linux.
+MPlayer uses threads to properly handle out and error stream. Support of
+correct MIME type under Linux.
 
 3.4.0
 

@@ -34,9 +34,8 @@ import java.io.OutputStreamWriter;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.console.PlayerFeedback;
-import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
-import java.awt.Dimension;
 
 /**
  *
@@ -46,11 +45,12 @@ public class MPlayerViewport implements Viewport {
     private Process proc;
     private BufferedWriter cmdpipe;
     private BufferedReader infopipe;
+    private BufferedReader errorpipe;
     
     private boolean isPaused;
     
     private double position;
-    private Thread updater;
+    private Thread out_t, error_t;
     
     
     private MPlayer player;
@@ -92,57 +92,24 @@ public class MPlayerViewport implements Viewport {
             proc = Runtime.getRuntime().exec(cmd);
             cmdpipe = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
             infopipe = new BufferedReader( new InputStreamReader(proc.getInputStream()));
-//            BufferedReader errorpipe = new BufferedReader( new InputStreamReader(proc.getErrorStream()));
+            errorpipe = new BufferedReader( new InputStreamReader(proc.getErrorStream()));
             
             if (infopipe == null || cmdpipe == null || proc == null )
                 throw new ExtProgramException(new NullPointerException());
             
-            sendCommand("get_property volume");
-            
-//            String line;
-//            while ((line=errorpipe.readLine())!=null) System.out.println(line);
-//            while ((line=infopipe.readLine())!=null) System.out.println(line);
-            
-            updater = new Thread() {
-                public void run() {
-                    parseOutput();
-                }
-            };
-            updater.start();
+            out_t = new OutputParser();
+            error_t = new ErrorParser ();
+            out_t.start();
+            error_t.start();
+
+            sendCommand("get_property volume");     // Get information for current volume position
             return;
         } catch (Exception e) {
             player.cleanUp();
             throw new ExtProgramException(e);
         }
     }
-    
-    
-    /* This part of the code is executed in the updater thread
-     * It finishes when the EOF is found */
-    private void parseOutput() {
-        String info;
-        try {
-            int first, second;
-            while ( (info=infopipe.readLine()) != null ) {
-                first = info.indexOf("V:");
-                if (first>=0) {
-                    first++;
-                    while(info.charAt(++first)==' ');
-                    second=first;
-                    while(info.charAt(++second)!=' ');
-                    position = getDouble(info.substring(first, second).trim());
-                } else {
-                    if (info.startsWith("ANS_volume")) {
-                        feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=')+1))/100f);
-                    }
-                }
-            }
-        } catch (IOException e) {}
-        if (quit_is_fatal) feedback.requestQuit();
-        else quit_is_fatal = true;  // revert flag to it's original value
-    }
-    
-    
+   
     private static double getDouble(String info) {
         try {
             return Double.parseDouble(info);
@@ -181,7 +148,7 @@ public class MPlayerViewport implements Viewport {
     public boolean quit(){
         sendCommand("quit");
         try {
-            Thread.currentThread().sleep(100);
+            Thread.sleep(100);
         } catch (InterruptedException e){}
         if (proc != null ) proc.destroy();
         return false;
@@ -232,7 +199,7 @@ public class MPlayerViewport implements Viewport {
         quit_is_fatal = false;
         quit();
         try {
-            updater.join();
+            out_t.join();
             setParameters(mfile, newsubs, feedback, new Time(getTime()-3));
             start();
             return true;
@@ -250,7 +217,7 @@ public class MPlayerViewport implements Viewport {
             isActive = true;
             try {
                 if (newsubs==null) return false;
-                updater.join();
+                out_t.join();
                 setParameters(mfile, newsubs, feedback, new Time(active_last_time-3));
                 start();
                 return true;
@@ -264,5 +231,48 @@ public class MPlayerViewport implements Viewport {
             isActive = false;
         }
         return true;
+    }
+
+    
+    private class OutputParser extends Thread {
+        public void run() {
+            String info;
+            try {
+                int first, second;
+                while ((info = infopipe.readLine()) != null) {
+                    first = info.indexOf("V:");
+                    if (first >= 0) {
+                        first++;
+                        while (info.charAt(++first) == ' ');
+                        second = first;
+                        while (info.charAt(++second) != ' ');
+                        position = getDouble(info.substring(first, second).trim());
+                    } else {
+                        DEBUG.debug("[mplayer:out] "+info);
+                        if (info.startsWith("ANS_volume")) {
+                            feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=') + 1)) / 100f);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+            }
+            if (quit_is_fatal) {
+                feedback.requestQuit();
+            } else {
+                quit_is_fatal = true;
+            }  // revert flag to it's original value
+        }
+    }
+
+    private class ErrorParser extends Thread {
+        public void run() {
+            String info;
+            try {
+                while ((info = errorpipe.readLine()) != null) {
+                    DEBUG.debug("[mplayer:err] "+info);
+                }
+            } catch (IOException e) {
+            }
+        }
     }
 }
