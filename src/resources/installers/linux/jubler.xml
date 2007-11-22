@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+	<mime-type type="application/x-ass">
+		<sub-class-of type="text/plain"/>
+		<comment>subtitle file</comment>
+		<comment xml:lang="bg">Субтитри</comment>
+		<comment xml:lang="cs">soubor s titulky</comment>
+		<comment xml:lang="de">Untertitel-Datei</comment>
+		<comment xml:lang="es">fichero de subtítulos</comment>
+		<comment xml:lang="eu">subtitulu fitxategia</comment>
+		<comment xml:lang="fi">tekstitystiedosto</comment>
+		<comment xml:lang="fr">fichier de sous-titres</comment>
+		<comment xml:lang="hu">feliratfájl</comment>
+		<comment xml:lang="it">File sottotitoli</comment>
+		<comment xml:lang="ko">자막 파일</comment>
+		<comment xml:lang="nb">teksting for film</comment>
+		<comment xml:lang="nl">ondertitelbestand</comment>
+		<comment xml:lang="nn">fil med undertekst for film</comment>
+		<comment xml:lang="pl">plik napisów</comment>
+		<comment xml:lang="sv">undertextfil</comment>
+		<comment xml:lang="uk">файл субтитрів</comment>
+		<comment xml:lang="vi">tập tin phụ đề phím</comment>
+		<glob pattern="*.ass"/>
+	</mime-type>
+	<mime-type type="application/x-ssa">
+		<sub-class-of type="text/plain"/>
+		<comment>subtitle file</comment>
+		<comment xml:lang="bg">Субтитри</comment>
+		<comment xml:lang="cs">soubor s titulky</comment>
+		<comment xml:lang="de">Untertitel-Datei</comment>
+		<comment xml:lang="es">fichero de subtítulos</comment>
+		<comment xml:lang="eu">subtitulu fitxategia</comment>
+		<comment xml:lang="fi">tekstitystiedosto</comment>
+		<comment xml:lang="fr">fichier de sous-titres</comment>
+		<comment xml:lang="hu">feliratfájl</comment>
+		<comment xml:lang="it">File sottotitoli</comment>
+		<comment xml:lang="ko">자막 파일</comment>
+		<comment xml:lang="nb">teksting for film</comment>
+		<comment xml:lang="nl">ondertitelbestand</comment>
+		<comment xml:lang="nn">fil med undertekst for film</comment>
+		<comment xml:lang="pl">plik napisów</comment>
+		<comment xml:lang="sv">undertextfil</comment>
+		<comment xml:lang="uk">файл субтитрів</comment>
+		<comment xml:lang="vi">tập tin phụ đề phím</comment>
+		<glob pattern="*.ssa"/>
+	</mime-type>
+	<mime-type type="application/x-sub">
+		<sub-class-of type="text/plain"/>
+		<comment>subtitle file</comment>
+		<comment xml:lang="bg">Субтитри</comment>
+		<comment xml:lang="cs">soubor s titulky</comment>
+		<comment xml:lang="de">Untertitel-Datei</comment>
+		<comment xml:lang="es">fichero de subtítulos</comment>
+		<comment xml:lang="eu">subtitulu fitxategia</comment>
+		<comment xml:lang="fi">tekstitystiedosto</comment>
+		<comment xml:lang="fr">fichier de sous-titres</comment>
+		<comment xml:lang="hu">feliratfájl</comment>
+		<comment xml:lang="it">File sottotitoli</comment>
+		<comment xml:lang="ko">자막 파일</comment>
+		<comment xml:lang="nb">teksting for film</comment>
+		<comment xml:lang="nl">ondertitelbestand</comment>
+		<comment xml:lang="nn">fil med undertekst for film</comment>
+		<comment xml:lang="pl">plik napisów</comment>
+		<comment xml:lang="sv">undertextfil</comment>
+		<comment xml:lang="uk">файл субтитрів</comment>
+		<comment xml:lang="vi">tập tin phụ đề phím</comment>
+		<glob pattern="*.sub"/>
+	</mime-type>
+</mime-info>

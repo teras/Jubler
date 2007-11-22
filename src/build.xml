@@ -228,10 +228,28 @@
 		<property name="mimedir" value="${sharedir}/mimelnk/application"/>
 	</target>
 
-
-	<target name="linuxinstall" depends="linuxproperties">
+	<target name="cleandestdir" depends="linuxproperties">
 		<!-- Cleanup -->
 		<exec executable="rm" failonerror="true"><arg line="-rf ${destdir}"/></exec>
+	</target>
+
+	<target name="linuxdesktopintegration" depends="linuxproperties">
+		<!-- Icon files -->
+		<copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
+		<copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
+		<copy file="resources/installers/linux/jubler.png" todir="${sharedir}/icons/hicolor/48x48/apps"/>
+		<exec executable="resources/installers/linux/iconinstall" failonerror="true"><arg line="${sharedir}/icons/hicolor"/></exec>
+		<copy file="resources/installers/linux/jubler.desktop" todir="${sharedir}/applications"/>
+
+		<!-- Mimetypes -->
+		<copy file="resources/installers/linux/x-srt.desktop" todir="${mimedir}"/>
+		<copy file="resources/installers/linux/x-sub.desktop" todir="${mimedir}"/>
+		<copy file="resources/installers/linux/x-ass.desktop" todir="${mimedir}"/>
+		<copy file="resources/installers/linux/x-ssa.desktop" todir="${mimedir}"/>
+		<copy file="resources/installers/linux/jubler.xml" todir="${sharedir}/mime/packages"/>
+	</target>
+
+	<target name="linuxinstall" depends="linuxproperties, cleandestdir, linuxdesktopintegration">
 
 		<!-- Basic Jubler files -->
 		<copy file="dist/Jubler.jar" todir="${libdir}"/>
@@ -251,20 +269,6 @@
 		<exec executable="ln" failonerror="true"><arg line="-s ${reldocdir} ${libdir}/help"/></exec>
 		<copy file="resources/installers/linux/jubler.1" todir="${mandir}"/>
 		<exec executable="gzip" failonerror="true"><arg line="-v -9 ${mandir}/jubler.1"/></exec>
-		
-		<!-- Icon files -->
-		<copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
-		<copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
-		<copy file="resources/installers/linux/jubler.png" todir="${sharedir}/icons/hicolor/32x32/apps"/>
-		<copy file="resources/installers/linux/subtitle-128.png" tofile="${sharedir}/icons/hicolor/128x128/mimetypes/subtitle.png"/>
-		<copy file="resources/installers/linux/subtitle-32.png" tofile="${sharedir}/icons/hicolor/32x32/mimetypes/subtitle.png"/>
-		<copy file="resources/installers/linux/jubler.desktop" todir="${sharedir}/applications"/>
-
-		<!-- Mimetypes -->
-		<copy file="resources/installers/linux/sub-srt.desktop" todir="${mimedir}"/>
-		<copy file="resources/installers/linux/sub-sub.desktop" todir="${mimedir}"/>
-		<copy file="resources/installers/linux/sub-ass.desktop" todir="${mimedir}"/>
-		<copy file="resources/installers/linux/sub-ssa.desktop" todir="${mimedir}"/>
 	</target>
 
 

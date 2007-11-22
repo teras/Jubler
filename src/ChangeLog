@@ -1,3 +1,7 @@
+3.4.1
+
+Support of correct MIME type under Linux.
+
 3.4.0
 
 SRT supports font formatting. Subtitle statistics. Better handling of preview

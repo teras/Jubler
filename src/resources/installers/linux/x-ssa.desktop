@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=MimeType
-MimeType=application/sub-ssa
+MimeType=application/x-ssa
 Icon=subtitle
 Patterns=*.ssa;
 DefaultApp=jubler

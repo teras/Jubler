@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=MimeType
-MimeType=application/sub-sub
+MimeType=application/x-sub
 Icon=subtitle
 Patterns=*.sub;
 DefaultApp=jubler
