@@ -16,9 +16,9 @@
 </section>
 
 <section><title>How to translate to my own language</title>
-    <para>The instructions here are for Linux (or similar POSIX) environment. First of all you will need to download the source code of Jubler (preferably from the SVN). Then go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot . Open this ??.po file with either a localization editor (like kbabel or poedit) or even with a text editor.</para>
-    <para>Leave the file in the directory resources/i18n and go to the home directory of Jubler. Type here this command "ant i18n && ant run". You should be able to see your language file being processed among the other files. When the compilation finishes, you should see Jubler application start with your newer localized environment. Of course your locale should be the one being tested. [ You need JDK 1.5 and ant tool to perform these steps. ]</para>
-    <para>When you have finished you can send this file to me in order to include it into the distribution. You can of course contact me earlier if you have any other questions.</para>
+    <para>To translate Jubler to your own language, there is a simple method, with a little help of poedit (and me!). At first contact me to send you the apropriate template for your language. If you prefer to create the template yourself, you need a POSIX environment and the source code of Jubler from the SVN. Go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot .</para>
+
+	<para>You can edit this file with either <ulink url="http://www.poedit.net/">poedit</ulink> (recommended) or any other plain text editor. Prepare the translation and then send the .po file back to me. If you want to compile the translation yourself (you are brave, aren't you) just place the file under resources/i18n and execute the "i18n" ant task (if you don't know what I am talking about, don't worry, just sent the file back).</para>
 </section>
 
 <section><title>Installing MPlayer/ASpell tools</title>
@@ -34,7 +34,7 @@
 </section>
 
 <section><title>How can I synchronize subtitles with two given time-points?</title>
-    <para>This can be performed using the Video Console. Let the movie play and when you hear a subtitle, press the "T" button. The playback pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the right of the "T" button) lights up. Then go to the movie end, without closing the Video Console. Again, when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. The recode window will pop up. Use the custom parameters (they should be already selected) and press OK.</para>
+    <para>This can be performed using the Video Console. Let the movie play and when you hear a subtitle, press the "T" button. The playback pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the right of the bar, in the same row with the "T" button) lights up. Then go to the movie end, without closing the Video Console. Again, when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. The recode window will pop up. Use the custom parameters (they should be already selected) and press OK.</para>
     <para>If the recode window did not show up, it means that the time-points chosen are not valid and it is impossible to recode. You have to select another time position. Therefore, the last selected position is deselected.</para>
     <para>If the subtitle time difference is the same on both time positions, then shift time is performed instead of recoding.</para>
     <para>There is also another way of selecting the time positions. Instead of selecting the subtitle text from the main window, you can shift the subtitled using the bar on the lower left of the Console. Then when you thing that the subtitles are synchronized, press either synchronization buttons.</para>
@@ -64,10 +64,6 @@
 <section><title>The mousewheel changes time too fast. Can I reduce this speed?</title>
 	<para>Yes you can! Press the ALT button while rotating the mousewheel and the speed will reduce from 1 second to 0.1 second per click.</para>
 	<para>You can have the same efect, if you click on the up/down arrows while holding again the ALT button.</para>
-</section>
-
-<section><title>How is transparency produced?</title>
-    <para>In subtitle preview, although outline & shadow color is per character, their transparency is calculated for the whole subtitle entry.</para>
 </section>
 
 <section><title>What is Zemberek and how can I use it?</title>

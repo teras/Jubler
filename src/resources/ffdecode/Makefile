@@ -96,7 +96,7 @@ ifeq (${SYSTEM},darwini386)
 	STRIP=echo No stripping on 
 endif
 
-FCONFCOMMON=--disable-debug --enable-gpl --enable-a52 --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-vhook --disable-ipv6 --disable-network --disable-dv1394 --disable-bktr --disable-v4l2 --disable-v4l --disable-audio-beos --disable-audio-oss
+FCONFCOMMON=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394
 
 CC=${PREF}gcc ${COMPARCH}
 RANLIB=${PREF}ranlib
