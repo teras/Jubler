@@ -206,15 +206,16 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                                 }
                             }
                         }
+ 
+                    	/* close the output file */
+                    	if (!(fmt->flags & AVFMT_NOFILE)) {
+                        	url_fclose(&ofcx->pb);
+                    	}
                     }
+                   	
+					/* Clean up part 2*/
                     
-                    /* Clean up part 2*/
-                    if (fmt!=NULL && (!(fmt->flags & AVFMT_NOFILE))) {
-                        /* close the output file */
-                        url_fclose(ofcx->pb);
-                    }
-                    
-                    /* free the stream */
+					/* free the stream */
                     if(ofcx != NULL) av_free(ofcx);
                     
                     /* Create WAV headers end */

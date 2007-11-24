@@ -45,13 +45,13 @@ COMPFLAGS=${CFLAGS} -std=c99 -pedantic -O3 -Wall -fPIC
 ifeq (${STATIC},no)
 	FFMPEGREQ=
 	RANLIBREQ=
-	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec libavdevice}
-	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec libavdevice}
+	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec}
+	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec}
 else
 	FFMPEGREQ=ffmpeg
 	RANLIBREQ=ranlib
-	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lavdevice${LIBSUF} -lm ${XLIBS}
-	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil -I${FFMPEG}/libavdevice
+	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm ${XLIBS}
+	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
 endif
 
 ifeq (${SYSTEM},linux)
@@ -181,7 +181,6 @@ ${LIBRARIES}/libavformat${LIBSUF}.a:
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/libavutil.a ${LIBRARIES}/libavutil${LIBSUF}.a
-	cp ${FFMPEG}/libavdevice/libavdevice.a ${LIBRARIES}/libavdevice${LIBSUF}.a
 	cd ${FFMPEG} && make distclean
 
 
@@ -189,4 +188,3 @@ ranlib:
 	${RANLIB} ${LIBRARIES}/libavformat${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavcodec${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavutil${LIBSUF}.a
-	${RANLIB} ${LIBRARIES}/libavdevice${LIBSUF}.a
