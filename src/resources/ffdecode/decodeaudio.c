@@ -209,9 +209,9 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                     }
                     
                     /* Clean up part 2*/
-                    if (!(fmt->flags & AVFMT_NOFILE)) {
+                    if (fmt!=NULL && (!(fmt->flags & AVFMT_NOFILE))) {
                         /* close the output file */
-                        url_fclose(&ofcx->pb);
+                        url_fclose(ofcx->pb);
                     }
                     
                     /* free the stream */

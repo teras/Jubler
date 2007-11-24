@@ -58,7 +58,7 @@ ifeq (${SYSTEM},linux)
 	XLIBS=-lz
 	PREF=
 	ARCH=${shell uname -m}
-	COMPARCH=
+	GCCOPTS=
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
 	FCOPTS=--extra-cflags="-fPIC"
@@ -67,7 +67,7 @@ endif
 ifeq (${SYSTEM},win32)
 	PREF=i586-mingw32msvc-
 	ARCH=i386
-	COMPARCH=
+	GCCOPTS=
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
 	XLIBS=
@@ -78,27 +78,27 @@ ifeq (${SYSTEM},darwinppc)
 	XLIBS=-lz
 	PREF=
 	ARCH=ppc
-	COMPARCH=-arch ppc
-	#LD=${CC} -bundle
+	GCCOPTS=-arch ${ARCH} -mmacosx-version-min=10.4
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
-	FCOPTS=--arch=powerpc --extra-cflags="-fno-common ${COMPARCH}" --extra-ldflags="${COMPARCH}" --cross-compile --enable-shared
+	FCOPTS=--extra-cflags="-fno-common ${GCCOPTS}" --extra-ldflags="${GCCOPTS}" --enable-shared --arch=powerpc --cross-compile
 	STRIP=echo No stripping on 
 endif
 ifeq (${SYSTEM},darwini386)
 	XLIBS=-lz
 	PREF=
 	ARCH=i386
-	COMPARCH=
+	GCCOPTS=-mmacosx-version-min=10.4
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
-	FCOPTS=--disable-mmx --arch=unknown --extra-cflags=-fno-common --enable-shared
+	FCOPTS=--extra-cflags="-fno-common ${GCCOPTS}" --extra-ldflags="${GCCOPTS}" --enable-shared --arch=unknown --disable-mmx
 	STRIP=echo No stripping on 
 endif
 
-FCONFCOMMON=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-muxers --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394
 
-CC=${PREF}gcc ${COMPARCH}
+FCONFCOMMON=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-muxers --enable-muxer=wav --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394
+
+CC=${PREF}gcc ${GCCOPTS}
 RANLIB=${PREF}ranlib
 
 
@@ -127,8 +127,8 @@ win32:distclean
 	rm -rf ${JUBLER}/src/lib
 
 darwin:
-	make darwini386
 	make darwinppc
+	make darwini386
 	make distclean
 	lipo ${PROJ}.ppc ${PROJ}.i386 -create -output ${MACLIBNAME}
 	rm -f ${PROJ}.ppc ${PROJ}.i386
@@ -152,7 +152,7 @@ libinstall:
 LIB:${LIBNAME}
 
 ${LIBNAME}:${FFMPEGREQ} ${OBJS} ${RANLIBREQ}
-	${LD} ${COMPARCH} -o ${LIBNAME} ${OBJS} ${LIBS}
+	${LD} ${GCCOPTS} -o ${LIBNAME} ${OBJS} ${LIBS}
 	${STRIP} ${LIBNAME}
 
 
@@ -176,7 +176,7 @@ ffmpeg:${LIBRARIES}/libavformat${LIBSUF}.a
 
 
 ${LIBRARIES}/libavformat${LIBSUF}.a:
-	cd ${FFMPEG} && ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} && make -j5
+	cd ${FFMPEG} && ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} && make -j3
 	mkdir -p ${LIBRARIES}
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
