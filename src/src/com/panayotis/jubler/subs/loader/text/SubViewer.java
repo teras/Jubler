@@ -90,13 +90,13 @@ public class SubViewer extends AbstractTextSubFormat {
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
         String t;
 
-        t = sub.getStartTime().toString().replace(',','.');
+        t = sub.getStartTime().getSeconds().replace(',','.');
         t = t.substring(0, t.length()-1);
         str.append(t);
         
         str.append(',');
         
-        t = sub.getFinishTime().toString().replace(',','.');
+        t = sub.getFinishTime().getSeconds().replace(',','.');
         t = t.substring(0, t.length()-1);
         str.append(t);
         

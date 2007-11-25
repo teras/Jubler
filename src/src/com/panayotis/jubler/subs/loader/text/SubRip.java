@@ -102,9 +102,9 @@ public class SubRip extends StyledTextSubFormat {
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
         str.append(Integer.toString(counter++));
         str.append("\n");
-        str.append(sub.getStartTime().toString());
+        str.append(sub.getStartTime().getSeconds());
         str.append(" --> ");
-        str.append(sub.getFinishTime().toString());
+        str.append(sub.getFinishTime().getSeconds());
         str.append("\n");
         str.append(rebuildSubText(sub));
         str.append("\n\n");

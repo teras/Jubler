@@ -69,10 +69,10 @@ public class Spruce extends AbstractTextSubFormat {
     }
     
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
-        String time = sub.getStartTime().toString().replace(',',':');
-        str.append(sub.getStartTime().toSecondsFrame(FPS));
+        String time = sub.getStartTime().getSeconds().replace(',',':');
+        str.append(sub.getStartTime().getSecondsFrames(FPS));
         str.append(" , ");
-        str.append(sub.getFinishTime().toSecondsFrame(FPS));
+        str.append(sub.getFinishTime().getSecondsFrames(FPS));
         str.append(" , ");
         str.append(sub.getText().replace('\n','|'));
         str.append("\n");

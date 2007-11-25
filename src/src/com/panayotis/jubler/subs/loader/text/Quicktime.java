@@ -123,7 +123,7 @@ public class Quicktime extends AbstractTextSubFormat {
     }
     private void printTime(StringBuffer buf, Time t) {
             buf.append('[');
-            buf.append(t.toString().replace(',', '.'));
+            buf.append(t.getSeconds().replace(',', '.'));
             buf.append("]\n");
     }
     protected void cleanupSaver(StringBuffer footer) {

@@ -71,9 +71,9 @@ public class MicroDVD extends AbstractTextSubFormat {
     
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
         str.append("{");
-        str.append(Long.toString(sub.getStartTime().toFrame(FPS)));
+        str.append(sub.getStartTime().getFrames(FPS));
         str.append("}{");
-        str.append(Long.toString(sub.getFinishTime().toFrame(FPS)));
+        str.append(sub.getFinishTime().getFrames(FPS));
         str.append("}");
         str.append(sub.getText().replace('\n','|'));
         str.append("\n");

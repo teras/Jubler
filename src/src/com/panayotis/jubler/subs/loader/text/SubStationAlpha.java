@@ -159,7 +159,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
     }
     
     private String timeformat(Time t) {
-        String res = t.toString().substring(1).replace(',','.');
+        String res = t.getSeconds().substring(1).replace(',','.');
         res = res.substring(0, res.length()-1);
         return res;
     }

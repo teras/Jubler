@@ -185,8 +185,8 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         id_string = digits.substring(id_string.length()) + id_string;
         buffer.append("Display_Area	(213 3 524 38)").append(NL);
         buffer.append(id_string).append(" ");
-        buffer.append(entry.getStartTime().toSecondsFrame(FPS)).append(" ");
-        buffer.append(entry.getFinishTime().toSecondsFrame(FPS)).append(" ");
+        buffer.append(entry.getStartTime().getSecondsFrames(FPS)).append(" ");
+        buffer.append(entry.getFinishTime().getSecondsFrames(FPS)).append(" ");
         buffer.append(filename).append(NL);
     }
     

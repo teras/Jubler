@@ -27,7 +27,6 @@ import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
@@ -157,9 +156,9 @@ public class SubEntry implements Comparable<SubEntry> {
     String getData(int col) {
         switch (col) {
             case 0:
-                return start.toString();
+                return start.getSeconds();
             case 1:
-                return finish.toString();
+                return finish.getSeconds();
             case 2:
                 return "0";
             case 3:
@@ -249,7 +248,7 @@ public class SubEntry implements Comparable<SubEntry> {
     }
     
     public String toString() {
-        return start.toString()+"->"+finish.toString()+" "+subtext;
+        return start.getSeconds()+"->"+finish.getSeconds()+" "+subtext;
     }
     
     /* Calculate statistics of this subtitle */

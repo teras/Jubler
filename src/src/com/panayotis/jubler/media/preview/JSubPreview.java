@@ -163,7 +163,7 @@ public class JSubPreview extends javax.swing.JPanel {
     
     
     public void updateSelectedTime() {
-        TimePosL.setText(_("Selected subtitles") + " "  + new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString());
+        TimePosL.setText(_("Selected subtitles") + " "  + new Time(timeline.getSelectionStart()).getSeconds() + " -> " + new Time(timeline.getSelectionEnd()).getSeconds());
     }
     
     public void updateMediaFile(MediaFile mfile) {

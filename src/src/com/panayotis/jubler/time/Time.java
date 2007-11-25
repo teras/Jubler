@@ -31,8 +31,8 @@ package com.panayotis.jubler.time;
  */
 public class Time implements Comparable<Time> {
     protected int msecs = -1;
-    
-    public static final int MAX_TIME=3600*24;
+
+    public static final int MAX_TIME=3600*24;   // in seconds
     
     
     /* Time in seconds */
@@ -136,7 +136,7 @@ public class Time implements Comparable<Time> {
     }
     
     
-    public String toString() {
+    public String getSeconds() {
         StringBuffer res;
         int hour, min, sec, milli;
         
@@ -163,7 +163,7 @@ public class Time implements Comparable<Time> {
     }
     
     
-    public String toSecondsFrame(float FPS) {
+    public String getSecondsFrames(float FPS) {
         StringBuffer res;
         int hour, min, sec, milli, frm;
         
@@ -189,14 +189,15 @@ public class Time implements Comparable<Time> {
         res.append(frm);
         return res.toString();
     }
-    
+
+    public String getFrames(float FPS) {
+        return Integer.toString((int)Math.round(toSeconds() * FPS));
+    }
+
     
     public double toSeconds() {
         return msecs/1000d;
     }
     
-    public long toFrame(float FPS) {
-        return Math.round(toSeconds() * FPS);
-    }
     
 }

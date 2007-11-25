@@ -121,7 +121,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         replaceValues(cmds, "%v", mfile.getVideoFile().getPath());
         replaceValues(cmds, "%a", mfile.getAudioFile().getPath());
         replaceValues(cmds, "%s", subpath);
-        replaceValues(cmds, "%t", when.toString());
+        replaceValues(cmds, "%t", when.getSeconds());
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));
         replaceValues(cmds, "%j", SystemFileFinder.getJublerAppPath());
