@@ -1,7 +1,7 @@
 /*
- * TimeInputVerifier.java
- *
- * Created on 23 Ιούνιος 2005, 12:58 μμ
+ * FramesFormatter
+ * 
+ * Created on 26 November 2007, 1:20 am
  * 
  * This file is part of Jubler.
  *
@@ -23,27 +23,12 @@
 
 package com.panayotis.jubler.time;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JFormattedTextField;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
  * @author teras
  */
-public class TimeInputVerifier extends InputVerifier {
-    
-    private final static Pattern pat;
-    
-    static {
-        pat = Pattern.compile("(\\d+):(\\d+):(\\d+),(\\d+)");
-    }
-    
-    public boolean verify(JComponent input) {
-        String dat = ((JFormattedTextField)input).getText();
-        Matcher m = pat.matcher(dat);
-        return m.matches();
-    }
+public class FramesFormatter extends NumberFormatter {
+
 }

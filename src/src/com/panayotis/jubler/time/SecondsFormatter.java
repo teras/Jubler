@@ -23,26 +23,26 @@
 
 package com.panayotis.jubler.time;
 
-import com.panayotis.jubler.time.Time;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 
 /**
  *
  * @author teras
  */
-public class TimeFormatter extends MaskFormatter {
+public class SecondsFormatter extends MaskFormatter {
     private static Pattern pat;
     
     static {
         pat = Pattern.compile("(\\d+):(\\d+):(\\d+),(\\d\\d\\d)\\d*");
     }
     
-    public TimeFormatter () throws ParseException { 
+    public SecondsFormatter () throws ParseException { 
         super("##:##:##,###");
+        setPlaceholder(null);
+        setPlaceholderCharacter('0');
     }
     
     public Object stringToValue(String text) throws ParseException {

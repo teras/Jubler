@@ -24,7 +24,6 @@
 package com.panayotis.jubler.time;
 
 import javax.swing.AbstractSpinnerModel;
-import com.panayotis.jubler.time.Time;
 
 /**
  *

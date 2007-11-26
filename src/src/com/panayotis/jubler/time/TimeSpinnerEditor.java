@@ -41,7 +41,6 @@ public class TimeSpinnerEditor extends JSpinner.DefaultEditor {
         JFormattedTextField ftf = getTextField();
         ftf.setEditable(true);
         ftf.setFont(new Font("Monospaced", Font.BOLD, 13));
-//        ftf.setFont(new Font("Dialog", Font.BOLD, 13));
         ftf.setColumns(13);
         ftf.setHorizontalAlignment(JFormattedTextField.RIGHT);
         ftf.setFormatterFactory(new TimeFormatterFactory());

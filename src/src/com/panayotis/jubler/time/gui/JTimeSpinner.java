@@ -54,7 +54,7 @@ public class JTimeSpinner extends JSpinner {
                 c = (JButton)getComponent(i);
                 c.addMouseListener(new MouseAdapter() {
                     public void mousePressed(MouseEvent e) {
-                        if( (e.getModifiers()&e.ALT_MASK) > 0) model.setSpeed(0.1);
+                        if( (e.getModifiers()&MouseEvent.ALT_MASK) > 0) model.setSpeed(0.1);
                         else model.setSpeed(1);
                     }
                 });

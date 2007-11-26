@@ -100,7 +100,7 @@ public class SubEntry implements Comparable<SubEntry> {
     public SubEntry( double start, double finish, String line) {
         this.start = new Time(start);
         this.finish = new Time(finish);
-        this.subtext = subtext;
+        this.subtext = line;
         mark = 0;
         style = null;
     }
@@ -110,6 +110,7 @@ public class SubEntry implements Comparable<SubEntry> {
         this.finish = new Time(finish);
         this.subtext = line;
         mark = 0;
+        style = null;
     }
     
     public SubEntry(SubEntry old) {
@@ -156,9 +157,9 @@ public class SubEntry implements Comparable<SubEntry> {
     String getData(int col) {
         switch (col) {
             case 0:
-                return start.getSeconds();
+                return start.toString();
             case 1:
-                return finish.getSeconds();
+                return finish.toString();
             case 2:
                 return "0";
             case 3:
@@ -248,7 +249,7 @@ public class SubEntry implements Comparable<SubEntry> {
     }
     
     public String toString() {
-        return start.getSeconds()+"->"+finish.getSeconds()+" "+subtext;
+        return start.toString()+"->"+finish.toString()+" "+subtext;
     }
     
     /* Calculate statistics of this subtitle */
