@@ -279,8 +279,8 @@
 		<copy todir="${destdir}">
 			<fileset dir="resources/installers/linux/dist/slackware"/>
 		</copy>
-		<exec dir="${destdir}" executable="echo" failonerror="true">
-			<arg line="makepkg -l y -c n /tmp/jubler-${version}-${os.arch}-1.tgz"/>
+		<exec dir="${destdir}" executable="makepkg" failonerror="true">
+			<arg line="-l y -c n /tmp/jubler-${version}-${os.arch}-1.tgz"/>
 		</exec>
 	</target>
 	
