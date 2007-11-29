@@ -306,6 +306,20 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
               <SubComponents>
+                <Component class="javax.swing.JToggleButton" name="PreviewB">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/icons/preview.png"/>
+                    </Property>
+                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="_(&quot;Enable/disable preview&quot;)" type="code"/>
+                    </Property>
+                    <Property name="actionCommand" type="java.lang.String" value="metrics"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewBpanelsetVisible"/>
+                  </Events>
+                </Component>
                 <Component class="javax.swing.JButton" name="DetachB">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
@@ -421,27 +435,13 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="panelsetVisible"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="PreviewB">
-                  <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/preview.png"/>
-                    </Property>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Displa/hide metric attributes&quot;)" type="code"/>
-                    </Property>
-                    <Property name="actionCommand" type="java.lang.String" value="metrics"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewBpanelsetVisible"/>
-                  </Events>
-                </Component>
                 <Component class="javax.swing.JToggleButton" name="MetricsB">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/sizes.png"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Displa/hide metric attributes&quot;)" type="code"/>
+                      <Connection code="_(&quot;Display/hide metric attributes&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="metrics"/>
                   </Properties>

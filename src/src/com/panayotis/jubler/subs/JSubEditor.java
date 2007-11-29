@@ -381,6 +381,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         EditB = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
+        PreviewB = new javax.swing.JToggleButton();
         DetachB = new javax.swing.JButton();
         AttachTxtB = new javax.swing.JButton();
         AttachPrevB = new javax.swing.JButton();
@@ -388,7 +389,6 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         TimeB = new javax.swing.JToggleButton();
         FontB = new javax.swing.JToggleButton();
         ColorB = new javax.swing.JToggleButton();
-        PreviewB = new javax.swing.JToggleButton();
         MetricsB = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
         TrashB = new javax.swing.JButton();
@@ -511,6 +511,16 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
 
+        PreviewB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
+        PreviewB.setToolTipText(_("Enable/disable preview"));
+        PreviewB.setActionCommand("metrics");
+        PreviewB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PreviewBpanelsetVisible(evt);
+            }
+        });
+        jPanel8.add(PreviewB);
+
         DetachB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/detach.png"))); // NOI18N
         DetachB.setToolTipText(_("Detach subtitle editor panel"));
         DetachB.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -577,18 +587,8 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel1.add(ColorB);
 
-        PreviewB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
-        PreviewB.setToolTipText(_("Displa/hide metric attributes"));
-        PreviewB.setActionCommand("metrics");
-        PreviewB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PreviewBpanelsetVisible(evt);
-            }
-        });
-        jPanel1.add(PreviewB);
-
         MetricsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sizes.png"))); // NOI18N
-        MetricsB.setToolTipText(_("Displa/hide metric attributes"));
+        MetricsB.setToolTipText(_("Display/hide metric attributes"));
         MetricsB.setActionCommand("metrics");
         MetricsB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
