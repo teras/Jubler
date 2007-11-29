@@ -2022,6 +2022,7 @@ public class Jubler extends JFrame {
              * This is also the case when the user just clicks on the "close" button
              * of the application */
             mfile.closeAudioCache();
+            preview.enablePreview(false);
 
             /* Reposition Visual Elements */
             BasicPanel.add(SubsScrollPane);

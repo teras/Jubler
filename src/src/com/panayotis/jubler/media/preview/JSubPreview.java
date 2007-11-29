@@ -67,9 +67,10 @@ public class JSubPreview extends javax.swing.JPanel {
     /* Here we store the start/end/videoduration values of the window*/
     private ViewWindow view;
     
-    private int cursor_action = 0;
-    
     private MediaFile last_media_file = null;
+    
+    /* Remember if this preview is being used or not */
+    private boolean is_enabled = false;
     
     
     /** Creates new form JSubPreview */
@@ -166,13 +167,14 @@ public class JSubPreview extends javax.swing.JPanel {
         frame.updateMediaFile(mfile);
     }
     
+    public boolean isActive() {
+        return is_enabled;
+    }
+
     public void enablePreview(boolean status) {
+        is_enabled = status;
         frame.setEnabled(status && VideoShow.isSelected());
         wave.setEnabled(status && AudioShow.isSelected());
-
-        if (status) {
-            frame.repaint();
-        } 
     }
 
     public void forceRepaintFrame() {
@@ -189,11 +191,7 @@ public class JSubPreview extends javax.swing.JPanel {
             parent.subeditor.setAttached(JSubEditor.ATTACHED_TO_DIALOG);
         enablePreview(false);
     }
-    
-    public boolean isActive() {
-        return true;
-    }
-    
+       
     public DecoderListener getDecoderListener() {
         return wave;
     }
