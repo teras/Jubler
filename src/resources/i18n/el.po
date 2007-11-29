@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-09 11:22+0200\n"
-"PO-Revision-Date: 2007-11-09 11:28+0200\n"
+"PO-Revision-Date: 2007-11-26 12:45+0200\n"
 "Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,7 +91,7 @@ msgstr "Μορφή"
 
 #: com/panayotis/jubler/Jubler.java:519
 msgid "Show columns"
-msgstr "Εμφάνιση στοιλών"
+msgstr "Εμφάνιση στηλών"
 
 #: com/panayotis/jubler/Jubler.java:520
 #: com/panayotis/jubler/subs/JSubEditor.java:400
@@ -531,7 +531,7 @@ msgstr "Πίσω"
 
 #: com/panayotis/jubler/information/HelpBrowser.java:88
 msgid "Go to previous page"
-msgstr "Πήγενε στη προηγούμενη σελίδα"
+msgstr "Πήγαινε στη προηγούμενη σελίδα"
 
 #: com/panayotis/jubler/information/JAbout.java:37
 msgid "Debug window"
@@ -555,7 +555,7 @@ msgstr "Ελληνικά"
 
 #: com/panayotis/jubler/information/JAbout.java:59
 msgid "Portuguese (Brazilian)"
-msgstr "Πορτογαλλικά (Βραζιλίας)"
+msgstr "Πορτογαλικά (Βραζιλίας)"
 
 #: com/panayotis/jubler/information/JAbout.java:60
 msgid "Serbian"
@@ -734,7 +734,7 @@ msgstr "Είναι σημαντικό να αναβαθμίσετε από τη�
 
 #: com/panayotis/jubler/information/JVersion.java:113
 msgid "Please consider upgrading from the following URL:"
-msgstr "Έχετε υπόψην να αναβαθμίσετε από την επόμενη διεύθυνση:"
+msgstr "Έχετε υπόψιν να αναβαθμίσετε από την επόμενη διεύθυνση:"
 
 #: com/panayotis/jubler/information/JVersion.java:139
 msgid "New Jubler version found!"
@@ -793,7 +793,7 @@ msgstr "Όνομα προσχηματισμένου αρχείου ήχου. Χ�
 
 #: com/panayotis/jubler/media/JVideofileSelector.java:189
 msgid "Change the audio cache filename"
-msgstr "Αλλαγή του προκατατασκευασμένου αρχείου ήχου"
+msgstr "Αλλαγή του προσχηματισμένου αρχείου ήχου"
 
 #: com/panayotis/jubler/media/JVideofileSelector.java:198
 msgid "Filename of the cached audio stream"
@@ -829,7 +829,7 @@ msgstr "Λανθασμένος τερματισμός εφαρμογής - πα�
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:170
 msgid "Movie Player Error"
-msgstr "Λάθος της αναπαραγής της ταινίας"
+msgstr "Λάθος της αναπαραγωγής της ταινίας"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:379
 msgid "Video Console"
@@ -945,7 +945,7 @@ msgstr "Δεν ήταν δυνατή η δημιουργία προσωρινο�
 
 #: com/panayotis/jubler/media/player/AbstractPlayer.java:70
 msgid "Media Player Error"
-msgstr "Λάθος της αναπαραγής πολυμέσου"
+msgstr "Λάθος της αναπαραγωγής πολυμέσου"
 
 #: com/panayotis/jubler/media/player/mplayer/MPlayer.java:67
 msgid "MPlayer options"
@@ -1124,7 +1124,7 @@ msgstr "Μάγος ρυθμίσεων"
 
 #: com/panayotis/jubler/options/JExtBasicOptions.java:87
 msgid "Start the Wizard, to locate the executable path name"
-msgstr "Εκκίνιση του Μάγου, για την εύρεση του εκτελέσιμου"
+msgstr "Εκκίνηση του Μάγου, για την εύρεση του εκτελέσιμου"
 
 #: com/panayotis/jubler/options/JExternalOptions.java:55
 #, java-format
@@ -1154,7 +1154,7 @@ msgstr "Εμφάνιση των επιλογών φόρτωσης κάθε φο�
 
 #: com/panayotis/jubler/options/JLoadOptions.java:111
 msgid "Load subtitles options"
-msgstr "Ιδιότήτες υποτίτλων για την φόρτωση"
+msgstr "Ιδιότητες υποτίτλων για την φόρτωση"
 
 #: com/panayotis/jubler/options/JLoadOptions.java:136
 msgid "First Encoding"
@@ -1211,7 +1211,7 @@ msgstr "Εμφάνιση επιλογών οποτεδήποτε ο χρήστη
 
 #: com/panayotis/jubler/options/JSaveOptions.java:118
 msgid "Save subtitles options"
-msgstr "Ιδιότήτες υποτίτλων για την αποθήκευση"
+msgstr "Ιδιότητες υποτίτλων για την αποθήκευση"
 
 #: com/panayotis/jubler/options/JSaveOptions.java:150
 msgid "Format"
@@ -1239,7 +1239,7 @@ msgstr "Ορισμός συντομεύσεων πληκτρολογίου"
 
 #: com/panayotis/jubler/options/JShortcutsOptions.java:115
 msgid "Clear current shortcut"
-msgstr "Διαγραφή τρέχοντος συνδιασμού"
+msgstr "Διαγραφή τρέχοντος συνδυασμού"
 
 #: com/panayotis/jubler/options/JShortcutsOptions.java:126
 msgid "Reset all to defaults"
@@ -1271,7 +1271,7 @@ msgstr "Τα αρχεία αυτά δεν έχουν αποθηκευθεί"
 
 #: com/panayotis/jubler/options/gui/JUnsaved.java:61
 msgid "Do you want to quit without saving?"
-msgstr "Θέλετε να εγκαταλήψετε χωρίς αποθήκευση;"
+msgstr "Θέλετε να εγκαταλείψετε χωρίς αποθήκευση;"
 
 #: com/panayotis/jubler/os/FileCommunicator.java:119
 #: com/panayotis/jubler/subs/loader/AbstractTextSubFormat.java:79
@@ -1681,7 +1681,7 @@ msgstr "Διαγραφή μορφής"
 
 #: com/panayotis/jubler/subs/style/JStyleEditor.java:786
 msgid "Welcome to the (Jubler) world!"
-msgstr "Καλωσήρθατε στον κόσμο του (Jubler)!"
+msgstr "Καλώς ήρθατε στον κόσμο του (Jubler)!"
 
 #: com/panayotis/jubler/subs/style/StyleType.java:84
 #: com/panayotis/jubler/subs/style/StyleType.java:105
@@ -2142,7 +2142,7 @@ msgstr "-τρέχων-"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:134
 msgid "Synchronize data from the following subtitles"
-msgstr "Συγχρονισμός υποτίτλως από τους επόμενους υπότιτλους"
+msgstr "Συγχρονισμός υποτίτλων από τους επόμενους υπότιτλους"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:137
 msgid "The subtitles file to use as a model"
@@ -2162,7 +2162,7 @@ msgstr "Εισαγωγή χρόνου"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:153
 msgid "Use the timestamp of the subtitles as the time model for current subtitles"
-msgstr "Χρήση του χρόνου του προτύπου αρχείου για τον καθορισμό του χρόνου των τρέχοντων υποτίτλων"
+msgstr "Χρήση του χρόνου του προτύπου αρχείου για τον καθορισμό του χρόνου των τρεχόντων υποτίτλων"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:158
 msgid "Import text"
@@ -2301,7 +2301,7 @@ msgstr "Χρήση όλων των ανωτέρω σεναρίων"
 
 #: com/panayotis/jubler/tools/replace/JReplaceList.java:84
 msgid "Clear All"
-msgstr "Απεπιλογή όλων"
+msgstr "Αποεπιλογή όλων"
 
 #: com/panayotis/jubler/tools/replace/JReplaceList.java:85
 msgid "Use none of the above replacing scenarios"
