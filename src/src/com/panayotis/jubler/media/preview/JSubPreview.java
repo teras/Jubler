@@ -69,9 +69,6 @@ public class JSubPreview extends javax.swing.JPanel {
     
     private MediaFile last_media_file = null;
     
-    /* Remember if this preview is being used or not */
-    private boolean is_enabled = false;
-    
     
     /** Creates new form JSubPreview */
     public JSubPreview(Jubler parent) {
@@ -167,12 +164,8 @@ public class JSubPreview extends javax.swing.JPanel {
         frame.updateMediaFile(mfile);
     }
     
-    public boolean isActive() {
-        return is_enabled;
-    }
-
-    public void enablePreview(boolean status) {
-        is_enabled = status;
+    public void setEnabled(boolean status) {
+        super.setEnabled(status);
         frame.setEnabled(status && VideoShow.isSelected());
         wave.setEnabled(status && AudioShow.isSelected());
     }
@@ -189,7 +182,7 @@ public class JSubPreview extends javax.swing.JPanel {
     public void dialogClosed() {
         if (parent.subeditor.getAttachedTo() == JSubEditor.ATTACHED_TO_PREVIEW)
             parent.subeditor.setAttached(JSubEditor.ATTACHED_TO_DIALOG);
-        enablePreview(false);
+        setEnabled(false);
     }
        
     public DecoderListener getDecoderListener() {

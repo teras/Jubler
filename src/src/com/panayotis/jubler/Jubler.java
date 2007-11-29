@@ -2006,7 +2006,7 @@ public class Jubler extends JFrame {
             mfile.initAudioCache(preview.getDecoderListener());
 
             preview.updateMediaFile(mfile);
-            preview.enablePreview(true);
+            preview.setEnabled(true);
             subeditor.setAttPrevSelectable(true);
             mfile.videoselector.setEnabled(false);
             preview.subsHaveChanged(SubTable.getSelectedRows());
@@ -2022,7 +2022,7 @@ public class Jubler extends JFrame {
              * This is also the case when the user just clicks on the "close" button
              * of the application */
             mfile.closeAudioCache();
-            preview.enablePreview(false);
+            preview.setEnabled(false);
 
             /* Reposition Visual Elements */
             BasicPanel.add(SubsScrollPane);
@@ -2044,7 +2044,7 @@ public class Jubler extends JFrame {
         }
         
         /* Clean up previewers */
-        preview.enablePreview(false);
+        preview.setEnabled(false);
         
         windows.remove(this);
         for (Jubler w : windows) {
