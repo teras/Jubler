@@ -198,8 +198,4 @@ public class Time implements Comparable<Time> {
         return msecs/1000d;
     }
     
-    public String toString() {
-        return getSeconds();
-    }
-    
 }

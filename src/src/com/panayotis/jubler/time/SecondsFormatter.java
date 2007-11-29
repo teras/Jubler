@@ -55,6 +55,6 @@ public class SecondsFormatter extends MaskFormatter {
     }
         
     public String valueToString(Object value) {
-        return value.toString();
+        return ((Time)value).getSeconds();
     }
 }

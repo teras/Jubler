@@ -23,6 +23,8 @@
 
 package com.panayotis.jubler.time;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
 import javax.swing.text.NumberFormatter;
 
 /**
@@ -30,5 +32,14 @@ import javax.swing.text.NumberFormatter;
  * @author teras
  */
 public class FramesFormatter extends NumberFormatter {
-
+    private final static NumberFormat format;
+    
+    static {
+        format = NumberFormat.getIntegerInstance();
+        format.setMaximumIntegerDigits(7);
+    }
+            
+    public FramesFormatter () throws ParseException {
+        super (format);
+    }
 }

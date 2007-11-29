@@ -35,6 +35,7 @@ public class TimeFormatterFactory extends JFormattedTextField.AbstractFormatterF
     public JFormattedTextField.AbstractFormatter getFormatter(JFormattedTextField tf)  {
         try {
             return new SecondsFormatter();
+      //      return new FramesFormatter();
         } catch ( ParseException e) {}
         return null;
     }
