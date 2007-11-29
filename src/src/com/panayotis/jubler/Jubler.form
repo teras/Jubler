@@ -1041,7 +1041,6 @@
         <Container class="javax.swing.JSplitPane" name="SubSplitPane">
           <Properties>
             <Property name="orientation" type="int" value="0"/>
-            <Property name="oneTouchExpandable" type="boolean" value="true"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

@@ -207,6 +207,7 @@ public class Jubler extends JFrame {
         subeditor.setAttached(JSubEditor.ATTACHED_TO_TEXT);
 
         SubSplitPane.add(preview, JSplitPane.TOP);
+        enablePreview(false);
 
         /* Set JFileChooser properties */
         filedialog = new JFileChooser();
@@ -239,6 +240,7 @@ public class Jubler extends JFrame {
         StaticJubler.putWindowPosition(this);
         openWindow();
         updateRecentFile(null);
+
     }
     
     
@@ -271,7 +273,8 @@ public class Jubler extends JFrame {
             SubSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         else
             SubSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-    }
+        SubSplitPane.resetToPreferredSizes();
+     }
     
     
     public void subTextChanged() {
@@ -573,7 +576,6 @@ public class Jubler extends JFrame {
         BasicPanel.add(LowerPartP, java.awt.BorderLayout.SOUTH);
 
         SubSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        SubSplitPane.setOneTouchExpandable(true);
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
         SubSplitPane.setBottomComponent(SubsScrollPane);
@@ -1297,29 +1299,7 @@ public class Jubler extends JFrame {
         subs.sort(0,Double.MAX_VALUE);
         tableHasChanged(selected);
     }//GEN-LAST:event_SortTBActionPerformed
-    
-    
-    public void openPreview(boolean status) {
-        if (status) {
-            mfile.validateMediaFile(subs, false);
-            mfile.initAudioCache(preview.getDecoderListener());
-
-            preview.updateMediaFile(mfile);
-            preview.setVisible(true);
-            subeditor.setAttPrevSelectable(true);
-            mfile.videoselector.setEnabled(false);
-            preview.subsHaveChanged(SubTable.getSelectedRows());
-        } else {
-            subeditor.setAttPrevSelectable(false);
-            mfile.videoselector.setEnabled(true);
-
-            /* Cache is deleted *every time* the preview window is closed
-             * This is also the case when the user just clicks on the "close" button
-             * of the application */
-            mfile.closeAudioCache();    //
-        }
-    }
-    
+        
     private void byTimeGEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byTimeGEMActionPerformed
         JTimeSingleSelection go = new JTimeSingleSelection(new Time(3600d), _("Go to the specified time"));
         go.setToolTip(_("Into which time moment do you want to go to"));
@@ -2016,7 +1996,40 @@ public class Jubler extends JFrame {
         if(reset_selection) setSelectedSub(0, true);
     }
     
-    
+    public void enablePreview(boolean status) {
+        BasicPanel.remove(SubSplitPane);
+        BasicPanel.remove(SubsScrollPane);
+        SubSplitPane.remove(SubsScrollPane);
+
+        if (status) {
+            mfile.validateMediaFile(subs, false);
+            mfile.initAudioCache(preview.getDecoderListener());
+
+            preview.updateMediaFile(mfile);
+            preview.enablePreview(true);
+            subeditor.setAttPrevSelectable(true);
+            mfile.videoselector.setEnabled(false);
+            preview.subsHaveChanged(SubTable.getSelectedRows());
+
+            /* Reposition Visual Elements */
+            BasicPanel.add(SubSplitPane);
+            SubSplitPane.setBottomComponent(SubsScrollPane);
+        } else {
+            subeditor.setAttPrevSelectable(false);
+            mfile.videoselector.setEnabled(true);
+
+            /* Cache is deleted *every time* the preview window is closed
+             * This is also the case when the user just clicks on the "close" button
+             * of the application */
+            mfile.closeAudioCache();
+
+            /* Reposition Visual Elements */
+            BasicPanel.add(SubsScrollPane);
+        }
+        SubSplitPane.resetToPreferredSizes();
+        validate();
+    }
+
     
     private void closeWindow(boolean unsave_check, boolean keep_application_alive) {
         if (isUnsaved() && unsave_check) {
@@ -2030,7 +2043,7 @@ public class Jubler extends JFrame {
         }
         
         /* Clean up previewers */
-        preview.setVisible(false);
+        preview.enablePreview(false);
         
         windows.remove(this);
         for (Jubler w : windows) {

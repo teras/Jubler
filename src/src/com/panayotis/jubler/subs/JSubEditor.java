@@ -740,7 +740,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     }//GEN-LAST:event_Lock1ActionPerformed
 
     private void PreviewBpanelsetVisible(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewBpanelsetVisible
-       parent.openPreview(PreviewB.isSelected());
+       parent.enablePreview(PreviewB.isSelected());
 }//GEN-LAST:event_PreviewBpanelsetVisible
     
     

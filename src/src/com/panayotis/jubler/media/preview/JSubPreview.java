@@ -166,16 +166,13 @@ public class JSubPreview extends javax.swing.JPanel {
         frame.updateMediaFile(mfile);
     }
     
-    public void setVisible(boolean status) {
-//        super.setVisible(status);
+    public void enablePreview(boolean status) {
         frame.setEnabled(status && VideoShow.isSelected());
         wave.setEnabled(status && AudioShow.isSelected());
-        
+
         if (status) {
             frame.repaint();
-        } else {
-            parent.openPreview(false);
-        }
+        } 
     }
 
     public void forceRepaintFrame() {
@@ -190,7 +187,7 @@ public class JSubPreview extends javax.swing.JPanel {
     public void dialogClosed() {
         if (parent.subeditor.getAttachedTo() == JSubEditor.ATTACHED_TO_PREVIEW)
             parent.subeditor.setAttached(JSubEditor.ATTACHED_TO_DIALOG);
-        setVisible(false);
+        enablePreview(false);
     }
     
     public boolean isActive() {
@@ -213,7 +210,6 @@ public class JSubPreview extends javax.swing.JPanel {
             MainPanel.add(frame, BorderLayout.NORTH);
         }
         parent.setPreviewOrientation(horizontal);
-        validate();
     }
     
     /** This method is called from within the constructor to
