@@ -96,9 +96,9 @@ public class SystemDependent {
     
     public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
         if (isMacOSX()) {
-            about.setVisible(false);
-            prefs.setVisible(false);
-            quit.setVisible(false);
+            about.getParent().remove(about);
+            prefs.getParent().remove(prefs);
+            quit.getParent().remove(quit);
         }
     }
     

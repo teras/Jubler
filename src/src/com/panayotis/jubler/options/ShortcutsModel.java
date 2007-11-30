@@ -32,7 +32,6 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JMenu;
@@ -64,7 +63,9 @@ public class ShortcutsModel extends AbstractTableModel {
         deflist = new ArrayList<Shortcut>();
         for (int i = 0 ; i < bar.getMenuCount() ; i++) {
             if (i>0) deflist.add(null);
-            addMenuList("", bar.getMenu(i));
+            JMenu menu = bar.getMenu(i);
+            addMenuList("", menu);
+            menu.setMnemonic(menu.getText().charAt(0));
         }
         String err = isValidCodes();
         if (err!=null) DEBUG.debug("Error in shortcut entry:"+err);
@@ -243,7 +244,6 @@ public class ShortcutsModel extends AbstractTableModel {
         }
         
         list = cloneList(deflist, true);
-        String nam, flags, kid;
         Matcher m = Pattern.compile("(\\w\\w\\w)=(\\w\\w\\w\\w)(\\d+)").matcher(keys);
         
         while (m.find()) {
