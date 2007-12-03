@@ -61,14 +61,15 @@ public class ShortcutsModel extends AbstractTableModel {
     /** Creates a new instance of ShortcutsModel */
     public ShortcutsModel(JMenuBar bar) {
         deflist = new ArrayList<Shortcut>();
-        for (int i = 0 ; i < bar.getMenuCount() ; i++) {
-            if (i>0) deflist.add(null);
+        for (int i = 0; i < bar.getMenuCount(); i++) {
+            if (i > 0) deflist.add(null);
             JMenu menu = bar.getMenu(i);
             addMenuList("", menu);
-            menu.setMnemonic(menu.getText().charAt(0));
+            menu.setMnemonic(KeyEvent.VK_A + i);
+            menu.setDisplayedMnemonicIndex(0);
         }
         String err = isValidCodes();
-        if (err!=null) DEBUG.debug("Error in shortcut entry:"+err);
+        if (err != null) DEBUG.debug("Error in shortcut entry:" + err);
     }
     
     private void addMenuList(String prefix, JMenu menu) {
