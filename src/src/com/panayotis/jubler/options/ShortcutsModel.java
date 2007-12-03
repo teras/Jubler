@@ -110,7 +110,7 @@ public class ShortcutsModel extends AbstractTableModel {
         Shortcut sh;
         for (int i = 0 ; i < list.size() ; i++) {
             sh = list.get(i);
-            if (sh!=null && sh.name.equals(name)) return i;
+            if (sh!=null && sh.name!=null && sh.name.equals(name)) return i;
         }
         return -1;
     }
@@ -257,6 +257,7 @@ public class ShortcutsModel extends AbstractTableModel {
         HashSet<String> set = new HashSet<String>();
         for (Shortcut s: deflist) {
             if (s!=null) {
+                if (s.name==null) return s.text;
                 if (set.contains(s.name)) return s.name;
                 if (s.name.length() != 3) return s.name;
                 set.add(s.name);
