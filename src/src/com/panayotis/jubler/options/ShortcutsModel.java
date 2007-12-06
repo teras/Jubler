@@ -32,6 +32,7 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JMenu;
@@ -65,8 +66,7 @@ public class ShortcutsModel extends AbstractTableModel {
             if (i > 0) deflist.add(null);
             JMenu menu = bar.getMenu(i);
             addMenuList("", menu);
-            menu.setMnemonic(KeyEvent.VK_A + i);
-            menu.setDisplayedMnemonicIndex(0);
+            updateMenuName(menu);
         }
         String err = isValidCodes();
         if (err != null) DEBUG.debug("Error in shortcut entry:" + err);
@@ -86,6 +86,15 @@ public class ShortcutsModel extends AbstractTableModel {
                 deflist.add(sh);
             }
         }
+    }
+    
+    public void updateMenuName(JMenuItem item) {
+//         menu.setMnemonic(KeyEvent.VK_A + i);
+//            menu.setDisplayedMnemonicIndex(0);
+//       
+        String full = item.getText();
+       // int 
+        System.out.println(full);
     }
     
     public void applyMenuShortcuts(JMenuBar bar) {

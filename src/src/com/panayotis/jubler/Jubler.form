@@ -181,7 +181,7 @@
         <Menu class="javax.swing.JMenu" name="FileM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;File&quot;)" type="code"/>
+              <Connection code="_(&quot;&amp;File&quot;)" type="code"/>
             </Property>
           </Properties>
           <SubComponents>
@@ -370,7 +370,7 @@
         <Menu class="javax.swing.JMenu" name="EditM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Edit&quot;)" type="code"/>
+              <Connection code="_(&quot;&amp;Edit&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -737,7 +737,7 @@
         <Menu class="javax.swing.JMenu" name="ToolsM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Tools&quot;)" type="code"/>
+              <Connection code="_(&quot;&amp;Tools&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -892,7 +892,7 @@
         <Menu class="javax.swing.JMenu" name="HelpM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Help&quot;)" type="code"/>
+              <Connection code="_(&quot;&amp;Help&quot;)" type="code"/>
             </Property>
           </Properties>
           <SubComponents>

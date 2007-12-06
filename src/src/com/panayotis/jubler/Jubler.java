@@ -662,7 +662,7 @@ public class Jubler extends JFrame {
 
         getContentPane().add(JublerTools, java.awt.BorderLayout.NORTH);
 
-        FileM.setText(_("File"));
+        FileM.setText(_("&File"));
 
         NewFM.setText(_("New..."));
 
@@ -746,7 +746,7 @@ public class Jubler extends JFrame {
 
         JublerMenuBar.add(FileM);
 
-        EditM.setText(_("Edit"));
+        EditM.setText(_("&Edit"));
         EditM.setEnabled(false);
 
         CutEM.setText(_("Cut subtitles"));
@@ -914,7 +914,7 @@ public class Jubler extends JFrame {
 
         JublerMenuBar.add(EditM);
 
-        ToolsM.setText(_("Tools"));
+        ToolsM.setText(_("&Tools"));
         ToolsM.setEnabled(false);
 
         SplitTM.setText(_("Split file"));
@@ -985,7 +985,7 @@ public class Jubler extends JFrame {
 
         JublerMenuBar.add(ToolsM);
 
-        HelpM.setText(_("Help"));
+        HelpM.setText(_("&Help"));
 
         FAQHM.setText(_("FAQ"));
         FAQHM.setName("HFQ"); // NOI18N
