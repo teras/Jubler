@@ -76,6 +76,10 @@ public class JFramePreview extends JPanel {
         setEnabled(false);
     }
     
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }
+    
     public Dimension getPreferredSize() {
         return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null)+24);
     }

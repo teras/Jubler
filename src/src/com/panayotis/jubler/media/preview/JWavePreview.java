@@ -87,8 +87,8 @@ public class JWavePreview extends JPanel implements DecoderListener {
     }
     
     
-    public Dimension getPreferredSize() { return new Dimension(500, 200); }
-    public Dimension getMinimumSize() { return new Dimension(500, 50); }
+    public Dimension getPreferredSize() { return new Dimension(10, 50); }
+    public Dimension getMinimumSize() { return new Dimension(10, 50); }
     
     
     public void startCacheCreation() {

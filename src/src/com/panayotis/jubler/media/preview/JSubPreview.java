@@ -153,7 +153,7 @@ public class JSubPreview extends javax.swing.JPanel {
     
     
     public void updateSelectedTime() {
-        TimePosL.setText(_("Selected subtitles") + " "  + new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString());
+        TimePosL.setText( new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString() + " [" + _("Selected subtitles") + "]");
     }
     
     public void updateMediaFile(MediaFile mfile) {
@@ -279,6 +279,8 @@ public class JSubPreview extends javax.swing.JPanel {
         InfoPanel.setLayout(new java.awt.BorderLayout());
 
         TimePosL.setText(" ");
+        TimePosL.setMinimumSize(new java.awt.Dimension(50, 16));
+        TimePosL.setPreferredSize(new java.awt.Dimension(50, 16));
         InfoPanel.add(TimePosL, java.awt.BorderLayout.CENTER);
 
         jPanel6.setLayout(new java.awt.BorderLayout());
@@ -310,14 +312,13 @@ public class JSubPreview extends javax.swing.JPanel {
 
         add(MainPanel, java.awt.BorderLayout.CENTER);
 
-        ToolPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        ToolPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 2, 2, 2));
         ToolPanel.setLayout(new javax.swing.BoxLayout(ToolPanel, javax.swing.BoxLayout.Y_AXIS));
 
-        Orientation.setSelected(true);
-        Orientation.setText("v");
-        Orientation.setToolTipText(_("Enable/disable video frame preview"));
+        Orientation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turndown.png"))); // NOI18N
+        Orientation.setToolTipText(_("Change orientation of Preview panel"));
         Orientation.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        Orientation.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/frameon.png"))); // NOI18N
+        Orientation.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turnright.png"))); // NOI18N
         Orientation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrientationActionPerformed(evt);
@@ -496,7 +497,7 @@ public class JSubPreview extends javax.swing.JPanel {
     }//GEN-LAST:event_sliderAdjustmentValueChanged
 
     private void OrientationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrientationActionPerformed
-       setOrientation(Orientation.isSelected());
+       setOrientation(!Orientation.isSelected());
 }//GEN-LAST:event_OrientationActionPerformed
     
     

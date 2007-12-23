@@ -189,18 +189,18 @@ public class Jubler extends JFrame {
     
     
     /** Creates new form JubEdit */
-    public Jubler() {
+    public Jubler() {        
         subs = null;
         mfile = new MediaFile();
         connected_consoles = new Vector<JVideoConsole>();
         
         undo = new UndoList(this);
-        
+                
         
         initComponents();
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
-        
+
         setTableProps();
 
         subeditor = new JSubEditor(this);
@@ -389,20 +389,21 @@ public class Jubler extends JFrame {
         SubSplitPane = new javax.swing.JSplitPane();
         SubsScrollPane = new javax.swing.JScrollPane();
         JublerTools = new javax.swing.JToolBar();
+        FileTP = new javax.swing.JPanel();
         NewTB = new javax.swing.JButton();
         LoadTB = new javax.swing.JButton();
         SaveTB = new javax.swing.JButton();
         InfoTB = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        EditTP = new javax.swing.JPanel();
         CutTB = new javax.swing.JButton();
         CopyTB = new javax.swing.JButton();
         PasteTB = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        UndoTP = new javax.swing.JPanel();
         UndoTB = new javax.swing.JButton();
         RedoTB = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
+        SortTP = new javax.swing.JPanel();
         SortTB = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
+        TestTP = new javax.swing.JPanel();
         TestTB = new javax.swing.JButton();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
@@ -584,81 +585,91 @@ public class Jubler extends JFrame {
 
         getContentPane().add(BasicPanel, java.awt.BorderLayout.CENTER);
 
+        FileTP.setLayout(new javax.swing.BoxLayout(FileTP, javax.swing.BoxLayout.LINE_AXIS));
+
         NewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/new.png"))); // NOI18N
         NewTB.setToolTipText(_("New"));
         NewTB.addActionListener(formListener);
-        JublerTools.add(NewTB);
+        FileTP.add(NewTB);
 
         LoadTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/load.png"))); // NOI18N
         LoadTB.setToolTipText(_("Load"));
         LoadTB.addActionListener(formListener);
-        JublerTools.add(LoadTB);
+        FileTP.add(LoadTB);
 
         SaveTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
         SaveTB.setToolTipText(_("Save"));
         SaveTB.setEnabled(false);
         SaveTB.addActionListener(formListener);
-        JublerTools.add(SaveTB);
+        FileTP.add(SaveTB);
 
         InfoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png"))); // NOI18N
         InfoTB.setToolTipText(_("Project Information"));
         InfoTB.setEnabled(false);
         InfoTB.addActionListener(formListener);
-        JublerTools.add(InfoTB);
+        FileTP.add(InfoTB);
 
-        jLabel4.setText("  ");
-        JublerTools.add(jLabel4);
+        JublerTools.add(FileTP);
+
+        EditTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
 
         CutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cut.png"))); // NOI18N
         CutTB.setToolTipText(_("Cut"));
         CutTB.setEnabled(false);
         CutTB.addActionListener(formListener);
-        JublerTools.add(CutTB);
+        EditTP.add(CutTB);
 
         CopyTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/copy.png"))); // NOI18N
         CopyTB.setToolTipText(_("Copy"));
         CopyTB.setEnabled(false);
         CopyTB.addActionListener(formListener);
-        JublerTools.add(CopyTB);
+        EditTP.add(CopyTB);
 
         PasteTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/paste.png"))); // NOI18N
         PasteTB.setToolTipText(_("Paste"));
         PasteTB.setEnabled(false);
         PasteTB.addActionListener(formListener);
-        JublerTools.add(PasteTB);
+        EditTP.add(PasteTB);
 
-        jLabel5.setText("  ");
-        JublerTools.add(jLabel5);
+        JublerTools.add(EditTP);
+
+        UndoTP.setLayout(new javax.swing.BoxLayout(UndoTP, javax.swing.BoxLayout.LINE_AXIS));
 
         UndoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/undo.png"))); // NOI18N
         UndoTB.setToolTipText(_("Undo"));
         UndoTB.setEnabled(false);
         UndoTB.addActionListener(formListener);
-        JublerTools.add(UndoTB);
+        UndoTP.add(UndoTB);
 
         RedoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/redo.png"))); // NOI18N
         RedoTB.setToolTipText(_("Redo"));
         RedoTB.setEnabled(false);
         RedoTB.addActionListener(formListener);
-        JublerTools.add(RedoTB);
+        UndoTP.add(RedoTB);
 
-        jLabel6.setText(" ");
-        JublerTools.add(jLabel6);
+        JublerTools.add(UndoTP);
+
+        SortTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        SortTP.setLayout(new javax.swing.BoxLayout(SortTP, javax.swing.BoxLayout.LINE_AXIS));
 
         SortTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sort.png"))); // NOI18N
         SortTB.setToolTipText(_("Sort subtitles"));
         SortTB.setEnabled(false);
         SortTB.addActionListener(formListener);
-        JublerTools.add(SortTB);
+        SortTP.add(SortTB);
 
-        jLabel8.setText("  ");
-        JublerTools.add(jLabel8);
+        JublerTools.add(SortTP);
+
+        TestTP.setLayout(new javax.swing.BoxLayout(TestTP, javax.swing.BoxLayout.LINE_AXIS));
 
         TestTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/test.png"))); // NOI18N
         TestTB.setToolTipText(_("Test subtitles from current position"));
         TestTB.setEnabled(false);
         TestTB.addActionListener(formListener);
-        JublerTools.add(TestTB);
+        TestTP.add(TestTB);
+
+        JublerTools.add(TestTP);
 
         getContentPane().add(JublerTools, java.awt.BorderLayout.NORTH);
 
@@ -1759,10 +1770,12 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu DeleteEM;
     private javax.swing.JMenuItem DeleteP;
     private javax.swing.JMenu EditM;
+    private javax.swing.JPanel EditTP;
     private javax.swing.JMenuItem EmptyLinesDEM;
     private javax.swing.JMenuItem FAQHM;
     private javax.swing.JMenu FileM;
     private javax.swing.JMenuItem FileNFM;
+    private javax.swing.JPanel FileTP;
     private javax.swing.JMenuItem FixTM;
     private javax.swing.JMenuItem GloballyREM;
     private javax.swing.JMenu GoEM;
@@ -1814,6 +1827,7 @@ public class Jubler extends JFrame {
     private javax.swing.JCheckBoxMenuItem ShowStartP;
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
     private javax.swing.JButton SortTB;
+    private javax.swing.JPanel SortTP;
     private javax.swing.JMenuItem SpellTM;
     private javax.swing.JMenuItem SplitTM;
     private javax.swing.JLabel Stats;
@@ -1828,10 +1842,12 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem SynchronizeTM;
     private javax.swing.JButton TestTB;
     private javax.swing.JMenu TestTM;
+    private javax.swing.JPanel TestTP;
     private javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
+    private javax.swing.JPanel UndoTP;
     private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
@@ -1839,10 +1855,6 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem bySelectionMEM;
     private javax.swing.JMenuItem bySelectionSEM;
     private javax.swing.JMenuItem byTimeGEM;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
