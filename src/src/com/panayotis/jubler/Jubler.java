@@ -2184,19 +2184,20 @@ public class Jubler extends JFrame {
     }
     
     public void showInfo() {
-        Info.setText(_("Number of subtitles : {0}    {1}", subs.size(),  (isUnsaved() ? "-" + _("Unsaved") + "-" : "") ));
-        String title = "";
-        if ( subs.getCurrentFile() != null ) {
-            if ( isUnsaved() ) {
-                title +="*";
+        Info.setText(_("Number of subtitles : {0}    {1}", subs.size(), (isUnsaved() ? "-" + _("Unsaved") + "-" : "")));
+        if (subs.getCurrentFile() != null) {
+            String title = subs.getCurrentFileName();
+            if (isUnsaved()) {
+                title = "*" + title;
                 getRootPane().putClientProperty("windowModified", Boolean.TRUE);
             } else {
                 getRootPane().putClientProperty("windowModified", Boolean.FALSE);
             }
-            title += subs.getCurrentFileName() + " - ";
+            setTitle(title + " - Jubler");
+            getRootPane().putClientProperty("Window.documentFile", subs.getCurrentFile());
+        } else {
+            setTitle("Jubler");
         }
-        title += "Jubler";
-        setTitle(title);
     }
     
     public void setUnsaved(boolean status) {

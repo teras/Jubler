@@ -1,3 +1,7 @@
+3.5.0
+
+Improved user interface. Preview interface intergrated inside main Jubler window.
+
 3.4.1
 
 MPlayer uses threads to properly handle out and error stream. Updated to latest
