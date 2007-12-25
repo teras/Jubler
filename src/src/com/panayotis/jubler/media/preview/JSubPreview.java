@@ -178,13 +178,7 @@ public class JSubPreview extends javax.swing.JPanel {
     public void attachEditor(JSubEditor editor) {
         EditorPanel.add(editor, BorderLayout.SOUTH);
     }
-    
-    public void dialogClosed() {
-        if (parent.subeditor.getAttachedTo() == JSubEditor.ATTACHED_TO_PREVIEW)
-            parent.subeditor.setAttached(JSubEditor.ATTACHED_TO_DIALOG);
-        setEnabled(false);
-    }
-       
+        
     public DecoderListener getDecoderListener() {
         return wave;
     }
@@ -318,6 +312,7 @@ public class JSubPreview extends javax.swing.JPanel {
         Orientation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turndown.png"))); // NOI18N
         Orientation.setToolTipText(_("Change orientation of Preview panel"));
         Orientation.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        Orientation.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turn.png"))); // NOI18N
         Orientation.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turnright.png"))); // NOI18N
         Orientation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

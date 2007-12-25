@@ -91,7 +91,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableCellRenderer;
 
 
 /**
@@ -118,8 +117,7 @@ public class Jubler extends JFrame {
      */
     private MediaFile mfile;
     
-    
-    private JTable SubTable;
+    /* A list of undo features */
     private UndoList undo;
     
     /* The preview dialog, showing the subtitle, the waveform and some video clips */
@@ -201,10 +199,8 @@ public class Jubler extends JFrame {
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
 
-        setTableProps();
-
         subeditor = new JSubEditor(this);
-        subeditor.setAttached(JSubEditor.ATTACHED_TO_TEXT);
+        subeditor.setAttached(true);
 
         SubSplitPane.add(preview, JSplitPane.TOP);
         enablePreview(false);
@@ -388,6 +384,12 @@ public class Jubler extends JFrame {
         Stats = new javax.swing.JLabel();
         SubSplitPane = new javax.swing.JSplitPane();
         SubsScrollPane = new javax.swing.JScrollPane();
+        SubTable = new JTable () {
+            public void columnMarginChanged(ChangeEvent e)  {
+                super.columnMarginChanged(e);
+                setcolumnchange(true);
+            }
+        };
         JublerTools = new javax.swing.JToolBar();
         FileTP = new javax.swing.JPanel();
         NewTB = new javax.swing.JButton();
@@ -579,6 +581,30 @@ public class Jubler extends JFrame {
         SubSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
+
+        SubTable.setComponentPopupMenu(SubsPop);
+        SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        SubTable.setDefaultRenderer(Object.class, TableRenderer);
+        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
+            public void mousePressed(MouseEvent e) {
+                setcolumnchange(false);
+            }
+            public void mouseReleased(MouseEvent e) {
+                if (getcolumnchange()) subs.saveColumnWidth(SubTable);
+                setcolumnchange(false);
+            }
+        });
+        SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) return; //Ignore extra messages
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+                if (!lsm.isSelectionEmpty()) {
+                    displaySubData();
+                }
+            }
+        });
+        SubsScrollPane.setViewportView(SubTable);
+
         SubSplitPane.setBottomComponent(SubsScrollPane);
 
         BasicPanel.add(SubSplitPane, java.awt.BorderLayout.CENTER);
@@ -1837,6 +1863,7 @@ public class Jubler extends JFrame {
     private javax.swing.JSeparator StyleSepSEM;
     public javax.swing.JPanel SubEditP;
     private javax.swing.JSplitPane SubSplitPane;
+    private javax.swing.JTable SubTable;
     private javax.swing.JPopupMenu SubsPop;
     private javax.swing.JScrollPane SubsScrollPane;
     private javax.swing.JMenuItem SynchronizeTM;
@@ -2019,7 +2046,6 @@ public class Jubler extends JFrame {
 
             preview.updateMediaFile(mfile);
             preview.setEnabled(true);
-            subeditor.setAttPrevSelectable(true);
             mfile.videoselector.setEnabled(false);
             preview.subsHaveChanged(SubTable.getSelectedRows());
 
@@ -2027,7 +2053,6 @@ public class Jubler extends JFrame {
             BasicPanel.add(SubSplitPane);
             SubSplitPane.setBottomComponent(SubsScrollPane);
         } else {
-            subeditor.setAttPrevSelectable(false);
             mfile.videoselector.setEnabled(true);
 
             /* Cache is deleted *every time* the preview window is closed
@@ -2114,62 +2139,8 @@ public class Jubler extends JFrame {
     private boolean column_change;
     private boolean getcolumnchange() { return column_change;}
     private void setcolumnchange(boolean cc) {column_change=cc;}
-    private void setTableProps() {
-        final SubRenderer renderer = new SubRenderer();
-        
-        /* We have to track column change and act on the mouse up event.
-         * If we do the other way round, then some event are going ot be missed,
-         * since we don't know the event trigger sequence .
-         */
-        
-        SubTable = new JTable() {
-            public TableCellRenderer getCellRenderer(int row, int column) {
-                return renderer;
-            }
-            public void columnMarginChanged(ChangeEvent e)  {
-                super.columnMarginChanged(e);
-                setcolumnchange(true);
-            }
-        };
-        
-        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
-            public void mousePressed(MouseEvent e) {
-                setcolumnchange(false);
-            }
-            
-            public void mouseReleased(MouseEvent e) {
-                if (getcolumnchange()) subs.saveColumnWidth(SubTable);
-                setcolumnchange(false);
-            }
-        });
-        
-        SubsScrollPane.setViewportView(SubTable);
-        
-        
-        /* Create selection listener for the subs table */
-        SubTable.setDefaultRenderer(String.class, new SubRenderer());
-        
-        //Ask to be notified of selection changes.
-        SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent e) {
-                //Ignore extra messages.
-                if (e.getValueIsAdjusting()) return;
-                
-                ListSelectionModel lsm =
-                        (ListSelectionModel)e.getSource();
-                if (!lsm.isSelectionEmpty()) {
-                    displaySubData();
-                }
-            }
-        });
-        
-        SubTable.setComponentPopupMenu(SubsPop);
-        SubTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        SubTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        pack();
-    }
-    
-    
+    final static SubRenderer TableRenderer = new SubRenderer();
+
     
     public SubEntry[] getSelectedSubs() {
         int[] sels = SubTable.getSelectedRows();

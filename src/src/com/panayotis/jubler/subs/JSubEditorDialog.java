@@ -26,7 +26,6 @@ package com.panayotis.jubler.subs;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
-import java.awt.BorderLayout;
 
 
 /**
@@ -67,7 +66,7 @@ public class JSubEditorDialog extends javax.swing.JDialog {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         remove(editor);
-        editor.setAttached(editor.ATTACHED_TO_TEXT);
+        editor.setAttached(true);
     }//GEN-LAST:event_formWindowClosing
     
     

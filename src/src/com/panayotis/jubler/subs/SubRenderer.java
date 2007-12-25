@@ -37,10 +37,10 @@ public class SubRenderer extends DefaultTableCellRenderer {
     public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column) {
         SubEntry entry;
         
-        setEnabled(table == null || table.isEnabled()); // Alwqays do that
+        setEnabled(table == null || table.isEnabled()); // Always do that
         
         entry = ((Subtitles)table.getModel()).elementAt(row);
-        setBackground( entry.MarkColors[entry.getMark()] );
+        setBackground( SubEntry.MarkColors[entry.getMark()] );
         setForeground(Color.BLACK);
         super.getTableCellRendererComponent(table, value, selected, focused, row, column);
         return this;

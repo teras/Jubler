@@ -1066,6 +1066,20 @@
               </Constraints>
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="SubTable">
+                  <Properties>
+                    <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
+                      <ComponentRef name="SubsPop"/>
+                    </Property>
+                    <Property name="autoResizeMode" type="int" value="3"/>
+                  </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable () {&#xa;            public void columnMarginChanged(ChangeEvent e)  {&#xa;                super.columnMarginChanged(e);&#xa;                setcolumnchange(true);&#xa;            }&#xa;        };"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="        SubTable.setDefaultRenderer(Object.class, TableRenderer);&#xa;        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){&#xa;            public void mousePressed(MouseEvent e) {&#xa;                setcolumnchange(false);&#xa;            }&#xa;            public void mouseReleased(MouseEvent e) {&#xa;                if (getcolumnchange()) subs.saveColumnWidth(SubTable);&#xa;                setcolumnchange(false);&#xa;            }&#xa;        });&#xa;        SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (e.getValueIsAdjusting()) return; //Ignore extra messages&#xa;                ListSelectionModel lsm = (ListSelectionModel)e.getSource();&#xa;                if (!lsm.isSelectionEmpty()) {&#xa;                    displaySubData();&#xa;                }&#xa;            }&#xa;        });&#xa;"/>
+                  </AuxValues>
+                </Component>
+              </SubComponents>
             </Container>
           </SubComponents>
         </Container>
