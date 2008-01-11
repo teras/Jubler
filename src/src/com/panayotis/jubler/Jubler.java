@@ -265,12 +265,16 @@ public class Jubler extends JFrame {
     }
 
     public void setPreviewOrientation(boolean horizontal) {
-        if (horizontal)
+        if (horizontal) {
             SubSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        else
+        } else {
             SubSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        }
+    }
+
+    public void resetPreviewPanels() {
         SubSplitPane.resetToPreferredSizes();
-     }
+    }
     
     
     public void subTextChanged() {

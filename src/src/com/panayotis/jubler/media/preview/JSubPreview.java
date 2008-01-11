@@ -182,11 +182,7 @@ public class JSubPreview extends javax.swing.JPanel {
     public DecoderListener getDecoderListener() {
         return wave;
     }
-
-    void repack() {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-    
+   
     private void setOrientation(boolean horizontal) {
         MainPanel.remove(frame);
         if (horizontal) {
@@ -195,6 +191,8 @@ public class JSubPreview extends javax.swing.JPanel {
             MainPanel.add(frame, BorderLayout.NORTH);
         }
         parent.setPreviewOrientation(horizontal);
+        parent.resetPreviewPanels();
+
     }
     
     /** This method is called from within the constructor to
@@ -471,6 +469,7 @@ public class JSubPreview extends javax.swing.JPanel {
     
     private void VideoZoomFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoZoomFrameActionPerformed
         frame.setSmall(VideoZoom.isSelected());
+        parent.resetPreviewPanels();
     }//GEN-LAST:event_VideoZoomFrameActionPerformed
     
     private void AudioShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioShowActionPerformed
@@ -479,6 +478,7 @@ public class JSubPreview extends javax.swing.JPanel {
     
     private void VideoShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoShowActionPerformed
         frame.setEnabled(VideoShow.isSelected());
+        parent.resetPreviewPanels();
     }//GEN-LAST:event_VideoShowActionPerformed
     
     private void cursorSelector(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cursorSelector

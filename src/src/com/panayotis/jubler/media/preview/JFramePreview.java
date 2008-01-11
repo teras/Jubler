@@ -112,7 +112,6 @@ public class JFramePreview extends JPanel {
         if (subimg==null) subimg = new SubImage(sub);
         
         /* Variables needed for frame calculation */
-        boolean needs_repacking = false;
         Image newimg = null;
         
         /* Calculate frame image */
@@ -126,16 +125,11 @@ public class JFramePreview extends JPanel {
                     newimg = null;
             }
             if (newimg!=null) {
-                needs_repacking = (frameimg==demoimg);
                 frameimg = newimg;
             }
         } else {
-            needs_repacking = (frameimg!=demoimg);
             frameimg = demoimg;
         }
-        
-        if (needs_repacking) callback.repack();
-        
         super.repaint();
     }
     

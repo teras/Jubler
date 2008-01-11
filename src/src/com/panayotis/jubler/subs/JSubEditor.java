@@ -482,6 +482,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         StyleP.add(jPanel6, java.awt.BorderLayout.EAST);
 
+        jPanel7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
 
         PreviewB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
