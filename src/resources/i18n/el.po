@@ -141,7 +141,7 @@ msgstr	"Δοκιμή υποτίτλων από την τρέχουσα θέση"
 
 #: com/panayotis/jubler/Jubler.java:665
 msgid	"&File"
-msgstr	""
+msgstr	"&ΑAρχείο"
 
 #: com/panayotis/jubler/Jubler.java:667
 msgid	"New..."
@@ -199,7 +199,7 @@ msgstr	"Έξοδος"
 
 #: com/panayotis/jubler/Jubler.java:749
 msgid	"&Edit"
-msgstr	""
+msgstr	"&ΕEπεξεργασία"
 
 #: com/panayotis/jubler/Jubler.java:752 com/panayotis/jubler/Jubler.java:1493
 msgid	"Cut subtitles"
@@ -279,7 +279,7 @@ msgstr	"Επιλογή με βάση το χρόνο"
 
 #: com/panayotis/jubler/Jubler.java:917
 msgid	"&Tools"
-msgstr	""
+msgstr	"Ε&ρrγαλεία"
 
 #: com/panayotis/jubler/Jubler.java:920
 msgid	"Split file"
@@ -330,7 +330,7 @@ msgstr	"Από την τρέχουσα θέση"
 
 #: com/panayotis/jubler/Jubler.java:988
 msgid	"&Help"
-msgstr	""
+msgstr	"&ΒBοήθεια"
 
 #: com/panayotis/jubler/Jubler.java:990
 msgid	"FAQ"

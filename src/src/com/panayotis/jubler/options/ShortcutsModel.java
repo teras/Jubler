@@ -87,13 +87,26 @@ public class ShortcutsModel extends AbstractTableModel {
         }
     }
     
+    /* Just to remind that in non-latin languages the format is:
+     * [text][&][non-latin character][corresponding latin character][rest of test]
+     */
     public void updateMenuName(JMenuItem item) {
-//         menu.setMnemonic(KeyEvent.VK_A + i);
-//            menu.setDisplayedMnemonicIndex(0);
-//       
-        String full = item.getText();
-       // int 
-        System.out.println(full);
+        String text = item.getText();
+        int carret = text.indexOf('&');
+        if (carret >= 0) {
+            char mnemchar = Character.toLowerCase(text.charAt(carret + 1));
+            int mnemonic = KeyEvent.VK_A;
+            if (mnemchar < 'a' || mnemchar > 'z') {
+                mnemonic += Character.toLowerCase(text.charAt(carret + 2)) - 'a';
+                text = text.substring(0, carret) + text.charAt(carret+1) + text.substring(carret + 3);
+            } else {
+                mnemonic += mnemchar - 'a';
+                text = text.substring(0, carret) + text.substring(carret + 1);
+            }
+            item.setText(text);
+            item.setMnemonic(mnemonic);
+            item.setDisplayedMnemonicIndex(carret);
+        }
     }
     
     public void applyMenuShortcuts(JMenuBar bar) {
