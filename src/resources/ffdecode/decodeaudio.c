@@ -209,7 +209,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
  
                     	/* close the output file */
                     	if (!(fmt->flags & AVFMT_NOFILE)) {
-                        	url_fclose(&ofcx->pb);
+                        	url_fclose(ofcx->pb);
                     	}
                     }
                    	
