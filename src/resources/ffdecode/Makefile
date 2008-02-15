@@ -95,13 +95,13 @@ ifeq (${SYSTEM},darwini386)
 	ARCH=i386
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
-	XFCONFIG=--enable-shared --arch=unknown --disable-mmx
+	XFCONFIG=--enable-shared --arch=unknown
 	GCCOPTS=-fno-common -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
 
 
-FCONFIG=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-muxers --enable-muxer=wav --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394 --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG}
+FCONFIG=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-muxers --enable-muxer=wav --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394 --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG} --disable-mmx
 
 CC=${PREF}gcc
 RANLIB=${PREF}ranlib
@@ -115,23 +115,23 @@ MACLIBNAME=lib${PROJ}.jnilib
 	${CC} ${CFLAGS} ${GCCOPTS} -std=c99 -pedantic -O3 -Wall ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -c -o $@ $?
 
 
-develop:
+develop:javacheck
 	make -e `uname -s|tr [A-Z] [a-z]`
 
 
-linux:distclean
+linux:javacheck distclean
 	make -e library SYSTEM=linux
 	rm -rf ${JUBLER}/src/lib
 
-linuxdyn:distclean
+linuxdyn:javacheck distclean
 	make -e library SYSTEM=linux STATIC=no
 	rm -rf ${Jubler}/src/lib
 
-win32:distclean
+win32:javacheck distclean
 	make -e library SYSTEM=win32
 	rm -rf ${JUBLER}/src/lib
 
-darwin:
+darwin:javacheck
 	make darwinppc
 	make darwini386
 	make distclean
@@ -169,6 +169,11 @@ distclean:clean
 	rm -rf ${JUBLER}/src/lib
 	rm -f *.dll *.so *.jnilib
 
+javacheck:
+ifeq (${JAVA_HOME},)
+	@echo "** Java Home not found"
+	exit 1
+endif
 
 
 native:
