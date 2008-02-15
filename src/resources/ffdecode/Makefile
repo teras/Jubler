@@ -15,16 +15,22 @@ PROJ=ffdecode
 # Paths of include files
 JAVA_HOME=${shell /bin/sh ../system/findjava.sh -j}
 
+# Current Path
+CPATH=${shell pwd}
+
 # Path of the local ffmpeg source structure (already inside the source version of Jubler)
-FFMPEG=../ffmpeg-svn
+FFMPEG=${CPATH}/../ffmpeg-svn
+
+# Path of local FAAD2 library
+FAAD=${CPATH}/../ffmpeg-libs/faad2
 
 # Use this path for static libraries
-LIBRARIES=../libraries
+LIBRARIES=${CPATH}/../libraries
 
 # Path of Jubler distribution
-JUBLER=../..
+JUBLER=${CPATH}/../..
 
-# Path of ffdecode relative to top Jubler directory
+# RELATIVE Path of ffdecode to top Jubler directory
 FFDECODE=resources/ffdecode
 
 # Where javah lives
@@ -40,65 +46,64 @@ NATIVES=${shell cd ../../src && grep -r ' native ' * | grep -v '/.svn/' | gawk -
 SRCS=${shell ls 2>/dev/null *.c}
 OBJS=${SRCS:.c=.o}
 
-COMPFLAGS=${CFLAGS} -std=c99 -pedantic -O3 -Wall -fPIC
 
 ifeq (${STATIC},no)
-	FFMPEGREQ=
+	LIBRARYREQ=
 	RANLIBREQ=
 	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec}
 	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec}
 else
-	FFMPEGREQ=ffmpeg
+	LIBRARYREQ=libreqs
 	RANLIBREQ=ranlib
-	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm ${XLIBS}
-	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil
+	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lfaad${LIBSUF} -lm ${XLIBS}
+	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil -I${FAAD}/include
 endif
 
 ifeq (${SYSTEM},linux)
 	XLIBS=-lz
 	PREF=
 	ARCH=${shell uname -m}
-	GCCOPTS=
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
-	FCOPTS=--extra-cflags="-fPIC"
+	XFCONFIG=
+	GCCOPTS=-fPIC
 	STRIP=${PREF}strip -s
 endif
 ifeq (${SYSTEM},win32)
+	XLIBS=
 	PREF=i586-mingw32msvc-
 	ARCH=i386
-	GCCOPTS=
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
-	XLIBS=
-	FCOPTS=--cross-prefix=${PREF} --enable-memalign-hack --target-os=mingw32
+	XFCONFIG=--cross-prefix=${PREF} --enable-memalign-hack --target-os=mingw32
+	GCCOPTS=
 	STRIP=${PREF}strip -s
 endif
 ifeq (${SYSTEM},darwinppc)
 	XLIBS=-lz
 	PREF=
 	ARCH=ppc
-	GCCOPTS=-arch ${ARCH} -mmacosx-version-min=10.4
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
-	FCOPTS=--extra-cflags="-fno-common ${GCCOPTS}" --extra-ldflags="${GCCOPTS}" --enable-shared --arch=powerpc --cross-compile
+	XFCONFIG=--enable-shared --arch=powerpc --cross-compile
+	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
 ifeq (${SYSTEM},darwini386)
 	XLIBS=-lz
 	PREF=
 	ARCH=i386
-	GCCOPTS=-mmacosx-version-min=10.4
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
-	FCOPTS=--extra-cflags="-fno-common ${GCCOPTS}" --extra-ldflags="${GCCOPTS}" --enable-shared --arch=unknown --disable-mmx
+	XFCONFIG=--enable-shared --arch=unknown --disable-mmx
+	GCCOPTS=-fno-common -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
 
 
-FCONFCOMMON=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-muxers --enable-muxer=wav --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394
+FCONFIG=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-muxers --enable-muxer=wav --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394 --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG}
 
-CC=${PREF}gcc ${GCCOPTS}
+CC=${PREF}gcc
 RANLIB=${PREF}ranlib
 
 
@@ -107,7 +112,7 @@ MACLIBNAME=lib${PROJ}.jnilib
 .SUFFIXES:.o .c
 
 .c.o:
-	${CC} ${COMPFLAGS} ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -c -o $@ $?
+	${CC} ${CFLAGS} ${GCCOPTS} -std=c99 -pedantic -O3 -Wall ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -c -o $@ $?
 
 
 develop:
@@ -151,7 +156,7 @@ libinstall:
 
 LIB:${LIBNAME}
 
-${LIBNAME}:${FFMPEGREQ} ${OBJS} ${RANLIBREQ}
+${LIBNAME}:${LIBRARYREQ} ${OBJS} ${RANLIBREQ}
 	${LD} ${GCCOPTS} -o ${LIBNAME} ${OBJS} ${LIBS}
 	${STRIP} ${LIBNAME}
 
@@ -172,12 +177,18 @@ native:
 	mv ${JUBLER}/build/classes/*.h .
 
 
-ffmpeg:${LIBRARIES}/libavformat${LIBSUF}.a
+libreqs:${LIBRARIES}/libavformat${LIBSUF}.a
 
-
-${LIBRARIES}/libavformat${LIBSUF}.a:
-	cd ${FFMPEG} && ./${FFCONF} ${FCONFCOMMON} ${FCOPTS} && make -j3
+${LIBRARIES}/libfaad${LIBSUF}.a:
+	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure --with-mp4v2 && make -j3
 	mkdir -p ${LIBRARIES}
+	cp ${FAAD}/libfaad/.libs/libfaad.a ${LIBRARIES}/libfaad${LIBSUF}.a
+	cd ${FAAD} && make distclean
+
+${LIBRARIES}/libavformat${LIBSUF}.a: ${LIBRARIES}/libfaad${LIBSUF}.a
+	mkdir -p ${LIBRARIES}
+	cd ${LIBRARIES} ; rm -f libfaad.a && ln -s libfaad${LIBSUF}.a libfaad.a
+	cd ${FFMPEG} && ./${FFCONF} ${FCONFIG} && make -j3
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/libavutil.a ${LIBRARIES}/libavutil${LIBSUF}.a

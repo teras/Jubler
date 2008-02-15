@@ -18,7 +18,8 @@
 
 DEBUG=
 CHECK_JDK=
-VERSION='1.[56].[0123456789]'
+VERSION='1.[567].[0123456789]'
+ACCEPT_GCJ=
 
 
 # Get options
@@ -29,6 +30,9 @@ while [ -n "$1" ]; do
 			;;
 		-j)
 			CHECK_JDK=yes
+			;;
+		-g)
+			ACCEPT_GCJ=yes
 			;;
 		-v)
 			VERSION=$2
@@ -68,9 +72,14 @@ check_for_JDK () {
 check_java_bin () {
 	debug "-- Searching for $1"
 	if [ -x "$1" ] ; then
-		VERS=`"$1" -version 2>&1 | grep 'java.version' | grep $VERSION`
+		JAVARES=`"$1" -version 2>&1`
+		VERS=`echo $JAVARES | grep 'java.version' | grep $VERSION`
 		if [ "$VERS" ] ; then
-			check_for_JDK $1
+			IS_GCJ=`echo $JAVARES | grep gij`
+			if [ -z "$IS_GCJ" -o -n "$ACCEPT_GCJ" ] ; then
+				check_for_JDK $1
+			fi
+
 		fi
 	fi
 }
@@ -118,7 +127,7 @@ find_in_system_path () {
 }
 
 
-debug "!! Information: Version=$VERSION, JDK=$CHECK_JDK"
+debug "!! Information: Version=$VERSION, JDK=$CHECK_JDK, ACCEPT_GCJ=$ACCEPT_GCJ"
 
 # Find java
 debug ">> Search in system paths"
