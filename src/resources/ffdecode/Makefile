@@ -198,6 +198,7 @@ ${LIBRARIES}/libavformat${LIBSUF}.a: ${LIBRARIES}/libfaad${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/libavutil.a ${LIBRARIES}/libavutil${LIBSUF}.a
 	cd ${FFMPEG} && make distclean
+	rm -f ${LIBRARIES}/libfaad.a
 
 
 ranlib:
