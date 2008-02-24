@@ -270,14 +270,15 @@ public class SubEntry implements Comparable<SubEntry> {
         if (curcol > m.maxlength) m.maxlength = curcol;
         return m;
     }
-    
+   
     public boolean updateMaxCharStatus(SubAttribs attr, int maxlength) {
-        if (attr.isMaxCharsEnabled() && maxlength>attr.getMaxCharacters()) {
-            setMark(attr.getMaxColor());
-            return true;
+        if (attr.isMaxCharsEnabled()) {
+            if (maxlength > attr.getMaxCharacters()) {
+                setMark(attr.getMaxColor());
+                return true;
+            }
+            if (mark == attr.getMaxColor()) setMark(0);
         }
-        if (mark==attr.getMaxColor())
-            setMark(0);
         return false;
     }
     

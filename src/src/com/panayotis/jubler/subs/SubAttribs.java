@@ -76,11 +76,6 @@ public class SubAttribs {
         return super.equals(o);
     }
     
-    public void setMaxValues(int maxchars, int maxcolor) {
-        this.maxchars = maxchars;
-        this.maxcolor = maxcolor;
-    }
-    
     public String getTitle() { return title; }
     public String getAuthor() { return author; }
     public String getSource() { return source; }
