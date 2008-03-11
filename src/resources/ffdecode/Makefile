@@ -65,7 +65,6 @@ ifeq (${SYSTEM},linux)
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
 	XFCONFIG=
-	XDCONFIG=
 	GCCOPTS=-fPIC
 	STRIP=${CCPREF}strip -s
 endif
@@ -76,7 +75,6 @@ ifeq (${SYSTEM},win32)
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
 	XFCONFIG=--cross-prefix=${CCPREF} --enable-memalign-hack --target-os=mingw32
-	XDCONFIG=
 	GCCOPTS=
 	STRIP=${CCPREF}strip -s
 endif
@@ -87,7 +85,6 @@ ifeq (${SYSTEM},darwinppc)
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
 	XFCONFIG=--enable-shared --arch=powerpc --cross-compile
-	XDCONFIG=
 	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
@@ -98,7 +95,6 @@ ifeq (${SYSTEM},darwini386)
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
 	XFCONFIG=--enable-shared --arch=unknown
-	XDCONFIG=
 	GCCOPTS=-fno-common -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
