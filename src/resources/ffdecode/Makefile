@@ -46,7 +46,6 @@ NATIVES=${shell cd ../../src && grep -r ' native ' * | grep -v '/.svn/' | gawk -
 SRCS=${shell ls 2>/dev/null *.c}
 OBJS=${SRCS:.c=.o}
 
-
 ifeq (${STATIC},no)
 	LIBRARYREQ=
 	RANLIBREQ=
@@ -61,41 +60,45 @@ endif
 
 ifeq (${SYSTEM},linux)
 	XLIBS=-lz
-	PREF=
+	CCPREF=
 	ARCH=${shell uname -m}
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
 	XFCONFIG=
+	XDCONFIG=
 	GCCOPTS=-fPIC
-	STRIP=${PREF}strip -s
+	STRIP=${CCPREF}strip -s
 endif
 ifeq (${SYSTEM},win32)
 	XLIBS=
-	PREF=i586-mingw32msvc-
+	CCPREF=i586-mingw32msvc-
 	ARCH=i386
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
-	XFCONFIG=--cross-prefix=${PREF} --enable-memalign-hack --target-os=mingw32
+	XFCONFIG=--cross-prefix=${CCPREF} --enable-memalign-hack --target-os=mingw32
+	XDCONFIG=
 	GCCOPTS=
-	STRIP=${PREF}strip -s
+	STRIP=${CCPREF}strip -s
 endif
 ifeq (${SYSTEM},darwinppc)
 	XLIBS=-lz
-	PREF=
+	CCPREF=
 	ARCH=ppc
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
 	XFCONFIG=--enable-shared --arch=powerpc --cross-compile
+	XDCONFIG=
 	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
 ifeq (${SYSTEM},darwini386)
 	XLIBS=-lz
-	PREF=
+	CCPREF=
 	ARCH=i386
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
 	XFCONFIG=--enable-shared --arch=unknown
+	XDCONFIG=
 	GCCOPTS=-fno-common -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
@@ -103,8 +106,11 @@ endif
 
 FCONFIG=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --disable-muxers --enable-muxer=wav --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394 --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG} --disable-mmx
 
-CC=${PREF}gcc
-RANLIB=${PREF}ranlib
+CCPREF_NOS=${shell echo ${CCPREF} | sed -e 's/-$$//g' }
+DCONFIG=--with-mp4v2 --host=${CCPREF_NOS}
+
+CC=${CCPREF}gcc
+RANLIB=${CCPREF}ranlib
 
 
 MACLIBNAME=lib${PROJ}.jnilib
@@ -185,7 +191,7 @@ native:
 libreqs:${LIBRARIES}/libavformat${LIBSUF}.a
 
 ${LIBRARIES}/libfaad${LIBSUF}.a:
-	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure --with-mp4v2 --host=i586-mingw32msvc && mv frontend/Makefile frontend/Makefile.orig && echo >frontend/Makefile "all:" && make -j3
+	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure ${DCONFIG} && mv frontend/Makefile frontend/Makefile.orig && echo >frontend/Makefile "all:" && make -j3
 	mkdir -p ${LIBRARIES}
 	cp ${FAAD}/libfaad/.libs/libfaad.a ${LIBRARIES}/libfaad${LIBSUF}.a
 	cd ${FAAD} && mv frontend/Makefile.orig frontend/Makefile && make distclean
