@@ -185,10 +185,10 @@ native:
 libreqs:${LIBRARIES}/libavformat${LIBSUF}.a
 
 ${LIBRARIES}/libfaad${LIBSUF}.a:
-	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure --with-mp4v2 && make -j3
+	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure --with-mp4v2 --host=i586-mingw32msvc && mv frontend/Makefile frontend/Makefile.orig && echo >frontend/Makefile "all:" && make -j3
 	mkdir -p ${LIBRARIES}
 	cp ${FAAD}/libfaad/.libs/libfaad.a ${LIBRARIES}/libfaad${LIBSUF}.a
-	cd ${FAAD} && make distclean
+	cd ${FAAD} && mv frontend/Makefile.orig frontend/Makefile && make distclean
 
 ${LIBRARIES}/libavformat${LIBSUF}.a: ${LIBRARIES}/libfaad${LIBSUF}.a
 	mkdir -p ${LIBRARIES}
@@ -205,3 +205,4 @@ ranlib:
 	${RANLIB} ${LIBRARIES}/libavformat${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavcodec${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavutil${LIBSUF}.a
+	${RANLIB} ${LIBRARIES}/libfaad${LIBSUF}.a
