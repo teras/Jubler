@@ -38,6 +38,7 @@ import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
+import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
@@ -219,6 +220,7 @@ public class Jubler extends JFrame {
         /* We have to do this AFTER we process the menu items (since some would be missing */
         if (prefs==null) prefs = new JPreferences(this);
         StaticJubler.updateMenus(this);
+        ShortcutsModel.updateMenuNames(JublerMenuBar);
         
         /* Initialize Tools */
         shift = new JShiftTime();

@@ -141,7 +141,7 @@ public class StaticJubler {
     
     
     public static void updateMenus(Jubler j) {
-        j.prefs.setMenuShortcuts(j.JublerMenuBar);
+        Jubler.prefs.setMenuShortcuts(j.JublerMenuBar);
     }
     
     public static void updateAllMenus() {
