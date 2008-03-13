@@ -68,7 +68,7 @@ public class JTimeSpinner extends JSpinner {
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if ( e.getModifiers() == InputEvent.ALT_MASK ) model.setSpeed(0.1);
                 else model.setSpeed(1);
-                model.increaseValue(e.getWheelRotation());
+                model.increaseValue(-e.getWheelRotation());
                 model.setSpeed(1);
             }
         });

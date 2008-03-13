@@ -20,17 +20,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time.gui;
 
-import com.panayotis.jubler.os.DEBUG;
+import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
 import java.util.Vector;
-
-
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.style.SubStyle;
 
 /**
@@ -38,31 +34,29 @@ import com.panayotis.jubler.subs.style.SubStyle;
  * @author  teras
  */
 public class JTimeFullSelection extends JTimeArea {
-    
-    
+
     JTimeRegion tregion;
-    
+
     /** Creates new form JTimePosition */
     public JTimeFullSelection() {
         super();
         initComponents();
         tregion = new JTimeRegion();
         TimePanel.add(tregion, BorderLayout.CENTER);
-        tregion.setButtonsEnabled(false);
+        tregion.setEnabled(false);
     }
-    
-    
+
     public void updateData(Subtitles subs, int[] selected) {
-        super.updateData(subs, selected );
+        super.updateData(subs, selected);
         tregion.updateData(subs, selected);
-        
+
         // Update styles
         int selvalue = StyleSel.getSelectedIndex();
         StyleSel.removeAllItems();
         for (SubStyle style : subs.getStyleList()) {
             StyleSel.addItem(style);
         }
-        if (subs.getStyleList().size()<2) {
+        if (subs.getStyleList().size() < 2) {
             if (byStyle.isSelected())
                 bySelection.setSelected(true);
             byStyle.setEnabled(false);
@@ -70,42 +64,42 @@ public class JTimeFullSelection extends JTimeArea {
         } else {
             byStyle.setEnabled(true);
             StyleSel.setEnabled(true);
-            if ( selvalue < 0 )
+            if (selvalue < 0)
                 selvalue = 0;
-            if ( selvalue < subs.getStyleList().size() )
+            if (selvalue < subs.getStyleList().size())
                 StyleSel.setSelectedIndex(selvalue);
         }
     }
-    
+
     public Vector<SubEntry> getAffectedSubs() {
         Vector<SubEntry> affected;
         SubEntry csub;
         int i;
-        
+
         affected = new Vector<SubEntry>();
-        
+
         if (bySelection.isSelected()) {
             /* Select affected subtitles by user selection */
-            for ( i = 0 ; i < selected.length ; i++ ) {
+            for (i = 0; i < selected.length; i++) {
                 affected.add(subs.elementAt(selected[i]));
             }
-        } else  if (byColor.isSelected()) {
+        } else if (byColor.isSelected()) {
             /* Select affected subtitles by marking */
             int selmark = ColorSel.getSelectedIndex();
-            
-            for ( i = 0 ; i < subs.size() ; i++ ) {
+
+            for (i = 0; i < subs.size(); i++) {
                 csub = subs.elementAt(i);
-                if (selmark == csub.getMark() ) {
+                if (selmark == csub.getMark()) {
                     affected.add(csub);
                 }
             }
         } else if (byStyle.isSelected()) {
             /* Select affected subtitles by marking */
-            SubStyle style = (SubStyle)StyleSel.getSelectedItem();
-            
-            for ( i = 0 ; i < subs.size() ; i++ ) {
+            SubStyle style = (SubStyle) StyleSel.getSelectedItem();
+
+            for (i = 0; i < subs.size(); i++) {
                 csub = subs.elementAt(i);
-                if ( style  == csub.getStyle() ) {
+                if (style == csub.getStyle()) {
                     affected.add(csub);
                 }
             }
@@ -114,13 +108,12 @@ public class JTimeFullSelection extends JTimeArea {
         }
         return affected;
     }
-    
+
     public void forceRangeSelection() {
         byRange.setSelected(true);
-        tregion.setButtonsEnabled(true);
+        tregion.setEnabled(true);
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -226,32 +219,29 @@ public class JTimeFullSelection extends JTimeArea {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
     private void byStyleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byStyleActionPerformed
-        tregion.setButtonsEnabled(false);
+        tregion.setEnabled(false);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(true);
     }//GEN-LAST:event_byStyleActionPerformed
-    
+
     private void byRangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byRangeActionPerformed
-        tregion.setButtonsEnabled(true);
+        tregion.setEnabled(true);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(false);
     }//GEN-LAST:event_byRangeActionPerformed
-    
+
     private void byColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byColorActionPerformed
-        tregion.setButtonsEnabled(false);
+        tregion.setEnabled(false);
         ColorSel.setEnabled(true);
         StyleSel.setEnabled(false);
     }//GEN-LAST:event_byColorActionPerformed
-    
+
     private void bySelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionActionPerformed
-        tregion.setButtonsEnabled(false);
+        tregion.setEnabled(false);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(false);
     }//GEN-LAST:event_bySelectionActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ColorSel;
 
@@ -270,5 +260,4 @@ public class JTimeFullSelection extends JTimeArea {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     // End of variables declaration//GEN-END:variables
-    
 }

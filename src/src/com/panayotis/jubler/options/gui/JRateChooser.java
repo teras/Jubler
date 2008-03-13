@@ -75,6 +75,12 @@ public class JRateChooser extends JPanel {
         return FPSChooser.getSelectedItem().toString();
     }
     
+    public void setEnabled(boolean value) {
+        super.setEnabled(value);
+        FPSChooser.setEnabled(value);
+        FromFPSB.setEnabled(value);
+    }
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
