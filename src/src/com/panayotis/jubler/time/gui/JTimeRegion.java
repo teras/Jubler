@@ -24,6 +24,7 @@ package com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+import java.awt.BorderLayout;
 import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -40,11 +41,13 @@ public class JTimeRegion extends JTimeArea {
     public JTimeRegion() {
         super();
         initComponents();
+        add(SubCP, BorderLayout.SOUTH);
+
         starttime = new JTimeSelector(true);
         endtime = new JTimeSelector(false);
-        add(starttime);
-        add(endtime);
-    }
+        TimesP.add(starttime);
+        TimesP.add(endtime);
+      }
 
     public void setEnabled(boolean status) {
         super.setEnabled(status);
@@ -99,11 +102,17 @@ public class JTimeRegion extends JTimeArea {
 
         FromGroup = new javax.swing.ButtonGroup();
         ToGroup = new javax.swing.ButtonGroup();
+        TimesP = new javax.swing.JPanel();
 
-        setLayout(new java.awt.GridLayout(1, 2));
+        setLayout(new java.awt.BorderLayout());
+
+        TimesP.setLayout(new java.awt.GridLayout(1, 2));
+        add(TimesP, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup FromGroup;
+    private javax.swing.JPanel TimesP;
     private javax.swing.ButtonGroup ToGroup;
     // End of variables declaration//GEN-END:variables
 }
