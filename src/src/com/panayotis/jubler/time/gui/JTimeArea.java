@@ -115,19 +115,19 @@ public abstract class JTimeArea extends JPanel {
         setLayout(new java.awt.BorderLayout());
 
         SubCP.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 0, 0));
-        SubCP.setLayout(new java.awt.GridLayout(1, 0));
+        SubCP.setLayout(new java.awt.BorderLayout(12, 0));
 
-        ChSubColorB.setText(_("Change affected subtitles color"));
+        ChSubColorB.setText(_("Change affected subtitles' color"));
         ChSubColorB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ChSubColorBActionPerformed(evt);
             }
         });
-        SubCP.add(ChSubColorB);
+        SubCP.add(ChSubColorB, java.awt.BorderLayout.WEST);
 
         ChSubColorC.setModel(new javax.swing.DefaultComboBoxModel(SubEntry.MarkNames));
         ChSubColorC.setEnabled(false);
-        SubCP.add(ChSubColorC);
+        SubCP.add(ChSubColorC, java.awt.BorderLayout.CENTER);
 
         add(SubCP, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents

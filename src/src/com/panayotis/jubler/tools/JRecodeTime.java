@@ -159,22 +159,28 @@ public class JRecodeTime extends JToolRealTime {
 
         Factor = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
         AutoB = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         ArrowL = new javax.swing.JLabel();
         FromP = new javax.swing.JPanel();
         ToP = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         CustomB = new javax.swing.JRadioButton();
+        jPanel6 = new javax.swing.JPanel();
         RecodeL = new javax.swing.JLabel();
         CustomF = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
         CentralL = new javax.swing.JLabel();
         CustomC = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(15, 0, 0, 0), javax.swing.BorderFactory.createTitledBorder(_("Use the following factor"))));
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
 
         Factor.add(AutoB);
         AutoB.setSelected(true);
@@ -185,7 +191,9 @@ public class JRecodeTime extends JToolRealTime {
                 AutoBActionPerformed(evt);
             }
         });
-        jPanel1.add(AutoB);
+        jPanel4.add(AutoB, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel4);
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -205,6 +213,8 @@ public class JRecodeTime extends JToolRealTime {
 
         jPanel1.add(jPanel3);
 
+        jPanel5.setLayout(new java.awt.BorderLayout());
+
         Factor.add(CustomB);
         CustomB.setText(_("Custom"));
         CustomB.setToolTipText(_("Use a custom factor in order to perform the recoding"));
@@ -213,25 +223,35 @@ public class JRecodeTime extends JToolRealTime {
                 CustomBActionPerformed(evt);
             }
         });
-        jPanel1.add(CustomB);
+        jPanel5.add(CustomB, java.awt.BorderLayout.CENTER);
+
+        jPanel1.add(jPanel5);
+
+        jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
         RecodeL.setText(_("Recoding factor"));
         RecodeL.setEnabled(false);
-        jPanel1.add(RecodeL);
+        jPanel6.add(RecodeL);
 
         CustomF.setText("1.0");
         CustomF.setToolTipText(_("The value of the custom factor which will do the recoding"));
         CustomF.setEnabled(false);
-        jPanel1.add(CustomF);
+        jPanel6.add(CustomF);
+
+        jPanel1.add(jPanel6);
+
+        jPanel7.setLayout(new java.awt.GridLayout(1, 2));
 
         CentralL.setText(_("Central time"));
         CentralL.setEnabled(false);
-        jPanel1.add(CentralL);
+        jPanel7.add(CentralL);
 
         CustomC.setText("0.0");
         CustomC.setToolTipText(_("The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."));
         CustomC.setEnabled(false);
-        jPanel1.add(CustomC);
+        jPanel7.add(CustomC);
+
+        jPanel1.add(jPanel7);
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -256,5 +276,9 @@ public class JRecodeTime extends JToolRealTime {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     // End of variables declaration//GEN-END:variables
 }
