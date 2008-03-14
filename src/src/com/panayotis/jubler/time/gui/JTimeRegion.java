@@ -24,8 +24,6 @@ package com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.time.Time;
-import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -37,7 +35,6 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class JTimeRegion extends JTimeArea {
 
     private JTimeSelector starttime,  endtime;
-    private Time first,  last;
 
     /** Creates new form jTimeRegion */
     public JTimeRegion() {

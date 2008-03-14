@@ -287,7 +287,7 @@ public class ShortcutsModel extends AbstractTableModel {
         return newlist;
     }
 
-    class Shortcut {
+    private class Shortcut {
 
         private boolean[] mods;
         private int key_id;
