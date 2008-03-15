@@ -42,9 +42,9 @@ import javax.swing.JTable;
  * @author teras
  */
 public class Subtitles extends AbstractTableModel {
-    private static final String colnames[] = {_("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
-    private boolean [] visiblecols = {true, true, false, false};
-    private int defaultcolwidth[] = {100, 100, 50, 50};
+    private static final String colnames[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
+    private boolean [] visiblecols = {false, true, true, false, false};
+    private int defaultcolwidth[] = {50, 100, 100, 50, 50};
     private int prefcolwidth[] = new int [visiblecols.length];
     
     
@@ -302,7 +302,7 @@ public class Subtitles extends AbstractTableModel {
         return visiblecols[which];
     }
     
-    private int getVisibleColumn(int col) {
+    private int visibleToReal(int col) {
         int vispointer = -1;
         for (int i = 0 ; i < visiblecols.length ; i++) {
             if (visiblecols[i]) vispointer++;
@@ -312,7 +312,7 @@ public class Subtitles extends AbstractTableModel {
     }
     
     public void setValueAt(Object value, int row, int col) {
-        col = getVisibleColumn(col);
+        col = visibleToReal(col);
         if ( col >= FIRST_EDITABLE_COL && row < sublist.size() ) {
             sublist.elementAt(row).setData(col, value);
         }
@@ -338,11 +338,11 @@ public class Subtitles extends AbstractTableModel {
     }
     
     public String getColumnName(int index) {
-        return colnames[getVisibleColumn(index)];
+        return colnames[visibleToReal(index)];
     }
     
     public Object getValueAt(int row, int col){
-        return sublist.elementAt(row).getData(getVisibleColumn(col));
+        return sublist.elementAt(row).getData(row, visibleToReal(col));
     }
     
     public void saveColumnWidth(JTable t) {
@@ -376,8 +376,7 @@ public class Subtitles extends AbstractTableModel {
     
     public void recalculateTableSize(JTable t) {
         int ccolumn = 0;
-        int size = getColumnCount();
-        
+
         int MIN_COLUMN_WIDTH = 10;
         int MAX_COLUMN_WIDTH = 400;
         

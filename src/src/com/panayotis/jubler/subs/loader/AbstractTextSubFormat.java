@@ -25,7 +25,6 @@ package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.subs.Subtitles;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,9 +69,6 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     
     
     public Subtitles parse(String input, float FPS, File f) {
-        Time start, finish;
-        String sub;
-        
         try{
             if ( ! getTestPattern().matcher(input).find() ) return null;    // Not valid - test pattern does not match
             

@@ -154,18 +154,20 @@ public class SubEntry implements Comparable<SubEntry> {
         finish.setTime(t);
     }
     
-    String getData(int col) {
+    String getData(int row, int col) {
         switch (col) {
             case 0:
-                return start.toString();
+                return Integer.toString(row);
             case 1:
-                return finish.toString();
+                return start.toString();
             case 2:
-                return "0";
+                return finish.toString();
             case 3:
+                return "0";
+            case 4:
                 if (style==null) return "?Default";
                 return style.toString();
-            case 4:
+            case 5:
                 return subtext.replace('\n','|');
         }
         return null;

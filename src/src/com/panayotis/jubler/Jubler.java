@@ -376,6 +376,7 @@ public class Jubler extends JFrame {
         StyleP = new javax.swing.JMenu();
         jSeparator1 = new javax.swing.JSeparator();
         ShowColP = new javax.swing.JMenu();
+        ShowNumberP = new javax.swing.JCheckBoxMenuItem();
         ShowStartP = new javax.swing.JCheckBoxMenuItem();
         ShowEndP = new javax.swing.JCheckBoxMenuItem();
         ShowLayerP = new javax.swing.JCheckBoxMenuItem();
@@ -529,23 +530,28 @@ public class Jubler extends JFrame {
 
         ShowColP.setText(_("Show columns"));
 
+        ShowNumberP.setText(_("Index"));
+        ShowNumberP.setActionCommand("0");
+        ShowNumberP.addActionListener(formListener);
+        ShowColP.add(ShowNumberP);
+
         ShowStartP.setText(_("Start"));
-        ShowStartP.setActionCommand("0");
+        ShowStartP.setActionCommand("1");
         ShowStartP.addActionListener(formListener);
         ShowColP.add(ShowStartP);
 
         ShowEndP.setText(_("End"));
-        ShowEndP.setActionCommand("1");
+        ShowEndP.setActionCommand("2");
         ShowEndP.addActionListener(formListener);
         ShowColP.add(ShowEndP);
 
         ShowLayerP.setText(_("Layer"));
-        ShowLayerP.setActionCommand("2");
+        ShowLayerP.setActionCommand("3");
         ShowLayerP.addActionListener(formListener);
         ShowColP.add(ShowLayerP);
 
         ShowStyleP.setText(_("Style"));
-        ShowStyleP.setActionCommand("3");
+        ShowStyleP.setActionCommand("4");
         ShowStyleP.addActionListener(formListener);
         ShowColP.add(ShowStyleP);
 
@@ -1266,6 +1272,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
+            else if (evt.getSource() == ShowNumberP) {
+                Jubler.this.showTableColumn(evt);
+            }
         }
 
         public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -1856,6 +1865,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu ShowColP;
     private javax.swing.JCheckBoxMenuItem ShowEndP;
     private javax.swing.JCheckBoxMenuItem ShowLayerP;
+    private javax.swing.JCheckBoxMenuItem ShowNumberP;
     private javax.swing.JCheckBoxMenuItem ShowStartP;
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
     private javax.swing.JButton SortTB;
@@ -2135,10 +2145,11 @@ public class Jubler extends JFrame {
         SubTable.setModel(subs);
         tableHasChanged(selected);
         
-        ShowStartP.setSelected(subs.isVisibleColumn(0));
-        ShowEndP.setSelected(subs.isVisibleColumn(1));
-        ShowLayerP.setSelected(subs.isVisibleColumn(2));
-        ShowStyleP.setSelected(subs.isVisibleColumn(3));
+        ShowNumberP.setSelected(subs.isVisibleColumn(0));
+        ShowStartP.setSelected(subs.isVisibleColumn(1));
+        ShowEndP.setSelected(subs.isVisibleColumn(2));
+        ShowLayerP.setSelected(subs.isVisibleColumn(3));
+        ShowStyleP.setSelected(subs.isVisibleColumn(4));
     }
     
     
