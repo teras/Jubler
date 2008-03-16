@@ -27,7 +27,6 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
-import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -69,7 +68,6 @@ public class JSubPreview extends javax.swing.JPanel {
     
     private MediaFile last_media_file = null;
     
-    
     /** Creates new form JSubPreview */
     public JSubPreview(Jubler parent) {
         initComponents();
@@ -88,7 +86,6 @@ public class JSubPreview extends javax.swing.JPanel {
         
         AudioPanel.add(wave, BorderLayout.CENTER);
         setOrientation(true);
-        if (new FFMPEG().isDecoderValid()) ErrorL.setVisible(false);
     }
     
     
@@ -204,7 +201,6 @@ public class JSubPreview extends javax.swing.JPanel {
     private void initComponents() {
 
         CursorGroup = new javax.swing.ButtonGroup();
-        ErrorL = new javax.swing.JLabel();
         MainPanel = new javax.swing.JPanel();
         AudioPanel = new javax.swing.JPanel();
         BottomPanel = new javax.swing.JPanel();
@@ -234,12 +230,6 @@ public class JSubPreview extends javax.swing.JPanel {
         NewSub = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
-
-        ErrorL.setBackground(new java.awt.Color(153, 0, 0));
-        ErrorL.setForeground(new java.awt.Color(255, 255, 255));
-        ErrorL.setText(_("FFDecode library is not present!"));
-        ErrorL.setOpaque(true);
-        add(ErrorL, java.awt.BorderLayout.NORTH);
 
         MainPanel.setLayout(new java.awt.BorderLayout());
 
@@ -505,7 +495,6 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel BottomPanel;
     private javax.swing.ButtonGroup CursorGroup;
     private javax.swing.JPanel EditorPanel;
-    private javax.swing.JLabel ErrorL;
     private javax.swing.JPanel InfoPanel;
     public javax.swing.JPanel MainPanel;
     private javax.swing.JToggleButton Move;

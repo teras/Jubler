@@ -136,7 +136,7 @@ public class MediaFile {
     public VideoFile getVideoFile() { return vfile; }
     public AudioFile getAudioFile() { return afile; }
     public CacheFile getCacheFile() { return cfile; }
-    DecoderInterface getDecoder() { return decoder; }
+    public DecoderInterface getDecoder() { return decoder; }
     
     
     public void setVideoFile(File vf) {

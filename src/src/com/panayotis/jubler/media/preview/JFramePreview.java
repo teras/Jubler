@@ -23,15 +23,20 @@
 
 package com.panayotis.jubler.media.preview;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.awt.font.TextLayout;
 import java.awt.image.ImageObserver;
 import javax.swing.JPanel;
 
@@ -42,7 +47,8 @@ import javax.swing.JPanel;
  */
 public class JFramePreview extends JPanel {
     /* Background color of the movie clip */
-    private final static Color background = new Color(10,10,10);
+    private final static Color background = new Color(10, 10, 10);
+    private final static String inactive_decoder_message = _("FFDecode library not active. Using demo image.");
     
     private final Image demoimg;
     
@@ -157,6 +163,17 @@ public class JFramePreview extends JPanel {
         }
         g.drawImage(frameimg,0,12,null); // Since we have already loaded the picture from memory, the imageobserver is of no help
         if (subimg!=null) g.drawImage(subimg.getImage(), subimg.getXOffset(frameimg), subimg.getYOffset(frameimg) + 12, (ImageObserver)null);
+        
+        /* Draw visual representation that ffdecode library is not present */
+        if (!mfile.getDecoder().isDecoderValid()) {
+            Font f = Font.decode(null);
+            g.setFont(f);
+            TextLayout layout = new TextLayout(inactive_decoder_message, f, ((Graphics2D)g).getFontRenderContext());
+            g.setColor(Color.RED);
+            g.fillRect(2, 14, (int) layout.getAdvance()+1, (int) layout.getAscent()+ (int)layout.getDescent()+1);
+            g.setColor(Color.WHITE);
+            g.drawString(inactive_decoder_message, 2, 14+(int)layout.getAscent());
+        }
     }
     
 }
