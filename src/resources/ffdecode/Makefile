@@ -45,6 +45,7 @@ MAKEOPTS=-j3
 NATIVES=${shell cd ../../src && grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' }
 SRCS=${shell ls 2>/dev/null *.c}
 OBJS=${SRCS:.c=.o}
+SYSTEM=${shell echo ${MAKESYS} | sed -e 's/_.*//g'}
 
 ifeq (${STATIC},no)
 	LIBRARYREQ=
@@ -52,13 +53,13 @@ ifeq (${STATIC},no)
 	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec}
 	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec}
 else
-	LIBRARYREQ=libreqs
+	LIBRARYREQ=${LIBRARIES}/libavformat${LIBSUF}.a
 	RANLIBREQ=ranlib
 	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lfaad${LIBSUF} -lm ${XLIBS}
 	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil -I${FAAD}/include
 endif
 
-ifeq (${SYSTEM},linux)
+ifeq (${MAKESYS},linux)
 	XLIBS=-lz
 	CCPREF=
 	ARCH=${shell uname -m}
@@ -68,7 +69,7 @@ ifeq (${SYSTEM},linux)
 	GCCOPTS=-fPIC
 	STRIP=${CCPREF}strip -s
 endif
-ifeq (${SYSTEM},win32)
+ifeq (${MAKESYS},win32)
 	XLIBS=
 	CCPREF=i586-mingw32msvc-
 	ARCH=i386
@@ -78,7 +79,7 @@ ifeq (${SYSTEM},win32)
 	GCCOPTS=
 	STRIP=${CCPREF}strip -s
 endif
-ifeq (${SYSTEM},darwinppc)
+ifeq (${MAKESYS},darwin_ppc)
 	XLIBS=-lz
 	CCPREF=
 	ARCH=ppc
@@ -88,7 +89,7 @@ ifeq (${SYSTEM},darwinppc)
 	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
-ifeq (${SYSTEM},darwini386)
+ifeq (${MAKESYS},darwin_i386)
 	XLIBS=-lz
 	CCPREF=
 	ARCH=i386
@@ -122,30 +123,26 @@ develop:javacheck
 
 
 linux:javacheck distclean
-	make -e library SYSTEM=linux
+	make -e library MAKESYS=linux
 	rm -rf ${JUBLER}/src/lib
 
 linuxdyn:javacheck distclean
-	make -e library SYSTEM=linux STATIC=no
+	make -e library MAKESYS=linux STATIC=no
 	rm -rf ${Jubler}/src/lib
 
 win32:javacheck distclean
-	make -e library SYSTEM=win32
+	make -e library MAKESYS=win32
 	rm -rf ${JUBLER}/src/lib
 
 darwin:javacheck
-	make darwinppc
-	make darwini386
+	make distclean
+	make -e LIB MAKESYS=darwin_ppc
+	make distclean
+	make -e LIB MAKESYS=darwin_i386
 	make distclean
 	lipo ${PROJ}.ppc ${PROJ}.i386 -create -output ${MACLIBNAME}
 	rm -f ${PROJ}.ppc ${PROJ}.i386
 	make -e libinstall LIBNAME=${MACLIBNAME}
-
-darwinppc:distclean
-	make -e LIB SYSTEM=darwinppc
-
-darwini386:distclean
-	make -e LIB SYSTEM=darwini386
 
 library:clean ${LIBNAME} libinstall
 
@@ -184,7 +181,6 @@ native:
 	mv ${JUBLER}/build/classes/*.h .
 
 
-libreqs:${LIBRARIES}/libavformat${LIBSUF}.a
 
 ${LIBRARIES}/libfaad${LIBSUF}.a:
 	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure ${DCONFIG} && mv frontend/Makefile frontend/Makefile.orig && echo >frontend/Makefile "all:" && make -j3
@@ -192,7 +188,7 @@ ${LIBRARIES}/libfaad${LIBSUF}.a:
 	cp ${FAAD}/libfaad/.libs/libfaad.a ${LIBRARIES}/libfaad${LIBSUF}.a
 	cd ${FAAD} && mv frontend/Makefile.orig frontend/Makefile && make distclean
 
-${LIBRARIES}/libavformat${LIBSUF}.a: ${LIBRARIES}/libfaad${LIBSUF}.a
+${LIBRARYREQ}: ${LIBRARIES}/libfaad${LIBSUF}.a
 	mkdir -p ${LIBRARIES}
 	cd ${LIBRARIES} ; rm -f libfaad.a && ln -s libfaad${LIBSUF}.a libfaad.a
 	cd ${FFMPEG} && ./${FFCONF} ${FCONFIG} && make -j3
