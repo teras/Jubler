@@ -44,8 +44,6 @@ import javax.swing.JPanel;
  */
 public class JWavePreview extends JPanel implements DecoderListener {
     
-    private static final AudioPreview demoaudio = new AudioPreview(1, 1000);
-    
     private final static Color [] background = {new Color(0,20,0), new Color(0,20,20)};
     private final static Color bordercolor = Color.WHITE;
     private final static Color basecolor = Color.LIGHT_GRAY;
@@ -54,12 +52,17 @@ public class JWavePreview extends JPanel implements DecoderListener {
     
     private final JSubTimeline timeline;
     
+    private static final AudioPreview demoaudio = new AudioPreview(1, 1000);
+
     private AudioPreview audio;
     private MediaFile mfile;
     
     private JAudioLoader loader;
     
     private double start_time = -1, end_time = -1;
+    
+    /* Whether the waveform in these panels will be maximized or not */
+    private boolean is_maximized = false;
     
     /** Creates a new instance of JWavePreview */
     public JWavePreview(JSubTimeline tline) {
@@ -133,11 +136,18 @@ public class JWavePreview extends JPanel implements DecoderListener {
         updateWave();
     }
     
+    public void setMaximized(boolean maximized) {
+        is_maximized = maximized;
+        updateWave();
+    }
+    
     private void updateWave() {
         if (isEnabled() && mfile != null)
             audio = mfile.getAudioPreview(start_time, end_time);
         else audio = null;
         if (audio==null) audio = demoaudio;
+        if (is_maximized)
+            audio.normalize();
         
         /* Remove old panels */
         if (panels!=null) {
@@ -164,7 +174,7 @@ public class JWavePreview extends JPanel implements DecoderListener {
     }
     
     
-    class WavePanel extends JPanel {
+    private class WavePanel extends JPanel {
         private float [][] data;
         private Color c;
         
@@ -218,6 +228,5 @@ public class JWavePreview extends JPanel implements DecoderListener {
                 g.fillRect( x1, y1, x2-x1, y2-y1);
             }
         }
-        
     }
 }

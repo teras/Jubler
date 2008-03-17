@@ -219,6 +219,7 @@ public class JSubPreview extends javax.swing.JPanel {
         VideoShow = new javax.swing.JToggleButton();
         VideoZoom = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
+        MaxWave = new javax.swing.JToggleButton();
         AudioShow = new javax.swing.JToggleButton();
         AudioPlay = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -338,6 +339,17 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolPanel.add(jPanel4);
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+
+        MaxWave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavenorm.png"))); // NOI18N
+        MaxWave.setToolTipText(_("Maximize waveform visualization"));
+        MaxWave.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        MaxWave.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavemax.png"))); // NOI18N
+        MaxWave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MaxWaveActionPerformed(evt);
+            }
+        });
+        jPanel2.add(MaxWave);
 
         AudioShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/waveoff.png"))); // NOI18N
         AudioShow.setSelected(true);
@@ -484,6 +496,10 @@ public class JSubPreview extends javax.swing.JPanel {
     private void OrientationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrientationActionPerformed
        setOrientation(!Orientation.isSelected());
 }//GEN-LAST:event_OrientationActionPerformed
+
+    private void MaxWaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveActionPerformed
+        wave.setMaximized(MaxWave.isSelected());
+}//GEN-LAST:event_MaxWaveActionPerformed
     
     
     
@@ -497,6 +513,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel EditorPanel;
     private javax.swing.JPanel InfoPanel;
     public javax.swing.JPanel MainPanel;
+    private javax.swing.JToggleButton MaxWave;
     private javax.swing.JToggleButton Move;
     private javax.swing.JButton NewSub;
     private javax.swing.JToggleButton Orientation;

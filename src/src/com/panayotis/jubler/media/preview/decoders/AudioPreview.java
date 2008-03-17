@@ -115,4 +115,27 @@ public class AudioPreview {
         if (name.equals("")) name = null;
         return name;
     }
+
+    public void normalize() {
+        float max, min;
+        for (int channel = 0; channel < cache.length; channel++) {
+            max = Float.MIN_VALUE;
+            min = Float.MAX_VALUE;
+            for (int sample = 0; sample < cache[channel].length; sample++) {
+                if (max < cache[channel][sample][0])
+                    max = cache[channel][sample][0];
+                if (min > cache[channel][sample][1])
+                    min = cache[channel][sample][1];
+            }
+            min = 0.5f - min;
+            max -= 0.5f;
+            float factor = 0.5f / Math.max(min, max);
+            float adder = (1-factor) * 0.5f;
+            for (int sample = 0; sample < cache[channel].length; sample++) {
+                cache[channel][sample][0] = factor * cache[channel][sample][0] + adder ;
+                cache[channel][sample][1] = factor * cache[channel][sample][1] + adder ;
+            }
+        }
+    }
+    
 }
