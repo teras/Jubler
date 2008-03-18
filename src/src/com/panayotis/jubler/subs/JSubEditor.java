@@ -235,9 +235,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         TimeB.setEnabled(enabled);
         FontB.setEnabled(enabled);
         ColorB.setEnabled(enabled);
-        PreviewB.setEnabled(enabled);
         DetachB.setEnabled(enabled);
-        AttachB.setEnabled(enabled);
         MetricsB.setEnabled(enabled);
         TrashB.setEnabled(enabled);
         ShowStyleB.setEnabled(enabled);
@@ -283,14 +281,12 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     
     public void setAttached(boolean attached) {
         if (attached) {
-            DetachB.setVisible(true);
-            AttachB.setVisible(false);
+            DetachP.setVisible(true);
             parent.SubEditP.add(this, BorderLayout.CENTER);
             parent.validate();
             dlg.setVisible(false);
         } else {
-            DetachB.setVisible(false);
-            AttachB.setVisible(true);
+            DetachP.setVisible(false);
             parent.SubEditP.remove(this);
             parent.validate();
             parent.getSubPreview().validate();
@@ -356,10 +352,8 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         StyleListC = new javax.swing.JComboBox();
         EditB = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
-        PreviewB = new javax.swing.JToggleButton();
-        jPanel8 = new javax.swing.JPanel();
+        DetachP = new javax.swing.JPanel();
         DetachB = new javax.swing.JButton();
-        AttachB = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         TimeB = new javax.swing.JToggleButton();
         FontB = new javax.swing.JToggleButton();
@@ -482,21 +476,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         StyleP.add(jPanel6, java.awt.BorderLayout.EAST);
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
 
-        PreviewB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
-        PreviewB.setToolTipText(_("Enable/disable preview"));
-        PreviewB.setActionCommand("metrics");
-        PreviewB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PreviewBpanelsetVisible(evt);
-            }
-        });
-        jPanel7.add(PreviewB);
-
-        jPanel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+        DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
+        DetachP.setLayout(new javax.swing.BoxLayout(DetachP, javax.swing.BoxLayout.LINE_AXIS));
 
         DetachB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/detach.png"))); // NOI18N
         DetachB.setToolTipText(_("Detach subtitle editor panel"));
@@ -506,21 +489,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
                 DetachBActionPerformed(evt);
             }
         });
-        jPanel8.add(DetachB);
+        DetachP.add(DetachB);
 
-        AttachB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/attach.png"))); // NOI18N
-        AttachB.setToolTipText(_("Attach subtitle editor panel to main Jubler window"));
-        AttachB.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        AttachB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AttachBActionPerformed(evt);
-            }
-        });
-        jPanel8.add(AttachB);
+        jPanel7.add(DetachP);
 
-        jPanel7.add(jPanel8);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 10));
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         TimeB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/time.png"))); // NOI18N
@@ -565,6 +537,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel7.add(jPanel1);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
         jPanel2.setLayout(new java.awt.GridLayout(0, 2, 2, 0));
 
         TrashB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/trash.png"))); // NOI18N
@@ -593,11 +566,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         add(StyleP, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-        
-    private void AttachBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttachBActionPerformed
-        setAttached(true);
-}//GEN-LAST:event_AttachBActionPerformed
-    
+            
     private void ShowStyleBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowStyleBActionPerformed
         showStyle();
     }//GEN-LAST:event_ShowStyleBActionPerformed
@@ -700,10 +669,6 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private void Lock1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Lock1ActionPerformed
         lockTimeSpinners(true);
     }//GEN-LAST:event_Lock1ActionPerformed
-
-    private void PreviewBpanelsetVisible(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewBpanelsetVisible
-       parent.enablePreview(PreviewB.isSelected());
-}//GEN-LAST:event_PreviewBpanelsetVisible
     
     
     public void changeStyle(StyleType type, Object value) {
@@ -745,9 +710,9 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     };
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JButton AttachB;
     private javax.swing.JToggleButton ColorB;
     public javax.swing.JButton DetachB;
+    private javax.swing.JPanel DetachP;
     private javax.swing.JButton EditB;
     private javax.swing.JToggleButton FontB;
     private javax.swing.JLabel L1;
@@ -761,7 +726,6 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JPanel PSDur;
     private javax.swing.JPanel PSFinish;
     private javax.swing.JPanel PSStart;
-    private javax.swing.JToggleButton PreviewB;
     private javax.swing.JToggleButton ShowStyleB;
     private javax.swing.JComboBox StyleListC;
     private javax.swing.JPanel StyleP;
@@ -777,7 +741,6 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     

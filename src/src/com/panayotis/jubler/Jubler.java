@@ -414,6 +414,7 @@ public class Jubler extends JFrame {
         SortTB = new javax.swing.JButton();
         TestTP = new javax.swing.JPanel();
         TestTB = new javax.swing.JButton();
+        PreviewTB = new javax.swing.JToggleButton();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
         NewFM = new javax.swing.JMenu();
@@ -482,6 +483,7 @@ public class Jubler extends JFrame {
         TestTM = new javax.swing.JMenu();
         BeginningTTM = new javax.swing.JMenuItem();
         CurrentTTM = new javax.swing.JMenuItem();
+        PreviewTM = new javax.swing.JCheckBoxMenuItem();
         HelpM = new javax.swing.JMenu();
         FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
@@ -706,6 +708,12 @@ public class Jubler extends JFrame {
         TestTB.setEnabled(false);
         TestTB.addActionListener(formListener);
         TestTP.add(TestTB);
+
+        PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
+        PreviewTB.setToolTipText(_("Enable/disable preview"));
+        PreviewTB.setEnabled(false);
+        PreviewTB.addActionListener(formListener);
+        TestTP.add(PreviewTB);
 
         JublerTools.add(TestTP);
 
@@ -1032,6 +1040,11 @@ public class Jubler extends JFrame {
 
         ToolsM.add(TestTM);
 
+        PreviewTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        PreviewTM.setText(_("Preview"));
+        PreviewTM.addActionListener(formListener);
+        ToolsM.add(PreviewTM);
+
         JublerMenuBar.add(ToolsM);
 
         HelpM.setText(_("&Help"));
@@ -1115,6 +1128,9 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == CyanMP) {
                 Jubler.this.CyanMPActionPerformed(evt);
+            }
+            else if (evt.getSource() == ShowNumberP) {
+                Jubler.this.showTableColumn(evt);
             }
             else if (evt.getSource() == ShowStartP) {
                 Jubler.this.showTableColumn(evt);
@@ -1272,8 +1288,11 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
-            else if (evt.getSource() == ShowNumberP) {
-                Jubler.this.showTableColumn(evt);
+            else if (evt.getSource() == PreviewTB) {
+                Jubler.this.PreviewTBActionPerformed(evt);
+            }
+            else if (evt.getSource() == PreviewTM) {
+                Jubler.this.PreviewTMActionPerformed(evt);
             }
         }
 
@@ -1788,6 +1807,16 @@ public class Jubler extends JFrame {
         savePathPosition();
         loadFileFromHere(filedialog.getSelectedFile(), false);
     }//GEN-LAST:event_OpenFMActionPerformed
+
+    private void PreviewTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBActionPerformed
+        PreviewTM.setSelected(PreviewTB.isSelected());
+        enablePreview(PreviewTB.isSelected());
+    }//GEN-LAST:event_PreviewTBActionPerformed
+
+    private void PreviewTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTMActionPerformed
+        PreviewTB.setSelected(PreviewTM.isSelected());
+        PreviewTBActionPerformed(evt);
+}//GEN-LAST:event_PreviewTMActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1847,6 +1876,8 @@ public class Jubler extends JFrame {
     private javax.swing.JMenuItem PinkMP;
     private javax.swing.JMenuItem PlayVideoP;
     private javax.swing.JMenuItem PrefsFM;
+    private javax.swing.JToggleButton PreviewTB;
+    private javax.swing.JCheckBoxMenuItem PreviewTM;
     private javax.swing.JMenuItem PreviousGEM;
     private javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
@@ -2044,6 +2075,7 @@ public class Jubler extends JFrame {
         PasteTB.setEnabled(true);
         SortTB.setEnabled(true);
         TestTB.setEnabled(true);
+        PreviewTB.setEnabled(true);
         
         subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
         updateRecentFile(f);
