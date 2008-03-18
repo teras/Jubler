@@ -1042,6 +1042,7 @@ public class Jubler extends JFrame {
 
         PreviewTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         PreviewTM.setText(_("Preview"));
+        PreviewTM.setName("TPR"); // NOI18N
         PreviewTM.addActionListener(formListener);
         ToolsM.add(PreviewTM);
 
@@ -1104,6 +1105,9 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == TestTB) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
+            }
+            else if (evt.getSource() == PreviewTB) {
+                Jubler.this.PreviewTBActionPerformed(evt);
             }
             else if (evt.getSource() == CutP) {
                 Jubler.this.CutEMActionPerformed(evt);
@@ -1282,17 +1286,14 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == CurrentTTM) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
             }
+            else if (evt.getSource() == PreviewTM) {
+                Jubler.this.PreviewTMActionPerformed(evt);
+            }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == PreviewTB) {
-                Jubler.this.PreviewTBActionPerformed(evt);
-            }
-            else if (evt.getSource() == PreviewTM) {
-                Jubler.this.PreviewTMActionPerformed(evt);
             }
         }
 

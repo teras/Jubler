@@ -32,6 +32,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
+import java.awt.Point;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -190,6 +191,10 @@ public class JSubPreview extends javax.swing.JPanel {
         parent.setPreviewOrientation(horizontal);
         parent.resetPreviewPanels();
 
+    }
+    
+    public Point getFrameLocation() {
+        return frame.getLocationOnScreen();
     }
     
     /** This method is called from within the constructor to
