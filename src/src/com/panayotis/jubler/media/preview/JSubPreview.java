@@ -32,6 +32,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
+import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -192,9 +193,13 @@ public class JSubPreview extends javax.swing.JPanel {
         parent.resetPreviewPanels();
 
     }
-    
+   
     public Point getFrameLocation() {
-        return frame.getLocationOnScreen();
+        try {
+            return frame.getLocationOnScreen();
+        } catch (IllegalComponentStateException e) {
+        }
+        return parent.getLocationOnScreen();
     }
     
     /** This method is called from within the constructor to
