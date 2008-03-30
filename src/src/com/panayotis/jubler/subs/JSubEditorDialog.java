@@ -26,6 +26,7 @@ package com.panayotis.jubler.subs;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.os.SystemDependent;
 
 
 /**
@@ -39,6 +40,7 @@ public class JSubEditorDialog extends javax.swing.JDialog {
     /** Creates new form JSubEditor */
     public JSubEditorDialog(Jubler parent, JSubEditor editor) {
         super(parent, false);
+        SystemDependent.setSmallDecoration(getRootPane());
 
         this.parent = parent;
         this.editor = editor;

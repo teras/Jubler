@@ -43,6 +43,7 @@ import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.options.Options;
 import java.awt.Color;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.tools.JToolRealTime;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
@@ -89,6 +90,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     /** Creates new form JVideoConsole */
     public JVideoConsole(Jubler parent, VideoPlayer player) {
         super(parent, false);
+        SystemDependent.setSmallDecoration(getRootPane());
         
         initComponents();
         initImageIcons();

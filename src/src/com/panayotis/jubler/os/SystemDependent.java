@@ -42,6 +42,7 @@ import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.JMenuItem;
+import javax.swing.JRootPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -93,6 +94,11 @@ public class SystemDependent {
         }
     }
     
+    public static void setSmallDecoration(JRootPane pane) {
+        if (isMacOSX()) {
+            pane.putClientProperty("Window.style", "small");
+        }
+    }
     
     public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
         if (isMacOSX()) {
