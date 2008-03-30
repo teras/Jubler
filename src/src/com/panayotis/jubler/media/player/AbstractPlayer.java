@@ -137,9 +137,9 @@ public abstract class AbstractPlayer extends VideoPlayer {
     public JExtBasicOptions getOptionsPanel() { return opts; }
     
     public void setCentralLocation(int x, int y) {
-        this.x = x + opts.getXOffset();
-        this.y = y + opts.getYOffset();
-    }
+        this.x = x ;
+        this.y = y ;
+}
     
     public int getLocationX() { return x; }
     public int getLocationY() { return y; }

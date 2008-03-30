@@ -829,11 +829,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     
     private void TimeSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TimeSStateChanged
-        if ( ignore_slider_changes || TimeS.getValueIsAdjusting() ) return;
-        if ( !timer.isRunning()) {
-            checkValid(view.seek(TimeS.getValue()));
-            if ( view != null ) timer.start();
-        }
+        if (ignore_slider_changes || TimeS.getValueIsAdjusting()) return;
+        checkValid(view.seek(TimeS.getValue()));
+        if (!timer.isRunning() && view != null) timer.start();
     }//GEN-LAST:event_TimeSStateChanged
     
     private void TimeSMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TimeSMousePressed
@@ -924,7 +922,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         /* We are able to sync - automatically do the syncing !!! */
         if (sync1!=null && sync2!=null) {
             JToolRealTime tool;
-            
+
             if (sync1.isEqualDiff(sync2))
                 tool = parent.getShifter();
             else
@@ -932,6 +930,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
             
             if (tool.setValues(sync1, sync2)) {
                 /* Parameters are OK */
+                timer.stop();
                 checkValid(view.setActive(false, null));
                 if (tool.execute(parent)) {             // execute tool
                     /* Execution successful */
