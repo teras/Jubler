@@ -2245,7 +2245,7 @@ public class Jubler extends JFrame {
                 getRootPane().putClientProperty("windowModified", Boolean.FALSE);
             }
             setTitle(title + " - Jubler");
-            getRootPane().putClientProperty("Window.documentFile", subs.getCurrentFile());
+            getRootPane().putClientProperty("Window.documentFile", subs.getLastOpenedFile());
         } else {
             setTitle("Jubler");
         }
