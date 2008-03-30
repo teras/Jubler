@@ -46,11 +46,18 @@ public class JTimeSelector extends JPanel {
         spinner.setEnabled(status);
     }
 
-    void setSelectedTime (Time t) {
+    void setSelectedTime(Time t) {
         selected_time = t;
         spinner.setTimeValue(t);
     }
-    
+
+    void setTimeToEdge() {
+        if (is_start_position)
+            spinner.setTimeValue(new Time(0));
+        else
+            spinner.setTimeValue(new Time(Time.MAX_TIME));
+    }
+
     double getTime() {
         return spinner.getTimeValue().toSeconds();
     }
@@ -103,10 +110,7 @@ public class JTimeSelector extends JPanel {
     }//GEN-LAST:event_EdgeBMousePressed
 
     private void EdgeMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EdgeMActionPerformed
-        if (is_start_position)
-            spinner.setTimeValue(new Time(0));
-        else
-            spinner.setTimeValue(new Time(Time.MAX_TIME));
+        setTimeToEdge();
 }//GEN-LAST:event_EdgeMActionPerformed
 
     private void SelectMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectMActionPerformed

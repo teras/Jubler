@@ -20,20 +20,34 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.console.TimeSync;
+import com.panayotis.jubler.time.gui.JTimeFullSelection;
 
 /**
  *
  * @author teras
  */
 public abstract class JToolRealTime extends JTool {
-    
-    public abstract boolean setValues (TimeSync first, TimeSync second);
-    
-    public JToolRealTime (boolean value) {
+
+    boolean should_maximize_values = false;
+
+    public boolean setValues(TimeSync first, TimeSync second) {
+        should_maximize_values = true;
+        return true;
+    }
+
+    public JToolRealTime(boolean value) {
         super(value);
+    }
+
+    protected void updateData(Jubler jub) {
+        super.updateData(jub);
+        if (should_maximize_values) {
+            ((JTimeFullSelection) pos).forceFullRangeSelection();
+            should_maximize_values = false;
+        }
     }
 }

@@ -24,7 +24,6 @@
 package com.panayotis.jubler.tools;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
-import com.panayotis.jubler.time.gui.JTimeFullSelection;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
 
@@ -57,6 +56,8 @@ public class JShiftTime extends JToolRealTime {
     }
     
     public boolean setValues(TimeSync first, TimeSync second) {
+        super.setValues(first, second);
+        
         double time = first.timediff;
         if (Math.abs(time) < 0.001) return false;
         
@@ -67,7 +68,6 @@ public class JShiftTime extends JToolRealTime {
             CSign.setSelectedIndex(0);
         }
         dt.setTimeValue(new Time(time));
-        pos.forceRangeSelection();
         return true;
     }
     

@@ -37,7 +37,6 @@ public class JRecodeTime extends JToolRealTime {
 
     private double factor;
     private double center;
-    private double given_factor,  given_center;
     private TimeSync t1,  t2;
     private JRateChooser FromR,  ToR;
 
@@ -62,6 +61,8 @@ public class JRecodeTime extends JToolRealTime {
     }
 
     public boolean setValues(TimeSync first, TimeSync second) {
+        super.setValues(first, second);
+
         if (first.smallerThan(second)) {
             t1 = first;
             t2 = second;
@@ -69,6 +70,8 @@ public class JRecodeTime extends JToolRealTime {
             t1 = second;
             t2 = first;
         }
+
+        double given_factor, given_center;
 
         given_center = (t2.timediff * t1.timepos - t1.timediff * t2.timepos) / (t2.timediff - t1.timediff);
         if (Double.isInfinite(given_center) || Double.isNaN(given_center)) {
@@ -83,36 +86,18 @@ public class JRecodeTime extends JToolRealTime {
             given_center = given_factor = 0;
             return false;
         }
+        /* Set recode parameters */
+        CustomC.setText(Double.toString(given_center));
+        CustomF.setText(Double.toString(given_factor));
 
-        pos.forceRangeSelection();
+        /* Set default selections */
+        CustomB.setSelected(true);
+
         return true;
     }
 
     public void updateData(Jubler j) {
-        if (t1 == null) {
-            /* normal execution */
-            super.updateData(j);
-        } else {
-            /* Directly execute from VideoConsole - do not follow normal procedure*/
-            subs = j.getSubtitles();
-            selected = new int[2];
-            selected[0] = subs.findSubEntry(t1.timepos, true);
-            selected[1] = subs.findSubEntry(t2.timepos, true);
-
-            pos.updateData(subs, selected);
-            jparent = j;
-
-            /* Set recode parameters */
-            CustomC.setText(Double.toString(given_center));
-            CustomF.setText(Double.toString(given_factor));
-
-            /* Set default selections */
-            CustomB.setSelected(true);
-
-
-            t1 = t2 = null;
-            given_center = given_factor = 0;
-        }
+        super.updateData(j);
         /* Set other values */
         FromR.setDataFiles(j.getMediaFile(), j.getSubtitles());
         ToR.setDataFiles(j.getMediaFile(), j.getSubtitles());

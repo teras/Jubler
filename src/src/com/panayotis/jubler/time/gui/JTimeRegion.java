@@ -24,6 +24,7 @@ package com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
 import java.util.Vector;
 
@@ -90,6 +91,11 @@ public class JTimeRegion extends JTimeArea {
 
     public double getFinishTime() {
         return endtime.getTime();
+    }
+    
+    public void setRegionToMaximum() {
+        starttime.setTimeToEdge();
+        endtime.setTimeToEdge();
     }
 
     /** This method is called from within the constructor to

@@ -760,8 +760,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
             createNewSyncMark(is_first);
         } else {
             destroySyncMark(is_first);
-        }
-        
+        }        
     }//GEN-LAST:event_SyncBActionPerformed
     
     private void selectMark(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectMark

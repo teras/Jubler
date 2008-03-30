@@ -112,9 +112,10 @@ public class JTimeFullSelection extends JTimeArea {
         return affected;
     }
 
-    public void forceRangeSelection() {
+    public void forceFullRangeSelection() {
         byRange.setSelected(true);
         tregion.setEnabled(true);
+        tregion.setRegionToMaximum();
     }
 
     /** This method is called from within the constructor to

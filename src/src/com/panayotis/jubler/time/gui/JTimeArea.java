@@ -39,9 +39,7 @@ public abstract class JTimeArea extends JPanel {
     protected int [] selected;
     
     public abstract Vector<SubEntry> getAffectedSubs() ;
-    
-    public void forceRangeSelection() {};
-    
+
     
     /** Creates a new instance of JTimeArea */
     public JTimeArea() {
