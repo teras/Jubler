@@ -712,6 +712,7 @@ public class Jubler extends JFrame {
         PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
         PreviewTB.setToolTipText(_("Enable/disable preview"));
         PreviewTB.setEnabled(false);
+        PreviewTB.putClientProperty("JButton.buttonType", "gradient");
         PreviewTB.addActionListener(formListener);
         TestTP.add(PreviewTB);
 

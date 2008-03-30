@@ -1326,6 +1326,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewTBActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="PreviewTB.putClientProperty(&quot;JButton.buttonType&quot;, &quot;gradient&quot;);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
