@@ -112,7 +112,7 @@ public class JFramePreview extends JPanel {
     public void repaint() {
         /* Check if this object should be repainted, or just silently exit */
         if (sub==null || callback==null || (!callback.isEnabled()) ) return;
-        System.out.println("How many times should I come here?");
+        // System.out.println("How many times should I come here?");
         /* Calculate subtitle image */
         //long systime = System.currentTimeMillis();
         if (subimg==null) subimg = new SubImage(sub);
