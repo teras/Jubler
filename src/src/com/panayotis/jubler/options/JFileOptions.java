@@ -31,7 +31,6 @@ import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 /**
  *
@@ -53,12 +52,8 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder  {
         }
     }
     
-    protected String getItemName(JComboBox box) {
-        return box.getSelectedItem().toString();
-    }
-    
     public abstract void updateVisuals(MediaFile mfile, Subtitles subs);
-    
+
     public JPanel getTabPanel() {
         return this;
     }

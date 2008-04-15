@@ -36,9 +36,6 @@ import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
-import java.nio.charset.Charset;
-import java.util.Iterator;
-import java.util.SortedMap;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
@@ -47,7 +44,6 @@ import javax.swing.JMenuBar;
  * @author  teras
  */
 public class JPreferences extends javax.swing.JDialog {
-    public static final String []AvailEncodings;
     public static final String []DefaultEncodings;
     public static final SubFormat DefaultSubFormat;
     
@@ -66,17 +62,6 @@ public class JPreferences extends javax.swing.JDialog {
     private boolean dialog_status;
     
     static {
-        SortedMap encs = Charset.availableCharsets();
-        AvailEncodings = new String[encs.size()];
-        int pos;
-        String item;
-        
-        pos = 0;
-        for (Iterator it = encs.keySet().iterator() ; it.hasNext() ; ) {
-            item = it.next().toString();
-            AvailEncodings[pos++] = item;
-        }
-        
         DefaultEncodings = new String[3];
         DefaultEncodings[0] = "UTF-8";
         DefaultEncodings[1] = "ISO-8859-1";
