@@ -46,9 +46,12 @@ import javax.swing.JPanel;
  * @author teras
  */
 public class JFramePreview extends JPanel {
+    
+    public static final int REEL_OFFSET = 12;
+    
     /* Background color of the movie clip */
-    private final static Color background = new Color(10, 10, 10);
-    private final static String inactive_decoder_message = _("FFDecode library not active. Using demo image.");
+    private static final Color background = new Color(10, 10, 10);
+    private static final String inactive_decoder_message = _("FFDecode library not active. Using demo image.");
     
     private final Image demoimg;
     
@@ -87,7 +90,7 @@ public class JFramePreview extends JPanel {
     }
     
     public Dimension getPreferredSize() {
-        return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null)+24);
+        return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null)+2*REEL_OFFSET);
     }
     
     public void updateMediaFile(MediaFile mfile) {
@@ -151,18 +154,18 @@ public class JFramePreview extends JPanel {
         int imgheight = frameimg.getHeight(null);
         int imgwidth = frameimg.getWidth(null);
         
-        g.fillRect(0, 0, getWidth(), 12);
-        g.fillRect(0, 12+imgheight, getWidth(), 12);
+        g.fillRect(0, 0, getWidth(), REEL_OFFSET);
+        g.fillRect(0, REEL_OFFSET+imgheight, getWidth(), REEL_OFFSET);
         if (getWidth()>imgwidth)
             g.fillRect(imgwidth, 0, getWidth() - imgwidth, getHeight());
         
         g.setColor(Color.WHITE);
-        for (int i = 4 ; i < getWidth() ; i += 12) {
-            g.fill3DRect(i, 2, 6, 8, false);
-            g.fill3DRect(i, 14+imgheight, 6, 8, false);
+        for (int i = 4 ; i < getWidth() ; i += REEL_OFFSET) {
+            g.fill3DRect(i, 2, REEL_OFFSET/2, REEL_OFFSET-4, false);
+            g.fill3DRect(i, 2+REEL_OFFSET+imgheight, REEL_OFFSET/2, REEL_OFFSET-4, false);
         }
-        g.drawImage(frameimg,0,12,null); // Since we have already loaded the picture from memory, the imageobserver is of no help
-        if (subimg!=null) g.drawImage(subimg.getImage(), subimg.getXOffset(frameimg), subimg.getYOffset(frameimg) + 12, (ImageObserver)null);
+        g.drawImage(frameimg,0,REEL_OFFSET,null); // Since we have already loaded the picture from memory, the imageobserver is of no help
+        if (subimg!=null) g.drawImage(subimg.getImage(), subimg.getXOffset(frameimg), subimg.getYOffset(frameimg) + REEL_OFFSET, (ImageObserver)null);
         
         /* Draw visual representation that ffdecode library is not present */
         if (!mfile.getDecoder().isDecoderValid()) {
@@ -170,9 +173,9 @@ public class JFramePreview extends JPanel {
             g.setFont(f);
             TextLayout layout = new TextLayout(inactive_decoder_message, f, ((Graphics2D)g).getFontRenderContext());
             g.setColor(Color.RED);
-            g.fillRect(2, 14, (int) layout.getAdvance()+1, (int) layout.getAscent()+ (int)layout.getDescent()+1);
+            g.fillRect(2, 2+REEL_OFFSET, (int) layout.getAdvance()+1, (int) layout.getAscent()+ (int)layout.getDescent()+1);
             g.setColor(Color.WHITE);
-            g.drawString(inactive_decoder_message, 2, 14+(int)layout.getAscent());
+            g.drawString(inactive_decoder_message, 2, 2+REEL_OFFSET+(int)layout.getAscent());
         }
     }
     

@@ -145,16 +145,6 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         
     }
     
-    private Point getFrameLocation() {
-        setVisible(true);
-        Point pos = parent.getSubPreview().getFrameLocation();
-        Point cpos = MainPanel.getLocationOnScreen();
-        Point wpos = getLocationOnScreen();
-        pos.x = pos.x - cpos.x + wpos.x;
-        pos.y = pos.y - cpos.y + wpos.y;
-        return pos;
-    }
-    
     /* Where to put this dialog */
     private void positionConsole() {
         Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
@@ -167,7 +157,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     public void start(MediaFile mfile, Subtitles subs, Time starttime ) {
         positionConsole();
-        Point pos = getFrameLocation();
+        Point pos = parent.getSubPreview().getFrameLocation();
         player.setCentralLocation(pos.x, pos.y);
         
         resetSubsDelay();
@@ -776,7 +766,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }//GEN-LAST:event_ResetSpeedBActionPerformed
     
     private void LoadSubsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadSubsBActionPerformed
-        player.setCentralLocation(getX(), getY()+getHeight());
+        Point pos = parent.getSubPreview().getFrameLocation();
+        player.setCentralLocation(pos.x, pos.y);
         checkValid(view.changeSubs(parent.getSubtitles()));
     }//GEN-LAST:event_LoadSubsBActionPerformed
     
@@ -944,7 +935,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                     /* Error in tool execution */
                     destroySyncMark(is_first);
                 }
-                player.setCentralLocation(getX(), getY()+getHeight());
+                Point pos = parent.getSubPreview().getFrameLocation();
+                player.setCentralLocation(pos.x, pos.y);
+        
                 checkValid(view.setActive(true, parent.getSubtitles()));
                 checkValid(view.delaySubs((float)subsdelay));  // Make sure we have the same subtitle delay
             } else {

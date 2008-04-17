@@ -196,7 +196,9 @@ public class JSubPreview extends javax.swing.JPanel {
    
     public Point getFrameLocation() {
         try {
-            return frame.getLocationOnScreen();
+            Point ret = frame.getLocationOnScreen();
+            ret.y += JFramePreview.REEL_OFFSET;
+            return ret;
         } catch (IllegalComponentStateException e) {
         }
         return parent.getLocationOnScreen();
