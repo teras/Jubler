@@ -16,7 +16,7 @@
 </section>
 
 <section><title>How to translate to my own language</title>
-    <para>To translate Jubler to your own language, there is a simple method, with a little help of poedit (and me!). At first contact me to send you the apropriate template for your language. If you prefer to create the template yourself, you need a POSIX environment and the source code of Jubler from the SVN. Go to recources/i18n folder and issue the following command (without quotes) "maketemplate". This will produce a file named "jubler.pot" into this directory. Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot .</para>
+    <para>To translate Jubler to your own language, there is a simple method, with a little help of poedit (and me!). At first contact me to update the language template file in the SVN. The file can be found in <ulink url="http://jubler.svn.sourceforge.net/viewvc/jubler/src/resources/i18n/">Sourceforge SVN</ulink> and is named "jubler.pot". Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot .</para>
 
 	<para>You can edit this file with either <ulink url="http://www.poedit.net/">poedit</ulink> (recommended) or any other plain text editor. Prepare the translation and then send the .po file back to me. If you want to compile the translation yourself (you are brave, aren't you) just place the file under resources/i18n and execute the "i18n" ant task (if you don't know what I am talking about, don't worry, just sent the file back).</para>
 </section>

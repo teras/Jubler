@@ -418,7 +418,6 @@
 			<fileset dir="." includes="*.sh"/>
 			<fileset dir="." includes="*.dmg"/>
 			<fileset dir="." includes="*.log"/>
-			<fileset dir="resources/i18n" includes="jubler.pot"/>
 			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
 			<fileset dir="src" includes="lib"/>
 		</delete>
