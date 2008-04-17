@@ -13,5 +13,3 @@ for i in $WHAT ; do
 	echo Remaking po file for language \"$LNG\"
 	msgmerge --no-fuzzy-matching --update --indent --sort-by-file --backup=none $LNG.po jubler.pot 
 done
-
-rm -rf jubler.pot
