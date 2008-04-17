@@ -66,8 +66,6 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        ParametersP = new javax.swing.JPanel();
-        OffsetL = new javax.swing.JLabel();
         ArgsP = new javax.swing.JPanel();
         HelpP = new javax.swing.JPanel();
         Help1L = new javax.swing.JLabel();
@@ -78,11 +76,6 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         deflt = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
-
-        ParametersP.setLayout(new java.awt.BorderLayout());
-
-        OffsetL.setText(_("Player window offset in pixels"));
-        ParametersP.add(OffsetL, java.awt.BorderLayout.NORTH);
 
         ArgsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 0, 0, 0));
         ArgsP.setLayout(new java.awt.BorderLayout());
@@ -115,9 +108,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         });
         ArgsP.add(deflt, java.awt.BorderLayout.EAST);
 
-        ParametersP.add(ArgsP, java.awt.BorderLayout.SOUTH);
-
-        add(ParametersP, java.awt.BorderLayout.CENTER);
+        add(ArgsP, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
     
     private void defltActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defltActionPerformed
@@ -132,8 +123,6 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
     private javax.swing.JLabel Help3L;
     private javax.swing.JLabel Help4L;
     private javax.swing.JPanel HelpP;
-    private javax.swing.JLabel OffsetL;
-    private javax.swing.JPanel ParametersP;
     private javax.swing.JTextField args;
     private javax.swing.JButton deflt;
     // End of variables declaration//GEN-END:variables
