@@ -40,18 +40,15 @@ public class JSaveOptions extends JFileOptions {
     
     private String enc_state, fps_state, format_state;
     private JRateChooser CFPS;
-    private JEncoding CEnc;
     
     /** Creates new form JSavePrefs */
     public JSaveOptions() {
         super();
-        CEnc = new JEncoding();
         initComponents();
         
         /* Fix DialogVisible */
-        add(DialogVisible, java.awt.BorderLayout.SOUTH);
-        DialogVisible.setText(_(" Show save preferences while saving file"));
-        DialogVisible.setToolTipText(_("Show preferences every time the user saves a subtitle file"));
+        addDialogOption();
+        updateDialogOption(_(" Show save preferences while saving file"), _("Show preferences every time the user saves a subtitle file"));
         
         CFPS = new JRateChooser();
         
@@ -78,7 +75,7 @@ public class JSaveOptions extends JFileOptions {
     }
     
     public String getEncoding() {
-        return CEnc.getItemName();
+        return CEnc.getSelectedItem().toString();
     }
     
     public SubFormat getFormat() {
@@ -86,9 +83,9 @@ public class JSaveOptions extends JFileOptions {
     }
     
     public void savePreferences() {
-        Options.setOption("Save.Encoding", CEnc.getItemName());
+        Options.setOption("Save.Encoding", CEnc.getSelectedItem().toString());
         Options.setOption("Save.FPS", CFPS.getFPS());
-        Options.setOption("System.ShowSaveDialog", DialogVisible.isSelected() ? "true" : "false");
+        Options.setOption("System.ShowSaveDialog", getDialogOption());
         
         SubFormat f = AvailSubFormats.findFromDescription(CFormat.getSelectedItem().toString());
         Options.setOption("Save.Format", (f!=null)?f.getName():"UNKNOWN");
@@ -102,14 +99,14 @@ public class JSaveOptions extends JFileOptions {
         fps = Options.getOption("Save.FPS", JRateChooser.DefaultFPSEntry);
         format = Options.getOption("Save.Format", AvailSubFormats.Formats[0].getName());
         
-        CEnc.setItemName(enc, "US-ASCII");
+        setListItem(CEnc, enc);
         CFPS.setFPS(fps);
         
         SubFormat f = AvailSubFormats.findFromName(format);
         setCombo(CFormat, (f!=null)?f.getDescription():"UNKNOWN", "UNKNOWN");
         updateVisualFPS(f);
         
-        DialogVisible.setSelected(Options.getOption("System.ShowSaveDialog", "true").equals("true"));
+        setDialogOption(Options.getOption("System.ShowSaveDialog", "true").equals("true"));
     }
     
     public String getTabName() { return _("Save"); }
@@ -125,6 +122,11 @@ public class JSaveOptions extends JFileOptions {
         FPSPanel.setVisible(supports_fps);
     }
     
+    
+    public void setPreEncoding(String enc) {
+        setListItem(CEnc, enc);
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -137,6 +139,7 @@ public class JSaveOptions extends JFileOptions {
         CFormatL = new javax.swing.JLabel();
         CFormat = new javax.swing.JComboBox();
         CEncL = new javax.swing.JLabel();
+        CEnc = new javax.swing.JComboBox(AvailEncodings);
         FPSPanelL = new javax.swing.JLabel();
         FPSPanel = new javax.swing.JPanel();
 
@@ -159,6 +162,7 @@ public class JSaveOptions extends JFileOptions {
         CEncL.setText(_("Encoding"));
         OptsP.add(CEncL);
         OptsP.add(CEnc);
+        OptsP.add(CEnc);
 
         FPSPanelL.setText(_("FPS"));
         OptsP.add(FPSPanelL);
@@ -175,6 +179,7 @@ public class JSaveOptions extends JFileOptions {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox CEnc;
     private javax.swing.JLabel CEncL;
     private javax.swing.JComboBox CFormat;
     private javax.swing.JLabel CFormatL;

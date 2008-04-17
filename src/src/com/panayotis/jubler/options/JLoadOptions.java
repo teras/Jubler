@@ -30,6 +30,7 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -38,41 +39,30 @@ import javax.swing.ImageIcon;
 public class JLoadOptions extends JFileOptions {
     
     private JRateChooser CFPS;
-    private JEncoding [] CEnc;
+    private JComboBox [] CEnc;
     
     /** Creates new form JLoadPrefs */
     public JLoadOptions() {
         super();
-        CEnc = new JEncoding[3];
+        CEnc = new JComboBox[3];
         for (int i = 0 ; i < CEnc.length ; i++) {
-            CEnc[i] = new JEncoding();
+            CEnc[i] = new JComboBox(AvailEncodings);
         }
         initComponents();
+        hideUnicodeMenu();
         
         /* Fix DialogVisible */
-        add(DialogVisible, java.awt.BorderLayout.SOUTH);
-        DialogVisible.setText(_(" Show load preferences while loading file"));
-        DialogVisible.setToolTipText(_("Show preferences every time the user loads a subtitle file"));
+        addDialogOption();
+        updateDialogOption(_(" Show load preferences while loading file"),_("Show preferences every time the user loads a subtitle file"));
         
         CFPS = new JRateChooser();
         FPSPanel.add(CFPS, BorderLayout.CENTER);
-        fillComponents();
     }
     
     
     public void updateVisuals(MediaFile mfile, Subtitles subs) {
         CFPS.setDataFiles(mfile, subs);
     }
-    
-    private void fillComponents() {
-        int i;
-//        for ( i = 0 ; i < JPreferences.AvailEncodings.length ; i++) {
-//            CEnc1.addItem(JPreferences.AvailEncodings[i]);
-//            CEnc2.addItem(JPreferences.AvailEncodings[i]);
-//            CEnc3.addItem(JPreferences.AvailEncodings[i]);
-//        }
-    }
-    
     
     public float getFPS() {
         return CFPS.getFPSValue();
@@ -81,7 +71,7 @@ public class JLoadOptions extends JFileOptions {
     public String[] getEncodings() {
         String [] encs  = new String[CEnc.length];
         for (int i = 0 ; i < encs.length ; i++)
-            encs[i] = CEnc[i].getItemName();
+            encs[i] = CEnc[i].getSelectedItem().toString();
         return encs;
     }
     
@@ -91,26 +81,32 @@ public class JLoadOptions extends JFileOptions {
         
         for (int i = 0 ; i<CEnc.length ; i++ ) {
             e = Options.getOption("Load.Encoding"+(i+1), JPreferences.DefaultEncodings[i]);
-            CEnc[i].setItemName(e, "US-ASCII");
+            setListItem(CEnc[i], e);
         }
          fps = Options.getOption("Load.FPS", JRateChooser.DefaultFPSEntry);
         CFPS.setFPS(fps);
-        
-        DialogVisible.setSelected(Options.getOption("System.ShowLoadDialog", "true").equals("true"));
+        setDialogOption(Options.getOption("System.ShowLoadDialog", "true").equals("true"));
     }
     
     public void savePreferences() {
         for (int i = 0 ; i < CEnc.length ; i++) {
-            Options.setOption("Load.Encoding"+(i+1), CEnc[i].getItemName());
+            Options.setOption("Load.Encoding"+(i+1), CEnc[i].getSelectedItem().toString());
         }
         Options.setOption("Load.FPS", CFPS.getFPS());
-        Options.setOption("System.ShowLoadDialog", DialogVisible.isSelected() ? "true" : "false");
+        Options.setOption("System.ShowLoadDialog", getDialogOption());
     }
     
     public String getTabName() { return _("Load"); }
     public String getTabTooltip() { return _("Load subtitles options"); }
     public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/load_small.png")); }
 
+    public void setPreEncoding(String enc) {
+        CEnc[0].setSelectedItem("UTF-8");
+        setListItem(CEnc[1], enc);
+        CEnc[2].setSelectedItem("UTF-16");
+    }
+
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -161,5 +157,6 @@ public class JLoadOptions extends JFileOptions {
     private javax.swing.JPanel FPSPanel;
     private javax.swing.JPanel OptsP;
     // End of variables declaration//GEN-END:variables
+
     
 }
