@@ -962,7 +962,7 @@ msgstr "Άκυρο"
 
 #: com/panayotis/jubler/media/preview/JFramePreview.java:51
 msgid "FFDecode library not active. Using demo image."
-msgstr "Η βιβλιοθήκη FFDecode δεν είναι ενεργή - χρήση δοκιμαστικής εικόνας"
+msgstr "Ανενεργη βιβλιοθήκη FFDecode. Χρήση δοκιμαστικής εικόνας."
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:155
 msgid "Selected subtitles"
