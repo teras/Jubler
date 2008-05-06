@@ -1370,7 +1370,7 @@ msgstr "No se ha podido mover el fichero de configuración a {0}"
 
 #: com/panayotis/jubler/options/Options.java:69
 #, java-format
-msgid "Configation filed moved to {0}"
+msgid "Configuration file moved to {0}"
 msgstr "El fichero de configuración se ha movido a {0}"
 
 #: com/panayotis/jubler/options/Options.java:84

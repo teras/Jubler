@@ -1325,7 +1325,7 @@ msgstr  ""
 
 #: com/panayotis/jubler/options/Options.java:69
 #, java-format
-msgid   "Configation filed moved to {0}"
+msgid   "Configuration file moved to {0}"
 msgstr  ""
 
 #: com/panayotis/jubler/options/Options.java:84
