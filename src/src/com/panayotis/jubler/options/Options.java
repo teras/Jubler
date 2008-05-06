@@ -66,7 +66,7 @@ public class Options {
                 if (!success) {
                     DEBUG.debug(_("Unable to move configuration file to {0}", newconfig.getPath()));
                 } else {
-                    DEBUG.debug(_("Configuration filed moved to {0}", newconfig.getPath()));
+                    DEBUG.debug(_("Configuration file moved to {0}", newconfig.getPath()));
                 }
             }
         }
