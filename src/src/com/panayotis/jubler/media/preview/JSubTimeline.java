@@ -142,7 +142,7 @@ public class JSubTimeline extends JPanel {
     public void setWavePreview(JWavePreview wave) { this.wave = wave; }
     public Jubler getJubler() { return parent; }
     
-    public ArrayList<SubInfo> getSelectedList() {
+    ArrayList<SubInfo> getSelectedList() {
         return sellist;
     }
     
@@ -246,7 +246,7 @@ public class JSubTimeline extends JPanel {
     
     
     public void mouseStartsDragging(MouseEvent e) {
-        if (e.getButton()!= e.BUTTON1) return;
+        if (e.getButton()!= MouseEvent.BUTTON1) return;
         if (current_action==NONE) return;
         
         X_position = e.getX();
@@ -476,7 +476,7 @@ public class JSubTimeline extends JPanel {
         repaint();
     }
     
-    public int findInList(ArrayList<SubInfo> list, int i) {
+    private int findInList(ArrayList<SubInfo> list, int i) {
         for (int j = 0 ; j < list.size() ; j++) {
             if ( list.get(j).pos == i) return j;
         }

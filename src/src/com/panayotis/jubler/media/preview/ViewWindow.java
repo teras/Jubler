@@ -28,8 +28,8 @@ package com.panayotis.jubler.media.preview;
  * @author teras
  */
 public class ViewWindow {
-    private double viewstart = -1;
-    private double viewduration = -1;
+    private double viewstart = 0;
+    private double viewduration = 10;
     private double videoduration = -1;
     
     public static final double MINIMUM_DURATION = 2;
@@ -47,20 +47,33 @@ public class ViewWindow {
 
         /* Keep current duration, if we are "lazy" about it */
         if (lazy_resize) {
-            if (start > viewstart && start < (viewstart+viewduration)) // If start  is between the old star/end (if it is not, then a new start will be used - the thing is what to do if we'return already inside the viewable area)
-                start = viewstart;  // Use old start - we don't need to resize the window AT ALL!!!
-            else if (start > (viewstart+viewduration)) // Start is past last entry, so we have to put it in far left
+            if (end > (viewstart + viewduration)) { // Go past the visual end
                 start = end - viewduration;
-            end = start + viewduration;
+            } else if (start < viewstart) {         // GO before the visual start
+                end = start + viewduration;
+            } else {                                // We are just perfect, inside!
+                start = viewstart;
+                end = viewstart + viewduration;
+            }
+        }
+
+        /* Make sure that start has positive value */
+        if (start < 0) {
+            end = end - start;
+            start = 0;
+        }
+        /* Make sure that we show *at*least* MINIMUM_DURATION seconds */
+        if ((end - start) < MINIMUM_DURATION) {
+            end = start + MINIMUM_DURATION;
+        }
+        /* If duration is too small, increase duration */
+        if ((end - start) > videoduration) {
+            start = 0;
+            end = videoduration;
         }
         
-        if ( (start+MINIMUM_DURATION) > end ) end = start+MINIMUM_DURATION;
-        if ( (end-start) > videoduration)  {
-            start = 0 ; end = videoduration;
-        }
-        viewduration = end - start;
         viewstart = start;
-        if (viewstart < 0) viewstart = 0;
+        viewduration = end - start;
     }
     
     public double getStart() { return viewstart; }

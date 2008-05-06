@@ -112,12 +112,12 @@ public class JSubPreview extends javax.swing.JPanel {
     
     
     public void subsHaveChanged(int [] subid) {
-        double min = Double.MAX_VALUE, max = Double.MIN_VALUE;
+        double min = Double.MAX_VALUE, max = 0d;
         SubEntry entry;
         double val;
         Subtitles subs = parent.getSubtitles();
         
-        /* First find total subtitle duration (since other values depend on it */
+        /* First find total subtitle duration (since other values depend on it) */
         double endtime;
         double videoduration = 0;
         for (int i = 0 ; i < subs.size() ; i++) {
@@ -141,7 +141,6 @@ public class JSubPreview extends javax.swing.JPanel {
         }
         /* Although we have a minimum duration in ViewWindow, this is too small.
          * When displaying subtitles for the first time make sure we display a generous amount of time */
-        if ( (max-min)<10) max = min+10;
         view.setWindow(min, max, true);
         
         /* Update visual data */
