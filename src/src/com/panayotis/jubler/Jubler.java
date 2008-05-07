@@ -33,7 +33,6 @@ import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.console.JVideoConsole;
@@ -210,8 +209,8 @@ public class Jubler extends JFrame {
         filedialog = new JFileChooser();
         filedialog.setMultiSelectionEnabled(false);
         filedialog.addChoosableFileFilter(new SubFileFilter());
-        filedialog.setSelectedFile(new File(Options.getOption("System.LastDirPath", ".") +"/.") );
-        
+        FileCommunicator.getDefaultDialogPath(filedialog);
+         
         WebFM.setVisible(false);
         setDropHandler();
         hideSystemMenus();
@@ -1780,9 +1779,8 @@ public class Jubler extends JFrame {
         filedialog.setDialogTitle(_("Save Subtitles"));
         filedialog.setSelectedFile(subs.getCurrentFile());
         if ( filedialog.showSaveDialog(this) != JFileChooser.APPROVE_OPTION ) return;
-        savePathPosition();
+        FileCommunicator.setDefaultDialogPath(filedialog);
         prefs.showSaveDialog(this, mfile, subs); //Show the "save options" dialog, if desired
-        
         saveFile(filedialog.getSelectedFile());
     }//GEN-LAST:event_SaveAsFMActionPerformed
     
@@ -1806,7 +1804,7 @@ public class Jubler extends JFrame {
     private void OpenFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFMActionPerformed
         filedialog.setDialogTitle(_("Load Subtitles"));
         if ( filedialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION ) return;
-        savePathPosition();
+        FileCommunicator.setDefaultDialogPath(filedialog);
         loadFileFromHere(filedialog.getSelectedFile(), false);
     }//GEN-LAST:event_OpenFMActionPerformed
 
@@ -2260,12 +2258,6 @@ public class Jubler extends JFrame {
     
     public void setDisableConsoleUpdate(boolean status) {
         disable_consoles_update = status;
-    }
-    
-    /* Save the position of the last directory opened */
-    void savePathPosition() {
-        Options.setOption("System.LastDirPath", filedialog.getSelectedFile().getParent());
-        Options.saveOptions();
     }
     
     public Subtitles getSubtitles() { return subs; }

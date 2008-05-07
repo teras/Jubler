@@ -43,6 +43,7 @@ import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -204,6 +205,14 @@ public class FileCommunicator {
             fname= fname.substring(0,pos);
         }
         return new File(fname);
+    }
+    
+    public static void getDefaultDialogPath(JFileChooser chooser) {
+         chooser.setSelectedFile(new File(Options.getOption("System.LastDirPath", System.getProperty("user.home")) +"/.") );
+    }
+    public static void setDefaultDialogPath(JFileChooser chooser) {
+         Options.setOption("System.LastDirPath", chooser.getSelectedFile().getParent());
+        Options.saveOptions();
     }
     
 }

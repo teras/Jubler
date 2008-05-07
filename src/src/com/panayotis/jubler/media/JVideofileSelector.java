@@ -25,6 +25,7 @@ package com.panayotis.jubler.media;
 
 import com.panayotis.jubler.media.filters.AudioFileFilter;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
+import com.panayotis.jubler.os.FileCommunicator;
 import java.io.File;
 import javax.swing.JFileChooser;
 
@@ -51,6 +52,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         fdialog.addChoosableFileFilter(vfilter);
         fdialog.addChoosableFileFilter(afilter);
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        FileCommunicator.getDefaultDialogPath(fdialog);
     }
     
     
@@ -207,6 +209,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         afilter.setCheckForValidCache(mfile.getVideoFile());
         fdialog.setFileFilter(afilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
+        FileCommunicator.setDefaultDialogPath(fdialog);
         mfile.setCacheFile(fdialog.getSelectedFile());
         updateFiles();
     }//GEN-LAST:event_CacheBrowseActionPerformed
@@ -215,8 +218,10 @@ public class JVideofileSelector extends javax.swing.JPanel {
         fdialog.setSelectedFile( mfile.getAudioFile());
         afilter.setCheckForValidCache(null);
         fdialog.setFileFilter(afilter);
-        if ( fdialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        if ( fdialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             mfile.setAudioFile(fdialog.getSelectedFile());
+            FileCommunicator.setDefaultDialogPath(fdialog);
+        }
         updateFiles();
     }//GEN-LAST:event_AudioBrowseActionPerformed
     
@@ -234,6 +239,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         fdialog.setSelectedFile(mfile.getVideoFile());
         fdialog.setFileFilter(vfilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
+        FileCommunicator.setDefaultDialogPath(fdialog);
         mfile.setVideoFile(fdialog.getSelectedFile());
         updateFiles();
     }//GEN-LAST:event_VideoBrowseActionPerformed
