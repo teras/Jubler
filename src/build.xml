@@ -131,6 +131,7 @@
 			<arg line="jcf ${basedir}/Jubler-fullsrc-${version}.tar.bz2 --exclude .svn Jubler-${version}"/>
 		</exec>
 		<delete dir="/tmp/Jubler-${version}/resources/ffmpeg-svn"/>
+		<delete dir="/tmp/Jubler-${version}/resources/ffmpeg-libs"/>
 		<tar destfile="Jubler-src-${version}.tar.bz2" basedir="/tmp/" includes="Jubler-${version}/**" compression="bzip2"/>
 		<delete dir="/tmp/Jubler-${version}"/>
 	</target>

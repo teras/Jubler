@@ -157,7 +157,7 @@ public class SubEntry implements Comparable<SubEntry> {
     String getData(int row, int col) {
         switch (col) {
             case 0:
-                return Integer.toString(row);
+                return Integer.toString(row+1);
             case 1:
                 return start.toString();
             case 2:

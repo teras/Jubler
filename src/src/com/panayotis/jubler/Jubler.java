@@ -449,6 +449,8 @@ public class Jubler extends JFrame {
         GoEM = new javax.swing.JMenu();
         PreviousGEM = new javax.swing.JMenuItem();
         NextGEM = new javax.swing.JMenuItem();
+        PreviousPageGEM = new javax.swing.JMenuItem();
+        NextPageGEM = new javax.swing.JMenuItem();
         TopGEM = new javax.swing.JMenuItem();
         BottomGEM = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
@@ -595,8 +597,8 @@ public class Jubler extends JFrame {
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 
-        SubTable.setComponentPopupMenu(SubsPop);
         SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        SubTable.setComponentPopupMenu(SubsPop);
         SubTable.setDefaultRenderer(Object.class, TableRenderer);
         SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
             public void mousePressed(MouseEvent e) {
@@ -890,6 +892,20 @@ public class Jubler extends JFrame {
         NextGEM.setName("EGN"); // NOI18N
         NextGEM.addActionListener(formListener);
         GoEM.add(NextGEM);
+
+        PreviousPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_UP, java.awt.event.InputEvent.CTRL_MASK));
+        PreviousPageGEM.setText(_("Previous page"));
+        PreviousPageGEM.setActionCommand("u");
+        PreviousPageGEM.setName("EGU"); // NOI18N
+        PreviousPageGEM.addActionListener(formListener);
+        GoEM.add(PreviousPageGEM);
+
+        NextPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_DOWN, java.awt.event.InputEvent.CTRL_MASK));
+        NextPageGEM.setText(_("Next page"));
+        NextPageGEM.setActionCommand("d");
+        NextPageGEM.setName("EGD"); // NOI18N
+        NextPageGEM.addActionListener(formListener);
+        GoEM.add(NextPageGEM);
 
         TopGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_OPEN_BRACKET, java.awt.event.InputEvent.CTRL_MASK));
         TopGEM.setText(_("First entry"));
@@ -1295,6 +1311,12 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
+            else if (evt.getSource() == PreviousPageGEM) {
+                Jubler.this.goToSubtitle(evt);
+            }
+            else if (evt.getSource() == NextPageGEM) {
+                Jubler.this.goToSubtitle(evt);
+            }
         }
 
         public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -1385,18 +1407,28 @@ public class Jubler extends JFrame {
         int row = SubTable.getSelectedRow();
         switch (evt.getActionCommand().charAt(0)) {
             case 'p':
-                if (row>0) --row;
+                row--;
                 break;
             case 'n':
-                if (row>=0 && (row < subs.size()-1)) ++row;
+                row++;
+                break;
+            case 'u':
+                row -= SubsScrollPane.getViewport().getHeight() / SubTable.getRowHeight();
+                break;
+            case 'd':
+                row += SubsScrollPane.getViewport().getHeight() / SubTable.getRowHeight();
                 break;
             case 't':
-                if (subs.size()>0) row=0;
+                row = 0;
                 break;
             case 'b':
-                if (subs.size()>0) row=subs.size()-1;
+                row = subs.size() - 1;
                 break;
         }
+        if (row < 0)
+            row = 0;
+        if (row >= subs.size())
+            row = subs.size() - 1;
         setSelectedSub(row, true);
     }//GEN-LAST:event_goToSubtitle
     
@@ -1865,6 +1897,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu NewFM;
     private javax.swing.JButton NewTB;
     private javax.swing.JMenuItem NextGEM;
+    private javax.swing.JMenuItem NextPageGEM;
     private javax.swing.JMenuItem NoneMEM;
     private javax.swing.JMenuItem NoneMP;
     private javax.swing.JMenuItem OpenFM;
@@ -1879,6 +1912,7 @@ public class Jubler extends JFrame {
     private javax.swing.JToggleButton PreviewTB;
     private javax.swing.JCheckBoxMenuItem PreviewTM;
     private javax.swing.JMenuItem PreviousGEM;
+    private javax.swing.JMenuItem PreviousPageGEM;
     private javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RecodeTM;
