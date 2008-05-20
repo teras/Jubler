@@ -24,7 +24,6 @@ package com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
 import java.util.Vector;
 
@@ -37,7 +36,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class JTimeRegion extends JTimeArea {
 
     private JTimeSelector starttime,  endtime;
-
+    
     /** Creates new form jTimeRegion */
     public JTimeRegion() {
         super();
@@ -58,8 +57,8 @@ public class JTimeRegion extends JTimeArea {
 
     public void updateData(Subtitles subs, int[] selected) {
         super.updateData(subs, selected);
-        starttime.setSelectedTime(findFirstInList(subs, selected));
-        endtime.setSelectedTime(findLastInList(subs, selected));
+        starttime.updateData(findFirstInList(subs, selected));
+        endtime.updateData(findLastInList(subs, selected));
     }
 
     public Vector<SubEntry> getAffectedSubs() {

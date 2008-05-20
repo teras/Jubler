@@ -72,6 +72,22 @@ public class JTimeFullSelection extends JTimeArea {
             if (selvalue < subs.getStyleList().size())
                 StyleSel.setSelectedIndex(selvalue);
         }
+        
+        // Select wanted widget
+        switch (selection_model) {
+            case DEFAULTS_BYSELECTION:
+                bySelection.doClick();
+                break;
+            case DEFAULTS_BYCOLOR:
+                byColor.doClick();
+                break;
+            case DEFAULTS_BYTHEME:
+                byStyle.doClick();
+                break;
+            case DEFAULTS_BYREGION:
+                byRange.doClick();
+                break;
+        }
     }
 
     public Vector<SubEntry> getAffectedSubs() {
@@ -221,24 +237,28 @@ public class JTimeFullSelection extends JTimeArea {
         tregion.setEnabled(false);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(true);
+        selection_model = DEFAULTS_BYTHEME;
     }//GEN-LAST:event_byStyleActionPerformed
 
     private void byRangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byRangeActionPerformed
         tregion.setEnabled(true);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(false);
+        selection_model = DEFAULTS_BYREGION;
     }//GEN-LAST:event_byRangeActionPerformed
 
     private void byColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byColorActionPerformed
         tregion.setEnabled(false);
         ColorSel.setEnabled(true);
         StyleSel.setEnabled(false);
+        selection_model = DEFAULTS_BYCOLOR;
     }//GEN-LAST:event_byColorActionPerformed
 
     private void bySelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionActionPerformed
         tregion.setEnabled(false);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(false);
+        selection_model = DEFAULTS_BYSELECTION;
     }//GEN-LAST:event_bySelectionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

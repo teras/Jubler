@@ -21,6 +21,14 @@ public class JTimeSelector extends JPanel {
     private boolean is_start_position;
     private Time selected_time;
 
+    /* static variable to store the last used selection model */
+    protected final static boolean REGION_EDGE = false;
+    protected final static boolean REGION_SELECTION = true;
+
+    protected static boolean region_from_model = REGION_SELECTION;
+    protected static boolean region_to_model = REGION_SELECTION;
+    
+
     /** Creates new form JTimeSelector */
     public JTimeSelector(boolean start_position) {
         initComponents();
@@ -46,9 +54,18 @@ public class JTimeSelector extends JPanel {
         spinner.setEnabled(status);
     }
 
-    void setSelectedTime(Time t) {
+    void updateData(Time t) {
         selected_time = t;
-        spinner.setTimeValue(t);
+        
+        boolean region_model;
+        if (is_start_position) region_model = region_from_model;
+        else region_model = region_to_model;
+        
+        if (region_model == REGION_SELECTION) {
+            SelectM.doClick();
+        } else {
+            EdgeM.doClick();
+        }
     }
 
     void setTimeToEdge() {
@@ -61,6 +78,7 @@ public class JTimeSelector extends JPanel {
     double getTime() {
         return spinner.getTimeValue().toSeconds();
     }
+    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -111,10 +129,14 @@ public class JTimeSelector extends JPanel {
 
     private void EdgeMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EdgeMActionPerformed
         setTimeToEdge();
+        if (is_start_position) region_from_model = REGION_EDGE;
+        else region_to_model = REGION_EDGE;
 }//GEN-LAST:event_EdgeMActionPerformed
 
     private void SelectMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectMActionPerformed
         spinner.setTimeValue(selected_time);
+        if (is_start_position) region_from_model = REGION_SELECTION;
+        else region_to_model = REGION_SELECTION;
     }//GEN-LAST:event_SelectMActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
