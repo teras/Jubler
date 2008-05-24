@@ -109,6 +109,12 @@ DCONFIG=--with-mp4v2 --host=${CCPREF_NOS}
 CC=${CCPREF}gcc
 RANLIB=${CCPREF}ranlib
 
+ifeq (${NOSTRIP},) 
+	STRIPCMD=${STRIP}
+else
+	STRIPCMD=@echo Bypass stripping
+endif
+
 
 MACLIBNAME=lib${PROJ}.jnilib
 
@@ -157,7 +163,7 @@ LIB:${LIBNAME}
 
 ${LIBNAME}:${LIBRARYREQ} ${OBJS} ${RANLIBREQ}
 	${LD} ${GCCOPTS} -o ${LIBNAME} ${OBJS} ${LIBS}
-	${STRIP} ${LIBNAME}
+	${STRIPCMD} ${LIBNAME}
 
 
 clean:
