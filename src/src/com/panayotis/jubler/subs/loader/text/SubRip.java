@@ -32,7 +32,6 @@ import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.util.Vector;
@@ -52,7 +51,7 @@ public class SubRip extends StyledTextSubFormat {
     static {
         pat = Pattern.compile(
                 "(?s)(\\d+)"+sp+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"-->"+
-                sp+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+nl+"(.*?)"+nl+nl
+                sp+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"(X1:\\d.*?)??"+nl+"(.*?)"+nl+nl
                 );
         stylepat = Pattern.compile("<(.*?)>");
         
@@ -84,7 +83,7 @@ public class SubRip extends StyledTextSubFormat {
     protected SubEntry getSubEntry(Matcher m) {
         Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
         Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
-        SubEntry entry = new SubEntry(start, finish, m.group(10));
+        SubEntry entry = new SubEntry(start, finish, m.group(11));
         entry.setStyle(subtitle_list.getStyleList().get(0));
         parseSubText(entry);
         return entry;
