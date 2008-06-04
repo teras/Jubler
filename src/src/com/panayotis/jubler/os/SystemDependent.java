@@ -83,10 +83,13 @@ public class SystemDependent {
     
     
     public final static void setLookAndFeel() {
+        boolean newjava = (System.getProperty("java.version")
+                .replaceAll("\\.", "").replaceAll("_", "")
+                .compareTo("16006")) >= 0;
         try {
-            if (isWindows() || isMacOSX()) {
+           if (newjava || isWindows() || isMacOSX()) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            }
+           }
         } catch ( ClassNotFoundException e ) {
         } catch ( InstantiationException e ) {
         } catch (IllegalAccessException e) {
