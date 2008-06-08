@@ -195,7 +195,6 @@ public class SubStyle {
         
         /* Check if the name already exists */
         private boolean findNameInList(NameList list, Object obj) {
-            String othername;
             for (int i = 0 ; i < list.size() ; i++ ) {
                 if (list.elementAt(i)!=obj && list.getNameAt(i).equals(newname)) return true;
             }

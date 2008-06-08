@@ -23,9 +23,7 @@
 
 
 package com.panayotis.jubler.subs.style.event;
-import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import java.util.ArrayList;
 import javax.swing.text.SimpleAttributeSet;
@@ -57,6 +55,24 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
     }
     
 
+    public AbstractStyleover setMaxStylePosition(int pos) {
+        AbstractStyleover.Entry entry;
+        for (int i = size() - 1; i >=0 ; i--) {
+            entry = get(i);
+            if (entry.prev != null) {
+                if (entry.prev.position > pos) {
+                    remove(i);
+                } else {
+                    if (entry.next != null && entry.next.position > pos) {
+                        entry.next = null;
+                    }
+                }
+            }
+        }
+        if (size() == 0) return null;
+        return this;
+    }
+    
     public void updateClone(AbstractStyleover old) {
         removeRange(0,size());
         ensureCapacity(old.size());
@@ -89,7 +105,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
         Object ret = basic;
         cleanupEvents(basic, subtext);
         start+=offsetByParagraph();
-        if (end<start) end+=offsetByParagraph();;
+        if (end<start) end+=offsetByParagraph();
         for (AbstractStyleover.Entry entry : this) {
             
             // Count how many styles are inside (and only inside)
@@ -152,7 +168,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
      *1) nothing: no special style exists for this place onward
      *2) a "left" style - there is a style which will be used onwards up to
      *    the end
-     *3) a "left" ad a "right" - this usually means that when a user types a chracter in between,
+     *3) a "left" and a "right" - this usually means that when a user types a chracter in between,
      *   the new characters will have to "left" attribute. If though nothing will be typed, then
      *   the style is discarded and the "right" attribute is used
      */
@@ -357,7 +373,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
         return e.prev;
     }
     
-    class Entry {
+    protected class Entry {
         StyleoverEvent prev = null;
         StyleoverEvent next = null;
         

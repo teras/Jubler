@@ -2114,7 +2114,8 @@ public class Jubler extends JFrame {
         subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
         updateRecentFile(f);
         showInfo();
-        if(reset_selection) setSelectedSub(0, true);
+        if(reset_selection) 
+            setSelectedSub(0, true);
     }
     
     public void enablePreview(boolean status) {
@@ -2235,13 +2236,20 @@ public class Jubler extends JFrame {
     }
     
     public void tableHasChanged(SubEntry[] oldselections) {
-        if (oldselections==null) {
-            /* Try to reset the last selected row, after an update to the table has been performed
-             * if no other information has been provided */
-            oldselections = new SubEntry[1];
-            int selected = SubTable.getSelectedRow();
-            if (selected<0) selected = 0;
-            oldselections[0] = subs.elementAt(selected);
+        /* Try to reset the last selected row, after an update to the table has been performed
+         * if no other information has been provided */
+        if (oldselections == null || oldselections.length == 0) {
+            if (subs.size() == 0)
+                oldselections = new SubEntry[0];
+            else {
+                oldselections = new SubEntry[1];
+                int selected = SubTable.getSelectedRow();
+                if (selected >= subs.size())
+                    selected = subs.size() - 1;
+                if (selected<0)
+                    selected = 0;
+                oldselections[0] = subs.elementAt(selected);
+            }
         }
         
         int[] last_selected = new int[oldselections.length];

@@ -145,11 +145,25 @@ public class SubEntry implements Comparable<SubEntry> {
     public AbstractStyleover[] getStyleovers() { return overstyle; }
     
     public void setText(String text) {
-        subtext= text;
+        subtext = text;
+        if (overstyle != null) {
+            int textsize = text.length();
+            int emptystyles = 0;
+            for (int i = 0; i < overstyle.length; i++) {
+                if (overstyle[i] != null)
+                    overstyle[i] = overstyle[i].setMaxStylePosition(textsize);
+                if (overstyle[i] == null)
+                    emptystyles++;
+            }
+            if (emptystyles == overstyle.length)
+                overstyle = null;
+        }
     }
+
     public void setStartTime(Time t) {
         start.setTime(t);
     }
+
     public void setFinishTime(Time t) {
         finish.setTime(t);
     }
