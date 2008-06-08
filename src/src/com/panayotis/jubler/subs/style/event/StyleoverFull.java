@@ -50,7 +50,7 @@ public class StyleoverFull extends AbstractStyleover {
     }
     
     public void addEvent(Object event, int start, int end, Object basic, String txt) {
-        super.addEvent( event, start, end, basic, txt);
+        super.addEvent( event, 0, txt.length()-1, basic, txt);
         cleanupEvents(basic, txt);
     }
     

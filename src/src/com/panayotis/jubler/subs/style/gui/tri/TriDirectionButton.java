@@ -25,7 +25,6 @@ package com.panayotis.jubler.subs.style.gui.tri;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
-import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.gui.DirectionListener;

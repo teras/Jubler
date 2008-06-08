@@ -175,8 +175,6 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
     public void addEvent(Object event, int start, int end, Object basic, String txt) {
         if (event==null) return;
         
-        int index_in_array;
-        
         cleanupEvents(basic, txt);
         
         StyleoverEvent startevent = makeStartEvent(event,  start,  basic, txt);
