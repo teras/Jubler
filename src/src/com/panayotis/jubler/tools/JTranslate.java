@@ -24,9 +24,11 @@ package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
 
-import com.panayotis.jubler.tools.translate.plugins.AvailTranslators;
-import javax.swing.DefaultComboBoxModel;
 import static com.panayotis.jubler.i18n.I18N._;
+
+import com.panayotis.jubler.tools.translate.plugins.AvailTranslators;
+import com.panayotis.jubler.tools.translate.plugins.Translator;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -47,12 +49,13 @@ public class JTranslate extends JTool {
     public void initialize() {
         initComponents();
         TransMachine.setModel(new DefaultComboBoxModel(translators.getNamesList()));
-        FromLang.setModel(new DefaultComboBoxModel(
-                translators.get(TransMachine.getSelectedIndex()).getFromLanguages()
-                ));
-        ToLang.setModel(new DefaultComboBoxModel(
-                translators.get(TransMachine.getSelectedIndex()).getToLanguages(FromLang.getSelectedItem().toString())
-                ));
+        Translator tr = translators.get(TransMachine.getSelectedIndex());
+        
+        FromLang.setModel(new DefaultComboBoxModel(tr.getFromLanguages()));
+        FromLang.setSelectedItem(tr.getDefaultFromLanguage());
+
+        ToLang.setModel(new DefaultComboBoxModel(tr.getToLanguages(FromLang.getSelectedItem().toString())));
+        ToLang.setSelectedItem(tr.getDefaultToLanguage());
     }
 
     protected String getToolTitle() {

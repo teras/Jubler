@@ -13,4 +13,7 @@ public interface Translator {
 
     public abstract String[] getFromLanguages();
     public abstract String[] getToLanguages(String from);
+    
+    public abstract String getDefaultFromLanguage();
+    public abstract String getDefaultToLanguage();
 }
