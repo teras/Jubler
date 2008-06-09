@@ -208,7 +208,7 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
     if (retflag != FALSE) {
        	*width = (ccx->width) * resize;
        	*height = (ccx->height) * resize;
-		DEBUG(env, this, "decodeFrame", "Resampling to (%i-%i*%f) %i-%i",ccx->width, ccx->height, resize,*width, *height);
+		DEBUG(env, this, "decodeFrame", "Resampling from (%i,%i) with resize factor %f to (%i,%i)",ccx->width, ccx->height, resize,*width, *height);
         // Allocate an AVPicture
         avpicture_alloc(pict, PIX_FMT_RGBA32, *width, *height);
 		swsContext = sws_getCachedContext(swsContext,
