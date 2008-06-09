@@ -65,6 +65,7 @@ import com.panayotis.jubler.tools.JSubJoin;
 import com.panayotis.jubler.tools.JSubSplit;
 import com.panayotis.jubler.tools.JSynchronize;
 import com.panayotis.jubler.tools.JToolRealTime;
+import com.panayotis.jubler.tools.JTranslate;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
@@ -163,6 +164,7 @@ public class Jubler extends JFrame {
     private JRecodeTime recode;
     private JSynchronize sync;
     private JSubSplit split;
+    private JTranslate translate;
     
     
     private static HelpBrowser faqbrowse;
@@ -198,6 +200,7 @@ public class Jubler extends JFrame {
         initComponents();
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
+//        TranslateTM.setVisible(false);
 
         subeditor = new JSubEditor(this);
         subeditor.setAttached(true);
@@ -233,6 +236,7 @@ public class Jubler extends JFrame {
         recode = new JRecodeTime();
         sync = new JSynchronize();
         split = new JSubSplit();
+        translate = new JTranslate();
         
         StaticJubler.putWindowPosition(this);
         openWindow();
@@ -481,6 +485,8 @@ public class Jubler extends JFrame {
         RoundTM = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JSeparator();
         SpellTM = new javax.swing.JMenuItem();
+        TranslateTM = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JSeparator();
         TestTM = new javax.swing.JMenu();
         BeginningTTM = new javax.swing.JMenuItem();
         CurrentTTM = new javax.swing.JMenuItem();
@@ -1040,6 +1046,12 @@ public class Jubler extends JFrame {
         SpellTM.addActionListener(formListener);
         ToolsM.add(SpellTM);
 
+        TranslateTM.setText(_("Translate"));
+        TranslateTM.setName("TTM"); // NOI18N
+        TranslateTM.addActionListener(formListener);
+        ToolsM.add(TranslateTM);
+        ToolsM.add(jSeparator3);
+
         TestTM.setText(_("Test video"));
 
         BeginningTTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
@@ -1236,6 +1248,12 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == NextGEM) {
                 Jubler.this.goToSubtitle(evt);
             }
+            else if (evt.getSource() == PreviousPageGEM) {
+                Jubler.this.goToSubtitle(evt);
+            }
+            else if (evt.getSource() == NextPageGEM) {
+                Jubler.this.goToSubtitle(evt);
+            }
             else if (evt.getSource() == TopGEM) {
                 Jubler.this.goToSubtitle(evt);
             }
@@ -1311,11 +1329,8 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
-            else if (evt.getSource() == PreviousPageGEM) {
-                Jubler.this.goToSubtitle(evt);
-            }
-            else if (evt.getSource() == NextPageGEM) {
-                Jubler.this.goToSubtitle(evt);
+            else if (evt.getSource() == TranslateTM) {
+                Jubler.this.TranslateTMActionPerformed(evt);
             }
         }
 
@@ -1849,6 +1864,10 @@ public class Jubler extends JFrame {
         PreviewTB.setSelected(PreviewTM.isSelected());
         PreviewTBActionPerformed(evt);
 }//GEN-LAST:event_PreviewTMActionPerformed
+
+private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TranslateTMActionPerformed
+        translate.execute(this);
+}//GEN-LAST:event_TranslateTMActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1953,6 +1972,7 @@ public class Jubler extends JFrame {
     private javax.swing.JPanel TestTP;
     private javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
+    private javax.swing.JMenuItem TranslateTM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
     private javax.swing.JPanel UndoTP;
@@ -1968,6 +1988,7 @@ public class Jubler extends JFrame {
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator7;

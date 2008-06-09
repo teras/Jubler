@@ -24,7 +24,6 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 
 import static com.panayotis.jubler.i18n.I18N._;
