@@ -26,7 +26,7 @@
  */
 
 // Use the correct path here for avformat.
-#include "avformat.h"
+#include "libavformat/avformat.h"
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -28,7 +28,8 @@
 
 
 // Use the correct path here for avformat.
-#include "avformat.h"
+#include "libavformat/avformat.h"
+#include "libswscale/swscale.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,6 +41,8 @@
 
 AVPicture *decodeFrame(JNIEnv * env, jobject this, const char *input_filename, jlong timepos, jint *width, jint *height);
 int file_info(JNIEnv * env, jobject this, char *input_filename);
+
+static int sws_flags = SWS_BICUBIC;
 
 
 JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFrame(JNIEnv * env, jobject this, jstring video, jlong time, jboolean issmall) {
@@ -53,95 +56,25 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
     /* Frame raw data */
     AVPicture* pict;
     jint width, height;
-    
+
     /* translate Java strings into C strings */
     video_c  = (*env)->GetStringUTFChars(env, video, 0);
-    
-    int zoom = 1;
-    int shift = 0;
-    if (issmall) {
-        zoom = 2;
-        shift = 2;	// it's 2 because we have 2 dimensions, so it's 4 cells
-    }
-    
-    /* Finf endianess */
-    int LE = isLittleEndian();
     
     /* Grab the desired frame */
     pict = decodeFrame(env, this, video_c, time, &width, &height);
     if (pict) {
         
-        jint rwidth = width>>(shift/2);
-        jint rheight = height>>(shift/2);
-        jint size = rwidth*rheight+2;	// Size of the return array
+		// make array
+        matrix = (*env)->NewIntArray(env, width*height+2);	// 4 bytes per pixel (int) plus picture information
         
-        // make array
-        matrix = (*env)->NewIntArray(env, size);
-        if (matrix) {
+		if (matrix) {
             /* Find pointer for matrix size */
             matrixdata = (*env)->GetIntArrayElements(env, matrix, 0);
             
             /* This is a trick: the first 2 elements are not video data but the size of the video */
-            matrixdata[0] = rwidth;
-            matrixdata[1] = rheight;
-            
-            int mpos, dpos;	/* Matrix position, data position */
-            int xe, ye, xi, yi;
-            jint r, g, b;
-            uint8_t *data = pict->data[0];
-            jint * mdata = &matrixdata[2];
-            
-            /* Create a normal or a zoomed out picture */
-            
-            /* The heart of the optimization: dpos in interlan yi loop, outside x1 :
-             * dpos = (xe*zoom + (ye*zoom+yi)*width)<<2;
-             * Finds the offsert depending on the row */
-            dpos = mpos = 0;
-            
-            int zoom_4 = zoom*4;
-            int width_4 = width*4;
-            int zoom_width_4 = zoom * width_4;
-            int dpos_nextrow = width_4 - zoom*4;
-            int xe_zoom_4 = 0;
-            int ye_zoom_width_4 = 0;
-            int yi_width_4 = 0;
-            for (ye = 0 ; ye < rheight ; ye++) {
-                for (xe = 0; xe < rwidth ; xe++) {
-                    r=g=b=0;
-                    dpos = xe_zoom_4 + ye_zoom_width_4;
-                    for(yi = 0 ; yi < zoom ; yi++) {
-                        for(xi = 0 ; xi < zoom ; xi++) {
-                            if (LE){
-                                b+=data[dpos++];
-                                g+=data[dpos++];
-                                r+=data[dpos++];
-                                dpos++; // Ignore alpha channel
-                            } else {
-                                dpos++; // Ignore alpha channel
-                                r+=data[dpos++];
-                                g+=data[dpos++];
-                                b+=data[dpos++];
-                            }
-                        }
-                        dpos += dpos_nextrow;
-                    }
-                    r >>= shift;
-                    g >>= shift;
-                    b >>= shift;
-                    if (r>0xff || g>0xff || b>0xff)	DEBUG(env, this, "grabFrame", "Overflow of color variables.");
-                    mdata[mpos]=0xff000000|(r<<16)|(g<<8)|b;
-                    mpos++;
-                    
-                    /* Optimization variables */
-                    xe_zoom_4 += zoom_4;
-                    yi_width_4 = 0;
-                }
-                /* Optimization variables */
-                xe_zoom_4 = 0;
-                ye_zoom_width_4 += zoom_width_4;
-            }
-            //memcpy(matrixdata+2, pict->data[0], width*height*4);
-            
+            matrixdata[0] = width;
+            matrixdata[1] = height;
+        	memcpy(matrixdata+2, pict->data[0], 4*width*height);
             /* Release the matrix data pointer */
             (*env)->ReleaseIntArrayElements(env, matrix, matrixdata, 0);
         } else {
@@ -271,12 +204,26 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
         av_free_packet(&pkt);
     }
     if (retflag != FALSE) {
+		struct SwsContext *swsContext = NULL;
         // Allocate an AVPicture
         avpicture_alloc(pict, PIX_FMT_RGBA32, ccx->width, ccx->height);
-        img_convert(pict, PIX_FMT_RGBA32, (AVPicture*) frame, ccx->pix_fmt, ccx->width, ccx->height);
-        
-        *width = ccx->width;
-        *height = ccx->height;
+		swsContext = sws_getCachedContext(swsContext,
+			ccx->width, ccx->height, ccx->pix_fmt,
+			ccx->width, ccx->height, PIX_FMT_RGBA32,
+			sws_flags, NULL, NULL, NULL);
+			
+		if (swsContext == NULL) {
+			DEBUG(env, this, "decodeFrame", "swscale context initialization failed.");
+	 	} else {
+			sws_scale(swsContext,
+				((AVPicture *)frame)->data,
+				((AVPicture *)frame)->linesize,
+				0, ccx->height,
+				((AVPicture *)pict)->data,
+				((AVPicture *)pict)->linesize); 
+        	*width = ccx->width;
+        	*height = ccx->height;
+		}
     }
     
     // Clean up

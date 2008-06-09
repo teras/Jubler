@@ -26,7 +26,7 @@
  */
 
 
-#include "avformat.h"
+#include "libavformat/avformat.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -46,7 +46,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMP
     /* translate Java strings into C strings */
     audio_c = (*env)->GetStringUTFChars(env, audio, 0);
     wav_c = (*env)->GetStringUTFChars(env, wav, 0);
-    
+ 
     ret = decodeAudio(env, this, audio_c, wav_c, start, stop);
     
     /* free memory reserved for Java->C strings */
@@ -209,7 +209,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
  
                     	/* close the output file */
                     	if (!(fmt->flags & AVFMT_NOFILE)) {
-                        	url_fclose(&ofcx->pb);
+                        	url_fclose(ofcx->pb);
                     	}
                     }
                    	

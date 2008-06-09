@@ -56,7 +56,7 @@ else
 	LIBRARYREQ=${LIBRARIES}/libavformat${LIBSUF}.a
 	RANLIBREQ=ranlib
 	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lfaad${LIBSUF} -lm ${XLIBS}
-	INCS=-I${FFMPEG}/libavcodec -I${FFMPEG}/libavformat -I${FFMPEG}/libavutil -I${FAAD}/include
+	INCS=-I${FFMPEG}
 endif
 
 ifeq (${MAKESYS},linux)
@@ -80,17 +80,17 @@ ifeq (${MAKESYS},win32)
 	STRIP=${CCPREF}strip -s
 endif
 ifeq (${MAKESYS},darwin_ppc)
-	XLIBS=-lz
+	XLIBS=-lz -lbz2
 	CCPREF=
 	ARCH=ppc
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
-	XFCONFIG=--enable-shared --arch=powerpc --cross-compile
+	XFCONFIG=--enable-shared --arch=powerpc --enable-cross-compile --disable-altivec
 	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
 ifeq (${MAKESYS},darwin_i386)
-	XLIBS=-lz
+	XLIBS=-lz -lbz2
 	CCPREF=
 	ARCH=i386
 	LD=${CC} -dynamiclib -framework JavaVM
@@ -206,7 +206,7 @@ ${LIBRARYREQ}: ${LIBRARIES}/libfaad${LIBSUF}.a
 
 
 ranlib:
+	${RANLIB} ${LIBRARIES}/libfaad${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavformat${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavcodec${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavutil${LIBSUF}.a
-	${RANLIB} ${LIBRARIES}/libfaad${LIBSUF}.a

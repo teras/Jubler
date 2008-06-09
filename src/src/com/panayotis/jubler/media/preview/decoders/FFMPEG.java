@@ -38,6 +38,7 @@ import java.awt.image.SinglePixelPackedSampleModel;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteOrder;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -53,9 +54,15 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public final class FFMPEG extends NativeDecoder {
     private static boolean library_is_present = false;
+    private static int[] bitmasks;
     
     static {
         library_is_present = SystemFileFinder.loadLibrary("ffdecode");
+             
+        boolean LE = (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN);
+        
+        int[] LE_BITMASKS = {0xff0000, 0xff00, 0xff, 0xff000000};
+        bitmasks = LE_BITMASKS;
     }
     
     /** Creates a new instance of FFMPEG */
@@ -68,7 +75,6 @@ public final class FFMPEG extends NativeDecoder {
         int[] frame = grabFrame(vfile.getPath(), (long)time, small);
         if (frame==null) return null;
         
-        int[] bitmasks = {0xff0000, 0xff00, 0xff, 0xff000000};
         SinglePixelPackedSampleModel model = new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT,frame[0], frame[1], bitmasks);
         DataBufferInt buffer = new DataBufferInt(frame, frame[0]*frame[1], 2);
         WritableRaster ras = Raster.createWritableRaster(model, buffer, null);
