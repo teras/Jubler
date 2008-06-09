@@ -100,6 +100,8 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
     /* *TERAS* This should be done at the beginning */
     av_register_all();
     
+	static struct SwsContext *swsContext = NULL;
+
     int err=0, i=0, len=0, got_picture, video_index=-1, pack_duration=0, codec_is_open=-1;
     int retflag=TRUE;
     jlong pack_pts=0, comp_pts=0;
@@ -204,7 +206,6 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
         av_free_packet(&pkt);
     }
     if (retflag != FALSE) {
-		struct SwsContext *swsContext = NULL;
         // Allocate an AVPicture
         avpicture_alloc(pict, PIX_FMT_RGBA32, ccx->width, ccx->height);
 		swsContext = sws_getCachedContext(swsContext,
