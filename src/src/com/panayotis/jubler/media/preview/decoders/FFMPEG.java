@@ -68,11 +68,11 @@ public final class FFMPEG extends NativeDecoder {
     /** Creates a new instance of FFMPEG */
     public FFMPEG() {}
     
-    public Image getFrame(VideoFile vfile, double time, boolean small) {
+    public Image getFrame(VideoFile vfile, double time, float resize) {
         if ( vfile==null || (!isDecoderValid()) ) return null;
         
         time *= 1000000;
-        int[] frame = grabFrame(vfile.getPath(), (long)time, small);
+        int[] frame = grabFrame(vfile.getPath(), (long)time, resize);
         if (frame==null) return null;
         
         SinglePixelPackedSampleModel model = new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT,frame[0], frame[1], bitmasks);
@@ -142,7 +142,7 @@ public final class FFMPEG extends NativeDecoder {
     }
     
     /* Get the image for this timestamp */
-    private native int[] grabFrame(String video, long time, boolean small);
+    private native int[] grabFrame(String video, long time, float resize);
     
     /* Create a wav file from the specified time stamps */
     private native boolean createClip(String audio, String wav, long from, long to);

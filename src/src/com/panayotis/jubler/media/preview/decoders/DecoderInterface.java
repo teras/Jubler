@@ -43,7 +43,7 @@ public interface DecoderInterface {
 
     public abstract AudioPreview getAudioPreview(CacheFile cache, double from, double to);
 
-    public abstract Image getFrame(VideoFile video, double time, boolean small);
+    public abstract Image getFrame(VideoFile video, double time, float resize);
     public abstract void retrieveInformation(VideoFile vfile);
     
     public abstract void playAudioClip(AudioFile audio, double from, double to);

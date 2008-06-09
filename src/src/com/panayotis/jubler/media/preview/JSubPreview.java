@@ -486,7 +486,7 @@ public class JSubPreview extends javax.swing.JPanel {
     }//GEN-LAST:event_AudioPlayActionPerformed
     
     private void VideoZoomFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoZoomFrameActionPerformed
-        frame.setSmall(VideoZoom.isSelected());
+        frame.setResize(VideoZoom.isSelected()?0.5f:1f);
         parent.resetPreviewPanels();
     }//GEN-LAST:event_VideoZoomFrameActionPerformed
     

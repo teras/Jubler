@@ -62,12 +62,12 @@ public class JFramePreview extends JPanel {
     private Image frameimg;
     private SubImage subimg;
     private JSubPreview callback;
-    private boolean small = false;
     
     private MediaFile mfile;
     private SubEntry sub = null;
     
     private double last_time = -1;
+    private float resize;
     
     /** Creates a new instance of JVideoPreview */
     public JFramePreview(JSubPreview callback) {
@@ -102,8 +102,8 @@ public class JFramePreview extends JPanel {
         repaint();
     }
     
-    public void setSmall(boolean small) {
-        this.small = small;
+    public void setResize(float resize) {
+        this.resize = resize;
         last_time = -1;
         repaint();
     }
@@ -129,7 +129,7 @@ public class JFramePreview extends JPanel {
             if (Math.abs(time-last_time) > DT || frameimg==demoimg) {
                 last_time = time;
                 if (mfile!=null)
-                    newimg = mfile.getFrame(last_time, small);
+                    newimg = mfile.getFrame(last_time, resize);
                 else
                     newimg = null;
             }

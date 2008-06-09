@@ -208,9 +208,9 @@ public class MediaFile {
         if (cfile!=null)
             decoder.closeAudioCache(cfile);
     }
-    public Image getFrame(double time, boolean small) {
+    public Image getFrame(double time, float resize) {
         if (vfile==null) return null;
-        return decoder.getFrame(vfile, time, small);
+        return decoder.getFrame(vfile, time, resize);
     }
     public void playAudioClip(double from, double to) {
         if (afile!=null)
