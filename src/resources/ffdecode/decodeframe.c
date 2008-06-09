@@ -39,13 +39,13 @@
 #include "defaults.h"
 #include "utilities.h"
 
-AVPicture *decodeFrame(JNIEnv * env, jobject this, const char *input_filename, jlong timepos, jint *width, jint *height);
+AVPicture *decodeFrame(JNIEnv * env, jobject this, const char *input_filename, jlong timepos, jint *width, jint *height, jfloat resize);
 int file_info(JNIEnv * env, jobject this, char *input_filename);
 
 static int sws_flags = SWS_BICUBIC;
 
 
-JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFrame(JNIEnv * env, jobject this, jstring video, jlong time, jboolean issmall) {
+JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFrame(JNIEnv * env, jobject this, jstring video, jlong time, jfloat resize) {
     /* Pointers for c-like strings */
     const char *video_c;
     
@@ -61,7 +61,7 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
     video_c  = (*env)->GetStringUTFChars(env, video, 0);
     
     /* Grab the desired frame */
-    pict = decodeFrame(env, this, video_c, time, &width, &height);
+    pict = decodeFrame(env, this, video_c, time, &width, &height, resize);
     if (pict) {
         
 		// make array
@@ -96,7 +96,7 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
 
 
 
-AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, jlong seek_time, jint *width, jint *height) {
+AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, jlong seek_time, jint *width, jint *height, jfloat resize) {
     /* *TERAS* This should be done at the beginning */
     av_register_all();
     
@@ -206,15 +206,18 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
         av_free_packet(&pkt);
     }
     if (retflag != FALSE) {
+       	*width = (ccx->width) * resize;
+       	*height = (ccx->height) * resize;
+		DEBUG(env, this, "decodeFrame", "Resampling to (%i-%i*%f) %i-%i",ccx->width, ccx->height, resize,*width, *height);
         // Allocate an AVPicture
-        avpicture_alloc(pict, PIX_FMT_RGBA32, ccx->width, ccx->height);
+        avpicture_alloc(pict, PIX_FMT_RGBA32, *width, *height);
 		swsContext = sws_getCachedContext(swsContext,
 			ccx->width, ccx->height, ccx->pix_fmt,
-			ccx->width, ccx->height, PIX_FMT_RGBA32,
+			*width, *height, PIX_FMT_RGBA32,
 			sws_flags, NULL, NULL, NULL);
-			
 		if (swsContext == NULL) {
 			DEBUG(env, this, "decodeFrame", "swscale context initialization failed.");
+			*width = *height = -1;
 	 	} else {
 			sws_scale(swsContext,
 				((AVPicture *)frame)->data,
@@ -222,8 +225,6 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
 				0, ccx->height,
 				((AVPicture *)pict)->data,
 				((AVPicture *)pict)->linesize); 
-        	*width = ccx->width;
-        	*height = ccx->height;
 		}
     }
     

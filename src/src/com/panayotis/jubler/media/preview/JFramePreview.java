@@ -67,7 +67,7 @@ public class JFramePreview extends JPanel {
     private SubEntry sub = null;
     
     private double last_time = -1;
-    private float resize;
+    private float resize = 1f;
     
     /** Creates a new instance of JVideoPreview */
     public JFramePreview(JSubPreview callback) {

@@ -10,10 +10,10 @@ extern "C" {
 /*
  * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
  * Method:    grabFrame
- * Signature: (Ljava/lang/String;JZ)[I
+ * Signature: (Ljava/lang/String;JF)[I
  */
 JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFrame
-  (JNIEnv *, jobject, jstring, jlong, jboolean);
+  (JNIEnv *, jobject, jstring, jlong, jfloat);
 
 /*
  * Class:     com_panayotis_jubler_media_preview_decoders_FFMPEG
