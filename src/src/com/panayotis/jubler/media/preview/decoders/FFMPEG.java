@@ -66,7 +66,7 @@ public final class FFMPEG extends NativeDecoder {
         int[] LE_BITMASKS = {0xff0000, 0xff00, 0xff, 0xff000000};
         int[] BE_BITMASKS = {0xff00, 0xff0000, 0xff000000, 0xff};
 
-        if (ByteOrder.nativeOrder() != ByteOrder.LITTLE_ENDIAN) {
+        if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
             bitmasks = LE_BITMASKS;
             cmodel = ColorModel.getRGBdefault();
         } else {
