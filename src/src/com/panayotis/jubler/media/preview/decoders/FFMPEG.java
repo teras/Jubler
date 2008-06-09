@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferInt;
+import java.awt.image.DirectColorModel;
 import java.awt.image.Raster;
 import java.awt.image.SinglePixelPackedSampleModel;
 import java.awt.image.WritableRaster;
@@ -54,15 +55,24 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  */
 public final class FFMPEG extends NativeDecoder {
     private static boolean library_is_present = false;
-    private static int[] bitmasks;
     
+    private static final int[] bitmasks;
+    private static final ColorModel cmodel;
+    
+
     static {
         library_is_present = SystemFileFinder.loadLibrary("ffdecode");
-             
-        boolean LE = (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN);
-        
+
         int[] LE_BITMASKS = {0xff0000, 0xff00, 0xff, 0xff000000};
-        bitmasks = LE_BITMASKS;
+        int[] BE_BITMASKS = {0xff0000, 0xff00, 0xff, 0xff000000};
+
+        if (ByteOrder.nativeOrder() != ByteOrder.LITTLE_ENDIAN) {
+            bitmasks = LE_BITMASKS;
+            cmodel = ColorModel.getRGBdefault();
+        } else {
+            bitmasks = BE_BITMASKS;
+            cmodel = new DirectColorModel(32, bitmasks[0], bitmasks[1], bitmasks[2], bitmasks[3]);
+        }
     }
     
     /** Creates a new instance of FFMPEG */
@@ -78,7 +88,7 @@ public final class FFMPEG extends NativeDecoder {
         SinglePixelPackedSampleModel model = new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT,frame[0], frame[1], bitmasks);
         DataBufferInt buffer = new DataBufferInt(frame, frame[0]*frame[1], 2);
         WritableRaster ras = Raster.createWritableRaster(model, buffer, null);
-        BufferedImage image = new BufferedImage(ColorModel.getRGBdefault(), ras, true, null);
+        BufferedImage image = new BufferedImage(cmodel, ras, true, null);
         return image;
     }
     
