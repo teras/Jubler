@@ -79,16 +79,34 @@ class GoogleTranslator implements Translator {
     public String getDefaultToLanguage() {
         return _("French");
     }
+    private static final int STEP = 200;
+
+    private String findLanguage(String language) {
+        for (Language l : lang) {
+            if (l.name.equals(language))
+                return l.id;
+        }
+        return "";
+    }
 
     public boolean translate(Vector<SubEntry> subs, String from_language, String to_language) {
+        String froml = findLanguage(from_language);
+        String tol = findLanguage(to_language);
+        for (int i = 0; i < subs.size(); i += STEP) {
+            translatePart(subs, i, Math.min(subs.size(), i + STEP), froml, tol);
+        }
+        return true;
+    }
+
+    public boolean translatePart(Vector<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
         try {
             StringBuffer txt = new StringBuffer();
-            for (int i = 0; i < subs.size(); i++) {
+            for (int i = fromsub; i < tosub; i++) {
                 txt.append("--").append(i).append("--\n");
                 txt.append(subs.get(i).getText()).append('\n');
             }
 
-            URL req = new URL("http://translate.google.com/translate_t?sl=" + "el" + "&tl=" + "en" + "&ie=utf-8");
+            URL req = new URL("http://translate.google.com/translate_t?sl=" + from_language + "&tl=" + to_language + "&ie=utf-8");
             URLConnection conn = req.openConnection();
             conn.setConnectTimeout(1000);
             conn.setReadTimeout(5000);
