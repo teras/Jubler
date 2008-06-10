@@ -41,6 +41,8 @@ public class JTranslate extends JTool {
         translators = new AvailTranslators();
     }
     
+    private Translator trans;
+    
     /** Creates new form JRounder */
     public JTranslate() {
         super(true);
@@ -49,24 +51,25 @@ public class JTranslate extends JTool {
     public void initialize() {
         initComponents();
         TransMachine.setModel(new DefaultComboBoxModel(translators.getNamesList()));
-        Translator tr = translators.get(TransMachine.getSelectedIndex());
+        trans = translators.get(TransMachine.getSelectedIndex());
         
-        FromLang.setModel(new DefaultComboBoxModel(tr.getFromLanguages()));
-        FromLang.setSelectedItem(tr.getDefaultFromLanguage());
+        FromLang.setModel(new DefaultComboBoxModel(trans.getFromLanguages()));
+        FromLang.setSelectedItem(trans.getDefaultFromLanguage());
 
-        ToLang.setModel(new DefaultComboBoxModel(tr.getToLanguages(FromLang.getSelectedItem().toString())));
-        ToLang.setSelectedItem(tr.getDefaultToLanguage());
+        ToLang.setModel(new DefaultComboBoxModel(trans.getToLanguages(FromLang.getSelectedItem().toString())));
+        ToLang.setSelectedItem(trans.getDefaultToLanguage());
     }
 
     protected String getToolTitle() {
         return _("Translate text");
     }
 
-    protected void storeSelections() {
-    }
+    protected void storeSelections() {}
 
-    protected void affect(int index) {
-        SubEntry sub = affected_list.elementAt(index);
+    protected void affect(int index) {}
+    
+    protected boolean finalizing() {
+        return trans.translate(affected_list, FromLang.getSelectedItem().toString(), ToLang.getSelectedItem().toString());
     }
 
     /** This method is called from within the constructor to

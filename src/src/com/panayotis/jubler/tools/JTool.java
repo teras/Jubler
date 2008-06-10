@@ -75,10 +75,11 @@ public abstract class JTool extends JPanel {
         pos.updateSubsMark(affected_list);
         
         storeSelections();
-        
         for (int i = 0 ; i < affected_list.size() ; i++ ) {
             affect(i);
         }
+        if (!finalizing()) return false;
+        
         jparent.tableHasChanged(selectedsubs);
         return true;
     }
@@ -95,4 +96,6 @@ public abstract class JTool extends JPanel {
     protected abstract void storeSelections();
     protected abstract void affect(int index);
     protected abstract String getToolTitle();
+
+    protected boolean finalizing() { return true; };
 }

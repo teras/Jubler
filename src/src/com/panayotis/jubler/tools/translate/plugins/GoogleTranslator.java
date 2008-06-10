@@ -4,6 +4,15 @@
  */
 package com.panayotis.jubler.tools.translate.plugins;
 
+import com.panayotis.jubler.subs.SubEntry;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.StringTokenizer;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import java.util.Vector;
@@ -15,7 +24,6 @@ import java.util.Vector;
 class GoogleTranslator implements Translator {
 
     private static Vector<Language> lang;
-    //http://translate.google.com/translate_t?sl=it&tl=el&ie=utf-8&text=
     
 
     static {
@@ -70,6 +78,75 @@ class GoogleTranslator implements Translator {
 
     public String getDefaultToLanguage() {
         return _("French");
+    }
+
+    public boolean translate(Vector<SubEntry> subs, String from_language, String to_language) {
+        try {
+            StringBuffer txt = new StringBuffer();
+            for (int i = 0; i < subs.size(); i++) {
+                txt.append("--").append(i).append("--\n");
+                txt.append(subs.get(i).getText()).append('\n');
+            }
+
+            URL req = new URL("http://translate.google.com/translate_t?sl=" + "el" + "&tl=" + "en" + "&ie=utf-8");
+            URLConnection conn = req.openConnection();
+            conn.setConnectTimeout(1000);
+            conn.setReadTimeout(5000);
+            conn.setRequestProperty("User-agent", "Jubler");
+
+            conn.setDoOutput(true);
+            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+            out.write("text=" + URLEncoder.encode(txt.toString(), "UTF-8"));
+            out.flush();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String line;
+            int from, to;
+            while ((line = in.readLine()) != null) {
+                from = line.indexOf("id=result_box");
+                if (from >= 0) {
+                    from = line.indexOf(">", from) + 1;
+                    if (from >= 0) {
+                        in.close();
+                        out.close();
+
+                        to = line.indexOf("</div>", from);
+                        updateData(subs, line.substring(from, to));
+                        return true;
+                    }
+                }
+            }
+            out.close();
+            in.close();
+
+        } catch (IOException ex) {
+        }
+        return false;
+    }
+
+    private void updateData(Vector<SubEntry> subs, String txt) {
+        txt = txt.replace("<br>", "\n");
+        String data;
+        String subtxt = "";
+        int idx = -1;
+
+        StringTokenizer tk = new StringTokenizer(txt, "\n");
+        while (tk.hasMoreTokens()) {
+            data = tk.nextToken().trim();
+            if (data.startsWith("-- ") && data.endsWith(" --")) {
+                if (idx >= 0) {
+                    subs.get(idx).setText(subtxt.substring(0, subtxt.length() - 1));
+                }
+                idx = Integer.parseInt(data.substring(3, data.length() - 3));
+                subtxt = "";
+            } else {
+                subtxt += data + "\n";
+            }
+        }
+        if (idx >= 0) {
+            subs.get(idx).setText(subtxt.substring(0, subtxt.length() - 1));
+        }
     }
 
     private static class Language {
