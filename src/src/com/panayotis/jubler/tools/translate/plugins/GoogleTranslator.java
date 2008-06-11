@@ -189,7 +189,8 @@ class GoogleTranslator implements Translator, ActionListener {
             }
         }
         if (idx >= 0) {
-            subs.get(idx).setText(subtxt.substring(0, subtxt.length() - 1));
+            subtxt = HTMLTextUtils.convertToString(subtxt.substring(0, subtxt.length() - 1));
+            subs.get(idx).setText(subtxt);
         }
     }
 
