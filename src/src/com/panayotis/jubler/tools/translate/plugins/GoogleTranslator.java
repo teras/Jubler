@@ -5,6 +5,9 @@
 package com.panayotis.jubler.tools.translate.plugins;
 
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.time.gui.JLongProcess;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,9 +24,11 @@ import java.util.Vector;
  *
  * @author teras
  */
-class GoogleTranslator implements Translator {
+class GoogleTranslator implements Translator, ActionListener {
 
     private static Vector<Language> lang;
+    private Thread transt;
+    private boolean runstatus;
     
 
     static {
@@ -83,22 +88,43 @@ class GoogleTranslator implements Translator {
 
     private String findLanguage(String language) {
         for (Language l : lang) {
-            if (l.name.equals(language))
+            if (l.name.equals(language)) {
                 return l.id;
+            }
         }
         return "";
     }
 
-    public boolean translate(Vector<SubEntry> subs, String from_language, String to_language) {
-        String froml = findLanguage(from_language);
-        String tol = findLanguage(to_language);
-        for (int i = 0; i < subs.size(); i += STEP) {
-            translatePart(subs, i, Math.min(subs.size(), i + STEP), froml, tol);
-        }
-        return true;
+    public boolean translate(final Vector<SubEntry> subs, final String from_language, final String to_language) {
+        runstatus = false;
+        final JLongProcess proc = new JLongProcess(this);
+        proc.setValues(subs.size(), _("Translating to {0}", to_language));
+
+        transt = new Thread() {
+
+            public void run() {
+                String froml = findLanguage(from_language);
+                String tol = findLanguage(to_language);
+                for (int i = 0; i < subs.size(); i += STEP) {
+                    proc.updateProgress(i);
+                    if (transt.isInterrupted()) {
+                        break;
+                    }
+                    translatePart(subs, i, Math.min(subs.size(), i + STEP), froml, tol);
+                }
+                proc.setVisible(false);
+            }
+        };
+        transt.start();
+        proc.setVisible(true);
+        return runstatus;
     }
 
-    public boolean translatePart(Vector<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
+    public void actionPerformed(ActionEvent arg0) {
+        transt.interrupt();
+    }
+
+    public void translatePart(Vector<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
         try {
             StringBuffer txt = new StringBuffer();
             for (int i = fromsub; i < tosub; i++) {
@@ -131,7 +157,8 @@ class GoogleTranslator implements Translator {
 
                         to = line.indexOf("</div>", from);
                         updateData(subs, line.substring(from, to));
-                        return true;
+                        runstatus = true;
+                        return;
                     }
                 }
             }
@@ -140,7 +167,6 @@ class GoogleTranslator implements Translator {
 
         } catch (IOException ex) {
         }
-        return false;
     }
 
     private void updateData(Vector<SubEntry> subs, String txt) {

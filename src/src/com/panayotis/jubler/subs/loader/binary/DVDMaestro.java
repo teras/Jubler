@@ -23,12 +23,12 @@
 
 package com.panayotis.jubler.subs.loader.binary;
 
+import com.panayotis.jubler.time.gui.JLongProcess;
 import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 
 import com.panayotis.jubler.options.JPreferences;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubEntry;
@@ -52,14 +52,14 @@ public class DVDMaestro extends AbstractBinarySubFormat {
     
     private static final String NL="\r\n";
     
-    private JSaveProgress progress;
+    private JLongProcess progress;
     private JMaestroOptions moptions;
     
     private String digits;  // This is used when we want to prepend the subtitle id with zeros
     
     /** Creates a new instance of DVDMaestro */
     public DVDMaestro() {
-        progress = new JSaveProgress();
+        progress = new JLongProcess(null);
         moptions = new JMaestroOptions();
     }
     
@@ -118,7 +118,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         /* Start writing the files in a separate thread */
         Thread t = new Thread() {
             public void run() {
-                progress.start(subs.size(), outfilename);
+                progress.setValues(subs.size(), _("Saving {0}", outfilename));
                 StringBuffer buffer = new StringBuffer();
                 
                 /* Make header */
@@ -152,7 +152,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
                 
                 String c_filename, id_string;
                 for (int i = 0 ; i < subs.size() ; i++) {
-                    progress.updateID(i);
+                    progress.updateProgress(i);
                     id_string = Integer.toString(i+1);
                     id_string = digits.substring(id_string.length()) + id_string;
         
@@ -170,7 +170,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
                     JIDialog.error(null, _("Unable to create subtitle file {0}.", outfilepath+outfilename+".son"), "DVDMaestro error");
                 }
                 
-                progress.stop();
+                progress.setVisible(false);
             }
         };
         t.start();
