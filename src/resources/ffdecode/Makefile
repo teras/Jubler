@@ -50,8 +50,8 @@ SYSTEM=${shell echo ${MAKESYS} | sed -e 's/_.*//g'}
 ifeq (${STATIC},no)
 	LIBRARYREQ=
 	RANLIBREQ=
-	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec}
-	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec}
+	LIBS=${shell pkg-config --libs libavformat libavutil libavcodec libswscale}
+	INCS=${shell pkg-config --cflags libavformat libavutil libavcodec libswscale}
 else
 	LIBRARYREQ=${LIBRARIES}/libavformat${LIBSUF}.a
 	RANLIBREQ=ranlib
