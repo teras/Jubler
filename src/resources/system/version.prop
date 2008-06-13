@@ -1,4 +1,4 @@
-version=3.9.1
-longversion=3.9.1.0
+version=3.9.5
+longversion=3.9.5.0
 release=@RELEASE@
 force.upgrade=false
