@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.preview;
+
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
@@ -43,129 +43,125 @@ import javax.swing.ImageIcon;
  * @author  teras
  */
 public class JSubPreview extends javax.swing.JPanel {
+
+    public final static Icon[] cursors;
     
-    public final static Icon [] cursors;
-    
-    
+
     static {
-        cursors = new Icon [4];
+        cursors = new Icon[4];
         cursors[0] = new ImageIcon(JSubPreview.class.getResource("/icons/auto.png"));
         cursors[1] = new ImageIcon(JSubPreview.class.getResource("/icons/pointer.png"));
         cursors[2] = new ImageIcon(JSubPreview.class.getResource("/icons/move.png"));
         cursors[3] = new ImageIcon(JSubPreview.class.getResource("/icons/resize.png"));
     }
-    
-    
     private JSubTimeline timeline;
     private JRuler timecaption;
     private JFramePreview frame;
     private JWavePreview wave;
-    
     private Jubler parent;
-    
     private boolean ignore_slider_changes = false;
     private boolean ignore_zoomfactor_changes = false;
-    
     /* Here we store the start/end/videoduration values of the window*/
     private ViewWindow view;
-    
     private MediaFile last_media_file = null;
-    
+
     /** Creates new form JSubPreview */
     public JSubPreview(Jubler parent) {
         initComponents();
-        
+
         view = new ViewWindow();
         timecaption = new JRuler(view);
         timeline = new JSubTimeline(parent, view, this);
         wave = new JWavePreview(timeline);
         timeline.setWavePreview(wave);
         frame = new JFramePreview(this);
-        
+
         this.parent = parent;
-        
+
         TimelineP.add(timeline, BorderLayout.CENTER);
         TimelineP.add(timecaption, BorderLayout.SOUTH);
-        
+
         AudioPanel.add(wave, BorderLayout.CENTER);
-        
+
         boolean orientation = Options.getOption("Preview.Orientation", "horizontal").equals("horizontal");
         setOrientation(orientation);
         Orientation.setSelected(!orientation);
     }
-    
-    
+
     public void windowHasChanged(int[] subid) {
         ignore_slider_changes = true;
-        slider.setMaximum((int)(view.getVideoDuration()*10));
-        slider.setVisibleAmount((int)(view.getDuration()*10));
-        slider.setValue((int)(view.getStart()*10));
-        
+        slider.setMaximum((int) (view.getVideoDuration() * 10));
+        slider.setVisibleAmount((int) (view.getDuration() * 10));
+        slider.setValue((int) (view.getStart() * 10));
+
         if (!ignore_zoomfactor_changes) {
-            int pos = (int)Math.round(ZoomS.getMaximum() * Math.log(view.getDuration())/Math.log(view.getVideoDuration()));
+            int pos = (int) Math.round(ZoomS.getMaximum() * Math.log(view.getDuration()) / Math.log(view.getVideoDuration()));
             ZoomS.setValue(pos);
         }
-        
+
         timeline.windowHasChanged(subid);
-        wave.setTime(view.getStart(), view.getStart()+view.getDuration());
-        if (subid!=null && subid.length>0) frame.setSubEntry(parent.getSubtitles().elementAt(subid[0]));
+        wave.setTime(view.getStart(), view.getStart() + view.getDuration());
+        if (subid != null && subid.length > 0)
+            frame.setSubEntry(parent.getSubtitles().elementAt(subid[0]));
         timecaption.repaint();
-        
+
         ignore_slider_changes = false;
     }
-    
-    
-    public void subsHaveChanged(int [] subid) {
+
+    public void subsHaveChanged(int[] subid) {
         double min = Double.MAX_VALUE, max = 0d;
         SubEntry entry;
         double val;
         Subtitles subs = parent.getSubtitles();
-        
+
         /* First find total subtitle duration (since other values depend on it) */
         double endtime;
         double videoduration = 0;
-        for (int i = 0 ; i < subs.size() ; i++) {
+        for (int i = 0; i < subs.size(); i++) {
             endtime = subs.elementAt(i).getFinishTime().toSeconds();
-            if (videoduration < endtime) videoduration = endtime;
+            if (videoduration < endtime)
+                videoduration = endtime;
         }
-        view.setVideoDuration(videoduration+10);
-        
+        view.setVideoDuration(videoduration + 10);
+
         /* Then find minimum & maximum time for this subtitle selection */
         if (subid.length == 0) {
             min = 0d;
             max = 0d;
         } else {
-            for (int i = 0 ; i < subid.length ; i++) {
+            for (int i = 0; i < subid.length; i++) {
                 entry = subs.elementAt(subid[i]);
                 val = entry.getStartTime().toSeconds();
-                if (min > val) min = val;
+                if (min > val)
+                    min = val;
                 val = entry.getFinishTime().toSeconds();
-                if (max < val) max = val;
+                if (max < val)
+                    max = val;
             }
         }
         /* Although we have a minimum duration in ViewWindow, this is too small.
          * When displaying subtitles for the first time make sure we display a generous amount of time */
         view.setWindow(min, max, true);
-        
+
         /* Update visual data */
         windowHasChanged(subid);
-        
+
         updateSelectedTime();
     }
-    
-    
+
     public void updateSelectedTime() {
-        TimePosL.setText( new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString() + " [" + _("Selected subtitles") + "]");
+        TimePosL.setText(new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString() + " [" + _("Selected subtitles") + "]");
     }
-    
+
     public void updateMediaFile(MediaFile mfile) {
-        if (mfile.equals(last_media_file)) return;
+        if (mfile.equals(last_media_file))
+            return;
         last_media_file = mfile;
-        
+
         wave.updateMediaFile(mfile);
         frame.updateMediaFile(mfile);
     }
-    
+
     public void setEnabled(boolean status) {
         super.setEnabled(status);
         frame.setEnabled(status && VideoShow.isSelected());
@@ -180,11 +176,11 @@ public class JSubPreview extends javax.swing.JPanel {
     public void attachEditor(JSubEditor editor) {
         EditorPanel.add(editor, BorderLayout.SOUTH);
     }
-        
+
     public DecoderListener getDecoderListener() {
         return wave;
     }
-   
+
     private void setOrientation(boolean horizontal) {
         MainPanel.remove(frame);
         if (horizontal) {
@@ -194,10 +190,10 @@ public class JSubPreview extends javax.swing.JPanel {
         }
         parent.setPreviewOrientation(horizontal);
         parent.resetPreviewPanels();
-        Options.setOption("Preview.Orientation", horizontal?"horizontal":"vertical");
+        Options.setOption("Preview.Orientation", horizontal ? "horizontal" : "vertical");
         Options.saveOptions();
     }
-   
+
     public Point getFrameLocation() {
         try {
             Point ret = frame.getLocationOnScreen();
@@ -207,7 +203,37 @@ public class JSubPreview extends javax.swing.JPanel {
         }
         return parent.getLocationOnScreen();
     }
-    
+
+    public void setVideoShow(boolean status) {
+        VideoShow.setSelected(status);
+        parent.VideoPreviewC.setSelected(status);
+        frame.setEnabled(status);
+        parent.resetPreviewPanels();
+    }
+
+    public void setVideoZoom(boolean status) {
+        VideoZoom.setSelected(status);
+        parent.HalfSizeC.setSelected(status);
+        frame.setResize(status ? 0.5f : 1f);
+        parent.resetPreviewPanels();
+    }
+
+    public void setAudioShow(boolean status) {
+        AudioShow.setSelected(status);
+        parent.AudioPreviewC.setSelected(status);
+        wave.setEnabled(status);
+    }
+
+    public void setMaxWave(boolean status) {
+        MaxWave.setSelected(status);
+        parent.MaxWaveC.setSelected(status);
+        wave.setMaximized(status);
+    }
+
+    public void playbackWave() {
+        wave.playbackWave();
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -235,8 +261,8 @@ public class JSubPreview extends javax.swing.JPanel {
         VideoShow = new javax.swing.JToggleButton();
         VideoZoom = new javax.swing.JToggleButton();
         jPanel2 = new javax.swing.JPanel();
-        MaxWave = new javax.swing.JToggleButton();
         AudioShow = new javax.swing.JToggleButton();
+        MaxWave = new javax.swing.JToggleButton();
         AudioPlay = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         Auto = new javax.swing.JToggleButton();
@@ -356,17 +382,6 @@ public class JSubPreview extends javax.swing.JPanel {
 
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
 
-        MaxWave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavenorm.png"))); // NOI18N
-        MaxWave.setToolTipText(_("Maximize waveform visualization"));
-        MaxWave.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        MaxWave.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavemax.png"))); // NOI18N
-        MaxWave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MaxWaveActionPerformed(evt);
-            }
-        });
-        jPanel2.add(MaxWave);
-
         AudioShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/waveoff.png"))); // NOI18N
         AudioShow.setSelected(true);
         AudioShow.setToolTipText(_("Enable/disable waveform preview"));
@@ -378,6 +393,17 @@ public class JSubPreview extends javax.swing.JPanel {
             }
         });
         jPanel2.add(AudioShow);
+
+        MaxWave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavenorm.png"))); // NOI18N
+        MaxWave.setToolTipText(_("Maximize waveform visualization"));
+        MaxWave.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        MaxWave.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavemax.png"))); // NOI18N
+        MaxWave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MaxWaveActionPerformed(evt);
+            }
+        });
+        jPanel2.add(MaxWave);
 
         AudioPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/playback.png"))); // NOI18N
         AudioPlay.setToolTipText(_("Play current subtitle"));
@@ -462,74 +488,70 @@ public class JSubPreview extends javax.swing.JPanel {
 
         add(ToolPanel, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
         parent.addNewSubtitle(true);
     }//GEN-LAST:event_NewSubActionPerformed
-    
-    
+
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
-        if (ignore_slider_changes) return;
+        if (ignore_slider_changes)
+            return;
         ignore_zoomfactor_changes = true;
-        
+
         double center = timeline.getCenterOfSelection();
         /* minimum diration is 2 seconds */
-        double half_duration = Math.pow(view.getVideoDuration()/2d, ((double)ZoomS.getValue())/ZoomS.getMaximum());
-        view.setWindow(center-half_duration, center+half_duration, false);
+        double half_duration = Math.pow(view.getVideoDuration() / 2d, ((double) ZoomS.getValue()) / ZoomS.getMaximum());
+        view.setWindow(center - half_duration, center + half_duration, false);
         windowHasChanged(null);
-        
+
         ignore_zoomfactor_changes = false;
     }//GEN-LAST:event_ZoomSStateChanged
-    
+
     private void AudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPlayActionPerformed
-        wave.playbackWave();
+        playbackWave();
     }//GEN-LAST:event_AudioPlayActionPerformed
-    
+
     private void VideoZoomFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoZoomFrameActionPerformed
-        frame.setResize(VideoZoom.isSelected()?0.5f:1f);
-        parent.resetPreviewPanels();
+        setVideoZoom(VideoZoom.isSelected());
     }//GEN-LAST:event_VideoZoomFrameActionPerformed
-    
+
     private void AudioShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioShowActionPerformed
-        wave.setEnabled(AudioShow.isSelected());
+        setAudioShow(AudioShow.isSelected());
     }//GEN-LAST:event_AudioShowActionPerformed
-    
+
     private void VideoShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoShowActionPerformed
-        frame.setEnabled(VideoShow.isSelected());
-        parent.resetPreviewPanels();
+        setVideoShow(VideoShow.isSelected());
     }//GEN-LAST:event_VideoShowActionPerformed
-    
+
     private void cursorSelector(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cursorSelector
-        timeline.setAction(evt.getActionCommand().charAt(0)-'0');
+        timeline.setAction(evt.getActionCommand().charAt(0) - '0');
     }//GEN-LAST:event_cursorSelector
-    
+
     private void sliderAdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_sliderAdjustmentValueChanged
-        if (ignore_slider_changes || evt.getValueIsAdjusting()) return;
-        view.setWindow(evt.getValue()/10d, evt.getValue()/10d+view.getDuration(), false);
+        if (ignore_slider_changes || evt.getValueIsAdjusting())
+            return;
+        view.setWindow(evt.getValue() / 10d, evt.getValue() / 10d + view.getDuration(), false);
         windowHasChanged(null);
     }//GEN-LAST:event_sliderAdjustmentValueChanged
 
     private void OrientationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrientationActionPerformed
-       setOrientation(!Orientation.isSelected());
+        setOrientation(!Orientation.isSelected());
 }//GEN-LAST:event_OrientationActionPerformed
 
     private void MaxWaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveActionPerformed
-        wave.setMaximized(MaxWave.isSelected());
+        setMaxWave(MaxWave.isSelected());
 }//GEN-LAST:event_MaxWaveActionPerformed
-    
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
-    private javax.swing.JButton AudioPlay;
-    private javax.swing.JToggleButton AudioShow;
+    public javax.swing.JButton AudioPlay;
+    public javax.swing.JToggleButton AudioShow;
     private javax.swing.JToggleButton Auto;
     private javax.swing.JPanel BottomPanel;
     private javax.swing.ButtonGroup CursorGroup;
     private javax.swing.JPanel EditorPanel;
     private javax.swing.JPanel InfoPanel;
     public javax.swing.JPanel MainPanel;
-    private javax.swing.JToggleButton MaxWave;
+    public javax.swing.JToggleButton MaxWave;
     private javax.swing.JToggleButton Move;
     private javax.swing.JButton NewSub;
     private javax.swing.JToggleButton Orientation;
@@ -538,8 +560,8 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
     private javax.swing.JPanel ToolPanel;
-    private javax.swing.JToggleButton VideoShow;
-    private javax.swing.JToggleButton VideoZoom;
+    public javax.swing.JToggleButton VideoShow;
+    public javax.swing.JToggleButton VideoZoom;
     private javax.swing.JSlider ZoomS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -550,5 +572,4 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables
-    
 }

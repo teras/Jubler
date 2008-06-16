@@ -200,7 +200,6 @@ public class Jubler extends JFrame {
         initComponents();
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
-//        TranslateTM.setVisible(false);
 
         subeditor = new JSubEditor(this);
         subeditor.setAttached(true);
@@ -490,7 +489,15 @@ public class Jubler extends JFrame {
         TestTM = new javax.swing.JMenu();
         BeginningTTM = new javax.swing.JMenuItem();
         CurrentTTM = new javax.swing.JMenuItem();
-        PreviewTM = new javax.swing.JCheckBoxMenuItem();
+        PreviewP = new javax.swing.JMenu();
+        EnablePreviewC = new javax.swing.JCheckBoxMenuItem();
+        jSeparator6 = new javax.swing.JSeparator();
+        VideoPreviewC = new javax.swing.JCheckBoxMenuItem();
+        HalfSizeC = new javax.swing.JCheckBoxMenuItem();
+        jSeparator12 = new javax.swing.JSeparator();
+        AudioPreviewC = new javax.swing.JCheckBoxMenuItem();
+        MaxWaveC = new javax.swing.JCheckBoxMenuItem();
+        PlayAudioC = new javax.swing.JMenuItem();
         HelpM = new javax.swing.JMenu();
         FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
@@ -1068,11 +1075,44 @@ public class Jubler extends JFrame {
 
         ToolsM.add(TestTM);
 
-        PreviewTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
-        PreviewTM.setText(_("Preview"));
-        PreviewTM.setName("TPR"); // NOI18N
-        PreviewTM.addActionListener(formListener);
-        ToolsM.add(PreviewTM);
+        PreviewP.setText(_("Preview"));
+
+        EnablePreviewC.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
+        EnablePreviewC.setText(_("Enable preview"));
+        EnablePreviewC.setName("TPE"); // NOI18N
+        EnablePreviewC.addActionListener(formListener);
+        PreviewP.add(EnablePreviewC);
+        PreviewP.add(jSeparator6);
+
+        VideoPreviewC.setSelected(true);
+        VideoPreviewC.setText(_("Video frame"));
+        VideoPreviewC.setName("TPV"); // NOI18N
+        VideoPreviewC.addActionListener(formListener);
+        PreviewP.add(VideoPreviewC);
+
+        HalfSizeC.setText(_("Half size image"));
+        HalfSizeC.setName("TPH"); // NOI18N
+        HalfSizeC.addActionListener(formListener);
+        PreviewP.add(HalfSizeC);
+        PreviewP.add(jSeparator12);
+
+        AudioPreviewC.setSelected(true);
+        AudioPreviewC.setText(_("Audio waveform"));
+        AudioPreviewC.setName("TAP"); // NOI18N
+        AudioPreviewC.addActionListener(formListener);
+        PreviewP.add(AudioPreviewC);
+
+        MaxWaveC.setText(_("Maximize waveform visualization"));
+        MaxWaveC.setName("TPM"); // NOI18N
+        MaxWaveC.addActionListener(formListener);
+        PreviewP.add(MaxWaveC);
+
+        PlayAudioC.setText(_("Play current subtitle"));
+        PlayAudioC.setName("TPP"); // NOI18N
+        PlayAudioC.addActionListener(formListener);
+        PreviewP.add(PlayAudioC);
+
+        ToolsM.add(PreviewP);
 
         JublerMenuBar.add(ToolsM);
 
@@ -1314,14 +1354,14 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == SpellTM) {
                 Jubler.this.SpellTMActionPerformed(evt);
             }
+            else if (evt.getSource() == TranslateTM) {
+                Jubler.this.TranslateTMActionPerformed(evt);
+            }
             else if (evt.getSource() == BeginningTTM) {
                 Jubler.this.BeginningTTMActionPerformed(evt);
             }
             else if (evt.getSource() == CurrentTTM) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == PreviewTM) {
-                Jubler.this.PreviewTMActionPerformed(evt);
             }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
@@ -1329,8 +1369,23 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
-            else if (evt.getSource() == TranslateTM) {
-                Jubler.this.TranslateTMActionPerformed(evt);
+            else if (evt.getSource() == EnablePreviewC) {
+                Jubler.this.EnablePreviewCActionPerformed(evt);
+            }
+            else if (evt.getSource() == VideoPreviewC) {
+                Jubler.this.VideoPreviewCActionPerformed(evt);
+            }
+            else if (evt.getSource() == HalfSizeC) {
+                Jubler.this.HalfSizeCActionPerformed(evt);
+            }
+            else if (evt.getSource() == AudioPreviewC) {
+                Jubler.this.AudioPreviewCActionPerformed(evt);
+            }
+            else if (evt.getSource() == MaxWaveC) {
+                Jubler.this.MaxWaveCActionPerformed(evt);
+            }
+            else if (evt.getSource() == PlayAudioC) {
+                Jubler.this.PlayAudioCActionPerformed(evt);
             }
         }
 
@@ -1856,23 +1911,42 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_OpenFMActionPerformed
 
     private void PreviewTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBActionPerformed
-        PreviewTM.setSelected(PreviewTB.isSelected());
         enablePreview(PreviewTB.isSelected());
     }//GEN-LAST:event_PreviewTBActionPerformed
-
-    private void PreviewTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTMActionPerformed
-        PreviewTB.setSelected(PreviewTM.isSelected());
-        PreviewTBActionPerformed(evt);
-}//GEN-LAST:event_PreviewTMActionPerformed
 
 private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TranslateTMActionPerformed
         translate.execute(this);
 }//GEN-LAST:event_TranslateTMActionPerformed
+
+private void EnablePreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnablePreviewCActionPerformed
+    enablePreview(EnablePreviewC.isSelected());
+}//GEN-LAST:event_EnablePreviewCActionPerformed
+
+private void VideoPreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoPreviewCActionPerformed
+    preview.setVideoShow(VideoPreviewC.isSelected());
+}//GEN-LAST:event_VideoPreviewCActionPerformed
+
+private void HalfSizeCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HalfSizeCActionPerformed
+    preview.setVideoZoom(HalfSizeC.isSelected());
+}//GEN-LAST:event_HalfSizeCActionPerformed
+
+private void AudioPreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPreviewCActionPerformed
+    preview.setAudioShow(AudioPreviewC.isSelected());
+}//GEN-LAST:event_AudioPreviewCActionPerformed
+
+private void MaxWaveCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveCActionPerformed
+    preview.setMaxWave(MaxWaveC.isSelected());
+}//GEN-LAST:event_MaxWaveCActionPerformed
+
+private void PlayAudioCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayAudioCActionPerformed
+    preview.playbackWave();
+}//GEN-LAST:event_PlayAudioCActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
+    public javax.swing.JCheckBoxMenuItem AudioPreviewC;
     private javax.swing.JPanel BasicPanel;
     private javax.swing.JMenuItem BeforeIEM;
     private javax.swing.JMenuItem BeginningTTM;
@@ -1893,6 +1967,7 @@ private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenu EditM;
     private javax.swing.JPanel EditTP;
     private javax.swing.JMenuItem EmptyLinesDEM;
+    private javax.swing.JCheckBoxMenuItem EnablePreviewC;
     private javax.swing.JMenuItem FAQHM;
     private javax.swing.JMenu FileM;
     private javax.swing.JMenuItem FileNFM;
@@ -1900,6 +1975,7 @@ private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuItem FixTM;
     private javax.swing.JMenuItem GloballyREM;
     private javax.swing.JMenu GoEM;
+    public javax.swing.JCheckBoxMenuItem HalfSizeC;
     private javax.swing.JMenu HelpM;
     private javax.swing.JLabel Info;
     private javax.swing.JMenuItem InfoFM;
@@ -1913,6 +1989,7 @@ private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenu MarkEM;
     private javax.swing.JMenu MarkP;
     private javax.swing.JSeparator MarkSep;
+    public javax.swing.JCheckBoxMenuItem MaxWaveC;
     private javax.swing.JMenu NewFM;
     private javax.swing.JButton NewTB;
     private javax.swing.JMenuItem NextGEM;
@@ -1926,10 +2003,11 @@ private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JButton PasteTB;
     private javax.swing.JMenuItem PinkMEM;
     private javax.swing.JMenuItem PinkMP;
+    private javax.swing.JMenuItem PlayAudioC;
     private javax.swing.JMenuItem PlayVideoP;
     private javax.swing.JMenuItem PrefsFM;
+    private javax.swing.JMenu PreviewP;
     private javax.swing.JToggleButton PreviewTB;
-    private javax.swing.JCheckBoxMenuItem PreviewTM;
     private javax.swing.JMenuItem PreviousGEM;
     private javax.swing.JMenuItem PreviousPageGEM;
     private javax.swing.JMenuItem QuitFM;
@@ -1976,6 +2054,7 @@ private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
     private javax.swing.JPanel UndoTP;
+    public javax.swing.JCheckBoxMenuItem VideoPreviewC;
     private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
@@ -1987,10 +2066,12 @@ private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
+    private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
@@ -2144,6 +2225,14 @@ private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         BasicPanel.remove(SubsScrollPane);
         SubSplitPane.remove(SubsScrollPane);
 
+        EnablePreviewC.setSelected(status);
+        PreviewTB.setSelected(status);
+        VideoPreviewC.setEnabled(status);
+        HalfSizeC.setEnabled(status);
+        AudioPreviewC.setEnabled(status);
+        MaxWaveC.setEnabled(status);
+        PlayAudioC.setEnabled(status);
+        
         if (status) {
             mfile.validateMediaFile(subs, false);
             mfile.initAudioCache(preview.getDecoderListener());
