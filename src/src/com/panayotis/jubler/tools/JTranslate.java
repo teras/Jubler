@@ -22,8 +22,6 @@
  */
 package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.subs.SubEntry;
-
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.translate.plugins.AvailTranslators;

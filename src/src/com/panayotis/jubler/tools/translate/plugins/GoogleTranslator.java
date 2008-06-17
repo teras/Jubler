@@ -4,6 +4,8 @@
  */
 package com.panayotis.jubler.tools.translate.plugins;
 
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.gui.JLongProcess;
 import java.awt.event.ActionEvent;
@@ -28,7 +30,7 @@ class GoogleTranslator implements Translator, ActionListener {
 
     private static Vector<Language> lang;
     private Thread transt;
-    private boolean runstatus;
+    private String errorstream;
     
 
     static {
@@ -96,7 +98,7 @@ class GoogleTranslator implements Translator, ActionListener {
     }
 
     public boolean translate(final Vector<SubEntry> subs, final String from_language, final String to_language) {
-        runstatus = false;
+        errorstream = "";
         final JLongProcess proc = new JLongProcess(this);
         proc.setValues(subs.size(), _("Translating to {0}", to_language));
 
@@ -110,21 +112,29 @@ class GoogleTranslator implements Translator, ActionListener {
                     if (transt.isInterrupted()) {
                         break;
                     }
-                    translatePart(subs, i, Math.min(subs.size(), i + STEP), froml, tol);
+                    errorstream = translatePart(subs, i, Math.min(subs.size(), i + STEP), froml, tol);
+                    if (errorstream != null) {
+                        JIDialog.error(null, _("Translating failed with error:") + '\n' + errorstream, _("Error while translating subtitles"));
+                        DEBUG.debug(errorstream);
+                        break;
+                    }
                 }
                 proc.setVisible(false);
             }
         };
         transt.start();
         proc.setVisible(true);
-        return runstatus;
+        return errorstream==null;
     }
 
     public void actionPerformed(ActionEvent arg0) {
         transt.interrupt();
     }
 
-    public void translatePart(Vector<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
+    public String translatePart(Vector<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
+        BufferedReader in = null ;
+        OutputStreamWriter out = null;
+        String error = null;
         try {
             StringBuffer txt = new StringBuffer();
             for (int i = fromsub; i < tosub; i++) {
@@ -139,11 +149,11 @@ class GoogleTranslator implements Translator, ActionListener {
             conn.setRequestProperty("User-agent", "Jubler");
 
             conn.setDoOutput(true);
-            OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream());
+            out = new OutputStreamWriter(conn.getOutputStream());
             out.write("text=" + URLEncoder.encode(txt.toString(), "UTF-8"));
             out.flush();
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
             String line;
             int from, to;
@@ -157,16 +167,25 @@ class GoogleTranslator implements Translator, ActionListener {
 
                         to = line.indexOf("</div>", from);
                         updateData(subs, line.substring(from, to));
-                        runstatus = true;
-                        return;
+                        break;
                     }
                 }
             }
-            out.close();
-            in.close();
-
         } catch (IOException ex) {
+            error = ex.toString();
+        } finally {
+            try {
+                if (out!=null) 
+                    out.close();
+            } catch (IOException ex) {                
+            }
+            try {
+                if (in!=null) 
+                    in.close();
+            } catch (IOException ex) {                
+            }
         }
+        return error;
     }
 
     private void updateData(Vector<SubEntry> subs, String txt) {
@@ -180,6 +199,7 @@ class GoogleTranslator implements Translator, ActionListener {
             data = tk.nextToken().trim();
             if (data.startsWith("-- ") && data.endsWith(" --")) {
                 if (idx >= 0) {
+                    subtxt = HTMLTextUtils.convertToString(subtxt.substring(0, subtxt.length() - 1));
                     subs.get(idx).setText(subtxt.substring(0, subtxt.length() - 1));
                 }
                 idx = Integer.parseInt(data.substring(3, data.length() - 3));
