@@ -175,6 +175,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                             // stereo downmix
                             if (ccx->channels > 2) {
                                 ccx->channels = 2;
+                                ccx->request_channels = 2;
                             }
                             audio_st = add_audio_stream(env, this, ofcx, fmt->audio_codec, ccx->sample_rate, ccx->channels);
                         }
@@ -260,6 +261,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                 // stereo downmix
                 if (ccx->channels > 2) {
                     ccx->channels = 2;
+                    ccx->request_channels = 2;
                 }
                 got_audio = AVCODEC_MAX_AUDIO_FRAME_SIZE;
                 len = avcodec_decode_audio2(ccx, (short *)outbuf, &got_audio, packptr, packsize);
