@@ -34,8 +34,8 @@
 #include "utilities.h"
 
 jboolean decodeAudio(JNIEnv* env, jobject this, const char *input_filename, const char *output_filename, jlong seek_time_start, jlong seek_time_stop);
-AVStream *add_audio_stream(JNIEnv* env, jobject this, AVFormatContext *oc, int codec_id, int sample_rate, int channels); void fput_le32(FILE *stream, long int val);
-size_t audio_out(char *, size_t, size_t, FILE *);
+AVStream *add_audio_stream(JNIEnv* env, jobject this, AVFormatContext *oc, int codec_id, int sample_rate, int channels);
+void audio_enc_out(JNIEnv * env, jobject this, AVFormatContext *ofcx, AVStream *audio_st, const short *samples, int buf_size);
 
 
 JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_createClip(JNIEnv * env, jobject this, jstring audio, jstring wav, jlong start, jlong stop) {
@@ -59,16 +59,14 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMP
 
 
 jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, const char *output_filename, jlong seek_time_start, jlong seek_time_stop) {
-    AVCodec *codec=NULL, *vcodec=NULL;
+    AVCodec *codec=NULL, *vcodec=NULL, *codec_enc=NULL;
     AVPacket pkt;
     AVCodecContext *ccx=NULL;
     AVFormatContext *fcx=NULL, *ofcx=NULL;
     AVOutputFormat *fmt=NULL;
     AVStream *audio_st=NULL;
-    int got_audio, len, err=0, audio_index=-1, i=0, pack_duration=0, packsize=0, codec_is_open=-1, video_index=-1;
-    long int file_size=0, header_size=0;
+    int got_audio, len, err=0, audio_index=-1, i=0, pack_duration=0, packsize=0, codec_is_open=-1, video_index=-1, codec_enc_is_open=-1;
     jlong pack_pts=0;
-    FILE *outfile=NULL;
     char *outbuf=NULL;
     unsigned char *packptr;
     jboolean ret = JNI_TRUE, nobrk = JNI_TRUE;
@@ -160,7 +158,11 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                     }
                     
                     /* use wav as the output format of the file */
-                    fmt = guess_format("wav", NULL, NULL);
+                    fmt = guess_format(NULL, output_filename, NULL);
+                    if (!fmt) {
+								DEBUG(env, this, "decodeAudio", "Could not deduce output format from file extension: using WAV.");
+                        fmt = guess_format("wav", NULL, NULL);
+                    }
                     if (!fmt) {
                         DEBUG(env, this, "decodeAudio", "Could not find suitable output format.");
                         ret = JNI_FALSE;
@@ -186,51 +188,28 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                             ret = JNI_FALSE;
                         }
                         else {
-                            /* open the output file, if needed */
-                            if (!(fmt->flags & AVFMT_NOFILE)) {
-                                if (url_fopen(&ofcx->pb, output_filename, URL_WRONLY) < 0) {
-                                    DEBUG(env, this, "decodeAudio", "Could not open file '%s'.", output_filename);
-                                    ret = JNI_FALSE;
-                                }
-                            }
-                            
-                            /* write the stream header, if any */
-                            if (av_write_header(ofcx) < 0) {
-                                DEBUG(env, this, "decodeAudio", "Could not write header for output file.") ;
+                            codec_enc = avcodec_find_encoder(audio_st->codec->codec_id);
+                            if (!codec_enc) {
+                                DEBUG(env, this, "decodeAudio", "Encoder codec not found.");
                                 ret = JNI_FALSE;
                             }
                             else {
-                                /* Clean up part 1*/
-                                /* free the streams */
-                                for(i = 0; i < ofcx->nb_streams; i++) {
-                                    av_freep(&ofcx->streams[i]);
+                                if ((codec_enc_is_open = avcodec_open(audio_st->codec, codec_enc)) < 0) {
+                                    DEBUG(env, this, "decodeAudio", "Could not open encoder codec.");
+                                    ret = JNI_FALSE;
+                                }
+                                else {
+                                     if (!(fmt->flags & AVFMT_NOFILE)) {
+                                         if (url_fopen(&ofcx->pb, output_filename, URL_WRONLY) < 0) {
+                                             DEBUG(env, this, "decodeAudio", "Could not open file '%s'", output_filename);
+                                             ret = JNI_FALSE;
+                                         }
+                                         else {
+                                             av_write_header(ofcx);
+                                         }
+                                     }
                                 }
                             }
-                        }
- 
-                    	/* close the output file */
-                    	if (!(fmt->flags & AVFMT_NOFILE)) {
-                        	url_fclose(ofcx->pb);
-                    	}
-                    }
-                   	
-					/* Clean up part 2*/
-                    
-					/* free the stream */
-                    if(ofcx != NULL) av_free(ofcx);
-                    
-                    /* Create WAV headers end */
-                    
-                    if (ret != JNI_FALSE) {
-                        outfile = fopen(output_filename, "r+b");
-                        if (!outfile) {
-                            DEBUG(env, this, "decodeAudio", "Could not open file '%s'", output_filename);
-                            ret = JNI_FALSE;
-                        }
-                        else {
-                            /* truncate the last four 0 bytes of the empty header */
-                            fseek(outfile, -4, SEEK_END);
-                            header_size = ftell(outfile);
                         }
                     }
                 }
@@ -279,7 +258,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                      * this is the frame we want */
                     if (pack_pts >= seek_time_start) {
                         /* if a frame has been decoded, output it */
-                        audio_out(outbuf, 1, got_audio, outfile);
+                        audio_enc_out(env, this, ofcx, audio_st, (short *)outbuf, got_audio);
                         /* if the next frame gets past our stop time, we want to stop decoding */
                         if ( pack_pts + pack_duration > seek_time_stop ) {
                             av_free_packet(&pkt);
@@ -290,7 +269,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                     /* If the next frame will be past our start seek time, this is the frame we want */
                     else if (pack_pts + pack_duration > seek_time_start) {
                         /* if a frame has been decoded, output it */
-                        audio_out(outbuf, 1, got_audio, outfile);
+                        audio_enc_out(env, this, ofcx, audio_st, (short *)outbuf, got_audio);
                         /* if the next frame gets past our stop time, we want to stop decoding */
                         if ( pack_pts + pack_duration > seek_time_stop ) {
                             av_free_packet(&pkt);
@@ -303,16 +282,30 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
         }
         av_free_packet(&pkt);
     }
-    
-    /* Write trailer */
-    if (ret != JNI_FALSE ) {
-        file_size = ftell(outfile);
-        fseek(outfile, header_size, SEEK_SET);
-        fput_le32(outfile, file_size - header_size - sizeof(file_size));
-    }
-    
+
     /* Clean up */
-    if(outfile != NULL)    fclose(outfile);
+    if (ret != JNI_FALSE) {
+        /* write the trailer, if any */
+        av_write_trailer(ofcx);
+    }
+
+    /* close each codec */
+    if (codec_enc_is_open >= 0) avcodec_close(audio_st->codec);
+
+    /* free the streams */
+    for(i = 0; i < ofcx->nb_streams; i++) {
+        av_freep(&ofcx->streams[i]->codec);
+        av_freep(&ofcx->streams[i]);
+    }
+
+    /* close the output file */
+    if (!(fmt->flags & AVFMT_NOFILE) && ofcx->pb != NULL) {
+        url_fclose(ofcx->pb);
+    }
+
+    /* free the stream */
+    if(ofcx != NULL) av_free(ofcx);
+
     if(codec_is_open >= 0) avcodec_close(ccx);
     if(outbuf != NULL)     free(outbuf);
     if(fcx != NULL)        av_close_input_file(fcx);
@@ -349,26 +342,37 @@ AVStream *add_audio_stream(JNIEnv * env, jobject this, AVFormatContext *oc, int 
         return NULL;
 }
 
-void fput_le32(FILE *stream, long int val) {
-    fputc(val, stream);
-    fputc(val >> 8, stream);
-    fputc(val >> 16, stream);
-    fputc(val >> 24, stream);
-}
+void audio_enc_out(JNIEnv * env, jobject this, AVFormatContext *ofcx, AVStream *audio_st, const short *samples, int buf_size) {
+	AVPacket pkt;
+	uint8_t *outbuf;
+	int ret = JNI_TRUE;
 
-size_t audio_out(char *ptr, size_t size, size_t nmemb, FILE *stream) {
-    char swap;
-    int i=0;
-    
-    if (!isLittleEndian()) {
-        for (i=0; i<= ((size*nmemb)-1); i++) {
-            swap = ptr[i]; // high
-            ptr[i] = ptr[i+1]; // low
-            ptr[++i] = swap ; // putting high back
-        }
-        
-    }
-    
-    return fwrite(ptr, size, nmemb, stream);
+	av_init_packet(&pkt);
+	
+	outbuf = malloc(buf_size);
+	if(outbuf==NULL) {
+		DEBUG(env, this, "audio_enc_out", "Cannot allocate memory for output encoded buffer.");
+		ret = JNI_FALSE;
+	}
+
+	if (ret != JNI_FALSE) {
+		pkt.size = avcodec_encode_audio(audio_st->codec, outbuf, buf_size, samples);
+
+		pkt.stream_index= audio_st->index;
+		pkt.data = outbuf;
+		if(audio_st->codec->coded_frame && audio_st->codec->coded_frame->pts != AV_NOPTS_VALUE)
+			pkt.pts = av_rescale_q(audio_st->codec->coded_frame->pts, audio_st->codec->time_base, audio_st->time_base);
+		pkt.flags |= PKT_FLAG_KEY;
+							
+		/* write the compressed frame in the media file */
+		if (av_write_frame(ofcx, &pkt) != 0) {
+		  DEBUG(env, this, "audio_enc_out", "Error while writing audio frame.");
+		}
+
+		if (outbuf != NULL)
+			free(outbuf);
+
+		av_free_packet(&pkt);
+	}
 }
 
