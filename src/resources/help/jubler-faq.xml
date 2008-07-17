@@ -67,7 +67,7 @@
 </section>
 
 <section><title>What is Zemberek and how can I use it?</title>
-    <para>Zemberek is a spell checking library for the Turkish language. You have to download the binary distribution of zemberek <ulink url="http://code.google.com/p/zemberek/">from its website</ulink> first. Version 2.0 was tested with this version of Jubler. Unzip the file, and copy zemberek-cekirdek-2.0.jar and zemberek-tr-2.0.jar under JUBLER_HOME/lib/ directory. Then Jubler should be able to open this library. 
+    <para>Zemberek is a spell checking library for the Turkish language. You have to download the binary distribution of zemberek <ulink url="http://code.google.com/p/zemberek/">from its website</ulink> first. Version 2.1 was tested with this version of Jubler. Unzip the file, and copy zemberek-cekirdek-2.1.jar and zemberek-tr-2.1.jar under JUBLER_HOME/lib/ directory. Then Jubler should be able to open this library. 
     </para>
 </section>
 
