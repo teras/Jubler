@@ -26,14 +26,13 @@ package com.panayotis.jubler.subs;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
-import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.options.AutoSaveOptions;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import java.io.File;
-import java.util.StringTokenizer;
 import javax.swing.JTable;
 
 
@@ -42,13 +41,16 @@ import javax.swing.JTable;
  * @author teras
  */
 public class Subtitles extends AbstractTableModel {
-    private static final String colnames[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
-    private boolean [] visiblecols = {false, true, true, false, false};
-    private int defaultcolwidth[] = {50, 100, 100, 50, 50};
-    private int prefcolwidth[] = new int [visiblecols.length];
+    private static final String COLUMNID = "#FELS";
+    private static final String DEFAULTCOLUMNID = "FE";
+    private static final String COLNAME[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
+    private static final String DEFAULTCOLWIDTH="50,100,100,50,50";
+    
+    private boolean[] visiblecols = AutoSaveOptions.getVisibleColumns(COLUMNID, DEFAULTCOLUMNID);
+    private int prefcolwidth[] = AutoSaveOptions.getColumnWidth(COLUMNID.length(), DEFAULTCOLWIDTH);
     
     
-    private final static int FIRST_EDITABLE_COL = colnames.length;
+    private final static int FIRST_EDITABLE_COL = COLNAME.length;
     
     /** Attributes of these subtiles */
     private SubAttribs attribs;
@@ -63,7 +65,6 @@ public class Subtitles extends AbstractTableModel {
     private SubFile subfile;
     
     public Subtitles() {
-        loadColumnWidth();
         sublist = new Vector<SubEntry>();
         styles = new SubStyleList();
         attribs = new SubAttribs();
@@ -71,7 +72,6 @@ public class Subtitles extends AbstractTableModel {
     }
     
     public Subtitles(Subtitles old) {
-        loadColumnWidth();
         sublist = new Vector<SubEntry>();
         for (int i = 0 ; i < old.size() ; i++ ) {
             sublist.add(new SubEntry(old.elementAt(i)));
@@ -297,7 +297,9 @@ public class Subtitles extends AbstractTableModel {
     /* Methods related to JTable */
     public void setVisibleColumn(int which, boolean how) {
         visiblecols[which]=how;
+        AutoSaveOptions.setVisibleColumns(visiblecols,COLUMNID);
     }
+    
     public boolean isVisibleColumn(int which) {
         return visiblecols[which];
     }
@@ -308,7 +310,7 @@ public class Subtitles extends AbstractTableModel {
             if (visiblecols[i]) vispointer++;
             if (vispointer==col) return i;
         }
-        return colnames.length-1;   // Return last column
+        return COLNAME.length-1;   // Return last column
     }
     
     public void setValueAt(Object value, int row, int col) {
@@ -338,15 +340,14 @@ public class Subtitles extends AbstractTableModel {
     }
     
     public String getColumnName(int index) {
-        return colnames[visibleToReal(index)];
+        return COLNAME[visibleToReal(index)];
     }
     
     public Object getValueAt(int row, int col){
         return sublist.elementAt(row).getData(row, visibleToReal(col));
     }
     
-    public void saveColumnWidth(JTable t) {
-        StringBuffer widths = new StringBuffer();
+    public void updateColumnWidth(JTable t) {
         int ccolumn = 0;
         
         for (int i = 0 ; i < visiblecols.length ; i++) {
@@ -354,26 +355,10 @@ public class Subtitles extends AbstractTableModel {
                 prefcolwidth[i] = t.getColumnModel().getColumn(ccolumn).getWidth();
                 ccolumn++;
             }
-            widths.append(prefcolwidth[i]).append(',');
         }
-        Options.setOption("System.ColumnWidth", widths.substring(0, widths.length()-1));
-        Options.saveOptions();
+        AutoSaveOptions.setColumnWidth(prefcolwidth);
     }
-    
-    private void loadColumnWidth() {
-        for (int i = 0 ; i< defaultcolwidth.length; i++) {
-            prefcolwidth[i] = defaultcolwidth[i];
-        }
-        String widths = Options.getOption("System.ColumnWidth", "");
-        if (widths == null || widths.equals("") || widths.length()<1) return;
-        
-        StringTokenizer st = new StringTokenizer(widths ,",");
-        int pos = 0;
-        while (st.hasMoreTokens() && pos < prefcolwidth.length) {
-            prefcolwidth[pos++] = Integer.parseInt(st.nextToken());
-        }
-    }
-    
+
     public void recalculateTableSize(JTable t) {
         int ccolumn = 0;
 

@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
-import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.options.AutoSaveOptions;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -83,7 +83,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
         AudioPanel.add(wave, BorderLayout.CENTER);
 
-        boolean orientation = Options.getOption("Preview.Orientation", "horizontal").equals("horizontal");
+        boolean orientation = AutoSaveOptions.getPreviewOrientation();
         setOrientation(orientation);
         Orientation.setSelected(!orientation);
     }
@@ -190,8 +190,7 @@ public class JSubPreview extends javax.swing.JPanel {
         }
         parent.setPreviewOrientation(horizontal);
         parent.resetPreviewPanels();
-        Options.setOption("Preview.Orientation", horizontal ? "horizontal" : "vertical");
-        Options.saveOptions();
+        AutoSaveOptions.setPreviewOrientation(horizontal);
     }
 
     public Point getFrameLocation() {

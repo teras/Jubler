@@ -1093,6 +1093,7 @@
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="1"/>
@@ -1226,7 +1227,7 @@
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable () {&#xa;            public void columnMarginChanged(ChangeEvent e)  {&#xa;                super.columnMarginChanged(e);&#xa;                setcolumnchange(true);&#xa;            }&#xa;        };"/>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="        SubTable.setDefaultRenderer(Object.class, TableRenderer);&#xa;        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){&#xa;            public void mousePressed(MouseEvent e) {&#xa;                setcolumnchange(false);&#xa;            }&#xa;            public void mouseReleased(MouseEvent e) {&#xa;                if (getcolumnchange()) subs.saveColumnWidth(SubTable);&#xa;                setcolumnchange(false);&#xa;            }&#xa;        });&#xa;        SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (e.getValueIsAdjusting()) return; //Ignore extra messages&#xa;                ListSelectionModel lsm = (ListSelectionModel)e.getSource();&#xa;                if (!lsm.isSelectionEmpty()) {&#xa;                    displaySubData();&#xa;                }&#xa;            }&#xa;        });&#xa;"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="        SubTable.setDefaultRenderer(Object.class, TableRenderer);&#xa;        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){&#xa;            public void mousePressed(MouseEvent e) {&#xa;                setcolumnchange(false);&#xa;            }&#xa;            public void mouseReleased(MouseEvent e) {&#xa;                if (getcolumnchange()) subs.updateColumnWidth(SubTable);&#xa;                setcolumnchange(false);&#xa;            }&#xa;        });&#xa;        SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (e.getValueIsAdjusting()) return; //Ignore extra messages&#xa;                ListSelectionModel lsm = (ListSelectionModel)e.getSource();&#xa;                if (!lsm.isSelectionEmpty()) {&#xa;                    displaySubData();&#xa;                }&#xa;            }&#xa;        });&#xa;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -1285,7 +1286,7 @@
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveFMActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveTBActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="InfoTB">

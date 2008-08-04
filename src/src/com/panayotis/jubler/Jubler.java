@@ -326,7 +326,6 @@ public class Jubler extends JFrame {
         undo.invalidateSaveMark();
         setFile(new File(fname), true);
         SaveFM.setEnabled(false);
-        SaveTB.setEnabled(false);
         RevertFM.setEnabled(false);
         subeditor.focusOnText();
     }
@@ -618,7 +617,7 @@ public class Jubler extends JFrame {
                 setcolumnchange(false);
             }
             public void mouseReleased(MouseEvent e) {
-                if (getcolumnchange()) subs.saveColumnWidth(SubTable);
+                if (getcolumnchange()) subs.updateColumnWidth(SubTable);
                 setcolumnchange(false);
             }
         });
@@ -1148,7 +1147,7 @@ public class Jubler extends JFrame {
                 Jubler.this.OpenFMActionPerformed(evt);
             }
             else if (evt.getSource() == SaveTB) {
-                Jubler.this.SaveFMActionPerformed(evt);
+                Jubler.this.SaveTBActionPerformed(evt);
             }
             else if (evt.getSource() == InfoTB) {
                 Jubler.this.InfoFMActionPerformed(evt);
@@ -1363,12 +1362,6 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == CurrentTTM) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
             }
-            else if (evt.getSource() == FAQHM) {
-                Jubler.this.FAQHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == AboutHM) {
-                Jubler.this.AboutHMActionPerformed(evt);
-            }
             else if (evt.getSource() == EnablePreviewC) {
                 Jubler.this.EnablePreviewCActionPerformed(evt);
             }
@@ -1386,6 +1379,12 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == PlayAudioC) {
                 Jubler.this.PlayAudioCActionPerformed(evt);
+            }
+            else if (evt.getSource() == FAQHM) {
+                Jubler.this.FAQHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == AboutHM) {
+                Jubler.this.AboutHMActionPerformed(evt);
             }
         }
 
@@ -1639,7 +1638,6 @@ public class Jubler extends JFrame {
             
             tableHasChanged(selected);
         }
-        
     }//GEN-LAST:event_PasteSpecialEMActionPerformed
     
     private void PasteEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteEMActionPerformed
@@ -1941,7 +1939,13 @@ private void MaxWaveCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 private void PlayAudioCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayAudioCActionPerformed
     preview.playbackWave();
 }//GEN-LAST:event_PlayAudioCActionPerformed
-    
+
+private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveTBActionPerformed
+    if (SaveFM.isEnabled())
+        SaveFMActionPerformed(evt);
+    else
+        SaveAsFMActionPerformed(evt);
+}//GEN-LAST:event_SaveTBActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
