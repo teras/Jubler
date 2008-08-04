@@ -28,6 +28,10 @@ import java.util.Vector;
  */
 class GoogleTranslator implements Translator, ActionListener {
 
+    private final static int TIMEOUT_CONNECT = 10000;
+    private final static int TIMEOUT_TRANSFER = 15000;
+
+
     private static Vector<Language> lang;
     private Thread transt;
     private String errorstream;
@@ -110,6 +114,7 @@ class GoogleTranslator implements Translator, ActionListener {
                 for (int i = 0; i < subs.size(); i += STEP) {
                     proc.updateProgress(i);
                     if (transt.isInterrupted()) {
+                        DEBUG.debug(_("Translation interrupted"));
                         break;
                     }
                     errorstream = translatePart(subs, i, Math.min(subs.size(), i + STEP), froml, tol);
@@ -144,14 +149,15 @@ class GoogleTranslator implements Translator, ActionListener {
 
             URL req = new URL("http://translate.google.com/translate_t?sl=" + from_language + "&tl=" + to_language + "&ie=utf-8");
             URLConnection conn = req.openConnection();
-            conn.setConnectTimeout(1000);
-            conn.setReadTimeout(5000);
+            conn.setConnectTimeout(TIMEOUT_CONNECT);
+            conn.setReadTimeout(TIMEOUT_TRANSFER);
             conn.setRequestProperty("User-agent", "Jubler");
 
             conn.setDoOutput(true);
             out = new OutputStreamWriter(conn.getOutputStream());
             out.write("text=" + URLEncoder.encode(txt.toString(), "UTF-8"));
             out.flush();
+            DEBUG.debug("Translation session intialized.");
 
             in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
@@ -200,7 +206,7 @@ class GoogleTranslator implements Translator, ActionListener {
             if (data.startsWith("-- ") && data.endsWith(" --")) {
                 if (idx >= 0) {
                     subtxt = HTMLTextUtils.convertToString(subtxt.substring(0, subtxt.length() - 1));
-                    subs.get(idx).setText(subtxt.substring(0, subtxt.length() - 1));
+                    subs.get(idx).setText(subtxt);
                 }
                 idx = Integer.parseInt(data.substring(3, data.length() - 3));
                 subtxt = "";
