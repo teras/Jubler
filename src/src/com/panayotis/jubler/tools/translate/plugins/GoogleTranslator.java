@@ -17,6 +17,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.StringTokenizer;
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -147,7 +148,7 @@ class GoogleTranslator implements Translator, ActionListener {
                 txt.append(subs.get(i).getText()).append('\n');
             }
 
-            URL req = new URL("http://translate.google.com/translate_t?sl=" + from_language + "&tl=" + to_language + "&ie=utf-8");
+            URL req = new URL("http://translate.google.com/translate_t?sl=" + from_language + "&tl=" + to_language + "&ie=utf-8&oe=utf-8");
             URLConnection conn = req.openConnection();
             conn.setConnectTimeout(TIMEOUT_CONNECT);
             conn.setReadTimeout(TIMEOUT_TRANSFER);
@@ -159,7 +160,7 @@ class GoogleTranslator implements Translator, ActionListener {
             out.flush();
             DEBUG.debug("Translation session intialized.");
 
-            in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), Charset.forName("UTF-8")));
 
             String line;
             int from, to;
