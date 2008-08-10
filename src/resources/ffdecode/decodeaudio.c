@@ -292,19 +292,21 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
     /* close each codec */
     if (codec_enc_is_open >= 0) avcodec_close(audio_st->codec);
 
-    /* free the streams */
-    for(i = 0; i < ofcx->nb_streams; i++) {
-        av_freep(&ofcx->streams[i]->codec);
-        av_freep(&ofcx->streams[i]);
-    }
+	if (ofcx!=NULL) {
+    	/* free the streams */
+    	for(i = 0; i < ofcx->nb_streams; i++) {
+        	av_freep(&ofcx->streams[i]->codec);
+        	av_freep(&ofcx->streams[i]);
+    	}
 
-    /* close the output file */
-    if (!(fmt->flags & AVFMT_NOFILE) && ofcx->pb != NULL) {
-        url_fclose(ofcx->pb);
-    }
-
-    /* free the stream */
-    if(ofcx != NULL) av_free(ofcx);
+    	/* close the output file */
+    	if (!(fmt->flags & AVFMT_NOFILE) && ofcx->pb != NULL) {
+        	url_fclose(ofcx->pb);
+    	}
+		
+    	/* free the stream */
+		av_free(ofcx);
+	}
 
     if(codec_is_open >= 0) avcodec_close(ccx);
     if(outbuf != NULL)     free(outbuf);
