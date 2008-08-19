@@ -48,6 +48,7 @@ import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSingleSelection;
 import com.panayotis.jubler.tools.JDelSelection;
@@ -72,8 +73,10 @@ import com.panayotis.jubler.undo.UndoList;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -88,6 +91,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
@@ -2517,21 +2521,25 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
                 changeSubtitleStyle(((JMenuItem)evt.getSource()).getText());
             }
         };
-        constructStyleMenu(StyleP, listener);
-        constructStyleMenu(StyleEM, listener);
+        constructStyleMenu(StyleP, listener, false);
+        constructStyleMenu(StyleEM, listener, true);
         StyleEM.add(StyleSepSEM);
         StyleEM.add(bySelectionSEM);
     }
     
-    private void constructStyleMenu(JMenu menu, ActionListener listener) {
+    private void constructStyleMenu(JMenu menu, ActionListener listener, boolean add_shortkey) {
         if ( subs.getStyleList().size() < 2 ) {
             menu.setEnabled(false);
             return;
         }
         menu.setEnabled(true);
         menu.removeAll();
-        for (SubStyle style : subs.getStyleList()) {
-            JMenuItem item = new JMenuItem(style.toString());
+        SubStyleList list = subs.getStyleList();
+        for (int i = 0 ; i < list.size() ; i++ ) {
+            JMenuItem item = new JMenuItem(list.getNameAt(i));
+            if ( i <= 9 && add_shortkey ) {
+                item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0+i, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()|java.awt.event.InputEvent.ALT_MASK));
+            }
             menu.add(item);
             item.addActionListener(listener);
         }
