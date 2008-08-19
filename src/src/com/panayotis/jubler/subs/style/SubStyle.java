@@ -25,7 +25,6 @@ package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
-import static com.panayotis.jubler.subs.style.StyleType.*;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.TreeSet;
@@ -36,7 +35,7 @@ import java.util.regex.Pattern;
  *
  * @author teras
  */
-public class SubStyle {
+public class SubStyle implements Comparable {
     
     
     public static enum Direction {TOP, TOPRIGHT, RIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT, LEFT, TOPLEFT, CENTER};
@@ -222,5 +221,9 @@ public class SubStyle {
             }
             return newname;
         }
+    }
+
+    public int compareTo(Object o) {
+        return Name.compareTo( ((SubStyle)o).Name );
     }
 }

@@ -23,10 +23,8 @@
 
 package com.panayotis.jubler.subs.style;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.SubEntry;
-import java.util.Properties;
 
 import java.util.Vector;
 

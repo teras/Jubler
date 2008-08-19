@@ -41,6 +41,7 @@ import javax.swing.text.StyleConstants;
 import com.panayotis.jubler.subs.style.gui.JAlphaColorDialog;
 import com.panayotis.jubler.subs.style.gui.JDirection;
 import com.panayotis.jubler.subs.style.gui.tri.TriColorButton;
+import java.util.Collections;
 import javax.swing.JButton;
 
 /**
@@ -122,6 +123,12 @@ public class JStyleEditor extends javax.swing.JDialog {
     
     public void setVisible(SubStyle style) {
         if (style==null) {
+            SubStyleList list = parent.getSubtitles().getStyleList();
+            SubStyle def_value = list.elementAt(0);
+            list.remove(0);
+            Collections.sort(list);
+            list.add(0, def_value);
+
             getOtherValues();
             setVisible(false);
             return;
