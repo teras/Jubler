@@ -561,7 +561,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel ToolPanel;
     public javax.swing.JToggleButton VideoShow;
     public javax.swing.JToggleButton VideoZoom;
-    private javax.swing.JSlider ZoomS;
+    javax.swing.JSlider ZoomS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

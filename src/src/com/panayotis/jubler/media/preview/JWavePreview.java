@@ -35,6 +35,8 @@ import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -86,7 +88,12 @@ public class JWavePreview extends JPanel implements DecoderListener {
                 timeline.mouseStopsDragging(e);
             }
         });
-        
+
+        addMouseWheelListener(new MouseWheelListener() {
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                timeline.mouseWheelUpdates(e);
+            }
+        });
     }
     
     

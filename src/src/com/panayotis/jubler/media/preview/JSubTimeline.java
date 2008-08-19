@@ -28,6 +28,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.undo.UndoEntry;
+import java.awt.event.MouseWheelEvent;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -37,7 +38,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import javax.swing.JSlider;
 
 /**
  *
@@ -136,6 +139,11 @@ public class JSubTimeline extends JPanel {
                 mouseStopsDragging(e);
             }
         });
+        addMouseWheelListener(new MouseWheelListener() {
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                mouseWheelUpdates(e);
+            }
+        });
     }
     
     public void setAction(int action) { current_action = action; }
@@ -154,6 +162,11 @@ public class JSubTimeline extends JPanel {
     public void mouseUpdateCursor(MouseEvent e) {
         X_position = e.getX();
         findAction();
+    }
+
+    void mouseWheelUpdates(MouseWheelEvent e) {
+        JSlider slider = parent.getSubPreview().ZoomS;
+        slider.setValue(slider.getValue() + e.getWheelRotation());
     }
     
     
