@@ -4,7 +4,7 @@ msgid	""
 msgstr	"Project-Id-Version: cs\n"
 	"Report-Msgid-Bugs-To: \n"
 	"POT-Creation-Date: 2008-08-20 09:24+0300\n"
-	"PO-Revision-Date: 2007-11-18 17:19+0200\n"
+	"PO-Revision-Date: 2008-08-20 20:00+0100\n"
 	"Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
 	"Language-Team:  <el@li.org>\n"
 	"MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr	"Zobrazit sloupce"
 
 #: com/panayotis/jubler/Jubler.java:552
 msgid	"Index"
-msgstr	""
+msgstr	"Index"
 
 #: com/panayotis/jubler/Jubler.java:557
 #: com/panayotis/jubler/subs/JSubEditor.java:372
@@ -140,7 +140,7 @@ msgstr	"Testovat titulky od aktuální pozice"
 
 #: com/panayotis/jubler/Jubler.java:730
 msgid	"Enable/disable preview"
-msgstr	""
+msgstr	"Povolit/zakázat náhled"
 
 #: com/panayotis/jubler/Jubler.java:740
 msgid	"&File"
@@ -270,11 +270,11 @@ msgstr	"Další záznam"
 
 #: com/panayotis/jubler/Jubler.java:913
 msgid	"Previous page"
-msgstr	""
+msgstr	"Předchozí stránka"
 
 #: com/panayotis/jubler/Jubler.java:920
 msgid	"Next page"
-msgstr	""
+msgstr	"Další stránka"
 
 #: com/panayotis/jubler/Jubler.java:927
 msgid	"First entry"
@@ -332,7 +332,7 @@ msgstr	"Kontrola pravopisu"
 
 #: com/panayotis/jubler/Jubler.java:1059
 msgid	"Translate"
-msgstr	""
+msgstr	"Přeložit"
 
 #: com/panayotis/jubler/Jubler.java:1068
 msgid	"From the beginning"
@@ -348,24 +348,24 @@ msgstr	"Náhled"
 
 #: com/panayotis/jubler/Jubler.java:1084
 msgid	"Enable preview"
-msgstr	""
+msgstr	"Povilit náhled"
 
 #: com/panayotis/jubler/Jubler.java:1091
 msgid	"Video frame"
-msgstr	""
+msgstr	"Video snímek"
 
 #: com/panayotis/jubler/Jubler.java:1096
 msgid	"Half size image"
-msgstr	""
+msgstr	"Obraz poloviční velikosti"
 
 #: com/panayotis/jubler/Jubler.java:1103
 msgid	"Audio waveform"
-msgstr	""
+msgstr	"Audio waveform"
 
 #: com/panayotis/jubler/Jubler.java:1108
 #: com/panayotis/jubler/media/preview/JSubPreview.java:397
 msgid	"Maximize waveform visualization"
-msgstr	""
+msgstr	"Maximalizovat waveform vizualizaci"
 
 #: com/panayotis/jubler/Jubler.java:1113
 #: com/panayotis/jubler/media/preview/JSubPreview.java:408
@@ -397,7 +397,7 @@ msgstr	"Cyklická závislost, když nastavuji nového rodiče.\n"
 
 #: com/panayotis/jubler/Jubler.java:1453
 msgid	"Reparent error"
-msgstr	""
+msgstr	"Chyba zrodičování"
 
 #: com/panayotis/jubler/Jubler.java:1464
 msgid	"Sort"
@@ -548,7 +548,7 @@ msgstr	"Jít na předchozí stránku"
 
 #: com/panayotis/jubler/information/JAbout.java:37
 msgid	"Debug window"
-msgstr	""
+msgstr	"Debug okno"
 
 #: com/panayotis/jubler/information/JAbout.java:55
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:47
@@ -638,7 +638,7 @@ msgstr	"Licence"
 
 #: com/panayotis/jubler/information/JInformation.java:138
 msgid	"Project Properties"
-msgstr	""
+msgstr	"Vlastnosti projektu"
 
 #: com/panayotis/jubler/information/JInformation.java:150
 msgid	"Comments"
@@ -678,39 +678,39 @@ msgstr	"Soubory s titulky"
 
 #: com/panayotis/jubler/information/JInformation.java:206
 msgid	"The file of this subtitle"
-msgstr	""
+msgstr	"Soubor těchto titulků"
 
 #: com/panayotis/jubler/information/JInformation.java:213
 msgid	"Media"
-msgstr	""
+msgstr	"Media"
 
 #: com/panayotis/jubler/information/JInformation.java:222
 msgid	"Number of subtitles"
-msgstr	""
+msgstr	"Počet titulků"
 
 #: com/panayotis/jubler/information/JInformation.java:226
 msgid	"Total subtitle characters"
-msgstr	""
+msgstr	"Celkový počet znaků"
 
 #: com/panayotis/jubler/information/JInformation.java:230
 msgid	"Total subtitle lines"
-msgstr	""
+msgstr	"Celkový počet řádků"
 
 #: com/panayotis/jubler/information/JInformation.java:234
 msgid	"Maximum subtitle length"
-msgstr	""
+msgstr	"Největší délka titulku"
 
 #: com/panayotis/jubler/information/JInformation.java:238
 msgid	"Maximum subtitle lines"
-msgstr	""
+msgstr	"Největší počet řádků titulku"
 
 #: com/panayotis/jubler/information/JInformation.java:242
 msgid	"Maximum subtitle characters per line"
-msgstr	""
+msgstr	"Největší počet znaků titulku na řádek"
 
 #: com/panayotis/jubler/information/JInformation.java:252
 msgid	"Inform user on exceeding subtitle length"
-msgstr	""
+msgstr	"Informovat uživatele o překročení délky titulku"
 
 #: com/panayotis/jubler/information/JInformation.java:265
 #: com/panayotis/jubler/tools/JMarker.java:81
@@ -719,15 +719,15 @@ msgstr	"Použitá barva"
 
 #: com/panayotis/jubler/information/JInformation.java:278
 msgid	"Maximum number of characters per line"
-msgstr	""
+msgstr	"Maximální počet znaků na řádek"
 
 #: com/panayotis/jubler/information/JInformation.java:287
 msgid	"The maximum number of characters per line which are permitted"
-msgstr	""
+msgstr	"Maximální počet znaků, který má být povolen (na řádek)"
 
 #: com/panayotis/jubler/information/JInformation.java:297
 msgid	"Statistics"
-msgstr	""
+msgstr	"Statistika"
 
 #: com/panayotis/jubler/information/JInformation.java:306
 #: com/panayotis/jubler/os/JIDialog.java:38
@@ -837,7 +837,7 @@ msgstr	"Soubor neexistuje.\n"
 
 #: com/panayotis/jubler/media/VideoFile.java:113
 msgid	"Could not retrieve actual video properties. Using defaults."
-msgstr	""
+msgstr	"Nemohu získat aktuální vlastnosti videa. Používám výchozí."
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:132
 msgid	"Map of subtitles"
@@ -845,11 +845,11 @@ msgstr	"Mapa titulků"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:174
 msgid	"Abnormal player exit"
-msgstr	""
+msgstr	"Abnormální ukončení přehrávače"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:174
 msgid	"Movie Player Error"
-msgstr	""
+msgstr	"Chyba video přehrávače"
 
 #: com/panayotis/jubler/media/console/JVideoConsole.java:384
 msgid	"Video Console"
@@ -966,7 +966,7 @@ msgstr	"Nemohu vytvořit dočasný soubor k uchování titulků"
 
 #: com/panayotis/jubler/media/player/AbstractPlayer.java:70
 msgid	"Media Player Error"
-msgstr	""
+msgstr	"Chyba Media Playeru"
 
 #: com/panayotis/jubler/media/preview/JAudioLoader.java:73
 #: com/panayotis/jubler/options/JPreferences.java:159
@@ -981,7 +981,7 @@ msgstr	"Storno"
 
 #: com/panayotis/jubler/media/preview/JFramePreview.java:54
 msgid	"FFDecode library not active. Using demo image."
-msgstr	""
+msgstr	"Knihovna FFDecode není aktivní. Používám vzorový obrázek."
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:153
 msgid	"Selected subtitles"
@@ -1001,7 +1001,7 @@ msgstr	"Zoom in"
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:343
 msgid	"Change orientation of Preview panel"
-msgstr	""
+msgstr	"Změna orientace panelu Náhled"
 
 #: com/panayotis/jubler/media/preview/JSubPreview.java:359
 msgid	"Enable/disable video frame preview"
@@ -1066,7 +1066,7 @@ msgstr	"Dekodér není aktivní. Ruším vytváření audio cache."
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:55
 msgid	"Caching still in progress"
-msgstr	""
+msgstr	"Cachování stále probíhá"
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:55
 msgid	"Still creating cache. Use the Cancel button to abort."
@@ -1074,11 +1074,11 @@ msgstr	"Stále vytvářím cache. Pro přerušení použijte Storno"
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:59
 msgid	"Unable to create cache to unknown audio file"
-msgstr	""
+msgstr	"Nemohu vytvořit cache do neznámého audio souboru"
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:63
 msgid	"Unable to create unset cache file"
-msgstr	""
+msgstr	"Nemohu vytvořit nenastavený cache soubor"
 
 #: com/panayotis/jubler/media/preview/decoders/NativeDecoder.java:67
 #, java-format
@@ -1144,133 +1144,133 @@ msgstr	"Možnosti souboru"
 
 #: com/panayotis/jubler/options/JFileOptions.java:242
 msgid	"Unicode"
-msgstr	""
+msgstr	"Unicode"
 
 #: com/panayotis/jubler/options/JFileOptions.java:259
 msgid	"West European"
-msgstr	""
+msgstr	"Západoevropské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:261
 msgid	"Western"
-msgstr	""
+msgstr	"Západní"
 
 #: com/panayotis/jubler/options/JFileOptions.java:285
 msgid	"Celtic"
-msgstr	""
+msgstr	"Keltské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:309
 msgid	"Icelandic"
-msgstr	""
+msgstr	"Islandské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:317
 msgid	"Nordic"
-msgstr	""
+msgstr	"Skandinávské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:325
 msgid	"South European"
-msgstr	""
+msgstr	"Jihoevropské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:335
 msgid	"East European"
-msgstr	""
+msgstr	"Východoevropské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:337
 msgid	"Baltic"
-msgstr	""
+msgstr	"Baltské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:353
 msgid	"Central European"
-msgstr	""
+msgstr	"Středoevropské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:373
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:46
 msgid	"Croatian"
-msgstr	""
+msgstr	"Chorvatské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:381
 msgid	"Cyrillic"
-msgstr	""
+msgstr	"Azbuka"
 
 #: com/panayotis/jubler/options/JFileOptions.java:413
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:62
 msgid	"Romanian"
-msgstr	""
+msgstr	"Rumunské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:427
 msgid	"East Asian"
-msgstr	""
+msgstr	"Východní Asie"
 
 #: com/panayotis/jubler/options/JFileOptions.java:429
 msgid	"Chinese Simplified"
-msgstr	""
+msgstr	"Čínština zjednodušená"
 
 #: com/panayotis/jubler/options/JFileOptions.java:453
 msgid	"Chinese Traditional"
-msgstr	""
+msgstr	"Čínština tradiční"
 
 #: com/panayotis/jubler/options/JFileOptions.java:469
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:57
 msgid	"Japanese"
-msgstr	""
+msgstr	"Japonština"
 
 #: com/panayotis/jubler/options/JFileOptions.java:485
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:58
 msgid	"Korean"
-msgstr	""
+msgstr	"Korejština"
 
 #: com/panayotis/jubler/options/JFileOptions.java:507
 msgid	"SE and SW Asian"
-msgstr	""
+msgstr	"JV a JZ Asie"
 
 #: com/panayotis/jubler/options/JFileOptions.java:509
 msgid	"Armenian"
-msgstr	""
+msgstr	"Arménština"
 
 #: com/panayotis/jubler/options/JFileOptions.java:517
 msgid	"Georgian"
-msgstr	""
+msgstr	"Gruzínské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:525
 msgid	"Thai"
-msgstr	""
+msgstr	"Thajština"
 
 #: com/panayotis/jubler/options/JFileOptions.java:561
 msgid	"Vietnamese"
-msgstr	""
+msgstr	"Vietnamské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:581
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:55
 msgid	"Hindi"
-msgstr	""
+msgstr	"Hindština"
 
 #: com/panayotis/jubler/options/JFileOptions.java:589
 msgid	"Gujarati"
-msgstr	""
+msgstr	"Gujarati"
 
 #: com/panayotis/jubler/options/JFileOptions.java:597
 msgid	"Gurmukhi"
-msgstr	""
+msgstr	"Gurmukhi"
 
 #: com/panayotis/jubler/options/JFileOptions.java:607
 msgid	"Middle Eastern"
-msgstr	""
+msgstr	"Střední východ"
 
 #: com/panayotis/jubler/options/JFileOptions.java:609
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:43
 msgid	"Arabic"
-msgstr	""
+msgstr	"Arabské"
 
 #: com/panayotis/jubler/options/JFileOptions.java:629
 msgid	"Farsi"
-msgstr	""
+msgstr	"Perština"
 
 #: com/panayotis/jubler/options/JFileOptions.java:637
 msgid	"Hebrew"
-msgstr	""
+msgstr	"Hebrejština"
 
 #: com/panayotis/jubler/options/JFileOptions.java:665
 msgid	"Use predefined encodings..."
-msgstr	""
+msgstr	"Použít předdefinovaná kódování..."
 
 #: com/panayotis/jubler/options/JLoadOptions.java:56
 msgid	" Show load preferences while loading file"
@@ -1360,17 +1360,17 @@ msgstr	"Nastavit na výchozí"
 #: com/panayotis/jubler/options/Options.java:67
 #, java-format
 msgid	"Unable to move configuration file to {0}"
-msgstr	""
+msgstr	"Nemohu přesunout konfigurační soubor do {0}"
 
 #: com/panayotis/jubler/options/Options.java:69
 #, java-format
 msgid	"Configuration file moved to {0}"
-msgstr	""
+msgstr	"Konfigurační soubor byl přesunut do {0}"
 
 #: com/panayotis/jubler/options/Options.java:84
 #, java-format
 msgid	"Updated configuration file. Old configuration moved to {0}"
-msgstr	""
+msgstr	"Konfigurační soubor byl aktualizován. Starý soubor byl přesunut do {0}"
 
 #: com/panayotis/jubler/options/ShortcutsModel.java:48
 msgid	"Command"
@@ -1390,7 +1390,7 @@ msgstr	"Snímků za sekundu"
 
 #: com/panayotis/jubler/options/gui/JRateChooser.java:128
 msgid	"Wrong FPS"
-msgstr	""
+msgstr	"Špatné FPS"
 
 #: com/panayotis/jubler/options/gui/JUnsaved.java:58
 msgid	"The following files are unsaved:"
@@ -1440,7 +1440,7 @@ msgstr	"Nemohu najít webový prohlížeč"
 
 #: com/panayotis/jubler/os/SystemDependent.java:182
 msgid	"Error while opening URL"
-msgstr	""
+msgstr	"Chyba při otevírání URL"
 
 #: com/panayotis/jubler/os/TreeWalker.java:49
 #, java-format
@@ -1505,7 +1505,7 @@ msgstr	"Zobrazit/skrýt atributy barvy"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:529
 msgid	"Display/hide metric attributes"
-msgstr	""
+msgstr	"Zobrazit/skrýt atributy rozměru"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:544
 msgid	"Delete styles of this subtitle"
@@ -1541,7 +1541,7 @@ msgstr	"Chyba!"
 
 #: com/panayotis/jubler/subs/Subtitles.java:46
 msgid	"#"
-msgstr	""
+msgstr	"#"
 
 #: com/panayotis/jubler/subs/Subtitles.java:46
 msgid	"Subtitle"
@@ -1574,7 +1574,7 @@ msgstr	"Maestro DVD volby"
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:121
 #, java-format
 msgid	"Saving {0}"
-msgstr	""
+msgstr	"Ukládám {0}"
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:170
 #, java-format
@@ -1599,7 +1599,7 @@ msgstr	"Čistý text"
 
 #: com/panayotis/jubler/subs/loader/text/Quicktime.java:71
 msgid	"Quicktime Texttrack"
-msgstr	""
+msgstr	"Quicktime Texttrack"
 
 #: com/panayotis/jubler/subs/loader/text/SubViewer2.java:57
 msgid	"SubViewer V2"
@@ -1804,18 +1804,18 @@ msgstr	"Vítejte ve světě (Jubler)"
 #: com/panayotis/jubler/subs/style/StyleType.java:105
 #, java-format
 msgid	"Error while parsing integral number {0}"
-msgstr	""
+msgstr	"Chyba při parsování integrálního čísla {0}"
 
 #: com/panayotis/jubler/subs/style/StyleType.java:90
 #: com/panayotis/jubler/subs/style/StyleType.java:111
 #, java-format
 msgid	"Error while parsing real number {0}"
-msgstr	""
+msgstr	"Chyba při parsování reálného čísla {0}"
 
 #: com/panayotis/jubler/subs/style/SubStyle.java:148
 #, java-format
 msgid	"Null value found while setting Style {0} - ignoring."
-msgstr	""
+msgstr	"Nalezena prázdná hodnota při nastavování Stylu {0} - ignoruji."
 
 #: com/panayotis/jubler/subs/style/gui/JAlphaColorDialog.java:93
 msgid	"Color Chooser"
@@ -1927,7 +1927,7 @@ msgstr	"Pokrok ukládání"
 
 #: com/panayotis/jubler/time/gui/JTimeArea.java:126
 msgid	"Change affected subtitles' color"
-msgstr	""
+msgstr	"Změnit barvu ovlivněných titulků"
 
 #: com/panayotis/jubler/time/gui/JTimeFullSelection.java:159
 msgid	"Select subtitles to work on"
@@ -1975,15 +1975,15 @@ msgstr	"Vybere titulky v závislosti na specifikované oblasti"
 
 #: com/panayotis/jubler/time/gui/JTimeSelector.java:40
 msgid	"Begin"
-msgstr	""
+msgstr	"Začátek"
 
 #: com/panayotis/jubler/time/gui/JTimeSelector.java:41
 msgid	"Set time to start of selected subtitles"
-msgstr	""
+msgstr	"Nastavit čas na začátek vybraných titulků"
 
 #: com/panayotis/jubler/time/gui/JTimeSelector.java:42
 msgid	"Set time to minimum"
-msgstr	""
+msgstr	"Nastavit čas na minimum"
 
 #: com/panayotis/jubler/time/gui/JTimeSelector.java:44
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:297
@@ -1993,15 +1993,15 @@ msgstr	"Dokončit"
 
 #: com/panayotis/jubler/time/gui/JTimeSelector.java:45
 msgid	"Set time to end of selected subtitles"
-msgstr	""
+msgstr	"Nastavit čas na konec vybraných titulků"
 
 #: com/panayotis/jubler/time/gui/JTimeSelector.java:46
 msgid	"Set time to maximum"
-msgstr	""
+msgstr	"Nastavit čas na maximum"
 
 #: com/panayotis/jubler/time/gui/JTimeSelector.java:117
 msgid	"Use predifined time positions"
-msgstr	""
+msgstr	"Nastavit předdefinované pozice času"
 
 #: com/panayotis/jubler/tools/JDelSelection.java:47
 msgid	"Delete selection"
@@ -2229,11 +2229,11 @@ msgstr	"Použije následující čas (včetně), aby vytvořil nové rozdělené
 
 #: com/panayotis/jubler/tools/JSubSplit.java:85
 msgid	"Split at given subtitle line (in percent)"
-msgstr	""
+msgstr	"Rozdělit podle procentuální délky titulku"
 
 #: com/panayotis/jubler/tools/JSubSplit.java:93
 msgid	"Percentage of subtitles to divide"
-msgstr	""
+msgstr	"Procento titlků, které má být odděleno"
 
 #: com/panayotis/jubler/tools/JSynchronize.java:65
 msgid	"-current-"
@@ -2275,31 +2275,31 @@ msgstr	"Zkopíruje text z vybraných titulků do aktuálního souboru"
 
 #: com/panayotis/jubler/tools/JTranslate.java:62
 msgid	"Translate text"
-msgstr	""
+msgstr	"Přeložit text"
 
 #: com/panayotis/jubler/tools/JTranslate.java:100
 msgid	"Translator"
-msgstr	""
+msgstr	"Překladač"
 
 #: com/panayotis/jubler/tools/JTranslate.java:103
 msgid	"Selection of translation machine"
-msgstr	""
+msgstr	"Výběr překládacího stroje"
 
 #: com/panayotis/jubler/tools/JTranslate.java:112
 msgid	"From"
-msgstr	""
+msgstr	"Z"
 
 #: com/panayotis/jubler/tools/JTranslate.java:115
 msgid	"Original language"
-msgstr	""
+msgstr	"Původní jazyk"
 
 #: com/panayotis/jubler/tools/JTranslate.java:122
 msgid	"To"
-msgstr	""
+msgstr	"Do"
 
 #: com/panayotis/jubler/tools/JTranslate.java:125
 msgid	"Target language"
-msgstr	""
+msgstr	"Cílový jazyk"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:102
 msgid	"External plugin Wizard"
@@ -2355,7 +2355,7 @@ msgstr	"Neplatný spustitelný soubor!"
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:215
 #, java-format
 msgid	"{0} executable has been resolved"
-msgstr	"Spustitelný soubor {0} byl rozlišen"
+msgstr	"Spustitelný soubor {0} byl rozpoznán"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:238
 msgid	"Continue"
@@ -2533,73 +2533,73 @@ msgstr	"Pravopis"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:44
 msgid	"Bulgarian"
-msgstr	""
+msgstr	"Bulharština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:45
 msgid	"Chinese"
-msgstr	""
+msgstr	"Čínština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:48
 msgid	"Danish"
-msgstr	""
+msgstr	"Dánština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:49
 msgid	"Dutch"
-msgstr	""
+msgstr	"Holandština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:50
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:88
 msgid	"English"
-msgstr	""
+msgstr	"Angličtina"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:51
 msgid	"Finnish"
-msgstr	""
+msgstr	"Finština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:56
 msgid	"Italian"
-msgstr	""
+msgstr	"Italština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:59
 msgid	"Norwegian"
-msgstr	""
+msgstr	"Norština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:60
 msgid	"Polish"
-msgstr	""
+msgstr	"Polština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:61
 msgid	"Portuguese"
-msgstr	""
+msgstr	"Portugalština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:63
 msgid	"Russian"
-msgstr	""
+msgstr	"Ruština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:65
 msgid	"Swedish"
-msgstr	""
+msgstr	"Švédština"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:72
 msgid	"Google translate"
-msgstr	""
+msgstr	"Google překladač"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:108
 #, java-format
 msgid	"Translating to {0}"
-msgstr	""
+msgstr	"Překládám do {0}"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:118
 msgid	"Translation interrupted"
-msgstr	""
+msgstr	"Překlad byl přerušen"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:123
 msgid	"Error while translating subtitles"
-msgstr	""
+msgstr	"Chyba při překládání titulků"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:123
 msgid	"Translating failed with error:"
-msgstr	""
+msgstr	"Překládání selhalo s chybou:"
 
 #~ msgid	"The beginning of the region is the given time"
 #~ msgstr	"Začátek oblasti je určený čas"
