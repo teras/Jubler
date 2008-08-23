@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Christian Weiske <cweiske@cweiske.de>, 2005.
+# Christian Weiske <cweiske@cweiske.de>, 2005-2008.
 #
 msgid	""
 msgstr	"Project-Id-Version: Jubler 3.4.0\n"
 	"Report-Msgid-Bugs-To: \n"
 	"POT-Creation-Date: 2008-08-20 09:24+0300\n"
-	"PO-Revision-Date: 2007-11-18 17:03+0200\n"
+	"PO-Revision-Date: 2008-08-23 17:03+0200\n"
 	"Last-Translator: Christian Weiske <cweiske@cweiske.de>\n"
 	"Language-Team: German <cweiske@cweiske.de>\n"
 	"MIME-Version: 1.0\n"
@@ -120,7 +120,7 @@ msgstr	"Speichern"
 
 #: com/panayotis/jubler/Jubler.java:664
 msgid	"Project Information"
-msgstr	"Information"
+msgstr	"Projektinformation"
 
 #: com/panayotis/jubler/Jubler.java:697 com/panayotis/jubler/Jubler.java:991
 #: com/panayotis/jubler/Jubler.java:2097
@@ -272,11 +272,11 @@ msgstr	"Nächster Eintrag"
 
 #: com/panayotis/jubler/Jubler.java:913
 msgid	"Previous page"
-msgstr	""
+msgstr	"Vorherige Seite"
 
 #: com/panayotis/jubler/Jubler.java:920
 msgid	"Next page"
-msgstr	""
+msgstr	"Nächste Seite"
 
 #: com/panayotis/jubler/Jubler.java:927
 msgid	"First entry"
@@ -334,7 +334,7 @@ msgstr	"Rechtschreibprüfung"
 
 #: com/panayotis/jubler/Jubler.java:1059
 msgid	"Translate"
-msgstr	""
+msgstr	"Übersetzen"
 
 #: com/panayotis/jubler/Jubler.java:1068
 msgid	"From the beginning"
@@ -350,19 +350,19 @@ msgstr	"Vorschau"
 
 #: com/panayotis/jubler/Jubler.java:1084
 msgid	"Enable preview"
-msgstr	""
+msgstr	"Vorschau aktivieren"
 
 #: com/panayotis/jubler/Jubler.java:1091
 msgid	"Video frame"
-msgstr	""
+msgstr	"Videoframe"
 
 #: com/panayotis/jubler/Jubler.java:1096
 msgid	"Half size image"
-msgstr	""
+msgstr	"Halbe Größe"
 
 #: com/panayotis/jubler/Jubler.java:1103
 msgid	"Audio waveform"
-msgstr	""
+msgstr	"Audiowellen"
 
 #: com/panayotis/jubler/Jubler.java:1108
 #: com/panayotis/jubler/media/preview/JSubPreview.java:397
@@ -1581,7 +1581,7 @@ msgstr	"Maestro DVD-Einstellungen"
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:121
 #, java-format
 msgid	"Saving {0}"
-msgstr	""
+msgstr	"Speichere {0}"
 
 #: com/panayotis/jubler/subs/loader/binary/DVDMaestro.java:170
 #, java-format
@@ -2287,31 +2287,31 @@ msgstr	"Kopiere Text einer anderen Untertiteldatei in diese"
 
 #: com/panayotis/jubler/tools/JTranslate.java:62
 msgid	"Translate text"
-msgstr	""
+msgstr	"Übersetze Text"
 
 #: com/panayotis/jubler/tools/JTranslate.java:100
 msgid	"Translator"
-msgstr	""
+msgstr	"Übersetzer"
 
 #: com/panayotis/jubler/tools/JTranslate.java:103
 msgid	"Selection of translation machine"
-msgstr	""
+msgstr	"Auswahl der Übersetzungsmaschine"
 
 #: com/panayotis/jubler/tools/JTranslate.java:112
 msgid	"From"
-msgstr	""
+msgstr	"Von"
 
 #: com/panayotis/jubler/tools/JTranslate.java:115
 msgid	"Original language"
-msgstr	""
+msgstr	"Originalsprache"
 
 #: com/panayotis/jubler/tools/JTranslate.java:122
 msgid	"To"
-msgstr	""
+msgstr	"Nach"
 
 #: com/panayotis/jubler/tools/JTranslate.java:125
 msgid	"Target language"
-msgstr	""
+msgstr	"Zielsprache"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:102
 msgid	"External plugin Wizard"
@@ -2545,73 +2545,73 @@ msgstr	"Prüfprogramm"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:44
 msgid	"Bulgarian"
-msgstr	""
+msgstr	"Bulgarisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:45
 msgid	"Chinese"
-msgstr	""
+msgstr	"Chinesisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:48
 msgid	"Danish"
-msgstr	""
+msgstr	"Dänisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:49
 msgid	"Dutch"
-msgstr	""
+msgstr	"Holländisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:50
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:88
 msgid	"English"
-msgstr	""
+msgstr	"Englisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:51
 msgid	"Finnish"
-msgstr	""
+msgstr	"Finnisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:56
 msgid	"Italian"
-msgstr	""
+msgstr	"Italienisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:59
 msgid	"Norwegian"
-msgstr	""
+msgstr	"Norwegisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:60
 msgid	"Polish"
-msgstr	""
+msgstr	"Polnisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:61
 msgid	"Portuguese"
-msgstr	""
+msgstr	"Portugiesisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:63
 msgid	"Russian"
-msgstr	""
+msgstr	"Russisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:65
 msgid	"Swedish"
-msgstr	""
+msgstr	"Schwedisch"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:72
 msgid	"Google translate"
-msgstr	""
+msgstr	"Google-Übersetzung"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:108
 #, java-format
 msgid	"Translating to {0}"
-msgstr	""
+msgstr	"Übersetze nach {0}"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:118
 msgid	"Translation interrupted"
-msgstr	""
+msgstr	"Übersetzung unterbrochen"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:123
 msgid	"Error while translating subtitles"
-msgstr	""
+msgstr	"Fehler beim Übersetzen der Untertitel"
 
 #: com/panayotis/jubler/tools/translate/plugins/GoogleTranslator.java:123
 msgid	"Translating failed with error:"
-msgstr	""
+msgstr	"Übersetzung schlug mit folgendem Fehler fehl:"
 
 #~ msgid	"The beginning of the region is the selected time"
 #~ msgstr	"Bereichsbeginn ist die gewählte Zeit"
