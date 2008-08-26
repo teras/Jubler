@@ -121,6 +121,7 @@ public class JStyleEditor extends javax.swing.JDialog {
     }
     
     
+    @SuppressWarnings ("unchecked")
     public void setVisible(SubStyle style) {
         if (style==null) {
             SubStyleList list = parent.getSubtitles().getStyleList();
