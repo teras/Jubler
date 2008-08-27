@@ -110,7 +110,10 @@ public class FileCommunicator {
     
     public static String load(File infile, JPreferences prefs) {
         String res;
-        String []encs = prefs.getLoadEncodings();
+        String []encs = {"UTF-8"};
+        
+        if (prefs!=null)
+            encs = prefs.getLoadEncodings();
         
         for (int i = 0 ; i < encs.length ; i++ ) {
             res = loadFromFile(infile, encs[i]);

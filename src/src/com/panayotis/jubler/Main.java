@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler;
+import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Dimension;
@@ -48,15 +49,20 @@ public class Main {
         /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
         ExceptionHandler eh = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(eh);
-
+        
         splash = new MainSplash("/icons/splash.jpg");
         SystemDependent.setLookAndFeel();
-                
+              
+        /* Remember how many autosaves we have, so that to start autosave deamon afterwards */
+        File[] autosavelist = AutoSaver.getAutoSaveList();
+        final int autosaves = autosavelist.length;
+
         /* Load all startup files in a separate process 
          * We need this definition early, so that it would be possible to  reference it
          */
         loader = new Thread() {
             public void run() {
+                int autosave_counter = 0;
                 while(true) {
                     try {
                         /* Here we do the actual work */
@@ -65,9 +71,15 @@ public class Main {
                             sublist.remove(0);
                             
                             File f = new File(sub);
+                            if (f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX))
+                                autosave_counter++;
+                            
                             if (f.exists() && f.isFile() && f.canRead()) {
                                 Jubler.windows.elementAt(0).loadFile(f, false);
                             }
+
+                            if (autosave_counter==autosaves)
+                                AutoSaver.init();
                         }
                         synchronized(this) { wait(); }
                     } catch (InterruptedException ex) {
@@ -78,9 +90,18 @@ public class Main {
         };
         /* Parse arguments */
         sublist = new Vector<String>();
-        for (int i = 0 ; i < args.length ; i++) {
-            asyncAddSubtitle(args[i]);
+        for (String file : args) {
+            asyncAddSubtitle(file);
         }
+        
+        /* Add autosave subtitles */
+        for (File file:autosavelist) {
+            asyncAddSubtitle(file.getPath());
+        }
+        /* Force starting autosaver, if no autosaves were found */
+        if (autosaves==0)
+            AutoSaver.init();
+        
         /* Load arguments, in a mac way */
         SystemDependent.initApplication();
 
@@ -95,7 +116,6 @@ public class Main {
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
         versioncheck.start();
-                
     }
         
     static private MainSplash splash;

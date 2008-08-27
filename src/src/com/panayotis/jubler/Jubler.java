@@ -38,6 +38,7 @@ import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.ShortcutsModel;
+import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
@@ -1431,7 +1432,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_SynchronizeTMActionPerformed
     
     private void QuitFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitFMActionPerformed
-        StaticJubler.quitAll();
+        StaticJubler.prepareQuitAll();
     }//GEN-LAST:event_QuitFMActionPerformed
     
     private void ReparentTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReparentTMActionPerformed
@@ -2144,39 +2145,57 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         loadFile( f, force_into_same_window );
     }
     
-    public void loadFile(File f, boolean force_into_same_window ) {
+    public void loadFile(File f, boolean force_into_same_window) {
         String data;
         Subtitles newsubs;
         Jubler work;
-        
+        boolean is_autoload;
+
         /* Find where to display this subtitle file */
-        if (subs==null || force_into_same_window) work = this;
-        else work = new Jubler();
-        
+        if (subs == null || force_into_same_window)
+            work = this;
+        else
+            work = new Jubler();
+
         /* Initialize Subtitles */
         newsubs = new Subtitles();
         newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
-        
+
+        /* Check if this is an auto-load subtitle file */
+        is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
+
         /* Load file into memory */
-        prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
-        
-        data = FileCommunicator.load(f, prefs);
-        if ( data == null ) {
+        if (!is_autoload)
+            prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
+
+        data = FileCommunicator.load(f, is_autoload ? null : prefs);
+        if (data == null) {
             JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
             return;
         }
+        /* Strip autosave prefix from filename */
+        if (is_autoload) {
+            f = new File(f.getName().substring(AutoSaver.AUTOSAVEPREFIX.length()+5));
+            newsubs.setCurrentFile(f);
+        }
         
         /* Convert file into subtitle data */
-        newsubs.populate(f, data, prefs.getLoadFPS());
-        if ( newsubs.size() == 0 ) {
+        newsubs.populate(f, data, is_autoload ? 25 : prefs.getLoadFPS());
+        if (newsubs.size() == 0) {
             JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
             return;
         }
+
+        if (work.subs != null)
+            work.undo.addUndo(new UndoEntry(work.subs, _("Reload subtitles")));
         
-        if (work.subs!=null) work.undo.addUndo(new UndoEntry(work.subs, _("Reload subtitles")));
-        work.undo.setSaveMark();
+        if (is_autoload)
+            work.undo.invalidateSaveMark();
+        else
+            work.undo.setSaveMark();
         work.setSubs(newsubs);
         work.setFile(f, true);
+        work.SaveFM.setEnabled(false);
     }
     
     
@@ -2298,12 +2317,12 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         FileCommunicator.updateRecentsMenu();
         
         if ( windows.size() == 0 ) {
-            StaticJubler.setWindowPosition(this, true);
             if (keep_application_alive && subs!=null) {
+                StaticJubler.setWindowPosition(this, true);
                 StaticJubler.jumpWindowPosition(false);
                 new Jubler();
             } else {
-                System.exit(0);
+                StaticJubler.quit(this);
             }
         }
         

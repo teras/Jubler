@@ -185,7 +185,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
         header.append("\nScriptType: v4.00").append(getExtraVersion());
         header.append("\nCollisions: Normal\n");
         
-        if (media.getVideoFile()!=null) {
+        if (media !=null && media.getVideoFile()!=null) {
             header.append("PlayResX: ").append(media.getVideoFile().getWidth());
             header.append("\nPlayResY: ").append(media.getVideoFile().getHeight()).append('\n');
         }

@@ -30,6 +30,7 @@ import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.information.JVersion;
 import com.panayotis.jubler.options.*;
 import com.panayotis.jubler.options.gui.JUnsaved;
+import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -57,32 +58,33 @@ public class StaticJubler {
     static {
         loadWindowPosition();
     }
-    
-    
-    
+  
     public static void setWindowPosition(Jubler current_window, boolean save) {
+        if (current_window == null)
+            return;
         screen_x = current_window.getX();
         screen_y = current_window.getY();
         screen_width = current_window.getWidth();
         screen_height = current_window.getHeight();
         screen_state = current_window.getExtendedState();
         if (save && screen_width > 0) {
-            String vals = "(("+screen_x + "," + screen_y +"),(" + screen_width + "," + screen_height + "),"+ screen_state +")";
+            String vals = "((" + screen_x + "," + screen_y + "),(" + screen_width + "," + screen_height + ")," + screen_state + ")";
             Options.setOption("System.WindowState", vals);
             Options.saveOptions();
         }
         jumpWindowPosition(true);
     }
-    
+
     public static void putWindowPosition(Jubler new_window) {
-        if (screen_width <= 0) return;
-        
+        if (screen_width <= 0)
+            return;
+
         new_window.setLocationByPlatform(false);
-        new_window.setBounds( screen_x, screen_y, screen_width, screen_height);
+        new_window.setBounds(screen_x, screen_y, screen_width, screen_height);
         new_window.setExtendedState(screen_state);
         jumpWindowPosition(true);
     }
-    
+
     
     public static void jumpWindowPosition(boolean forth) {
         if (forth) {
@@ -123,23 +125,26 @@ public class StaticJubler {
     }
     
     
-    public static void quitAll() {
+    public static void quit(Jubler window) {
+        setWindowPosition(window, true);
+        AutoSaver.cleanup();
+        System.exit(0);
+    }
+    
+    public static void prepareQuitAll() {
         Vector <String>unsaved = new Vector<String>();
         for (Jubler j : Jubler.windows) {
             if (j.isUnsaved()) {
                 unsaved.add(j.getSubtitles().getCurrentFileName());
             }
         }
-        if (unsaved.size()>0) {
-            if ( ! JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler")))
+        if (unsaved.size() > 0) {
+            if (!JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler")))
                 return;
         }
-        if (Jubler.windows.size()>0)
-            StaticJubler.setWindowPosition(Jubler.windows.get(Jubler.windows.size()-1), true);
-        System.exit(0);
+        quit(Jubler.windows.size() > 0 ? Jubler.windows.get(Jubler.windows.size() - 1) : null);
     }
-    
-    
+
     public static void updateMenus(Jubler j) {
         Jubler.prefs.setMenuShortcuts(j.JublerMenuBar);
     }

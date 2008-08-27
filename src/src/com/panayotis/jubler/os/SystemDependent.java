@@ -330,6 +330,14 @@ public class SystemDependent {
         if (isMacOSX()) return home+"Library/Logs/Jubler.log";
         return home+".jubler/output.log";
     }
+    
+    public final static String getAutoSavePath() {
+        String home = System.getProperty("user.home") + System.getProperty("file.separator");
+        
+        if (isWindows()) return System.getenv("APPDATA")+"\\Jubler\\autosave";
+        if (isMacOSX()) return home+"Library/Application Support/Jubler/autosave";
+        return home+".jubler/autosave";
+    }
 }
 
 
@@ -356,7 +364,7 @@ class ApplicationHandler extends ApplicationAdapter {
     }
     
     public void handleQuit(ApplicationEvent event) {
-        StaticJubler.quitAll();
+        StaticJubler.prepareQuitAll();
         event.setHandled(false);
     }
     
