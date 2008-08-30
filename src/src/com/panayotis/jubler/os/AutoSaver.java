@@ -96,7 +96,7 @@ public class AutoSaver {
                 ofile.renameTo(new File(dir, ofile.getName()));
             }
         }
-        deleteDir(olds);
+        deleteDirContents(olds);
         olds.delete();
         
         File [] f = dir.listFiles(new SubFileFilter());
@@ -106,14 +106,14 @@ public class AutoSaver {
     
     public static void cleanup() {
         timer.cancel();
-        deleteDir(olds);
-        deleteDir(dir);
+        deleteDirContents(olds);
+        deleteDirContents(dir);
         olds.delete();
     }
 
     
     
-    private static void deleteDir(File d) {
+    private static void deleteDirContents(File d) {
         /* cleanup old files - with exception handling in case the directory does not exist */
         try {
             for (File current : d.listFiles()) {
