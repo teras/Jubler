@@ -72,11 +72,6 @@ public class Subtitles extends AbstractTableModel {
     }
     
     public Subtitles(Subtitles old) {
-        sublist = new Vector<SubEntry>();
-        for (int i = 0 ; i < old.size() ; i++ ) {
-            sublist.add(new SubEntry(old.elementAt(i)));
-        }
-        
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
         
@@ -85,6 +80,17 @@ public class Subtitles extends AbstractTableModel {
         }
         
         subfile = new SubFile(old.subfile);
+
+        sublist = new Vector<SubEntry>();
+        SubEntry newentry, oldentry;
+        for (int i = 0 ; i < old.size() ; i++ ) {
+            oldentry = old.elementAt(i);
+            newentry = new SubEntry();
+            sublist.add(newentry);
+            if (newentry.getStyle()!=null) {
+                newentry.setStyle(styles.getStyleByName(oldentry.getStyle().getName()));
+            }
+        }
     }
     
     /* @data loaded file with proper encoding

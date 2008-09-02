@@ -103,9 +103,11 @@ public class SubStyle implements Comparable {
     }
     
     public void setName(String newname, SubStyleList list) {
-        
         UniqName uniq = new UniqName(newname);
         Name = uniq.getUniqName(list, this);
+    }
+    public String getName() {
+        return Name;
     }
     
     
@@ -158,7 +160,7 @@ public class SubStyle implements Comparable {
     
     
     
-    public String toString() { return Name; }
+    public String toString() { return getName(); }
     
     public void setDefault(boolean def) { isDefault = def; }
     public boolean isDefault() { return isDefault; }
