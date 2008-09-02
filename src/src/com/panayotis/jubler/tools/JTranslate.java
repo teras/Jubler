@@ -24,8 +24,8 @@ package com.panayotis.jubler.tools;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.tools.translate.plugins.AvailTranslators;
-import com.panayotis.jubler.tools.translate.plugins.Translator;
+import com.panayotis.jubler.tools.translate.AvailTranslators;
+import com.panayotis.jubler.tools.translate.Translator;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -51,11 +51,11 @@ public class JTranslate extends JTool {
         TransMachine.setModel(new DefaultComboBoxModel(translators.getNamesList()));
         trans = translators.get(TransMachine.getSelectedIndex());
         
-        FromLang.setModel(new DefaultComboBoxModel(trans.getFromLanguages()));
-        FromLang.setSelectedItem(trans.getDefaultFromLanguage());
+        FromLang.setModel(new DefaultComboBoxModel(trans.getSourceLanguages()));
+        FromLang.setSelectedItem(trans.getDefaultSourceLanguage());
 
-        ToLang.setModel(new DefaultComboBoxModel(trans.getToLanguages(FromLang.getSelectedItem().toString())));
-        ToLang.setSelectedItem(trans.getDefaultToLanguage());
+        ToLang.setModel(new DefaultComboBoxModel(trans.getDestinationLanguagesFor(FromLang.getSelectedItem().toString())));
+        ToLang.setSelectedItem(trans.getDefaultDestinationLanguage());
     }
 
     protected String getToolTitle() {
@@ -101,6 +101,11 @@ public class JTranslate extends JTool {
         jPanel2.add(jLabel1, java.awt.BorderLayout.WEST);
 
         TransMachine.setToolTipText(_("Selection of translation machine"));
+        TransMachine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TransMachineActionPerformed(evt);
+            }
+        });
         jPanel2.add(TransMachine, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
@@ -131,6 +136,11 @@ public class JTranslate extends JTool {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
+
+private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransMachineActionPerformed
+        trans = translators.get(TransMachine.getSelectedIndex());
+}//GEN-LAST:event_TransMachineActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox FromLang;
     private javax.swing.JComboBox ToLang;

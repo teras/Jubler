@@ -63,6 +63,7 @@ public class JLongProcess extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         InfoL = new javax.swing.JLabel();
         ProgBar = new javax.swing.JProgressBar();
         jPanel2 = new javax.swing.JPanel();
@@ -72,10 +73,13 @@ public class JLongProcess extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle(_("Save progress"));
         setResizable(false);
-        getContentPane().add(InfoL, java.awt.BorderLayout.NORTH);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(InfoL, java.awt.BorderLayout.NORTH);
 
         ProgBar.setToolTipText(_("Save progress"));
-        getContentPane().add(ProgBar, java.awt.BorderLayout.CENTER);
+        jPanel1.add(ProgBar, java.awt.BorderLayout.CENTER);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -89,14 +93,18 @@ public class JLongProcess extends javax.swing.JDialog {
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.EAST);
 
-        getContentPane().add(jPanel2, java.awt.BorderLayout.SOUTH);
+        jPanel1.add(jPanel2, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
-    if (listener!=null)
+    if (listener!=null) {
         listener.actionPerformed(evt);
+        CancelB.setEnabled(false);
+    }
 }//GEN-LAST:event_CancelBActionPerformed
     
  
@@ -105,6 +113,7 @@ private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JButton CancelB;
     private javax.swing.JLabel InfoL;
     private javax.swing.JProgressBar ProgBar;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables

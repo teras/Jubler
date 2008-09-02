@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jubler.tools.translate.plugins;
+package com.panayotis.jubler.tools.translate;
 
 import java.util.HashMap;
 

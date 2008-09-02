@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.panayotis.jubler.tools.translate.plugins;
+package com.panayotis.jubler.tools.translate;
 
 import com.panayotis.jubler.subs.SubEntry;
 import java.util.Vector;
@@ -14,11 +14,13 @@ import java.util.Vector;
  */
 public interface Translator {
 
-    public abstract String[] getFromLanguages();
-    public abstract String[] getToLanguages(String from);
+    public abstract String[] getSourceLanguages();
+    public abstract String[] getDestinationLanguagesFor(String from);
     
-    public abstract String getDefaultFromLanguage();
-    public abstract String getDefaultToLanguage();
+    public abstract String getDefaultSourceLanguage();
+    public abstract String getDefaultDestinationLanguage();
 
+    public abstract String getDefinition();
+    
     public abstract boolean translate (Vector<SubEntry> subs, String from_language, String to_language);
 }
