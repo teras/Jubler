@@ -163,7 +163,7 @@ public class Jubler extends JFrame {
     private JSpeller spell;
     private JRounder round;
     private JFixer fix;
-    private JReplaceGlobal delp;
+    private JReplaceGlobal repg;
     private JDelSelection dels;
     private JMarker mark;
     private JRecodeTime recode;
@@ -234,7 +234,7 @@ public class Jubler extends JFrame {
         spell = new JSpeller();
         round = new JRounder();
         fix = new JFixer();
-        delp = new JReplaceGlobal();
+        repg = new JReplaceGlobal();
         dels = new JDelSelection();
         mark = new JMarker();
         recode = new JRecodeTime();
@@ -1722,7 +1722,7 @@ public class Jubler extends JFrame {
         for (int i = sel.length-1 ; i >= 0 ; i--) {
             subs.remove(sel[i]);
         }
-        tableHasChanged(new SubEntry[0]);
+        tableHasChanged(null);
     }//GEN-LAST:event_DeletePActionPerformed
     
     private void RevertFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevertFMActionPerformed
@@ -1730,11 +1730,13 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_RevertFMActionPerformed
     
     private void GloballyREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GloballyREMActionPerformed
-        delp.execute(this);
+        repg.execute(this);
     }//GEN-LAST:event_GloballyREMActionPerformed
     
     private void bySelectionDEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionDEMActionPerformed
+        int lastrow = SubTable.getSelectedRow();
         dels.execute(this);
+        setSelectedSub(lastrow, true);        
     }//GEN-LAST:event_bySelectionDEMActionPerformed
     
     private void EmptyLinesDEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmptyLinesDEMActionPerformed
@@ -1754,7 +1756,7 @@ public class Jubler extends JFrame {
         }
         if ( u!=null) {
             undo.addUndo(u);
-            tableHasChanged(selected);
+            tableHasChanged(null);
         } else {
             JIDialog.info(this, _("No lines affected"), _("Remove empty lines"));
         }
