@@ -85,7 +85,7 @@ public class Subtitles extends AbstractTableModel {
         SubEntry newentry, oldentry;
         for (int i = 0 ; i < old.size() ; i++ ) {
             oldentry = old.elementAt(i);
-            newentry = new SubEntry();
+            newentry = new SubEntry(oldentry);
             sublist.add(newentry);
             if (newentry.getStyle()!=null) {
                 newentry.setStyle(styles.getStyleByName(oldentry.getStyle().getName()));
