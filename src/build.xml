@@ -140,7 +140,7 @@
 	<target name="version-update">
 		<exec executable="svn" outputproperty="svnoutput"> <arg line="info"/> </exec>
 		<exec executable="grep" inputstring="${svnoutput}" outputproperty="grepoutput"> <arg line="Revision"/> </exec>
-		<exec executable="gawk" inputstring="${grepoutput}" outputproperty="releaseid"> <arg line="'{print $2}'"/> </exec>
+		<exec executable="awk" inputstring="${grepoutput}" outputproperty="releaseid"> <arg line="'{print $2}'"/> </exec>
 		<copy file="resources/system/version.prop" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
 			<filterset><filter token="RELEASE" value="${releaseid}"/></filterset>
 		</copy>
