@@ -36,6 +36,6 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         StringWriter trace = new StringWriter();
         PrintWriter wr = new PrintWriter(trace);
         e.printStackTrace(wr);
-        DEBUG.debug(trace.toString());
+        DEBUG.debug(e);
     }
 }

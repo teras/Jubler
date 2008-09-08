@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 
+import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import java.io.File;
@@ -83,10 +84,8 @@ public class AudioPreview {
                 header.append((char)file.readByte());
             }
             file.close();
-        } catch (FileNotFoundException e) {
-        //    e.printStackTrace();
         } catch (IOException e) {
-        //    e.printStackTrace();
+            DEBUG.debug(e);
         }
         
         if (header.toString().equals("JACACHE")) return true;
@@ -107,10 +106,8 @@ public class AudioPreview {
             file.seek(nameoffset);
             name = file.readUTF().trim();
             file.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            DEBUG.debug(e);
         }
         if (name.equals("")) name = null;
         return name;

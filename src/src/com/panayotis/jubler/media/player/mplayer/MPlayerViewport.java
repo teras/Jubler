@@ -204,7 +204,7 @@ public class MPlayerViewport implements Viewport {
             start();
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            DEBUG.debug(e);
         }
         return false;
     }

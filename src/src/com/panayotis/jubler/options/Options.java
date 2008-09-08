@@ -100,7 +100,7 @@ public class Options {
         try {
             opts.storeToXML(new FileOutputStream(preffile), "Jubler file");
         } catch ( IOException e ) {
-            e.printStackTrace();
+            DEBUG.debug(e);
         }
     }
     

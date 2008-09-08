@@ -129,7 +129,7 @@ public final class FFMPEG extends NativeDecoder {
         } catch (LineUnavailableException e) {
             cleanUp(_("Line unavailable"), wav);
         } catch (Exception e) {
-            e.printStackTrace();
+            DEBUG.debug(e);
             cleanUp(null, wav);
         }
     }

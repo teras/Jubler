@@ -722,7 +722,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         try {
             current.set(FONTSIZE, FontSize.getModel().getSelectedItem().toString());
         } catch (NumberFormatException e) {
-            DEBUG.debug(e.toString());
+            DEBUG.debug(e);
         }
         
         current.set(BOLD, Bold.isSelected());

@@ -62,6 +62,10 @@ public class DEBUG {
         }
     }
 
+    public static void debug(Throwable e) {
+        debug(e.toString());
+    }
+    
     public static String toString(String[] array) {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < array.length; i++) {

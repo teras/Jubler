@@ -80,9 +80,9 @@ public class Dropper extends TransferHandler {
                 return (AbstractList<File>)t.getTransferData(flavor);
             }
         } catch (UnsupportedFlavorException e) {
-            e.printStackTrace();
+            DEBUG.debug(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            DEBUG.debug(e);
         }
         return null;
     }
