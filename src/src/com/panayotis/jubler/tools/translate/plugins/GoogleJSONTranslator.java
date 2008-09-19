@@ -100,7 +100,6 @@ public class GoogleJSONTranslator extends GenericWebTranslator {
     }
 
     protected boolean isIDTag(String data) {
-        System.out.println(data);
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

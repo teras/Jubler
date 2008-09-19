@@ -89,7 +89,7 @@ public class GoogleHTMLTranslator extends GenericWebTranslator {
     }
 
     protected String makeIDTag(int id) {
-        return "--" + id + "--";
+        return "-" + id + "-";
     }
 
     protected String getNewLineTag() {
@@ -97,13 +97,27 @@ public class GoogleHTMLTranslator extends GenericWebTranslator {
     }
 
     protected boolean isIDTag(String data) {
-        return data.startsWith("--") && data.endsWith("--");
+        return data.startsWith("-") && data.endsWith("-");
     }
 
     protected int getIDTagFromData(String data) {
         int idx = -1;
         try {
-            idx = Integer.parseInt(data.substring(3, data.length() - 3));
+            int from, to, length;
+            
+            length = data.length();
+            from = 0;
+            while(from < length && data.charAt(from)=='-')
+                from++;
+            
+            if (from<length) {
+                to = length - 1;
+                while (to >= 0 && data.charAt(to)=='-')
+                    to--;
+                if(to!=0) {
+                    idx = Integer.parseInt(data.substring(from, to).trim());
+                }
+            }
         } catch (NumberFormatException ex) {
         }
         return idx;

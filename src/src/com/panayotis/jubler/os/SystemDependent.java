@@ -270,6 +270,8 @@ public class SystemDependent {
     
     /* A dirty dirty dirty trick to be able to find the actual canWrite attribute under Windows */
     public static boolean canWrite(File f) {
+        if (f==null)
+            return false;
         if (!isWindows()) {
             return f.canWrite();
         }

@@ -25,6 +25,8 @@ package com.panayotis.jubler.os;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  *
@@ -63,7 +65,9 @@ public class DEBUG {
     }
 
     public static void debug(Throwable e) {
-        debug(e.toString());
+        StringWriter str = new StringWriter();
+        e.printStackTrace(new PrintWriter(str));
+        debug(str.toString());
     }
     
     public static String toString(String[] array) {

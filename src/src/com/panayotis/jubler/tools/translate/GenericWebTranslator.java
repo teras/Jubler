@@ -69,10 +69,8 @@ public abstract class GenericWebTranslator extends WebTranslator {
         StringTokenizer tk;
         while ((line = in.readLine()) != null) {
             line = retrieveSubData(line);
-            //System.out.println("RAW=" + line);
             if (line != null) {
                 line = HTMLTextUtils.convertToString(line.replace(getNewLineTag(), "\n"));
-                System.out.println("R=" + line);
                 subtxt = "";
                 idx = -1;
                 tk = new StringTokenizer(line, "\n");
