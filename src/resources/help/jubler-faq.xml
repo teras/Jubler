@@ -66,6 +66,21 @@
 	<para>You can have the same efect, if you click on the up/down arrows while holding again the ALT button.</para>
 </section>
 
+<section><title>Mouse usage in Preview widget</title>
+	<para> Although there was an effort to maintain the expected GUI behaviour in the Preview widget, there might be uages not directly expected. Here is documented all mouse usages on this visual object.
+	<itemizedlist>
+		<listitem><para>Right mouse button: this is heavily used to select and manipulate the various subtitles. There are a lot of "usage" modes, described below:
+			<itemizedlist>
+			<listitem>Select tool ("mouse" icon on the toolbar): Use the mouse to select one subtitle at a time. If the [CONTROL] button is pressed, then more than one subtilte can be selected by clicking on an unselected subtitle. If the user clicks on an already selected subtitle while pressing the [CONTROL] key, then the clicked subtitle will be deselected.</listitem>
+			<listitem>Move tool ("hand" icon on the toolbar): This tool works exactly like the "Select" tool. In addition, if the mouse pointer is moved, while clicked down, then the selected subtitles will move. If the user wants to move more than one subtitle, no pressure of [CONTROL] key is needed. In this case no subtitles are deselected.</listitem>
+			<listitem>Resize tool ("two-face arrow" on the toolbar): Again, this tool works just like the "Select" tool, but if the user clicks on the "edge" of the subtitle, then it is possible to change the size of the subtitle. if the ending time-point of the subtitle(s) are smaller than the starting time, then the resize will inverse the subtitles and resize accordingly. The usage of [CONTROL] button is again not required while resizing, just like the "Move" tool.</listitem>
+			<listitem>Automatic tool ("magic wand" on the toolbar): The widget selects the appropriate tool depending on the location of the first click: if the user clicks inside the subtitle, then it is like the "Select" tool. If the user clicks  inside and moves the mouse pointer, then the produced action is similar to the the "Move" tool, while if the original click area is in the obrder of a subtitle, then the "Resize" tool action is performed. </listitem>
+			</para></listitem>
+		<listitem><para>Mouse wheel. By using the mouse wheel on the preview widget, the preview zooms in/out accordingly.</para></listitem>
+	</itemizedlist>
+	</para>
+</section>
+
 <section><title>What is Zemberek and how can I use it?</title>
     <para>Zemberek is a spell checking library for the Turkish language. You have to download the binary distribution of zemberek <ulink url="http://code.google.com/p/zemberek/">from its website</ulink> first. Version 2.1 was tested with this version of Jubler. Unzip the file, and copy zemberek-cekirdek-2.1.jar and zemberek-tr-2.1.jar under JUBLER_HOME/lib/ directory. Then Jubler should be able to open this library. 
     </para>
