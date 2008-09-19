@@ -1,3 +1,9 @@
+3.9.6
+
+Improved Google translator parsing engine. Fixed compile issues with ffmpeg
+under OS X 10.4
+
+
 3.9.5
 
 Autosave/recovery of changed subtitles. Automatic translate of subtitles
