@@ -117,12 +117,12 @@
 		<delete file="ChangeLog"/>
 		<exec executable="bash" failonerror="true">
 			<arg value="-c"/>
-			<arg value="sed -e 's/&lt;release version=&quot;//g' &lt;changelog.xml | sed -e 's/&lt;\/release&gt;//g' | sed -e 's/&quot;&gt;//g' >ChangeLog"/>
+			<arg value="sed -e 's/&lt;release version=&quot;//g' &lt;resources/system/changelog.xml | sed -e 's/&lt;\/release&gt;//g' | sed -e 's/&quot;&gt;//g' >ChangeLog"/>
 		</exec>
 	</target>
 
 	<!-- Copy the full Jubler source tree in tmp -->
-	<target name="copytree" depends="clean">
+	<target name="copytree" depends="clean,changelog">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<delete dir="/tmp/Jubler-${version}"/>
 		<mkdir dir="/tmp/Jubler-${version}"/>
@@ -156,7 +156,7 @@
 	</target>
 
 	<!-- Common tasks for ALL packagers -->
-	<target name="release" depends="clean,i18n,version-update,jar,faq" />
+	<target name="release" depends="clean,i18n,version-update,jar,faq,changelog" />
 
 
 	<!-- Windows Installer -->
@@ -437,6 +437,7 @@
 		<exec dir="resources/ffdecode" executable="make" failonerror="true">
 			<arg line="distclean"/>
 		</exec>
+		<delete file="ChangeLog"/>
 	</target>
 
 </project>
