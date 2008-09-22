@@ -1,0 +1,68 @@
+<release version="3.9.6">
+Improved Google translator parsing engine. Fixed compile issues with ffmpeg under OS X 10.4. Fixed Linux GTK Look and Feel bug with time-spinner under Java 6.0.
+</release>
+<release version="3.9.5">
+Autosave/recovery of changed subtitles. Automatic translate of subtitles through Google. Updated to latest FFMPEG.  Small GUI improvements. Better SRT support. Minor bug fixes and enhancements.
+</release>
+<release version="3.9.0">
+Improved user interface. Preview interface integrated inside main Jubler window. Subtitle number is now visible, if desired. Use of preset file encodings. Visual display, using color, of affected subtitles. Maximize waveform visualization. Support of AAC audio streams.
+</release>
+<release version="3.4.1">
+MPlayer uses threads to properly handle out and error stream. Updated to latest
+ffmpeg library. Support of correct MIME type under Linux.
+</release>
+<release version="3.4.0">
+SRT supports font formatting. Subtitle statistics. Better handling of preview bars. Improved splitting interface. Updated Media files configuration. Display number of lines and characters per line while editing. MPlayer display formatted subtitles - use of ASS format instead of SRT. Linux man and doc paths fixed.  Support for Quicktime Texttrack subtitles. Fixed an error with MPL2 subtitles.  Frame icon now properly display under Windows/Linux. Quit confirmation dialogue properly works under Mac. Check for new version only once per day.  Better display of selected subtitles. Fixed serious memory allocation error in Windows. Various bug fixes and updates.
+</release>
+<release version="3.3.0">
+Automatic detection of MPlayer/ASpell executables. Preview window GUI updates.  Alt-mousewheel / alt-click slows down rotation in JTimeSpinner boxes.  Support for Spruce DVDMaestro (STL) and MPL2 subtitles (without formatting).  Fixed autoload for Java 1.6 in Linux. Added missing tooltips. Fixed gettext bug with ' character. Improved ffmpeg support. Keep application alive if "Close window" is selected. New window will not fully overlap old one.  Spanish, French and Serbian translations introduced. Czech, German, Portuguese and Greek translation corrections. Various bug fixes and usability improvements.
+</release>
+<release version="3.2.0">
+Doube click on icons launch Jubler (in Mac OSX, Windows and Debian systems).  MPlayer fixes. Jubler installs in systems with JRE 1.6. MPlayer supports different audio stream. Video playback doesn't change system mixers. FFMPEG time offset and WMV bug fixes. Better handling of audio caches. Updated to newer version of FFMPEG. ASpell updates supported languages when opening preferences. Major internal changes and cleanups. Initial Debian package.
+</release>
+<release version="3.1.0">
+Read frames per second from the movie now supported. Movie synchronization on the fly, based on time differences between time points supported. Updated recoring of subtitles on the fly. A lot of fine tuning. Zemberek updates.
+</release>
+</release>
+<release version="3.0.0">
+FFDecode bugs fixed, preview should be much more stable and accurate. Preview bug fixed, where wrong duration was reported. Tools remember last values.  Column width is now saved. Now it is compatible with latest version of MPlayer.  Updated to newest ffmpeg sources. Turkish translation added. Support for zemberek added. Preliminary built-in FAQ subsystem. Tweaks and code changes.  New icons and splash screen. Linux installation script fixes. Supports cocoASpell under Mac OSX.  
+</release>
+<release version="3.0.0-rc4">
+Fixed bugs: audio line not closing, saving file with an illegal character set, banner not closing, Jubler crashing when audio codec could not be opened, Jubler didn't start under Linux. Mac OSX port is now universal binary.  Synchronize subtitle texts and timestamps. Subtitle preview updates live on key events. Automatic version check through internet. Smaller code changes.  
+</release>
+<release version="3.0.0-rc3">
+Initial Mac OS X version. Big endian bugs fixed. "Quit" introduced. Menu shortcuts are now editable. MPlayer threading issues fixed. Cache is created only when needed. Full AC3 support.  
+</release>
+<release version="3.0.0-rc2">
+Great speedup improvements were made on subtitle preview. Alpha channel values in SSA/ASS format were flipped. MPlayer options may now be edited. Recent items are sorted according to their call. A bug with the installer not properly detecting JRE was fixed. Subtitle preview fixes were done.  
+</release>
+<release version="3.0.0-rc1">
+Czech translation. Subtitle text display on frame preview (draft and full details) using Java 2D. Default display frame when no library is present, or no actual frame preview is required. When FFDecode library is missing, a notice is displayed and no more a popup dialog appers. Subtitle is movable on wave panel too (in preview). Display subtitle time when moving subtitles in preview. Revert, clone and open recent subtitles in File menu. Video preview in normal and half size. Reparent current subtitles (for translations). MPlayer now supports default font size (and font name in Linux). Only static version of ffmpeg for linux is provided. Varius bug fixes.  
+</release>
+<release version="2.9.9">
+Preview of subtitles added (dependance on FFMPEG library). Frame preview of the current frame, waveform preview and waveform listening is supported.  Graphically display of subtitles, which can be moved and resized. Jubler no longer distributed as JAR file but using self expandable platform specific installers (due to FFMPEG). Mouse wheel over subtitle time changes its value.  Various bug fixes and other enchacements.  
+</release>
+<release version="2.5.1">
+Fix while trying to save a splitted subtitle file.  
+</release>
+<release version="2.5.0">
+Suport for SubStation Alpha (SSA), Advanced SubStation (ASS), and SubViewer (1+2) subtitle formats. A German translation. Styles are supported (when saving in SubStation formats). A translating mode. A lot of fine tuning and bugfixes.  
+</release>
+<release version="2.0.0">
+Mostly code cleanup and changes in the "about" box.  
+</release>
+<release version="2.0-rc1">
+This release adds I18n support through gettext.  
+</release>
+<release version="1.9.3">
+Find and replace and global replace features were added. The focus of the subtitle textbox was fixed.  
+</release>
+<release version="1.9.1">
+Enhancements were made to the command line arguments of mplayer in order to play correctly under the Windows ports of MPlayer. A few unimportant corrections were made to the ASpell options.  
+</release>
+<release version="1.9.0">
+This release has great improvements in the mplayer frontend, ASpell support, GUI lifting, and new tools.  
+</release>
+<release version="0.9">
+Initial announcement
+</release>

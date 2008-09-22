@@ -112,6 +112,15 @@
 		<delete dir="resources/libraries"/>
 	</target>
 
+
+	<target name="changelog">
+		<delete file="ChangeLog"/>
+		<exec executable="bash" failonerror="true">
+			<arg value="-c"/>
+			<arg value="sed -e 's/&lt;release version=&quot;//g' &lt;changelog.xml | sed -e 's/&lt;\/release&gt;//g' | sed -e 's/&quot;&gt;//g' >ChangeLog"/>
+		</exec>
+	</target>
+
 	<!-- Copy the full Jubler source tree in tmp -->
 	<target name="copytree" depends="clean">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
