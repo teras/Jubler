@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.update;
+package com.panayotis.updater.changelog;
 
-import com.panayotis.update.changelog.ChangeLogHandler;
 import com.panayotis.jubler.os.DEBUG;
+import java.util.ArrayList;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -13,16 +13,17 @@ import javax.xml.parsers.SAXParserFactory;
  *
  * @author teras
  */
-public class Updater {
+public class ChangeLog extends ArrayList<ChangeLogEntry> {
 
-    public static void main(String[] args) {
+    public static ChangeLog loadChangeLog(String URL) {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             ChangeLogHandler handler = new ChangeLogHandler();
-            parser.parse("file:///Users/teras/Works/Development/Java/Jubler/resources/system/changelog.xml", handler);
+            parser.parse(URL, handler);
+            return handler.getChangeLog();
         } catch (Exception ex) {
             DEBUG.debug(ex);
         }
-
+        return null;
     }
 }

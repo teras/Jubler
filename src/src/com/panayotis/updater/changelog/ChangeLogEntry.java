@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.panayotis.update.changelog;
+package com.panayotis.updater.changelog;
 
 /**
  *

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.update.download;
+package com.panayotis.updater.download;
 
 import com.panayotis.jubler.os.DEBUG;
 import java.io.BufferedOutputStream;

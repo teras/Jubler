@@ -2,10 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.update.changelog;
+package com.panayotis.updater.changelog;
 
-import com.panayotis.update.changelog.ChangeLog;
-import com.panayotis.update.changelog.ChangeLogEntry;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -15,7 +13,7 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class ChangeLogHandler extends DefaultHandler {
 
-    private ChangeLog log = null;
+    private ChangeLog log;
     private ChangeLogEntry lastentry;
     private StringBuffer info;
 
@@ -48,7 +46,7 @@ public class ChangeLogHandler extends DefaultHandler {
         }
     }
     
-    public ChangeLog getChangeLog() {
+    ChangeLog getChangeLog() {
         return log;
     }
 }
