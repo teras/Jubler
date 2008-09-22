@@ -147,6 +147,7 @@ darwin:javacheck
 	make -e LIB MAKESYS=darwin_i386
 	make distclean
 	lipo ${PROJ}.ppc ${PROJ}.i386 -create -output ${MACLIBNAME}
+	TIGER=`otool -vR ${MACLIBNAME} | grep UNIX` ; if [ -n "$$TIGER" ] ; then echo "Tiger compatibility problem!" ; echo $$TIGER ; exit 1 ; fi
 	rm -f ${PROJ}.ppc ${PROJ}.i386
 	make -e libinstall LIBNAME=${MACLIBNAME}
 
