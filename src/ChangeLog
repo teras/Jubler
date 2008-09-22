@@ -1,7 +1,7 @@
 3.9.6
 
 Improved Google translator parsing engine. Fixed compile issues with ffmpeg
-under OS X 10.4
+under OS X 10.4. Fixed Linux GTK L&F bug with time-spinner under Java 6.0.
 
 
 3.9.5

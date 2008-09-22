@@ -32,7 +32,6 @@ import javax.swing.AbstractSpinnerModel;
 public class TimeSpinnerModel extends AbstractSpinnerModel {
         
     private Time time;
-    private int i;
     private double speed = 1;
     
     public TimeSpinnerModel() {
@@ -40,13 +39,15 @@ public class TimeSpinnerModel extends AbstractSpinnerModel {
     }
     
     public Object getPreviousValue() {
-        time.addTime(-speed);
-        return time;
+        Time nvalue = new Time(time);
+        nvalue.addTime(-speed);
+        return nvalue;
     }
     
     public Object getNextValue() {
-        time.addTime(speed);
-        return time;
+        Time nvalue = new Time(time);
+        nvalue.addTime(speed);
+        return nvalue;
     }
     
     public Object getValue() {
