@@ -147,9 +147,9 @@
 	
 	<!-- Update to the latest release version -->
 	<target name="version-update">
-		<exec executable="svn" outputproperty="svnoutput"> <arg line="info"/> </exec>
-		<exec executable="grep" inputstring="${svnoutput}" outputproperty="grepoutput"> <arg line="Revision"/> </exec>
-		<exec executable="awk" inputstring="${grepoutput}" outputproperty="releaseid"> <arg line="'{print $2}'"/> </exec>
+		<exec executable="svn" outputproperty="svnoutput" failonerror="true"> <arg line="info"/> </exec>
+		<exec executable="grep" inputstring="${svnoutput}" outputproperty="grepoutput" failonerror="true"> <arg line="Revision"/> </exec>
+		<exec executable="awk" inputstring="${grepoutput}" outputproperty="releaseid" failonerror="true"> <arg line="'{print $2}'"/> </exec>
 		<copy file="resources/system/version.prop" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
 			<filterset><filter token="RELEASE" value="${releaseid}"/></filterset>
 		</copy>

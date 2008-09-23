@@ -5,6 +5,7 @@
 package com.panayotis.updater;
 
 import com.panayotis.updater.changelog.ChangeLog;
+import com.panayotis.updater.updatelist.UpdateList;
 
 /**
  *
@@ -13,6 +14,8 @@ import com.panayotis.updater.changelog.ChangeLog;
 public class Updater {
 
     public static void main(String[] args) {
-      ChangeLog log = ChangeLog.loadChangeLog("file:///Users/teras/Works/Development/Java/Jubler/resources/system/changelog.xml");
+        ChangeLog log = ChangeLog.loadChangeLog("file:///Users/teras/Works/Development/Java/Jubler/resources/system/changelog.xml");
+        UpdateList list = UpdateList.loadChangeLog("file:////Users/teras/Works/Development/Java/Jubler/resources/system/updater.xml");
+        System.out.println(list.toString());
     }
 }

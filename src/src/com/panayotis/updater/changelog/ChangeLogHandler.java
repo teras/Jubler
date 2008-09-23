@@ -40,12 +40,6 @@ public class ChangeLogHandler extends DefaultHandler {
         info = new StringBuffer();
     }
     
-    public void endDocument() {
-        for(ChangeLogEntry en : log) {
-            System.out.println("{"+en.getVersion()+"}"+en.getDescription()+"--");
-        }
-    }
-    
     ChangeLog getChangeLog() {
         return log;
     }

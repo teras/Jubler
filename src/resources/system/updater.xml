@@ -1,0 +1,33 @@
+<updatelist>
+
+<alias name="Mac OS X" tag="macosx" os="Mac" arch="i386"/>
+<alias name="Mac OS X" tag="macosx" os="Mac" arch="ppc"/>
+<alias name="Linux i386" tag="linux_i386" os="Linux" arch="i386"/>
+<alias name="Linux AMD64" tag="linux_amd64" os="Linux" arch="amd64"/>
+<alias name="Windows" tag="win32" os="Windows" arch="x86"/>
+
+
+<version id="438" basedir="3.9.6">
+	<arch name="linux_i386">
+		<file source="linux_i386/libffdecode.so" dest="lib"/>
+		<file source="Jubler.jar" dest="." />
+		<rm file="Jubler.jar"/>
+	</arch>
+	<arch name="linux_amd64">
+		<file source="linux_amd64/libffdecode.so" dest="lib"/>
+		<file source="Jubler.jar" dest="." />
+	</arch>
+	<arch name="win32">
+		<file source="win32/ffdecode.dll" dest="lib"/>
+		<file source="win32/Jubler.exe" dest="." />
+	</arch>
+	<arch name="macosx">
+		<file source="macosx/libffdecode.dylib" dest="lib"/>
+		<file source="Jubler.jar" dest="."/>
+	</arch>
+	<arch name="generic">
+		<file source="Jubler.jar" dest="."/>
+	</arch>
+</version>
+
+</updatelist>

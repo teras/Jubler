@@ -15,6 +15,10 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class ChangeLog extends ArrayList<ChangeLogEntry> {
 
+    ChangeLog() {
+        super();
+    }
+    
     public static ChangeLog loadChangeLog(String URL) {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
