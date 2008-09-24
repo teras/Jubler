@@ -6,6 +6,7 @@ package com.panayotis.updater.updatelist;
 
 import com.panayotis.jubler.os.DEBUG;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -51,5 +52,16 @@ public class UpdateList extends ArrayList<Version> {
                 return a;
         }
         return null;
+    }
+
+    void collapse() {
+        if (size() == 0)
+            return;
+        Collections.sort(this);
+        Version v = get(size());
+        for (int i = size() - 2; i >= 0; i--) {
+            v.mergeWith(get(i));
+            remove(i);
+        }
     }
 }

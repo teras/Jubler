@@ -41,6 +41,10 @@ public class UpdateListHandler extends DefaultHandler {
         list = new UpdateList();
     }
     
+    public void endDocument() {
+        list.collapse();
+    }
+    
     UpdateList getUpdateList() {
         return list;
     }

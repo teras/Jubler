@@ -22,6 +22,10 @@ public class Alias {
         this.arch = arch.toLowerCase();
     }
 
+    String getTag() {
+        return tag;
+    }
+
     boolean isTag(String tag) {
         return tag.toLowerCase().equals(this.tag);
     }

@@ -17,4 +17,12 @@ public class Arch extends ArrayList<FileElement> {
     public Arch(Alias alias) {
         this.alias = alias;
     }
+
+    String getTag() {
+        return alias.getTag();
+    }
+
+    boolean isTag(String tag) {
+        return alias.isTag(tag);
+    }
  }
