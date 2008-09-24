@@ -5,24 +5,31 @@
 
 package com.panayotis.updater.updatelist;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author teras
  */
-public class Arch extends ArrayList<FileElement> {
-    private Alias alias;
-    
-    public Arch(Alias alias) {
-        this.alias = alias;
-    }
+public class Arch {
+    private String tag;
+    private String name;
+    private String os;
+    private String arch;
 
-    String getTag() {
-        return alias.getTag();
+    public Arch(String tag, String name, String os, String arch) {
+        this.tag = tag.toLowerCase();
+        this.name = name;
+        this.os = os.toLowerCase();
+        this.arch = arch.toLowerCase();
     }
 
     boolean isTag(String tag) {
-        return alias.isTag(tag);
+        return this.tag.toLowerCase().equals(tag);
     }
- }
+
+    boolean isCurrent() {
+        String c_os = System.getProperty("os.name");
+        String c_arch = System.getProperty("os.arch");
+        return (c_os.toLowerCase().startsWith(os) && c_arch.toLowerCase().startsWith(arch));
+    }
+    
+}

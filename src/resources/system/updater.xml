@@ -1,5 +1,13 @@
-<updatelist>
+<?xml version="1.0" encoding="UTF-8"?>
+ <!DOCTYPE updatelist SYSTEM "updater.dtd">
+ 
+ 
+ <updatelist>
 
+<!--
+Generic alias is ALWAYS present - it's the failsafe method 
+ <alias name="Generic" tag="generic" os="" arch=""/>
+-->
 <alias name="Mac OS X" tag="macosx" os="Mac" arch="i386"/>
 <alias name="Mac OS X" tag="macosx" os="Mac" arch="ppc"/>
 <alias name="Linux i386" tag="linux_i386" os="Linux" arch="i386"/>
@@ -7,75 +15,73 @@
 <alias name="Windows" tag="win32" os="Windows" arch="x86"/>
 
 
-<version id="400" basedir="3.8.0">
+<version id="400">
 	<arch name="linux_i386">
-		<file source="0linux_i386/libffdecode.so" dest="lib"/>
-		<file source="0Jubler.jar" dest="." />
-		<rm file="0Jubler.jar"/>
+		<file name="libffdecode.so" sourcedir="3.8.0/linux_i386" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.8.0" destdir="${APPHOME}" />
 	</arch>
 	<arch name="linux_amd64">
-		<file source="0linux_amd64/libffdecode.so" dest="lib"/>
-		<file source="0Jubler.jar" dest="." />
+		<file name="libffdecode.so" sourcedir="3.8.0/linux_amd64" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.8.0" destdir="${APPHOME}" />
 	</arch>
 	<arch name="win32">
-		<file source="0win32/ffdecode.dll" dest="lib"/>
-		<file source="0win32/Jubler.exe" dest="." />
+		<file name="ffdecode.dll" sourcedir="3.8.0/win32" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.exe" sourcedir="3.8.0/win32" destdir="${APPHOME}" />
 	</arch>
 	<arch name="macosx">
-		<file source="0macosx/libffdecode.dylib" dest="lib"/>
-		<file source="0Jubler.jar" dest="."/>
+		<file name="libffdecode.dylib" sourcedir="3.8.0/macosx" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.8.0" destdir="${APPHOME}"/>
+		<file name="other.jar" sourcedir="3.8.0" destdir="${APPHOME}"/>
+		<rm name="Jublericious.jar" sourcedir="3.8.0" destdir="${APPHOME}"/>
 	</arch>
 	<arch name="generic">
-		<file source="0Jubler.jar" dest="."/>
+		<file name="Jublericious.jar" sourcedir="3.8.0" destdir="${APPHOME}"/>
+	</arch>
+</version>
+
+<version id="488">
+	<arch name="linux_i386">
+		<file name="libffdecode.so" sourcedir="3.9.6/linux_i386" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.9.6" destdir="${APPHOME}" />
+	</arch>
+	<arch name="linux_amd64">
+		<file name="libffdecode.so" sourcedir="3.9.6/linux_amd64" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.9.6" destdir="${APPHOME}" />
+	</arch>
+	<arch name="win32">
+		<file name="ffdecode.dll" sourcedir="3.9.6/win32" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.exe" sourcedir="3.9.6/win32" destdir="${APPHOME}" />
+	</arch>
+	<arch name="macosx">
+		<file name="Jubler.jar" sourcedir="3.9.6" destdir="${APPHOME}"/>
+	</arch>
+	<arch name="generic">
+		<file name="Jubler.jar" sourcedir="3.9.6" destdir="${APPHOME}"/>
 	</arch>
 </version>
 
 
-<version id="438" basedir="3.9.6">
+<version id="410">
 	<arch name="linux_i386">
-		<file source="1linux_i386/libffdecode.so" dest="lib"/>
-		<file source="1Jubler.jar" dest="." />
-		<rm file="1Jubler.jar"/>
+		<file name="libffdecode.so" sourcedir="3.9.0/linux_i386" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}" />
 	</arch>
 	<arch name="linux_amd64">
-		<file source="1linux_amd64/libffdecode.so" dest="lib"/>
-		<file source="1Jubler.jar" dest="." />
+		<file name="libffdecode.so" sourcedir="3.9.0/linux_amd64" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}" />
 	</arch>
 	<arch name="win32">
-		<file source="1win32/ffdecode.dll" dest="lib"/>
-		<file source="1win32/Jubler.exe" dest="." />
+		<file name="ffdecode.dll" sourcedir="3.9.0/win32" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.exe" sourcedir="3.9.0/win32" destdir="${APPHOME}" />
 	</arch>
 	<arch name="macosx">
-		<file source="1macosx/libffdecode.dylib" dest="lib"/>
-		<file source="1Jubler.jar" dest="."/>
+		<file name="libffdecode.dylib" sourcedir="3.9.0/macosx" destdir="${APPHOME}/lib"/>
+		<file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}"/>
 	</arch>
 	<arch name="generic">
-		<file source="1Jubler.jar" dest="."/>
+		<file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}"/>
 	</arch>
 </version>
 
-
-<version id="410" basedir="3.9.0">
-	<arch name="linux_i386">
-		<file source="2linux_i386/libffdecode.so" dest="lib"/>
-		<file source="2Jubler.jar" dest="." />
-		<rm file="2Jubler.jar"/>
-	</arch>
-	<arch name="linux_amd64">
-		<file source="2linux_amd64/libffdecode.so" dest="lib"/>
-		<file source="2Jubler.jar" dest="." />
-	</arch>
-	<arch name="win32">
-		<file source="2win32/ffdecode.dll" dest="lib"/>
-		<file source="2win32/Jubler.exe" dest="." />
-	</arch>
-	<arch name="macosx">
-		<file source="2macosx/libffdecode.dylib" dest="lib"/>
-		<file source="2Jubler.jar" dest="."/>
-	</arch>
-	<arch name="generic">
-		<file source="2Jubler.jar" dest="."/>
-	</arch>
-</version>
 
 </updatelist>

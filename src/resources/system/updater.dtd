@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/updater.dtd
+
+--><!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE updatelist SYSTEM "updater.dtd">
+
+    <updatelist>
+    ...
+    </updatelist>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT updatelist (version|alias)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT alias EMPTY>
+<!ATTLIST alias
+    arch CDATA #REQUIRED
+    os CDATA #REQUIRED
+    tag CDATA #REQUIRED
+    name CDATA #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT version (arch)*>
+<!ATTLIST version
+    id CDATA #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT arch (rm|file)*>
+<!ATTLIST arch
+    name CDATA #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT file EMPTY>
+<!ATTLIST file
+    destdir CDATA #REQUIRED
+    sourcedir CDATA #REQUIRED
+    name CDATA #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT rm EMPTY>
+<!ATTLIST rm
+    destdir CDATA #REQUIRED
+    name CDATA #REQUIRED
+  >

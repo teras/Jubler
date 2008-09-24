@@ -2,44 +2,59 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.panayotis.updater.updatelist;
 
-import java.util.ArrayList;
+import com.panayotis.jubler.os.DEBUG;
+import java.util.HashMap;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  *
  * @author teras
  */
-public class Version extends ArrayList<Arch> implements Comparable {
+public class Version extends HashMap<String, FileElement> {
 
-    private int id;
-    private String basedir;
-    
-    Version(String id, String basedir) {
-        this.id = Integer.parseInt(id);
-        this.basedir = basedir;
+    public String toString() {
+        StringBuffer b = new StringBuffer();
+        b.append("[Version").append('\n');
+        for (String tag : keySet()) {
+            b.append("  ");
+            b.append(get(tag).toString());
+            b.append('\n');
+        }
+        b.append("]");
+        return b.toString();
     }
 
-    /** 
-     * Forward sorting
-     */
-    public int compareTo(Object o) {
-        return id - ((Version)o).id;
-    }
-
-    private Arch getArch(String tag) {
-        for(Arch a:this) {
-            if(a.isTag(tag))
-                return a;
+    public static Version loadChangeLog(String URL) {
+        try {
+            SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+            UpdateListHandler handler = new UpdateListHandler();
+            parser.parse(URL, handler);
+            return handler.getUpdateList();
+        } catch (Exception ex) {
+            DEBUG.debug(ex);
         }
         return null;
     }
-    
-    void mergeWith(Version other) {
-        Arch thisarch;
-        for(Arch a:other) {
-            thisarch = getArch(a.getTag());
+
+    void merge(Version other) {
+        if (other == null)
+            return;
+
+        FileElement fother, fthis, fnew;
+        for (String tag : other.keySet()) {
+            fother = other.get(tag);
+            fthis = get(tag);
+            if (fthis == null) {
+                put(tag, fother);
+            } else {
+                fnew = fother;
+                if (fthis.id > fother.id)
+                    fnew = fthis;
+                put(tag, fnew);
+            }
         }
     }
 }

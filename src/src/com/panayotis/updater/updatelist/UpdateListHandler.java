@@ -13,39 +13,58 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class UpdateListHandler extends DefaultHandler {
 
-    private UpdateList list;
-    private Version vers;
     private Arch arch;
+    private Version latest;
+    private Version current;
+    private int lastid;
 
     public void startElement(String uri, String localName, String qName, Attributes attr) {
         if (qName.equals("alias")) {
-            list.addAlias(new Alias(attr.getValue("name"), attr.getValue("tag"), attr.getValue("os"), attr.getValue("arch")));
+            Arch a = new Arch(attr.getValue("tag"), attr.getValue("name"), attr.getValue("os"), attr.getValue("arch"));
+            if (a.isCurrent())
+                arch = a;
         } else if (qName.equals("version")) {
-            vers = new Version(attr.getValue("id"), attr.getValue("basedir"));
+            lastid = Integer.parseInt(attr.getValue("id"));
         } else if (qName.equals("arch")) {
-            arch = new Arch(list.findAlias(attr.getValue("name")));
+            String tag = attr.getValue("name");
+            if (arch!=null && arch.isTag(tag) || (arch == null && tag.equals("generic"))) {
+                // We have found the correct arch
+                // OR we are using generic tag, if nothing is found
+                current = new Version();
+            }
         } else if (qName.equals("file")) {
-            arch.add(new UpdateFile(attr.getValue("source"), attr.getValue("dest")));
+            if (current != null) {
+                // We are inside a correct arch
+                FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"), attr.getValue("destdir"), lastid);
+                current.put(f.getHash(), f);
+            }
+        } else if (qName.equals("rm")) {
+            if (current != null) {
+                // We are inside a correct arch
+                FileRm f = new FileRm(attr.getValue("name"), attr.getValue("destdir"), lastid);
+                current.put(f.getHash(), f);
+            }
         }
     }
 
     public void endElement(String uri, String localName, String qName) {
-        if (qName.equals("version")) {
-            list.add(vers);
-        } else if (qName.equals("arch")) {
-            vers.add(arch);
+        if (qName.equals("arch")) {
+            if (latest==null) {
+                latest = current;
+            } else {
+                latest.merge(current);
+            }
+            current = null;
         }
     }
 
     public void startDocument() {
-        list = new UpdateList();
+        arch = null;
+        latest = null;
+        current = null;
     }
-    
-    public void endDocument() {
-        list.collapse();
-    }
-    
-    UpdateList getUpdateList() {
-        return list;
+
+    Version getUpdateList() {
+        return latest;
     }
 }

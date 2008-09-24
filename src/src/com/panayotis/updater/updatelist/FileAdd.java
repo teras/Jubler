@@ -9,16 +9,17 @@ package com.panayotis.updater.updatelist;
  *
  * @author teras
  */
-public class UpdateFile implements FileElement {
+public class FileAdd extends FileElement {
+    
     private String source;
-    private String dest;
 
-    UpdateFile(String source, String dest) {
+    FileAdd(String name, String source, String dest, int id) {
+        super(name, dest, id);
         this.source = source;
-        this.dest = dest;
     }
     
     public String toString() {
-        return "("+source+"|"+dest+")";
+        return "+"+source+SEP+name+">"+dest;
     }
+
 }
