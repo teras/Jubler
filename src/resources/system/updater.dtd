@@ -18,7 +18,7 @@
 -->
 
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT updatelist (version|alias)*>
+<!ELEMENT updatelist (alias*, version+)>
 
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT alias EMPTY>
@@ -30,10 +30,14 @@
   >
 
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT version (arch)*>
+<!ELEMENT version (description, (arch)*)>
 <!ATTLIST version
     id CDATA #REQUIRED
+    release CDATA #REQUIRED
   >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT description (#PCDATA)>
 
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT arch (rm|file)*>

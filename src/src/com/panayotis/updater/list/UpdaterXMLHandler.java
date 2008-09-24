@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.updater.updatelist;
+package com.panayotis.updater.list;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
@@ -11,7 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author teras
  */
-public class UpdateListHandler extends DefaultHandler {
+public class UpdaterXMLHandler extends DefaultHandler {
 
     private Arch arch;
     private Version latest;
@@ -62,6 +62,10 @@ public class UpdateListHandler extends DefaultHandler {
         arch = null;
         latest = null;
         current = null;
+    }
+    
+    public void characters(char[] ch, int start, int length) {
+        System.out.println("**"+new String(ch, start, length)+"**");
     }
 
     Version getUpdateList() {

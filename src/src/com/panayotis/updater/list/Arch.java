@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.panayotis.updater.updatelist;
+package com.panayotis.updater.list;
 
 /**
  *

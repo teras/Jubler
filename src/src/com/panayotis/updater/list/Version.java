@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.updater.updatelist;
+package com.panayotis.updater.list;
 
 import com.panayotis.jubler.os.DEBUG;
 import java.util.HashMap;
@@ -30,7 +30,7 @@ public class Version extends HashMap<String, FileElement> {
     public static Version loadChangeLog(String URL) {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            UpdateListHandler handler = new UpdateListHandler();
+            UpdaterXMLHandler handler = new UpdaterXMLHandler();
             parser.parse(URL, handler);
             return handler.getUpdateList();
         } catch (Exception ex) {
