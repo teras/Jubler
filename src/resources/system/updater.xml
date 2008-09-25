@@ -1,69 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <!DOCTYPE updatelist SYSTEM "updater.dtd">
-<updatelist>
+<updatelist application="Jubler" icon="/icons/jubler-logo.png">
 
 <!--
 Generic alias is ALWAYS present - it's the failsafe method 
- <alias name="Generic" tag="generic" os="" arch=""/>
+ <alias name="" tag="any" os="" arch=""/>
 -->
     <alias name="Mac OS X" tag="macosx" os="Mac" arch="i386"/>
     <alias name="Mac OS X" tag="macosx" os="Mac" arch="ppc"/>
     <alias name="Linux i386" tag="linux_i386" os="Linux" arch="i386"/>
     <alias name="Linux AMD64" tag="linux_amd64" os="Linux" arch="amd64"/>
     <alias name="Windows" tag="win32" os="Windows" arch="x86"/>
-    <version id="488" release="3.9.6">
+    <version id="488" release="4.0">
+        <description>
+	Auto-update support. Jubler is able to smart update with minimum user interaction.
+        </description>
+        <arch name="linux_i386">
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" />
+        </arch>
+        <arch name="linux_amd64">
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" />
+        </arch>
+        <arch name="win32">
+            <file name="Jubler.exe" sourcedir="4.0/win32" destdir="${APPHOME}" />
+        </arch>
+        <arch name="macosx">
+            <rm name="Jubler.jar" destdir="${APPHOME}"/>
+        </arch>
+        <arch name="any">
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
+        </arch>
+    </version>
+    <version id="485" release="3.9.6">
         <description>
 	Improved Google translator parsing engine. Fixed compile issues with ffmpeg under OS X 10.4. Fixed Linux GTK Look and Feel bug with time-spinner under Java 6.0.
-        </description>
-        <arch name="linux_i386">
-            <file name="libffdecode.so" sourcedir="3.8.0/linux_i386" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.jar" sourcedir="3.8.0" destdir="${APPHOME}" />
-        </arch>
-        <arch name="linux_amd64">
-            <file name="libffdecode.so" sourcedir="3.8.0/linux_amd64" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.jar" sourcedir="3.8.0" destdir="${APPHOME}" />
-        </arch>
-        <arch name="win32">
-            <file name="ffdecode.dll" sourcedir="3.8.0/win32" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.exe" sourcedir="3.8.0/win32" destdir="${APPHOME}" />
-        </arch>
-        <arch name="macosx">
-            <file name="libffdecode.dylib" sourcedir="3.8.0/macosx" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.jar" sourcedir="3.8.0" destdir="${APPHOME}"/>
-            <file name="other.jar" sourcedir="3.8.0" destdir="${APPHOME}"/>
-            <rm name="Jublericious.jar" destdir="${APPHOME}"/>
-        </arch>
-        <arch name="generic">
-            <file name="Jublericious.jar" sourcedir="3.8.0" destdir="${APPHOME}"/>
-        </arch>
-    </version>
-    <version id="21" release="3.9.5">
-        <description>
-	Autosave/recovery of changed subtitles. Automatic translate of subtitles through Google. Updated to latest FFMPEG.  Small GUI improvements. Better SRT support. Minor bug fixes and enhancements.
-        </description>
-        <arch name="linux_i386">
-            <file name="libffdecode.so" sourcedir="3.9.0/linux_i386" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}" />
-        </arch>
-        <arch name="linux_amd64">
-            <file name="libffdecode.so" sourcedir="3.9.0/linux_amd64" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}" />
-        </arch>
-        <arch name="win32">
-            <file name="ffdecode.dll" sourcedir="3.9.0/win32" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.exe" sourcedir="3.9.0/win32" destdir="${APPHOME}" />
-        </arch>
-        <arch name="macosx">
-            <file name="libffdecode.dylib" sourcedir="3.9.0/macosx" destdir="${APPHOME}/lib"/>
-            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}"/>
-        </arch>
-        <arch name="generic">
-            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}"/>
-        </arch>
-    </version>
-    <version id="20" release="3.9.0">
-        <description>
-	Improved user interface. Preview interface integrated inside main Jubler window. Subtitle number is now visible, if desired. Use of preset file encodings. Visual display, using color, of affected subtitles. Maximize waveform visualization. Support of AAC audio streams.
         </description>
         <arch name="linux_i386">
             <file name="libffdecode.so" sourcedir="3.9.6/linux_i386" destdir="${APPHOME}/lib"/>
@@ -78,10 +48,58 @@ Generic alias is ALWAYS present - it's the failsafe method
             <file name="Jubler.exe" sourcedir="3.9.6/win32" destdir="${APPHOME}" />
         </arch>
         <arch name="macosx">
-            <file name="Jubler.jar" sourcedir="3.9.6" destdir="${APPHOME}"/>
+            <file name="other.jar" sourcedir="3.9.6" destdir="${APPHOME}"/>
+            <rm name="Jublericious.jar" destdir="${APPHOME}"/>
         </arch>
-        <arch name="generic">
-            <file name="Jubler.jar" sourcedir="3.9.6" destdir="${APPHOME}"/>
+        <arch name="any">
+            <file name="Jublericious.jar" sourcedir="3.9.6" destdir="${APPHOME}"/>
+        </arch>
+    </version>
+    <version id="410" release="3.9.5">
+        <description>
+	Autosave/recovery of changed subtitles. Automatic translate of subtitles through Google. Updated to latest FFMPEG.  Small GUI improvements. Better SRT support. Minor bug fixes and enhancements.
+        </description>
+        <arch name="linux_i386">
+            <file name="libffdecode.so" sourcedir="3.9.5/linux_i386" destdir="${APPHOME}/lib"/>
+            <file name="Jubler.jar" sourcedir="3.9.5" destdir="${APPHOME}" />
+        </arch>
+        <arch name="linux_amd64">
+            <file name="libffdecode.so" sourcedir="3.9.5/linux_amd64" destdir="${APPHOME}/lib"/>
+            <file name="Jubler.jar" sourcedir="3.9.5" destdir="${APPHOME}" />
+        </arch>
+        <arch name="win32">
+            <file name="ffdecode.dll" sourcedir="3.9.5/win32" destdir="${APPHOME}/lib"/>
+            <file name="Jubler.exe" sourcedir="3.9.5/win32" destdir="${APPHOME}" />
+        </arch>
+        <arch name="macosx">
+            <file name="libffdecode.dylib" sourcedir="3.9.0/macosx" destdir="${APPHOME}/lib"/>
+            <file name="Jubler.jar" sourcedir="3.9.5" destdir="${APPHOME}"/>
+        </arch>
+        <arch name="any">
+            <file name="Jubler.jar" sourcedir="3.9.5" destdir="${APPHOME}"/>
+        </arch>
+    </version>
+    <version id="400" release="3.9.0">
+        <description>
+	Improved user interface. Preview interface integrated inside main Jubler window. Subtitle number is now visible, if desired. Use of preset file encodings. Visual display, using color, of affected subtitles. Maximize waveform visualization. Support of AAC audio streams.
+        </description>
+        <arch name="linux_i386">
+            <file name="libffdecode.so" sourcedir="3.9.0/linux_i386" destdir="${APPHOME}/lib"/>
+            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}" />
+        </arch>
+        <arch name="linux_amd64">
+            <file name="libffdecode.so" sourcedir="3.9.0/linux_amd64" destdir="${APPHOME}/lib"/>
+            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}" />
+        </arch>
+        <arch name="win32">
+            <file name="ffdecode.dll" sourcedir="3.9.0/win32" destdir="${APPHOME}/lib"/>
+            <file name="Jubler.exe" sourcedir="3.9.0/win32" destdir="${APPHOME}" />
+        </arch>
+        <arch name="macosx">
+            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}"/>
+        </arch>
+        <arch name="any">
+            <file name="Jubler.jar" sourcedir="3.9.0" destdir="${APPHOME}"/>
         </arch>
     </version>
     <version id="19" release="3.4.1">

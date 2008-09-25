@@ -19,7 +19,10 @@
 
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT updatelist (alias*, version+)>
-
+<!ATTLIST updatelist
+    application CDATA #REQUIRED
+  >
+  
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT alias EMPTY>
 <!ATTLIST alias
