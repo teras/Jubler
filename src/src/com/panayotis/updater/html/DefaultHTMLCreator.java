@@ -3,7 +3,6 @@
  * and open the template in the editor.
  */
 package com.panayotis.updater.html;
-import com.panayotis.updater.list.*;
 import java.awt.Color;
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -14,15 +13,16 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class DefaultHTMLCreator implements UpdaterHTMLCreator {
 
     private StringBuffer data;
-    private String backcolor = "rgb(240, 220, 150)";
+    private String backcolor;
 
     public DefaultHTMLCreator() {
         data = new StringBuffer();
         data.append("<html>\n<body>\n");
+        setHeaderBackColor(new Color(210, 210, 230));
     }
 
     public void addInfo(String lastrelease, String information) {
-        data.append("<table border=\"0\">\n");
+        data.append("<table style=\"text-align: left; margin-top: 6px; margin-left: 10px; margin-right: 10px;\" border=\"0\" cellpadding=\"4\">\n");
         data.append("<tr><td style=\"background-color: "+backcolor+";\"><span style=\"font-weight: bold;\">");
         data.append(_("Version"));
         data.append(": ").append(lastrelease);

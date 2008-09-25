@@ -31,7 +31,6 @@ public class UpdaterXMLHandler extends DefaultHandler {
         elements = new UpdaterAppElements(current_release, current_version);
         ignore_version = false;
         display = new DefaultHTMLCreator();
-        ((DefaultHTMLCreator) display).setHeaderBackColor(Color.LIGHT_GRAY);
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attr) {
