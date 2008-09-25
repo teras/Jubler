@@ -7,7 +7,6 @@ package com.panayotis.updater.list;
 import com.panayotis.updater.html.UpdaterAppElements;
 import com.panayotis.updater.html.UpdaterHTMLCreator;
 import com.panayotis.updater.html.DefaultHTMLCreator;
-import java.awt.Color;
 import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 

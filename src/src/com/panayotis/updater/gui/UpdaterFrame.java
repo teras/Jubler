@@ -6,10 +6,12 @@
 package com.panayotis.updater.gui;
 
 import com.panayotis.updater.html.UpdaterAppElements;
+import java.awt.BorderLayout;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import java.awt.Frame;
 import javax.swing.JDialog;
+import javax.swing.border.Border;
 
 /**
  *
@@ -21,6 +23,8 @@ public class UpdaterFrame extends JDialog {
     public UpdaterFrame() {
         super((Frame) null, false);
         initComponents();
+        ProgressP.setVisible(false);
+        MainPanel.add(CommandP, BorderLayout.SOUTH);
     }
 
     public void setAppElements(UpdaterAppElements el) {
@@ -43,7 +47,7 @@ public class UpdaterFrame extends JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        MainPanel = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         InfoPane = new javax.swing.JEditorPane();
@@ -52,20 +56,26 @@ public class UpdaterFrame extends JDialog {
         VersInfoL = new javax.swing.JLabel();
         NotesL = new javax.swing.JLabel();
         IconL = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        CommandP = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        SkipB = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        LaterB = new javax.swing.JButton();
+        UpdateB = new javax.swing.JButton();
+        ProgressP = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jPanel9 = new javax.swing.JPanel();
+        jButton4 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setResizable(false);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        jPanel1.setMinimumSize(new java.awt.Dimension(550, 400));
-        jPanel1.setPreferredSize(new java.awt.Dimension(550, 400));
-        jPanel1.setLayout(new java.awt.BorderLayout());
+        MainPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
+        MainPanel.setMinimumSize(new java.awt.Dimension(550, 400));
+        MainPanel.setPreferredSize(new java.awt.Dimension(550, 400));
+        MainPanel.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setLayout(new java.awt.BorderLayout());
 
@@ -88,54 +98,93 @@ public class UpdaterFrame extends JDialog {
 
         jPanel6.add(jPanel5, java.awt.BorderLayout.PAGE_START);
 
-        jPanel1.add(jPanel6, java.awt.BorderLayout.CENTER);
+        MainPanel.add(jPanel6, java.awt.BorderLayout.CENTER);
 
         IconL.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         IconL.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 0, 0, 0));
-        jPanel1.add(IconL, java.awt.BorderLayout.LINE_START);
+        MainPanel.add(IconL, java.awt.BorderLayout.LINE_START);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        CommandP.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 8));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText(_("Skip this version"));
-        jPanel3.add(jButton1, java.awt.BorderLayout.CENTER);
+        SkipB.setText(_("Skip this version"));
+        jPanel3.add(SkipB, java.awt.BorderLayout.CENTER);
 
-        jPanel2.add(jPanel3, java.awt.BorderLayout.WEST);
+        CommandP.add(jPanel3, java.awt.BorderLayout.WEST);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 12));
         jPanel4.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
-        jButton2.setText(_("Remind me later"));
-        jPanel4.add(jButton2);
+        LaterB.setText(_("Remind me later"));
+        jPanel4.add(LaterB);
 
-        jButton3.setText(_("Install Update"));
-        jPanel4.add(jButton3);
+        UpdateB.setText(_("Install Update"));
+        UpdateB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UpdateBActionPerformed(evt);
+            }
+        });
+        jPanel4.add(UpdateB);
 
-        jPanel2.add(jPanel4, java.awt.BorderLayout.EAST);
+        CommandP.add(jPanel4, java.awt.BorderLayout.EAST);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.SOUTH);
+        MainPanel.add(CommandP, java.awt.BorderLayout.SOUTH);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        ProgressP.setLayout(new java.awt.BorderLayout());
+
+        jPanel8.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
+        jPanel8.setLayout(new java.awt.BorderLayout());
+        jPanel8.add(jProgressBar1, java.awt.BorderLayout.CENTER);
+
+        ProgressP.add(jPanel8, java.awt.BorderLayout.CENTER);
+
+        jPanel9.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 24, 8, 8));
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jButton4.setText(_("Cancel"));
+        jPanel9.add(jButton4, java.awt.BorderLayout.CENTER);
+
+        ProgressP.add(jPanel9, java.awt.BorderLayout.EAST);
+
+        jLabel1.setText(_("Downloading..."));
+        ProgressP.add(jLabel1, java.awt.BorderLayout.LINE_START);
+
+        MainPanel.add(ProgressP, java.awt.BorderLayout.SOUTH);
+
+        getContentPane().add(MainPanel, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void UpdateBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UpdateBActionPerformed
+    CommandP.setVisible(false);
+    ProgressP.setVisible(true);
+    MainPanel.add(ProgressP, BorderLayout.SOUTH);
+}//GEN-LAST:event_UpdateBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel CommandP;
     private javax.swing.JLabel IconL;
     private javax.swing.JEditorPane InfoPane;
+    private javax.swing.JButton LaterB;
+    private javax.swing.JPanel MainPanel;
     private javax.swing.JLabel NewVerL;
     private javax.swing.JLabel NotesL;
+    private javax.swing.JPanel ProgressP;
+    private javax.swing.JButton SkipB;
+    private javax.swing.JButton UpdateB;
     private javax.swing.JLabel VersInfoL;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

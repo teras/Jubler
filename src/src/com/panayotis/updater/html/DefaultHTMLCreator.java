@@ -17,7 +17,10 @@ public class DefaultHTMLCreator implements UpdaterHTMLCreator {
 
     public DefaultHTMLCreator() {
         data = new StringBuffer();
-        data.append("<html>\n<body>\n");
+        data.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
+        data.append("<html>\n");
+        data.append("<head><title></title></head>\n");
+        data.append("<body>\n");
         setHeaderBackColor(new Color(210, 210, 230));
     }
 
@@ -26,8 +29,9 @@ public class DefaultHTMLCreator implements UpdaterHTMLCreator {
         data.append("<tr><td style=\"background-color: "+backcolor+";\"><span style=\"font-weight: bold;\">");
         data.append(_("Version"));
         data.append(": ").append(lastrelease);
-        data.append("</td></tr>\n<td>");
+        data.append("</span></td></tr>\n<tr><td>");
         data.append(information);
+        data.append("</td></tr>\n");
         data.append("</table><br>\n");
     }
 
