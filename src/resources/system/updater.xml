@@ -27,6 +27,9 @@ Generic alias is ALWAYS present - it's the failsafe method
         <arch name="macosx">
             <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
         </arch>
+        <arch name="macosx">
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
+        </arch>
         <arch name="any">
             <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
         </arch>

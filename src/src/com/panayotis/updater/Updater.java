@@ -13,23 +13,32 @@ import com.panayotis.updater.list.Version;
  */
 public class Updater implements UpdaterCallback {
 
-    public Updater(String xmlurl, String release, String version, String apphome) throws UpdaterException {
-        Version vers = Version.loadVersion(xmlurl, release, version, apphome);
-        UpdaterFrame frame = new UpdaterFrame();
-        frame.setAppElements(vers.getAppElements());
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+    private Version vers;
+    private UpdaterFrame frame;
+
+    public Updater(String xmlurl, String release, String version, String apphome, boolean distributionBased) throws UpdaterException {
+        vers = Version.loadVersion(xmlurl, release, version, apphome, distributionBased);
+        if (vers.size() > 0) {
+            System.out.println(vers);
+            frame = new UpdaterFrame(this);
+            frame.setAppElements(vers.getAppElements());
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }
     }
 
     public void actionCommit() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        frame.setVisible(false);
+        frame.dispose();
     }
 
     public void actionDefer() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        frame.setVisible(false);
+        frame.dispose();
     }
 
     public void actionIgnore() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        frame.setVisible(false);
+        frame.dispose();
     }
 }

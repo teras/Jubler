@@ -23,9 +23,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private boolean ignore_version; // true, if this version is too old and should be ignored
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private UpdaterHTMLCreator display; // Store version updated
-
-    public UpdaterXMLHandler(String current_release, String current_version, String app_home) { // We are interested only for version "current_version" onwards
+    private boolean distributionBased = false;
+    // true:  Some files can be ignored, if they are taken care by a distribution
+    // false: All files should be  updated
+    public UpdaterXMLHandler(String current_release, String current_version, String app_home, boolean distributionBased) { // We are interested only for version "current_version" onwards
         elements = new UpdaterAppElements(current_release, current_version, app_home);
+        this.distributionBased = distributionBased;
         ignore_version = false;
         display = new DefaultHTMLCreator();
     }
@@ -51,19 +54,13 @@ public class UpdaterXMLHandler extends DefaultHandler {
                 current = new Version();
             }
         } else if (qName.equals("file")) {
-            if (ignore_version)
+            if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            if (current == null)
-                return;
-            // We are inside a correct arch
             FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"), attr.getValue("destdir"), elements);
             current.put(f.getHash(), f);
         } else if (qName.equals("rm")) {
-            if (ignore_version)
+            if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            if (current == null)
-                return;
-            // We are inside a correct arch
             FileRm f = new FileRm(attr.getValue("name"), attr.getValue("destdir"), elements);
             current.put(f.getHash(), f);
         } else if (qName.equals("updatelist")) {
@@ -71,6 +68,22 @@ public class UpdaterXMLHandler extends DefaultHandler {
             elements.setAppName(attr.getValue("application"));
             elements.setIconpath(attr.getValue("icon"));
         }
+    }
+
+    private boolean shouldIgnore(String force) {
+        if(ignore_version)
+            return true;
+        if (current==null)
+            return true;
+        
+        if (!distributionBased)
+            return false;
+        if (force != null) {
+            force = force.toLowerCase().trim();
+            if (force.equals("true") || force.equals("yes") || force.equals("1"))
+                return false;
+        }
+        return true;
     }
 
     public void endElement(String uri, String localName, String qName) {

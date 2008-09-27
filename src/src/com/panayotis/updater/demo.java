@@ -23,7 +23,8 @@ public class demo {
             String release = current.getProperty("release");
             String version = current.getProperty("version");
             String apphome = "/Users/teras/Works/Development/Java/Jubler/testcase/release";
-            Updater upd = new Updater(xmlurl, release, version, apphome);
+            Updater upd = new Updater(xmlurl, release, version, apphome, false);
+            
         } catch (IOException ex) {
             DEBUG.debug(ex);
         } catch (UpdaterException ex) {

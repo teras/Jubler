@@ -52,14 +52,16 @@
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT file EMPTY>
 <!ATTLIST file
-    destdir CDATA #REQUIRED
     sourcedir CDATA #REQUIRED
+    distignore CDATA "true"
+    destdir CDATA #REQUIRED
     name CDATA #REQUIRED
   >
 
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT rm EMPTY>
 <!ATTLIST rm
+    forceinstall CDATA "false"
     destdir CDATA #REQUIRED
     name CDATA #REQUIRED
   >

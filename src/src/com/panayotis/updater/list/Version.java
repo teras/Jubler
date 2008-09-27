@@ -15,10 +15,10 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class Version extends HashMap<String, FileElement> {
 
-    public static Version loadVersion(String xml, String release, String version, String apphome) throws UpdaterException {
+    public static Version loadVersion(String xml, String release, String version, String apphome, boolean distributionBased) throws UpdaterException {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            UpdaterXMLHandler handler = new UpdaterXMLHandler(release, version, apphome);
+            UpdaterXMLHandler handler = new UpdaterXMLHandler(release, version, apphome, distributionBased);
             parser.parse(xml, handler);
             Version v = handler.getVersion();
             v.appel = handler.getAppElements();

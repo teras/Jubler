@@ -5,6 +5,7 @@
  */
 package com.panayotis.updater.gui;
 
+import com.panayotis.updater.UpdaterCallback;
 import com.panayotis.updater.UpdaterException;
 import com.panayotis.updater.list.UpdaterAppElements;
 import java.awt.BorderLayout;
@@ -22,12 +23,15 @@ import javax.swing.JDialog;
  */
 public class UpdaterFrame extends JDialog {
 
+    private UpdaterCallback callback;
+    
     /** Creates new form UpdaterFrame */
-    public UpdaterFrame() {
+    public UpdaterFrame(UpdaterCallback callback) {
         super((Frame) null, false);
         initComponents();
         ProgressP.setVisible(false);
         MainPanel.add(CommandP, BorderLayout.SOUTH);
+        this.callback = callback;
     }
 
     public void setAppElements(UpdaterAppElements el) throws UpdaterException {
@@ -119,6 +123,11 @@ public class UpdaterFrame extends JDialog {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         SkipB.setText(_("Skip this version"));
+        SkipB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SkipBActionPerformed(evt);
+            }
+        });
         jPanel3.add(SkipB, java.awt.BorderLayout.CENTER);
 
         CommandP.add(jPanel3, java.awt.BorderLayout.WEST);
@@ -179,8 +188,12 @@ private void UpdateBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
 }//GEN-LAST:event_UpdateBActionPerformed
 
 private void LaterBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaterBActionPerformed
-    setVisible(false);
+    callback.actionDefer();
 }//GEN-LAST:event_LaterBActionPerformed
+
+private void SkipBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SkipBActionPerformed
+    callback.actionIgnore();
+}//GEN-LAST:event_SkipBActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CommandP;
