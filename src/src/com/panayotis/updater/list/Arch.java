@@ -11,13 +11,11 @@ package com.panayotis.updater.list;
  */
 public class Arch {
     private String tag;
-    private String name;
     private String os;
     private String arch;
 
-    public Arch(String tag, String name, String os, String arch) {
+    public Arch(String tag, String os, String arch) {
         this.tag = tag.toLowerCase();
-        this.name = name;
         this.os = os.toLowerCase();
         this.arch = arch.toLowerCase();
     }

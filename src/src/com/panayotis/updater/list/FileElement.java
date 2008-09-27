@@ -12,16 +12,26 @@ public abstract class FileElement {
 
     protected static final String SEP = System.getProperty("file.separator");
     protected String name;
-    protected String dest;
+    private String dest;
     protected int id;
 
-    public FileElement(String name, String dest, int id) {
+    public FileElement(String name, String dest, UpdaterAppElements elements) {
+        if (name==null)
+            name = "";
         this.name = name;
+        id = elements.getLastRelease();
+        
+        if (dest==null)
+            dest = "";
+        dest.replaceAll("$\\{APPHOME\\}", elements.getAppHome());
         this.dest = dest;
-        this.id = id;
     }
 
     public String getHash() {
         return dest + SEP + name;
+    }
+    
+    public String getDestination() {
+        return dest;
     }
 }

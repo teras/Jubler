@@ -21,6 +21,8 @@
 <!ELEMENT updatelist (alias*, version+)>
 <!ATTLIST updatelist
     application CDATA #REQUIRED
+    baseurl CDATA #REQUIRED
+    icon CDATA #IMPLIED
   >
   
 <!--- Put your DTDDoc comment here. -->
@@ -29,7 +31,6 @@
     arch CDATA #REQUIRED
     os CDATA #REQUIRED
     tag CDATA #REQUIRED
-    name CDATA #REQUIRED
   >
 
 <!--- Put your DTDDoc comment here. -->

@@ -10,8 +10,8 @@ package com.panayotis.updater.list;
  */
 public class FileRm extends FileElement {
 
-    public FileRm(String name, String dest, int id) {
-        super(name, dest, id);
+    public FileRm(String name, String dest, UpdaterAppElements elements) {
+        super(name, dest, elements);
     }
 
     public String toString() {

@@ -5,13 +5,16 @@
  */
 package com.panayotis.updater.gui;
 
-import com.panayotis.updater.html.UpdaterAppElements;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.updater.list.UpdaterAppElements;
 import java.awt.BorderLayout;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import java.awt.Frame;
+import java.net.MalformedURLException;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.border.Border;
 
 /**
  *
@@ -35,7 +38,13 @@ public class UpdaterFrame extends JDialog {
         InfoPane.setContentType("text/html");
         InfoPane.setText(el.getHTML());
 
-        IconL.setIcon(new javax.swing.ImageIcon(getClass().getResource(el.getIconpath())));
+        try {
+            URL icon = new URL(el.getIconpath());
+            if (icon != null)
+                IconL.setIcon(new ImageIcon(icon));
+        } catch (MalformedURLException ex) {
+            DEBUG.debug(ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -118,6 +127,11 @@ public class UpdaterFrame extends JDialog {
         jPanel4.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
         LaterB.setText(_("Remind me later"));
+        LaterB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LaterBActionPerformed(evt);
+            }
+        });
         jPanel4.add(LaterB);
 
         UpdateB.setText(_("Install Update"));
@@ -163,6 +177,10 @@ private void UpdateBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     ProgressP.setVisible(true);
     MainPanel.add(ProgressP, BorderLayout.SOUTH);
 }//GEN-LAST:event_UpdateBActionPerformed
+
+private void LaterBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LaterBActionPerformed
+    setVisible(false);
+}//GEN-LAST:event_LaterBActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel CommandP;
