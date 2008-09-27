@@ -23,7 +23,7 @@ public abstract class FileElement {
         
         if (dest==null)
             dest = "";
-        dest.replaceAll("$\\{APPHOME\\}", elements.getAppHome());
+        dest = dest.replaceAll("\\$\\{APPHOME\\}", elements.getAppHome());
         this.dest = dest;
     }
 

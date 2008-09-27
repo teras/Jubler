@@ -15,8 +15,6 @@ public class Updater implements UpdaterCallback {
 
     public Updater(String xmlurl, String release, String version, String apphome) throws UpdaterException {
         Version vers = Version.loadVersion(xmlurl, release, version, apphome);
-        if (vers == null)
-            return;
         UpdaterFrame frame = new UpdaterFrame();
         frame.setAppElements(vers.getAppElements());
         frame.setLocationRelativeTo(null);
