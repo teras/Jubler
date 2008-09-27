@@ -15,24 +15,19 @@ import com.panayotis.updater.ApplicationInfo;
 public abstract class FileElement {
 
     protected static final String SEP = System.getProperty("file.separator");
-    protected String name;
+    protected String name = "";
     private String dest;
     protected int release;
     protected ApplicationInfo info;
-    
+
     public FileElement(String name, String dest, UpdaterAppElements elements, ApplicationInfo appinfo) {
-        if (name==null)
-            name = "";
-        this.name = name;
+        if (name != null)
+            this.name = name;
         release = elements.getLastRelease();
-        
-        if (dest==null)
-            dest = "";
-        dest = dest.replaceAll("\\$\\{APPHOME\\}", appinfo.getApplicationHome());
-        this.dest = dest;
-        
+        this.dest = appinfo.updatePath(dest);
+
         info = appinfo;
-        if (info==null) {
+        if (info == null) {
             throw new NullPointerException(_("Application info not provided."));
         }
     }
@@ -40,7 +35,7 @@ public abstract class FileElement {
     public String getHash() {
         return dest + SEP + name;
     }
-    
+
     public String getDestination() {
         return dest;
     }

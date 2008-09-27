@@ -14,13 +14,32 @@ import java.io.File;
  */
 public class ApplicationInfo {
 
-    private String AppHomeDir;
+    private String AppHome;
+    private String AppConfigFile;
+    private String AppUpdaterFile;
+
+    public String getAppConfigFile() {
+        return AppConfigFile;
+    }
+
+    public String updatePath(String path) {
+        if (path == null)
+            path = "";
+        path = path.replaceAll("\\$\\{APPHOME\\}", AppHome);
+        path = path.replaceAll("\\$\\{APPCONFIG\\}", AppConfigFile);
+        path = path.replaceAll("\\$\\{APPUPDATER\\}", AppUpdaterFile);
+        return path;
+    }
+
+    public void setAppConfigFile(String AppConfigFile) {
+        this.AppConfigFile = AppConfigFile;
+    }
+
+    public void setAppUpdaterFile(String AppUpdaterFile) {
+        this.AppUpdaterFile = AppUpdaterFile;
+    }
     private int release = -1;
     private String version = "0.0.0";
-
-    public String getApplicationHome() {
-        return AppHomeDir;
-    }
 
     public int getRelease() {
         return release;
@@ -35,15 +54,15 @@ public class ApplicationInfo {
      */
     private boolean distributionBased = false;
 
-    public ApplicationInfo(String AppHomeDir) {
-        if (AppHomeDir == null) {
+    public ApplicationInfo(String AppHome) {
+        if (AppHome == null) {
             throw new NullPointerException(_("Application path can not be null."));
         }
-        File f = new File(AppHomeDir);
+        File f = new File(AppHome);
         if (!f.isDirectory()) {
-            throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHomeDir));
+            throw new IllegalArgumentException(_("Unable to find Application path {0}.", AppHome));
         }
-        this.AppHomeDir = AppHomeDir;
+        this.AppHome = AppHome;
     }
 
     public boolean isDistributionBased() {
