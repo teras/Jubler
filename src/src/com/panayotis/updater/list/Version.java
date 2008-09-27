@@ -4,7 +4,7 @@
  */
 package com.panayotis.updater.list;
 
-import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.updater.UpdaterException;
 import java.util.HashMap;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -15,7 +15,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class Version extends HashMap<String, FileElement> {
 
-    public static Version loadVersion(String xml, String release, String version, String apphome) {
+    public static Version loadVersion(String xml, String release, String version, String apphome) throws UpdaterException {
         try {
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             UpdaterXMLHandler handler = new UpdaterXMLHandler(release, version, apphome);
@@ -24,10 +24,10 @@ public class Version extends HashMap<String, FileElement> {
             v.appel = handler.getAppElements();
             return v;
         } catch (Exception ex) {
-            DEBUG.debug(ex);
+            throw new UpdaterException(ex.getMessage());
         }
-        return null;
     }
+    
     private UpdaterAppElements appel;
 
     public String toString() {

@@ -5,7 +5,7 @@
  */
 package com.panayotis.updater.gui;
 
-import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.updater.UpdaterException;
 import com.panayotis.updater.list.UpdaterAppElements;
 import java.awt.BorderLayout;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -30,7 +30,7 @@ public class UpdaterFrame extends JDialog {
         MainPanel.add(CommandP, BorderLayout.SOUTH);
     }
 
-    public void setAppElements(UpdaterAppElements el) {
+    public void setAppElements(UpdaterAppElements el) throws UpdaterException {
         NewVerL.setText(_("A new version of {0} is available!", el.getAppName()));
         VersInfoL.setText(_("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), el.getCurVersion()));
         setTitle(_("New version of {0} found!", el.getAppName()));
@@ -43,7 +43,7 @@ public class UpdaterFrame extends JDialog {
             if (icon != null)
                 IconL.setIcon(new ImageIcon(icon));
         } catch (MalformedURLException ex) {
-            DEBUG.debug(ex);
+            throw new UpdaterException("Unable to load  icon "+ex.getMessage());
         }
     }
 

@@ -4,7 +4,6 @@
  */
 package com.panayotis.updater.download;
 
-import com.panayotis.jubler.os.DEBUG;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,8 +19,8 @@ public class Downloader {
 
     private final static int BUFFER = 2048;
 
-    public static String download(String URL, String filename) {
-        String status = null;
+    public static void download(String URL, String filename) throws IOException {
+        IOException status = null;
         int count;
         byte[] buffer = new byte[BUFFER];
 
@@ -34,24 +33,24 @@ public class Downloader {
                 out.write(buffer, 0, count);
             }
         } catch (IOException ex) {
-            DEBUG.debug(ex);
-            status = ex.getMessage();
+            status = ex;
         } finally {
             try {
                 if (in != null)
                     in.close();
             } catch (IOException ex) {
-                DEBUG.debug(ex);
-                status = ex.getMessage();
+                if (status!= null)
+                    status = ex;
             }
             try {
                 if (out != null)
                     out.close();
             } catch (IOException ex) {
-                DEBUG.debug(ex);
-                status = ex.getMessage();
+                if (status!=null)
+                status = ex;
             }
         }
-        return status;
+        if(status!=null)
+            throw status;
     }
 }
