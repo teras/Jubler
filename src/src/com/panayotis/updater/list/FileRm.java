@@ -4,14 +4,16 @@
  */
 package com.panayotis.updater.list;
 
+import com.panayotis.updater.ApplicationInfo;
+
 /**
  *
  * @author teras
  */
 public class FileRm extends FileElement {
 
-    public FileRm(String name, String dest, UpdaterAppElements elements) {
-        super(name, dest, elements);
+    public FileRm(String name, String dest, UpdaterAppElements elements, ApplicationInfo info) {
+        super(name, dest, elements, info);
     }
 
     public String toString() {

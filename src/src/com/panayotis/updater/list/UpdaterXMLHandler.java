@@ -4,7 +4,7 @@
  */
 package com.panayotis.updater.list;
 
-import com.panayotis.updater.UpdaterException;
+import com.panayotis.updater.ApplicationInfo;
 import com.panayotis.updater.html.UpdaterHTMLCreator;
 import com.panayotis.updater.html.DefaultHTMLCreator;
 import org.xml.sax.Attributes;
@@ -23,14 +23,13 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private boolean ignore_version; // true, if this version is too old and should be ignored
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private UpdaterHTMLCreator display; // Store version updated
-    private boolean distributionBased = false;
-    // true:  Some files can be ignored, if they are taken care by a distribution
-    // false: All files should be  updated
-    public UpdaterXMLHandler(String current_release, String current_version, String app_home, boolean distributionBased) { // We are interested only for version "current_version" onwards
-        elements = new UpdaterAppElements(current_release, current_version, app_home);
-        this.distributionBased = distributionBased;
+    private ApplicationInfo appinfo;    // Remember information about the current running application
+
+    public UpdaterXMLHandler(ApplicationInfo appinfo) { // We are interested only for version "current_version" onwards
+        elements = new UpdaterAppElements();
         ignore_version = false;
         display = new DefaultHTMLCreator();
+        this.appinfo = appinfo;
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attr) {
@@ -42,7 +41,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             int release_last = Integer.parseInt(attr.getValue("id"));
             String version_last = attr.getValue("release");
             elements.updateVersion(release_last, version_last);
-            ignore_version = release_last <= elements.getCurRelease();
+            ignore_version = release_last <= appinfo.getRelease();
         } else if (qName.equals("description")) {
             descbuffer = new StringBuffer();
         } else if (qName.equals("arch")) {
@@ -56,12 +55,12 @@ public class UpdaterXMLHandler extends DefaultHandler {
         } else if (qName.equals("file")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"), attr.getValue("destdir"), elements);
+            FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"), attr.getValue("destdir"), elements, appinfo);
             current.put(f.getHash(), f);
         } else if (qName.equals("rm")) {
             if (shouldIgnore(attr.getValue("forceinstall")))
                 return;
-            FileRm f = new FileRm(attr.getValue("name"), attr.getValue("destdir"), elements);
+            FileRm f = new FileRm(attr.getValue("name"), attr.getValue("destdir"), elements, appinfo);
             current.put(f.getHash(), f);
         } else if (qName.equals("updatelist")) {
             elements.setBaseURL(attr.getValue("baseurl"));
@@ -76,7 +75,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
         if (current==null)
             return true;
         
-        if (!distributionBased)
+        if (!appinfo.isDistributionBased())
             return false;
         if (force != null) {
             force = force.toLowerCase().trim();

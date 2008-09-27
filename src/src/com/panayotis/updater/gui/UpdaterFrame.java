@@ -5,6 +5,7 @@
  */
 package com.panayotis.updater.gui;
 
+import com.panayotis.updater.ApplicationInfo;
 import com.panayotis.updater.UpdaterCallback;
 import com.panayotis.updater.UpdaterException;
 import com.panayotis.updater.list.UpdaterAppElements;
@@ -34,9 +35,9 @@ public class UpdaterFrame extends JDialog {
         this.callback = callback;
     }
 
-    public void setAppElements(UpdaterAppElements el) throws UpdaterException {
+    public void setInformation(UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
         NewVerL.setText(_("A new version of {0} is available!", el.getAppName()));
-        VersInfoL.setText(_("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), el.getCurVersion()));
+        VersInfoL.setText(_("{0} version {1} is now available - you have {2}.", el.getAppName(), el.getNewVersion(), info.getVersion()));
         setTitle(_("New version of {0} found!", el.getAppName()));
 
         InfoPane.setContentType("text/html");

@@ -19,11 +19,12 @@ public class demo {
             Properties current = new Properties();
             current.load(Updater.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
 
-            String xmlurl = "file:////Users/teras/Works/Development/Java/Jubler/resources/system/updater.xml";
-            String release = current.getProperty("release");
-            String version = current.getProperty("version");
-            String apphome = "/Users/teras/Works/Development/Java/Jubler/testcase/release";
-            Updater upd = new Updater(xmlurl, release, version, apphome, false);
+            String URL = "file:////Users/teras/Works/Development/Java/Jubler/resources/system/updater.xml";
+            ApplicationInfo ap = new ApplicationInfo("/Users/teras/Works/Development/Java/Jubler/testcase/release");
+            ap.setCurrentVersion(current.getProperty("release"), current.getProperty("version"));
+            ap.setDistributionBased(false);
+                    
+            Updater upd = new Updater(URL, ap);
             
         } catch (IOException ex) {
             DEBUG.debug(ex);

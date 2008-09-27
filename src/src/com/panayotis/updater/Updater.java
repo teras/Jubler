@@ -16,12 +16,12 @@ public class Updater implements UpdaterCallback {
     private Version vers;
     private UpdaterFrame frame;
 
-    public Updater(String xmlurl, String release, String version, String apphome, boolean distributionBased) throws UpdaterException {
-        vers = Version.loadVersion(xmlurl, release, version, apphome, distributionBased);
+    public Updater(String xmlurl, ApplicationInfo apinfo) throws UpdaterException {
+        vers = Version.loadVersion(xmlurl, apinfo);
         if (vers.size() > 0) {
             System.out.println(vers);
             frame = new UpdaterFrame(this);
-            frame.setAppElements(vers.getAppElements());
+            frame.setInformation(vers.getAppElements(), apinfo);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         }
