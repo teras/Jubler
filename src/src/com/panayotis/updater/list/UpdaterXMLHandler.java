@@ -4,6 +4,7 @@
  */
 package com.panayotis.updater.list;
 
+import com.panayotis.updater.UpdaterException;
 import com.panayotis.updater.html.UpdaterHTMLCreator;
 import com.panayotis.updater.html.DefaultHTMLCreator;
 import org.xml.sax.Attributes;
@@ -20,7 +21,6 @@ public class UpdaterXMLHandler extends DefaultHandler {
     private Version latest; // The list of the latest files, in order to upgrade
     private Version current;    // The list of files for the current reading "version" object
     private boolean ignore_version; // true, if this version is too old and should be ignored
-    private String baseURL;         // The base URL of every file activity
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
     private UpdaterHTMLCreator display; // Store version updated
 
@@ -56,7 +56,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
             if (current == null)
                 return;
             // We are inside a correct arch
-            FileAdd f = new FileAdd(attr.getValue("name"), baseURL + attr.getValue("sourcedir"), attr.getValue("destdir"), elements);
+            FileAdd f = new FileAdd(attr.getValue("name"), attr.getValue("sourcedir"), attr.getValue("destdir"), elements);
             current.put(f.getHash(), f);
         } else if (qName.equals("rm")) {
             if (ignore_version)
@@ -67,9 +67,9 @@ public class UpdaterXMLHandler extends DefaultHandler {
             FileRm f = new FileRm(attr.getValue("name"), attr.getValue("destdir"), elements);
             current.put(f.getHash(), f);
         } else if (qName.equals("updatelist")) {
-            baseURL = attr.getValue("baseurl") + "/";
+            elements.setBaseURL(attr.getValue("baseurl"));
             elements.setAppName(attr.getValue("application"));
-            elements.setIconpath(baseURL + attr.getValue("icon"));
+            elements.setIconpath(attr.getValue("icon"));
         }
     }
 

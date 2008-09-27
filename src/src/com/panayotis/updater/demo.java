@@ -7,8 +7,6 @@ package com.panayotis.updater;
 import com.panayotis.jubler.os.DEBUG;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

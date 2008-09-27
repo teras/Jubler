@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.panayotis.updater.list;
 
+import com.panayotis.updater.UpdaterException;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import java.io.File;
@@ -17,6 +17,7 @@ public class UpdaterAppElements {
 
     private String AppHome;
     private String AppName;
+    private String baseURL = "";
     private String iconpath;
     private String HTML;
     private int newrelease = -1;
@@ -36,8 +37,8 @@ public class UpdaterAppElements {
         if (ver == null)
             ver = "0.0.0";
         curversion = ver;
-        
-        if (home==null) {
+
+        if (home == null) {
             throw new NullPointerException(_("Application path can not be null."));
         }
         File f = new File(home);
@@ -81,6 +82,16 @@ public class UpdaterAppElements {
         return HTML;
     }
 
+    public String getBaseURL() {
+        return baseURL;
+    }
+
+    void setBaseURL(String base) {
+        if (base == null)
+            throw new IllegalArgumentException("Base URL should be defined in XML.");
+        baseURL = base + "/";
+    }
+
     void setHTML(String HTML) {
         this.HTML = HTML;
     }
@@ -90,9 +101,9 @@ public class UpdaterAppElements {
     }
 
     void setIconpath(String iconpath) {
-        if (iconpath==null)
+        if (iconpath == null)
             iconpath = "";
-        this.iconpath = iconpath;
+        this.iconpath = baseURL+iconpath;
     }
 
     void updateVersion(int lastrelease, String lastversion) {
@@ -102,7 +113,7 @@ public class UpdaterAppElements {
             newrelease = lastrelease;
             newversion = lastversion;
         }
-        if (newversion==null)
+        if (newversion == null)
             newversion = "0.0.0";
     }
 
