@@ -52,27 +52,22 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class SystemDependent {
     
-    private final static String OS;
+    private final static boolean IS_LINUX;
+    private final static boolean IS_WINDOWS;
+    private final static boolean IS_MACOSX;
+    
     public final static String PROG_EXT;
     
     static {
-        OS = System.getProperty("os.name").toLowerCase();
+        String OS = System.getProperty("os.name").toLowerCase();
+        IS_LINUX = OS.indexOf("linux") >= 0;
+        IS_WINDOWS = OS.indexOf("windows") >= 0;
+        IS_MACOSX = OS.indexOf("mac") >= 0;
         
-        if (isWindows()) PROG_EXT=".exe";
+        if (IS_WINDOWS) PROG_EXT=".exe";
         else PROG_EXT="";
     }
-    
-    private static boolean isLinux() {
-        return OS.indexOf("linux") >= 0;
-    }
-    
-    private static boolean isWindows() {
-        return OS.indexOf("windows") >= 0;
-    }
-    private static boolean isMacOSX() {
-        return OS.indexOf("mac") >= 0;
-    }
-    
+        
     public static int getSliderLOffset() {
         return 7;
     }
@@ -87,7 +82,7 @@ public class SystemDependent {
                 .replaceAll("\\.", "").replaceAll("_", "")
                 .compareTo("16006")) >= 0;
         try {
-           if (newjava || isWindows() || isMacOSX()) {
+           if (newjava || IS_WINDOWS || IS_MACOSX) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
            }
         } catch ( ClassNotFoundException e ) {
@@ -98,13 +93,13 @@ public class SystemDependent {
     }
     
     public static void setSmallDecoration(JRootPane pane) {
-        if (isMacOSX()) {
+        if (IS_MACOSX) {
             pane.putClientProperty("Window.style", "small");
         }
     }
     
     public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
-        if (isMacOSX()) {
+        if (IS_MACOSX) {
             about.getParent().remove(about);
             prefs.getParent().remove(prefs);
             quit.getParent().remove(quit);
@@ -114,7 +109,7 @@ public class SystemDependent {
     
     public static void initApplication() {
         /* In Linux this is a dummy function */
-        if (isMacOSX()) {
+        if (IS_MACOSX) {
             JublerApp japp = new JublerApp();
         }
     }
@@ -124,7 +119,7 @@ public class SystemDependent {
         return 4;
     }
     public static String getKeyMods(boolean [] mods) {
-        if (isMacOSX()) {
+        if (IS_MACOSX) {
             StringBuffer res = new StringBuffer();
             if (mods[0]) res.append("\u2318");
             if (mods[1]) res.append("\u2325");
@@ -147,23 +142,23 @@ public class SystemDependent {
     }
     
     public static int getDefaultKeyModifier() {
-        if (isMacOSX()) return 0;
+        if (IS_MACOSX) return 0;
         return 2;
     }
     
     public static int getBundleOrFileID() {
-        if (isMacOSX()) return ExtPath.BUNDLE_ONLY;
+        if (IS_MACOSX) return ExtPath.BUNDLE_ONLY;
         return ExtPath.FILE_ONLY;
     }
     
     @SuppressWarnings("unchecked")
     public static void openURL(String url) {
         try {
-            if (isMacOSX()) {
+            if (IS_MACOSX) {
                 Class fileMgr = Class.forName("com.apple.eio.FileManager");
                 Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] {String.class});
                 openURL.invoke(null, new Object[] {url});
-            } else if (isWindows())
+            } else if (IS_WINDOWS)
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
             else { //assume Unix or Linux
                 String[] browsers = {
@@ -187,10 +182,10 @@ public class SystemDependent {
     public static String getDefaultMPlayerArgs() {	 
          String font = "";	 
  	 
-         if (isLinux()) {	 
+         if (IS_LINUX) {	 
              font = " -fontconfig";	 
          } else {	 
-             if (isWindows()) {	 
+             if (IS_WINDOWS) {	 
                  font=" -font " + System.getenv("SystemRoot")+"\\fonts\\arial.ttf";	 
              } else {	 
                  File freesans = new File(SystemFileFinder.getJublerAppPath()+"/lib/freesans.ttf");	 
@@ -208,7 +203,7 @@ public class SystemDependent {
     
     /* Force ASpell to use UTF-8 encoding - broken on Windows */
     public static boolean forceASpellEncoding() {
-        return !isWindows();
+        return !IS_WINDOWS;
     }
     
     
@@ -217,7 +212,7 @@ public class SystemDependent {
      * Under other platforms does not do anything
      */
     public static void appendSpotlightApplication(String name, Vector<ExtPath> res) {
-        if (!isMacOSX()) return;
+        if (!IS_MACOSX) return;
         if (name==null) return;
         Process proc = null;
         String[] cmd = new String[2];
@@ -236,7 +231,7 @@ public class SystemDependent {
     }
     
     public static void appendLocateApplication(String name, Vector<ExtPath> res) {
-        if (isWindows()) return;
+        if (IS_WINDOWS) return;
         if (name==null) return;
         
         name = name.toLowerCase();
@@ -272,7 +267,7 @@ public class SystemDependent {
     public static boolean canWrite(File f) {
         if (f==null)
             return false;
-        if (!isWindows()) {
+        if (!IS_WINDOWS) {
             return f.canWrite();
         }
         /* Do this horrible trick to make sure that a file is REALLY writable... */
@@ -320,24 +315,24 @@ public class SystemDependent {
     public final static String getConfigPath() {
         String home = System.getProperty("user.home") + System.getProperty("file.separator");
         
-        if (isWindows()) return System.getenv("APPDATA")+"\\Jubler\\config.txt";
-        if (isMacOSX()) return home+"Library/Preferences/com.panayotis.jubler.config";
+        if (IS_WINDOWS) return System.getenv("APPDATA")+"\\Jubler\\config.txt";
+        if (IS_MACOSX) return home+"Library/Preferences/com.panayotis.jubler.config";
         return home+".jubler/config";
     }
     
     public final static String getLogPath() {
         String home = System.getProperty("user.home") + System.getProperty("file.separator");
         
-        if (isWindows()) return System.getenv("APPDATA")+"\\Jubler\\log.txt";
-        if (isMacOSX()) return home+"Library/Logs/Jubler.log";
+        if (IS_WINDOWS) return System.getenv("APPDATA")+"\\Jubler\\log.txt";
+        if (IS_MACOSX) return home+"Library/Logs/Jubler.log";
         return home+".jubler/output.log";
     }
     
     public final static String getAutoSavePath() {
         String home = System.getProperty("user.home") + System.getProperty("file.separator");
         
-        if (isWindows()) return System.getenv("APPDATA")+"\\Jubler\\autosave";
-        if (isMacOSX()) return home+"Library/Application Support/Jubler/autosave";
+        if (IS_WINDOWS) return System.getenv("APPDATA")+"\\Jubler\\autosave";
+        if (IS_MACOSX) return home+"Library/Application Support/Jubler/autosave";
         return home+".jubler/autosave";
     }
 }
