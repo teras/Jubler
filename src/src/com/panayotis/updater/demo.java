@@ -6,6 +6,7 @@ package com.panayotis.updater;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -23,8 +24,7 @@ public class demo {
             String URL = "file:////Users/teras/Works/Development/Java/Jubler/resources/system/updater.xml";
             ApplicationInfo ap = new ApplicationInfo("/Users/teras/Works/Development/Java/Jubler/testcase/release");
             ap.setCurrentVersion(current.getProperty("release"), current.getProperty("version"));
-            ap.setAppConfigFile(SystemDependent.getConfigPath());
-            ap.setAppUpdaterFile(SystemDependent.getConfigPath());       
+            ap.setAppConfigFile(new File(SystemDependent.getConfigPath()).getParent());       
             
             ap.setDistributionBased(false);
             Updater upd = new Updater(URL, ap);

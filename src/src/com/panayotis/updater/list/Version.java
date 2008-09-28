@@ -6,9 +6,13 @@ package com.panayotis.updater.list;
 
 import com.panayotis.updater.ApplicationInfo;
 import com.panayotis.updater.UpdaterException;
+import com.panayotis.updater.UpdaterProperties;
+import java.io.IOException;
 import java.util.HashMap;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -16,21 +20,29 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class Version extends HashMap<String, FileElement> {
 
-    public static Version loadVersion(String xml, ApplicationInfo apinfo) throws UpdaterException {
+    private UpdaterAppElements appel;
+    private UpdaterProperties appprop;
+    
+    public static Version loadVersion(String xml, ApplicationInfo appinfo) throws UpdaterException {
         try {
+            UpdaterProperties prop = new UpdaterProperties(appinfo);
+            if (prop.isTooSoon())
+                return new Version();
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            UpdaterXMLHandler handler = new UpdaterXMLHandler(apinfo);
+            UpdaterXMLHandler handler = new UpdaterXMLHandler(appinfo);
             parser.parse(xml, handler);
             Version v = handler.getVersion();
             v.appel = handler.getAppElements();
+            v.appprop = prop;
             return v;
-        } catch (Exception ex) {
-            System.out.println(ex.toString()+ " " +ex.getMessage());
+        } catch (SAXException ex) {
+            throw new UpdaterException(ex.getMessage());
+        } catch (IOException ex) {
+            throw new UpdaterException(ex.getMessage());
+        } catch (ParserConfigurationException ex) {
             throw new UpdaterException(ex.getMessage());
         }
     }
-    
-    private UpdaterAppElements appel;
 
     public String toString() {
         StringBuffer b = new StringBuffer();
@@ -46,6 +58,10 @@ public class Version extends HashMap<String, FileElement> {
 
     public UpdaterAppElements getAppElements() {
         return appel;
+    }
+    
+    public UpdaterProperties getUpdaterProperties() {
+        return appprop;
     }
 
     void merge(Version other) {

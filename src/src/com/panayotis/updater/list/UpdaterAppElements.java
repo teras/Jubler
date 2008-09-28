@@ -77,4 +77,8 @@ public class UpdaterAppElements {
     public String getNewVersion() {
         return newversion;
     }
+    
+    public int getNewRelease() {
+        return newrelease;
+    }
 }

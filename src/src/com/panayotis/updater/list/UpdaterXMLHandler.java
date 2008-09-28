@@ -18,7 +18,7 @@ public class UpdaterXMLHandler extends DefaultHandler {
 
     private UpdaterAppElements elements; // Location to store various application elements, needed in GUI
     private Arch arch;  // The stored architecture of the running system - null if unknown
-    private Version latest; // The list of the latest files, in order to upgrade
+    private Version latest; // The full aggregated list of the latest files, in order to upgrade
     private Version current;    // The list of files for the current reading "version" object
     private boolean ignore_version; // true, if this version is too old and should be ignored
     private StringBuffer descbuffer;    // Temporary buffer to store descriptions
@@ -70,11 +70,11 @@ public class UpdaterXMLHandler extends DefaultHandler {
     }
 
     private boolean shouldIgnore(String force) {
-        if(ignore_version)
+        if (ignore_version)
             return true;
-        if (current==null)
+        if (current == null)
             return true;
-        
+
         if (!appinfo.isDistributionBased())
             return false;
         if (force != null) {
@@ -122,6 +122,10 @@ public class UpdaterXMLHandler extends DefaultHandler {
     }
 
     Version getVersion() {
+        // Make sure that we are never rturning null.
+        // note: latest is null if no updates were found at all
+        if (latest == null)
+            return new Version();
         return latest;
     }
 }

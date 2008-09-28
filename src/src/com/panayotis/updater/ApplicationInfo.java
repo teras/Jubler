@@ -4,10 +4,10 @@
  */
 package com.panayotis.updater;
 
+import com.panayotis.updater.utils.FileUtils;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -19,7 +19,7 @@ public class ApplicationInfo {
     protected static final String SEP = System.getProperty("file.separator");
     private String AppHome;
     private String AppUpdaterFile;
-    private String AppConfigFile = null;
+    private String AppConfigFile;
     private int release = -1;
     private String version = "0.0.0";
     /**
@@ -38,16 +38,15 @@ public class ApplicationInfo {
         }
         this.AppHome = AppHome;
         AppUpdaterFile = AppHome + SEP + "updater.xml";
+        AppConfigFile = AppHome + SEP + "config.xml";
     }
 
     public boolean isDistributionBased() {
         return distributionBased;
     }
 
-    public String getAppConfigFile() {
-        if (AppConfigFile == null)
-            throw new NullPointerException("Application configuration file unknown! Please set it first.");
-        return AppConfigFile;
+    String getAppUpdaterFile() {
+        return AppUpdaterFile;
     }
 
     public String updatePath(String path) {
@@ -59,27 +58,23 @@ public class ApplicationInfo {
         return path;
     }
 
-    private void fileIsValid(String file, String type) throws IOException {
-        if (file == null) {
-            throw new NullPointerException(type + " file could not be null.");
+    /* This new release has to do with ignoring a specific version */
+    public void updateRelease(String lastrelease) {
+        try {
+            int lastrel = Integer.parseInt(lastrelease);
+            if (lastrel > release)
+                release = lastrel;
+        } catch (NumberFormatException ex) {
         }
-        File f = new File(file);
-        File p = f.getParentFile();
-        if (!(p.exists()))
-            p.mkdirs();
-        if (!(p.exists()) && p.isDirectory() && p.canWrite())
-            throw new IOException(type + "parent file is not writable.");
-        if (f.exists() && (!f.canWrite()))
-            throw new IOException(type + " file is not writable.");
     }
 
     public void setAppConfigFile(String AppConfigFile) throws IOException {
-        fileIsValid(AppConfigFile, "Application configuration");
+        FileUtils.fileIsValid(AppConfigFile, "Application configuration");
         this.AppConfigFile = AppConfigFile;
     }
 
     public void setAppUpdaterFile(String AppUpdaterFile) throws IOException {
-        fileIsValid(AppUpdaterFile, "Application updater");
+        FileUtils.fileIsValid(AppUpdaterFile, "Application updater");
         this.AppUpdaterFile = AppUpdaterFile;
     }
 
