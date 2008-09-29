@@ -1,5 +1,5 @@
 /*
- * _.java
+ * I18N.java
  *
  * Created on 21 Αύγουστος 2005, 7:18 πμ
  *
@@ -23,9 +23,7 @@
 
 package com.panayotis.jubler.i18n;
 
-import com.panayotis.jubler.i18n.GettextResource;
 import java.text.MessageFormat;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 
