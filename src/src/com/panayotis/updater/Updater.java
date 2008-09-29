@@ -19,6 +19,7 @@ public class Updater implements UpdaterCallback {
     public Updater(String xmlurl, ApplicationInfo apinfo) throws UpdaterException {
         vers = Version.loadVersion(xmlurl, apinfo);
         if (vers.size() > 0) {
+            System.out.println(vers.toString());
             frame = new UpdaterFrame(this);
             frame.setInformation(vers.getAppElements(), apinfo);
             frame.setLocationRelativeTo(null);

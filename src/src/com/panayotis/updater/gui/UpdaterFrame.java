@@ -33,6 +33,7 @@ public class UpdaterFrame extends JDialog {
         ProgressP.setVisible(false);
         MainPanel.add(CommandP, BorderLayout.SOUTH);
         this.callback = callback;
+        LaterB.requestFocus();
     }
 
     public void setInformation(UpdaterAppElements el, ApplicationInfo info) throws UpdaterException {
@@ -137,6 +138,7 @@ public class UpdaterFrame extends JDialog {
         jPanel4.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
 
         LaterB.setText(_("Remind me later"));
+        LaterB.setSelected(true);
         LaterB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LaterBActionPerformed(evt);
