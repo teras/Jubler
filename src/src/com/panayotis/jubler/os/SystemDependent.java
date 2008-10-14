@@ -361,7 +361,8 @@ class ApplicationHandler extends ApplicationAdapter {
     }
     
     public void handleQuit(ApplicationEvent event) {
-        StaticJubler.prepareQuitAll();
+        if (StaticJubler.requestQuit(null))
+            System.exit(0);
         event.setHandled(false);
     }
     

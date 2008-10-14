@@ -22,6 +22,7 @@
  */
 
 package com.panayotis.jubler;
+import com.panayotis.jubler.information.AutoUpdater;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
@@ -105,17 +106,11 @@ public class Main {
         /* Load arguments, in a mac way */
         SystemDependent.initApplication();
 
-        /* Check current version in a new thread */
-        Thread versioncheck = new Thread() {
-            public void run() {
-                StaticJubler.initVersion();
-            }
-        };
-
         new Jubler();   // Display initial Jubler window
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
-        versioncheck.start();
+        
+        AutoUpdater upd = new AutoUpdater();
     }
         
     static private MainSplash splash;

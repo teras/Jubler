@@ -27,7 +27,6 @@ import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.information.JAbout;
-import com.panayotis.jubler.information.JVersion;
 import com.panayotis.jubler.options.*;
 import com.panayotis.jubler.options.gui.JUnsaved;
 import com.panayotis.jubler.os.AutoSaver;
@@ -49,8 +48,6 @@ import javax.swing.KeyStroke;
  * @author teras
  */
 public class StaticJubler {
-    private static JVersion version;
-    
     private static int screen_x, screen_y, screen_width, screen_height, screen_state;
     private static final int SCREEN_DELTAX = 24;
     private static final int SCREEN_DELTAY = 24;
@@ -125,13 +122,7 @@ public class StaticJubler {
     }
     
     
-    public static void quit(Jubler window) {
-        setWindowPosition(window, true);
-        AutoSaver.cleanup();
-        System.exit(0);
-    }
-    
-    public static void prepareQuitAll() {
+    public static boolean requestQuit(Jubler request) {
         Vector <String>unsaved = new Vector<String>();
         for (Jubler j : Jubler.windows) {
             if (j.isUnsaved()) {
@@ -140,9 +131,16 @@ public class StaticJubler {
         }
         if (unsaved.size() > 0) {
             if (!JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler")))
-                return;
+                return false;
         }
-        quit(Jubler.windows.size() > 0 ? Jubler.windows.get(Jubler.windows.size() - 1) : null);
+        
+        if (request == null && Jubler.windows.size() > 0)
+            request = Jubler.windows.get(Jubler.windows.size() - 1);
+        if (request != null)
+            setWindowPosition(request, true);
+
+        AutoSaver.cleanup();
+        return true;
     }
 
     public static void updateMenus(Jubler j) {
@@ -226,11 +224,4 @@ public class StaticJubler {
         return item;
     }
     
-    
-    public static void initVersion() {
-        version = new JVersion();
-    }
-    public static String getCurrentVersion() {
-        return JVersion.getCurrentVersion();
-    }
 }

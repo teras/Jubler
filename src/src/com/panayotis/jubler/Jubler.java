@@ -1432,7 +1432,8 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_SynchronizeTMActionPerformed
     
     private void QuitFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitFMActionPerformed
-        StaticJubler.prepareQuitAll();
+        if (StaticJubler.requestQuit(this))
+            System.exit(0);
     }//GEN-LAST:event_QuitFMActionPerformed
     
     private void ReparentTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReparentTMActionPerformed
@@ -2324,7 +2325,8 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
                 StaticJubler.jumpWindowPosition(false);
                 new Jubler();
             } else {
-                StaticJubler.quit(this);
+                if (StaticJubler.requestQuit(this))
+                    System.exit(0);
             }
         }
         
