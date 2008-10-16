@@ -1955,7 +1955,6 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
-    PreviewTB.setToolTipText(PreviewTB.isSelected() ? _("Disable Preview") : _("Enable Preview"));
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2265,7 +2264,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         AudioPreviewC.setEnabled(status);
         MaxWaveC.setEnabled(status);
         PlayAudioC.setEnabled(status);
-        
+        PreviewTB.setToolTipText(PreviewTB.isSelected() ? _("Disable Preview") : _("Enable Preview"));
+
         if (status) {
             mfile.validateMediaFile(subs, false);
             mfile.initAudioCache(preview.getDecoderListener());
