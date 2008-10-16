@@ -1439,21 +1439,24 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CurrentTTMActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JToggleButton" name="PreviewTB">
+            <Component class="javax.swing.JButton" name="PreviewTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/icons/preview.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Enable/disable preview&quot;)" type="code"/>
+                  <Connection code="_(&quot;Enable preview&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
+                <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/icons/previewc.png"/>
+                </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewTBActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewTBCurrentTTMActionPerformed"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="PreviewTB.putClientProperty(&quot;JButton.buttonType&quot;, &quot;gradient&quot;);"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="        PreviewTB.setModel(new ToggleButtonModel()); "/>
               </AuxValues>
             </Component>
           </SubComponents>

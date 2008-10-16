@@ -92,6 +92,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -420,7 +421,7 @@ public class Jubler extends JFrame {
         SortTB = new javax.swing.JButton();
         TestTP = new javax.swing.JPanel();
         TestTB = new javax.swing.JButton();
-        PreviewTB = new javax.swing.JToggleButton();
+        PreviewTB = new javax.swing.JButton();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
         NewFM = new javax.swing.JMenu();
@@ -727,10 +728,11 @@ public class Jubler extends JFrame {
         TestTB.addActionListener(formListener);
         TestTP.add(TestTB);
 
+        PreviewTB.setModel(new ToggleButtonModel());
         PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
-        PreviewTB.setToolTipText(_("Enable/disable preview"));
+        PreviewTB.setToolTipText(_("Enable preview"));
         PreviewTB.setEnabled(false);
-        PreviewTB.putClientProperty("JButton.buttonType", "gradient");
+        PreviewTB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/previewc.png"))); // NOI18N
         PreviewTB.addActionListener(formListener);
         TestTP.add(PreviewTB);
 
@@ -1178,9 +1180,6 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == TestTB) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
             }
-            else if (evt.getSource() == PreviewTB) {
-                Jubler.this.PreviewTBActionPerformed(evt);
-            }
             else if (evt.getSource() == CutP) {
                 Jubler.this.CutEMActionPerformed(evt);
             }
@@ -1390,6 +1389,9 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == PreviewTB) {
+                Jubler.this.PreviewTBCurrentTTMActionPerformed(evt);
             }
         }
 
@@ -1916,10 +1918,6 @@ public class Jubler extends JFrame {
         loadFileFromHere(filedialog.getSelectedFile(), false);
     }//GEN-LAST:event_OpenFMActionPerformed
 
-    private void PreviewTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBActionPerformed
-        enablePreview(PreviewTB.isSelected());
-    }//GEN-LAST:event_PreviewTBActionPerformed
-
 private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TranslateTMActionPerformed
         translate.execute(this);
 }//GEN-LAST:event_TranslateTMActionPerformed
@@ -1954,6 +1952,11 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     else
         SaveAsFMActionPerformed(evt);
 }//GEN-LAST:event_SaveTBActionPerformed
+
+private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
+    enablePreview(PreviewTB.isSelected());
+    PreviewTB.setToolTipText(PreviewTB.isSelected() ? _("Disable Preview") : _("Enable Preview"));
+}//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
@@ -2019,7 +2022,7 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem PlayVideoP;
     private javax.swing.JMenuItem PrefsFM;
     private javax.swing.JMenu PreviewP;
-    private javax.swing.JToggleButton PreviewTB;
+    private javax.swing.JButton PreviewTB;
     private javax.swing.JMenuItem PreviousGEM;
     private javax.swing.JMenuItem PreviousPageGEM;
     private javax.swing.JMenuItem QuitFM;
