@@ -247,7 +247,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                 
                 if (len < 0) {
                     DEBUG(env, this, "decodeAudio", "Error while decoding.");
-                    continue;
+						  break;
                 }
                 
                 packsize -= len;
