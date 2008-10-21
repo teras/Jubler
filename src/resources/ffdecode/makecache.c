@@ -179,7 +179,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
                     
                     if (len < 0) {
                         DEBUG(env, this, "makeCache", "Error while decoding.");
-                        continue;
+                        break;
                     }
                     
                     packsize -= len;
