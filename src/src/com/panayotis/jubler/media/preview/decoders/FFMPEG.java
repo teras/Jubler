@@ -56,23 +56,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public final class FFMPEG extends NativeDecoder {
     private static boolean library_is_present = false;
     
-    private static final int[] bitmasks;
-    private static final ColorModel cmodel;
-    
-
     static {
         library_is_present = SystemFileFinder.loadLibrary("ffdecode");
-
-        int[] LE_BITMASKS = {0xff0000, 0xff00, 0xff, 0xff000000};
-        int[] BE_BITMASKS = {0xff00, 0xff0000, 0xff000000, 0xff};
-
-        if (ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN) {
-            bitmasks = LE_BITMASKS;
-            cmodel = ColorModel.getRGBdefault();
-        } else {
-            bitmasks = BE_BITMASKS;
-            cmodel = new DirectColorModel(32, bitmasks[0], bitmasks[1], bitmasks[2], bitmasks[3]);
-        }
     }
     
     /** Creates a new instance of FFMPEG */
@@ -82,13 +67,16 @@ public final class FFMPEG extends NativeDecoder {
         if ( vfile==null || (!isDecoderValid()) ) return null;
         
         time *= 1000000;
-        int[] frame = grabFrame(vfile.getPath(), (long)time, resize);
-        if (frame==null) return null;
-        
-        SinglePixelPackedSampleModel model = new SinglePixelPackedSampleModel(DataBuffer.TYPE_INT,frame[0], frame[1], bitmasks);
-        DataBufferInt buffer = new DataBufferInt(frame, frame[0]*frame[1], 2);
-        WritableRaster ras = Raster.createWritableRaster(model, buffer, null);
-        BufferedImage image = new BufferedImage(cmodel, ras, true, null);
+        byte[] data = grabFrame(vfile.getPath(), (long)time, resize);
+        if (data==null) return null;
+
+        byte[] frame = new byte[data.length-4];
+        int X = data[0] * 128 + data[1];
+        int Y = data[2] * 128 + data[3];
+        System.arraycopy(data, 4, frame, 0, frame.length);
+        BufferedImage image = new BufferedImage(X, Y, BufferedImage.TYPE_3BYTE_BGR);
+        WritableRaster raster = image.getRaster();
+        raster.setDataElements(0, 0, X, Y, data);
         return image;
     }
     
@@ -152,7 +140,7 @@ public final class FFMPEG extends NativeDecoder {
     }
     
     /* Get the image for this timestamp */
-    private native int[] grabFrame(String video, long time, float resize);
+    private native byte[] grabFrame(String video, long time, float resize);
     
     /* Create a wav file from the specified time stamps */
     private native boolean createClip(String audio, String wav, long from, long to);

@@ -39,19 +39,23 @@
 #include "defaults.h"
 #include "utilities.h"
 
+#define MAXSIZE 16383
+
+
 AVPicture *decodeFrame(JNIEnv * env, jobject this, const char *input_filename, jlong timepos, jint *width, jint *height, jfloat resize);
 int file_info(JNIEnv * env, jobject this, char *input_filename);
+void storenumb (jbyte * data, int number);
 
 static int sws_flags = SWS_BICUBIC;
 
 
-JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFrame(JNIEnv * env, jobject this, jstring video, jlong time, jfloat resize) {
+JNIEXPORT jbyteArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFMPEG_grabFrame(JNIEnv * env, jobject this, jstring video, jlong time, jfloat resize) {
     /* Pointers for c-like strings */
     const char *video_c;
     
     /* Here we'll store the frame for java */
-    jintArray matrix = NULL;
-    jint* matrixdata = NULL;
+    jbyteArray matrix = NULL;
+    jbyte* matrixdata = NULL;
     
     /* Frame raw data */
     AVPicture* pict;
@@ -65,18 +69,20 @@ JNIEXPORT jintArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FFM
     if (pict) {
         
 		// make array
-        matrix = (*env)->NewIntArray(env, width*height+2);	// 4 bytes per pixel (int) plus picture information
+        matrix = (*env)->NewByteArray(env, width*height*3+4);	// 3 bytes per pixel + picture width information (2*2)
         
 		if (matrix) {
             /* Find pointer for matrix size */
-            matrixdata = (*env)->GetIntArrayElements(env, matrix, 0);
+            matrixdata = (*env)->GetByteArrayElements(env, matrix, 0);
             
-            /* This is a trick: the first 2 elements are not video data but the size of the video */
-            matrixdata[0] = width;
-            matrixdata[1] = height;
-        	memcpy(matrixdata+2, pict->data[0], 4*width*height);
+            /* This is a trick: the first 4 bytes are not video data but the size of the video */
+            storenumb(matrixdata, width);
+            storenumb(matrixdata+2, height);
+
+            /* Copy the actual color map to picture buffer */
+            memcpy(matrixdata+4, pict->data[0], 3*width*height);
             /* Release the matrix data pointer */
-            (*env)->ReleaseIntArrayElements(env, matrix, matrixdata, 0);
+            (*env)->ReleaseByteArrayElements(env, matrix, matrixdata, 0);
         } else {
             DEBUG(env, this, "grabFrame", "Can not create array into memory.");
         }
@@ -206,14 +212,24 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
         av_free_packet(&pkt);
     }
     if (retflag != FALSE) {
-       	*width = (ccx->width) * resize;
-       	*height = (ccx->height) * resize;
+        /* Calculating new picture size and keep aspect ratio */
+        *width = (ccx->width) * resize;
+       *height = (ccx->height) * resize;
+        if (*width > MAXSIZE ) {
+            *height = ( (*height) * MAXSIZE) / (*width);
+            *width = MAXSIZE;
+        }
+        if (*height > MAXSIZE) {
+            *width = ( (*width) * MAXSIZE) / (*height);
+            *height = MAXSIZE;
+        }
+
 		DEBUG(env, this, "decodeFrame", "Resampling from (%i,%i) with resize factor %f to (%i,%i)",ccx->width, ccx->height, resize,*width, *height);
         // Allocate an AVPicture
-        avpicture_alloc(pict, PIX_FMT_RGBA32, *width, *height);
+        avpicture_alloc(pict, PIX_FMT_BGR24, *width, *height);
 		swsContext = sws_getCachedContext(swsContext,
 			ccx->width, ccx->height, ccx->pix_fmt,
-			*width, *height, PIX_FMT_RGBA32,
+			*width, *height, PIX_FMT_BGR24,
 			sws_flags, NULL, NULL, NULL);
 		if (swsContext == NULL) {
 			DEBUG(env, this, "decodeFrame", "swscale context initialization failed.");
@@ -264,5 +280,8 @@ int file_info(JNIEnv * env, jobject this, char * input_filename) { int err=0;
     return 0;
 }
 
-
+void storenumb (jbyte * data, int number) {
+	data[0] = number/128;
+	data[1] = number % 128;	
+}
 
