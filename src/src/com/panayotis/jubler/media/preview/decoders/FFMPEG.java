@@ -76,7 +76,7 @@ public final class FFMPEG extends NativeDecoder {
         System.arraycopy(data, 4, frame, 0, frame.length);
         BufferedImage image = new BufferedImage(X, Y, BufferedImage.TYPE_3BYTE_BGR);
         WritableRaster raster = image.getRaster();
-        raster.setDataElements(0, 0, X, Y, data);
+        raster.setDataElements(0, 0, X, Y, frame);
         return image;
     }
     
