@@ -226,10 +226,10 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
 
 		DEBUG(env, this, "decodeFrame", "Resampling from (%i,%i) with resize factor %f to (%i,%i)",ccx->width, ccx->height, resize,*width, *height);
         // Allocate an AVPicture
-        avpicture_alloc(pict, PIX_FMT_BGR24, *width, *height);
+        avpicture_alloc(pict, PIX_FMT_RGB24, *width, *height);
 		swsContext = sws_getCachedContext(swsContext,
 			ccx->width, ccx->height, ccx->pix_fmt,
-			*width, *height, PIX_FMT_BGR24,
+			*width, *height, PIX_FMT_RGB24,
 			sws_flags, NULL, NULL, NULL);
 		if (swsContext == NULL) {
 			DEBUG(env, this, "decodeFrame", "swscale context initialization failed.");

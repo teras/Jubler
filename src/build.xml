@@ -103,7 +103,8 @@
 		<copy file="resources/help/question.png" todir="dist/help"/>
 	</target>
 
-	<target name="xdevelop" depends="i18n,faq">
+	<target name="xdevelop" depends="i18n,faq,ffdecode"/>
+	<target name="ffdecode">
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"/>
 		<copy file="dist/help/jubler-faq.html" todir="build/classes/help"/>
 	</target>
