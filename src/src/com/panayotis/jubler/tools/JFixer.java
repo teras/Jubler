@@ -157,7 +157,7 @@ public class JFixer extends JTool {
         else upperlimit = affected_list.elementAt(index+1).getStartTime().toSeconds();
         
         /* Fix time by pushing the subtitles up */
-        if (pushmodel == 1) {
+        if (pushmodel == 2) {
             sub.getFinishTime().setTime(curstart + curdur);   /* Calculate new finish time */
             double dt = curstart + curdur + gap - upperlimit;
             if (dt > 0) {
@@ -173,11 +173,14 @@ public class JFixer extends JTool {
         }
 
         /* Fix time by equally divide overlapped subtitle time */
-        if (pushmodel == 2) {
-            double timesplit = (curstart + curdur + gap - upperlimit) / 2d;
-            sub.getFinishTime().setTime(curstart + curdur - timesplit);
-            if (index > 0)
-                affected_list.elementAt(index - 1).getFinishTime().setTime(lowerlimit - timesplit);
+        if (pushmodel == 1) {
+            if (index > 0) {
+                double timesplit = (lowerlimit - curstart + gap) / 2d;
+                if (timesplit > 0) {
+                    sub.getStartTime().setTime(curstart + timesplit);
+                    affected_list.elementAt(index - 1).getFinishTime().setTime(lowerlimit - timesplit);
+                }
+            }
             return;
         }
 
@@ -272,44 +275,45 @@ public class JFixer extends JTool {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         PushModelB.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
-            _("Rearrange subtitle time"),
-            _("Shift subtitle time"),
-            _("Equally divide susbtitle time") }));
-jPanel2.add(PushModelB, java.awt.BorderLayout.PAGE_END);
+            _("Evenly distribute subtitles"),
+            _("Equally divide overriding duration"),
+            _("Shift subtitles")
+        }));
+        jPanel2.add(PushModelB, java.awt.BorderLayout.PAGE_END);
 
-jPanel3.add(jPanel2);
+        jPanel3.add(jPanel2);
 
-jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
-jPanel5.setLayout(new java.awt.BorderLayout());
+        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
-GapB.setText(_("Leave gap between subtitles (in milliseconds)") + "  ");
-GapB.addActionListener(new java.awt.event.ActionListener() {
-    public void actionPerformed(java.awt.event.ActionEvent evt) {
-        GapBActionPerformed(evt);
-    }
-    });
-    jPanel5.add(GapB, java.awt.BorderLayout.WEST);
+        GapB.setText(_("Leave gap between subtitles (in milliseconds)") + "  ");
+        GapB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GapBActionPerformed(evt);
+            }
+        });
+        jPanel5.add(GapB, java.awt.BorderLayout.WEST);
 
-    GapNum.setText("300");
-    GapNum.setEnabled(false);
-    jPanel5.add(GapNum, java.awt.BorderLayout.CENTER);
+        GapNum.setText("100");
+        GapNum.setEnabled(false);
+        jPanel5.add(GapNum, java.awt.BorderLayout.CENTER);
 
-    jPanel3.add(jPanel5);
+        jPanel3.add(jPanel5);
 
-    add(jPanel3, java.awt.BorderLayout.NORTH);
+        add(jPanel3, java.awt.BorderLayout.NORTH);
 
-    jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-    jPanel4.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
-    MinTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Minimum subtitle duration")));
-    MinTimeP.setLayout(new java.awt.BorderLayout());
-    jPanel4.add(MinTimeP);
+        MinTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Minimum subtitle duration")));
+        MinTimeP.setLayout(new java.awt.BorderLayout());
+        jPanel4.add(MinTimeP);
 
-    MaxTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Maximum subtitle duration")));
-    MaxTimeP.setLayout(new java.awt.BorderLayout());
-    jPanel4.add(MaxTimeP);
+        MaxTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Maximum subtitle duration")));
+        MaxTimeP.setLayout(new java.awt.BorderLayout());
+        jPanel4.add(MaxTimeP);
 
-    add(jPanel4, java.awt.BorderLayout.SOUTH);
+        add(jPanel4, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
     
     private void GapBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GapBActionPerformed
