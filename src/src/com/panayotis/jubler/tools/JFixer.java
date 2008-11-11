@@ -279,6 +279,7 @@ public class JFixer extends JTool {
             _("Equally divide overriding duration"),
             _("Shift subtitles")
         }));
+        PushModelB.setToolTipText(_("Model how to solve overriding subtitles"));
         jPanel2.add(PushModelB, java.awt.BorderLayout.PAGE_END);
 
         jPanel3.add(jPanel2);
