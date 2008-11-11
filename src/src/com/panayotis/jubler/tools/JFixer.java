@@ -42,7 +42,8 @@ public class JFixer extends JTool {
     
     private JDuration mintime, maxtime;
     
-    private boolean fix, push;
+    private boolean fix;
+    private int pushmodel;
     
     private double min_abs, min_cps, max_abs, max_cps, gap;
     
@@ -74,7 +75,7 @@ public class JFixer extends JTool {
         /* What to do with the remaining duration */
         fix = FixT.isSelected();
         if ( fix ) {
-            push = PushB.isSelected();
+            pushmodel = PushModelB.getSelectedIndex();
         }
         
         min_abs = mintime.getAbsTime();
@@ -104,7 +105,7 @@ public class JFixer extends JTool {
     protected void affect(int index) {
         SubEntry sub = affected_list.elementAt(index);
         
-        double curstart, curfinish; /* THe original start & finishing times */
+        double curstart; /* The original start time */
         double curdur;  /* The original duration of the subtitle */
         int charcount;  /* The number of characters of the subtitle */
         double mindur, maxdur;  /* minimum & maximum duration of the subtitle */
@@ -113,8 +114,7 @@ public class JFixer extends JTool {
         
         /* Get current information */
         curstart = sub.getStartTime().toSeconds();
-        curfinish = sub.getFinishTime().toSeconds();
-        curdur = curfinish - curstart;
+        curdur = sub.getFinishTime().toSeconds() - curstart;
         charcount = sub.getText().length();
         
         /* initialize minimum/maximum duration */
@@ -137,7 +137,8 @@ public class JFixer extends JTool {
         /* Fix duration depending on their values */
         if (curdur>maxdur) curdur = maxdur;
         if (curdur<mindur) curdur = mindur;
-        
+
+        /* If smart duration fix is not wanted, set duration time and exit */
         if ( !fix ) {
             /* Do not fix time */
             sub.getFinishTime().setTime(curstart+curdur);
@@ -145,7 +146,9 @@ public class JFixer extends JTool {
             return;
         }
         
-        /* The following part of the code is executed only when the user wanted to fix the subtitle times */
+        /* The following part of the code is executed *only* when the user wanted
+         to fix the subtitle times
+         */
         
         /* Find limits depending on their neighbour subtitles */
         if (index==0) lowerlimit = 0;
@@ -153,14 +156,14 @@ public class JFixer extends JTool {
         if (index==(affected_list.size()-1)) upperlimit = Time.MAX_TIME;
         else upperlimit = affected_list.elementAt(index+1).getStartTime().toSeconds();
         
-        if ( push ) {
-            /* Fix time by pushing the subtitles up */
-            sub.getFinishTime().setTime(curstart+curdur);   /* Calculate new finish time */
+        /* Fix time by pushing the subtitles up */
+        if (pushmodel == 1) {
+            sub.getFinishTime().setTime(curstart + curdur);   /* Calculate new finish time */
             double dt = curstart + curdur + gap - upperlimit;
-            if ( dt > 0 ) {
+            if (dt > 0) {
                 /* Ooops, time is not enough, we have to push everything up from now on */
                 SubEntry uppersub;
-                for (int i = index+1 ; i < affected_list.size() ; i++ ) {
+                for (int i = index + 1; i < affected_list.size(); i++) {
                     uppersub = affected_list.elementAt(i);
                     uppersub.getStartTime().addTime(dt);
                     uppersub.getFinishTime().addTime(dt);
@@ -168,7 +171,17 @@ public class JFixer extends JTool {
             }
             return;
         }
-        
+
+        /* Fix time by equally divide overlapped subtitle time */
+        if (pushmodel == 2) {
+            double timesplit = (curstart + curdur + gap - upperlimit) / 2d;
+            sub.getFinishTime().setTime(curstart + curdur - timesplit);
+            if (index > 0)
+                affected_list.elementAt(index - 1).getFinishTime().setTime(lowerlimit - timesplit);
+            return;
+        }
+
+
         /* Try to cleverly rearrange the subtitles */
         
         /* Available space */
@@ -178,7 +191,7 @@ public class JFixer extends JTool {
         if (  (curdur+2*gap) <= avail ) {
             /* We have enough space, phewwww... */
             double fulldur = curdur + 2 * gap;  /* The new full duration, i.e. subtitle + 2 gaps */
-            double center = curstart + (curfinish-curstart)/2 ; /* Calculate the old center of the subtitle display */
+            double center = curstart + (curdur/2) ; /* Calculate the old center of the subtitle display */
             double newstart = center - (fulldur/2); /* Calculate the new *full* start of the subtitle */
             double newfinish = center + (fulldur/2);    /* Calculate the new *full* finish of the subtitle */
             double dt = 0;  /* Initialize deviation of the desired center */
@@ -215,14 +228,13 @@ public class JFixer extends JTool {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        OverlapGroup = new javax.swing.ButtonGroup();
         jPanel3 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         SortB = new javax.swing.JCheckBox();
         jPanel7 = new javax.swing.JPanel();
         FixT = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
-        PushB = new javax.swing.JCheckBox();
+        PushModelB = new javax.swing.JComboBox();
         jPanel5 = new javax.swing.JPanel();
         GapB = new javax.swing.JCheckBox();
         GapNum = new JFormattedTextField( new DecimalFormat("#######") );
@@ -259,42 +271,45 @@ public class JFixer extends JTool {
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        PushB.setText(_("Push subtitles instead of rearranging"));
-        jPanel2.add(PushB, java.awt.BorderLayout.CENTER);
+        PushModelB.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
+            _("Rearrange subtitle time"),
+            _("Shift subtitle time"),
+            _("Equally divide susbtitle time") }));
+jPanel2.add(PushModelB, java.awt.BorderLayout.PAGE_END);
 
-        jPanel3.add(jPanel2);
+jPanel3.add(jPanel2);
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
-        jPanel5.setLayout(new java.awt.BorderLayout());
+jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
+jPanel5.setLayout(new java.awt.BorderLayout());
 
-        GapB.setSelected(true);
-        GapB.setText(_("Leave gap between subtitles (in milliseconds)") + "  ");
-        GapB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                GapBActionPerformed(evt);
-            }
-        });
-        jPanel5.add(GapB, java.awt.BorderLayout.WEST);
+GapB.setText(_("Leave gap between subtitles (in milliseconds)") + "  ");
+GapB.addActionListener(new java.awt.event.ActionListener() {
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        GapBActionPerformed(evt);
+    }
+    });
+    jPanel5.add(GapB, java.awt.BorderLayout.WEST);
 
-        GapNum.setText("300");
-        jPanel5.add(GapNum, java.awt.BorderLayout.CENTER);
+    GapNum.setText("300");
+    GapNum.setEnabled(false);
+    jPanel5.add(GapNum, java.awt.BorderLayout.CENTER);
 
-        jPanel3.add(jPanel5);
+    jPanel3.add(jPanel5);
 
-        add(jPanel3, java.awt.BorderLayout.NORTH);
+    add(jPanel3, java.awt.BorderLayout.NORTH);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
+    jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
+    jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
-        MinTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Minimum subtitle duration")));
-        MinTimeP.setLayout(new java.awt.BorderLayout());
-        jPanel4.add(MinTimeP);
+    MinTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Minimum subtitle duration")));
+    MinTimeP.setLayout(new java.awt.BorderLayout());
+    jPanel4.add(MinTimeP);
 
-        MaxTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Maximum subtitle duration")));
-        MaxTimeP.setLayout(new java.awt.BorderLayout());
-        jPanel4.add(MaxTimeP);
+    MaxTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Maximum subtitle duration")));
+    MaxTimeP.setLayout(new java.awt.BorderLayout());
+    jPanel4.add(MaxTimeP);
 
-        add(jPanel4, java.awt.BorderLayout.SOUTH);
+    add(jPanel4, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
     
     private void GapBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GapBActionPerformed
@@ -303,7 +318,7 @@ public class JFixer extends JTool {
     
     private void FixTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FixTActionPerformed
         boolean en = FixT.isSelected();
-        PushB.setEnabled(en);
+        PushModelB.setEnabled(en);
         GapB.setEnabled(en);
         
         if ( en ) GapNum.setEnabled(GapB.isSelected());
@@ -317,8 +332,7 @@ public class JFixer extends JTool {
     private javax.swing.JFormattedTextField GapNum;
     private javax.swing.JPanel MaxTimeP;
     private javax.swing.JPanel MinTimeP;
-    private javax.swing.ButtonGroup OverlapGroup;
-    private javax.swing.JCheckBox PushB;
+    private javax.swing.JComboBox PushModelB;
     private javax.swing.JCheckBox SortB;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
