@@ -11,7 +11,7 @@ Generic alias is ALWAYS present - it's the failsafe method
     <alias tag="linux_i386" os="Linux" arch="i386"/>
     <alias tag="linux_amd64" os="Linux" arch="amd64"/>
     <alias tag="win32" os="Windows" arch="x86"/>
-    <version id="500" release="4.0">
+    <version id="1500" release="4.0">
         <description>
 	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
         </description>

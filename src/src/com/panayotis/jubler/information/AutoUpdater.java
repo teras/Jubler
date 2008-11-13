@@ -25,18 +25,18 @@ public class AutoUpdater implements UpdaterListener {
             Properties current = new Properties();
             current.load(Updater.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
 
-            String URL = "file:////Users/teras/Works/Development/Java/Jubler/resources/system/updater.xml";
             ApplicationInfo ap = new ApplicationInfo(
-                    "/Users/teras/Works/Development/Java/Jubler/testcase/release",
+                    System.getProperty("user.home") + "/Works/Development/Java/Jubler/testcase/release",
                     SystemDependent.getConfigPath(),
                     SystemDependent.getAppSupportDirPath(),
                     current.getProperty("release"),
-                    current.getProperty("version")
-            );
+                    current.getProperty("version"));
             ap.setDistributionBased(false);
-            
-            new Updater(URL, ap, this);
-            
+
+            new Updater(
+                    "file:///" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml",
+                    ap, this);
+
         } catch (IOException ex) {
             DEBUG.debug(ex);
         } catch (UpdaterException ex) {
