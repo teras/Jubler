@@ -32,7 +32,7 @@ public class AutoSaver {
     static {
         rnd = new Random();
         timer = new Timer();
-        dir = new File(SystemDependent.getAutoSavePath());
+        dir = new File(SystemDependent.getAppSupportDirPath()+"autosave");
         olds = new File(dir, "olds");
     }
 

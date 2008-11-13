@@ -328,12 +328,13 @@ public class SystemDependent {
         return home+".jubler/output.log";
     }
     
-    public final static String getAutoSavePath() {
+    /** This function always return the directory seperator at the end of the filename */
+    public final static String getAppSupportDirPath() {
         String home = System.getProperty("user.home") + System.getProperty("file.separator");
         
-        if (IS_WINDOWS) return System.getenv("APPDATA")+"\\Jubler\\autosave";
-        if (IS_MACOSX) return home+"Library/Application Support/Jubler/autosave";
-        return home+".jubler/autosave";
+        if (IS_WINDOWS) return System.getenv("APPDATA")+"\\Jubler\\";
+        if (IS_MACOSX) return home+"Library/Application Support/Jubler/";
+        return home+".jubler/";
     }
 }
 

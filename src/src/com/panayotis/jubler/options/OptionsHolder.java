@@ -24,7 +24,6 @@
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.options.gui.TabPage;
-import java.util.Properties;
 
 /**
  *
