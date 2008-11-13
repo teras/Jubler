@@ -23,7 +23,7 @@ public class AutoUpdater implements UpdaterListener {
     public AutoUpdater() {
         try {
             Properties current = new Properties();
-            current.load(Updater.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
+            current.load(AutoUpdater.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
 
             ApplicationInfo ap = new ApplicationInfo(
                     System.getProperty("user.home") + "/Works/Development/Java/Jubler/testcase/release",
