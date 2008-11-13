@@ -34,7 +34,7 @@ public class AutoUpdater implements UpdaterListener {
             ap.setDistributionBased(false);
 
             new Updater(
-                    "file:///" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml",
+                    "file://" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml",
                     ap, this);
 
         } catch (IOException ex) {
