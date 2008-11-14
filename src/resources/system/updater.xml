@@ -2,38 +2,61 @@
  <!DOCTYPE updatelist SYSTEM "updater.dtd">
 <updatelist application="Jubler" baseurl="file:///Users/teras/Works/Development/Java/Jubler/testcase/source" icon="icons/jubler.png">
 
-<!--
-Generic alias is ALWAYS present - it's the failsafe method 
- <alias name="" tag="any" os="" arch=""/>
--->
-    <alias tag="macosx" os="Mac" arch="i386"/>
-    <alias tag="macosx" os="Mac" arch="ppc"/>
-    <alias tag="linux_i386" os="Linux" arch="i386"/>
-    <alias tag="linux_amd64" os="Linux" arch="amd64"/>
-    <alias tag="win32" os="Windows" arch="x86"/>
+    <architect tag="any" os="" arch="">
+        <launcher exec="$JAVABIN">
+            <argument value="-jar"/>
+            <argument value="$BASEFILE"/>
+        </launcher>
+    </architect>
+
+    <architect tag="macosx" os="Mac" arch="i386">
+        <launcher exec="../../MacOS/JavaApplicationStub"/>
+    </architect>
+
+    <architect tag="macosx" os="Mac" arch="ppc">
+        <launcher exec="../../MacOS/JavaApplicationStub"/>
+    </architect>
+
+    <architect tag="linux_i386" os="Linux" arch="i386">
+        <launcher exec="$JAVABIN">
+            <argument value="-jar"/>
+            <argument value="$BASEFILE"/>
+        </launcher>
+    </architect>
+
+    <architect tag="linux_amd64" os="Linux" arch="amd64">
+        <launcher exec="$JAVABIN">
+            <argument value="-jar"/>
+            <argument value="$BASEFILE"/>
+        </launcher>
+    </architect>
+
+    <architect tag="win32" os="Windows" arch="x86">
+        <launcher exec="$BASEFILE"/>
+    </architect>
+
+
     <version id="1500" release="4.0">
         <description>
 	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
         </description>
-        <arch name="linux_i386">
+        <arch name="linux_i386" basefile="Jubler.jar">
             <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" />
         </arch>
-        <arch name="linux_amd64">
+        <arch name="linux_amd64" basefile="Jubler.jar">
             <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" />
         </arch>
-        <arch name="win32">
+        <arch name="win32" basefile="Jubler.exe">
             <file name="Jubler.exe" sourcedir="4.0/win32" destdir="${APPHOME}" />
         </arch>
-        <arch name="macosx">
+        <arch name="macosx" basefile="Jubler.jar">
             <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
         </arch>
-        <arch name="macosx">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
-        </arch>
-        <arch name="any">
+        <arch name="any" basefile="Jubler.jar">
             <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
         </arch>
     </version>
+    
     <version id="22" release="3.9.6">
         <description>
 	Improved Google translator parsing engine. Fixed compile issues with ffmpeg under OS X 10.4. Fixed Linux GTK Look and Feel bug with time-spinner under Java 6.0.

@@ -18,7 +18,7 @@
 -->
 
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT updatelist (alias*, version+)>
+<!ELEMENT updatelist (architect*, version+)>
 <!ATTLIST updatelist
     application CDATA #REQUIRED
     baseurl CDATA #REQUIRED
@@ -26,11 +26,21 @@
   >
   
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT alias EMPTY>
-<!ATTLIST alias
+<!ELEMENT architect (launcher)>
+<!ATTLIST architect
     arch CDATA #REQUIRED
     os CDATA #REQUIRED
     tag CDATA #REQUIRED
+  >
+
+<!ELEMENT launcher (argument*)>
+<!ATTLIST launcher
+    exec CDATA #REQUIRED
+  >
+  
+<!ELEMENT argument EMPTY>
+<!ATTLIST argument
+    value CDATA #REQUIRED
   >
 
 <!--- Put your DTDDoc comment here. -->
@@ -47,6 +57,7 @@
 <!ELEMENT arch (rm|file)*>
 <!ATTLIST arch
     name CDATA #REQUIRED
+    basefile CDATA #REQUIRED
   >
 
 <!--- Put your DTDDoc comment here. -->
