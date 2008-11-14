@@ -47,4 +47,8 @@ public class AutoUpdater implements UpdaterListener {
     public boolean requestRestart() {
         return StaticJubler.requestQuit(null);
     }
+    
+    public void receiveMessage(String message) {
+        DEBUG.debug(message);
+    }
 }
