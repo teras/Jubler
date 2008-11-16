@@ -23,8 +23,6 @@
 
 package com.panayotis.jubler.os;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 import java.io.File;
 import java.util.StringTokenizer;
 

@@ -3,36 +3,36 @@
 <updatelist application="Jubler" baseurl="file:///Users/teras/Works/Development/Java/Jubler/testcase/source" icon="icons/jubler.png">
 
     <architect tag="any" os="" arch="">
-        <launcher exec="$JAVABIN">
+        <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="$BASEFILE"/>
+            <argument value="${APPHOME}/${BASEFILE}"/>
         </launcher>
     </architect>
 
     <architect tag="macosx" os="Mac" arch="i386">
-        <launcher exec="../../MacOS/JavaApplicationStub"/>
+        <launcher exec="${APPHOME}/../../MacOS/JavaApplicationStub"/>
     </architect>
 
     <architect tag="macosx" os="Mac" arch="ppc">
-        <launcher exec="../../MacOS/JavaApplicationStub"/>
+        <launcher exec="${APPHOME}/../../MacOS/JavaApplicationStub"/>
     </architect>
 
     <architect tag="linux_i386" os="Linux" arch="i386">
-        <launcher exec="$JAVABIN">
+        <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="$BASEFILE"/>
+            <argument value="${APPHOME}/${BASEFILE}"/>
         </launcher>
     </architect>
 
     <architect tag="linux_amd64" os="Linux" arch="amd64">
-        <launcher exec="$JAVABIN">
+        <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="$BASEFILE"/>
+            <argument value="${APPHOME}/${BASEFILE}"/>
         </launcher>
     </architect>
 
     <architect tag="win32" os="Windows" arch="x86">
-        <launcher exec="$BASEFILE"/>
+        <launcher exec="${APPHOME}\${BASEFILE}"/>
     </architect>
 
 
