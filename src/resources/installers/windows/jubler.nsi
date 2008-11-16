@@ -60,7 +60,7 @@ Section "Jubler editor" SecJubler
   ; Set output path to the installation directory.
   SetOutPath $INSTDIR
   File dist\Jubler.exe
-  File dist\ChangeLog.txt
+  File ChangeLog.html
   File dist\LICENCE.txt
   File dist\README.txt
    

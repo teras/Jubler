@@ -114,12 +114,11 @@
 	</target>
 
 
-	<target name="changelog">
-		<delete file="ChangeLog"/>
-		<exec executable="bash" failonerror="true">
-			<arg value="-c"/>
-			<arg value="sed -e 's/&lt;release version=&quot;//g' &lt;resources/system/changelog.xml | sed -e 's/&lt;\/release&gt;//g' | sed -e 's/&quot;&gt;//g' >ChangeLog"/>
-		</exec>
+	<target name="changelog" depends="compile">
+		<delete file="ChangeLog.html"/>
+		<java fork="true" classname="com.panayotis.jubler.information.AutoUpdater" dir="build/classes">
+			<arg value="../../ChangeLog.html"/>
+		</java>
 	</target>
 
 	<!-- Copy the full Jubler source tree in tmp -->
@@ -128,7 +127,7 @@
 		<delete dir="/tmp/Jubler-${version}"/>
 		<mkdir dir="/tmp/Jubler-${version}"/>
 		<exec executable="cp" failonerror="true">
-			<arg line="-R -p ChangeLog LICENCE README build.xml manifest.mf nbproject resources src /tmp/Jubler-${version}/"/>
+			<arg line="-R -p ChangeLog.html LICENCE README build.xml manifest.mf nbproject resources src /tmp/Jubler-${version}/"/>
 		</exec>
 		<delete dir="/tmp/Jubler-${version}/resources/libraries"/>
 	</target>
@@ -191,14 +190,12 @@
 		</launch4j>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
-		<exec executable="sed" input="ChangeLog" output="dist/ChangeLog.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="makensis" failonerror="true">
 			<arg line="-NOCD -DVERSION=${version} resources/installers/windows/jubler.nsi"/>
 		</exec>
 		<delete file="dist/Jubler.exe"/>
 		<delete file="dist/README.txt"/>
 		<delete file="dist/LICENCE.txt"/>
-		<delete file="dist/ChangeLog.txt"/>
 	</target>
 
 
@@ -274,7 +271,7 @@
 		<!-- Documentation files -->
 		<copy file="resources/installers/linux/copyright" todir="${docdir}"/>
 		<copy file="README" todir="${docdir}"/>
-		<copy file="ChangeLog" todir="${docdir}"/>
+		<copy file="ChangeLog.html" todir="${docdir}"/>
 		<copy file="dist/help/jubler-faq.html" todir="${docdir}/help"/>
 		<copy file="resources/help/question.png" todir="${docdir}/help"/>
 		<exec executable="ln" failonerror="true"><arg line="-s ${reldocdir} ${libdir}/help"/></exec>
@@ -438,7 +435,7 @@
 		<exec dir="resources/ffdecode" executable="make" failonerror="true">
 			<arg line="distclean"/>
 		</exec>
-		<delete file="ChangeLog"/>
+		<delete file="ChangeLog.html"/>
 	</target>
 
 </project>
