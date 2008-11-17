@@ -5,16 +5,6 @@
     PUBLIC ID: -//vendor//vocabulary//EN
     SYSTEM ID: http://server/path/updater.dtd
 
---><!--
-    An example how to use this DTD from your XML document:
-
-    <?xml version="1.0"?>
-
-    <!DOCTYPE updatelist SYSTEM "updater.dtd">
-
-    <updatelist>
-    ...
-    </updatelist>
 -->
 
 <!--- Put your DTDDoc comment here. -->
@@ -67,6 +57,7 @@
     distignore CDATA "true"
     destdir CDATA #REQUIRED
     name CDATA #REQUIRED
+    size CDATA #REQUIRED
   >
 
 <!--- Put your DTDDoc comment here. -->

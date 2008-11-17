@@ -41,19 +41,19 @@
 	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
         </description>
         <arch name="linux_i386" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" />
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
         </arch>
         <arch name="linux_amd64" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" />
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
         </arch>
         <arch name="win32" basefile="Jubler.exe">
-            <file name="Jubler.exe" sourcedir="4.0/win32" destdir="${APPHOME}" />
+            <file name="Jubler.exe" sourcedir="4.0/win32" destdir="${APPHOME}" size="1000000"/>
         </arch>
         <arch name="macosx" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
         </arch>
         <arch name="any" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}"/>
+            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
         </arch>
     </version>
     
