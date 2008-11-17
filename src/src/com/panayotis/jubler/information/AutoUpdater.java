@@ -63,7 +63,7 @@ public class AutoUpdater implements UpdaterListener {
             FileWriter out = null;
             try {
                 if (args.length < 1) {
-                    System.err.println("Arguments should be greater than 0.");
+                    System.err.println("One argument required: changelog file");
                     return;
                 }
                 String cl = new Updater("file://" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml", null, null).getChangeLog();
