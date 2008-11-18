@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  <!DOCTYPE updatelist SYSTEM "updater.dtd">
-<updatelist application="Jubler" baseurl="file:///Users/teras/Works/Development/Java/Jubler/testcase/source" icon="icons/jubler.png">
+<updatelist application="Jubler" baseurl="http://www.jubler.org/files/jupidator" icon="icons/jubler.png">
 
     <architect tag="any" os="" arch="">
         <launcher exec="${JAVABIN}">
@@ -10,7 +10,10 @@
     </architect>
 
     <architect tag="macosx" os="Mac" arch="i386">
-        <launcher exec="${APPHOME}/../../MacOS/JavaApplicationStub"/>
+        <launcher exec="${JAVABIN}">
+            <argument value="-jar"/>
+            <argument value="${APPHOME}/${BASEFILE}"/>
+        </launcher>
     </architect>
 
     <architect tag="macosx" os="Mac" arch="ppc">
@@ -36,7 +39,7 @@
     </architect>
 
 
-    <version id="1500" release="4.0">
+    <version id="533" release="4.0">
         <description>
 	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
         </description>

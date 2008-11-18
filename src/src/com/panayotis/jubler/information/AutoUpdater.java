@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public class AutoUpdater implements UpdatedApplication {
 
-    private static final String URL = "file://" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml";
+    private static final String URL = "http://www.jubler.org/files/jupidator/updater.xml";
 
     public AutoUpdater() {
         try {
