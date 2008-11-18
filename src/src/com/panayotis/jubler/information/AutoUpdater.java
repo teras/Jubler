@@ -9,9 +9,9 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jupidator.ApplicationInfo;
+import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import com.panayotis.jupidator.UpdaterListener;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ import java.io.IOException;
  *
  * @author teras
  */
-public class AutoUpdater implements UpdaterListener {
+public class AutoUpdater implements UpdatedApplication {
 
     private static final String URL = "file://" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml";
 
@@ -32,7 +32,7 @@ public class AutoUpdater implements UpdaterListener {
                     JAbout.getCurrentRelease(),
                     JAbout.getCurrentVersion());
             ap.setDistributionBased(false);
-            new Updater(URL, ap, this).actionStart();
+            new Updater(URL, ap, this).actionDisplay();
         } catch (UpdaterException ex) {
             DEBUG.debug(ex);
         }
