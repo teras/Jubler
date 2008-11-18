@@ -31,7 +31,7 @@ public class AutoUpdater implements UpdatedApplication {
                     SystemDependent.getAppSupportDirPath(),
                     JAbout.getCurrentRelease(),
                     JAbout.getCurrentVersion());
-            ap.setDistributionBased(false);
+            ap.setDistributionBased(JAbout.isDistributionBased());
             new Updater(URL, ap, this).actionDisplay();
         } catch (UpdaterException ex) {
             DEBUG.debug(ex);

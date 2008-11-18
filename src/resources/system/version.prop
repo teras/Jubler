@@ -1,4 +1,4 @@
 version=3.9.9
 longversion=3.9.9.9
 release=@RELEASE@
-distribution.based=@DISTRIBUTION@
+packaged=@DISTRIBUTION@

@@ -35,10 +35,7 @@ import javax.swing.text.StyleConstants;
  * @author  teras
  */
 public class JAbout extends javax.swing.JPanel {
-    
-    private String  debugwin = _("Debug window");
-    
-    
+        
     private final static String icon_theme = "Nuvola (David Vignoni - http://www.icon-king.com)";
     
     private final static String[] transl={
@@ -66,20 +63,24 @@ public class JAbout extends javax.swing.JPanel {
     
     private final static String version;
     private final static String release;
+    private final static boolean distributionbased;
     
     static {
         String v = "0.0.0.0";
         String r = "-1";
+        String d = "false";
         try {
             Properties current = new Properties();
             current.load(JAbout.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
             v = current.getProperty("version");
             r = current.getProperty("release");
+            d = current.getProperty("packaged").toLowerCase();
         } catch (IOException ex) {
             DEBUG.debug(ex);
         }
         version = v;
         release = r;
+        distributionbased = d.startsWith("t") || d.startsWith("y") || d.startsWith("1");
     }
 
     
@@ -143,6 +144,10 @@ public class JAbout extends javax.swing.JPanel {
     
     public static String getCurrentRelease() {
             return release;
+    }
+    
+    public static boolean isDistributionBased() {
+        return distributionbased;
     }
     
     /** This method is called from within the constructor to

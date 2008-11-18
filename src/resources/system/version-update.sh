@@ -14,7 +14,7 @@ cat >$FPATH <<EOF
 version=$HVER
 longversion=$NVER
 release=@RELEASE@
-distribution.based=@DISTRIBUTION@
+packaged=@DISTRIBUTION@
 EOF
 cd `dirname $0`
 cd ../..
