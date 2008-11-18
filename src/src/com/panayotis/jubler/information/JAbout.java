@@ -23,6 +23,9 @@
 
 package com.panayotis.jubler.information;
 
+import com.panayotis.jubler.os.DEBUG;
+import java.io.IOException;
+import java.util.Properties;
 import static com.panayotis.jubler.i18n.I18N._;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -61,6 +64,24 @@ public class JAbout extends javax.swing.JPanel {
         _("Turkish")
     };
     
+    private final static String version;
+    private final static String release;
+    
+    static {
+        String v = "0.0.0.0";
+        String r = "-1";
+        try {
+            Properties current = new Properties();
+            current.load(JAbout.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
+            v = current.getProperty("version");
+            r = current.getProperty("release");
+        } catch (IOException ex) {
+            DEBUG.debug(ex);
+        }
+        version = v;
+        release = r;
+    }
+
     
     /** Creates new form JAbout */
     public JAbout() {
@@ -116,8 +137,12 @@ public class JAbout extends javax.swing.JPanel {
         return '<'+prepend+'@'+append+'>';
     }
 
-    private String getCurrentVersion() {
-        return "unknown";
+    public static String getCurrentVersion() {
+        return version;
+    }
+    
+    public static String getCurrentRelease() {
+            return release;
     }
     
     /** This method is called from within the constructor to

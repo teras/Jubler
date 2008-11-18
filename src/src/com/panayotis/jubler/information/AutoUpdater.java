@@ -14,7 +14,6 @@ import com.panayotis.jupidator.UpdaterException;
 import com.panayotis.jupidator.UpdaterListener;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  *
@@ -22,25 +21,18 @@ import java.util.Properties;
  */
 public class AutoUpdater implements UpdaterListener {
 
+    private static final String URL = "file://" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml";
+
     public AutoUpdater() {
         try {
-            Properties current = new Properties();
-            current.load(AutoUpdater.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
-
             ApplicationInfo ap = new ApplicationInfo(
                     SystemFileFinder.getJublerAppPath(),
                     SystemDependent.getConfigPath(),
                     SystemDependent.getAppSupportDirPath(),
-                    current.getProperty("release"),
-                    current.getProperty("version"));
+                    JAbout.getCurrentRelease(),
+                    JAbout.getCurrentVersion());
             ap.setDistributionBased(false);
-
-            new Updater(
-                    "file://" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml",
-                    ap, this).actionStart();
-
-        } catch (IOException ex) {
-            DEBUG.debug(ex);
+            new Updater(URL, ap, this).actionStart();
         } catch (UpdaterException ex) {
             DEBUG.debug(ex);
         }
@@ -66,7 +58,7 @@ public class AutoUpdater implements UpdaterListener {
                     System.err.println("One argument required: changelog file");
                     return;
                 }
-                String cl = new Updater("file://" + System.getProperty("user.home") + "/Works/Development/Java/Jubler/resources/system/updater.xml", null, null).getChangeLog();
+                String cl = new Updater(URL, null, null).getChangeLog();
                 out = new FileWriter(args[0]);
                 out.write(cl);
                 out.close();

@@ -133,7 +133,7 @@
 	</target>
 
 	<!-- Create source tarballs of Jubler -->
-	<target name="distsource" depends="copytree">
+	<target name="distsource" depends="nodistbased,copytree">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<echo message="TAR full sources"/>
 		<exec executable="tar" dir="/tmp" failonerror="true">
@@ -147,20 +147,39 @@
 	
 	<!-- Update to the latest release version -->
 	<target name="version-update">
+		<echo message="INFO: Before updating version number, make *sure* that the correct human-readable version is defined."/>
+		<echo message="INFO: To define a new human-readable version, execute script ./resources/system/version-update.sh"/>
+		<echo message="INFO: If you run this script, then this script automatically executes this ant task"/>
+		<echo message="NOTE: If this task fails, then ./resources/system/version-update.sh script should be executed once, and executables 'svn', 'grep' and 'awk' should be existing in current $PATH."/>
 		<exec executable="svn" outputproperty="svnoutput" failonerror="true"> <arg line="info"/> </exec>
 		<exec executable="grep" inputstring="${svnoutput}" outputproperty="grepoutput" failonerror="true"> <arg line="Revision"/> </exec>
 		<exec executable="awk" inputstring="${grepoutput}" outputproperty="releaseid" failonerror="true"> <arg line="'{print $2}'"/> </exec>
-		<copy file="resources/system/version.prop" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+		<copy file="resources/system/version.prop" tofile="resources/system/version.prop.gen" overwrite="yes">
 			<filterset><filter token="RELEASE" value="${releaseid}"/></filterset>
 		</copy>
 	</target>
 
 	<!-- Common tasks for ALL packagers -->
-	<target name="release" depends="clean,i18n,version-update,jar,faq,changelog" />
+	<target name="release" depends="clean,i18n,jar,faq,changelog">
+		<echo message="*WARNING* :  In order to update version numbering, ant task version-update should be called manually" />
+	</target>
 
+	<target name="nodistbased">
+		<echo message="NOTE: If this task fails, ant version-update should be called."/>
+		<copy file="resources/system/version.prop.gen" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+			<filterset><filter token="DISTRIBUTION" value="false"/></filterset>
+		</copy>
+	</target>
+
+	<target name="distbased">
+		<echo message="NOTE: If this task fails, ant version-update should be called."/>
+		<copy file="resources/system/version.prop.gen" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+			<filterset><filter token="DISTRIBUTION" value="true"/></filterset>
+		</copy>
+	</target>
 
 	<!-- Windows Installer -->
-	<target name="win32" depends="release">
+	<target name="win32" depends="nodistbased,release">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 
 		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
@@ -283,7 +302,7 @@
 	<!-- DISTRIBUTION SPECIFIC TARGETS -->
 
 	<!-- Slackware Linux installer -->
-	<target name="slackware" depends="release,linuxffdecode,linuxinstall">
+	<target name="slackware" depends="distbased,release,linuxffdecode,linuxinstall">
 		<copy todir="${destdir}">
 			<fileset dir="resources/installers/linux/dist/slackware"/>
 		</copy>
@@ -295,11 +314,11 @@
 
 	<!-- Fedora Linux installer -->
 	<target name="redhat" depends="fedora"/>
-	<target name="fedora" depends="release,linuxffdecodedyn,linuxinstall"/>
+	<target name="fedora" depends="distbased,release,linuxffdecodedyn,linuxinstall"/>
 
 
 	<!-- Debian Linux installer -->
-	<target name="debian" depends="release,linuxffdecodedyn,linuxinstall">
+	<target name="debian" depends="distbased,release,linuxffdecodedyn,linuxinstall">
 		<mkdir dir="${destdir}/DEBIAN"/>
 		<exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
 			<arg line="usr -type f -exec md5sum {} ;"/>
@@ -320,7 +339,7 @@
 	</target>
 
 	<!-- IzPack Linux installer -->
-	<target name="genlinux" depends="release,linuxffdecode,linuxproperties">
+	<target name="genlinux" depends="nodistbased,release,linuxffdecode,linuxproperties">
 		<mkdir dir="self"/>
 		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes">
 			<filterset><filter token="VERSION" value="${version}"/></filterset>
@@ -339,7 +358,7 @@
 
 
 	<!-- Generic installer -->
-	<target name="generic" depends="release">
+	<target name="generic" depends="nodistbased,release">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes">
 			<filterset><filter token="VERSION" value="${version}"/></filterset>
@@ -351,7 +370,7 @@
 
 
 	<!-- MacOSX installer -->
-	<target name="macosx" depends="release">
+	<target name="macosx" depends="nodistbased,release">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
 		<jarbundler
 			dir="dist"
