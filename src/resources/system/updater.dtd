@@ -54,7 +54,8 @@
 <!ELEMENT file EMPTY>
 <!ATTLIST file
     sourcedir CDATA #REQUIRED
-    distignore CDATA "true"
+    forceinstall CDATA "false"
+    compress CDATA "none"
     destdir CDATA #REQUIRED
     name CDATA #REQUIRED
     size CDATA #REQUIRED
