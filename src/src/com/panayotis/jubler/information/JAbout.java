@@ -72,9 +72,9 @@ public class JAbout extends javax.swing.JPanel {
         try {
             Properties current = new Properties();
             current.load(JAbout.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
-            v = current.getProperty("version");
-            r = current.getProperty("release");
-            d = current.getProperty("packaged", "false").toLowerCase();
+            v = current.getProperty("version", v);
+            r = current.getProperty("release", r);
+            d = current.getProperty("packaged", d).toLowerCase();
         } catch (IOException ex) {
             DEBUG.debug(ex);
         }
