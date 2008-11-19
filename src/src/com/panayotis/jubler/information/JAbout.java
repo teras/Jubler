@@ -74,13 +74,13 @@ public class JAbout extends javax.swing.JPanel {
             current.load(JAbout.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
             v = current.getProperty("version");
             r = current.getProperty("release");
-            d = current.getProperty("packaged").toLowerCase();
+            d = current.getProperty("packaged", "false").toLowerCase();
         } catch (IOException ex) {
             DEBUG.debug(ex);
         }
         version = v;
         release = r;
-        distributionbased = d.startsWith("t") || d.startsWith("y") || d.startsWith("1");
+        distributionbased = "true".startsWith(d) || "yes".startsWith(d) || d.equals("1");
     }
 
     
