@@ -41,7 +41,7 @@
 
     <version id="533" release="4.0">
         <description>
-	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
+	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fix tool for overlapping subtitles. Improved FFMPEG color model. Initial support for W3C Timed Text.
         </description>
         <arch name="linux_i386" basefile="Jubler.jar">
             <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
