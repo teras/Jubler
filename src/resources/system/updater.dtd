@@ -44,7 +44,7 @@
 <!ELEMENT description (#PCDATA)>
 
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT arch (rm|file)*>
+<!ELEMENT arch (file|rm|chmod|chown)*>
 <!ATTLIST arch
     name CDATA #REQUIRED
     basefile CDATA #REQUIRED
@@ -64,7 +64,22 @@
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT rm EMPTY>
 <!ATTLIST rm
+    file CDATA #REQUIRED
     forceinstall CDATA "false"
-    destdir CDATA #REQUIRED
-    name CDATA #REQUIRED
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT chmod EMPTY>
+<!ATTLIST chmod
+    file CDATA #REQUIRED
+    attr CDATA #REQUIRED
+    recursive CDATA "false"
+  >
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT chown EMPTY>
+<!ATTLIST chown
+    file CDATA #REQUIRED
+    attr CDATA #REQUIRED
+    recursive CDATA "false"
   >
