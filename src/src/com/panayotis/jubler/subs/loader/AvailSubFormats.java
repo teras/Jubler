@@ -33,6 +33,7 @@ import com.panayotis.jubler.subs.loader.text.SubRip;
 import com.panayotis.jubler.subs.loader.text.SubStationAlpha;
 import com.panayotis.jubler.subs.loader.text.SubViewer;
 import com.panayotis.jubler.subs.loader.text.SubViewer2;
+import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 
 /**
  *
@@ -43,7 +44,7 @@ public class AvailSubFormats {
     int current;
     
     static {
-        Formats = new SubFormat [10];
+        Formats = new SubFormat [11];
         Formats[0] = new AdvancedSubStation();
         Formats[1] = new SubStationAlpha();
         Formats[2] = new SubRip();
@@ -53,9 +54,10 @@ public class AvailSubFormats {
         Formats[6] = new MPL2();
         Formats[7] = new Spruce();
         Formats[8] = new Quicktime();
-        Formats[9] = new PlainText();
-     //   Formats[9] = new DVDMaestro();
-     //   Formats[7] = new ScanTitle();
+        Formats[9] = new W3CTimedText();
+        Formats[10] = new PlainText();
+     //   Formats[] = new DVDMaestro();
+     //   Formats[] = new ScanTitle();
     }
     
     /** Creates a new instance of SubFormats */
