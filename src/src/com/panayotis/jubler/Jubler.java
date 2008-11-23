@@ -2200,7 +2200,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             work.undo.setSaveMark();
         work.setSubs(newsubs);
         work.setFile(f, true);
-        work.SaveFM.setEnabled(false);
+        work.SaveFM.setEnabled(true);
     }
     
     
