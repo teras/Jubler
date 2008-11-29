@@ -1,0 +1,22 @@
+# HOW TO EDIT THIS FILE:
+# The "handy ruler" below makes it easier to edit a package description.  Line
+# up the first '|' above the ':' following the base package name, and the '|' on
+# the right side marks the last column you can put a character in.  You must make
+# exactly 11 lines for the formatting to be correct.  It's also customary to
+# leave one space after the ':'.
+
+      |-----handy-ruler------------------------------------------------------|
+jubler: Jubler
+jubler:
+jubler: A tool to edit text-based subtitles. It can be used as an authoring
+jubler: software for new subtitles or as a tool to convert, transform, 
+jubler: correct and refine existing subtitles.
+jubler:
+jubler: The most popular subtitle format can be used. Preview of the 
+jubler: subtitles in realtime or in design time, spell checking, translation
+jubler: mode and styles editing are some of the main features.
+jubler:
+jubler: Jubler was written by Panayotis Katsaloulis.
+jubler:
+jubler: For more information, visit: http://www.jubler.org
+jubler:

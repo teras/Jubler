@@ -1,0 +1,10 @@
+#!/bin/sh
+
+for i in *.po ; do
+	LNG=`echo $i | sed -e 's/\.po$//g'`
+	echo Creating class for language \"$LNG\"
+	JAVAC=javac msgfmt -d . --java2 --resource=com.panayotis.jubler.i18n.Messages_$LNG $i
+	if [ $? != 0 ] ; then exit 1; fi
+done
+mv com/panayotis/jubler/i18n/Messages_*.class ../../src/com/panayotis/jubler/i18n/
+rm -fr com

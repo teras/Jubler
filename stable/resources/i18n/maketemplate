@@ -1,0 +1,6 @@
+#!/bin/sh
+
+rm -f jubler.pot
+cd ../../src
+xgettext  --from-code=utf-8 -k_ `find . | grep '.java$'` -d . -o ../resources/i18n/jubler.pot
+cd ../resources/i18n
