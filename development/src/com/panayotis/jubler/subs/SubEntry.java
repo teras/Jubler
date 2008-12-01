@@ -86,10 +86,10 @@ public class SubEntry implements Comparable<SubEntry> {
     
     
     
-    private Time start, finish;
-    private String subtext;
-    private int mark;
-    private SubStyle style;
+    protected Time start, finish;
+    protected String subtext;
+    protected int mark;
+    protected SubStyle style;
     
     /** The following parameter is lazily used. It is initialized only when data
      * are needed to be added.
@@ -168,7 +168,7 @@ public class SubEntry implements Comparable<SubEntry> {
         finish.setTime(t);
     }
     
-    String getData(int row, int col) {
+    public Object getData(int row, int col) {
         switch (col) {
             case 0:
                 return Integer.toString(row+1);
