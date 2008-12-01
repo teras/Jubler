@@ -618,6 +618,9 @@ class SonSubEntry extends SubEntry implements ImageTypeSubtitle, HeaderedTypeSub
         }
     }
 
+    public ImageIcon getImage(){
+        return image;
+    }
     public Object getData(int row, int col) {
         switch (col) {
             case 0:
