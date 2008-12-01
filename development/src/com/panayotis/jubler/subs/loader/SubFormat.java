@@ -26,8 +26,11 @@ package com.panayotis.jubler.subs.loader;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.Subtitles;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -75,4 +78,44 @@ public abstract class SubFormat {
     
     
     public abstract boolean supportsFPS();
+    
+    public short parseShort(String data, short default_value){
+        short value = default_value;
+        try{
+            value = Short.parseShort(data);            
+        }catch(Exception ex){}
+        return value;
+    }
+    
+    public int parseInt(String data, int default_value){
+        int value = default_value;
+        try{
+            value = Integer.parseInt(data);            
+        }catch(Exception ex){}
+        return value;
+    }
+
+    /**
+     * Using the ImageIO to read an image from a file into the internal buffer,
+     * And then create a image icon which is stored in the image record and update the
+     * internal image dimension if this image is larger than the previous one.
+     * @param f the image file being read
+     * @return the image record if reading was successfully carried out, Null if reading's failed.
+     */
+    public static ImageIcon readImage(File f) {
+        BufferedImage img = null;
+        ImageIcon ico = null;
+        try {
+            img = ImageIO.read(f);
+            boolean is_empty = (img == null);
+            if (is_empty) {
+                return null;
+            } else {
+                ico = new ImageIcon(img);
+                return ico;
+            }//end if
+        } catch (Exception ex) {            
+            return null;
+        }
+    }
 }
