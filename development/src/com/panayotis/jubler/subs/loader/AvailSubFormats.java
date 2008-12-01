@@ -76,7 +76,9 @@ public class AvailSubFormats {
     }
     
     public SubFormat nextElement() {
-        return Formats[current++];
+        SubFormat handler = Formats[current];
+        current++;
+        return handler;
     }
     
     public static SubFormat findFromDescription(String name) {
