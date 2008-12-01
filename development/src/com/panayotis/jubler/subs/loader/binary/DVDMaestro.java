@@ -623,9 +623,9 @@ class SonSubEntry extends SubEntry implements ImageTypeSubtitle, HeaderedTypeSub
             case 0:
                 return Integer.toString(row + 1);
             case 1:
-                return start.toString();
+                return this.getStartTime().toString();
             case 2:
-                return finish.toString();
+                return this.getFinishTime().toString();
             case 5:
                 return image;
         }//end switch/case
