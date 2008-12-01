@@ -23,9 +23,13 @@
 
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.subs.loader.text.AdvancedSubStation;
 import com.panayotis.jubler.subs.loader.text.MPL2;
 import com.panayotis.jubler.subs.loader.text.MicroDVD;
+import com.panayotis.jubler.subs.loader.text.PlainOCRTextWithDoubleNewLine;
+import com.panayotis.jubler.subs.loader.text.PlainOCRTextWithPageBreak;
+import com.panayotis.jubler.subs.loader.text.PlainOCRTextWithIndex;
 import com.panayotis.jubler.subs.loader.text.PlainText;
 import com.panayotis.jubler.subs.loader.text.Quicktime;
 import com.panayotis.jubler.subs.loader.text.Spruce;
@@ -40,26 +44,27 @@ import com.panayotis.jubler.subs.loader.text.W3CTimedText;
  * @author teras
  */
 public class AvailSubFormats {
-    public static final SubFormat []Formats;
+    public static final SubFormat []Formats = {
+        new DVDMaestro(),
+        new AdvancedSubStation(),
+        new SubStationAlpha(),
+        new SubRip(),
+        new SubViewer2(),
+        new SubViewer(),
+        new MicroDVD(),
+        new MPL2(),
+        new Spruce(),
+        new Quicktime(),
+        new W3CTimedText(),
+        new PlainOCRTextWithIndex(),
+        new PlainOCRTextWithPageBreak(),
+        new PlainOCRTextWithDoubleNewLine(),
+        new PlainText()
+        //new ScanTitle()
+    };
+     
+    
     int current;
-    
-    static {
-        Formats = new SubFormat [11];
-        Formats[0] = new AdvancedSubStation();
-        Formats[1] = new SubStationAlpha();
-        Formats[2] = new SubRip();
-        Formats[3] = new SubViewer2();
-        Formats[4] = new SubViewer();
-        Formats[5] = new MicroDVD();
-        Formats[6] = new MPL2();
-        Formats[7] = new Spruce();
-        Formats[8] = new Quicktime();
-        Formats[9] = new W3CTimedText();
-        Formats[10] = new PlainText();
-     //   Formats[] = new DVDMaestro();
-     //   Formats[] = new ScanTitle();
-    }
-    
     /** Creates a new instance of SubFormats */
     public AvailSubFormats() {
         current = 0;
