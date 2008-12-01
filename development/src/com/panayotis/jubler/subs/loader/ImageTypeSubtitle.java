@@ -23,6 +23,8 @@
 
 package com.panayotis.jubler.subs.loader;
 
+import javax.swing.ImageIcon;
+
 /**
  * This file is a template for subtitle which contains images.
  * @author Hoang Duy Tran
@@ -30,4 +32,5 @@ package com.panayotis.jubler.subs.loader;
 public interface ImageTypeSubtitle {
 
     public int getMaxImageHeight();
+    public ImageIcon getImage();
 }
