@@ -1,7 +1,7 @@
 /*
  * Subtitles.java
  *
- * Created on 22 Ιούνιος 2005, 1:51 πμ
+ * Created on 22 Ιο�?νιος 2005, 1:51 πμ
  *
  * This file is part of Jubler.
  *
@@ -26,6 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
@@ -99,7 +100,8 @@ public class Subtitles extends AbstractTableModel {
         formats = new AvailSubFormats();
 
         while (load == null && formats.hasMoreElements()) {
-            load = formats.nextElement().parse(data, FPS, f);
+            SubFormat format_handler = formats.nextElement();
+            load = format_handler.parse(data, FPS, f);
             if (load != null && load.size() < 1) {
                 load = null;
             }
@@ -379,12 +381,16 @@ public class Subtitles extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
-        SubEntry entry = (SubEntry) sublist.elementAt(row);
-        if (entry != null) {
-            int column = visibleToReal(col);
-            Object value = entry.getData(row, column);
+        Object value;
+        int column;
+        SubEntry entry;
+        try{
+            entry = (SubEntry) sublist.elementAt(row);
+            column = visibleToReal(col);
+            value = entry.getData(row, column);
             return value;
-        } else {
+        }catch(Exception ex){
+            ex.printStackTrace(System.out);
             return null;
         }
     //return sublist.elementAt(row).getData(row, visibleToReal(col));
