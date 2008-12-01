@@ -20,29 +20,74 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import java.awt.Color;
 import java.awt.Component;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
 
 /**
  *
- * @author teras
+ * @author teras, Hoang Duy Tran
  */
-public class SubRenderer extends DefaultTableCellRenderer {
-    
-    public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+//public class SubRenderer extends DefaultTableCellRenderer {
+public class SubRenderer extends JLabel implements TableCellRenderer {
+
+    private int table_row_height,  image_row_height;
+
+    public SubRenderer() {
+        super();
+        setOpaque(true);
+    //setFont(new java.awt.Font("Monofont", 0, 11));
+    }
+
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
         SubEntry entry;
-        
+
         setEnabled(table == null || table.isEnabled()); // Always do that
+
+        //super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+
+        if (selected) {
+            setBackground(table.getSelectionBackground());
+            setForeground(table.getSelectionForeground());
+        } else {
+            entry = ((Subtitles) table.getModel()).elementAt(row);
+            setBackground(SubEntry.MarkColors[entry.getMark()]);
+            setForeground(Color.BLACK);
+            /*
+            setBackground(table.getBackground());
+            setForeground(table.getForeground());
+             */
+        }
         
-        entry = ((Subtitles)table.getModel()).elementAt(row);
-        setBackground( SubEntry.MarkColors[entry.getMark()] );
-        setForeground(Color.BLACK);
-        super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+        this.table_row_height = table.getRowHeight();
+        setText(null);
+        setIcon(null);
+        setToolTipText(null);
+        setText("");
+        boolean is_image_type = (value instanceof ImageIcon);
+        if (is_image_type) {
+            setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            ImageIcon img = (ImageIcon) value;
+            setIcon(img);
+            this.image_row_height = img.getIconHeight();
+            boolean is_taller = (table_row_height < image_row_height);
+            if (is_taller) {
+                table.setRowHeight(row, image_row_height);
+            }//end if
+        } else {
+            boolean is_string = (value instanceof String);
+            if (is_string) {
+                String s_value = (String) value;
+                setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+                setText(s_value);
+            }//end if
+        }//end if
+
         return this;
     }
 }
