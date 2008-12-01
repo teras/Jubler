@@ -41,11 +41,13 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
 /**
- *
+ * This class provides a basic textual processing foundation class for
+ * classes processing text based subtitle files.
  * @author teras
  */
 public abstract class AbstractTextSubFormat extends SubFormat {
     
+    protected static final String nl_repeat = "[\\n]{2,}+"; //at least twice or more
     protected static final String nl = "\\\n";
     protected static final String sp = "[ \\t]*";
     
@@ -66,11 +68,13 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         return getPattern();
     }
     
-    
+    public String preProcessing(String input){ return input; }
     
     public Subtitles parse(String input, float FPS, File f) {
         try{
             if ( ! getTestPattern().matcher(input).find() ) return null;    // Not valid - test pattern does not match
+            
+            input = preProcessing(input);
             
             DEBUG.debug(_("Found file {0}", _(getExtendedName())));
             subtitle_list = new Subtitles();
