@@ -1,5 +1,5 @@
 /*
- * PlainText.java
+ * PlainOCRTextWithDoubleNewLine.java
  *
  * Created on 26 Αύγουστος 2005, 11:08 πμ
  * 
