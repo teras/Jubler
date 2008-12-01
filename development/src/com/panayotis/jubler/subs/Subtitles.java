@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -35,120 +34,121 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 import java.io.File;
 import javax.swing.JTable;
 
-
 /**
  *
  * @author teras
  */
 public class Subtitles extends AbstractTableModel {
+
     private static final String COLUMNID = "#FELS";
     private static final String DEFAULTCOLUMNID = "FE";
     private static final String COLNAME[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
-    private static final String DEFAULTCOLWIDTH="50,100,100,50,50";
-    
+    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50";
     private boolean[] visiblecols = AutoSaveOptions.getVisibleColumns(COLUMNID, DEFAULTCOLUMNID);
     private int prefcolwidth[] = AutoSaveOptions.getColumnWidth(COLUMNID.length(), DEFAULTCOLWIDTH);
-    
-    
     private final static int FIRST_EDITABLE_COL = COLNAME.length;
-    
     /** Attributes of these subtiles */
     private SubAttribs attribs;
-    
     /** List of subtitles */
-    private Vector <SubEntry> sublist;
-    
+    private Vector<SubEntry> sublist;
     /** List of possible predefined styles */
     private SubStyleList styles;
-    
     /* The file representation of this subtitle */
     private SubFile subfile;
-    
+
     public Subtitles() {
         sublist = new Vector<SubEntry>();
         styles = new SubStyleList();
         attribs = new SubAttribs();
         subfile = new SubFile();
     }
-    
+
     public Subtitles(Subtitles old) {
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
-        
-        for (int i = 0 ; i < visiblecols.length ; i++) {
+
+        for (int i = 0; i < visiblecols.length; i++) {
             visiblecols[i] = old.visiblecols[i];
         }
-        
+
         subfile = new SubFile(old.subfile);
 
         sublist = new Vector<SubEntry>();
         SubEntry newentry, oldentry;
-        for (int i = 0 ; i < old.size() ; i++ ) {
+        for (int i = 0; i < old.size(); i++) {
             oldentry = old.elementAt(i);
             newentry = new SubEntry(oldentry);
             sublist.add(newentry);
-            if (newentry.getStyle()!=null) {
+            if (newentry.getStyle() != null) {
                 newentry.setStyle(styles.getStyleByName(oldentry.getStyle().getName()));
             }
         }
     }
-    
+
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
     public void populate(File f, String data, float FPS) {
         Subtitles load;
         AvailSubFormats formats;
-        
-        if ( data == null ) return;
+
+        if (data == null) {
+            return;
+        }
         load = null;
         formats = new AvailSubFormats();
-        
-        while ( load == null && formats.hasMoreElements()) {
+
+        while (load == null && formats.hasMoreElements()) {
             load = formats.nextElement().parse(data, FPS, f);
-            if (load!=null && load.size() < 1)
+            if (load != null && load.size() < 1) {
                 load = null;
+            }
         }
         appendSubs(load, true);
         attribs = new SubAttribs(load.attribs);
     }
-    
-    
+
     public void sort(double mintime, double maxtime) {
         Vector<SubEntry> sorted;
         SubEntry sub;
         double time;
         int lastpos;
-        
+
         lastpos = -1;
         sorted = new Vector<SubEntry>();
-        
+
         /* Get affected subtitles */
-        for (int i = size() -1  ; i >= 0 ; i-- ) {
+        for (int i = size() - 1; i >= 0; i--) {
             sub = elementAt(i);
             time = sub.getStartTime().toSeconds();
-            if ( time >= mintime && time <= maxtime )        {
+            if (time >= mintime && time <= maxtime) {
                 lastpos = i;
                 sorted.add(sub);
                 remove(i);
             }
         }
-        if (lastpos == -1 ) return ; /* None affected */
-        
+        if (lastpos == -1) {
+            return; /* None affected */
+
         /* Sort affected subtitles */
+        }
         Collections.sort(sorted);
         /* Insert affected subtitles */
         sublist.addAll(lastpos, sorted);
     }
-    
+
     private void appendSubs(Subtitles newsubs, boolean newStylePriority) {
-        if (newsubs == null) return;
+        if (newsubs == null) {
+            return;
+        }
         sublist.addAll(newsubs.sublist);
         /* Deal with default style first: change it's values if it is nessesary */
-        if ( newStylePriority) styles.elementAt(0).setValues(newsubs.styles.elementAt(0));
+        if (newStylePriority) {
+            styles.elementAt(0).setValues(newsubs.styles.elementAt(0));
+        }
         SubStyle style;
         /* Go through all remaining new styles */
-        for (int i = 1 ; i < newsubs.styles.size() ; i++ ) {
+        for (int i = 1; i < newsubs.styles.size(); i++) {
             SubStyle newstyle = newsubs.styles.elementAt(i);
             int res = styles.findStyleIndex(newstyle.Name);
             /* We have found that a style with the same name already exists ! */
@@ -162,97 +162,103 @@ public class Subtitles extends AbstractTableModel {
             }
         }
     }
-    
-    
+
     public void joinSubs(Subtitles s1, Subtitles s2, double dt) {
         double maxtime;
         SubEntry newentry;
-        
+
         appendSubs(s1, false);
         maxtime = s1.getMaxTime();
         maxtime += dt;
-        for ( int i = 0 ; i < s2.size() ; i++) {
+        for (int i = 0; i < s2.size(); i++) {
             newentry = new SubEntry(s2.elementAt(i));
             newentry.getStartTime().addTime(maxtime);
             newentry.getFinishTime().addTime(maxtime);
             add(newentry);
         }
     }
-    
+
     private double getMaxTime() {
         double max, cur;
-        
+
         max = 0;
-        for (int i = 0 ; i < sublist.size() ; i++) {
+        for (int i = 0; i < sublist.size(); i++) {
             cur = sublist.elementAt(i).getFinishTime().toSeconds();
-            if ( cur > max ) max = cur;
+            if (cur > max) {
+                max = cur;
+            }
         }
         return max;
     }
-    
+
     public int addSorted(SubEntry sub) {
         double time = sub.getStartTime().toSeconds();
         int pos = 0;
-        while ( sublist.size() > pos && sublist.elementAt(pos).getStartTime().toSeconds() < time )
+        while (sublist.size() > pos && sublist.elementAt(pos).getStartTime().toSeconds() < time) {
             pos++;
+        }
         sublist.add(pos, sub);
-        if (sub.getStyle() == null) sub.setStyle(styles.elementAt(0));
+        if (sub.getStyle() == null) {
+            sub.setStyle(styles.elementAt(0));
+        }
         return pos;
     }
-    
-    public void add( SubEntry sub) {
+
+    public void add(SubEntry sub) {
         sublist.add(sub);
-        if (sub.getStyle() == null) sub.setStyle(styles.elementAt(0));
+        if (sub.getStyle() == null) {
+            sub.setStyle(styles.elementAt(0));
+        }
     }
-    
+
     public void remove(int i) {
         sublist.remove(i);
     }
+
     public void remove(SubEntry sub) {
         sublist.remove(sub);
     }
-    
+
     public SubEntry elementAt(int i) {
         return sublist.elementAt(i);
     }
-    
-    
+
     public boolean isEmpty() {
         return sublist.isEmpty();
     }
-    
+
     public int size() {
         return sublist.size();
     }
-    
+
     /* Calculate maximum character length & maximum lines */
     public TotalSubMetrics getTotalMetrics() {
         TotalSubMetrics max = new TotalSubMetrics();
-        for (int i = 0 ; i < size() ; i++) {
-           max.updateToMaxValues(elementAt(i).getMetrics());
+        for (int i = 0; i < size(); i++) {
+            max.updateToMaxValues(elementAt(i).getMetrics());
         }
         return max;
     }
-    
-    
-    
+
     public int indexOf(SubEntry entry) {
         return sublist.indexOf(entry);
     }
-    
+
     public int findSubEntry(double time, boolean fuzzyMatch) {
         /* If not an exact match is found, return the closest previous index in respect to the start time */
         int fuzzyresult = -1;
         double fuzzyDiff = Double.MAX_VALUE;
-        
+
         SubEntry entry;
         double cdiff;
-        for ( int i = 0 ; i < sublist.size() ; i++ ) {
+        for (int i = 0; i < sublist.size(); i++) {
             entry = sublist.elementAt(i);
-            if ( entry.isInTime(time)) return i;
-            if (fuzzyMatch ) {
+            if (entry.isInTime(time)) {
+                return i;
+            }
+            if (fuzzyMatch) {
                 cdiff = Math.abs(time - entry.getStartTime().toSeconds());
-                if ( cdiff > 0 && cdiff < fuzzyDiff) {
+                if (cdiff > 0 && cdiff < fuzzyDiff) {
                     fuzzyDiff = cdiff;
                     fuzzyresult = i;
                 }
@@ -260,103 +266,135 @@ public class Subtitles extends AbstractTableModel {
         }
         return fuzzyresult;
     }
-    
-    public SubStyleList getStyleList() { return styles; }
-    
+
+    public SubStyleList getStyleList() {
+        return styles;
+    }
+
     public void revalidateStyles() {
         for (SubEntry entry : sublist) {
             SubStyle style = entry.getStyle();
-            if (style == null || styles.indexOf(style) < 0 ) {
+            if (style == null || styles.indexOf(style) < 0) {
                 entry.setStyle(styles.elementAt(0));
             }
         }
     }
-    
-    
-    public SubAttribs getAttribs() { return attribs; }
+
+    public SubAttribs getAttribs() {
+        return attribs;
+    }
     /* Not only update attributes, but also mark all the entries with long texts */
-    public void setAttribs(SubAttribs newattr) { 
+
+    public void setAttribs(SubAttribs newattr) {
         attribs = newattr;
         for (SubEntry entry : sublist) {
             entry.updateMaxCharStatus(attribs, entry.getMetrics().maxlength);
         }
     }
-    
+
     /*
      * Methods related to SubFile
      *
      */
-    public File getCurrentFile() { return subfile.getCurrentFile(); }
-    public void setCurrentFile(File f) { subfile.setCurrentFile(f); }
-    public String getCurrentFileName() { return subfile.getCurrentFile().getName(); }
-    
-    public File getLastOpenedFile() { return subfile.getLastOpenedFile(); }
-    public void setLastOpenedFile(File f) { subfile.setLastOpenedFile(f); }
+    public File getCurrentFile() {
+        return subfile.getCurrentFile();
+    }
+
+    public void setCurrentFile(File f) {
+        subfile.setCurrentFile(f);
+    }
+
+    public String getCurrentFileName() {
+        return subfile.getCurrentFile().getName();
+    }
+
+    public File getLastOpenedFile() {
+        return subfile.getLastOpenedFile();
+    }
+
+    public void setLastOpenedFile(File f) {
+        subfile.setLastOpenedFile(f);
+    }
+
     public String getLastOpendFilePath() {
         File last = subfile.getLastOpenedFile();
-        if (last==null) return null;
+        if (last == null) {
+            return null;
+        }
         return last.getPath();
     }
-    
-    
-    
+
     /* Methods related to JTable */
     public void setVisibleColumn(int which, boolean how) {
-        visiblecols[which]=how;
-        AutoSaveOptions.setVisibleColumns(visiblecols,COLUMNID);
+        visiblecols[which] = how;
+        AutoSaveOptions.setVisibleColumns(visiblecols, COLUMNID);
     }
-    
+
     public boolean isVisibleColumn(int which) {
         return visiblecols[which];
     }
-    
+
     private int visibleToReal(int col) {
         int vispointer = -1;
-        for (int i = 0 ; i < visiblecols.length ; i++) {
-            if (visiblecols[i]) vispointer++;
-            if (vispointer==col) return i;
+        for (int i = 0; i < visiblecols.length; i++) {
+            if (visiblecols[i]) {
+                vispointer++;
+            }
+            if (vispointer == col) {
+                return i;
+            }
         }
-        return COLNAME.length-1;   // Return last column
+        return COLNAME.length - 1;   // Return last column
     }
-    
+
     public void setValueAt(Object value, int row, int col) {
         col = visibleToReal(col);
-        if ( col >= FIRST_EDITABLE_COL && row < sublist.size() ) {
+        if (col >= FIRST_EDITABLE_COL && row < sublist.size()) {
             sublist.elementAt(row).setData(col, value);
         }
         fireTableCellUpdated(row, col);
     }
-    
-    
+
     public boolean isCellEditable(int row, int col) {
         //if ( col >= FIRST_EDITABLE_COL) return true;
         return false;
     }
-    
-    public int getRowCount(){
+
+    public int getRowCount() {
         return sublist.size();
     }
-    
+
     public int getColumnCount() {
-        int cols = 1 ; // At least one column is visible
-        for (int i = 0 ; i < visiblecols.length ; i++ ) {
-            if (visiblecols[i]) cols++;
+        int cols = 1; // At least one column is visible
+        for (int i = 0; i < visiblecols.length; i++) {
+            if (visiblecols[i]) {
+                cols++;
+            }
         }
         return cols;
     }
-    
+
     public String getColumnName(int index) {
         return COLNAME[visibleToReal(index)];
     }
-    
-    public Object getValueAt(int row, int col){
-        return sublist.elementAt(row).getData(row, visibleToReal(col));
+
+    public Object getValueAt(int row, int col) {
+        SubEntry entry = (SubEntry) sublist.elementAt(row);
+        if (entry != null) {
+            int column = visibleToReal(col);
+            Object value = entry.getData(row, column);
+            return value;
+        } else {
+            return null;
+        }
+    //return sublist.elementAt(row).getData(row, visibleToReal(col));
+
     }
-    
+
     public void updateColumnWidth(JTable t) {
         int ccolumn = 0;
-        
-        for (int i = 0 ; i < visiblecols.length ; i++) {
+
+        for (int i = 0; i < visiblecols.length; i++) {
             if (visiblecols[i]) {
                 prefcolwidth[i] = t.getColumnModel().getColumn(ccolumn).getWidth();
                 ccolumn++;
@@ -370,8 +408,8 @@ public class Subtitles extends AbstractTableModel {
 
         int MIN_COLUMN_WIDTH = 10;
         int MAX_COLUMN_WIDTH = 400;
-        
-        for (int i = 0 ; i < visiblecols.length ; i++) {
+
+        for (int i = 0; i < visiblecols.length; i++) {
             if (visiblecols[i]) {
                 t.getColumnModel().getColumn(ccolumn).setMinWidth(MIN_COLUMN_WIDTH);
                 t.getColumnModel().getColumn(ccolumn).setMaxWidth(MAX_COLUMN_WIDTH);
@@ -380,5 +418,4 @@ public class Subtitles extends AbstractTableModel {
             }
         }
     }
-    
 }
