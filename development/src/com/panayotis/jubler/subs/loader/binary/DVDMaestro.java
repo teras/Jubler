@@ -112,7 +112,7 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         p_son_tv_type = Pattern.compile("TV_Type" + sp + graph);
         p_son_tape_type = Pattern.compile("Tape_Type" + sp + graph);
         p_son_pixel_area = Pattern.compile("Pixel_Area" + sp + "\\(" + digits + sp + digits + "\\)");
-        p_son_image_directory = Pattern.compile("Directory" + sp + graph);
+        p_son_image_directory = Pattern.compile("Directory" + sp + printable);
         p_son_colour = Pattern.compile("Color" + sp + "\\(" + digits + sp + digits + sp + digits + sp + digits + "\\)");
         p_son_contrast = Pattern.compile("Contrast" + sp + "\\(" + digits + sp + digits + sp + digits + sp + digits + "\\)");
         p_son_displayarea = Pattern.compile("Display_Area" + sp + "\\(" + digits + sp + digits + sp + digits + sp + digits + "\\)");
