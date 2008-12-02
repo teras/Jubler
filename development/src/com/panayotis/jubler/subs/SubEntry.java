@@ -193,6 +193,17 @@ public class SubEntry implements Comparable<SubEntry> {
                 }
                 return style.toString();
             case 5:
+                boolean is_image_type = (this instanceof ImageTypeSubtitle);
+                if (is_image_type){
+                    ImageTypeSubtitle img_type = (ImageTypeSubtitle)this;
+                    ImageIcon img = img_type.getImage();
+                    boolean has_image = (img != null);
+                    if (has_image){
+                        return img;
+                    }//end if (has_image)
+                }//end if (is_image_type)
+                
+                //otherwise return text as originally
                 return subtext.replace('\n', '|');
         }
         return null;
