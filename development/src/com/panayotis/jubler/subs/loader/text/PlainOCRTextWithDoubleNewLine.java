@@ -89,7 +89,7 @@ public class PlainOCRTextWithDoubleNewLine extends AbstractTextSubFormat {
      * @param input The input string of the subtitle-text.
      * @return Recomposed subtitle-text.
      */
-    public String preProcessing(String input) {
+    private String preProcessing(String input) {
         boolean has_text = false;
         String[] list = input.split(DOUBLE_NEW_LINE);
         int len = list.length;
@@ -133,7 +133,7 @@ public class PlainOCRTextWithDoubleNewLine extends AbstractTextSubFormat {
 
     protected String initLoader(String input) {
         current_time = 0;
-        return super.initLoader(input);
+        return preProcessing(input);
     }
 
     public boolean supportsFPS() {
