@@ -2,7 +2,7 @@
  * SubRenderer.java
  *
  * Created on 20 Δεκέμβριος 2004, 1:40 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -63,7 +63,7 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
             setForeground(table.getForeground());
              */
         }
-        
+
         this.table_row_height = table.getRowHeight();
         setText(null);
         setIcon(null);
@@ -78,6 +78,7 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
             boolean is_taller = (table_row_height < image_row_height);
             if (is_taller) {
                 table.setRowHeight(row, image_row_height);
+                table.repaint();
             }//end if
         } else {
             boolean is_string = (value instanceof String);
