@@ -621,20 +621,7 @@ class SonSubEntry extends SubEntry implements ImageTypeSubtitle, HeaderedTypeSub
     public ImageIcon getImage(){
         return image;
     }
-    public Object getData(int row, int col) {
-        switch (col) {
-            case 0:
-                return Integer.toString(row + 1);
-            case 1:
-                return this.getStartTime().toString();
-            case 2:
-                return this.getFinishTime().toString();
-            case 5:
-                return image;
-        }//end switch/case
-        return null;
-    }
-
+    
     private String shortArrayToString(short[] a, String title) {
         StringBuffer b = new StringBuffer();
         if (a != null && a.length > 3) {
