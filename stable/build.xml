@@ -269,7 +269,10 @@
 		<copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
 		<copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
 		<copy file="resources/installers/linux/jubler.png" todir="${sharedir}/icons/hicolor/48x48/apps"/>
-		<exec executable="resources/installers/linux/iconinstall" failonerror="true"><arg line="${sharedir}/icons/hicolor"/></exec>
+		<exec executable="bash" failonerror="true">
+			<arg line="resources/installers/linux/iconinstall"/>
+			<arg line="${sharedir}/icons/hicolor"/>
+		</exec>
 		<copy file="resources/installers/linux/jubler.desktop" todir="${sharedir}/applications"/>
 
 		<!-- Mimetypes -->
@@ -287,7 +290,7 @@
 		<copy file="resources/system/findjava.sh" todir="${libdir}"/>
 		<chmod file="${libdir}/findjava.sh" perm="a+x"/>
 		<copy file="dist/lib/libffdecode.so" todir="${libdir}/lib"/>
-		<copy file="dist/lib/jupidator.jar" todir="${libdir}/lib"/>
+		<copy file="resources/jupidator/jupidator.jar" todir="${libdir}/lib"/>
 		<chmod file="${libdir}/lib/libffdecode.so" perm="a+x"/>
 		<copy file="resources/installers/linux/jubler" todir="${bindir}"/>
 		<chmod file="${bindir}/jubler" perm="a+x"/>

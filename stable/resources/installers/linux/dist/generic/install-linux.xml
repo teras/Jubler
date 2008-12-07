@@ -48,7 +48,7 @@
     <packs>
         <pack name="Base" required="yes">
             <description>Jubler base files</description>
-            <file src="ChangeLog" targetdir="$INSTALL_PATH"/>
+            <file src="ChangeLog.html" targetdir="$INSTALL_PATH"/>
             <file src="LICENCE" targetdir="$INSTALL_PATH"/>
             <file src="README" targetdir="$INSTALL_PATH"/>
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
