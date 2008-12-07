@@ -326,7 +326,7 @@
 
 
 	<!-- Debian Linux installer -->
-	<target name="debian" depends="distbased,release,linuxffdecodedyn,linuxinstall">
+	<target name="debian" depends="distbased,release,linuxffdecode,linuxinstall">
 		<mkdir dir="${destdir}/DEBIAN"/>
 		<exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
 			<arg line="usr -type f -exec md5sum {} ;"/>
