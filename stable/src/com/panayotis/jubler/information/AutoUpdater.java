@@ -45,35 +45,4 @@ public class AutoUpdater implements UpdatedApplication {
     public void receiveMessage(String message) {
         DEBUG.debug(message);
     }
-
-    /**
-     * Use this method to save changelog to a file
-     * @param args
-     */
-    public static void main(String[] args) {
-        {
-            FileWriter out = null;
-            try {
-                if (args.length < 1) {
-                    System.err.println("One argument required: changelog file");
-                    return;
-                }
-                String cl = new Updater(URL, null, null).getChangeLog();
-                out = new FileWriter(args[0]);
-                out.write(cl);
-                out.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (UpdaterException ex) {
-                ex.printStackTrace();
-            } finally {
-                try {
-                    if (out != null)
-                        out.close();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        }
-    }
 }

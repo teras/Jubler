@@ -68,6 +68,7 @@ Section "Jubler editor" SecJubler
   SetOutPath $INSTDIR\lib
   File dist\lib\ffdecode.dll
   File resources\installers\windows\subtitle.ico
+  File resources\jupidator\jupidator.jar
 
   ; Create help directory
   SetOutPath $INSTDIR\help

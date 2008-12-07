@@ -10,6 +10,8 @@ echo
 echo "Human readable version is \"$HVER\" and numeric version is \"$NVER\"."
 echo "Press [RETURN] to continue or [CTRL]-C to abort version upgrade."
 read NL
+echo
+echo Updating file $FPATH
 cat >$FPATH <<EOF
 version=$HVER
 longversion=$NVER
