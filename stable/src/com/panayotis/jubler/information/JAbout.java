@@ -23,10 +23,11 @@
 
 package com.panayotis.jubler.information;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.os.DEBUG;
 import java.io.IOException;
 import java.util.Properties;
-import static com.panayotis.jubler.i18n.I18N._;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
