@@ -1,0 +1,29 @@
+Index: configure
+===================================================================
+--- configure	(revision 15970)
++++ configure	(working copy)
+@@ -1127,7 +1127,7 @@
+ vhook="default"
+ 
+ # build settings
+-add_cflags -D_ISOC99_SOURCE -D_POSIX_C_SOURCE=200112
++add_cflags -D_ISOC99_SOURCE
+ SHFLAGS='-shared -Wl,-soname,$$(@F)'
+ VHOOKSHFLAGS='$(SHFLAGS)'
+ FFSERVERLDFLAGS=-Wl,-E
+Index: libavcodec/utils.c
+===================================================================
+--- libavcodec/utils.c	(revision 15970)
++++ libavcodec/utils.c	(working copy)
+@@ -25,8 +25,10 @@
+  * utils.
+  */
+ 
+-/* needed for mkstemp() */
++/* needed for mkstemp() but breaks compatibility in Leopard */
++#ifndef __APPLE__
+ #define _XOPEN_SOURCE 600
++#endif
+ 
+ #include "libavutil/avstring.h"
+ #include "libavutil/integer.h"

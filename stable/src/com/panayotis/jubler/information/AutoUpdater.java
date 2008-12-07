@@ -12,8 +12,6 @@ import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.Updater;
 import com.panayotis.jupidator.UpdaterException;
-import java.io.FileWriter;
-import java.io.IOException;
 
 /**
  *
