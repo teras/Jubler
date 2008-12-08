@@ -75,12 +75,13 @@ JNIEXPORT jbyteArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_FF
             /* Find pointer for matrix size */
             matrixdata = (*env)->GetByteArrayElements(env, matrix, 0);
             
-            /* This is a trick: the first 4 bytes are not video data but the size of the video */
-            storenumb(matrixdata, width);
-            storenumb(matrixdata+2, height);
-
             /* Copy the actual color map to picture buffer */
-            memcpy(matrixdata+4, pict->data[0], 3*width*height);
+            memcpy(matrixdata, pict->data[0], 3*width*height);
+           
+            /* This is a trick: the first 4 bytes are not video data but the size of the video */
+            storenumb(matrixdata+(3*width*height), width);
+            storenumb(matrixdata+(3*width*height)+2, height);
+
             /* Release the matrix data pointer */
             (*env)->ReleaseByteArrayElements(env, matrix, matrixdata, 0);
         } else {

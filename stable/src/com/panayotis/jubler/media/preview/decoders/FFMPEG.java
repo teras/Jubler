@@ -30,16 +30,9 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemFileFinder;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
-import java.awt.image.DirectColorModel;
-import java.awt.image.Raster;
-import java.awt.image.SinglePixelPackedSampleModel;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteOrder;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -70,13 +63,13 @@ public final class FFMPEG extends NativeDecoder {
         byte[] data = grabFrame(vfile.getPath(), (long)time, resize);
         if (data==null) return null;
 
-        byte[] frame = new byte[data.length-4];
-        int X = data[0] * 128 + data[1];
-        int Y = data[2] * 128 + data[3];
-        System.arraycopy(data, 4, frame, 0, frame.length);
+        /* The last 4 bytes is the image resolution */
+        int X = data[data.length-4] * 128 + data[data.length-3];
+        int Y = data[data.length-2] * 128 + data[data.length-1];
+
         BufferedImage image = new BufferedImage(X, Y, BufferedImage.TYPE_3BYTE_BGR);
         WritableRaster raster = image.getRaster();
-        raster.setDataElements(0, 0, X, Y, frame);
+        raster.setDataElements(0, 0, X, Y, data);
         return image;
     }
     
