@@ -36,23 +36,22 @@ import java.util.Vector;
  */
 public class TreeWalker {
 
-    public static File searchExecutable(String application, String deflt) {
+    public static File searchExecutable(String application, String[] parameters, String test_signature, String deflt) {
         Vector<ExtPath> paths = new Vector<ExtPath>();
         paths.add(new ExtPath(deflt, ExtPath.FILE_ONLY));
         SystemDependent.appendSpotlightApplication(application, paths);
         SystemDependent.appendPathApplication(paths);
         SystemDependent.appendLocateApplication(application, paths);
 
+        if (parameters == null)
+            parameters = new String[0];
+
         for (ExtPath path : paths) {
             DEBUG.debug(_("Wizard is looking inside {0}", path.getPath()));
-            if (path.getPath().endsWith("ffmpegX/mplayer")) {
-                DEBUG.debug(_("Ignoring ffmpegX mplayer executable"));
-                continue;
-            }
             File f = new File(path.getPath());
             if (path.searchForFile() && (!f.isFile()))
                 continue;   // If we want a file and this is not, ignore this entry
-            File res = searchExecutable(f, application.toLowerCase(), path.getRecStatus());
+            File res = searchExecutable(f, application.toLowerCase(), parameters, test_signature, path.getRecStatus());
             if (res != null)
                 return res;
         }
@@ -60,7 +59,7 @@ public class TreeWalker {
     }
 
     /* filename is already in lower case... */
-    public static File searchExecutable(File root, String program, int recursive) {
+    public static File searchExecutable(File root, String program, String[] parameters, String test_signature, int recursive) {
         if (!root.exists())
             return null;
         if (root.isFile()) {
@@ -68,7 +67,7 @@ public class TreeWalker {
                 return null;
             if (!root.getName().toLowerCase().equals(program + SystemDependent.PROG_EXT))
                 return null;
-            if (!execIsValid(root, program))
+            if (!execIsValid(root, parameters, program, test_signature))
                 return null;
             /* All checks OK - valid executable! */
             return root;
@@ -79,7 +78,7 @@ public class TreeWalker {
             File[] childs = root.listFiles();
             if (childs != null) {
                 for (int i = 0; i < childs.length; i++) {
-                    File res = searchExecutable(childs[i], program, recursive);
+                    File res = searchExecutable(childs[i], program, parameters, test_signature, recursive);
                     if (res != null)
                         return res;
                 }
@@ -88,28 +87,47 @@ public class TreeWalker {
         return null;
     }
 
-    public static boolean execIsValid(File exec, String test_signature) {
+    public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
         Process proc = null;
-        String[] cmd = new String[1];
-        cmd[0] = exec.getAbsolutePath();    // Use this trick to avoid spaces problems inside the filename
-        boolean found = false;
+        String[] cmd = new String[parameters.length + 1];
+        cmd[0] = exec.getAbsolutePath();
+        if (parameters.length > 0)
+            System.arraycopy(parameters, 0, cmd, 1, parameters.length);
 
         try {
-            DEBUG.debug(_("Testing if {0} is a valid executable", exec.getAbsolutePath()));
+            StringBuffer buf = new StringBuffer();
+            buf.append(_("Testing:")).append(" ");
+            for (int i = 0; i < cmd.length; i++) {
+                buf.append(cmd[i]).append(' ');
+            }
+            DEBUG.debug(buf.toString());
+
             proc = Runtime.getRuntime().exec(cmd);
             BufferedReader infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line;
+            line = infopipe.readLine() + infopipe.readLine();
+            if (!line.toLowerCase().contains(app_signature)) {
+                proc.destroy();
+                return false;
+            }
+            if (test_signature == null) {
+                proc.destroy();
+                return true;
+            }
             while ((line = infopipe.readLine()) != null) {
-                if (line.toLowerCase().contains("mplayer")) {
+                if (line.toLowerCase().contains(test_signature)) {
                     DEBUG.debug(_("Valid executable found: {0}", exec.getAbsolutePath()));
-                    found = true;
-                    break;
+                    proc.destroy();
+                    return true;
                 }
             }
-            proc.destroy();
-            return found;
         } catch (Exception ex) {
+        } finally {
+            try {
+                proc.destroy();
+            } catch (Exception e) {
+            }
         }
-        return found;
+        return false;
     }
 }

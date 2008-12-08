@@ -44,16 +44,20 @@ public class JWizard extends JDialog {
     private JExtBasicOptions ext;
     
     private String name;
+    private String[] testparameters;
+    private String test_signature;
     private String deflt;
     
     private JFileChooser fdialog;
     
     /** Creates new form JWizard */
-    public JWizard(String name, String deflt) {
+    public JWizard(String name, String[] testparameters, String test_signature, String deflt) {
         super((Frame)null, true);
         
         this.name = name;
         this.deflt = deflt;
+        this.testparameters = testparameters;
+        this.test_signature = test_signature;
         
         fdialog = new JFileChooser();
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -254,7 +258,7 @@ public class JWizard extends JDialog {
     private void autoFind() {
         Thread auto = new Thread() {
             public void run() {
-                File f = TreeWalker.searchExecutable(name, deflt);
+                File f = TreeWalker.searchExecutable(name, testparameters, test_signature, deflt);
                 
                 ContinueB.setEnabled(true);
                 AutoProgress.setVisible(false);
@@ -276,7 +280,7 @@ public class JWizard extends JDialog {
             case 1:
                 if (ManualB.isSelected()) {
                     cardid++;
-                    ContinueB.setEnabled(TreeWalker.execIsValid(new File(deflt), name.toLowerCase()));
+                    ContinueB.setEnabled(TreeWalker.execIsValid(new File(deflt), testparameters, test_signature, name.toLowerCase()));
                     FilenameT.setText(deflt);
                 } else {
                     CancelB.setEnabled(false);
@@ -307,7 +311,7 @@ public class JWizard extends JDialog {
     private void BrowseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseBActionPerformed
         BrowseStatusL.setVisible(false);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), name.toLowerCase(), SystemDependent.getBundleOrFileID());
+        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), name.toLowerCase(), testparameters, test_signature, SystemDependent.getBundleOrFileID());
         if (newexe!=null) {
             FilenameT.setText(newexe.getPath());
             ContinueB.setEnabled(true);

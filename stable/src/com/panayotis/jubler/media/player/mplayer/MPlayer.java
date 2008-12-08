@@ -24,7 +24,6 @@
 
 package com.panayotis.jubler.media.player.mplayer;
 
-import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
@@ -55,5 +54,13 @@ public class MPlayer extends AbstractPlayer {
     public boolean supportChangeSubs() { return true; }
     
     public Viewport getViewport() { return new MPlayerViewport(this); }
+
+    public String[] getTestParameters() {
+        return new String[] {"-list-options"};
+    }
+
+    public String getTestSignature() {
+        return " ass ";
+    }
     
 }
