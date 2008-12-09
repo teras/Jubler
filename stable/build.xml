@@ -183,10 +183,8 @@
 	</target>
 
 	<!-- Windows Installer -->
-	<target name="win32" depends="nodistbased,release">
+	<target name="win32exe" depends="nodistbased,release">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
-
-		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -211,6 +209,10 @@
 				<jre minVersion="1.6.0" />
 			</config>
 		</launch4j>
+	</target>
+	<target name="win32" depends="win32exe">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="makensis" failonerror="true">
@@ -456,6 +458,7 @@
 			<fileset dir="." includes="*.log"/>
 			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
 			<fileset dir="src" includes="lib"/>
+			<fileset dir="resources/i18n" includes="*.mo"/>
 		</delete>
 		<delete dir="self"/>
 		<delete dir="dist/Jubler.app"/>

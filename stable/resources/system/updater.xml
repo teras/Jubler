@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!DOCTYPE updatelist SYSTEM "updater.dtd">
 <updatelist application="Jubler" baseurl="http://www.jubler.org/files/jupidator" icon="icons/jubler.png">
 
     <architect tag="any" os="" arch="">
@@ -39,27 +38,20 @@
     </architect>
 
 
-    <version id="533" release="4.0">
+    <version id="589" release="3.9.9_e2">
         <description>
-	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fix tool for overlapping subtitles. Improved FFMPEG color model. Initial support for W3C Timed Text.
+	Greek translation updates.
         </description>
-        <arch name="linux_i386" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
-        </arch>
-        <arch name="linux_amd64" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
-        </arch>
         <arch name="win32" basefile="Jubler.exe">
-            <file name="Jubler.exe" sourcedir="4.0/win32" destdir="${APPHOME}" size="1000000"/>
-        </arch>
-        <arch name="macosx" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
-        </arch>
-        <arch name="any" basefile="Jubler.jar">
-            <file name="Jubler.jar" sourcedir="4.0" destdir="${APPHOME}" size="1000000"/>
+            <file name="Jubler.exe" sourcedir="3.9.9_e2" destdir="${APPHOME}" size="942915" compress="gzip"/>
         </arch>
     </version>
-    
+
+    <version id="559" release="3.9.9_e1">
+        <description>
+	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
+        </description>
+    </version>    
     <version id="22" release="3.9.6">
         <description>
 	Improved Google translator parsing engine. Fixed compile issues with ffmpeg under OS X 10.4. Fixed Linux GTK Look and Feel bug with time-spinner under Java 6.0.
