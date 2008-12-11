@@ -78,7 +78,6 @@ public abstract class GenericWebTranslator extends WebTranslator {
                     data = tk.nextToken().trim();
                     if (isIDTag(data)) {
                         if (idx >= 0) {
-                            subtxt = "";
                             if (subtxt.length() > 0)
                                 subtxt = subtxt.substring(0, subtxt.length() - 1);
                             subs.get(idx).setText(subtxt);
@@ -90,7 +89,6 @@ public abstract class GenericWebTranslator extends WebTranslator {
                     }
                 }
                 if (idx >= 0) {
-                    subtxt = "";
                     if (subtxt.length() > 0)
                         subtxt = subtxt.substring(0, subtxt.length() - 1);
                     subs.get(idx).setText(subtxt);
