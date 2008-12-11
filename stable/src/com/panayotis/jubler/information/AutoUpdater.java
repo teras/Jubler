@@ -25,7 +25,6 @@ public class AutoUpdater implements UpdatedApplication {
         try {
             ApplicationInfo ap = new ApplicationInfo(
                     SystemFileFinder.getJublerAppPath(),
-                    SystemDependent.getConfigPath(),
                     SystemDependent.getAppSupportDirPath(),
                     JAbout.getCurrentRelease(),
                     JAbout.getCurrentVersion());
