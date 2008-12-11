@@ -1442,14 +1442,14 @@
             <Component class="javax.swing.JButton" name="PreviewTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/preview.png"/>
+                  <Image iconType="3" name="/icons/previewc.png"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Enable preview&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/previewc.png"/>
+                  <Image iconType="3" name="/icons/preview.png"/>
                 </Property>
               </Properties>
               <Events>
