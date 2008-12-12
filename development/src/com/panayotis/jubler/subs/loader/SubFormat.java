@@ -55,6 +55,7 @@ public abstract class SubFormat {
         return produce(subs, outfile, media);
     }
     
+    public void init(){}
     
     /* Export subtitles to file
      * Return whether the file should be moved & renamed or not
@@ -79,7 +80,11 @@ public abstract class SubFormat {
     
     public abstract boolean supportsFPS();
     
-    public short parseShort(String data, short default_value){
+    public static short parseShort(String data){
+        return parseShort(data, (short)0);
+    }
+    
+    public static short parseShort(String data, short default_value){
         short value = default_value;
         try{
             value = Short.parseShort(data);            
@@ -87,7 +92,10 @@ public abstract class SubFormat {
         return value;
     }
     
-    public int parseInt(String data, int default_value){
+    public static int parseInt(String data){
+        return parseInt(data, (int)0);
+    }
+    public static int parseInt(String data, int default_value){
         int value = default_value;
         try{
             value = Integer.parseInt(data);            
