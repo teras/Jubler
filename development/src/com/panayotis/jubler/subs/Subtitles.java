@@ -1,7 +1,7 @@
 /*
  * Subtitles.java
  *
- * Created on 22 Ιο�?νιος 2005, 1:51 πμ
+ * Created on 22 Ιο�?νιος 2005, 1:51 πμ
  *
  * This file is part of Jubler.
  *
@@ -86,6 +86,12 @@ public class Subtitles extends AbstractTableModel {
         }
     }
 
+    public void clear() {
+        if (sublist != null) {
+            sublist.clear();
+        }//end if (sublist != null)
+    }
+
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
@@ -101,6 +107,7 @@ public class Subtitles extends AbstractTableModel {
 
         while (load == null && formats.hasMoreElements()) {
             SubFormat format_handler = formats.nextElement();
+            format_handler.init();
             load = format_handler.parse(data, FPS, f);
             if (load != null && load.size() < 1) {
                 load = null;
@@ -384,12 +391,12 @@ public class Subtitles extends AbstractTableModel {
         Object value;
         int column;
         SubEntry entry;
-        try{
+        try {
             entry = (SubEntry) sublist.elementAt(row);
             column = visibleToReal(col);
             value = entry.getData(row, column);
             return value;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace(System.out);
             return null;
         }
