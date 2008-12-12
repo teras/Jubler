@@ -84,7 +84,7 @@ import javax.swing.ImageIcon;
  * Display_Start	non_forced
  * TV_Type		PAL
  * Tape_Type	NON_DROP
- * Pixel_Area	(0 575) 
+ * Pixel_Area	(0 575) //width 576
  * Directory	C:\java\test_data\edwardian
  * Contrast	( 15 0 15 15 )
  * 
