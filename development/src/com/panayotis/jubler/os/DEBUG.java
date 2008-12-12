@@ -27,6 +27,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,6 +37,7 @@ public class DEBUG {
 
     private static FileWriter log;
     private static String NL = System.getProperty("line.separator");
+    public static Logger logger = Logger.getLogger("Jubler"); //HDT
     static {
         try {
             File logfile = new File(SystemDependent.getLogPath());
