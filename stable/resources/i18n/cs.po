@@ -4,7 +4,7 @@ msgid	""
 msgstr	"Project-Id-Version: cs\n"
 	"Report-Msgid-Bugs-To: \n"
 	"POT-Creation-Date: 2008-12-09 17:10+0200\n"
-	"PO-Revision-Date: 2008-08-20 20:00+0100\n"
+	"PO-Revision-Date: 2008-12-11 20:00+0100\n"
 	"Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
 	"Language-Team:  <el@li.org>\n"
 	"MIME-Version: 1.0\n"
@@ -491,11 +491,11 @@ msgstr	"Znovu načíst titulky"
 
 #: com/panayotis/jubler/Jubler.java:2267
 msgid	"Disable Preview"
-msgstr	""
+msgstr	"Zakázat náhled"
 
 #: com/panayotis/jubler/Jubler.java:2267
 msgid	"Enable Preview"
-msgstr	""
+msgstr	"Povolit náhled"
 
 #: com/panayotis/jubler/Jubler.java:2300
 msgid	"Quit confirmation"
@@ -523,7 +523,7 @@ msgstr	"Změnit styl na {0}"
 
 #: com/panayotis/jubler/Main.java:122
 msgid	"Unable to find Jupidator auto update system."
-msgstr	""
+msgstr	"Nemohu najít Jupidator - automatický aktualizační systém."
 
 #: com/panayotis/jubler/StaticJubler.java:121
 msgid	"About Jubler"
@@ -614,7 +614,7 @@ msgstr	"Kontaktní adresa"
 
 #: com/panayotis/jubler/information/JAbout.java:111
 msgid	"Special thanks"
-msgstr	"Speciální poděkování"
+msgstr	"Zvláštní poděkování"
 
 #: com/panayotis/jubler/information/JAbout.java:111
 #: com/panayotis/jubler/information/JAbout.java:115
@@ -1388,12 +1388,12 @@ msgstr	"Opravdu chcete skončit bez uložení?"
 #: com/panayotis/jubler/os/AutoSaver.java:47
 #, java-format
 msgid	"ERROR: Could not use autosave directory \"{0}\"."
-msgstr	""
+msgstr	"CHYBA: Nemohu použít složku pro automatické ukládání \"{0}\"."
 
 #: com/panayotis/jubler/os/AutoSaver.java:51
 #, java-format
 msgid	"ERROR: Could not use autosave directory for old files \"{0}\"."
-msgstr	""
+msgstr	"CHYBA: Nemohu použít složku pro automatické ukládání starých souborů \"{0}\"."
 
 #: com/panayotis/jubler/os/FileCommunicator.java:121
 #: com/panayotis/jubler/subs/loader/AbstractTextSubFormat.java:75
@@ -1444,12 +1444,12 @@ msgstr	"Průvodce hledá v {0}"
 
 #: com/panayotis/jubler/os/TreeWalker.java:99
 msgid	"Testing:"
-msgstr	""
+msgstr	"Testuji:"
 
 #: com/panayotis/jubler/os/TreeWalker.java:119
 #, java-format
 msgid	"Valid executable found: {0}"
-msgstr	""
+msgstr	"Nalezen spouštěcí soubor {0}"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:214
 msgid	"Start time of the subtitle"
@@ -1611,7 +1611,7 @@ msgstr	"SubViewer V2"
 
 #: com/panayotis/jubler/subs/loader/text/W3CTimedText.java:95
 msgid	"W3C Timed Text"
-msgstr	""
+msgstr	"W3C Timed Text"
 
 #: com/panayotis/jubler/subs/loader/text/format/StyledTextSubFormat.java:158
 #, java-format
@@ -2029,19 +2029,19 @@ msgstr	"Předejít překrytí"
 
 #: com/panayotis/jubler/tools/JFixer.java:278
 msgid	"Evenly distribute subtitles"
-msgstr	""
+msgstr	"Rovnoměrně rozmístit titulky"
 
 #: com/panayotis/jubler/tools/JFixer.java:279
 msgid	"Equally divide overriding duration"
-msgstr	""
+msgstr	"Rovnoměrně oddělit dobu překrývání"
 
 #: com/panayotis/jubler/tools/JFixer.java:280
 msgid	"Shift subtitles"
-msgstr	""
+msgstr	"Posunout titulky"
 
 #: com/panayotis/jubler/tools/JFixer.java:282
 msgid	"Model how to solve overriding subtitles"
-msgstr	""
+msgstr	"Způsob jak vyřešit překrývání titulků"
 
 #: com/panayotis/jubler/tools/JFixer.java:290
 msgid	"Leave gap between subtitles (in milliseconds)"
@@ -2324,7 +2324,7 @@ msgstr	"Cílový jazyk"
 #: com/panayotis/jubler/tools/JTranslate.java:150
 msgid	"Computer Translated subtitles should be only for personal use, and "
 	"not for distribution."
-msgstr	""
+msgstr	"Počítačem přeložené titulky jsou určeny pouze k vlastnímu užití, ne k distribuci."
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:107
 msgid	"External plugin Wizard"
@@ -2375,7 +2375,7 @@ msgstr	"Otevře dialog k výběru souboru přehrávače"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:205
 msgid	"The selected file is not valid"
-msgstr	""
+msgstr	"Vybraý soubor není korektní"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:218
 #, java-format
