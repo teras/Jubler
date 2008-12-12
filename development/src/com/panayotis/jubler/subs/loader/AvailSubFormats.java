@@ -24,6 +24,7 @@
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
+import com.panayotis.jubler.subs.loader.binary.DVDMaestroExtendedSWT;
 import com.panayotis.jubler.subs.loader.text.AdvancedSubStation;
 import com.panayotis.jubler.subs.loader.text.MPL2;
 import com.panayotis.jubler.subs.loader.text.MicroDVD;
@@ -41,11 +42,12 @@ import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 
 /**
  *
- * @author teras
+ * @author teras and Hoang Duy Tran
  */
 public class AvailSubFormats {
-    public static final SubFormat []Formats = {
-        new DVDMaestro(),
+    public static final SubFormat[] Formats = {
+        new DVDMaestroExtendedSWT(), //added by HDT
+        new DVDMaestro(), //added by HDT
         new AdvancedSubStation(),
         new SubStationAlpha(),
         new SubRip(),
@@ -56,31 +58,31 @@ public class AvailSubFormats {
         new Spruce(),
         new Quicktime(),
         new W3CTimedText(),
-        new PlainOCRTextWithIndex(),
-        new PlainOCRTextWithPageBreak(),
-        new PlainOCRTextWithDoubleNewLine(),
+        new PlainOCRTextWithIndex(), //added by HDT
+        new PlainOCRTextWithPageBreak(), //added by HDT
+        new PlainOCRTextWithDoubleNewLine(), //added by HDT
         new PlainText()
         //new ScanTitle()
     };
-     
-    
+
+
     int current;
     /** Creates a new instance of SubFormats */
     public AvailSubFormats() {
         current = 0;
     }
-    
+
     public boolean hasMoreElements() {
         if ( current < Formats.length ) return true;
         return false;
     }
-    
+
     public SubFormat nextElement() {
         SubFormat handler = Formats[current];
         current++;
         return handler;
     }
-    
+
     public static SubFormat findFromDescription(String name) {
         for ( int i = 0 ; i < Formats.length ; i++ ) {
             if ( Formats[i].getDescription().equals(name)) {
@@ -89,7 +91,7 @@ public class AvailSubFormats {
         }
         return null;
     }
-    
+
     public static SubFormat findFromName(String ext) {
         for ( int i = 0 ; i < Formats.length ; i++ ) {
             if ( Formats[i].getName().equals(ext)) {
