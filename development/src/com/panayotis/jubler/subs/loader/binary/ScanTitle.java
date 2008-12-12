@@ -24,7 +24,6 @@
 package com.panayotis.jubler.subs.loader.binary;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -50,6 +49,9 @@ public class ScanTitle extends AbstractBinarySubFormat {
         return "ScanTitle";
     }
     
+    public boolean isSubType(String input, File f){
+        return true;
+    }
     public void parseBinary(float FPS, BufferedReader in) {
         // Add code to load subtitles from input buffer
         // Example:
