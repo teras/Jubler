@@ -1,9 +1,9 @@
 msgid	""
 msgstr	"Project-Id-Version: JublerTr v1.0\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2008-12-09 17:10+0200\n"
-	"PO-Revision-Date: 2008-08-30 12:38+0200\n"
-	"Last-Translator: Serkan Kaba <serkan_kaba@yahoo.com>\n"
+	"POT-Creation-Date: 2008-12-17 23:21+0200\n"
+	"PO-Revision-Date: 2008-12-17 20:44+0200\n"
+	"Last-Translator: Serkan Kaba <serkan@gentoo.org>\n"
 	"Language-Team: C-NoNe <yuksel.asim.sinan@gmail.com>\n"
 	"MIME-Version: 1.0\n"
 	"Content-Type: text/plain; charset=utf-8\n"
@@ -490,11 +490,11 @@ msgstr	"Altyazıları yeniden yükle"
 
 #: com/panayotis/jubler/Jubler.java:2267
 msgid	"Disable Preview"
-msgstr	""
+msgstr	"Önizlemeyi Pasifleştir"
 
 #: com/panayotis/jubler/Jubler.java:2267
 msgid	"Enable Preview"
-msgstr	""
+msgstr	"Önizlemeyi Etkinleştir"
 
 #: com/panayotis/jubler/Jubler.java:2300
 msgid	"Quit confirmation"
@@ -522,7 +522,7 @@ msgstr	"Stili {0} olarak değiştir"
 
 #: com/panayotis/jubler/Main.java:122
 msgid	"Unable to find Jupidator auto update system."
-msgstr	""
+msgstr	"Jupidator otomatik güncelleme sistemi bulunamadı."
 
 #: com/panayotis/jubler/StaticJubler.java:121
 msgid	"About Jubler"
@@ -1392,12 +1392,13 @@ msgstr	"Kaydetmeden çıkmak istiyor musunuz?"
 #: com/panayotis/jubler/os/AutoSaver.java:47
 #, java-format
 msgid	"ERROR: Could not use autosave directory \"{0}\"."
-msgstr	""
+msgstr	"HATA: \"{0}\" otomatik kaydetme dizini kullanılamadı."
 
 #: com/panayotis/jubler/os/AutoSaver.java:51
 #, java-format
 msgid	"ERROR: Could not use autosave directory for old files \"{0}\"."
-msgstr	""
+msgstr	"HATA: \"{0}\" otomatik kaydetme dizini eski dosyalar için "
+	"kullanılamadı."
 
 #: com/panayotis/jubler/os/FileCommunicator.java:121
 #: com/panayotis/jubler/subs/loader/AbstractTextSubFormat.java:75
@@ -1448,12 +1449,12 @@ msgstr	"Sihirbaz arıyor {0}"
 
 #: com/panayotis/jubler/os/TreeWalker.java:99
 msgid	"Testing:"
-msgstr	""
+msgstr	"Sınanıyor:"
 
 #: com/panayotis/jubler/os/TreeWalker.java:119
 #, java-format
 msgid	"Valid executable found: {0}"
-msgstr	""
+msgstr	"Geçerli çalıştırılabilir dosya bulundu: {0}"
 
 #: com/panayotis/jubler/subs/JSubEditor.java:214
 msgid	"Start time of the subtitle"
@@ -1615,7 +1616,7 @@ msgstr	"SubViewer V2"
 
 #: com/panayotis/jubler/subs/loader/text/W3CTimedText.java:95
 msgid	"W3C Timed Text"
-msgstr	""
+msgstr	"W3C Zamanlı Metin"
 
 #: com/panayotis/jubler/subs/loader/text/format/StyledTextSubFormat.java:158
 #, java-format
@@ -2033,19 +2034,19 @@ msgstr	"Örtüşmeyi önle"
 
 #: com/panayotis/jubler/tools/JFixer.java:278
 msgid	"Evenly distribute subtitles"
-msgstr	""
+msgstr	"Altyazıları eşit olarak dağıt."
 
 #: com/panayotis/jubler/tools/JFixer.java:279
 msgid	"Equally divide overriding duration"
-msgstr	""
+msgstr	"Üst üste binen altyazıları eşit olarak böl"
 
 #: com/panayotis/jubler/tools/JFixer.java:280
 msgid	"Shift subtitles"
-msgstr	""
+msgstr	"Altyazıları kaydır"
 
 #: com/panayotis/jubler/tools/JFixer.java:282
 msgid	"Model how to solve overriding subtitles"
-msgstr	""
+msgstr	"Üst üste binen altyazılar çözme yöntemi"
 
 #: com/panayotis/jubler/tools/JFixer.java:290
 msgid	"Leave gap between subtitles (in milliseconds)"
@@ -2328,7 +2329,8 @@ msgstr	"Hedef dil"
 #: com/panayotis/jubler/tools/JTranslate.java:150
 msgid	"Computer Translated subtitles should be only for personal use, and "
 	"not for distribution."
-msgstr	""
+msgstr	"Bilgisayar ile çevrilen altyazılar sadece kişisel olarak "
+	"kullanılmalı, dağıtılmamalıdır."
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:107
 msgid	"External plugin Wizard"
@@ -2379,7 +2381,7 @@ msgstr	"Oynatıcının dosya ismini seçmek için dosya diyaloğunu aç"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:205
 msgid	"The selected file is not valid"
-msgstr	""
+msgstr	"Seçilen dosya geçersiz"
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:218
 #, java-format
@@ -2644,216 +2646,216 @@ msgstr	"İsveççe"
 msgid	"Google translate"
 msgstr	"Google çevirici"
 
+#~ msgid	"The end of the region is the selected time"
+#~ msgstr	"Bölgenin sonu seçilen zamandır"
+
+#~ msgid	"To the end"
+#~ msgstr	"Sona doğru"
+
+#~ msgid	"End time"
+#~ msgstr	"Bitiş zamanı"
+
+#~ msgid	"The beginning of the region is the given time"
+#~ msgstr	"Bölgenin başlangıcı verilen süredir"
+
+#~ msgid	"From the following time"
+#~ msgstr	"Aşağıdaki zamandan"
+
+#~ msgid	"The beginning of the region is the selected time"
+#~ msgstr	"Bölgenin başlangıcı seçili zamandır."
+
+#~ msgid	"From current time"
+#~ msgstr	"Şimdiki zaman"
+
+#~ msgid	"The end of the region is the given time"
+#~ msgstr	"Bölgenin sonu verilen zamandır"
+
+#~ msgid	"Use given time as start of region"
+#~ msgstr	"Verilen zamanı bölgenin başlangıcı olarak kullan"
+
+#~ msgid	"Use selected time as end of region"
+#~ msgstr	"Seçili zamanı bölgenin bitişiı olarak kullan"
+
+#~ msgid	"Use selected time as start of region"
+#~ msgstr	"Seçili zamanı bölgenin başlangıcı olarak kullan"
+
+#~ msgid	"Attach subtitle editor panel to preview window"
+#~ msgstr	"Altyazı düzenleme panelini önizleme penceresine ekle"
+
+#~ msgid	"Attach subtitle editor panel to main Jubler window"
+#~ msgstr	"Altyazı düzenleme panelini Jubler ana penceresine ekle"
+
+#~ msgid	"FFDecode library is not present!"
+#~ msgstr	"FFDecode kütüphanesi yok!"
+
+#~ msgid	"No options for this program"
+#~ msgstr	"Bu programın seçenekleri yoktur"
+
+#~ msgid	"Delay subtitles by 100 milliseconds"
+#~ msgstr	"Altyazıları 100 milisaniye geciktir."
+
+#~ msgid	"Advanced SubStation format"
+#~ msgstr	"Gelişmiş SubStation formatı"
+
+#~ msgid	"Unable to load plugin: {0}"
+#~ msgstr	"{0} eklentisi yüklenemedi"
+
+#~ msgid	"Error while executing ASpell"
+#~ msgstr	"Yazdım denetiminde hata"
+
+#~ msgid	"Options for {0}"
+#~ msgstr	"{0} için seçenekler"
+
 #~ msgid	"Invalid executable!"
 #~ msgstr	"Geçersiz dosya"
 
-#~ msgid	"Push subtitles instead of rearranging"
-#~ msgstr	"Yeniden düzenlemek yerine altyazıları itele"
+#~ msgid	"Open the options for this player"
+#~ msgstr	"Bu oynatıcı için seçenekleri aç"
 
-#~ msgid	"Do not inform me again for this version"
-#~ msgstr	"Bu sürüm için beni tekrar bilgilendirme"
+#~ msgid	"Options"
+#~ msgstr	"Seçenekler"
 
-#~ msgid	"Go"
-#~ msgstr	"Git"
+#~ msgid	"Error while executing MPlayer. Executable not found."
+#~ msgstr	"MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
+#~ 	"bulunamadı."
 
-#~ msgid	"New Jubler version found!"
-#~ msgstr	"Yeni Jubler sürümü bulundu"
+#~ msgid	"SubStationAlpha format"
+#~ msgstr	"SubStationAlpha formatı"
 
-#~ msgid	"Please consider upgrading from the following URL:"
-#~ msgstr	"Aşağıdaki URL'den sürümü yükseltmeyi göz önünde bulundurun"
+#~ msgid	"Start time"
+#~ msgstr	"Başlangıç zamanı"
 
-#~ msgid	"It is important to upgrade from the following URL:"
-#~ msgstr	"Aşağıdaki URL'den sürümü yükseltmek önemli"
+#~ msgid	"SubViewer format"
+#~ msgstr	"SubViewer formatı"
 
-#~ msgid	"Version found:"
-#~ msgstr	"Bulunan sürüm:"
+#~ msgid	"Delay subtitles by 1 second"
+#~ msgstr	"Altyazıları 1 saniye geciktir."
 
-#~ msgid	"Current version:"
-#~ msgstr	"Şu anki sürüm"
+#~ msgid	"To current time"
+#~ msgstr	"Şimdi zamana"
 
-#~ msgid	"New version"
-#~ msgstr	"Yeni Sürüm"
+#~ msgid	"Forward subtitles by 100 milliseconds"
+#~ msgstr	"Altyazıları 100 milisaniye ileri kaydır."
 
-#~ msgid	"Debug window"
-#~ msgstr	"Hata ayıklama penceresi"
-
-#~ msgid	"Enable/disable preview"
-#~ msgstr	"Ön izleme etkinleştir/etkisizleştir"
-
-#~ msgid	"Warning!"
-#~ msgstr	"Uyarı!"
-
-#~ msgid	"The beginning of the region is the start of the file"
-#~ msgstr	"Bölgenin başlangıçı dosya başlangıcıdır"
-
-#~ msgid	"To the following time"
-#~ msgstr	"Aşağıdaki zamana"
-
-#~ msgid	"Use given time as end of region"
-#~ msgstr	"Verilen zamanı bölgenin sonu olarak kullan"
-
-#~ msgid	"Subtitles preview"
-#~ msgstr	"Altyazı önizleme"
-
-#~ msgid	"X offset"
-#~ msgstr	"X Ofseti"
-
-#~ msgid	"Y offset"
-#~ msgstr	"Y Ofseti"
-
-#~ msgid	"Select the encoding to be searched first"
-#~ msgstr	"İlk aranacak kodlamayı seçin"
-
-#~ msgid	"The end of the region is the end of the file"
-#~ msgstr	"Bölgenin sonu dosya sonudur"
-
-#~ msgid	"Select the encoding to be searched second"
-#~ msgstr	"İkinci aranacak kodlamayı seçin"
-
-#~ msgid	"Select the encoding to be searched last"
-#~ msgstr	"Üçüncü aranacak kodlamayı seçin"
-
-#~ msgid	"Encoding of the saved file"
-#~ msgstr	"Kaydedilen dosyanın kodlaması"
-
-#~ msgid	"Preview the subtitles"
-#~ msgstr	"Altyazıları önizle"
-
-#~ msgid	"Abnormal exit - please report the author about this "
-#~ 	"behaviour."
-#~ msgstr	"Anormal sonlandırma.\n"
-#~ 	"Lütfen bu durumu yazara bildirin."
-
-#~ msgid	"MPlayer options"
-#~ msgstr	"MPlayer seçenekleri"
-
-#~ msgid	"MPlayer parameters have been updated."
-#~ msgstr	"MPlayer parametreleri güncellendi."
-
-#~ msgid	"Player window offset in pixels"
-#~ msgstr	"Piksel bazında oynatıcı penceresi ofseti"
-
-#~ msgid	"Could not find Jubler path!"
-#~ msgstr	"Jubler yolu bulunamadı."
-
-#~ msgid	"Displa/hide metric attributes"
-#~ msgstr	"Metrik özellikleri sakla/göster"
-
-#~ msgid	"MicroDVD format"
-#~ msgstr	"MicroDVD formatı"
-
-#~ msgid	"Not a valid number: {0}"
-#~ msgstr	"Geçerli bir sayı değil: {0}"
-
-#~ msgid	"SubRip format"
-#~ msgstr	"Subrip formatı"
-
-#~ msgid	"File path"
-#~ msgstr	"Dosya yolu"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Video dosyasını değiştir"
-
-#~ msgid	"The subtitle differences\n"
-#~ 	" were {0}"
-#~ msgstr	"Altyazı farklılıkları\n"
-#~ 	" {0}"
-
-#~ msgid	"Text to be replaced"
-#~ msgstr	"Değiştirilecek metin"
+#~ msgid	"Forward subtitles by 1 second"
+#~ msgstr	"Altyazıları 1 saniye ileri kaydır."
 
 #~ msgid	"Filename of the external audio file (could be also an audio "
 #~ 	"cache). Use the \"Browse\" button to change it."
 #~ msgstr	"Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı "
 #~ 	"değiştirmek için \"Göz At\" düğmesini kullan"
 
-#~ msgid	"Forward subtitles by 1 second"
-#~ msgstr	"Altyazıları 1 saniye ileri kaydır."
+#~ msgid	"Text to be replaced"
+#~ msgstr	"Değiştirilecek metin"
 
-#~ msgid	"Forward subtitles by 100 milliseconds"
-#~ msgstr	"Altyazıları 100 milisaniye ileri kaydır."
+#~ msgid	"Change media file"
+#~ msgstr	"Video dosyasını değiştir"
 
-#~ msgid	"To current time"
-#~ msgstr	"Şimdi zamana"
+#~ msgid	"File path"
+#~ msgstr	"Dosya yolu"
 
-#~ msgid	"Delay subtitles by 1 second"
-#~ msgstr	"Altyazıları 1 saniye geciktir."
+#~ msgid	"SubRip format"
+#~ msgstr	"Subrip formatı"
 
-#~ msgid	"SubViewer format"
-#~ msgstr	"SubViewer formatı"
+#~ msgid	"Not a valid number: {0}"
+#~ msgstr	"Geçerli bir sayı değil: {0}"
 
-#~ msgid	"Start time"
-#~ msgstr	"Başlangıç zamanı"
+#~ msgid	"MicroDVD format"
+#~ msgstr	"MicroDVD formatı"
 
-#~ msgid	"SubStationAlpha format"
-#~ msgstr	"SubStationAlpha formatı"
+#~ msgid	"Displa/hide metric attributes"
+#~ msgstr	"Metrik özellikleri sakla/göster"
 
-#~ msgid	"Error while executing MPlayer. Executable not found."
-#~ msgstr	"MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
-#~ 	"bulunamadı."
+#~ msgid	"Could not find Jubler path!"
+#~ msgstr	"Jubler yolu bulunamadı."
 
-#~ msgid	"Options"
-#~ msgstr	"Seçenekler"
+#~ msgid	"Player window offset in pixels"
+#~ msgstr	"Piksel bazında oynatıcı penceresi ofseti"
 
-#~ msgid	"Open the options for this player"
-#~ msgstr	"Bu oynatıcı için seçenekleri aç"
+#~ msgid	"MPlayer parameters have been updated."
+#~ msgstr	"MPlayer parametreleri güncellendi."
 
-#~ msgid	"Options for {0}"
-#~ msgstr	"{0} için seçenekler"
+#~ msgid	"MPlayer options"
+#~ msgstr	"MPlayer seçenekleri"
 
-#~ msgid	"Error while executing ASpell"
-#~ msgstr	"Yazdım denetiminde hata"
+#~ msgid	"Abnormal exit - please report the author about this "
+#~ 	"behaviour."
+#~ msgstr	"Anormal sonlandırma.\n"
+#~ 	"Lütfen bu durumu yazara bildirin."
 
-#~ msgid	"Unable to load plugin: {0}"
-#~ msgstr	"{0} eklentisi yüklenemedi"
+#~ msgid	"Preview the subtitles"
+#~ msgstr	"Altyazıları önizle"
 
-#~ msgid	"Advanced SubStation format"
-#~ msgstr	"Gelişmiş SubStation formatı"
+#~ msgid	"Encoding of the saved file"
+#~ msgstr	"Kaydedilen dosyanın kodlaması"
 
-#~ msgid	"Delay subtitles by 100 milliseconds"
-#~ msgstr	"Altyazıları 100 milisaniye geciktir."
+#~ msgid	"Select the encoding to be searched last"
+#~ msgstr	"Üçüncü aranacak kodlamayı seçin"
 
-#~ msgid	"No options for this program"
-#~ msgstr	"Bu programın seçenekleri yoktur"
+#~ msgid	"Select the encoding to be searched second"
+#~ msgstr	"İkinci aranacak kodlamayı seçin"
 
-#~ msgid	"FFDecode library is not present!"
-#~ msgstr	"FFDecode kütüphanesi yok!"
+#~ msgid	"The end of the region is the end of the file"
+#~ msgstr	"Bölgenin sonu dosya sonudur"
 
-#~ msgid	"Attach subtitle editor panel to main Jubler window"
-#~ msgstr	"Altyazı düzenleme panelini Jubler ana penceresine ekle"
+#~ msgid	"Select the encoding to be searched first"
+#~ msgstr	"İlk aranacak kodlamayı seçin"
 
-#~ msgid	"Attach subtitle editor panel to preview window"
-#~ msgstr	"Altyazı düzenleme panelini önizleme penceresine ekle"
+#~ msgid	"Y offset"
+#~ msgstr	"Y Ofseti"
 
-#~ msgid	"Use selected time as start of region"
-#~ msgstr	"Seçili zamanı bölgenin başlangıcı olarak kullan"
+#~ msgid	"X offset"
+#~ msgstr	"X Ofseti"
 
-#~ msgid	"Use selected time as end of region"
-#~ msgstr	"Seçili zamanı bölgenin bitişiı olarak kullan"
+#~ msgid	"Subtitles preview"
+#~ msgstr	"Altyazı önizleme"
 
-#~ msgid	"Use given time as start of region"
-#~ msgstr	"Verilen zamanı bölgenin başlangıcı olarak kullan"
+#~ msgid	"Use given time as end of region"
+#~ msgstr	"Verilen zamanı bölgenin sonu olarak kullan"
 
-#~ msgid	"The end of the region is the given time"
-#~ msgstr	"Bölgenin sonu verilen zamandır"
+#~ msgid	"To the following time"
+#~ msgstr	"Aşağıdaki zamana"
 
-#~ msgid	"From current time"
-#~ msgstr	"Şimdiki zaman"
+#~ msgid	"The beginning of the region is the start of the file"
+#~ msgstr	"Bölgenin başlangıçı dosya başlangıcıdır"
 
-#~ msgid	"The beginning of the region is the selected time"
-#~ msgstr	"Bölgenin başlangıcı seçili zamandır."
+#~ msgid	"Warning!"
+#~ msgstr	"Uyarı!"
 
-#~ msgid	"From the following time"
-#~ msgstr	"Aşağıdaki zamandan"
+#~ msgid	"Enable/disable preview"
+#~ msgstr	"Ön izleme etkinleştir/etkisizleştir"
 
-#~ msgid	"The beginning of the region is the given time"
-#~ msgstr	"Bölgenin başlangıcı verilen süredir"
+#~ msgid	"Debug window"
+#~ msgstr	"Hata ayıklama penceresi"
 
-#~ msgid	"End time"
-#~ msgstr	"Bitiş zamanı"
+#~ msgid	"New version"
+#~ msgstr	"Yeni Sürüm"
 
-#~ msgid	"To the end"
-#~ msgstr	"Sona doğru"
+#~ msgid	"Current version:"
+#~ msgstr	"Şu anki sürüm"
 
-#~ msgid	"The end of the region is the selected time"
-#~ msgstr	"Bölgenin sonu seçilen zamandır"
+#~ msgid	"Version found:"
+#~ msgstr	"Bulunan sürüm:"
+
+#~ msgid	"It is important to upgrade from the following URL:"
+#~ msgstr	"Aşağıdaki URL'den sürümü yükseltmek önemli"
+
+#~ msgid	"Please consider upgrading from the following URL:"
+#~ msgstr	"Aşağıdaki URL'den sürümü yükseltmeyi göz önünde bulundurun"
+
+#~ msgid	"New Jubler version found!"
+#~ msgstr	"Yeni Jubler sürümü bulundu"
+
+#~ msgid	"Go"
+#~ msgstr	"Git"
+
+#~ msgid	"Do not inform me again for this version"
+#~ msgstr	"Bu sürüm için beni tekrar bilgilendirme"
+
+#~ msgid	"Push subtitles instead of rearranging"
+#~ msgstr	"Yeniden düzenlemek yerine altyazıları itele"
+
+#~ msgid	"The subtitle differences\n"
+#~ 	" were {0}"
+#~ msgstr	"Altyazı farklılıkları\n"
+#~ 	" {0}"

@@ -6,7 +6,7 @@
 msgid	""
 msgstr	"Project-Id-Version: Jubler French 1.0\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2008-12-09 17:10+0200\n"
+	"POT-Creation-Date: 2008-12-17 23:21+0200\n"
 	"PO-Revision-Date: 2007-11-18 17:16+0200\n"
 	"Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
 	"Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2657,156 +2657,6 @@ msgstr	""
 msgid	"Google translate"
 msgstr	""
 
-#~ msgid	"New Jubler version found!"
-#~ msgstr	"Une nouvelle version de Jubler a été trouvée!"
-
-#~ msgid	"Go"
-#~ msgstr	"OK"
-
-#~ msgid	"Do not inform me again for this version"
-#~ msgstr	"Ne plus m'informer sur cette version"
-
-#~ msgid	"Please consider upgrading from the following URL:"
-#~ msgstr	"Veuillez mettre à jour depuis l'adresse suivante SVP:"
-
-#~ msgid	"It is important to upgrade from the following URL:"
-#~ msgstr	"Il est important de mettre à jour depuis l'adresse suivante:"
-
-#~ msgid	"Version found:"
-#~ msgstr	"Version trouvée"
-
-#~ msgid	"Current version:"
-#~ msgstr	"Version actuelle:"
-
-#~ msgid	"New version"
-#~ msgstr	"Nouvelle version"
-
-#~ msgid	"To the following time"
-#~ msgstr	"Jusqu'à :"
-
-#~ msgid	"Subtitles preview"
-#~ msgstr	"Prévisualisation des sous-titres"
-
-#~ msgid	"The end of the region is the given time"
-#~ msgstr	"La fin de la région est le temps spécifié"
-
-#~ msgid	"The beginning of the region is the selected time"
-#~ msgstr	"Le début de la région est le moment sélectionné"
-
-#~ msgid	"The end of the region is the selected time"
-#~ msgstr	"La fin de la région est le temps sélectionné"
-
-#~ msgid	"To current time"
-#~ msgstr	"Jusqu'à position courante"
-
-#~ msgid	"The end of the region is the end of the file"
-#~ msgstr	"La fin de la région sera la fin du fichier"
-
-#~ msgid	"To the end"
-#~ msgstr	"Jusqu'à la fin"
-
-#~ msgid	"End time"
-#~ msgstr	"Fin"
-
-#~ msgid	"The beginning of the region is the given time"
-#~ msgstr	"Le début de la région est le moment spécifié"
-
-#~ msgid	"Push subtitles instead of rearranging"
-#~ msgstr	"Pousser les sous-titres plutôt que les réarranger"
-
-#~ msgid	"From the following time"
-#~ msgstr	"Depuis :"
-
-#~ msgid	"From current time"
-#~ msgstr	"Depuis position courante"
-
-#~ msgid	"The beginning of the region is the start of the file"
-#~ msgstr	"Le début de la région sera le début du fichier"
-
-#~ msgid	"Start time"
-#~ msgstr	"Début"
-
-#~ msgid	"Use given time as end of region"
-#~ msgstr	"Utilise la position temporelle spécifiée comme fin de région"
-
-#~ msgid	"Player window offset in pixels"
-#~ msgstr	"Position en pixels de la fenêtre du lecteur"
-
-#~ msgid	"Use selected time as end of region"
-#~ msgstr	"Utilise la position temporelle courante comme fin de région"
-
-#~ msgid	"Use selected time as start of region"
-#~ msgstr	"Utilise la position temporelle courante comme début de région"
-
-#~ msgid	"Attach subtitle editor panel to preview window"
-#~ msgstr	"Ancrer la barre d'édition des sous-titres à la fenêtre de "
-#~ 	"prévisualisation"
-
-#~ msgid	"Attach subtitle editor panel to main Jubler window"
-#~ msgstr	"Ancrer la barre d'édition des sous-titres à la fenêtre "
-#~ 	"principale de Jubler"
-
-#~ msgid	"FFDecode library is not present!"
-#~ msgstr	"La librairie FFDecode est introuvable!"
-
-#~ msgid	"Preview the subtitles"
-#~ msgstr	"Prévisualiser les sous-titres"
-
-#, fuzzy
-#~ msgid	"MPlayer options"
-#~ msgstr	"Options du lecteur"
-
-#~ msgid	"Could not find Jubler path!"
-#~ msgstr	"Impossible de trouver le chemin de Jubler!"
-
-#~ msgid	"Unable to load plugin: {0}"
-#~ msgstr	"Impossible de charger le plugin: {0}"
-
-#~ msgid	"File path"
-#~ msgstr	"Chemin du fichier"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Changer de fichier media"
-
-#~ msgid	"Error while executing MPlayer. Executable not found."
-#~ msgstr	"Erreur lors de l'ouverture de MPlayer. Fichier executable "
-#~ 	"introuvable."
-
-#~ msgid	"Options"
-#~ msgstr	"Options"
-
-#~ msgid	"Error while executing ASpell"
-#~ msgstr	"Erreur lors de l'éxécution de ASpell"
-
-#~ msgid	"No options for this program"
-#~ msgstr	"Pas d'options pour ce programme"
-
-#~ msgid	"Options for {0}"
-#~ msgstr	"Options {0}"
-
-#~ msgid	"Open the options for this player"
-#~ msgstr	"Ouvrir les options pour ce lecteur"
-
-#~ msgid	"Not a valid number: {0}"
-#~ msgstr	"Numéro invalide: {0}"
-
-#~ msgid	"Warning!"
-#~ msgstr	"Alerte!"
-
-#~ msgid	"Filename of the external audio file (could be also an audio "
-#~ 	"cache). Use the \"Browse\" button to change it."
-#~ msgstr	"Nom du fichier audio externe (peut aussi être un fichier de "
-#~ 	"cache audio). Utilisez le bouton \"Parcourir\" pour en changer."
-
-#~ msgid	"Encoding of the saved file"
-#~ msgstr	"Encodage du fichier enregistré"
-
-#~ msgid	"Select the encoding to be searched last"
-#~ msgstr	"Sélectionne l'encodage à rechercher en dernier"
-
-#~ msgid	"Select the encoding to be searched second"
-#~ msgstr	"Sélectionne l'encodage à rechercher en deuxième"
-
 #~ msgid	"Select the encoding to be searched first"
 #~ msgstr	"Sélectionne l'encodage à rechercher en premier"
 
@@ -2816,6 +2666,156 @@ msgstr	""
 #~ msgid	"X offset"
 #~ msgstr	"Décalage X"
 
+#~ msgid	"Select the encoding to be searched second"
+#~ msgstr	"Sélectionne l'encodage à rechercher en deuxième"
+
+#~ msgid	"Select the encoding to be searched last"
+#~ msgstr	"Sélectionne l'encodage à rechercher en dernier"
+
+#~ msgid	"Encoding of the saved file"
+#~ msgstr	"Encodage du fichier enregistré"
+
+#~ msgid	"Filename of the external audio file (could be also an audio "
+#~ 	"cache). Use the \"Browse\" button to change it."
+#~ msgstr	"Nom du fichier audio externe (peut aussi être un fichier de "
+#~ 	"cache audio). Utilisez le bouton \"Parcourir\" pour en changer."
+
+#~ msgid	"Warning!"
+#~ msgstr	"Alerte!"
+
+#~ msgid	"Not a valid number: {0}"
+#~ msgstr	"Numéro invalide: {0}"
+
+#~ msgid	"Open the options for this player"
+#~ msgstr	"Ouvrir les options pour ce lecteur"
+
+#~ msgid	"Options for {0}"
+#~ msgstr	"Options {0}"
+
+#~ msgid	"No options for this program"
+#~ msgstr	"Pas d'options pour ce programme"
+
+#~ msgid	"Error while executing ASpell"
+#~ msgstr	"Erreur lors de l'éxécution de ASpell"
+
+#~ msgid	"Options"
+#~ msgstr	"Options"
+
+#~ msgid	"Error while executing MPlayer. Executable not found."
+#~ msgstr	"Erreur lors de l'ouverture de MPlayer. Fichier executable "
+#~ 	"introuvable."
+
+#~ msgid	"Change media file"
+#~ msgstr	"Changer de fichier media"
+
+#~ msgid	"File path"
+#~ msgstr	"Chemin du fichier"
+
+#~ msgid	"Unable to load plugin: {0}"
+#~ msgstr	"Impossible de charger le plugin: {0}"
+
 #~ msgid	"Use given time as start of region"
 #~ msgstr	"Utilise la position temporelle spécifiée comme début de "
 #~ 	"région"
+
+#~ msgid	"Could not find Jubler path!"
+#~ msgstr	"Impossible de trouver le chemin de Jubler!"
+
+#, fuzzy
+#~ msgid	"MPlayer options"
+#~ msgstr	"Options du lecteur"
+
+#~ msgid	"Preview the subtitles"
+#~ msgstr	"Prévisualiser les sous-titres"
+
+#~ msgid	"FFDecode library is not present!"
+#~ msgstr	"La librairie FFDecode est introuvable!"
+
+#~ msgid	"Attach subtitle editor panel to main Jubler window"
+#~ msgstr	"Ancrer la barre d'édition des sous-titres à la fenêtre "
+#~ 	"principale de Jubler"
+
+#~ msgid	"New Jubler version found!"
+#~ msgstr	"Une nouvelle version de Jubler a été trouvée!"
+
+#~ msgid	"Use selected time as start of region"
+#~ msgstr	"Utilise la position temporelle courante comme début de région"
+
+#~ msgid	"Use selected time as end of region"
+#~ msgstr	"Utilise la position temporelle courante comme fin de région"
+
+#~ msgid	"Player window offset in pixels"
+#~ msgstr	"Position en pixels de la fenêtre du lecteur"
+
+#~ msgid	"Use given time as end of region"
+#~ msgstr	"Utilise la position temporelle spécifiée comme fin de région"
+
+#~ msgid	"Start time"
+#~ msgstr	"Début"
+
+#~ msgid	"The beginning of the region is the start of the file"
+#~ msgstr	"Le début de la région sera le début du fichier"
+
+#~ msgid	"From current time"
+#~ msgstr	"Depuis position courante"
+
+#~ msgid	"From the following time"
+#~ msgstr	"Depuis :"
+
+#~ msgid	"Push subtitles instead of rearranging"
+#~ msgstr	"Pousser les sous-titres plutôt que les réarranger"
+
+#~ msgid	"The beginning of the region is the given time"
+#~ msgstr	"Le début de la région est le moment spécifié"
+
+#~ msgid	"End time"
+#~ msgstr	"Fin"
+
+#~ msgid	"To the end"
+#~ msgstr	"Jusqu'à la fin"
+
+#~ msgid	"The end of the region is the end of the file"
+#~ msgstr	"La fin de la région sera la fin du fichier"
+
+#~ msgid	"To current time"
+#~ msgstr	"Jusqu'à position courante"
+
+#~ msgid	"The end of the region is the selected time"
+#~ msgstr	"La fin de la région est le temps sélectionné"
+
+#~ msgid	"The beginning of the region is the selected time"
+#~ msgstr	"Le début de la région est le moment sélectionné"
+
+#~ msgid	"The end of the region is the given time"
+#~ msgstr	"La fin de la région est le temps spécifié"
+
+#~ msgid	"Subtitles preview"
+#~ msgstr	"Prévisualisation des sous-titres"
+
+#~ msgid	"To the following time"
+#~ msgstr	"Jusqu'à :"
+
+#~ msgid	"New version"
+#~ msgstr	"Nouvelle version"
+
+#~ msgid	"Current version:"
+#~ msgstr	"Version actuelle:"
+
+#~ msgid	"Version found:"
+#~ msgstr	"Version trouvée"
+
+#~ msgid	"It is important to upgrade from the following URL:"
+#~ msgstr	"Il est important de mettre à jour depuis l'adresse suivante:"
+
+#~ msgid	"Please consider upgrading from the following URL:"
+#~ msgstr	"Veuillez mettre à jour depuis l'adresse suivante SVP:"
+
+#~ msgid	"Do not inform me again for this version"
+#~ msgstr	"Ne plus m'informer sur cette version"
+
+#~ msgid	"Go"
+#~ msgstr	"OK"
+
+#~ msgid	"Attach subtitle editor panel to preview window"
+#~ msgstr	"Ancrer la barre d'édition des sous-titres à la fenêtre de "
+#~ 	"prévisualisation"

@@ -3,7 +3,7 @@
 msgid	""
 msgstr	"Project-Id-Version: cs\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2008-12-09 17:10+0200\n"
+	"POT-Creation-Date: 2008-12-17 23:21+0200\n"
 	"PO-Revision-Date: 2008-12-11 20:00+0100\n"
 	"Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
 	"Language-Team:  <el@li.org>\n"
@@ -1393,7 +1393,8 @@ msgstr	"CHYBA: Nemohu použít složku pro automatické ukládání \"{0}\"."
 #: com/panayotis/jubler/os/AutoSaver.java:51
 #, java-format
 msgid	"ERROR: Could not use autosave directory for old files \"{0}\"."
-msgstr	"CHYBA: Nemohu použít složku pro automatické ukládání starých souborů \"{0}\"."
+msgstr	"CHYBA: Nemohu použít složku pro automatické ukládání starých souborů "
+	"\"{0}\"."
 
 #: com/panayotis/jubler/os/FileCommunicator.java:121
 #: com/panayotis/jubler/subs/loader/AbstractTextSubFormat.java:75
@@ -2324,7 +2325,8 @@ msgstr	"Cílový jazyk"
 #: com/panayotis/jubler/tools/JTranslate.java:150
 msgid	"Computer Translated subtitles should be only for personal use, and "
 	"not for distribution."
-msgstr	"Počítačem přeložené titulky jsou určeny pouze k vlastnímu užití, ne k distribuci."
+msgstr	"Počítačem přeložené titulky jsou určeny pouze k vlastnímu užití, ne "
+	"k distribuci."
 
 #: com/panayotis/jubler/tools/externals/wizard/JWizard.java:107
 msgid	"External plugin Wizard"
@@ -2640,153 +2642,153 @@ msgstr	"Švédština"
 msgid	"Google translate"
 msgstr	"Google překladač"
 
+#~ msgid	"X offset"
+#~ msgstr	"X ofset"
+
 #~ msgid	"Invalid executable!"
 #~ msgstr	"Neplatný spustitelný soubor!"
 
-#~ msgid	"Warning!"
-#~ msgstr	"Varování!"
+#~ msgid	"File path"
+#~ msgstr	"Soubor"
 
-#~ msgid	"Push subtitles instead of rearranging"
-#~ msgstr	"Stlačit titulky místo přerovnání"
+#~ msgid	"Encoding of the saved file"
+#~ msgstr	"Kódování ukládaného souboru"
 
-#~ msgid	"Do not inform me again for this version"
-#~ msgstr	"Neinformuj mě znovu o téhle verzi"
+#~ msgid	"Displa/hide metric attributes"
+#~ msgstr	"Zobrazit/skrýt metrické atributy"
 
-#~ msgid	"Go"
-#~ msgstr	"Jdi"
-
-#~ msgid	"New Jubler version found!"
-#~ msgstr	"Byla nalezena nová verze Jubleru!"
-
-#~ msgid	"Please consider upgrading from the following URL:"
-#~ msgstr	"Prosím uvažujte o upgradu z následujícího URL:"
-
-#~ msgid	"It is important to upgrade from the following URL:"
-#~ msgstr	"Je důležité upgradovat z následujícího URL:"
-
-#~ msgid	"Version found:"
-#~ msgstr	"Nalezená verze:"
-
-#~ msgid	"Current version:"
-#~ msgstr	"Stávající verze:"
-
-#~ msgid	"New version"
-#~ msgstr	"Nová verze"
-
-#~ msgid	"Debug window"
-#~ msgstr	"Debug okno"
-
-#~ msgid	"Enable/disable preview"
-#~ msgstr	"Povolit/zakázat náhled"
-
-#~ msgid	"The beginning of the region is the start of the file"
-#~ msgstr	"Začátek oblasti je začátkem souboru"
-
-#~ msgid	"The beginning of the region is the given time"
-#~ msgstr	"Začátek oblasti je určený čas"
-
-#~ msgid	"End time"
-#~ msgstr	"Konec"
-
-#~ msgid	"The beginning of the region is the selected time"
-#~ msgstr	"Začátek oblasti je čas aktuálního výběru"
-
-#~ msgid	"From current time"
-#~ msgstr	"Od aktuálního času"
-
-#~ msgid	"Start time"
-#~ msgstr	"Začátek"
-
-#~ msgid	"To the end"
-#~ msgstr	"Až na konec"
-
-#~ msgid	"The end of the region is the end of the file"
-#~ msgstr	"Konec oblasti je koncem souboru"
-
-#~ msgid	"Use given time as end of region"
-#~ msgstr	"Použít určený čas jako konec oblasti"
-
-#~ msgid	"The end of the region is the given time"
-#~ msgstr	"Konec oblasti je určený čas"
-
-#~ msgid	"To the following time"
-#~ msgstr	"Do následujícího času"
-
-#~ msgid	"The end of the region is the selected time"
-#~ msgstr	"Konec oblasti je čas aktuálního výběru"
-
-#~ msgid	"Use selected time as end of region"
-#~ msgstr	"Použít čas výběru jako konec oblasti"
-
-#~ msgid	"To current time"
-#~ msgstr	"Do aktuálního času"
-
-#~ msgid	"Use given time as start of region"
-#~ msgstr	"Použít určený čas jako začátek oblasti"
-
-#~ msgid	"Filename of the external audio file (could be also an audio "
-#~ 	"cache). Use the \"Browse\" button to change it."
-#~ msgstr	"Jméno extérního audio souboru (může být také audio cache). "
-#~ 	"Pro změnu použijte \"Procházet\""
-
-#~ msgid	"Use selected time as start of region"
-#~ msgstr	"Použít čas výběru jako začátek oblasti"
-
-#~ msgid	"Attach subtitle editor panel to preview window"
-#~ msgstr	"Připojit panel s editorem titulku k oknu s náhledem"
-
-#~ msgid	"Attach subtitle editor panel to main Jubler window"
-#~ msgstr	"Připojit panel s editorem titulku k hlavnímu oknu Jubleru"
-
-#~ msgid	"FFDecode library is not present!"
-#~ msgstr	"FFDecode knihovna není přítomná!"
-
-#~ msgid	"From the following time"
-#~ msgstr	"Od následujícího času"
-
-#~ msgid	"Not a valid number: {0}"
-#~ msgstr	"Nesprávné číslo: {0}"
-
-#~ msgid	"Change media file"
-#~ msgstr	"Změnit mediální soubor"
-
-#~ msgid	"Could not find Jubler path!"
-#~ msgstr	"Nemohu najít cestu k Jubleru!"
-
-#~ msgid	"Player window offset in pixels"
-#~ msgstr	"Ofset okna přehrávače v pixelech (bodech)"
-
-#~ msgid	"Y offset"
-#~ msgstr	"Y ofset"
-
-#~ msgid	"Select the encoding to be searched first"
-#~ msgstr	"Vyberte kódování, které má být hledáno prvně"
-
-#~ msgid	"Subtitles preview"
+#~ msgid	"Preview the subtitles"
 #~ msgstr	"Náhled titulků"
-
-#~ msgid	"Select the encoding to be searched second"
-#~ msgstr	"Vyberte kódování, které má být hledáno druhotně"
-
-#~ msgid	"Select the encoding to be searched last"
-#~ msgstr	"Vyberte kódování, které má být hledáno nakonec"
 
 #~ msgid	"Abnormal exit - please report the author about this "
 #~ 	"behaviour."
 #~ msgstr	"Abnormální ukončení - prosím podejte zprávu autorovi o tomto "
 #~ 	"chování."
 
-#~ msgid	"Preview the subtitles"
+#~ msgid	"Select the encoding to be searched last"
+#~ msgstr	"Vyberte kódování, které má být hledáno nakonec"
+
+#~ msgid	"Select the encoding to be searched second"
+#~ msgstr	"Vyberte kódování, které má být hledáno druhotně"
+
+#~ msgid	"Subtitles preview"
 #~ msgstr	"Náhled titulků"
 
-#~ msgid	"Displa/hide metric attributes"
-#~ msgstr	"Zobrazit/skrýt metrické atributy"
+#~ msgid	"Select the encoding to be searched first"
+#~ msgstr	"Vyberte kódování, které má být hledáno prvně"
 
-#~ msgid	"Encoding of the saved file"
-#~ msgstr	"Kódování ukládaného souboru"
+#~ msgid	"Y offset"
+#~ msgstr	"Y ofset"
 
-#~ msgid	"File path"
-#~ msgstr	"Soubor"
+#~ msgid	"Player window offset in pixels"
+#~ msgstr	"Ofset okna přehrávače v pixelech (bodech)"
 
-#~ msgid	"X offset"
-#~ msgstr	"X ofset"
+#~ msgid	"Could not find Jubler path!"
+#~ msgstr	"Nemohu najít cestu k Jubleru!"
+
+#~ msgid	"Change media file"
+#~ msgstr	"Změnit mediální soubor"
+
+#~ msgid	"Not a valid number: {0}"
+#~ msgstr	"Nesprávné číslo: {0}"
+
+#~ msgid	"From the following time"
+#~ msgstr	"Od následujícího času"
+
+#~ msgid	"FFDecode library is not present!"
+#~ msgstr	"FFDecode knihovna není přítomná!"
+
+#~ msgid	"Attach subtitle editor panel to main Jubler window"
+#~ msgstr	"Připojit panel s editorem titulku k hlavnímu oknu Jubleru"
+
+#~ msgid	"Attach subtitle editor panel to preview window"
+#~ msgstr	"Připojit panel s editorem titulku k oknu s náhledem"
+
+#~ msgid	"Use selected time as start of region"
+#~ msgstr	"Použít čas výběru jako začátek oblasti"
+
+#~ msgid	"Filename of the external audio file (could be also an audio "
+#~ 	"cache). Use the \"Browse\" button to change it."
+#~ msgstr	"Jméno extérního audio souboru (může být také audio cache). "
+#~ 	"Pro změnu použijte \"Procházet\""
+
+#~ msgid	"Use given time as start of region"
+#~ msgstr	"Použít určený čas jako začátek oblasti"
+
+#~ msgid	"To current time"
+#~ msgstr	"Do aktuálního času"
+
+#~ msgid	"Use selected time as end of region"
+#~ msgstr	"Použít čas výběru jako konec oblasti"
+
+#~ msgid	"The end of the region is the selected time"
+#~ msgstr	"Konec oblasti je čas aktuálního výběru"
+
+#~ msgid	"To the following time"
+#~ msgstr	"Do následujícího času"
+
+#~ msgid	"The end of the region is the given time"
+#~ msgstr	"Konec oblasti je určený čas"
+
+#~ msgid	"Use given time as end of region"
+#~ msgstr	"Použít určený čas jako konec oblasti"
+
+#~ msgid	"The end of the region is the end of the file"
+#~ msgstr	"Konec oblasti je koncem souboru"
+
+#~ msgid	"To the end"
+#~ msgstr	"Až na konec"
+
+#~ msgid	"Start time"
+#~ msgstr	"Začátek"
+
+#~ msgid	"From current time"
+#~ msgstr	"Od aktuálního času"
+
+#~ msgid	"The beginning of the region is the selected time"
+#~ msgstr	"Začátek oblasti je čas aktuálního výběru"
+
+#~ msgid	"End time"
+#~ msgstr	"Konec"
+
+#~ msgid	"The beginning of the region is the given time"
+#~ msgstr	"Začátek oblasti je určený čas"
+
+#~ msgid	"The beginning of the region is the start of the file"
+#~ msgstr	"Začátek oblasti je začátkem souboru"
+
+#~ msgid	"Enable/disable preview"
+#~ msgstr	"Povolit/zakázat náhled"
+
+#~ msgid	"New version"
+#~ msgstr	"Nová verze"
+
+#~ msgid	"Current version:"
+#~ msgstr	"Stávající verze:"
+
+#~ msgid	"Version found:"
+#~ msgstr	"Nalezená verze:"
+
+#~ msgid	"It is important to upgrade from the following URL:"
+#~ msgstr	"Je důležité upgradovat z následujícího URL:"
+
+#~ msgid	"Please consider upgrading from the following URL:"
+#~ msgstr	"Prosím uvažujte o upgradu z následujícího URL:"
+
+#~ msgid	"New Jubler version found!"
+#~ msgstr	"Byla nalezena nová verze Jubleru!"
+
+#~ msgid	"Go"
+#~ msgstr	"Jdi"
+
+#~ msgid	"Do not inform me again for this version"
+#~ msgstr	"Neinformuj mě znovu o téhle verzi"
+
+#~ msgid	"Push subtitles instead of rearranging"
+#~ msgstr	"Stlačit titulky místo přerovnání"
+
+#~ msgid	"Warning!"
+#~ msgstr	"Varování!"
+
+#~ msgid	"Debug window"
+#~ msgstr	"Debug okno"

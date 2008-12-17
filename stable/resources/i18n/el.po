@@ -8,7 +8,7 @@
 msgid	""
 msgstr	"Project-Id-Version: el\n"
 	"Report-Msgid-Bugs-To: \n"
-	"POT-Creation-Date: 2008-12-09 17:10+0200\n"
+	"POT-Creation-Date: 2008-12-17 23:21+0200\n"
 	"PO-Revision-Date: 2008-12-09 15:37+0200\n"
 	"Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
 	"Language-Team: Greek <en@li.org>\n"
@@ -2662,39 +2662,39 @@ msgstr	"Σουηδικά"
 msgid	"Google translate"
 msgstr	"Μεταφραστής Google"
 
-#~ msgid	"Invalid executable!"
-#~ msgstr	"Μη λειτουργικό εκτελέσιμο!"
+#~ msgid	"Enable/disable preview"
+#~ msgstr	"Ενεργοποίηση/απενεργοποίηση προεπισκόπισης"
+
+#~ msgid	"Debug window"
+#~ msgstr	"Παράθυρο αποσφαλμάτωσης"
+
+#~ msgid	"New version"
+#~ msgstr	"Νέα έκδοση"
+
+#~ msgid	"Current version:"
+#~ msgstr	"Τρέχουσα έκδοση:"
+
+#~ msgid	"Version found:"
+#~ msgstr	"Έκδοση που βρέθηκε:"
+
+#~ msgid	"It is important to upgrade from the following URL:"
+#~ msgstr	"Είναι σημαντικό να αναβαθμίσετε από την επόμενη διεύθυνση:"
+
+#~ msgid	"Please consider upgrading from the following URL:"
+#~ msgstr	"Έχετε υπόψιν να αναβαθμίσετε από την επόμενη διεύθυνση:"
+
+#~ msgid	"New Jubler version found!"
+#~ msgstr	"Βρέθηκε νέα έκδοση του Jubler!"
+
+#~ msgid	"Go"
+#~ msgstr	"Πήγαινε"
+
+#~ msgid	"Do not inform me again for this version"
+#~ msgstr	"Να μη πληροφορηθώ ξανά για αυτήν την έκδοση"
 
 #~ msgid	"Push subtitles instead of rearranging"
 #~ msgstr	"Χρονική μετακίνηση υποτίτλων αντί για επαναπροσδιορισμό "
 #~ 	"χρόνου"
 
-#~ msgid	"Do not inform me again for this version"
-#~ msgstr	"Να μη πληροφορηθώ ξανά για αυτήν την έκδοση"
-
-#~ msgid	"Go"
-#~ msgstr	"Πήγαινε"
-
-#~ msgid	"New Jubler version found!"
-#~ msgstr	"Βρέθηκε νέα έκδοση του Jubler!"
-
-#~ msgid	"Please consider upgrading from the following URL:"
-#~ msgstr	"Έχετε υπόψιν να αναβαθμίσετε από την επόμενη διεύθυνση:"
-
-#~ msgid	"It is important to upgrade from the following URL:"
-#~ msgstr	"Είναι σημαντικό να αναβαθμίσετε από την επόμενη διεύθυνση:"
-
-#~ msgid	"Version found:"
-#~ msgstr	"Έκδοση που βρέθηκε:"
-
-#~ msgid	"Current version:"
-#~ msgstr	"Τρέχουσα έκδοση:"
-
-#~ msgid	"New version"
-#~ msgstr	"Νέα έκδοση"
-
-#~ msgid	"Debug window"
-#~ msgstr	"Παράθυρο αποσφαλμάτωσης"
-
-#~ msgid	"Enable/disable preview"
-#~ msgstr	"Ενεργοποίηση/απενεργοποίηση προεπισκόπισης"
+#~ msgid	"Invalid executable!"
+#~ msgstr	"Μη λειτουργικό εκτελέσιμο!"
