@@ -1,7 +1,7 @@
 /*
  * SubEntry.java
  *
- * Created on 22 June 2005, 1:51 PM
+ * Created on 22 June 2005, 1:51 AM
  *
  * This file is part of Jubler.
  *
@@ -45,7 +45,7 @@ import javax.swing.text.StyleConstants;
 public class SubEntry implements Comparable<SubEntry> {
 
     private static final AbstractStyleover[] styleover_template;
-    
+
 
     static {
 
@@ -257,8 +257,10 @@ public class SubEntry implements Comparable<SubEntry> {
     private AbstractStyleover getStyleover(StyleType type) {
         // Create style array, if it doesn't exist
         if (overstyle == null) {
-            overstyle = new AbstractStyleover[styleover_template.length];        // Create style array, if it doesn't exist
+            overstyle = new AbstractStyleover[styleover_template.length];
         }
+
+        // Create style array, if it doesn't exist
         int idx = type.ordinal();
         if (overstyle[idx] == null) {
             overstyle[idx] = (AbstractStyleover) styleover_template[idx].clone();

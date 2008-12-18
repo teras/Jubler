@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
@@ -45,6 +44,7 @@ import com.panayotis.jubler.subs.loader.text.W3CTimedText;
  * @author teras and Hoang Duy Tran
  */
 public class AvailSubFormats {
+
     public static final SubFormat[] Formats = {
         new DVDMaestroExtendedSWT(), //added by HDT
         new DVDMaestro(), //added by HDT
@@ -62,18 +62,18 @@ public class AvailSubFormats {
         new PlainOCRTextWithPageBreak(), //added by HDT
         new PlainOCRTextWithDoubleNewLine(), //added by HDT
         new PlainText()
-        //new ScanTitle()
+    //new ScanTitle()
     };
-
-
     int current;
+
     /** Creates a new instance of SubFormats */
     public AvailSubFormats() {
         current = 0;
     }
 
     public boolean hasMoreElements() {
-        if ( current < Formats.length ) return true;
+        if (current < Formats.length)
+            return true;
         return false;
     }
 
@@ -84,20 +84,16 @@ public class AvailSubFormats {
     }
 
     public static SubFormat findFromDescription(String name) {
-        for ( int i = 0 ; i < Formats.length ; i++ ) {
-            if ( Formats[i].getDescription().equals(name)) {
+        for (int i = 0; i < Formats.length; i++)
+            if (Formats[i].getDescription().equals(name))
                 return Formats[i];
-            }
-        }
         return null;
     }
 
     public static SubFormat findFromName(String ext) {
-        for ( int i = 0 ; i < Formats.length ; i++ ) {
-            if ( Formats[i].getName().equals(ext)) {
+        for (int i = 0; i < Formats.length; i++)
+            if (Formats[i].getName().equals(ext))
                 return Formats[i];
-            }
-        }
         return null;
     }
 }

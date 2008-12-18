@@ -1,7 +1,7 @@
 /*
  * Subtitles.java
  *
- * Created on 22 June 2005, 1:51 PM
+ * Created on 22 June 2005, 1:51 AM
  *
  * This file is part of Jubler.
  *
@@ -138,9 +138,9 @@ public class Subtitles extends AbstractTableModel {
         }
         if (lastpos == -1) {
             return; /* None affected */
+        }
 
         /* Sort affected subtitles */
-        }
         Collections.sort(sorted);
         /* Insert affected subtitles */
         sublist.addAll(lastpos, sorted);
