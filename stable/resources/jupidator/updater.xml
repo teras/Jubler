@@ -4,14 +4,14 @@
     <architect tag="any" os="" arch="">
         <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="${APPHOME}/${BASEFILE}"/>
+            <argument value="${APPHOME}/Jubler.jar"/>
         </launcher>
     </architect>
 
     <architect tag="macosx" os="Mac" arch="i386">
         <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="${APPHOME}/${BASEFILE}"/>
+            <argument value="${APPHOME}/../../MacOS/JavaApplicationStub"/>
         </launcher>
     </architect>
 
@@ -22,36 +22,31 @@
     <architect tag="linux_i386" os="Linux" arch="i386">
         <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="${APPHOME}/${BASEFILE}"/>
+            <argument value="${APPHOME}/Jubler.jar"/>
         </launcher>
     </architect>
 
     <architect tag="linux_amd64" os="Linux" arch="amd64">
         <launcher exec="${JAVABIN}">
             <argument value="-jar"/>
-            <argument value="${APPHOME}/${BASEFILE}"/>
+            <argument value="${APPHOME}/Jubler.jar"/>
         </launcher>
     </architect>
 
     <architect tag="win32" os="Windows" arch="x86">
-        <launcher exec="${APPHOME}\${BASEFILE}"/>
+        <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
 
-    <version release="589" version="3.9.9_e2">
-        <description>
-	Greek translation updates.
-        </description>
-        <arch name="win32" basefile="Jubler.exe">
-            <file name="Jubler.exe" sourcedir="3.9.9_e2" destdir="${APPHOME}" size="942915" compress="gzip"/>
-        </arch>
-    </version>
-
-    <version release="559" version="3.9.9_e1">
+    <version release="559" version="4.0">
         <description>
 	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
         </description>
-    </version>    
+		<arch name="macosx">
+<!--            <file name="Jubler.exe" sourcedir="3.9.9_e2" destdir="${APPHOME}" size="942915" compress="gzip"/> -->
+			<wait/>
+        </arch>
+    </version>
     <version release="22" version="3.9.6">
         <description>
 	Improved Google translator parsing engine. Fixed compile issues with ffmpeg under OS X 10.4. Fixed Linux GTK Look and Feel bug with time-spinner under Java 6.0.

@@ -1,4 +1,4 @@
-version=3.9.9_e3
-longversion=3.9.9.3
-release=594
+version=3.9.9.5
+longversion=3.9.9.5
+release=597
 packaged=@DISTRIBUTION@
