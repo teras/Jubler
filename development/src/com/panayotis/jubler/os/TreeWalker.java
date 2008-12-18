@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.os;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -36,63 +35,99 @@ import java.util.Vector;
  * @author teras
  */
 public class TreeWalker {
-    
-    
-    public static File searchExecutable(String application, String deflt) {
+
+    public static File searchExecutable(String application, String[] parameters, String test_signature, String deflt) {
         Vector<ExtPath> paths = new Vector<ExtPath>();
         paths.add(new ExtPath(deflt, ExtPath.FILE_ONLY));
         SystemDependent.appendSpotlightApplication(application, paths);
         SystemDependent.appendPathApplication(paths);
         SystemDependent.appendLocateApplication(application, paths);
-        
-        for (ExtPath path: paths) {
+
+        if (parameters == null)
+            parameters = new String[0];
+
+        for (ExtPath path : paths) {
             DEBUG.debug(_("Wizard is looking inside {0}", path.getPath()));
             File f = new File(path.getPath());
-            if (path.searchForFile() && (!f.isFile()) ) continue;   // If we want a file and this is not, ignore this entry
-            File res = searchExecutable(f, application.toLowerCase(), path.getRecStatus());
-            if (res!=null) return res;
+            if (path.searchForFile() && (!f.isFile()))
+                continue;   // If we want a file and this is not, ignore this entry
+            File res = searchExecutable(f, application.toLowerCase(), parameters, test_signature, path.getRecStatus());
+            if (res != null)
+                return res;
         }
         return null;
     }
-    
-    
+
     /* filename is already in lower case... */
-    public static File searchExecutable(File root, String program, int recursive) {
-        if (!root.exists()) return null;
+    public static File searchExecutable(File root, String program, String[] parameters, String test_signature, int recursive) {
+        if (!root.exists())
+            return null;
         if (root.isFile()) {
-            if (!root.canRead()) return null;
-            if (!root.getName().toLowerCase().equals(program+SystemDependent.PROG_EXT)) return null;
-            if (!execIsValid(root, program)) return null;
+            if (!root.canRead())
+                return null;
+            if (!root.getName().toLowerCase().equals(program + SystemDependent.PROG_EXT))
+                return null;
+            if (!execIsValid(root, parameters, program, test_signature))
+                return null;
             /* All checks OK - valid executable! */
             return root;
         } else {
-            if (recursive<=ExtPath.FILE_ONLY) return null;   // No more recursive should be done
+            if (recursive <= ExtPath.FILE_ONLY)
+                return null;   // No more recursive should be done
             recursive--;
             File[] childs = root.listFiles();
-            if (childs!=null) {
-                for (int i = 0 ; i < childs.length ; i++) {
-                    File res = searchExecutable(childs[i], program, recursive);
-                    if (res!=null) return res;
+            if (childs != null) {
+                for (int i = 0; i < childs.length; i++) {
+                    File res = searchExecutable(childs[i], program, parameters, test_signature, recursive);
+                    if (res != null)
+                        return res;
                 }
             }
         }
         return null;
     }
-    
-    
-    public static boolean execIsValid(File exec, String test_signature) {
+
+    public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
         Process proc = null;
-        String[] cmd = new String[1];
-        cmd[0] = exec.getAbsolutePath();    // Use this trick to avoid spaces problems inside the filename
-        
+        String[] cmd = new String[parameters.length + 1];
+        cmd[0] = exec.getAbsolutePath();
+        if (parameters.length > 0)
+            System.arraycopy(parameters, 0, cmd, 1, parameters.length);
+
         try {
+            StringBuffer buf = new StringBuffer();
+            buf.append(_("Testing:")).append(" ");
+            for (int i = 0; i < cmd.length; i++) {
+                buf.append(cmd[i]).append(' ');
+            }
+            DEBUG.debug(buf.toString());
+
             proc = Runtime.getRuntime().exec(cmd);
-            BufferedReader infopipe = new BufferedReader( new InputStreamReader(proc.getInputStream()));
-            boolean found = (infopipe.readLine() + infopipe.readLine() + infopipe.readLine()).toLowerCase().indexOf(test_signature) >= 0;
-            proc.destroy();
-            return found;
-        } catch (Exception ex) { }
+            BufferedReader infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String line;
+            line = infopipe.readLine() + infopipe.readLine();
+            if (!line.toLowerCase().contains(app_signature)) {
+                proc.destroy();
+                return false;
+            }
+            if (test_signature == null) {
+                proc.destroy();
+                return true;
+            }
+            while ((line = infopipe.readLine()) != null) {
+                if (line.toLowerCase().contains(test_signature)) {
+                    DEBUG.debug(_("Valid executable found: {0}", exec.getAbsolutePath()));
+                    proc.destroy();
+                    return true;
+                }
+            }
+        } catch (Exception ex) {
+        } finally {
+            try {
+                proc.destroy();
+            } catch (Exception e) {
+            }
+        }
         return false;
     }
-    
 }

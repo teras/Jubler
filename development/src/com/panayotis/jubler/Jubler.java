@@ -729,10 +729,10 @@ public class Jubler extends JFrame {
         TestTP.add(TestTB);
 
         PreviewTB.setModel(new ToggleButtonModel());
-        PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
+        PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/previewc.png"))); // NOI18N
         PreviewTB.setToolTipText(_("Enable preview"));
         PreviewTB.setEnabled(false);
-        PreviewTB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/previewc.png"))); // NOI18N
+        PreviewTB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
         PreviewTB.addActionListener(formListener);
         TestTP.add(PreviewTB);
 
@@ -1180,6 +1180,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == TestTB) {
                 Jubler.this.CurrentTTMActionPerformed(evt);
             }
+            else if (evt.getSource() == PreviewTB) {
+                Jubler.this.PreviewTBCurrentTTMActionPerformed(evt);
+            }
             else if (evt.getSource() == CutP) {
                 Jubler.this.CutEMActionPerformed(evt);
             }
@@ -1389,9 +1392,6 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == PreviewTB) {
-                Jubler.this.PreviewTBCurrentTTMActionPerformed(evt);
             }
         }
 

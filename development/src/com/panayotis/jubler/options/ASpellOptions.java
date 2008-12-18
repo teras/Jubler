@@ -26,7 +26,6 @@ import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Properties;
 import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -46,7 +45,7 @@ public class ASpellOptions extends JExtBasicOptions {
     
     /** Creates new form ASpellOptions */
     public ASpellOptions(String type, String name) {
-        super(type, name);
+        super(type, name, new String[] {"-?"}, null);
         initComponents();
         
         dictionaries = new Vector<ASpellDict>();

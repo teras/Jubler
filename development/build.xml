@@ -73,17 +73,17 @@
 
 	<taskdef name="izpack"
 		onerror="report"
-		classpath="../../Tools/IzPack/standalone-compiler.jar"
+		classpath="../../../Tools/IzPack/standalone-compiler.jar"
 		classname="com.izforge.izpack.ant.IzPackTask"/>
 
 	<taskdef name="launch4j"
 		onerror="report"
-		classpath="../../Tools/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
+		classpath="../../../Tools/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
 		classname="net.sf.launch4j.ant.Launch4jTask"/>
 	
 	<taskdef name="jarbundler"
 		onerror="report"
-		classpath="../../Tools/jarbundler/jarbundler-1.9.jar"
+		classpath="../../../Tools/jarbundler/jarbundler-1.9.jar"
 		classname="net.sourceforge.jarbundler.JarBundler" />
 
 
@@ -114,10 +114,11 @@
 	</target>
 
 
-	<target name="changelog" depends="compile">
+	<target name="changelog">
 		<delete file="ChangeLog.html"/>
-		<java fork="true" classname="com.panayotis.jubler.information.AutoUpdater" dir="build/classes">
-			<arg value="../../ChangeLog.html"/>
+		<java fork="true" classname="com.panayotis.jupidator.helpers.ChangeLogCreator" classpath="resources/jupidator/jupidator.jar">
+			<arg value="http://www.jubler.org/files/jupidator/updater.xml"/>
+			<arg value="ChangeLog.html"/>
 		</java>
 	</target>
 
@@ -147,44 +148,39 @@
 		<delete dir="/tmp/Jubler-${version}"/>
 	</target>
 	
-	<!-- Update to the latest release version -->
+	<!-- Common tasks for ALL packagers -->
+	<target name="release" depends="clean,i18n,jar,faq,changelog">
+		<echo message="INFO:  In order to update version numbering, ant task version-update should be called manually" />
+	</target>
+	
+
 	<target name="version-update">
-		<echo message="INFO: Before updating version number, make *sure* that the correct human-readable version is defined."/>
-		<echo message="INFO: To define a new human-readable version, execute script ./resources/system/version-update.sh"/>
-		<echo message="INFO: If you run this script, then this script automatically executes this ant task"/>
-		<echo message="NOTE: If this task fails, then ./resources/system/version-update.sh script should be executed once, and executables 'svn', 'grep' and 'awk' should be existing in current $PATH."/>
+		<echo message="NOTE: If this task fails, executables 'svn', 'grep' and 'awk' should be existing in current $PATH."/>
 		<exec executable="svn" outputproperty="svnoutput" failonerror="true"> <arg line="info"/> </exec>
 		<exec executable="grep" inputstring="${svnoutput}" outputproperty="grepoutput" failonerror="true"> <arg line="Revision"/> </exec>
 		<exec executable="awk" inputstring="${grepoutput}" outputproperty="releaseid" failonerror="true"> <arg line="'{print $2}'"/> </exec>
-		<copy file="resources/system/version.prop" tofile="resources/system/version.prop.gen" overwrite="yes">
-			<filterset><filter token="RELEASE" value="${releaseid}"/></filterset>
-		</copy>
-	</target>
-
-	<!-- Common tasks for ALL packagers -->
-	<target name="release" depends="clean,i18n,jar,faq,changelog">
-		<echo message="*WARNING* :  In order to update version numbering, ant task version-update should be called manually" />
+		<input message="Please give human-readable version" addproperty="versionid"/>
+		<input message="Please give numeric version" addproperty="longversionid"/>
+		<echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}"/>
+		<echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}packaged=@DISTRIBUTION@${line.separator}" file="resources/system/version.prop"/>
+		<antcall target="nodistbased"/>
 	</target>
 
 	<target name="nodistbased">
-		<echo message="NOTE: If this task fails, ant version-update should be called."/>
-		<copy file="resources/system/version.prop.gen" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+		<copy file="resources/system/version.prop" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
 			<filterset><filter token="DISTRIBUTION" value="false"/></filterset>
 		</copy>
 	</target>
 
 	<target name="distbased">
-		<echo message="NOTE: If this task fails, ant version-update should be called."/>
-		<copy file="resources/system/version.prop.gen" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+		<copy file="resources/system/version.prop" tofile="src/com/panayotis/jubler/information/version.prop" overwrite="yes">
 			<filterset><filter token="DISTRIBUTION" value="true"/></filterset>
 		</copy>
 	</target>
 
 	<!-- Windows Installer -->
-	<target name="win32" depends="nodistbased,release">
+	<target name="win32exe" depends="nodistbased,release">
 		<property file="src/com/panayotis/jubler/information/version.prop" />
-
-		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -209,6 +205,10 @@
 				<jre minVersion="1.6.0" />
 			</config>
 		</launch4j>
+	</target>
+	<target name="win32" depends="win32exe">
+		<property file="src/com/panayotis/jubler/information/version.prop" />
+		<exec dir="resources/ffdecode" executable="make" failonerror="true"> <arg line="win32"/> </exec>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="makensis" failonerror="true">
@@ -267,7 +267,10 @@
 		<copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
 		<copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
 		<copy file="resources/installers/linux/jubler.png" todir="${sharedir}/icons/hicolor/48x48/apps"/>
-		<exec executable="resources/installers/linux/iconinstall" failonerror="true"><arg line="${sharedir}/icons/hicolor"/></exec>
+		<exec executable="bash" failonerror="true">
+			<arg line="resources/installers/linux/iconinstall"/>
+			<arg line="${sharedir}/icons/hicolor"/>
+		</exec>
 		<copy file="resources/installers/linux/jubler.desktop" todir="${sharedir}/applications"/>
 
 		<!-- Mimetypes -->
@@ -285,6 +288,7 @@
 		<copy file="resources/system/findjava.sh" todir="${libdir}"/>
 		<chmod file="${libdir}/findjava.sh" perm="a+x"/>
 		<copy file="dist/lib/libffdecode.so" todir="${libdir}/lib"/>
+		<copy file="resources/jupidator/jupidator.jar" todir="${libdir}/lib"/>
 		<chmod file="${libdir}/lib/libffdecode.so" perm="a+x"/>
 		<copy file="resources/installers/linux/jubler" todir="${bindir}"/>
 		<chmod file="${bindir}/jubler" perm="a+x"/>
@@ -320,7 +324,7 @@
 
 
 	<!-- Debian Linux installer -->
-	<target name="debian" depends="distbased,release,linuxffdecodedyn,linuxinstall">
+	<target name="debian" depends="distbased,release,linuxffdecode,linuxinstall">
 		<mkdir dir="${destdir}/DEBIAN"/>
 		<exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
 			<arg line="usr -type f -exec md5sum {} ;"/>
@@ -411,6 +415,7 @@
 		<chmod file="/Volumes/Jubler-template/Jubler.app/Contents/MacOS/JavaApplicationStub" perm="a+x"/>
 		<copy file="resources/ffdecode/libffdecode.jnilib" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
 		<copy file="resources/system/fonts/freesans.ttf" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
+		<copy file="resources/jupidator/jupidator.jar" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
 		<copy file="dist/help/jubler-faq.html" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help"/>
 		<copy file="resources/help/question.png" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help"/>
 
@@ -449,6 +454,7 @@
 			<fileset dir="." includes="*.log"/>
 			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
 			<fileset dir="src" includes="lib"/>
+			<fileset dir="resources/i18n" includes="*.mo"/>
 		</delete>
 		<delete dir="self"/>
 		<delete dir="dist/Jubler.app"/>

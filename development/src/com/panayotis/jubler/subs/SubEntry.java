@@ -1,7 +1,7 @@
 /*
  * SubEntry.java
  *
- * Created on 22 Ιο�?νιος 2005, 1:51 πμ
+ * Created on 22 June 2005, 1:51 PM
  *
  * This file is part of Jubler.
  *

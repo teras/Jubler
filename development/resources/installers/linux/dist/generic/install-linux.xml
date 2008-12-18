@@ -48,12 +48,13 @@
     <packs>
         <pack name="Base" required="yes">
             <description>Jubler base files</description>
-            <file src="ChangeLog" targetdir="$INSTALL_PATH"/>
+            <file src="ChangeLog.html" targetdir="$INSTALL_PATH"/>
             <file src="LICENCE" targetdir="$INSTALL_PATH"/>
             <file src="README" targetdir="$INSTALL_PATH"/>
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
 			<file src="resources/installers/linux/jubler.png" targetdir="$INSTALL_PATH/lib"/>
+			<file src="resources/jupidator/jupidator.jar" targetdir="$INSTALL_PATH/lib"/>
 			<file src="resources/system/findjava.sh" targetdir="$INSTALL_PATH/lib"/>
 			<file src="resources/installers/linux/jubler" targetdir="$INSTALL_PATH"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
