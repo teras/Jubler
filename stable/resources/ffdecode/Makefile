@@ -125,31 +125,31 @@ MACLIBNAME=lib${PROJ}.jnilib
 
 
 develop:javacheck
-	make -e `uname -s|tr [A-Z] [a-z]`
+	${MAKE} -e `uname -s|tr [A-Z] [a-z]`
 
 
 linux:javacheck distclean
-	make -e library MAKESYS=linux
+	${MAKE} -e library MAKESYS=linux
 	rm -rf ${JUBLER}/src/lib
 
 linuxdyn:javacheck distclean
-	make -e library MAKESYS=linux STATIC=no
+	${MAKE} -e library MAKESYS=linux STATIC=no
 	rm -rf ${Jubler}/src/lib
 
 win32:javacheck distclean
-	make -e library MAKESYS=win32
+	${MAKE} -e library MAKESYS=win32
 	rm -rf ${JUBLER}/src/lib
 
 darwin:javacheck
-	make distclean
-	make -e LIB MAKESYS=darwin_ppc
-	make distclean
-	make -e LIB MAKESYS=darwin_i386
-	make distclean
+	${MAKE} distclean
+	${MAKE} -e LIB MAKESYS=darwin_ppc
+	${MAKE} distclean
+	${MAKE} -e LIB MAKESYS=darwin_i386
+	${MAKE} distclean
 	lipo ${PROJ}.ppc ${PROJ}.i386 -create -output ${MACLIBNAME}
 	TIGER=`otool -vR ${MACLIBNAME} | grep UNIX` ; if [ -n "$$TIGER" ] ; then echo "Tiger compatibility problem!" ; echo $$TIGER ; exit 1 ; fi
 	rm -f ${PROJ}.ppc ${PROJ}.i386
-	make -e libinstall LIBNAME=${MACLIBNAME}
+	${MAKE} -e libinstall LIBNAME=${MACLIBNAME}
 
 library:clean ${LIBNAME} libinstall
 
@@ -190,19 +190,19 @@ native:
 
 
 ${LIBRARIES}/libfaad${LIBSUF}.a:
-	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure ${DCONFIG} && mv frontend/Makefile frontend/Makefile.orig && echo >frontend/Makefile "all:" && make -j3
+	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure ${DCONFIG} && mv frontend/Makefile frontend/Makefile.orig && echo >frontend/Makefile "all:" && ${MAKE} -j3
 	mkdir -p ${LIBRARIES}
 	cp ${FAAD}/libfaad/.libs/libfaad.a ${LIBRARIES}/libfaad${LIBSUF}.a
-	cd ${FAAD} && mv frontend/Makefile.orig frontend/Makefile && make distclean
+	cd ${FAAD} && mv frontend/Makefile.orig frontend/Makefile && ${MAKE} distclean
 
 ${LIBRARYREQ}: ${LIBRARIES}/libfaad${LIBSUF}.a
 	mkdir -p ${LIBRARIES}
 	cd ${LIBRARIES} ; rm -f libfaad.a && ln -s libfaad${LIBSUF}.a libfaad.a
-	cd ${FFMPEG} && ./${FFCONF} ${FCONFIG} && make -j3
+	cd ${FFMPEG} && ./${FFCONF} ${FCONFIG} && ${MAKE} -j3
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/libavutil.a ${LIBRARIES}/libavutil${LIBSUF}.a
-	cd ${FFMPEG} && make distclean
+	cd ${FFMPEG} && ${MAKE} distclean
 	rm -f ${LIBRARIES}/libfaad.a
 
 
