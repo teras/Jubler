@@ -2,7 +2,7 @@
  * SubRenderer.java
  *
  * Created on 20 Δεκέμβριος 2004, 1:40 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import java.awt.Color;
@@ -33,14 +32,14 @@ import javax.swing.table.DefaultTableCellRenderer;
  * @author teras
  */
 public class SubRenderer extends DefaultTableCellRenderer {
-    
-    public Component getTableCellRendererComponent (JTable table, Object value, boolean selected, boolean focused, int row, int column) {
+
+    public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
         SubEntry entry;
-        
+
         setEnabled(table == null || table.isEnabled()); // Always do that
-        
-        entry = ((Subtitles)table.getModel()).elementAt(row);
-        setBackground( SubEntry.MarkColors[entry.getMark()] );
+
+        entry = ((Subtitles) table.getModel()).elementAt(row);
+        setBackground(SubEntry.MarkColors[entry.getMark()]);
         setForeground(Color.BLACK);
         super.getTableCellRendererComponent(table, value, selected, focused, row, column);
         return this;

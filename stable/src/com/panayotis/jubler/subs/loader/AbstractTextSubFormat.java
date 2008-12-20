@@ -66,8 +66,6 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         return getPattern();
     }
     
-    
-    
     public Subtitles parse(String input, float FPS, File f) {
         try{
             if ( ! getTestPattern().matcher(input).find() ) return null;    // Not valid - test pattern does not match
