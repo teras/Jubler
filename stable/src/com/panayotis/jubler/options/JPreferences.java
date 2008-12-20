@@ -118,12 +118,14 @@ public class JPreferences extends javax.swing.JDialog {
     }
     
     public void showLoadDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
-        jload.showDialog(parent, mfile, subs);
         Tabs.setVisibleTab(0);
+        jload.showDialog(parent, Tabs.getTab(), mfile, subs);
+        Tabs.putTabBack();
     }
     public void showSaveDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
-        jsave.showDialog(parent, mfile, subs);
         Tabs.setVisibleTab(1);
+        jsave.showDialog(parent, Tabs.getTab(), mfile, subs);
+        Tabs.putTabBack();
     }
     
     public void showPreferencesDialog() {

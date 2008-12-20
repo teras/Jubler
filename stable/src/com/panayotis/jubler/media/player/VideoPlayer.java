@@ -57,7 +57,7 @@ public abstract class VideoPlayer extends ExtProgram {
     /** Use this method to center the video player on the screen, if desired */
     public abstract void setCentralLocation(int x, int y);
     
-    public String getIconName() { return "/icons/player_small.png"; }
+    public String getIconName() { return "/icons/player_pref.png"; }
 
     /* Player is exiting, clean up */
     public abstract void cleanUp();

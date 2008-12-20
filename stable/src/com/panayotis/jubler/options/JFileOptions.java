@@ -84,12 +84,12 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
      * To grasp when a JPreferences dialog is displayed, see
      * Options.loadSystemPreferences(JPreferences);
      */
-    public void showDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
+    public void showDialog(JFrame parent, JPanel GUI, MediaFile mfile, Subtitles subs) {
         if ( !DialogVisible.isSelected() ) return;
         
         updateVisuals(mfile, subs);
         DialogVisible.setVisible(false);
-        JIDialog.info(parent, this, _("File preferences"));
+        JIDialog.info(parent, GUI, _("File preferences"));
         DialogVisible.setVisible(true);
     }
     

@@ -98,7 +98,7 @@ public class JLoadOptions extends JFileOptions {
     
     public String getTabName() { return _("Load"); }
     public String getTabTooltip() { return _("Load subtitles options"); }
-    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/load_small.png")); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/load_pref.png")); }
 
     public void setPreEncoding(String enc) {
         CEnc[0].setSelectedItem("UTF-8");

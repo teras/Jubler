@@ -44,7 +44,7 @@ public abstract class SpellChecker extends ExtProgram {
     
     public abstract boolean supportsInsert();
     
-    public String getIconName() { return "/icons/spellcheck_small.png"; }
+    public String getIconName() { return "/icons/spellcheck_pref.png"; }
     public String getType() { return "Speller"; }
     public String getLocalType() { return _("Speller"); } 
 }
