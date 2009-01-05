@@ -22,10 +22,12 @@
 package com.panayotis.jubler.subs;
 
 /**
- *
+ * Common pattern definitions.
  * @author Hoang Duy Tran
  */
 public interface CommonDef {
+    public static final String USER_HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
+    public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + System.getProperty("file.separator");    
     public static final String DOS_NL = "\r\n";
     public static final String UNIX_NL = "\n";
     public static final String nl = "\\\n";
