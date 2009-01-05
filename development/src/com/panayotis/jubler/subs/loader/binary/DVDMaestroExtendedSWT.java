@@ -63,7 +63,7 @@ import java.util.regex.Pattern;
  * # 02 : RGB( 8, 0, 0)
  * #
  *
- * SP_NUMBER	START		END		FILE_NAME
+ * SP_NUMBER	START	END	FILE_NAME	SUBTITLE_TEXT
  * Color		(0 1 6 7)
  * Contrast	(0 15 15 15)
  * Display_Area	(000 446 720 518)
