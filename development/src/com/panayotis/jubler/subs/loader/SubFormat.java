@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.media.MediaFile;
@@ -37,15 +36,16 @@ import javax.swing.ImageIcon;
  * @author teras
  */
 public abstract class SubFormat {
-    
+
     protected float FPS;
     private String ENCODING;
 
     public abstract String getExtension();
+
     public abstract String getName();
-            
+
     public final boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
-        if (prefs==null) {
+        if (prefs == null) {
             FPS = 25f;
             ENCODING = "UTF-8";
         } else {
@@ -54,18 +54,19 @@ public abstract class SubFormat {
         }
         return produce(subs, outfile, media);
     }
-    
-    public void init(){}
-    
+
+    public void init() {
+    }
+
     /* Export subtitles to file
      * Return whether the file should be moved & renamed or not
      */
     public abstract boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException;
-    
+
     public String getExtendedName() {
         return getName();
     }
-    
+
     public String getDescription() {
         return getExtendedName() + "  (*." + getExtension() + ")";
     }
@@ -73,33 +74,35 @@ public abstract class SubFormat {
     public String getEncoding() {
         return ENCODING;
     }
-    
+
     /* convert a string into subtitles */
     public abstract Subtitles parse(String input, float FPS, File f);
-    
-    
+
     public abstract boolean supportsFPS();
-    
-    public static short parseShort(String data){
-        return parseShort(data, (short)0);
+
+    public static short parseShort(String data) {
+        return parseShort(data, (short) 0);
     }
-    
-    public static short parseShort(String data, short default_value){
+
+    public static short parseShort(String data, short default_value) {
         short value = default_value;
-        try{
-            value = Short.parseShort(data);            
-        }catch(Exception ex){}
+        try {
+            value = Short.parseShort(data);
+        } catch (Exception ex) {
+        }
         return value;
     }
-    
-    public static int parseInt(String data){
-        return parseInt(data, (int)0);
+
+    public static int parseInt(String data) {
+        return parseInt(data, 0);
     }
-    public static int parseInt(String data, int default_value){
+
+    public static int parseInt(String data, int default_value) {
         int value = default_value;
-        try{
-            value = Integer.parseInt(data);            
-        }catch(Exception ex){}
+        try {
+            value = Integer.parseInt(data);
+        } catch (Exception ex) {
+        }
         return value;
     }
 
@@ -122,7 +125,7 @@ public abstract class SubFormat {
                 ico = new ImageIcon(img);
                 return ico;
             }//end if
-        } catch (Exception ex) {            
+        } catch (Exception ex) {
             return null;
         }
     }
