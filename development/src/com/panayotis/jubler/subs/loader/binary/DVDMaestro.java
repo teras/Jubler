@@ -24,12 +24,13 @@ package com.panayotis.jubler.subs.loader.binary;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.JIDialog;
-import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.subs.CommonDef;
+import com.panayotis.jubler.subs.NonDuplicatedVector;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.Subtitles;
@@ -58,8 +59,8 @@ import com.panayotis.jubler.subs.loader.processor.SON.SONPatternDef;
 import com.panayotis.jubler.subs.loader.processor.SON.SONPixelArea;
 import com.panayotis.jubler.subs.loader.processor.SON.SONSubtitleEvent;
 import com.panayotis.jubler.time.gui.JLongProcess;
-import com.panayotis.jubler.subs.records.SonHeader;
-import com.panayotis.jubler.subs.records.SonSubEntry;
+import com.panayotis.jubler.subs.records.SON.SonHeader;
+import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -75,11 +76,10 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-
 /**
  * This file is used to read, parse and produce SON subtitle format with images.
  * The example for index file which hold reference to images is shown here:
- *
+ * <pre>
  * st_format	2
  * Display_Start	non_forced
  * TV_Type		PAL
@@ -87,7 +87,7 @@ import javax.swing.ImageIcon;
  * Pixel_Area	(0 575) //width 576
  * Directory	C:\java\test_data\edwardian
  * Contrast	( 15 0 15 15 )
- * 
+ *
  * #
  * # Palette entries:
  * #
@@ -95,13 +95,13 @@ import javax.swing.ImageIcon;
  * # 01 : RGB(131,127, 0)
  * # 02 : RGB( 8, 0, 0)
  * #
- * 
+ *
  * SP_NUMBER	START		END		FILE_NAME
- * Color		(0 1 6 7)
+ * Color	(0 1 6 7)
  * Contrast	(0 15 15 15)
  * Display_Area	(000 446 720 518)
  * 0001		00:00:11:01	00:00:15:08	Edwardians In Colour _st00001p1.bmp
- *
+ * </pre>
  * The file has a header section (from "st_format" to "Directory") and the line
  * "SP_NUMBER	START		END		FILE_NAME"
  * is used as a signature for the format. The data section below the signature
@@ -124,9 +124,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         PostParseActionEventListener {
 
     /** Creates a new instance of SubFormat */
-    private JLongProcess progress = null;
     private JMaestroOptions moptions = null;
-    private String number = null;
     protected SonHeader sonHeader = null;
     protected SonSubEntry sonSubEntry = null;
     protected SubtitlePatternProcessor son_palette_entry = null;
@@ -139,7 +137,6 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
 
     /** Creates a new instance of DVDMaestro */
     public DVDMaestro() {
-        progress = new JLongProcess(null);
         moptions = new JMaestroOptions();
         definePatternList();
     }
@@ -182,8 +179,8 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         processorList.addAll(getDetailProcessorListGroup());
 
         processorList.addSubtitleRecordCreatedEventListener(this);
-        processorList.addSubtitleDataParsedEventListener(this);
         processorList.addSubtitleDataPreParsingEventListener(this);
+        processorList.addSubtitleDataParsedEventListener(this);
 
         clearPostParseActionEventListener();
         clearPreParseActionEventListener();
@@ -263,7 +260,13 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
 
     public void preParsingDataLineAction(PreParsingDataLineActionEvent e) {
         String data = e.getProcessor().getTextLine();
-        boolean is_empty = (isEmptyTextLine(data) || isHeaderLine(data) || isComment(data) || isPaletteEntryHeader(data));
+
+        boolean is_empty_line = isEmptyTextLine(data);
+        boolean is_header_line = isHeaderLine(data);
+        boolean is_comment_line = isComment(data);
+        boolean is_palette_header = isPaletteEntryHeader(data);
+
+        boolean is_empty = (is_empty_line || is_header_line || is_comment_line || is_palette_header);
         processorList.setIgnoreData(is_empty);
 
         if (isHeaderLine(data)) {
@@ -307,38 +310,13 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         return true;
     }
     private Subtitles subs;
-    private JPreferences prefs;
-    private File outfile;
 
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
-        if (progress.isVisible()) {
-            throw new java.io.IOException(_("The save process did not finish yet"));
-        /* Prepare directory structure */
-        }
-
-        final File dir = FileCommunicator.stripFileFromExtension(
-                FileCommunicator.stripFileFromExtension(outfile));
-        if (dir.exists()) {
-            if (!dir.isDirectory()) {
-                throw new IOException(_("A file exists with the same name."));
-            }
-
-            if (!SystemDependent.canWrite(dir)) {
-                throw new IOException(_("Directory is not writable."));
-            }
-        } else {
-            if (!dir.mkdir()) {
-                throw new IOException(_("Unable to create directory."));
-            }
-        }
+        File dir = outfile.getParentFile();
 
         subs = given_subs;
-        final String outfilepath = dir.getPath() + System.getProperty("file.separator");
-        final String outfilename = dir.getName();
-
         boolean has_record = (subs.size() > 0);
         if (!has_record) {
-            getProgress().setVisible(false);
             return false;
         }
 
@@ -350,135 +328,17 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         }//end if
 
         /* Start writing the files in a separate thread */
-        Thread t = new Thread() {
-
-            public void run() {
-                SonSubEntry son_subentry = null;
-                boolean has_record = (subs.size() > 0);
-                if (!has_record) {
-                    getProgress().setVisible(false);
-                    return;
-                }
-
-                getProgress().setValues(subs.size(), _("Saving {0}", outfilename));
-                StringBuffer buffer = new StringBuffer();
-
-                Object obj = subs.elementAt(0);
-                boolean is_son = (obj instanceof SonSubEntry);
-                if (!is_son) {
-                    son_subentry = new SonSubEntry();
-                } else {
-                    son_subentry = (SonSubEntry) obj;
-                }//end if (! is_son)
-
-                boolean has_header = (is_son && son_subentry.getHeader() != null);
-                if (!has_header) {
-                    son_subentry.header = new SonHeader();
-                }//end if
-
-                buffer.append(son_subentry.header.toString());
-
-                /*
-                if (!header_filled) {
-                SonHeader header = new SonHeader();
-                header.moptions = moptions;
-                
-                buffer.append("st_format 2").append(UNIX_NL);
-                buffer.append("Display_Start non_forced").append(UNIX_NL);
-                buffer.append("TV_Type ").append(moptions.getVideoFormat()).append(UNIX_NL);
-                buffer.append("Tape_Type NON_DROP").append(UNIX_NL);
-                buffer.append("Pixel_Area (0 477)").append(UNIX_NL);
-                buffer.append("Directory").append(UNIX_NL);
-                
-                buffer.append("Display_Area (0 0 ");
-                buffer.append(moptions.getVideoWidth() - 1).append(" ");
-                buffer.append(moptions.getVideoHeight() - 1).append(")").append(UNIX_NL);
-                
-                buffer.append("Contrast	(15 15 15 0)").append(UNIX_NL);
-                buffer.append(UNIX_NL);
-                buffer.append("#").append(UNIX_NL);
-                buffer.append("# Palette entries:").append(UNIX_NL);
-                buffer.append("# 00 : RGB(255,255,255)").append(UNIX_NL);
-                buffer.append("# 01 : RGB( 64, 64, 64)").append(UNIX_NL);
-                buffer.append(UNIX_NL);
-                buffer.append(getDetailHeaderLine()).append(UNIX_NL);
-                buffer.append("Color	(0 1 0 0)").append(UNIX_NL);
-                buffer.append(UNIX_NL);
-                }
-                 */
-                /* create digits prependable string */
-                int digs = Integer.toString(subs.size()).length();
-                NumberFormat fmt = NumberFormat.getInstance();
-                fmt.setMinimumIntegerDigits(digs);
-                fmt.setMaximumIntegerDigits(digs);
-
-                String c_filename, id_string;
-                for (int i = 0; i < subs.size(); i++) {
-                    getProgress().updateProgress(i);
-                    obj = subs.elementAt(i);
-                    boolean is_son_subtitle = (obj instanceof SonSubEntry);
-                    if (is_son_subtitle) {
-                        son_subentry = (SonSubEntry) obj;
-                        son_subentry.event_id = (short) (i + 1);
-                        son_subentry.max_digits = digs;
-                        String sub_string = son_subentry.toString();
-                        buffer.append(sub_string);
-                    } else {
-                        SubEntry entry = (SubEntry) obj;
-                        id_string = fmt.format(i + 1);
-                        c_filename = outfilename + "_" + id_string + ".png";
-                        makeSubPicture(entry, i, outfilepath + c_filename);
-                        makeSubEntry(entry, i, c_filename, buffer);
-                    }//end if
-
-                }//end for
-
-                /* Write textual part to disk */
-                try {
-                    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outfilepath + outfilename + ".son")));
-                    out.write(buffer.toString());
-                    out.close();
-                } catch (IOException ex) {
-                    JIDialog.error(null, _("Unable to create subtitle file {0}.", outfilepath + outfilename + ".son"), "DVDMaestro error");
-                }
-                getProgress().setVisible(false);
-            }
-        };
+        Thread t = new WriteSonSubtitle(this, subs, moptions, outfile, dir, this.FPS);
         t.start();
-
         return false;   // There is no need to move any files
-
     }
 
     protected String addSubEntryText(SubEntry entry) {
         return "";
     }
 
-    private void makeSubEntry(SubEntry entry, int id, String filename, StringBuffer buffer) {
-        String id_string = Integer.toString(id + 1);
-        id_string = number.substring(id_string.length()) + id_string;
-        buffer.append("Display_Area	(213 3 524 38)").append(UNIX_NL);
-        buffer.append(id_string).append(" ");
-        buffer.append(entry.getStartTime().getSecondsFrames(FPS)).append(" ");
-        buffer.append(entry.getFinishTime().getSecondsFrames(FPS)).append(" ");
-        buffer.append(filename).append(UNIX_NL);
-        buffer.append(addSubEntryText(entry));
-    }
-
-    private boolean makeSubPicture(SubEntry entry, int id, String filename) {
-        SubImage simg = new SubImage(entry);
-        BufferedImage img = simg.getImage();
-        try {
-            ImageIO.write(img, "png", new File(filename));
-        } catch (IOException ex) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public JLongProcess getProgress() {
-        return progress;
+    public void makeHeaderRecord() {
+        sonHeader = new SonHeader();
     }
 
     public SonHeader getSonHeader() {
@@ -489,6 +349,10 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         this.sonHeader = sonHeader;
     }
 
+    public void makeSubEntryRecord() {
+        sonSubEntry = new SonSubEntry();
+    }
+
     public SonSubEntry getSonSubEntry() {
         return sonSubEntry;
     }
@@ -497,15 +361,244 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         this.sonSubEntry = sonSubEntry;
     }
 }
-class LoadSonImage extends Thread {
 
-    String USER_HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
-    String USER_CURRENT_DIR = System.getProperty("user.dir") + System.getProperty("file.separator");
+/**
+ * This class writes SON index file, and images if the subtitle list is not
+ * already SON type. Index file is always written to the chosen directory,
+ * but there is an option to write images to a different set of directories,
+ * if created and chosen at the beginning of the routine. This option is only
+ * available to non-SON subtitles. The number of images are divided equally
+ * over the number of directories created/chosen.
+ * The user will need to create the directories using the JFileChooser and select
+ * them from there. The set of directories chosen is NOT remembered in the
+ * header, as this would violate the format's definition, but there is an
+ * option to find missing images at the loading of the file.
+ * @see LoadSonImage
+ * @author teras && Hoang Duy Tran
+ */
+class WriteSonSubtitle extends Thread implements SONPatternDef {
+
+    private static NumberFormat fmt = NumberFormat.getInstance();
+    private DVDMaestro parent = null;
+    private JMaestroOptions moptions = null;
+    private SonHeader sonHeader = null;
+    private SonSubEntry sonSubEntry = null;
+    private Subtitles subs;
+    private File outfile,  dir;
+    private float FPS = 25f;
+    private File index_outfile = null;
+    private String image_out_filename = null;
+    private static int maxDigits = 1;
+    private short[] fixedDisplayArea = new short[]{213, 3, 524, 38};
+    private NonDuplicatedVector<File> dirList = null;
+    private ProgressBar pb = ProgressBar.getInstance();
+
+    public WriteSonSubtitle() {
+    }
+
+    public WriteSonSubtitle(DVDMaestro parent, Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS) {
+        this.parent = parent;
+        this.moptions = moptions;
+        this.outfile = outfile;
+        this.dir = dir;
+        this.FPS = FPS;
+
+        // The outfile is:
+        //  C:\project\test_data\edwardian\testson.son
+        // FileCommunicator.save puts the "temp" extension and it became
+        //  C:\project\test_data\edwardian\testson.son.temp
+        // Stripped 'temp' from the outfile, so it remains
+        //  C:\project\test_data\edwardian\testson.son
+        index_outfile = FileCommunicator.stripFileFromExtension(outfile);
+        //outfilepath = index_outfile.getParentFile();
+
+        //dir.getPath() + System.getProperty("file.separator");
+        //The 'image_out_filename' = "testson"
+        File image_file = FileCommunicator.stripFileFromExtension(index_outfile);
+        this.image_out_filename = image_file.getName();
+
+        this.subs = subtitle_list;
+    }
+
+    public void run() {
+        try {            
+            if (pb.isOn()) {
+                throw new IOException(_("A process did not finish yet"));
+            }
+
+            int dir_count = 1;
+            int sub_count = subs.size();
+            int files_per_dir_count = sub_count;
+            int image_count = 0;
+            int image_dir_index = 0;
+
+            String txt = null;
+            SonSubEntry son_subentry = null;
+
+
+            pb.setMinValue(0);
+            pb.setMaxValue(sub_count - 1);
+            pb.on();
+            pb.setTitle(_("Saving \"{0}\"", index_outfile.getName()));
+            StringBuffer buffer = new StringBuffer();
+
+            Object obj = subs.elementAt(0);
+            boolean is_son = (obj instanceof SonSubEntry);
+            if (is_son) {
+                son_subentry = (SonSubEntry) obj;
+            }//end if (! is_son)
+
+            boolean has_header = (is_son && son_subentry.getHeader() != null);
+            if (has_header) {
+                sonHeader = son_subentry.header;
+            } else {
+                parent.makeHeaderRecord();
+                sonHeader = parent.getSonHeader();
+                sonHeader.moptions = moptions;
+                sonHeader.FPS = FPS;
+
+                dirList = Share.createImageDirectories(dir);
+                if (Share.isEmpty(dirList)) {
+                    dirList.add(dir);
+                }//end if (Share.isEmpty(dirList))
+
+                dir_count = dirList.size();
+                files_per_dir_count = (sub_count / dir_count);
+                File first_image_dir = dirList.elementAt(0);
+                sonHeader.image_directory = first_image_dir.getAbsolutePath();
+            }//end if
+
+            sonHeader.subtitle_file = outfile;
+            txt = parent.getSonHeader().toString();
+            buffer.append(txt);
+
+            /* create digits prependable string */
+            maxDigits = Integer.toString(subs.size()).length();
+            fmt.setMinimumIntegerDigits(maxDigits);
+            fmt.setMaximumIntegerDigits(maxDigits);
+
+            String img_filename, id_string;
+            image_count = 0;
+            for (int i = 0; i < subs.size(); i++) {
+                obj = subs.elementAt(i);
+                is_son = (obj instanceof SonSubEntry);
+                if (is_son) {
+                    son_subentry = (SonSubEntry) obj;
+                    son_subentry.event_id = (short) (i + 1);
+                    son_subentry.max_digits = maxDigits;
+                    txt = son_subentry.toString();
+                    buffer.append(txt);
+                } else {
+                    SubEntry entry = (SubEntry) obj;
+                    id_string = fmt.format(i + 1);
+                    img_filename = image_out_filename + "_" + id_string + ".png";
+
+                    image_count++;
+                    if (dir_count > 0) {
+                        image_dir_index += (image_count % files_per_dir_count == 0 ? 1 : 0);
+                        if (image_dir_index > dir_count - 1) {
+                            image_dir_index = dir_count - 1;
+                        }//end if (image_dir_index > dir_count - 1)
+                    }//end if (dir_count > 0)
+
+                    File image_dir = dirList.elementAt(image_dir_index);
+                    makeSubPicture(entry, i, image_dir, img_filename);
+                    pb.setTitle(img_filename);
+                    makeSubEntry(entry, i, img_filename, buffer);
+                }//end if
+                pb.setValue(i);
+            }//end for
+
+            /* Write textual part to disk */
+            //String file_name = outfilepath + image_out_filename + ".son";
+            FileOutputStream os = new FileOutputStream(index_outfile);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os));
+            out.write(buffer.toString());
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.out);
+            String msg = ex.getMessage() + UNIX_NL;
+            msg += _("Unable to create subtitle file {0}.", outfile.getAbsolutePath());
+            JIDialog.error(null, msg, "DVDMaestro error");
+        } finally {
+            pb.off();
+        }
+    }
+
+    private void makeSubEntry(SubEntry entry, int id, String filename, StringBuffer buffer) {
+        if (parent.getSonSubEntry() == null) {
+            parent.makeSubEntryRecord();
+            sonSubEntry = parent.getSonSubEntry();
+            sonSubEntry.header = sonHeader;
+            sonSubEntry.display_area = fixedDisplayArea;
+            sonSubEntry.max_digits = maxDigits;
+        }//end if
+
+        sonSubEntry.image_filename = filename;
+        sonSubEntry.event_id = (short) (id + 1);
+        sonSubEntry.setText(entry.getText());
+        sonSubEntry.setStartTime(entry.getStartTime());
+        sonSubEntry.setFinishTime(entry.getFinishTime());
+
+        String txt = sonSubEntry.toString();
+        buffer.append(txt);
+    }//end private void makeSubEntry(SubEntry entry, int id, String filename, StringBuffer buffer)
+
+    private boolean makeSubPicture(SubEntry entry, int id, File dir, String filename) {
+        SubImage simg = new SubImage(entry);
+        BufferedImage img = simg.getImage();
+        try {
+            ImageIO.write(img, "png", new File(dir, filename));
+        } catch (IOException ex) {
+            return false;
+        }
+
+        return true;
+    }//end private boolean makeSubPicture(SubEntry entry, int id, String filename)
+}//class WriteSonSubtitle extends Thread
+
+/**
+ * This class is used to load SON subtitle images. There will be a progress bar
+ * shown to indicate what images is being loaded.
+ * 
+ * The list of subtitle records - {@link SonSubEntry} - is used to load the
+ * image using its file-name that was parsed from the read subtitle file.
+ * 
+ * There is an option to allow searching for missing image manually when
+ * a list of default directories have been exhausted. 
+ * The list of default directories includes
+ * <ul>
+ * <li>Image directory held in the "Directory" element of the header.</li>
+ * <li>The directory where the subtitle file resides.</li>
+ * <li>The working directory of the executable, such as the jubler's directory</li>
+ * <li>The user's home directory, such as $HOME</li>
+ * </ul>
+ * 
+ * When an image is not found within the default set of directories, use is
+ * prompted to search the directory where the missing image can be found. User
+ * can choose to 
+ * <ul>
+ * <li>Ignore the current missing image.</li>
+ * <li>Ignore the current missing image and set the program to not prompt again
+ * for missing images.
+ * <li>Browse directories where images can be found. User can select a file
+ * within the directory or just select a directory.</li>
+ * </ul>
+ * If a directory is chosen, it is added to the top of the searched list
+ * and the searching is repeated, and with the lastest directory being on top
+ * of the list, the image is likely to be found and loaed within the first turn
+ * of the searching loop.
+ * 
+ * @author Hoang Duy Tran
+ */
+class LoadSonImage extends Thread implements CommonDef {
+
     Subtitles sub_list = null;
     String image_dir = null;
     String subtitle_file_dir = null;
     DVDMaestro parent = null;
-
+    ProgressBar pb = ProgressBar.getInstance();
+    
     public LoadSonImage(Subtitles sub_list, String image_dir, String file_dir) {
         this.sub_list = sub_list;
         this.image_dir = image_dir;
@@ -513,34 +606,51 @@ class LoadSonImage extends Thread {
     }
 
     public void run() {
-        String image_filename;
-        SonSubEntry sub_entry;
-        File dir, f;
+        NonDuplicatedVector<File> path_list = new NonDuplicatedVector<File>();
+        String image_filename = null;
+        SonSubEntry sub_entry = null;
+        File f, last_image_dir;
+        File dir;
         boolean is_found = false;
         ImageIcon img = null;
         int count = 0;
-        boolean has_image, has_header;
+        boolean has_image, has_header, repeat_search;
         try {
-            File[] path_list = {
-                new File(image_dir),
-                new File(subtitle_file_dir),
-                new File(USER_CURRENT_DIR),
-                new File(USER_HOME_DIR)
-            };
+            Share.setRemindMissingImage(true);
+
+            File f_img = new File(image_dir);
+            if (! f_img.isDirectory())
+                f_img = new File(image_dir);
+            last_image_dir = f_img;
+            
+            path_list.add(last_image_dir);
+            path_list.add(new File(USER_CURRENT_DIR));
+            path_list.add(new File(USER_HOME_DIR));
+
             int len = sub_list.size();
-            ProgressBar pb = ProgressBar.getInstance();
-            pb.setTitle("Loading SON images");
+            
+            if (pb.isOn()) {
+                throw new IOException(_("A process did not finish yet"));
+            }
+
+            pb.setTitle(_("Loading SON images"));
             pb.setMinValue(0);
             pb.setMaxValue(len - 1);
             pb.on();
-            for (int i = 0; i < len; i++) {
-                sub_entry = (SonSubEntry) sub_list.elementAt(i);
-                image_filename = sub_entry.image_filename;
-                pb.setTitle(image_filename);
-                pb.setValue(i);
+
+            int i = 0;
+            repeat_search = false;
+            while (i < len) {
+                if (!repeat_search) {
+                    sub_entry = (SonSubEntry) sub_list.elementAt(i);
+                    image_filename = sub_entry.image_filename;
+                    pb.setTitle(image_filename);
+                    pb.setValue(i);
+                }//end if
+
                 is_found = false;
-                for (int j = 0; j < path_list.length; j++) {
-                    dir = path_list[j];
+                for (int j = 0; (!is_found) && (j < path_list.size()); j++) {
+                    dir = path_list.elementAt(j);
                     f = new File(dir, image_filename);
                     is_found = (f != null) && f.isFile() && f.exists();
                     if (is_found) {
@@ -550,31 +660,42 @@ class LoadSonImage extends Thread {
                         has_header = (sub_entry.header != null);
                         if (has_image && has_header) {
                             sub_entry.header.updateRowHeight(img.getIconHeight());
+                            sub_list.fireTableRowsUpdated(i, i);
                             count++;
                         }//end if (has_image)
+                    }//end if
+                }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)
 
-                        break;
-                    }//end if (is_found)
-
-                }//end for (int j = 0; j < path_list.length; j++)
-
+                repeat_search = false;
                 if (!is_found) {
-                    DEBUG.debug(_("Cannot find image {0}", image_filename));
+                    DEBUG.debug(_("Cannot find image \"{0}\"", image_filename));
+                    if (Share.isRemindMissingImage()) {
+                        File backup = last_image_dir;
+                        last_image_dir = Share.findImageDirectory(image_filename, last_image_dir);
+                        repeat_search =
+                                (last_image_dir != null) &&
+                                (last_image_dir.isDirectory()) &&
+                                (Share.isRemindMissingImage());
+
+                        if (repeat_search) {
+                            path_list.insertAtTop(last_image_dir);
+                        } else {
+                            last_image_dir = backup;
+                        }//end if (repeat_search)
+                    }//end if
                 }//end if (!is_found)
 
-            }//end for (int i = 0; i < len; i++)
+                if (!repeat_search) {
+                    i++;
+                }//end if (! repeat_search)
+            }//end while(i < len)
 
-            boolean updated = (count > 0);
-            if (updated) {
-                sub_list.fireTableRowsUpdated(0, len - 1);
-            }//end if
-
-            pb.off();
-            DEBUG.debug(_("Found number of images: {0}", String.valueOf(count)));
+            DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
+        }finally{
+            pb.off();
         }//end try/catch
-
     }//end public void run()
-    }//end class LoadSonImage extends Thread
+}//end class LoadSonImage extends Thread
 
