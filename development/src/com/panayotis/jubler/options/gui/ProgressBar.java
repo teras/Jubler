@@ -64,6 +64,14 @@ public class ProgressBar extends javax.swing.JPanel {
         title = null;
     }
 
+    public boolean isOn(){
+        return dlg.isVisible();
+    }
+
+    public boolean isOff(){
+        return !isOn();
+    }
+    
     /**
      * Sets the display ON
      */
@@ -206,7 +214,6 @@ public class ProgressBar extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdOKActionPerformed
-// TODO add your handling code here:
         getDlg().setVisible(false);
     }//GEN-LAST:event_cmdOKActionPerformed
 
