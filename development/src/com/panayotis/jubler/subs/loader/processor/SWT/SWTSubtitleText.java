@@ -29,7 +29,7 @@
 package com.panayotis.jubler.subs.loader.processor.SWT;
 
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
-import com.panayotis.jubler.subs.records.SWTSubEntry;
+import com.panayotis.jubler.subs.records.SWT.SWTSubEntry;
 
 /**
  *

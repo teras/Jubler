@@ -29,7 +29,7 @@ package com.panayotis.jubler.subs.loader.processor.SON;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
-import com.panayotis.jubler.subs.records.SonHeader;
+import com.panayotis.jubler.subs.records.SON.SonHeader;
 
 /**
  *
