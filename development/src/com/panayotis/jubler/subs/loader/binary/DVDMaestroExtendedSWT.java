@@ -68,7 +68,9 @@ import java.util.regex.Pattern;
  * Contrast	(0 15 15 15)
  * Display_Area	(000 446 720 518)
  * 0001		00:00:11:01	00:00:15:08	Edwardians In Colour _st00001p1.bmp
- *
+ * In November 1908, the steamship
+ * Hamburg America left Cherbourg
+ * 
  * Display_Area	(000 446 720 518)
  * 0002		00:00:15:23	00:00:19:11	Edwardians In Colour _st00002p1.bmp
  * on a transatlantic voyage
