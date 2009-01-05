@@ -20,7 +20,9 @@
  * 
  */
 
-package com.panayotis.jubler.subs.records;
+package com.panayotis.jubler.subs.records.SWT;
+
+import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 
 /**
  *
