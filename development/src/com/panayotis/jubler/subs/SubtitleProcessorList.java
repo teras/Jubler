@@ -41,10 +41,10 @@ import java.util.logging.Level;
  * each will be in charge of a recognising and parsing a data line. 
  * There are a groups of action events to be fired:
  * <ul>
- * <li>PreParsingDataLineActionEvent</li> Occurs before the data line is parsed.
+ * <li>{@link PreParsingDataLineActionEvent}</li> Occurs before the data line is parsed.
  * It is possible to set flag to ignore the data line using 
  * {@link #setIgnoreData(boolean)}
- * <li>SubtitleRecordCreatedEvent</li> Occurs before the data line is parsed and
+ * <li>{@link SubtitleRecordCreatedEvent}</li> Occurs before the data line is parsed and
  * when either {@link #isCreateNewObject()}flag is set or the reference to the
  * target object of the {@link SubtitlePatternProcessor} is "null". Initialisation
  * to the created object or changing the state of the 
@@ -53,7 +53,7 @@ import java.util.logging.Level;
  * {@link SubtitlePatternProcessor}'s getTargetObjectClassName() is used. 
  * As this uses the Class.forname().newInstance(), the default constructor is
  * used and no parameterised constructors are recognised.
- * <li>ParsedDataLineEvent</li> Occurs after the data line has been parsed by a
+ * <li>{@link ParsedDataLineEvent}</li> Occurs after the data line has been parsed by a
  * SubtitlePatternProcessor. Resetting of the {@link #isCreateNewObject()} flag
  * is possible within this event to commence the creation of a new record on the
  * next parsing turn.
