@@ -29,8 +29,8 @@ import com.panayotis.jubler.subs.events.PreParseActionEvent;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEvent;
 import com.panayotis.jubler.subs.loader.processor.SWT.SWTPatternDef;
 import com.panayotis.jubler.subs.loader.processor.SWT.SWTSubtitleText;
-import com.panayotis.jubler.subs.records.SWTHeader;
-import com.panayotis.jubler.subs.records.SWTSubEntry;
+import com.panayotis.jubler.subs.records.SWT.SWTHeader;
+import com.panayotis.jubler.subs.records.SWT.SWTSubEntry;
 import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,10 +43,10 @@ import java.util.regex.Pattern;
  * editing sessions. The text can then be extracted to others using "Save As"
  * function from the menu - produce() - such as sub-rip SRT. Entries are
  * NEW-LINE separated.
- *
+ * 
  * The example for index file which hold reference to images and text
  * is shown here:
- *
+ *<pre>
  * st_format	2
  * Display_Start	non_forced
  * TV_Type		PAL
@@ -73,7 +73,7 @@ import java.util.regex.Pattern;
  * 0002		00:00:15:23	00:00:19:11	Edwardians In Colour _st00002p1.bmp
  * on a transatlantic voyage
  * to New York.
- *
+ * </pre>
  * The file has a header section (from "st_format" to "Directory") and the line
  * "SP_NUMBER	START		END		FILE_NAME   SUBTITLE_TEXT"
  * is used as a signature for the format. The data section below the signature
@@ -105,14 +105,6 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
         detailProcessorListGroup.add(swt_text);
         processorList.add(swt_text);
         processorList.clearSubtitleDataParsedEventListener();
-
-    /*
-    processorList.clearSubtitleRecordCreatedEventListener();
-    processorList.clearSubtitleDataPreParsingEventListener();
-
-    processorList.addSubtitleRecordCreatedEventListener(this);
-    processorList.addSubtitleDataPreParsingEventListener(this);
-     */
     }
 
     @Override
@@ -210,5 +202,33 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
         } else {
             return "";
         }//end if
+    }
+
+    @Override
+    public void makeHeaderRecord() {
+        swtHeader = new SWTHeader();
+    }
+
+    @Override
+    public SWTHeader getSonHeader() {
+        return swtHeader;
+    }
+
+    public void setSonHeader(SWTHeader swtHeader) {
+        this.swtHeader = swtHeader;
+    }
+
+    @Override
+    public void makeSubEntryRecord() {
+        swtSubEntry = new SWTSubEntry();
+    }
+
+    @Override
+    public SWTSubEntry getSonSubEntry() {
+        return swtSubEntry;
+    }
+
+    public void setSonSubEntry(SWTSubEntry swtSubEntry) {
+        this.swtSubEntry = swtSubEntry;
     }
 }
