@@ -39,8 +39,19 @@ public class SubtitlePatternDefinition {
     private Pattern workPattern = null;
     private Pattern testPattern = null;
     
+    /**
+     * Default constructor
+     */
     public SubtitlePatternDefinition(){}
 
+    /**
+     * Parameterised constructor
+     * @param work_pattern The pattern to be compiled by the Pattern.compile()
+     * @param is_test_and_work_the_same Flag to set the work-pattern to be the 
+     * same as test pattern. When this flag is true, the compiled work-pattern
+     * is used for the test-pattern as well. Both references are pointed to the
+     * same compiled Pattern object.
+     */
     public SubtitlePatternDefinition(String work_pattern, boolean is_test_and_work_the_same){
         setWorkPattern(work_pattern);
         if (is_test_and_work_the_same){
@@ -48,27 +59,54 @@ public class SubtitlePatternDefinition {
         }//end if (is_test_and_work_the_same)
     }
     
+    /**
+     * Parameterised constructor
+     * @param work_pattern The pattern to be compiled by the Pattern.compile()
+     */
     public SubtitlePatternDefinition(String work_pattern){
         setWorkPattern(work_pattern);
     }
     
+    /**
+     * Parameterised constructor
+     * @param work_pattern The pattern to be compiled by the Pattern.compile()
+     * @param test_pattern The pattern to be compiled by the Pattern.compile()
+     * and is used for testing purpose only
+     */
     public SubtitlePatternDefinition(String work_pattern, String test_pattern){
         setWorkPattern(work_pattern);
         setTestPattern(test_pattern);
     }
     
+    /**
+     * Return the compiled work-pattern
+     * @return The compiled work-pattern
+     */
     public Pattern getWorkPattern() {
         return workPattern;
     }
 
-    public void setWorkPattern(String working_pattern) {
-        this.workPattern = Pattern.compile(working_pattern);        
+    /**
+     * Set the work-pattern.
+     * @param work_pattern The pattern to be compiled by the Pattern.compile()
+     */
+    public void setWorkPattern(String work_pattern) {
+        this.workPattern = Pattern.compile(work_pattern);        
     }
 
+    /**
+     * Gets the compiled test pattern.
+     * @return 
+     */
     public Pattern getTestPattern() {
         return testPattern;
     }
 
+    /**
+     * Sets the test pattern.
+     * @param testing_pattern The pattern to be compiled by the Pattern.compile()
+
+     */
     public void setTestPattern(String testing_pattern) {
         testPattern = Pattern.compile(testing_pattern);
     }
