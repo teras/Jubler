@@ -220,6 +220,19 @@ public class Subtitles extends AbstractTableModel {
         }
     }
 
+    public void insertAt(SubEntry sub, int index) {
+        boolean valid_index = (index >= 0 && index < sublist.size());
+        sub.setStyle(styles.elementAt(0));
+        if (valid_index) {
+            sublist.insertElementAt(sub, index);
+            int last_row = sublist.size() - 1;
+            fireTableRowsInserted(last_row, last_row);
+        } else {
+            sublist.add(sub);
+            fireTableRowsInserted(index, index);
+        }
+    }
+
     public void remove(int i) {
         sublist.remove(i);
     }
@@ -362,6 +375,19 @@ public class Subtitles extends AbstractTableModel {
             sublist.elementAt(row).setData(col, value);
         }
         fireTableCellUpdated(row, col);
+    }
+
+    public void replace(SubEntry sub, int row) {
+        boolean is_valid_row = (row >= 0 && row < sublist.size());
+        sub.setStyle(styles.elementAt(0));
+        if (is_valid_row) {
+            sublist.setElementAt(sub, row);
+            fireTableRowsUpdated(row, row);
+        } else {
+            sublist.add(sub);
+            int last_row = sublist.size() - 1;
+            fireTableRowsInserted(last_row, last_row);
+}//end if
     }
 
     public boolean isCellEditable(int row, int col) {
