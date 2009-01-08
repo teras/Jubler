@@ -40,7 +40,32 @@ import javax.swing.JOptionPane;
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class Share implements CommonDef {
+    public static enum CopyOption {
+        CP_TEXT,
+        CP_TIME,
+        CP_RECORD
+    };
 
+    public static short[] copyShortArray(short[] orig){
+        if (orig == null)
+            return null;
+        
+        int len = orig.length;
+        short[] new_array = new short[len];
+        System.arraycopy(orig, 0, new_array, 0, len);
+        return new_array;
+    }
+
+    public static int[] copyIntArray(int[] orig){
+        if (orig == null)
+            return null;
+        
+        int len = orig.length;
+        int[] new_array = new int[len];
+        System.arraycopy(orig, 0, new_array, 0, len);
+        return new_array;
+    }
+    
     public static boolean isRemindMissingImage() {
         return remindMissingImage;
     }
@@ -255,7 +280,7 @@ public class Share implements CommonDef {
     public static String search_file_extension = "";
     public static Component parent = null;
     private static JFileChooser jfc = null;
-    
+
     public static File browseFile(String file_name, File start_directory) {
         File accepted_file = null;
         try {
@@ -304,13 +329,14 @@ public class Share implements CommonDef {
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int option = jfc.showDialog(parent, _("Accept"));
             if (option == JFileChooser.APPROVE_OPTION) {
-                 accepted_file = jfc.getSelectedFiles();
-                 f = jfc.getSelectedFile();
+                accepted_file = jfc.getSelectedFiles();
+                f = jfc.getSelectedFile();
             }//end if
         } catch (Exception ex) {
         }
         return accepted_file;
     }//end public static File browseFile(String file_name, File start_directory)
+
     public static int fileCount(File start_directory) throws Exception {
         return start_directory.list().length;
     }
