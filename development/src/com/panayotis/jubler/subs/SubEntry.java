@@ -42,7 +42,7 @@ import javax.swing.text.StyleConstants;
  *
  * @author teras
  */
-public class SubEntry implements Comparable<SubEntry> {
+public class SubEntry implements Comparable<SubEntry>, Cloneable {
 
     private static final AbstractStyleover[] styleover_template;
 
@@ -108,7 +108,7 @@ public class SubEntry implements Comparable<SubEntry> {
     }
 
     public SubEntry(SubEntry old) {
-        this(old.getStartTime(), old.getFinishTime(), old.getText());
+        this(old.getStartTime(), old.getFinishTime(), new String(old.getText()));
         mark = old.mark;
         style = old.style;
         if (old.overstyle != null) {
@@ -194,15 +194,15 @@ public class SubEntry implements Comparable<SubEntry> {
                 return style.toString();
             case 5:
                 boolean is_image_type = (this instanceof ImageTypeSubtitle);
-                if (is_image_type){
-                    ImageTypeSubtitle img_type = (ImageTypeSubtitle)this;
+                if (is_image_type) {
+                    ImageTypeSubtitle img_type = (ImageTypeSubtitle) this;
                     ImageIcon img = img_type.getImage();
                     boolean has_image = (img != null);
-                    if (has_image){
+                    if (has_image) {
                         return img;
                     }//end if (has_image)
                 }//end if (is_image_type)
-                
+
                 //otherwise return text as originally
                 return subtext.replace('\n', '|');
         }
@@ -340,4 +340,28 @@ public class SubEntry implements Comparable<SubEntry> {
         }
         return false;
     }
+
+    public Object clone() {
+        SubEntry new_sub = null;
+        try {
+            new_sub = (SubEntry) super.clone();
+            new_sub.start = new Time(start);
+            new_sub.finish = new Time(finish);
+            new_sub.subtext = new String(this.getText());
+            new_sub.mark = mark;
+            new_sub.style = style;
+            if (overstyle != null) {
+                new_sub.overstyle = new AbstractStyleover[overstyle.length];
+                for (int i = 0; i < overstyle.length; i++) {
+                    if (overstyle[i] != null) {
+                        new_sub.overstyle[i] = (AbstractStyleover) styleover_template[i].clone();
+                        new_sub.overstyle[i].updateClone(overstyle[i]);
+                    }//end if (overstyle[i] != null)
+                }//end for (int i = 0; i < overstyle.length; i++)
+            }//end if (overstyle != null)
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        }//end try/catch
+        return new_sub;
+    }//end public Object clone()
 }
