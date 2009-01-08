@@ -52,4 +52,9 @@ public class SWTSubEntry extends SonSubEntry {
         }
         return b.toString();
     }
+
+    public Object clone() {
+        return super.clone();
+    }
+
 }

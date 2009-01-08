@@ -21,6 +21,7 @@
  */
 package com.panayotis.jubler.subs.records.SON;
 
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.binary.JMaestroOptions;
@@ -32,7 +33,7 @@ import java.util.Vector;
  *
  * @author Hoang Duy Tran <hoang_tran>
  */
-public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef {
+public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef, Cloneable {
 
     public float FPS = 25f;
     public int st_format = -1;
@@ -129,7 +130,7 @@ public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef {
 
         if (is_new) {
             addPaletteEntry((short) 0, 255, 255, 255);
-            addPaletteEntry((short) 1, 64, 64, 64);            
+            addPaletteEntry((short) 1, 64, 64, 64);
         }//end if (is_new)
 
         boolean has_palette = (this.palletEntry != null && this.palletEntry.size() > 0);
@@ -144,20 +145,20 @@ public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef {
             b.append("#").append(UNIX_NL);
             b.append(UNIX_NL);
         }//end if (has_palette)
-        
+
         addDetailHeader(b);
 
-        if (is_new){
+        if (is_new) {
             this.colour = new short[]{0, 1, 0, 0};
         }//end if (is_new)
-        
+
         boolean has_color = (this.colour != null && this.colour.length == 4);
-        if (has_color){
-            b.append("Color" + "\t" + "(" + 
+        if (has_color) {
+            b.append("Color" + "\t" + "(" +
                     this.colour[0] + " " +
                     this.colour[1] + " " +
                     this.colour[2] + " " +
-                    this.colour[3] + ")" ).append(UNIX_NL);            
+                    this.colour[3] + ")").append(UNIX_NL);
         }//end if (has_color)
 
         return b.toString();
@@ -195,5 +196,27 @@ public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef {
 
         SonPaletteEntry spe = new SonPaletteEntry(index, r, g, b);
         getPalletEntry().add(spe);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Object clone() {
+        SonHeader new_header = new SonHeader();
+        new_header.FPS = this.FPS;
+        new_header.st_format = this.st_format;
+        new_header.display_start = (display_start == null ? null : new String(display_start));
+        new_header.tv_type = (tv_type == null ? null : new String(tv_type));
+        new_header.tape_type = (tape_type == null ? null : new String(tape_type));
+        new_header.pixel_area = Share.copyShortArray(pixel_area);
+        new_header.colour = Share.copyShortArray(colour);
+        new_header.contrast = Share.copyShortArray(contrast);
+        new_header.display_area = Share.copyShortArray(display_area);
+        new_header.palletEntry = (palletEntry == null ? null : (Vector<SonPaletteEntry>) palletEntry.clone());
+        new_header.image_directory = (image_directory == null ? null : new String(image_directory));
+        new_header.subtitle_file = subtitle_file;
+        new_header.max_row_height = max_row_height;
+        new_header.moptions = moptions;
+
+        return new_header;
     }
 }

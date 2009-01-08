@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
-
 package com.panayotis.jubler.subs.records.SON;
 
 import com.panayotis.jubler.subs.CommonDef;
@@ -30,18 +29,20 @@ import java.text.NumberFormat;
  *
  * @author Hai Dang Quang
  */
-public class SonPaletteEntry implements CommonDef{
+public class SonPaletteEntry implements CommonDef, Cloneable {
+
     NumberFormat fmt = NumberFormat.getInstance();
     private short index = -1;
     private Color rgb = null;
 
-    public SonPaletteEntry (){}
-    
-    public SonPaletteEntry (short idx, int r, int g, int b){
+    public SonPaletteEntry() {
+    }
+
+    public SonPaletteEntry(short idx, int r, int g, int b) {
         setIndex(idx);
         setRgb(r, g, b);
     }
-    
+
     public short getIndex() {
         return index;
     }
@@ -55,27 +56,36 @@ public class SonPaletteEntry implements CommonDef{
     }
 
     public void setRgb(int r, int g, int b) {
-        rgb = new Color(r,g,b);
+        rgb = new Color(r, g, b);
     }
+
     public void setRgb(short r, short g, short b) {
-        rgb = new Color(r,g,b);
+        rgb = new Color(r, g, b);
     }
+
     public void setRgb(Color rgb) {
         this.rgb = rgb;
     }
-    
-    public String toString(){
+
+    public String toString() {
         StringBuffer b = new StringBuffer();
         fmt.setMinimumIntegerDigits(2);
 
         b.append("# ");
-        b.append( fmt.format(index));
-        b.append( " : ");
+        b.append(fmt.format(index));
+        b.append(" : ");
         b.append("RGB(").
                 append(rgb.getRed()).append(", ").
                 append(rgb.getGreen()).append(", ").
                 append(rgb.getBlue()).
-                append(")").append(UNIX_NL);        
+                append(")").append(UNIX_NL);
         return b.toString();
+    }
+
+    public Object clone() {
+        SonPaletteEntry new_object = new SonPaletteEntry();
+        new_object.index = index;
+        new_object.rgb = (rgb == null ? null : new Color(rgb.getRed(), rgb.getGreen(), rgb.getBlue()));
+        return new_object;
     }
 }

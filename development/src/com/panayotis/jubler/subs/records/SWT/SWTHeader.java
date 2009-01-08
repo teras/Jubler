@@ -36,5 +36,9 @@ public class SWTHeader extends SonHeader{
         b.append(UNIX_NL);
         b.append(SWTPatternDef.swtSubtitleEventHeaderLine).append(UNIX_NL);
         return b;
-    }    
+    }
+
+    public Object clone() {
+        return super.clone();
+    }
 }

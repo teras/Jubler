@@ -19,14 +19,15 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
-
 package com.panayotis.jubler.subs.records.SON;
 
 import com.panayotis.jubler.subs.CommonDef;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
+import java.net.URL;
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
 
@@ -43,6 +44,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public short[] contrast = null;
     public short[] display_area = null;
     public String image_filename = null;
+    public String image_pathname = null;
     public ImageIcon image = null;
 
     public Object getHeader() {
@@ -90,7 +92,6 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
         return array;
     }
 
-    
     public String toString() {
         NumberFormat fmt = NumberFormat.getInstance();
         StringBuffer b = new StringBuffer();
@@ -123,5 +124,20 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             ex.printStackTrace(System.out);
         }
         return b.toString();
+    }
+
+    public Object clone() {
+        SonSubEntry new_object = (SonSubEntry) super.clone();
+        new_object.max_digits = max_digits;
+        new_object.header = (header == null ? null : (SonHeader) header.clone());
+        new_object.event_id = event_id;
+        new_object.colour = Share.copyShortArray(colour);
+        new_object.contrast = Share.copyShortArray(contrast);
+        new_object.display_area = Share.copyShortArray(display_area);
+        //avoid making copy of image as there aren't many option to alter its content
+        //so make a shallow copy here for the time being.
+        new_object.image_filename = image_filename;
+        new_object.image = image;
+        return new_object;
     }
 }
