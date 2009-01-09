@@ -34,12 +34,14 @@ import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
+import com.panayotis.jubler.options.IntegerComboBoxModel;
 import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.Share.CopyOption;
+import com.panayotis.jubler.subs.Share.TextLineMovementOption;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
@@ -80,6 +82,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
@@ -105,8 +108,7 @@ public class Jubler extends JFrame {
 
     public static JublerList windows;
     private static ArrayList<SubEntry> copybuffer;
-    private static CopyOption copyOption = CopyOption.CP_TEXT;    
-
+    private static CopyOption copyOption = CopyOption.CP_TEXT;
     public static JPreferences prefs;
     /** File chooser dialog to open/ save subtitles */
     private JFileChooser filedialog;
@@ -141,6 +143,8 @@ public class Jubler extends JFrame {
     boolean disable_consoles_update = false;
     /* Whether this file needs saving or not */
     private boolean unsaved_data = false;
+    private int numberOfLine = 1;
+    private TextLineMovementOption textLineMovementOption = TextLineMovementOption.TL_MOVE_TEXT_SELECTION_UP;
     /* Jubler tools */
     private JStyler styler;
     private JShiftTime shift;
@@ -394,17 +398,25 @@ public class Jubler extends JFrame {
         LoadTB = new javax.swing.JButton();
         SaveTB = new javax.swing.JButton();
         InfoTB = new javax.swing.JButton();
+        jSeparator13 = new javax.swing.JToolBar.Separator();
         EditTP = new javax.swing.JPanel();
+        OptCopyCutPaste = new javax.swing.JComboBox();
         CutTB = new javax.swing.JButton();
         CopyTB = new javax.swing.JButton();
         PasteTB = new javax.swing.JButton();
-        EditCopyOptionTP = new javax.swing.JPanel();
-        OptCopyCutPaste = new javax.swing.JComboBox();
+        jSeparator14 = new javax.swing.JToolBar.Separator();
+        MoveTextTP = new javax.swing.JPanel();
+        OptTextLineActList = new javax.swing.JComboBox();
+        OptNumberOfLine = new javax.swing.JComboBox();
+        DoItTB = new javax.swing.JButton();
+        jSeparator15 = new javax.swing.JToolBar.Separator();
         UndoTP = new javax.swing.JPanel();
         UndoTB = new javax.swing.JButton();
         RedoTB = new javax.swing.JButton();
+        jSeparator16 = new javax.swing.JToolBar.Separator();
         SortTP = new javax.swing.JPanel();
         SortTB = new javax.swing.JButton();
+        jSeparator17 = new javax.swing.JToolBar.Separator();
         TestTP = new javax.swing.JPanel();
         TestTB = new javax.swing.JButton();
         PreviewTB = new javax.swing.JButton();
@@ -655,12 +667,19 @@ public class Jubler extends JFrame {
         FileTP.add(InfoTB);
 
         JublerTools.add(FileTP);
+        JublerTools.add(jSeparator13);
 
-        EditTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
-        EditTP.setMaximumSize(new java.awt.Dimension(180, 31));
+        EditTP.setMaximumSize(new java.awt.Dimension(250, 31));
         EditTP.setMinimumSize(new java.awt.Dimension(180, 31));
-        EditTP.setPreferredSize(new java.awt.Dimension(180, 31));
+        EditTP.setPreferredSize(new java.awt.Dimension(250, 31));
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
+
+        OptCopyCutPaste.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Text", "Time", "Record" }));
+        OptCopyCutPaste.setToolTipText(_("Copy/Cut/Paste component"));
+        OptCopyCutPaste.setMaximumSize(new java.awt.Dimension(100, 22));
+        OptCopyCutPaste.setPreferredSize(new java.awt.Dimension(100, 22));
+        OptCopyCutPaste.addActionListener(formListener);
+        EditTP.add(OptCopyCutPaste);
 
         CutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cut.png"))); // NOI18N
         CutTB.setToolTipText(_("Cut"));
@@ -681,21 +700,39 @@ public class Jubler extends JFrame {
         EditTP.add(PasteTB);
 
         JublerTools.add(EditTP);
+        JublerTools.add(jSeparator14);
 
-        EditCopyOptionTP.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        EditCopyOptionTP.setToolTipText("Copy/Cut/Paste Options");
-        EditCopyOptionTP.setMaximumSize(new java.awt.Dimension(80, 31));
-        EditCopyOptionTP.setMinimumSize(new java.awt.Dimension(80, 31));
-        EditCopyOptionTP.setPreferredSize(new java.awt.Dimension(80, 31));
-        EditCopyOptionTP.setLayout(new javax.swing.BoxLayout(EditCopyOptionTP, javax.swing.BoxLayout.LINE_AXIS));
+        MoveTextTP.setToolTipText("Move text lines up or down");
+        MoveTextTP.setMaximumSize(new java.awt.Dimension(200, 31));
+        MoveTextTP.setMinimumSize(new java.awt.Dimension(80, 31));
+        MoveTextTP.setPreferredSize(new java.awt.Dimension(200, 31));
+        MoveTextTP.setLayout(new javax.swing.BoxLayout(MoveTextTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        OptCopyCutPaste.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Text", "Time", "Record" }));
-        OptCopyCutPaste.setMaximumSize(new java.awt.Dimension(100, 22));
-        OptCopyCutPaste.setPreferredSize(new java.awt.Dimension(100, 22));
-        OptCopyCutPaste.addActionListener(formListener);
-        EditCopyOptionTP.add(OptCopyCutPaste);
+        OptTextLineActList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Move text up", "Move text down", "Move all text up", "Move all text down", "Blank line above", "Blank line below" }));
+        OptTextLineActList.setToolTipText(_("Operation on text lines"));
+        OptTextLineActList.setMaximumSize(new java.awt.Dimension(100, 22));
+        OptTextLineActList.setPreferredSize(new java.awt.Dimension(100, 22));
+        OptTextLineActList.addActionListener(formListener);
+        MoveTextTP.add(OptTextLineActList);
 
-        JublerTools.add(EditCopyOptionTP);
+        OptNumberOfLine.setModel(new IntegerComboBoxModel(new int[]{1,2,3,5,7,10,15,30,50,100}));
+        OptNumberOfLine.setToolTipText(_("Number of lines"));
+        OptNumberOfLine.setMaximumSize(new java.awt.Dimension(50, 22));
+        OptNumberOfLine.setPreferredSize(new java.awt.Dimension(50, 22));
+        OptNumberOfLine.addActionListener(formListener);
+        MoveTextTP.add(OptNumberOfLine);
+
+        DoItTB.setText("Do it");
+        DoItTB.setToolTipText(_("Perform text line operation"));
+        DoItTB.setEnabled(false);
+        DoItTB.setMaximumSize(new java.awt.Dimension(57, 40));
+        DoItTB.setMinimumSize(new java.awt.Dimension(57, 40));
+        DoItTB.setPreferredSize(new java.awt.Dimension(57, 40));
+        DoItTB.addActionListener(formListener);
+        MoveTextTP.add(DoItTB);
+
+        JublerTools.add(MoveTextTP);
+        JublerTools.add(jSeparator15);
 
         UndoTP.setLayout(new javax.swing.BoxLayout(UndoTP, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -712,17 +749,26 @@ public class Jubler extends JFrame {
         UndoTP.add(RedoTB);
 
         JublerTools.add(UndoTP);
+        JublerTools.add(jSeparator16);
 
         SortTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        SortTP.setAlignmentX(0.0F);
+        SortTP.setMaximumSize(new java.awt.Dimension(65, 31));
+        SortTP.setMinimumSize(new java.awt.Dimension(60, 31));
+        SortTP.setPreferredSize(new java.awt.Dimension(65, 31));
         SortTP.setLayout(new javax.swing.BoxLayout(SortTP, javax.swing.BoxLayout.LINE_AXIS));
 
         SortTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sort.png"))); // NOI18N
         SortTB.setToolTipText(_("Sort subtitles"));
         SortTB.setEnabled(false);
+        SortTB.setFocusable(false);
+        SortTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SortTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SortTB.addActionListener(formListener);
         SortTP.add(SortTB);
 
         JublerTools.add(SortTP);
+        JublerTools.add(jSeparator17);
 
         TestTP.setLayout(new javax.swing.BoxLayout(TestTP, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1163,6 +1209,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == InfoTB) {
                 Jubler.this.InfoFMActionPerformed(evt);
             }
+            else if (evt.getSource() == OptCopyCutPaste) {
+                Jubler.this.OptCopyCutPasteActionPerformed(evt);
+            }
             else if (evt.getSource() == CutTB) {
                 Jubler.this.CutEMActionPerformed(evt);
             }
@@ -1171,6 +1220,15 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == PasteTB) {
                 Jubler.this.PasteEMActionPerformed(evt);
+            }
+            else if (evt.getSource() == OptTextLineActList) {
+                Jubler.this.OptTextLineActListActionPerformed(evt);
+            }
+            else if (evt.getSource() == OptNumberOfLine) {
+                Jubler.this.OptNumberOfLineActionPerformed(evt);
+            }
+            else if (evt.getSource() == DoItTB) {
+                Jubler.this.DoItTBActionPerformed(evt);
             }
             else if (evt.getSource() == UndoTB) {
                 Jubler.this.UndoEMActionPerformed(evt);
@@ -1396,9 +1454,6 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == OptCopyCutPaste) {
-                Jubler.this.OptCopyCutPasteActionPerformed(evt);
             }
         }
 
@@ -1691,12 +1746,16 @@ public class Jubler extends JFrame {
             return;
         }
 
+        String sub_class_name = null;
         if (is_table_empty) {
             if (subs == null) {
                 subs = new Subtitles();
                 SubTable.setModel(subs);
             }//end if
             target_location = 0;
+            sub_class_name = (new SubEntry()).getClass().getName();
+        }else{
+            sub_class_name = subs.elementAt( target_location ).getClass().getName();
         }//end if
 
         SubEntry source_sub = null;
@@ -1714,7 +1773,7 @@ public class Jubler extends JFrame {
                 switch (opt) {
                     case CP_TEXT:
                         if (is_table_empty || !target_location_valid) {
-                            target_sub = new SubEntry();
+                            target_sub = (SubEntry) Class.forName(sub_class_name).newInstance();
                         } else {
                             target_sub = subs.elementAt(target_location);
                         }//end if
@@ -1725,7 +1784,7 @@ public class Jubler extends JFrame {
                         break;
                     case CP_TIME:
                         if (is_table_empty || !target_location_valid) {
-                            target_sub = new SubEntry();
+                            target_sub = (SubEntry) Class.forName(sub_class_name).newInstance();
                         } else {
                             target_sub = subs.elementAt(target_location);
                         }//end if
@@ -2105,19 +2164,72 @@ private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//G
     int selected_index = this.OptCopyCutPaste.getSelectedIndex();
     switch (selected_index) {
         case 0:
-            this.copyOption = CopyOption.CP_TEXT;
+            copyOption = CopyOption.CP_TEXT;
             break;
         case 1:
-            this.copyOption = CopyOption.CP_TIME;
+            copyOption = CopyOption.CP_TIME;
             break;
         case 2:
-            this.copyOption = CopyOption.CP_RECORD;
+            copyOption = CopyOption.CP_RECORD;
             break;
         default:
-            this.copyOption = CopyOption.CP_TEXT;
+            copyOption = CopyOption.CP_TEXT;
             break;
     }//end switch(selected_index)
 }//GEN-LAST:event_OptCopyCutPasteActionPerformed
+
+private void OptNumberOfLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptNumberOfLineActionPerformed
+    numberOfLine = ((Integer) OptNumberOfLine.getSelectedItem()).intValue();
+}//GEN-LAST:event_OptNumberOfLineActionPerformed
+
+private void OptTextLineActListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptTextLineActListActionPerformed
+    int selected_action_index = this.OptTextLineActList.getSelectedIndex();
+    switch (selected_action_index) {
+        case 0:
+            textLineMovementOption = TextLineMovementOption.TL_MOVE_TEXT_SELECTION_UP;
+            break;
+        case 1:
+            textLineMovementOption = TextLineMovementOption.TL_MOVE_TEXT_SELECTION_DOWN;
+            break;
+        case 2:
+            textLineMovementOption = TextLineMovementOption.TL_MOVE_ALL_TEXT_FROM_SELECTION_UP;
+            break;
+        case 3:
+            textLineMovementOption = TextLineMovementOption.TL_MOVE_ALL_TEXT_FROM_SELECTION_DOWN;
+            break;
+        case 4:
+            textLineMovementOption = TextLineMovementOption.TL_INSERT_BLANK_LINE_ABOVE;
+            break;
+        case 5:
+            textLineMovementOption = TextLineMovementOption.TL_INSERT_BLANK_LINE_BELOW;
+            break;
+    }//end switch
+
+}//GEN-LAST:event_OptTextLineActListActionPerformed
+
+private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DoItTBActionPerformed
+    switch(textLineMovementOption){
+        case TL_MOVE_TEXT_SELECTION_UP:
+            this.moveText(true, false);
+            break;
+        case TL_MOVE_TEXT_SELECTION_DOWN:
+            this.moveText(false, false);
+            break;
+        case TL_MOVE_ALL_TEXT_FROM_SELECTION_UP:
+            this.moveText(true, true);
+            break;
+        case TL_MOVE_ALL_TEXT_FROM_SELECTION_DOWN:
+            this.moveText(false, true);
+            break;
+        case TL_INSERT_BLANK_LINE_ABOVE:
+            this.insertBlankLine(true);
+            break;
+        case TL_INSERT_BLANK_LINE_BELOW:
+            this.insertBlankLine(false);
+            break;
+    }//switch(textLineMovementOption)
+}//GEN-LAST:event_DoItTBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2139,7 +2251,7 @@ private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JMenuItem CyanMP;
     private javax.swing.JMenu DeleteEM;
     private javax.swing.JMenuItem DeleteP;
-    private javax.swing.JPanel EditCopyOptionTP;
+    private javax.swing.JButton DoItTB;
     private javax.swing.JMenu EditM;
     private javax.swing.JPanel EditTP;
     private javax.swing.JMenuItem EmptyLinesDEM;
@@ -2166,6 +2278,7 @@ private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JMenu MarkP;
     private javax.swing.JSeparator MarkSep;
     public javax.swing.JCheckBoxMenuItem MaxWaveC;
+    private javax.swing.JPanel MoveTextTP;
     private javax.swing.JMenu NewFM;
     private javax.swing.JButton NewTB;
     private javax.swing.JMenuItem NextGEM;
@@ -2174,6 +2287,8 @@ private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JMenuItem NoneMP;
     private javax.swing.JMenuItem OpenFM;
     private javax.swing.JComboBox OptCopyCutPaste;
+    private javax.swing.JComboBox OptNumberOfLine;
+    private javax.swing.JComboBox OptTextLineActList;
     private javax.swing.JMenuItem PasteEM;
     private javax.swing.JMenuItem PasteP;
     private javax.swing.JMenuItem PasteSpecialEM;
@@ -2245,6 +2360,11 @@ private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
+    private javax.swing.JToolBar.Separator jSeparator13;
+    private javax.swing.JToolBar.Separator jSeparator14;
+    private javax.swing.JToolBar.Separator jSeparator15;
+    private javax.swing.JToolBar.Separator jSeparator16;
+    private javax.swing.JToolBar.Separator jSeparator17;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
@@ -2406,6 +2526,7 @@ private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//G
         SortTB.setEnabled(true);
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
+        DoItTB.setEnabled(true);
 
         subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
         updateRecentFile(f);
@@ -2788,5 +2909,66 @@ private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//G
 
     private void hideSystemMenus() {
         SystemDependent.hideSystemMenus(AboutHM, PrefsFM, QuitFM);
+    }
+
+    private void moveText(boolean is_moving_up, boolean is_moving_all_from_selected_line) {
+        int selected_line = this.SubTable.getSelectedRow();
+        int target_line = selected_line +
+                (is_moving_up ? -numberOfLine :  numberOfLine) ;
+
+        int total_length = subs.size();
+        boolean valid = (is_moving_up ? target_line >= 0 : target_line < total_length);
+        if (! valid)
+            return;
+        
+        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Move text");
+        CopyOption opt = copyOption;
+        copyOption = CopyOption.CP_TEXT;
+
+        if (is_moving_all_from_selected_line){
+            SubTable.clearSelection();
+            SubTable.getSelectionModel().setSelectionInterval(selected_line, subs.size()-1);
+        }//end if (is_moving_all_from_selected_line)
+        
+        CutEMActionPerformed(e);
+
+        SubTable.clearSelection();
+        SubTable.getSelectionModel().setSelectionInterval(target_line, target_line);
+        PasteEMActionPerformed(e);
+        copyOption = opt;
+
+        SubTable.clearSelection();
+        SubTable.getSelectionModel().setSelectionInterval(target_line, target_line);
+        tableHasChanged(null);
+    }//private void moveTextUp()
+
+    private void insertBlankLine(boolean is_above) {
+        int select_line = SubTable.getSelectedRow();
+        if (select_line < 0) {
+            return;
+        }
+        if (subs.size() <= 0) {
+            return;
+        }
+        
+        undo.addUndo(new UndoEntry(subs, _("Insert text lined above")));
+
+        Object obj = subs.elementAt(select_line);
+        String class_name = obj.getClass().getName();
+
+        Collection<SubEntry> c = new Vector<SubEntry>();
+        try {
+            for (int i = 0; i < numberOfLine; i++) {
+                SubEntry r = (SubEntry) Class.forName(class_name).newInstance();
+                r.setStyle( subs.getStyleList().elementAt(0));
+                c.add(r);
+            }//end for (int i=0; i < numberOfLine; i++)
+
+            int row = (is_above ? select_line : select_line + 1);
+            subs.addAll(c,  row);
+            tableHasChanged(null);
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        }
     }
 }
