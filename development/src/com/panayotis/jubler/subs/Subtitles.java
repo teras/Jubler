@@ -33,6 +33,7 @@ import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import java.io.File;
+import java.util.Collection;
 import javax.swing.JTable;
 
 /**
@@ -233,6 +234,19 @@ public class Subtitles extends AbstractTableModel {
         }
     }
 
+    public boolean addAll(Collection<SubEntry> c, int index) {
+        boolean result = false;
+        if (index < 0){
+            index = 0;
+        }
+        if (index >= sublist.size()){
+            result = sublist.addAll(c);
+        }else{
+            result = sublist.addAll(index, c);
+        }
+        return result;
+    }
+    
     public void remove(int i) {
         sublist.remove(i);
     }
