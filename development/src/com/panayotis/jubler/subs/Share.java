@@ -46,6 +46,15 @@ public class Share implements CommonDef {
         CP_RECORD
     };
 
+    public static enum TextLineMovementOption {
+        TL_MOVE_TEXT_SELECTION_UP,
+        TL_MOVE_TEXT_SELECTION_DOWN,
+        TL_MOVE_ALL_TEXT_FROM_SELECTION_UP,
+        TL_MOVE_ALL_TEXT_FROM_SELECTION_DOWN,
+        TL_INSERT_BLANK_LINE_ABOVE,
+        TL_INSERT_BLANK_LINE_BELOW
+    };
+
     public static short[] copyShortArray(short[] orig){
         if (orig == null)
             return null;
