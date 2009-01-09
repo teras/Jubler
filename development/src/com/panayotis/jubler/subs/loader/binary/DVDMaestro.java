@@ -58,7 +58,6 @@ import com.panayotis.jubler.subs.loader.processor.SON.SONPaletteEntry;
 import com.panayotis.jubler.subs.loader.processor.SON.SONPatternDef;
 import com.panayotis.jubler.subs.loader.processor.SON.SONPixelArea;
 import com.panayotis.jubler.subs.loader.processor.SON.SONSubtitleEvent;
-import com.panayotis.jubler.time.gui.JLongProcess;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
