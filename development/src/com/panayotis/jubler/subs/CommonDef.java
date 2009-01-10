@@ -27,7 +27,24 @@ package com.panayotis.jubler.subs;
  */
 public interface CommonDef {
     public static final String USER_HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
-    public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + System.getProperty("file.separator");    
+    public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + System.getProperty("file.separator");
+    /**
+     * Double quote character pattern (DQUOTE = "\"")
+     */
+    public static final String char_double_quote = "\"";
+    /**
+     * Pattern for double quote ("[\"]{1}")
+     */
+    public static final String single_double_quote = "[\"]{1}";
+    /**
+     * Pattern for comma ("[,]{1}")
+     */
+    public static final String single_comma = "[,]{1}";
+    /**
+     * Comma character pattern (",")
+     */
+    public static final String char_comma = ",";
+
     public static final String DOS_NL = "\r\n";
     public static final String UNIX_NL = "\n";
     public static final String nl = "\\\n";

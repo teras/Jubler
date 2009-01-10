@@ -27,7 +27,6 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
-import java.net.URL;
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
 

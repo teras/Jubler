@@ -37,6 +37,7 @@ import com.panayotis.jubler.subs.loader.text.SubRip;
 import com.panayotis.jubler.subs.loader.text.SubStationAlpha;
 import com.panayotis.jubler.subs.loader.text.SubViewer;
 import com.panayotis.jubler.subs.loader.text.SubViewer2;
+import com.panayotis.jubler.subs.loader.text.TMPGenc;
 import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 
 /**
@@ -46,6 +47,7 @@ import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 public class AvailSubFormats {
 
     public static final SubFormat[] Formats = {
+        new TMPGenc(),
         new DVDMaestroExtendedSWT(), //added by HDT
         new DVDMaestro(), //added by HDT
         new AdvancedSubStation(),
