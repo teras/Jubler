@@ -268,39 +268,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
         //t.start();
         return false;   // There is no need to move any files
     }
-
-    protected String addSubEntryText(SubEntry entry) {
-        return "";
-    }
 }
 
-/**
- * This class writes SON index file, and images if the subtitle list is not
- * already SON type. Index file is always written to the chosen directory,
- * but there is an option to write images to a different set of directories,
- * if created and chosen at the beginning of the routine. This option is only
- * available to non-SON subtitles. The number of images are divided equally
- * over the number of directories created/chosen.
- * The user will need to create the directories using the JFileChooser and select
- * them from there. The set of directories chosen is NOT remembered in the
- * header, as this would violate the format's definition, but there is an
- * option to find missing images at the loading of the file.
- * @see LoadSonImage
- * @author teras && Hoang Duy Tran
- */
-class WriteSonSubtitle extends Thread implements SONPatternDef {
-
-    private static NumberFormat fmt = NumberFormat.getInstance();
-    private ProgressBar pb = ProgressBar.getInstance();
-
-    public WriteSonSubtitle() {
-    }
-
-    public WriteSonSubtitle(TMPGenc parent, Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS) {
-    }
-
-    public void run() {
-    }
-}//class WriteSonSubtitle extends Thread
 
 
