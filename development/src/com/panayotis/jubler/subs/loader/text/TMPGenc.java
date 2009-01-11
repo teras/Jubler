@@ -22,9 +22,9 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.loader.binary.*;
+import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.Subtitles;
@@ -38,7 +38,6 @@ import com.panayotis.jubler.subs.events.PreParsingDataLineActionEvent;
 import com.panayotis.jubler.subs.events.PreParsingDataLineActionEventListener;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEventListener;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
-import com.panayotis.jubler.subs.loader.processor.SON.SONPatternDef;
 import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencLayoutDataItem;
 import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencLayoutExDataItem;
 import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencPatternDef;
@@ -50,9 +49,11 @@ import com.panayotis.jubler.subs.records.TMPGenc.LayoutDataItemRecordList;
 import com.panayotis.jubler.subs.records.TMPGenc.TMPGencHeaderRecord;
 import com.panayotis.jubler.subs.records.TMPGenc.TMPGencSubtitleRecord;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.NumberFormat;
+import java.io.OutputStreamWriter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -155,7 +156,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             if (layoutDataItemList == null) {
                 layoutDataItemList = new LayoutDataItemRecordList();
                 if (header == null) {
-                    header = new TMPGencHeaderRecord();                    
+                    header = new TMPGencHeaderRecord();
                 }//if (header == null)
                 header.layoutList = layoutDataItemList;
             }//end if
@@ -168,7 +169,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             if (layoutDataExList == null) {
                 layoutDataExList = new LayoutDataExRecordList();
                 if (header == null) {
-                    header = new TMPGencHeaderRecord();                    
+                    header = new TMPGencHeaderRecord();
                 }//if (header == null)
                 header.layoutExList = layoutDataExList;
             }//end if
@@ -250,6 +251,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
     private Subtitles subs;
 
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
+        TMPGencSubtitleRecord sub = null;
         File dir = outfile.getParentFile();
 
         subs = given_subs;
@@ -258,15 +260,57 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             return false;
         }
 
-        SubEntry entry = (subs.elementAt(0));
-        boolean is_tmpgenc_subtitle = (entry instanceof TMPGencSubtitleRecord);
-        if (!is_tmpgenc_subtitle) {
-        }//end if
+        try {
+            SubEntry entry = (subs.elementAt(0));
+            boolean is_tmpgenc_subtitle = (entry instanceof TMPGencSubtitleRecord);
 
-        /* Start writing the files in a separate thread */
-        //Thread t = new WriteSonSubtitle(this, subs, moptions, outfile, dir, this.FPS);
-        //t.start();
-        return false;   // There is no need to move any files
+            StringBuffer buf = new StringBuffer();
+            String txt = null;
+            if (!is_tmpgenc_subtitle) {
+                txt = TMPEG_DEFAULT_HEADER;
+            } else {
+                sub = (TMPGencSubtitleRecord) entry;
+                TMPGencHeaderRecord hdr = sub.getHeaderRecord();
+                boolean has_header = (hdr != null);
+                if (has_header) {
+                    txt = hdr.toStringForWrite();
+                } else {
+                    txt = TMPEG_DEFAULT_HEADER;
+                }//end if
+            }//end if
+            buf.append(txt);
+
+
+            for (int i = 0; i < subs.size(); i++) {
+                entry = (subs.elementAt(i));
+                is_tmpgenc_subtitle = (entry instanceof TMPGencSubtitleRecord);
+                if (!is_tmpgenc_subtitle) {
+                    sub = new TMPGencSubtitleRecord();
+                    sub.setStartTime(entry.getStartTime());
+                    sub.setFinishTime(entry.getFinishTime());
+                    sub.setText(entry.getText());
+                } else {
+                    sub = (TMPGencSubtitleRecord) entry;
+                }//end if
+                sub.setId(i+1);
+                txt = sub.toStringForWrite();
+                buf.append(txt);
+            }//end for(int i=0; i < subs.size(); i++)
+
+            /* Write textual part to disk */
+            //String file_name = outfilepath + image_out_filename + ".son";
+            FileOutputStream os = new FileOutputStream(outfile);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os));
+            out.write(buf.toString());
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace(System.out);
+            String msg = ex.getMessage() + UNIX_NL;
+            msg += _("Unable to create subtitle file {0}.", outfile.getAbsolutePath());
+            JIDialog.error(null, msg, "TMPGenc error");
+            return false;
+        }
+        return true;   // There is no need to move any files
     }
 }
 

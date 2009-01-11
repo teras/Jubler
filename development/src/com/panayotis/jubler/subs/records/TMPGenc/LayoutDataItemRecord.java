@@ -43,7 +43,7 @@ import java.text.NumberFormat;
  * red: (255,0,0 = #FF0000) TMP: 17587891077120 => 0x0FFF 0000 0000
  * yellow: (255,255,0 = #FFFF00) TMP: 17588159447040 => 0x0FFF 0FFF 0000
  * Font style: 	Normal	Bold	Italic	Underscore	StrikeThrough
- * <num1>       	0	1	0	0		0
+ * <num1>      	0	1	0	0		0
  * <num2>		0	0	1	0		0
  * <num3>		0	0	0	1		0
  * <num4>		0	0	0	0		1
@@ -426,8 +426,9 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
             fmt.setGroupingUsed(false);
             String fc = fmt.format(getFontColour());
-            bld.append(fc); //
+            bld.append(fc); 
             bld.append(char_comma);
+            
             bld.append(styleBold);
             bld.append(char_comma);
             bld.append(styleItalic);

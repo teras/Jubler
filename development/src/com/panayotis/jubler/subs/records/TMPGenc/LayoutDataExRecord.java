@@ -22,7 +22,6 @@
 package com.panayotis.jubler.subs.records.TMPGenc;
 
 import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencPatternDef;
-import java.util.Vector;
 
 /**
  * This class stores all the highlighted text lines in separate strings
@@ -34,11 +33,14 @@ import java.util.Vector;
  * 1,0
  * 1,1</b></i>
  * </pre></blockquote>
+ * This data affects the layout globally.
+ * First number (left):   centered text or not - 0: centered, 1: left align
+ * Second number (right): readingDirection - left to right 0: reading left to right alignment, 1: reading right to left
  * @author Hoang Duy Tran
  */
 public class LayoutDataExRecord implements TMPGencPatternDef{
-    public int number1 = 0;
-    public int number2 = 0;
+    public int centered = 0; //centered or not - 0: centered, 1: left align
+    public int readingDirection = 0; //left to right 0: reading left to right alignment, 1: reading right to left
     /**
      * Returns the collection of strings stored internally as a continuous
      * string of text, separating each line with a new line character.
@@ -47,10 +49,9 @@ public class LayoutDataExRecord implements TMPGencPatternDef{
      */
     private String toString(String separator){
         StringBuilder bld = new StringBuilder();
-        bld.append(number1);
+        bld.append(centered);
         bld.append(",");
-        bld.append(number2);
-        bld.append(separator);
+        bld.append(readingDirection);
         return bld.toString();
     }
     /**

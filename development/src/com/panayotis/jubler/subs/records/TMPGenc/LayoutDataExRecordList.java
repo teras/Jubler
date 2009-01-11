@@ -41,8 +41,6 @@ public class LayoutDataExRecordList extends Vector<LayoutDataExRecord> implement
      */
     private String toString(String separator){
         StringBuilder bld = new StringBuilder();
-        bld.append(TMPG_LAYOUT_DATA);
-        bld.append(separator);
         for (int i=0; i < this.size(); i++){
             LayoutDataExRecord r = this.elementAt(i);
             bld.append(r.toString());

@@ -33,10 +33,6 @@ public interface CommonDef {
      */
     public static final String char_double_quote = "\"";
     /**
-     * Pattern for double quote ("[\"]{1}")
-     */
-    public static final String single_double_quote = "[\"]{1}";
-    /**
      * Pattern for comma ("[,]{1}")
      */
     public static final String single_comma = "[,]{1}";
@@ -44,6 +40,9 @@ public interface CommonDef {
      * Comma character pattern (",")
      */
     public static final String char_comma = ",";
+
+	public static String char_two_double_quotes = char_double_quote + char_double_quote;
+	public static String pat_nl = "\\\\n";
 
     public static final String DOS_NL = "\r\n";
     public static final String UNIX_NL = "\n";

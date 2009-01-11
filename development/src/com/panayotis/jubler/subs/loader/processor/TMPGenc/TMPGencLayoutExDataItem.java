@@ -59,8 +59,8 @@ public class TMPGencLayoutExDataItem extends SubtitlePatternProcessor implements
         //System.out.println(matched_data[0]);
         try {
             LayoutDataExRecord r = (LayoutDataExRecord) record;
-            r.number1 = Integer.parseInt(matched_data[1]);
-            r.number2 = Integer.parseInt(matched_data[2]);
+            r.centered = Integer.parseInt(matched_data[1]);
+            r.readingDirection = Integer.parseInt(matched_data[2]);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }

@@ -33,6 +33,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
 
     private TMPGencHeaderRecord headerRecord = null;
 
+    private int id = -1;
     /**
      * The index to the
      * {@link dvdsubtitlemanager.Records.TMPGenc.LayoutDataRecord}
@@ -41,10 +42,10 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
      */
     private int layoutIndex;
     /**
-     * This is guessed to be the streamID, but is not 100% sure, but the value
+     * This is guessed to be the enabled, but is not 100% sure, but the value
      * is used in the TMPGenc DVD Authoring software.
      */
-    private int streamID;
+    private int enabled = 1;
 
     /**
      * gets the layout index
@@ -63,19 +64,19 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * Gets the stream ID.
-     * @return The value of the stream ID
+     * Gets the value to indicate if the subtitle is enabled or not
+     * @return The value of the enability
      */
-    public int getStreamID() {
-        return streamID;
+    public int getEnabled() {
+        return enabled;
     }
 
     /**
-     * Sets the stream ID
-     * @param streamID the ID to set
+     * Sets the enability
+     * @param value for the enability
      */
-    public void setStreamID(int streamID) {
-        this.streamID = streamID;
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
     }
 
     /**
@@ -86,27 +87,38 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
      * out to files is used or not.
      * @return the string representation of the record
      */
-    public String toString(boolean is_write) {
+    public String toString(String separator) {
         //1,1,"00:01:57,470","00:02:00,720",1,"Think to yourself personally\nthat every day is your last."
         StringBuilder bld = new StringBuilder();
         try {
-            //bld.append(this.getId());
+            bld.append(getId());
             bld.append(char_comma);
-            bld.append(getStreamID());
+            bld.append(getEnabled());
             bld.append(char_comma);
+
             bld.append(char_double_quote);
             bld.append(getStartTime().toString());
             bld.append(char_double_quote);
             bld.append(char_comma);
+
             bld.append(char_double_quote);
             bld.append(getFinishTime().toString());
             bld.append(char_double_quote);
             bld.append(char_comma);
+
             bld.append(this.getLayoutIndex());
             bld.append(char_comma);
+
             bld.append(char_double_quote);
-            bld.append(getText());
+
+            String txt = getText();
+            txt = txt.replaceAll(UNIX_NL, pat_nl);
+            txt = txt.replaceAll(char_double_quote, char_two_double_quotes);
+
+            bld.append(txt);
             bld.append(char_double_quote);
+            bld.append(separator);
+
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
@@ -121,7 +133,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
      */
     @Override
     public String toString() {
-        return toString(false);
+        return toString(UNIX_NL);
     }
 
     /**
@@ -131,7 +143,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
      * @return the string representation of the record
      */
     public String toStringForWrite() {
-        return toString(true);
+        return toString(DOS_NL);
     }
 
     /**
@@ -144,7 +156,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
         try {
             n = (TMPGencSubtitleRecord) super.clone();
             n.layoutIndex = this.layoutIndex;
-            n.streamID = this.streamID;
+            n.enabled = this.enabled;
 
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -164,5 +176,19 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
      */
     public void setHeaderRecord(TMPGencHeaderRecord headerRecord) {
         this.headerRecord = headerRecord;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 }

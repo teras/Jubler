@@ -41,8 +41,6 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
      */
     private String toString(String separator){
         StringBuilder bld = new StringBuilder();
-        bld.append(TMPG_LAYOUT_DATA);
-        bld.append(separator);
         for (int i=0; i < this.size(); i++){
             LayoutDataItemRecord r = this.elementAt(i);
             bld.append(r.toString());

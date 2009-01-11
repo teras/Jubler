@@ -45,44 +45,45 @@ public interface TMPGencPatternDef extends CommonDef{
      * 15,1,"00:02:29,001","00:02:32,014",0,"'The morning it all began,\nbegan like any other morning.'"
      * </pre>
      */
-    public static String CHAR_TMPG_NEW_LINE_READ = "\\\\n";
+    public static final String CHAR_TMPG_NEW_LINE_READ = "\\\\n";
+    public static final String CHAR_TMPG_NEW_LINE_WRITE = "\\n";
 
     /**
      * The hard-coded header block used to write out a TMPGenc compatible subtile format file.
      */
     public static final String TMPEG_DEFAULT_HEADER =
             "[LayoutData]" +
-            UNIX_NL +
+            DOS_NL +
             "\"Picture bottom layout\"," +
             "0,Tahoma," +
             "0.08,17588159451135," +
             "0,0,0,0,1,2,0,1,0.0035,0" +
-            UNIX_NL +
+            DOS_NL +
             "\"Picture top layout\"," +
             "1,Tahoma," +
             "0.08,17588159451135," +
             "0,0,0,0,1,0,0,1,0.0035,0" +
-            UNIX_NL +
+            DOS_NL +
             "\"Picture left layout\"," +
             "2,Tahoma," +
             "0.08,17588159451135," +
             "0,0,0,0,0,2,0,1,0.0035,0" +
-            UNIX_NL +
+            DOS_NL +
             "\"Picture right layout\"," +
             "3,Tahoma," +
             "0.08,17588159451135," +
             "0,0,0,0,2,2,0,1,0.0035,0" +
-            UNIX_NL +
-            UNIX_NL +
+            DOS_NL +
+            DOS_NL +
             "[LayoutDataEx]" +
-            UNIX_NL +
-            "0,0" + UNIX_NL +
-            "0,0" + UNIX_NL +
-            "1,0" + UNIX_NL +
-            "1,0" + UNIX_NL +
-            UNIX_NL +
+            DOS_NL +
+            "0,0" + DOS_NL +
+            "0,0" + DOS_NL +
+            "1,0" + DOS_NL +
+            "1,0" + DOS_NL +
+            DOS_NL +
             "[ItemData]" +
-            UNIX_NL;
+            DOS_NL;
 
      /**
      * Identity string for TMPGenc ("[ItemData]").
