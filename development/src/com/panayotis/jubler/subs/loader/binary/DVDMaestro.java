@@ -237,13 +237,13 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
 
     protected boolean isPaletteEntryHeader(String input) {
         Matcher m = pat_son_palette_entries_header.matcher(input);
-        boolean is_found = m.find();
+        boolean is_found = m.find(0);
         return is_found;
     }
 
     protected boolean isHeaderLine(String input) {
         Matcher m = pat_son_header.matcher(input);
-        boolean is_found = m.find();
+        boolean is_found = m.find(0);
         return is_found;
     }
 

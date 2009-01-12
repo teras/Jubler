@@ -35,10 +35,20 @@ import com.panayotis.jubler.time.Time;
 /**
  * Pattern to recognize the TMPGenc's subtitle detail line
  * Typical example:
- * <pre>
+ * <blockquote><pre>
  * 15,1,"00:02:29,001","00:02:32,014",0,"""If lost, please return\nto Charles Christopher Schine."""
- * </pre>
- *
+ * </pre></blockquote>
+ * <ol>
+ * <li> Subtitle event's ID, starting from 1
+ * <li> Entry's visibility flag: 1=visible, 0=invisible.
+ * When 0 is set, the subtitle event is not visisible upon playback of DVD.
+ * <li> Start-time: The format is similar to SRT
+ * <li> Finish-time: The format is similar to SRT
+ * <li> Layout index: Index to the layout entry in the [LayoutData] section.
+ * <li> Subtitle-text: Surrounded by double-quotes, and two double-quotes refers to one instance
+ * of the double-quote in the text. New-line is replaced by the group "\\n" and thus
+ * the whole subtitle text resides in a single-line, so parsing and replacing must use '\\\\n'.
+ * </ol>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TMPGencPatternDef {
@@ -46,7 +56,7 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
     private static final String pattern =
             digits +        //id
             single_comma +
-            digits +        //stream_id
+            digits +        //visibility
             single_comma +
             TMPG_TIME +     //start-time
             single_comma +

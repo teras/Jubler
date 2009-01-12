@@ -67,7 +67,7 @@ import java.util.regex.Pattern;
  * </ul>
  * A typical example would be:
  * <blockquote><pre>
- * [layoutDataItemList]
+ * [LayoutData]
  * "Picture bottom layout",4,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0
  * "Picture top layout",4,Tahoma,0.1,17588159451135,0,0,0,0,1,0,0,1,0.0050,0
  * "Picture left layout",4,Tahoma,0.1,17588159451135,0,0,0,0,0,1,1,1,0.0050,0
@@ -83,7 +83,33 @@ import java.util.regex.Pattern;
  * 1,1,"00:00:13,023","00:00:18,009",0,"This film contains\nvery strong language"
  * 2,1,"00:00:24,021","00:00:26,015",0,"(COUGHING)"
  * </pre></blockquote>
+ *
+ * The subtitle file has header consists of '[LayoutData]' block and
+ * '[LayoutDataEx]' block, and the subtitle events which are held in the
+ * block starting with the header line '[ItemData]'.
+ *
+ * Entries in the [LayoutData] block hold definition for the subtitle-layout
+ * which appears on screen when play-back, and each have a Name, DisplayArea,
+ * FontName etc..
+ *
+ * Entries in the [LayoutDataEx] block hold definition for global alignment
+ * setting, such as centered or not, and reading direction (left-to-right or
+ * right-to-left). This function serves the originator's market, that is
+ * the Japanese/English users.
+ *
+ * Entries in the [ItemData] block consist elements such as subtitle ID,
+ * visibility (on/off), start-time, end-time, layout index, and subtitle-text.
  * 
+ * The subtitle text is held in a single line and thus encloses some elements
+ * that are needed to parse when reading and replace when writing out to files.
+ * Mostly, the subtitle text are surrounded with double-quotes, and for each
+ * double quote exists in the text, two instances are stored. The line separator
+ * "\\n" is used to represent the single new-line '\n' character.
+ *
+ * @see TMPGencLayoutDataItem
+ * @see TMPGencLayoutExDataItem
+ * @see TMPGencSubtitleEvent
+ *
  * @author Hoang Duy Tran
  *
  */
@@ -253,9 +279,22 @@ public class TMPGenc extends AbstractBinarySubFormat implements
     }
     private Subtitles subs;
 
+    /**
+     * This routine is used to write out subtitle records to a subtitle-file
+     * in the format of TMPGenc format. A non-TMPGenc subtitle can inherit the
+     * default heading and records are written out in the TMPGenc format, suitble
+     * for importing into the TMPGenc DVD Authoring solution.
+     * 
+     * @param given_subs List of subtitle events
+     * @param outfile The output-file. This file has 'temp' extension, but will be
+     * replaced after the routine is completed successfully. If not, the file with
+     * the chosen-name and 'temp' extension exists in the user's file system.
+     * @param media The media file
+     * @return True if the routine completed sucessfully, false otherwise.
+     * @throws java.io.IOException When IO errors occur.
+     */
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
         TMPGencSubtitleRecord sub = null;
-        File dir = outfile.getParentFile();
 
         subs = given_subs;
         boolean has_record = (subs.size() > 0);

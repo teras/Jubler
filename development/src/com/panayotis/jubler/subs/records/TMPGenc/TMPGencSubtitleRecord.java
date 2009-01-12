@@ -139,7 +139,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     /**
      * Converts the record to a string representation
      * This version is platform dependent and is used externally
-     * for writing files.
+     * for writing to files.
      * @return the string representation of the record
      */
     public String toStringForWrite() {

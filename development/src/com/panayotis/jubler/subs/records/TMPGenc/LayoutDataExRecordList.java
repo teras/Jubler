@@ -25,11 +25,7 @@ import java.util.Vector;
 
 /**
  * This class is used to hold a collection of
- * {@link dvdsubtitlemanager.Records.TMPGenc.LayoutDataItemRecord}(s).
- * The {@link #toString} method will include the header
- * {@link Share#TMPG_LAYOUT_DATA} when it converts the list of records
- * into a string representation for writing to a file, or for comparing
- * internally.
+ * {@link LayoutDataExRecord}(s).
  * @author Hoang Duy Tran
  */
 public class LayoutDataExRecordList extends Vector<LayoutDataExRecord> implements TMPGencPatternDef{
@@ -59,7 +55,7 @@ public class LayoutDataExRecordList extends Vector<LayoutDataExRecord> implement
      */
     @Override
     public String toString() {
-        return toString(DOS_NL);
+        return toString(UNIX_NL);
     }
 
     /**
@@ -71,7 +67,7 @@ public class LayoutDataExRecordList extends Vector<LayoutDataExRecord> implement
      * lines that was stored internally.
      */
     public String toStringForWrite() {
-        return toString(UNIX_NL);
+        return toString(DOS_NL);
     }
 
 

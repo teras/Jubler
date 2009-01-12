@@ -415,8 +415,11 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     public String toString() {
         StringBuilder bld = new StringBuilder();
         try {
+            bld.append(char_double_quote);
             bld.append(name);
+            bld.append(char_double_quote);
             bld.append(char_comma);
+            
             bld.append(displayArea);
             bld.append(char_comma);
             bld.append(fontName);

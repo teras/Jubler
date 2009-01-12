@@ -24,12 +24,7 @@ import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencPatternDef;
 import java.util.Vector;
 
 /**
- * This class is used to hold a collection of
- * {@link dvdsubtitlemanager.Records.TMPGenc.LayoutDataItemRecord}(s).
- * The {@link #toString} method will include the header
- * {@link Share#TMPG_LAYOUT_DATA} when it converts the list of records
- * into a string representation for writing to a file, or for comparing
- * internally.
+ * This class holds a collection of {@link LayoutDataItemRecord}(s).
  * @author Hoang Duy Tran
  */
 public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> implements TMPGencPatternDef{
@@ -59,7 +54,7 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
      */
     @Override
     public String toString() {
-        return toString(DOS_NL);
+        return toString(UNIX_NL);
     }
 
     /**
@@ -71,7 +66,7 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
      * lines that was stored internally.
      */
     public String toStringForWrite() {
-        return toString(UNIX_NL);
+        return toString(DOS_NL);
     }
 
 

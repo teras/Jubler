@@ -32,82 +32,79 @@ import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.records.TMPGenc.LayoutDataItemRecord;
 
 /**
+ * This class hold a pattern to identify item lines from the "[LayoutData]"
+ * section of TMPGenc subtitle file.
+ * <pre>
+ * "Picture bottom layout",4,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0
+ * </pre>
+ * This class is used to parse the following line of data
+ * <pre><b>"Picture bottom layout",0,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0</b></pre>
  *
+ * The definition of each component is defined below:
+ * <pre>
+ * Name : "Picture top layout",
+ * Display Area:
+ *      Picture bottom = 0
+ *      Picture top = 1
+ *      Picture left = 2
+ *      Picture right = 3
+ *      Picture center = 4
+ *      Picture bottom (Computer display) = 5
+ *      Picture top (Computer display) = 6
+ * Font : Tahoma,
+ * Size%: 0.7 (7/10)
+ * Font colour:
+ *      red: (255,0,0 = #FF0000) TMP: 17587891077120 => 0x0FFF 0000 0000
+ *      yellow: (255,255,0 = #FFFF00) TMP: 17588159447040 => 0x0FFF 0FFF 0000
+ * Font style: 	Normal	Bold	Italic	Underscore	StrikeThrough
+ * <num1>      	0	1	0	0		0
+ * <num2>		0	0	1	0		0
+ * <num3>		0	0	0	1		0
+ * <num4>		0	0	0	0		1
+ * Horizontal Alignment: left = 0, center = 1, right = 2 # ie. (2),2,0,1,0.0035,0
+ * Vertical Alignment: top = 0, mid = 1, bottom = 2 	       (2),0,1,0.0035,0
+ * Text Rotation: Write Vertical = 1  2,(1),1,0.0035,0
+ * Border: No = 0, Yes = 1 	ie. (1),0.0035,0
+ * Border size: 5 = 0.035, 7 = 0.049 (formular: x * 7 / 100)#
+ * Border colour: black = 0, gray = 5841244652880 = 0x0550. 0550. 0550  = #55 55 55 = (RGB: 85,85,85)
+ * </pre>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class TMPGencLayoutDataItem extends SubtitlePatternProcessor implements TMPGencPatternDef {
 
-    /**
-     * Pattern to identify item lines from the "[LayoutData]"
-     * section of TMPGenc subtitle file.
-     * <pre>
-     * "Picture bottom layout",4,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0
-     * </pre>
-     * This class is used to parse the following line of data
-     * <pre><b>"Picture bottom layout",0,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0</b></pre>
-     *
-     * The definition of each component is defined below:
-     * <pre>
-     * Name : "Picture top layout",
-     * Display Area:
-     *      Picture bottom = 0
-     *      Picture top = 1
-     *      Picture left = 2
-     *      Picture right = 3
-     *      Picture center = 4
-     *      Picture bottom (Computer display) = 5
-     *      Picture top (Computer display) = 6
-     * Font : Tahoma,
-     * Size%: 0.7 (7/10)
-     * Font colour:
-     *      red: (255,0,0 = #FF0000) TMP: 17587891077120 => 0x0FFF 0000 0000
-     *      yellow: (255,255,0 = #FFFF00) TMP: 17588159447040 => 0x0FFF 0FFF 0000
-     * Font style: 	Normal	Bold	Italic	Underscore	StrikeThrough
-     * <num1>      	0	1	0	0		0
-     * <num2>		0	0	1	0		0
-     * <num3>		0	0	0	1		0
-     * <num4>		0	0	0	0		1
-     * Horizontal Alignment: left = 0, center = 1, right = 2 # ie. (2),2,0,1,0.0035,0
-     * Vertical Alignment: top = 0, mid = 1, bottom = 2 	       (2),0,1,0.0035,0
-     * Text Rotation: Write Vertical = 1  2,(1),1,0.0035,0
-     * Border: No = 0, Yes = 1 	ie. (1),0.0035,0
-     * Border size: 5 = 0.035, 7 = 0.049 (formular: x * 7 / 100)#
-     * Border colour: black = 0, gray = 5841244652880 = 0x0550. 0550. 0550  = #55 55 55 = (RGB: 85,85,85)
-     * </pre>
-     */
     private static final String pattern =
             char_double_quote +
-            "Picture" +
-            printable + //layout
+            printable + //layout name
             char_double_quote +
             single_comma +
-            digits + //4
+            digits + //Display-area
             single_comma +
-            printable + //font name
+            //printable + //font name
+            anything + //font name: changed to 'anything' as sometimes when a new entry is created, the font-name is not assigned.
             single_comma +
-            graph + //0.07
+            graph + //font-size: 0.07
             single_comma +
-            graph + //colour 17588159451135
-            single_comma + //,0,0,0,0,1,2,0,1,0.0035,0
-            digits + //0
+            graph + //font colour: 17588159451135
             single_comma +
-            digits + //0
+            digits + //style bold
             single_comma +
-            digits + //0
+            digits + //style italic
             single_comma +
-            digits + //0
+            digits + //style underscore
+            single_comma +
+            digits + //style strike-through
             single_comma + //1,2,0,1,0.0035,0
-            digits + //1
+            digits + //Alignment horizontal
             single_comma +
-            digits + //2
+            digits + //Alignment vertical
             single_comma +
-            digits + //0
+            digits + //Text rotation: vertical/horizontal
             single_comma +
-            digits + //1
+            digits + //Text border using: Yea=1, No=0
             single_comma + //0.0035,0
-            graph + //0
+            graph + //border-size
             single_comma +
-            digits;
+            digits; //border-colour
 
     public TMPGencLayoutDataItem() {
         super(pattern);
@@ -117,10 +114,7 @@ public class TMPGencLayoutDataItem extends SubtitlePatternProcessor implements T
     public void parsePattern(String[] matched_data, Object record) {
         try {
             LayoutDataItemRecord r = (LayoutDataItemRecord) record;
-            String txt = matched_data[0];
-            String[] list = txt.split(",");
-
-            r.setName(list[0]);
+            r.setName(matched_data[1]);
             r.setDisplayArea(Byte.parseByte(matched_data[2]));
             r.setFontName(matched_data[3]);
             r.setForntSize(Float.parseFloat(matched_data[4]));

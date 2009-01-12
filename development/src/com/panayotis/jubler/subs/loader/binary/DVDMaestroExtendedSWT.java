@@ -112,7 +112,7 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
     @Override
     protected boolean isHeaderLine(String input) {
         Matcher m = pat_swt_header.matcher(input);
-        boolean is_found = m.find();
+        boolean is_found = m.find(0);
         return is_found;
     }
 

@@ -24,8 +24,8 @@ package com.panayotis.jubler.subs.records.TMPGenc;
 import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencPatternDef;
 
 /**
- * This class stores all the highlighted text lines in separate strings
- * as a collection. The strings stores here are for writing purposes only.
+ * This class hold patterns to recognise and parse data line from the
+ * [LayoutDataEx] section. The typical data example is shown below:
  * <blockquote><pre>
  * [LayoutDataEx]
  * <i><b>0,0
@@ -33,50 +33,30 @@ import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencPatternDef;
  * 1,0
  * 1,1</b></i>
  * </pre></blockquote>
- * This data affects the layout globally.
- * First number (left):   centered text or not - 0: centered, 1: left align
- * Second number (right): readingDirection - left to right 0: reading left to right alignment, 1: reading right to left
+ * The setting of each line affects the corresponding layout in the
+ * [LayoutData] section and subtitle events using the corresponding layout
+ * will affect by this setting. The setting definitions are:
+ * <ol>
+ * <li> First number (left):   centered text or not - 0: centered, 1: left align
+ * <li> Second number (right): readingDirection - left to right 0: reading left to right alignment, 1: reading right to left
+ * </ol>
+ * 
  * @author Hoang Duy Tran
  */
 public class LayoutDataExRecord implements TMPGencPatternDef{
     public int centered = 0; //centered or not - 0: centered, 1: left align
     public int readingDirection = 0; //left to right 0: reading left to right alignment, 1: reading right to left
+
     /**
-     * Returns the collection of strings stored internally as a continuous
-     * string of text, separating each line with a new line character.
-     * @return the continuous string of text that contains every single data
-     * lines that was stored internally.
+     * Returns a string representation of internal data
+     * @return a string representation of internal data
      */
-    private String toString(String separator){
+    public String toString(){
         StringBuilder bld = new StringBuilder();
         bld.append(centered);
         bld.append(",");
         bld.append(readingDirection);
         return bld.toString();
-    }
-    /**
-     * Returns the collection of strings stored internally as a continuous
-     * string of text, separating each line with a new line character.
-     * That is platform independent.
-     * This version is used internally for reporting and comparing purposes only.
-     * @return the continuous string of text that contains every single data
-     * lines that was stored internally.
-     */
-    @Override
-    public String toString() {
-        return toString(DOS_NL);
-    }
-
-    /**
-     * Returns the collection of strings stored internally as a continuous
-     * string of text, separating each line with a new line character that is
-     * platform dependent.
-     * This version is used externally, such as when writing the data to a file.
-     * @return the continuous string of text that contains every single data
-     * lines that was stored internally.
-     */
-    public String toStringForWrite() {
-        return toString(UNIX_NL);
     }
 
     /**
@@ -88,6 +68,8 @@ public class LayoutDataExRecord implements TMPGencPatternDef{
         LayoutDataExRecord n = null;
         try {
             n = (LayoutDataExRecord) super.clone();
+            n.readingDirection = readingDirection;
+            n.centered = centered;
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
