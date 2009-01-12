@@ -47,6 +47,8 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.events.JublerPopupMenuListener;
+import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencImportHeaderAction;
 import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
@@ -163,7 +165,8 @@ public class Jubler extends JFrame {
     private static HelpBrowser faqbrowse;
     /* Window frame icon */
     public final static Image FrameIcon;
-
+    private TMPGencImportHeaderAction tmpGencImportHeaderAction = new TMPGencImportHeaderAction();
+    private JublerPopupMenuListener jublerPopupMenuListener = new JublerPopupMenuListener();
 
     static {
         windows = new JublerList();
@@ -188,6 +191,19 @@ public class Jubler extends JFrame {
 
 
         initComponents();
+
+        //this is for TMPGenc subtitle only. So by default, it is turned off
+        SubsPop.add(tmpGencImportHeaderAction);
+        tmpGencImportHeaderAction.setJublerParent(this);
+        tmpGencImportHeaderAction.setVisible(false);
+
+        //Adding the popup menu listener to enable/disable tmpGencImportHeaderAction
+        //if the first item of the subtitles is of TMPGencSubtitleRecord
+        jublerPopupMenuListener.setJublerParent(this);
+        jublerPopupMenuListener.setTmpGencImportHeaderAction(tmpGencImportHeaderAction);
+        SubsPop.addPopupMenuListener(jublerPopupMenuListener);
+
+
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
 
@@ -2846,7 +2862,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         }
 
         subeditor.ignoreSubChanges(true);
-        SubEntry sel = subs.elementAt(subrow);
+        SubEntry sel = subs.elementAt(subrow);        
         subeditor.setData(sel);
 
         if (preview.isVisible()) {

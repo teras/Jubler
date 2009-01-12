@@ -98,13 +98,16 @@ public class TMPGenc extends AbstractBinarySubFormat implements
     protected LayoutDataExRecord layoutDataEx = null;
     protected LayoutDataItemRecord layoutDataItem = null;
     protected LayoutDataItemRecordList layoutDataItemList = null;
-    protected LayoutDataExRecordList layoutDataExList = null;
-    protected TMPGencSubtitleRecord subRecord = null;
-    protected TMPGencHeaderRecord header = null;
+    protected LayoutDataExRecordList layoutDataExList = null;    
+    private TMPGencHeaderRecord header = null;
     protected static Pattern pat_tmpg_item_data_header = Pattern.compile(TMPG_ITEM_DATA);
     protected static Pattern pat_tmpg_layout_data_header = Pattern.compile(TMPG_LAYOUT_DATA);
     protected static Pattern pat_tmpg_layout_data_ex_header = Pattern.compile(TMPG_LAYOUT_DATA_EX);
     protected SubtitlePatternProcessor layoutDataItemProcessor,  layoutDataExItemProcessor,  subtitleEventProcessor;
+
+    public static String extension = "subtitle";
+    public static String name = "TMPGenc DVD Authoring";
+    public static String extendedName = "TMPGenc (subtitle)";
 
     /** Creates a new instance of DVDMaestro */
     public TMPGenc() {
@@ -112,16 +115,16 @@ public class TMPGenc extends AbstractBinarySubFormat implements
     }
 
     public String getExtension() {
-        return "subtitle";
+        return extension;
     }
 
     public String getName() {
-        return "TMPGenc DVD Authoring";
+        return name;
     }
 
     @Override
     public String getExtendedName() {
-        return "TMPGenc (subtitle)";
+        return extendedName;
     }
 
     private void definePatternList() {
@@ -178,7 +181,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
 
         boolean isTMPGencSubtitleRecord = (created_object instanceof TMPGencSubtitleRecord);
         if (isTMPGencSubtitleRecord) {
-            subRecord = (TMPGencSubtitleRecord) created_object;
+            TMPGencSubtitleRecord subRecord = (TMPGencSubtitleRecord) created_object;
             subRecord.setHeaderRecord(header);
             subtitle_list.add(subRecord);
         }//end if (is_son_sub_entry)
@@ -311,6 +314,20 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             return false;
         }
         return true;   // There is no need to move any files
+    }
+
+    /**
+     * @return the header
+     */
+    public TMPGencHeaderRecord getHeader() {
+        return header;
+    }
+
+    /**
+     * @param header the header to set
+     */
+    public void setHeader(TMPGencHeaderRecord header) {
+        this.header = header;
     }
 }
 
