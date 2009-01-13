@@ -28,6 +28,7 @@
  */
 package com.panayotis.jubler.subs.loader.processor.SWT;
 
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.records.SWT.SWTSubEntry;
 
@@ -37,29 +38,28 @@ import com.panayotis.jubler.subs.records.SWT.SWTSubEntry;
  */
 public class SWTSubtitleText extends SubtitlePatternProcessor implements SWTPatternDef {
 
-    private static String pattern = p_swt_text;
-    int index = 1;
+    private static String pattern = anything;
     private SWTSubEntry swtSubEntry = null;
 
     public SWTSubtitleText() {
         super(pattern);
-        setMatchIndexList(index);
     }
 
     public void parsePattern(String[] matched_data, Object record) {
+        String new_text = getTextLine();
         if (record instanceof SWTSubEntry) {
             setSwtSubEntry((SWTSubEntry) record);
 
             String txt = getSwtSubEntry().getText();
-            boolean has_text = (txt != null && txt.length() > 0);
+            boolean has_text = !Share.isEmpty(txt);
             if (has_text) {
                 StringBuffer b = new StringBuffer();
                 b.append(getSwtSubEntry().getText());
                 b.append(UNIX_NL);
-                b.append(matched_data[0]);
+                b.append(new_text);
                 getSwtSubEntry().setText(b.toString());
             } else {
-                getSwtSubEntry().setText(matched_data[0]);
+                getSwtSubEntry().setText(new_text);
             }//end if            
         }//end if (record instanceof SonSubEntry)
 

@@ -57,7 +57,7 @@ public class SONPaletteEntry extends SubtitlePatternProcessor implements CommonD
                     matched_data[1],
                     matched_data[2],
                     matched_data[3]);
-            System.out.println(sonHeader.toString());
+            //System.out.println(sonHeader.toString());
         }//end if
 
     }//end if

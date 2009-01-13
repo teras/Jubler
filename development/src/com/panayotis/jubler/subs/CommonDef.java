@@ -29,7 +29,7 @@ public interface CommonDef {
     public static final String USER_HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
     public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + System.getProperty("file.separator");
     /**
-     * Double quote character pattern (DQUOTE = "\"")
+     * Double quote character pattern (char_double_quote = "\"")
      */
     public static final String char_double_quote = "\"";
     /**

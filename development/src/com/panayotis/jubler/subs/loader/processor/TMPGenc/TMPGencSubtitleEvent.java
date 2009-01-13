@@ -28,6 +28,7 @@
  */
 package com.panayotis.jubler.subs.loader.processor.TMPGenc;
 
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.records.TMPGenc.TMPGencSubtitleRecord;
 import com.panayotis.jubler.time.Time;
@@ -54,17 +55,16 @@ import com.panayotis.jubler.time.Time;
 public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TMPGencPatternDef {
 
     private static final String pattern =
-            digits +        //id
+            digits + //id
             single_comma +
-            digits +        //visibility
+            digits + //visibility
             single_comma +
-            TMPG_TIME +     //start-time
+            TMPG_TIME + //start-time
             single_comma +
-            TMPG_TIME +     //finish-time
+            TMPG_TIME + //finish-time
             single_comma +
-            digits +        //layout-index
-            single_comma +
-            printable;      //subtitle-text
+            digits + //layout-index
+            single_comma;
 
     public TMPGencSubtitleEvent() {
         super(pattern);
@@ -90,7 +90,8 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
             int layout_idx = Integer.parseInt(matched_data[11]);
             r.setLayoutIndex(layout_idx);
 
-            String txt = matched_data[12];
+            String txt = getSubTextManually();
+            
             //remove the leading double-quote (")
             if (txt.startsWith(char_double_quote)) {
                 txt = txt.substring(1);
@@ -101,7 +102,6 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
             if (txt.endsWith(char_double_quote)) {
                 txt = txt.substring(0, len - 1);
             }
-
             //correcting single-line of text with patched double-quotes and new-lines
             String r_txt = txt.replaceAll(char_two_double_quotes, char_double_quote);
             txt = r_txt.replaceAll(pat_nl, UNIX_NL);
@@ -111,4 +111,29 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
             ex.printStackTrace(System.out);
         }
     }//end if
+
+    /**
+     * This is to cope with last line of the subtitle file where sub-text exists
+     * but without the surrounding double-quotes, leading to error in the parsing
+     * of the pattern.
+     * 1203,1,"01:37:50,000","01:37:52,002",0,#Aaaaah!
+     * @return subttile-text filtered or empty string if no text exists.
+     */
+    private String getSubTextManually() {
+        String result_txt = null;
+        String txt = getTextLine();
+        String split_pattern =
+                char_double_quote +
+                char_comma +
+                digits +
+                char_comma;
+        String[] list = txt.split(split_pattern);
+        boolean valid = (list.length == 2);
+        if (valid) {
+            result_txt = list[1];
+        } else {
+            result_txt = "";
+        }//end if (valid)
+        return result_txt;
+    }
 }
