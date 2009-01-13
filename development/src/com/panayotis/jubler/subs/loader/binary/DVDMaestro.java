@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs.loader.binary;
 
+import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.gui.ProgressBar;
@@ -327,7 +328,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         }//end if
 
         /* Start writing the files in a separate thread */
-        Thread t = new WriteSonSubtitle(this, subs, moptions, outfile, dir, this.FPS);
+        Thread t = new WriteSonSubtitle(this, subs, moptions, outfile, dir, FPS, ENCODING);
         t.start();
         return false;   // There is no need to move any files
     }
@@ -391,17 +392,19 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
     private short[] fixedDisplayArea = new short[]{213, 3, 524, 38};
     private NonDuplicatedVector<File> dirList = null;
     private ProgressBar pb = ProgressBar.getInstance();
+    private String encoding = null;
 
     public WriteSonSubtitle() {
     }
 
-    public WriteSonSubtitle(DVDMaestro parent, Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS) {
+    public WriteSonSubtitle(DVDMaestro parent, Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS, String encoding) {
         this.parent = parent;
         this.moptions = moptions;
         this.outfile = outfile;
         this.dir = dir;
         this.FPS = FPS;
-
+        this.encoding = encoding;
+        
         // The outfile is:
         //  C:\project\test_data\edwardian\testson.son
         // FileCommunicator.save puts the "temp" extension and it became
@@ -511,7 +514,7 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
             /* Write textual part to disk */
             //String file_name = outfilepath + image_out_filename + ".son";
             FileOutputStream os = new FileOutputStream(index_outfile);
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, encoding));
             out.write(buffer.toString());
             out.close();
         } catch (IOException ex) {

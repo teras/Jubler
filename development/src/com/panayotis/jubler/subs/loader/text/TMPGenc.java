@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
+import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.MediaFile;
@@ -341,8 +342,8 @@ public class TMPGenc extends AbstractBinarySubFormat implements
 
             /* Write textual part to disk */
             //String file_name = outfilepath + image_out_filename + ".son";
-            FileOutputStream os = new FileOutputStream(outfile);
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os));
+            FileOutputStream os = new FileOutputStream(outfile);            
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, ENCODING));
             out.write(buf.toString());
             out.close();
         } catch (IOException ex) {

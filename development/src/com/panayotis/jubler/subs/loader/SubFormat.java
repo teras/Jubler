@@ -38,7 +38,7 @@ import javax.swing.ImageIcon;
 public abstract class SubFormat {
 
     protected float FPS;
-    private String ENCODING;
+    protected String ENCODING;
 
     public abstract String getExtension();
 

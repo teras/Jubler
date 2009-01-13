@@ -22,7 +22,9 @@
  */
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.SubtitleProcessorList;
 import com.panayotis.jubler.subs.Subtitles;
@@ -33,7 +35,8 @@ import com.panayotis.jubler.subs.events.PreParseActionEventListener;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -60,6 +63,18 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
     private String textLine = null;
     private String inputData = null;
 
+    @Override
+    public void init() {
+        JPreferences prefs = Jubler.prefs;
+        if (prefs == null) {
+            FPS = 25f;
+            ENCODING = "UTF-8";
+        } else {
+            FPS = prefs.getLoadFPS();
+            ENCODING = prefs.getLoadEncodings()[0];
+        }
+    }
+
     public Subtitles parse(String input, float FPS, File f) {
         boolean is_sub_type = isSubType(input, f);
         if (!is_sub_type) {
@@ -82,7 +97,11 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
             subtitleFile = f;
 
             firePreParseActionEvent();
-            BufferedReader in = new BufferedReader(new FileReader(f));
+
+            FileInputStream fileInputStream = new FileInputStream(f);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, ENCODING);
+            
+            BufferedReader in = new BufferedReader(inputStreamReader);
             while ((textLine = in.readLine()) != null) {
                 int line_no = processorList.getTextLineNumber() + 1;
                 processorList.setTextLineNumber(line_no);
