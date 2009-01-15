@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -44,36 +43,34 @@ import javax.swing.JMenuBar;
  * @author  teras
  */
 public class JPreferences extends javax.swing.JDialog {
-    public static final String []DefaultEncodings;
+
+    public static final String[] DefaultEncodings;
     public static final SubFormat DefaultSubFormat;
-    
     /* GUI element to hold various preferences 
      * it is "friendly", since it is needed in Options 
      */
     JOptionTabs Tabs;
-    
     /* Shortcuts to panels */
     private JLoadOptions jload;
     private JSaveOptions jsave;
     private JExternalOptions jplay;
     private JExternalOptions jspell;
     private JShortcutsOptions jcut;
-    
     private boolean dialog_status;
-    
+
+
     static {
         DefaultEncodings = new String[3];
         DefaultEncodings[0] = "UTF-8";
         DefaultEncodings[1] = "ISO-8859-1";
         DefaultEncodings[2] = "UTF-16";
-        
+
         DefaultSubFormat = AvailSubFormats.findFromName("AdvancedSubStation");
     }
-    
-    
+
     /** Creates new form JPreferences */
     public JPreferences(Jubler jub) {
-        
+
         Tabs = new JOptionTabs(this);
         Tabs.addTab(jload = new JLoadOptions());
         Tabs.addTab(jsave = new JSaveOptions());
@@ -81,61 +78,74 @@ public class JPreferences extends javax.swing.JDialog {
         Tabs.addTab(jspell = new JExternalOptions(new AvailSpellCheckers()));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Options.loadSystemPreferences(this);
-        
+
         initComponents();
         add(Tabs, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
     }
-    
-    
+
     /* Various methods to get the preferences to the othe components */
     public float getLoadFPS() {
         return jload.getFPS();
     }
+
     public String[] getLoadEncodings() {
         return jload.getEncodings();
     }
+
     public String getSaveEncoding() {
         return jsave.getEncoding();
     }
+
     public float getSaveFPS() {
         return jsave.getFPS();
     }
+
     public SubFormat getSaveFormat() {
         return jsave.getFormat();
     }
-    
+
     public VideoPlayer getVideoPlayer() {
-        return (VideoPlayer)jplay.getObject();
+        return (VideoPlayer) jplay.getObject();
     }
+
     public SpellChecker getSpellChecker() {
-        return (SpellChecker)jspell.getObject();
+        return (SpellChecker) jspell.getObject();
     }
-    
+
     public void setMenuShortcuts(JMenuBar bar) {
         jcut.applyMenuShortcuts(bar);
     }
-    
+
     public void showLoadDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
         jload.showDialog(parent, mfile, subs);
         Tabs.setVisibleTab(0);
     }
-    public void showSaveDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
-        jsave.showDialog(parent, mfile, subs);
-        Tabs.setVisibleTab(1);
+
+    public void setShowSaveDiaglog(boolean value){
+        jsave.setRemindAgain(value);
     }
     
+    public void showSaveDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
+        if (jsave.isRemindAgain()) {
+            jsave.showDialog(parent, mfile, subs);
+            Tabs.setVisibleTab(1);
+        }//end if
+    }
+
     public void showPreferencesDialog() {
         dialog_status = false;
         Options.loadSystemPreferences(this);
         Tabs.initTabs();
         setVisible(true);
-        if ( dialog_status ) Options.saveSystemPreferences(this);
-        else Options.loadSystemPreferences(this); // Make sure options are returned to their saved state
+        if (dialog_status) {
+            Options.saveSystemPreferences(this);
+        } else {
+            Options.loadSystemPreferences(this); // Make sure options are returned to their saved state
+        }
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -182,24 +192,20 @@ public class JPreferences extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
         dialog_status = false;
         setVisible(false);
     }//GEN-LAST:event_CancelBActionPerformed
-    
+
     private void AcceptBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptBActionPerformed
         dialog_status = true;
         setVisible(false);
     }//GEN-LAST:event_AcceptBActionPerformed
-        
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcceptB;
     private javax.swing.JPanel ButtonsP;
     private javax.swing.JButton CancelB;
     private javax.swing.JPanel LowerP;
     // End of variables declaration//GEN-END:variables
-    
 }

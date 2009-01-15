@@ -40,12 +40,14 @@ public class JSaveOptions extends JFileOptions {
     
     private String enc_state, fps_state, format_state;
     private JRateChooser CFPS;
+    private boolean remindAgain = true;
     
     /** Creates new form JSavePrefs */
     public JSaveOptions() {
         super();
         initComponents();
         
+        setRemindAgain(remindAgain);
         /* Fix DialogVisible */
         addDialogOption();
         updateDialogOption(_(" Show save preferences while saving file"), _("Show preferences every time the user saves a subtitle file"));
@@ -142,11 +144,13 @@ public class JSaveOptions extends JFileOptions {
         CEnc = new javax.swing.JComboBox(AvailEncodings);
         FPSPanelL = new javax.swing.JLabel();
         FPSPanel = new javax.swing.JPanel();
+        RemindAgainL = new javax.swing.JLabel();
+        chkRemindAgain = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.BorderLayout());
 
         OptsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
-        OptsP.setLayout(new java.awt.GridLayout(3, 2));
+        OptsP.setLayout(new java.awt.GridLayout(4, 2));
 
         CFormatL.setText(_("Format"));
         OptsP.add(CFormatL);
@@ -170,12 +174,27 @@ public class JSaveOptions extends JFileOptions {
         FPSPanel.setLayout(new java.awt.BorderLayout());
         OptsP.add(FPSPanel);
 
+        RemindAgainL.setText(_("Change setting"));
+        OptsP.add(RemindAgainL);
+
+        chkRemindAgain.setText(_("Remind again"));
+        chkRemindAgain.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkRemindAgainActionPerformed(evt);
+            }
+        });
+        OptsP.add(chkRemindAgain);
+
         add(OptsP, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
     
     private void CFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CFormatActionPerformed
         updateVisualFPS(null);
     }//GEN-LAST:event_CFormatActionPerformed
+
+    private void chkRemindAgainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkRemindAgainActionPerformed
+        remindAgain = chkRemindAgain.isSelected();
+    }//GEN-LAST:event_chkRemindAgainActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -186,6 +205,23 @@ public class JSaveOptions extends JFileOptions {
     private javax.swing.JPanel FPSPanel;
     private javax.swing.JLabel FPSPanelL;
     private javax.swing.JPanel OptsP;
+    private javax.swing.JLabel RemindAgainL;
+    private javax.swing.JCheckBox chkRemindAgain;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the remindAgain
+     */
+    public boolean isRemindAgain() {
+        return remindAgain;
+    }
+
+    /**
+     * @param remindAgain the remindAgain to set
+     */
+    public void setRemindAgain(boolean remindAgain) {
+        this.remindAgain = remindAgain;
+        chkRemindAgain.setSelected(remindAgain);
+    }
     
 }

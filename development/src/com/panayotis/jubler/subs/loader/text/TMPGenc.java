@@ -346,6 +346,15 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, ENCODING));
             out.write(buf.toString());
             out.close();
+
+            /* debugging code
+            buf = new StringBuffer();
+            buf.append("Saved file: ");
+            buf.append(outfile.getAbsoluteFile());
+            buf.append(" with encoding: ");
+            buf.append(ENCODING);
+            System.out.println(buf.toString());
+             */
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
             String msg = ex.getMessage() + UNIX_NL;

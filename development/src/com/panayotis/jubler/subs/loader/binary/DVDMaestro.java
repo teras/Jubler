@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler.subs.loader.binary;
 
-import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.gui.ProgressBar;

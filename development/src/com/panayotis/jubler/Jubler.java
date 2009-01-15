@@ -2106,6 +2106,7 @@ public class Jubler extends JFrame {
             return;
         }
         FileCommunicator.setDefaultDialogPath(filedialog);
+        prefs.setShowSaveDiaglog(true);
         prefs.showSaveDialog(this, mfile, subs); //Show the "save options" dialog, if desired
         saveFile(filedialog.getSelectedFile());
     }//GEN-LAST:event_SaveAsFMActionPerformed
