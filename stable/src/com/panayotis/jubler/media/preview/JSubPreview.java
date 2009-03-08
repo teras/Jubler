@@ -35,8 +35,10 @@ import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
 import java.awt.IllegalComponentStateException;
 import java.awt.Point;
+import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JToolBar;
 
 /**
  *
@@ -254,22 +256,22 @@ public class JSubPreview extends javax.swing.JPanel {
         ZoomS = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        ToolPanel = new javax.swing.JPanel();
+        ToolBar = new javax.swing.JToolBar();
         Orientation = new javax.swing.JToggleButton();
-        jPanel4 = new javax.swing.JPanel();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
         VideoShow = new javax.swing.JToggleButton();
         VideoZoom = new javax.swing.JToggleButton();
-        jPanel2 = new javax.swing.JPanel();
+        jSeparator4 = new javax.swing.JToolBar.Separator();
         AudioShow = new javax.swing.JToggleButton();
         MaxWave = new javax.swing.JToggleButton();
-        AudioPlay = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
         Auto = new javax.swing.JToggleButton();
         Select = new javax.swing.JToggleButton();
         Move = new javax.swing.JToggleButton();
         Resize = new javax.swing.JToggleButton();
-        jPanel3 = new javax.swing.JPanel();
-        NewSub = new javax.swing.JButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        AudioPlay = new javax.swing.JToggleButton();
+        NewSub = new javax.swing.JToggleButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -336,12 +338,14 @@ public class JSubPreview extends javax.swing.JPanel {
 
         add(MainPanel, java.awt.BorderLayout.CENTER);
 
-        ToolPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 2, 2, 2));
-        ToolPanel.setLayout(new javax.swing.BoxLayout(ToolPanel, javax.swing.BoxLayout.Y_AXIS));
+        ToolBar.setFloatable(false);
+        ToolBar.setOrientation(JToolBar.VERTICAL);
+        ToolBar.setRollover(true);
 
         Orientation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turndown.png"))); // NOI18N
         Orientation.setToolTipText(_("Change orientation of Preview panel"));
-        Orientation.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        Orientation.setFocusable(false);
+        Orientation.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Orientation.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turn.png"))); // NOI18N
         Orientation.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turnright.png"))); // NOI18N
         Orientation.addActionListener(new java.awt.event.ActionListener() {
@@ -349,148 +353,141 @@ public class JSubPreview extends javax.swing.JPanel {
                 OrientationActionPerformed(evt);
             }
         });
-        ToolPanel.add(Orientation);
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+        ToolBar.add(Orientation);
+        ToolBar.add(jSeparator3);
 
         VideoShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/frameoff.png"))); // NOI18N
         VideoShow.setSelected(true);
         VideoShow.setToolTipText(_("Enable/disable video frame preview"));
-        VideoShow.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        VideoShow.setFocusable(false);
+        VideoShow.setMargin(new java.awt.Insets(0, 0, 0, 0));
         VideoShow.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/frameon.png"))); // NOI18N
         VideoShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VideoShowActionPerformed(evt);
             }
         });
-        jPanel4.add(VideoShow);
+        ToolBar.add(VideoShow);
 
         VideoZoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/framezoomin.png"))); // NOI18N
         VideoZoom.setToolTipText(_("Zoom frame to original value"));
-        VideoZoom.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        VideoZoom.setFocusable(false);
+        VideoZoom.setMargin(new java.awt.Insets(0, 0, 0, 0));
         VideoZoom.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/framezoomout.png"))); // NOI18N
         VideoZoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VideoZoomFrameActionPerformed(evt);
             }
         });
-        jPanel4.add(VideoZoom);
-
-        ToolPanel.add(jPanel4);
-
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.Y_AXIS));
+        ToolBar.add(VideoZoom);
+        ToolBar.add(jSeparator4);
 
         AudioShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/waveoff.png"))); // NOI18N
         AudioShow.setSelected(true);
         AudioShow.setToolTipText(_("Enable/disable waveform preview"));
-        AudioShow.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        AudioShow.setFocusable(false);
+        AudioShow.setMargin(new java.awt.Insets(0, 0, 0, 0));
         AudioShow.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/waveon.png"))); // NOI18N
         AudioShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AudioShowActionPerformed(evt);
             }
         });
-        jPanel2.add(AudioShow);
+        ToolBar.add(AudioShow);
 
         MaxWave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavenorm.png"))); // NOI18N
         MaxWave.setToolTipText(_("Maximize waveform visualization"));
-        MaxWave.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        MaxWave.setFocusable(false);
+        MaxWave.setMargin(new java.awt.Insets(0, 0, 0, 0));
         MaxWave.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavemax.png"))); // NOI18N
         MaxWave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MaxWaveActionPerformed(evt);
             }
         });
-        jPanel2.add(MaxWave);
-
-        AudioPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/playback.png"))); // NOI18N
-        AudioPlay.setToolTipText(_("Play current subtitle"));
-        AudioPlay.setMargin(new java.awt.Insets(2, 2, 2, 2));
-        AudioPlay.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AudioPlayActionPerformed(evt);
-            }
-        });
-        jPanel2.add(AudioPlay);
-
-        ToolPanel.add(jPanel2);
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+        ToolBar.add(MaxWave);
+        ToolBar.add(jSeparator1);
 
         CursorGroup.add(Auto);
         Auto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/auto.png"))); // NOI18N
         Auto.setSelected(true);
         Auto.setToolTipText(_("Automatically perform operation depending on the mouse position"));
         Auto.setActionCommand(String.valueOf(JSubTimeline.AUTO_ACTION));
-        Auto.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        Auto.setFocusable(false);
+        Auto.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Auto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cursorSelector(evt);
             }
         });
-        jPanel1.add(Auto);
+        ToolBar.add(Auto);
 
         CursorGroup.add(Select);
         Select.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pointer.png"))); // NOI18N
         Select.setToolTipText(_("Select subtitles only"));
         Select.setActionCommand(String.valueOf(JSubTimeline.SELECT_ACTION));
-        Select.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        Select.setFocusable(false);
+        Select.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Select.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cursorSelector(evt);
             }
         });
-        jPanel1.add(Select);
+        ToolBar.add(Select);
 
         CursorGroup.add(Move);
         Move.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/move.png"))); // NOI18N
         Move.setToolTipText(_("Move subtitles only"));
         Move.setActionCommand(String.valueOf(JSubTimeline.MOVE_ACTION));
-        Move.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        Move.setFocusable(false);
+        Move.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Move.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cursorSelector(evt);
             }
         });
-        jPanel1.add(Move);
+        ToolBar.add(Move);
 
         CursorGroup.add(Resize);
         Resize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/resize.png"))); // NOI18N
         Resize.setToolTipText(_("Resize subtitles only"));
         Resize.setActionCommand(String.valueOf(JSubTimeline.RESIZE_ACTION));
-        Resize.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        Resize.setFocusable(false);
+        Resize.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Resize.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cursorSelector(evt);
             }
         });
-        jPanel1.add(Resize);
+        ToolBar.add(Resize);
+        ToolBar.add(jSeparator2);
 
-        ToolPanel.add(jPanel1);
-
-        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.Y_AXIS));
+        AudioPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/playback.png"))); // NOI18N
+        AudioPlay.setToolTipText(_("Play current subtitle"));
+        AudioPlay.setFocusable(false);
+        AudioPlay.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        AudioPlay.setModel(new DefaultButtonModel());
+        AudioPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AudioPlayActionPerformed(evt);
+            }
+        });
+        ToolBar.add(AudioPlay);
 
         NewSub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/newsub.png"))); // NOI18N
         NewSub.setToolTipText(_("New subtitle after current one"));
-        NewSub.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        NewSub.setFocusable(false);
+        NewSub.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        NewSub.setModel(new DefaultButtonModel());
         NewSub.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NewSubActionPerformed(evt);
             }
         });
-        jPanel3.add(NewSub);
+        ToolBar.add(NewSub);
 
-        ToolPanel.add(jPanel3);
-
-        add(ToolPanel, java.awt.BorderLayout.WEST);
+        add(ToolBar, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
-        parent.addNewSubtitle(true);
-    }//GEN-LAST:event_NewSubActionPerformed
 
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
         if (ignore_slider_changes)
@@ -505,10 +502,6 @@ public class JSubPreview extends javax.swing.JPanel {
 
         ignore_zoomfactor_changes = false;
     }//GEN-LAST:event_ZoomSStateChanged
-
-    private void AudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPlayActionPerformed
-        playbackWave();
-    }//GEN-LAST:event_AudioPlayActionPerformed
 
     private void VideoZoomFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoZoomFrameActionPerformed
         setVideoZoom(VideoZoom.isSelected());
@@ -540,9 +533,18 @@ public class JSubPreview extends javax.swing.JPanel {
     private void MaxWaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveActionPerformed
         setMaxWave(MaxWave.isSelected());
 }//GEN-LAST:event_MaxWaveActionPerformed
+
+    private void AudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPlayActionPerformed
+        playbackWave();
+}//GEN-LAST:event_AudioPlayActionPerformed
+
+    private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
+        parent.addNewSubtitle(true);
+}//GEN-LAST:event_NewSubActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
-    public javax.swing.JButton AudioPlay;
+    public javax.swing.JToggleButton AudioPlay;
     public javax.swing.JToggleButton AudioShow;
     private javax.swing.JToggleButton Auto;
     private javax.swing.JPanel BottomPanel;
@@ -552,23 +554,23 @@ public class JSubPreview extends javax.swing.JPanel {
     public javax.swing.JPanel MainPanel;
     public javax.swing.JToggleButton MaxWave;
     private javax.swing.JToggleButton Move;
-    private javax.swing.JButton NewSub;
+    public javax.swing.JToggleButton NewSub;
     private javax.swing.JToggleButton Orientation;
     private javax.swing.JToggleButton Resize;
     private javax.swing.JToggleButton Select;
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
-    private javax.swing.JPanel ToolPanel;
+    private javax.swing.JToolBar ToolBar;
     public javax.swing.JToggleButton VideoShow;
     public javax.swing.JToggleButton VideoZoom;
     javax.swing.JSlider ZoomS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
+    private javax.swing.JToolBar.Separator jSeparator4;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables
 }

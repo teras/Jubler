@@ -121,7 +121,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         if ( !player.supportChangeSubs()) {
             LoadSubsB.setEnabled(false);
         }
-        
+
         Pink.setIcon(ColorIconFilter.getColoredIcon((ImageIcon)White.getIcon(),Color.PINK));
         Yellow.setIcon(ColorIconFilter.getColoredIcon((ImageIcon)White.getIcon(),Color.YELLOW));
         Cyan.setIcon(ColorIconFilter.getColoredIcon((ImageIcon)White.getIcon(),Color.CYAN));
@@ -352,7 +352,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel1 = new javax.swing.JPanel();
         MarkB = new javax.swing.JToggleButton();
         ResetSpeedB = new javax.swing.JButton();
-        AudioL = new javax.swing.JLabel();
+        AudioB = new javax.swing.JToggleButton();
         MainPanel = new javax.swing.JPanel();
         SliderP = new javax.swing.JPanel();
         TimeS = new javax.swing.JSlider();
@@ -397,6 +397,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         White.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pen.png"))); // NOI18N
         White.setToolTipText(_("Mark subttile as white"));
         White.setActionCommand("0");
+        White.setBorderPainted(false);
+        White.setContentAreaFilled(false);
+        White.setMargin(new java.awt.Insets(0, 0, 0, 0));
         White.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
@@ -407,6 +410,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         MarkGroup.add(Pink);
         Pink.setToolTipText(_("Mark subttile as pink"));
         Pink.setActionCommand("1");
+        Pink.setBorderPainted(false);
+        Pink.setContentAreaFilled(false);
+        Pink.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Pink.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
@@ -417,6 +423,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         MarkGroup.add(Yellow);
         Yellow.setToolTipText(_("Mark subttile as yellow"));
         Yellow.setActionCommand("2");
+        Yellow.setBorderPainted(false);
+        Yellow.setContentAreaFilled(false);
+        Yellow.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Yellow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
@@ -427,6 +436,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         MarkGroup.add(Cyan);
         Cyan.setToolTipText(_("Mark subttile as cyan"));
         Cyan.setActionCommand("3");
+        Cyan.setBorderPainted(false);
+        Cyan.setContentAreaFilled(false);
+        Cyan.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Cyan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
@@ -444,7 +456,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         SpeedS.setSnapToTicks(true);
         SpeedS.setToolTipText(_("Change playback speed"));
         SpeedS.setValue(3);
-        SpeedS.setPreferredSize(new java.awt.Dimension(40, 80));
+        SpeedS.setMinimumSize(new java.awt.Dimension(30, 36));
+        SpeedS.setPreferredSize(new java.awt.Dimension(30, 40));
         SpeedS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 SpeedSStateChanged(evt);
@@ -460,7 +473,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         AudioS.setSnapToTicks(true);
         AudioS.setToolTipText(_("Change audio volume"));
         AudioS.setValue(5);
-        AudioS.setPreferredSize(new java.awt.Dimension(40, 80));
+        AudioS.setMinimumSize(new java.awt.Dimension(30, 36));
+        AudioS.setPreferredSize(new java.awt.Dimension(30, 40));
         AudioS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 AudioSStateChanged(evt);
@@ -474,6 +488,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         MarkB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/mark.png"))); // NOI18N
         MarkB.setToolTipText(_("Add new subtitle on the fly"));
+        MarkB.setBorderPainted(false);
+        MarkB.setContentAreaFilled(false);
+        MarkB.setMargin(new java.awt.Insets(0, 0, 0, 0));
         MarkB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/markrec.png"))); // NOI18N
         MarkB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -484,7 +501,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         ResetSpeedB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/speed.png"))); // NOI18N
         ResetSpeedB.setToolTipText(_("Reset playback speed to default value"));
-        ResetSpeedB.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        ResetSpeedB.setBorderPainted(false);
+        ResetSpeedB.setContentAreaFilled(false);
+        ResetSpeedB.setMargin(new java.awt.Insets(0, 0, 0, 0));
         ResetSpeedB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ResetSpeedBActionPerformed(evt);
@@ -492,9 +511,12 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel1.add(ResetSpeedB);
 
-        AudioL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        AudioL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/audio.png"))); // NOI18N
-        jPanel1.add(AudioL);
+        AudioB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/audio.png"))); // NOI18N
+        AudioB.setBorderPainted(false);
+        AudioB.setContentAreaFilled(false);
+        AudioB.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        AudioB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/audiomute.png"))); // NOI18N
+        jPanel1.add(AudioB);
 
         jPanel7.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
@@ -549,7 +571,10 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         PauseB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/play.png"))); // NOI18N
         PauseB.setToolTipText(_("Play/Pause video playback"));
+        PauseB.setBorderPainted(false);
+        PauseB.setContentAreaFilled(false);
         PauseB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pause.png"))); // NOI18N
+        SystemDependent.setConsoleButtonStyle(PauseB, "first");
         PauseB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PauseBActionPerformed(evt);
@@ -559,6 +584,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         LoadSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reload.png"))); // NOI18N
         LoadSubsB.setToolTipText(_("Load new subtitles into player"));
+        LoadSubsB.setBorderPainted(false);
+        LoadSubsB.setContentAreaFilled(false);
         LoadSubsB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LoadSubsBActionPerformed(evt);
@@ -568,6 +595,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         QuitB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/quit.png"))); // NOI18N
         QuitB.setToolTipText(_("Quit Player"));
+        QuitB.setBorderPainted(false);
+        QuitB.setContentAreaFilled(false);
         QuitB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 QuitBActionPerformed(evt);
@@ -582,6 +611,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         BBMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bbmovie.png"))); // NOI18N
         BBMovieB.setToolTipText(_("Go backwards by 30 seconds"));
+        BBMovieB.setBorderPainted(false);
+        BBMovieB.setContentAreaFilled(false);
         BBMovieB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BBMovieBActionPerformed(evt);
@@ -591,6 +622,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         BMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bmovie.png"))); // NOI18N
         BMovieB.setToolTipText(_("Go backwards by 10 secons"));
+        BMovieB.setBorderPainted(false);
+        BMovieB.setContentAreaFilled(false);
         BMovieB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BMovieBActionPerformed(evt);
@@ -600,6 +633,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         FMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/fmovie.png"))); // NOI18N
         FMovieB.setToolTipText(_("Go forwards by 10 seconds"));
+        FMovieB.setBorderPainted(false);
+        FMovieB.setContentAreaFilled(false);
         FMovieB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FMovieBActionPerformed(evt);
@@ -609,6 +644,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         FFMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ffmovie.png"))); // NOI18N
         FFMovieB.setToolTipText(_("Go forwards by 30 seconds"));
+        FFMovieB.setBorderPainted(false);
+        FFMovieB.setContentAreaFilled(false);
         FFMovieB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FFMovieBActionPerformed(evt);
@@ -628,6 +665,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         Sync1B.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync1b.png"))); // NOI18N
         Sync1B.setToolTipText(_("Mark first synchronization position of the subtitles."));
         Sync1B.setActionCommand("sync1");
+        Sync1B.setBorderPainted(false);
+        Sync1B.setContentAreaFilled(false);
+        Sync1B.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Sync1B.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync1c.png"))); // NOI18N
         Sync1B.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -639,6 +679,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         Sync2B.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync2b.png"))); // NOI18N
         Sync2B.setToolTipText(_("Mark second synchronization position of the subtitles."));
         Sync2B.setActionCommand("sync2");
+        Sync2B.setBorderPainted(false);
+        Sync2B.setContentAreaFilled(false);
+        Sync2B.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Sync2B.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync2c.png"))); // NOI18N
         Sync2B.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -651,6 +694,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         GrabSub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/textpick.png"))); // NOI18N
         GrabSub.setToolTipText(_("Select subtitle from the main window, to synchronize subtitles with current time."));
+        GrabSub.setBorderPainted(false);
+        GrabSub.setContentAreaFilled(false);
+        GrabSub.setMargin(new java.awt.Insets(0, 0, 0, 0));
         GrabSub.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GrabSubActionPerformed(evt);
@@ -783,9 +829,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         
         int value = AudioS.getValue();
         if (value == 0) {
-            AudioL.setIcon(Audio[1]);
+            AudioB.setSelected(true);
         } else {
-            AudioL.setIcon(Audio[0]);
+            AudioB.setSelected(false);
         }
         checkValid(view.setVolume(value));
     }//GEN-LAST:event_AudioSStateChanged
@@ -863,7 +909,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
             else timer.start();
             return;
         }
-        view.quit();
+        if (view!=null)
+            view.quit();
         stop();
     }
     
@@ -967,7 +1014,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AudioL;
+    private javax.swing.JToggleButton AudioB;
     private javax.swing.JSlider AudioS;
     private javax.swing.JButton BBMovieB;
     private javax.swing.JButton BMovieB;

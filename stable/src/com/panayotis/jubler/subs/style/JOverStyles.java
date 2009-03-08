@@ -28,6 +28,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
@@ -39,8 +40,8 @@ import com.panayotis.jubler.subs.style.gui.tri.TriDummy;
 import com.panayotis.jubler.subs.style.gui.tri.TriObject;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.AbstractButton;
 import javax.swing.JComponent;
-import javax.swing.text.Style;
 
 /**
  *
@@ -60,19 +61,37 @@ public class JOverStyles extends javax.swing.JPanel {
         initComponents();
         
         visuals = new TriObject[StyleType.values().length];
-        
-        FontAttP.add((JComponent)(visuals[0] = new TriComboBox(SubStyle.FontNames)), BorderLayout.CENTER);
-        FontAttP.add((JComponent)(visuals[1] = new TriComboBox(SubStyle.FontSizes)), BorderLayout.EAST);
-        
-        TextAttP.add((JComponent)(visuals[2] = new TriToggleButton("/icons/bold.png")));
-        TextAttP.add((JComponent)(visuals[3] = new TriToggleButton("/icons/italics.png")));
-        TextAttP.add((JComponent)(visuals[4] = new TriToggleButton("/icons/underline.png")));
-        TextAttP.add((JComponent)(visuals[5] = new TriToggleButton("/icons/strike.png")));
-        
-        ColorP.add((JComponent)(visuals[6] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
-        ColorP.add((JComponent)(visuals[7] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
-        ColorP.add((JComponent)(visuals[8] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
-        ColorP.add((JComponent)(visuals[9] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+
+        FontAttP.add((JComponent) (visuals[0] = new TriComboBox(SubStyle.FontNames)), BorderLayout.CENTER);
+        ((TriComboBox) visuals[0]).setToolTipText(_("Font name"));
+        FontAttP.add((JComponent) (visuals[1] = new TriComboBox(SubStyle.FontSizes)), BorderLayout.EAST);
+        ((TriComboBox) visuals[1]).setToolTipText(_("Font size"));
+
+        TextAttP.add((JComponent) (visuals[2] = new TriToggleButton("/icons/bold.png")));
+        ((AbstractButton) visuals[2]).setToolTipText(_("Bold"));
+        SystemDependent.setCommandButtonStyle((AbstractButton) visuals[2], "first");
+
+        TextAttP.add((JComponent) (visuals[3] = new TriToggleButton("/icons/italics.png")));
+        SystemDependent.setCommandButtonStyle((AbstractButton) visuals[3], "middle");
+        ((AbstractButton) visuals[3]).setToolTipText(_("Italic"));
+
+        TextAttP.add((JComponent) (visuals[4] = new TriToggleButton("/icons/underline.png")));
+        SystemDependent.setCommandButtonStyle((AbstractButton) visuals[4], "middle");
+        ((AbstractButton) visuals[4]).setToolTipText(_("Underline"));
+
+        TextAttP.add((JComponent) (visuals[5] = new TriToggleButton("/icons/strike.png")));
+        SystemDependent.setCommandButtonStyle((AbstractButton) visuals[5], "last");
+        ((AbstractButton) visuals[5]).setToolTipText(_("Strikethrough"));
+
+
+        ColorP.add((JComponent) (visuals[6] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        ColorP.add((JComponent) (visuals[7] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        ColorP.add((JComponent) (visuals[8] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        ColorP.add((JComponent) (visuals[9] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        for (int i = 6; i < 10; i++) {
+            SystemDependent.setColorButtonStyle((AbstractButton) visuals[i], "only");
+            ((AbstractButton) visuals[i]).setToolTipText(_(TriColorButton.tooltips[i - 6]));
+        }
         
         
         for (int i = 10 ; i < visuals.length ; i++) {
@@ -80,7 +99,8 @@ public class JOverStyles extends javax.swing.JPanel {
         }
         
         TextAttP.add((JComponent)(visuals[DIRECTION.ordinal()] = new TriDirectionButton(parent)));
-        
+        SystemDependent.setToolBarButtonStyle((AbstractButton)visuals[DIRECTION.ordinal()], "only");
+        ((AbstractButton)visuals[DIRECTION.ordinal()]).setToolTipText(_("Alignment"));
         
         for (int i = 0 ; i < visuals.length ; i++) {
             ((TriObject)visuals[i]).setStyle(StyleType.values()[i]);

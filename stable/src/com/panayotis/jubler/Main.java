@@ -29,6 +29,8 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.rmi.JublerClient;
+import com.panayotis.jubler.rmi.JublerServer;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -111,6 +113,14 @@ public class Main {
 
         /* Load arguments, in a mac way */
         SystemDependent.initApplication();
+
+        if (JublerClient.isRunning()) {
+            JublerClient.setFileList(sublist);
+            System.exit(0);
+        }
+
+        /* Start RMI server, so only one instance of Jubler will be opened at all times */
+        JublerServer.startServer();
 
         new Jubler();   // Display initial Jubler window
         splash.dispose();   // Hide splash screen

@@ -46,8 +46,8 @@ public abstract class SubFormat {
             FPS = 25f;
             ENCODING = "UTF-8";
         } else {
-            FPS = prefs.getSaveFPS();
-            ENCODING = prefs.getSaveEncoding();
+            FPS = prefs.getFileOptions().getSaveFPS();
+            ENCODING = prefs.getFileOptions().getSaveEncoding();
         }
         return produce(subs, outfile, media);
     }

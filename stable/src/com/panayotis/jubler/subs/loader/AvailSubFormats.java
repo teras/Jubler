@@ -33,6 +33,7 @@ import com.panayotis.jubler.subs.loader.text.SubRip;
 import com.panayotis.jubler.subs.loader.text.SubStationAlpha;
 import com.panayotis.jubler.subs.loader.text.SubViewer;
 import com.panayotis.jubler.subs.loader.text.SubViewer2;
+import com.panayotis.jubler.subs.loader.text.TextScript;
 import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 
 /**
@@ -42,7 +43,6 @@ import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 public class AvailSubFormats {
 
     public static final SubFormat[] Formats = {
-        new DVDMaestro(), //added by HDT
         new AdvancedSubStation(),
         new SubStationAlpha(),
         new SubRip(),
@@ -52,7 +52,9 @@ public class AvailSubFormats {
         new MPL2(),
         new Spruce(),
         new Quicktime(),
+        new TextScript(),
         new W3CTimedText(),
+        new DVDMaestro(), //added by HDT
         new PlainText()
     //new ScanTitle()
     };
@@ -81,6 +83,8 @@ public class AvailSubFormats {
     }
 
     public static SubFormat findFromName(String ext) {
+        if (ext==null)
+            return null;
         for (int i = 0; i < Formats.length; i++)
             if (Formats[i].getName().equals(ext))
                 return Formats[i];

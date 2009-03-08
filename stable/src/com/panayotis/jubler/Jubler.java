@@ -28,7 +28,6 @@ package com.panayotis.jubler;
 import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.subs.loader.SubFileFilter;
 import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.media.MediaFile;
@@ -47,6 +46,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.gui.JSubFileDialog;
 import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
@@ -86,7 +86,6 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -111,9 +110,9 @@ public class Jubler extends JFrame {
     
     private static ArrayList<SubEntry> copybuffer;
     public static JPreferences prefs;
-    
+
     /** File chooser dialog to open/ save subtitles */
-    private JFileChooser filedialog;
+    public static JSubFileDialog fdialog;
     
     /*
      * Where the subtitles for this window is stored
@@ -190,6 +189,7 @@ public class Jubler extends JFrame {
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
         FrameIcon = new ImageIcon(Jubler.class.getResource("/icons/frame.png")).getImage();
+        fdialog = new JSubFileDialog();
     }
     
     
@@ -213,12 +213,6 @@ public class Jubler extends JFrame {
         SubSplitPane.add(preview, JSplitPane.TOP);
         enablePreview(false);
 
-        /* Set JFileChooser properties */
-        filedialog = new JFileChooser();
-        filedialog.setMultiSelectionEnabled(false);
-        filedialog.addChoosableFileFilter(new SubFileFilter());
-        FileCommunicator.getDefaultDialogPath(filedialog);
-         
         WebFM.setVisible(false);
         setDropHandler();
         hideSystemMenus();
@@ -246,7 +240,6 @@ public class Jubler extends JFrame {
         StaticJubler.putWindowPosition(this);
         openWindow();
         updateRecentFile(null);
-
     }
     
     
@@ -254,7 +247,9 @@ public class Jubler extends JFrame {
         this();
         setSubs(data);
     }
-    
+
+    /* Set the button style */
+
     
     /* This method is called EVERY time an undo option is added.
      * It is used in order to inform the system that a new undo command is added.
@@ -586,6 +581,9 @@ public class Jubler extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Jubler");
         setForeground(java.awt.Color.white);
+        addComponentListener(formListener);
+        addMouseMotionListener(formListener);
+        addMouseListener(formListener);
         addWindowListener(formListener);
 
         BasicPanel.setLayout(new java.awt.BorderLayout());
@@ -600,11 +598,13 @@ public class Jubler extends JFrame {
 
         Info.setLabelFor(ShiftTimeTM);
         Info.setText(" ");
+        SystemDependent.setComponentDraggable(this, Info);
         jPanel5.add(Info, java.awt.BorderLayout.CENTER);
 
         Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         Stats.setText("-");
         Stats.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
+        SystemDependent.setComponentDraggable(this, Stats);
         jPanel5.add(Stats, java.awt.BorderLayout.EAST);
 
         LowerPartP.add(jPanel5, java.awt.BorderLayout.SOUTH);
@@ -644,27 +644,33 @@ public class Jubler extends JFrame {
 
         getContentPane().add(BasicPanel, java.awt.BorderLayout.CENTER);
 
+        SystemDependent.setComponentDraggable(this, JublerTools);
+
         FileTP.setLayout(new javax.swing.BoxLayout(FileTP, javax.swing.BoxLayout.LINE_AXIS));
 
         NewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/new.png"))); // NOI18N
         NewTB.setToolTipText(_("New"));
+        SystemDependent.setToolBarButtonStyle(NewTB, "first");
         NewTB.addActionListener(formListener);
         FileTP.add(NewTB);
 
         LoadTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/load.png"))); // NOI18N
         LoadTB.setToolTipText(_("Load"));
+        SystemDependent.setToolBarButtonStyle(LoadTB, "middle");
         LoadTB.addActionListener(formListener);
         FileTP.add(LoadTB);
 
         SaveTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
         SaveTB.setToolTipText(_("Save"));
         SaveTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(SaveTB, "middle");
         SaveTB.addActionListener(formListener);
         FileTP.add(SaveTB);
 
         InfoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png"))); // NOI18N
         InfoTB.setToolTipText(_("Project Information"));
         InfoTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(InfoTB, "last");
         InfoTB.addActionListener(formListener);
         FileTP.add(InfoTB);
 
@@ -676,18 +682,21 @@ public class Jubler extends JFrame {
         CutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cut.png"))); // NOI18N
         CutTB.setToolTipText(_("Cut"));
         CutTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(CutTB, "first");
         CutTB.addActionListener(formListener);
         EditTP.add(CutTB);
 
         CopyTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/copy.png"))); // NOI18N
         CopyTB.setToolTipText(_("Copy"));
         CopyTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(CopyTB, "middle");
         CopyTB.addActionListener(formListener);
         EditTP.add(CopyTB);
 
         PasteTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/paste.png"))); // NOI18N
         PasteTB.setToolTipText(_("Paste"));
         PasteTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(PasteTB, "last");
         PasteTB.addActionListener(formListener);
         EditTP.add(PasteTB);
 
@@ -698,12 +707,14 @@ public class Jubler extends JFrame {
         UndoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/undo.png"))); // NOI18N
         UndoTB.setToolTipText(_("Undo"));
         UndoTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(UndoTB, "first");
         UndoTB.addActionListener(formListener);
         UndoTP.add(UndoTB);
 
         RedoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/redo.png"))); // NOI18N
         RedoTB.setToolTipText(_("Redo"));
         RedoTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(RedoTB, "last");
         RedoTB.addActionListener(formListener);
         UndoTP.add(RedoTB);
 
@@ -715,6 +726,7 @@ public class Jubler extends JFrame {
         SortTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sort.png"))); // NOI18N
         SortTB.setToolTipText(_("Sort subtitles"));
         SortTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(SortTB, "only");
         SortTB.addActionListener(formListener);
         SortTP.add(SortTB);
 
@@ -725,10 +737,12 @@ public class Jubler extends JFrame {
         TestTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/test.png"))); // NOI18N
         TestTB.setToolTipText(_("Test subtitles from current position"));
         TestTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(TestTB, "first");
         TestTB.addActionListener(formListener);
         TestTP.add(TestTB);
 
         PreviewTB.setModel(new ToggleButtonModel());
+        SystemDependent.setToolBarButtonStyle(PreviewTB, "last");
         PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/previewc.png"))); // NOI18N
         PreviewTB.setToolTipText(_("Enable preview"));
         PreviewTB.setEnabled(false);
@@ -1144,7 +1158,7 @@ public class Jubler extends JFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.WindowListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.ComponentListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.WindowListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == NewTB) {
@@ -1392,6 +1406,48 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
+            }
+        }
+
+        public void componentHidden(java.awt.event.ComponentEvent evt) {
+        }
+
+        public void componentMoved(java.awt.event.ComponentEvent evt) {
+            if (evt.getSource() == Jubler.this) {
+                Jubler.this.formComponentMoved(evt);
+            }
+        }
+
+        public void componentResized(java.awt.event.ComponentEvent evt) {
+        }
+
+        public void componentShown(java.awt.event.ComponentEvent evt) {
+        }
+
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == Jubler.this) {
+                Jubler.this.formMouseClicked(evt);
+            }
+        }
+
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mousePressed(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseReleased(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseDragged(java.awt.event.MouseEvent evt) {
+        }
+
+        public void mouseMoved(java.awt.event.MouseEvent evt) {
+            if (evt.getSource() == Jubler.this) {
+                Jubler.this.formMouseMoved(evt);
             }
         }
 
@@ -1886,12 +1942,7 @@ public class Jubler extends JFrame {
     
     
     private void SaveAsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsFMActionPerformed
-        filedialog.setDialogTitle(_("Save Subtitles"));
-        filedialog.setSelectedFile(subs.getCurrentFile());
-        if ( filedialog.showSaveDialog(this) != JFileChooser.APPROVE_OPTION ) return;
-        FileCommunicator.setDefaultDialogPath(filedialog);
-        prefs.showSaveDialog(this, mfile, subs); //Show the "save options" dialog, if desired
-        saveFile(filedialog.getSelectedFile());
+        saveFile(fdialog.getSaveFile(this, prefs.getFileOptions(), subs, mfile));
     }//GEN-LAST:event_SaveAsFMActionPerformed
     
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1899,7 +1950,6 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_formWindowClosing
     
     private void SaveFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFMActionPerformed
-        prefs.showSaveDialog(this, mfile, subs); //Show the "save options" dialog, if desired
         saveFile(subs.getCurrentFile());
     }//GEN-LAST:event_SaveFMActionPerformed
     
@@ -1912,10 +1962,10 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_CloseFMActionPerformed
     
     private void OpenFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFMActionPerformed
-        filedialog.setDialogTitle(_("Load Subtitles"));
-        if ( filedialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION ) return;
-        FileCommunicator.setDefaultDialogPath(filedialog);
-        loadFileFromHere(filedialog.getSelectedFile(), false);
+        MediaFile mf = new MediaFile();
+        Jubler newj = loadFileFromHere(fdialog.getLoadFile(this, prefs.getFileOptions(), mf), false);
+        if (newj!=null)
+            newj.mfile = mf;
     }//GEN-LAST:event_OpenFMActionPerformed
 
 private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TranslateTMActionPerformed
@@ -1956,6 +2006,19 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
+
+private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+    System.out.println("KO");    // TODO add your handling code here:
+}//GEN-LAST:event_formMouseClicked
+
+private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
+    System.out.println("LA");    // TODO add your handling code here:
+}//GEN-LAST:event_formMouseMoved
+
+private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentMoved
+    System.out.println("KA");
+        // TODO add your handling code here:
+}//GEN-LAST:event_formComponentMoved
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
@@ -2131,8 +2194,10 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     
     
     private void saveFile(File f) {
+        if (f ==null)
+            return;
         String ext;
-        ext = "."+prefs.getSaveFormat().getExtension();
+        ext = "."+prefs.getFileOptions().getSaveFormat().getExtension();
         f = FileCommunicator.stripFileFromVideoExtension(f);
         f = new File(f.getPath()+ext);
         String result = FileCommunicator.save(subs, f, prefs, mfile);
@@ -2145,17 +2210,20 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         }
     }
     
-    private void loadFileFromHere(File f, boolean force_into_same_window) {
+    private Jubler loadFileFromHere(File f, boolean force_into_same_window) {
         StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
-        loadFile( f, force_into_same_window );
+        return loadFile( f, force_into_same_window );
     }
     
-    public void loadFile(File f, boolean force_into_same_window) {
+    public Jubler loadFile(File f, boolean force_into_same_window) {
         String data;
         Subtitles newsubs;
         Jubler work;
         boolean is_autoload;
 
+        if (f==null)
+            return null;
+        
         /* Find where to display this subtitle file */
         if (subs == null || force_into_same_window)
             work = this;
@@ -2169,14 +2237,10 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         /* Check if this is an auto-load subtitle file */
         is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
 
-        /* Load file into memory */
-        if (!is_autoload)
-            prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
-
         data = FileCommunicator.load(f, is_autoload ? null : prefs);
         if (data == null) {
             JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
-            return;
+            return null;
         }
         /* Strip autosave prefix from filename */
         if (is_autoload) {
@@ -2185,10 +2249,10 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         }
         
         /* Convert file into subtitle data */
-        newsubs.populate(f, data, is_autoload ? 25 : prefs.getLoadFPS());
+        newsubs.populate(f, data, is_autoload ? 25 : prefs.getFileOptions().getLoadFPS());
         if (newsubs.size() == 0) {
             JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
-            return;
+            return null;
         }
 
         if (work.subs != null)
@@ -2201,6 +2265,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         work.setSubs(newsubs);
         work.setFile(f, true);
         work.SaveFM.setEnabled(true);
+        return work;
     }
     
     

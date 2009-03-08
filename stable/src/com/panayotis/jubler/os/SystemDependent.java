@@ -32,6 +32,12 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.Main;
 import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.tools.externals.ExtPath;
+import java.awt.Component;
+import java.awt.Point;
+import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -40,8 +46,11 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import javax.swing.AbstractButton;
 import javax.swing.JMenuItem;
 import javax.swing.JRootPane;
+import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -78,16 +87,76 @@ public class SystemDependent {
     }
 
     public final static void setLookAndFeel() {
-        boolean newjava = (System.getProperty("java.version").replaceAll("\\.", "").replaceAll("_", "").compareTo("16006")) >= 0;
+        boolean newjava = (System.getProperty("java.version").replaceAll("\\.", "").replaceAll("_", "").compareTo("160")) >= 0;
         try {
             if (newjava || IS_WINDOWS || IS_MACOSX) {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                System.setProperty("apple.laf.useScreenMenuBar", "true");
             }
         } catch (ClassNotFoundException e) {
         } catch (InstantiationException e) {
         } catch (IllegalAccessException e) {
         } catch (UnsupportedLookAndFeelException e) {
         }
+    }
+
+    public final static void setComponentDraggable(Window window, Component component) {
+        if (IS_MACOSX) {
+            if (component instanceof JToolBar)
+                ((JToolBar)component).setFloatable(false);
+
+            final Window wind = window;
+            final Component comp = component;
+            final Point oldpos = new Point();
+            final Point newpos = new Point();
+
+            comp.addMouseListener(new MouseAdapter() {
+
+                public void mousePressed(MouseEvent e) {
+                    oldpos.setLocation(e.getPoint());
+                    SwingUtilities.convertPointToScreen(oldpos, comp);
+                    oldpos.x -= wind.getX();
+                    oldpos.y -= wind.getY();
+                }
+            });
+
+            comp.addMouseMotionListener(new MouseMotionAdapter() {
+
+                public void mouseDragged(MouseEvent e) {
+                    newpos.setLocation(e.getPoint());
+                    SwingUtilities.convertPointToScreen(newpos, comp);
+                    wind.setLocation(newpos.x - oldpos.x, newpos.y - oldpos.y);
+                }
+            });
+        }
+    }
+
+    private final static void setButtonStyle(AbstractButton button, String pos, String style) {
+        button.putClientProperty("JButton.buttonType", style);
+        button.putClientProperty("JButton.segmentPosition", pos);
+        if (!pos.equals("only") && button.isFocusable())
+            button.setFocusable(false);
+    }
+
+    public final static void setConsoleButtonStyle(AbstractButton button, String pos) {
+        setButtonStyle(button, pos, "segmented");
+    }
+
+    public final static void setCommandButtonStyle(AbstractButton button, String pos) {
+        setButtonStyle(button, pos, "segmentedTextured");
+    }
+
+    public final static void setDirectionButtonStyle(AbstractButton button) {
+        setButtonStyle(button, "only", "segmentedCapsule");
+    }
+
+    public final static void setToolBarButtonStyle(AbstractButton button, String pos) {
+        button.setFocusable(false);
+        setButtonStyle(button, pos, "segmentedCapsule");
+    }
+
+    public final static void setColorButtonStyle(AbstractButton button, String pos) {
+        setButtonStyle(button, pos, "segmentedRoundRect");
     }
 
     public static void setSmallDecoration(JRootPane pane) {

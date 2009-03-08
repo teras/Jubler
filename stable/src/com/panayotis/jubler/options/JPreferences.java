@@ -26,17 +26,15 @@ package com.panayotis.jubler.options;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
-import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.loader.SubFormat;
+import com.panayotis.jubler.subs.loader.gui.FileOptions;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
-import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
 /**
@@ -53,11 +51,11 @@ public class JPreferences extends javax.swing.JDialog {
     JOptionTabs Tabs;
     
     /* Shortcuts to panels */
-    private JLoadOptions jload;
-    private JSaveOptions jsave;
     private JExternalOptions jplay;
     private JExternalOptions jspell;
     private JShortcutsOptions jcut;
+
+    private FileOptions fileopts;
     
     private boolean dialog_status;
     
@@ -75,8 +73,6 @@ public class JPreferences extends javax.swing.JDialog {
     public JPreferences(Jubler jub) {
         
         Tabs = new JOptionTabs(this);
-        Tabs.addTab(jload = new JLoadOptions());
-        Tabs.addTab(jsave = new JSaveOptions());
         Tabs.addTab(jplay = new JExternalOptions(new AvailPlayers()));
         Tabs.addTab(jspell = new JExternalOptions(new AvailSpellCheckers()));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
@@ -86,24 +82,12 @@ public class JPreferences extends javax.swing.JDialog {
         add(Tabs, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
+
+        fileopts = new FileOptions();
     }
-    
-    
-    /* Various methods to get the preferences to the othe components */
-    public float getLoadFPS() {
-        return jload.getFPS();
-    }
-    public String[] getLoadEncodings() {
-        return jload.getEncodings();
-    }
-    public String getSaveEncoding() {
-        return jsave.getEncoding();
-    }
-    public float getSaveFPS() {
-        return jsave.getFPS();
-    }
-    public SubFormat getSaveFormat() {
-        return jsave.getFormat();
+
+    public FileOptions getFileOptions() {
+        return fileopts;
     }
     
     public VideoPlayer getVideoPlayer() {
@@ -115,17 +99,6 @@ public class JPreferences extends javax.swing.JDialog {
     
     public void setMenuShortcuts(JMenuBar bar) {
         jcut.applyMenuShortcuts(bar);
-    }
-    
-    public void showLoadDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
-        Tabs.setVisibleTab(0);
-        jload.showDialog(parent, Tabs.getTab(), mfile, subs);
-        Tabs.putTabBack();
-    }
-    public void showSaveDialog(JFrame parent, MediaFile mfile, Subtitles subs) {
-        Tabs.setVisibleTab(1);
-        jsave.showDialog(parent, Tabs.getTab(), mfile, subs);
-        Tabs.putTabBack();
     }
     
     public void showPreferencesDialog() {

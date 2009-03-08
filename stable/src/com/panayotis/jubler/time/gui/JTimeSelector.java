@@ -5,11 +5,13 @@
  */
 package com.panayotis.jubler.time.gui;
 
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
+import java.awt.Point;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -115,6 +117,7 @@ public class JTimeSelector extends JPanel {
 
         EdgeB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png"))); // NOI18N
         EdgeB.setToolTipText(_("Use predifined time positions"));
+        SystemDependent.setCommandButtonStyle(EdgeB, "only");
         EdgeB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 EdgeBMousePressed(evt);
@@ -124,7 +127,7 @@ public class JTimeSelector extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
     private void EdgeBMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EdgeBMousePressed
         if (EdgeB.isEnabled())
-            PredefM.show(EdgeB, evt.getX(), evt.getY());
+            PredefM.show(EdgeB, EdgeB.getBorder().getBorderInsets(EdgeB).left / 2, EdgeB.getHeight() - EdgeB.getBorder().getBorderInsets(EdgeB).bottom + 1);
     }//GEN-LAST:event_EdgeBMousePressed
 
     private void EdgeMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EdgeMActionPerformed

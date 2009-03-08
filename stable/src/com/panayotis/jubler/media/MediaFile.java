@@ -104,7 +104,7 @@ public class MediaFile {
     }
     public void guessMediaFiles(Subtitles subs) {
         if (!isValid(vfile)) {
-            vfile = VideoFile.guessFile(subs.getCurrentFile(), new VideoFileFilter(), decoder);
+            vfile = VideoFile.guessFile(subs, new VideoFileFilter(), decoder);
             if (!isValid(afile)) setAudioFileUnused();
             if (!isValid(cfile)) updateCacheFile(afile);
         }

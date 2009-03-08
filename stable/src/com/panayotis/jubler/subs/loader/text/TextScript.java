@@ -38,13 +38,15 @@ import com.panayotis.jubler.subs.Subtitles;
  *
  * @author teras
  */
-public class W3CTimedText extends AbstractTextSubFormat {
+public class TextScript extends AbstractTextSubFormat {
     private static final Pattern pat;
+    
+    private int counter;
     
     static {
         pat = Pattern.compile(
-                "(?s)<p"+sp+"(.*?)\\\"(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d\\d)\\\""+sp+
-                "end=\\\"(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d\\d)\\\">(.*?)</p>"+nl
+                "(?s)(\\d+)"+sp+"(\\d\\d);(\\d\\d);(\\d\\d);(\\d\\d)"+sp+
+                "(\\d\\d);(\\d\\d);(\\d\\d);(\\d\\d)"+sp+"(.*?)"+nl+nl
                 );
     }
     
@@ -53,38 +55,32 @@ public class W3CTimedText extends AbstractTextSubFormat {
     protected SubEntry getSubEntry(Matcher m) {
         Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
         Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
-        SubEntry entry = new SubEntry(start, finish, m.group(10).replace("<br />", "\n"));
+        SubEntry entry = new SubEntry(start, finish, m.group(10));
         return entry;
     }
     
+    
     public String getExtension() {
-        return "xml";
+        return "txt";
     }
     
     public String getName() {
-        return "W3CTimedText";
+        return "TextScript";
     }
     public String getExtendedName() {
-        return _("W3C Timed Text");
+        return _("Adobe Encore Text Script");
     }
     
     protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
-        header.append("<tt xmlns=\"http://www.w3.org/2006/10/ttaf1\">\n");
-        header.append("  <body>\n");
-        header.append("    <div xml:id=\"captions\">\n");
+        counter = 0;
     }
     
     protected void appendSubEntry(SubEntry sub, StringBuffer str){
-        str.append("      <p begin=\"" + sub.getStartTime().getSeconds().replace(',', '.') + "\" end=\"" + sub.getFinishTime().getSeconds().replace(',', '.') + "\">");
-        str.append(sub.getText().replace("\n","<br />"));
-        str.append("</p>\n");
+        str.append(Integer.toString(++counter) + " ");
+        str.append(sub.getStartTime().getSecondsFrames(FPS).replace(',', ';').replace(':', ';') + " " +
+                   sub.getFinishTime().getSecondsFrames(FPS).replace(',', ';').replace(':', ';') + " ");
+        str.append(sub.getText() + "\n\n");
     }
     
-    protected void cleanupSaver(StringBuffer footer) {
-        footer.append("    </div>\n");
-        footer.append("  </body>\n");
-        footer.append("</tt>\n");
-    }
-    
-    public boolean supportsFPS() { return false; }
+    public boolean supportsFPS() { return true; }
 }

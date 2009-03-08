@@ -30,6 +30,7 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import java.awt.BorderLayout;
@@ -73,6 +74,7 @@ public class JStyleEditor extends javax.swing.JDialog {
     /** Creates new form JStyleEditor */
     public JStyleEditor(Jubler parent) {
         super(parent, true);
+        SystemDependent.setSmallDecoration(getRootPane());
         initComponents();
         
         this.parent = parent;
@@ -111,8 +113,8 @@ public class JStyleEditor extends javax.swing.JDialog {
         setOptionsVisible(false);
         pack();
     }
-    
-    
+
+
     private void setSpinner(JSpinner spin, int min, int max) {
         SpinnerNumberModel model = (SpinnerNumberModel)spin.getModel();
         model.setMinimum(min);
@@ -139,6 +141,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         Clone.setEnabled(true);
         delete_button_selected = false;
         is_cloned = false;
+        setLocationRelativeTo(parent);
         setVisible(true);
     }
      
@@ -357,21 +360,25 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         Bold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bold.png"))); // NOI18N
         Bold.setToolTipText(_("Bold"));
+        SystemDependent.setCommandButtonStyle(Bold, "first");
         Bold.addActionListener(formListener);
         jPanel3.add(Bold);
 
         Italic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/italics.png"))); // NOI18N
         Italic.setToolTipText(_("Italic"));
+        SystemDependent.setCommandButtonStyle(Italic, "middle");
         Italic.addActionListener(formListener);
         jPanel3.add(Italic);
 
         Underline.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/underline.png"))); // NOI18N
         Underline.setToolTipText(_("Underline"));
+        SystemDependent.setCommandButtonStyle(Underline, "middle");
         Underline.addActionListener(formListener);
         jPanel3.add(Underline);
 
         Strike.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/strike.png"))); // NOI18N
         Strike.setToolTipText(_("Strikethrough"));
+        SystemDependent.setCommandButtonStyle(Strike, "last");
         Strike.addActionListener(formListener);
         jPanel3.add(Strike);
 
@@ -384,21 +391,25 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         Primary.setText(TriColorButton.labels[0]);
         Primary.setToolTipText(TriColorButton.tooltips[0]);
+        SystemDependent.setColorButtonStyle(Primary, "only");
         Primary.addActionListener(formListener);
         jPanel4.add(Primary);
 
         Secondary.setText(TriColorButton.labels[1]);
         Secondary.setToolTipText(TriColorButton.tooltips[1]);
+        SystemDependent.setColorButtonStyle(Secondary, "only");
         Secondary.addActionListener(formListener);
         jPanel4.add(Secondary);
 
         Outline.setText(TriColorButton.labels[2]);
         Outline.setToolTipText(TriColorButton.tooltips[2]);
+        SystemDependent.setColorButtonStyle(Outline, "only");
         Outline.addActionListener(formListener);
         jPanel4.add(Outline);
 
         Shadow.setText(TriColorButton.labels[3]);
         Shadow.setToolTipText(TriColorButton.tooltips[3]);
+        SystemDependent.setColorButtonStyle(Shadow, "only");
         Shadow.addActionListener(formListener);
         jPanel4.add(Shadow);
 

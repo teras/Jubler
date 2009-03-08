@@ -20,12 +20,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+package com.panayotis.jubler.subs.loader.gui;
 
-package com.panayotis.jubler.options;
-
-import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionListener;
@@ -33,17 +32,18 @@ import java.awt.event.MouseListener;
 import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.SortedMap;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
  *
  * @author  teras
  */
-public abstract class JFileOptions extends JPanel implements OptionsHolder, ActionListener, MouseListener  {
-    
+public abstract class JFileOptions extends JPanel implements ActionListener, MouseListener {
+
     public static final String[] AvailEncodings;
+
 
     static {
         SortedMap encs = Charset.availableCharsets();
@@ -57,69 +57,37 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
             AvailEncodings[pos++] = item;
         }
     }
-    
-    public abstract void updateVisuals(MediaFile mfile, Subtitles subs);
-    
+
     protected abstract void setPreEncoding(String enc);
 
-        public JFileOptions() {
+    /* Use this method to load options and use them on visual components */
+    public abstract void updateVisuals(FileOptions opts, MediaFile mfile, Subtitles subs);
+
+
+    /* Use this method to save options to disk */
+    protected abstract void setOptions(FileOptions opts);
+
+    public JFileOptions() {
         initComponents();
     }
-    
-    protected void setCombo(JComboBox enc, String t, String deflt) {
-        if ( enc.getSelectedItem().equals(t)) return;
-        
-        int i = enc.getSelectedIndex();
-        enc.setSelectedItem(t);
-        if ( enc.getSelectedIndex() == i) {
-            enc.setSelectedItem(deflt);
-        }
-    }
-    
-    public JPanel getTabPanel() {
-        return this;
-    }
-    
-    /* This method is called when a load/save action is performed
-     * To grasp when a JPreferences dialog is displayed, see
-     * Options.loadSystemPreferences(JPreferences);
-     */
-    public void showDialog(JFrame parent, JPanel GUI, MediaFile mfile, Subtitles subs) {
-        if ( !DialogVisible.isSelected() ) return;
-        
-        updateVisuals(mfile, subs);
-        DialogVisible.setVisible(false);
-        JIDialog.info(parent, GUI, _("File preferences"));
-        DialogVisible.setVisible(true);
-    }
-    
-    protected void updateDialogOption(String text, String tooltip) {
-        DialogVisible.setText(text);
-        DialogVisible.setToolTipText(tooltip);
-    }
-    protected void addDialogOption() {
-        add(DialogPanel, java.awt.BorderLayout.SOUTH);
-    }
-    protected void setDialogOption(boolean status) {
-        DialogVisible.setSelected(status);
-    }
-    protected String getDialogOption() {
-         return DialogVisible.isSelected() ? "true" : "false";
-    }
+
     protected void setListItem(JComboBox comp, String value) {
         comp.setSelectedItem(value);
         if (!comp.getSelectedItem().toString().equals(value))
             comp.setSelectedItem("US-ASCII");
     }
-    
-    protected void hideUnicodeMenu() {
-        Unicode.setVisible(false);
-        uSep.setVisible(false);
+
+    protected void setUnicodeVisible(boolean status) {
+        Unicode.setVisible(status);
+        uSep.setVisible(status);
     }
-    
-    /* We simply ignore this message */
-    public void tabChanged() {}
-    
+
+    protected JButton getPresetsButton() {
+        if (Presets.getParent() != null)
+            Presets.getParent().remove(Presets);
+        return Presets;
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -234,10 +202,7 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         windows_1255 = new javax.swing.JMenuItem();
         IBM862 = new javax.swing.JMenuItem();
         MacHebrew = new javax.swing.JMenuItem();
-        DialogPanel = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         Presets = new javax.swing.JButton();
-        DialogVisible = new javax.swing.JCheckBox();
 
         Unicode.setText(_("Unicode"));
 
@@ -656,20 +621,10 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
 
         PreEnc.add(MiddleE);
 
-        setLayout(new java.awt.BorderLayout());
-
-        DialogPanel.setLayout(new java.awt.GridLayout(2, 1));
-
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        Presets.setText(_("Use predefined encodings..."));
+        Presets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/encs.png"))); // NOI18N
+        Presets.setToolTipText(_("Use predefined encodings"));
+        SystemDependent.setCommandButtonStyle(Presets, "only");
         Presets.addMouseListener(this);
-        jPanel2.add(Presets, java.awt.BorderLayout.WEST);
-
-        DialogPanel.add(jPanel2);
-        DialogPanel.add(DialogVisible);
-
-        add(DialogPanel, java.awt.BorderLayout.SOUTH);
     }
 
     // Code for dispatching events from components to event handlers.
@@ -690,13 +645,13 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == ISO_8859_15) {
             JFileOptions.this.selectPreEncodings(evt);
         }
+        else if (evt.getSource() == windows_1252) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
         else if (evt.getSource() == IBM850) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == MacRoman) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1252) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == ISO_8859_14) {
@@ -705,10 +660,10 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == ISO_8859_7) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == MacGreek) {
+        else if (evt.getSource() == windows_1253) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == windows_1253) {
+        else if (evt.getSource() == MacGreek) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == MacIcelandic) {
@@ -729,28 +684,31 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == windows_1257) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == IBM852) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
         else if (evt.getSource() == ISO_8859_2) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacCE) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == windows_1250) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == MacCroatian) {
+        else if (evt.getSource() == IBM852) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == IBM855) {
+        else if (evt.getSource() == MacCE) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
+        else if (evt.getSource() == MacCroatian) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == ISO_8859_5) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == KOI8_R) {
+        else if (evt.getSource() == windows_1251) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
+        else if (evt.getSource() == IBM855) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
+        else if (evt.getSource() == IBM866) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == MacCyrillic) {
@@ -759,16 +717,16 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == MacUkraine) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == windows_1251) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM866) {
+        else if (evt.getSource() == KOI8_R) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == ISO_8859_16) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == MacRomania) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
+        else if (evt.getSource() == ISO_2022_CN) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == GB2312) {
@@ -783,9 +741,6 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == HZ) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == ISO_2022_CN) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
         else if (evt.getSource() == Big5) {
             JFileOptions.this.selectPreEncodings(evt);
         }
@@ -795,13 +750,16 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == EUC_TW) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == EUC_JP) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
         else if (evt.getSource() == ISO_2022_JP) {
             JFileOptions.this.selectPreEncodings(evt);
         }
+        else if (evt.getSource() == EUC_JP) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
         else if (evt.getSource() == Shift_JIS) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
+        else if (evt.getSource() == ISO_2022_KR) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == EUC_KR) {
@@ -813,16 +771,10 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == Johab) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == ISO_2022_KR) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
         else if (evt.getSource() == ARMSCII_8) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == GEOSTD_8) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == TIS_620) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == ISO_8859_11) {
@@ -831,16 +783,22 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == windows_874) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == IBM857) {
+        else if (evt.getSource() == TIS_620) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == ISO_8859_9) {
             JFileOptions.this.selectPreEncodings(evt);
         }
+        else if (evt.getSource() == windows_1254) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
+        else if (evt.getSource() == IBM857) {
+            JFileOptions.this.selectPreEncodings(evt);
+        }
         else if (evt.getSource() == MacTurkish) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == windows_1254) {
+        else if (evt.getSource() == windows_1258) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == TCVN) {
@@ -850,9 +808,6 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == VPS) {
-            JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1258) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == MacDevanagari) {
@@ -879,10 +834,10 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
         else if (evt.getSource() == MacFarsi) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == windows_1255) {
+        else if (evt.getSource() == ISO_8859_8) {
             JFileOptions.this.selectPreEncodings(evt);
         }
-        else if (evt.getSource() == ISO_8859_8) {
+        else if (evt.getSource() == windows_1255) {
             JFileOptions.this.selectPreEncodings(evt);
         }
         else if (evt.getSource() == IBM862) {
@@ -913,19 +868,17 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
 
     private void PresetsMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PresetsMousePressed
         if (Presets.isEnabled())
-            PreEnc.show(Presets, evt.getX(), evt.getY());
+            PreEnc.show(Presets, Presets.getBorder().getBorderInsets(Presets).left / 2, Presets.getHeight() - Presets.getBorder().getBorderInsets(Presets).bottom + 1);
     }//GEN-LAST:event_PresetsMousePressed
 
     private void selectPreEncodings(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPreEncodings
         String enc = evt.getActionCommand();
-        if (enc.startsWith("Mac")||
-                enc.equals("Johab")||
+        if (enc.startsWith("Mac") ||
+                enc.equals("Johab") ||
                 enc.endsWith("874"))
-            enc = "x-"+enc;
+            enc = "x-" + enc;
         setPreEncoding(enc);
     }//GEN-LAST:event_selectPreEncodings
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ARMSCII_8;
     private javax.swing.JMenu Arabic;
@@ -941,8 +894,6 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
     private javax.swing.JMenu ChineseT;
     private javax.swing.JMenu Croatian;
     private javax.swing.JMenu Cyrillic;
-    private javax.swing.JPanel DialogPanel;
-    private javax.swing.JCheckBox DialogVisible;
     private javax.swing.JMenuItem EUC_JP;
     private javax.swing.JMenuItem EUC_KR;
     private javax.swing.JMenuItem EUC_TW;
@@ -1025,7 +976,6 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
     private javax.swing.JMenuItem VPS;
     private javax.swing.JMenu Vietnamese;
     private javax.swing.JMenu Western;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator uSep;
     private javax.swing.JMenuItem windows_1250;
     private javax.swing.JMenuItem windows_1251;
@@ -1038,6 +988,5 @@ public abstract class JFileOptions extends JPanel implements OptionsHolder, Acti
     private javax.swing.JMenuItem windows_1258;
     private javax.swing.JMenuItem windows_874;
     // End of variables declaration//GEN-END:variables
-    
 //   protected abstract String getDialogVisible
 }

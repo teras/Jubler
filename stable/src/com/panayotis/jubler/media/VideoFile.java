@@ -30,6 +30,7 @@ import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.subs.Subtitles;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -124,7 +125,7 @@ public class VideoFile extends File {
     
      /* The following function is used in order to guess the filename of the avi/audio/jacache based
       *  on the name of the original file */
-    public static VideoFile guessFile(File subfile, MediaFileFilter filter, DecoderInterface decoder) {
+    public static VideoFile guessFile(Subtitles subs, MediaFileFilter filter, DecoderInterface decoder) {
         File dir;   /* the parent directory of the subtitle */
         File files[];   /* List of video files in the same directory as the subtitle */
         int matchcount;  /* best match so far */
@@ -132,10 +133,14 @@ public class VideoFile extends File {
         String subfilename, curfilename;    /* Subtitles filename (in lowercase) & file in the same directory */
         int size;
         int i,j;
-        
-        if (subfile==null) subfile = new File(FileCommunicator.getCurrentPath()+_("Untitled"));
-        
-        dir  = subfile.getParentFile();
+
+        File subfile;
+        if (subs == null || subs.getCurrentFile() == null)
+            subfile = new File(FileCommunicator.getCurrentPath() + _("Untitled"));
+        else
+            subfile = subs.getCurrentFile();
+
+        dir = subfile.getParentFile();
         if (dir == null)
             return new VideoFile(subfile.getPath() + "." + filter.getExtensions()[0], decoder);
         

@@ -96,7 +96,7 @@ public class JAbout extends javax.swing.JPanel {
         String abouttext =
                 "\n" + _("Subtitle Editor for Java") + "\n\n" +
                 _("Version") + " " + getCurrentVersion() + "\n\n" +
-                "(C) 2005 Panayotis Katsaloulis" + "\n"+
+                "\u00a9 2005-2009 Panayotis Katsaloulis" + "\n"+
                 "\u03a0\u03b1\u03bd\u03b1\u03b3\u03b9\u03ce\u03c4\u03b7\u03c2 \u039a\u03b1\u03c4\u03c3\u03b1\u03bb\u03bf\u03cd\u03bb\u03b7\u03c2" + "\n\n" +
                 "http://www.jubler.org" + "\n\n" +
                 _("Contact address")+": "+parseMail("panayotis.com","panayotis");

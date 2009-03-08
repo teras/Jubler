@@ -36,6 +36,8 @@ public class DEBUG {
 
     private static FileWriter log;
     private static String NL = System.getProperty("line.separator");
+
+
     static {
         try {
             File logfile = new File(SystemDependent.getLogPath());
@@ -50,8 +52,8 @@ public class DEBUG {
     }
 
     public static void debug(String debug) {
-        if (debug==null || debug.equals("")) return;
-        
+        if (debug == null || debug.equals(""))
+            return;
         System.out.println(debug);
         try {
             if (log != null) {
@@ -60,16 +62,18 @@ public class DEBUG {
                 log.flush();
             }
         } catch (IOException ex) {
-  //          Logger.getLogger(DEBUG.class.getName()).log(Level.SEVERE, null, ex);
+            //          Logger.getLogger(DEBUG.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public static void debug(Throwable e) {
+        if (e instanceof ArrayIndexOutOfBoundsException && e.getStackTrace()[0].toString().startsWith("apple.laf.ScreenMenu.updateItems"))
+            return;
         StringWriter str = new StringWriter();
         e.printStackTrace(new PrintWriter(str));
         debug(str.toString());
     }
-    
+
     public static String toString(String[] array) {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < array.length; i++) {

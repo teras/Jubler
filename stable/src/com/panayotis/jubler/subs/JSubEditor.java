@@ -27,6 +27,7 @@ import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.style.JOverStyles;
 import com.panayotis.jubler.subs.style.JStyleEditor;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
@@ -367,6 +368,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         TimeP.setLayout(new java.awt.BorderLayout());
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 0));
         jPanel3.setLayout(new java.awt.GridLayout(3, 1));
 
         L1.setText(_("Start"));
@@ -388,6 +390,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         Lock1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lock.png"))); // NOI18N
         Lock1.setToolTipText(_("Lock the start time of the subtitle"));
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Lock1ActionPerformed(evt);
@@ -403,6 +406,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         Lock2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lock.png"))); // NOI18N
         Lock2.setToolTipText(_("Lock the stop time of the subtitle"));
         Lock2.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        SystemDependent.setCommandButtonStyle(Lock2, "only");
         Lock2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Lock2ActionPerformed(evt);
@@ -419,6 +423,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         Lock3.setSelected(true);
         Lock3.setToolTipText(_("Lock the duration of the subtitle"));
         Lock3.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        SystemDependent.setCommandButtonStyle(Lock3, "only");
         Lock3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Lock3ActionPerformed(evt);
@@ -467,6 +472,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         EditB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edittheme.png"))); // NOI18N
         EditB.setToolTipText(_("Edit current style"));
+        SystemDependent.setCommandButtonStyle(EditB, "only");
         EditB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditBActionPerformed(evt);
@@ -484,6 +490,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         DetachB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/detach.png"))); // NOI18N
         DetachB.setToolTipText(_("Detach subtitle editor panel"));
         DetachB.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        SystemDependent.setCommandButtonStyle(DetachB, "only");
         DetachB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DetachBActionPerformed(evt);
@@ -498,6 +505,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         TimeB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/time.png"))); // NOI18N
         TimeB.setSelected(true);
         TimeB.setToolTipText(_("Display/hide subtitle timings"));
+        SystemDependent.setCommandButtonStyle(TimeB, "first");
         TimeB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TimeBActionPerformed(evt);
@@ -508,6 +516,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         FontB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/font.png"))); // NOI18N
         FontB.setToolTipText(_("Display/hide font attributes"));
         FontB.setActionCommand("font");
+        SystemDependent.setCommandButtonStyle(FontB, "middle");
         FontB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 panelsetVisible(evt);
@@ -518,6 +527,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         ColorB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/color.png"))); // NOI18N
         ColorB.setToolTipText(_("Display/hide color attributes"));
         ColorB.setActionCommand("color");
+        SystemDependent.setCommandButtonStyle(ColorB, "last");
         ColorB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 panelsetVisible(evt);
@@ -542,6 +552,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         TrashB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/trash.png"))); // NOI18N
         TrashB.setToolTipText(_("Delete styles of this subtitle"));
+        SystemDependent.setCommandButtonStyle(TrashB, "only");
         TrashB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TrashBActionPerformed(evt);
@@ -553,6 +564,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         ShowStyleB.setSelected(true);
         ShowStyleB.setToolTipText(_("Display/hide styles for this subtitle"));
         ShowStyleB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/showstyle.png"))); // NOI18N
+        SystemDependent.setCommandButtonStyle(ShowStyleB, "only");
         ShowStyleB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ShowStyleBActionPerformed(evt);

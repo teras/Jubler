@@ -113,7 +113,7 @@ public class FileCommunicator {
         String []encs = {"UTF-8"};
         
         if (prefs!=null)
-            encs = prefs.getLoadEncodings();
+            encs = prefs.getFileOptions().getLoadEncodings();
         
         for (int i = 0 ; i < encs.length ; i++ ) {
             res = loadFromFile(infile, encs[i]);
@@ -141,7 +141,7 @@ public class FileCommunicator {
             if ( prefs == null ) {
                 saveformat = JPreferences.DefaultSubFormat;   
             } else {
-                saveformat = prefs.getSaveFormat();
+                saveformat = prefs.getFileOptions().getSaveFormat();
             }
             
             if (saveformat.produce(subs, tempout, prefs, media)) {  // produce & check if should rename file

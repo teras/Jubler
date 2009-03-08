@@ -1088,6 +1088,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
   <Events>
+    <EventHandler event="componentMoved" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="formComponentMoved"/>
+    <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="formMouseMoved"/>
+    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="formMouseClicked"/>
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
   </Events>
   <AuxValues>
@@ -1163,6 +1166,9 @@
                     </Property>
                     <Property name="text" type="java.lang.String" value=" "/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setComponentDraggable(this, Info);"/>
+                  </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="Center"/>
@@ -1179,6 +1185,9 @@
                       </Border>
                     </Property>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setComponentDraggable(this, Stats);"/>
+                  </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                       <BorderConstraints direction="East"/>
@@ -1237,6 +1246,9 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JToolBar" name="JublerTools">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setComponentDraggable(this, JublerTools);"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="North"/>
@@ -1261,6 +1273,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FileNFMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(NewTB, &quot;first&quot;);"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="LoadTB">
               <Properties>
@@ -1274,6 +1289,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OpenFMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(LoadTB, &quot;middle&quot;);"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="SaveTB">
               <Properties>
@@ -1288,6 +1306,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveTBActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(SaveTB, &quot;middle&quot;);"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="InfoTB">
               <Properties>
@@ -1302,6 +1323,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InfoFMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(InfoTB, &quot;last&quot;);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -1329,6 +1353,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CutEMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(CutTB, &quot;first&quot;);"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="CopyTB">
               <Properties>
@@ -1343,6 +1370,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CopyEMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(CopyTB, &quot;middle&quot;);"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="PasteTB">
               <Properties>
@@ -1357,6 +1387,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasteEMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(PasteTB, &quot;last&quot;);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -1377,6 +1410,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UndoEMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(UndoTB, &quot;first&quot;);"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="RedoTB">
               <Properties>
@@ -1391,6 +1427,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RedoEMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(RedoTB, &quot;last&quot;);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -1418,6 +1457,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SortTBActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(SortTB, &quot;only&quot;);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -1438,6 +1480,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CurrentTTMActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(TestTB, &quot;first&quot;);"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JButton" name="PreviewTB">
               <Properties>
@@ -1456,7 +1501,7 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewTBCurrentTTMActionPerformed"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="        PreviewTB.setModel(new ToggleButtonModel()); "/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="        PreviewTB.setModel(new ToggleButtonModel());&#xa;        SystemDependent.setToolBarButtonStyle(PreviewTB, &quot;last&quot;);"/>
               </AuxValues>
             </Component>
           </SubComponents>
