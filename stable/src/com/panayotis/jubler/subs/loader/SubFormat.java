@@ -24,7 +24,6 @@
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;
@@ -40,18 +39,6 @@ public abstract class SubFormat {
 
     public abstract String getExtension();
     public abstract String getName();
-            
-    public final boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
-        if (prefs==null) {
-            FPS = 25f;
-            ENCODING = "UTF-8";
-        } else {
-            FPS = prefs.getFileOptions().getSaveFPS();
-            ENCODING = prefs.getFileOptions().getSaveEncoding();
-        }
-        return produce(subs, outfile, media);
-    }
-    
     
     /* Export subtitles to file
      * Return whether the file should be moved & renamed or not

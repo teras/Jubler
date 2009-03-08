@@ -292,6 +292,9 @@ public class Subtitles extends AbstractTableModel {
         }
     }
 
+    public SubFile getSubFile() {
+        return subfile;
+    }
     /*
      * Methods related to SubFile
      *

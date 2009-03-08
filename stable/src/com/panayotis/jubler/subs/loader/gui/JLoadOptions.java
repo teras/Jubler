@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JComboBox;
 
@@ -54,19 +55,20 @@ public class JLoadOptions extends JFileOptions {
         FPSPanel.add(CFPS, BorderLayout.CENTER);
     }
 
-    public void updateVisuals(FileOptions opts, MediaFile mfile, Subtitles subs) {
+    public void updateVisuals(Subtitles subs, MediaFile mfile) {
         CFPS.setDataFiles(mfile, subs);
         setUnicodeVisible(false);
         OptsP.add(getPresetsButton(), BorderLayout.EAST);
         for(int i = 0 ; i < CEnc.length ; i++)
-            setListItem(CEnc[i], opts.getLoadEncoding(i));
-        CFPS.setFPS(opts.getLoadFPS());
+            setListItem(CEnc[i], SubFile.getDefaultEncoding(i));
+        CFPS.setFPS(SubFile.getDefaultFPS());
     }
 
-    protected void setOptions(FileOptions opts) {
+    /* opts should be null - they are not used */
+    protected void setOptions(SubFile  opts_no_use) {
         for (int i = 0; i < CEnc.length; i++)
-            opts.setLoadEncodings(i, CEnc[i].getSelectedItem().toString());
-        opts.setLoadFPS(CFPS.getFPS());
+            SubFile.setDefaultEncoding(i, CEnc[i].getSelectedItem().toString());
+        SubFile.setDefaultFPS(CFPS.getFPS());
     }
 
     public void setPreEncoding(String enc) {

@@ -31,7 +31,6 @@ import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.loader.SubFormat;
-import com.panayotis.jubler.subs.loader.gui.FileOptions;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
@@ -55,8 +54,6 @@ public class JPreferences extends javax.swing.JDialog {
     private JExternalOptions jspell;
     private JShortcutsOptions jcut;
 
-    private FileOptions fileopts;
-    
     private boolean dialog_status;
     
     static {
@@ -82,14 +79,8 @@ public class JPreferences extends javax.swing.JDialog {
         add(Tabs, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
-
-        fileopts = new FileOptions();
     }
 
-    public FileOptions getFileOptions() {
-        return fileopts;
-    }
-    
     public VideoPlayer getVideoPlayer() {
         return (VideoPlayer)jplay.getObject();
     }

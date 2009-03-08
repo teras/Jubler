@@ -26,6 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -61,11 +62,11 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
     protected abstract void setPreEncoding(String enc);
 
     /* Use this method to load options and use them on visual components */
-    public abstract void updateVisuals(FileOptions opts, MediaFile mfile, Subtitles subs);
+    public abstract void updateVisuals(Subtitles subs, MediaFile mfile);
 
 
     /* Use this method to save options to disk */
-    protected abstract void setOptions(FileOptions opts);
+    protected abstract void setOptions(SubFile opts);
 
     public JFileOptions() {
         initComponents();

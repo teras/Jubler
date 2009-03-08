@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 
 /**
@@ -38,7 +39,7 @@ public class JSaveOptions extends JFileOptions {
 
     private String enc_state,  fps_state,  format_state;
     private JRateChooser CFPS;
-    private FileOptions opts;
+    private SubFile subfile;
 
     /** Creates new form JSavePrefs */
     public JSaveOptions() {
@@ -50,30 +51,30 @@ public class JSaveOptions extends JFileOptions {
         ControlsP.add(CFPS, BorderLayout.CENTER);
     }
 
-    public void updateVisuals(FileOptions opts, MediaFile mfile, Subtitles subs) {
-        this.opts = opts;
+    public void updateVisuals(Subtitles subs, MediaFile mfile) {
+        this.subfile = subs.getSubFile();
         updateVisualFPS();  // get the current SubFormat
         setUnicodeVisible(true);
         CEncP.add(getPresetsButton(), BorderLayout.EAST);
 
         CFPS.setDataFiles(mfile, subs);
-        CFormat.setSelectedItem(opts.getSaveFormat().getName());
+        CFormat.setSelectedItem(subfile.getFormat().getName());
 
-        setListItem(CEnc, opts.getSaveEncoding());
-        CFPS.setFPS(opts.getSaveFPS());
-        CFormat.setSelectedItem(opts.getSaveFormat().getDescription());
+        setListItem(CEnc, subfile.getEncoding());
+        CFPS.setFPS(subfile.getFPS());
+        CFormat.setSelectedItem(subfile.getFormat().getDescription());
     }
 
-    protected void setOptions(FileOptions opts) {
-        opts.setSaveEncoding(CEnc.getSelectedItem().toString());
-        opts.setSaveFPS(CFPS.getFPS());
-        opts.setSaveFormat(CFormat.getSelectedItem().toString());
+    protected void setOptions(SubFile opts) {
+        opts.setEncoding(CEnc.getSelectedItem().toString());
+        opts.setFPS(CFPS.getFPS());
+        opts.setFormat(CFormat.getSelectedItem().toString());
     }
 
 
     /* Execute this method whenever the output format is changed (or this panel is displayed */
     private void updateVisualFPS() {
-        boolean supports_fps = opts.getSaveFormat().supportsFPS();
+        boolean supports_fps = subfile.getFormat().supportsFPS();
         FPSPanelL.setVisible(supports_fps);
         CFPS.setVisible(supports_fps);
     }
@@ -143,8 +144,8 @@ public class JSaveOptions extends JFileOptions {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CFormatActionPerformed
-        if (opts != null) {
-            opts.setSaveFormat(CFormat.getSelectedItem().toString());
+        if (subfile != null) {
+            subfile.setFormat(CFormat.getSelectedItem().toString());
             updateVisualFPS();
         }
     }//GEN-LAST:event_CFormatActionPerformed

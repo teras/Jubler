@@ -37,6 +37,11 @@
         <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
+    <version release="" version="4.1">
+        <description>
+            Only one instance of Jubler is now run in a system. Improved load/save dialog, which encapsulates the information inside the load dialog. Great improvements in Mac OS X GUI. Improved subtitle support. Many changes and bug fixes.
+        </description>
+    </version>
 
     <version release="559" version="4.0">
         <description>

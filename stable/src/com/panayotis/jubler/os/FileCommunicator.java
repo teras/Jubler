@@ -40,6 +40,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
@@ -108,17 +109,13 @@ public class FileCommunicator {
     
     
     
-    public static String load(File infile, JPreferences prefs) {
+    public static String load(File infile) {
         String res;
-        String []encs = {"UTF-8"};
-        
-        if (prefs!=null)
-            encs = prefs.getFileOptions().getLoadEncodings();
-        
-        for (int i = 0 ; i < encs.length ; i++ ) {
-            res = loadFromFile(infile, encs[i]);
+
+        for (int i = 0 ; i < SubFile.getDefaultEncodingSize() ; i++ ) {
+            res = loadFromFile(infile, SubFile.getDefaultEncoding(i));
             if ( res != null) {
-                DEBUG.debug(_("Found file {0}", encs[i]));
+                DEBUG.debug(_("Found file {0}", SubFile.getDefaultEncoding(i)));
                 return res;
             }
         }
@@ -126,25 +123,17 @@ public class FileCommunicator {
     }
     
     
-    public static String save(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) {
+    public static String save(Subtitles subs, MediaFile media, File outfile) {
         File tempout = null;
         String result = null;
         
         try {
-            SubFormat saveformat;
             tempout = new File(outfile.getPath()+".temp");
             if ( !SystemDependent.canWrite(tempout.getParentFile()) ||
                     (outfile.exists() && (!SystemDependent.canWrite(outfile)) ) ) {
                 return _("File {0} is unwritable", outfile.getPath());
             }
-            
-            if ( prefs == null ) {
-                saveformat = JPreferences.DefaultSubFormat;   
-            } else {
-                saveformat = prefs.getFileOptions().getSaveFormat();
-            }
-            
-            if (saveformat.produce(subs, tempout, prefs, media)) {  // produce & check if should rename file
+            if (subs.getSubFile().getFormat().produce(subs, tempout, media)) {  // produce & check if should rename file
                 outfile.delete();
                 if (!tempout.renameTo(outfile))
                     result = _("Error while updating file {0}", outfile.getPath());

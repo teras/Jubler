@@ -76,6 +76,8 @@ public class AvailSubFormats {
     }
 
     public static SubFormat findFromDescription(String name) {
+        if (name == null)
+            return null;
         for (int i = 0; i < Formats.length; i++)
             if (Formats[i].getDescription().equals(name))
                 return Formats[i];

@@ -14,6 +14,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFileFilter;
 import java.awt.BorderLayout;
@@ -40,8 +41,8 @@ public class JSubFileDialog extends javax.swing.JDialog {
         jsave = new JSaveOptions();
     }
 
-    private File showDialog(Frame parent, FileOptions opts, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
-        jopt.updateVisuals(opts, mfile, subs);
+    private File showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
+        jopt.updateVisuals(subs, mfile);
         getContentPane().removeAll();
         getContentPane().add(chooser, BorderLayout.CENTER);
         getContentPane().add(jopt, BorderLayout.NORTH);
@@ -50,23 +51,25 @@ public class JSubFileDialog extends javax.swing.JDialog {
         setVisible(true);
         if (!isAccepted)
             return null;
-        jopt.setOptions(opts);
-        opts.saveOptions();
+        jopt.setOptions(subs.getSubFile());
         FileCommunicator.setDefaultDialogPath(chooser);
         return chooser.getSelectedFile();
     }
 
-    public File getSaveFile(Frame parent, FileOptions opts, Subtitles subs, MediaFile mfile) {
+    public File getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
         setTitle(_("Save Subtitles"));
         chooser.setSelectedFile(subs.getCurrentFile());
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        return showDialog(parent, opts, subs, mfile, jsave);
+        return showDialog(parent, subs, mfile, jsave);
     }
 
-    public File getLoadFile(Frame parent, FileOptions opts, MediaFile mfile) {
+    public File getLoadFile(Frame parent, MediaFile mfile) {
         setTitle(_("Load Subtitles"));
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        return showDialog(parent, opts, null, mfile, jload);
+        File res = showDialog(parent, null, mfile, jload);
+        if (res != null)
+            SubFile.saveDefaultOptions();
+        return res;
     }
 
     /** This method is called from within the constructor to

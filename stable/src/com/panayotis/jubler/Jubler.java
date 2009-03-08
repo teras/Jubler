@@ -43,6 +43,7 @@ import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
@@ -1942,7 +1943,7 @@ public class Jubler extends JFrame {
     
     
     private void SaveAsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsFMActionPerformed
-        saveFile(fdialog.getSaveFile(this, prefs.getFileOptions(), subs, mfile));
+        saveFile(fdialog.getSaveFile(this, subs, mfile));
     }//GEN-LAST:event_SaveAsFMActionPerformed
     
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1963,7 +1964,7 @@ public class Jubler extends JFrame {
     
     private void OpenFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFMActionPerformed
         MediaFile mf = new MediaFile();
-        Jubler newj = loadFileFromHere(fdialog.getLoadFile(this, prefs.getFileOptions(), mf), false);
+        Jubler newj = loadFileFromHere(fdialog.getLoadFile(this, mf), false);
         if (newj!=null)
             newj.mfile = mf;
     }//GEN-LAST:event_OpenFMActionPerformed
@@ -2197,10 +2198,10 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         if (f ==null)
             return;
         String ext;
-        ext = "."+prefs.getFileOptions().getSaveFormat().getExtension();
+        ext = "." + subs.getSubFile().getFormat().getExtension();
         f = FileCommunicator.stripFileFromVideoExtension(f);
         f = new File(f.getPath()+ext);
-        String result = FileCommunicator.save(subs, f, prefs, mfile);
+        String result = FileCommunicator.save(subs, mfile, f);
         if (result == null ) {
             /* Saving succesfull */
             undo.setSaveMark();
@@ -2237,7 +2238,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         /* Check if this is an auto-load subtitle file */
         is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
 
-        data = FileCommunicator.load(f, is_autoload ? null : prefs);
+        data = FileCommunicator.load(f);
         if (data == null) {
             JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
             return null;
@@ -2249,7 +2250,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         }
         
         /* Convert file into subtitle data */
-        newsubs.populate(f, data, is_autoload ? 25 : prefs.getFileOptions().getLoadFPS());
+        newsubs.populate(f, data, SubFile.getDefaultFPS());
         if (newsubs.size() == 0) {
             JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
             return null;
