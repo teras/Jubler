@@ -126,7 +126,7 @@ public class StaticJubler {
         Vector <String>unsaved = new Vector<String>();
         for (Jubler j : Jubler.windows) {
             if (j.isUnsaved()) {
-                unsaved.add(j.getSubtitles().getCurrentFileName());
+                unsaved.add(j.getSubtitles().getSubFile().getCurrentFile().getName());
             }
         }
         if (unsaved.size() > 0) {
@@ -162,7 +162,7 @@ public class StaticJubler {
         for (Jubler j : Jubler.windows) {
             subs = j.getSubtitles();
             if (subs!=null) {
-                jfile = subs.getLastOpendFilePath();
+                jfile = subs.getSubFile().getLastOpenedFile().getPath();
                 found = false;
                 
                 if (jfile!=null) {

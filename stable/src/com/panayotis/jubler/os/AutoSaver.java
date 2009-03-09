@@ -65,7 +65,7 @@ public class AutoSaver {
                         subs = j.getSubtitles();
                         outfile = new File(dir,
                                 AUTOSAVEPREFIX + String.format("%04x", rnd.nextInt() & 0xffff) + "." +
-                                subs.getCurrentFileName() + "." +
+                                subs.getSubFile().getCurrentFile().getName() + "." +
                                 JPreferences.DefaultSubFormat.getExtension());
                         FileCommunicator.save(subs, null, outfile);
                     }

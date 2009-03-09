@@ -135,10 +135,10 @@ public class VideoFile extends File {
         int i,j;
 
         File subfile;
-        if (subs == null || subs.getCurrentFile() == null)
+        if (subs == null || subs.getSubFile().getCurrentFile() == null)
             subfile = new File(FileCommunicator.getCurrentPath() + _("Untitled"));
         else
-            subfile = subs.getCurrentFile();
+            subfile = subs.getSubFile().getCurrentFile();
 
         dir = subfile.getParentFile();
         if (dir == null)

@@ -72,7 +72,7 @@ public class SubFile {
             enc = JPreferences.DefaultEncodings[i];
         def_encodings[i] = enc;
     }
-
+    
     public static float getDefaultFPS() {
         return def_FPS;
     }
@@ -91,6 +91,8 @@ public class SubFile {
         setEncoding(null);
         setFPS(null);
         setFormat(null);
+        setCurrentFile(null);
+        setLastOpenedFile(null);
     }
 
     public SubFile(SubFile old) {

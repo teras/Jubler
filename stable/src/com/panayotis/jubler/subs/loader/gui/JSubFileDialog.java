@@ -51,25 +51,23 @@ public class JSubFileDialog extends javax.swing.JDialog {
         setVisible(true);
         if (!isAccepted)
             return null;
-        jopt.setOptions(subs.getSubFile());
+        jopt.applyOptions();
+        SubFile.saveDefaultOptions();
         FileCommunicator.setDefaultDialogPath(chooser);
         return chooser.getSelectedFile();
     }
 
     public File getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
         setTitle(_("Save Subtitles"));
-        chooser.setSelectedFile(subs.getCurrentFile());
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        chooser.setSelectedFile(subs.getSubFile().getCurrentFile());
         return showDialog(parent, subs, mfile, jsave);
     }
 
     public File getLoadFile(Frame parent, MediaFile mfile) {
         setTitle(_("Load Subtitles"));
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        File res = showDialog(parent, null, mfile, jload);
-        if (res != null)
-            SubFile.saveDefaultOptions();
-        return res;
+        return showDialog(parent, null, mfile, jload);
     }
 
     /** This method is called from within the constructor to

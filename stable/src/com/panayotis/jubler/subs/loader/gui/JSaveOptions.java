@@ -65,10 +65,10 @@ public class JSaveOptions extends JFileOptions {
         CFormat.setSelectedItem(subfile.getFormat().getDescription());
     }
 
-    protected void setOptions(SubFile opts) {
-        opts.setEncoding(CEnc.getSelectedItem().toString());
-        opts.setFPS(CFPS.getFPS());
-        opts.setFormat(CFormat.getSelectedItem().toString());
+    protected void applyOptions() {
+//        SubFile.setDefaultFPS(CFPS.getFPS());
+//        SubFile.setDefaultSaveEncoding(CEnc.getSelectedItem().toString());
+//        opts.setFormat(CFormat.getSelectedItem().toString());
     }
 
 

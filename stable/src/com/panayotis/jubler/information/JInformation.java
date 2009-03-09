@@ -58,7 +58,7 @@ public class JInformation extends JDialog {
         AuthorT.setText(attr.getAuthor());
         SourceT.setText(attr.getSource());
         CommentsT.setText(attr.getComments());
-        FilePathT.setText(parent.getSubtitles().getCurrentFile().getPath());
+        FilePathT.setText(parent.getSubtitles().getSubFile().getCurrentFile().getPath());
         
         NumberT.setText(Integer.toString(parent.getSubtitles().size()));
         TotalSubMetrics m = parent.getSubtitles().getTotalMetrics();

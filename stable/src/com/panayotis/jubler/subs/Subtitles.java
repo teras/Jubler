@@ -295,37 +295,6 @@ public class Subtitles extends AbstractTableModel {
     public SubFile getSubFile() {
         return subfile;
     }
-    /*
-     * Methods related to SubFile
-     *
-     */
-    public File getCurrentFile() {
-        return subfile.getCurrentFile();
-    }
-
-    public void setCurrentFile(File f) {
-        subfile.setCurrentFile(f);
-    }
-
-    public String getCurrentFileName() {
-        return subfile.getCurrentFile().getName();
-    }
-
-    public File getLastOpenedFile() {
-        return subfile.getLastOpenedFile();
-    }
-
-    public void setLastOpenedFile(File f) {
-        subfile.setLastOpenedFile(f);
-    }
-
-    public String getLastOpendFilePath() {
-        File last = subfile.getLastOpenedFile();
-        if (last == null) {
-            return null;
-        }
-        return last.getPath();
-    }
 
     /* Methods related to JTable */
     public void setVisibleColumn(int which, boolean how) {

@@ -341,7 +341,7 @@ public class Jubler extends JFrame {
     
     
     private void updateRecentFile(File recent) {
-        if (subs!=null) subs.setLastOpenedFile(recent);
+        if (subs!=null) subs.getSubFile().setLastOpenedFile(recent);
         FileCommunicator.updateRecentsList(recent);
         FileCommunicator.updateRecentsMenu();
     }
@@ -350,7 +350,7 @@ public class Jubler extends JFrame {
     public void recentMenuCallback(String filename) {
         if (filename==null) {
             Jubler jub = new Jubler(new Subtitles(subs));
-            jub.initNewFile(subs.getCurrentFile().getPath()+_("_clone"));
+            jub.initNewFile(subs.getSubFile().getCurrentFile().getPath()+_("_clone"));
             /* The user wants to clone current file */
         } else {
             loadFileFromHere(new File(filename), false);
@@ -1582,7 +1582,7 @@ public class Jubler extends JFrame {
         }
         curjubler.setSubs(s);
         
-        curjubler.initNewFile(subs.getCurrentFile().getPath()+_("_child"));
+        curjubler.initNewFile(subs.getSubFile().getCurrentFile().getPath()+_("_child"));
         curjubler.connect_to_other = this;
     }//GEN-LAST:event_ChildNFMActionPerformed
     
@@ -1786,7 +1786,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_DeletePActionPerformed
     
     private void RevertFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevertFMActionPerformed
-        loadFileFromHere(subs.getLastOpenedFile(), true);
+        loadFileFromHere(subs.getSubFile().getLastOpenedFile(), true);
     }//GEN-LAST:event_RevertFMActionPerformed
     
     private void GloballyREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GloballyREMActionPerformed
@@ -1923,8 +1923,8 @@ public class Jubler extends JFrame {
             Jubler newwindow = new Jubler(subs2);
             newwindow.undo.invalidateSaveMark();
             
-            newwindow.setFile(new File(oldsubs.getCurrentFile()+"_2"), true);
-            setFile(new File(oldsubs.getCurrentFile()+"_1"), false);
+            newwindow.setFile(new File(oldsubs.getSubFile().getCurrentFile()+"_2"), true);
+            setFile(new File(oldsubs.getSubFile().getCurrentFile()+"_1"), false);
         }
     }//GEN-LAST:event_SplitTMActionPerformed
     
@@ -1951,7 +1951,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_formWindowClosing
     
     private void SaveFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFMActionPerformed
-        saveFile(subs.getCurrentFile());
+        saveFile(subs.getSubFile().getCurrentFile());
     }//GEN-LAST:event_SaveFMActionPerformed
     
     private void PrefsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrefsFMActionPerformed
@@ -2233,7 +2233,8 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
 
         /* Initialize Subtitles */
         newsubs = new Subtitles();
-        newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
+        SubFile sfile = newsubs.getSubFile();
+        sfile.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
 
         /* Check if this is an auto-load subtitle file */
         is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
@@ -2246,7 +2247,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         /* Strip autosave prefix from filename */
         if (is_autoload) {
             f = new File(f.getName().substring(AutoSaver.AUTOSAVEPREFIX.length()+5));
-            newsubs.setCurrentFile(f);
+            newsubs.getSubFile().setCurrentFile(f);
         }
         
         /* Convert file into subtitle data */
@@ -2311,7 +2312,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
         
-        subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
+        subs.getSubFile().setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
         updateRecentFile(f);
         showInfo();
         if(reset_selection) 
@@ -2385,7 +2386,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
             windows.elementAt(0).JoinTM.setEnabled(false);
             windows.elementAt(0).ReparentTM.setEnabled(false);
         }
-        if (subs!=null) subs.setLastOpenedFile(null); //Needed to remove itself from the recents menu
+        if (subs!=null) subs.getSubFile().setLastOpenedFile(null); //Needed to remove itself from the recents menu
         FileCommunicator.updateRecentsMenu();
         
         if ( windows.size() == 0 ) {
@@ -2417,7 +2418,8 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     
     public void setSubs(Subtitles newsubs) {
         SubEntry[] selected = getSelectedSubs();
-        if ( subs!=null && newsubs.getCurrentFile()==null ) newsubs.setCurrentFile(subs.getCurrentFile());
+        if ( subs!=null && newsubs.getSubFile().getCurrentFile()==null )
+            newsubs.getSubFile().setCurrentFile(subs.getSubFile().getCurrentFile());
         subs = newsubs;
         SubTable.setModel(subs);
         tableHasChanged(selected);
@@ -2486,8 +2488,8 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
     
     public void showInfo() {
         Info.setText(_("Number of subtitles : {0}    {1}", subs.size(), (isUnsaved() ? "-" + _("Unsaved") + "-" : "")));
-        if (subs.getCurrentFile() != null) {
-            String title = subs.getCurrentFileName();
+        if (subs.getSubFile().getCurrentFile() != null) {
+            String title = subs.getSubFile().getCurrentFile().getName();
             if (isUnsaved()) {
                 title = "*" + title;
                 getRootPane().putClientProperty("windowModified", Boolean.TRUE);
@@ -2495,7 +2497,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
                 getRootPane().putClientProperty("windowModified", Boolean.FALSE);
             }
             setTitle(title + " - Jubler");
-            getRootPane().putClientProperty("Window.documentFile", subs.getLastOpenedFile());
+            getRootPane().putClientProperty("Window.documentFile", subs.getSubFile().getLastOpenedFile());
         } else {
             setTitle("Jubler");
         }
