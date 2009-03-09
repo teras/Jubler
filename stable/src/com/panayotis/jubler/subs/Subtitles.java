@@ -26,6 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
@@ -88,24 +89,29 @@ public class Subtitles extends AbstractTableModel {
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
-    public void populate(File f, String data, float FPS) {
+    public void populate(File f, String data, SubFile sfile) {
         Subtitles load;
-        AvailSubFormats formats;
+        SubFormat format = null;
+        AvailSubFormats formatlist;
 
-        if (data == null) {
+        if (data == null)
             return;
-        }
         load = null;
-        formats = new AvailSubFormats();
+        formatlist = new AvailSubFormats();
 
-        while (load == null && formats.hasMoreElements()) {
-            load = formats.nextElement().parse(data, FPS, f);
-            if (load != null && load.size() < 1) {
+        while (load == null && formatlist.hasMoreElements()) {
+            format = formatlist.nextElement();
+            format.updateFormat(sfile);
+            load = format.parse(data, sfile.getFPS(), f);
+            if (load != null && load.size() < 1)
                 load = null;
-            }
         }
-        appendSubs(load, true);
-        attribs = new SubAttribs(load.attribs);
+        if (load != null) {
+            appendSubs(load, true);
+            attribs = new SubAttribs(load.attribs);
+            if (format != null)
+                sfile.setFormat(format.getName());
+        }
     }
 
     public void sort(double mintime, double maxtime) {

@@ -24,6 +24,7 @@
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +36,7 @@ import java.io.IOException;
 public abstract class SubFormat {
     
     protected float FPS;
-    private String ENCODING;
+    protected String ENCODING;
 
     public abstract String getExtension();
     public abstract String getName();
@@ -53,13 +54,13 @@ public abstract class SubFormat {
         return getExtendedName() + "  (*." + getExtension() + ")";
     }
 
-    public String getEncoding() {
-        return ENCODING;
-    }
-    
     /* convert a string into subtitles */
-    public abstract Subtitles parse(String input, float FPS, File f);
-    
+    public abstract Subtitles parse(String input, float FPS, File f);    
     
     public abstract boolean supportsFPS();
+
+    public void updateFormat(SubFile sfile) {
+        this.ENCODING = sfile.getEncoding();
+        this.FPS = sfile.getFPS();
+    }
 }

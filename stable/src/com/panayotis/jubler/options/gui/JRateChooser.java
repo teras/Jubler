@@ -37,8 +37,7 @@ import javax.swing.JPanel;
  */
 public class JRateChooser extends JPanel {
        
-    public static final String DefaultFPSEntry = "25";
-    private static final float DefaultValue = 25f;
+    public static final float DefaultFPS = 25f;
     
     private MediaFile mfile = null;
     private Subtitles subs = null;
@@ -54,7 +53,7 @@ public class JRateChooser extends JPanel {
             return Float.parseFloat(getFPS());
         } catch (NumberFormatException e) {
         }
-        return 25f;
+        return DefaultFPS;
     }
     
     public void setDataFiles(MediaFile m, Subtitles s) {

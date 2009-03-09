@@ -37,7 +37,6 @@ import com.panayotis.jubler.subs.Subtitles;
  */
 public class JSaveOptions extends JFileOptions {
 
-    private String enc_state,  fps_state,  format_state;
     private JRateChooser CFPS;
     private SubFile subfile;
 
@@ -52,29 +51,30 @@ public class JSaveOptions extends JFileOptions {
     }
 
     public void updateVisuals(Subtitles subs, MediaFile mfile) {
-        this.subfile = subs.getSubFile();
-        updateVisualFPS();  // get the current SubFormat
         setUnicodeVisible(true);
         CEncP.add(getPresetsButton(), BorderLayout.EAST);
 
-        CFPS.setDataFiles(mfile, subs);
-        CFormat.setSelectedItem(subfile.getFormat().getName());
+        subfile = subs.getSubFile();
 
-        setListItem(CEnc, subfile.getEncoding());
+        CFPS.setDataFiles(mfile, subs);
         CFPS.setFPS(subfile.getFPS());
-        CFormat.setSelectedItem(subfile.getFormat().getDescription());
+        CFormat.setSelectedItem(subfile.getFormat().getName());
+        setListItem(CEnc, subfile.getEncoding());
+
+        updateVisualFPS();  // Set if FPS controls are visible - should be called AFTER CFormat initialization
     }
 
     protected void applyOptions() {
-//        SubFile.setDefaultFPS(CFPS.getFPS());
-//        SubFile.setDefaultSaveEncoding(CEnc.getSelectedItem().toString());
-//        opts.setFormat(CFormat.getSelectedItem().toString());
+        subfile.setFPS(CFPS.getFPSValue());
+        subfile.setEncoding(CEnc.getSelectedItem().toString());
+        subfile.setFormat(CFormat.getSelectedItem().toString());
     }
 
 
     /* Execute this method whenever the output format is changed (or this panel is displayed */
     private void updateVisualFPS() {
-        boolean supports_fps = subfile.getFormat().supportsFPS();
+        String format_name = CFormat.getSelectedItem().toString();
+        boolean supports_fps = AvailSubFormats.findFromDescription(format_name).supportsFPS();
         FPSPanelL.setVisible(supports_fps);
         CFPS.setVisible(supports_fps);
     }
@@ -144,10 +144,7 @@ public class JSaveOptions extends JFileOptions {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CFormatActionPerformed
-        if (subfile != null) {
-            subfile.setFormat(CFormat.getSelectedItem().toString());
-            updateVisualFPS();
-        }
+        updateVisualFPS();
     }//GEN-LAST:event_CFormatActionPerformed
 
     private void CEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CEncActionPerformed

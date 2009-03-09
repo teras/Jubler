@@ -26,8 +26,6 @@ package com.panayotis.jubler.os;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.StaticJubler;
-import com.panayotis.jubler.subs.loader.SubFormat;
-import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import java.io.BufferedReader;
 import java.io.File;
@@ -109,12 +107,13 @@ public class FileCommunicator {
     
     
     
-    public static String load(File infile) {
+    public static String load(File infile, SubFile sfile) {
         String res;
 
         for (int i = 0 ; i < SubFile.getDefaultEncodingSize() ; i++ ) {
             res = loadFromFile(infile, SubFile.getDefaultEncoding(i));
             if ( res != null) {
+                sfile.setEncoding(SubFile.getDefaultEncoding(i));
                 DEBUG.debug(_("Found file {0}", SubFile.getDefaultEncoding(i)));
                 return res;
             }
@@ -133,6 +132,7 @@ public class FileCommunicator {
                     (outfile.exists() && (!SystemDependent.canWrite(outfile)) ) ) {
                 return _("File {0} is unwritable", outfile.getPath());
             }
+            subs.getSubFile().getFormat().updateFormat(subs.getSubFile());   // This is required to update FPS & encoding of the current format
             if (subs.getSubFile().getFormat().produce(subs, tempout, media)) {  // produce & check if should rename file
                 outfile.delete();
                 if (!tempout.renameTo(outfile))

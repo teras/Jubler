@@ -72,7 +72,7 @@ public class SubFile {
             enc = JPreferences.DefaultEncodings[i];
         def_encodings[i] = enc;
     }
-    
+
     public static float getDefaultFPS() {
         return def_FPS;
     }
@@ -81,15 +81,14 @@ public class SubFile {
         try {
             def_FPS = Float.parseFloat(fps);
         } catch (Exception ex) {
-            def_FPS = Float.parseFloat(JRateChooser.DefaultFPSEntry);
+            def_FPS = JRateChooser.DefaultFPS;
         }
     }
 
-    /* COnstructors */
-
+    /* Constructors */
     public SubFile() {
         setEncoding(null);
-        setFPS(null);
+        setFPS(-1);
         setFormat(null);
         setCurrentFile(null);
         setLastOpenedFile(null);
@@ -119,12 +118,10 @@ public class SubFile {
         return FPS;
     }
 
-    public void setFPS(String fps) {
-        try {
-            FPS = Float.parseFloat(fps);
-        } catch (Exception ex) {
-            FPS = Float.parseFloat(JRateChooser.DefaultFPSEntry);
-        }
+    public void setFPS(float fps) {
+        if (fps <= 0)
+            fps = JRateChooser.DefaultFPS;
+        FPS = fps;
     }
 
     public SubFormat getFormat() {
@@ -154,4 +151,5 @@ public class SubFile {
     public void setLastOpenedFile(File f) {
         last_opened_file = f;
     }
+
 }

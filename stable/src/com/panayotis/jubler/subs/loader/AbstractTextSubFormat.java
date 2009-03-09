@@ -52,7 +52,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     protected Subtitles subtitle_list;
     
     /* Initialization functions */
-    private void setFPS(float FPS) { this.FPS=FPS; }
+//    private void setFPS(float FPS) { this.FPS=FPS; }
     
     /* Loading functions */
     protected abstract SubEntry getSubEntry(Matcher m);
@@ -72,7 +72,6 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             
             DEBUG.debug(_("Found file {0}", _(getExtendedName())));
             subtitle_list = new Subtitles();
-            setFPS(FPS);
             input = initLoader(input);
             SubAttribs attr = subtitle_list.getAttribs();   // This method should be called after initLoader()
             
@@ -111,7 +110,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         }
         
         // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
-        CharsetEncoder encoder = Charset.forName(getEncoding()).newEncoder();
+        CharsetEncoder encoder = Charset.forName(ENCODING).newEncoder();
         
         BufferedWriter out = new BufferedWriter( new OutputStreamWriter( new FileOutputStream(outfile), encoder));
         out.write(res.toString().replace("\n","\r\n"));

@@ -2231,15 +2231,15 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         else
             work = new Jubler();
 
-        /* Initialize Subtitles */
-        newsubs = new Subtitles();
-        SubFile sfile = newsubs.getSubFile();
-        sfile.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
-
         /* Check if this is an auto-load subtitle file */
         is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
 
-        data = FileCommunicator.load(f);
+        /* Initialize Subtitles */
+        newsubs = new Subtitles();
+        newsubs.getSubFile().setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
+        newsubs.getSubFile().setFPS(SubFile.getDefaultFPS());
+
+        data = FileCommunicator.load(f, newsubs.getSubFile());  // Read data and set current encoding
         if (data == null) {
             JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
             return null;
@@ -2251,7 +2251,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         }
         
         /* Convert file into subtitle data */
-        newsubs.populate(f, data, SubFile.getDefaultFPS());
+        newsubs.populate(f, data, newsubs.getSubFile());
         if (newsubs.size() == 0) {
             JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
             return null;
