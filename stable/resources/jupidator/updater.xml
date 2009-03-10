@@ -39,7 +39,7 @@
 
     <version release="" version="4.1">
         <description>
-            Only one instance of Jubler is now run in a system. Improved load/save dialog, which encapsulates the information inside the load dialog. Great improvements in Mac OS X GUI. Improved subtitle support. Many changes and bug fixes.
+            Only one instance of Jubler is now run in a system. Every file remembers loading parameters and uses it when saving. Improved load/save dialog, which encapsulates the information inside the load dialog. General GUI improvements, especially in Mac OSX. Relaxed file loading, when file contains encoding errors. Improved subtitle support. Many changes and bug fixes.
         </description>
     </version>
 

@@ -55,10 +55,9 @@ public class JSaveOptions extends JFileOptions {
         CEncP.add(getPresetsButton(), BorderLayout.EAST);
 
         subfile = subs.getSubFile();
-
         CFPS.setDataFiles(mfile, subs);
         CFPS.setFPS(subfile.getFPS());
-        CFormat.setSelectedItem(subfile.getFormat().getName());
+        CFormat.setSelectedItem(subfile.getFormat().getDescription());
         setListItem(CEnc, subfile.getEncoding());
 
         updateVisualFPS();  // Set if FPS controls are visible - should be called AFTER CFormat initialization

@@ -122,7 +122,7 @@ public class Main {
         /* Start RMI server, so only one instance of Jubler will be opened at all times */
         JublerServer.startServer();
 
-        new Jubler();   // Display initial Jubler window
+        new Jubler().setVisible(true);   // Display initial Jubler window
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
 

@@ -239,13 +239,13 @@ public class Jubler extends JFrame {
         translate = new JTranslate();
         
         StaticJubler.putWindowPosition(this);
-        openWindow();
         updateRecentFile(null);
     }
     
     
     public Jubler(Subtitles data) {
         this();
+        setVisible(true);
         setSubs(data);
     }
 
@@ -582,9 +582,6 @@ public class Jubler extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Jubler");
         setForeground(java.awt.Color.white);
-        addComponentListener(formListener);
-        addMouseMotionListener(formListener);
-        addMouseListener(formListener);
         addWindowListener(formListener);
 
         BasicPanel.setLayout(new java.awt.BorderLayout());
@@ -1159,7 +1156,7 @@ public class Jubler extends JFrame {
 
     // Code for dispatching events from components to event handlers.
 
-    private class FormListener implements java.awt.event.ActionListener, java.awt.event.ComponentListener, java.awt.event.MouseListener, java.awt.event.MouseMotionListener, java.awt.event.WindowListener {
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.WindowListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == NewTB) {
@@ -1410,48 +1407,6 @@ public class Jubler extends JFrame {
             }
         }
 
-        public void componentHidden(java.awt.event.ComponentEvent evt) {
-        }
-
-        public void componentMoved(java.awt.event.ComponentEvent evt) {
-            if (evt.getSource() == Jubler.this) {
-                Jubler.this.formComponentMoved(evt);
-            }
-        }
-
-        public void componentResized(java.awt.event.ComponentEvent evt) {
-        }
-
-        public void componentShown(java.awt.event.ComponentEvent evt) {
-        }
-
-        public void mouseClicked(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == Jubler.this) {
-                Jubler.this.formMouseClicked(evt);
-            }
-        }
-
-        public void mouseEntered(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mouseExited(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mousePressed(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mouseReleased(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mouseDragged(java.awt.event.MouseEvent evt) {
-        }
-
-        public void mouseMoved(java.awt.event.MouseEvent evt) {
-            if (evt.getSource() == Jubler.this) {
-                Jubler.this.formMouseMoved(evt);
-            }
-        }
-
         public void windowActivated(java.awt.event.WindowEvent evt) {
         }
 
@@ -1575,7 +1530,8 @@ public class Jubler extends JFrame {
     
     private void ChildNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChildNFMActionPerformed
         Jubler curjubler = new Jubler();
-        
+        curjubler.setVisible(true);
+
         Subtitles s = new Subtitles(subs);
         for ( int i = 0 ; i < s.size() ; i++ ) {
             s.elementAt(i).setText("");
@@ -1739,8 +1695,11 @@ public class Jubler extends JFrame {
     
     private void FileNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileNFMActionPerformed
         Jubler curjubler;
-        if ( subs == null ) curjubler = this;
-        else curjubler = new Jubler();
+        if ( subs == null )
+            curjubler = this;
+        else
+            curjubler = new Jubler();
+        curjubler.setVisible(true);
         
         Subtitles s = new Subtitles();
         s.add(new SubEntry(new Time(0), new Time(5), ""));
@@ -2007,19 +1966,6 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
-
-private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-    System.out.println("KO");    // TODO add your handling code here:
-}//GEN-LAST:event_formMouseClicked
-
-private void formMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseMoved
-    System.out.println("LA");    // TODO add your handling code here:
-}//GEN-LAST:event_formMouseMoved
-
-private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentMoved
-    System.out.println("KA");
-        // TODO add your handling code here:
-}//GEN-LAST:event_formComponentMoved
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
@@ -2201,7 +2147,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         ext = "." + subs.getSubFile().getFormat().getExtension();
         f = FileCommunicator.stripFileFromVideoExtension(f);
         f = new File(f.getPath()+ext);
-        String result = FileCommunicator.save(subs, mfile, f);
+        String result = FileCommunicator.save(subs, subs.getSubFile(), mfile, f);
         if (result == null ) {
             /* Saving succesfull */
             undo.setSaveMark();
@@ -2267,6 +2213,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         work.setSubs(newsubs);
         work.setFile(f, true);
         work.SaveFM.setEnabled(true);
+        work.setVisible(true);
         return work;
     }
     
@@ -2393,7 +2340,7 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
             if (keep_application_alive && subs!=null) {
                 StaticJubler.setWindowPosition(this, true);
                 StaticJubler.jumpWindowPosition(false);
-                new Jubler();
+                new Jubler().setVisible(true);
             } else {
                 if (StaticJubler.requestQuit(this))
                     System.exit(0);
@@ -2401,18 +2348,19 @@ private void formComponentMoved(java.awt.event.ComponentEvent evt) {//GEN-FIRST:
         }
         
         dispose();
-        
     }
     
-    private void openWindow() {
-        windows.add(this);
-        if (windows.size() > 1) {
-            for (int i = 0 ; i < windows.size() ; i++ ) {
-                windows.elementAt(i).JoinTM.setEnabled(true);
-                windows.elementAt(i).ReparentTM.setEnabled(true);
+    public void setVisible(boolean status) {
+        super.setVisible(status);
+        if (status && (!windows.contains(this))) {
+            windows.add(this);
+            if (windows.size() > 1) {
+                for (int i = 0; i < windows.size(); i++) {
+                    windows.elementAt(i).JoinTM.setEnabled(true);
+                    windows.elementAt(i).ReparentTM.setEnabled(true);
+                }
             }
         }
-        setVisible(true);
     }
     
     

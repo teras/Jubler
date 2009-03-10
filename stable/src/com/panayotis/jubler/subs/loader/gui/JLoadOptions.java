@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JComboBox;
@@ -71,9 +72,9 @@ public class JLoadOptions extends JFileOptions {
     }
 
     public void setPreEncoding(String enc) {
-        CEnc[0].setSelectedItem("UTF-8");
+        CEnc[0].setSelectedItem(JPreferences.DefaultEncodings[0]);
         setListItem(CEnc[1], enc);
-        CEnc[2].setSelectedItem("UTF-16");
+        CEnc[2].setSelectedItem(JPreferences.DefaultEncodings[2]);
     }
 
     /** This method is called from within the constructor to

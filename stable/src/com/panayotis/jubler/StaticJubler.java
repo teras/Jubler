@@ -161,7 +161,7 @@ public class StaticJubler {
         
         for (Jubler j : Jubler.windows) {
             subs = j.getSubtitles();
-            if (subs!=null) {
+            if (subs!=null & subs.getSubFile().getLastOpenedFile()!=null) {
                 jfile = subs.getSubFile().getLastOpenedFile().getPath();
                 found = false;
                 

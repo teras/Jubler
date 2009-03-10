@@ -37,6 +37,9 @@ public class SubFile {
 
     private static String[] def_encodings = new String[3];
     private static float def_FPS;
+
+    public static final SubFile defaults;
+
     /* */
     private String encoding;
     private float FPS;
@@ -50,6 +53,8 @@ public class SubFile {
         for (int i = 0; i < def_encodings.length; i++)
             setDefaultEncoding(i, Options.getOption("Default.Encoding" + (i + 1), null));
         setDefaultFPS(Options.getOption("Default.FPS", null));
+
+        defaults = new SubFile();
     }
 
     public static void saveDefaultOptions() {

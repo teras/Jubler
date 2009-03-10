@@ -67,7 +67,7 @@ public class AutoSaver {
                                 AUTOSAVEPREFIX + String.format("%04x", rnd.nextInt() & 0xffff) + "." +
                                 subs.getSubFile().getCurrentFile().getName() + "." +
                                 JPreferences.DefaultSubFormat.getExtension());
-                        FileCommunicator.save(subs, null, outfile);
+                        FileCommunicator.save(subs, null, null, outfile);
                     }
                 }
 

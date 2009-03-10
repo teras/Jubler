@@ -110,30 +110,46 @@ public class FileCommunicator {
     public static String load(File infile, SubFile sfile) {
         String res;
 
+        /* First be strict */
         for (int i = 0 ; i < SubFile.getDefaultEncodingSize() ; i++ ) {
-            res = loadFromFile(infile, SubFile.getDefaultEncoding(i));
+            res = loadFromFile(infile, SubFile.getDefaultEncoding(i), true);
             if ( res != null) {
                 sfile.setEncoding(SubFile.getDefaultEncoding(i));
-                DEBUG.debug(_("Found file {0}", SubFile.getDefaultEncoding(i)));
+                DEBUG.debug(_("Found strict encoding {0}", SubFile.getDefaultEncoding(i)));
+                return res;
+            }
+        }
+        /* Then be relaxed */
+        for (int i = 0 ; i < SubFile.getDefaultEncodingSize() ; i++ ) {
+            res = loadFromFile(infile, SubFile.getDefaultEncoding(i), false);
+            if ( res != null) {
+                sfile.setEncoding(SubFile.getDefaultEncoding(i));
+                DEBUG.debug(_("Found relaxed encoding {0}", SubFile.getDefaultEncoding(i)));
                 return res;
             }
         }
         return null;
     }
     
-    
-    public static String save(Subtitles subs, MediaFile media, File outfile) {
+    /* We do need separate SubFile information, and not the one owned by subfile, so that
+     * we will be able to temporary save subtitles with different format (i.e. when autosaving
+     * or creating subtitles for displaying reasons)
+     */
+    public static String save(Subtitles subsy, SubFile sfile, MediaFile media, File outfile) {
         File tempout = null;
         String result = null;
         
         try {
+            if (sfile==null)
+                sfile = SubFile.defaults;
+
             tempout = new File(outfile.getPath()+".temp");
             if ( !SystemDependent.canWrite(tempout.getParentFile()) ||
                     (outfile.exists() && (!SystemDependent.canWrite(outfile)) ) ) {
                 return _("File {0} is unwritable", outfile.getPath());
             }
-            subs.getSubFile().getFormat().updateFormat(subs.getSubFile());   // This is required to update FPS & encoding of the current format
-            if (subs.getSubFile().getFormat().produce(subs, tempout, media)) {  // produce & check if should rename file
+            sfile.getFormat().updateFormat(sfile);   // This is required to update FPS & encoding of the current format
+            if (sfile.getFormat().produce(subsy, tempout, media)) {  // produce & check if should rename file
                 outfile.delete();
                 if (!tempout.renameTo(outfile))
                     result = _("Error while updating file {0}", outfile.getPath());
@@ -151,14 +167,23 @@ public class FileCommunicator {
     }
     
     
-    private static String loadFromFile(File infile, String encoding) {
+    private static String loadFromFile(File infile, String encoding, boolean strict) {
         StringBuffer res;
         String dat;
         CharsetDecoder decoder;
-        
+
+        CodingErrorAction malformed, unmappable;
+        if (strict) {
+            malformed = CodingErrorAction.REPORT;
+            unmappable = CodingErrorAction.REPORT;
+        } else {
+            malformed = CodingErrorAction.REPORT;
+            unmappable = CodingErrorAction.REPLACE;
+        }
+
         res = new StringBuffer();
         try {
-            decoder = Charset.forName(encoding).newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
+            decoder = Charset.forName(encoding).newDecoder().onMalformedInput(malformed).onUnmappableCharacter(unmappable);
             BufferedReader in = new BufferedReader( new InputStreamReader(new FileInputStream(infile), decoder));
             while ( (dat = in.readLine()) != null ) {
                 res.append(dat).append("\n");
