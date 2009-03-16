@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Stack;
 /**
  *
  * @author teras
@@ -43,6 +44,8 @@ public class Options {
     private final static String preffile;
     
     public final static int CURRENT_VERSION = 2;
+
+    private final static int MAX_RECENTS = 10;
     
     static {
         opts = new Properties();
@@ -118,34 +121,37 @@ public class Options {
         saveOptions();
     }
     
-    public static void saveFileList(File[]  list) {
-        String fname;
-        String key;
-        for (int i = 0 ; i < 10 ; i++) {
-            key = "System.Lastfile"+(i+1);
-            if (!(list[i]==null) && list[i].exists() && list[i].isFile()) {
-                setOption(key, list[i].getPath());
-            } else {
-                opts.remove(key);
+    public static void saveFileList(Stack<File> recents) {
+        File f;
+        int pos = recents.size();
+        int counter = 0;
+        while (pos > 0 && counter < MAX_RECENTS) {
+            pos--;
+            f = recents.get(pos);
+            if (f.exists() && f.isFile()) {
+                counter++;
+                setOption("System.Lastfile" + counter, f.getPath());
             }
         }
+        while (counter < MAX_RECENTS)
+            opts.remove("System.Lastfile" + (++counter));
         saveOptions();
     }
     
-    public static File[] loadFileList() {
-        File[] ret = new File[10];
+    public static Stack<File> loadFileList() {
+        Stack<File> files = new Stack<File>();
+
         String fname;
-        int pointer = 0;
         File f;
-        for (int i = 1 ; i < 11 ; i++) {
+        for (int i = MAX_RECENTS ; i >0 ; i--) {
             fname = getOption("System.Lastfile"+i,"");
             if (!fname.trim().equals("")) {
                 f = new File(fname);
                 if (f.exists() && f.canRead() && f.isFile())
-                    ret[pointer++] = f;
+                    files.push(f);
             }
         }
-        return ret;
+        return files;
     }
 
 }

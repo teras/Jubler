@@ -239,7 +239,6 @@ public class Jubler extends JFrame {
         translate = new JTranslate();
         
         StaticJubler.putWindowPosition(this);
-        updateRecentFile(null);
     }
     
     
@@ -332,11 +331,6 @@ public class Jubler extends JFrame {
     }
     
     
-    private void updateRecentFile(File recent) {
-        FileCommunicator.updateRecentsList(recent);
-        FileCommunicator.updateRecentsMenu();
-    }
-    
     /* This method is called when an item in the recent menu is clicked */
     public void recentMenuCallback(SubFile sfile) {
         if (sfile==null) {
@@ -344,6 +338,8 @@ public class Jubler extends JFrame {
             newsubs.getSubFile().appendToFilename("_clone");
             Jubler jub = new Jubler(newsubs);
             jub.enableSaveControls();
+            jub.showInfo();
+            StaticJubler.updateRecents();
             /* The user wants to clone current file */
         } else {
             loadFileFromHere(sfile, false);
@@ -1697,6 +1693,7 @@ public class Jubler extends JFrame {
         s.add(new SubEntry(new Time(0), new Time(5), ""));
         curjubler.setSubs(s);
         curjubler.enableSaveControls();
+        StaticJubler.updateRecents();
     }//GEN-LAST:event_FileNFMActionPerformed
     
     private void FixTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FixTMActionPerformed
@@ -1878,9 +1875,9 @@ public class Jubler extends JFrame {
             
             enableWindowControls(false);
             newwindow.enableWindowControls(true);
-
-            updateRecentFile(null);
-            newwindow.updateRecentFile(null);
+            showInfo();
+            newwindow.showInfo();
+            StaticJubler.updateRecents();
         }
     }//GEN-LAST:event_SplitTMActionPerformed
     
@@ -2147,6 +2144,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             undo.setSaveMark();
             subs.setSubFile(sfile);
             showInfo();
+            StaticJubler.updateRecents();
         } else
             JIDialog.error(this, result, _("Error while saving file"));
     }
@@ -2205,8 +2203,10 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             work.undo.setSaveMark();
         work.setSubs(newsubs);
         work.enableWindowControls(true);
+        work.showInfo();
         work.SaveFM.setEnabled(true);
         work.setVisible(true);
+        StaticJubler.updateRecents();
         return work;
     }
     
@@ -2260,7 +2260,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
         
-        showInfo();
         if(reset_selection) 
             setSelectedSub(0, true);
     }
@@ -2332,8 +2331,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             windows.elementAt(0).JoinTM.setEnabled(false);
             windows.elementAt(0).ReparentTM.setEnabled(false);
         }
-   ////////     if (subs!=null) subs.getSubFile().setLastOpenedFile(null); //Needed to remove itself from the recents menu
-        FileCommunicator.updateRecentsMenu();
+        StaticJubler.updateRecents();
         
         if ( windows.size() == 0 ) {
             if (keep_application_alive && subs!=null) {
@@ -2353,17 +2351,15 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         super.setVisible(status);
         if (status && (!windows.contains(this))) {
             windows.add(this);
-            if (windows.size() > 1) {
+            if (windows.size() > 1)
                 for (int i = 0; i < windows.size(); i++) {
                     windows.elementAt(i).JoinTM.setEnabled(true);
                     windows.elementAt(i).ReparentTM.setEnabled(true);
                 }
-            }
         }
+        StaticJubler.updateRecents();
     }
     
-
-    /* ERROR ERROR ERROR */
     public void setSubs(Subtitles newsubs) {
         SubEntry[] selected = getSelectedSubs();
         subs = newsubs;
