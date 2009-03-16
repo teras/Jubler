@@ -38,7 +38,6 @@ import com.panayotis.jubler.subs.Subtitles;
 public class JSaveOptions extends JFileOptions {
 
     private JRateChooser CFPS;
-    private SubFile subfile;
 
     /** Creates new form JSavePrefs */
     public JSaveOptions() {
@@ -54,19 +53,19 @@ public class JSaveOptions extends JFileOptions {
         setUnicodeVisible(true);
         CEncP.add(getPresetsButton(), BorderLayout.EAST);
 
-        subfile = subs.getSubFile();
         CFPS.setDataFiles(mfile, subs);
-        CFPS.setFPS(subfile.getFPS());
-        CFormat.setSelectedItem(subfile.getFormat().getDescription());
-        setListItem(CEnc, subfile.getEncoding());
+        CFPS.setFPS(subs.getSubFile().getFPS());
+        CFormat.setSelectedItem(subs.getSubFile().getFormat().getDescription());
+        setListItem(CEnc, subs.getSubFile().getEncoding());
 
         updateVisualFPS();  // Set if FPS controls are visible - should be called AFTER CFormat initialization
     }
 
-    protected void applyOptions() {
-        subfile.setFPS(CFPS.getFPSValue());
-        subfile.setEncoding(CEnc.getSelectedItem().toString());
-        subfile.setFormat(CFormat.getSelectedItem().toString());
+    protected void applyOptions(SubFile sfile) {
+        super.applyOptions(sfile);
+        sfile.setFPS(CFPS.getFPSValue());
+        sfile.setEncoding(CEnc.getSelectedItem().toString());
+        sfile.setFormat(CFormat.getSelectedItem().toString());
     }
 
 

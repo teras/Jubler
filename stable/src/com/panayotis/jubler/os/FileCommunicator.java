@@ -42,7 +42,6 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
-import javax.swing.JFileChooser;
 
 /**
  *
@@ -107,26 +106,35 @@ public class FileCommunicator {
     
     
     
-    public static String load(File infile, SubFile sfile) {
+    private static String load(SubFile sfile, String enc, String msg, boolean strict) {
+        String res = loadFromFile(sfile.getSaveFile(), enc, strict);
+        if (res!=null) {
+            sfile.setEncoding(enc);
+            DEBUG.debug(msg);
+        }
+        return res;
+    }
+    public static String load(SubFile sfile) {
         String res;
 
-        /* First be strict */
-        for (int i = 0 ; i < SubFile.getDefaultEncodingSize() ; i++ ) {
-            res = loadFromFile(infile, SubFile.getDefaultEncoding(i), true);
-            if ( res != null) {
-                sfile.setEncoding(SubFile.getDefaultEncoding(i));
-                DEBUG.debug(_("Found strict encoding {0}", SubFile.getDefaultEncoding(i)));
+        String enc = sfile.getEncoding();
+        /* First chech already known data */
+        res = load(sfile, enc, _("Found defined encoding {0}", enc), false);
+        if (res != null)
+            return res;
+
+        /* Then guess and be strict */
+        for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
+            res = load(sfile, enc, _("Found strict encoding {0}", enc), true);
+            if (res != null)
                 return res;
-            }
         }
         /* Then be relaxed */
-        for (int i = 0 ; i < SubFile.getDefaultEncodingSize() ; i++ ) {
-            res = loadFromFile(infile, SubFile.getDefaultEncoding(i), false);
-            if ( res != null) {
-                sfile.setEncoding(SubFile.getDefaultEncoding(i));
-                DEBUG.debug(_("Found relaxed encoding {0}", SubFile.getDefaultEncoding(i)));
+        for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
+            enc = SubFile.getDefaultEncoding(i);
+            res = load(sfile, enc,  _("Found relaxed encoding {0}", enc), false);
+            if (res != null)
                 return res;
-            }
         }
         return null;
     }
@@ -135,21 +143,20 @@ public class FileCommunicator {
      * we will be able to temporary save subtitles with different format (i.e. when autosaving
      * or creating subtitles for displaying reasons)
      */
-    public static String save(Subtitles subsy, SubFile sfile, MediaFile media, File outfile) {
+    public static String save(Subtitles subs, SubFile sfile, MediaFile media) {
         File tempout = null;
         String result = null;
+        File outfile = null;
         
         try {
-            if (sfile==null)
-                sfile = SubFile.defaults;
-
+            outfile = sfile.getSaveFile();
             tempout = new File(outfile.getPath()+".temp");
             if ( !SystemDependent.canWrite(tempout.getParentFile()) ||
                     (outfile.exists() && (!SystemDependent.canWrite(outfile)) ) ) {
                 return _("File {0} is unwritable", outfile.getPath());
             }
             sfile.getFormat().updateFormat(sfile);   // This is required to update FPS & encoding of the current format
-            if (sfile.getFormat().produce(subsy, tempout, media)) {  // produce & check if should rename file
+            if (sfile.getFormat().produce(subs, tempout, media)) {  // produce & check if should rename file
                 outfile.delete();
                 if (!tempout.renameTo(outfile))
                     result = _("Error while updating file {0}", outfile.getPath());
@@ -199,11 +206,6 @@ public class FileCommunicator {
         return res.toString();
     }
      
-    
-    public static String getCurrentPath() {
-        return System.getProperty("user.dir") + System.getProperty("file.separator");
-    }
-    
     public static File stripFileFromVideoExtension(File f) {
         String ext;
         String fname = f.getPath().toLowerCase();
@@ -224,12 +226,19 @@ public class FileCommunicator {
         return new File(fname);
     }
     
-    public static void getDefaultDialogPath(JFileChooser chooser) {
-         chooser.setSelectedFile(new File(Options.getOption("System.LastDirPath", System.getProperty("user.home")) +"/.") );
+    public static String getDefaultDirPath() {
+        String basic_path = System.getProperty("user.dir") + System.getProperty("file.separator");
+        return Options.getOption("System.LastDirPath", basic_path);
     }
-    public static void setDefaultDialogPath(JFileChooser chooser) {
-         Options.setOption("System.LastDirPath", chooser.getSelectedFile().getParent());
+
+    public static void setDefaultDir(File default_file) {
+        String path = default_file.getPath();
+        if (!default_file.isDirectory())
+            throw new IllegalArgumentException(_("File {0} is not a directory", default_file.getPath()));
+
+        path += System.getProperty("file.separator");
+        Options.setOption("System.LastDirPath", path);
         Options.saveOptions();
     }
-    
+
 }

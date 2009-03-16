@@ -323,15 +323,7 @@ public class Jubler extends JFrame {
         return where;
     }
     
-    
-    private void initNewFile(String fname) {
-        undo.invalidateSaveMark();
-        setFile(new File(fname), true);
-        SaveFM.setEnabled(false);
-        RevertFM.setEnabled(false);
-        subeditor.focusOnText();
-    }
-    
+       
     private void setDropHandler() {
         Dropper r = new Dropper(this);
         BasicPanel.setTransferHandler(r);
@@ -341,19 +333,20 @@ public class Jubler extends JFrame {
     
     
     private void updateRecentFile(File recent) {
-        if (subs!=null) subs.getSubFile().setLastOpenedFile(recent);
         FileCommunicator.updateRecentsList(recent);
         FileCommunicator.updateRecentsMenu();
     }
     
     /* This method is called when an item in the recent menu is clicked */
-    public void recentMenuCallback(String filename) {
-        if (filename==null) {
-            Jubler jub = new Jubler(new Subtitles(subs));
-            jub.initNewFile(subs.getSubFile().getCurrentFile().getPath()+_("_clone"));
+    public void recentMenuCallback(SubFile sfile) {
+        if (sfile==null) {
+            Subtitles newsubs = new Subtitles(subs);
+            newsubs.getSubFile().appendToFilename("_clone");
+            Jubler jub = new Jubler(newsubs);
+            jub.enableSaveControls();
             /* The user wants to clone current file */
         } else {
-            loadFileFromHere(new File(filename), false);
+            loadFileFromHere(sfile, false);
         }
     }
     
@@ -1537,8 +1530,7 @@ public class Jubler extends JFrame {
             s.elementAt(i).setText("");
         }
         curjubler.setSubs(s);
-        
-        curjubler.initNewFile(subs.getSubFile().getCurrentFile().getPath()+_("_child"));
+        s.getSubFile().appendToFilename(_("_child"));
         curjubler.connect_to_other = this;
     }//GEN-LAST:event_ChildNFMActionPerformed
     
@@ -1700,11 +1692,11 @@ public class Jubler extends JFrame {
         else
             curjubler = new Jubler();
         curjubler.setVisible(true);
-        
+
         Subtitles s = new Subtitles();
         s.add(new SubEntry(new Time(0), new Time(5), ""));
         curjubler.setSubs(s);
-        curjubler.initNewFile(FileCommunicator.getCurrentPath()+_("Untitled"));
+        curjubler.enableSaveControls();
     }//GEN-LAST:event_FileNFMActionPerformed
     
     private void FixTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FixTMActionPerformed
@@ -1745,7 +1737,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_DeletePActionPerformed
     
     private void RevertFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevertFMActionPerformed
-        loadFileFromHere(subs.getSubFile().getLastOpenedFile(), true);
+        loadFileFromHere(subs.getSubFile(), true);
     }//GEN-LAST:event_RevertFMActionPerformed
     
     private void GloballyREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GloballyREMActionPerformed
@@ -1862,8 +1854,10 @@ public class Jubler extends JFrame {
             undo.addUndo(new UndoEntry(subs, _("Split subtitles")));
             
             stime = split.getTime().toSeconds();
-            subs1 = new Subtitles();
-            subs2 = new Subtitles();
+            subs1 = new Subtitles(new SubFile(subs.getSubFile()));
+            subs1.getSubFile().appendToFilename("_1");
+            subs2 = new Subtitles(new SubFile(subs.getSubFile()));
+            subs2.getSubFile().appendToFilename("_2");
             
             for ( int i = 0 ; i < subs.size() ; i++ ) {
                 csub = subs.elementAt(i);
@@ -1876,14 +1870,17 @@ public class Jubler extends JFrame {
                 }
             }
             
-            Subtitles oldsubs = subs;
             setSubs(subs1);
-            
             Jubler newwindow = new Jubler(subs2);
+
+            undo.invalidateSaveMark();
             newwindow.undo.invalidateSaveMark();
             
-            newwindow.setFile(new File(oldsubs.getSubFile().getCurrentFile()+"_2"), true);
-            setFile(new File(oldsubs.getSubFile().getCurrentFile()+"_1"), false);
+            enableWindowControls(false);
+            newwindow.enableWindowControls(true);
+
+            updateRecentFile(null);
+            newwindow.updateRecentFile(null);
         }
     }//GEN-LAST:event_SplitTMActionPerformed
     
@@ -1910,7 +1907,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_formWindowClosing
     
     private void SaveFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFMActionPerformed
-        saveFile(subs.getSubFile().getCurrentFile());
+        saveFile(new SubFile(subs.getSubFile()));
     }//GEN-LAST:event_SaveFMActionPerformed
     
     private void PrefsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrefsFMActionPerformed
@@ -2139,38 +2136,34 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         tableHasChanged(selected);
     }
     
-    
-    private void saveFile(File f) {
-        if (f ==null)
+
+    /* This sfile is already new - wew can do whatever we want with it */
+    private void saveFile(SubFile sfile) {
+        if (sfile == null)
             return;
-        String ext;
-        ext = "." + subs.getSubFile().getFormat().getExtension();
-        f = FileCommunicator.stripFileFromVideoExtension(f);
-        f = new File(f.getPath()+ext);
-        String result = FileCommunicator.save(subs, subs.getSubFile(), mfile, f);
-        if (result == null ) {
+        String result = FileCommunicator.save(subs, sfile, mfile);
+        if (result == null) {
             /* Saving succesfull */
             undo.setSaveMark();
-            setFile(f, false);
-        } else {
+            subs.setSubFile(sfile);
+            showInfo();
+        } else
             JIDialog.error(this, result, _("Error while saving file"));
-        }
     }
     
-    private Jubler loadFileFromHere(File f, boolean force_into_same_window) {
+    private Jubler loadFileFromHere(SubFile file, boolean force_into_same_window) {
+        if (file == null)
+            return null;
         StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
-        return loadFile( f, force_into_same_window );
+        return loadFile(file, force_into_same_window);
     }
     
-    public Jubler loadFile(File f, boolean force_into_same_window) {
+    public Jubler loadFile(SubFile sfile, boolean force_into_same_window) {
         String data;
         Subtitles newsubs;
         Jubler work;
         boolean is_autoload;
 
-        if (f==null)
-            return null;
-        
         /* Find where to display this subtitle file */
         if (subs == null || force_into_same_window)
             work = this;
@@ -2178,26 +2171,26 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             work = new Jubler();
 
         /* Check if this is an auto-load subtitle file */
-        is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
+        is_autoload = sfile.getSaveFile().getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
 
         /* Initialize Subtitles */
-        newsubs = new Subtitles();
-        newsubs.getSubFile().setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
-        newsubs.getSubFile().setFPS(SubFile.getDefaultFPS());
+        newsubs = new Subtitles(sfile);
 
-        data = FileCommunicator.load(f, newsubs.getSubFile());  // Read data and set current encoding
+        data = FileCommunicator.load(sfile);  // Read data and set current encoding
         if (data == null) {
             JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
             return null;
         }
         /* Strip autosave prefix from filename */
         if (is_autoload) {
-            f = new File(f.getName().substring(AutoSaver.AUTOSAVEPREFIX.length()+5));
-            newsubs.getSubFile().setCurrentFile(f);
+            // Set as a new file... make sure to keep original file name
+            String newfparent = new SubFile().getSaveFile().getParent();
+            String oldfname = sfile.getSaveFile().getName().substring(AutoSaver.AUTOSAVEPREFIX.length()+5);
+            newsubs.getSubFile().setFile(new File(newfparent, oldfname));
         }
         
         /* Convert file into subtitle data */
-        newsubs.populate(f, data, newsubs.getSubFile());
+        newsubs.populate(newsubs.getSubFile(), data);
         if (newsubs.size() == 0) {
             JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
             return null;
@@ -2211,7 +2204,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         else
             work.undo.setSaveMark();
         work.setSubs(newsubs);
-        work.setFile(f, true);
+        work.enableWindowControls(true);
         work.SaveFM.setEnabled(true);
         work.setVisible(true);
         return work;
@@ -2238,10 +2231,18 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         }
     }
     
-    
+
+    /* Use this method when a new file is created */
+    private void enableSaveControls() {
+        undo.invalidateSaveMark();
+        enableWindowControls(true);
+        SaveFM.setEnabled(false);
+        RevertFM.setEnabled(false);
+        subeditor.focusOnText();
+    }
     
     /* Set the filename of this project and enanble the buttons */
-    private void setFile(File f, boolean reset_selection) {
+    private void enableWindowControls(boolean reset_selection) {
         RevertFM.setEnabled(true);
         ChildNFM.setEnabled(true);
         SaveFM.setEnabled(true);
@@ -2259,8 +2260,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
         
-        subs.getSubFile().setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
-        updateRecentFile(f);
         showInfo();
         if(reset_selection) 
             setSelectedSub(0, true);
@@ -2333,7 +2332,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             windows.elementAt(0).JoinTM.setEnabled(false);
             windows.elementAt(0).ReparentTM.setEnabled(false);
         }
-        if (subs!=null) subs.getSubFile().setLastOpenedFile(null); //Needed to remove itself from the recents menu
+   ////////     if (subs!=null) subs.getSubFile().setLastOpenedFile(null); //Needed to remove itself from the recents menu
         FileCommunicator.updateRecentsMenu();
         
         if ( windows.size() == 0 ) {
@@ -2363,15 +2362,13 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         }
     }
     
-    
+
+    /* ERROR ERROR ERROR */
     public void setSubs(Subtitles newsubs) {
         SubEntry[] selected = getSelectedSubs();
-        if ( subs!=null && newsubs.getSubFile().getCurrentFile()==null )
-            newsubs.getSubFile().setCurrentFile(subs.getSubFile().getCurrentFile());
         subs = newsubs;
         SubTable.setModel(subs);
         tableHasChanged(selected);
-        
         ShowNumberP.setSelected(subs.isVisibleColumn(0));
         ShowStartP.setSelected(subs.isVisibleColumn(1));
         ShowEndP.setSelected(subs.isVisibleColumn(2));
@@ -2436,8 +2433,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     
     public void showInfo() {
         Info.setText(_("Number of subtitles : {0}    {1}", subs.size(), (isUnsaved() ? "-" + _("Unsaved") + "-" : "")));
-        if (subs.getSubFile().getCurrentFile() != null) {
-            String title = subs.getSubFile().getCurrentFile().getName();
+        if (subs.getSubFile().getStrippedFile() != null) {
+            String title = subs.getSubFile().getStrippedFile().getName();
             if (isUnsaved()) {
                 title = "*" + title;
                 getRootPane().putClientProperty("windowModified", Boolean.TRUE);
@@ -2445,7 +2442,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
                 getRootPane().putClientProperty("windowModified", Boolean.FALSE);
             }
             setTitle(title + " - Jubler");
-            getRootPane().putClientProperty("Window.documentFile", subs.getSubFile().getLastOpenedFile());
+            getRootPane().putClientProperty("Window.documentFile", subs.getSubFile().getSaveFile());
         } else {
             setTitle("Jubler");
         }

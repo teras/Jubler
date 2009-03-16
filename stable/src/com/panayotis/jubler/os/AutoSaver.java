@@ -8,6 +8,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.options.JPreferences;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -22,17 +23,16 @@ import java.util.TimerTask;
 public class AutoSaver {
 
     public final static String AUTOSAVEPREFIX = "autosave.";
-    
     private final static long AUTOSAVE_SECONDS = 30;
     private final static Random rnd;
     private final static Timer timer;
     private final static File dir,  olds;
-    
+
 
     static {
         rnd = new Random();
         timer = new Timer();
-        dir = new File(SystemDependent.getAppSupportDirPath()+"autosave");
+        dir = new File(SystemDependent.getAppSupportDirPath() + "autosave");
         olds = new File(dir, "olds");
     }
 
@@ -53,28 +53,24 @@ public class AutoSaver {
                 }
 
                 /* Move old autosave files to olds */
-                for (File current : dir.listFiles(new SubFileFilter())) {
+                for (File current : dir.listFiles(new SubFileFilter()))
                     current.renameTo(new File(olds, current.getName()));
-                }
 
                 /* Autosave unsaved files */
                 Subtitles subs;
-                File outfile;
-                for (Jubler j : Jubler.windows) {
+                for (Jubler j : Jubler.windows)
                     if (j.isUnsaved()) {
                         subs = j.getSubtitles();
-                        outfile = new File(dir,
-                                AUTOSAVEPREFIX + String.format("%04x", rnd.nextInt() & 0xffff) + "." +
-                                subs.getSubFile().getCurrentFile().getName() + "." +
-                                JPreferences.DefaultSubFormat.getExtension());
-                        FileCommunicator.save(subs, null, null, outfile);
+                        String fname = AUTOSAVEPREFIX +
+                                String.format("%04x", rnd.nextInt() & 0xffff) +
+                                "." +
+                                subs.getSubFile().getStrippedFile().getName();
+                        FileCommunicator.save(subs, new SubFile(new File(fname)), null);
                     }
-                }
 
                 /* cleanup old files */
-                for (File current : olds.listFiles()) {
+                for (File current : olds.listFiles())
                     current.delete();
-                }
                 olds.delete();
             }
         }, 1000l, AUTOSAVE_SECONDS * 1000);
@@ -82,28 +78,27 @@ public class AutoSaver {
 
     public static File[] getAutoSaveList() {
         File[] empty = new File[0];
-        
+
         if (!dir.exists())
             return empty;
         if (!dir.canRead())
             return empty;
         if (!dir.isDirectory())
             return empty;
-        
+
         /* Move possibly remaining old files to autosave location and delete olds directory */
-        if (olds.exists() && olds.isDirectory()) {
-            for(File ofile:olds.listFiles()) {
+        if (olds.exists() && olds.isDirectory())
+            for (File ofile : olds.listFiles())
                 ofile.renameTo(new File(dir, ofile.getName()));
-            }
-        }
         deleteDirContents(olds);
         olds.delete();
-        
-        File [] f = dir.listFiles(new SubFileFilter());
-        if (f==null) return empty;
+
+        File[] f = dir.listFiles(new SubFileFilter());
+        if (f == null)
+            return empty;
         return f;
     }
-    
+
     public static void cleanup() {
         timer.cancel();
         deleteDirContents(olds);
@@ -111,18 +106,15 @@ public class AutoSaver {
         olds.delete();
     }
 
-    
-    
     private static void deleteDirContents(File d) {
         /* cleanup old files - with exception handling in case the directory does not exist */
         try {
-            for (File current : d.listFiles()) {
+            for (File current : d.listFiles())
                 current.delete();
-            }
         } catch (NullPointerException ex) {
         }
     }
-    
+
     private static class SubFileFilter implements FilenameFilter {
 
         public boolean accept(File dir, String name) {

@@ -26,6 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
@@ -65,7 +66,9 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
 
     /* Use this method to apply default options from various controls */
-    protected abstract void applyOptions();
+    protected void applyOptions(SubFile sfile) {
+        SubFile.saveDefaultOptions();
+    }
 
     public JFileOptions() {
         initComponents();

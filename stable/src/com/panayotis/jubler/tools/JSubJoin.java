@@ -49,7 +49,7 @@ public class JSubJoin extends javax.swing.JPanel {
         
         for ( int i = 0 ; i <list.size() ; i++) {
             if ( list.elementAt(i) != current ) {
-                SubWindow.addItem(list.elementAt(i).getSubtitles().getSubFile().getCurrentFile().getName());
+                SubWindow.addItem(list.elementAt(i).getSubtitles().getSubFile().getStrippedFile().getName());
                 privlist.add(list.elementAt(i));
             }
         }

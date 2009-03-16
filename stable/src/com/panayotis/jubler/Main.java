@@ -31,6 +31,7 @@ import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
+import com.panayotis.jubler.subs.SubFile;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -70,7 +71,7 @@ public class Main {
 
             public void run() {
                 int autosave_counter = 0;
-                while (true) {
+                while (true)
                     try {
                         /* Here we do the actual work */
                         while (sublist.size() > 0) {
@@ -81,10 +82,8 @@ public class Main {
                             if (f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX))
                                 autosave_counter++;
 
-                            if (f.exists() && f.isFile() && f.canRead()) {
-                                Jubler.windows.elementAt(0).loadFile(f, false);
-                            }
-
+                            if (f.exists() && f.isFile() && f.canRead())
+                                Jubler.windows.elementAt(0).loadFile(new SubFile(f, SubFile.EXTENSION_GIVEN), false);
                             if (autosave_counter == autosaves)
                                 AutoSaver.init();
                         }
@@ -94,19 +93,16 @@ public class Main {
                     } catch (InterruptedException ex) {
                     } catch (ArrayIndexOutOfBoundsException ex) {
                     }
-                }
             }
         };
         /* Parse arguments */
         sublist = new Vector<String>();
-        for (String file : args) {
+        for (String file : args)
             asyncAddSubtitle(file);
-        }
 
         /* Add autosave subtitles */
-        for (File file : autosavelist) {
+        for (File file : autosavelist)
             asyncAddSubtitle(file.getPath());
-        }
         /* Force starting autosaver, if no autosaves were found */
         if (autosaves == 0)
             AutoSaver.init();

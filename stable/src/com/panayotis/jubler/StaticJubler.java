@@ -30,11 +30,13 @@ import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.options.*;
 import com.panayotis.jubler.options.gui.JUnsaved;
 import com.panayotis.jubler.os.AutoSaver;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -126,7 +128,7 @@ public class StaticJubler {
         Vector <String>unsaved = new Vector<String>();
         for (Jubler j : Jubler.windows) {
             if (j.isUnsaved()) {
-                unsaved.add(j.getSubtitles().getSubFile().getCurrentFile().getName());
+                unsaved.add(j.getSubtitles().getSubFile().getStrippedFile().getName());
             }
         }
         if (unsaved.size() > 0) {
@@ -161,8 +163,8 @@ public class StaticJubler {
         
         for (Jubler j : Jubler.windows) {
             subs = j.getSubtitles();
-            if (subs!=null & subs.getSubFile().getLastOpenedFile()!=null) {
-                jfile = subs.getSubFile().getLastOpenedFile().getPath();
+            if (subs!=null & subs.getSubFile().getSaveFile()!=null) {
+                jfile = subs.getSubFile().getSaveFile().getPath();
                 found = false;
                 
                 if (jfile!=null) {
@@ -217,8 +219,12 @@ public class StaticJubler {
         final Jubler jub_f = jub;
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(isclone_f) jub_f.recentMenuCallback(null);
-                else jub_f.recentMenuCallback(text_f);
+                if(isclone_f)
+                    jub_f.recentMenuCallback(null);
+                else {
+                    SubFile sfile = new SubFile(new File(text_f));
+                    jub_f.recentMenuCallback(sfile);
+                }
             }
         });
         return item;

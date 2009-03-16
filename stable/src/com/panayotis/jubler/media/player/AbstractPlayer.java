@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.media.player;
 
-import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.AbstractPlayerOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
@@ -35,7 +34,7 @@ import java.io.IOException;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.JPreferences;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
 import java.util.StringTokenizer;
 /**
@@ -64,12 +63,12 @@ public abstract class AbstractPlayer extends VideoPlayer {
     /* Create Subtitle File for testing*/
     private void initSubFile(Subtitles subs, MediaFile mfile) {
         try {
-            File subtemp = File.createTempFile("jubler_", "."+JPreferences.DefaultSubFormat.getExtension());
-            FileCommunicator.save(subs, null, mfile, subtemp);
-            subpath = subtemp.getPath();
+            SubFile sfile = new SubFile(File.createTempFile("jubler_", ""));
+            FileCommunicator.save(subs, sfile, mfile);
+            subpath = sfile.getSaveFile().getPath();
             return;
-        } catch (IOException e) {}
-        JIDialog.error(null, _("Could not create temporary file to store the subtitles."), _("Media Player Error"));
+        } catch (IOException ex) {
+        }
     }
     
      public void cleanUp() {

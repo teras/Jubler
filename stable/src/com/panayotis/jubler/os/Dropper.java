@@ -24,6 +24,7 @@
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.subs.SubFile;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -95,7 +96,7 @@ public class Dropper extends TransferHandler {
                 AbstractList<File> files = getFileListString(t, data);
                 if (files==null) return true;
                 for (File f : files) {
-                    if (f.isFile()) parent.loadFile(f, false);
+                    if (f.isFile()) parent.loadFile(new SubFile(f), false);
                 }
                 return true;
             }

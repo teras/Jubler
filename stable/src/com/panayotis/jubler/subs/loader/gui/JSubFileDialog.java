@@ -36,12 +36,13 @@ public class JSubFileDialog extends javax.swing.JDialog {
         super((Frame) null, true);
         initComponents();
         chooser.addChoosableFileFilter(new SubFileFilter());
-        FileCommunicator.getDefaultDialogPath(chooser);
+        chooser.setSelectedFile(new File(FileCommunicator.getDefaultDirPath(), "."));
         jload = new JLoadOptions();
         jsave = new JSaveOptions();
     }
 
-    private File showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
+    private SubFile showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
+        SubFile sfile;
         jopt.updateVisuals(subs, mfile);
         getContentPane().removeAll();
         getContentPane().add(chooser, BorderLayout.CENTER);
@@ -49,22 +50,31 @@ public class JSubFileDialog extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(parent);
         setVisible(true);
+
         if (!isAccepted)
             return null;
-        jopt.applyOptions();
-        SubFile.saveDefaultOptions();
-        FileCommunicator.setDefaultDialogPath(chooser);
-        return chooser.getSelectedFile();
+
+        if (subs == null) // Load
+            sfile = new SubFile(chooser.getSelectedFile(), SubFile.EXTENSION_GIVEN);
+        else {   // Save
+            sfile = new SubFile(subs.getSubFile());
+            sfile.setFile(chooser.getSelectedFile());
+        }
+        jopt.applyOptions(sfile);
+        if (subs != null) // Only in Save
+            sfile.updateFileByType();
+        FileCommunicator.setDefaultDir(chooser.getCurrentDirectory());
+        return sfile;
     }
 
-    public File getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
+    public SubFile getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
         setTitle(_("Save Subtitles"));
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        chooser.setSelectedFile(subs.getSubFile().getCurrentFile());
+        chooser.setSelectedFile(subs.getSubFile().getStrippedFile());
         return showDialog(parent, subs, mfile, jsave);
     }
 
-    public File getLoadFile(Frame parent, MediaFile mfile) {
+    public SubFile getLoadFile(Frame parent, MediaFile mfile) {
         setTitle(_("Load Subtitles"));
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
         return showDialog(parent, null, mfile, jload);

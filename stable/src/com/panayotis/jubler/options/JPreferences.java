@@ -41,8 +41,6 @@ import javax.swing.JMenuBar;
  * @author  teras
  */
 public class JPreferences extends javax.swing.JDialog {
-    public static final String []DefaultEncodings;
-    public static final SubFormat DefaultSubFormat;
     
     /* GUI element to hold various preferences 
      * it is "friendly", since it is needed in Options 
@@ -55,15 +53,6 @@ public class JPreferences extends javax.swing.JDialog {
     private JShortcutsOptions jcut;
 
     private boolean dialog_status;
-    
-    static {
-        DefaultEncodings = new String[3];
-        DefaultEncodings[0] = "UTF-8";
-        DefaultEncodings[1] = "ISO-8859-1";
-        DefaultEncodings[2] = "UTF-16";
-        
-        DefaultSubFormat = AvailSubFormats.findFromName("AdvancedSubStation");
-    }
     
     
     /** Creates new form JPreferences */

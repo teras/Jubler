@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JPanel;
 
@@ -37,8 +38,6 @@ import javax.swing.JPanel;
  */
 public class JRateChooser extends JPanel {
        
-    public static final float DefaultFPS = 25f;
-    
     private MediaFile mfile = null;
     private Subtitles subs = null;
     
@@ -53,7 +52,7 @@ public class JRateChooser extends JPanel {
             return Float.parseFloat(getFPS());
         } catch (NumberFormatException e) {
         }
-        return DefaultFPS;
+        return SubFile.getDefaultFPS();
     }
     
     public void setDataFiles(MediaFile m, Subtitles s) {

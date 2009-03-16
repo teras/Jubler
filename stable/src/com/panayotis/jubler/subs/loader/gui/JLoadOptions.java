@@ -65,16 +65,18 @@ public class JLoadOptions extends JFileOptions {
         CFPS.setFPS(SubFile.getDefaultFPS());
     }
 
-    protected void applyOptions() {
+    protected void applyOptions(SubFile sfile) {
         for (int i = 0; i < CEnc.length; i++)
             SubFile.setDefaultEncoding(i, CEnc[i].getSelectedItem().toString());
         SubFile.setDefaultFPS(CFPS.getFPS());
+        super.applyOptions(sfile);
+        sfile.setFPS(CFPS.getFPSValue());
     }
 
     public void setPreEncoding(String enc) {
-        CEnc[0].setSelectedItem(JPreferences.DefaultEncodings[0]);
+        CEnc[0].setSelectedItem(SubFile.getBasicEncoding(0));
         setListItem(CEnc[1], enc);
-        CEnc[2].setSelectedItem(JPreferences.DefaultEncodings[2]);
+        CEnc[2].setSelectedItem(SubFile.getBasicEncoding(2));
     }
 
     /** This method is called from within the constructor to

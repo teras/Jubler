@@ -22,9 +22,10 @@
  */
 package com.panayotis.jubler.subs;
 
-import com.panayotis.jubler.options.JPreferences;
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.options.Options;
-import com.panayotis.jubler.options.gui.JRateChooser;
+import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.io.File;
@@ -34,27 +35,39 @@ import java.io.File;
  * @author teras
  */
 public class SubFile {
+    /* Immutable basic preferences, when we have absolutely no knowledge of the file - the ultimate defaults */
 
-    private static String[] def_encodings = new String[3];
+    public static final boolean EXTENSION_GIVEN = true;
+    public static final boolean EXTENSION_OMMITED = false;
+
+    private final static String[] basic_encodings = {
+        "UTF-8",
+        "ISO-8859-1",
+        "UTF-16"
+    };
+    private final static String basic_fileencoding = basic_encodings[0];
+    private final static float basic_FPS = 25f;
+    private final static SubFormat basic_format = AvailSubFormats.findFromName("AdvancedSubStation");
+
+    /* Mutable default values - used only in load/save dialogs */
+    private static String[] def_encodings = new String[basic_encodings.length];
     private static float def_FPS;
 
-    public static final SubFile defaults;
-
-    /* */
+    /* Current values */
     private String encoding;
     private float FPS;
     private SubFormat format;
-    /* */
-    private File current_file;
-    private File last_opened_file;
-
+    private File savefile;
+    private File savefile_noext;
 
     static {
         for (int i = 0; i < def_encodings.length; i++)
             setDefaultEncoding(i, Options.getOption("Default.Encoding" + (i + 1), null));
         setDefaultFPS(Options.getOption("Default.FPS", null));
+    }
 
-        defaults = new SubFile();
+    public final static String getBasicEncoding(int i) {
+        return basic_encodings[i];
     }
 
     public static void saveDefaultOptions() {
@@ -62,6 +75,12 @@ public class SubFile {
             Options.setOption("Default.Encoding" + (i + 1), getDefaultEncoding(i));
         Options.setOption("Default.FPS", Float.toString(getDefaultFPS()));
         Options.saveOptions();
+    }
+
+    public static void setDefaultEncoding(int i, String enc) {
+        if (enc == null)
+            enc = basic_encodings[i];
+        def_encodings[i] = enc;
     }
 
     public static int getDefaultEncodingSize() {
@@ -72,89 +91,123 @@ public class SubFile {
         return def_encodings[i];
     }
 
-    public static void setDefaultEncoding(int i, String enc) {
-        if (enc == null)
-            enc = JPreferences.DefaultEncodings[i];
-        def_encodings[i] = enc;
+    public static void setDefaultFPS(String fps) {
+        try {
+            def_FPS = Float.parseFloat(fps);
+        } catch (Exception ex) {
+            def_FPS = basic_FPS;
+        }
     }
 
     public static float getDefaultFPS() {
         return def_FPS;
     }
 
-    public static void setDefaultFPS(String fps) {
-        try {
-            def_FPS = Float.parseFloat(fps);
-        } catch (Exception ex) {
-            def_FPS = JRateChooser.DefaultFPS;
-        }
+    public SubFile(String encoding, float FPS, SubFormat format, File file, boolean extension) {
+        setEncoding(encoding);
+        setFPS(FPS);
+        setFormat(format);
+        if (extension==EXTENSION_GIVEN)
+            setFile(file);
+        else
+            setStrippedFile(file);
     }
 
-    /* Constructors */
+    public SubFile(File file, boolean extension) {
+        this(null, -1, null, file, extension);
+    }
+
+    public SubFile(File file) {
+        this(null, -1, null, file, EXTENSION_OMMITED);
+    }
+
     public SubFile() {
-        setEncoding(null);
-        setFPS(-1);
-        setFormat(null);
-        setCurrentFile(null);
-        setLastOpenedFile(null);
+        this(null, -1, null, null, EXTENSION_OMMITED);
     }
 
     public SubFile(SubFile old) {
+        if (old == null)
+            old = new SubFile();
         encoding = old.encoding;
         FPS = old.FPS;
         format = old.format;
-        current_file = old.current_file;
-        last_opened_file = old.last_opened_file;
+        savefile = old.savefile;
+        savefile_noext = old.savefile_noext;
     }
 
-
     /* File specific options */
+    public void setEncoding(String enc) {
+        if (enc == null)
+            enc = basic_fileencoding;
+        encoding = enc;
+    }
+
     public String getEncoding() {
         return encoding;
     }
 
-    public void setEncoding(String enc) {
-        if (enc == null)
-            enc = JPreferences.DefaultEncodings[0];
-        encoding = enc;
+    public void setFPS(float fps) {
+        if (fps <= 0)
+            fps = basic_FPS;
+        FPS = fps;
     }
 
     public float getFPS() {
         return FPS;
     }
 
-    public void setFPS(float fps) {
-        if (fps <= 0)
-            fps = JRateChooser.DefaultFPS;
-        FPS = fps;
+    public void setFormat(SubFormat format) {
+        if (format==null)
+            format = basic_format;
+        this.format = format;
+    }
+    
+    public void setFormat(String format) {
+        if (format == null) {
+            this.format = basic_format;
+            return;
+        }
+        this.format = AvailSubFormats.findFromDescription(format);
+        if (this.format == null)
+            this.format = AvailSubFormats.findFromName(format);
+        if (this.format == null)
+            this.format = basic_format;
     }
 
     public SubFormat getFormat() {
         return format;
     }
 
-    public void setFormat(String format) {
-        this.format = AvailSubFormats.findFromDescription(format);
-        if (this.format == null)
-            this.format = AvailSubFormats.findFromName(format);
-        if (this.format == null)
-            this.format = AvailSubFormats.Formats[0];
+    public void setFile(File f) {
+        if (f == null) {
+            setStrippedFile(null);
+            return;
+        }
+        savefile = f;
+        savefile_noext = FileCommunicator.stripFileFromExtension(savefile);
     }
 
-    public File getCurrentFile() {
-        return current_file;
+    public void setStrippedFile(File f) {
+        if (f == null)
+            f = new File(FileCommunicator.getDefaultDirPath() + _("Untitled"));
+        savefile_noext = f;
+        savefile = new File(savefile_noext.getPath() + "." + getFormat().getExtension());
     }
 
-    public void setCurrentFile(File f) {
-        current_file = f;
+    public void appendToFilename(String append) {
+        String newfile = savefile_noext.getPath() + append;
+        setStrippedFile(new File(newfile));
     }
 
-    public File getLastOpenedFile() {
-        return last_opened_file;
+    public File getSaveFile() {
+        return savefile;
     }
 
-    public void setLastOpenedFile(File f) {
-        last_opened_file = f;
+    public File getStrippedFile() {
+        return savefile_noext;
     }
 
+    public void updateFileByType() {
+        savefile = new File(getStrippedFile().getPath() + "." + format.getExtension());
+    }
 }

@@ -58,10 +58,17 @@ public class Subtitles extends AbstractTableModel {
     private SubFile subfile;
 
     public Subtitles() {
+        this((SubFile)null);
+    }
+
+    public Subtitles(SubFile sfile) {
         sublist = new Vector<SubEntry>();
         styles = new SubStyleList();
         attribs = new SubAttribs();
-        subfile = new SubFile();
+        if (sfile==null)
+            subfile = new SubFile();
+        else
+            subfile = sfile;
     }
 
     public Subtitles(Subtitles old) {
@@ -89,7 +96,7 @@ public class Subtitles extends AbstractTableModel {
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
-    public void populate(File f, String data, SubFile sfile) {
+    public void populate(SubFile sfile, String data) {
         Subtitles load;
         SubFormat format = null;
         AvailSubFormats formatlist;
@@ -99,10 +106,11 @@ public class Subtitles extends AbstractTableModel {
         load = null;
         formatlist = new AvailSubFormats();
 
+        File file = sfile.getSaveFile();
         while (load == null && formatlist.hasMoreElements()) {
             format = formatlist.nextElement();
             format.updateFormat(sfile);
-            load = format.parse(data, sfile.getFPS(), f);
+            load = format.parse(data, sfile.getFPS(), file);
             if (load != null && load.size() < 1)
                 load = null;
         }
@@ -110,7 +118,7 @@ public class Subtitles extends AbstractTableModel {
             appendSubs(load, true);
             attribs = new SubAttribs(load.attribs);
             if (format != null)
-                sfile.setFormat(format.getName());
+                sfile.setFormat(format);
         }
     }
 
@@ -300,6 +308,10 @@ public class Subtitles extends AbstractTableModel {
 
     public SubFile getSubFile() {
         return subfile;
+    }
+
+    public void setSubFile( SubFile sfile) {
+        subfile = sfile;
     }
 
     /* Methods related to JTable */

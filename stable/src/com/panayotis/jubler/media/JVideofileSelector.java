@@ -52,7 +52,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         fdialog.addChoosableFileFilter(vfilter);
         fdialog.addChoosableFileFilter(afilter);
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        FileCommunicator.getDefaultDialogPath(fdialog);
+        fdialog.setSelectedFile(new File(FileCommunicator.getDefaultDirPath(), "."));
     }
     
     
@@ -209,7 +209,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         afilter.setCheckForValidCache(mfile.getVideoFile());
         fdialog.setFileFilter(afilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        FileCommunicator.setDefaultDialogPath(fdialog);
+        FileCommunicator.setDefaultDir(fdialog.getCurrentDirectory());
         mfile.setCacheFile(fdialog.getSelectedFile());
         updateFiles();
     }//GEN-LAST:event_CacheBrowseActionPerformed
@@ -220,7 +220,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         fdialog.setFileFilter(afilter);
         if ( fdialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             mfile.setAudioFile(fdialog.getSelectedFile());
-            FileCommunicator.setDefaultDialogPath(fdialog);
+            FileCommunicator.setDefaultDir(fdialog.getCurrentDirectory());
         }
         updateFiles();
     }//GEN-LAST:event_AudioBrowseActionPerformed
@@ -239,7 +239,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         fdialog.setSelectedFile(mfile.getVideoFile());
         fdialog.setFileFilter(vfilter);
         if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
-        FileCommunicator.setDefaultDialogPath(fdialog);
+        FileCommunicator.setDefaultDir(fdialog.getCurrentDirectory());
         mfile.setVideoFile(fdialog.getSelectedFile());
         updateFiles();
     }//GEN-LAST:event_VideoBrowseActionPerformed
