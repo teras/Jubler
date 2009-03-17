@@ -39,7 +39,6 @@ public class SubFile {
 
     public static final boolean EXTENSION_GIVEN = true;
     public static final boolean EXTENSION_OMMITED = false;
-
     private final static String[] basic_encodings = {
         "UTF-8",
         "ISO-8859-1",
@@ -59,6 +58,7 @@ public class SubFile {
     private SubFormat format;
     private File savefile;
     private File savefile_noext;
+
 
     static {
         for (int i = 0; i < def_encodings.length; i++)
@@ -107,7 +107,7 @@ public class SubFile {
         setEncoding(encoding);
         setFPS(FPS);
         setFormat(format);
-        if (extension==EXTENSION_GIVEN)
+        if (extension == EXTENSION_GIVEN)
             setFile(file);
         else
             setStrippedFile(file);
@@ -135,9 +135,35 @@ public class SubFile {
         savefile_noext = old.savefile_noext;
     }
 
+    public SubFile(String pack) throws InstantiationException {
+        this();
+        if (pack == null || pack.equals(""))
+            throw new InstantiationException();
+
+        if (!pack.startsWith(";")) {
+            setFile(new File(pack));
+            return;
+        }
+
+        int fps_pos = pack.indexOf(";", 1);
+        if (fps_pos < 0)
+            throw new InstantiationException();
+        int file_pos = pack.indexOf(";", fps_pos + 1);
+        if (file_pos < 0)
+            throw new InstantiationException();
+
+        setEncoding(pack.substring(1, fps_pos));
+        try {
+            setFPS(Float.parseFloat(pack.substring(fps_pos + 1, file_pos)));
+        } catch (NumberFormatException ex) {
+            throw new InstantiationException(ex.getMessage());
+        }
+        setFile(new File(pack.substring(file_pos + 1)));
+    }
+
     /* File specific options */
     public void setEncoding(String enc) {
-        if (enc == null)
+        if (enc == null || enc.equals(""))
             enc = basic_fileencoding;
         encoding = enc;
     }
@@ -157,11 +183,11 @@ public class SubFile {
     }
 
     public void setFormat(SubFormat format) {
-        if (format==null)
+        if (format == null)
             format = basic_format;
         this.format = format;
     }
-    
+
     public void setFormat(String format) {
         if (format == null) {
             this.format = basic_format;
@@ -209,5 +235,19 @@ public class SubFile {
 
     public void updateFileByType() {
         savefile = new File(getStrippedFile().getPath() + "." + format.getExtension());
+    }
+
+    public String getPacked() {
+        StringBuffer b = new StringBuffer();
+        b.append(";").append(encoding);
+        b.append(";").append(FPS);
+        b.append(";").append(savefile.getPath());
+        return b.toString();
+    }
+
+    public boolean equals(Object o) {
+        if (o != null && (o instanceof SubFile))
+            return savefile.equals(((SubFile)o).savefile);
+        return false;
     }
 }

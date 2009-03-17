@@ -26,7 +26,7 @@ import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.information.JAbout;
-import com.panayotis.jubler.options.*;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.options.gui.JUnsaved;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.subs.SubFile;
@@ -50,7 +50,7 @@ import javax.swing.KeyStroke;
  */
 public class StaticJubler {
 
-    private static Stack<File> recent_files = Options.loadFileList();
+    private static Stack<SubFile> recent_files = Options.loadFileList();
     private static int screen_x,  screen_y,  screen_width,  screen_height,  screen_state;
     private static final int SCREEN_DELTAX = 24;
     private static final int SCREEN_DELTAY = 24;
@@ -150,27 +150,23 @@ public class StaticJubler {
 
     public static void updateRecents() {
         /* Get filenames of all files */
-        File f;
         Subtitles subs;
         for (Jubler j : Jubler.windows) {
             subs = j.getSubtitles();
             if (subs != null) {
-                f = subs.getSubFile().getSaveFile();
-                if (!recent_files.contains(f))
-                    recent_files.push(f);
+                if (!recent_files.contains(subs.getSubFile()))
+                    recent_files.push(subs.getSubFile());
             }
         }
         Options.saveFileList(recent_files);
 
         /* Get filenames of closed files */
-        Stack<File> menulist = new Stack<File>();
+        Stack<SubFile> menulist = new Stack<SubFile>();
         menulist.addAll(recent_files);
         for (Jubler j : Jubler.windows) {
             subs = j.getSubtitles();
-            if (subs != null) {
-                f = subs.getSubFile().getSaveFile();
-                menulist.remove(f);
-            }
+            if (subs != null)
+                menulist.remove(subs.getSubFile());
         }
 
         /* Update menus */
@@ -189,7 +185,7 @@ public class StaticJubler {
             else {
                 int counter = 1;
                 for (int i = menulist.size() - 1; i >= 0; i--)
-                    recent_menu.add(addNewMenu(menulist.get(i).getPath(), false, true, j, counter++));
+                    recent_menu.add(addNewMenu(menulist.get(i).getSaveFile().getPath(), false, true, j, counter++));
             }
         }
     }
@@ -209,8 +205,15 @@ public class StaticJubler {
                 if (isclone_f)
                     jub_f.recentMenuCallback(null);
                 else {
-                    SubFile sfile = new SubFile(new File(text_f));
-                    jub_f.recentMenuCallback(sfile);
+                    SubFile prototype = new SubFile(new File(text_f), SubFile.EXTENSION_GIVEN);
+                    System.out.println(recent_files.get(0).getSaveFile().getPath());
+                    System.out.println(prototype.getSaveFile().getPath());
+                    System.out.println("equals? "+prototype.equals(recent_files.get(0)));
+                    int where = recent_files.indexOf(prototype);
+                    if (where >= 0)
+                        jub_f.recentMenuCallback(recent_files.get(where));
+                    else
+                        JIDialog.error(jub_f, "Unable to load recent item", "Error");
                 }
             }
         });

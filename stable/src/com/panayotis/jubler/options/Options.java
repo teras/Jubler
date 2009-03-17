@@ -29,6 +29,7 @@ import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.subs.SubFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -122,16 +123,18 @@ public class Options {
         saveOptions();
     }
     
-    public static void saveFileList(Stack<File> recents) {
+    public static void saveFileList(Stack<SubFile> recents) {
+        SubFile sfile;
         File f;
         int pos = recents.size();
         int counter = 0;
         while (pos > 0 && counter < MAX_RECENTS) {
             pos--;
-            f = recents.get(pos);
+            sfile = recents.get(pos);
+            f = sfile.getSaveFile();
             if (f.exists() && f.isFile()) {
                 counter++;
-                setOption("System.Lastfile" + counter, f.getPath());
+                setOption("System.Lastfile" + counter, sfile.getPacked());
             }
         }
         while (counter < MAX_RECENTS)
@@ -139,17 +142,18 @@ public class Options {
         saveOptions();
     }
     
-    public static Stack<File> loadFileList() {
-        Stack<File> files = new Stack<File>();
+    public static Stack<SubFile> loadFileList() {
+        Stack<SubFile> files = new Stack<SubFile>();
 
         String fname;
         File f;
         for (int i = MAX_RECENTS ; i >0 ; i--) {
-            fname = getOption("System.Lastfile"+i,"");
-            if (!fname.trim().equals("")) {
-                f = new File(fname);
-                if (f.exists() && f.canRead() && f.isFile())
-                    files.push(f);
+            try {
+                SubFile sf = new SubFile(getOption("System.Lastfile"+i,""));
+                f = sf.getSaveFile();
+                if (f.exists()&& f.canRead() && f.isFile())
+                    files.push(sf);
+            } catch (InstantiationException er){
             }
         }
         return files;
