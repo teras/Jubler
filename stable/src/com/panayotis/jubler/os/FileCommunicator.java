@@ -46,6 +46,8 @@ import java.nio.charset.UnmappableCharacterException;
  */
 public class FileCommunicator {
 
+    public static final String FS = System.getProperty("file.separator");
+
     private static String load(SubFile sfile, String enc, String msg, boolean strict) {
         String res = loadFromFile(sfile.getSaveFile(), enc, strict);
         if (res != null) {
@@ -166,16 +168,17 @@ public class FileCommunicator {
     }
 
     public static String getDefaultDirPath() {
-        String basic_path = System.getProperty("user.dir") + System.getProperty("file.separator");
-        return Options.getOption("System.LastDirPath", basic_path);
+        String basic_path = System.getProperty("user.dir") + FS;
+        String c_path = Options.getOption("System.LastDirPath", basic_path);
+        if (!c_path.endsWith(FileCommunicator.FS))
+            c_path += FS;
+        return c_path;
     }
 
     public static void setDefaultDir(File default_file) {
-        String path = default_file.getPath();
+        String path = default_file.getPath() + FS;
         if (!default_file.isDirectory())
             throw new IllegalArgumentException(_("File {0} is not a directory", default_file.getPath()));
-
-        path += System.getProperty("file.separator");
         Options.setOption("System.LastDirPath", path);
         Options.saveOptions();
     }

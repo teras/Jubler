@@ -31,6 +31,7 @@ import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.media.preview.decoders.FFMPEG;
+import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Image;
@@ -178,7 +179,7 @@ public class MediaFile {
             int point = strippedfilename.lastIndexOf('.');
             if (point < 0 ) point = strippedfilename.length();
             cf = new File(System.getProperty("java.io.tmpdir")+
-                    System.getProperty("file.separator")+
+                    FileCommunicator.FS +
                     strippedfilename.substring(0,point)+AudioPreview.getExtension());
         } else {
             int point = cf.getPath().lastIndexOf('.');

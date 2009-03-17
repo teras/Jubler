@@ -32,8 +32,6 @@ import java.util.StringTokenizer;
  */
 public class SystemFileFinder {
     
-    private final static String pathseparator = System.getProperty("file.separator");
-    
     private static File findFile(String name) {
         String classpath = System.getProperty("java.class.path");
         StringTokenizer tok = new StringTokenizer(classpath, System.getProperty("path.separator"));
@@ -42,11 +40,11 @@ public class SystemFileFinder {
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
             if (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")) {
-                int seppos = path.lastIndexOf(pathseparator);
+                int seppos = path.lastIndexOf(FileCommunicator.FS);
                 if (seppos>=0) path = path.substring(0, seppos);
                 else path = ".";
             }
-            if (!path.endsWith(pathseparator)) path = path + pathseparator;
+            if (!path.endsWith(FileCommunicator.FS)) path = path + FileCommunicator.FS;
             File filetest = new File(path+name);
             if (filetest.exists()) {
                 return filetest;
@@ -56,7 +54,7 @@ public class SystemFileFinder {
     }
     
     public static boolean loadLibrary(String name) {
-        File libfile = findFile("lib"+pathseparator+System.mapLibraryName(name));
+        File libfile = findFile("lib"+FileCommunicator.FS+System.mapLibraryName(name));
         if (libfile!=null) {
             try {
                 System.load(libfile.getAbsolutePath());

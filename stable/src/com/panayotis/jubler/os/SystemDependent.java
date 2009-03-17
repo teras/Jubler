@@ -319,13 +319,12 @@ public class SystemDependent {
         String[] cmd = new String[2];
         cmd[0] = "locate";
         cmd[1] = name;
-        String pathterm = System.getProperty("file.separator");
         try {
             String line;
             proc = Runtime.getRuntime().exec(cmd);
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             while ((line = in.readLine()) != null) {
-                if (line.endsWith(pathterm + name))
+                if (line.endsWith(FileCommunicator.FS + name))
                     res.add(new ExtPath(line, ExtPath.FILE_ONLY));
             }
         } catch (Exception ex) {
@@ -394,7 +393,7 @@ public class SystemDependent {
     }
 
     public final static String getConfigPath() {
-        String home = System.getProperty("user.home") + System.getProperty("file.separator");
+        String home = System.getProperty("user.home") + FileCommunicator.FS;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\config.txt";
@@ -404,7 +403,7 @@ public class SystemDependent {
     }
 
     public final static String getLogPath() {
-        String home = System.getProperty("user.home") + System.getProperty("file.separator");
+        String home = System.getProperty("user.home") + FileCommunicator.FS;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\log.txt";
@@ -415,7 +414,7 @@ public class SystemDependent {
 
     /** This function always return the directory seperator at the end of the filename */
     public final static String getAppSupportDirPath() {
-        String home = System.getProperty("user.home") + System.getProperty("file.separator");
+        String home = System.getProperty("user.home") + FileCommunicator.FS;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\";
