@@ -1526,7 +1526,8 @@ public class Jubler extends JFrame {
             s.elementAt(i).setText("");
         }
         curjubler.setSubs(s);
-        s.getSubFile().appendToFilename(_("_child"));
+        curjubler.subs.getSubFile().appendToFilename(_("_child"));
+        curjubler.showInfo();
         curjubler.connect_to_other = this;
     }//GEN-LAST:event_ChildNFMActionPerformed
     
@@ -1820,7 +1821,7 @@ public class Jubler extends JFrame {
             
             undo.addUndo(new UndoEntry(subs, _("Join subtitles")));
             
-            newsubs = new Subtitles();
+            newsubs = new Subtitles(subs.getSubFile());
             other = join.getOtherSubs();
             dt = join.getGap().toSeconds();
             

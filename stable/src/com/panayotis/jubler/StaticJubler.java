@@ -206,9 +206,6 @@ public class StaticJubler {
                     jub_f.recentMenuCallback(null);
                 else {
                     SubFile prototype = new SubFile(new File(text_f), SubFile.EXTENSION_GIVEN);
-                    System.out.println(recent_files.get(0).getSaveFile().getPath());
-                    System.out.println(prototype.getSaveFile().getPath());
-                    System.out.println("equals? "+prototype.equals(recent_files.get(0)));
                     int where = recent_files.indexOf(prototype);
                     if (where >= 0)
                         jub_f.recentMenuCallback(recent_files.get(where));
