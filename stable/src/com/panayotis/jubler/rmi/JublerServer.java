@@ -6,13 +6,10 @@ package com.panayotis.jubler.rmi;
 
 import com.panayotis.jubler.Main;
 import com.panayotis.jubler.os.DEBUG;
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

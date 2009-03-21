@@ -73,80 +73,45 @@
                     <Property name="rows" type="int" value="0"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JToggleButton" name="White">
+                    <Component class="javax.swing.JButton" name="WhiteB">
                       <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="MarkGroup"/>
-                        </Property>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/pen.png"/>
-                        </Property>
-                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Mark subttile as white&quot;)" type="code"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="w"/>
                         <Property name="actionCommand" type="java.lang.String" value="0"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
-                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                          <Insets value="[0, 0, 0, 0]"/>
-                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectMark"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JToggleButton" name="Pink">
+                    <Component class="javax.swing.JButton" name="PinkB">
                       <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="MarkGroup"/>
-                        </Property>
-                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Mark subttile as pink&quot;)" type="code"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="p"/>
                         <Property name="actionCommand" type="java.lang.String" value="1"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
-                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                          <Insets value="[0, 0, 0, 0]"/>
-                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectMark"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JToggleButton" name="Yellow">
+                    <Component class="javax.swing.JButton" name="YellowB">
                       <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="MarkGroup"/>
-                        </Property>
-                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Mark subttile as yellow&quot;)" type="code"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="y"/>
                         <Property name="actionCommand" type="java.lang.String" value="2"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
-                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                          <Insets value="[0, 0, 0, 0]"/>
-                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectMark"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JToggleButton" name="Cyan">
+                    <Component class="javax.swing.JButton" name="CyanB">
                       <Properties>
-                        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                          <ComponentRef name="MarkGroup"/>
-                        </Property>
-                        <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Mark subttile as cyan&quot;)" type="code"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="c"/>
                         <Property name="actionCommand" type="java.lang.String" value="3"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
-                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                          <Insets value="[0, 0, 0, 0]"/>
-                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectMark"/>
@@ -214,22 +179,14 @@
                 <Property name="rows" type="int" value="1"/>
               </Layout>
               <SubComponents>
-                <Component class="javax.swing.JToggleButton" name="MarkB">
+                <Component class="javax.swing.JButton" name="MarkB">
                   <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/mark.png"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="m"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Add new subtitle on the fly&quot;)" type="code"/>
                     </Property>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
-                    <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                      <Insets value="[0, 0, 0, 0]"/>
-                    </Property>
-                    <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/markrec.png"/>
-                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MarkBActionPerformed"/>
@@ -237,9 +194,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="ResetSpeedB">
                   <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/speed.png"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="s"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Reset playback speed to default value&quot;)" type="code"/>
                     </Property>
@@ -253,20 +208,15 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ResetSpeedBActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="AudioB">
+                <Component class="javax.swing.JButton" name="AudioB">
                   <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/audio.png"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="a"/>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
-                    <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                      <Insets value="[0, 0, 0, 0]"/>
-                    </Property>
-                    <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/audiomute.png"/>
-                    </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AudioBActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -395,32 +345,22 @@
                     <Property name="rows" type="int" value="1"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JToggleButton" name="PauseB">
+                    <Component class="javax.swing.JButton" name="PauseB">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/play.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="p"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Play/Pause video playback&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
-                        <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/pause.png"/>
-                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PauseBActionPerformed"/>
                       </Events>
-                      <AuxValues>
-                        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setConsoleButtonStyle(PauseB, &quot;first&quot;);"/>
-                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="LoadSubsB">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/reload.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="l"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Load new subtitles into player&quot;)" type="code"/>
                         </Property>
@@ -433,9 +373,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="QuitB">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/quit.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="q"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Quit Player&quot;)" type="code"/>
                         </Property>
@@ -470,9 +408,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JButton" name="BBMovieB">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/bbmovie.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="bb"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Go backwards by 30 seconds&quot;)" type="code"/>
                         </Property>
@@ -485,9 +421,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="BMovieB">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/bmovie.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="b"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Go backwards by 10 secons&quot;)" type="code"/>
                         </Property>
@@ -500,9 +434,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="FMovieB">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/fmovie.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="f"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Go forwards by 10 seconds&quot;)" type="code"/>
                         </Property>
@@ -515,9 +447,7 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="FFMovieB">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/ffmovie.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="ff"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Go forwards by 30 seconds&quot;)" type="code"/>
                         </Property>
@@ -556,45 +486,29 @@
                     <Property name="rows" type="int" value="1"/>
                   </Layout>
                   <SubComponents>
-                    <Component class="javax.swing.JToggleButton" name="Sync1B">
+                    <Component class="javax.swing.JButton" name="Sync1B">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/sync1b.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="1"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                           <Connection code="_(&quot;Mark first synchronization position of the subtitles.&quot;)" type="code"/>
                         </Property>
-                        <Property name="actionCommand" type="java.lang.String" value="sync1"/>
+                        <Property name="actionCommand" type="java.lang.String" value="b1"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
-                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                          <Insets value="[0, 0, 0, 0]"/>
-                        </Property>
-                        <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/sync1c.png"/>
-                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SyncBActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JToggleButton" name="Sync2B">
+                    <Component class="javax.swing.JButton" name="Sync2B">
                       <Properties>
-                        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/sync2b.png"/>
-                        </Property>
+                        <Property name="text" type="java.lang.String" value="2"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Mark second synchronization position of the subtitles.&quot;)" type="code"/>
+                          <Connection code="_(&quot;Mark first synchronization position of the subtitles.&quot;)" type="code"/>
                         </Property>
-                        <Property name="actionCommand" type="java.lang.String" value="sync2"/>
+                        <Property name="actionCommand" type="java.lang.String" value="b2"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
-                        <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                          <Insets value="[0, 0, 0, 0]"/>
-                        </Property>
-                        <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                          <Image iconType="3" name="/icons/sync2c.png"/>
-                        </Property>
                       </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SyncBActionPerformed"/>
@@ -604,9 +518,7 @@
                 </Container>
                 <Component class="javax.swing.JButton" name="GrabSub">
                   <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/icons/textpick.png"/>
-                    </Property>
+                    <Property name="text" type="java.lang.String" value="g"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Select subtitle from the main window, to synchronize subtitles with current time.&quot;)" type="code"/>
                     </Property>

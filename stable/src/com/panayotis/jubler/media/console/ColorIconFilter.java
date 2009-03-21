@@ -20,46 +20,43 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.console;
 
-import com.panayotis.jubler.subs.style.gui.tri.DarkIconFilter;
 import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import javax.swing.ImageIcon;
 
 /**
  *
  * @author teras
  */
 public class ColorIconFilter extends RGBImageFilter {
-    
-   float rf, gf, bf;
-   
-   public ColorIconFilter (Color c) {
-       rf = c.getRed()/255f;
-       gf = c.getGreen()/255f;
-       bf = c.getBlue()/255f;
-   }
-    
-    public int filterRGB(int x, int y, int rgb) {
-        int r = (rgb>>16) & 255;
-        int g = (rgb>>8) & 255;
-        int b = rgb & 255;
-        int medhalf = (r+g+b)/7;
-        
-        r = (int)(r*rf) & 0xff;
-        g = (int)(g*gf) & 0xff;
-        b = (int)(b*bf) & 0xff;
-        return (rgb & 0xff000000) | (r << 16) | (g << 8) | b;
+
+    float rf, gf, bf;
+
+    public ColorIconFilter(Color c) {
+        this(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f);
     }
-    
-    public static ImageIcon getColoredIcon(ImageIcon from, Color c) {
-        ColorIconFilter filter = new ColorIconFilter(c);
-        ImageProducer prod = new FilteredImageSource(from.getImage().getSource(), filter);
-        return new ImageIcon(Toolkit.getDefaultToolkit().createImage(prod));
+
+    public ColorIconFilter(float rf, float gf, float bf) {
+        this.rf = rf;
+        this.gf = gf;
+        this.bf = bf;
+    }
+
+    public int filterRGB(int x, int y, int rgb) {
+        int r = (rgb >> 16) & 0xff;
+        int g = (rgb >> 8) & 0xff;
+        int b = rgb & 0xff;
+
+        r = (int) (r * rf);
+        g = (int) (g * gf);
+        b = (int) (b * bf);
+        if (r > 255)
+            r = 255;
+        if (g > 255)
+            g = 255;
+        if (b > 255)
+            b = 255;
+        return (rgb & 0xff000000) | (r << 16) | (g << 8) | b;
     }
 }

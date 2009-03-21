@@ -49,6 +49,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JToggleButton;
 
@@ -71,19 +73,26 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private boolean ignore_slider_changes = false;
     private boolean ignore_volume_changes = false;
     
-    
-    /* use this flag to stop entering the mark change event method, if the change has been done programmatically */
-    private boolean ignore_mark_changes = false;
+    /* This stores the state of the four marking icons */
+    private int penstatus = -1; // none selected
     
     /* When adding subtitles on the fly, remember what was the last selected marker */
     private int last_selected_marker = 0;
-    
+    /* Remember the state if a new subtitle is added */
+    private boolean subadd_status = false;
+
+    /* mute/unmute the player */
+    int last_volume_value = 5;
+
+    /* While sync-ing, remember which sync button was pressed */
+    boolean sync1_status = false;
+    boolean sync2_status = false;
+
+
     private double start_mark_sub, finish_mark_sub;
     
     private double subsdelay; /* Keep the difference of the subtitles */
-    
-    private ImageIcon Audio[];
-    
+        
     /* Use this flag to quit the console with thread safe methods */
     private boolean request_quit;
     
@@ -94,6 +103,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         
         initComponents();
         initImageIcons();
+        initButtonIcons();
         resetSubsDelay();
         
         if ( !player.supportPause()) {
@@ -120,12 +130,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         }
         if ( !player.supportChangeSubs()) {
             LoadSubsB.setEnabled(false);
-        }
-
-        Pink.setIcon(ColorIconFilter.getColoredIcon((ImageIcon)White.getIcon(),Color.PINK));
-        Yellow.setIcon(ColorIconFilter.getColoredIcon((ImageIcon)White.getIcon(),Color.YELLOW));
-        Cyan.setIcon(ColorIconFilter.getColoredIcon((ImageIcon)White.getIcon(),Color.CYAN));
-        
+        }        
         
         diagram = new JSubSimpleGraph(parent.getSubtitles());
         SliderP.add(diagram, BorderLayout.SOUTH);
@@ -242,38 +247,28 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     public void volumeUpdate(float vol) {
         ignore_volume_changes = true;
-        AudioS.setValue(Math.round(vol*10));
+        int value = Math.round(vol * 10);
+        AudioS.setValue(value);
+        if (value > 0)
+            last_volume_value = value;
         ignore_volume_changes = false;
     }
     
     
-    private void setMarker(int which) {
-        ignore_mark_changes = true;
-        switch (which) {
-            case 0:
-                White.setSelected(true);
-                break;
-            case 1:
-                Pink.setSelected(true);
-                break;
-            case 2:
-                Yellow.setSelected(true);
-                break;
-            case 3:
-                Cyan.setSelected(true);
-                break;
-        }
-        ignore_mark_changes = false;
+    private void setMarker(int newstatus) {
+        if (newstatus < 0)
+            newstatus = -1;
+        if (newstatus > 3)
+            newstatus = 3;
+        if (newstatus == penstatus)
+            return;
+        if (penstatus >= 0)   // something was selected
+            setPenIcon(penstatus, false);   // Unselect it
+        penstatus = newstatus;
+        if (penstatus >= 0)
+            setPenIcon(penstatus, true);
     }
-    
-    private int getMarker() {
-        if (Pink.isSelected()) return 1;
-        if (Yellow.isSelected()) return 2;
-        if (Cyan.isSelected()) return 3;
-        return 0;
-    }
-    
-    
+
     
     /* These variables are used to define the state of the Subtitle Recorder */
     private final static int SUBREC_BEGIN = 0;
@@ -285,22 +280,16 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private void setSubRecStatus(int status) {
         switch (status) {
             case SUBREC_BEGIN:
-                start_mark_sub = view.getTime();
-                
+                start_mark_sub = view.getTime();                
                 checkValid(view.pause(false));
                 SubShow.setEditable(false);
-                MarkB.setSelected(true);
-                MarkB.setEnabled(true);
                 break;
                 
             case SUBREC_TYPING:
-                setMarker(last_selected_marker);
-                
+                setMarker(last_selected_marker);                
                 checkValid(view.pause(true));
                 SubShow.setText("");
                 SubShow.setEditable(true);
-                MarkB.setEnabled(false);
-                MarkB.setSelected(true);
                 break;
                 
             case SUBREC_FINALIZE:
@@ -309,7 +298,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                     String sub = SubShow.getText().trim().replace('|', '\n');
                     parent.setDisableConsoleUpdate(true);
                     SubEntry entry = new SubEntry(new Time(start_mark_sub), new Time(finish_mark_sub), sub);
-                    last_selected_marker = getMarker();
+                    last_selected_marker = penstatus;
                     entry.setMark(last_selected_marker);
                     parent.addSubEntry( entry );
                     diagram.repaint();
@@ -317,15 +306,13 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                 }
                 
             case SUBREC_ABORT:  // This part is executed by SUBREC_FINALIZE too !
-                
                 checkValid(view.pause(false));
                 SubShow.setEditable(false);
                 SubShow.setText("");
-                MarkB.setEnabled(true);
-                MarkB.setSelected(false);
                 start_mark_sub = finish_mark_sub = -1;
                 break;
         }
+        setMarkStatus(status);
         SubShow.requestFocusInWindow();
     }
     
@@ -343,16 +330,16 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel13 = new javax.swing.JPanel();
-        White = new javax.swing.JToggleButton();
-        Pink = new javax.swing.JToggleButton();
-        Yellow = new javax.swing.JToggleButton();
-        Cyan = new javax.swing.JToggleButton();
+        WhiteB = new javax.swing.JButton();
+        PinkB = new javax.swing.JButton();
+        YellowB = new javax.swing.JButton();
+        CyanB = new javax.swing.JButton();
         SpeedS = new javax.swing.JSlider();
         AudioS = new javax.swing.JSlider();
         jPanel1 = new javax.swing.JPanel();
-        MarkB = new javax.swing.JToggleButton();
+        MarkB = new javax.swing.JButton();
         ResetSpeedB = new javax.swing.JButton();
-        AudioB = new javax.swing.JToggleButton();
+        AudioB = new javax.swing.JButton();
         MainPanel = new javax.swing.JPanel();
         SliderP = new javax.swing.JPanel();
         TimeS = new javax.swing.JSlider();
@@ -362,7 +349,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel11 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        PauseB = new javax.swing.JToggleButton();
+        PauseB = new javax.swing.JButton();
         LoadSubsB = new javax.swing.JButton();
         QuitB = new javax.swing.JButton();
         NavPanel = new javax.swing.JPanel();
@@ -372,8 +359,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         FFMovieB = new javax.swing.JButton();
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
-        Sync1B = new javax.swing.JToggleButton();
-        Sync2B = new javax.swing.JToggleButton();
+        Sync1B = new javax.swing.JButton();
+        Sync2B = new javax.swing.JButton();
         GrabSub = new javax.swing.JButton();
         jPanel12 = new javax.swing.JPanel();
         SubMover = new javax.swing.JSlider();
@@ -393,58 +380,49 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         jPanel13.setLayout(new java.awt.GridLayout(0, 1));
 
-        MarkGroup.add(White);
-        White.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pen.png"))); // NOI18N
-        White.setToolTipText(_("Mark subttile as white"));
-        White.setActionCommand("0");
-        White.setBorderPainted(false);
-        White.setContentAreaFilled(false);
-        White.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        White.addActionListener(new java.awt.event.ActionListener() {
+        WhiteB.setText("w");
+        WhiteB.setActionCommand("0");
+        WhiteB.setBorderPainted(false);
+        WhiteB.setContentAreaFilled(false);
+        WhiteB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
             }
         });
-        jPanel13.add(White);
+        jPanel13.add(WhiteB);
 
-        MarkGroup.add(Pink);
-        Pink.setToolTipText(_("Mark subttile as pink"));
-        Pink.setActionCommand("1");
-        Pink.setBorderPainted(false);
-        Pink.setContentAreaFilled(false);
-        Pink.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        Pink.addActionListener(new java.awt.event.ActionListener() {
+        PinkB.setText("p");
+        PinkB.setActionCommand("1");
+        PinkB.setBorderPainted(false);
+        PinkB.setContentAreaFilled(false);
+        PinkB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
             }
         });
-        jPanel13.add(Pink);
+        jPanel13.add(PinkB);
 
-        MarkGroup.add(Yellow);
-        Yellow.setToolTipText(_("Mark subttile as yellow"));
-        Yellow.setActionCommand("2");
-        Yellow.setBorderPainted(false);
-        Yellow.setContentAreaFilled(false);
-        Yellow.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        Yellow.addActionListener(new java.awt.event.ActionListener() {
+        YellowB.setText("y");
+        YellowB.setActionCommand("2");
+        YellowB.setBorderPainted(false);
+        YellowB.setContentAreaFilled(false);
+        YellowB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
             }
         });
-        jPanel13.add(Yellow);
+        jPanel13.add(YellowB);
 
-        MarkGroup.add(Cyan);
-        Cyan.setToolTipText(_("Mark subttile as cyan"));
-        Cyan.setActionCommand("3");
-        Cyan.setBorderPainted(false);
-        Cyan.setContentAreaFilled(false);
-        Cyan.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        Cyan.addActionListener(new java.awt.event.ActionListener() {
+        CyanB.setText("c");
+        CyanB.setActionCommand("3");
+        CyanB.setBorderPainted(false);
+        CyanB.setContentAreaFilled(false);
+        CyanB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectMark(evt);
             }
         });
-        jPanel13.add(Cyan);
+        jPanel13.add(CyanB);
 
         jPanel8.add(jPanel13);
 
@@ -486,12 +464,10 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
-        MarkB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/mark.png"))); // NOI18N
+        MarkB.setText("m");
         MarkB.setToolTipText(_("Add new subtitle on the fly"));
         MarkB.setBorderPainted(false);
         MarkB.setContentAreaFilled(false);
-        MarkB.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        MarkB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/markrec.png"))); // NOI18N
         MarkB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MarkBActionPerformed(evt);
@@ -499,7 +475,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel1.add(MarkB);
 
-        ResetSpeedB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/speed.png"))); // NOI18N
+        ResetSpeedB.setText("s");
         ResetSpeedB.setToolTipText(_("Reset playback speed to default value"));
         ResetSpeedB.setBorderPainted(false);
         ResetSpeedB.setContentAreaFilled(false);
@@ -511,11 +487,14 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel1.add(ResetSpeedB);
 
-        AudioB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/audio.png"))); // NOI18N
+        AudioB.setText("a");
         AudioB.setBorderPainted(false);
         AudioB.setContentAreaFilled(false);
-        AudioB.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        AudioB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/audiomute.png"))); // NOI18N
+        AudioB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AudioBActionPerformed(evt);
+            }
+        });
         jPanel1.add(AudioB);
 
         jPanel7.add(jPanel1, java.awt.BorderLayout.SOUTH);
@@ -569,12 +548,10 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 5));
         jPanel3.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
-        PauseB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/play.png"))); // NOI18N
+        PauseB.setText("p");
         PauseB.setToolTipText(_("Play/Pause video playback"));
         PauseB.setBorderPainted(false);
         PauseB.setContentAreaFilled(false);
-        PauseB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pause.png"))); // NOI18N
-        SystemDependent.setConsoleButtonStyle(PauseB, "first");
         PauseB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 PauseBActionPerformed(evt);
@@ -582,7 +559,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel3.add(PauseB);
 
-        LoadSubsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reload.png"))); // NOI18N
+        LoadSubsB.setText("l");
         LoadSubsB.setToolTipText(_("Load new subtitles into player"));
         LoadSubsB.setBorderPainted(false);
         LoadSubsB.setContentAreaFilled(false);
@@ -593,7 +570,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel3.add(LoadSubsB);
 
-        QuitB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/quit.png"))); // NOI18N
+        QuitB.setText("q");
         QuitB.setToolTipText(_("Quit Player"));
         QuitB.setBorderPainted(false);
         QuitB.setContentAreaFilled(false);
@@ -609,7 +586,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         NavPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
         NavPanel.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
-        BBMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bbmovie.png"))); // NOI18N
+        BBMovieB.setText("bb");
         BBMovieB.setToolTipText(_("Go backwards by 30 seconds"));
         BBMovieB.setBorderPainted(false);
         BBMovieB.setContentAreaFilled(false);
@@ -620,7 +597,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         NavPanel.add(BBMovieB);
 
-        BMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bmovie.png"))); // NOI18N
+        BMovieB.setText("b");
         BMovieB.setToolTipText(_("Go backwards by 10 secons"));
         BMovieB.setBorderPainted(false);
         BMovieB.setContentAreaFilled(false);
@@ -631,7 +608,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         NavPanel.add(BMovieB);
 
-        FMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/fmovie.png"))); // NOI18N
+        FMovieB.setText("f");
         FMovieB.setToolTipText(_("Go forwards by 10 seconds"));
         FMovieB.setBorderPainted(false);
         FMovieB.setContentAreaFilled(false);
@@ -642,7 +619,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         NavPanel.add(FMovieB);
 
-        FFMovieB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/ffmovie.png"))); // NOI18N
+        FFMovieB.setText("ff");
         FFMovieB.setToolTipText(_("Go forwards by 30 seconds"));
         FFMovieB.setBorderPainted(false);
         FFMovieB.setContentAreaFilled(false);
@@ -662,13 +639,11 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
-        Sync1B.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync1b.png"))); // NOI18N
+        Sync1B.setText("1");
         Sync1B.setToolTipText(_("Mark first synchronization position of the subtitles."));
-        Sync1B.setActionCommand("sync1");
+        Sync1B.setActionCommand("b1");
         Sync1B.setBorderPainted(false);
         Sync1B.setContentAreaFilled(false);
-        Sync1B.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        Sync1B.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync1c.png"))); // NOI18N
         Sync1B.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SyncBActionPerformed(evt);
@@ -676,13 +651,11 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel15.add(Sync1B);
 
-        Sync2B.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync2b.png"))); // NOI18N
-        Sync2B.setToolTipText(_("Mark second synchronization position of the subtitles."));
-        Sync2B.setActionCommand("sync2");
+        Sync2B.setText("2");
+        Sync2B.setToolTipText(_("Mark first synchronization position of the subtitles."));
+        Sync2B.setActionCommand("b2");
         Sync2B.setBorderPainted(false);
         Sync2B.setContentAreaFilled(false);
-        Sync2B.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        Sync2B.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sync2c.png"))); // NOI18N
         Sync2B.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SyncBActionPerformed(evt);
@@ -692,7 +665,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         jPanel14.add(jPanel15, java.awt.BorderLayout.EAST);
 
-        GrabSub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/textpick.png"))); // NOI18N
+        GrabSub.setText("g");
         GrabSub.setToolTipText(_("Select subtitle from the main window, to synchronize subtitles with current time."));
         GrabSub.setBorderPainted(false);
         GrabSub.setContentAreaFilled(false);
@@ -750,13 +723,14 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                     setSubRecStatus(SUBREC_ABORT);
                 else
                     setSubRecStatus(SUBREC_FINALIZE);
-                
+
             } else {
                 if (keycode == KeyEvent.VK_ENTER) {
-                    if (MarkB.isSelected()) {
-                        setSubRecStatus(SUBREC_TYPING);
-                    } else {
+                    subadd_status = !subadd_status;
+                    if (subadd_status) {
                         setSubRecStatus(SUBREC_BEGIN);
+                    } else {
+                        setSubRecStatus(SUBREC_TYPING);
                     }
                 }
             }
@@ -792,19 +766,27 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }//GEN-LAST:event_GrabSubActionPerformed
     
     private void SyncBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SyncBActionPerformed
-        boolean is_first = evt.getActionCommand().equals("sync1");
-        
-        if ( ((JToggleButton)evt.getSource()).isSelected()) {
+        boolean is_first = evt.getActionCommand().equals("b1");
+        boolean status;
+        if (is_first) {
+            status = !sync1_status;
+            setSyncButton(1, status);
+        } else {
+            status = !sync2_status;
+            setSyncButton(2, status);
+        }
+
+        if (status) {
             createNewSyncMark(is_first);
         } else {
             destroySyncMark(is_first);
-        }        
+        }
     }//GEN-LAST:event_SyncBActionPerformed
     
     private void selectMark(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectMark
-        if (ignore_mark_changes) return;
-        SubEntry sub= parent.matchSubtitle(view.getTime());
-        if (sub!=null) sub.setMark(evt.getActionCommand().charAt(0)-'0');
+        SubEntry sub = parent.matchSubtitle(view.getTime());
+        if (sub != null)
+            sub.setMark(evt.getActionCommand().charAt(0) - '0');
     }//GEN-LAST:event_selectMark
     
     private void ResetSpeedBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetSpeedBActionPerformed
@@ -816,28 +798,21 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         player.setCentralLocation(pos.x, pos.y);
         checkValid(view.changeSubs(parent.getSubtitles()));
     }//GEN-LAST:event_LoadSubsBActionPerformed
-    
-    private void PauseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PauseBActionPerformed
-        checkValid(view.pause(PauseB.isSelected()));
-        if ( (!PauseB.isSelected()) && (!GrabSub.isEnabled()) )
-            GrabSub.setEnabled(true);
-    }//GEN-LAST:event_PauseBActionPerformed
-    
+        
     private void AudioSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_AudioSStateChanged
         if (ignore_volume_changes) return;
         if ( AudioS.getValueIsAdjusting()) return;
         
         int value = AudioS.getValue();
-        if (value == 0) {
-            AudioB.setSelected(true);
-        } else {
-            AudioB.setSelected(false);
-        }
+        if (value > 0)
+            last_volume_value = value;
+        setAudioIcon(value == 0);
         checkValid(view.setVolume(value));
     }//GEN-LAST:event_AudioSStateChanged
     
     private void MarkBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MarkBActionPerformed
-        if (MarkB.isSelected()) {
+        subadd_status = !subadd_status;
+        if (subadd_status) {
             setSubRecStatus(SUBREC_BEGIN);
         } else {
             setSubRecStatus(SUBREC_TYPING);
@@ -897,13 +872,24 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private void QuitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitBActionPerformed
         checkValid(false); /* Always think that the user wants to exit here */
     }//GEN-LAST:event_QuitBActionPerformed
+
+    private void PauseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PauseBActionPerformed
+        checkValid(view.pause(!view.isPaused()));
+        setPauseIcon();
+        if ( (!view.isPaused()) && (!GrabSub.isEnabled()) )
+            GrabSub.setEnabled(true);
+}//GEN-LAST:event_PauseBActionPerformed
+
+    private void AudioBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioBActionPerformed
+        AudioS.setValue(AudioS.getValue() == 0 ? last_volume_value : 0);
+    }//GEN-LAST:event_AudioBActionPerformed
     
     private void checkValid(boolean isvalid) {
         if (isvalid) {
             SubShow.requestFocusInWindow(); // Make sure that SubShow has the focus, in order to grab the key events
             
             boolean paused = view.isPaused();
-            PauseB.setSelected(paused);
+            setPauseIcon();
             //if (SubShow.isEditable()) setSubRecStatus(SUBREC_FINALIZE); // Stop subtitle recording
             if (paused) timer.stop();
             else timer.start();
@@ -926,13 +912,13 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
             checkValid(view.delaySubs(diff));
             checkValid(view.seek((int)(newtime-subsdelay)));
             checkValid(view.pause(false));
-            
-            if (!Sync1B.isSelected()) {
-                Sync1B.setSelected(true);
+
+            if (!sync1_status) {
+                setSyncButton(1, true);
                 createNewSyncMark(true);
             } else {
-                if (!Sync2B.isSelected()) {
-                    Sync2B.setSelected(true);
+                if (!sync2_status) {
+                    setSyncButton(2, true);
                     createNewSyncMark(false);
                 }
             }
@@ -946,10 +932,10 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private void destroySyncMark(boolean is_first) {
         if (is_first) {
             sync1 = null;
-            Sync1B.setSelected(false);
+            setSyncButton(1, false);
         } else {
             sync2 = null;
-            Sync2B.setSelected(false);
+            setSyncButton(2, false);
         }
     }
     
@@ -1014,21 +1000,21 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton AudioB;
+    private javax.swing.JButton AudioB;
     private javax.swing.JSlider AudioS;
     private javax.swing.JButton BBMovieB;
     private javax.swing.JButton BMovieB;
-    private javax.swing.JToggleButton Cyan;
+    private javax.swing.JButton CyanB;
     private javax.swing.JButton FFMovieB;
     private javax.swing.JButton FMovieB;
     private javax.swing.JButton GrabSub;
     private javax.swing.JButton LoadSubsB;
     private javax.swing.JPanel MainPanel;
-    private javax.swing.JToggleButton MarkB;
+    private javax.swing.JButton MarkB;
     private javax.swing.ButtonGroup MarkGroup;
     private javax.swing.JPanel NavPanel;
-    private javax.swing.JToggleButton PauseB;
-    private javax.swing.JToggleButton Pink;
+    private javax.swing.JButton PauseB;
+    private javax.swing.JButton PinkB;
     private javax.swing.JButton QuitB;
     private javax.swing.JButton ResetSpeedB;
     private javax.swing.JPanel SliderP;
@@ -1036,12 +1022,12 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private javax.swing.JSlider SpeedS;
     private javax.swing.JSlider SubMover;
     private javax.swing.JTextField SubShow;
-    private javax.swing.JToggleButton Sync1B;
-    private javax.swing.JToggleButton Sync2B;
+    private javax.swing.JButton Sync1B;
+    private javax.swing.JButton Sync2B;
     private javax.swing.JLabel TimeL;
     private javax.swing.JSlider TimeS;
-    private javax.swing.JToggleButton White;
-    private javax.swing.JToggleButton Yellow;
+    private javax.swing.JButton WhiteB;
+    private javax.swing.JButton YellowB;
     private javax.swing.JLabel dtL;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
@@ -1056,11 +1042,109 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     // End of variables declaration//GEN-END:variables
-    
+
+    /* Pre rendered icons */
+    private ImageIcon[] PenIcons;
+    private JButton[] Pens;
+    private ImageIcon[] SubRecIcons;
+    private ImageIcon[] AudioIcons;
+    private ImageIcon[] SyncIcons;
+
     private void initImageIcons() {
-        Audio = new ImageIcon[2];
-        Audio[0] = new javax.swing.ImageIcon(getClass().getResource("/icons/audio.png"));
-        Audio[1] = new javax.swing.ImageIcon(getClass().getResource("/icons/audiomute.png"));
+        AudioIcons = new ImageIcon[2];
+        AudioIcons[0] = new ImageIcon(getClass().getResource("/icons/audio.png"));
+        AudioIcons[1] = new ImageIcon(getClass().getResource("/icons/audiomute.png"));
+
+        PenIcons = new ImageIcon[8];
+        PenIcons[0] = new ImageIcon(JVideoConsole.class.getResource("/icons/pen.png"));
+        PenIcons[1] = IconFactory.getColoredIcon(PenIcons[0], Color.PINK);
+        PenIcons[2] = IconFactory.getColoredIcon(PenIcons[0], Color.YELLOW);
+        PenIcons[3] = IconFactory.getColoredIcon(PenIcons[0], Color.CYAN);
+        PenIcons[4] = IconFactory.getSelectedPenIcon(PenIcons[0]);
+        PenIcons[5] = IconFactory.getSelectedPenIcon(PenIcons[1]);
+        PenIcons[6] = IconFactory.getSelectedPenIcon(PenIcons[2]);
+        PenIcons[7] = IconFactory.getSelectedPenIcon(PenIcons[3]);
+
+        Pens = new JButton[4];
+        Pens[0] = WhiteB;
+        Pens[1] = PinkB;
+        Pens[2] = YellowB;
+        Pens[3] = CyanB;
+
+        SubRecIcons = new ImageIcon[4];
+        SubRecIcons[SUBREC_BEGIN] = new ImageIcon(JVideoConsole.class.getResource("/icons/markrec.png"));
+        SubRecIcons[SUBREC_TYPING] = new ImageIcon(JVideoConsole.class.getResource("/icons/mark.png"));
+        SubRecIcons[SUBREC_FINALIZE] = SubRecIcons[SUBREC_TYPING];
+        SubRecIcons[SUBREC_ABORT] = SubRecIcons[SUBREC_TYPING];
+
+        SyncIcons = new ImageIcon[4];
+        SyncIcons[0] =  new ImageIcon(JVideoConsole.class.getResource("/icons/sync1b.png"));
+        SyncIcons[1] =  new ImageIcon(JVideoConsole.class.getResource("/icons/sync1c.png"));
+        SyncIcons[2] =  new ImageIcon(JVideoConsole.class.getResource("/icons/sync2b.png"));
+        SyncIcons[3] =  new ImageIcon(JVideoConsole.class.getResource("/icons/sync2c.png"));
     }
-    
+
+    private void setButtonIcon(JButton button, ImageIcon icon) {
+        button.setIcon(icon);
+        button.setPressedIcon(IconFactory.getPressedIcon(icon));
+        button.setRolloverIcon(IconFactory.getRolloverIcon(icon));
+        button.setText("");
+    }
+
+    private void setButtonIcon(JButton button, String name) {
+        setButtonIcon(button, new ImageIcon(getClass().getResource("/icons/" + name + ".png")));
+    }
+
+    private void setPauseIcon() {
+        boolean status = false;
+        if (view != null)
+            status = view.isPaused();
+        setButtonIcon(PauseB, status ? "pause" : "play");
+    }
+
+    private void setPenIcon(int idx, boolean status) {
+        setButtonIcon(Pens[idx], PenIcons[idx + (status ? 4 : 0)]);
+    }
+
+    private void setMarkStatus(int status) {
+        if (status == SUBREC_TYPING)
+            MarkB.setEnabled(false);
+        else
+            MarkB.setEnabled(true);
+        setButtonIcon(MarkB, SubRecIcons[status]);
+    }
+
+    private void setAudioIcon(boolean ismute) {
+        setButtonIcon(AudioB, AudioIcons[ismute ? 1 : 0]);
+    }
+
+    private void setSyncButton(int number, boolean status) {
+        JButton b = (number == 1) ? Sync1B : Sync2B;
+        if (number==1)
+            sync1_status = status;
+        else
+            sync2_status = status;
+        setButtonIcon(b, SyncIcons[(status ? 1 : 0) + ((number - 1) * 2)]);
+    }
+
+    private void initButtonIcons() {
+        setButtonIcon(LoadSubsB, "reload");
+        setButtonIcon(QuitB, "quit");
+        setButtonIcon(BBMovieB, "bbmovie");
+        setButtonIcon(BMovieB, "bmovie");
+        setButtonIcon(FMovieB, "fmovie");
+        setButtonIcon(FFMovieB, "ffmovie");
+        setButtonIcon(GrabSub, "textpick");
+        setButtonIcon(ResetSpeedB, "speed");
+
+        setPenIcon(0, false);
+        setPenIcon(1, false);
+        setPenIcon(2, false);
+        setPenIcon(3, false);
+        setPauseIcon();
+        setMarkStatus(SUBREC_ABORT);
+        setAudioIcon(false);
+        setSyncButton(1, false);
+        setSyncButton(2, false);
+    }
 }
