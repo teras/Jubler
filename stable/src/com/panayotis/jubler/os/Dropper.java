@@ -96,7 +96,7 @@ public class Dropper extends TransferHandler {
                 AbstractList<File> files = getFileListString(t, data);
                 if (files==null) return true;
                 for (File f : files) {
-                    if (f.isFile()) parent.loadFile(new SubFile(f), false);
+                    if (f.isFile()) parent.loadFile(new SubFile(f, SubFile.EXTENSION_GIVEN), false);
                 }
                 return true;
             }
