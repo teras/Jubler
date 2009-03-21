@@ -29,6 +29,7 @@ import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.options.gui.JUnsaved;
 import com.panayotis.jubler.os.AutoSaver;
+import com.panayotis.jubler.rmi.JublerServer;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Toolkit;
@@ -129,6 +130,8 @@ public class StaticJubler {
         if (unsaved.size() > 0)
             if (!JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler")))
                 return false;
+
+        JublerServer.stopServer();
 
         if (request == null && Jubler.windows.size() > 0)
             request = Jubler.windows.get(Jubler.windows.size() - 1);
