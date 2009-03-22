@@ -24,6 +24,7 @@ package com.panayotis.jubler.options.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -54,6 +55,12 @@ public class JOptionTabs extends JPanel {
         selector.setToolTipText(page.getTabTooltip());
         selector.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         selector.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Dimension d = selector.getPreferredSize();
+        if (d.width < 100)
+            d.width = 100;
+        selector.setPreferredSize(d);
+        selector.setMinimumSize(d);
+        selector.setMaximumSize(d);
 
         if (first==null)
             first = selector;
