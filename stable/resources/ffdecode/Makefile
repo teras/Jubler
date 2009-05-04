@@ -76,7 +76,7 @@ ifeq (${MAKESYS},win32)
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
 	XFCONFIG=--cross-prefix=${CCPREF} --enable-memalign-hack --target-os=mingw32
-	GCCOPTS=
+	GCCOPTS=-I../../../../../Tools/jvm/win32
 	STRIP=${CCPREF}strip -s
 endif
 ifeq (${MAKESYS},darwin_ppc)
