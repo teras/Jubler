@@ -41,6 +41,9 @@
         <description>
             Only one instance of Jubler is now run in a system. Every file remembers loading parameters and uses it when saving. Improved load/save dialog, which encapsulates the information inside the load dialog. General GUI improvements, especially in Mac OSX. Relaxed file loading, when file contains encoding errors. Improved subtitle support. Improved visuals in Video Console window. More compact Preferences dialog. Minor changes and bug fixes.
         </description>
+		<arch name="any"/>
+<!--            <file name="Jubler.exe" sourcedir="3.9.9_e2" destdir="${APPHOME}" size="942915" compress="gzip"/> -->
+		</arch>
     </version>
 
     <version release="559" version="4.0">
@@ -48,7 +51,6 @@
 	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
         </description>
 		<arch name="macosx">
-<!--            <file name="Jubler.exe" sourcedir="3.9.9_e2" destdir="${APPHOME}" size="942915" compress="gzip"/> -->
 			<wait/>
         </arch>
     </version>

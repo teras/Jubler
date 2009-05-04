@@ -1,4 +1,4 @@
-version=4.2
-longversion=4.2.2
-release=667
+version=4.1
+longversion=4.1.0.0
+release=669
 packaged=@DISTRIBUTION@
