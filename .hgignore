@@ -8,4 +8,4 @@ syntax:glob
 syntax: regexp
 
 ^stable/resources/libraries
-
+^stable/nbproject/private
