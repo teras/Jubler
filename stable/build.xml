@@ -155,10 +155,8 @@
 	
 
 	<target name="version-update">
-		<echo message="NOTE: If this task fails, executables 'svn', 'grep' and 'awk' should be existing in current $PATH."/>
-		<exec executable="svn" outputproperty="svnoutput" failonerror="true"> <arg line="info"/> </exec>
-		<exec executable="grep" inputstring="${svnoutput}" outputproperty="grepoutput" failonerror="true"> <arg line="Revision"/> </exec>
-		<exec executable="awk" inputstring="${grepoutput}" outputproperty="releaseid" failonerror="true"> <arg line="'{print $2}'"/> </exec>
+		<echo message="NOTE: If this task fails, 'hg' executable should be existing in current $PATH."/>
+		<exec executable="hg" outputproperty="releaseid" failonerror="true"> <arg line="tip --template {rev}"/> </exec>
 		<input message="Please give human-readable version" addproperty="versionid"/>
 		<input message="Please give numeric version" addproperty="longversionid"/>
 		<echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}"/>
