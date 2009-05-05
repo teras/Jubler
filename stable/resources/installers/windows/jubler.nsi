@@ -70,6 +70,17 @@ Section "Jubler editor" SecJubler
   File resources\installers\windows\subtitle.ico
   File resources\jupidator\jupidator.jar
 
+  ; Create i18n files
+  SetOutPath $INSTDIR\i18n
+  File dist\i18n\cs.jar
+  File dist\i18n\de.jar
+  File dist\i18n\el.jar
+  File dist\i18n\es.jar
+  File dist\i18n\fr.jar
+  File dist\i18n\pt.jar
+  File dist\i18n\sr.jar
+  File dist\i18n\tr.jar
+
   ; Create help directory
   SetOutPath $INSTDIR\help
   File dist\help\jubler-faq.html
@@ -170,6 +181,7 @@ Section "Uninstall"
 
   ; Remove files and uninstaller
   Delete "$INSTDIR\lib\*.*"
+  Delete "$INSTDIR\i18n\*.*"
   Delete "$INSTDIR\help\*.*"
   Delete "$INSTDIR\*.*"
 
@@ -183,6 +195,7 @@ Section "Uninstall"
   ; Remove directories used
   RMDir "$SMPROGRAMS\Jubler"
   RMDir "$INSTDIR\lib"
+  RMDir "$INSTDIR\i18n"
   RMDir "$INSTDIR\help"
   RMDir "$INSTDIR"
 
