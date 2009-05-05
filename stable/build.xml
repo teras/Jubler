@@ -450,12 +450,12 @@
 			<fileset dir="." includes="*.sh"/>
 			<fileset dir="." includes="*.dmg"/>
 			<fileset dir="." includes="*.log"/>
-			<fileset dir="src/com/panayotis/jubler/i18n" includes="Messages*" />
 			<fileset dir="src" includes="lib"/>
 			<fileset dir="resources/i18n" includes="*.mo"/>
 		</delete>
 		<delete dir="self"/>
 		<delete dir="dist/Jubler.app"/>
+		<delete dir="dist/i18n"/>
 		<delete dir="src/com/apple"/>
 		<exec dir="resources/ffdecode" executable="make" failonerror="true">
 			<arg line="distclean"/>

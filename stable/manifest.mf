@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
 X-COMMENT: Main-Class will be added automatically by build
-Class-Path: lib/zemberek-cekirdek-2.1.jar lib/zemberek-tr-2.1.jar lib/jupidator.jar
+Class-Path: lib/zemberek-cekirdek-2.1.jar lib/zemberek-tr-2.1.jar lib/jupidator.jar i18n/cs.jar i18n/de.jar i18n/el.jar i18n/es.jar i18n/fr.jar i18n/pt.jar i18n/sr.jar i18n/tr.jar
