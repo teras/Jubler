@@ -290,6 +290,9 @@
 		<chmod file="${libdir}/lib/libffdecode.so" perm="a+x"/>
 		<copy file="resources/installers/linux/jubler" todir="${bindir}"/>
 		<chmod file="${bindir}/jubler" perm="a+x"/>
+		<copy todir="${libdir}/i18n">
+			<fileset dir="dist/i18n"/>
+		</copy>
 
 		<!-- Documentation files -->
 		<copy file="resources/installers/linux/copyright" todir="${docdir}"/>
@@ -358,8 +361,6 @@
 		</exec>
 		<delete dir="self"/>
 	</target>
-
-
 
 	<!-- Generic installer -->
 	<target name="generic" depends="nodistbased,release">
