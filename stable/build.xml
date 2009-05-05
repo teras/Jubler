@@ -412,6 +412,9 @@
 			<fileset dir="dist/Jubler.app"/>
 		</copy>
 		<chmod file="/Volumes/Jubler-template/Jubler.app/Contents/MacOS/JavaApplicationStub" perm="a+x"/>
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/i18n">
+			<fileset dir="dist/i18n"/>
+		</copy>
 		<copy file="resources/ffdecode/libffdecode.jnilib" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
 		<copy file="resources/system/fonts/freesans.ttf" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
 		<copy file="resources/jupidator/jupidator.jar" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
