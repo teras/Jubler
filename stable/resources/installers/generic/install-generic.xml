@@ -49,6 +49,7 @@
             <file src="LICENCE" targetdir="$INSTALL_PATH"/>
             <file src="README" targetdir="$INSTALL_PATH"/>
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
+            <file src="dist/i18n" targetdir="$INSTALL_PATH"/>
 			<file src="resources/system/fonts/freesans.ttf" targetdir="$INSTALL_PATH/lib"/>
 			<file src="resources/jupidator/jupidator.jar" targetdir="$INSTALL_PATH/lib"/>
 			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
