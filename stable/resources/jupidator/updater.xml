@@ -9,10 +9,7 @@
     </architect>
 
     <architect tag="macosx" os="Mac" arch="i386">
-        <launcher exec="${JAVABIN}">
-            <argument value="-jar"/>
-            <argument value="${APPHOME}/../../MacOS/JavaApplicationStub"/>
-        </launcher>
+        <launcher exec="${APPHOME}/../../MacOS/JavaApplicationStub"/>
     </architect>
 
     <architect tag="macosx" os="Mac" arch="ppc">
@@ -37,12 +34,30 @@
         <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
-    <version release="" version="4.1">
+	<version release="800" version="4.1.1">
+		<description>
+			Fixed error not updating recents menu.
+		</description>
+	</version>
+
+    <version release="669" version="4.1">
         <description>
             Only one instance of Jubler is now run in a system. Every file remembers loading parameters and uses it when saving. Improved load/save dialog, which encapsulates the information inside the load dialog. General GUI improvements, especially in Mac OSX. Relaxed file loading, when file contains encoding errors. Improved subtitle support. Improved visuals in Video Console window. More compact Preferences dialog. Minor changes and bug fixes.
         </description>
-		<arch name="any"/>
-<!--            <file name="Jubler.exe" sourcedir="3.9.9_e2" destdir="${APPHOME}" size="942915" compress="gzip"/> -->
+		<arch name="macosx">
+            <file name="Jubler.jar" sourcedir="4.1" destdir="${APPHOME}" size="924599" compress="bzip2"/>
+		</arch>
+		<arch name="win32">
+            <file name="Jubler.exe" sourcedir="4.1" destdir="${APPHOME}" size="975784" compress="bzip2"/>
+		</arch>
+		<arch name="linux_i386">
+            <file name="Jubler.jar" sourcedir="4.1" destdir="${APPHOME}" size="924599" compress="bzip2"/>
+		</arch>
+		<arch name="linux_amd64">
+            <file name="Jubler.jar" sourcedir="4.1" destdir="${APPHOME}" size="924599" compress="bzip2"/>
+		</arch>
+		<arch name="any">
+            <file name="Jubler.jar" sourcedir="4.1" destdir="${APPHOME}" size="924599" compress="bzip2"/>
 		</arch>
     </version>
 
@@ -50,9 +65,6 @@
         <description>
 	Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
         </description>
-		<arch name="macosx">
-			<wait/>
-        </arch>
     </version>
     <version release="22" version="3.9.6">
         <description>

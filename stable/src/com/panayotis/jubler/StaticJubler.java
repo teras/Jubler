@@ -161,6 +161,8 @@ public class StaticJubler {
                 if (which >= 0) {
                     recent_files.remove(which);
                     recent_files.push(subs.getSubFile());
+                } else {
+                    recent_files.add(subs.getSubFile());
                 }
             }
         }
