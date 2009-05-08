@@ -148,7 +148,7 @@ public class FileCommunicator {
         return res.toString();
     }
 
-    public static File stripFileFromVideoExtension(File f) {
+    public static File stripFileFromSubExtension(File f) {
         String ext;
         String fname = f.getPath().toLowerCase();
         for (int i = 0; i < AvailSubFormats.Formats.length; i++) {

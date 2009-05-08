@@ -210,7 +210,7 @@ public class SubFile {
             return;
         }
         savefile = f;
-        savefile_noext = FileCommunicator.stripFileFromExtension(savefile);
+        savefile_noext = FileCommunicator.stripFileFromSubExtension(savefile);
     }
 
     public void setStrippedFile(File f) {
