@@ -114,6 +114,8 @@ public class JAbout extends javax.swing.JPanel {
         thanks.append(": Dimitris Karakatsanis ").append(parseMail("ath.forthnet.gr","dimkaras")).append("\n");
         thanks.append(_("{0} plugin", "zemberek"));
         thanks.append(": Serkan Kaba ").append(parseMail("yahoo.com","serkan_kaba")).append("\n");
+        thanks.append(_("{0} plugin", "W3C TT"));
+        thanks.append(": Albert DeSantis ").append(parseMail("gmail.com","netgensuperstar")).append("\n");
         
         thanks.append("\n");
         thanks.append(_("Translators"));
