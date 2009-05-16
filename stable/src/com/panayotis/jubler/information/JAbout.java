@@ -217,7 +217,7 @@ public class JAbout extends javax.swing.JPanel {
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
     
-    private final static String licence = "\n(c) 2005, Panayotis Katsaloulis\n" +
+    private final static String licence = "\n(c) 2005-2009, Panayotis Katsaloulis\n" +
             "\n" +
             "This program is distributed under the terms of the GPL v2.\n" +
             "\n" +
