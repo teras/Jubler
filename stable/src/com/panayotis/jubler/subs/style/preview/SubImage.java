@@ -160,7 +160,6 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
         Graphics2D g;
         
         /* Draw outline mask*/
-        DEBUG.debug("width:"+width+" height:"+height);
         mask = new BufferedImage((int)width, (int)height, BufferedImage.TYPE_INT_ARGB);
         g = mask.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
