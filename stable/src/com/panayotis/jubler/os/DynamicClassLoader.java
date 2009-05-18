@@ -16,12 +16,6 @@ import java.util.ArrayList;
  */
 public class DynamicClassLoader extends URLClassLoader {
 
-    static {
-        System.out.println(System.getProperty("user.dir"));
-
-//            urls = new URL[]{new File("/Users/teras/Works/Development/Java/Jubler/stable/dist/lib/jupidator.jar").toURL()};
-    }
-
     public DynamicClassLoader(String[] paths) {
         this(paths, true);
     }
@@ -30,7 +24,7 @@ public class DynamicClassLoader extends URLClassLoader {
         super(getUrlsFromPaths(paths, recursively));
     }
 
-    private static URL[] getUrlsFromPaths(String[] paths, boolean recursively) {
+    private static URL[] getUrlsFromPaths(String[] paths, boolean look_below) {
         ArrayList<URL> urls = new ArrayList<URL>();
         String defpath = System.getProperty("user.dir");
         if (!defpath.endsWith(FileCommunicator.FS))
@@ -41,7 +35,7 @@ public class DynamicClassLoader extends URLClassLoader {
         for (int i = 0; i < paths.length; i++) {
             cfile = new File(defpath + paths[i]);
             addPath(urls, cfile);
-            if (recursively) {
+            if (look_below) {
                 list = cfile.listFiles();
                 if (list != null) {
                     for (int j = 0; j < list.length; j++) {
