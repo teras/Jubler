@@ -8,31 +8,31 @@ import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.SystemFileFinder;
-import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.UpdatedApplication;
-import com.panayotis.jupidator.Updater;
-import com.panayotis.jupidator.UpdaterException;
+//import com.panayotis.jupidator.ApplicationInfo;
+//import com.panayotis.jupidator.UpdatedApplication;
+//import com.panayotis.jupidator.Updater;
+//import com.panayotis.jupidator.UpdaterException;
 
 /**
  *
  * @author teras
  */
-public class AutoUpdater implements UpdatedApplication {
+public class AutoUpdater {//implements UpdatedApplication {
 
     private static final String URL = "http://www.jubler.org/files/updates/update.xml";
 
     public AutoUpdater() {
-        try {
-            ApplicationInfo ap = new ApplicationInfo(
-                    SystemFileFinder.getJublerAppPath(),
-                    SystemDependent.getAppSupportDirPath(),
-                    JAbout.getCurrentRelease(),
-                    JAbout.getCurrentVersion());
-            ap.setDistributionBased(JAbout.isDistributionBased());
-            new Updater(URL, ap, this).actionDisplay();
-        } catch (UpdaterException ex) {
-            DEBUG.debug(ex);
-        }
+//        try {
+//            ApplicationInfo ap = new ApplicationInfo(
+//                    SystemFileFinder.getJublerAppPath(),
+//                    SystemDependent.getAppSupportDirPath(),
+//                    JAbout.getCurrentRelease(),
+//                    JAbout.getCurrentVersion());
+//            ap.setDistributionBased(JAbout.isDistributionBased());
+//            new Updater(URL, ap, this).actionDisplay();
+//        } catch (UpdaterException ex) {
+//            DEBUG.debug(ex);
+//        }
     }
 
     public boolean requestRestart() {

@@ -32,8 +32,8 @@ import com.panayotis.jubler.tools.spell.SpellChecker;
 public class AvailSpellCheckers extends ExtList<SpellChecker> {
     
     public AvailSpellCheckers () {
-        add (new ASpell());
-        add (new ZemberekSpellChecker());
+//        add (new ASpell());
+//        add (new ZemberekSpellChecker());
     }
     
 }

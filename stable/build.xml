@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Jubler" default="dist" basedir=".">
+    <description>Builds, tests, and runs the project Jubler.</description>
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="resources/libs/ant-contrib/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+
+
+
+	<target name="dist">
+		<ant dir="core" target="jar"/>
+		<for param="plugin">
+			<path> <dirset dir="plugins" includes="*"/> </path>
+			<sequential>
+				<ant dir="@{plugin}" target="jar"/> 
+				<propertyregex property="plugname" input="@{plugin}" regexp=".*/(.*)" select="\1" casesensitive="false" override="true"/>
+				<move file="@{plugin}/dist/${plugname}.jar" todir="dist/lib"/>
+			</sequential>
+		</for>
+		<move file="core/dist/Jubler.jar" todir="dist"/>
+	</target>
+
+
+	<target name="clean">
+		<for param="plugin">
+			<path> <dirset dir="plugins" includes="*"/> </path>
+			<sequential> <ant dir="@{plugin}" target="clean"/> </sequential>
+		</for>
+		<ant dir="core" target="clean"/>
+		<delete dir="dist"/>
+	</target>
+
+
+</project>
