@@ -10,6 +10,4 @@ syntax: regexp
 ^old-project
 ^stable/resources/ffmpeg/libraries
 
-^stable/core/nbproject/private
-^stable/plugins/aspell/nbproject/private
-^stable/plugins/zemberek/nbproject/private
+nbproject/private

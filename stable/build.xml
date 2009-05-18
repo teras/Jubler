@@ -10,6 +10,29 @@
 
 
 
+	<target name="i18n">
+        <exec dir="resources/i18n" executable="bash" failonerror="true">
+            <arg line="compile"/>
+        </exec>
+    </target>
+  
+	<target name="faq">
+        <exec dir="resources/help" executable="docbook2html" failonerror="false">
+            <arg line="-u jubler-faq.xml"/>
+        </exec>
+        <mkdir dir="dist/help"/>
+        <move file="resources/help/jubler-faq.html" todir="dist/help"/>
+        <copy file="resources/help/question.png" todir="dist/help"/>
+    </target>
+
+    <target name="changelog">
+        <delete file="ChangeLog.html"/>
+        <java fork="true" classname="com.panayotis.jupidator.helpers.ChangeLogCreator" classpath="resources/libs/jupidator/jupidator.jar">
+            <arg value="http://www.jubler.org/files/jupidator/updater.xml"/>
+            <arg value="ChangeLog.html"/>
+        </java>
+    </target>
+
 	<target name="jars" depends="i18n">
 		<ant dir="core" target="jar"/>
 		<for param="plugin">
@@ -23,11 +46,49 @@
 		<move file="core/dist/Jubler.jar" todir="dist"/>
 	</target>
 
-	<target name="i18n">
-        <exec dir="resources/i18n" executable="bash" failonerror="true">
-            <arg line="compile"/>
-        </exec>
+
+
+
+
+	<!-- Create distribution related files & versioning information -->
+    <target name="version-update">
+        <echo message="NOTE: If this task fails, 'hg' executable should be existing in current $PATH."/>
+        <exec executable="hg" outputproperty="releaseid" failonerror="true"> <arg line="tip --template {rev}"/> </exec>
+        <input message="Please give human-readable version" addproperty="versionid"/>
+        <input message="Please give numeric version" addproperty="longversionid"/>
+        <echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}"/>
+        <echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}packaged=@DISTRIBUTION@${line.separator}" file="resources/system/version.prop"/>
+        <antcall target="nodistbased"/>
     </target>
+    <target name="nodistbased">
+        <copy file="resources/system/version.prop" tofile="core/src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+            <filterset><filter token="DISTRIBUTION" value="false"/></filterset>
+        </copy>
+    </target>
+    <target name="distbased">
+        <copy file="resources/system/version.prop" tofile="core/src/com/panayotis/jubler/information/version.prop" overwrite="yes">
+            <filterset><filter token="DISTRIBUTION" value="true"/></filterset>
+        </copy>
+    </target>
+
+
+
+
+
+    <!-- Create source tarballs of Jubler -->
+    <target name="distsource" depends="clean">
+        <property file="core/src/com/panayotis/jubler/information/version.prop" />
+        <echo message="TAR full sources"/>
+		<exec executable="tar" dir=".." failonerror="true">
+			<arg line="jcf Jubler-fullsrc-${version}.tar.bz2 --exclude .hg --exclude resources/ffmpeg/libraries --exclude nbproject/private --transform s/^stable/jubler-${version}/g stable"/>
+		</exec>
+        <echo message="TAR Jubler sources"/>
+		<exec executable="tar" dir=".." failonerror="true">
+			<arg line="jcf Jubler-${version}.tar.bz2 --exclude .hg --exclude resources/ffmpeg/ffmpeg-svn  --exclude resources/ffmpeg/libraries --exclude resources/ffmpeg/ffmpeg-libs --exclude nbproject/private --transform s/^stable/jubler-${version}/g stable"/>
+		</exec>
+    </target>
+
+
 
 
 
@@ -39,6 +100,7 @@
 		</for>
 		<ant dir="core" target="clean"/>
 		<delete dir="dist"/>
+		<delete file="ChangeLog.html"/>
 	</target>
 
 	

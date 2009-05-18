@@ -24,13 +24,7 @@ package com.panayotis.jubler.os;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.apple.eawt.Application;
-import com.apple.eawt.ApplicationAdapter;
-import com.apple.eawt.ApplicationEvent;
 
-import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.Main;
-import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.tools.externals.ExtPath;
 import java.awt.Component;
 import java.awt.Point;
@@ -103,7 +97,7 @@ public class SystemDependent {
     public final static void setComponentDraggable(Window window, Component component) {
         if (IS_MACOSX) {
             if (component instanceof JToolBar)
-                ((JToolBar)component).setFloatable(false);
+                ((JToolBar) component).setFloatable(false);
 
             final Window wind = window;
             final Component comp = component;
@@ -176,7 +170,13 @@ public class SystemDependent {
     public static void initApplication() {
         /* In Linux this is a dummy function */
         if (IS_MACOSX) {
-            JublerApp japp = new JublerApp();
+            try {
+                ClassLoader cl = new DynamicClassLoader(new String[]{"dist/lib/macapp.jar"}, false);
+                Object jublerapp = cl.loadClass("com.panayotis.jubler.os.JublerApp").newInstance();
+            } catch (InstantiationException ex) {
+            } catch (IllegalAccessException ex) {
+            } catch (ClassNotFoundException ex) {
+            }
         }
     }
 
@@ -421,41 +421,5 @@ public class SystemDependent {
         if (IS_MACOSX)
             return home + "Library/Application Support/Jubler/";
         return home + ".jubler/";
-    }
-}
-
-class JublerApp extends Application {
-
-    public JublerApp() {
-        setEnabledPreferencesMenu(true);
-        addApplicationListener(new ApplicationHandler());
-    }
-}
-
-class ApplicationHandler extends ApplicationAdapter {
-
-    public ApplicationHandler() {
-    }
-
-    public void handleAbout(ApplicationEvent event) {
-        StaticJubler.showAbout();
-        event.setHandled(true);
-    }
-
-    public void handlePreferences(ApplicationEvent event) {
-        if (Jubler.prefs != null) {
-            Jubler.prefs.showPreferencesDialog();
-            event.setHandled(true);
-        }
-    }
-
-    public void handleQuit(ApplicationEvent event) {
-        if (StaticJubler.requestQuit(null))
-            System.exit(0);
-        event.setHandled(false);
-    }
-
-    public void handleOpenFile(ApplicationEvent event) {
-        Main.asyncAddSubtitle(event.getFilename());
     }
 }
