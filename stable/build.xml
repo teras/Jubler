@@ -10,7 +10,7 @@
 
 
 
-	<target name="jars">
+	<target name="jars" depends="i18n">
 		<ant dir="core" target="jar"/>
 		<for param="plugin">
 			<path> <dirset dir="plugins" includes="*"/> </path>
@@ -23,6 +23,14 @@
 		<move file="core/dist/Jubler.jar" todir="dist"/>
 	</target>
 
+	<target name="i18n">
+        <exec dir="resources/i18n" executable="bash" failonerror="true">
+            <arg line="compile"/>
+        </exec>
+    </target>
+
+
+
 
 	<target name="clean">
 		<for param="plugin">
@@ -33,5 +41,5 @@
 		<delete dir="dist"/>
 	</target>
 
-
+	
 </project>
