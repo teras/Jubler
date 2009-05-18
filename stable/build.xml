@@ -10,7 +10,7 @@
 
 
 
-	<target name="dist">
+	<target name="jars">
 		<ant dir="core" target="jar"/>
 		<for param="plugin">
 			<path> <dirset dir="plugins" includes="*"/> </path>
