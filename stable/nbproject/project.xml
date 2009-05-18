@@ -6,7 +6,10 @@
             <name>Jubler</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <source-roots>
-                <root id="src.dir"/>
+                <root id="src.core.dir" name="Core"/>
+                <root id="src.resources.dir" name="Resources"/>
+                <root id="src.aspell.dir" name="ASpell"/>
+                <root id="src.zemberek.dir" name="Zemberek"/>
             </source-roots>
             <test-roots/>
         </data>

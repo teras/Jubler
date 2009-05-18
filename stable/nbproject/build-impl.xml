@@ -68,7 +68,10 @@ is divided into following sections:
         </condition>
         <condition property="have.sources">
             <or>
-                <available file="${src.dir}"/>
+                <available file="${src.core.dir}"/>
+                <available file="${src.resources.dir}"/>
+                <available file="${src.aspell.dir}"/>
+                <available file="${src.zemberek.dir}"/>
             </or>
         </condition>
         <condition property="netbeans.home+have.tests">
@@ -122,7 +125,10 @@ is divided into following sections:
         <!-- You can override this target in the ../build.xml file. -->
     </target>
     <target depends="-pre-init,-init-private,-init-user,-init-project,-do-init" name="-init-check">
-        <fail unless="src.dir">Must set src.dir</fail>
+        <fail unless="src.core.dir">Must set src.core.dir</fail>
+        <fail unless="src.resources.dir">Must set src.resources.dir</fail>
+        <fail unless="src.aspell.dir">Must set src.aspell.dir</fail>
+        <fail unless="src.zemberek.dir">Must set src.zemberek.dir</fail>
         <fail unless="build.dir">Must set build.dir</fail>
         <fail unless="dist.dir">Must set dist.dir</fail>
         <fail unless="build.classes.dir">Must set build.classes.dir</fail>
@@ -143,7 +149,7 @@ is divided into following sections:
     </target>
     <target name="-init-macrodef-javac">
         <macrodef name="javac" uri="http://www.netbeans.org/ns/j2se-project/3">
-            <attribute default="${src.dir}" name="srcdir"/>
+            <attribute default="${src.core.dir}:${src.resources.dir}:${src.aspell.dir}:${src.zemberek.dir}" name="srcdir"/>
             <attribute default="${build.classes.dir}" name="destdir"/>
             <attribute default="${javac.classpath}" name="classpath"/>
             <attribute default="${includes}" name="includes"/>
@@ -162,7 +168,7 @@ is divided into following sections:
             </sequential>
         </macrodef>
         <macrodef name="depend" uri="http://www.netbeans.org/ns/j2se-project/3">
-            <attribute default="${src.dir}" name="srcdir"/>
+            <attribute default="${src.core.dir}:${src.resources.dir}:${src.aspell.dir}:${src.zemberek.dir}" name="srcdir"/>
             <attribute default="${build.classes.dir}" name="destdir"/>
             <attribute default="${javac.classpath}" name="classpath"/>
             <sequential>
@@ -330,7 +336,10 @@ is divided into following sections:
     <target depends="init,deps-jar,-pre-pre-compile,-pre-compile,-compile-depend" if="have.sources" name="-do-compile">
         <j2seproject3:javac/>
         <copy todir="${build.classes.dir}">
-            <fileset dir="${src.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.core.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.resources.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.aspell.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
+            <fileset dir="${src.zemberek.dir}" excludes="${build.classes.excludes},${excludes}" includes="${includes}"/>
         </copy>
     </target>
     <target name="-post-compile">
@@ -345,7 +354,7 @@ is divided into following sections:
     <target depends="init,deps-jar,-pre-pre-compile" name="-do-compile-single">
         <fail unless="javac.includes">Must select some files in the IDE or set javac.includes</fail>
         <j2seproject3:force-recompile/>
-        <j2seproject3:javac excludes="" includes="${javac.includes}" sourcepath="${src.dir}"/>
+        <j2seproject3:javac excludes="" includes="${javac.includes}" sourcepath="${src.core.dir}:${src.resources.dir}:${src.aspell.dir}:${src.zemberek.dir}"/>
     </target>
     <target name="-post-compile-single">
         <!-- Empty placeholder for easier customization. -->
@@ -479,7 +488,16 @@ is divided into following sections:
             <classpath>
                 <path path="${javac.classpath}"/>
             </classpath>
-            <fileset dir="${src.dir}" excludes="${excludes}" includes="${includes}">
+            <fileset dir="${src.core.dir}" excludes="${excludes}" includes="${includes}">
+                <filename name="**/*.java"/>
+            </fileset>
+            <fileset dir="${src.resources.dir}" excludes="${excludes}" includes="${includes}">
+                <filename name="**/*.java"/>
+            </fileset>
+            <fileset dir="${src.aspell.dir}" excludes="${excludes}" includes="${includes}">
+                <filename name="**/*.java"/>
+            </fileset>
+            <fileset dir="${src.zemberek.dir}" excludes="${excludes}" includes="${includes}">
                 <filename name="**/*.java"/>
             </fileset>
         </javadoc>
