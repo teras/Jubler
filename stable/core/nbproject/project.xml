@@ -3,16 +3,12 @@
     <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
-            <name>Jubler</name>
+            <name>JublerCore</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <source-roots>
-                <root id="src.core.dir" name="Core"/>
-                <root id="src.resources.dir" name="Resources"/>
-                <root id="src.aspell.dir" name="ASpell"/>
-                <root id="src.zemberek.dir" name="Zemberek"/>
+                <root id="src.dir"/>
             </source-roots>
             <test-roots/>
         </data>
-        <references xmlns="http://www.netbeans.org/ns/ant-project-references/1"/>
     </configuration>
 </project>
