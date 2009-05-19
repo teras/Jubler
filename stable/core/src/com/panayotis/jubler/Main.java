@@ -29,6 +29,7 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
 import com.panayotis.jubler.subs.SubFile;
@@ -56,6 +57,8 @@ public class Main {
         /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
         ExceptionHandler eh = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(eh);
+
+         PluginManager pm = new PluginManager();
 
         splash = new MainSplash("/icons/splash.jpg");
         SystemDependent.setLookAndFeel();

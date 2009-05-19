@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jubler.os;
+package com.panayotis.jubler.plugins;
 
 import java.io.File;
 import java.io.IOException;

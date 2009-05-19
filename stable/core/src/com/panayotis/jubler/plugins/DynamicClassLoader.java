@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jubler.os;
+package com.panayotis.jubler.plugins;
 
+import com.panayotis.jubler.os.*;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,7 +25,11 @@ public class DynamicClassLoader extends URLClassLoader {
         super(getUrlsFromPaths(paths, recursively));
     }
 
-    private static URL[] getUrlsFromPaths(String[] paths, boolean look_below) {
+    public DynamicClassLoader(URL[] urls) {
+        super(urls);
+    }
+
+    public static URL[] getUrlsFromPaths(String[] paths, boolean look_below) {
         ArrayList<URL> urls = new ArrayList<URL>();
         String defpath = System.getProperty("user.dir");
         if (!defpath.endsWith(FileCommunicator.FS))

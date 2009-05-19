@@ -22,7 +22,7 @@
  */
 package com.panayotis.jubler.i18n;
 
-import com.panayotis.jubler.os.DynamicClassLoader;
+import com.panayotis.jubler.plugins.DynamicClassLoader;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 

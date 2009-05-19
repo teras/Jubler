@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.os;
 
+import com.panayotis.jubler.plugins.DynamicClassLoader;
 import static com.panayotis.jubler.i18n.I18N._;
 
 
