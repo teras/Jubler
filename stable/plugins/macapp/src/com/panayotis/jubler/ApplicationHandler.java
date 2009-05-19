@@ -2,13 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jubler.os;
+package com.panayotis.jubler;
 
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
-import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.Main;
-import com.panayotis.jubler.StaticJubler;
 
 /**
  *

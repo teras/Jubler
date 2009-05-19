@@ -36,9 +36,7 @@ public class PluginManager {
     public Object getClass(String classname) {
         try {
             return cl.loadClass(classname).newInstance();
-        } catch (InstantiationException ex) {
-        } catch (IllegalAccessException ex) {
-        } catch (ClassNotFoundException ex) {
+        } catch (Exception ex) {
         }
         return null;
     }

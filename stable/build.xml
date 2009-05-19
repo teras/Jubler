@@ -33,17 +33,22 @@
         </java>
     </target>
 
-	<target name="jars" depends="i18n">
+	<target name="jars" depends="i18n,core,plugins"/>
+
+	<target name="core">
 		<ant dir="core" target="jar"/>
+		<copy file="core/dist/Jubler.jar" todir="dist"/>
+	</target>
+
+	<target name="plugins" depends="core">
 		<for param="plugin">
 			<path> <dirset dir="plugins" includes="*"/> </path>
 			<sequential>
 				<ant dir="@{plugin}" target="jar"/> 
 				<propertyregex property="plugname" input="@{plugin}" regexp=".*/(.*)" select="\1" casesensitive="false" override="true"/>
-				<move file="@{plugin}/dist/${plugname}.jar" todir="dist/lib"/>
+				<copy file="@{plugin}/dist/${plugname}.jar" todir="dist/lib"/>
 			</sequential>
 		</for>
-		<move file="core/dist/Jubler.jar" todir="dist"/>
 	</target>
 
 

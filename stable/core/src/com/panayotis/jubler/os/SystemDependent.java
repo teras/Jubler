@@ -157,14 +157,6 @@ public class SystemDependent {
         pane.putClientProperty("Window.style", "small");
     }
 
-    public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
-        if (IS_MACOSX) {
-            about.getParent().remove(about);
-            prefs.getParent().remove(prefs);
-            quit.getParent().remove(quit);
-        }
-    }
-
     public static int countKeyMods() {
         return 4;
     }

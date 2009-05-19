@@ -216,7 +216,6 @@ public class Jubler extends JFrame {
 
         WebFM.setVisible(false);
         setDropHandler();
-        hideSystemMenus();
         
         /* If this is the first Jubler instance, initialize preferences */
         /* We have to do this AFTER we process the menu items (since some would be missing */
@@ -1963,7 +1962,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem AboutHM;
+    javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
     public javax.swing.JCheckBoxMenuItem AudioPreviewC;
     private javax.swing.JPanel BasicPanel;
@@ -2024,12 +2023,12 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem PinkMP;
     private javax.swing.JMenuItem PlayAudioC;
     private javax.swing.JMenuItem PlayVideoP;
-    private javax.swing.JMenuItem PrefsFM;
+    javax.swing.JMenuItem PrefsFM;
     private javax.swing.JMenu PreviewP;
     private javax.swing.JButton PreviewTB;
     private javax.swing.JMenuItem PreviousGEM;
     private javax.swing.JMenuItem PreviousPageGEM;
-    private javax.swing.JMenuItem QuitFM;
+    javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RecodeTM;
     private javax.swing.JMenuItem RedoEM;
@@ -2590,10 +2589,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             subs.elementAt(rows[i]).setStyle(style);
         }
         tableHasChanged(selected);
-    }
-    
-    private void hideSystemMenus() {
-        SystemDependent.hideSystemMenus(AboutHM, PrefsFM, QuitFM);
     }
     
 }
