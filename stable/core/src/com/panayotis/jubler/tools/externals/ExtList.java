@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.externals;
+
 import java.util.Vector;
 
 /**
@@ -29,13 +29,38 @@ import java.util.Vector;
  * @author teras
  */
 public class ExtList<E> extends Vector<ExtProgram> {
-    
+
+    private String type;
+    private String localtype;
+    private String iconname;
+
+    public ExtList (String type, String localtype, String iconname) {
+        this.type = type;
+        this.localtype = localtype;
+        this.iconname = iconname;
+    }
+
     public String nameAt(int i) {
         return elementAt(i).getName();
     }
-    
+
     public ExtProgram programAt(int i) {
         return elementAt(i);
     }
-    
+
+        /* Get the type of this external program, useful to save options */
+    public String getType() {
+        return type;
+    }
+
+    /* Get the localized type of this external program, useful for labels */
+    public String getLocalType() {
+        return localtype;
+    }
+
+    /* Use this method to get the icon of this program */
+    public String getIconName() {
+        return iconname;
+    }
+
 }

@@ -20,8 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.player;
+
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.media.player.mplayer.MPlayer;
 import com.panayotis.jubler.tools.externals.ExtList;
 
@@ -30,9 +32,9 @@ import com.panayotis.jubler.tools.externals.ExtList;
  * @author teras
  */
 public class AvailPlayers extends ExtList<VideoPlayer> {
-    
-    public AvailPlayers () {
-        add (new MPlayer());
+
+    public AvailPlayers() {
+        super("Player", _("Player"), "/icons/player_pref.png");
+        add(new MPlayer("Player"));
     }
-    
 }

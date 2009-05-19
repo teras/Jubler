@@ -20,8 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.spell.checkers;
+
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.tools.externals.ExtList;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 
@@ -30,10 +32,10 @@ import com.panayotis.jubler.tools.spell.SpellChecker;
  * @author teras
  */
 public class AvailSpellCheckers extends ExtList<SpellChecker> {
-    
-    public AvailSpellCheckers () {
+
+    public AvailSpellCheckers() {
+        super("Speller", _("Speller"), "/icons/spellcheck_pref.png");
 //        add (new ASpell());
 //        add (new ZemberekSpellChecker());
     }
-    
 }

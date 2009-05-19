@@ -32,7 +32,6 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
@@ -48,17 +47,13 @@ public abstract class AbstractPlayer extends VideoPlayer {
     private int x, y;
     
     
-    public AbstractPlayer() {
-        opts = new AbstractPlayerOptions(this);
+    public AbstractPlayer(String type) {
+        opts = new AbstractPlayerOptions(type, this);
     }
     
     public abstract String getDefaultArguments();
     public abstract String[] getTestParameters();
-    public abstract String getTestSignature();
-    
-    public String getType() { return "Player"; }
-    public String getLocalType() { return _("Player"); }
-    
+    public abstract String getTestSignature();    
     
     /* Create Subtitle File for testing*/
     private void initSubFile(Subtitles subs, MediaFile mfile) {

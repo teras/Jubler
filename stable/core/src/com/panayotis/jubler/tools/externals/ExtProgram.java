@@ -37,13 +37,4 @@ public abstract class ExtProgram {
     /* Get the name of this external program, useful e.g. to save options or for labels */
     public abstract String getName();
     
-    /* Get the type of this external program, useful to save options */
-    public abstract String getType();
-    
-    /* Get the localized type of this external program, useful for labels */
-    public abstract String getLocalType();
-    
-    /* Use this method to get the icon of this program */
-    public abstract String getIconName();
-    
 }

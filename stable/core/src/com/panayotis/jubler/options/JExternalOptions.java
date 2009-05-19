@@ -38,20 +38,20 @@ import javax.swing.JPanel;
  */
 public class JExternalOptions extends JPanel implements OptionsHolder {
     ExtList list;
-    
+
     /**
      * Creates new form JExternalOptions
      */
     public JExternalOptions(ExtList list) {
         initComponents();
         this.list = list;
-        
+
         for ( int i = 0 ; i < list.size() ; i++ ) {
             PList.addItem(list.nameAt(i));
             JExtBasicOptions opts = list.programAt(i).getOptionsPanel();
             ParamsP.add( (opts==null ? new JPanel() : opts), Integer.toString(i));
         }
-        SelectorL.setText(_("Select a {0} from the following list", _(list.programAt(0).getType()).toLowerCase() ));
+        SelectorL.setText(_("Select a {0} from the following list", _(list.getType()).toLowerCase() ));
     }
     
     public Object getObject() {
@@ -102,6 +102,8 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     }//GEN-LAST:event_PListActionPerformed
     
     public void loadPreferences() {
+        if (list.size()<1)
+            return;
         JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
         if (opts!=null) opts.loadPreferences();
     }
@@ -119,9 +121,9 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         if (opts!=null) opts.updateOptionsPanel();
     }
     
-    public String getTabName() { return list.programAt(0).getType(); }
-    public String getTabTooltip() { return _("{0} options", list.programAt(0).getType()); }
-    public Icon getTabIcon() { return new ImageIcon(getClass().getResource(list.programAt(0).getIconName())); }
+    public String getTabName() { return list.getType(); }
+    public String getTabTooltip() { return _("{0} options", list.getType()); }
+    public Icon getTabIcon() { return new ImageIcon(getClass().getResource(list.getIconName())); }
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
