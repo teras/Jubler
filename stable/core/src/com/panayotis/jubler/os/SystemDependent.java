@@ -41,7 +41,6 @@ import java.lang.reflect.Method;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.AbstractButton;
-import javax.swing.JMenuItem;
 import javax.swing.JRootPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
@@ -54,10 +53,10 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 public class SystemDependent {
 
-    private final static boolean IS_LINUX;
-    private final static boolean IS_WINDOWS;
-    private final static boolean IS_MACOSX;
-    public final static String PROG_EXT;
+    protected final static boolean IS_LINUX;
+    protected final static boolean IS_WINDOWS;
+    protected final static boolean IS_MACOSX;
+    protected final static String PROG_EXT;
 
 
     static {
@@ -230,25 +229,6 @@ public class SystemDependent {
         } catch (Exception e) {
             JIDialog.warning(null, "Exception " + e.getClass().getName() + " while loading URL " + url, _("Error while opening URL"));
         }
-    }
-
-    /* Get MPlayer parameters */
-    public static String getDefaultMPlayerArgs() {
-        String font = "";
-
-        if (IS_LINUX)
-            font = " -fontconfig";
-        else if (IS_WINDOWS)
-            font = " -font " + System.getenv("SystemRoot") + "\\fonts\\arial.ttf";
-        else {
-            File freesans = new File(SystemFileFinder.getJublerAppPath() + "/lib/freesans.ttf");
-            if (freesans.exists())
-                font = " -font %j/lib/freesans.ttf";
-        }
-
-        return "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 " +
-                "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y " +
-                "%(-audiofile %a%) -ass" + font + " %v";
     }
 
     /* Force ASpell to use UTF-8 encoding - broken on Windows */

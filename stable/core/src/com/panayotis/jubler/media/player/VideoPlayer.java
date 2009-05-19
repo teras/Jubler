@@ -29,7 +29,9 @@ import com.panayotis.jubler.tools.externals.ExtProgram;
  * @author teras
  */
 public abstract class VideoPlayer extends ExtProgram {
-    
+
+    public static final String family = "Player";
+
     /** Whether this player supports the pause command */
     public abstract boolean supportPause();
     

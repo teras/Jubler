@@ -7,7 +7,6 @@ package com.panayotis.jubler.os;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;

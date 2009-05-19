@@ -25,6 +25,7 @@ package com.panayotis.jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.information.AutoUpdater;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.ExceptionHandler;
