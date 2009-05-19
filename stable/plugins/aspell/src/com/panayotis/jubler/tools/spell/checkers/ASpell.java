@@ -58,14 +58,20 @@ public class ASpell extends SpellChecker implements Plugin {
      * Creates a new instance of ASpell
      */
     
+    private final static boolean forceutf8;
+        /* Force ASpell to use UTF-8 encoding - broken on Windows */
+    static {
+        boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;;
+        forceutf8 = !IS_WINDOWS;
+    }
+
+
     public ASpell() {
         opts = new ASpellOptions(family, getName());
     }
     
     public void start() throws ExtProgramException {
         try {
-            boolean forceutf8 = SystemDependent.forceASpellEncoding();
-            
             ArrayList<String> cmd = new ArrayList<String>();
             cmd.add(opts.getExecFileName());
             if (forceutf8) cmd.add("--encoding=utf-8");

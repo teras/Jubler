@@ -231,11 +231,6 @@ public class SystemDependent {
         }
     }
 
-    /* Force ASpell to use UTF-8 encoding - broken on Windows */
-    public static boolean forceASpellEncoding() {
-        return !IS_WINDOWS;
-    }
-
     /* This method is valid only under Mac OSX.
      * It uses Spotlight to find a desired application.
      * Under other platforms does not do anything
