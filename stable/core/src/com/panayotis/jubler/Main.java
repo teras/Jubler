@@ -60,10 +60,10 @@ public class Main {
         ExceptionHandler eh = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(eh);
 
-        plugins = new PluginManager();
-        System.out.println("koko");
 
         splash = new MainSplash("/icons/splash.jpg");
+        plugins = new PluginManager();
+
         SystemDependent.setLookAndFeel();
 
         /* Remember how many autosaves we have, so that to start autosave deamon afterwards */

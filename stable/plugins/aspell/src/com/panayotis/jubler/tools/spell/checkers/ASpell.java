@@ -37,6 +37,8 @@ import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.tools.externals.ExtList;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.util.ArrayList;
 
@@ -44,7 +46,7 @@ import java.util.ArrayList;
  *
  * @author teras
  */
-public class ASpell extends SpellChecker {
+public class ASpell extends SpellChecker implements Plugin {
     BufferedWriter send;
     BufferedReader get;
     
@@ -55,7 +57,8 @@ public class ASpell extends SpellChecker {
     /**
      * Creates a new instance of ASpell
      */
-    public ASpell(String family) {
+    
+    public ASpell() {
         opts = new ASpellOptions(family, getName());
     }
     
@@ -153,5 +156,17 @@ public class ASpell extends SpellChecker {
     }
     
     public JExtBasicOptions getOptionsPanel() { return opts; }
-    public String getName() { return "ASpell"; }    
+    public String getName() { return "ASpell"; }
+
+    public String[] getAffectionList() {
+        return new String[] {"com.panayotis.jubler.tools.externals.ExtList"};
+    }
+
+    public void postInit(Object o) {
+        if (o instanceof ExtList) {
+            ExtList l = (ExtList)o;
+            if (l.getType().equals(family))
+                l.add(this);
+        }
+    }
 }

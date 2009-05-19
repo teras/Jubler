@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -29,10 +28,8 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.player.AvailPlayers;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
-import com.panayotis.jubler.subs.loader.AvailSubFormats;
-import com.panayotis.jubler.subs.loader.SubFormat;
+import com.panayotis.jubler.tools.externals.ExtList;
 import com.panayotis.jubler.tools.spell.SpellChecker;
-import com.panayotis.jubler.tools.spell.checkers.AvailSpellCheckers;
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
 
@@ -41,29 +38,26 @@ import javax.swing.JMenuBar;
  * @author  teras
  */
 public class JPreferences extends javax.swing.JDialog {
-    
+
     /* GUI element to hold various preferences 
      * it is "friendly", since it is needed in Options 
      */
     JOptionTabs Tabs;
-    
     /* Shortcuts to panels */
     private JExternalOptions jplay;
     private JExternalOptions jspell;
     private JShortcutsOptions jcut;
-
     private boolean dialog_status;
-    
-    
+
     /** Creates new form JPreferences */
     public JPreferences(Jubler jub) {
-        
+
         Tabs = new JOptionTabs(this);
         Tabs.addTab(jplay = new JExternalOptions(new AvailPlayers()));
-        Tabs.addTab(jspell = new JExternalOptions(new AvailSpellCheckers()));
+        Tabs.addTab(jspell = new JExternalOptions(new ExtList(SpellChecker.family, _("Speller"), "/icons/spellcheck_pref.png")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Options.loadSystemPreferences(this);
-        
+
         initComponents();
         add(Tabs, BorderLayout.CENTER);
         pack();
@@ -71,26 +65,28 @@ public class JPreferences extends javax.swing.JDialog {
     }
 
     public VideoPlayer getVideoPlayer() {
-        return (VideoPlayer)jplay.getObject();
+        return (VideoPlayer) jplay.getObject();
     }
+
     public SpellChecker getSpellChecker() {
-        return (SpellChecker)jspell.getObject();
+        return (SpellChecker) jspell.getObject();
     }
-    
+
     public void setMenuShortcuts(JMenuBar bar) {
         jcut.applyMenuShortcuts(bar);
     }
-    
+
     public void showPreferencesDialog() {
         dialog_status = false;
         Options.loadSystemPreferences(this);
         Tabs.initTabs();
         setVisible(true);
-        if ( dialog_status ) Options.saveSystemPreferences(this);
-        else Options.loadSystemPreferences(this); // Make sure options are returned to their saved state
+        if (dialog_status)
+            Options.saveSystemPreferences(this);
+        else
+            Options.loadSystemPreferences(this); // Make sure options are returned to their saved state
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -137,24 +133,20 @@ public class JPreferences extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
         dialog_status = false;
         setVisible(false);
     }//GEN-LAST:event_CancelBActionPerformed
-    
+
     private void AcceptBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AcceptBActionPerformed
         dialog_status = true;
         setVisible(false);
     }//GEN-LAST:event_AcceptBActionPerformed
-        
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcceptB;
     private javax.swing.JPanel ButtonsP;
     private javax.swing.JButton CancelB;
     private javax.swing.JPanel LowerP;
     // End of variables declaration//GEN-END:variables
-    
 }

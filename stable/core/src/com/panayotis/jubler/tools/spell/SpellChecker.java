@@ -33,7 +33,9 @@ import java.util.Vector;
  * @author teras
  */
 public abstract class SpellChecker extends ExtProgram {
-    
+
+    public static final String family = "Speller";
+
     public abstract void start() throws ExtProgramException ;
     public abstract Vector<SpellError> checkSpelling(String text);
     public abstract void stop();

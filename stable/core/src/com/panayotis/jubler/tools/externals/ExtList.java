@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.tools.externals;
 
+import com.panayotis.jubler.Main;
 import java.util.Vector;
 
 /**
@@ -38,6 +39,7 @@ public class ExtList<E> extends Vector<ExtProgram> {
         this.type = type;
         this.localtype = localtype;
         this.iconname = iconname;
+        Main.plugins.callPostInitListeners(this);
     }
 
     public String nameAt(int i) {

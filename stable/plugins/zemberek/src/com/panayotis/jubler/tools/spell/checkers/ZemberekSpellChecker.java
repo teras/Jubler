@@ -31,8 +31,9 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.JExtBasicOptions;
+import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.tools.externals.ExtList;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
@@ -40,12 +41,13 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class ZemberekSpellChecker extends SpellChecker {
+public class ZemberekSpellChecker extends SpellChecker implements Plugin {
     
     private Method kelimeDenetle, oner;
     private Object zemberek;
     
-    public ZemberekSpellChecker() {}
+    public ZemberekSpellChecker() {
+    }
     
     public Vector<SpellError> checkSpelling(String text) {
         Hashtable<String, Integer> lastPositions = new Hashtable<String, Integer>();
@@ -106,6 +108,18 @@ public class ZemberekSpellChecker extends SpellChecker {
     public boolean supportsInsert() { return false; }
     public JExtBasicOptions getOptionsPanel() { return null; }
     public String getName() { return "Zemberek"; }
+
+    public String[] getAffectionList() {
+        return new String[] {"com.panayotis.jubler.tools.externals.ExtList"};
+    }
+
+    public void postInit(Object o) {
+        if (o instanceof ExtList) {
+            ExtList l = (ExtList)o;
+            if (l.getType().equals(family))
+                l.add(this);
+        }
+    }
     
 }
 

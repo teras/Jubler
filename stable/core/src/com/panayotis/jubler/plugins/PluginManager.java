@@ -21,6 +21,7 @@
  */
 package com.panayotis.jubler.plugins;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -31,7 +32,9 @@ import java.util.HashMap;
 public class PluginManager {
 
     private static final String[] PLUGINS = {
-        "com.panayotis.jubler.JublerApp"
+        "com.panayotis.jubler.JublerApp",
+        "com.panayotis.jubler.tools.spell.checkers.ASpell",
+        "com.panayotis.jubler.tools.spell.checkers.ZemberekSpellChecker"
     };
     private DynamicClassLoader cl;
     private HashMap<String, ArrayList<Plugin>> connections;
@@ -44,9 +47,12 @@ public class PluginManager {
         String[] affectlist;
         Plugin pl;
         ArrayList<Plugin> pllist;
+        int hm = 0;
         for (int i = 0; i < PLUGINS.length; i++) {
             pl = (Plugin) getClass(PLUGINS[i]);
             if (pl != null) {
+                DEBUG.debug("Plugin "+PLUGINS[i]+" loaded successfully.");
+                hm++;
                 affectlist = pl.getAffectionList();
                 for (int j = 0; j < affectlist.length; j++) {
                     pllist = connections.get(affectlist[j]);
@@ -58,8 +64,11 @@ public class PluginManager {
                         pllist.add(pl);
                     }
                 }
+            } else {
+                DEBUG.debug("!! Plugin "+PLUGINS[i]+" unable to load.");
             }
         }
+        DEBUG.debug(connections.size() + " listeners found for "+hm+" plugins (out of "+PLUGINS.length+" plugins)");
     }
 
     private Object getClass(String classname) {
