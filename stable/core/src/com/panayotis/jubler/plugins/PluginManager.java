@@ -1,10 +1,25 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * PluginManager.java
+ * Created on 19 May 2009
+ *
+ * This file is part of Jubler.
+ *
+ * Jubler is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2.
+ *
+ *
+ * Jubler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Jubler; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
  */
 package com.panayotis.jubler.plugins;
-
-import java.net.URL;
 
 /**
  *
@@ -15,21 +30,16 @@ public class PluginManager {
     private DynamicClassLoader cl;
 
     public PluginManager() {
-        URL[] urls = DynamicClassLoader.getUrlsFromPaths(new String[]{"lib", "../dist/lib"}, true);
-        cl = new DynamicClassLoader(urls);
-
-        for (int i = 0; i < urls.length; i++)
-            System.out.println(urls[i]);
+        cl = new DynamicClassLoader(new String[]{"lib", "../dist/lib"});
     }
 
     public Object getClass(String classname) {
-        Object ret = null;
         try {
-            ret = cl.loadClass(classname).newInstance();
+            return cl.loadClass(classname).newInstance();
         } catch (InstantiationException ex) {
         } catch (IllegalAccessException ex) {
         } catch (ClassNotFoundException ex) {
         }
-        return ret;
+        return null;
     }
 }
