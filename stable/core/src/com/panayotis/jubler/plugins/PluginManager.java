@@ -21,23 +21,61 @@
  */
 package com.panayotis.jubler.plugins;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  *
  * @author teras
  */
 public class PluginManager {
 
+    private static final String[] PLUGINS = {
+        "com.panayotis.jubler.JublerApp"
+    };
     private DynamicClassLoader cl;
+    private HashMap<String, ArrayList<Plugin>> connections;
 
     public PluginManager() {
+        connections = new HashMap<String, ArrayList<Plugin>>();
+
         cl = new DynamicClassLoader(new String[]{"lib", "../dist/lib"});
+
+        String[] affectlist;
+        Plugin pl;
+        ArrayList<Plugin> pllist;
+        for (int i = 0; i < PLUGINS.length; i++) {
+            pl = (Plugin) getClass(PLUGINS[i]);
+            if (pl != null) {
+                affectlist = pl.getAffectionList();
+                for (int j = 0; j < affectlist.length; j++) {
+                    pllist = connections.get(affectlist[j]);
+                    if (pllist == null) {
+                        pllist = new ArrayList<Plugin>();
+                        pllist.add(pl);
+                        connections.put(affectlist[j], pllist);
+                    } else {
+                        pllist.add(pl);
+                    }
+                }
+            }
+        }
     }
 
-    public Object getClass(String classname) {
+    private Object getClass(String classname) {
         try {
             return cl.loadClass(classname).newInstance();
         } catch (Exception ex) {
         }
         return null;
+    }
+
+    public void callPostInitListeners(Object o) {
+        ArrayList<Plugin> pl = connections.get(o.getClass().getName());
+        if (pl != null) {
+            for (int i = 0; i < pl.size(); i++) {
+                pl.get(i).postInit(o);
+            }
+        }
     }
 }

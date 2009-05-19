@@ -61,7 +61,7 @@ public class Main {
         Thread.setDefaultUncaughtExceptionHandler(eh);
 
         plugins = new PluginManager();
-        plugins.getClass("com.panayotis.jubler.os.JublerApp");
+        System.out.println("koko");
 
         splash = new MainSplash("/icons/splash.jpg");
         SystemDependent.setLookAndFeel();

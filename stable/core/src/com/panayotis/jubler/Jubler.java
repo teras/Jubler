@@ -238,6 +238,8 @@ public class Jubler extends JFrame {
         translate = new JTranslate();
         
         StaticJubler.putWindowPosition(this);
+
+        Main.plugins.callPostInitListeners(this);
     }
     
     
@@ -1962,7 +1964,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JMenuItem AboutHM;
+    public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
     public javax.swing.JCheckBoxMenuItem AudioPreviewC;
     private javax.swing.JPanel BasicPanel;
@@ -2023,12 +2025,12 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem PinkMP;
     private javax.swing.JMenuItem PlayAudioC;
     private javax.swing.JMenuItem PlayVideoP;
-    javax.swing.JMenuItem PrefsFM;
+    public javax.swing.JMenuItem PrefsFM;
     private javax.swing.JMenu PreviewP;
     private javax.swing.JButton PreviewTB;
     private javax.swing.JMenuItem PreviousGEM;
     private javax.swing.JMenuItem PreviousPageGEM;
-    javax.swing.JMenuItem QuitFM;
+    public javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RecodeTM;
     private javax.swing.JMenuItem RedoEM;
