@@ -38,15 +38,15 @@ public class JExtBasicOptions extends JPanel {
     private JFileChooser fdialog;
     
     protected String name;
-    protected String type;
+    protected String family;
     protected String[] testparameters;
     protected String test_signature;
     
     /** Creates new form MPlay */
-    public JExtBasicOptions(String type, String name, String[] testparameters, String test_signature) {
+    public JExtBasicOptions(String family, String name, String[] testparameters, String test_signature) {
         super();
         
-        this.type = type;
+        this.family = family;
         this.name = name;
         this.testparameters = testparameters;
         this.test_signature = test_signature;
@@ -110,11 +110,11 @@ public class JExtBasicOptions extends JPanel {
     // End of variables declaration//GEN-END:variables
     
     protected void loadPreferences() {
-        FilenameT.setText( Options.getOption(type + "." + name + ".Path", name.toLowerCase()) );
+        FilenameT.setText( Options.getOption(family + "." + name + ".Path", name.toLowerCase()) );
     }
     
     protected void savePreferences() {
-        Options.setOption(type + "." + name + ".Path", FilenameT.getText());
+        Options.setOption(family + "." + name + ".Path", FilenameT.getText());
     }
     
     public String getExecFileName() {

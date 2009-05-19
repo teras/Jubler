@@ -37,7 +37,7 @@ import javax.swing.JPanel;
  * @author  teras
  */
 public class JExternalOptions extends JPanel implements OptionsHolder {
-    ExtList list;
+    private ExtList list;
 
     /**
      * Creates new form JExternalOptions

@@ -35,8 +35,8 @@ import com.panayotis.jubler.os.SystemDependent;
  */
 public class MPlayer extends AbstractPlayer {
 
-    public MPlayer(String type) {
-        super(type);
+    public MPlayer(String family) {
+        super(family);
     }
     
     public String getName() { return "MPlayer"; }

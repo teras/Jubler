@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.tools.spell.checkers;
 
-import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
@@ -56,8 +55,8 @@ public class ASpell extends SpellChecker {
     /**
      * Creates a new instance of ASpell
      */
-    public ASpell() {
-        opts = new ASpellOptions(getType(), getName());
+    public ASpell(String family) {
+        opts = new ASpellOptions(family, getName());
     }
     
     public void start() throws ExtProgramException {

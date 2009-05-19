@@ -47,8 +47,8 @@ public abstract class AbstractPlayer extends VideoPlayer {
     private int x, y;
     
     
-    public AbstractPlayer(String type) {
-        opts = new AbstractPlayerOptions(type, this);
+    public AbstractPlayer(String family) {
+        opts = new AbstractPlayerOptions(family, this);
     }
     
     public abstract String getDefaultArguments();
