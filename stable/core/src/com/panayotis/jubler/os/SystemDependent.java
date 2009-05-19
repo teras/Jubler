@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler.os;
 
-import com.panayotis.jubler.plugins.DynamicClassLoader;
 import static com.panayotis.jubler.i18n.I18N._;
 
 
@@ -155,9 +154,7 @@ public class SystemDependent {
     }
 
     public static void setSmallDecoration(JRootPane pane) {
-        if (IS_MACOSX) {
-            pane.putClientProperty("Window.style", "small");
-        }
+        pane.putClientProperty("Window.style", "small");
     }
 
     public static void hideSystemMenus(JMenuItem about, JMenuItem prefs, JMenuItem quit) {
@@ -165,19 +162,6 @@ public class SystemDependent {
             about.getParent().remove(about);
             prefs.getParent().remove(prefs);
             quit.getParent().remove(quit);
-        }
-    }
-
-    public static void initApplication() {
-        /* In Linux this is a dummy function */
-        if (IS_MACOSX) {
-            try {
-                ClassLoader cl = new DynamicClassLoader(new String[]{"dist/lib/macapp.jar"}, false);
-                Object jublerapp = cl.loadClass("com.panayotis.jubler.os.JublerApp").newInstance();
-            } catch (InstantiationException ex) {
-            } catch (IllegalAccessException ex) {
-            } catch (ClassNotFoundException ex) {
-            }
         }
     }
 
@@ -260,17 +244,14 @@ public class SystemDependent {
     public static String getDefaultMPlayerArgs() {
         String font = "";
 
-        if (IS_LINUX) {
+        if (IS_LINUX)
             font = " -fontconfig";
-        } else {
-            if (IS_WINDOWS) {
-                font = " -font " + System.getenv("SystemRoot") + "\\fonts\\arial.ttf";
-            } else {
-                File freesans = new File(SystemFileFinder.getJublerAppPath() + "/lib/freesans.ttf");
-                if (freesans.exists()) {
-                    font = " -font %j/lib/freesans.ttf";
-                }
-            }
+        else if (IS_WINDOWS)
+            font = " -font " + System.getenv("SystemRoot") + "\\fonts\\arial.ttf";
+        else {
+            File freesans = new File(SystemFileFinder.getJublerAppPath() + "/lib/freesans.ttf");
+            if (freesans.exists())
+                font = " -font %j/lib/freesans.ttf";
         }
 
         return "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 " +
@@ -301,10 +282,9 @@ public class SystemDependent {
             proc = Runtime.getRuntime().exec(cmd);
             proc.waitFor();
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            while ((line = in.readLine()) != null) {
+            while ((line = in.readLine()) != null)
                 if (line.endsWith(".app"))
                     res.add(new ExtPath(line, ExtPath.BUNDLE_ONLY));
-            }
         } catch (Exception ex) {
         }
     }
@@ -324,10 +304,9 @@ public class SystemDependent {
             String line;
             proc = Runtime.getRuntime().exec(cmd);
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            while ((line = in.readLine()) != null) {
+            while ((line = in.readLine()) != null)
                 if (line.endsWith(FileCommunicator.FS + name))
                     res.add(new ExtPath(line, ExtPath.FILE_ONLY));
-            }
         } catch (Exception ex) {
         }
     }
@@ -348,12 +327,11 @@ public class SystemDependent {
     public static boolean canWrite(File f) {
         if (f == null)
             return false;
-        if (!IS_WINDOWS) {
+        if (!IS_WINDOWS)
             return f.canWrite();
-        }
         /* Do this horrible trick to make sure that a file is REALLY writable... */
         boolean ret = false;
-        if (f.isFile()) {
+        if (f.isFile())
             if (f.exists()) {
                 File newfile = new File(f.getPath() + ".canWrite");
                 boolean renameTo = f.renameTo(newfile);
@@ -361,12 +339,10 @@ public class SystemDependent {
                     newfile.renameTo(f);
                     ret = true;
                 }
-            } else {
+            } else
                 ret = newfile_canwrite(f);
-            }
-        } else if (f.isDirectory()) {
+        else if (f.isDirectory())
             ret = newfile_canwrite(new File(f, "canWrite"));
-        }
         return ret;
     }
 
@@ -380,14 +356,12 @@ public class SystemDependent {
         } catch (IOException ex) {
         } finally {
             try {
-                if (qw != null) {
+                if (qw != null)
                     qw.close();
-                }
             } catch (IOException ex) {
             } finally {
-                if (f.exists()) {
+                if (f.exists())
                     f.delete();
-                }
             }
         }
         return ret;

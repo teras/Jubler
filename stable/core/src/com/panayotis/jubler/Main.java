@@ -50,6 +50,8 @@ import javax.swing.JWindow;
  */
 public class Main {
 
+    public static PluginManager plugins;
+
     /**
      * @param args the command line arguments
      */
@@ -58,7 +60,8 @@ public class Main {
         ExceptionHandler eh = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(eh);
 
-         PluginManager pm = new PluginManager();
+        plugins = new PluginManager();
+        plugins.getClass("com.panayotis.jubler.os.JublerApp");
 
         splash = new MainSplash("/icons/splash.jpg");
         SystemDependent.setLookAndFeel();
@@ -109,9 +112,6 @@ public class Main {
         /* Force starting autosaver, if no autosaves were found */
         if (autosaves == 0)
             AutoSaver.init();
-
-        /* Load arguments, in a mac way */
-        SystemDependent.initApplication();
 
         if (JublerClient.isRunning()) {
             JublerClient.setFileList(sublist);
