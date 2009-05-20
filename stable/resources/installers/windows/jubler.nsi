@@ -66,26 +66,16 @@ Section "Jubler editor" SecJubler
    
   ; Create library
   SetOutPath $INSTDIR\lib
-  File dist\lib\ffdecode.dll
+  File dist\lib\*.*
   File resources\installers\windows\subtitle.ico
-  File resources\jupidator\jupidator.jar
 
   ; Create i18n files
   SetOutPath $INSTDIR\i18n
-  File dist\i18n\cs.jar
-  File dist\i18n\de.jar
-  File dist\i18n\el.jar
-  File dist\i18n\es.jar
-  File dist\i18n\fr.jar
-  File dist\i18n\pt.jar
-  File dist\i18n\sr.jar
-  File dist\i18n\tr.jar
+  File dist\i18n\*.jar
 
   ; Create help directory
   SetOutPath $INSTDIR\help
-  File dist\help\jubler-faq.html
-  File resources\help\question.png
-
+  File dist\help\*.*
 
   ; Write the installation path into the registry
   WriteRegStr HKLM "Software\Jubler" "Install_Dir" "$INSTDIR"
@@ -180,24 +170,15 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Jubler"
 
   ; Remove files and uninstaller
-  Delete "$INSTDIR\lib\*.*"
-  Delete "$INSTDIR\i18n\*.*"
-  Delete "$INSTDIR\help\*.*"
-  Delete "$INSTDIR\*.*"
+  RMDir /R "$INSTDIR"
 
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\Jubler\*.*"
+  RMDir "$SMPROGRAMS\Jubler"
 
   ; Remove Desctop shortcut
   Delete "$DESKTOP\Jubler subtitle editor.lnk"
   Delete "$DESKTOP\Jubler.lnk"
-
-  ; Remove directories used
-  RMDir "$SMPROGRAMS\Jubler"
-  RMDir "$INSTDIR\lib"
-  RMDir "$INSTDIR\i18n"
-  RMDir "$INSTDIR\help"
-  RMDir "$INSTDIR"
 
   ; Remove associations
   !insertmacro APP_UNASSOCIATE "ass" "jubler.subfile.ass"

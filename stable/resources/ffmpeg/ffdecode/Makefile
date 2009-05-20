@@ -30,8 +30,10 @@ LIBRARIES=${CPATH}/../libraries
 # Path of Jubler distribution
 JUBLER=${CPATH}/../../..
 
+WININCLOC=${JUBLER}/../../../Tools/jvm/win32
+
 # RELATIVE Path of ffdecode to top Jubler directory
-FFDECODE=resources/ffdecode
+FFDECODE=resources/ffmpeg/ffdecode
 
 # Where javah lives
 JAVAH=${JAVA_HOME}/bin/javah
@@ -76,7 +78,7 @@ ifeq (${MAKESYS},win32)
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
 	XFCONFIG=--cross-prefix=${CCPREF} --enable-memalign-hack --target-os=mingw32
-	GCCOPTS=-I../../../../../Tools/jvm/win32
+	GCCOPTS=-I${WININCLOC}
 	STRIP=${CCPREF}strip -s
 endif
 ifeq (${MAKESYS},darwin_ppc)
@@ -171,8 +173,8 @@ clean:
 	rm -f *.o
 
 distclean:clean
-	rm -rf ${JUBLER}/dist/lib
-	rm -rf ${JUBLER}/src/lib
+	rm -rf ${JUBLER}/dist/lib/*ffdecode*
+	rm -rf ${JUBLER}/src/lib/*ffdecode*
 	rm -f *.dll *.so *.jnilib
 
 destroy:
