@@ -13,7 +13,7 @@
 PROJ=ffdecode
 
 # Paths of include files
-JAVA_HOME=${shell /bin/sh ../system/findjava.sh -j}
+JAVA_HOME=${shell /bin/sh ../../system/findjava.sh -j}
 
 # Current Path
 CPATH=${shell pwd}
@@ -28,7 +28,7 @@ FAAD=${CPATH}/../ffmpeg-libs/faad2
 LIBRARIES=${CPATH}/../libraries
 
 # Path of Jubler distribution
-JUBLER=${CPATH}/../..
+JUBLER=${CPATH}/../../..
 
 # RELATIVE Path of ffdecode to top Jubler directory
 FFDECODE=resources/ffdecode
@@ -174,6 +174,9 @@ distclean:clean
 	rm -rf ${JUBLER}/dist/lib
 	rm -rf ${JUBLER}/src/lib
 	rm -f *.dll *.so *.jnilib
+
+destroy:
+	rm -rf ../libraries
 
 javacheck:
 ifeq (${JAVA_HOME},)

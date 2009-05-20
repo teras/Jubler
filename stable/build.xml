@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Jubler" default="dist" basedir=".">
     <description>Builds, tests, and runs the project Jubler.</description>
+    <property file="core/src/com/panayotis/jubler/information/version.prop" />
 
 	<taskdef resource="net/sf/antcontrib/antlib.xml">
 		<classpath>
 			<pathelement location="resources/libs/ant-contrib/ant-contrib-1.0b3.jar"/>
 		</classpath>
 	</taskdef>
+	
+	<taskdef name="jarbundler"
+        onerror="report"
+        classpath="../../../Tools/jarbundler/jarbundler-1.9.jar"
+        classname="net.sourceforge.jarbundler.JarBundler" />
+
+   <taskdef name="izpack"
+        onerror="report"
+        classpath="../../../Tools/IzPack/standalone-compiler.jar"
+        classname="com.izforge.izpack.ant.IzPackTask"/>
+
+    <taskdef name="launch4j"
+        onerror="report"
+        classpath="../../../Tools/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
+        classname="net.sf.launch4j.ant.Launch4jTask"/>
 
 
 
@@ -16,7 +32,7 @@
         </exec>
     </target>
   
-	<target name="faq">
+	<target name="help">
         <exec dir="resources/help" executable="docbook2html" failonerror="false">
             <arg line="-u jubler-faq.xml"/>
         </exec>
@@ -33,7 +49,9 @@
         </java>
     </target>
 
-	<target name="jars" depends="i18n,core,plugins"/>
+	<target name="font">
+		<copy file="resources/system/fonts/freesans.ttf" todir="dist/lib"/>
+	</target>
 
 	<target name="core">
 		<ant dir="core" target="jar"/>
@@ -78,12 +96,87 @@
     </target>
 
 
+	<target name="release" depends="clean,i18n,core,plugins,help,changelog">
+		<echo message="INFO:  In order to update version numbering, ant task version-update should be called manually" />
+    </target>
+
+
+	<!-- Mac OS X installer -->
+    <target name="macosx" depends="nodistbased,release,font">
+        <jarbundler
+            dir="dist"
+            jars="dist/Jubler.jar"
+            mainclass="com.panayotis.jubler.Main"
+            name="Jubler"
+            aboutmenuname="Jubler"
+            antialiasedgraphics="true"
+            antialiasedtext="true"
+            bundleid="com.panayotis.jubler"
+            infostring="Jubler ${version}, Multiplatform Subtitle Editor"
+            jvmversion="1.5+"
+            screenmenu="true"
+            version="${version}"
+            icon="resources/installers/macosx/jubler.icns"
+        >
+        <documenttype
+            name="Subtitle Document"
+            extensions="srt sub ass ssa stl son txt xml"
+            role="Editor"
+            iconfile="resources/installers/macosx/subtitle.icns"
+        />
+        </jarbundler>
+        <exec dir="resources/ffmpeg/ffdecode" executable="make" failonerror="true"> <arg line="darwin"/> </exec>
+
+        <delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
+        <bunzip2 src="resources/installers/macosx/Jubler-template.dmg.bz2" dest="/tmp/Jubler-template.dmg"/>
+        <exec executable="hdiutil" failonerror="true">
+            <arg line="attach -noautoopen -mountpoint /Volumes/Jubler-template /tmp/Jubler-template.dmg"/>
+        </exec>
+
+        <delete dir="/Volumes/Jubler-template/Jubler.app" includeemptydirs="yes"/>
+        <copy todir="/Volumes/Jubler-template/Jubler.app">
+            <fileset dir="dist/Jubler.app"/>
+        </copy>
+        <chmod file="/Volumes/Jubler-template/Jubler.app/Contents/MacOS/JavaApplicationStub" perm="a+x"/>
+        <copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/i18n">
+            <fileset dir="dist/i18n"/>
+        </copy>
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib">
+			<fileset dir="dist/lib"/>
+		</copy>
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help">
+			<fileset dir="dist/help"/>
+		</copy>
+        <copy file="resources/ffmpeg/ffdecode/libffdecode.jnilib" todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib"/>
+
+        <exec executable="hdiutil" failonerror="true">
+            <arg line="detach -force /Volumes/Jubler-template"/>
+        </exec>
+        <exec executable="hdiutil" failonerror="true">
+            <arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o Jubler-${version}.dmg"/>
+        </exec>
+        <delete file="/tmp/Jubler-template.dmg"/>
+    </target>
+
+
+    <!-- Generic installer -->
+    <target name="generic" depends="nodistbased,release,font">
+        <copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes">
+            <filterset><filter token="VERSION" value="${version}"/></filterset>
+        </copy>
+        <izpack input="/tmp/install.xml" output="Jubler-${version}-generic.jar" installerType="standard" basedir="."/>
+        <delete file="/tmp/install.xml" />
+    </target>
+
+
+
+
+
 
 
 
     <!-- Create source tarballs of Jubler -->
     <target name="distsource" depends="clean">
-        <property file="core/src/com/panayotis/jubler/information/version.prop" />
         <echo message="TAR full sources"/>
 		<exec executable="tar" dir=".." failonerror="true">
 			<arg line="jcf Jubler-fullsrc-${version}.tar.bz2 --exclude .hg --exclude resources/ffmpeg/libraries --exclude nbproject/private --transform s/^stable/jubler-${version}/g stable"/>
@@ -105,8 +198,22 @@
 			<sequential> <ant dir="@{plugin}" target="clean"/> </sequential>
 		</for>
 		<ant dir="core" target="clean"/>
-		<delete dir="dist"/>
+       <delete>
+            <fileset dir="." includes="*.bz2"/>
+            <fileset dir="." includes="*.exe"/>
+            <fileset dir="." includes="*.deb"/>
+            <fileset dir="." includes="*.jar"/>
+            <fileset dir="." includes="*.sh"/>
+            <fileset dir="." includes="*.dmg"/>
+            <fileset dir="." includes="*.log"/>
+            <fileset dir="resources/i18n" includes="*.mo"/>
+        </delete>
 		<delete file="ChangeLog.html"/>
+		<delete dir="dist"/>
+		<delete dir="self"/>
+        <exec dir="resources/ffmpeg/ffdecode" executable="make" failonerror="true">
+            <arg line="distclean"/>
+        </exec>
 	</target>
 
 	
