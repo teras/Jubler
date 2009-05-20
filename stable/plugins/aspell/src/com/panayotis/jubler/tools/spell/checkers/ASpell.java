@@ -36,7 +36,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.tools.externals.ExtList;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
@@ -61,7 +60,7 @@ public class ASpell extends SpellChecker implements Plugin {
     private final static boolean forceutf8;
         /* Force ASpell to use UTF-8 encoding - broken on Windows */
     static {
-        boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;;
+        boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
         forceutf8 = !IS_WINDOWS;
     }
 

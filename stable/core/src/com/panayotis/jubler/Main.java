@@ -22,12 +22,8 @@
  */
 package com.panayotis.jubler;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
-import com.panayotis.jubler.information.AutoUpdater;
-import com.panayotis.jubler.options.Options;
+import com.panayotis.jupidator.AutoUpdater;
 import com.panayotis.jubler.os.AutoSaver;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.PluginManager;
@@ -126,11 +122,7 @@ public class Main {
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
 
-        try {
-            new AutoUpdater();
-        } catch (NoClassDefFoundError ex) {
-            DEBUG.debug(_("Unable to find Jupidator auto update system."));
-        }
+        new AutoUpdater();
     }
     static private MainSplash splash;
     static private Vector<String> sublist;

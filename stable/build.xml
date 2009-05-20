@@ -49,6 +49,7 @@
 				<copy file="@{plugin}/dist/${plugname}.jar" todir="dist/lib"/>
 			</sequential>
 		</for>
+		<copy file="resources/libs/jupidator/jupidator.jar" todir="dist/lib"/>
 	</target>
 
 

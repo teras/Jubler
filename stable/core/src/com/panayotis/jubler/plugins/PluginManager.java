@@ -35,7 +35,8 @@ public class PluginManager {
         "com.panayotis.jubler.JublerApp",
         "com.panayotis.jubler.tools.spell.checkers.ASpell",
         "com.panayotis.jubler.tools.spell.checkers.ZemberekSpellChecker",
-        "com.panayotis.jubler.media.player.mplayer.MPlayer"
+        "com.panayotis.jubler.media.player.mplayer.MPlayer",
+        "com.panayotis.jubler.plugins.AutoUpdatePlugin"
     };
     private DynamicClassLoader cl;
     private HashMap<String, ArrayList<Plugin>> connections;
@@ -82,7 +83,11 @@ public class PluginManager {
     }
 
     public void callPostInitListeners(Object o) {
-        ArrayList<Plugin> pl = connections.get(o.getClass().getName());
+        callPostInitListeners(o, o.getClass().getName());
+    }
+
+    public void callPostInitListeners(Object o, String tag) {
+        ArrayList<Plugin> pl = connections.get(tag);
         if (pl != null) {
             for (int i = 0; i < pl.size(); i++) {
                 pl.get(i).postInit(o);
