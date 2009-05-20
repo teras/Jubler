@@ -55,7 +55,6 @@
 
 	<target name="core">
 		<ant dir="core" target="jar"/>
-		<copy file="core/dist/Jubler.jar" todir="dist"/>
 	</target>
 
 	<target name="plugins" depends="core">
@@ -64,7 +63,6 @@
 			<sequential>
 				<ant dir="@{plugin}" target="jar"/> 
 				<propertyregex property="plugname" input="@{plugin}" regexp=".*/(.*)" select="\1" casesensitive="false" override="true"/>
-				<copy file="@{plugin}/dist/${plugname}.jar" todir="dist/lib"/>
 			</sequential>
 		</for>
 		<copy file="resources/libs/jupidator/jupidator.jar" todir="dist/lib"/>
