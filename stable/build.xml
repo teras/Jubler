@@ -210,6 +210,152 @@
 
 
 
+<!-- ***********************
+     *   Linux Installers  *
+     *********************** -->
+
+
+    <!-- Generic Linux installer -->
+    <target name="genlinux" depends="nodistbased,release,linuxffdecode,linuxproperties">
+        <mkdir dir="self"/>
+        <copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes">
+            <filterset><filter token="VERSION" value="${version}"/></filterset>
+        </copy>
+        <izpack input="/tmp/install.xml" output="self/Jubler-install-linux.jar" installerType="standard" basedir="."/>
+        <delete file="/tmp/install.xml" />
+        <copy file="resources/system/findjava.sh" todir="self"/>
+        <copy file="resources/installers/linux/dist/generic/install.sh" todir="self"/>
+        <chmod file="self/install.sh" perm="a+x"/>
+        <exec executable="makeself" failonerror="true">
+            <arg line="--bzip2 self Jubler-${version}-linux_${os.arch}.sh 'Jubler installer' ./install.sh"/>
+        </exec>
+        <delete dir="self"/>
+    </target>
+
+     <!-- Debian Linux installer -->
+    <target name="debian" depends="distbased,release,linuxffdecode,linuxinstall">
+        <mkdir dir="${destdir}/DEBIAN"/>
+        <exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
+            <arg line="usr -type f -exec md5sum {} ;"/>
+        </exec>
+        <copy todir="${destdir}/DEBIAN">
+            <fileset dir="resources/installers/linux/dist/debian"/>
+            <filterset>
+                <filter token="VERSION" value="${version}"/>
+                <filter token="ARCH" value="${os.arch}"/>
+            </filterset>
+        </copy>
+        <chmod file="${destdir}/DEBIAN/postinst" perm="755"/>
+        <chmod file="${destdir}/DEBIAN/postrm" perm="755"/>
+
+        <exec executable="fakeroot" failonerror="true">
+            <arg line="dpkg-deb --build ${destdir} jubler_${version}_${os.arch}.deb"/>
+        </exec>
+    </target>
+
+    <!-- Slackware Linux installer -->
+    <target name="slackware" depends="distbased,release,linuxffdecode,linuxinstall">
+        <copy todir="${destdir}">
+            <fileset dir="resources/installers/linux/dist/slackware"/>
+        </copy>
+        <exec dir="${destdir}" executable="makepkg" failonerror="true">
+            <arg line="-l y -c n /tmp/jubler-${version}-${os.arch}-1.tgz"/>
+        </exec>
+    </target>
+
+    <!-- Fedora Linux installer -->
+    <target name="redhat" depends="fedora"/>
+    <target name="fedora" depends="distbased,release,linuxffdecodedyn,linuxinstall"/>
+
+
+
+
+	<!-- Clean up destination directory -->
+    <target name="cleandestdir" depends="linuxproperties">
+        <!-- Cleanup -->
+        <exec executable="rm" failonerror="true"><arg line="-rf ${destdir}"/></exec>
+    </target>
+
+	<!-- Create an isntallation-like file tree -->
+    <target name="linuxinstall" depends="linuxproperties, cleandestdir, linuxdesktopintegration">
+        <!-- Basic Jubler files -->
+        <copy file="dist/Jubler.jar" todir="${libdir}"/>
+        <copy todir="${libdir}/lib">
+            <fileset dir="dist/lib"/>
+        </copy>
+        <copy todir="${libdir}/i18n">
+            <fileset dir="dist/i18n"/>
+        </copy>
+        <copy file="resources/system/findjava.sh" todir="${libdir}"/>
+        <chmod file="${libdir}/findjava.sh" perm="a+x"/>
+        <copy file="resources/installers/linux/jubler" todir="${bindir}"/>
+        <chmod file="${bindir}/jubler" perm="a+x"/>
+        <!-- Documentation files -->
+		<copy todir="${docdir}/help">
+			<fileset dir="dist/help"/>
+		</copy>
+        <copy file="resources/installers/linux/copyright" todir="${docdir}"/>
+        <copy file="README" todir="${docdir}"/>
+        <copy file="ChangeLog.html" todir="${docdir}"/>
+        <exec executable="ln" failonerror="true"><arg line="-s ${reldocdir} ${libdir}/help"/></exec>
+        <copy file="resources/installers/linux/jubler.1" todir="${mandir}"/>
+        <exec executable="gzip" failonerror="true"><arg line="-v -9 ${mandir}/jubler.1"/></exec>
+    </target>
+
+	<!-- Linux desktop intergration -->
+    <target name="linuxdesktopintegration" depends="linuxproperties">
+        <!-- Icon files -->
+        <copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
+        <copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
+        <copy file="resources/installers/linux/jubler.png" todir="${sharedir}/icons/hicolor/48x48/apps"/>
+        <exec executable="bash" failonerror="true">
+            <arg line="resources/installers/linux/iconinstall"/>
+            <arg line="${sharedir}/icons/hicolor"/>
+        </exec>
+        <copy file="resources/installers/linux/jubler.desktop" todir="${sharedir}/applications"/>
+        <!-- Mimetypes -->
+        <copy file="resources/installers/linux/x-srt.desktop" todir="${mimedir}"/>
+        <copy file="resources/installers/linux/x-sub.desktop" todir="${mimedir}"/>
+        <copy file="resources/installers/linux/x-ass.desktop" todir="${mimedir}"/>
+        <copy file="resources/installers/linux/x-ssa.desktop" todir="${mimedir}"/>
+        <copy file="resources/installers/linux/jubler.xml" todir="${sharedir}/mime/packages"/>
+    </target>
+
+   <!-- Linux with static ffdecode library -->
+    <target name="linuxffdecode">
+        <exec dir="resources/ffmpeg/ffdecode" executable="make" failonerror="true"> <arg line="linux"/> </exec>
+    </target>
+
+    <!-- Linux with dynamic ffdecode library -->
+    <target name="linuxffdecodedyn">
+        <exec dir="resources/ffmpeg/ffdecode" executable="make" failonerror="true"> <arg line="linuxdyn"/> </exec>
+    </target>
+
+    <target name="linuxproperties">
+        <!-- Propery files -->
+        <property environment="env"/>
+
+        <!-- Basic properties -->
+        <condition property="destdir" value="${env.DESTDIR}" else="/tmp/package-jubler-${version}">
+            <isset property="env.DESTDIR"/>
+        </condition>
+        <condition property="prefix" value="${destdir}${env.PREFIX}" else="${destdir}/usr">
+            <isset property="env.PREFIX"/>
+        </condition>
+
+        <!-- Helpful properties definitions -->
+        <property name="libdir" value="${prefix}/lib/jubler"/>
+        <property name="bindir" value="${prefix}/bin"/>
+        <property name="sharedir" value="${prefix}/share"/>
+        <property name="reldocdir" value="../../share/doc/jubler-${version}/help"/>
+        <property name="docdir" value="${sharedir}/doc/jubler-${version}"/>
+        <property name="mandir" value="${sharedir}/man/man1"/>
+        <property name="libp" value="/lib"/>
+        <property name="binp" value="/bin"/>
+        <property name="mimedir" value="${sharedir}/mimelnk/application"/>
+    </target>
+
+
 
 
 
