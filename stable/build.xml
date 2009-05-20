@@ -61,8 +61,10 @@
 		<for param="plugin">
 			<path> <dirset dir="plugins" includes="*"/> </path>
 			<sequential>
-				<ant dir="@{plugin}" target="jar"/> 
-				<propertyregex property="plugname" input="@{plugin}" regexp=".*/(.*)" select="\1" casesensitive="false" override="true"/>
+			<trycatch>
+				<try> <ant dir="@{plugin}" target="jar"/> </try>
+				<catch> <echo message="@{plugin} failed!"/> </catch>
+			</trycatch>
 			</sequential>
 		</for>
 		<copy file="resources/libs/jupidator/jupidator.jar" todir="dist/lib"/>
