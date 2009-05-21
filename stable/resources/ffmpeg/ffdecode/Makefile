@@ -232,6 +232,7 @@ ${LIBRARYREQ}: ${LIBRARIES}/libfaad${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/libavutil.a ${LIBRARIES}/libavutil${LIBSUF}.a
 	cd ${FFMPEG} && ${MAKE} distclean
+	rm -f ${FFMPEG}/libswscale/libswscale-uninstalled.pc ${FFMPEG}/libswscale/libswscale.pc
 	rm -f ${LIBRARIES}/libfaad.a
 
 
