@@ -25,8 +25,10 @@
  * utils.
  */
 
-/* needed for mkstemp() */
+/* needed for mkstemp() but breaks compatibility in Leopard */
+#ifndef __APPLE__
 #define _XOPEN_SOURCE 600
+#endif
 
 #include "libavutil/avstring.h"
 #include "libavutil/integer.h"
