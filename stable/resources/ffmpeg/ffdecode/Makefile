@@ -19,7 +19,7 @@ JAVA_HOME=${shell /bin/sh ../../system/findjava.sh -j}
 CPATH=${shell pwd}
 
 # Path of the local ffmpeg source structure (already inside the source version of Jubler)
-FFMPEG=${CPATH}/../ffmpeg-svn
+FFMPEG=${CPATH}/../ffmpeg-0.5
 
 # Path of local FAAD2 library
 FAAD=${CPATH}/../ffmpeg-libs/faad2
@@ -92,7 +92,7 @@ ifeq (${MAKESYS},darwin_i386)
 	GCCOPTS=-fno-common -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
-ifeq (${MAKESYS},linux32)
+ifeq (${MAKESYS},linux_i686)
 	XLIBS=-lz
 	CCPREF=
 	ARCH=${ARCHITECTURE}
@@ -102,7 +102,7 @@ ifeq (${MAKESYS},linux32)
 	GCCOPTS=
 	STRIP=${CCPREF}strip -s
 endif
-ifeq (${MAKESYS},linux64)
+ifeq (${MAKESYS},linux_x86_64)
 	XLIBS=-lz
 	CCPREF=
 	ARCH=${ARCHITECTURE}
@@ -141,32 +141,30 @@ develop:javacheck
 	${MAKE} -e `uname -s|tr [A-Z] [a-z]`
 
 
-linux:
-	if [ "${ARCHITECTURE}" = "x86_64" ]; then ${MAKE} linux64 ; else ${MAKE} linux32 ; fi
+linux:linux_${ARCHITECTURE}
 
-
-linux32:javacheck distclean
-	${MAKE} -e library MAKESYS=linux32
+linux_i686:javacheck distclean
+	${MAKE} -e library MAKESYS=linux_i686
 	rm -rf ${JUBLER}/src/lib
 
-linux64:javacheck distclean
-	${MAKE} -e library MAKESYS=linux64
+linux_x86_64:javacheck distclean
+	${MAKE} -e library MAKESYS=linux_x86_64
 	rm -rf ${JUBLER}/src/lib
 
-linuxdyn:
-	if [ "${ARCHITECTURE}" == "x86_64" ]; then ${MAKE} linuxdyn64 ; else ${MAKE} linuxdyn32 ; fi
+linuxdyn:linuxdyn_${ARCHITECTURE}
 
-linuxdyn32:javacheck distclean
-	${MAKE} -e library MAKESYS=linux32 STATIC=no
+linuxdyn_i686:javacheck distclean
+	${MAKE} -e library MAKESYS=linux_i686 STATIC=no
 	rm -rf ${Jubler}/src/lib
 
-linuxdyn64:javacheck distclean
-	${MAKE} -e library MAKESYS=linux64 STATIC=no
+linuxdyn_x86_64:javacheck distclean
+	${MAKE} -e library MAKESYS=linux_x86_64 STATIC=no
 	rm -rf ${Jubler}/src/lib
 
 win32:javacheck distclean
 	${MAKE} -e library MAKESYS=win32
 	rm -rf ${JUBLER}/src/lib
+
 
 darwin:javacheck
 	${MAKE} distclean
