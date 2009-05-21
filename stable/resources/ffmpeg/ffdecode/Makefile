@@ -48,6 +48,7 @@ NATIVES=${shell cd ../../src && grep -r ' native ' * | grep -v '/.svn/' | gawk -
 SRCS=${shell ls 2>/dev/null *.c}
 OBJS=${SRCS:.c=.o}
 SYSTEM=${shell echo ${MAKESYS} | sed -e 's/_.*//g'}
+ARCHITECTURE=${shell uname -m}
 
 ifeq (${STATIC},no)
 	LIBRARYREQ=
@@ -61,16 +62,6 @@ else
 	INCS=-I${FFMPEG}
 endif
 
-ifeq (${MAKESYS},linux)
-	XLIBS=-lz
-	CCPREF=
-	ARCH=${shell uname -m}
-	LD=${CC} -shared
-	LIBNAME=lib${PROJ}.so
-	XFCONFIG=
-	GCCOPTS=-fPIC
-	STRIP=${CCPREF}strip -s
-endif
 ifeq (${MAKESYS},win32)
 	XLIBS=
 	CCPREF=i586-mingw32msvc-
@@ -101,6 +92,26 @@ ifeq (${MAKESYS},darwin_i386)
 	GCCOPTS=-fno-common -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
+ifeq (${MAKESYS},linux32)
+	XLIBS=-lz
+	CCPREF=
+	ARCH=${ARCHITECTURE}
+	LD=${CC} -shared
+	LIBNAME=lib${PROJ}.so
+	XFCONFIG=
+	GCCOPTS=
+	STRIP=${CCPREF}strip -s
+endif
+ifeq (${MAKESYS},linux64)
+	XLIBS=-lz
+	CCPREF=
+	ARCH=${ARCHITECTURE}
+	LD=${CC} -shared
+	LIBNAME=lib${PROJ}.so
+	XFCONFIG=
+	GCCOPTS=-fPIC
+	STRIP=${CCPREF}strip -s
+endif
 
 
 FCONFIG=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --enable-encoder=pcm_s16le --enable-encoder=pcm_s16be --disable-muxers --enable-muxer=wav --disable-devices --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394 --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG} --disable-mmx
@@ -130,12 +141,27 @@ develop:javacheck
 	${MAKE} -e `uname -s|tr [A-Z] [a-z]`
 
 
-linux:javacheck distclean
-	${MAKE} -e library MAKESYS=linux
+linux:
+	if [ "${ARCHITECTURE}" = "x86_64" ]; then ${MAKE} linux64 ; else ${MAKE} linux32 ; fi
+
+
+linux32:javacheck distclean
+	${MAKE} -e library MAKESYS=linux32
 	rm -rf ${JUBLER}/src/lib
 
-linuxdyn:javacheck distclean
-	${MAKE} -e library MAKESYS=linux STATIC=no
+linux64:javacheck distclean
+	${MAKE} -e library MAKESYS=linux64
+	rm -rf ${JUBLER}/src/lib
+
+linuxdyn:
+	if [ "${ARCHITECTURE}" == "x86_64" ]; then ${MAKE} linuxdyn64 ; else ${MAKE} linuxdyn32 ; fi
+
+linuxdyn32:javacheck distclean
+	${MAKE} -e library MAKESYS=linux32 STATIC=no
+	rm -rf ${Jubler}/src/lib
+
+linuxdyn64:javacheck distclean
+	${MAKE} -e library MAKESYS=linux64 STATIC=no
 	rm -rf ${Jubler}/src/lib
 
 win32:javacheck distclean
