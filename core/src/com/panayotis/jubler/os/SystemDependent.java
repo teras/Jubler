@@ -26,12 +26,6 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 
 import com.panayotis.jubler.tools.externals.ExtPath;
-import java.awt.Component;
-import java.awt.Point;
-import java.awt.Window;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -42,8 +36,6 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.JRootPane;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -90,37 +82,6 @@ public class SystemDependent {
         } catch (InstantiationException e) {
         } catch (IllegalAccessException e) {
         } catch (UnsupportedLookAndFeelException e) {
-        }
-    }
-
-    public final static void setComponentDraggable(Window window, Component component) {
-        if (IS_MACOSX) {
-            if (component instanceof JToolBar)
-                ((JToolBar) component).setFloatable(false);
-
-            final Window wind = window;
-            final Component comp = component;
-            final Point oldpos = new Point();
-            final Point newpos = new Point();
-
-            comp.addMouseListener(new MouseAdapter() {
-
-                public void mousePressed(MouseEvent e) {
-                    oldpos.setLocation(e.getPoint());
-                    SwingUtilities.convertPointToScreen(oldpos, comp);
-                    oldpos.x -= wind.getX();
-                    oldpos.y -= wind.getY();
-                }
-            });
-
-            comp.addMouseMotionListener(new MouseMotionAdapter() {
-
-                public void mouseDragged(MouseEvent e) {
-                    newpos.setLocation(e.getPoint());
-                    SwingUtilities.convertPointToScreen(newpos, comp);
-                    wind.setLocation(newpos.x - oldpos.x, newpos.y - oldpos.y);
-                }
-            });
         }
     }
 

@@ -196,7 +196,7 @@ public class Jubler extends JFrame {
     
     
     /** Creates new form JubEdit */
-    public Jubler() {        
+    public Jubler() {
         subs = null;
         mfile = new MediaFile();
         connected_consoles = new Vector<JVideoConsole>();
@@ -586,13 +586,11 @@ public class Jubler extends JFrame {
 
         Info.setLabelFor(ShiftTimeTM);
         Info.setText(" ");
-        SystemDependent.setComponentDraggable(this, Info);
         jPanel5.add(Info, java.awt.BorderLayout.CENTER);
 
         Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         Stats.setText("-");
         Stats.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
-        SystemDependent.setComponentDraggable(this, Stats);
         jPanel5.add(Stats, java.awt.BorderLayout.EAST);
 
         LowerPartP.add(jPanel5, java.awt.BorderLayout.SOUTH);
@@ -631,8 +629,6 @@ public class Jubler extends JFrame {
         BasicPanel.add(SubSplitPane, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(BasicPanel, java.awt.BorderLayout.CENTER);
-
-        SystemDependent.setComponentDraggable(this, JublerTools);
 
         FileTP.setLayout(new javax.swing.BoxLayout(FileTP, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1997,13 +1993,13 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenu GoEM;
     public javax.swing.JCheckBoxMenuItem HalfSizeC;
     private javax.swing.JMenu HelpM;
-    private javax.swing.JLabel Info;
+    public javax.swing.JLabel Info;
     private javax.swing.JMenuItem InfoFM;
     private javax.swing.JButton InfoTB;
     private javax.swing.JMenu InsertEM;
     private javax.swing.JMenuItem JoinTM;
     public javax.swing.JMenuBar JublerMenuBar;
-    private javax.swing.JToolBar JublerTools;
+    public javax.swing.JToolBar JublerTools;
     private javax.swing.JButton LoadTB;
     public javax.swing.JPanel LowerPartP;
     private javax.swing.JMenu MarkEM;
@@ -2054,7 +2050,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JPanel SortTP;
     private javax.swing.JMenuItem SpellTM;
     private javax.swing.JMenuItem SplitTM;
-    private javax.swing.JLabel Stats;
+    public javax.swing.JLabel Stats;
     private javax.swing.JMenuItem StepwiseREM;
     private javax.swing.JMenu StyleEM;
     private javax.swing.JMenu StyleP;
