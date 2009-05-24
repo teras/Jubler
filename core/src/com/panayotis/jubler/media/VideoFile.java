@@ -152,23 +152,25 @@ public class VideoFile extends File {
         matchcount = 0;
         match = null;
         files = dir.listFiles(filter);
-        for ( i = 0 ; i < files.length ; i++ ) {
-            if ( !files[i].isDirectory()) {
-                j = 0;
-                curfilename = files[i].getPath().toLowerCase();
-                size = (subfilename.length() > curfilename.length()) ? curfilename.length() : subfilename.length();
-                while ( j < size  &&  subfilename.charAt(j) == curfilename.charAt(j)) {
-                    j++;
-                }
-                if (matchcount < j) {
-                    matchcount = j;
-                    match = files[i];
+        if (files != null) {
+            for (i = 0; i < files.length; i++) {
+                if (!files[i].isDirectory()) {
+                    j = 0;
+                    curfilename = files[i].getPath().toLowerCase();
+                    size = (subfilename.length() > curfilename.length()) ? curfilename.length() : subfilename.length();
+                    while (j < size && subfilename.charAt(j) == curfilename.charAt(j)) {
+                        j++;
+                    }
+                    if (matchcount < j) {
+                        matchcount = j;
+                        match = files[i];
+                    }
                 }
             }
+            if (match != null)
+                return new VideoFile(match.getPath(), decoder);
         }
-        if (match != null) 
-            return new VideoFile(match.getPath(), decoder);
-        return new VideoFile(subfile.getPath()+filter.getExtensions()[0], decoder);
+        return new VideoFile(subfile.getPath() + filter.getExtensions()[0], decoder);
     }
     
 }
