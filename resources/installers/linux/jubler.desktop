@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories=AudioVideo;
+Comment=Subtitle editor and authoring tool
+Exec=jubler %f
+GenericName=Jubler subtitle editor
+Icon=jubler
+MimeType=application/x-srt;application/x-sub;application/x-ssa;application/x-ass;
+Name=Jubler
+Terminal=false
+Type=Application
