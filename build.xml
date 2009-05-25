@@ -11,17 +11,17 @@
 	
 	<taskdef name="jarbundler"
         onerror="report"
-        classpath="../../../Tools/jarbundler/jarbundler-1.9.jar"
+        classpath="../../Tools/jarbundler/jarbundler-1.9.jar"
         classname="net.sourceforge.jarbundler.JarBundler" />
 
    <taskdef name="izpack"
         onerror="report"
-        classpath="../../../Tools/IzPack/standalone-compiler.jar"
+        classpath="../../Tools/IzPack/standalone-compiler.jar"
         classname="com.izforge.izpack.ant.IzPackTask"/>
 
     <taskdef name="launch4j"
         onerror="report"
-        classpath="../../../Tools/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
+        classpath="../../Tools/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
         classname="net.sf.launch4j.ant.Launch4jTask"/>
 
 

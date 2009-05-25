@@ -30,7 +30,7 @@ LIBRARIES=${CPATH}/../libraries
 # Path of Jubler distribution
 JUBLER=${CPATH}/../../..
 
-WININCLOC=${JUBLER}/../../../Tools/jvm/win32
+WININCLOC=${JUBLER}/../../Tools/jvm/win32
 
 # RELATIVE Path of ffdecode to top Jubler directory
 FFDECODE=resources/ffmpeg/ffdecode
