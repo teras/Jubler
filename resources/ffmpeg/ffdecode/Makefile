@@ -108,7 +108,7 @@ ifeq (${MAKESYS},linux_x86_64)
 	ARCH=${ARCHITECTURE}
 	LD=${CC} -shared
 	LIBNAME=lib${PROJ}.so
-	XFCONFIG=
+	XFCONFIG=--disable-mmx
 	GCCOPTS=-fPIC
 	STRIP=${CCPREF}strip -s
 endif
