@@ -44,7 +44,7 @@ public class PluginManager {
     public PluginManager() {
         connections = new HashMap<String, ArrayList<Plugin>>();
 
-        DynamicClassLoader.updateMainPath("Jubler", "com/panayotis/jubler/Jubler.class");
+        DynamicClassLoader.updateMainPath("Jubler", "com.panayotis.jubler.Jubler");
         if (DynamicClassLoader.isJarBased())
             cl = new DynamicClassLoader(new String[]{"lib"});
         else

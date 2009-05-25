@@ -82,14 +82,15 @@ public class DynamicClassLoader extends URLClassLoader {
         StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), System.getProperty("path.separator"));
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
-            if (!path.startsWith(FS))
+            File file = new File(path);
+            if (!file.isAbsolute())
                 path = UD + path;
             if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
-                MainPath = new File(path).getParent() + FS;
+                MainPath = file.getParent() + FS;
                 MainPath_JarBased = true;
                 return;
             }
-            if (new File(path + FS + baseclass).exists()) {
+            if (new File(path + FS + baseclass.replace('.', FS.charAt(0))+".class").exists()) {
                 MainPath = path + FS;
                 MainPath_JarBased = false;
                 return;
