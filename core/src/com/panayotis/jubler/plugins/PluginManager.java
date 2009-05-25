@@ -44,7 +44,11 @@ public class PluginManager {
     public PluginManager() {
         connections = new HashMap<String, ArrayList<Plugin>>();
 
-        cl = new DynamicClassLoader(new String[]{"lib", "../dist/lib"});
+        DynamicClassLoader.updateMainPath("Jubler", "com/panayotis/jubler/Jubler.class");
+        if (DynamicClassLoader.isJarBased())
+            cl = new DynamicClassLoader(new String[]{"lib"});
+        else
+            cl = new DynamicClassLoader(new String[]{"../../../dist/lib"});
 
         String[] affectlist;
         Plugin pl;
@@ -62,13 +66,11 @@ public class PluginManager {
                         pllist = new ArrayList<Plugin>();
                         pllist.add(pl);
                         connections.put(affectlist[j], pllist);
-                    } else {
+                    } else
                         pllist.add(pl);
-                    }
                 }
-            } else {
+            } else
                 DEBUG.debug("!! Plugin " + PLUGINS[i] + " unable to load.");
-            }
         }
         if (PLUGINS.length > 0)
             DEBUG.debug(connections.size() + " listeners found for " + hm + " plugins (out of " + PLUGINS.length + " plugins)");
@@ -88,10 +90,8 @@ public class PluginManager {
 
     public void callPostInitListeners(Object o, String tag) {
         ArrayList<Plugin> pl = connections.get(tag);
-        if (pl != null) {
-            for (int i = 0; i < pl.size(); i++) {
+        if (pl != null)
+            for (int i = 0; i < pl.size(); i++)
                 pl.get(i).postInit(o);
-            }
-        }
     }
 }
