@@ -150,7 +150,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                     /* Create WAV headers */
                     
                     /* allocate the output media context */
-                    ofcx = av_alloc_format_context();
+                    ofcx = avformat_alloc_context();
                     
                     if (!ofcx) {
                         DEBUG(env, this, "decodeAudio", "Memory error!");
