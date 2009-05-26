@@ -1,0 +1,15 @@
+#!/bin/sh
+
+./maketemplate
+
+if [ "$1" != "" ] ; then
+	WHAT=$1.po
+else
+	WHAT=`ls *.po`
+fi
+
+for i in $WHAT ; do
+	LNG=`echo $i | sed -e 's/\.po$//g'`
+	echo Remaking po file for language \"$LNG\"
+	msgmerge --no-fuzzy-matching --update --indent --sort-by-file --backup=none $LNG.po jubler.pot 
+done

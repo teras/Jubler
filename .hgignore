@@ -1,0 +1,12 @@
+# These lines are suggested according to the svn:ignore property
+# Feel free to enable them by uncommenting them
+syntax:glob
+
+
+
+
+syntax: regexp
+
+^stable/resources/ffmpeg/libraries
+
+nbproject/private

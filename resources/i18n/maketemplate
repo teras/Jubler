@@ -1,0 +1,7 @@
+#!/bin/sh
+
+rm -f jubler.pot
+
+cd ../..
+xgettext  --from-code=utf-8 -k_ `find core plugins -name *.java` -i -o resources/i18n/jubler.pot
+cd resources/i18n
