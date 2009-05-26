@@ -93,7 +93,7 @@ ifeq (${MAKESYS},darwin_i386)
 	STRIP=echo No stripping on 
 endif
 ifeq (${MAKESYS},linux_i686)
-	XLIBS=-lz
+	XLIBS=-lz -lbz2
 	CCPREF=
 	ARCH=${ARCHITECTURE}
 	LD=${CC} -shared
