@@ -57,7 +57,7 @@ public class Main {
         ExceptionHandler eh = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(eh);
 
-
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
         splash = new MainSplash("/icons/splash.jpg");
         plugins = new PluginManager();
 
