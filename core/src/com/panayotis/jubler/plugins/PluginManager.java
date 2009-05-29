@@ -31,13 +31,6 @@ import java.util.HashMap;
  */
 public class PluginManager {
 
-    private static final String[] PLUGINS = {
-        "com.panayotis.jubler.JublerApp",
-        "com.panayotis.jubler.tools.spell.checkers.ASpell",
-        "com.panayotis.jubler.tools.spell.checkers.ZemberekSpellChecker",
-        "com.panayotis.jubler.media.player.mplayer.MPlayer",
-        "com.panayotis.jubler.plugins.AutoUpdatePlugin"
-    };
     private DynamicClassLoader cl;
     private HashMap<String, ArrayList<Plugin>> connections;
 
@@ -52,28 +45,28 @@ public class PluginManager {
 
         String[] affectlist;
         Plugin pl;
-        ArrayList<Plugin> pllist;
         int hm = 0;
-        for (int i = 0; i < PLUGINS.length; i++) {
-            pl = (Plugin) getClass(PLUGINS[i]);
+        ArrayList<Plugin> current_list;
+        ArrayList<String> plugins = DynamicClassLoader.getPluginsList();
+        for (int i = 0; i < plugins.size(); i++) {
+            pl = (Plugin) getClass(plugins.get(i));
             if (pl != null) {
-                DEBUG.debug("Plugin " + PLUGINS[i] + " loaded successfully.");
+                DEBUG.debug("Loading plugin " + plugins.get(i));
                 hm++;
                 affectlist = pl.getAffectionList();
                 for (int j = 0; j < affectlist.length; j++) {
-                    pllist = connections.get(affectlist[j]);
-                    if (pllist == null) {
-                        pllist = new ArrayList<Plugin>();
-                        pllist.add(pl);
-                        connections.put(affectlist[j], pllist);
+                    current_list = connections.get(affectlist[j]);
+                    if (current_list == null) {
+                        current_list = new ArrayList<Plugin>();
+                        current_list.add(pl);
+                        connections.put(affectlist[j], current_list);
                     } else
-                        pllist.add(pl);
+                        current_list.add(pl);
                 }
             } else
-                DEBUG.debug("!! Plugin " + PLUGINS[i] + " unable to load.");
+                DEBUG.debug("Unable to load plugin " + plugins.get(i));
         }
-        if (PLUGINS.length > 0)
-            DEBUG.debug(connections.size() + " listeners found for " + hm + " plugins (out of " + PLUGINS.length + " plugins)");
+        DEBUG.debug(connections.size() + " listeners found for " + hm + " plugins (out of " + plugins.size() + " plugins)");
     }
 
     private Object getClass(String classname) {
