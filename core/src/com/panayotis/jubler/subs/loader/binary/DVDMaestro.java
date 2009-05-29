@@ -75,7 +75,11 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         return "DVD Maestro (PNGs)";
     }
     
-    
+    /**
+     * Parsing the binary file
+     * @param FPS Number of Frames Per Second
+     * @param in Input buffer reader
+     */
     protected void parseBinary(float FPS, BufferedReader in) {
         
     }
