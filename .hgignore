@@ -8,5 +8,5 @@ syntax:glob
 syntax: regexp
 
 ^resources/ffmpeg/libraries
-
+build/classes
 nbproject/private
