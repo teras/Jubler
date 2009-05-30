@@ -4,6 +4,8 @@
  */
 package com.panayotis.jubler.tools.translate.google;
 
+import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.tools.translate.AvailTranslators;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.translate.GenericWebTranslator;
@@ -16,7 +18,7 @@ import java.util.Vector;
  *
  * @author teras
  */
-public class GoogleJSONTranslator extends GenericWebTranslator {
+public class GoogleJSONTranslator extends GenericWebTranslator implements Plugin {
 
     private static Vector<Language> lang;
 
@@ -123,5 +125,16 @@ public class GoogleJSONTranslator extends GenericWebTranslator {
 
     protected int getIDTagFromData(String data) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public String[] getAffectionList() {
+        return new String[]{"com.panayotis.jubler.tools.translate.AvailTranslators"};
+    }
+
+    public void postInit(Object o) {
+        if (o instanceof AvailTranslators) {
+            AvailTranslators av = (AvailTranslators) o;
+            av.add(this);
+        }
     }
 }

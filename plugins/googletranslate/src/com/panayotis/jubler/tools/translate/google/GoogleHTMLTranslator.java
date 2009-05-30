@@ -5,6 +5,7 @@
 package com.panayotis.jubler.tools.translate.google;
 
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.tools.translate.AvailTranslators;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.translate.GenericWebTranslator;
@@ -20,6 +21,7 @@ import java.util.Vector;
 public class GoogleHTMLTranslator extends GenericWebTranslator implements Plugin {
 
     private static Vector<Language> lang;
+
 
     static {
         lang = new Vector<Language>();
@@ -141,10 +143,13 @@ public class GoogleHTMLTranslator extends GenericWebTranslator implements Plugin
     }
 
     public String[] getAffectionList() {
-        return null;
+        return new String[]{"com.panayotis.jubler.tools.translate.AvailTranslators"};
     }
 
-    public void postInit(Object arg0) {
-        
+    public void postInit(Object o) {
+        if (o instanceof AvailTranslators) {
+            AvailTranslators av = (AvailTranslators) o;
+            av.add(this);
+        }
     }
 }
