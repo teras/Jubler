@@ -54,15 +54,16 @@ public class PluginManager {
                 DEBUG.debug("Loading plugin " + plugins.get(i));
                 hm++;
                 affectlist = pl.getAffectionList();
-                for (int j = 0; j < affectlist.length; j++) {
-                    current_list = connections.get(affectlist[j]);
-                    if (current_list == null) {
-                        current_list = new ArrayList<Plugin>();
-                        current_list.add(pl);
-                        connections.put(affectlist[j], current_list);
-                    } else
-                        current_list.add(pl);
-                }
+                if (affectlist != null)
+                    for (int j = 0; j < affectlist.length; j++) {
+                        current_list = connections.get(affectlist[j]);
+                        if (current_list == null) {
+                            current_list = new ArrayList<Plugin>();
+                            current_list.add(pl);
+                            connections.put(affectlist[j], current_list);
+                        } else
+                            current_list.add(pl);
+                    }
             } else
                 DEBUG.debug("Unable to load plugin " + plugins.get(i));
         }
