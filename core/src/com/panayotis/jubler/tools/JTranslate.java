@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.translate.AvailTranslators;
@@ -35,12 +36,13 @@ import javax.swing.DefaultComboBoxModel;
 public class JTranslate extends JTool {
 
     private static AvailTranslators translators;
+
+
     static {
         translators = new AvailTranslators();
     }
-    
-    private Translator trans;
-    
+    private Translator trans = null;
+
     /** Creates new form JRounder */
     public JTranslate() {
         super(true);
@@ -48,25 +50,34 @@ public class JTranslate extends JTool {
 
     public void initialize() {
         initComponents();
-        TransMachine.setModel(new DefaultComboBoxModel(translators.getNamesList()));
-        trans = translators.get(TransMachine.getSelectedIndex());
-        
-        FromLang.setModel(new DefaultComboBoxModel(trans.getSourceLanguages()));
-        FromLang.setSelectedItem(trans.getDefaultSourceLanguage());
+        String[] names = translators.getNamesList();
+        if (names != null) {
+            TransMachine.setModel(new DefaultComboBoxModel(names));
+            trans = translators.get(TransMachine.getSelectedIndex());
 
-        ToLang.setModel(new DefaultComboBoxModel(trans.getDestinationLanguagesFor(FromLang.getSelectedItem().toString())));
-        ToLang.setSelectedItem(trans.getDefaultDestinationLanguage());
+            FromLang.setModel(new DefaultComboBoxModel(trans.getSourceLanguages()));
+            FromLang.setSelectedItem(trans.getDefaultSourceLanguage());
+
+            ToLang.setModel(new DefaultComboBoxModel(trans.getDestinationLanguagesFor(FromLang.getSelectedItem().toString())));
+            ToLang.setSelectedItem(trans.getDefaultDestinationLanguage());
+        }
     }
 
     protected String getToolTitle() {
         return _("Translate text");
     }
 
-    protected void storeSelections() {}
+    protected void storeSelections() {
+    }
 
-    protected void affect(int index) {}
-    
+    protected void affect(int index) {
+    }
+
     protected boolean finalizing() {
+        if (trans == null) {
+            DEBUG.debug("No active translators found!");
+            return true;
+        }
         return trans.translate(affected_list, FromLang.getSelectedItem().toString(), ToLang.getSelectedItem().toString());
     }
 
@@ -160,7 +171,7 @@ public class JTranslate extends JTool {
     }// </editor-fold>//GEN-END:initComponents
 
 private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransMachineActionPerformed
-        trans = translators.get(TransMachine.getSelectedIndex());
+    trans = translators.get(TransMachine.getSelectedIndex());
 }//GEN-LAST:event_TransMachineActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

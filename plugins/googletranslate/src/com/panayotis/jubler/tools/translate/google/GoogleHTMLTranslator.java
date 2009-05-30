@@ -2,8 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.panayotis.jubler.tools.translate.plugins;
+package com.panayotis.jubler.tools.translate.google;
 
+import com.panayotis.jubler.plugins.Plugin;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.translate.GenericWebTranslator;
@@ -16,10 +17,9 @@ import java.util.Vector;
  *
  * @author teras
  */
-public class GoogleJSONTranslator extends GenericWebTranslator {
+public class GoogleHTMLTranslator extends GenericWebTranslator implements Plugin {
 
     private static Vector<Language> lang;
-    
 
     static {
         lang = new Vector<Language>();
@@ -61,14 +61,9 @@ public class GoogleJSONTranslator extends GenericWebTranslator {
         lang.add(new Language("es", _("Spanish")));
         lang.add(new Language("sv", _("Swedish")));
         lang.add(new Language("th", _("Thai")));
-	lang.add(new Language("tr", _("Turkish")));
-	lang.add(new Language("uk", _("Ukrainian")));
-	lang.add(new Language("vi", _("Vietnamese")));
-    }
-
-    public GoogleJSONTranslator() {
-        super();
-        setSubtitleBlock(10);
+        lang.add(new Language("tr", _("Turkish")));
+        lang.add(new Language("uk", _("Ukrainian")));
+        lang.add(new Language("vi", _("Vietnamese")));
     }
 
     protected Vector<Language> getLanguages() {
@@ -76,7 +71,7 @@ public class GoogleJSONTranslator extends GenericWebTranslator {
     }
 
     public String getDefinition() {
-        return _("Google translate")+" (JSON)";
+        return _("Google translate");
     }
 
     public String getDefaultSourceLanguage() {
@@ -88,29 +83,31 @@ public class GoogleJSONTranslator extends GenericWebTranslator {
     }
 
     protected String getTranslationURL(String from_language, String to_language) throws MalformedURLException {
-        return "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=" + findLanguage(from_language) + "%7C" + findLanguage(to_language);
+        return "http://translate.google.com/translate_t?&ie=utf-8&oe=utf-8&sl=" + findLanguage(from_language) + "&tl=" + findLanguage(to_language);
     }
 
     protected String retrieveSubData(String line) {
-        int from = line.indexOf("translatedText");
+        int from = line.indexOf("id=result_box");
         if (from >= 0) {
-            from += "translatedText\":\"".length();
-            int to = line.indexOf("\"},", from);
-            return line.substring(from, to);
+            from = line.indexOf(">", from) + 1;
+            if (from >= 0) {
+                int to = line.indexOf("</div>", from);
+                return line.substring(from, to).replace("<br>", "\n");
+            }
         }
         return null;
     }
 
     protected String getQueryTag() {
-        return "&q";
+        return "text";
     }
 
     protected boolean isProtocolPOST() {
-        return false;
+        return true;
     }
 
     protected String makeIDTag(int id) {
-        return "S"+id+".";
+        return "-" + id + "-";
     }
 
     protected String getNewLineTag() {
@@ -118,10 +115,36 @@ public class GoogleJSONTranslator extends GenericWebTranslator {
     }
 
     protected boolean isIDTag(String data) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return data.startsWith("-") && data.endsWith("-");
     }
 
     protected int getIDTagFromData(String data) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int idx = -1;
+        try {
+            int from, to, length;
+
+            length = data.length();
+            from = 0;
+            while (from < length && data.charAt(from) == '-')
+                from++;
+
+            if (from < length) {
+                to = length - 1;
+                while (to >= 0 && data.charAt(to) == '-')
+                    to--;
+                if (to != 0)
+                    idx = Integer.parseInt(data.substring(from, to).trim());
+            }
+        } catch (NumberFormatException ex) {
+        }
+        return idx;
+    }
+
+    public String[] getAffectionList() {
+        return null;
+    }
+
+    public void postInit(Object arg0) {
+        
     }
 }
