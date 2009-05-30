@@ -57,7 +57,7 @@
 		<ant dir="core" target="jar"/>
 	</target>
 
-	<target name="plugins" depends="core">
+	<target name="plugin" depends="core">
 		<for param="plugin">
 			<path> <dirset dir="plugins" includes="*"/> </path>
 			<sequential>
@@ -96,7 +96,7 @@
     </target>
 
 
-	<target name="release" depends="clean,i18n,core,plugins,help,changelog">
+	<target name="release" depends="clean,i18n,core,plugin,help,changelog">
 		<echo message="INFO:  In order to update version numbering, ant task version-update should be called manually" />
     </target>
 

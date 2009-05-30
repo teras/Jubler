@@ -41,7 +41,7 @@ public class JTranslate extends JTool {
     static {
         translators = new AvailTranslators();
     }
-    private Translator trans = null;
+    private Translator trans;
 
     /** Creates new form JRounder */
     public JTranslate() {
@@ -50,6 +50,7 @@ public class JTranslate extends JTool {
 
     public void initialize() {
         initComponents();
+        trans = null;
         String[] names = translators.getNamesList();
         if (names != null) {
             TransMachine.setModel(new DefaultComboBoxModel(names));
