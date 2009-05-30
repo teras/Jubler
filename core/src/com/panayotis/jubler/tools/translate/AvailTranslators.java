@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools.translate;
 
+import com.panayotis.jubler.Main;
 import java.util.Vector;
 
 /**
@@ -13,13 +14,15 @@ import java.util.Vector;
 public class AvailTranslators extends Vector<Translator> {
 
     public AvailTranslators() {
+        Main.plugins.callPostInitListeners(this);
     }
 
     public String[] getNamesList() {
-        return null;
-//        String[] ret = new String[size()];
-//        for (int i = 0; i < ret.length; i++)
-//            ret[i] = get(i).getDefinition();
-//        return ret;
+        if (size()<1)
+            return null;
+        String[] ret = new String[size()];
+        for (int i = 0; i < ret.length; i++)
+            ret[i] = get(i).getDefinition();
+        return ret;
     }
 }
