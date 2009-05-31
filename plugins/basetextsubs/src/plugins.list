@@ -1,12 +1,11 @@
 com.panayotis.jubler.subs.loader.text.AdvancedSubStation
-com.panayotis.jubler.subs.loader.text.MPL2
-com.panayotis.jubler.subs.loader.text.MicroDVD
-com.panayotis.jubler.subs.loader.text.PlainText
-com.panayotis.jubler.subs.loader.text.Quicktime
-com.panayotis.jubler.subs.loader.text.Spruce
 com.panayotis.jubler.subs.loader.text.SubRip
 com.panayotis.jubler.subs.loader.text.SubStationAlpha
-com.panayotis.jubler.subs.loader.text.SubViewer
 com.panayotis.jubler.subs.loader.text.SubViewer2
+com.panayotis.jubler.subs.loader.text.SubViewer
+com.panayotis.jubler.subs.loader.text.MPL2
+com.panayotis.jubler.subs.loader.text.MicroDVD
+com.panayotis.jubler.subs.loader.text.Quicktime
+com.panayotis.jubler.subs.loader.text.Spruce
 com.panayotis.jubler.subs.loader.text.TextScript
 com.panayotis.jubler.subs.loader.text.W3CTimedText

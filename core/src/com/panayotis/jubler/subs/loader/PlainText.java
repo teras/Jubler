@@ -83,11 +83,4 @@ public class PlainText extends AbstractTextSubFormat {
 
     public boolean supportsFPS() { return false; }
 
-    public String[] getAffectionList() {
-        return null;
-    }
-
-    public void postInit(Object o) {
-    }
-
 }
