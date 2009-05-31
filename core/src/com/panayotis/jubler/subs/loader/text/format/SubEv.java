@@ -44,7 +44,7 @@ public class SubEv implements Comparable<SubEv> {
     public int compareTo(SubEv other) {
         if (start < other.start) return 1;
         if (start > other.start) return -1;
-        if (value.equals(other)) return 0;
+        if (value.equals(other.value)) return 0;
         return -1;  // In all other occasions, means that it's a different object so just put it somewhere
     }
 }
