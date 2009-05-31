@@ -45,14 +45,12 @@ public class PluginManager {
 
         String[] affectlist;
         Plugin pl;
-        int hm = 0;
         ArrayList<Plugin> current_list;
         ArrayList<String> plugins = DynamicClassLoader.getPluginsList();
         for (int i = 0; i < plugins.size(); i++) {
             pl = (Plugin) getClass(plugins.get(i));
             if (pl != null) {
                 DEBUG.debug("Loading plugin " + plugins.get(i));
-                hm++;
                 affectlist = pl.getAffectionList();
                 if (affectlist != null)
                     for (int j = 0; j < affectlist.length; j++) {
@@ -67,7 +65,7 @@ public class PluginManager {
             } else
                 DEBUG.debug("Unable to load plugin " + plugins.get(i));
         }
-        DEBUG.debug(connections.size() + " listeners found for " + hm + " plugins (out of " + plugins.size() + " plugins)");
+        DEBUG.debug(connections.size() + " listeners found for " + plugins.size() + " plugins");
     }
 
     private Object getClass(String classname) {
