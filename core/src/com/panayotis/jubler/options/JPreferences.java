@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
-import com.panayotis.jubler.tools.externals.ExtList;
+import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
@@ -52,8 +52,8 @@ public class JPreferences extends javax.swing.JDialog {
     public JPreferences(Jubler jub) {
 
         Tabs = new JOptionTabs(this);
-        Tabs.addTab(jplay = new JExternalOptions(new ExtList(VideoPlayer.family, _("Player"), "/icons/player_pref.png")));
-        Tabs.addTab(jspell = new JExternalOptions(new ExtList(SpellChecker.family, _("Speller"), "/icons/spellcheck_pref.png")));
+        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, _("Player"), "/icons/player_pref.png")));
+        Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, _("Speller"), "/icons/spellcheck_pref.png")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Options.loadSystemPreferences(this);
 

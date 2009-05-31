@@ -1,5 +1,5 @@
 /*
- * ExtList.java
+ * AvailExternals.java
  *
  * Created on 16 Ιούλιος 2005, 2:29 μμ
  *
@@ -29,13 +29,13 @@ import java.util.Vector;
  *
  * @author teras
  */
-public class ExtList<E> extends Vector<ExtProgram> {
+public class AvailExternals<E> extends Vector<ExtProgram> {
 
     private String type;
     private String localtype;
     private String iconname;
 
-    public ExtList (String type, String localtype, String iconname) {
+    public AvailExternals (String type, String localtype, String iconname) {
         this.type = type;
         this.localtype = localtype;
         this.iconname = iconname;
