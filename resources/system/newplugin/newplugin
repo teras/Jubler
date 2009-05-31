@@ -14,8 +14,6 @@ cat >$FILE <<EOF
 :q
 EOF
 
-echo $FROM $TO
-
 IFS="
 "
 for ARG in $*; do
