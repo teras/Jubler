@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.tools.externals.ExtList;
+import com.panayotis.jubler.tools.externals.AvailExternals;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.CardLayout;
 import javax.swing.Icon;
@@ -37,12 +37,12 @@ import javax.swing.JPanel;
  * @author  teras
  */
 public class JExternalOptions extends JPanel implements OptionsHolder {
-    private ExtList list;
+    private AvailExternals list;
 
     /**
      * Creates new form JExternalOptions
      */
-    public JExternalOptions(ExtList list) {
+    public JExternalOptions(AvailExternals list) {
         initComponents();
         this.list = list;
 
