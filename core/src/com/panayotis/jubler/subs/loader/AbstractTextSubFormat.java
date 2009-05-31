@@ -29,7 +29,6 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import java.io.BufferedWriter;
@@ -70,7 +69,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         try{
             if ( ! getTestPattern().matcher(input).find() ) return null;    // Not valid - test pattern does not match
             
-            DEBUG.debug(_("Found file {0}", _(getExtendedName())));
+            DEBUG.debug("Found file " + getExtendedName());
             subtitle_list = new Subtitles();
             input = initLoader(input);
             SubAttribs attr = subtitle_list.getAttribs();   // This method should be called after initLoader()

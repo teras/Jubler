@@ -22,8 +22,6 @@
  */
 package com.panayotis.jubler.options;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
@@ -66,9 +64,9 @@ public class Options {
             if (!newconfig.exists()) {
                 boolean success = oldconfig.renameTo(newconfig);
                 if (!success) {
-                    DEBUG.debug(_("Unable to move configuration file to {0}", newconfig.getPath()));
+                    DEBUG.debug("Unable to move configuration file to " + newconfig.getPath());
                 } else {
-                    DEBUG.debug(_("Configuration file moved to {0}", newconfig.getPath()));
+                    DEBUG.debug("Configuration file moved to " + newconfig.getPath());
                 }
             }
         }

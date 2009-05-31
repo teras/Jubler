@@ -22,8 +22,6 @@
  */
 package com.panayotis.jubler.os;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 import com.panayotis.jubler.tools.externals.ExtPath;
 import java.io.BufferedReader;
 import java.io.File;
@@ -47,7 +45,7 @@ public class TreeWalker {
             parameters = new String[0];
 
         for (ExtPath path : paths) {
-            DEBUG.debug(_("Wizard is looking inside {0}", path.getPath()));
+            DEBUG.debug("Wizard is looking inside " + path.getPath());
             File f = new File(path.getPath());
             if (path.searchForFile() && (!f.isFile()))
                 continue;   // If we want a file and this is not, ignore this entry
@@ -96,7 +94,7 @@ public class TreeWalker {
 
         try {
             StringBuffer buf = new StringBuffer();
-            buf.append(_("Testing:")).append(" ");
+            buf.append("Testing: ");
             for (int i = 0; i < cmd.length; i++) {
                 buf.append(cmd[i]).append(' ');
             }
@@ -116,7 +114,7 @@ public class TreeWalker {
             }
             while ((line = infopipe.readLine()) != null) {
                 if (line.toLowerCase().contains(test_signature)) {
-                    DEBUG.debug(_("Valid executable found: {0}", exec.getAbsolutePath()));
+                    DEBUG.debug("Valid executable found: " + exec.getAbsolutePath());
                     proc.destroy();
                     return true;
                 }

@@ -63,7 +63,7 @@ public abstract class WebTranslator implements Translator, ActionListener {
                 for (int i = 0; i < subs.size(); i += blocksize) {
                     proc.updateProgress(i);
                     if (transt.isInterrupted()) {
-                        DEBUG.debug(_("Translation interrupted"));
+                        DEBUG.debug("Translation interrupted");
                         break;
                     }
                     errorstream = translatePart(subs, i, Math.min(subs.size(), i + blocksize), from_language, to_language);
