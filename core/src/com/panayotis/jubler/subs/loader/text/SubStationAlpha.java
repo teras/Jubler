@@ -27,7 +27,6 @@ import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
 import com.panayotis.jubler.subs.loader.text.format.StyledTextSubFormat;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
