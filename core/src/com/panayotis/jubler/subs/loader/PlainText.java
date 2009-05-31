@@ -21,17 +21,14 @@
  *
  */
 
-package com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader;
 
-import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.subs.Subtitles;
-
 
 /**
  *
@@ -85,4 +82,12 @@ public class PlainText extends AbstractTextSubFormat {
     }
 
     public boolean supportsFPS() { return false; }
+
+    public String[] getAffectionList() {
+        return null;
+    }
+
+    public void postInit(Object o) {
+    }
+
 }
