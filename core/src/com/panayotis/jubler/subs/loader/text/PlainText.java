@@ -67,7 +67,7 @@ public class PlainText extends AbstractTextSubFormat {
     }
     
     public String getName() {
-        return "PlainTxt";
+        return "PlainText";
     }
     
     public String getExtendedName() {

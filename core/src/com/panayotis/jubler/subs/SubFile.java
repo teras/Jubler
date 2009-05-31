@@ -26,7 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.FileCommunicator;
-import com.panayotis.jubler.subs.loader.AvailSubFormats;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.io.File;
 
@@ -64,11 +64,11 @@ public class SubFile {
         for (int i = 0; i < def_encodings.length; i++)
             setDefaultEncoding(i, Options.getOption("Default.Encoding" + (i + 1), null));
         setDefaultFPS(Options.getOption("Default.FPS", null));
-        SubFormat f = AvailSubFormats.findFromName("AdvancedSubStation");
+        SubFormat f = Availabilities.formats.findFromName("AdvancedSubStation");
         if (f == null)
-            f = AvailSubFormats.findFromName("SubRip");
+            f = Availabilities.formats.findFromName("SubRip");
         if (f == null)
-            f = AvailSubFormats.findFromName("PlainText");
+            f = Availabilities.formats.findFromName("PlainText");
         basic_format = f;
     }
 
@@ -199,9 +199,9 @@ public class SubFile {
             this.format = basic_format;
             return;
         }
-        this.format = AvailSubFormats.findFromDescription(format);
+        this.format = Availabilities.formats.findFromDescription(format);
         if (this.format == null)
-            this.format = AvailSubFormats.findFromName(format);
+            this.format = Availabilities.formats.findFromName(format);
         if (this.format == null)
             this.format = basic_format;
     }
@@ -253,7 +253,7 @@ public class SubFile {
 
     public boolean equals(Object o) {
         if (o != null && (o instanceof SubFile))
-            return savefile.equals(((SubFile)o).savefile);
+            return savefile.equals(((SubFile) o).savefile);
         return false;
     }
 }

@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.plugins.Availabilities;
 import java.io.File;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -37,8 +38,8 @@ public class SubFileFilter extends javax.swing.filechooser.FileFilter implements
     public boolean accept(File pathname) {
         if (pathname.isDirectory()) return true;
         String fname = pathname.getName().toLowerCase();
-        for ( int i = 0 ; i < AvailSubFormats.size() ; i++) {
-            if (fname.endsWith(AvailSubFormats.get(i).getExtension())) return true;
+        for ( int i = 0 ; i < Availabilities.formats.size() ; i++) {
+            if (fname.endsWith(Availabilities.formats.get(i).getExtension())) return true;
         }
         return false;
     }

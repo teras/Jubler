@@ -32,16 +32,14 @@ import java.util.ArrayList;
  */
 public class AvailSubFormats {
 
-    private static final ArrayList<SubFormat> Formats = new ArrayList<SubFormat>();
+    private final ArrayList<SubFormat> Formats = new ArrayList<SubFormat>();
     int current;
 
     /** Creates a new instance of SubFormats */
     public AvailSubFormats() {
         current = 0;
-        if (size() == 0) {    // populate list
-            Main.plugins.callPostInitListeners(this);
-            Formats.add(new PlainText());
-        }
+        Main.plugins.callPostInitListeners(this);
+        Formats.add(new PlainText());
     }
 
     public boolean hasMoreElements() {
@@ -54,11 +52,11 @@ public class AvailSubFormats {
         return Formats.get(current++);
     }
 
-    public static int size() {
+    public int size() {
         return Formats.size();
     }
 
-    public static SubFormat findFromDescription(String name) {
+    public SubFormat findFromDescription(String name) {
         if (name == null)
             return null;
         for (int i = 0; i < Formats.size(); i++)
@@ -67,7 +65,7 @@ public class AvailSubFormats {
         return null;
     }
 
-    public static SubFormat findFromName(String ext) {
+    public SubFormat findFromName(String ext) {
         if (ext == null)
             return null;
         for (int i = 0; i < Formats.size(); i++)
@@ -76,7 +74,7 @@ public class AvailSubFormats {
         return null;
     }
 
-    public static SubFormat get(int i) {
+    public SubFormat get(int i) {
         return Formats.get(i);
     }
 }
