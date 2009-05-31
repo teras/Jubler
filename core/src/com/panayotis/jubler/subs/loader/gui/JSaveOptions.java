@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 
@@ -44,8 +45,8 @@ public class JSaveOptions extends JFileOptions {
         super();
         CFPS = new JRateChooser();
         initComponents();
-        for (int i = 0; i < AvailSubFormats.size(); i++)
-            CFormat.addItem(AvailSubFormats.get(i).getDescription());
+        for (int i = 0; i < Availabilities.formats.size(); i++)
+            CFormat.addItem(Availabilities.formats.get(i).getDescription());
         ControlsP.add(CFPS, BorderLayout.CENTER);
     }
 
@@ -72,7 +73,7 @@ public class JSaveOptions extends JFileOptions {
     /* Execute this method whenever the output format is changed (or this panel is displayed */
     private void updateVisualFPS() {
         String format_name = CFormat.getSelectedItem().toString();
-        boolean supports_fps = AvailSubFormats.findFromDescription(format_name).supportsFPS();
+        boolean supports_fps = Availabilities.formats.findFromDescription(format_name).supportsFPS();
         FPSPanelL.setVisible(supports_fps);
         CFPS.setVisible(supports_fps);
     }

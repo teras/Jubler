@@ -24,7 +24,6 @@ package com.panayotis.jubler.os;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +35,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
@@ -151,8 +151,8 @@ public class FileCommunicator {
     public static File stripFileFromSubExtension(File f) {
         String ext;
         String fname = f.getPath().toLowerCase();
-        for (int i = 0; i < AvailSubFormats.size(); i++) {
-            ext = "." + AvailSubFormats.get(i).getExtension().toLowerCase();
+        for (int i = 0; i < Availabilities.formats.size(); i++) {
+            ext = "." + Availabilities.formats.get(i).getExtension().toLowerCase();
             if (fname.endsWith(ext))
                 return new File(f.getPath().substring(0, fname.length() - ext.length()));
         }
