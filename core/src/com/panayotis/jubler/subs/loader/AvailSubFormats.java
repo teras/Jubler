@@ -23,7 +23,6 @@
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.Main;
-import com.panayotis.jubler.subs.loader.text.PlainText;
 import java.util.ArrayList;
 
 /**
@@ -76,5 +75,9 @@ public class AvailSubFormats {
 
     public SubFormat get(int i) {
         return Formats.get(i);
+    }
+
+    void add(SubFormat format) {
+        Formats.add(format);
     }
 }
