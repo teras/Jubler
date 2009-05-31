@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.subs.loader.text.format;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.loader.text.format.StyledFormat.*;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
@@ -155,7 +154,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     
                             }
                         } catch (Exception e) {
-                            DEBUG.debug(_("Exception {0} while loading style {1}: {2}", e.getClass().getName(), sf.style.name(), e.getMessage()));
+                            DEBUG.debug("Exception " + e.getClass().getName() + " while loading style " + sf.style.name() + ": " + e.getMessage());
                         }
                         break;
                     }

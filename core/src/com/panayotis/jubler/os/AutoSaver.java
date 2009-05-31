@@ -4,8 +4,6 @@
  */
 package com.panayotis.jubler.os;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
@@ -43,11 +41,11 @@ public class AutoSaver {
                 dir.mkdirs();
                 olds.mkdir();
                 if (!(dir.isDirectory() && dir.canWrite())) {
-                    DEBUG.debug(_("ERROR: Could not use autosave directory \"{0}\".", dir.getPath()));
+                    DEBUG.debug("ERROR: Could not use autosave directory " + dir.getPath());
                     return;
                 }
                 if (!(olds.isDirectory() && olds.canWrite())) {
-                    DEBUG.debug(_("ERROR: Could not use autosave directory for old files \"{0}\".", olds.getPath()));
+                    DEBUG.debug("ERROR: Could not use autosave directory for old files " + olds.getPath());
                     return;
                 }
 

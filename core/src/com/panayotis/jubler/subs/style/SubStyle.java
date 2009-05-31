@@ -24,7 +24,6 @@
 package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.os.DEBUG;
-import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.TreeSet;
@@ -147,7 +146,7 @@ public class SubStyle implements Comparable {
     
     public void set(StyleType which, Object what) {
         if (what==null) {
-            DEBUG.debug(_("Null value found while setting Style {0} - ignoring.", which.name()));
+            DEBUG.debug("Ignoring null value found while setting Style " + which.name());
             return;
         }
         int where = which.ordinal();
