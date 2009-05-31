@@ -33,7 +33,7 @@ import java.util.Vector;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.plugins.Plugin;
-import com.panayotis.jubler.tools.externals.ExtList;
+import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
@@ -114,8 +114,8 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
     }
 
     public void postInit(Object o) {
-        if (o instanceof ExtList) {
-            ExtList l = (ExtList)o;
+        if (o instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals)o;
             if (l.getType().equals(family))
                 l.add(this);
         }

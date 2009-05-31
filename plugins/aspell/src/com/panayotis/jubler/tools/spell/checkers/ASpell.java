@@ -37,7 +37,7 @@ import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import com.panayotis.jubler.plugins.Plugin;
-import com.panayotis.jubler.tools.externals.ExtList;
+import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.util.ArrayList;
 
@@ -168,8 +168,8 @@ public class ASpell extends SpellChecker implements Plugin {
     }
 
     public void postInit(Object o) {
-        if (o instanceof ExtList) {
-            ExtList l = (ExtList)o;
+        if (o instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals)o;
             if (l.getType().equals(family))
                 l.add(this);
         }

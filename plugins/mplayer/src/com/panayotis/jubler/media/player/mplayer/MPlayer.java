@@ -25,7 +25,7 @@ package com.panayotis.jubler.media.player.mplayer;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
-import com.panayotis.jubler.tools.externals.ExtList;
+import com.panayotis.jubler.tools.externals.AvailExternals;
 
 /**
  *
@@ -94,8 +94,8 @@ public class MPlayer extends AbstractPlayer implements Plugin {
     }
 
     public void postInit(Object o) {
-        if (o instanceof ExtList) {
-            ExtList l = (ExtList) o;
+        if (o instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals) o;
             if (l.getType().equals(family))
                 l.add(this);
         }
