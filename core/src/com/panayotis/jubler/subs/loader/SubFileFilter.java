@@ -37,8 +37,8 @@ public class SubFileFilter extends javax.swing.filechooser.FileFilter implements
     public boolean accept(File pathname) {
         if (pathname.isDirectory()) return true;
         String fname = pathname.getName().toLowerCase();
-        for ( int i = 0 ; i < AvailSubFormats.Formats.length ; i++) {
-            if (fname.endsWith(AvailSubFormats.Formats[i].getExtension())) return true;
+        for ( int i = 0 ; i < AvailSubFormats.size() ; i++) {
+            if (fname.endsWith(AvailSubFormats.get(i).getExtension())) return true;
         }
         return false;
     }

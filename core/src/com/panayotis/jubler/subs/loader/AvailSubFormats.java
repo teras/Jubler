@@ -22,19 +22,9 @@
  */
 package com.panayotis.jubler.subs.loader;
 
-import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
-import com.panayotis.jubler.subs.loader.text.AdvancedSubStation;
-import com.panayotis.jubler.subs.loader.text.MPL2;
-import com.panayotis.jubler.subs.loader.text.MicroDVD;
+import com.panayotis.jubler.Main;
 import com.panayotis.jubler.subs.loader.text.PlainText;
-import com.panayotis.jubler.subs.loader.text.Quicktime;
-import com.panayotis.jubler.subs.loader.text.Spruce;
-import com.panayotis.jubler.subs.loader.text.SubRip;
-import com.panayotis.jubler.subs.loader.text.SubStationAlpha;
-import com.panayotis.jubler.subs.loader.text.SubViewer;
-import com.panayotis.jubler.subs.loader.text.SubViewer2;
-import com.panayotis.jubler.subs.loader.text.TextScript;
-import com.panayotis.jubler.subs.loader.text.W3CTimedText;
+import java.util.ArrayList;
 
 /**
  *
@@ -42,54 +32,51 @@ import com.panayotis.jubler.subs.loader.text.W3CTimedText;
  */
 public class AvailSubFormats {
 
-    public static final SubFormat[] Formats = {
-        new AdvancedSubStation(),
-        new SubStationAlpha(),
-        new SubRip(),
-        new SubViewer2(),
-        new SubViewer(),
-        new MicroDVD(),
-        new MPL2(),
-        new Spruce(),
-        new Quicktime(),
-        new TextScript(),
-        new W3CTimedText(),
-        new DVDMaestro(), //added by HDT
-        new PlainText()
-    //new ScanTitle()
-    };
+    private static final ArrayList<SubFormat> Formats = new ArrayList<SubFormat>();
     int current;
 
     /** Creates a new instance of SubFormats */
     public AvailSubFormats() {
         current = 0;
+        if (size() == 0) {    // populate list
+            Main.plugins.callPostInitListeners(this);
+            Formats.add(new PlainText());
+        }
     }
 
     public boolean hasMoreElements() {
-        if (current < Formats.length)
+        if (current < Formats.size())
             return true;
         return false;
     }
 
     public SubFormat nextElement() {
-        return Formats[current++];
+        return Formats.get(current++);
+    }
+
+    public static int size() {
+        return Formats.size();
     }
 
     public static SubFormat findFromDescription(String name) {
         if (name == null)
             return null;
-        for (int i = 0; i < Formats.length; i++)
-            if (Formats[i].getDescription().equals(name))
-                return Formats[i];
+        for (int i = 0; i < Formats.size(); i++)
+            if (Formats.get(i).getDescription().equals(name))
+                return Formats.get(i);
         return null;
     }
 
     public static SubFormat findFromName(String ext) {
-        if (ext==null)
+        if (ext == null)
             return null;
-        for (int i = 0; i < Formats.length; i++)
-            if (Formats[i].getName().equals(ext))
-                return Formats[i];
+        for (int i = 0; i < Formats.size(); i++)
+            if (Formats.get(i).getName().equals(ext))
+                return Formats.get(i);
         return null;
+    }
+
+    public static SubFormat get(int i) {
+        return Formats.get(i);
     }
 }

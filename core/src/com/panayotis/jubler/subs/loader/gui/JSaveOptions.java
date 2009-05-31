@@ -44,8 +44,8 @@ public class JSaveOptions extends JFileOptions {
         super();
         CFPS = new JRateChooser();
         initComponents();
-        for (int i = 0; i < AvailSubFormats.Formats.length; i++)
-            CFormat.addItem(AvailSubFormats.Formats[i].getDescription());
+        for (int i = 0; i < AvailSubFormats.size(); i++)
+            CFormat.addItem(AvailSubFormats.get(i).getDescription());
         ControlsP.add(CFPS, BorderLayout.CENTER);
     }
 
