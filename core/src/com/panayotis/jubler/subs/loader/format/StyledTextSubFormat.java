@@ -21,9 +21,9 @@
  *
  */
 
-package com.panayotis.jubler.subs.loader.text.format;
+package com.panayotis.jubler.subs.loader.format;
 
-import static com.panayotis.jubler.subs.loader.text.format.StyledFormat.*;
+import static com.panayotis.jubler.subs.loader.format.StyledFormat.*;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.subs.SubEntry;
