@@ -26,8 +26,8 @@ package com.panayotis.jubler.subs.loader.text;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
-import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.format.StyledFormat;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;

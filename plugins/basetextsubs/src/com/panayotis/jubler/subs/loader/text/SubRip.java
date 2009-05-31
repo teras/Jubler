@@ -23,17 +23,16 @@
 
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.loader.text.format.StyledFormat;
-import com.panayotis.jubler.subs.loader.text.format.StyledTextSubFormat;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.format.StyledFormat;
+import com.panayotis.jubler.subs.loader.format.StyledTextSubFormat;
 import java.util.Vector;
 
 
