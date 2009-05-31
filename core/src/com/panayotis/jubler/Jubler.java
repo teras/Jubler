@@ -48,7 +48,6 @@ import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.gui.JSubFileDialog;
-import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
@@ -1419,8 +1418,8 @@ public class Jubler extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void RetrieveWFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrieveWFMActionPerformed
-        OpenSubtitles osubs = new OpenSubtitles();
-        osubs.printStream("The wall", "eng");
+    //    OpenSubtitles osubs = new OpenSubtitles();
+    //    osubs.printStream("The wall", "eng");
     }//GEN-LAST:event_RetrieveWFMActionPerformed
     
     private void FAQHMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAQHMActionPerformed
