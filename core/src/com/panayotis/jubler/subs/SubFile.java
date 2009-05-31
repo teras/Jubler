@@ -46,7 +46,7 @@ public class SubFile {
     };
     private final static String basic_fileencoding = basic_encodings[0];
     private final static float basic_FPS = 25f;
-    private final static SubFormat basic_format = AvailSubFormats.findFromName("AdvancedSubStation");
+    private final static SubFormat basic_format;
 
     /* Mutable default values - used only in load/save dialogs */
     private static String[] def_encodings = new String[basic_encodings.length];
@@ -64,6 +64,12 @@ public class SubFile {
         for (int i = 0; i < def_encodings.length; i++)
             setDefaultEncoding(i, Options.getOption("Default.Encoding" + (i + 1), null));
         setDefaultFPS(Options.getOption("Default.FPS", null));
+        SubFormat f = AvailSubFormats.findFromName("AdvancedSubStation");
+        if (f == null)
+            f = AvailSubFormats.findFromName("SubRip");
+        if (f == null)
+            f = AvailSubFormats.findFromName("PlainText");
+        basic_format = f;
     }
 
     public final static String getBasicEncoding(int i) {

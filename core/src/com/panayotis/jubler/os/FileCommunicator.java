@@ -151,8 +151,8 @@ public class FileCommunicator {
     public static File stripFileFromSubExtension(File f) {
         String ext;
         String fname = f.getPath().toLowerCase();
-        for (int i = 0; i < AvailSubFormats.Formats.length; i++) {
-            ext = "." + AvailSubFormats.Formats[i].getExtension().toLowerCase();
+        for (int i = 0; i < AvailSubFormats.size(); i++) {
+            ext = "." + AvailSubFormats.get(i).getExtension().toLowerCase();
             if (fname.endsWith(ext))
                 return new File(f.getPath().substring(0, fname.length() - ext.length()));
         }
