@@ -82,6 +82,8 @@ public class TreeWalker {
         return null;
     }
 
+    /* when no parameters are set, while checking executable,
+     no real execution of the application is required */
     public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
         if (parameters==null)
             return exec.isFile();
