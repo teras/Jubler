@@ -90,7 +90,7 @@ public class MPlayer extends AbstractPlayer implements Plugin {
     }
 
     public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.ExtList"};
+        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
     }
 
     public void postInit(Object o) {

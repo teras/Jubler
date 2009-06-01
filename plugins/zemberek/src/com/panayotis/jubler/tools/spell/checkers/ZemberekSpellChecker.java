@@ -110,7 +110,7 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
     public String getName() { return "Zemberek"; }
 
     public String[] getAffectionList() {
-        return new String[] {"com.panayotis.jubler.tools.externals.ExtList"};
+        return new String[] {"com.panayotis.jubler.tools.externals.AvailExternals"};
     }
 
     public void postInit(Object o) {

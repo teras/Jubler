@@ -49,10 +49,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.IOException;
-import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JToggleButton;
 
 
 /**
