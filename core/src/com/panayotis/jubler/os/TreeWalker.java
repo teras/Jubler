@@ -41,9 +41,6 @@ public class TreeWalker {
         SystemDependent.appendPathApplication(paths);
         SystemDependent.appendLocateApplication(application, paths);
 
-        if (parameters == null)
-            parameters = new String[0];
-
         for (ExtPath path : paths) {
             DEBUG.debug("Wizard is looking inside " + path.getPath());
             File f = new File(path.getPath());
@@ -86,6 +83,9 @@ public class TreeWalker {
     }
 
     public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
+        if (parameters==null)
+            return exec.isFile();
+
         Process proc = null;
         String[] cmd = new String[parameters.length + 1];
         cmd[0] = exec.getAbsolutePath();
