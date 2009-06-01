@@ -7,6 +7,7 @@ package com.panayotis.jubler.media.player.vlc;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.tools.externals.AvailExternals;
 
 /**
  *
@@ -18,71 +19,64 @@ public class VLC extends AbstractPlayer implements Plugin {
         super(family);
     }
 
-    @Override
     public String getDefaultArguments() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "%p --extraint=rc --no-save-config --extraintf=rc --sub-file=%s %v";
     }
 
-    @Override
     public String[] getTestParameters() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
-    @Override
     public String getTestSignature() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
-    @Override
     public boolean supportPause() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
-    @Override
     public boolean supportSubDisplace() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
     @Override
     public boolean supportSkip() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
-    @Override
     public boolean supportSeek() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
-    @Override
     public boolean supportSpeed() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
-    @Override
     public boolean supportAudio() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return false;
     }
 
-    @Override
     public boolean supportChangeSubs() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return true;
     }
 
-    @Override
     public Viewport getViewport() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new VLCViewport(this);
     }
 
-    @Override
     public String getName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "VLC";
     }
 
     public String[] getAffectionList() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
     }
 
-    public void postInit(Object arg0) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void postInit(Object o) {
+        if (o instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals) o;
+            if (l.getType().equals(family))
+                l.add(this);
+        }
     }
 }
