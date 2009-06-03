@@ -44,53 +44,45 @@ public class DynamicClassLoader extends URLClassLoader {
     private final static String FS = System.getProperty("file.separator");
     private final static String UD = System.getProperty("user.dir") + FS;
     private final static String plugins_list_filename = "plugins.list";
-    public static String MainPath = UD;
-    private static boolean MainPath_JarBased = false;
-    private static final ArrayList<String> plugins_list = new ArrayList<String>();
+    //
+    private static String MainPath = UD;  // Base directory to look for plugins
+    private static boolean JarBased = false;
+    //
+    private boolean search_recursively = true;
+    private final ArrayList<String> plugins = new ArrayList<String>();
 
-    public static ArrayList<String> getPluginsList() {
-        return plugins_list;
+    public DynamicClassLoader() {
+        super(new URL[]{});
     }
 
-    public DynamicClassLoader(String[] paths) {
-        this(paths, true);
-    }
+    public void addPaths(String paths[]) {
+        if (paths == null)
+            return;
 
-    public DynamicClassLoader(String[] paths, boolean recursively) {
-        super(getUrlsFromPaths(paths, recursively));
-    }
-
-    public DynamicClassLoader(URL[] urls) {
-        super(urls);
-    }
-
-    public static URL[] getUrlsFromPaths(String[] paths, boolean look_below) {
-        ArrayList<URL> urls = new ArrayList<URL>();
         File cfile;
         File[] list;
         for (int i = 0; i < paths.length; i++) {
             cfile = new File(MainPath + paths[i]);
-            addPath(urls, cfile);
-            if (look_below) {
+            addJAR(cfile);
+            if (cfile.isDirectory() && search_recursively) {
                 list = cfile.listFiles();
                 if (list != null)
                     for (int j = 0; j < list.length; j++)
-                        addPath(urls, list[j]);
+                        addJAR(list[j]);
             }
         }
-        return urls.toArray(new URL[]{});
     }
 
-    private static void addPath(ArrayList<URL> urls, File path) {
-        if (path.exists() && path.getPath().toLowerCase().endsWith(".jar"))
+    public void addJAR(File path) {
+        if (path.isFile() && path.getPath().toLowerCase().endsWith(".jar"))
             try {
-                urls.add(path.toURL());
+                addURL(path.toURL());
                 addPluginsList(path);
             } catch (MalformedURLException ex) {
             }
     }
 
-    private static void addPluginsList(File path) {
+    private void addPluginsList(File path) {
         BufferedReader in = null;
         try {
             InputStream stream = new ZipFile(path).getInputStream(new ZipEntry(plugins_list_filename));
@@ -100,8 +92,8 @@ public class DynamicClassLoader extends URLClassLoader {
                 while ((line = in.readLine()) != null) {
                     line = line.trim();
                     if (line.length() > 0) {
-                        DEBUG.debug("Registering plugin " + line + " from file" + path.getPath() + ".");
-                        plugins_list.add(line);
+                        DEBUG.debug("Registering plugin " + line + " from file " + path.getPath() + ".");
+                        plugins.add(line);
                     }
                 }
                 in.close();
@@ -117,7 +109,22 @@ public class DynamicClassLoader extends URLClassLoader {
         }
     }
 
-    public static void updateMainPath(String basename, String baseclass) {
+    public ArrayList<String> getPluginsList() {
+        return plugins;
+    }
+
+    public void setClassPath() {
+        String sep = System.getProperty("path.separator");
+        StringBuffer buf = new StringBuffer(System.getProperty("java.class.path"));
+        URL[] urls = getURLs();
+
+        for (int i = 0; i < urls.length; i++)
+            buf.append(sep).append(urls[i].getFile());
+        String cp = buf.toString();
+        System.setProperty("java.class.path", cp);
+    }
+
+    public static void guessMainPath(String basename, String baseclass) {
         String path;
         StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), System.getProperty("path.separator"));
         while (tok.hasMoreTokens()) {
@@ -127,18 +134,18 @@ public class DynamicClassLoader extends URLClassLoader {
                 path = UD + path;
             if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
                 MainPath = file.getParent() + FS;
-                MainPath_JarBased = true;
+                JarBased = true;
                 return;
             }
             if (new File(path + FS + baseclass.replace('.', FS.charAt(0)) + ".class").exists()) {
                 MainPath = path + FS;
-                MainPath_JarBased = false;
+                JarBased = false;
                 return;
             }
         }
     }
 
     public static boolean isJarBased() {
-        return MainPath_JarBased;
+        return JarBased;
     }
 }

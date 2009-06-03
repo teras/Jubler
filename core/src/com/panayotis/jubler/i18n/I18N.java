@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.i18n;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.DynamicClassLoader;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
@@ -34,15 +35,33 @@ public class I18N {
 
     private static ResourceBundle b;
     private static final String PATH = "com.panayotis.jubler.i18n.Messages_";
+    private static final DynamicClassLoader cl = new DynamicClassLoader();
 
 
     static {
-        String lang = System.getProperty("user.language");
-        String country = System.getProperty("user.country");
+        String ls = System.getProperty("user.language");
+        String ll = ls + "_" + System.getProperty("user.country");
 
-        setLang(lang + "_" + country);
-        if (b == null)
-            setLang(lang);
+        cl.addPaths(new String[]{
+                    "../../../dist/i18n/" + ls + ".jar", "i18n/" + ls + ".jar",
+                    "../../../dist/i18n/" + ll + ".jar", "i18n/" + ll + ".jar"
+                });
+
+        b = loadClass(PATH + ll);
+        if (b == null) {
+            b = loadClass(PATH + ls);
+            if (b != null)
+                DEBUG.debug("Using language " + ls);
+        } else
+            DEBUG.debug("Using language " + ll);
+    }
+
+    private static ResourceBundle loadClass(String classname) {
+        try {
+            return (ResourceBundle) cl.loadClass(classname).newInstance();
+        } catch (Exception e) {
+        }
+        return null;
     }
 
     public static String ngettext(String single, String plural, long n, Object... args) {
@@ -53,15 +72,5 @@ public class I18N {
     public static String _(String msg, Object... args) {
         String format = GettextResource.gettext(b, msg);
         return MessageFormat.format(format.replaceAll("'", "''"), args);
-    }
-
-    private static void setLang(String langcode) {
-        try {
-            ClassLoader cl = new DynamicClassLoader(new String[]{"dist/i18n/"+langcode+".jar", "i18n/"+langcode+".jar"}, false);
-            b = (ResourceBundle) cl.loadClass(PATH + langcode).newInstance();
-        } catch (ClassNotFoundException e) {
-        } catch (InstantiationException e) {
-        } catch (IllegalAccessException e) {
-        }
     }
 }

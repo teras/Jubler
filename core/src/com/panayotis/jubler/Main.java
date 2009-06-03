@@ -25,6 +25,7 @@ package com.panayotis.jubler;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.DynamicClassLoader;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
@@ -47,6 +48,7 @@ import javax.swing.JWindow;
 public class Main {
 
     public static PluginManager plugins;
+    public static final String POSTLOADER = "com.panayotis.jubler.Main";
 
     /**
      * @param args the command line arguments
@@ -58,6 +60,8 @@ public class Main {
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         splash = new MainSplash("/icons/splash.jpg");
+
+        DynamicClassLoader.guessMainPath("Jubler", "com.panayotis.jubler.Jubler");
         plugins = new PluginManager();
 
         SystemDependent.setLookAndFeel();
@@ -120,6 +124,8 @@ public class Main {
         new Jubler().setVisible(true);   // Display initial Jubler window
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
+
+        plugins.callPostInitListeners(null, POSTLOADER);
     }
     static private MainSplash splash;
     static private Vector<String> sublist;

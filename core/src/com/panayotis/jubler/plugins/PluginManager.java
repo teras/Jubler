@@ -37,16 +37,17 @@ public class PluginManager {
     public PluginManager() {
         connections = new HashMap<String, ArrayList<Plugin>>();
 
-        DynamicClassLoader.updateMainPath("Jubler", "com.panayotis.jubler.Jubler");
-        if (DynamicClassLoader.isJarBased())
-            cl = new DynamicClassLoader(new String[]{"lib"});
+        cl = new DynamicClassLoader();
+        if (cl.isJarBased())
+            cl.addPaths(new String[]{"lib"});
         else
-            cl = new DynamicClassLoader(new String[]{"../../../dist/lib"});
+            cl.addPaths(new String[]{"../../../dist/lib"});
+        cl.setClassPath();
 
         String[] affectlist;
         Plugin pl;
         ArrayList<Plugin> current_list;
-        ArrayList<String> plugins = DynamicClassLoader.getPluginsList();
+        ArrayList<String> plugins = cl.getPluginsList();
         for (int i = 0; i < plugins.size(); i++) {
             pl = (Plugin) getClass(plugins.get(i));
             if (pl != null) {
