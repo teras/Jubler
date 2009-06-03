@@ -62,13 +62,15 @@
 		<ant dir="core" target="jar"/>
 	</target>
 
-	<target name="plugin" depends="core">
-		<for param="plugin">
+	<target name="allparts" depends="i18n,parts"/>
+
+	<target name="parts" depends="core">
+		<for param="plugins">
 			<path> <dirset dir="plugins" includes="*"/> </path>
 			<sequential>
 			<trycatch>
-				<try> <ant antfile="@{plugin}/build.xml" inheritall="false" target="jar"/> </try>
-				<catch> <echo message="@{plugin} failed!"/> </catch>
+				<try> <ant antfile="@{plugins}/build.xml" inheritall="false" target="jar"/> </try>
+				<catch> <echo message="@{plugins} failed!"/> </catch>
 			</trycatch>
 			</sequential>
 		</for>
@@ -100,7 +102,7 @@
     </target>
 
 
-	<target name="release" depends="clean,i18n,core,plugin,help,changelog">
+	<target name="release" depends="clean,allparts,help,changelog">
 		<echo message="INFO:  In order to update version numbering, ant task version-update should be called manually" />
     </target>
 
@@ -388,9 +390,9 @@
 
 
 	<target name="clean">
-		<for param="plugin">
+		<for param="plugins">
 			<path> <dirset dir="plugins" includes="*"/> </path>
-			<sequential> <ant antfile="@{plugin}/build.xml" inheritall="false" target="clean"/> </sequential>
+			<sequential> <ant antfile="@{plugins}/build.xml" inheritall="false" target="clean"/> </sequential>
 		</for>
 		<ant dir="core" target="clean"/>
        <delete>
