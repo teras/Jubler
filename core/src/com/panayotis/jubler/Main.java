@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler;
 
-import com.panayotis.jupidator.AutoUpdater;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
@@ -121,8 +120,6 @@ public class Main {
         new Jubler().setVisible(true);   // Display initial Jubler window
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
-
-        new AutoUpdater();
     }
     static private MainSplash splash;
     static private Vector<String> sublist;

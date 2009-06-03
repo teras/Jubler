@@ -25,7 +25,6 @@
         classname="net.sf.launch4j.ant.Launch4jTask"/>
 
 
-
 	<target name="i18n">
         <exec dir="resources/i18n" executable="bash" failonerror="true">
             <arg line="compile"/>
@@ -62,7 +61,7 @@
 			<path> <dirset dir="plugins" includes="*"/> </path>
 			<sequential>
 			<trycatch>
-				<try> <ant dir="@{plugin}" target="jar"/> </try>
+				<try> <ant antfile="@{plugin}/build.xml" inheritall="false" target="jar"/> </try>
 				<catch> <echo message="@{plugin} failed!"/> </catch>
 			</trycatch>
 			</sequential>
@@ -381,7 +380,7 @@
 	<target name="clean">
 		<for param="plugin">
 			<path> <dirset dir="plugins" includes="*"/> </path>
-			<sequential> <ant dir="@{plugin}" target="clean"/> </sequential>
+			<sequential> <ant antfile="@{plugin}/build.xml" inheritall="false" target="clean"/> </sequential>
 		</for>
 		<ant dir="core" target="clean"/>
        <delete>
