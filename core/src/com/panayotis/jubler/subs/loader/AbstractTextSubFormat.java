@@ -86,7 +86,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             if ( subtitle_list.isEmpty()) return null;
             return subtitle_list;
         } catch(Exception e) {
-            e.printStackTrace();
+            DEBUG.debug(e);
             return null;
         }
     }

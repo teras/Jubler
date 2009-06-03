@@ -60,7 +60,7 @@ public class SystemFileFinder {
                 System.load(libfile.getAbsolutePath());
                 return true;
             } catch (UnsatisfiedLinkError e) {
-                e.printStackTrace();
+                DEBUG.debug(e);
             }
         }
         return false;
