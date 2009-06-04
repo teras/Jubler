@@ -1,0 +1,13 @@
+#!/bin/bash
+dir=$(dirname ${0})
+target=${1}
+[[ ${target} ]] || { echo "No target given!"; exit 1; }
+
+for size in 48 128 ; do
+	icondir="${target}/${size}x${size}/mimetypes"
+	mkdir -pv "${icondir}"
+	cp -v "${dir}/subtitle-${size}.png" "${icondir}/subtitle.png"
+	for mime in srt ssa ass sub; do
+		ln -sv subtitle.png "${icondir}/application-x-${mime}.png"
+	done
+done

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN">
+<article>
+
+<title>Jubler FAQ</title>
+
+<section><title>I have a question not mentioned here</title>
+<mediaobject>
+      <imageobject>
+            <imagedata fileref="question.png" format="PNG"/>
+      </imageobject>
+</mediaobject>
+
+    <para>Please feel free to contact me through the <ulink url="http://www.jubler.org">forum or email</ulink>, and I will try to answer your question.
+</para>
+</section>
+
+<section><title>How to translate to my own language</title>
+    <para>To translate Jubler to your own language, there is a simple method, with a little help of poedit (and me!). At first contact me to update the language template file in the SVN. The file can be found in <ulink url="http://jubler.svn.sourceforge.net/viewvc/jubler/src/resources/i18n/">Sourceforge SVN</ulink> and is named "jubler.pot". Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot .</para>
+
+	<para>You can edit this file with either <ulink url="http://www.poedit.net/">poedit</ulink> (recommended) or any other plain text editor. Prepare the translation and then send the .po file back to me. If you want to compile the translation yourself (you are brave, aren't you) just place the file under resources/i18n and execute the "i18n" ant task (if you don't know what I am talking about, don't worry, just sent the file back).</para>
+</section>
+
+<section><title>Installing MPlayer/ASpell tools</title>
+    <para>In order to use any external tool, you have to manually download the tool and install it in your system. You need to follow the usual installation procedure of your operating system for proper installation. When Jubler needs this tool, it will launch a Wizard to search for the location of the external tool.</para>
+	<para>MPlayer can be downloaded form the  <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <emphasis>not</emphasis> download the GUI version, since Jubler uses it's own GUI.</para>
+	<para>ASpell can be found for <ulink url="http://aspell.net/">POSIX/Linux environment</ulink>, <ulink url="http://people.ict.usc.edu/~leuski/cocoaspell/">Mac OS X</ulink> and <ulink url="http://aspell.net/win32/">Windows</ulink>. Do not forget to download the apropriate <ulink url="http://ftp.gnu.org/gnu/aspell/dict/0index.html">language definitions</ulink> afterwards.</para>
+</section>
+
+<section><title>How can I enter translation mode?</title>
+    <para>There is no such thing as "translation mode". Instead there is a parent/child approach which is more flexible, since it is a tree-like relationship instead of one-to-one. Every file might have a "parent" file; of course one parent might have more than one children. When a subtitle is selected on the child file, the subtitle with the closest time on the parent file is selected too. This is always the case either when a user selects a subtitle with the mouse, or if a subtitle is automatically selected (e.g. while playing or previewing).</para>
+    <para>This selection propagates to the "grandparent" (i.e. the parent of the parent) and so on, up to the file which has no parents at all. Of course you could display all the windows simultaneously on screen and see how the selected subtitle propagates at their parent. When a subtitle is selected on the parent file, the selected subtitle on the children is not altered.</para>
+    <para>On order to (un)set the parent of a file, go to "Tools" - "Reparent" and (de)select the parent file. If you want to start a translation from scratch, i.e. having a new file with the correct time-slots but without any text, go to "File" - "New" - "Child" and a new file will open, with it's parent to the current one. It would be wise to detach the subtitle edit box from the child, hide the subtitle edit box from the parent and enlarge the visible subtitle box to take the whole space underneath the subtitle windows.</para>
+</section>
+
+<section><title>How can I synchronize subtitles with two given time-points?</title>
+    <para>This can be performed using the Video Console. Let the movie play and when you hear a subtitle, press the "T" button. The playback pauses. Go to the main window and select the subtitle you have just heard. The first synchronization button (on the right of the bar, in the same row with the "T" button) lights up. Then go to the movie end, without closing the Video Console. Again, when you hear a subtitle, press the "T" button. The playback pauses again. Select the subtitle from the main window. The recode window will pop up. Use the custom parameters (they should be already selected) and press OK.</para>
+    <para>If the recode window did not show up, it means that the time-points chosen are not valid and it is impossible to recode. You have to select another time position. Therefore, the last selected position is deselected.</para>
+    <para>If the subtitle time difference is the same on both time positions, then shift time is performed instead of recoding.</para>
+    <para>There is also another way of selecting the time positions. Instead of selecting the subtitle text from the main window, you can shift the subtitled using the bar on the lower left of the Console. Then when you thing that the subtitles are synchronized, press either synchronization buttons.</para>
+</section>
+
+<section id="synchronize"><title>How can I synchronize subtitles from an external file?</title>
+    <para>In order to synchronize the subtitles of one file with the subtitles of another, you have to open both files in Jubler. Then go to the file you want to  work on and select tool "Synchronize". Select which subtitles you want to synchronize (possibly all of them), the "model" subtitles (from the other file), if there is any offset and if you want to synchronize time-stamps or text. After clicking OK the synchronization will be performed. Keep in mind that the offset is based on index of the subtitle and not on time.</para>
+</section>
+
+<section><title>How can I shift subtitles text, while keeping the time-stamp slots constant?</title>
+    <para>There are times where you want to keep the various time-stamps of subtitles steady and shift the subtitle texts - relative to their time-stamp. Here comes <ulink url="#synchronize">synchronize</ulink> to the rescue again. The only difference from the previous approach is that you select the "-current-" subtitle file and you enter the offset. You can either shift time-stamps or text.</para>
+</section>
+
+<section><title>How can I change the video file?</title>
+    <para>The position of this menu entry has changed (again). It is under "File"->"Information", tab "Media".</para>
+</section>
+
+<section><title>How can I change the default font while previewing a subtitle?</title>
+	<para>You have to click on the <emphasis>Edit current style</emphasis> button, on the upper right corner of the subtitle editing area. A window will pop up, with various options, like font size, colors, etc. Please note that, due to MPlayer limitations, most of these options will not change the subtitle output while previewing with MPlayer. Still, values like font size are useful.</para>
+</section>
+
+<section><title>How can I create new subtitles while the movie is played?</title>
+    <para>This is performed with the Video Console window. In order for this mode to work is <emphasis>necessary</emphasis> the Video Console window to have the focus, and especially the Text Box on the lower left of the window. Usually the application tries to request the focus to this widget, when the Video Console is selected. You can do this manually, after selecting the Video Console window, by clicking inside this Text Box.</para>
+    <para>To perform the actual subtitle recording, follow this procedure. When you hear a subtitle press the ENTER key, or press the notepad like icon, on the right of the Text Box. Then the icon of the notepad will turn red. When you want to mark the end of the recorded subtitle, press ENTER or the notepad icon again. The notepad button will be inactive and the focus will be on the Text Box. Type a text (if you want) and press ENTER again to accept it or ESCAPE to cancel. This method accepts subtitles with no text inside.</para>
+</section>
+ 
+<section><title>The mousewheel changes time too fast. Can I reduce this speed?</title>
+	<para>Yes you can! Press the ALT button while rotating the mousewheel and the speed will reduce from 1 second to 0.1 second per click.</para>
+	<para>You can have the same efect, if you click on the up/down arrows while holding again the ALT button.</para>
+</section>
+
+<section><title>Mouse usage in Preview widget</title>
+	<para>Although there was an effort to maintain the expected GUI behaviour in the Preview widget, there might be usages not directly expected. Here is documented all mouse usages on this visual object.</para>
+	<itemizedlist>
+		<listitem><para>Right mouse button: this is heavily used to select and manipulate the various subtitles. There are a lot of "usage" modes, described below:</para>
+			<itemizedlist>
+			<listitem><para>Select tool ("mouse" icon on the toolbar): Use the mouse to select one subtitle at a time. If the [CONTROL] button is pressed, then more than one subtilte can be selected by clicking on an unselected subtitle. If the user clicks on an already selected subtitle while pressing the [CONTROL] key, then the clicked subtitle will be deselected.</para></listitem>
+			<listitem><para>Move tool ("hand" icon on the toolbar): This tool works exactly like the "Select" tool. In addition, if the mouse pointer is moved, while clicked down, then the selected subtitles will move. If the user wants to move more than one subtitle, no pressure of [CONTROL] key is needed. In this case no subtitles are deselected.</para></listitem>
+			<listitem><para>Resize tool ("two-face arrow" on the toolbar): Again, this tool works just like the "Select" tool, but if the user clicks on the "edge" of the subtitle, then it is possible to change the size of the subtitle. if the ending time-point of the subtitle(s) are smaller than the starting time, then the resize will inverse the subtitles and resize accordingly. The usage of [CONTROL] button is again not required while resizing, just like the "Move" tool.</para></listitem>
+			<listitem><para>Automatic tool ("magic wand" on the toolbar): The widget selects the appropriate tool depending on the location of the first click: if the user clicks inside the subtitle, then it is like the "Select" tool. If the user clicks  inside and moves the mouse pointer, then the produced action is similar to the the "Move" tool, while if the original click area is in the obrder of a subtitle, then the "Resize" tool action is performed.</para></listitem>
+			</itemizedlist>
+		</listitem>
+		<listitem><para>Mouse wheel. By using the mouse wheel on the preview widget, the preview zooms in/out accordingly.</para></listitem>
+	</itemizedlist>
+</section>
+
+<section><title>What is Zemberek and how can I use it?</title>
+    <para>Zemberek is a spell checking library for the Turkish language. You have to download the binary distribution of zemberek <ulink url="http://code.google.com/p/zemberek/">from its website</ulink> first. Version 2.1 was tested with this version of Jubler. Unzip the file, and copy zemberek-cekirdek-2.1.jar and zemberek-tr-2.1.jar under JUBLER_HOME/lib/ directory. Then Jubler should be able to open this library. 
+    </para>
+</section>
+
+<section><title>Problems while loading a subtitle file</title>
+    <para>Since the subtitle loader is still under development, it is possible that when loading a valid supported subtitle file, a message will pop up informing that it is unable to load this file. In such a case you can <ulink url="http://www.jubler.org">contact me or write in the forum</ulink> and send me the problematic subtitle file.</para>
+</section>
+
+<section><title>Problems while creating preview</title>
+    <para>Sometimes when opening preview for a valid video file, a message informing that preview is not available may pop up. This sometimes happens when there is a problem with the initialization of the ffdecode library from your Java environment. Usually closing the Preview window and open it again helps. When this doesn't help, a restart of Jubler solves this situation. I am really interested on these kind of problems, so when you can reproduce this error, please give me a note.</para>
+</section>
+
+<section><title>I found a problem!</title>
+    <para>I am always happy to listen to problems of Jubler, especially those not mentioned here - although I am happier when you report success issues! The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The preferred way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
+</section>
+
+</article>
