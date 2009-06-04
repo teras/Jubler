@@ -157,12 +157,15 @@ public class StaticJubler {
         for (Jubler j : Jubler.windows) {
             subs = j.getSubtitles();
             if (subs != null) {
-                int which = recent_files.indexOf(subs.getSubFile());
-                if (which >= 0) {
-                    recent_files.remove(which);
-                    recent_files.push(subs.getSubFile());
-                } else {
-                    recent_files.add(subs.getSubFile());
+                SubFile sfile = subs.getSubFile();
+                if (sfile.exists()) {
+                    int which = recent_files.indexOf(subs.getSubFile());
+                    if (which >= 0) {
+                        recent_files.remove(which);
+                        recent_files.push(subs.getSubFile());
+                    } else {
+                        recent_files.add(subs.getSubFile());
+                    }
                 }
             }
         }
