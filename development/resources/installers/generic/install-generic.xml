@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+
+<!-- 
+ XML file for IzPack
+-->
+
+<installation version="1.0">
+
+    <info>
+        <appname>Jubler</appname>
+        <appversion>@VERSION@</appversion>
+        <authors>
+            <author name="Panayotis Katsaloulis" email="panayotis@panayotis.com"/>
+        </authors>
+        <url>http://www.jubler.org/</url>
+  <javaversion>1.5</javaversion>
+    </info>
+    
+    <guiprefs width="640" height="480" resizable="no"/>
+    
+    <locale>
+        <langpack iso3="eng"/>
+        <langpack iso3="cze"/>
+        <langpack iso3="deu"/>
+        <langpack iso3="ell"/>
+        <langpack iso3="fra"/>
+        <langpack iso3="por"/>
+        <langpack iso3="spa"/>
+        <langpack iso3="tur"/>
+    </locale>
+    
+    <resources>
+        <res id="LicencePanel.licence" src="LICENCE"/>
+  <res id="Installer.image" src="resources/installers/common/logo-install.jpg" />
+    </resources>
+    
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="LicencePanel"/>
+        <panel classname="TargetPanel"/> 
+        <panel classname="InstallPanel"/>
+        <panel classname="SimpleFinishPanel"/>
+    </panels>
+    
+    <packs>
+        <pack name="Base" required="yes">
+            <description>Jubler base files</description>
+            <file src="ChangeLog.html" targetdir="$INSTALL_PATH"/>
+            <file src="LICENCE" targetdir="$INSTALL_PATH"/>
+            <file src="README" targetdir="$INSTALL_PATH"/>
+            <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
+			<file src="resources/system/fonts/freesans.ttf" targetdir="$INSTALL_PATH/lib"/>
+			<file src="resources/jupidator/jupidator.jar" targetdir="$INSTALL_PATH/lib"/>
+			<file src="dist/help/jubler-faq.html" targetdir="$INSTALL_PATH/help"/>
+			<file src="resources/help/question.png" targetdir="$INSTALL_PATH/help"/>
+        </pack>
+    </packs>
+    
+</installation>

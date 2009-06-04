@@ -1,0 +1,6 @@
+?package(jubler):needs="X11" section="Apps/Editors"\
+  title="Jubler"\
+  longtitle="Jubler subtitle editor"\
+  icon="/usr/share/pixmaps/jubler.xpm"\
+  command="/usr/bin/jubler"\
+
