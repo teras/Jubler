@@ -2138,6 +2138,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         String result = FileCommunicator.save(subs, sfile, mfile);
         if (result == null) {
             /* Saving succesfull */
+            enableWindowControls(false);
             undo.setSaveMark();
             subs.setSubFile(sfile);
             showInfo();
