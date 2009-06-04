@@ -4,17 +4,15 @@
  */
 package com.panayotis.jubler.media.player.vlc;
 
-import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.media.player.CommandLineViewport;
 
 /**
  *
  * @author teras
  */
-public class VLCViewport extends GenericPlayerViewport {
-    private final static String[] PAUSE = {"pause"};
-    private final static String[] QUIT = {"quit"};
+public class VLCViewport extends CommandLineViewport {
 
-    public VLCViewport(AbstractPlayer player) {
+    public VLCViewport(VLC player) {
         super(player);
     }
 
@@ -23,34 +21,30 @@ public class VLCViewport extends GenericPlayerViewport {
     }
 
     protected String[] getPauseCommand() {
-        return PAUSE;
+        return new String[] {"pause"};
     }
 
     protected String[] getQuitCommand() {
-        return QUIT;
-    }
-
-    protected String[] getSkipCommand(int secs) {
-        return null;
+        return new String[] {"quit"};
     }
 
     protected String[] getSeekCommand(int secs) {
-        return null;
+        return new String[] {""};
+    }
+
+    protected String[] getSkipCommand(int secs) {
+        return new String[] {""};
     }
 
     protected String[] getSubDelayCommand(float secs) {
-        return null;
+        return new String[] {""};
     }
 
     protected String[] getSpeedCommand(float secs) {
-        return null;
+        return new String[] {""};
     }
 
-    protected String[] getVolumeCommand(float secs) {
-        return null;
-    }
-
-    public boolean jump(int secs) {
-        return true;
+    protected String[] getVolumeCommand(int vol) {
+        return new String[] {""};
     }
 }

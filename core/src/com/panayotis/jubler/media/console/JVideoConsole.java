@@ -852,19 +852,19 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     
     private void FFMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FFMovieBActionPerformed
-        checkValid(view.jump(30));
+        checkValid(view.skip(30));
     }//GEN-LAST:event_FFMovieBActionPerformed
     
     private void FMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMovieBActionPerformed
-        checkValid(view.jump(10));
+        checkValid(view.skip(10));
     }//GEN-LAST:event_FMovieBActionPerformed
     
     private void BMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BMovieBActionPerformed
-        checkValid(view.jump(-10));
+        checkValid(view.skip(-10));
     }//GEN-LAST:event_BMovieBActionPerformed
     
     private void BBMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBMovieBActionPerformed
-        checkValid(view.jump(-30));
+        checkValid(view.skip(-30));
     }//GEN-LAST:event_BBMovieBActionPerformed
     
     private void QuitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitBActionPerformed
