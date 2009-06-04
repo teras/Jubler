@@ -161,6 +161,12 @@ public class SubFile {
         setFile(new File(pack.substring(file_pos + 1)));
     }
 
+    public boolean exists() {
+        if (savefile == null)
+            return false;
+        return savefile.exists();
+    }
+
     /* File specific options */
     public void setEncoding(String enc) {
         if (enc == null || enc.equals(""))
@@ -247,7 +253,7 @@ public class SubFile {
 
     public boolean equals(Object o) {
         if (o != null && (o instanceof SubFile))
-            return savefile.equals(((SubFile)o).savefile);
+            return savefile.equals(((SubFile) o).savefile);
         return false;
     }
 }
