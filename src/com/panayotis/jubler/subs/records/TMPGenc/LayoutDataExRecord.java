@@ -47,6 +47,14 @@ public class LayoutDataExRecord implements TMPGencPatternDef{
     public int centered = 0; //centered or not - 0: centered, 1: left align
     public int readingDirection = 0; //left to right 0: reading left to right alignment, 1: reading right to left
 
+    public LayoutDataExRecord(){
+
+    }
+    
+    public LayoutDataExRecord(int centered, int readingDirection){
+        this.centered = centered;
+        this.readingDirection = readingDirection;
+    }
     /**
      * Returns a string representation of internal data
      * @return a string representation of internal data

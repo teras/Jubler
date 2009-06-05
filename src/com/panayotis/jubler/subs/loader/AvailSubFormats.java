@@ -60,8 +60,8 @@ public class AvailSubFormats {
         new Spruce(),
         new Quicktime(),
         new W3CTimedText(),
-        new PlainOCRTextWithIndex(), //added by HDT
         new PlainOCRTextWithPageBreak(), //added by HDT
+        new PlainOCRTextWithIndex(), //added by HDT
         new PlainOCRTextWithDoubleNewLine(), //added by HDT
         new PlainText()
     //new ScanTitle()

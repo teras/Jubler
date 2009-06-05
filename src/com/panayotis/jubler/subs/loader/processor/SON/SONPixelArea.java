@@ -34,7 +34,10 @@ import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 
 /**
- *
+ * Process data entry in the following format:
+ * <pre>
+ * Pixel_Area	(0 575)
+ * </pre>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONPixelArea extends SubtitlePatternProcessor implements CommonDef {

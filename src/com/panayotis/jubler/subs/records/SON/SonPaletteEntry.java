@@ -26,7 +26,10 @@ import java.awt.Color;
 import java.text.NumberFormat;
 
 /**
- *
+ * This class is used to hold the data of a single palette entry, such as:
+ * <pre>
+ * # 00 : RGB(255,255, 0)
+ *</pre>
  * @author Hai Dang Quang
  */
 public class SonPaletteEntry implements CommonDef, Cloneable {

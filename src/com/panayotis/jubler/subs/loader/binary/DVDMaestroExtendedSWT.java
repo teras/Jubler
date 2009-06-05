@@ -24,11 +24,13 @@ package com.panayotis.jubler.subs.loader.binary;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
+import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.events.ParsedDataLineEventListener;
 import com.panayotis.jubler.subs.events.PreParseActionEvent;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEvent;
 import com.panayotis.jubler.subs.loader.processor.SWT.SWTPatternDef;
 import com.panayotis.jubler.subs.loader.processor.SWT.SWTSubtitleText;
+import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.subs.records.SWT.SWTHeader;
 import com.panayotis.jubler.subs.records.SWT.SWTSubEntry;
 import java.io.File;
@@ -128,12 +130,17 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
         return is_empty;
     }
 
-    @Override
-    public void preParseAction(PreParseActionEvent e) {
+    public void init(){
+        super.init();
         swtSubEntry = null;
         swtHeader = null;
         sonHeader = null;
         sonSubEntry = null;
+    }
+    
+    @Override
+    public void preParseAction(PreParseActionEvent e) {
+        init();
         processorList.setAllTargetObjectClassNameAndRemovable(getHeaderProcessorListGroup(), SWTHeader.class.getName(), true);
         processorList.setAllTargetObjectClassNameAndRemovable(getAttributeProcessorListGroup(), SWTHeader.class.getName(), false);
         processorList.setAllTargetObjectClassNameAndRemovable(getDetailProcessorListGroup(), SWTSubEntry.class.getName(), false);
@@ -232,5 +239,36 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
 
     public void setSonSubEntry(SWTSubEntry swtSubEntry) {
         this.swtSubEntry = swtSubEntry;
+    }
+
+    @Override
+    public Subtitles convert(Subtitles current_subs) {
+        init();
+        try {
+            for (int i = 0; i < current_subs.size(); i++) {
+                SubEntry old_entry = current_subs.elementAt(i);
+                if (old_entry instanceof SWTSubEntry){
+                    swtSubEntry = (SWTSubEntry) old_entry;
+                }else{
+                    swtSubEntry = new SWTSubEntry();
+                    /**
+                     * Temporary use the global if any has been done in
+                     * previous run
+                     */
+                    swtSubEntry.header = swtHeader;
+                    /**
+                     * Create new header if the global has not been created
+                     */
+                    swtSubEntry.copyRecord(old_entry);
+                    current_subs.replace(swtSubEntry, i);
+                }//end if
+                /**
+                 * Extract the header's reference to the global for future use.
+                 */
+                swtHeader = (SWTHeader) swtSubEntry.getHeader();
+            }//end for(int i=0; i < current_subs.size(); i++)            
+        } catch (Exception ex) {
+        }
+        return current_subs;
     }
 }

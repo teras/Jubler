@@ -84,7 +84,7 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
         }
         buf.append(separator);
         buf.append(S_TMPG_ITEM_DATA).append(separator);
-        
+
         return buf.toString();
     }//end public String toString()
 
@@ -111,4 +111,12 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
     public String toStringForWrite() {
         return toString(DOS_NL);
     }
+
+    public void makeDefaultHeader() {
+        this.layoutList = new LayoutDataItemRecordList();
+        layoutList.defaultRecord();
+
+        this.layoutExList = new LayoutDataExRecordList();
+        layoutExList.defaultRecord();
+    }//public void makeDefaultHeader()
 }

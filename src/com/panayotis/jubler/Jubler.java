@@ -40,15 +40,15 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
-import com.panayotis.jubler.subs.Share.CopyOption;
-import com.panayotis.jubler.subs.Share.TextLineMovementOption;
+import com.panayotis.jubler.subs.Share;
+import com.panayotis.jubler.subs.Share.SubtitleRecordComponent;
+import com.panayotis.jubler.subs.Share.FunctionList;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.events.JublerPopupMenuListener;
-import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencImportHeaderAction;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
@@ -70,6 +70,17 @@ import com.panayotis.jubler.tools.JSubSplit;
 import com.panayotis.jubler.tools.JSynchronize;
 import com.panayotis.jubler.tools.JToolRealTime;
 import com.panayotis.jubler.tools.JTranslate;
+import com.panayotis.jubler.tools.duplication.RemoveBottomTopLineDuplication;
+import com.panayotis.jubler.tools.duplication.RemoveTimeDuplication;
+import com.panayotis.jubler.tools.duplication.RemoveTopLineDuplication;
+import com.panayotis.jubler.tools.editing.BalanceText;
+import com.panayotis.jubler.tools.editing.InsertBlankLine;
+import com.panayotis.jubler.tools.editing.MoveText;
+import com.panayotis.jubler.tools.records.AppendFromFile;
+import com.panayotis.jubler.tools.records.ImportComponent;
+import com.panayotis.jubler.tools.records.MergeRecords;
+import com.panayotis.jubler.tools.records.SplitRecord;
+import com.panayotis.jubler.tools.records.ViewHeader;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
@@ -84,9 +95,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Vector;
 import javax.swing.AbstractButton;
+import javax.swing.ComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -110,7 +121,7 @@ public class Jubler extends JFrame {
 
     public static JublerList windows;
     private static ArrayList<SubEntry> copybuffer;
-    private static CopyOption copyOption = CopyOption.CP_TEXT;
+    public static SubtitleRecordComponent selectedComponent = SubtitleRecordComponent.CP_TEXT;
     public static JPreferences prefs;
     /** File chooser dialog to open/ save subtitles */
     private JFileChooser filedialog;
@@ -146,7 +157,9 @@ public class Jubler extends JFrame {
     /* Whether this file needs saving or not */
     private boolean unsaved_data = false;
     private int numberOfLine = 1;
-    private TextLineMovementOption textLineMovementOption = TextLineMovementOption.TL_MOVE_TEXT_SELECTION_UP;
+    private FunctionList fnOption = FunctionList.FN_GOTO_LINE;
+    private ComboBoxModel fnComboboxModel = new javax.swing.DefaultComboBoxModel(Share.fnNames);
+    private ComboBoxModel componentListModel = new javax.swing.DefaultComboBoxModel(Share.componentNames);
     /* Jubler tools */
     private JStyler styler;
     private JShiftTime shift;
@@ -165,9 +178,18 @@ public class Jubler extends JFrame {
     private static HelpBrowser faqbrowse;
     /* Window frame icon */
     public final static Image FrameIcon;
-    private TMPGencImportHeaderAction tmpGencImportHeaderAction = new TMPGencImportHeaderAction();
-    private JublerPopupMenuListener jublerPopupMenuListener = new JublerPopupMenuListener();
-
+    private RemoveTimeDuplication removeTimeDuplicationAction = new RemoveTimeDuplication(this);
+    private RemoveBottomTopLineDuplication removeBottomTopLineDuplicationAction = new RemoveBottomTopLineDuplication(this);
+    private RemoveTopLineDuplication removeTopLineDuplicationAction = new RemoveTopLineDuplication(this);
+    private MergeRecords mergeRecords = new MergeRecords(this);
+    private AppendFromFile appendFromFile = new AppendFromFile(this);
+    private SplitRecord splitRecord = new SplitRecord();
+    private ImportComponent importComponent = new ImportComponent(this);
+    private MoveText moveText = new MoveText(this);
+    private InsertBlankLine insertBlankLine = new InsertBlankLine(this);
+    private BalanceText balanceText = new BalanceText(this);
+    private ViewHeader viewHeader = new ViewHeader(this);
+    
     static {
         windows = new JublerList();
         copybuffer = new ArrayList<SubEntry>();
@@ -192,23 +214,22 @@ public class Jubler extends JFrame {
 
         initComponents();
 
-        //this is for TMPGenc subtitle only. So by default, it is turned off
-        SubsPop.add(tmpGencImportHeaderAction);
-        tmpGencImportHeaderAction.setJublerParent(this);
-        tmpGencImportHeaderAction.setVisible(false);
-
-        //Adding the popup menu listener to enable/disable tmpGencImportHeaderAction
-        //if the first item of the subtitles is of TMPGencSubtitleRecord
-        jublerPopupMenuListener.setJublerParent(this);
-        jublerPopupMenuListener.setTmpGencImportHeaderAction(tmpGencImportHeaderAction);
-        SubsPop.addPopupMenuListener(jublerPopupMenuListener);
-
-
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
 
         subeditor = new JSubEditor(this);
         subeditor.setAttached(true);
+        
+        ImportComponentFM.addActionListener(importComponent);
+        AppendFromFileFM.addActionListener(appendFromFile);
+        
+        RemoveTimeDuplication.addActionListener(removeTimeDuplicationAction);
+        RemoveBottomTopLineDuplication.addActionListener(removeBottomTopLineDuplicationAction);
+        RemoveTimeDuplication.addActionListener(removeTopLineDuplicationAction);
+        
+        JoinRecordTM.addActionListener(mergeRecords);
+        SplitRecordTM.addActionListener(splitRecord);
+        ViewHeaderTM.addActionListener(viewHeader);
 
         SubSplitPane.add(preview, JSplitPane.TOP);
         enablePreview(false);
@@ -234,6 +255,7 @@ public class Jubler extends JFrame {
         /* Initialize Tools */
         shift = new JShiftTime();
         styler = new JStyler();  //
+
         spell = new JSpeller();
         round = new JRounder();
         fix = new JFixer();
@@ -389,6 +411,7 @@ public class Jubler extends JFrame {
         ShowNumberP = new javax.swing.JCheckBoxMenuItem();
         ShowStartP = new javax.swing.JCheckBoxMenuItem();
         ShowEndP = new javax.swing.JCheckBoxMenuItem();
+        ShowDurationP = new javax.swing.JCheckBoxMenuItem();
         ShowLayerP = new javax.swing.JCheckBoxMenuItem();
         ShowStyleP = new javax.swing.JCheckBoxMenuItem();
         jSeparator11 = new javax.swing.JSeparator();
@@ -421,11 +444,6 @@ public class Jubler extends JFrame {
         CopyTB = new javax.swing.JButton();
         PasteTB = new javax.swing.JButton();
         jSeparator14 = new javax.swing.JToolBar.Separator();
-        MoveTextTP = new javax.swing.JPanel();
-        OptTextLineActList = new javax.swing.JComboBox();
-        OptNumberOfLine = new javax.swing.JComboBox();
-        DoItTB = new javax.swing.JButton();
-        jSeparator15 = new javax.swing.JToolBar.Separator();
         UndoTP = new javax.swing.JPanel();
         UndoTB = new javax.swing.JButton();
         RedoTB = new javax.swing.JButton();
@@ -436,6 +454,12 @@ public class Jubler extends JFrame {
         TestTP = new javax.swing.JPanel();
         TestTB = new javax.swing.JButton();
         PreviewTB = new javax.swing.JButton();
+        jSeparator15 = new javax.swing.JToolBar.Separator();
+        MoveTextTP = new javax.swing.JPanel();
+        OptTextLineActList = new javax.swing.JComboBox();
+        OptNumberOfLine = new javax.swing.JComboBox();
+        DoItTB = new javax.swing.JButton();
+        jSeparator18 = new javax.swing.JToolBar.Separator();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
         NewFM = new javax.swing.JMenu();
@@ -452,6 +476,10 @@ public class Jubler extends JFrame {
         jSeparator7 = new javax.swing.JSeparator();
         InfoFM = new javax.swing.JMenuItem();
         PrefsFM = new javax.swing.JMenuItem();
+        jSeparator20 = new javax.swing.JSeparator();
+        ImportComponentFM = new javax.swing.JMenuItem();
+        AppendFromFileFM = new javax.swing.JMenuItem();
+        jSeparator21 = new javax.swing.JSeparator();
         QuitFM = new javax.swing.JMenuItem();
         EditM = new javax.swing.JMenu();
         CutEM = new javax.swing.JMenuItem();
@@ -477,6 +505,7 @@ public class Jubler extends JFrame {
         BottomGEM = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         byTimeGEM = new javax.swing.JMenuItem();
+        byLineNumberEM = new javax.swing.JMenuItem();
         jSeparator10 = new javax.swing.JSeparator();
         MarkEM = new javax.swing.JMenu();
         NoneMEM = new javax.swing.JMenuItem();
@@ -517,6 +546,18 @@ public class Jubler extends JFrame {
         AudioPreviewC = new javax.swing.JCheckBoxMenuItem();
         MaxWaveC = new javax.swing.JCheckBoxMenuItem();
         PlayAudioC = new javax.swing.JMenuItem();
+        jSeparator19 = new javax.swing.JSeparator();
+        RecordTM = new javax.swing.JMenu();
+        JoinRecordTM = new javax.swing.JMenuItem();
+        SplitRecordTM = new javax.swing.JMenuItem();
+        ViewHeaderTM = new javax.swing.JMenuItem();
+        DuplicationTM = new javax.swing.JMenu();
+        RemoveTimeDuplication = new javax.swing.JMenuItem();
+        RemoveTopLineDuplication = new javax.swing.JMenuItem();
+        RemoveBottomTopLineDuplication = new javax.swing.JMenuItem();
+        TextBalancingTM = new javax.swing.JMenu();
+        TextBalancingOnSelection = new javax.swing.JMenuItem();
+        TextBalancingOnTheWholeTable = new javax.swing.JMenuItem();
         HelpM = new javax.swing.JMenu();
         FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
@@ -580,13 +621,18 @@ public class Jubler extends JFrame {
         ShowEndP.addActionListener(formListener);
         ShowColP.add(ShowEndP);
 
+        ShowDurationP.setText(_("Duration"));
+        ShowDurationP.setActionCommand("3");
+        ShowDurationP.addActionListener(formListener);
+        ShowColP.add(ShowDurationP);
+
         ShowLayerP.setText(_("Layer"));
-        ShowLayerP.setActionCommand("3");
+        ShowLayerP.setActionCommand("4");
         ShowLayerP.addActionListener(formListener);
         ShowColP.add(ShowLayerP);
 
         ShowStyleP.setText(_("Style"));
-        ShowStyleP.setActionCommand("4");
+        ShowStyleP.setActionCommand("5");
         ShowStyleP.addActionListener(formListener);
         ShowColP.add(ShowStyleP);
 
@@ -690,8 +736,9 @@ public class Jubler extends JFrame {
         EditTP.setPreferredSize(new java.awt.Dimension(250, 31));
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        OptCopyCutPaste.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Text", "Time", "Record" }));
-        OptCopyCutPaste.setToolTipText(_("Copy/Cut/Paste component"));
+        OptCopyCutPaste.setModel(componentListModel);
+        OptCopyCutPaste.setToolTipText(_("Copy/Cut/Paste/Import component"));
+        OptCopyCutPaste.setEnabled(false);
         OptCopyCutPaste.setMaximumSize(new java.awt.Dimension(100, 22));
         OptCopyCutPaste.setPreferredSize(new java.awt.Dimension(100, 22));
         OptCopyCutPaste.addActionListener(formListener);
@@ -717,38 +764,6 @@ public class Jubler extends JFrame {
 
         JublerTools.add(EditTP);
         JublerTools.add(jSeparator14);
-
-        MoveTextTP.setToolTipText("Move text lines up or down");
-        MoveTextTP.setMaximumSize(new java.awt.Dimension(200, 31));
-        MoveTextTP.setMinimumSize(new java.awt.Dimension(80, 31));
-        MoveTextTP.setPreferredSize(new java.awt.Dimension(200, 31));
-        MoveTextTP.setLayout(new javax.swing.BoxLayout(MoveTextTP, javax.swing.BoxLayout.LINE_AXIS));
-
-        OptTextLineActList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Move text up", "Move text down", "Move all text up", "Move all text down", "Blank line above", "Blank line below" }));
-        OptTextLineActList.setToolTipText(_("Operation on text lines"));
-        OptTextLineActList.setMaximumSize(new java.awt.Dimension(100, 22));
-        OptTextLineActList.setPreferredSize(new java.awt.Dimension(100, 22));
-        OptTextLineActList.addActionListener(formListener);
-        MoveTextTP.add(OptTextLineActList);
-
-        OptNumberOfLine.setModel(new IntegerComboBoxModel(new int[]{1,2,3,5,7,10,15,30,50,100}));
-        OptNumberOfLine.setToolTipText(_("Number of lines"));
-        OptNumberOfLine.setMaximumSize(new java.awt.Dimension(50, 22));
-        OptNumberOfLine.setPreferredSize(new java.awt.Dimension(50, 22));
-        OptNumberOfLine.addActionListener(formListener);
-        MoveTextTP.add(OptNumberOfLine);
-
-        DoItTB.setText("Do it");
-        DoItTB.setToolTipText(_("Perform text line operation"));
-        DoItTB.setEnabled(false);
-        DoItTB.setMaximumSize(new java.awt.Dimension(57, 40));
-        DoItTB.setMinimumSize(new java.awt.Dimension(57, 40));
-        DoItTB.setPreferredSize(new java.awt.Dimension(57, 40));
-        DoItTB.addActionListener(formListener);
-        MoveTextTP.add(DoItTB);
-
-        JublerTools.add(MoveTextTP);
-        JublerTools.add(jSeparator15);
 
         UndoTP.setLayout(new javax.swing.BoxLayout(UndoTP, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -803,6 +818,41 @@ public class Jubler extends JFrame {
         TestTP.add(PreviewTB);
 
         JublerTools.add(TestTP);
+        JublerTools.add(jSeparator15);
+
+        MoveTextTP.setToolTipText("Move text lines up or down");
+        MoveTextTP.setMaximumSize(new java.awt.Dimension(250, 31));
+        MoveTextTP.setMinimumSize(new java.awt.Dimension(80, 31));
+        MoveTextTP.setPreferredSize(new java.awt.Dimension(250, 31));
+        MoveTextTP.setLayout(new javax.swing.BoxLayout(MoveTextTP, javax.swing.BoxLayout.LINE_AXIS));
+
+        OptTextLineActList.setModel(fnComboboxModel);
+        OptTextLineActList.setToolTipText(_("Quick operations"));
+        OptTextLineActList.setEnabled(false);
+        OptTextLineActList.setMaximumSize(new java.awt.Dimension(100, 22));
+        OptTextLineActList.setPreferredSize(new java.awt.Dimension(100, 22));
+        OptTextLineActList.addActionListener(formListener);
+        MoveTextTP.add(OptTextLineActList);
+
+        OptNumberOfLine.setModel(new IntegerComboBoxModel(new int[]{1,2,3,5,7,10,15,30,50,100}));
+        OptNumberOfLine.setToolTipText(_("Number of lines"));
+        OptNumberOfLine.setEnabled(false);
+        OptNumberOfLine.setMaximumSize(new java.awt.Dimension(100, 22));
+        OptNumberOfLine.setPreferredSize(new java.awt.Dimension(80, 22));
+        OptNumberOfLine.addActionListener(formListener);
+        MoveTextTP.add(OptNumberOfLine);
+
+        DoItTB.setText("Do it");
+        DoItTB.setToolTipText(_("Perform quick operation"));
+        DoItTB.setEnabled(false);
+        DoItTB.setMaximumSize(new java.awt.Dimension(57, 40));
+        DoItTB.setMinimumSize(new java.awt.Dimension(40, 40));
+        DoItTB.setPreferredSize(new java.awt.Dimension(57, 40));
+        DoItTB.addActionListener(formListener);
+        MoveTextTP.add(DoItTB);
+
+        JublerTools.add(MoveTextTP);
+        JublerTools.add(jSeparator18);
 
         getContentPane().add(JublerTools, java.awt.BorderLayout.NORTH);
 
@@ -881,6 +931,14 @@ public class Jubler extends JFrame {
         PrefsFM.setName("FPR"); // NOI18N
         PrefsFM.addActionListener(formListener);
         FileM.add(PrefsFM);
+        FileM.add(jSeparator20);
+
+        ImportComponentFM.setText(_("Import components"));
+        FileM.add(ImportComponentFM);
+
+        AppendFromFileFM.setText(_("Append from file"));
+        FileM.add(AppendFromFileFM);
+        FileM.add(jSeparator21);
 
         QuitFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
         QuitFM.setText(_("Quit"));
@@ -1011,6 +1069,11 @@ public class Jubler extends JFrame {
         byTimeGEM.setName("EGM"); // NOI18N
         byTimeGEM.addActionListener(formListener);
         GoEM.add(byTimeGEM);
+
+        byLineNumberEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        byLineNumberEM.setText(_("Line number"));
+        byLineNumberEM.addActionListener(formListener);
+        GoEM.add(byLineNumberEM);
 
         EditM.add(GoEM);
         EditM.add(jSeparator10);
@@ -1185,6 +1248,63 @@ public class Jubler extends JFrame {
         PreviewP.add(PlayAudioC);
 
         ToolsM.add(PreviewP);
+        ToolsM.add(jSeparator19);
+
+        RecordTM.setText(_("Records"));
+
+        JoinRecordTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_J, java.awt.event.InputEvent.CTRL_MASK));
+        JoinRecordTM.setText(_("Join records"));
+        JoinRecordTM.setName("TRJ"); // NOI18N
+        JoinRecordTM.addActionListener(formListener);
+        RecordTM.add(JoinRecordTM);
+
+        SplitRecordTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        SplitRecordTM.setText(_("Split record"));
+        SplitRecordTM.setName("TRS"); // NOI18N
+        SplitRecordTM.addActionListener(formListener);
+        RecordTM.add(SplitRecordTM);
+
+        ViewHeaderTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
+        ViewHeaderTM.setText(_("View header"));
+        ViewHeaderTM.setName("TRV"); // NOI18N
+        RecordTM.add(ViewHeaderTM);
+
+        ToolsM.add(RecordTM);
+
+        DuplicationTM.setText(_("Remove Duplications"));
+
+        RemoveTimeDuplication.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_T, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        RemoveTimeDuplication.setText(_("Time"));
+        RemoveTimeDuplication.setName("TDT"); // NOI18N
+        DuplicationTM.add(RemoveTimeDuplication);
+
+        RemoveTopLineDuplication.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        RemoveTopLineDuplication.setText(_("Top Line"));
+        RemoveTopLineDuplication.setName("TDTL"); // NOI18N
+        DuplicationTM.add(RemoveTopLineDuplication);
+
+        RemoveBottomTopLineDuplication.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        RemoveBottomTopLineDuplication.setText(_("Bottom Top Line"));
+        RemoveBottomTopLineDuplication.setName("TDBT"); // NOI18N
+        DuplicationTM.add(RemoveBottomTopLineDuplication);
+
+        ToolsM.add(DuplicationTM);
+
+        TextBalancingTM.setText(_("Text balancing"));
+
+        TextBalancingOnSelection.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        TextBalancingOnSelection.setText(_("On Selection"));
+        TextBalancingOnSelection.setName("TTBS"); // NOI18N
+        TextBalancingOnSelection.addActionListener(formListener);
+        TextBalancingTM.add(TextBalancingOnSelection);
+
+        TextBalancingOnTheWholeTable.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        TextBalancingOnTheWholeTable.setText(_("On entire table"));
+        TextBalancingOnTheWholeTable.setName("TTBW"); // NOI18N
+        TextBalancingOnTheWholeTable.addActionListener(formListener);
+        TextBalancingTM.add(TextBalancingOnTheWholeTable);
+
+        ToolsM.add(TextBalancingTM);
 
         JublerMenuBar.add(ToolsM);
 
@@ -1237,15 +1357,6 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == PasteTB) {
                 Jubler.this.PasteEMActionPerformed(evt);
             }
-            else if (evt.getSource() == OptTextLineActList) {
-                Jubler.this.OptTextLineActListActionPerformed(evt);
-            }
-            else if (evt.getSource() == OptNumberOfLine) {
-                Jubler.this.OptNumberOfLineActionPerformed(evt);
-            }
-            else if (evt.getSource() == DoItTB) {
-                Jubler.this.DoItTBActionPerformed(evt);
-            }
             else if (evt.getSource() == UndoTB) {
                 Jubler.this.UndoEMActionPerformed(evt);
             }
@@ -1260,6 +1371,15 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == PreviewTB) {
                 Jubler.this.PreviewTBCurrentTTMActionPerformed(evt);
+            }
+            else if (evt.getSource() == OptTextLineActList) {
+                Jubler.this.OptTextLineActListActionPerformed(evt);
+            }
+            else if (evt.getSource() == OptNumberOfLine) {
+                Jubler.this.OptNumberOfLineActionPerformed(evt);
+            }
+            else if (evt.getSource() == DoItTB) {
+                Jubler.this.DoItTBActionPerformed(evt);
             }
             else if (evt.getSource() == CutP) {
                 Jubler.this.CutEMActionPerformed(evt);
@@ -1292,6 +1412,9 @@ public class Jubler extends JFrame {
                 Jubler.this.showTableColumn(evt);
             }
             else if (evt.getSource() == ShowEndP) {
+                Jubler.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowDurationP) {
                 Jubler.this.showTableColumn(evt);
             }
             else if (evt.getSource() == ShowLayerP) {
@@ -1387,6 +1510,9 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == byTimeGEM) {
                 Jubler.this.byTimeGEMActionPerformed(evt);
             }
+            else if (evt.getSource() == byLineNumberEM) {
+                Jubler.this.byLineNumberEMActionPerformed(evt);
+            }
             else if (evt.getSource() == NoneMEM) {
                 Jubler.this.NoneMEMActionPerformed(evt);
             }
@@ -1464,6 +1590,18 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == PlayAudioC) {
                 Jubler.this.PlayAudioCActionPerformed(evt);
+            }
+            else if (evt.getSource() == JoinRecordTM) {
+                Jubler.this.JoinRecordTMActionPerformed(evt);
+            }
+            else if (evt.getSource() == SplitRecordTM) {
+                Jubler.this.SplitRecordTMActionPerformed(evt);
+            }
+            else if (evt.getSource() == TextBalancingOnSelection) {
+                Jubler.this.TextBalancingOnSelectionActionPerformed(evt);
+            }
+            else if (evt.getSource() == TextBalancingOnTheWholeTable) {
+                Jubler.this.TextBalancingOnTheWholeTableActionPerformed(evt);
             }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
@@ -1746,96 +1884,121 @@ public class Jubler extends JFrame {
         }
     }//GEN-LAST:event_PasteSpecialEMActionPerformed
 
-    private void PasteEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteEMActionPerformed
-        if (copybuffer.isEmpty()) {
-            return;
-        }
-
-        boolean is_table_empty = (subs == null || subs.size() == 0);
-        int target_location = SubTable.getSelectedRow();
-        boolean is_selected = (target_location >= 0);
-        boolean target_location_valid = false;
-
-        //If the table has data and yet no row is selected then abandon operation
-        boolean is_abandon = !(is_table_empty || is_selected);
-        if (is_abandon) {
-            return;
-        }
-
-        String sub_class_name = null;
-        if (is_table_empty) {
-            if (subs == null) {
-                subs = new Subtitles();
-                SubTable.setModel(subs);
-            }//end if
-            target_location = 0;
-            sub_class_name = (new SubEntry()).getClass().getName();
-        }else{
-            sub_class_name = subs.elementAt( target_location ).getClass().getName();
-        }//end if
-
+    /**
+     * Pasting component is a replace operation
+     * hence the order of the replacement can be worked from
+     * top-down order. Target locations which are outside the
+     * range are omitted.
+     */
+    private void PasteComponents(int target_location) {
         SubEntry source_sub = null;
         SubEntry target_sub = null;
 
-        try {
-            //copy out here avoiding changes of the value during the loop
-            CopyOption opt = copyOption;
-            undo.addUndo(new UndoEntry(subs, _("Paste subtitles")));
-
-            SubEntry[] sel = new SubEntry[copybuffer.size()];
-            for (int i = 0; i < copybuffer.size(); i++, target_location++) {
-                source_sub = copybuffer.get(i);
-                target_location_valid = (target_location >= 0 && target_location < subs.size());
-                switch (opt) {
-                    case CP_TEXT:
-                        if (is_table_empty || !target_location_valid) {
-                            target_sub = (SubEntry) Class.forName(sub_class_name).newInstance();
-                        } else {
-                            target_sub = subs.elementAt(target_location);
-                        }//end if
-
-                        //making an explicit copy of the original text
+        int len = copybuffer.size();
+        SubtitleRecordComponent opt = selectedComponent;
+        for (int i = 0; i < len; i++, target_location++) {
+            source_sub = copybuffer.get(i);
+            try {
+                target_sub = subs.elementAt(target_location);
+            } catch (Exception e) {
+                //if target location is not within the range of the current subs
+                //then the details cannot be paste on.
+                continue;
+            }
+            switch (opt) {
+                case CP_TEXT:
+                    //making an explicit copy of the original text
+                    try {
                         String txt = source_sub.getText();
                         target_sub.setText(txt);
-                        break;
-                    case CP_TIME:
-                        if (is_table_empty || !target_location_valid) {
-                            target_sub = (SubEntry) Class.forName(sub_class_name).newInstance();
-                        } else {
-                            target_sub = subs.elementAt(target_location);
-                        }//end if
-
+                    } catch (Exception ex) {
+                    }
+                    break;
+                case CP_TIME:
+                    try {
                         //making an explicit copy of the original time
                         Time start_time = source_sub.getStartTime();
                         Time end_time = source_sub.getFinishTime();
                         target_sub.setStartTime(start_time);
                         target_sub.setFinishTime(end_time);
-                        break;
-                    case CP_RECORD:
-                        target_sub = source_sub;
-                        break;
-                    default:
-                        break;
-                }//end switch (opt)
+                    } catch (Exception ex) {
+                    }
+                    break;
+                default:
+                    break;
+            }//end switch/case
 
-                sel[i] = target_sub;
-                if (is_table_empty) {
-                    subs.add(target_sub);
-                } else {
-                    if (opt == CopyOption.CP_RECORD) {
-                        subs.insertAt(target_sub, target_location);
-                    } else {
-                        subs.replace(target_sub, target_location);
-                    }//end if
-                }//end if (is_table_empty)
-            //subs.addSorted(sel[i]);
-            }//end for (int i = 0; i < copybuffer.size(); i++)
-            tableHasChanged(sel);
-        } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+        }//end for (int i = 0; i < copybuffer.size(); i++, target_location++)
+
+    }//private void PasteComponents()
+
+    /**
+     * Pasting records is an insert operation and since 
+     * the array management shift downward from the selected row,
+     * all records are inserted in the reverse order, bottom to top,
+     * to maintain the copied order of records.
+     */
+    private void PasteRecords(int target_location) {
+        SubEntry target_sub = null;
+        int len = copybuffer.size();
+        for (int i = len - 1; i >= 0; i--) {
+            target_sub = copybuffer.get(i);
+            subs.insertAt(target_sub, target_location);
+        }//end for (int i = 0; i < copybuffer.size(); i++, target_location++)
+
+    }//private void PasteRecord()
+
+    /**
+     * This routine performs the pasting action, based on the selected
+     * component. It calls the corresponding routines to perform the
+     * selected component. For text and time components, the
+     * {@link PasteComponents} is called. For records, the
+     * {@link PasteRecords} is invoked.
+     * The current table is redrawn (refreshed) after all changes has taken
+     * place.
+     * @param evt The action event which holds the information about the
+     * action's source.
+     */
+    private void PasteEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteEMActionPerformed
+        if (copybuffer.isEmpty()) {
+            return;
         }
+
+        int target_location = SubTable.getSelectedRow();
+        boolean is_selected = (target_location >= 0);
+
+        //If the table has data and yet no row is selected then abandon operation
+        boolean is_abandon = !(is_selected);
+        if (is_abandon) {
+            return;
+        }
+
+        SubtitleRecordComponent opt = selectedComponent;
+        undo.addUndo(new UndoEntry(subs, _("Paste subtitles")));
+        switch (opt) {
+            case CP_TEXT:
+            case CP_TIME:
+                PasteComponents(target_location);
+                break;
+            case CP_RECORD:
+                PasteRecords(target_location);
+                break;
+            default:
+                break;
+        }//end switch (opt)
+
+        tableHasChanged(null);
     }//GEN-LAST:event_PasteEMActionPerformed
 
+    /**
+     * Runs through the selected rows on the subtitle table and clone
+     * records into the copy buffer, regardless of the selected component.
+     * The component selection is taken into account when pasting, although
+     * the flag is global, it can be changed by the source instance of
+     * jubler as well as target instance.
+     * @param evt The action event which holds the information about the
+     * action's source.
+     */
     private void CopyEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyEMActionPerformed
         SubEntry sub = null;
         int row = -1;
@@ -1849,6 +2012,20 @@ public class Jubler extends JFrame {
         }
     }//GEN-LAST:event_CopyEMActionPerformed
 
+    /**
+     * Similar to the copy, this routine runs through the list of selected
+     * records, cloning the record instances and hold them in the copy buffer,
+     * for pasting later on. To show the effect of the cutting, selected
+     * component of the records - ie. Text, Time, Record - are removed.
+     * The non-record components are removed by resetting them to a blank
+     * instance of the component, but only doing so if the component actually
+     * exists. If not, the null default is left alone.
+     *
+     * When cutting records, the record is removed completely from the vector.
+     * shortening the list.
+     * @param evt The action event which holds the information about the
+     * action's source.
+     */
     private void CutEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutEMActionPerformed
         SubEntry sub = null;
         int row = -1;
@@ -1856,7 +2033,7 @@ public class Jubler extends JFrame {
         copybuffer.clear();
         undo.addUndo(new UndoEntry(subs, _("Cut subtitles")));
         //copy out here avoiding changes of the value during the loop
-        CopyOption opt = copyOption;
+        SubtitleRecordComponent opt = selectedComponent;
 
         //SubEntry [] selected = getSelectedSubs();
         int[] selected = SubTable.getSelectedRows();
@@ -1866,11 +2043,18 @@ public class Jubler extends JFrame {
             copybuffer.add((SubEntry) sub.clone());
             switch (opt) {
                 case CP_TEXT:
-                    sub.setText("");
+                    if (sub.getText() != null) {
+                        sub.setText(new String());
+                    }
                     break;
                 case CP_TIME:
-                    sub.setStartTime(new Time(0));
-                    sub.setFinishTime(new Time(0));
+                    if (sub.getStartTime() != null) {
+                        sub.setStartTime(new Time(0));
+                    }
+
+                    if (sub.getFinishTime() != null) {
+                        sub.setFinishTime(new Time(0));
+                    }
                     break;
                 case CP_RECORD:
                     subs.remove(row);
@@ -1878,6 +2062,7 @@ public class Jubler extends JFrame {
                 default:
                     break;
             }//end switch (opt)
+
         }
         tableHasChanged(new SubEntry[0]);
     }//GEN-LAST:event_CutEMActionPerformed
@@ -2108,6 +2293,7 @@ public class Jubler extends JFrame {
         FileCommunicator.setDefaultDialogPath(filedialog);
         prefs.setShowSaveDiaglog(true);
         prefs.showSaveDialog(this, mfile, subs); //Show the "save options" dialog, if desired
+
         saveFile(filedialog.getSelectedFile());
     }//GEN-LAST:event_SaveAsFMActionPerformed
 
@@ -2117,6 +2303,7 @@ public class Jubler extends JFrame {
 
     private void SaveFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFMActionPerformed
         prefs.showSaveDialog(this, mfile, subs); //Show the "save options" dialog, if desired
+
         saveFile(subs.getCurrentFile());
     }//GEN-LAST:event_SaveFMActionPerformed
 
@@ -2179,77 +2366,89 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 
 private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptCopyCutPasteActionPerformed
     int selected_index = this.OptCopyCutPaste.getSelectedIndex();
-    switch (selected_index) {
-        case 0:
-            copyOption = CopyOption.CP_TEXT;
-            break;
-        case 1:
-            copyOption = CopyOption.CP_TIME;
-            break;
-        case 2:
-            copyOption = CopyOption.CP_RECORD;
-            break;
-        default:
-            copyOption = CopyOption.CP_TEXT;
-            break;
-    }//end switch(selected_index)
+    selectedComponent = Share.recordComponentList[selected_index];
 }//GEN-LAST:event_OptCopyCutPasteActionPerformed
 
 private void OptNumberOfLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptNumberOfLineActionPerformed
-    numberOfLine = ((Integer) OptNumberOfLine.getSelectedItem()).intValue();
+    int value = numberOfLine;
+    try {
+        value = ((Integer) OptNumberOfLine.getSelectedItem()).intValue();
+        numberOfLine = value;
+    } catch (Exception ex) {
+        OptNumberOfLine.getModel().setSelectedItem(Integer.valueOf(numberOfLine));
+    }
 }//GEN-LAST:event_OptNumberOfLineActionPerformed
 
 private void OptTextLineActListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptTextLineActListActionPerformed
-    int selected_action_index = this.OptTextLineActList.getSelectedIndex();
-    switch (selected_action_index) {
-        case 0:
-            textLineMovementOption = TextLineMovementOption.TL_MOVE_TEXT_SELECTION_UP;
-            break;
-        case 1:
-            textLineMovementOption = TextLineMovementOption.TL_MOVE_TEXT_SELECTION_DOWN;
-            break;
-        case 2:
-            textLineMovementOption = TextLineMovementOption.TL_MOVE_ALL_TEXT_FROM_SELECTION_UP;
-            break;
-        case 3:
-            textLineMovementOption = TextLineMovementOption.TL_MOVE_ALL_TEXT_FROM_SELECTION_DOWN;
-            break;
-        case 4:
-            textLineMovementOption = TextLineMovementOption.TL_INSERT_BLANK_LINE_ABOVE;
-            break;
-        case 5:
-            textLineMovementOption = TextLineMovementOption.TL_INSERT_BLANK_LINE_BELOW;
-            break;
-    }//end switch
-
+    try {
+        int selected_action_index = this.OptTextLineActList.getSelectedIndex();
+        fnOption = Share.FunctionListArray[selected_action_index];
+    } catch (Exception ex) {
+    }
 }//GEN-LAST:event_OptTextLineActListActionPerformed
 
 private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DoItTBActionPerformed
-    switch(textLineMovementOption){
-        case TL_MOVE_TEXT_SELECTION_UP:
-            this.moveText(true, false);
+    evt.setSource(this);
+    switch (fnOption) {
+        case FN_MOVE_TEXT_UP:
+            moveText.setMoveTextDown(false);
+            moveText.actionPerformed(evt);
             break;
-        case TL_MOVE_TEXT_SELECTION_DOWN:
-            this.moveText(false, false);
+        case FN_MOVE_TEXT_DOWN:
+            moveText.setMoveTextDown(true);
+            moveText.actionPerformed(evt);
             break;
-        case TL_MOVE_ALL_TEXT_FROM_SELECTION_UP:
-            this.moveText(true, true);
+        case FN_INSERT_BLANK_LINE_ABOVE:
+            insertBlankLine.setAbove(true);
+            insertBlankLine.actionPerformed(evt);
             break;
-        case TL_MOVE_ALL_TEXT_FROM_SELECTION_DOWN:
-            this.moveText(false, true);
+        case FN_INSERT_BLANK_LINE_BELOW:
+            insertBlankLine.setAbove(false);
+            insertBlankLine.actionPerformed(evt);
             break;
-        case TL_INSERT_BLANK_LINE_ABOVE:
-            this.insertBlankLine(true);
+        case FN_IMPORT_COMPONENT:            
+            importComponent.actionPerformed(evt);
             break;
-        case TL_INSERT_BLANK_LINE_BELOW:
-            this.insertBlankLine(false);
+        case FN_APPEND_FROM_FILE:
+            appendFromFile.actionPerformed(evt);
             break;
-    }//switch(textLineMovementOption)
+        case FN_GOTO_LINE:
+            this.gotoLine();
+            break;
+    }//switch(fnOption)
 }//GEN-LAST:event_DoItTBActionPerformed
+
+private void byLineNumberEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byLineNumberEMActionPerformed
+    try {
+        int goto_line_function_index = Share.getFunctionIndex(Share.FunctionList.FN_GOTO_LINE);
+        OptTextLineActList.setSelectedIndex(goto_line_function_index);
+        this.gotoLine();
+    } catch (Exception ex) {
+    }
+}//GEN-LAST:event_byLineNumberEMActionPerformed
+
+private void JoinRecordTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinRecordTMActionPerformed
+    mergeRecords.actionPerformed(evt);
+}//GEN-LAST:event_JoinRecordTMActionPerformed
+
+private void SplitRecordTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitRecordTMActionPerformed
+    splitRecord.actionPerformed(evt);
+}//GEN-LAST:event_SplitRecordTMActionPerformed
+
+private void TextBalancingOnSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextBalancingOnSelectionActionPerformed
+    balanceText.setActionOnAllData(false);
+    balanceText.actionPerformed(evt);
+}//GEN-LAST:event_TextBalancingOnSelectionActionPerformed
+
+private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextBalancingOnTheWholeTableActionPerformed
+    balanceText.setActionOnAllData(true);
+    balanceText.actionPerformed(evt);
+}//GEN-LAST:event_TextBalancingOnTheWholeTableActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
+    private javax.swing.JMenuItem AppendFromFileFM;
     public javax.swing.JCheckBoxMenuItem AudioPreviewC;
     private javax.swing.JPanel BasicPanel;
     private javax.swing.JMenuItem BeforeIEM;
@@ -2269,6 +2468,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenu DeleteEM;
     private javax.swing.JMenuItem DeleteP;
     private javax.swing.JButton DoItTB;
+    private javax.swing.JMenu DuplicationTM;
     private javax.swing.JMenu EditM;
     private javax.swing.JPanel EditTP;
     private javax.swing.JMenuItem EmptyLinesDEM;
@@ -2282,10 +2482,12 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenu GoEM;
     public javax.swing.JCheckBoxMenuItem HalfSizeC;
     private javax.swing.JMenu HelpM;
+    private javax.swing.JMenuItem ImportComponentFM;
     private javax.swing.JLabel Info;
     private javax.swing.JMenuItem InfoFM;
     private javax.swing.JButton InfoTB;
     private javax.swing.JMenu InsertEM;
+    private javax.swing.JMenuItem JoinRecordTM;
     private javax.swing.JMenuItem JoinTM;
     public javax.swing.JMenuBar JublerMenuBar;
     private javax.swing.JToolBar JublerTools;
@@ -2322,8 +2524,12 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RecodeTM;
+    private javax.swing.JMenu RecordTM;
     private javax.swing.JMenuItem RedoEM;
     private javax.swing.JButton RedoTB;
+    private javax.swing.JMenuItem RemoveBottomTopLineDuplication;
+    private javax.swing.JMenuItem RemoveTimeDuplication;
+    private javax.swing.JMenuItem RemoveTopLineDuplication;
     private javax.swing.JMenuItem ReparentTM;
     private javax.swing.JMenu ReplaceEM;
     private javax.swing.JMenuItem RetrieveWFM;
@@ -2334,6 +2540,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JButton SaveTB;
     private javax.swing.JMenuItem ShiftTimeTM;
     private javax.swing.JMenu ShowColP;
+    private javax.swing.JCheckBoxMenuItem ShowDurationP;
     private javax.swing.JCheckBoxMenuItem ShowEndP;
     private javax.swing.JCheckBoxMenuItem ShowLayerP;
     private javax.swing.JCheckBoxMenuItem ShowNumberP;
@@ -2342,6 +2549,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JButton SortTB;
     private javax.swing.JPanel SortTP;
     private javax.swing.JMenuItem SpellTM;
+    private javax.swing.JMenuItem SplitRecordTM;
     private javax.swing.JMenuItem SplitTM;
     private javax.swing.JLabel Stats;
     private javax.swing.JMenuItem StepwiseREM;
@@ -2357,6 +2565,9 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JButton TestTB;
     private javax.swing.JMenu TestTM;
     private javax.swing.JPanel TestTP;
+    private javax.swing.JMenuItem TextBalancingOnSelection;
+    private javax.swing.JMenuItem TextBalancingOnTheWholeTable;
+    private javax.swing.JMenu TextBalancingTM;
     private javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem TranslateTM;
@@ -2364,9 +2575,11 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JButton UndoTB;
     private javax.swing.JPanel UndoTP;
     public javax.swing.JCheckBoxMenuItem VideoPreviewC;
+    private javax.swing.JMenuItem ViewHeaderTM;
     private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
+    private javax.swing.JMenuItem byLineNumberEM;
     private javax.swing.JMenuItem bySelectionDEM;
     private javax.swing.JMenuItem bySelectionMEM;
     private javax.swing.JMenuItem bySelectionSEM;
@@ -2382,7 +2595,11 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JToolBar.Separator jSeparator15;
     private javax.swing.JToolBar.Separator jSeparator16;
     private javax.swing.JToolBar.Separator jSeparator17;
+    private javax.swing.JToolBar.Separator jSeparator18;
+    private javax.swing.JSeparator jSeparator19;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator20;
+    private javax.swing.JSeparator jSeparator21;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
@@ -2444,6 +2661,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
     private void loadFileFromHere(File f, boolean force_into_same_window) {
         StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
+
         loadFile(f, force_into_same_window);
     }
 
@@ -2470,6 +2688,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         /* Load file into memory */
         if (!is_autoload) {
             prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
+
         }
         data = FileCommunicator.load(f, is_autoload ? null : prefs);
         if (data == null) {
@@ -2544,6 +2763,10 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
         DoItTB.setEnabled(true);
+        OptCopyCutPaste.setEnabled(true);
+        OptNumberOfLine.setEnabled(true);
+        OptNumberOfLine.setEditable(true);
+        OptTextLineActList.setEnabled(true);
 
         subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
         updateRecentFile(f);
@@ -2622,6 +2845,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         }
         if (subs != null) {
             subs.setLastOpenedFile(null); //Needed to remove itself from the recents menu
+
         }
         FileCommunicator.updateRecentsMenu();
 
@@ -2664,7 +2888,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         ShowNumberP.setSelected(subs.isVisibleColumn(0));
         ShowStartP.setSelected(subs.isVisibleColumn(1));
         ShowEndP.setSelected(subs.isVisibleColumn(2));
-        ShowLayerP.setSelected(subs.isVisibleColumn(3));
+        ShowDurationP.setSelected(subs.isVisibleColumn(3));
         ShowStyleP.setSelected(subs.isVisibleColumn(4));
     }
     private boolean column_change;
@@ -2776,6 +3000,27 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         return preview;
     }
 
+    /**
+     * @return the SubTable
+     */
+    public javax.swing.JTable getSubTable() {
+        return SubTable;
+    }
+
+    /**
+     * @return the numberOfLine
+     */
+    public int getNumberOfLine() {
+        return numberOfLine;
+    }
+
+    /**
+     * @param numberOfLine the numberOfLine to set
+     */
+    public void setNumberOfLine(int numberOfLine) {
+        this.numberOfLine = numberOfLine;
+    }
+
     public int[] getSelectedRows() {
         return SubTable.getSelectedRows();
     }
@@ -2837,6 +3082,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
             for (int i = 0; i < which.length; i++) {
                 if (which[i] >= subs.size()) {
                     which[i] = subs.size() - 1;   // Make sure we don't go past the end of subtitles
+
                 }
                 if (which[i] >= 0) {
                     SubTable.changeSelection(which[i], -1, true, false);
@@ -2863,7 +3109,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         }
 
         subeditor.ignoreSubChanges(true);
-        SubEntry sel = subs.elementAt(subrow);        
+        SubEntry sel = subs.elementAt(subrow);
         subeditor.setData(sel);
 
         if (preview.isVisible()) {
@@ -2928,64 +3174,70 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         SystemDependent.hideSystemMenus(AboutHM, PrefsFM, QuitFM);
     }
 
-    private void moveText(boolean is_moving_up, boolean is_moving_all_from_selected_line) {
-        int selected_line = this.SubTable.getSelectedRow();
-        int target_line = selected_line +
-                (is_moving_up ? -numberOfLine :  numberOfLine) ;
-
-        int total_length = subs.size();
-        boolean valid = (is_moving_up ? target_line >= 0 : target_line < total_length);
-        if (! valid)
-            return;
-        
-        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "Move text");
-        CopyOption opt = copyOption;
-        copyOption = CopyOption.CP_TEXT;
-
-        if (is_moving_all_from_selected_line){
-            SubTable.clearSelection();
-            SubTable.getSelectionModel().setSelectionInterval(selected_line, subs.size()-1);
-        }//end if (is_moving_all_from_selected_line)
-        
-        CutEMActionPerformed(e);
-
-        SubTable.clearSelection();
-        SubTable.getSelectionModel().setSelectionInterval(target_line, target_line);
-        PasteEMActionPerformed(e);
-        copyOption = opt;
-
-        SubTable.clearSelection();
-        SubTable.getSelectionModel().setSelectionInterval(target_line, target_line);
-        tableHasChanged(null);
-    }//private void moveTextUp()
-
-    private void insertBlankLine(boolean is_above) {
-        int select_line = SubTable.getSelectedRow();
-        if (select_line < 0) {
-            return;
-        }
-        if (subs.size() <= 0) {
-            return;
-        }
-        
-        undo.addUndo(new UndoEntry(subs, _("Insert text lined above")));
-
-        Object obj = subs.elementAt(select_line);
-        String class_name = obj.getClass().getName();
-
-        Collection<SubEntry> c = new Vector<SubEntry>();
+    /**
+     * This routine loads a new subtitle file for use in addition with
+     * the loaded subtitle set. This function is used in import and append
+     * operations.
+     * 
+     * @return new set of subtitle events stored in an instance of
+     * {@link Subtitles} or null if the user has cancelled the operation
+     * or the file format is not recognised by any of internal subtitle
+     * processor.
+     */
+    public Subtitles loadSubtitleFile() {
+        String data;
+        Subtitles newsubs = null;
         try {
-            for (int i = 0; i < numberOfLine; i++) {
-                SubEntry r = (SubEntry) Class.forName(class_name).newInstance();
-                r.setStyle( subs.getStyleList().elementAt(0));
-                c.add(r);
-            }//end for (int i=0; i < numberOfLine; i++)
+            filedialog.setDialogTitle(_("Load Subtitles"));
+            if (filedialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) {
+                return null;
+            }
+            FileCommunicator.setDefaultDialogPath(filedialog);
+            File f = filedialog.getSelectedFile();
 
-            int row = (is_above ? select_line : select_line + 1);
-            subs.addAll(c,  row);
-            tableHasChanged(null);
+            /* Initialize Subtitles */
+            newsubs = new Subtitles();
+            newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
+
+            /* Check if this is an auto-load subtitle file */
+            data = FileCommunicator.load(f, prefs);
+            if (data == null) {
+                JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
+                return null;
+            }
+
+            /* Convert file into subtitle data */
+            SubFormat format_handler = newsubs.populate(f, data, prefs.getLoadFPS());
+            if (newsubs.size() == 0) {
+                JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
+                return null;
+            }
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
+            return null;
+        }//end try/catch
+        return newsubs;
+    }//end private Subtitles loadSubtitleFile()
+
+    /**
+     * This function takes the value from the editor of the combo-box
+     * OptNumberOfLine, which should be an Integer. However, when the
+     * value received is not an integer, then casting will cause
+     * an exception to raise, at which case, the old value is restored.
+     * This is done so to allow users to type a number into the combo-box
+     * and without having to exit the combobox, using short-cut Ctrl-L to
+     * activate this gotoLine() function. The number of line entered should
+     * be non-zero based and hence it should be zero-based first
+     * before being passed to the 'setSelectedSub()' function.
+     */
+    private void gotoLine() {
+        try {
+            Integer integer = (Integer) OptNumberOfLine.getEditor().getItem();
+            numberOfLine = integer.intValue();
+            setSelectedSub(numberOfLine - 1, true);
+        } catch (Exception ex) {
+            OptNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
         }
-    }
-}
+    }//private void gotoLine()
+
+}//end public class Jubler extends JFrame

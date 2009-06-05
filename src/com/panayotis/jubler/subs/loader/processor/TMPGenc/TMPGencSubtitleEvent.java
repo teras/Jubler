@@ -28,7 +28,6 @@
  */
 package com.panayotis.jubler.subs.loader.processor.TMPGenc;
 
-import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.records.TMPGenc.TMPGencSubtitleRecord;
 import com.panayotis.jubler.time.Time;

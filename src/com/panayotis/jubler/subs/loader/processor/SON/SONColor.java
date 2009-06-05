@@ -33,7 +33,10 @@ import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 /**
- *
+ * Process data entry in the following format:
+ * <pre>
+ * Color	(0 1 6 7)
+ * </pre>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONColor extends SubtitlePatternProcessor implements CommonDef {

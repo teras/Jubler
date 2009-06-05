@@ -32,6 +32,9 @@ public class Time implements Comparable<Time> {
     public static final int MAX_TIME = 3600 * 24;   // in seconds
     public static final int MAX_MILLI_TIME = MAX_TIME * 1000;   // in seconds
 
+    public Time(int msecs){
+        this.setMilli(msecs);
+    }
     /* Time in seconds */
     public Time(double time) {
         setTime(time);
@@ -112,7 +115,7 @@ public class Time implements Comparable<Time> {
     }
 
     public void setTime(double time) {
-        setMilliSeconds((int)(time * 1000d+0.5d));
+        msecs = (int)(time * 1000d+0.5d);
     }
 
     public void setTime(Time time) {
@@ -120,7 +123,7 @@ public class Time implements Comparable<Time> {
     }
 
     private void setTime(short h, short m, short s, short f) {
-        setMilliSeconds((h * 3600 + m * 60 + s) * 1000 + f);
+        msecs = (h * 3600 + m * 60 + s) * 1000 + f;
     }
 
     private void setMilliSeconds(int msecs) {
@@ -128,7 +131,7 @@ public class Time implements Comparable<Time> {
             msecs = 0;
         if (msecs > MAX_MILLI_TIME)
             msecs = MAX_MILLI_TIME;
-        this.msecs = msecs;
+        this.setMilli(msecs);
     }
 
     public int compareTo(Time t) {
@@ -216,5 +219,19 @@ public class Time implements Comparable<Time> {
     }
     public String toString() {
         return getSeconds();
+    }
+
+    /**
+     * @return the msecs
+     */
+    public int getMilli() {
+        return msecs;
+    }
+
+    /**
+     * @param msecs the msecs to set
+     */
+    public void setMilli(int msecs) {
+        this.msecs = msecs;
     }
 }

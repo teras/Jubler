@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.MediaFile;
@@ -89,9 +88,9 @@ import java.util.regex.Pattern;
  * '[LayoutDataEx]' block, and the subtitle events which are held in the
  * block starting with the header line '[ItemData]'.
  *
- * Entries in the [LayoutData] block hold definition for the subtitle-layout
- * which appears on screen when play-back, and each have a Name, DisplayArea,
- * FontName etc..
+ * Entries in the [LayoutData] block hold definition for the subtitle-layout,
+ * determines how and where the subtitle text will appears on screen when
+ * play-back, and each have a Name, DisplayArea, FontName etc..
  *
  * Entries in the [LayoutDataEx] block hold definition for global alignment
  * setting, such as centered or not, and reading direction (left-to-right or
@@ -125,20 +124,28 @@ public class TMPGenc extends AbstractBinarySubFormat implements
     protected LayoutDataExRecord layoutDataEx = null;
     protected LayoutDataItemRecord layoutDataItem = null;
     protected LayoutDataItemRecordList layoutDataItemList = null;
-    protected LayoutDataExRecordList layoutDataExList = null;    
+    protected LayoutDataExRecordList layoutDataExList = null;
     private TMPGencHeaderRecord header = null;
     protected static Pattern pat_tmpg_item_data_header = Pattern.compile(TMPG_ITEM_DATA);
     protected static Pattern pat_tmpg_layout_data_header = Pattern.compile(TMPG_LAYOUT_DATA);
     protected static Pattern pat_tmpg_layout_data_ex_header = Pattern.compile(TMPG_LAYOUT_DATA_EX);
     protected SubtitlePatternProcessor layoutDataItemProcessor,  layoutDataExItemProcessor,  subtitleEventProcessor;
-
-    public static String extension = "subtitle";
-    public static String name = "TMPGenc DVD Authoring";
-    public static String extendedName = "TMPGenc (subtitle)";
+    public static String extension = _("subtitle");
+    public static String name = _("TMPGenc DVD Authoring");
+    public static String extendedName = _("TMPGenc (subtitle)");
 
     /** Creates a new instance of DVDMaestro */
     public TMPGenc() {
         definePatternList();
+    }
+
+    public void init() {
+        super.init();
+        layoutDataEx = null;
+        layoutDataItem = null;
+        layoutDataItemList = null;
+        layoutDataExList = null;
+        header = null;
     }
 
     public String getExtension() {
@@ -155,6 +162,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
     }
 
     private void definePatternList() {
+        init();
         processorList = new SubtitleProcessorList();
         layoutDataItemProcessor = new TMPGencLayoutDataItem();
         layoutDataExItemProcessor = new TMPGencLayoutExDataItem();
@@ -188,8 +196,10 @@ public class TMPGenc extends AbstractBinarySubFormat implements
                 if (header == null) {
                     header = new TMPGencHeaderRecord();
                 }//if (header == null)
+
                 header.layoutList = layoutDataItemList;
             }//end if
+
             layoutDataItemList.add(layoutDataItem);
         }//end if (is_son_header)
 
@@ -201,8 +211,10 @@ public class TMPGenc extends AbstractBinarySubFormat implements
                 if (header == null) {
                     header = new TMPGencHeaderRecord();
                 }//if (header == null)
+
                 header.layoutExList = layoutDataExList;
             }//end if
+
             layoutDataExList.add(layoutDataEx);
         }//end if (isLayoutDataExRecord)
 
@@ -212,6 +224,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             subRecord.setHeaderRecord(header);
             subtitle_list.add(subRecord);
         }//end if (is_son_sub_entry)
+
     }//end public void recordCreated(SubtitleRecordCreatedEvent e)
 
     public void dataLineParsed(ParsedDataLineEvent e) {
@@ -264,8 +277,10 @@ public class TMPGenc extends AbstractBinarySubFormat implements
 
         if (is_data_item_header_line) {
             processorList.remove(layoutDataItemProcessor); //this is just incase
+
             processorList.remove(layoutDataExItemProcessor);
         }//end if
+
     }
 
     public boolean isSubType(String input, File f) {
@@ -279,6 +294,49 @@ public class TMPGenc extends AbstractBinarySubFormat implements
         return true;
     }
     private Subtitles subs;
+
+    /**
+     * Convert the existing entries to the target record
+     * @param current_subs current vector of the subtitle events
+     * @return newly converted subtitle vector
+     */
+    public Subtitles convert(Subtitles current_subs) {
+        TMPGencSubtitleRecord tmpgencEntry = null;
+        String instance_class_name, actual_class_name;
+        boolean is_tmpgenc_class = false;
+        try {
+            for (int i = 0; i < current_subs.size(); i++) {
+                SubEntry old_entry = current_subs.elementAt(i);
+                instance_class_name = old_entry.getClass().getName();
+                actual_class_name = TMPGencSubtitleRecord.class.getName();
+                is_tmpgenc_class = instance_class_name.equals(actual_class_name);
+
+                if (is_tmpgenc_class) {
+                    tmpgencEntry = (TMPGencSubtitleRecord) old_entry;
+                } else {
+                    tmpgencEntry = new TMPGencSubtitleRecord();
+                    /**
+                     * Temporary take the global header
+                     */
+                    tmpgencEntry.setHeaderRecord(header);
+                    /**
+                     * If the header is null, then create a new default
+                     */
+                    tmpgencEntry.copyRecord(old_entry);
+                    current_subs.replace(tmpgencEntry, i);
+                }//end if
+
+                /**
+                 * Reassign the global header in case there were some changes
+                 * above.
+                 */
+                header = tmpgencEntry.getHeaderRecord();
+            }//end for(int i=0; i < current_subs.size(); i++)
+
+        } catch (Exception ex) {
+        }
+        return current_subs;
+    }//public Subtitles convert(Subtitles current_subs)
 
     /**
      * This routine is used to write out subtitle records to a subtitle-file
@@ -304,65 +362,42 @@ public class TMPGenc extends AbstractBinarySubFormat implements
         }
 
         try {
-            SubEntry entry = (subs.elementAt(0));
-            boolean is_tmpgenc_subtitle = (entry instanceof TMPGencSubtitleRecord);
-
             StringBuffer buf = new StringBuffer();
             String txt = null;
-            if (!is_tmpgenc_subtitle) {
-                txt = TMPEG_DEFAULT_HEADER;
-            } else {
-                sub = (TMPGencSubtitleRecord) entry;
-                TMPGencHeaderRecord hdr = sub.getHeaderRecord();
-                boolean has_header = (hdr != null);
-                if (has_header) {
-                    txt = hdr.toStringForWrite();
-                } else {
-                    txt = TMPEG_DEFAULT_HEADER;
-                }//end if
-            }//end if
+
+            Subtitles converted_subs = this.convert(given_subs);
+            sub = (TMPGencSubtitleRecord) converted_subs.elementAt(0);
+            header = sub.getHeaderRecord();
+            txt = header.toStringForWrite();
             buf.append(txt);
 
-
-            for (int i = 0; i < subs.size(); i++) {
-                entry = (subs.elementAt(i));
-                is_tmpgenc_subtitle = (entry instanceof TMPGencSubtitleRecord);
-                if (!is_tmpgenc_subtitle) {
-                    sub = new TMPGencSubtitleRecord();
-                    sub.setStartTime(entry.getStartTime());
-                    sub.setFinishTime(entry.getFinishTime());
-                    sub.setText(entry.getText());
-                } else {
-                    sub = (TMPGencSubtitleRecord) entry;
-                }//end if
-                sub.setId(i+1);
+            for (int i = 0; i < converted_subs.size(); i++) {
+                sub = (TMPGencSubtitleRecord) converted_subs.elementAt(i);
+                sub.setId(i + 1);
                 txt = sub.toStringForWrite();
                 buf.append(txt);
             }//end for(int i=0; i < subs.size(); i++)
 
             /* Write textual part to disk */
-            //String file_name = outfilepath + image_out_filename + ".son";
-            FileOutputStream os = new FileOutputStream(outfile);            
+            FileOutputStream os = new FileOutputStream(outfile);
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, ENCODING));
             out.write(buf.toString());
             out.close();
 
-            /* debugging code
-            buf = new StringBuffer();
-            buf.append("Saved file: ");
-            buf.append(outfile.getAbsoluteFile());
-            buf.append(" with encoding: ");
-            buf.append(ENCODING);
-            System.out.println(buf.toString());
-             */
+        /* debugging code
+        buf = new StringBuffer();
+        buf.append("Saved file: ");
+        buf.append(outfile.getAbsoluteFile());
+        buf.append(" with encoding: ");
+        buf.append(ENCODING);
+        System.out.println(buf.toString());
+         */
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
-            String msg = ex.getMessage() + UNIX_NL;
-            msg += _("Unable to create subtitle file {0}.", outfile.getAbsolutePath());
-            JIDialog.error(null, msg, "TMPGenc error");
             return false;
         }
         return true;   // There is no need to move any files
+
     }
 
     /**

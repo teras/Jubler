@@ -34,7 +34,10 @@ import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 
 /**
- *
+ * Process data entry in the following format:
+ * <pre>
+ * # 00 : RGB(255,255, 0)
+ * </pre>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONPaletteEntry extends SubtitlePatternProcessor implements CommonDef {

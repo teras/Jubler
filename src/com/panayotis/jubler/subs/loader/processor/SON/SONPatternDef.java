@@ -32,7 +32,8 @@ package com.panayotis.jubler.subs.loader.processor.SON;
 import com.panayotis.jubler.subs.CommonDef;
 
 /**
- *
+ * This interface holds the most commonly used patter definitions for SON
+ * subtitle format.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public interface SONPatternDef extends CommonDef{

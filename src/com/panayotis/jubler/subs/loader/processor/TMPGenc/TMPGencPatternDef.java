@@ -32,14 +32,15 @@ package com.panayotis.jubler.subs.loader.processor.TMPGenc;
 import com.panayotis.jubler.subs.CommonDef;
 
 /**
- *
+ * The interface holds the common definitions of patterns used during the
+ * processing of a TMPGenc subtitle file.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public interface TMPGencPatternDef extends CommonDef{
     /**
      * Character for TMPGenc new line marker which is embedded in the
-     * subtitle text part. ("\\\\n"). This pattern is used for filter to
-     * recognize and filter during the reading operation only.
+     * subtitle text part. ("\\\\n"). This pattern is used for filters to
+     * recognize and parse during the reading operation only.
      * Typical example:
      * <pre>
      * 15,1,"00:02:29,001","00:02:32,014",0,"'The morning it all began,\nbegan like any other morning.'"

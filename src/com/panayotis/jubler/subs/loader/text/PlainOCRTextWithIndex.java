@@ -77,11 +77,11 @@ public class PlainOCRTextWithIndex extends AbstractTextSubFormat {
     }
     
     public String getName() {
-        return "PlainTxt";
+        return "PlainTxtID";
     }
     
     public String getExtendedName() {
-        return _("Plain text");
+        return _("Plain text with ID");
     }
     
     protected void appendSubEntry(SubEntry sub, StringBuffer str){

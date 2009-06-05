@@ -83,7 +83,7 @@ import javax.swing.ImageIcon;
  * Display_Start	non_forced
  * TV_Type		PAL
  * Tape_Type	NON_DROP
- * Pixel_Area	(0 575) //width 576
+ * Pixel_Area	(0 575)
  * Directory	C:\java\test_data\edwardian
  * Contrast	( 15 0 15 15 )
  *
@@ -188,9 +188,14 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         addPostParseActionEventListener(this);
     }
 
-    public void preParseAction(PreParseActionEvent e) {
+    public void init(){
+        super.init();
         sonHeader = null;
-        sonSubEntry = null;
+        sonSubEntry = null;        
+    }
+    
+    public void preParseAction(PreParseActionEvent e) {
+        init();
         processorList.setAllTargetObjectClassNameAndRemovable(getHeaderProcessorListGroup(), SonHeader.class.getName(), true);
         processorList.setAllTargetObjectClassNameAndRemovable(getAttributeProcessorListGroup(), SonHeader.class.getName(), false);
         processorList.setAllTargetObjectClassNameAndRemovable(getDetailProcessorListGroup(), SonSubEntry.class.getName(), false);
@@ -310,6 +315,45 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
     }
     private Subtitles subs;
 
+    /**
+     * Convert the existing entries to the target record
+     * @param current_subs current vector of the subtitle events
+     * @return newly converted subtitle vector
+     */
+    public Subtitles convert(Subtitles current_subs){
+        String instance_class_name, actual_class_name;
+        boolean is_son_class = false;
+        init();
+        try {
+            for (int i = 0; i < current_subs.size(); i++) {
+                SubEntry old_entry = current_subs.elementAt(i);
+                instance_class_name = old_entry.getClass().getName();
+                actual_class_name = SonSubEntry.class.getName();
+                is_son_class = instance_class_name.equals(actual_class_name);
+                if (is_son_class){
+                    sonSubEntry = (SonSubEntry) old_entry;
+                }else{
+                    sonSubEntry = new SonSubEntry();
+                    /**
+                     * Temporary take the global header
+                     */
+                    sonSubEntry.header = sonHeader;
+                    /**
+                     * If the header is null, then create a new default
+                     */
+                    sonSubEntry.copyRecord(old_entry);
+                    current_subs.replace(sonSubEntry, i);
+                }//end if
+                /**
+                 * Reassign the global header in case there were some changes
+                 * above.
+                 */
+                sonHeader = sonSubEntry.header;
+            }//end for(int i=0; i < current_subs.size(); i++)
+        } catch (Exception ex) {
+        }
+        return current_subs;
+    }
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
         File dir = outfile.getParentFile();
 
@@ -326,8 +370,9 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
             JIDialog.action(null, moptions, _("Maestro DVD options"));
         }//end if
 
+        Subtitles convert_list = convert(given_subs);
         /* Start writing the files in a separate thread */
-        Thread t = new WriteSonSubtitle(this, subs, moptions, outfile, dir, FPS, ENCODING);
+        Thread t = new WriteSonSubtitle(this, convert_list, moptions, outfile, dir, FPS, ENCODING);
         t.start();
         return false;   // There is no need to move any files
     }
@@ -421,6 +466,7 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
         this.subs = subtitle_list;
     }
 
+    @Override
     public void run() {
         try {            
             if (pb.isOn()) {
@@ -434,8 +480,6 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
             int image_dir_index = 0;
 
             String txt = null;
-            SonSubEntry son_subentry = null;
-
 
             pb.setMinValue(0);
             pb.setMaxValue(sub_count - 1);
@@ -443,21 +487,12 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
             pb.setTitle(_("Saving \"{0}\"", index_outfile.getName()));
             StringBuffer buffer = new StringBuffer();
 
-            Object obj = subs.elementAt(0);
-            boolean is_son = (obj instanceof SonSubEntry);
-            if (is_son) {
-                son_subentry = (SonSubEntry) obj;
-            }//end if (! is_son)
-
-            boolean has_header = (is_son && son_subentry.getHeader() != null);
-            if (has_header) {
-                sonHeader = son_subentry.header;
-            } else {
-                parent.makeHeaderRecord();
-                sonHeader = parent.getSonHeader();
+            sonSubEntry = (SonSubEntry) subs.elementAt(0);
+            sonHeader = sonSubEntry.getHeader();
+            boolean is_default_header = sonSubEntry.getHeader().isDefaultHeader();
+            if (is_default_header){
                 sonHeader.moptions = moptions;
                 sonHeader.FPS = FPS;
-
                 dirList = Share.createImageDirectories(dir);
                 if (Share.isEmpty(dirList)) {
                     dirList.add(dir);
@@ -467,10 +502,11 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
                 files_per_dir_count = (sub_count / dir_count);
                 File first_image_dir = dirList.elementAt(0);
                 sonHeader.image_directory = first_image_dir.getAbsolutePath();
+                sonHeader.setDefaultHeader(false);
             }//end if
 
             sonHeader.subtitle_file = outfile;
-            txt = parent.getSonHeader().toString();
+            txt = sonHeader.toString();
             buffer.append(txt);
 
             /* create digits prependable string */
@@ -481,16 +517,14 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
             String img_filename, id_string;
             image_count = 0;
             for (int i = 0; i < subs.size(); i++) {
-                obj = subs.elementAt(i);
-                is_son = (obj instanceof SonSubEntry);
-                if (is_son) {
-                    son_subentry = (SonSubEntry) obj;
-                    son_subentry.event_id = (short) (i + 1);
-                    son_subentry.max_digits = maxDigits;
-                    txt = son_subentry.toString();
-                    buffer.append(txt);
-                } else {
-                    SubEntry entry = (SubEntry) obj;
+                sonSubEntry = (SonSubEntry) subs.elementAt(i);
+                sonSubEntry.event_id = (short) (i + 1);
+                sonSubEntry.max_digits = maxDigits;
+
+                boolean has_image = (sonSubEntry.getImage() != null);
+                boolean has_text = (sonSubEntry.getText() != null);
+                boolean is_make_text_image = (has_text && !has_image);
+                if (is_make_text_image){
                     id_string = fmt.format(i + 1);
                     img_filename = image_out_filename + "_" + id_string + ".png";
 
@@ -503,12 +537,16 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
                     }//end if (dir_count > 0)
 
                     File image_dir = dirList.elementAt(image_dir_index);
-                    makeSubPicture(entry, i, image_dir, img_filename);
+                    makeSubPicture(sonSubEntry, i, image_dir, img_filename);
                     pb.setTitle(img_filename);
-                    makeSubEntry(entry, i, img_filename, buffer);
+                    //makeSubEntry(sonSubEntry, i, img_filename, buffer);
                 }//end if
+                
+                txt = sonSubEntry.toString();
+                buffer.append(txt);
+
                 pb.setValue(i);
-            }//end for
+            }//end for (int i = 0; i < subs.size(); i++)
 
             /* Write textual part to disk */
             //String file_name = outfilepath + image_out_filename + ".son";
@@ -545,11 +583,15 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
         buffer.append(txt);
     }//end private void makeSubEntry(SubEntry entry, int id, String filename, StringBuffer buffer)
 
-    private boolean makeSubPicture(SubEntry entry, int id, File dir, String filename) {
+    private boolean makeSubPicture(SonSubEntry entry, int id, File dir, String filename) {
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();
         try {
-            ImageIO.write(img, "png", new File(dir, filename));
+            File image_file =  new File(dir, filename);
+            entry.image_filename = filename;
+            entry.image_pathname = image_file.getParent();
+            entry.image = new ImageIcon(img);
+            ImageIO.write(img, "png", image_file);
         } catch (IOException ex) {
             return false;
         }
@@ -621,7 +663,7 @@ class LoadSonImage extends Thread implements CommonDef {
 
             File f_img = new File(image_dir);
             if (! f_img.isDirectory())
-                f_img = new File(image_dir);
+                f_img = new File(subtitle_file_dir);
             last_image_dir = f_img;
             
             path_list.add(last_image_dir);
@@ -654,7 +696,7 @@ class LoadSonImage extends Thread implements CommonDef {
                     dir = path_list.elementAt(j);
                     f = new File(dir, image_filename);
                     is_found = (f != null) && f.isFile() && f.exists();
-                    if (is_found) {
+                    if (is_found) {                        
                         img = DVDMaestro.readImage(f);
                         sub_entry.image = img;
                         has_image = (img != null);
@@ -691,6 +733,7 @@ class LoadSonImage extends Thread implements CommonDef {
                 }//end if (! repeat_search)
             }//end while(i < len)
 
+            sub_list.fireTableDataChanged();
             DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
         } catch (Exception ex) {
             ex.printStackTrace(System.out);

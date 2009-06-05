@@ -57,6 +57,7 @@ import java.text.NumberFormat;
  * @author Hoang Duy Tran
  */
 public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Cloneable {
+
     /**
      * The internal number format instance. This is used to format numerical values
      * when it is required to convert values into string format.
@@ -127,6 +128,42 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * The color of the border normally black
      */
     private long borderColour = 0;
+
+    public LayoutDataItemRecord() {
+    }
+
+    public LayoutDataItemRecord(
+            String name,
+            byte displayArea,
+            String fontName,
+            float forntSize,
+            double fontColour,
+            byte styleBold,
+            byte styleItalic,
+            byte styleUnderScore,
+            byte styleStrikeThrough,
+            byte alignmentHorizontal,
+            byte alignmentVertical,
+            byte textRotation,
+            byte textBorder,
+            float borderSize,
+            long borderColour) {
+        this.name = name;
+        this.displayArea = displayArea;
+        this.fontName = fontName;
+        this.forntSize = forntSize;
+        this.fontColour = fontColour;
+        this.styleBold = styleBold;
+        this.styleItalic = styleItalic;
+        this.styleUnderScore = styleUnderScore;
+        this.styleStrikeThrough = styleStrikeThrough;
+        this.alignmentHorizontal = alignmentHorizontal;
+        this.alignmentVertical = alignmentVertical;
+        this.textRotation = textRotation;
+        this.textBorder = textBorder;
+        this.borderSize = borderSize;
+        this.borderColour = borderColour;
+    }//public LayoutDataItemRecord
 
     /**
      * gets the name of the layout
@@ -419,7 +456,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
             bld.append(name);
             bld.append(char_double_quote);
             bld.append(char_comma);
-            
+
             bld.append(displayArea);
             bld.append(char_comma);
             bld.append(fontName);
@@ -429,9 +466,9 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
             fmt.setGroupingUsed(false);
             String fc = fmt.format(getFontColour());
-            bld.append(fc); 
+            bld.append(fc);
             bld.append(char_comma);
-            
+
             bld.append(styleBold);
             bld.append(char_comma);
             bld.append(styleItalic);

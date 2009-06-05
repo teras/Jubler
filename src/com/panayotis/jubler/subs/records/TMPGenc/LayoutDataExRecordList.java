@@ -86,4 +86,24 @@ public class LayoutDataExRecordList extends Vector<LayoutDataExRecord> implement
         return n;
     }//end clone
 
+    /**
+     * Generate this default
+     * [LayoutDataEx]
+     * 0,0
+     * 1,0
+     * 1,0
+     * 1,1
+     */
+    public void defaultRecord(){
+        LayoutDataExRecord list[]=new LayoutDataExRecord[4];
+        list[0] = new LayoutDataExRecord(0, 0);
+        list[1] = new LayoutDataExRecord(1, 0);
+        list[2] = new LayoutDataExRecord(1, 0);
+        list[3] = new LayoutDataExRecord(1, 1);
+
+        for(int i=0; i<list.length; i++){
+            this.add(list[i]);
+        }//end for(int i=0; i<list.length; i++)
+    }// public void defaultRecord()
+
 }

@@ -24,10 +24,14 @@
 package com.panayotis.jubler.subs.loader;
 
 /**
- * This file is a template for subtitle which contains images such as SON.
+ * This file is a template for subtitle which contains header, such as
+ * TMPGenc or SON, SWT.
  * @author Hoang Duy Tran
  */
 public interface HeaderedTypeSubtitle {
     public Object getHeader();
+    public void setHeader(Object header);
+    public Object getDefaultHeader();
     public String getHeaderAsString();
+
 }

@@ -26,10 +26,15 @@ import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.loader.processor.SWT.SWTPatternDef;
 
 /**
- *
+ * Similar to SonHeader class.
+ * @see SonHeader
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SWTHeader extends SonHeader{
+
+    public void copyRecord(SonHeader o){
+        super.copyRecord(o);
+    }
     
     @Override
     public StringBuffer addDetailHeader(StringBuffer b){

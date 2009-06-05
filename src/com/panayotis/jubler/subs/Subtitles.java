@@ -42,10 +42,10 @@ import javax.swing.JTable;
  */
 public class Subtitles extends AbstractTableModel {
 
-    private static final String COLUMNID = "#FELS";
+    private static final String COLUMNID = "#FEDLS";
     private static final String DEFAULTCOLUMNID = "FE";
-    private static final String COLNAME[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
-    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50";
+    private static final String COLNAME[] = {_("#"), _("Start"), _("End"), _("Duration"), _("Layer"), _("Style"), _("Subtitle")};
+    private static final String DEFAULTCOLWIDTH = "50,100,100,100,50,50";
     private boolean[] visiblecols = AutoSaveOptions.getVisibleColumns(COLUMNID, DEFAULTCOLUMNID);
     private int prefcolwidth[] = AutoSaveOptions.getColumnWidth(COLUMNID.length(), DEFAULTCOLWIDTH);
     private final static int FIRST_EDITABLE_COL = COLNAME.length;
@@ -79,7 +79,8 @@ public class Subtitles extends AbstractTableModel {
         SubEntry newentry, oldentry;
         for (int i = 0; i < old.size(); i++) {
             oldentry = old.elementAt(i);
-            newentry = new SubEntry(oldentry);
+            //newentry = new SubEntry(oldentry);
+            newentry = (SubEntry)oldentry.clone();
             sublist.add(newentry);
             if (newentry.getStyle() != null) {
                 newentry.setStyle(styles.getStyleByName(oldentry.getStyle().getName()));
@@ -96,18 +97,25 @@ public class Subtitles extends AbstractTableModel {
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
-    public void populate(File f, String data, float FPS) {
+    public SubFormat populate(File f, String data, float FPS) {
         Subtitles load;
         AvailSubFormats formats;
 
         if (data == null) {
-            return;
+            return null;
         }
         load = null;
         formats = new AvailSubFormats();
 
+        /**
+         * Leave the format_handler outside the loop here
+         * for easier debugging and see which format handler was selected
+         * during the recognition of pattern and subsequently chosen
+         * as the loader for the data.
+         */
+        SubFormat format_handler = null;
         while (load == null && formats.hasMoreElements()) {
-            SubFormat format_handler = formats.nextElement();
+            format_handler = formats.nextElement();
             format_handler.init();
             load = format_handler.parse(data, FPS, f);
             if (load != null && load.size() < 1) {
@@ -116,6 +124,7 @@ public class Subtitles extends AbstractTableModel {
         }
         appendSubs(load, true);
         attribs = new SubAttribs(load.attribs);
+        return (load == null ? null : format_handler);
     }
 
     public void sort(double mintime, double maxtime) {
@@ -147,7 +156,7 @@ public class Subtitles extends AbstractTableModel {
         sublist.addAll(lastpos, sorted);
     }
 
-    private void appendSubs(Subtitles newsubs, boolean newStylePriority) {
+    public void appendSubs(Subtitles newsubs, boolean newStylePriority) {
         if (newsubs == null) {
             return;
         }
@@ -221,32 +230,54 @@ public class Subtitles extends AbstractTableModel {
         }
     }
 
-    public void insertAt(SubEntry sub, int index) {
-        boolean valid_index = (index >= 0 && index < sublist.size());
-        sub.setStyle(styles.elementAt(0));
-        if (valid_index) {
-            sublist.insertElementAt(sub, index);
-            int last_row = sublist.size() - 1;
-            fireTableRowsInserted(last_row, last_row);
-        } else {
-            sublist.add(sub);
-            fireTableRowsInserted(index, index);
+    public boolean insertAt(SubEntry sub, int index) {
+        try {
+            boolean valid_index = (index >= 0 && index < sublist.size());
+            sub.setStyle(styles.elementAt(0));
+            if (valid_index) {
+                sublist.insertElementAt(sub, index);
+                fireTableRowsInserted(index, index);
+            } else {
+                if (index < 0) {
+                    sublist.insertElementAt(sub, 0);
+                    fireTableRowsInserted(0, 0);
+                } else {
+                    sublist.add(sub);
+                    fireTableRowsInserted(sublist.size() - 1, sublist.size() - 1);
+                }//end if/else invalid_index
+            }//end if/else valid_index
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
     }
 
+    /**
+     * Adding a collection or {@link SubEntry} into the current set of
+     * subtitle records at the specified index, by using
+     * {@link #insertAt} as this routine takes care of the style.
+     * This routine add records in the reverse order, starting from the bottom
+     * of the {@link Collection}. This has effect to ensure the order
+     * of the newly selected set are inserted correctly, as elements are
+     * shift downward from the chosen index.
+     * @param c The new {@link Collection} of {@link SubEntry}
+     * @param index The selected row at which entries are added
+     * @return true if all entries are added, false otherwise.
+     */
     public boolean addAll(Collection<SubEntry> c, int index) {
-        boolean result = false;
-        if (index < 0){
-            index = 0;
+        boolean ok = false;
+        try{
+            Object[] array = c.toArray();
+            int len = array.length;
+            for (int i=len-1; i >= 0; i--){
+                SubEntry entry = (SubEntry)array[i];
+                ok = insertAt(entry, index);
+            }//end for (int i=len-1; i >= 0; i--)
+        }catch(Exception ex){
         }
-        if (index >= sublist.size()){
-            result = sublist.addAll(c);
-        }else{
-            result = sublist.addAll(index, c);
-        }
-        return result;
+        return ok;
     }
-    
+
     public void remove(int i) {
         sublist.remove(i);
     }
@@ -391,17 +422,16 @@ public class Subtitles extends AbstractTableModel {
         fireTableCellUpdated(row, col);
     }
 
-    public void replace(SubEntry sub, int row) {
+    public boolean replace(SubEntry sub, int row) {
         boolean is_valid_row = (row >= 0 && row < sublist.size());
         sub.setStyle(styles.elementAt(0));
         if (is_valid_row) {
             sublist.setElementAt(sub, row);
             fireTableRowsUpdated(row, row);
-        } else {
-            sublist.add(sub);
-            int last_row = sublist.size() - 1;
-            fireTableRowsInserted(last_row, last_row);
-}//end if
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public boolean isCellEditable(int row, int col) {

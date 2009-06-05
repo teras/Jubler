@@ -30,10 +30,36 @@ import java.io.File;
 import java.util.Vector;
 
 /**
+ * This class is used to hold the header record of a SON subtitle format.
+ * The example for this block of data in the subtitle file is shown here:
+ * <pre>
+ * st_format	2
+ * Display_Start	non_forced
+ * TV_Type		PAL
+ * Tape_Type	NON_DROP
+ * Pixel_Area	(0 575)
+ * Directory	C:\java\test_data\edwardian
+ * Contrast	( 15 0 15 15 )
+ * Color	(0 1 6 7)
+ * Display_Area	(000 446 720 518)
  *
+ * #
+ * # Palette entries:
+ * #
+ * # 00 : RGB(255,255, 0)
+ * # 01 : RGB(131,127, 0)
+ * # 02 : RGB( 8, 0, 0)
+ * #
+ *</pre>
  * @author Hoang Duy Tran <hoang_tran>
  */
-public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef, Cloneable {
+public class SonHeader implements SONPatternDef, Cloneable {
+    /**
+     * this is to flag that the record is a default header generated and
+     * further modification might be required. This is useful when conversion
+     * from other record types are performed.
+     */
+    private boolean defaultHeader = false;
 
     public float FPS = 25f;
     public int st_format = -1;
@@ -49,11 +75,6 @@ public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef, Cloneable
     public File subtitle_file = null;
     public int max_row_height = -1;
     public JMaestroOptions moptions = null;
-
-    public HeaderedTypeSubtitle newInstance() {
-        HeaderedTypeSubtitle new_instance = new SonHeader();
-        return new_instance;
-    }
 
     public Object getHeader() {
         return this;
@@ -202,21 +223,78 @@ public class SonHeader implements HeaderedTypeSubtitle, SONPatternDef, Cloneable
     @SuppressWarnings("unchecked")
     public Object clone() {
         SonHeader new_header = new SonHeader();
-        new_header.FPS = this.FPS;
-        new_header.st_format = this.st_format;
-        new_header.display_start = (display_start == null ? null : new String(display_start));
-        new_header.tv_type = (tv_type == null ? null : new String(tv_type));
-        new_header.tape_type = (tape_type == null ? null : new String(tape_type));
-        new_header.pixel_area = Share.copyShortArray(pixel_area);
-        new_header.colour = Share.copyShortArray(colour);
-        new_header.contrast = Share.copyShortArray(contrast);
-        new_header.display_area = Share.copyShortArray(display_area);
-        new_header.palletEntry = (palletEntry == null ? null : (Vector<SonPaletteEntry>) palletEntry.clone());
-        new_header.image_directory = (image_directory == null ? null : new String(image_directory));
-        new_header.subtitle_file = subtitle_file;
-        new_header.max_row_height = max_row_height;
-        new_header.moptions = moptions;
-
+        try {
+            new_header.defaultHeader = this.defaultHeader;
+            new_header.FPS = this.FPS;
+            new_header.st_format = this.st_format;
+            new_header.display_start = (display_start == null ? null : new String(display_start));
+            new_header.tv_type = (tv_type == null ? null : new String(tv_type));
+            new_header.tape_type = (tape_type == null ? null : new String(tape_type));
+            new_header.pixel_area = Share.copyShortArray(pixel_area);
+            new_header.colour = Share.copyShortArray(colour);
+            new_header.contrast = Share.copyShortArray(contrast);
+            new_header.display_area = Share.copyShortArray(display_area);
+            new_header.palletEntry = (palletEntry == null ? null : (Vector<SonPaletteEntry>) palletEntry.clone());
+            new_header.image_directory = (image_directory == null ? null : new String(image_directory));
+            new_header.subtitle_file = subtitle_file;
+            new_header.max_row_height = max_row_height;
+            new_header.moptions = moptions;
+        } catch (Exception ex) {
+        }
         return new_header;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void copyRecord(SonHeader o) {
+        try {
+            this.defaultHeader = o.defaultHeader;
+            this.FPS = o.FPS;
+            this.st_format = o.st_format;
+            this.display_start = (o.display_start == null ? null : new String(o.display_start));
+            this.tv_type = (o.tv_type == null ? null : new String(o.tv_type));
+            this.tape_type = (o.tape_type == null ? null : new String(o.tape_type));
+            this.pixel_area = Share.copyShortArray(o.pixel_area);
+            this.colour = Share.copyShortArray(o.colour);
+            this.contrast = Share.copyShortArray(o.contrast);
+            this.display_area = Share.copyShortArray(o.display_area);
+            this.palletEntry = (o.palletEntry == null ? null : (Vector<SonPaletteEntry>) o.palletEntry.clone());
+            this.image_directory = (o.image_directory == null ? null : new String(o.image_directory));
+            this.subtitle_file = o.subtitle_file;
+            this.max_row_height = o.max_row_height;
+            this.moptions = o.moptions;
+        } catch (Exception ex) {
+        }
+    }
+
+    public void makeDefaultHeader(){
+            this.defaultHeader = true;
+            this.FPS = 25;
+            this.st_format = 2;
+            this.display_start = "non_forced";
+            this.tv_type = "PAL";
+            this.tape_type = "NON_DROP";
+            this.pixel_area = new short[]{0, 575};
+            this.colour = new short[]{0, 1, 2, 3};
+            this.contrast = new short[]{0, 15, 15, 15};
+            this.display_area = new short[]{0, 380, 720, 416};
+            this.palletEntry = null;
+            this.image_directory = USER_CURRENT_DIR;
+            this.subtitle_file = new File(USER_CURRENT_DIR);
+            this.max_row_height = 25;
+            this.moptions = null;
+    }
+
+    /**
+     * @return the defaultHeader
+     */
+    public boolean isDefaultHeader() {
+        return defaultHeader;
+    }
+
+    /**
+     * @param defaultHeader the defaultHeader to set
+     */
+    public void setDefaultHeader(boolean defaultHeader) {
+        this.defaultHeader = defaultHeader;
     }
 }

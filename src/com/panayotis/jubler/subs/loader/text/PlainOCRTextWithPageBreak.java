@@ -121,11 +121,11 @@ public class PlainOCRTextWithPageBreak extends AbstractTextSubFormat {
     }
 
     public String getName() {
-        return "PlainTxt";
+        return "PlainTxtPgBrk";
     }
 
     public String getExtendedName() {
-        return _("Plain text");
+        return _("Plain text with page-break");
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuffer str) {

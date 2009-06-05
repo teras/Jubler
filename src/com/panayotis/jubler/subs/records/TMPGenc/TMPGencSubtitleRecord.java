@@ -22,6 +22,7 @@ package com.panayotis.jubler.subs.records.TMPGenc;
 
 import com.panayotis.jubler.subs.loader.processor.TMPGenc.TMPGencPatternDef;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 
 /**
  * This class is used to hold the following data line
@@ -29,10 +30,9 @@ import com.panayotis.jubler.subs.SubEntry;
  * which is a part of the subtitle events in a TMPGenc subtitle format file.
  * @author Hoang Duy Tran
  */
-public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef {
+public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef, HeaderedTypeSubtitle {
 
-    private TMPGencHeaderRecord headerRecord = null;
-
+    private TMPGencHeaderRecord header = null;
     private int id = -1;
     /**
      * The index to the
@@ -79,6 +79,30 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
         this.enabled = enabled;
     }
 
+    public TMPGencHeaderRecord getHeader() {
+        return header;
+    }//end public TMPGencHeaderRecord getHeader()
+
+    public String getHeaderAsString() {
+        if (header == null) {
+            return "";
+        } else {
+            return header.toStringForWrite();
+        }
+    }//end public String getHeaderAsString()
+
+    public void setHeader(Object header) {
+        boolean ok = (header != null && (header instanceof TMPGencHeaderRecord));
+        if (ok) {
+            this.header = (TMPGencHeaderRecord) header;
+        }
+    }//public void setHeader(Object header)
+
+    public Object getDefaultHeader() {
+        TMPGencHeaderRecord new_header = new TMPGencHeaderRecord();
+        new_header.makeDefaultHeader();
+        return new_header;
+    }//end public Object getDefaultHeader()
     /**
      * Converts the record to a string representation. If the version for
      * writing out to files is required than the new line character will be made
@@ -147,35 +171,17 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * Clone the record to a new instance.
-     * @return the instance of cloned version
-     */
-    @Override
-    public Object clone() {
-        TMPGencSubtitleRecord n = null;
-        try {
-            n = (TMPGencSubtitleRecord) super.clone();
-            n.layoutIndex = this.layoutIndex;
-            n.enabled = this.enabled;
-
-        } catch (Exception ex) {
-            ex.printStackTrace(System.out);
-        }
-        return n;
-    }//end clone
-
-    /**
-     * @return the headerRecord
+     * @return the header
      */
     public TMPGencHeaderRecord getHeaderRecord() {
-        return headerRecord;
+        return header;
     }
 
     /**
-     * @param headerRecord the headerRecord to set
+     * @param header the header to set
      */
     public void setHeaderRecord(TMPGencHeaderRecord headerRecord) {
-        this.headerRecord = headerRecord;
+        this.header = headerRecord;
     }
 
     /**
@@ -191,4 +197,41 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     public void setId(int id) {
         this.id = id;
     }
+
+    /**
+     * Clone the record to a new instance.
+     * @return the instance of cloned version
+     */
+    @Override
+    public Object clone() {
+        TMPGencSubtitleRecord n = null;
+        try {
+            n = (TMPGencSubtitleRecord) super.clone();
+            n.id = this.id;
+            n.layoutIndex = this.layoutIndex;
+            n.enabled = this.enabled;
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        }
+        return n;
+    }//end clone
+
+
+    @Override
+    public void copyRecord(SubEntry o) {
+        try {
+            super.copyRecord(o);
+            boolean has_header = (header != null);
+            if (!has_header) {
+                header = new TMPGencHeaderRecord();
+                header.makeDefaultHeader();
+            }//end if (! has_header)
+
+            TMPGencSubtitleRecord tmp = (TMPGencSubtitleRecord) o;
+            id = tmp.id;
+            layoutIndex = tmp.layoutIndex;
+            enabled = tmp.enabled;
+        } catch (Exception ex) {
+        }
+    }//end public void copyRecord(SubEntry o)
 }

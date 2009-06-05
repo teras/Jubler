@@ -40,41 +40,119 @@ import javax.swing.JOptionPane;
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class Share implements CommonDef {
-    public static enum CopyOption {
+
+    /**
+     * This enumeration indicates the component
+     * of a record will be used. The typical use
+     * will be for cutting/copying, and for importing.
+     */
+    public static enum SubtitleRecordComponent {
         CP_TEXT,
         CP_TIME,
+        CP_HEADER,
         CP_RECORD
     };
-
-    public static enum TextLineMovementOption {
-        TL_MOVE_TEXT_SELECTION_UP,
-        TL_MOVE_TEXT_SELECTION_DOWN,
-        TL_MOVE_ALL_TEXT_FROM_SELECTION_UP,
-        TL_MOVE_ALL_TEXT_FROM_SELECTION_DOWN,
-        TL_INSERT_BLANK_LINE_ABOVE,
-        TL_INSERT_BLANK_LINE_BELOW
+    public static SubtitleRecordComponent[] recordComponentList =
+            new SubtitleRecordComponent[]{
+        SubtitleRecordComponent.CP_TEXT,
+        SubtitleRecordComponent.CP_TIME,
+        SubtitleRecordComponent.CP_HEADER,
+        SubtitleRecordComponent.CP_RECORD
+    };
+    /**
+     * This is the readable names of the record component
+     * above and is used for human interaction, plus translation
+     * purposes.
+     */
+    public static String[] componentNames = new String[]{
+        _("Text"),
+        _("Time"),
+        _("Header"),
+        _("Record"),
     };
 
-    public static short[] copyShortArray(short[] orig){
-        if (orig == null)
+    public static enum FunctionList {
+        FN_GOTO_LINE,
+        FN_MOVE_TEXT_UP,
+        FN_MOVE_TEXT_DOWN,
+        FN_INSERT_BLANK_LINE_ABOVE,
+        FN_INSERT_BLANK_LINE_BELOW,
+        FN_IMPORT_COMPONENT,
+        FN_APPEND_FROM_FILE
+    };
+    /**
+     * This is used to simplify the function selection, a translation
+     * from the fnNames below to the FunctionList enumeration above.
+     */
+    public static FunctionList[] FunctionListArray = new FunctionList[]{
+        FunctionList.FN_GOTO_LINE,
+        FunctionList.FN_MOVE_TEXT_UP,
+        FunctionList.FN_MOVE_TEXT_DOWN,
+        FunctionList.FN_INSERT_BLANK_LINE_ABOVE,
+        FunctionList.FN_INSERT_BLANK_LINE_BELOW,
+        FunctionList.FN_IMPORT_COMPONENT,
+        FunctionList.FN_APPEND_FROM_FILE
+    };
+
+    /**
+     * Find the index for a desired function's enumeration. The
+     * index can then be used to access the fnNames array or manipulate
+     * the selected index of the OptTextLineActList combobox in Jubler
+     * class.
+     * @param entry The enumeration for the function
+     * @return the index of the function enumeration in the
+     * FunctionListArray if the entry is found. If not, -1 is
+     * returned.
+     */
+    public static int getFunctionIndex(FunctionList entry) {
+        try {
+            for (int i = 0; i < FunctionListArray.length; i++) {
+                boolean is_found = (FunctionListArray[i] == entry);
+                if (is_found) {
+                    return i;
+                }//end if
+            }//end for
+        } catch (Exception ex) {
+        }
+        return -1;
+    }
+    /**
+     * This is the names of the functions that can be used from the
+     * OptTextLineActList combo-box in the Jubler class.
+     * They are listed here for easy to gather data for translations.
+     */
+    public static String[] fnNames = new String[]{
+        _("Goto line"),
+        _("Move text up"),
+        _("Move text down"),
+        _("Blank line above"),
+        _("Blank line below"),
+        _("Import component"),
+        _("Append from file")
+    };
+
+    public static short[] copyShortArray(short[] orig) {
+        if (orig == null) {
             return null;
-        
+        }
+
         int len = orig.length;
         short[] new_array = new short[len];
         System.arraycopy(orig, 0, new_array, 0, len);
         return new_array;
     }
 
-    public static int[] copyIntArray(int[] orig){
-        if (orig == null)
+    public static int[] copyIntArray(int[] orig) {
+        if (orig == null) {
             return null;
-        
+        }
+
         int len = orig.length;
         int[] new_array = new int[len];
         System.arraycopy(orig, 0, new_array, 0, len);
         return new_array;
     }
-    
+
     public static boolean isRemindMissingImage() {
         return remindMissingImage;
     }
@@ -453,6 +531,17 @@ public class Share implements CommonDef {
         return null;
     }//public static File[] createImageDirectory(File default_directory)
 
+    /**
+     * Initiates the {@link #createImageDirectory} - singular - to obtain
+     * a directory selection using a file dialog, defaulted at an initial
+     * directory. Once the selection has been made, the list of selected
+     * directories, plus the default directory, are grouped into a single
+     * non-duplicated list and returned to the calling routine.
+     * @param default_directory The default directory to start-up the file
+     * dialog with.
+     * @return A non-duplicated list of directories which has been selected,
+     * empty if the directory selection operation has been cancelled.
+     */
     public static NonDuplicatedVector<File> createImageDirectories(File default_directory) {
         NonDuplicatedVector<File> dirList = new NonDuplicatedVector<File>();
         File[] selectedDirectories = Share.createImageDirectory(default_directory);
@@ -465,6 +554,33 @@ public class Share implements CommonDef {
             }//end for
         }//end if
         return dirList;
-    }//end public static Vector<File> createImageDirectory(File default_directory) 
+    }//end public static Vector<File> createImageDirectory(File default_directory)
+
+    /**
+     * Count the number of word, space separated, in a string of text.
+     * @param text_line The text line to be counted.
+     * @return The number of words contains in the text line, 0 if no words
+     * are found or an error occurred.
+     */
+    public static int wordCount(String text_line) {
+        try {
+            String[] list = text_line.split(white_sp);
+            int count = list.length;
+            return count;
+        } catch (Exception ex) {
+            return 0;
+        }
+    }//end public static int wordCount(String text_line)
+
+    /**
+     * Checks to see if a string of text only contains a single word or not.
+     * @param txt The string of text to be examined.
+     * @return True if the text contains only a single word, false otherwise.
+     */
+    public static boolean isOneWord(String txt) {
+        int count = wordCount(txt);
+        boolean is_one_word = (count == 1);
+        return is_one_word;
+    }//end public static boolean isOneWord(String txt)
 }
 

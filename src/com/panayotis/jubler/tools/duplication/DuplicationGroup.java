@@ -1,7 +1,7 @@
 /*
- * SWTPatternDef.java
+ * DuplicationGroup.java
  *
- * Created on 12-Dec-2008 by Hoang Duy Tran <hoang_tran>
+ * Created on 23-May-2009, 00:17:31
  */
 
 /*
@@ -27,17 +27,14 @@
  * 
  */
 
-package com.panayotis.jubler.subs.loader.processor.SWT;
+package com.panayotis.jubler.tools.duplication;
 
-import com.panayotis.jubler.subs.CommonDef;
+import com.panayotis.jubler.subs.NonDuplicatedVector;
+import com.panayotis.jubler.subs.SubEntry;
 
 /**
- * Common definitions of patterns for processing of SWT (Son With Text) subtitle
- * files. This format is derived from the SON format by Hoang Duy Tran.
- * @author Hoang Duy Tran <hoang_tran>
+ *
+ * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
-public interface SWTPatternDef extends CommonDef{
-        public static String swtSubtitleEventHeaderLine = "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME" + "\t" + "SUBTITLE_TEXT";
-        public static String p_swt_subtitle_event_header = "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME" + sp + "SUBTITLE_TEXT";
-        public static String p_swt_text = printable;
-}
+public class DuplicationGroup extends NonDuplicatedVector<SubEntry>{
+}//public class DuplicationGroup extends Vector<SubEntry>

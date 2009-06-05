@@ -19,13 +19,27 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
-
 package com.panayotis.jubler.subs.records.SWT;
 
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 
 /**
+ * Similar to SonSubEntry apart from the production of subtitle text
+ * during the output to files and that entries are separated by a blank
+ * line. A typical example of SWT is shown below:
+ * <pre>
+ * Display_Area	(000 452 720 524)
+ * 0020		00:02:53:09	00:02:56:24	Derailed_st00020p1.bmp
+ * And you promised to help me
+ * with my book report, remember?
  *
+ * Color		(0 1 2 3)
+ * Display_Area	(000 488 720 524)
+ * 0021		00:02:58:18	00:03:00:12	Derailed_st00021p1.bmp
+ * (WHINES / BARKS)
+ * </pre>
+ * @see SonSubEntry
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SWTSubEntry extends SonSubEntry {
@@ -38,9 +52,10 @@ public class SWTSubEntry extends SonSubEntry {
         try {
             txt = super.toString();
             has_text = (txt != null && txt.length() > 0);
-            if (has_text)
+            if (has_text) {
                 b.append(txt);
-            
+            }
+
             String sub_text = this.getText();
             has_text = (sub_text != null && sub_text.length() > 0);
             if (has_text) {
@@ -54,7 +69,38 @@ public class SWTSubEntry extends SonSubEntry {
     }
 
     public Object clone() {
-        return super.clone();
+        SWTSubEntry new_object = null;
+        try {
+            new_object = (SWTSubEntry) super.clone();
+            new_object.header = (header == null ? null : (SWTHeader) header.clone());
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        }
+        return new_object;
     }
 
+    public void copyRecord(SubEntry o) {
+        SWTHeader newSwtHeader = null;
+        try {
+            super.copyRecord(o);
+
+            boolean has_header = (header != null);
+            if (has_header){
+                String instance_class_name = header.getClass().getName();
+                String swt_class_name = SWTHeader.class.getName();
+                boolean is_swt = (instance_class_name.equals( swt_class_name ));
+                
+                if (! is_swt){
+                    newSwtHeader = new SWTHeader();
+                    newSwtHeader.copyRecord(header);
+                    header = newSwtHeader;
+                }//end if (! is_swt)
+            }else{
+                newSwtHeader = new SWTHeader();
+                newSwtHeader.makeDefaultHeader();
+                header = newSwtHeader;
+            }//if (has_header)            
+        } catch (Exception ex) {
+        }
+    }//public void copyRecord(SubEntry o) 
 }

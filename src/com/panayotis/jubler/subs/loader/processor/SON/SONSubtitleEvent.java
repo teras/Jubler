@@ -35,7 +35,10 @@ import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.time.Time;
 
 /**
- *
+ * Process data entry in the following format:
+ * <pre>
+ * 0001		00:00:11:01	00:00:15:08	Edwardians In Colour _st00001p1.bmp
+ * </pre>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONSubtitleEvent extends SubtitlePatternProcessor implements CommonDef {

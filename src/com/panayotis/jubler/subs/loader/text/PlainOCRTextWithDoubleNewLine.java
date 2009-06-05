@@ -37,8 +37,8 @@ import static com.panayotis.jubler.i18n.I18N._;
  *        In November 1908, the steamship
  *        Hamburg America left Cherbourg
  * 
- * 	  on a transatlantic voyage
- * 		to New York.
+ *        on a transatlantic voyage
+ *        to New York.
  * 
  * @author Hoang Tran
  */
@@ -120,11 +120,11 @@ public class PlainOCRTextWithDoubleNewLine extends AbstractTextSubFormat {
     }
 
     public String getName() {
-        return "PlainTxt";
+        return "PlainTxtNL";
     }
 
     public String getExtendedName() {
-        return _("Plain text");
+        return _("Plain text with blank-line separation");
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuffer str) {
