@@ -130,8 +130,10 @@ public class DynamicClassLoader extends URLClassLoader {
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
             File file = new File(path);
-            if (!file.isAbsolute())
+            if (!file.isAbsolute()) {
                 path = UD + path;
+                file = new File(path);
+            }
             if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
                 MainPath = file.getParent() + FS;
                 JarBased = true;

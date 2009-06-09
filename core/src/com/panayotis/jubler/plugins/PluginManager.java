@@ -38,7 +38,7 @@ public class PluginManager {
         connections = new HashMap<String, ArrayList<Plugin>>();
 
         cl = new DynamicClassLoader();
-        if (cl.isJarBased())
+        if (DynamicClassLoader.isJarBased())
             cl.addPaths(new String[]{"lib"});
         else
             cl.addPaths(new String[]{"../../../dist/lib"});
