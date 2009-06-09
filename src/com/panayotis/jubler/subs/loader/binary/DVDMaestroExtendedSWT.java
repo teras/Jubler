@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs.loader.binary;
 
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.Subtitles;
@@ -30,7 +31,6 @@ import com.panayotis.jubler.subs.events.PreParseActionEvent;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEvent;
 import com.panayotis.jubler.subs.loader.processor.SWT.SWTPatternDef;
 import com.panayotis.jubler.subs.loader.processor.SWT.SWTSubtitleText;
-import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.subs.records.SWT.SWTHeader;
 import com.panayotis.jubler.subs.records.SWT.SWTSubEntry;
 import java.io.File;
@@ -120,7 +120,7 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
 
     @Override
     protected boolean isEmptyTextLine(String input) {
-        boolean is_empty = (input == null || input.isEmpty());
+        boolean is_empty = Share.isEmpty(input);
         if (is_empty) {
             boolean is_sub_entry_record_there = (this.swtSubEntry != null);
             if (is_sub_entry_record_there) {
@@ -204,7 +204,7 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
     @Override
     protected String addSubEntryText(SubEntry entry) {
         String result_text = entry.getText();
-        boolean valid = !(result_text == null || result_text.isEmpty());
+        boolean valid = !(Share.isEmpty(result_text));
         if (valid) {
             result_text += DOS_NL;
             return result_text;

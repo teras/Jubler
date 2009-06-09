@@ -899,13 +899,13 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         try {
             StringBuffer b = new StringBuffer();
             String current_text = getText();
-            boolean is_empty = (current_text == null || current_text.isEmpty());
+            boolean is_empty = Share.isEmpty(current_text);
             if (!is_empty) {
                 b.append(current_text);
                 b.append(separator);
             }//end if (! is_empty)
 
-            is_empty = (line == null || line.isEmpty());
+            is_empty = Share.isEmpty(line);
             if (!is_empty) {
                 b.append(line);
                 is_added = true;

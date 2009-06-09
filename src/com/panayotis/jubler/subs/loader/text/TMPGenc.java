@@ -23,8 +23,8 @@
 package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.Subtitles;
@@ -250,7 +250,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
     }
 
     protected boolean isEmptyTextLine(String input) {
-        boolean is_empty = (input == null || input.isEmpty());
+        boolean is_empty = Share.isEmpty(input);
         return is_empty;
     }
 

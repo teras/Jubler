@@ -355,7 +355,7 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
                     boolean is_create_new = (ps.getTargetObject() == null || this.isCreateNewObject());
                     if (is_create_new) {
                         String class_name = ps.getTargetObjectClassName();
-                        boolean is_empty = (class_name == null || class_name.isEmpty());
+                        boolean is_empty = Share.isEmpty(class_name);
                         if (is_empty) {
                             String msg = "Cannot create new record. Processor: [" + ps.getClass().getName() + "]. Reason: target object class name is empty.";
                             DEBUG.logger.log(Level.SEVERE, msg);

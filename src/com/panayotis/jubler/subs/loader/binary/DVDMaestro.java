@@ -253,7 +253,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
     }
 
     protected boolean isEmptyTextLine(String input) {
-        boolean is_empty = (input == null || input.isEmpty());
+        boolean is_empty = Share.isEmpty(input);
         return is_empty;
     }
 
