@@ -48,6 +48,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
@@ -189,7 +190,8 @@ public class Jubler extends JFrame {
     private InsertBlankLine insertBlankLine = new InsertBlankLine(this);
     private BalanceText balanceText = new BalanceText(this);
     private ViewHeader viewHeader = new ViewHeader(this);
-    
+
+
     static {
         windows = new JublerList();
         copybuffer = new ArrayList<SubEntry>();
@@ -219,14 +221,14 @@ public class Jubler extends JFrame {
 
         subeditor = new JSubEditor(this);
         subeditor.setAttached(true);
-        
+
         ImportComponentFM.addActionListener(importComponent);
         AppendFromFileFM.addActionListener(appendFromFile);
-        
+
         RemoveTimeDuplication.addActionListener(removeTimeDuplicationAction);
         RemoveBottomTopLineDuplication.addActionListener(removeBottomTopLineDuplicationAction);
         RemoveTimeDuplication.addActionListener(removeTopLineDuplicationAction);
-        
+
         JoinRecordTM.addActionListener(mergeRecords);
         SplitRecordTM.addActionListener(splitRecord);
         ViewHeaderTM.addActionListener(viewHeader);
@@ -394,6 +396,7 @@ public class Jubler extends JFrame {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         SubsPop = new javax.swing.JPopupMenu();
         CutP = new javax.swing.JMenuItem();
@@ -821,35 +824,55 @@ public class Jubler extends JFrame {
         JublerTools.add(jSeparator15);
 
         MoveTextTP.setToolTipText("Move text lines up or down");
-        MoveTextTP.setMaximumSize(new java.awt.Dimension(250, 31));
+        MoveTextTP.setMaximumSize(new java.awt.Dimension(350, 31));
         MoveTextTP.setMinimumSize(new java.awt.Dimension(80, 31));
-        MoveTextTP.setPreferredSize(new java.awt.Dimension(250, 31));
-        MoveTextTP.setLayout(new javax.swing.BoxLayout(MoveTextTP, javax.swing.BoxLayout.LINE_AXIS));
+        MoveTextTP.setPreferredSize(new java.awt.Dimension(300, 31));
+        MoveTextTP.setLayout(new java.awt.GridBagLayout());
 
         OptTextLineActList.setModel(fnComboboxModel);
         OptTextLineActList.setToolTipText(_("Quick operations"));
         OptTextLineActList.setEnabled(false);
         OptTextLineActList.setMaximumSize(new java.awt.Dimension(100, 22));
-        OptTextLineActList.setPreferredSize(new java.awt.Dimension(100, 22));
+        OptTextLineActList.setPreferredSize(new java.awt.Dimension(150, 22));
         OptTextLineActList.addActionListener(formListener);
-        MoveTextTP.add(OptTextLineActList);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        MoveTextTP.add(OptTextLineActList, gridBagConstraints);
 
         OptNumberOfLine.setModel(new IntegerComboBoxModel(new int[]{1,2,3,5,7,10,15,30,50,100}));
         OptNumberOfLine.setToolTipText(_("Number of lines"));
         OptNumberOfLine.setEnabled(false);
-        OptNumberOfLine.setMaximumSize(new java.awt.Dimension(100, 22));
-        OptNumberOfLine.setPreferredSize(new java.awt.Dimension(80, 22));
+        OptNumberOfLine.setMaximumSize(new java.awt.Dimension(50, 22));
+        OptNumberOfLine.setPreferredSize(new java.awt.Dimension(50, 22));
         OptNumberOfLine.addActionListener(formListener);
-        MoveTextTP.add(OptNumberOfLine);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        MoveTextTP.add(OptNumberOfLine, gridBagConstraints);
 
         DoItTB.setText("Do it");
         DoItTB.setToolTipText(_("Perform quick operation"));
         DoItTB.setEnabled(false);
-        DoItTB.setMaximumSize(new java.awt.Dimension(57, 40));
-        DoItTB.setMinimumSize(new java.awt.Dimension(40, 40));
-        DoItTB.setPreferredSize(new java.awt.Dimension(57, 40));
+        DoItTB.setMaximumSize(new java.awt.Dimension(60, 32));
+        DoItTB.setMinimumSize(new java.awt.Dimension(40, 32));
+        DoItTB.setPreferredSize(new java.awt.Dimension(57, 32));
         DoItTB.addActionListener(formListener);
-        MoveTextTP.add(DoItTB);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
+        MoveTextTP.add(DoItTB, gridBagConstraints);
 
         JublerTools.add(MoveTextTP);
         JublerTools.add(jSeparator18);
@@ -1924,6 +1947,17 @@ public class Jubler extends JFrame {
                     } catch (Exception ex) {
                     }
                     break;
+                case CP_HEADER:
+                    boolean has_header =
+                            (source_sub instanceof HeaderedTypeSubtitle) &&
+                            (target_sub instanceof HeaderedTypeSubtitle);
+                    if (has_header) {
+                        HeaderedTypeSubtitle headered_source_sub = (HeaderedTypeSubtitle) source_sub;
+                        HeaderedTypeSubtitle headered_target_sub = (HeaderedTypeSubtitle) target_sub;
+                        Object header = headered_source_sub.getHeader();
+                        headered_target_sub.setHeader(header);
+                    }//end if (has_header)
+                    break;
                 default:
                     break;
             }//end switch/case
@@ -1978,6 +2012,7 @@ public class Jubler extends JFrame {
         switch (opt) {
             case CP_TEXT:
             case CP_TIME:
+            case CP_HEADER:
                 PasteComponents(target_location);
                 break;
             case CP_RECORD:
@@ -2058,6 +2093,13 @@ public class Jubler extends JFrame {
                     break;
                 case CP_RECORD:
                     subs.remove(row);
+                    break;
+                case CP_HEADER:
+                    boolean has_header = (sub instanceof HeaderedTypeSubtitle);
+                    if (has_header) {
+                        HeaderedTypeSubtitle headered_sub = (HeaderedTypeSubtitle) sub;
+                        headered_sub.setHeader(null);
+                    }//end if (has_header)
                     break;
                 default:
                     break;
@@ -2406,7 +2448,7 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
             insertBlankLine.setAbove(false);
             insertBlankLine.actionPerformed(evt);
             break;
-        case FN_IMPORT_COMPONENT:            
+        case FN_IMPORT_COMPONENT:
             importComponent.actionPerformed(evt);
             break;
         case FN_APPEND_FROM_FILE:
@@ -3239,5 +3281,4 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
             OptNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
         }
     }//private void gotoLine()
-
 }//end public class Jubler extends JFrame
