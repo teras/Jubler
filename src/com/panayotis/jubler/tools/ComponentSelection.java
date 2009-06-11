@@ -29,7 +29,8 @@ import com.panayotis.jubler.subs.Share.SubtitleRecordComponent;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Construct a dialog to obtain user's preferred component when performing
+ * copy,cut,import. Optionally allowing the global variable to be updated.
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class ComponentSelection {
@@ -44,10 +45,22 @@ public class ComponentSelection {
         this.jubler = jubler;
     }
 
+    /**
+     * Calling the {@link #showDialog} with predefined string
+     * @return
+     */
     public SubtitleRecordComponent showDialog() {
         return showDialog(_("Component required"));
     }
 
+    /**
+     * Show the dialog which contains a combo-box of items that use can
+     * select. Each item represents a record's component that the operation
+     * will act on.
+     * @param title The title for the dialog box.
+     * @return One of the selected components in {@link SubtitleRecordComponent}, 
+     * {@link SubtitleRecordComponent.CP_INVALID} if the user cancelled.
+     */
     public SubtitleRecordComponent showDialog(String title) {
         selectedComponent = SubtitleRecordComponent.CP_INVALID;
         try {
