@@ -29,10 +29,12 @@
 package com.panayotis.jubler.tools.records;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.subs.Share.SubtitleRecordComponent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.ComponentSelection;
 import com.panayotis.jubler.undo.UndoEntry;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
@@ -50,6 +52,7 @@ public class ImportComponent extends JMenuItem implements ActionListener {
 
     private static String action_name = _("Import subtitle-event's components");
     private Jubler jublerParent = null;
+    private ComponentSelection compSel = null;
 
     public ImportComponent() {
         setText(action_name);
@@ -67,12 +70,23 @@ public class ImportComponent extends JMenuItem implements ActionListener {
         boolean has_changed = false;
         SubEntry current_entry, import_entry;
         try {
-
             newsubs = jublerParent.loadSubtitleFile();
             if (newsubs == null) {
                 return;
             }
 
+            if (compSel == null) {
+                compSel = new ComponentSelection(jublerParent);
+            } else {
+                compSel.setJubler(jublerParent);
+            }
+            
+            SubtitleRecordComponent opt = compSel.showDialog();
+            boolean valid_opt = (opt != SubtitleRecordComponent.CP_INVALID);
+            if (!valid_opt) {
+                return;
+            }
+            
             Subtitles subs = jublerParent.getSubtitles();
             jublerParent.getUndoList().addUndo(new UndoEntry(subs, _("Import component")));
             int len = (Math.max(subs.size(), newsubs.size()));
@@ -100,7 +114,7 @@ public class ImportComponent extends JMenuItem implements ActionListener {
                     has_changed = true;
                 } else {
                     //both entries exists, so perform the replacement
-                    switch (Jubler.selectedComponent) {
+                    switch (opt) {
                         case CP_TEXT:
                             String new_text = import_entry.getText();
                             current_entry.setText(new_text);
