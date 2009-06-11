@@ -75,18 +75,12 @@ public class ImportComponent extends JMenuItem implements ActionListener {
                 return;
             }
 
-            if (compSel == null) {
-                compSel = new ComponentSelection(jublerParent);
-            } else {
-                compSel.setJubler(jublerParent);
-            }
-            
-            SubtitleRecordComponent opt = compSel.showDialog();
-            boolean valid_opt = (opt != SubtitleRecordComponent.CP_INVALID);
-            if (!valid_opt) {
+            SubtitleRecordComponent opt =
+                    ComponentSelection.getSelectedComponent(jublerParent, false);
+            if (opt == null) {
                 return;
             }
-            
+                        
             Subtitles subs = jublerParent.getSubtitles();
             jublerParent.getUndoList().addUndo(new UndoEntry(subs, _("Import component")));
             int len = (Math.max(subs.size(), newsubs.size()));
