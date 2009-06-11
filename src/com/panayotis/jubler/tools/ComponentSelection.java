@@ -91,7 +91,7 @@ public class ComponentSelection {
      * @return One of the enumeration {@link SubtitleRecordComponent} or null
      * if user cancelled.
      */
-    public static SubtitleRecordComponent getSelectedComponent(Jubler jublerParent, boolean set_global_var) {
+    public static synchronized SubtitleRecordComponent getSelectedComponent(Jubler jublerParent, boolean set_global_var) {
         ComponentSelection compSel = new ComponentSelection(jublerParent);
         SubtitleRecordComponent opt = compSel.showDialog();
         boolean is_valid_opt = (opt != SubtitleRecordComponent.CP_INVALID);
