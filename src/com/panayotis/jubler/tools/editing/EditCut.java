@@ -54,7 +54,6 @@ public class EditCut extends JMenuItem implements ActionListener {
 
     private static String action_name = _("Edit Cut");
     private Jubler jublerParent = null;
-    private ComponentSelection compSel = null;
 
     public EditCut() {
         setText(action_name);
@@ -69,18 +68,11 @@ public class EditCut extends JMenuItem implements ActionListener {
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            if (compSel == null) {
-                compSel = new ComponentSelection(jublerParent);
-            } else {
-                compSel.setJubler(jublerParent);
-            }
-            SubtitleRecordComponent opt = compSel.showDialog();
-            boolean is_valid_opt = (opt != SubtitleRecordComponent.CP_INVALID);
-            if (!is_valid_opt) {
+            SubtitleRecordComponent opt =
+                    ComponentSelection.getSelectedComponent(jublerParent, true);
+            if (opt == null) {
                 return;
             }
-            
-            Jubler.selectedComponent = opt;
             SubEntry sub = null;
             Jubler.copybuffer.clear();
             JTable subTable = jublerParent.getSubTable();
