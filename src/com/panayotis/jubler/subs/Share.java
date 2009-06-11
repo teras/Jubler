@@ -47,10 +47,11 @@ public class Share implements CommonDef {
      * will be for cutting/copying, and for importing.
      */
     public static enum SubtitleRecordComponent {
+        CP_INVALID,
         CP_TEXT,
         CP_TIME,
         CP_HEADER,
-        CP_RECORD
+        CP_RECORD,
     };
     public static SubtitleRecordComponent[] recordComponentList =
             new SubtitleRecordComponent[]{
@@ -59,6 +60,7 @@ public class Share implements CommonDef {
         SubtitleRecordComponent.CP_HEADER,
         SubtitleRecordComponent.CP_RECORD
     };
+
     /**
      * This is the readable names of the record component
      * above and is used for human interaction, plus translation
@@ -71,6 +73,42 @@ public class Share implements CommonDef {
         _("Record"),
     };
 
+    public static int getComponentIndex(SubtitleRecordComponent entry){
+        try {
+            for (int i = 0; i < recordComponentList.length; i++) {
+                boolean is_found = (recordComponentList[i] == entry);
+                if (is_found) {
+                    return i;
+                }//end if
+            }//end for
+        } catch (Exception ex) {
+        }
+        return -1;
+    }//end public static int getComponentIndex(SubtitleRecordComponent entry)
+
+    /**
+     * Converting the selected value to the enumeration value of the 
+     * selected component.
+     * @param value The string value selected from list
+     * @return One of the value listed in {@link SubtitleRecordComponent}, null
+     * if the input value is not found in {@link componentNames}
+     */
+    public static SubtitleRecordComponent getSelectedComponent(String value){
+        SubtitleRecordComponent sel = null;
+        try{
+            for (int i=0; i < Share.componentNames.length; i++){
+                String list_value = Share.componentNames[i];
+                boolean found = (value.equals(list_value));
+                if (found){
+                    sel = Share.recordComponentList[i];
+                    break;
+                }//end if (found)
+            }//end for (int i=0; i < Share.componentNames.length; i++)
+        }catch(Exception ex){            
+        }//end try/catch
+        return sel;
+    }//end public SubtitleRecordComponent getSelectedComponent(String value)
+    
     public static enum FunctionList {
         FN_GOTO_LINE,
         FN_MOVE_TEXT_UP,
