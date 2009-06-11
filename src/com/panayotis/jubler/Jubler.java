@@ -48,7 +48,6 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.web.OpenSubtitles;
 import com.panayotis.jubler.subs.style.SubStyle;
@@ -75,6 +74,9 @@ import com.panayotis.jubler.tools.duplication.RemoveBottomTopLineDuplication;
 import com.panayotis.jubler.tools.duplication.RemoveTimeDuplication;
 import com.panayotis.jubler.tools.duplication.RemoveTopLineDuplication;
 import com.panayotis.jubler.tools.editing.BalanceText;
+import com.panayotis.jubler.tools.editing.EditCopy;
+import com.panayotis.jubler.tools.editing.EditCut;
+import com.panayotis.jubler.tools.editing.EditPaste;
 import com.panayotis.jubler.tools.editing.InsertBlankLine;
 import com.panayotis.jubler.tools.editing.MoveText;
 import com.panayotis.jubler.tools.records.AppendFromFile;
@@ -121,7 +123,7 @@ import javax.swing.event.ListSelectionListener;
 public class Jubler extends JFrame {
 
     public static JublerList windows;
-    private static ArrayList<SubEntry> copybuffer;
+    public static ArrayList<SubEntry> copybuffer;
     public static SubtitleRecordComponent selectedComponent = SubtitleRecordComponent.CP_TEXT;
     public static JPreferences prefs;
     /** File chooser dialog to open/ save subtitles */
@@ -190,7 +192,9 @@ public class Jubler extends JFrame {
     private InsertBlankLine insertBlankLine = new InsertBlankLine(this);
     private BalanceText balanceText = new BalanceText(this);
     private ViewHeader viewHeader = new ViewHeader(this);
-
+    private EditCopy editCopy = new EditCopy(this);
+    private EditCut editCut = new EditCut(this);
+    private EditPaste editPaste = new EditPaste(this);
 
     static {
         windows = new JublerList();
@@ -232,6 +236,25 @@ public class Jubler extends JFrame {
         JoinRecordTM.addActionListener(mergeRecords);
         SplitRecordTM.addActionListener(splitRecord);
         ViewHeaderTM.addActionListener(viewHeader);
+
+        CutTB.addActionListener(editCut);
+        CutEM.addActionListener(editCut);
+        CutP.addActionListener(editCut);
+
+        CopyTB.addActionListener(editCopy);
+        CopyEM.addActionListener(editCopy);
+        CopyP.addActionListener(editCopy);
+
+        PasteTB.addActionListener(editPaste);
+        PasteEM.addActionListener(editPaste);
+        PasteP.addActionListener(editPaste);
+
+        /**
+         * This is to make sure that the combo-box index matches the currently
+         * selected options, especially when new instance is created.
+         */        
+        int sel_index = Share.getFunctionIndex(fnOption);
+        OptTextLineActList.setSelectedIndex(sel_index);
 
         SubSplitPane.add(preview, JSplitPane.TOP);
         enablePreview(false);
@@ -442,7 +465,6 @@ public class Jubler extends JFrame {
         InfoTB = new javax.swing.JButton();
         jSeparator13 = new javax.swing.JToolBar.Separator();
         EditTP = new javax.swing.JPanel();
-        OptCopyCutPaste = new javax.swing.JComboBox();
         CutTB = new javax.swing.JButton();
         CopyTB = new javax.swing.JButton();
         PasteTB = new javax.swing.JButton();
@@ -568,15 +590,12 @@ public class Jubler extends JFrame {
         FormListener formListener = new FormListener();
 
         CutP.setText(_("Cut"));
-        CutP.addActionListener(formListener);
         SubsPop.add(CutP);
 
         CopyP.setText(_("Copy"));
-        CopyP.addActionListener(formListener);
         SubsPop.add(CopyP);
 
         PasteP.setText(_("Paste"));
-        PasteP.addActionListener(formListener);
         SubsPop.add(PasteP);
 
         DeleteP.setText(_("Delete"));
@@ -734,35 +753,24 @@ public class Jubler extends JFrame {
         JublerTools.add(FileTP);
         JublerTools.add(jSeparator13);
 
-        EditTP.setMaximumSize(new java.awt.Dimension(250, 31));
+        EditTP.setMaximumSize(new java.awt.Dimension(170, 31));
         EditTP.setMinimumSize(new java.awt.Dimension(180, 31));
-        EditTP.setPreferredSize(new java.awt.Dimension(250, 31));
+        EditTP.setPreferredSize(new java.awt.Dimension(170, 31));
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
-
-        OptCopyCutPaste.setModel(componentListModel);
-        OptCopyCutPaste.setToolTipText(_("Copy/Cut/Paste/Import component"));
-        OptCopyCutPaste.setEnabled(false);
-        OptCopyCutPaste.setMaximumSize(new java.awt.Dimension(100, 22));
-        OptCopyCutPaste.setPreferredSize(new java.awt.Dimension(100, 22));
-        OptCopyCutPaste.addActionListener(formListener);
-        EditTP.add(OptCopyCutPaste);
 
         CutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cut.png"))); // NOI18N
         CutTB.setToolTipText(_("Cut"));
         CutTB.setEnabled(false);
-        CutTB.addActionListener(formListener);
         EditTP.add(CutTB);
 
         CopyTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/copy.png"))); // NOI18N
         CopyTB.setToolTipText(_("Copy"));
         CopyTB.setEnabled(false);
-        CopyTB.addActionListener(formListener);
         EditTP.add(CopyTB);
 
         PasteTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/paste.png"))); // NOI18N
         PasteTB.setToolTipText(_("Paste"));
         PasteTB.setEnabled(false);
-        PasteTB.addActionListener(formListener);
         EditTP.add(PasteTB);
 
         JublerTools.add(EditTP);
@@ -976,17 +984,14 @@ public class Jubler extends JFrame {
 
         CutEM.setText(_("Cut subtitles"));
         CutEM.setName("ECU"); // NOI18N
-        CutEM.addActionListener(formListener);
         EditM.add(CutEM);
 
         CopyEM.setText(_("Copy subtitles"));
         CopyEM.setName("ECO"); // NOI18N
-        CopyEM.addActionListener(formListener);
         EditM.add(CopyEM);
 
         PasteEM.setText(_("Paste subtitles"));
         PasteEM.setName("EPA"); // NOI18N
-        PasteEM.addActionListener(formListener);
         EditM.add(PasteEM);
 
         PasteSpecialEM.setText(_("Paste special"));
@@ -1368,18 +1373,6 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == InfoTB) {
                 Jubler.this.InfoFMActionPerformed(evt);
             }
-            else if (evt.getSource() == OptCopyCutPaste) {
-                Jubler.this.OptCopyCutPasteActionPerformed(evt);
-            }
-            else if (evt.getSource() == CutTB) {
-                Jubler.this.CutEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == CopyTB) {
-                Jubler.this.CopyEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == PasteTB) {
-                Jubler.this.PasteEMActionPerformed(evt);
-            }
             else if (evt.getSource() == UndoTB) {
                 Jubler.this.UndoEMActionPerformed(evt);
             }
@@ -1403,15 +1396,6 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == DoItTB) {
                 Jubler.this.DoItTBActionPerformed(evt);
-            }
-            else if (evt.getSource() == CutP) {
-                Jubler.this.CutEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == CopyP) {
-                Jubler.this.CopyEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == PasteP) {
-                Jubler.this.PasteEMActionPerformed(evt);
             }
             else if (evt.getSource() == DeleteP) {
                 Jubler.this.DeletePActionPerformed(evt);
@@ -1481,15 +1465,6 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == QuitFM) {
                 Jubler.this.QuitFMActionPerformed(evt);
-            }
-            else if (evt.getSource() == CutEM) {
-                Jubler.this.CutEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == CopyEM) {
-                Jubler.this.CopyEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == PasteEM) {
-                Jubler.this.PasteEMActionPerformed(evt);
             }
             else if (evt.getSource() == PasteSpecialEM) {
                 Jubler.this.PasteSpecialEMActionPerformed(evt);
@@ -1907,208 +1882,6 @@ public class Jubler extends JFrame {
         }
     }//GEN-LAST:event_PasteSpecialEMActionPerformed
 
-    /**
-     * Pasting component is a replace operation
-     * hence the order of the replacement can be worked from
-     * top-down order. Target locations which are outside the
-     * range are omitted.
-     */
-    private void PasteComponents(int target_location) {
-        SubEntry source_sub = null;
-        SubEntry target_sub = null;
-
-        int len = copybuffer.size();
-        SubtitleRecordComponent opt = selectedComponent;
-        for (int i = 0; i < len; i++, target_location++) {
-            source_sub = copybuffer.get(i);
-            try {
-                target_sub = subs.elementAt(target_location);
-            } catch (Exception e) {
-                //if target location is not within the range of the current subs
-                //then the details cannot be paste on.
-                continue;
-            }
-            switch (opt) {
-                case CP_TEXT:
-                    //making an explicit copy of the original text
-                    try {
-                        String txt = source_sub.getText();
-                        target_sub.setText(txt);
-                    } catch (Exception ex) {
-                    }
-                    break;
-                case CP_TIME:
-                    try {
-                        //making an explicit copy of the original time
-                        Time start_time = source_sub.getStartTime();
-                        Time end_time = source_sub.getFinishTime();
-                        target_sub.setStartTime(start_time);
-                        target_sub.setFinishTime(end_time);
-                    } catch (Exception ex) {
-                    }
-                    break;
-                case CP_HEADER:
-                    boolean has_header =
-                            (source_sub instanceof HeaderedTypeSubtitle) &&
-                            (target_sub instanceof HeaderedTypeSubtitle);
-                    if (has_header) {
-                        HeaderedTypeSubtitle headered_source_sub = (HeaderedTypeSubtitle) source_sub;
-                        HeaderedTypeSubtitle headered_target_sub = (HeaderedTypeSubtitle) target_sub;
-                        Object header = headered_source_sub.getHeader();
-                        headered_target_sub.setHeader(header);
-                    }//end if (has_header)
-                    break;
-                default:
-                    break;
-            }//end switch/case
-
-        }//end for (int i = 0; i < copybuffer.size(); i++, target_location++)
-
-    }//private void PasteComponents()
-
-    /**
-     * Pasting records is an insert operation and since 
-     * the array management shift downward from the selected row,
-     * all records are inserted in the reverse order, bottom to top,
-     * to maintain the copied order of records.
-     */
-    private void PasteRecords(int target_location) {
-        SubEntry target_sub = null;
-        int len = copybuffer.size();
-        for (int i = len - 1; i >= 0; i--) {
-            target_sub = copybuffer.get(i);
-            subs.insertAt(target_sub, target_location);
-        }//end for (int i = 0; i < copybuffer.size(); i++, target_location++)
-
-    }//private void PasteRecord()
-
-    /**
-     * This routine performs the pasting action, based on the selected
-     * component. It calls the corresponding routines to perform the
-     * selected component. For text and time components, the
-     * {@link PasteComponents} is called. For records, the
-     * {@link PasteRecords} is invoked.
-     * The current table is redrawn (refreshed) after all changes has taken
-     * place.
-     * @param evt The action event which holds the information about the
-     * action's source.
-     */
-    private void PasteEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteEMActionPerformed
-        if (copybuffer.isEmpty()) {
-            return;
-        }
-
-        int target_location = SubTable.getSelectedRow();
-        boolean is_selected = (target_location >= 0);
-
-        //If the table has data and yet no row is selected then abandon operation
-        boolean is_abandon = !(is_selected);
-        if (is_abandon) {
-            return;
-        }
-
-        SubtitleRecordComponent opt = selectedComponent;
-        undo.addUndo(new UndoEntry(subs, _("Paste subtitles")));
-        switch (opt) {
-            case CP_TEXT:
-            case CP_TIME:
-            case CP_HEADER:
-                PasteComponents(target_location);
-                break;
-            case CP_RECORD:
-                PasteRecords(target_location);
-                break;
-            default:
-                break;
-        }//end switch (opt)
-
-        tableHasChanged(null);
-    }//GEN-LAST:event_PasteEMActionPerformed
-
-    /**
-     * Runs through the selected rows on the subtitle table and clone
-     * records into the copy buffer, regardless of the selected component.
-     * The component selection is taken into account when pasting, although
-     * the flag is global, it can be changed by the source instance of
-     * jubler as well as target instance.
-     * @param evt The action event which holds the information about the
-     * action's source.
-     */
-    private void CopyEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyEMActionPerformed
-        SubEntry sub = null;
-        int row = -1;
-
-        copybuffer.clear();
-        int[] selected = SubTable.getSelectedRows();
-        for (int i = 0; i < selected.length; i++) {
-            row = selected[i];
-            sub = subs.elementAt(row);
-            copybuffer.add((SubEntry) sub.clone());
-        }
-    }//GEN-LAST:event_CopyEMActionPerformed
-
-    /**
-     * Similar to the copy, this routine runs through the list of selected
-     * records, cloning the record instances and hold them in the copy buffer,
-     * for pasting later on. To show the effect of the cutting, selected
-     * component of the records - ie. Text, Time, Record - are removed.
-     * The non-record components are removed by resetting them to a blank
-     * instance of the component, but only doing so if the component actually
-     * exists. If not, the null default is left alone.
-     *
-     * When cutting records, the record is removed completely from the vector.
-     * shortening the list.
-     * @param evt The action event which holds the information about the
-     * action's source.
-     */
-    private void CutEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutEMActionPerformed
-        SubEntry sub = null;
-        int row = -1;
-
-        copybuffer.clear();
-        undo.addUndo(new UndoEntry(subs, _("Cut subtitles")));
-        //copy out here avoiding changes of the value during the loop
-        SubtitleRecordComponent opt = selectedComponent;
-
-        //SubEntry [] selected = getSelectedSubs();
-        int[] selected = SubTable.getSelectedRows();
-        for (int i = 0; i < selected.length; i++) {
-            row = selected[i];
-            sub = subs.elementAt(row);
-            copybuffer.add((SubEntry) sub.clone());
-            switch (opt) {
-                case CP_TEXT:
-                    if (sub.getText() != null) {
-                        sub.setText(new String());
-                    }
-                    break;
-                case CP_TIME:
-                    if (sub.getStartTime() != null) {
-                        sub.setStartTime(new Time(0));
-                    }
-
-                    if (sub.getFinishTime() != null) {
-                        sub.setFinishTime(new Time(0));
-                    }
-                    break;
-                case CP_RECORD:
-                    subs.remove(row);
-                    break;
-                case CP_HEADER:
-                    boolean has_header = (sub instanceof HeaderedTypeSubtitle);
-                    if (has_header) {
-                        HeaderedTypeSubtitle headered_sub = (HeaderedTypeSubtitle) sub;
-                        headered_sub.setHeader(null);
-                    }//end if (has_header)
-                    break;
-                default:
-                    break;
-            }//end switch (opt)
-
-        }
-        tableHasChanged(new SubEntry[0]);
-    }//GEN-LAST:event_CutEMActionPerformed
-
     private void FileNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileNFMActionPerformed
         Jubler curjubler;
         if (subs == null) {
@@ -2406,11 +2179,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
 
-private void OptCopyCutPasteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptCopyCutPasteActionPerformed
-    int selected_index = this.OptCopyCutPaste.getSelectedIndex();
-    selectedComponent = Share.recordComponentList[selected_index];
-}//GEN-LAST:event_OptCopyCutPasteActionPerformed
-
 private void OptNumberOfLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptNumberOfLineActionPerformed
     int value = numberOfLine;
     try {
@@ -2547,7 +2315,6 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
     private javax.swing.JMenuItem NoneMEM;
     private javax.swing.JMenuItem NoneMP;
     private javax.swing.JMenuItem OpenFM;
-    private javax.swing.JComboBox OptCopyCutPaste;
     private javax.swing.JComboBox OptNumberOfLine;
     private javax.swing.JComboBox OptTextLineActList;
     private javax.swing.JMenuItem PasteEM;
@@ -2805,7 +2572,6 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
         DoItTB.setEnabled(true);
-        OptCopyCutPaste.setEnabled(true);
         OptNumberOfLine.setEnabled(true);
         OptNumberOfLine.setEditable(true);
         OptTextLineActList.setEnabled(true);
