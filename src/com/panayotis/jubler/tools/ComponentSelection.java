@@ -55,7 +55,7 @@ public class ComponentSelection {
                     jubler,
                     "",
                     title,
-                    JOptionPane.OK_OPTION,
+                    JOptionPane.PLAIN_MESSAGE,
                     null,
                     Share.componentNames,
                     Share.componentNames[0]);
@@ -66,6 +66,30 @@ public class ComponentSelection {
         }
         return selectedComponent;
     }//end public SubtitleRecordComponent showDialog(String title)
+
+    /**
+     * Display the dialog, allow user to choose a selected component, then
+     * return the selected component for use internally. Optionally update the
+     * global {@link Jubler.selectedComponent}.
+     * @param jublerParent Reference to the {@link Jubler} screen where the
+     * dialog is based on.
+     * @param set_global_var true to update the {@link Jubler.selectedComponent}
+     * with the new selection. false otherwise.
+     * @return One of the enumeration {@link SubtitleRecordComponent} or null
+     * if user cancelled.
+     */
+    public static SubtitleRecordComponent getSelectedComponent(Jubler jublerParent, boolean set_global_var) {
+        ComponentSelection compSel = new ComponentSelection(jublerParent);
+        SubtitleRecordComponent opt = compSel.showDialog();
+        boolean is_valid_opt = (opt != SubtitleRecordComponent.CP_INVALID);
+        if (!is_valid_opt) {
+            return null;
+        }
+        if (set_global_var) {
+            Jubler.selectedComponent = opt;
+        }
+        return opt;
+    }//end public static SubtitleRecordComponent getSelectedComponent()
 
     public Jubler getJubler() {
         return jubler;
