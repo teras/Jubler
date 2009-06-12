@@ -28,6 +28,7 @@
  */
 package com.panayotis.jubler.subs;
 
+import java.awt.Color;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.Component;
 import java.io.File;
@@ -40,7 +41,10 @@ import javax.swing.JOptionPane;
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class Share implements CommonDef {
-
+    /**
+     * The colour that is used for DVB-T subtitle's transparency.
+     */
+    public static Color DVBT_SUB_TRANSPARENCY = new Color(0, 0, 96);
     /**
      * This enumeration indicates the component
      * of a record will be used. The typical use
