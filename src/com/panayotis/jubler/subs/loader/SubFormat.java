@@ -127,24 +127,153 @@ public abstract class SubFormat {
             if (is_empty) {
                 return null;
             } else {
-                Rectangle sr =getSubImageDimension(
+                int w = img.getWidth();
+                int h = img.getHeight();
+                /**
+                 * make the transparent image first
+                 */
+                tran_image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
+                /**
+                 * Whilst running the loop to find boundary, also update the
+                 * transparent image with desired pixel, ignoring the colour
+                 * that are transparent.
+                 */
+                Rectangle sr = getSubImageDimension(
                         img,
-                        Share.DVBT_SUB_TRANSPARENCY);
-                sub_img = img.getSubimage(
-                        sr.x, 
-                        sr.y, 
-                        sr.width, 
-                        sr.height);                
-                tran_image = getTransparentImage(
-                        sub_img, 
-                        Share.DVBT_SUB_TRANSPARENCY);
-                ico = new ImageIcon(tran_image);
+                        Share.DVBT_SUB_TRANSPARENCY,
+                        tran_image);
+                /**
+                 * now crop the transparent image down to the size obtained.
+                 */
+                sub_img = tran_image.getSubimage(
+                        sr.x,
+                        sr.y,
+                        sr.width,
+                        sr.height);
+
+                /**
+                 * Converts the cropped image into the image-icon for displaying
+                 */
+                ico = new ImageIcon(sub_img);
                 return ico;
             }//end if
         } catch (Exception ex) {
             return null;
         }
     }//public static ImageIcon readImage(File f)
+
+    /**
+     * This routine gets the sub-image boundary using the specified colour
+     * that will be treated as transparent within an existing image. It 
+     * assumes a transparent image 'dest' exists and write the pixels that
+     * are not transparent to that image whilst searching for the boundary.
+     * This routine cuts down an additional expensive loop running through
+     * the source image to find the matching colour, as previously implemented
+     * using separated routines, one to find the boundary, another to make
+     * the transparent image. This routine combine the 2 functions together
+     * in one solution. In order to use this routine, a preparation for 
+     * transparent image must be done in advance, something like:
+     * <pre>
+     * int w = source_img.getWidth();
+     * int h = source_img.getHeight();
+     * 
+     * BufferedImage tran_image = 
+     *      new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+     * 
+     * Rectangle rec = getSubImageDimension(
+     *      source_img, some_color, tran_image );
+     * 
+     * BufferedImage sub_img = tran_image.getSubimage(
+     *      sr.x,
+     *      sr.y,
+     *      sr.width,
+     *      sr.height);
+     * </pre>
+     * The final 'sub_imag' is the cropped image and contain transparency, where
+     * all instances of 'some_color' are removed (transparent).
+     * @param source The non-transparent image that will be used to find the
+     * sub-image boundary.
+     * @param find_colour The colour that will be treated as transparent.
+     * @param dest The transparent image, whose size is the same as the source
+     * image, and whose content is blank.
+     * @return The dimension of sub-image where it will be cropped to, plus
+     * the destination image being filled with content that are NOT transparent.
+     */
+    public static Rectangle getSubImageDimension(
+            BufferedImage source,
+            Color find_colour,
+            BufferedImage dest) {
+        Rectangle rec = null;
+        int lx,  ly,  rx,  ry;
+        int img_w,  img_h,  w,  h;
+        try {
+            img_w = source.getWidth();
+            img_h = source.getHeight();
+
+            /**
+             * Assuming the largest value first.
+             */
+            lx = img_w;
+            ly = img_h;
+
+            /**
+             * search top-left down to bottom-right and find the excluding 
+             * colour. The smaller value is held.
+             */
+            for (int x = 0; x < img_w; x++) {
+                for (int y = 0; y < img_h; y++) {
+                    int img_rgb = (source.getRGB(x, y));
+                    Color img_colour = new Color(img_rgb);
+                    boolean is_same = (find_colour.equals(img_colour));
+                    if (!is_same) {
+                        if (x < lx) {
+                            lx = x;
+                        }
+                        if (y < ly) {
+                            ly = y;
+                        }
+                        /*copy the non-transparent pixels to new image*/
+                        dest.setRGB(x, y, img_rgb);
+                    }//end if
+                }//end for (int col = 0; col < img_h; col++)
+            }//end for(int row = 0; row < img_w; row++)
+
+            /**
+             * Assuming the smallest value first.
+             */
+            rx = 0;
+            ry = 0;
+            /**
+             * search bottom-right up to top-left, upto the limit above
+             * and find the excluding colour. The larger value is held.
+             */
+            for (int x = img_w - 1; x > lx; x--) {
+                for (int y = img_h - 1; y > ly; y--) {
+                    int img_rgb = (source.getRGB(x, y));
+                    Color img_colour = new Color(img_rgb);
+                    boolean is_same = (find_colour.equals(img_colour));
+                    if (!is_same) {
+                        if (x > rx) {
+                            rx = x;
+                        }
+                        if (y > ry) {
+                            ry = y;
+                        }
+                    }//end if
+                }//end for (int col = 0; col < img_h; col++)
+            }//end for(int row = 0; row < img_w; row++)            
+
+            /**
+             * Calculate the width and height
+             */
+            w = (rx - lx);
+            h = (ry - ly);
+            rec = new Rectangle(lx, ly, w, h);
+        } catch (Exception ex) {
+        }
+        return rec;
+    }//end public static Rectangle getSubImageDimension
 
     /**
      * Turns a buffered image into an image with transparency bit set for the
@@ -157,7 +286,7 @@ public abstract class SubFormat {
      */
     public static BufferedImage getTransparentImage(BufferedImage source, Color find_colour) {
         BufferedImage tran_image = null;
-        int img_w, img_h, w, h;
+        int img_w,  img_h,  w,  h;
         try {
             w = source.getWidth();
             h = source.getHeight();
