@@ -195,6 +195,7 @@ public class Jubler extends JFrame {
     private EditCopy editCopy = new EditCopy(this);
     private EditCut editCut = new EditCut(this);
     private EditPaste editPaste = new EditPaste(this);
+    
 
     static {
         windows = new JublerList();
@@ -252,7 +253,7 @@ public class Jubler extends JFrame {
         /**
          * This is to make sure that the combo-box index matches the currently
          * selected options, especially when new instance is created.
-         */        
+         */
         int sel_index = Share.getFunctionIndex(fnOption);
         OptTextLineActList.setSelectedIndex(sel_index);
 
@@ -697,8 +698,8 @@ public class Jubler extends JFrame {
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 
-        SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setComponentPopupMenu(SubsPop);
+        SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setDefaultRenderer(Object.class, TableRenderer);
         SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
             public void mousePressed(MouseEvent e) {
@@ -965,9 +966,13 @@ public class Jubler extends JFrame {
         FileM.add(jSeparator20);
 
         ImportComponentFM.setText(_("Import components"));
+        ImportComponentFM.setEnabled(false);
+        ImportComponentFM.setName("FIM"); // NOI18N
         FileM.add(ImportComponentFM);
 
         AppendFromFileFM.setText(_("Append from file"));
+        AppendFromFileFM.setEnabled(false);
+        AppendFromFileFM.setName("FAF"); // NOI18N
         FileM.add(AppendFromFileFM);
         FileM.add(jSeparator21);
 
@@ -1100,6 +1105,7 @@ public class Jubler extends JFrame {
 
         byLineNumberEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         byLineNumberEM.setText(_("Line number"));
+        byLineNumberEM.setName("EGL"); // NOI18N
         byLineNumberEM.addActionListener(formListener);
         GoEM.add(byLineNumberEM);
 
@@ -1308,12 +1314,12 @@ public class Jubler extends JFrame {
 
         RemoveTopLineDuplication.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         RemoveTopLineDuplication.setText(_("Top Line"));
-        RemoveTopLineDuplication.setName("TDTL"); // NOI18N
+        RemoveTopLineDuplication.setName("TDP"); // NOI18N
         DuplicationTM.add(RemoveTopLineDuplication);
 
         RemoveBottomTopLineDuplication.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         RemoveBottomTopLineDuplication.setText(_("Bottom Top Line"));
-        RemoveBottomTopLineDuplication.setName("TDBT"); // NOI18N
+        RemoveBottomTopLineDuplication.setName("TDB"); // NOI18N
         DuplicationTM.add(RemoveBottomTopLineDuplication);
 
         ToolsM.add(DuplicationTM);
@@ -1322,13 +1328,13 @@ public class Jubler extends JFrame {
 
         TextBalancingOnSelection.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         TextBalancingOnSelection.setText(_("On Selection"));
-        TextBalancingOnSelection.setName("TTBS"); // NOI18N
+        TextBalancingOnSelection.setName("TBT"); // NOI18N
         TextBalancingOnSelection.addActionListener(formListener);
         TextBalancingTM.add(TextBalancingOnSelection);
 
         TextBalancingOnTheWholeTable.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         TextBalancingOnTheWholeTable.setText(_("On entire table"));
-        TextBalancingOnTheWholeTable.setName("TTBW"); // NOI18N
+        TextBalancingOnTheWholeTable.setName("TTW"); // NOI18N
         TextBalancingOnTheWholeTable.addActionListener(formListener);
         TextBalancingTM.add(TextBalancingOnTheWholeTable);
 
@@ -2254,7 +2260,6 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
     balanceText.setActionOnAllData(true);
     balanceText.actionPerformed(evt);
 }//GEN-LAST:event_TextBalancingOnTheWholeTableActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2417,7 +2422,6 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     // End of variables declaration//GEN-END:variables
-
     public void setDoText(String text, boolean isUndo) {
         JMenuItem domenu;
         JButton dobutton;
@@ -2575,6 +2579,8 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
         OptNumberOfLine.setEnabled(true);
         OptNumberOfLine.setEditable(true);
         OptTextLineActList.setEnabled(true);
+        AppendFromFileFM.setEnabled(true);
+        ImportComponentFM.setEnabled(true);
 
         subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
         updateRecentFile(f);
