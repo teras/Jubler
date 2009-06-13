@@ -162,7 +162,6 @@ public class Jubler extends JFrame {
     private int numberOfLine = 1;
     private FunctionList fnOption = FunctionList.FN_GOTO_LINE;
     private ComboBoxModel fnComboboxModel = new javax.swing.DefaultComboBoxModel(Share.fnNames);
-    private ComboBoxModel componentListModel = new javax.swing.DefaultComboBoxModel(Share.componentNames);
     /* Jubler tools */
     private JStyler styler;
     private JShiftTime shift;
