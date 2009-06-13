@@ -378,6 +378,23 @@ public abstract class SubFormat {
         return rec;
     }//end public Rectangle getSubImageDimension(BufferedImage img, Color col)
 
+    /**
+     * Note the copyright of this code is: Rafael Santos - 
+     * Author of: Java Image Processing Cookbook
+     * http://www.lac.inpe.br/~rafael.santos/JIPCookbook/6040-howto-compressimages.jsp
+     * 
+     * The routine compress a BufferedImage by forming a JPEG writer and 
+     * write the original image to the buffer of the compressed writer which
+     * will compress the image as it writes the image out. The compressed
+     * image is then read back again into another instance of BufferedImage
+     * and return it for use. The returned image is the compressed image of
+     * the original.
+     * @param image The image to be compressed.
+     * @param quality The factor to compress. 1.0f being the highest quality,
+     * 0.1f being the worst.
+     * @return The compressed BufferedImage.
+     * @throws java.io.IOException When a JPEG write is not available.
+     */
     public static BufferedImage compressImage(BufferedImage image, float quality) throws IOException {
         //int orig_size = image.getData().getDataBuffer().getSize();
         
