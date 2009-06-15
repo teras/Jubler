@@ -28,7 +28,6 @@ import com.panayotis.jubler.subs.loader.text.AdvancedSubStation;
 import com.panayotis.jubler.subs.loader.text.MPL2;
 import com.panayotis.jubler.subs.loader.text.MicroDVD;
 import com.panayotis.jubler.subs.loader.text.PlainOCRTextWithDoubleNewLine;
-import com.panayotis.jubler.subs.loader.text.PlainOCRTextWithIndex;
 import com.panayotis.jubler.subs.loader.text.PlainOCRTextWithPageBreak;
 import com.panayotis.jubler.subs.loader.text.PlainText;
 import com.panayotis.jubler.subs.loader.text.Quicktime;
@@ -62,7 +61,6 @@ public class AvailSubFormats {
         new W3CTimedText(),
         new PlainOCRTextWithPageBreak(), //added by HDT        
         new PlainOCRTextWithDoubleNewLine(), //added by HDT
-        new PlainOCRTextWithIndex(), //added by HDT
         new PlainText()
     //new ScanTitle()
     };
