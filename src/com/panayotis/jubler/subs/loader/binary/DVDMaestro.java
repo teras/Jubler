@@ -61,6 +61,7 @@ import com.panayotis.jubler.subs.loader.processor.SON.SONSubtitleEvent;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
+import com.panayotis.jubler.tools.JImage;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -493,7 +494,7 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
             if (is_default_header){
                 sonHeader.moptions = moptions;
                 sonHeader.FPS = FPS;
-                dirList = Share.createImageDirectories(dir);
+                dirList = JImage.createImageDirectories(dir);
                 if (Share.isEmpty(dirList)) {
                     dirList.add(dir);
                 }//end if (Share.isEmpty(dirList))
@@ -658,7 +659,7 @@ class LoadSonImage extends Thread implements CommonDef {
         int count = 0;
         boolean has_image, has_header, repeat_search;
         try {
-            Share.setRemindMissingImage(true);
+            JImage.setRemindMissingImage(true);
 
             File f_img = new File(image_dir);
             if (! f_img.isDirectory())
@@ -696,7 +697,7 @@ class LoadSonImage extends Thread implements CommonDef {
                     f = new File(dir, image_filename);
                     is_found = (f != null) && f.isFile() && f.exists();
                     if (is_found) {                        
-                        img = DVDMaestro.readImage(f);
+                        img = JImage.readImage(f);
                         sub_entry.image = img;
                         has_image = (img != null);
                         has_header = (sub_entry.header != null);
@@ -711,13 +712,13 @@ class LoadSonImage extends Thread implements CommonDef {
                 repeat_search = false;
                 if (!is_found) {
                     DEBUG.debug(_("Cannot find image \"{0}\"", image_filename));
-                    if (Share.isRemindMissingImage()) {
+                    if (JImage.isRemindMissingImage()) {
                         File backup = last_image_dir;
-                        last_image_dir = Share.findImageDirectory(image_filename, last_image_dir);
+                        last_image_dir = JImage.findImageDirectory(image_filename, last_image_dir);
                         repeat_search =
                                 (last_image_dir != null) &&
                                 (last_image_dir.isDirectory()) &&
-                                (Share.isRemindMissingImage());
+                                (JImage.isRemindMissingImage());
 
                         if (repeat_search) {
                             path_list.insertAtTop(last_image_dir);

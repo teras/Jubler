@@ -45,6 +45,11 @@ public class Share implements CommonDef {
      * The colour that is used for DVB-T subtitle's transparency.
      */
     public static Color DVBT_SUB_TRANSPARENCY = new Color(0, 0, 96);
+    
+    /**
+     * The black background colour in DVB-T subtitle blocks
+     */
+    public static Color DVBT_SUB_BLACK_BC = new Color(31, 31, 31);
     /**
      * This enumeration indicates the component
      * of a record will be used. The typical use
@@ -194,14 +199,7 @@ public class Share implements CommonDef {
         System.arraycopy(orig, 0, new_array, 0, len);
         return new_array;
     }
-
-    public static boolean isRemindMissingImage() {
-        return remindMissingImage;
-    }
-
-    public static void setRemindMissingImage(boolean aRemindMissingImage) {
-        remindMissingImage = aRemindMissingImage;
-    }
+    
     public static final int INVALID_INDEX = -1;
 
     /**
@@ -468,135 +466,7 @@ public class Share implements CommonDef {
 
     public static int fileCount(File start_directory) throws Exception {
         return start_directory.list().length;
-    }
-    private static boolean remindMissingImage = false;
-
-    /**
-     * Display an option panel which allows, among other options,
-     * browsing for directories where image file can be found. Other options
-     * include the ability to obmit the search, the ability to set the
-     * flag not to remind the missing of image again in the future. Setting
-     * the "Do not remind again!" will deny the ability to search for
-     * missing images for the rest of the file. Option "No" will only
-     * stops the searching for the current missing image only.
-     * @param image_name The name of the file which holds the image.
-     * @param default_directory The default directory at which the file-chooser
-     * dialog will change to when it starts.
-     * @return The new directory to search for or Null if nothing was selected,
-     * or cancel was chosen.
-     */
-    public static File findImageDirectory(
-            String image_name, File default_directory) {
-        Object[] options = {
-            _("Browse..."),
-            _("Not this image"),
-            _("Do not remind again!")
-        };
-
-        StringBuffer b = new StringBuffer();
-        b.append(_("Image \"{0}\"", image_name)).append(" ");
-        b.append(_("is missing")).append(UNIX_NL);
-        b.append(_("Would you like to find the missing image ?"));
-        String msg = b.toString();
-        String title = _("Find directory for the missing image");
-
-        int selected_option = JOptionPane.showOptionDialog(null,
-                msg,
-                title,
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        switch (selected_option) {
-            case JOptionPane.YES_OPTION: //Browse...
-                File directory = Share.browseFile(image_name, default_directory);
-                return directory;
-            case JOptionPane.NO_OPTION: //Not this image
-                break;
-            case JOptionPane.CANCEL_OPTION: //No/Not remind again!
-                setRemindMissingImage(false);
-                break;
-        }//end selected_option
-        return null;
-    }
-
-    /**
-     * Display an option panel which allows, among other options,
-     * browsing for directories where new directory can be created. Other options
-     * include the ability to select to use current dir, the ability to set the
-     * flag not to remind the creation of a new directory again in the future.
-     * Setting the "Do not remind again!" will deny the ability to prompt for
-     * the option to create a directory. Option "Use current" will only
-     * stops the prompt for the current set of images until the maximum
-     * number of images is reached.
-     * @param default_directory The default directory at which the file-chooser
-     * dialog will change to when it starts.
-     * @return The new directory created and selected
-     */
-    public static File[] createImageDirectory(File default_directory) {
-        Object[] options = {
-            _("Create/Select new"),
-            _("Use current")
-        };
-
-        StringBuffer b = new StringBuffer();
-        b.append(_("Current directory is " + UNIX_NL + "\"{0}\"",
-                default_directory.getAbsoluteFile())).append(UNIX_NL);
-        b.append(_("Large number of files in one directory could")).append(UNIX_NL);
-        b.append(_("deteriorate the system's performance.")).append(UNIX_NL);
-        b.append(_("Would you like to create new directories")).append(UNIX_NL);
-        b.append(_("and select them for storing images?")).append(UNIX_NL);
-        b.append(_("Note:"));
-        b.append(_("(Images are divided equally over the group")).append(UNIX_NL);
-        b.append(_("of selected directoriess.)"));
-        String msg = b.toString();
-        String title = _("Creating directories for images");
-
-        int selected_option = JOptionPane.showOptionDialog(null,
-                msg,
-                title,
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        switch (selected_option) {
-            case JOptionPane.YES_OPTION: //Browse...
-                File[] directories = Share.browseDir(default_directory);
-                return directories;
-            case JOptionPane.NO_OPTION: //Not this image
-                break;
-        }//end selected_option
-        return null;
-    }//public static File[] createImageDirectory(File default_directory)
-
-    /**
-     * Initiates the {@link #createImageDirectory} - singular - to obtain
-     * a directory selection using a file dialog, defaulted at an initial
-     * directory. Once the selection has been made, the list of selected
-     * directories, plus the default directory, are grouped into a single
-     * non-duplicated list and returned to the calling routine.
-     * @param default_directory The default directory to start-up the file
-     * dialog with.
-     * @return A non-duplicated list of directories which has been selected,
-     * empty if the directory selection operation has been cancelled.
-     */
-    public static NonDuplicatedVector<File> createImageDirectories(File default_directory) {
-        NonDuplicatedVector<File> dirList = new NonDuplicatedVector<File>();
-        File[] selectedDirectories = Share.createImageDirectory(default_directory);
-        boolean has_new_directories =
-                (selectedDirectories != null) && (selectedDirectories.length > 0);
-        if (has_new_directories) {
-            for (int i = 0; i < selectedDirectories.length; i++) {
-                File selected_dir = selectedDirectories[i];
-                dirList.add(selected_dir);
-            }//end for
-        }//end if
-        return dirList;
-    }//end public static Vector<File> createImageDirectory(File default_directory)
+    }    
 
     /**
      * Count the number of word, space separated, in a string of text.
