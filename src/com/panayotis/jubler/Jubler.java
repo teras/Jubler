@@ -79,6 +79,7 @@ import com.panayotis.jubler.tools.editing.EditCut;
 import com.panayotis.jubler.tools.editing.EditPaste;
 import com.panayotis.jubler.tools.editing.InsertBlankLine;
 import com.panayotis.jubler.tools.editing.MoveText;
+import com.panayotis.jubler.tools.ocr.OCRAction;
 import com.panayotis.jubler.tools.records.AppendFromFile;
 import com.panayotis.jubler.tools.records.ImportComponent;
 import com.panayotis.jubler.tools.records.MergeRecords;
@@ -194,7 +195,7 @@ public class Jubler extends JFrame {
     private EditCopy editCopy = new EditCopy(this);
     private EditCut editCut = new EditCut(this);
     private EditPaste editPaste = new EditPaste(this);
-    
+    private OCRAction ocrAction = new OCRAction(this);
 
     static {
         windows = new JublerList();
@@ -249,6 +250,9 @@ public class Jubler extends JFrame {
         PasteEM.addActionListener(editPaste);
         PasteP.addActionListener(editPaste);
 
+        ocrAction.setTessPath("/usr/local/bin");
+        ocrAction.setLanguage("eng");
+        
         /**
          * This is to make sure that the combo-box index matches the currently
          * selected options, especially when new instance is created.
@@ -586,6 +590,9 @@ public class Jubler extends JFrame {
         TextBalancingTM = new javax.swing.JMenu();
         TextBalancingOnSelection = new javax.swing.JMenuItem();
         TextBalancingOnTheWholeTable = new javax.swing.JMenuItem();
+        OCRTM = new javax.swing.JMenu();
+        OCRSelected = new javax.swing.JMenuItem();
+        OCRAll = new javax.swing.JMenuItem();
         HelpM = new javax.swing.JMenu();
         FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
@@ -1355,6 +1362,20 @@ public class Jubler extends JFrame {
 
         ToolsM.add(TextBalancingTM);
 
+        OCRTM.setText(_("Perform OCR"));
+
+        OCRSelected.setText(_("On Selected Images"));
+        OCRSelected.setName("TOS"); // NOI18N
+        OCRSelected.addActionListener(formListener);
+        OCRTM.add(OCRSelected);
+
+        OCRAll.setText(_("On All Images"));
+        OCRAll.setName("TOA"); // NOI18N
+        OCRAll.addActionListener(formListener);
+        OCRTM.add(OCRAll);
+
+        ToolsM.add(OCRTM);
+
         JublerMenuBar.add(ToolsM);
 
         HelpM.setText(_("&Help"));
@@ -1489,6 +1510,12 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == PasteSpecialEM) {
                 Jubler.this.PasteSpecialEMActionPerformed(evt);
+            }
+            else if (evt.getSource() == CutComponentEM) {
+                Jubler.this.CutComponentEMActionPerformed(evt);
+            }
+            else if (evt.getSource() == CopyComponentEM) {
+                Jubler.this.CopyComponentEMActionPerformed(evt);
             }
             else if (evt.getSource() == bySelectionDEM) {
                 Jubler.this.bySelectionDEMActionPerformed(evt);
@@ -1628,11 +1655,11 @@ public class Jubler extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
             }
-            else if (evt.getSource() == CutComponentEM) {
-                Jubler.this.CutComponentEMActionPerformed(evt);
+            else if (evt.getSource() == OCRSelected) {
+                Jubler.this.OCRSelectedActionPerformed(evt);
             }
-            else if (evt.getSource() == CopyComponentEM) {
-                Jubler.this.CopyComponentEMActionPerformed(evt);
+            else if (evt.getSource() == OCRAll) {
+                Jubler.this.OCRAllActionPerformed(evt);
             }
         }
 
@@ -2292,6 +2319,16 @@ private void CopyComponentEMActionPerformed(java.awt.event.ActionEvent evt) {//G
     editCopy.actionPerformed(evt);
 }//GEN-LAST:event_CopyComponentEMActionPerformed
 
+private void OCRSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OCRSelectedActionPerformed
+    ocrAction.setOcrAllList(false);
+    ocrAction.actionPerformed(evt);
+}//GEN-LAST:event_OCRSelectedActionPerformed
+
+private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OCRAllActionPerformed
+    ocrAction.setOcrAllList(true);
+    ocrAction.actionPerformed(evt);
+}//GEN-LAST:event_OCRAllActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2353,6 +2390,9 @@ private void CopyComponentEMActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JMenuItem NextPageGEM;
     private javax.swing.JMenuItem NoneMEM;
     private javax.swing.JMenuItem NoneMP;
+    private javax.swing.JMenuItem OCRAll;
+    private javax.swing.JMenuItem OCRSelected;
+    private javax.swing.JMenu OCRTM;
     private javax.swing.JMenuItem OpenFM;
     private javax.swing.JComboBox OptNumberOfLine;
     private javax.swing.JComboBox OptTextLineActList;
