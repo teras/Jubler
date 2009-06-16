@@ -27,6 +27,8 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
 
@@ -51,9 +53,10 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public short[] contrast = null;
     public short[] display_area = null;
     public String image_filename = null;
-    public String image_pathname = null;
-    public ImageIcon image = null;
-
+    private File imageFile = null;
+    private ImageIcon image = null;
+    private BufferedImage bufferedImage = null;
+        
     public SonHeader getHeader() {
         return header;
     }
@@ -139,7 +142,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
 
             b.append(getStartTime().getSecondsFrames(header.FPS)).append(" ");
             b.append(getFinishTime().getSecondsFrames(header.FPS)).append(" ");
-            b.append(image_filename).append(UNIX_NL);
+            b.append(imageFile.getName()).append(UNIX_NL);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
@@ -159,8 +162,9 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             new_object.display_area = Share.copyShortArray(display_area);
             //avoid making copy of image as there aren't many option to alter its content
             //so make a shallow copy here for the time being.
-            new_object.image_filename = image_filename;
+            new_object.imageFile = imageFile;
             new_object.image = image;
+            new_object.bufferedImage = this.bufferedImage;
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
@@ -194,11 +198,32 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             if (o_son.display_area != null) {
                 display_area = Share.copyShortArray(o_son.display_area);
             }
-            if (o_son.image_filename != null) {
-                image_filename = new String(o_son.image_filename);
+            if (o_son.imageFile != null) {
+                imageFile = o_son.imageFile;
             }
             image = o_son.image;
+            bufferedImage = o_son.bufferedImage;
         } catch (Exception ex) {
         }
     }//public void copyRecord(SubEntry o)
+
+    public BufferedImage getBufferedImage() {
+        return bufferedImage;
+    }
+
+    public void setBufferedImage(BufferedImage bufferedImage) {
+        this.bufferedImage = bufferedImage;
+    }
+
+    public void setImage(ImageIcon image) {
+        this.image = image;
+    }
+
+    public File getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(File imageFile) {
+        this.imageFile = imageFile;
+    }
 }

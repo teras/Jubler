@@ -285,7 +285,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         //the GUI display problems, create a separate thread and runs it in the
         //background.
         LoadSonImage load_image = new LoadSonImage(subtitle_list, sonHeader.image_directory, e.getSubtitleFile().getParent());
-        load_image.start();
+        load_image.run();
     }
 
     public boolean isSubType(String input, File f) {
@@ -434,7 +434,6 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
     private File index_outfile = null;
     private String image_out_filename = null;
     private static int maxDigits = 1;
-    private short[] fixedDisplayArea = new short[]{213, 3, 524, 38};
     private NonDuplicatedVector<File> dirList = null;
     private ProgressBar pb = ProgressBar.getInstance();
     private String encoding = null;
@@ -565,33 +564,14 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
         }
     }
 
-    private void makeSubEntry(SubEntry entry, int id, String filename, StringBuffer buffer) {
-        if (parent.getSonSubEntry() == null) {
-            parent.makeSubEntryRecord();
-            sonSubEntry = parent.getSonSubEntry();
-            sonSubEntry.header = sonHeader;
-            sonSubEntry.display_area = fixedDisplayArea;
-            sonSubEntry.max_digits = maxDigits;
-        }//end if
-
-        sonSubEntry.image_filename = filename;
-        sonSubEntry.event_id = (short) (id + 1);
-        sonSubEntry.setText(entry.getText());
-        sonSubEntry.setStartTime(entry.getStartTime());
-        sonSubEntry.setFinishTime(entry.getFinishTime());
-
-        String txt = sonSubEntry.toString();
-        buffer.append(txt);
-    }//end private void makeSubEntry(SubEntry entry, int id, String filename, StringBuffer buffer)
-
     private boolean makeSubPicture(SonSubEntry entry, int id, File dir, String filename) {
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();
         try {
             File image_file =  new File(dir, filename);
-            entry.image_filename = filename;
-            entry.image_pathname = image_file.getParent();
-            entry.image = new ImageIcon(img);
+            entry.setImageFile(image_file);
+            entry.setBufferedImage(img);
+            entry.setImage(new ImageIcon(img));
             ImageIO.write(img, "png", image_file);
         } catch (IOException ex) {
             return false;
@@ -635,8 +615,8 @@ class WriteSonSubtitle extends Thread implements SONPatternDef {
  * 
  * @author Hoang Duy Tran
  */
-class LoadSonImage extends Thread implements CommonDef {
-
+class LoadSonImage implements CommonDef {
+    
     Subtitles sub_list = null;
     String image_dir = null;
     String subtitle_file_dir = null;
@@ -647,7 +627,8 @@ class LoadSonImage extends Thread implements CommonDef {
         this.image_dir = image_dir;
         this.subtitle_file_dir = file_dir;
     }
-
+    
+    
     public void run() {
         NonDuplicatedVector<File> path_list = new NonDuplicatedVector<File>();
         String image_filename = null;
@@ -697,8 +678,12 @@ class LoadSonImage extends Thread implements CommonDef {
                     f = new File(dir, image_filename);
                     is_found = (f != null) && f.isFile() && f.exists();
                     if (is_found) {                        
-                        img = JImage.readImage(f);
-                        sub_entry.image = img;
+                        BufferedImage b_img = JImage.readImage(f);
+                        img = new ImageIcon(b_img);
+                        
+                        sub_entry.setImageFile(f);
+                        sub_entry.setBufferedImage(b_img);
+                        sub_entry.setImage(img);                        
                         has_image = (img != null);
                         has_header = (sub_entry.header != null);
                         if (has_image && has_header) {
@@ -732,8 +717,7 @@ class LoadSonImage extends Thread implements CommonDef {
                     i++;
                 }//end if (! repeat_search)
             }//end while(i < len)
-
-            sub_list.fireTableDataChanged();
+            
             DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
