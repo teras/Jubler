@@ -28,13 +28,13 @@
  */
 package com.panayotis.jubler.tools.editing;
 
-import com.panayotis.jubler.tools.ComponentSelection;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.Share.SubtitleRecordComponent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.undo.UndoEntry;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
@@ -69,6 +69,9 @@ public class EditPaste extends JMenuItem implements ActionListener {
         boolean changed = false;
         try {
             SubtitleRecordComponent opt = Jubler.selectedComponent;
+            Subtitles subs = jublerParent.getSubtitles();
+            jublerParent.getUndoList().addUndo(new UndoEntry(subs, _("Paste subtitles")));
+            
             switch (opt) {
                 case CP_HEADER:
                     changed = PasteHeader();                    
