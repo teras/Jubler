@@ -124,7 +124,7 @@ public class Jubler extends JFrame {
 
     public static JublerList windows;
     public static ArrayList<SubEntry> copybuffer;
-    public static SubtitleRecordComponent selectedComponent = SubtitleRecordComponent.CP_TEXT;
+    public static SubtitleRecordComponent selectedComponent = SubtitleRecordComponent.CP_RECORD;
     public static JPreferences prefs;
     /** File chooser dialog to open/ save subtitles */
     private JFileChooser filedialog;
@@ -511,6 +511,9 @@ public class Jubler extends JFrame {
         CopyEM = new javax.swing.JMenuItem();
         PasteEM = new javax.swing.JMenuItem();
         PasteSpecialEM = new javax.swing.JMenuItem();
+        jSeparator22 = new javax.swing.JSeparator();
+        CutComponentEM = new javax.swing.JMenuItem();
+        CopyComponentEM = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JSeparator();
         DeleteEM = new javax.swing.JMenu();
         bySelectionDEM = new javax.swing.JMenuItem();
@@ -697,8 +700,8 @@ public class Jubler extends JFrame {
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 
-        SubTable.setComponentPopupMenu(SubsPop);
         SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        SubTable.setComponentPopupMenu(SubsPop);
         SubTable.setDefaultRenderer(Object.class, TableRenderer);
         SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
             public void mousePressed(MouseEvent e) {
@@ -1002,6 +1005,19 @@ public class Jubler extends JFrame {
         PasteSpecialEM.setName("EPS"); // NOI18N
         PasteSpecialEM.addActionListener(formListener);
         EditM.add(PasteSpecialEM);
+        EditM.add(jSeparator22);
+
+        CutComponentEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
+        CutComponentEM.setText(_("Cut Component"));
+        CutComponentEM.setName("ECC"); // NOI18N
+        CutComponentEM.addActionListener(formListener);
+        EditM.add(CutComponentEM);
+
+        CopyComponentEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
+        CopyComponentEM.setText(_("Copy Component"));
+        CopyComponentEM.setName("ECP"); // NOI18N
+        CopyComponentEM.addActionListener(formListener);
+        EditM.add(CopyComponentEM);
         EditM.add(jSeparator9);
 
         DeleteEM.setText(_("Delete"));
@@ -1611,6 +1627,12 @@ public class Jubler extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == CutComponentEM) {
+                Jubler.this.CutComponentEMActionPerformed(evt);
+            }
+            else if (evt.getSource() == CopyComponentEM) {
+                Jubler.this.CopyComponentEMActionPerformed(evt);
             }
         }
 
@@ -2259,6 +2281,17 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
     balanceText.setActionOnAllData(true);
     balanceText.actionPerformed(evt);
 }//GEN-LAST:event_TextBalancingOnTheWholeTableActionPerformed
+
+private void CutComponentEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutComponentEMActionPerformed
+    editCut.setCutComponent(true);
+    editCut.actionPerformed(evt);
+}//GEN-LAST:event_CutComponentEMActionPerformed
+
+private void CopyComponentEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyComponentEMActionPerformed
+    editCopy.setCopyComponent(true);
+    editCopy.actionPerformed(evt);
+}//GEN-LAST:event_CopyComponentEMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2270,10 +2303,12 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
     private javax.swing.JMenuItem BottomGEM;
     private javax.swing.JMenuItem ChildNFM;
     private javax.swing.JMenuItem CloseFM;
+    private javax.swing.JMenuItem CopyComponentEM;
     private javax.swing.JMenuItem CopyEM;
     private javax.swing.JMenuItem CopyP;
     private javax.swing.JButton CopyTB;
     private javax.swing.JMenuItem CurrentTTM;
+    private javax.swing.JMenuItem CutComponentEM;
     private javax.swing.JMenuItem CutEM;
     private javax.swing.JMenuItem CutP;
     private javax.swing.JButton CutTB;
@@ -2413,6 +2448,7 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator20;
     private javax.swing.JSeparator jSeparator21;
+    private javax.swing.JSeparator jSeparator22;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
