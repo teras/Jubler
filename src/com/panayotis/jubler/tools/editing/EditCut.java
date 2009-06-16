@@ -104,7 +104,6 @@ public class EditCut extends JMenuItem implements ActionListener {
              */
             if (this.isCutComponent()){
                 this.setCutComponent(false);
-                Jubler.selectedComponent = SubtitleRecordComponent.CP_RECORD;
             }//end if (this.isCutComponent())
         } catch (Exception ex) {
             ex.printStackTrace(System.out);

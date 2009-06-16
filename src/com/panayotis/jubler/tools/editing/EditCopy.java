@@ -97,7 +97,6 @@ public class EditCopy extends JMenuItem implements ActionListener {
              */
             if (this.isCopyComponent()) {
                 this.setCopyComponent(false);
-                Jubler.selectedComponent = SubtitleRecordComponent.CP_RECORD;
             }//end if (this.isCopyComponent())
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
