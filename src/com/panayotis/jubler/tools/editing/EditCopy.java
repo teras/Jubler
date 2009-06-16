@@ -51,7 +51,7 @@ public class EditCopy extends JMenuItem implements ActionListener {
 
     private static String action_name = _("Edit Copy");
     private Jubler jublerParent = null;
-    private ComponentSelection compSel = null;
+    private boolean copyComponent = false;
 
     public EditCopy() {
         setText(action_name);
@@ -65,13 +65,19 @@ public class EditCopy extends JMenuItem implements ActionListener {
     }
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
-        try {
-            SubtitleRecordComponent opt =
-                    ComponentSelection.getSelectedComponent(jublerParent, true);
-            if (opt == null) {
-                return;
-            }
-            
+        SubtitleRecordComponent opt = SubtitleRecordComponent.CP_RECORD;
+        Jubler.selectedComponent = opt;
+        try {            
+            /**
+             * Check the component flag
+             */
+            if (this.isCopyComponent()) {
+                opt = ComponentSelection.getSelectedComponent(jublerParent, true);
+                if (opt == null) {
+                    return;
+                }
+            }//end if (this.isCopyComponent())
+
             SubEntry sub = null;
             int row = -1;
 
@@ -85,8 +91,30 @@ public class EditCopy extends JMenuItem implements ActionListener {
                 sub = subs.elementAt(row);
                 Jubler.copybuffer.add((SubEntry) sub.clone());
             }//for (int i = 0; i < selected.length; i++)
+
+            /**
+             * Reset the component flag
+             */
+            if (this.isCopyComponent()) {
+                this.setCopyComponent(false);
+                Jubler.selectedComponent = SubtitleRecordComponent.CP_RECORD;
+            }//end if (this.isCopyComponent())
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }//end try/catch
     }//public void actionPerformed(java.awt.event.ActionEvent evt)
+
+    /**
+     * @return the copyComponent
+     */
+    public boolean isCopyComponent() {
+        return copyComponent;
+    }
+
+    /**
+     * @param copyComponent the copyComponent to set
+     */
+    public void setCopyComponent(boolean copyComponent) {
+        this.copyComponent = copyComponent;
+    }
 }//end public class EditCopy extends JMenuItem implements ActionListener

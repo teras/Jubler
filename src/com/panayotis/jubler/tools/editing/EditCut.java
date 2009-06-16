@@ -54,6 +54,7 @@ public class EditCut extends JMenuItem implements ActionListener {
 
     private static String action_name = _("Edit Cut");
     private Jubler jublerParent = null;
+    private boolean cutComponent = false;
 
     public EditCut() {
         setText(action_name);
@@ -67,12 +68,19 @@ public class EditCut extends JMenuItem implements ActionListener {
     }
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
+        SubtitleRecordComponent opt = SubtitleRecordComponent.CP_RECORD;
+        Jubler.selectedComponent = opt;
         try {
-            SubtitleRecordComponent opt =
-                    ComponentSelection.getSelectedComponent(jublerParent, true);
-            if (opt == null) {
-                return;
-            }
+            /**
+             * Check the component flag
+             */
+            if (this.isCutComponent()) {
+                opt = ComponentSelection.getSelectedComponent(jublerParent, true);
+                if (opt == null) {
+                    return;
+                }
+            }//end if (this.isCutComponent())
+
             SubEntry sub = null;
             Jubler.copybuffer.clear();
             JTable subTable = jublerParent.getSubTable();
@@ -91,6 +99,13 @@ public class EditCut extends JMenuItem implements ActionListener {
 
             jublerParent.tableHasChanged(null);
 
+            /**
+             * Reset the component flag
+             */
+            if (this.isCutComponent()){
+                this.setCutComponent(false);
+                Jubler.selectedComponent = SubtitleRecordComponent.CP_RECORD;
+            }//end if (this.isCutComponent())
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }//end try/catch
@@ -140,4 +155,18 @@ public class EditCut extends JMenuItem implements ActionListener {
             }//end if (has_header)
         }//end for(int i=0; i < len; i++)
     }//end private void CutHeader()
+
+    /**
+     * @return the cutComponent
+     */
+    public boolean isCutComponent() {
+        return cutComponent;
+    }
+
+    /**
+     * @param cutComponent the cutComponent to set
+     */
+    public void setCutComponent(boolean cutComponent) {
+        this.cutComponent = cutComponent;
+    }
 }//end public class EditCut extends JMenuItem implements ActionListener
