@@ -29,6 +29,7 @@
 package com.panayotis.jubler.tools.ocr;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
@@ -71,7 +72,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
             subTable = jublerParent.getSubTable();
             subs = jublerParent.getSubtitles();
             row_count = subTable.getSelectedRowCount();
-            len = (isOcrAllList() ?  subs.size() : row_count);
+            len = (isOcrAllList() ? subs.size() : row_count);
 
             SwingUtilities.invokeLater(new Runnable() {
 
@@ -83,33 +84,43 @@ public class OCRAction extends JMenuItem implements ActionListener {
                     SubEntry sub;
                     ImageTypeSubtitle img_sub;
                     File[] file_list;
+
+                    ProgressBar pb = new ProgressBar();
+                    pb.setMinValue(0);
+                    pb.setMaxValue(len);
+                    pb.on();
+                    
                     try {
-                        
                         for (int i = 0; i < len; i++) {
+                            
                             if (isOcrAllList()) {
-                                row = i;                                
+                                row = i;
                             } else {
                                 selected = subTable.getSelectedRows();
                                 row = selected[i];
                             }//end if/else;
 
                             sub = subs.elementAt(row);
-                            
+
                             is_image = (sub instanceof ImageTypeSubtitle);
                             if (!is_image) {
                                 continue;
                             }
                             img_sub = (ImageTypeSubtitle) sub;
-                            final ArrayList<File>
-                                    image_file_list = JImageIOHelper.createImageFiles(
-                                    img_sub.getImageFile(), 0);                                    
+                            
+                            String msg = "OCR: " + img_sub.getImageFile().getName();
+                            pb.setTitle(msg);
+                            pb.setValue(i);
+                            
+                            final ArrayList<File> image_file_list = JImageIOHelper.createImageFiles(
+                                    img_sub.getImageFile(), 0);
 
                             file_list = image_file_list.toArray(new File[image_file_list.size()]);
-                                                        
+
                             JOCR ocrEngine = new JOCR(tessPath);
                             String result = ocrEngine.recognizeText(file_list, language);
                             sub.setText(result.trim());
-                            
+
                         // postprocess to correct common OCR errors
                         //result = Processor.postProcess(result, curLangCode);
 
@@ -117,6 +128,8 @@ public class OCRAction extends JMenuItem implements ActionListener {
                         jublerParent.tableHasChanged(null);
                     } catch (Exception e) {
                         e.printStackTrace(System.out);
+                    } finally {
+                        pb.off();
                     }
                 }
             });
