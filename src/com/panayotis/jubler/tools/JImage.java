@@ -188,6 +188,23 @@ public class JImage implements CommonDef{
     }//end public static Vector<File> createImageDirectory(File default_directory)
     
     /**
+     * Write an image to a pre-defined file.
+     * @param img The image to write
+     * @param dir The directory to write to
+     * @param filename The image's filename
+     * @param extension The extension, indicating the type ie. png, jpg, bmp
+     * @return true if the image was written without errors, false otherwise.
+     */
+    public static boolean writeImage(BufferedImage img, File file, String extension){
+        try {            
+            ImageIO.write(img, extension, file);
+            return true;
+        } catch (Exception ex) {
+            //ex.printStackTrace(System.out);
+            return false;
+        }        
+    }
+    /**
      * Writes an image to a file.
      * @param img The image to write
      * @param dir The directory to write to
@@ -201,11 +218,11 @@ public class JImage implements CommonDef{
             ImageIO.write(img, extension, image_file);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            //ex.printStackTrace(System.out);
             return false;
         }
     }//end public static void writeImage(BufferedImage img, String file_name)
-
+    
     /**
      * Using the ImageIO to read an image from a file into the internal buffer,
      * And then create a image icon which is stored in the image record and update the
@@ -215,7 +232,7 @@ public class JImage implements CommonDef{
      * @param f the image file being read
      * @return the image record if reading was successfully carried out, Null if reading's failed.
      */
-    public static ImageIcon readImage(File f) {
+    public static BufferedImage readImage(File f) {
         BufferedImage img, sub_img, tran_image, bw = null;
         ImageIcon ico = null;
         try {
@@ -254,9 +271,10 @@ public class JImage implements CommonDef{
                 /**
                  * Converts the cropped image into the image-icon for displaying
                  */
-                ico = new ImageIcon(sub_img);
+                //ico = new ImageIcon(sub_img);
                 //ico = new ImageIcon(bw);
-                return ico;
+                //return ico;
+                return sub_img;
             }//end if
         } catch (Exception ex) {
             return null;
