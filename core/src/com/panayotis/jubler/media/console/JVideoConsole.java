@@ -95,7 +95,13 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private boolean request_quit;
     
     /** Creates new form JVideoConsole */
-    public JVideoConsole(Jubler parent, VideoPlayer player) {
+    public static JVideoConsole initialize(Jubler jubler, VideoPlayer videoPlayer) {
+        if (videoPlayer == null)
+            return null;
+        return new JVideoConsole(jubler, videoPlayer);
+    }
+
+    private JVideoConsole(Jubler parent, VideoPlayer player) {
         super(parent, false);
         SystemDependent.setSmallDecoration(getRootPane());
         
@@ -103,7 +109,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         initImageIcons();
         initButtonIcons();
         resetSubsDelay();
-        
+
         if ( !player.supportPause()) {
             PauseB.setEnabled(false);
         }

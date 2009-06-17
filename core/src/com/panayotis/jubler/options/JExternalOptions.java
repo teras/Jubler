@@ -55,7 +55,14 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     }
     
     public Object getObject() {
-        return list.elementAt(PList.getSelectedIndex());
+        if (list.size() < 1)
+            return null;
+        int which = PList.getSelectedIndex();
+        if (which < 0)
+            which = 0;
+        if (which >= list.size())
+            which = list.size() - 1;
+        return list.elementAt(which);
     }
     
     
