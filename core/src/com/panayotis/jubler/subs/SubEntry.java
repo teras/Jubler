@@ -79,7 +79,6 @@ public class SubEntry implements Comparable<SubEntry> {
     }
     /* Markings */
     public static final String[] MarkNames = {_("None"), _("Pink"), _("Yellow"), _("Cyan")};
-    public static final Color[] MarkColors = {Color.WHITE, new Color(255, 200, 220), new Color(255, 255, 200), new Color(200, 255, 255)};
     private Time start,  finish;
     private String subtext;
     private int mark;

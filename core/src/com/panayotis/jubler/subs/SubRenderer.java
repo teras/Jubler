@@ -33,13 +33,28 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class SubRenderer extends DefaultTableCellRenderer {
 
+    private static final Color[] MarkColors = {Color.WHITE, new Color(255, 200, 220), new Color(255, 255, 170), new Color(200, 255, 255)};
+    private static final Color[] MarkColorsDark = new Color[MarkColors.length];
+    private static final float percent = 0.85f;
+
+
+    static {
+        for (int i = 0; i < MarkColors.length; i++) {
+            Color c = MarkColors[i];
+            MarkColorsDark[i] = new Color((int) (c.getRed() * percent), (int) (c.getGreen() * percent), (int) (c.getBlue() * percent));
+        }
+    }
+
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
         SubEntry entry;
 
         setEnabled(table == null || table.isEnabled()); // Always do that
 
         entry = ((Subtitles) table.getModel()).elementAt(row);
-        setBackground(SubEntry.MarkColors[entry.getMark()]);
+        if (row % 2 == 0)
+            setBackground(MarkColors[entry.getMark()]);
+        else
+            setBackground(MarkColorsDark[entry.getMark()]);
         setForeground(Color.BLACK);
         super.getTableCellRendererComponent(table, value, selected, focused, row, column);
         return this;
