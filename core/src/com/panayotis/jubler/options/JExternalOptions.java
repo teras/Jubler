@@ -98,7 +98,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
 
     private void PListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PListActionPerformed
         ((CardLayout) ParamsP.getLayout()).show(ParamsP, Integer.toString(PList.getSelectedIndex()));
-        tabChanged();
+        changeProgram();
     }//GEN-LAST:event_PListActionPerformed
 
     public void loadPreferences() {
@@ -123,7 +123,8 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         return this;
     }
 
-    public void tabChanged() {
+    public void changeProgram() {
+        System.out.println(PList.getSelectedIndex());
         JExtBasicOptions opts = null;
         ExtProgram ext = list.programAt(PList.getSelectedIndex());
         if (ext != null)
