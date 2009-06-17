@@ -37,5 +37,5 @@ public interface TabPage {
     public abstract Icon getTabIcon();
     
     /* Fire this method if the tab should be updated */
-    public abstract void tabChanged();
+    public abstract void changeProgram();
 }
