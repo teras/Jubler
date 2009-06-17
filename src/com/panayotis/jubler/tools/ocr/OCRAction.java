@@ -85,14 +85,14 @@ public class OCRAction extends JMenuItem implements ActionListener {
                     ImageTypeSubtitle img_sub;
                     File[] file_list;
 
-                    ProgressBar pb = new ProgressBar();
+                    ProgressBar pb = ProgressBar.getInstance();
                     pb.setMinValue(0);
-                    pb.setMaxValue(len);
+                    pb.setMaxValue(len - 1);
                     pb.on();
-                    
+
                     try {
                         for (int i = 0; i < len; i++) {
-                            
+
                             if (isOcrAllList()) {
                                 row = i;
                             } else {
@@ -106,12 +106,13 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             if (!is_image) {
                                 continue;
                             }
+
                             img_sub = (ImageTypeSubtitle) sub;
-                            
+
                             String msg = "OCR: " + img_sub.getImageFile().getName();
                             pb.setTitle(msg);
                             pb.setValue(i);
-                            
+
                             final ArrayList<File> image_file_list = JImageIOHelper.createImageFiles(
                                     img_sub.getImageFile(), 0);
 
@@ -120,7 +121,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             JOCR ocrEngine = new JOCR(tessPath);
                             String result = ocrEngine.recognizeText(file_list, language);
                             sub.setText(result.trim());
-
+                                                        
                         // postprocess to correct common OCR errors
                         //result = Processor.postProcess(result, curLangCode);
 

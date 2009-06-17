@@ -38,6 +38,7 @@ import com.panayotis.jubler.options.IntegerComboBoxModel;
 import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.Share;
@@ -121,7 +122,7 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author  teras
  */
-public class Jubler extends JFrame {
+public class Jubler extends JFrame implements CommonDef{
 
     public static JublerList windows;
     public static ArrayList<SubEntry> copybuffer;
@@ -249,9 +250,9 @@ public class Jubler extends JFrame {
         PasteTB.addActionListener(editPaste);
         PasteEM.addActionListener(editPaste);
         PasteP.addActionListener(editPaste);
-
-        ocrAction.setTessPath("/usr/local/bin");
+        
         ocrAction.setLanguage("eng");
+        ocrAction.setTessPath(USER_CURRENT_DIR + "tesseract"  + FILE_SEP);
         
         /**
          * This is to make sure that the combo-box index matches the currently

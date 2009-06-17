@@ -16,6 +16,7 @@
 
 package com.panayotis.jubler.tools.ocr;
 
+import com.panayotis.jubler.subs.CommonDef;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,7 +29,7 @@ import javax.imageio.IIOImage;
  *
  * @author Quan Nguyen (nguyenq@users.sf.net)
  */
-public class JOCR {
+public class JOCR implements CommonDef{
     private final String LANG_OPTION = "-l";
     private final String EOL = System.getProperty("line.separator");
 
@@ -81,12 +82,13 @@ public class JOCR {
         StringBuffer strB = new StringBuffer();
         
         List<String> cmd = new ArrayList<String>();
-        cmd.add(tessPath + "/tesseract");
+        
+        cmd.add(tessPath + "tesseract" + PROG_EXT);
         cmd.add(""); // placeholder for inputfile
         cmd.add(output);
         cmd.add(LANG_OPTION);
         cmd.add(lang);
-
+        
         ProcessBuilder pb = new ProcessBuilder();
         pb.directory(new File(System.getProperty("user.home")));
             

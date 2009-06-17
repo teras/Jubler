@@ -26,8 +26,16 @@ package com.panayotis.jubler.subs;
  * @author Hoang Duy Tran
  */
 public interface CommonDef {
-    public static final String USER_HOME_DIR = System.getProperty("user.home") + System.getProperty("file.separator");
-    public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + System.getProperty("file.separator");
+    public final static String OS = System.getProperty("os.name").toLowerCase();
+    public final static boolean IS_LINUX = OS.indexOf("linux") >= 0;;
+    public final static boolean IS_WINDOWS = OS.indexOf("windows") >= 0;
+    public final static boolean IS_MACOSX = OS.indexOf("mac") >= 0;
+    
+    public final static String PROG_EXT = (IS_WINDOWS ? ".exe" : "");
+    
+    public static final String FILE_SEP = System.getProperty("file.separator");
+    public static final String USER_HOME_DIR = System.getProperty("user.home") + FILE_SEP;
+    public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + FILE_SEP;
     /**
      * Double quote character pattern (char_double_quote = "\"")
      */
