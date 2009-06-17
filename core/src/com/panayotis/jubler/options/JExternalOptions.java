@@ -20,23 +20,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.tools.externals.AvailExternals;
+import com.panayotis.jubler.tools.externals.ExtProgram;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.CardLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-
-
 /**
  *
  * @author  teras
  */
 public class JExternalOptions extends JPanel implements OptionsHolder {
+
     private AvailExternals list;
 
     /**
@@ -46,26 +45,20 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         initComponents();
         this.list = list;
 
-        for ( int i = 0 ; i < list.size() ; i++ ) {
+        for (int i = 0; i < list.size(); i++) {
             PList.addItem(list.nameAt(i));
             JExtBasicOptions opts = list.programAt(i).getOptionsPanel();
-            ParamsP.add( (opts==null ? new JPanel() : opts), Integer.toString(i));
+            ParamsP.add((opts == null ? new JPanel() : opts), Integer.toString(i));
         }
-        SelectorL.setText(_("Select a {0} from the following list", _(list.getType()).toLowerCase() ));
+        SelectorL.setText(_("Select a {0} from the following list", _(list.getType()).toLowerCase()));
+        if (PList.getModel().getSize() > 0)
+            PList.setSelectedIndex(0);
     }
-    
+
     public Object getObject() {
-        if (list.size() < 1)
-            return null;
-        int which = PList.getSelectedIndex();
-        if (which < 0)
-            which = 0;
-        if (which >= list.size())
-            which = list.size() - 1;
-        return list.elementAt(which);
+        return list.programAt(PList.getSelectedIndex());
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -102,42 +95,58 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         add(ParamsP, java.awt.BorderLayout.CENTER);
 
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void PListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PListActionPerformed
-        ((CardLayout)ParamsP.getLayout()).show(ParamsP, Integer.toString(PList.getSelectedIndex()));
+        ((CardLayout) ParamsP.getLayout()).show(ParamsP, Integer.toString(PList.getSelectedIndex()));
         tabChanged();
     }//GEN-LAST:event_PListActionPerformed
-    
+
     public void loadPreferences() {
-        if (list.size()<1)
-            return;
-        JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
-        if (opts!=null) opts.loadPreferences();
+        JExtBasicOptions opts = null;
+        ExtProgram ext = list.programAt(PList.getSelectedIndex());
+        if (ext != null)
+            opts = ext.getOptionsPanel();
+        if (opts != null)
+            opts.loadPreferences();
     }
-    
+
     public void savePreferences() {
-        JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
-        if (opts!=null) opts.savePreferences();
+        JExtBasicOptions opts = null;
+        ExtProgram ext = list.programAt(PList.getSelectedIndex());
+        if (ext != null)
+            opts = ext.getOptionsPanel();
+        if (opts != null)
+            opts.savePreferences();
     }
-    
-    public JPanel getTabPanel() { return this; }
-    
+
+    public JPanel getTabPanel() {
+        return this;
+    }
 
     public void tabChanged() {
-        JExtBasicOptions opts = list.programAt(PList.getSelectedIndex()).getOptionsPanel();
-        if (opts!=null) opts.updateOptionsPanel();
+        JExtBasicOptions opts = null;
+        ExtProgram ext = list.programAt(PList.getSelectedIndex());
+        if (ext != null)
+            opts = ext.getOptionsPanel();
+        if (opts != null)
+            opts.updateOptionsPanel();
     }
-    
-    public String getTabName() { return list.getType(); }
-    public String getTabTooltip() { return _("{0} options", list.getType()); }
-    public Icon getTabIcon() { return new ImageIcon(getClass().getResource(list.getIconName())); }
-    
-    
+
+    public String getTabName() {
+        return list.getType();
+    }
+
+    public String getTabTooltip() {
+        return _("{0} options", list.getType());
+    }
+
+    public Icon getTabIcon() {
+        return new ImageIcon(getClass().getResource(list.getIconName()));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ExtSelectorP;
     private javax.swing.JComboBox PList;
     private javax.swing.JPanel ParamsP;
     private javax.swing.JLabel SelectorL;
     // End of variables declaration//GEN-END:variables
-    
 }
