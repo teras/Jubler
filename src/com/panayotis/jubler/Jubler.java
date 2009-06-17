@@ -2567,7 +2567,7 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         }
 
         /* Initialize Subtitles */
-        newsubs = new Subtitles();
+        newsubs = new Subtitles(this);
         newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
 
         /* Check if this is an auto-load subtitle file */

@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.Subtitles;
@@ -36,7 +37,8 @@ public abstract class SubFormat {
 
     protected float FPS;
     protected String ENCODING;
-
+    protected Jubler jubler;
+    
     public abstract String getExtension();
 
     public abstract String getName();
@@ -102,4 +104,12 @@ public abstract class SubFormat {
         }
         return value;
     }//end public static int parseInt(String data, int default_value)
+
+    public Jubler getJubler() {
+        return jubler;
+    }
+
+    public void setJubler(Jubler jubler) {
+        this.jubler = jubler;
+    }
 }//end public abstract class SubFormat 

@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
@@ -57,6 +58,7 @@ public class Subtitles extends AbstractTableModel {
     private SubStyleList styles;
     /* The file representation of this subtitle */
     private SubFile subfile;
+    protected Jubler jubler;
 
     public Subtitles() {
         sublist = new Vector<SubEntry>();
@@ -65,6 +67,11 @@ public class Subtitles extends AbstractTableModel {
         subfile = new SubFile();
     }
 
+    public Subtitles(Jubler jubler) {
+        this();
+        this.jubler = jubler;        
+    }
+    
     public Subtitles(Subtitles old) {
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
@@ -116,7 +123,8 @@ public class Subtitles extends AbstractTableModel {
         SubFormat format_handler = null;
         while (load == null && formats.hasMoreElements()) {
             format_handler = formats.nextElement();
-            format_handler.init();
+            format_handler.setJubler(jubler);
+            format_handler.init();            
             load = format_handler.parse(data, FPS, f);
             if (load != null && load.size() < 1) {
                 load = null;

@@ -52,7 +52,7 @@ public class JImageIOHelper {
         ImageInputStream iis = ImageIO.createImageInputStream(imageFile);
         reader.setInput(iis);
         //Read the stream metadata
-//        IIOMetadata streamMetadata = reader.getStreamMetadata();
+        //IIOMetadata streamMetadata = reader.getStreamMetadata();
 
         //Set up the writeParam
         TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
