@@ -50,6 +50,7 @@ public class JPreferences extends javax.swing.JDialog {
 
     /** Creates new form JPreferences */
     public JPreferences(Jubler jub) {
+        super(jub);
 
         Tabs = new JOptionTabs(this);
         Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, _("Player"), "/icons/player_pref.png")));
