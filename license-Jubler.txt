@@ -1,0 +1,26 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+${licensePrefix}
+${licensePrefix}This file is part of Jubler.
+${licensePrefix}
+${licensePrefix}Jubler is free software; you can redistribute it and/or modify
+${licensePrefix}it under the terms of the GNU General Public License as published by
+${licensePrefix}the Free Software Foundation, version 2.
+${licensePrefix}
+${licensePrefix}
+${licensePrefix}Jubler is distributed in the hope that it will be useful,
+${licensePrefix}but WITHOUT ANY WARRANTY; without even the implied warranty of
+${licensePrefix}MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+${licensePrefix}GNU General Public License for more details.
+${licensePrefix}
+${licensePrefix}You should have received a copy of the GNU General Public License
+${licensePrefix}along with Jubler; if not, write to the Free Software
+${licensePrefix}Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+${licensePrefix}
+${licensePrefix}Contributor(s):
+${licensePrefix}
+<#if licenseLast??>
+${licenseLast}
+</#if>
