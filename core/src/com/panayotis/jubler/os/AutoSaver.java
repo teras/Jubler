@@ -50,20 +50,21 @@ public class AutoSaver {
                 }
 
                 /* Move old autosave files to olds */
-                for (File current : dir.listFiles(new SubFileFilter()))
+                for (File current : dir.listFiles(new AutoSubFileFilter()))
                     current.renameTo(new File(olds, current.getName()));
 
                 /* Autosave unsaved files */
                 Subtitles subs;
-                for (Jubler j : Jubler.windows)
+                for (Jubler j : Jubler.windows) {
                     if (j.isUnsaved()) {
                         subs = j.getSubtitles();
                         String fname = AUTOSAVEPREFIX +
                                 String.format("%04x", rnd.nextInt() & 0xffff) +
                                 "." +
                                 subs.getSubFile().getStrippedFile().getName();
-                        FileCommunicator.save(subs, new SubFile(new File(fname)), null);
+                        FileCommunicator.save(subs, new SubFile(new File(dir, fname)), null);
                     }
+                }
 
                 /* cleanup old files */
                 for (File current : olds.listFiles())
@@ -90,7 +91,7 @@ public class AutoSaver {
         deleteDirContents(olds);
         olds.delete();
 
-        File[] f = dir.listFiles(new SubFileFilter());
+        File[] f = dir.listFiles(new AutoSubFileFilter());
         if (f == null)
             return empty;
         return f;
@@ -112,10 +113,10 @@ public class AutoSaver {
         }
     }
 
-    private static class SubFileFilter implements FilenameFilter {
+    private static class AutoSubFileFilter implements FilenameFilter {
 
         public boolean accept(File dir, String name) {
-            return name.endsWith(".ass");
+            return name.endsWith(".ass") || name.endsWith(".txt");
         }
     }
 }
