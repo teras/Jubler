@@ -2215,7 +2215,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             return;
         JVideoConsole console = JVideoConsole.initialize(this, prefs.getVideoPlayer());
         if (console == null) {
-            JIDialog.info(this, _("No valid players where found"), _("Error while initializing video player"));
+            JIDialog.info(this, _("No valid players where registered!"), _("Error while initializing video player"));
             return;
         }
         connected_consoles.add(console);
