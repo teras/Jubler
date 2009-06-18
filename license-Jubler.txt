@@ -1,8 +1,9 @@
 <#if licenseFirst??>
 ${licenseFirst}
 </#if>
-${licensePrefix} 
-${licensePrefix} File: ${nameAndExt} Created on: ${date} at ${time}
+${licensePrefix} ${nameAndExt} 
+${licensePrefix}
+${licensePrefix} Created on: ${date} at ${time}
 ${licensePrefix}
 ${licensePrefix} 
 ${licensePrefix}DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
