@@ -36,6 +36,8 @@ public interface CommonDef {
     public static final String FILE_SEP = System.getProperty("file.separator");
     public static final String USER_HOME_DIR = System.getProperty("user.home") + FILE_SEP;
     public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + FILE_SEP;
+    
+    public static final String EOL = System.getProperty("line.separator");
     /**
      * Double quote character pattern (char_double_quote = "\"")
      */

@@ -74,7 +74,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
             row_count = subTable.getSelectedRowCount();
             len = (isOcrAllList() ? subs.size() : row_count);
 
-            SwingUtilities.invokeLater(new Runnable() {
+            Thread ocr_thread = new Thread() {
 
                 @Override
                 public void run() {
@@ -133,7 +133,9 @@ public class OCRAction extends JMenuItem implements ActionListener {
                         pb.off();
                     }
                 }
-            });
+            };
+            
+            ocr_thread.start();
 
         } catch (Exception ex) {
             ex.printStackTrace(System.out);

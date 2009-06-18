@@ -16,6 +16,7 @@
 
 package com.panayotis.jubler.tools.ocr;
 
+import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.CommonDef;
 import java.io.BufferedReader;
 import java.io.File;
@@ -30,8 +31,7 @@ import javax.imageio.IIOImage;
  * @author Quan Nguyen (nguyenq@users.sf.net)
  */
 public class JOCR implements CommonDef{
-    private final String LANG_OPTION = "-l";
-    private final String EOL = System.getProperty("line.separator");
+    private final String LANG_OPTION = "-l";    
 
     private String tessPath;
 
@@ -90,7 +90,7 @@ public class JOCR implements CommonDef{
         cmd.add(lang);
         
         ProcessBuilder pb = new ProcessBuilder();
-        pb.directory(new File(System.getProperty("user.home")));
+        pb.directory(new File(USER_CURRENT_DIR));
             
         for (File tempImageFile : tempImageFiles) {
             // actual output file will be "output.txt"
@@ -121,16 +121,16 @@ public class JOCR implements CommonDef{
                 String msg;
                 switch (w) {
                     case 1:
-                        msg = "Errors accessing files.";
+                        msg = _("Errors accessing files.");
                         break;
                     case 29:
-                        msg = "Cannot recognize the image or its selected region.";
+                        msg = _("Cannot recognize the image or its selected region.");
                         break;
                     case 31:
-                        msg = "Unsupported image format.";
+                        msg = _("Unsupported image format.");
                         break;                        
                     default:
-                        msg = "Errors occurred.";
+                        msg = _("Errors occurred.");
                 }
                 for (File image : tempImageFiles) {
                     image.delete();
