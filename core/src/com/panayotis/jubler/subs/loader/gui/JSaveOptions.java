@@ -129,12 +129,6 @@ public class JSaveOptions extends JFileOptions {
         ControlsP.add(CFormat);
 
         CEncP.setLayout(new java.awt.BorderLayout());
-
-        CEnc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CEncActionPerformed(evt);
-            }
-        });
         CEncP.add(CEnc, java.awt.BorderLayout.CENTER);
 
         ControlsP.add(CEncP);
@@ -145,10 +139,6 @@ public class JSaveOptions extends JFileOptions {
     private void CFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CFormatActionPerformed
         updateVisualFPS();
     }//GEN-LAST:event_CFormatActionPerformed
-
-    private void CEncActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CEncActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CEncActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CEnc;

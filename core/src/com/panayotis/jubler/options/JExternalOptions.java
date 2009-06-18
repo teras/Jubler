@@ -102,21 +102,21 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     }//GEN-LAST:event_PListActionPerformed
 
     public void loadPreferences() {
-        JExtBasicOptions opts = null;
-        ExtProgram ext = list.programAt(PList.getSelectedIndex());
-        if (ext != null)
-            opts = ext.getOptionsPanel();
-        if (opts != null)
-            opts.loadPreferences();
+        JExtBasicOptions opts;
+        for (int i = 0; i < list.size(); i++) {
+            opts = list.programAt(i).getOptionsPanel();
+            if (opts != null)
+                opts.loadPreferences();
+        }
     }
 
     public void savePreferences() {
-        JExtBasicOptions opts = null;
-        ExtProgram ext = list.programAt(PList.getSelectedIndex());
-        if (ext != null)
-            opts = ext.getOptionsPanel();
-        if (opts != null)
-            opts.savePreferences();
+        JExtBasicOptions opts;
+        for (int i = 0; i < list.size(); i++) {
+            opts = list.programAt(i).getOptionsPanel();
+            if (opts != null)
+                opts.savePreferences();
+        }
     }
 
     public JPanel getTabPanel() {
@@ -124,13 +124,12 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     }
 
     public void changeProgram() {
-        System.out.println(PList.getSelectedIndex());
-        JExtBasicOptions opts = null;
-        ExtProgram ext = list.programAt(PList.getSelectedIndex());
-        if (ext != null)
-            opts = ext.getOptionsPanel();
-        if (opts != null)
-            opts.updateOptionsPanel();
+        JExtBasicOptions opts;
+        for (int i = 0; i < list.size(); i++) {
+            opts = list.programAt(i).getOptionsPanel();
+            if (opts != null)
+                opts.updateOptionsPanel();
+        }
     }
 
     public String getTabName() {
