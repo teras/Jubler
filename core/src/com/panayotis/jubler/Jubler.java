@@ -2213,7 +2213,11 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private void testVideo(Time t) {
         if (!mfile.validateMediaFile(subs, false))
             return;
-        JVideoConsole console = new JVideoConsole(this, prefs.getVideoPlayer());
+        JVideoConsole console = JVideoConsole.initialize(this, prefs.getVideoPlayer());
+        if (console == null) {
+            JIDialog.info(this, _("No valid players where found"), _("Error while initializing video player"));
+            return;
+        }
         connected_consoles.add(console);
         console.start(mfile, subs, new Time(((long)t.toSeconds())-2));
     }

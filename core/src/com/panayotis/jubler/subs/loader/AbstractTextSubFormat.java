@@ -104,9 +104,9 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         cleanupSaver(res);
         
         /* Clean up leading \n characters */
-        while (res.charAt(res.length()-1)=='\n' && res.charAt(res.length()-2)=='\n') {
-            res.setLength(res.length()-1);
-        }
+        if (res.length() > 1)
+            while (res.charAt(res.length() - 1) == '\n' && res.charAt(res.length() - 2) == '\n')
+                res.setLength(res.length() - 1);
         
         // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
         CharsetEncoder encoder = Charset.forName(ENCODING).newEncoder();
