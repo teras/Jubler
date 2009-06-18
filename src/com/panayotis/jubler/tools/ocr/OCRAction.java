@@ -1,5 +1,5 @@
 /*
- * EditCopy.java
+ * OCRAction.java
  *
  * Created on 20-May-2009, 19:26:57
  */
@@ -41,6 +41,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
 /**
+ * This class performs the OCR action. It runs throught the list of subtitle
+ * entries that contain image files and uses the image's filename to write 
+ * a temporary image in TIFF format to the system's temp directory.
+ * It then call the JOCR's recognizeText method to recognise text. 
+ * The result text is set in the instance of sub-entry.
+ * It must know the references of:
+ * 1. Jubler instance currently running, from which it can get the list of
+ * subtitles loaded and the table, from where it knows the table's selection.
+ * 2. The 'tesseract' executable path.
+ * 3. The 3 character code of language where OCR opeation will be based on
+ * 4. The setting of ocrAllList is true when all items from the subtitle list
+ * is to be OCR(ed) and false when only the selected item is to be done.
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class OCRAction extends JMenuItem implements ActionListener {
@@ -118,7 +130,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
 
                             img_sub = (ImageTypeSubtitle) sub;
 
-                            String msg = "OCR: " + img_sub.getImageFile().getName();
+                            String msg = _("OCR:") + img_sub.getImageFile().getName();
                             pb.setTitle(msg);
                             pb.setValue(i);
 
@@ -130,10 +142,6 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             JOCR ocrEngine = new JOCR(tessPath);
                             String result = ocrEngine.recognizeText(file_list, language);
                             sub.setText(result.trim());
-
-                        // postprocess to correct common OCR errors
-                        //result = Processor.postProcess(result, curLangCode);
-
                         }//end for(int i=0; i < len; i++)
                         jublerParent.tableHasChanged(null);
                     } catch (Exception e) {

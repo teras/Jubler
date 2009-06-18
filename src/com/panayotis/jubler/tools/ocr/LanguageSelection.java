@@ -45,18 +45,63 @@ import javax.swing.JOptionPane;
  */
 public class LanguageSelection implements CommonDef {
 
+    /**
+     * The fixed 'tessdata' directory name where language font files 
+     * for 'tesseract' are found
+     */
     public static final String TESSERACT_LANGUAGE_PATH = "tessdata";
+    /**
+     * The reference to the instance of {@link Jubler}
+     */
     private Jubler jubler = null;
+    /**
+     * The system's locale instance where information about the locale of the
+     * current system is held.
+     */
     public static Locale currentLocale = Locale.getDefault();
+    /**
+     * The 3 character long language code of the current system's locale.
+     */
     public static String currentLanguageCode = currentLocale.getISO3Language();
+    /**
+     * The display name of the language held in the current system's locale.
+     */
     public static String currentLanguageName = currentLocale.getDisplayLanguage();
     
+    /**
+     * The path to 'tesseract' executable.
+     */
     private String tessPath;
+    /**
+     * The language file filter using in the dialog. This filter will load
+     * the available language files and form value pairs 
+     * [language display name, language code] in the 
+     * {@link #availableLanguageMap}.
+     */
     private LanguageFileFilter langFileFilter = null;
+    /**
+     * The map holds instances of value pairs [language code, language display name]
+     * where language code is a 3 characters long code defines in the ISO-639.
+     * for instance the pair [eng, English] for English language.
+     */
     public static Map<String, String> languageMap = new HashMap<String, String>();
+    
+    /**
+     * The map holds the actual available languages in the 'tessdata' directory.
+     * The value pairs are in the format [language display name, language code]
+     * which is the reverse order of the 'languageMap'. This map is searched
+     * when the user select a 'language display name' and for the matching entry,
+     * it will draw the 3 character long 'language code' to provide for the
+     * operation requires it, such as OCR action.
+     */
     public static Map<String, String> availableLanguageMap = new HashMap<String, String>();
     
 
+    /**
+     * This routine loads the value pairs 
+     * [language display name, language code] of every language on Earth 
+     * as defined ISO-639
+     */
     static {
         String[] languages = Locale.getISOLanguages();
         for (String language : languages) {
@@ -88,7 +133,13 @@ public class LanguageSelection implements CommonDef {
         return showDialog(_("Language Selection"));
     }
 
-    private boolean loadLanguageList() {
+    /**
+     * Load a new language map by getting the list of files in the
+     * 'tesseract/tessdata' directory, where language files reside.
+     * @return true if the list loaded without errors and there are
+     * language files in the directory, false otherwise.
+     */
+    public boolean loadLanguageList() {
         boolean result = false;
         try {
             availableLanguageMap.clear();
@@ -97,21 +148,11 @@ public class LanguageSelection implements CommonDef {
             if (langFileFilter == null) {
                 langFileFilter = new LanguageFileFilter();
             }//end if (langFileFilter == null) 
-
-            String[] file_list = dir.list(langFileFilter);
-            for (String filename : file_list) {
-                int dot = filename.indexOf(".");
-                String language_code = filename.substring(0, dot).toLowerCase();
-                boolean is_language =
-                        languageMap.containsKey(language_code);
-                boolean is_there_already = is_language &&
-                        availableLanguageMap.containsKey(language_code);
-                if (! is_there_already){
-                    String language_name = languageMap.get(language_code);
-                    availableLanguageMap.put(language_name, language_code);
-                }//end if (! is_there_already)
-            }//end for(String filename :  file_list)
             
+            langFileFilter.setAvailableLanguageMap(availableLanguageMap);
+            //now pull the list, this should fill the availableLanguageMap
+            dir.list(langFileFilter);
+            //DEBUG.logger.log(Level.INFO, "Available languages: " + availableLanguageMap.toString());
             result = (availableLanguageMap.size() > 0);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -125,7 +166,8 @@ public class LanguageSelection implements CommonDef {
      * select. Each item represents a language that the operation
      * will act on.
      * @param title The title for the dialog box.
-     * @return One of the selected language or null  if the user cancelled.
+     * @return One of the selected language code (3 character long) 
+     * or null  if the user cancelled.
      */
     public String showDialog(String title) {
         String sel_code = "";
@@ -140,7 +182,7 @@ public class LanguageSelection implements CommonDef {
             
             Object sel = JOptionPane.showInputDialog(
                     jubler,
-                    "",
+                    _("Select a languages in 'tessdata' directory:"),
                     title,
                     JOptionPane.PLAIN_MESSAGE,
                     null,
