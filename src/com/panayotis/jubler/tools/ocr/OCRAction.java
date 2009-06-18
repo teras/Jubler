@@ -39,7 +39,6 @@ import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 
 /**
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
@@ -74,6 +73,16 @@ public class OCRAction extends JMenuItem implements ActionListener {
             row_count = subTable.getSelectedRowCount();
             len = (isOcrAllList() ? subs.size() : row_count);
 
+            LanguageSelection lang_sel = LanguageSelection.getInstance();
+            
+            lang_sel.setJubler(jublerParent);
+            lang_sel.setTessPath(tessPath);
+            
+            language = lang_sel.showDialog();
+            if (language == null) {
+                return;
+            }
+            
             Thread ocr_thread = new Thread() {
 
                 @Override
@@ -121,7 +130,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             JOCR ocrEngine = new JOCR(tessPath);
                             String result = ocrEngine.recognizeText(file_list, language);
                             sub.setText(result.trim());
-                                                        
+
                         // postprocess to correct common OCR errors
                         //result = Processor.postProcess(result, curLangCode);
 
@@ -134,7 +143,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
                     }
                 }
             };
-            
+
             ocr_thread.start();
 
         } catch (Exception ex) {
