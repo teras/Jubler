@@ -43,10 +43,20 @@ public class AvailExternals<E> extends Vector<ExtProgram> {
     }
 
     public String nameAt(int i) {
-        return elementAt(i).getName();
+        ExtProgram ext = programAt(i);
+        if (ext != null)
+            return ext.getName();
+        else
+            return null;
     }
 
     public ExtProgram programAt(int i) {
+        if (size() < 1)
+            return null;
+        if (i < 0)
+            i = 0;
+        if (i >= size())
+            i = size() - 1;
         return elementAt(i);
     }
 

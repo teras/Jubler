@@ -92,7 +92,7 @@ public abstract class ExternalViewport implements Viewport {
             if (!isActive)
                 return true;    // Ignore commands if viewport is inactive
             try {
-                sendData(com + "\n");
+                sendData(com[i] + "\n");
             } catch (IOException e) {
                 quit();
                 return false;
