@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+#
+# This file is part of Jubler.
+#
+# Jubler is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, version 2 of the License.
+#
+# Jubler is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Jubler; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+BINPATH=`dirname $0`
+if [ -e "$BINPATH/lib/findjava.sh" ] ; then
+	JUBLERPATH=$BINPATH
+	JAVABIN=`"$JUBLERPATH/lib/findjava.sh"`
+else
+	if [ -e "/usr/lib/jubler/findjava.sh" ] ; then
+		JUBLERPATH=/usr/lib/jubler
+		JAVABIN=`"$JUBLERPATH/findjava.sh"`
+	else
+		echo "The installation is corrupted. Please install again."
+		exit 2;
+	fi
+fi
+
+
+if [ -z "$JAVABIN" ] ; then
+	echo Java binary not found. Exiting.
+	exit 1
+fi
+
+"$JAVABIN" -jar "$JUBLERPATH/Jubler.jar" "$@"

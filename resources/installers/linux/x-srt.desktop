@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=MimeType
+MimeType=application/x-srt
+Icon=subtitle
+Patterns=*.srt;
+DefaultApp=jubler
+Comment=SRT subtitle

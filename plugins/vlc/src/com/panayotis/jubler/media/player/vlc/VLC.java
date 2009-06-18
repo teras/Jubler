@@ -1,0 +1,82 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.panayotis.jubler.media.player.vlc;
+
+import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.media.player.Viewport;
+import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.tools.externals.AvailExternals;
+
+/**
+ *
+ * @author teras
+ */
+public class VLC extends AbstractPlayer implements Plugin {
+
+    public VLC() {
+        super(family);
+    }
+
+    public String getDefaultArguments() {
+        return "%p --extraint=rc --no-save-config --extraintf=rc --sub-file=%s %v";
+    }
+
+    public String[] getTestParameters() {
+        return null;
+    }
+
+    public String getTestSignature() {
+        return null;
+    }
+
+    public boolean supportPause() {
+        return true;
+    }
+
+    public boolean supportSubDisplace() {
+        return true;
+    }
+
+    @Override
+    public boolean supportSkip() {
+        return true;
+    }
+
+    public boolean supportSeek() {
+        return true;
+    }
+
+    public boolean supportSpeed() {
+        return true;
+    }
+
+    public boolean supportAudio() {
+        return false;
+    }
+
+    public boolean supportChangeSubs() {
+        return true;
+    }
+
+    public Viewport getViewport() {
+        return new VLCViewport(this);
+    }
+
+    public String getName() {
+        return "VLC";
+    }
+
+    public String[] getAffectionList() {
+        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
+    }
+
+    public void postInit(Object o) {
+        if (o instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals) o;
+            if (l.getType().equals(family))
+                l.add(this);
+        }
+    }
+}
