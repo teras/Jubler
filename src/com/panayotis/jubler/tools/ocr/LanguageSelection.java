@@ -99,8 +99,8 @@ public class LanguageSelection implements CommonDef {
 
     /**
      * This routine loads the value pairs 
-     * [language display name, language code] of every language on Earth 
-     * as defined ISO-639
+     * [language code (3 characters), language display name] of every languages
+     * on Earth as defined ISO-639
      */
     static {
         String[] languages = Locale.getISOLanguages();
