@@ -40,30 +40,42 @@ public class JImageIOHelper {
     final static String TIFF_EXT = ".tif";
     final static String TIFF_FORMAT = "tiff";
 
-    public static ArrayList<File> createImageFiles(BufferedImage source) throws Exception {
+    public static ArrayList<File> createImageFile(BufferedImage source) throws Exception {
+        ImageOutputStream ios = null;
+        ImageWriter writer = null;
+
         ArrayList<File> tempImageFiles = new ArrayList<File>();
-        //TIFFEncodeParam params = new TIFFEncodeParam();
-        //Set up the writeParam
+        try {
+            //Set up the writeParam
+            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.getDefault());
+            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
 
-        TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
-        tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+            //Get tif writer and set output to file
+            Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+            writer = (ImageWriter) writers.next();
 
-        //Get tif writer and set output to file
-        Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
-        ImageWriter writer = (ImageWriter) writers.next();
+            //Read the stream metadata
+            IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
 
-        //Read the stream metadata
-        IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
-        
-        IIOImage image = new IIOImage(source, null, null);
-        
-        File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
-        ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
-        writer.setOutput(ios);
-        writer.write(streamMetadata, image, tiffWriteParam);
-        ios.close();
-        writer.dispose();
-        tempImageFiles.add(tempFile);
+            IIOImage image = new IIOImage(source, null, null);
+
+            File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
+            ios = ImageIO.createImageOutputStream(tempFile);
+            writer.setOutput(ios);
+            writer.write(streamMetadata, image, tiffWriteParam);
+            tempImageFiles.add(tempFile);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            try {
+                if (ios != null) {
+                    ios.close();
+                }
+                if (writer != null);
+                writer.dispose();
+            } catch (Exception ex) {
+            }
+        }
         return tempImageFiles;
     }//end public static ArrayList<File> createImageFiles(BufferedImage) throws Exception 
 

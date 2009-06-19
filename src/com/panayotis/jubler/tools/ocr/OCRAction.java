@@ -30,6 +30,7 @@ package com.panayotis.jubler.tools.ocr;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.options.gui.ProgressBar;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
@@ -39,6 +40,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
@@ -54,7 +56,7 @@ import javax.swing.JTable;
  * 2. The 'tesseract' executable path.
  * 3. The 3 character code of language where OCR opeation will be based on
  * 4. The setting of ocrAllList is true when all items from the subtitle list
- * is to be OCR(ed) and false when only the selected item is to be done.
+ * are to be OCR(ed) and false when only the selected items are to be done.
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class OCRAction extends JMenuItem implements ActionListener {
@@ -88,25 +90,27 @@ public class OCRAction extends JMenuItem implements ActionListener {
             len = (isOcrAllList() ? subs.size() : row_count);
 
             LanguageSelection lang_sel = LanguageSelection.getInstance();
-            
+
             lang_sel.setJubler(jublerParent);
             lang_sel.setTessPath(tessPath);
-            
+
             language = lang_sel.showDialog();
             if (language == null) {
                 return;
             }
-            
+
             Thread ocr_thread = new Thread() {
 
                 @Override
                 public void run() {
                     boolean is_image = false;
+                    boolean has_image = true;
                     int[] selected;
                     int row;
                     SubEntry sub;
                     ImageTypeSubtitle img_sub;
                     File[] file_list;
+                    ImageIcon image = null;
 
                     ProgressBar pb = ProgressBar.getInstance();
                     pb.setMinValue(0);
@@ -131,26 +135,25 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             }
 
                             img_sub = (ImageTypeSubtitle) sub;
-
+                            image = img_sub.getImage();
+                            has_image = !(Share.isEmpty(image));
+                            if (!has_image) {
+                                continue;
+                            }
+                            
                             String msg = _("OCR:") + img_sub.getImageFile().getName();
                             pb.setTitle(msg);
                             pb.setValue(i);
 
-                            /*
-                            final ArrayList<File> image_file_list = JImageIOHelper.createImageFiles(
-                                    img_sub.getImageFile(), 0);
-                           */
-                            
-                           /**
-                            * Convert to B/W image to obtain better OCR result.
-                            */ 
+                            /**
+                             * Convert to B/W image to obtain better OCR result.
+                             */
                             BufferedImage bw_image = JImage.bwConversion(img_sub.getImage());
-                                    
-                            final ArrayList<File> image_file_list = 
-                                    JImageIOHelper.createImageFiles(
-                                    bw_image
-                                    );
-                            
+
+                            final ArrayList<File> image_file_list =
+                                    JImageIOHelper.createImageFile(
+                                    bw_image);
+
                             file_list = image_file_list.toArray(new File[image_file_list.size()]);
 
                             JOCR ocrEngine = new JOCR(tessPath);
