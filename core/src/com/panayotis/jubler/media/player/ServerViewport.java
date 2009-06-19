@@ -16,7 +16,7 @@ import java.io.OutputStreamWriter;
  *
  * @author teras
  */
-public abstract class CommandLineViewport extends ExternalViewport {
+public abstract class ServerViewport extends ExternalViewport {
 
     protected Process proc;
     protected BufferedWriter cmdpipe;
@@ -26,7 +26,7 @@ public abstract class CommandLineViewport extends ExternalViewport {
 
     protected abstract String[] getPostInitCommand();
 
-    public CommandLineViewport(AbstractPlayer player) {
+    public ServerViewport(AbstractPlayer player) {
         super(player);
     }
 
@@ -97,7 +97,7 @@ public abstract class CommandLineViewport extends ExternalViewport {
                         while (info.charAt(++second) != ' ');
                         position = getDouble(info.substring(first, second).trim());
                     } else {
-                        DEBUG.debug("[player] " + info);
+                        DEBUG.debug("[Player] " + info);
                         if (info.startsWith("ANS_volume"))
                             feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=') + 1)) / 100f);
                     }
