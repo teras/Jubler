@@ -222,8 +222,9 @@ public class SonHeader implements SONPatternDef, Cloneable {
     @Override
     @SuppressWarnings("unchecked")
     public Object clone() {
-        SonHeader new_header = new SonHeader();
+        SonHeader new_header = null;
         try {
+            new_header = (SonHeader) super.clone();
             new_header.defaultHeader = this.defaultHeader;
             new_header.FPS = this.FPS;
             new_header.st_format = this.st_format;
