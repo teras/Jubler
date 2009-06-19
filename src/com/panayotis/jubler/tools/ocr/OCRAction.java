@@ -33,8 +33,10 @@ import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
+import com.panayotis.jubler.tools.JImage;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JMenuItem;
@@ -134,9 +136,21 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             pb.setTitle(msg);
                             pb.setValue(i);
 
+                            /*
                             final ArrayList<File> image_file_list = JImageIOHelper.createImageFiles(
                                     img_sub.getImageFile(), 0);
-
+                           */
+                            
+                           /**
+                            * Convert to B/W image to obtain better OCR result.
+                            */ 
+                            BufferedImage bw_image = JImage.bwConversion(img_sub.getImage());
+                                    
+                            final ArrayList<File> image_file_list = 
+                                    JImageIOHelper.createImageFiles(
+                                    bw_image
+                                    );
+                            
                             file_list = image_file_list.toArray(new File[image_file_list.size()]);
 
                             JOCR ocrEngine = new JOCR(tessPath);

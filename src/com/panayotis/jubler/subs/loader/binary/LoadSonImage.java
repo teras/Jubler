@@ -143,7 +143,6 @@ public class LoadSonImage extends Thread implements CommonDef {
                         BufferedImage b_img = JImage.readImage(f);
                         img = new ImageIcon(b_img);
                         sub_entry.setImageFile(f);
-                        sub_entry.setBufferedImage(b_img);
                         sub_entry.setImage(img);
                         has_image = (img != null);
                         has_header = (sub_entry.header != null);

@@ -55,7 +55,6 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public String image_filename = null;
     private File imageFile = null;
     private ImageIcon image = null;
-    private BufferedImage bufferedImage = null;
         
     public SonHeader getHeader() {
         return header;
@@ -164,7 +163,6 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             //so make a shallow copy here for the time being.
             new_object.imageFile = imageFile;
             new_object.image = image;
-            new_object.bufferedImage = this.bufferedImage;
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
@@ -202,18 +200,9 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
                 imageFile = o_son.imageFile;
             }
             image = o_son.image;
-            bufferedImage = o_son.bufferedImage;
         } catch (Exception ex) {
         }
     }//public void copyRecord(SubEntry o)
-
-    public BufferedImage getBufferedImage() {
-        return bufferedImage;
-    }
-
-    public void setBufferedImage(BufferedImage bufferedImage) {
-        this.bufferedImage = bufferedImage;
-    }
 
     public void setImage(ImageIcon image) {
         this.image = image;

@@ -15,7 +15,7 @@
  */
 package com.panayotis.jubler.tools.ocr;
 
-import com.sun.media.imageio.plugins.tiff.*;
+import com.sun.media.imageio.plugins.tiff.TIFFImageWriteParam;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -39,6 +39,33 @@ public class JImageIOHelper {
     final static String OUTPUT_FILE_NAME = "TessTempFile";
     final static String TIFF_EXT = ".tif";
     final static String TIFF_FORMAT = "tiff";
+
+    public static ArrayList<File> createImageFiles(BufferedImage source) throws Exception {
+        ArrayList<File> tempImageFiles = new ArrayList<File>();
+        //TIFFEncodeParam params = new TIFFEncodeParam();
+        //Set up the writeParam
+
+        TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+        tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+
+        //Get tif writer and set output to file
+        Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+        ImageWriter writer = (ImageWriter) writers.next();
+
+        //Read the stream metadata
+        IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
+        
+        IIOImage image = new IIOImage(source, null, null);
+        
+        File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
+        ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
+        writer.setOutput(ios);
+        writer.write(streamMetadata, image, tiffWriteParam);
+        ios.close();
+        writer.dispose();
+        tempImageFiles.add(tempFile);
+        return tempImageFiles;
+    }//end public static ArrayList<File> createImageFiles(BufferedImage) throws Exception 
 
     public static ArrayList<File> createImageFiles(File imageFile, int index) throws Exception {
         ArrayList<File> tempImageFiles = new ArrayList<File>();

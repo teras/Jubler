@@ -214,7 +214,6 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
         try {
             File image_file =  new File(dir, filename);
             entry.setImageFile(image_file);
-            entry.setBufferedImage(img);
             entry.setImage(new ImageIcon(img));
             ImageIO.write(img, "png", image_file);
         } catch (IOException ex) {

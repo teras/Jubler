@@ -36,8 +36,6 @@ public interface ImageTypeSubtitle {
     public int getMaxImageHeight();
     public ImageIcon getImage();
     public void setImage(ImageIcon img);
-    public BufferedImage getBufferedImage();
-    public void setBufferedImage(BufferedImage img);
     public File getImageFile();
     public void setImageFile(File imageFile);
 }

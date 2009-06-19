@@ -28,10 +28,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.Share;
 import java.awt.Color;
 import java.awt.Rectangle;
-import java.awt.color.ColorSpace;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ColorConvertOp;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -281,16 +278,40 @@ public class JImage implements CommonDef{
         }
     }//public static ImageIcon readImage(File f)
 
+    public static BufferedImage bwConversion(ImageIcon source) {
+        BufferedImage new_image = null;
+        int w, h;
+        try{
+            w = source.getIconWidth();
+            h = source.getIconHeight(); 
+            new_image = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
+            new_image.getGraphics().drawImage(source.getImage(), 0, 0, null);
+            return new_image;
+        }catch(Exception ex){
+            return null;
+        }
+    }//public static BufferedImage bwConversion(BufferedImage source)
+    
+    /**
+     * Creates a new buffered image using TYPE_BYTE_GRAY meaning converts
+     * the current image to gray scale.
+     * @param source The source image
+     * @return The newly converted b/w image if no errors occured, source
+     * image if some errors occured.
+     */
     public static BufferedImage bwConversion(BufferedImage source) {
-        try {
-            ColorSpace cs = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-            BufferedImageOp op = new ColorConvertOp(cs, null);
-            BufferedImage gray = op.filter(source, null);
-            return gray;
-        } catch (Exception ex) {
+        BufferedImage new_image = null;
+        int w, h;
+        try{
+            w = source.getWidth();
+            h = source.getHeight();            
+            new_image = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_GRAY);
+            new_image.getGraphics().drawImage(source, 0, 0, null);
+            return new_image;
+        }catch(Exception ex){
             return source;
         }
-    }//end public static BufferedImage bwConversion(BufferedImage source)
+    }//public static BufferedImage bwConversion(BufferedImage source)
 
     /**
      * This routine gets the sub-image boundary using the specified colour
