@@ -71,8 +71,9 @@ public class JImageIOHelper {
                 if (ios != null) {
                     ios.close();
                 }
-                if (writer != null);
-                writer.dispose();
+                if (writer != null) {
+                    writer.dispose();
+                }
             } catch (Exception ex) {
             }
         }
