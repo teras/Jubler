@@ -81,7 +81,7 @@ public class LoadSonImage extends Thread implements CommonDef {
     Subtitles sub_list = null;
     String image_dir = null;
     String subtitle_file_dir = null;
-    ProgressBar pb = ProgressBar.getInstance();
+    ProgressBar pb = new ProgressBar();
     private Jubler jubler;
 
     public LoadSonImage(Subtitles sub_list, String image_dir, String file_dir) {

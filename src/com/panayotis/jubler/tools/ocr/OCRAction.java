@@ -112,7 +112,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
                     File[] file_list;
                     ImageIcon image = null;
 
-                    ProgressBar pb = ProgressBar.getInstance();
+                    ProgressBar pb = new ProgressBar();
                     pb.setMinValue(0);
                     pb.setMaxValue(len - 1);
                     pb.on();

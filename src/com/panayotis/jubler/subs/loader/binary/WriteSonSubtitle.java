@@ -78,10 +78,11 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
     private File index_outfile = null;
     private String image_out_filename = null;
     private static int maxDigits = 1;
-    private NonDuplicatedVector<File> dirList = null;
-    private ProgressBar pb = ProgressBar.getInstance();
+    private NonDuplicatedVector<File> dirList = null;    
     private String encoding = null;
 
+    ProgressBar pb = new ProgressBar();
+    
     public WriteSonSubtitle() {
     }
 
@@ -113,9 +114,6 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
     @Override
     public void run() {
         try {            
-            if (pb.isOn()) {
-                throw new IOException(_("A process did not finish yet"));
-            }
 
             int dir_count = 1;
             int sub_count = subs.size();
