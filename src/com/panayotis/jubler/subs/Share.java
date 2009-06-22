@@ -40,142 +40,6 @@ import javax.swing.JFileChooser;
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class Share implements CommonDef {
-    /**
-     * The colour that is used for DVB-T subtitle's transparency.
-     */
-    public static Color DVBT_SUB_TRANSPARENCY = new Color(0, 0, 96);
-    
-    /**
-     * The black background colour in DVB-T subtitle blocks
-     */
-    public static Color DVBT_SUB_BLACK_BC = new Color(31, 31, 31);
-    /**
-     * This enumeration indicates the component
-     * of a record will be used. The typical use
-     * will be for cutting/copying, and for importing.
-     */
-    public static enum SubtitleRecordComponent {
-        CP_INVALID,
-        CP_TEXT,
-        CP_TIME,
-        CP_HEADER,
-        CP_RECORD,
-    };
-    public static SubtitleRecordComponent[] recordComponentList =
-            new SubtitleRecordComponent[]{
-        SubtitleRecordComponent.CP_TEXT,
-        SubtitleRecordComponent.CP_TIME,
-        SubtitleRecordComponent.CP_HEADER,
-        SubtitleRecordComponent.CP_RECORD
-    };
-
-    /**
-     * This is the readable names of the record component
-     * above and is used for human interaction, plus translation
-     * purposes.
-     */
-    public static String[] componentNames = new String[]{
-        _("Text"),
-        _("Time"),
-        _("Header"),
-        _("Record"),
-    };
-
-    public static int getComponentIndex(SubtitleRecordComponent entry){
-        try {
-            for (int i = 0; i < recordComponentList.length; i++) {
-                boolean is_found = (recordComponentList[i] == entry);
-                if (is_found) {
-                    return i;
-                }//end if
-            }//end for
-        } catch (Exception ex) {
-        }
-        return -1;
-    }//end public static int getComponentIndex(SubtitleRecordComponent entry)
-
-    /**
-     * Converting the selected value to the enumeration value of the 
-     * selected component.
-     * @param value The string value selected from list
-     * @return One of the value listed in {@link SubtitleRecordComponent}, null
-     * if the input value is not found in {@link componentNames}
-     */
-    public static SubtitleRecordComponent getSelectedComponent(String value){
-        SubtitleRecordComponent sel = null;
-        try{
-            for (int i=0; i < Share.componentNames.length; i++){
-                String list_value = Share.componentNames[i];
-                boolean found = (value.equals(list_value));
-                if (found){
-                    sel = Share.recordComponentList[i];
-                    break;
-                }//end if (found)
-            }//end for (int i=0; i < Share.componentNames.length; i++)
-        }catch(Exception ex){            
-        }//end try/catch
-        return sel;
-    }//end public SubtitleRecordComponent getSelectedComponent(String value)
-    
-    public static enum FunctionList {
-        FN_GOTO_LINE,
-        FN_MOVE_TEXT_UP,
-        FN_MOVE_TEXT_DOWN,
-        FN_INSERT_BLANK_LINE_ABOVE,
-        FN_INSERT_BLANK_LINE_BELOW,
-        FN_IMPORT_COMPONENT,
-        FN_APPEND_FROM_FILE
-    };
-    /**
-     * This is used to simplify the function selection, a translation
-     * from the fnNames below to the FunctionList enumeration above.
-     */
-    public static FunctionList[] FunctionListArray = new FunctionList[]{
-        FunctionList.FN_GOTO_LINE,
-        FunctionList.FN_MOVE_TEXT_UP,
-        FunctionList.FN_MOVE_TEXT_DOWN,
-        FunctionList.FN_INSERT_BLANK_LINE_ABOVE,
-        FunctionList.FN_INSERT_BLANK_LINE_BELOW,
-        FunctionList.FN_IMPORT_COMPONENT,
-        FunctionList.FN_APPEND_FROM_FILE
-    };
-
-    /**
-     * Find the index for a desired function's enumeration. The
-     * index can then be used to access the fnNames array or manipulate
-     * the selected index of the OptTextLineActList combobox in Jubler
-     * class.
-     * @param entry The enumeration for the function
-     * @return the index of the function enumeration in the
-     * FunctionListArray if the entry is found. If not, -1 is
-     * returned.
-     */
-    public static int getFunctionIndex(FunctionList entry) {
-        try {
-            for (int i = 0; i < FunctionListArray.length; i++) {
-                boolean is_found = (FunctionListArray[i] == entry);
-                if (is_found) {
-                    return i;
-                }//end if
-            }//end for
-        } catch (Exception ex) {
-        }
-        return -1;
-    }
-    /**
-     * This is the names of the functions that can be used from the
-     * OptTextLineActList combo-box in the Jubler class.
-     * They are listed here for easy to gather data for translations.
-     */
-    public static String[] fnNames = new String[]{
-        _("Goto line"),
-        _("Move text up"),
-        _("Move text down"),
-        _("Blank line above"),
-        _("Blank line below"),
-        _("Import component"),
-        _("Append from file")
-    };
 
     public static short[] copyShortArray(short[] orig) {
         if (orig == null) {
@@ -198,7 +62,6 @@ public class Share implements CommonDef {
         System.arraycopy(orig, 0, new_array, 0, len);
         return new_array;
     }
-    
     public static final int INVALID_INDEX = -1;
 
     /**
@@ -413,8 +276,7 @@ public class Share implements CommonDef {
             File search_file = new File(start_directory, file_name);
             search_file_extension = Share.getFileExtension(search_file);
 
-            jfc = new JFileChooser() {
-
+            jfc = new  JFileChooser( ) { 
                 public boolean accept(File f) {
                     try {
                         if (f.isDirectory()) {
@@ -465,7 +327,7 @@ public class Share implements CommonDef {
 
     public static int fileCount(File start_directory) throws Exception {
         return start_directory.list().length;
-    }    
+    }
 
     /**
      * Count the number of word, space separated, in a string of text.
@@ -493,5 +355,6 @@ public class Share implements CommonDef {
         boolean is_one_word = (count == 1);
         return is_one_word;
     }//end public static boolean isOneWord(String txt)
-}
+    
+}//end Share
 
