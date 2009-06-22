@@ -22,8 +22,10 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -35,7 +37,7 @@ import javax.swing.table.TableCellRenderer;
  */
 //public class SubRenderer extends DefaultTableCellRenderer {
 public class SubRenderer extends JLabel implements TableCellRenderer {
-
+    public static final int DEFAULT_ROW_HEIGHT = 20; //originally 16
     private int table_row_height,  image_row_height;
 
     public SubRenderer() {
@@ -86,6 +88,9 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
                 String s_value = (String) value;
                 setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
                 setText(s_value);
+                //int row_height = table.getRowHeight();
+                //DEBUG.logger.log(Level.INFO, "row_height: " + row_height);
+                table.setRowHeight(row, DEFAULT_ROW_HEIGHT);
             }//end if
         }//end if
 
