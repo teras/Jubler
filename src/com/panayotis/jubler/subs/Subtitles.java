@@ -27,12 +27,14 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
+import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.util.Collections;
 import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
+import com.panayotis.jubler.undo.UndoEntry;
 import java.io.File;
 import java.util.Collection;
 import javax.swing.JTable;
@@ -69,9 +71,9 @@ public class Subtitles extends AbstractTableModel {
 
     public Subtitles(Jubler jubler) {
         this();
-        this.jubler = jubler;        
+        this.jubler = jubler;
     }
-    
+
     public Subtitles(Subtitles old) {
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
@@ -87,7 +89,7 @@ public class Subtitles extends AbstractTableModel {
         for (int i = 0; i < old.size(); i++) {
             oldentry = old.elementAt(i);
             //newentry = new SubEntry(oldentry);
-            newentry = (SubEntry)oldentry.clone();
+            newentry = (SubEntry) oldentry.clone();
             sublist.add(newentry);
             if (newentry.getStyle() != null) {
                 newentry.setStyle(styles.getStyleByName(oldentry.getStyle().getName()));
@@ -124,7 +126,7 @@ public class Subtitles extends AbstractTableModel {
         while (load == null && formats.hasMoreElements()) {
             format_handler = formats.nextElement();
             format_handler.setJubler(jubler);
-            format_handler.init();            
+            format_handler.init();
             load = format_handler.parse(data, FPS, f);
             if (load != null && load.size() < 1) {
                 load = null;
@@ -274,14 +276,14 @@ public class Subtitles extends AbstractTableModel {
      */
     public boolean addAll(Collection<SubEntry> c, int index) {
         boolean ok = false;
-        try{
+        try {
             Object[] array = c.toArray();
             int len = array.length;
-            for (int i=len-1; i >= 0; i--){
-                SubEntry entry = (SubEntry)array[i];
+            for (int i = len - 1; i >= 0; i--) {
+                SubEntry entry = (SubEntry) array[i];
                 ok = insertAt(entry, index);
             }//end for (int i=len-1; i >= 0; i--)
-        }catch(Exception ex){
+        } catch (Exception ex) {
         }
         return ok;
     }
@@ -437,7 +439,7 @@ public class Subtitles extends AbstractTableModel {
             sublist.setElementAt(sub, row);
             fireTableRowsUpdated(row, row);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -506,7 +508,90 @@ public class Subtitles extends AbstractTableModel {
                 t.getColumnModel().getColumn(ccolumn).setMaxWidth(MAX_COLUMN_WIDTH);
                 t.getColumnModel().getColumn(ccolumn).setPreferredWidth(prefcolwidth[i]);
                 ccolumn++;
+            }//if (visiblecols[i])
+        }//end for (int i = 0; i < visiblecols.length; i++)
+    }//end public void recalculateTableSize(JTable t)
+    /**
+     * This routine will convert the current subtitle-entries to a target class
+     * using the implementation of 'copyRecord' method in {@link SubEntry} and
+     * its extended classes. The main complex task of this is to deal with
+     * headered types. Header for one set of records is considered as a global
+     * object, and hence all records in the subset inherit the same header.
+     * There are situation where the target type is a headered type when the
+     * source type is not, in which situation, the 'copyRecord' routine will
+     * create a new default header for a new record. This reference must
+     * be kept locally and pass to all sub-sequent records, avoiding the waste
+     * of memory.
+     * @param target_class The target class to convert the current subtitle 
+     * entries to.
+     * @return true if convertion was carried out without erros, or no 
+     * conversions are required, false otherwise.
+     */
+    public boolean convert(Class target_class) {
+        HeaderedTypeSubtitle target_hdr_sub = null;
+        
+        /**
+         * Global header object for all records.
+         */
+        Object header = null;
+        try {
+            SubEntry src_entry = elementAt(0);
+            String current_class_name = (src_entry.getClass().getName());
+            String target_class_name = target_class.getName();
+            boolean is_same = (current_class_name.equals(target_class_name));
+            if (is_same) {
+                return true;
             }
+
+            String action_name = _("Convert records");
+            jubler.getUndoList().addUndo(new UndoEntry(this, action_name));
+            for (int i = 0; i < size(); i++) {
+                target_hdr_sub = null;
+
+                /**
+                 * Get the current entry and treat as the source of copying action
+                 */
+                src_entry = elementAt(i);
+                /**
+                 * Create a new instance of the target using its class name.
+                 */
+                SubEntry target_entry = (SubEntry) Class.forName(target_class_name).newInstance();
+
+                /**
+                 * Check to see if the target created is an instance of headered type.
+                 * If it is, cast it to the target_hdr_sub so that headering methods
+                 * can be accessed.
+                 */
+                boolean is_target_headered = (target_entry instanceof HeaderedTypeSubtitle);
+                if (is_target_headered) {
+                    target_hdr_sub = (HeaderedTypeSubtitle) target_entry;
+                }
+
+                /**
+                 * Try to set the header record first, avoiding the copyRecord
+                 * routine to create a new header.
+                 */
+                if (target_hdr_sub != null) {
+                    target_hdr_sub.setHeader(header);
+                }//end if
+                
+                /**
+                 * now performs the copying of the source record to target.
+                 */
+                target_entry.copyRecord(src_entry);
+                /**
+                 * copy out the header reference to keep it globally.
+                 */
+                if (header == null && target_hdr_sub != null) {
+                    header = target_hdr_sub.getHeader();
+                }
+                replace(target_entry, i);
+                fireTableRowsUpdated(i, i);
+            }//end for(int i=0; i < size(); i++)
+            return true;
+        } catch (Exception ex) {
+            return false;
         }
-    }
-}
+    }//end public void convert(Class tagert_class)
+}//end public class Subtitles extends AbstractTableModel
+

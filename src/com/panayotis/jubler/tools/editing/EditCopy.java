@@ -29,10 +29,10 @@
 package com.panayotis.jubler.tools.editing;
 
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.subs.Share.SubtitleRecordComponent;
+import com.panayotis.jubler.subs.RecordComponent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.tools.ComponentSelection;
+import com.panayotis.jubler.tools.JComponentSelection;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
@@ -65,15 +65,15 @@ public class EditCopy extends JMenuItem implements ActionListener {
     }
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
-        SubtitleRecordComponent opt = SubtitleRecordComponent.CP_RECORD;
+        int opt = RecordComponent.CP_RECORD;
         Jubler.selectedComponent = opt;
         try {            
             /**
              * Check the component flag
              */
             if (this.isCopyComponent()) {
-                opt = ComponentSelection.getSelectedComponent(jublerParent, true);
-                if (opt == null) {
+                opt = JComponentSelection.getSelectedComponent(jublerParent, true);
+                if (opt == RecordComponent.CP_INVALID) {
                     return;
                 }
             }//end if (this.isCopyComponent())

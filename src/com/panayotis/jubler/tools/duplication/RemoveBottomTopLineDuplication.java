@@ -37,7 +37,7 @@ import com.panayotis.jubler.subs.SubEntry;
  * bottom line of the first subtitle event's text and on the top-line
  * of a second subttle event's. An example of duplication is shown in
  * the following live-subtitled programme:
- * *************************************
+ * <pre>
  * 7
  * I love this show. 140 people.
  * ladies and gentlemen. All with the
@@ -45,20 +45,19 @@ import com.panayotis.jubler.subs.SubEntry;
  * 8
  * ladies and gentlemen. All with the
  * same aim.
- * *************************************
+ * </pre>
  *
  * The number of lines on the duplication group limited to 2.
  * The result of the above example will be as below, after the run is
  * compledted:
- *
- * *************************************
+ * <pre>
  * 7
  * I love this show. 140 people.
  * ladies and gentlemen. All with the
  *
  * 8
  * same aim.
- * *************************************
+ * </pre>
 
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */

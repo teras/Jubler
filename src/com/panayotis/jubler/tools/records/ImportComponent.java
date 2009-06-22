@@ -29,12 +29,10 @@
 package com.panayotis.jubler.tools.records;
 
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.subs.Share.SubtitleRecordComponent;
+import com.panayotis.jubler.subs.RecordComponent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
-import com.panayotis.jubler.time.Time;
-import com.panayotis.jubler.tools.ComponentSelection;
+import com.panayotis.jubler.tools.JComponentSelection;
 import com.panayotis.jubler.undo.UndoEntry;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
@@ -52,7 +50,7 @@ public class ImportComponent extends JMenuItem implements ActionListener {
 
     private static String action_name = _("Import subtitle-event's components");
     private Jubler jublerParent = null;
-    private ComponentSelection compSel = null;
+    private JComponentSelection compSel = null;
 
     public ImportComponent() {
         setText(action_name);
@@ -67,7 +65,7 @@ public class ImportComponent extends JMenuItem implements ActionListener {
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         Subtitles newsubs;
-        boolean has_changed = false;
+        boolean changed = false;
         SubEntry current_entry, import_entry;
         try {
             newsubs = jublerParent.loadSubtitleFile();
@@ -75,12 +73,12 @@ public class ImportComponent extends JMenuItem implements ActionListener {
                 return;
             }
 
-            SubtitleRecordComponent opt =
-                    ComponentSelection.getSelectedComponent(jublerParent, false);
-            if (opt == null) {
+            int opt =
+                    JComponentSelection.getSelectedComponent(jublerParent, false);
+            if (opt == RecordComponent.CP_INVALID) {
                 return;
             }
-                        
+
             Subtitles subs = jublerParent.getSubtitles();
             jublerParent.getUndoList().addUndo(new UndoEntry(subs, _("Import component")));
             int len = (Math.max(subs.size(), newsubs.size()));
@@ -97,55 +95,18 @@ public class ImportComponent extends JMenuItem implements ActionListener {
                     import_entry = null;
                 }
 
-                boolean no_current_entry = (current_entry == null);
-                boolean no_import_entry = (import_entry == null);
-                boolean both_null = (no_current_entry && no_import_entry);
-                boolean import_completed = (both_null || no_import_entry);
-                if (import_completed) {
-                    break;
-                } else if (no_current_entry) {
-                    subs.add(import_entry);
-                    has_changed = true;
+                if (RecordComponent.isCP_RECORD(opt)) {
+                    subs.replace(import_entry, i);
+                    changed = true;
                 } else {
-                    //both entries exists, so perform the replacement
-                    switch (opt) {
-                        case CP_TEXT:
-                            String new_text = import_entry.getText();
-                            current_entry.setText(new_text);
-                            has_changed = true;
-                            break;
-                        case CP_TIME:
-                            Time new_start_time = import_entry.getStartTime();
-                            Time new_finish_time = import_entry.getFinishTime();
-
-                            current_entry.setStartTime(new_start_time);
-                            current_entry.setFinishTime(new_finish_time);
-                            has_changed = true;
-                            break;
-                        case CP_RECORD:
-                            subs.replace(import_entry, i);
-                            has_changed = true;
-                            break;
-                        case CP_HEADER:
-                            boolean has_header =
-                                    (import_entry instanceof HeaderedTypeSubtitle) &&
-                                    (current_entry instanceof HeaderedTypeSubtitle);
-
-                            if (has_header) {
-                                HeaderedTypeSubtitle hdr_import_entry = (HeaderedTypeSubtitle) import_entry;
-                                HeaderedTypeSubtitle hdr_current_entry = (HeaderedTypeSubtitle) current_entry;
-                                Object import_header = hdr_import_entry.getHeader();
-                                hdr_current_entry.setHeader(import_header);
-                                has_changed = true;
-                            }//if (has_header)
-                            break;
-                        default:
-                            break;
-                    }//end switch/case                    
-                }//end if/else
+                    changed |= RecordComponent.copyText(current_entry, import_entry, opt);
+                    changed |= RecordComponent.copyTime(current_entry, import_entry, opt);
+                    changed |= RecordComponent.copyImage(current_entry, import_entry, opt);
+                    changed |= RecordComponent.copyHeader(current_entry, import_entry, opt);
+                }//end if
             }//end for (int i = 0; i < len; i++)
 
-            if (has_changed) {
+            if (changed) {
                 jublerParent.tableHasChanged(null);
             }
         } catch (Exception ex) {

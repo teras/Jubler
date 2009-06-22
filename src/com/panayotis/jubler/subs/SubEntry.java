@@ -22,7 +22,9 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
 import com.panayotis.jubler.os.JIDialog;
+import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.StyleType.*;
@@ -41,13 +43,12 @@ import javax.swing.text.StyleConstants;
 
 /**
  *
- * @author teras
+ * @author teras, Hoang Duy Tran
  */
 public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
 
     public static final int SMALL_MILLI = 50;
     private static final AbstractStyleover[] styleover_template;
-
 
     static {
 
@@ -88,7 +89,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         new Color(255, 200, 220), //pink - edit
         new Color(255, 255, 200), //yellow
         new Color(200, 255, 255), //cyan
-        new Color(255, 90, 0), //orange
+        new Color(255, 90, 0) //orange
     };
     protected Time start,  finish,  duration;
     protected String subtext;
@@ -178,7 +179,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             duration = null;
         }//end if
     }//public void computeDuration()
-
     public int compareTo(SubEntry other) {
         return start.compareTo(other.start);
     }
@@ -379,6 +379,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         overstyle = null;
     }
 
+    @Override
     public String toString() {
         return start.toString() + "->" + finish.toString() + " " + subtext;
     }
@@ -423,6 +424,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * Cloning the current-record.
      * @return a new deep-copied instance of the this record.
      */
+    @Override
     public Object clone() {
         SubEntry new_sub = null;
         try {
@@ -455,7 +457,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         }//end try/catch
         return new_sub;
     }//end public Object clone()
-
     /**
      * Performs a deep-copy of other record's content. This is necessary when
      * perform import/export function of the record
@@ -482,7 +483,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 overstyle = new AbstractStyleover[len];
                 for (int i = 0; i < len; i++) {
                     if (o.overstyle[i] != null) {
-                        overstyle[i] = (AbstractStyleover) o.styleover_template[i].clone();
+                        overstyle[i] = (AbstractStyleover) SubEntry.styleover_template[i].clone();
                         overstyle[i].updateClone(o.overstyle[i]);
                     }//end if (overstyle[i] != null)
                 }//end for (int i = 0; i < overstyle.length; i++)
@@ -525,7 +526,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             ex.printStackTrace(System.out);
         }
     }//end public SubEntry mergeRecord(SubEntry o)
-
     /**
      * This function collect words from a list and joining them with a
      * space character.
@@ -620,7 +620,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         }
         return new_sub;
     }//end public SubEntry splitRecord()
-
     /**
      * Gets the number of text lines by split the text line at the the new-line
      * characters and returns the number of lines in the array.
@@ -634,7 +633,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return 0;
         }
     }//public int getTextLineCount()
-
     /**
      * Convert the subtitle text into a list of lines, separating lines at
      * the new-line character - '\n' - and collate them into a vector of
@@ -655,7 +653,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         }
         return list;
     }//public String getTextList()
-
     /**
      * Setting the subtitle text using a vector of text lines.
      * @param list The vector contains the text strings.
@@ -683,7 +680,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//end public void setText(Vector<String> list)
-
     /**
      * This routine removes line breaks in the subtitle text and return
      * the text with a string of words, each separated by a single space.
@@ -701,7 +697,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return new String();
         }
     }//end public String getTextWithoutLineBreak()
-
     /**
      * Gets a text line using its index. Note the index is zero-based.
      * @param line_number The index of the line to get. Zero is the first
@@ -717,7 +712,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return null;
         }
     }//end private String getTextLine(int line_number)
-
     /**
      * Get the first text line of the subtitle text, such as line at index = 0.
      * @return The first text line or null if the text line doesn't exist.
@@ -725,7 +719,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     public String getFirstTextLine() {
         return getTextLine(0);
     }//public String getFirstTextLine()
-
     /**
      * Get the last text line of the subtitle text, such as line at
      * index = length-1.
@@ -735,7 +728,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         int count = this.getTextLineCount();
         return getTextLine(count - 1);
     }//end public String getLastTextLine()
-
     /**
      * Cheks to see if the text line, at the same index, on current subtitle
      * event and an other event, are identical or not.
@@ -753,7 +745,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//public boolean isSameTextLine(int line_number, SubEntry other)
-
     /**
      * Cheks to see if the text line, at the first index, on current subtitle
      * event and an other event, are identical or not.
@@ -770,7 +761,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//public boolean isFirstTextLineEqual(SubEntry other)
-
     /**
      * Cheks to see if the text line at the last index, on current subtitle
      * event, and one on the first index on an other event,
@@ -790,7 +780,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//public boolean isFirstTextLineEqual(SubEntry other)
-
     /**
      * Get the text line excluding a selected line. This routine serves
      * the removal of the duplicated text lines. The index is zero-based.
@@ -805,7 +794,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         }
         return list;
     }//end public Vector<String> getTextExcludingLine(int line_number)
-
     /**
      * Remove the top line of the subtitle text and returns the remaining
      * lines in a vector of strings.
@@ -814,12 +802,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     public Vector<String> getTextExcludingTopLine() {
         return getTextExcludingLine(0);
     }//end public Vector<String> getTextExcludingTopLine()
-
     public Vector<String> getTextExcludingBottomLine() {
         int count = this.getTextLineCount();
         return getTextExcludingLine(count - 1);
     }//end public Vector<String> getTextExcludingTopLine()
-
     /**
      * Remove the text line at a chosen index by converting the subtitle
      * text into a vector of string, remove the text line at the
@@ -832,7 +818,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         Vector<String> new_list = getTextExcludingLine(index);
         setText(new_list);
     }//end public boolean removeTextLine(int index)
-
     /**
      * Add all text from a new vector of strings into the current
      * subtitle text.
@@ -843,7 +828,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         current_list.addAll(new_list);
         setText(current_list);
     }//end public void addAll(Vector<String> list)
-
     /**
      * Examines to see if the starting-time of this subtitle-event and
      * other's are the same or not.
@@ -853,7 +837,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * is considered to be too small. False otherwise.
      * @see SMALL_MILLI
      */
-    public boolean isStartTimeSame(SubEntry o) {
+    public boolean isSameStartTime(SubEntry o) {
         try {
             int t1 = this.getStartTime().getMilli();
             int t2 = o.getStartTime().getMilli();
@@ -863,7 +847,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//public boolean isStartTimeSame(SubEntry o)
-
     /**
      * Examines to see if the ending-time of this subtitle-event and
      * other's are the same or not.
@@ -873,7 +856,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * is considered to be too small. False otherwise.
      * @see SMALL_MILLI
      */
-    public boolean isEndTimeSame(SubEntry o) {
+    public boolean isSameEndTime(SubEntry o) {
         try {
             int t1 = this.getFinishTime().getMilli();
             int t2 = o.getFinishTime().getMilli();
@@ -883,7 +866,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//public boolean isStartTimeSame(SubEntry o)
-
     /**
      * Add a string instance to the current subtitle text, using a selective
      * separator.
@@ -917,7 +899,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return is_added;
         }
     }//end public void appendTextLine(String line)
-
     public boolean isOneWord() {
         try {
             String text = this.getTextWithoutLineBreak();
@@ -928,7 +909,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//end public boolean isOneWord()
-
     /**
      * Similar to the previous append text, but this function checks to see
      * if the new text is single word or not. A single word is added with
@@ -959,7 +939,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//end public boolean appendText(Vector<String> text_list)
-
     /**
      * Appending a new text line to the current subtitle text lines,
      * separating them with a '\n' character.
@@ -970,7 +949,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     public boolean addTextLine(String line) {
         return appendText(line, UNIX_NL);
     }//end public boolean addTextLine(String word)
-
     /**
      * Adds a single word into the current subtitle text, using
      * a single space character as separator.
@@ -980,7 +958,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     public boolean addWord(String word) {
         return appendText(word, char_sp);
     }//end public boolean addWord(String word)
-
     /**
      * There are times where text spacing causes the text comparison
      * between two instances of subtitle events, when in fact, their
@@ -1010,7 +987,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//end public boolean reSpacingText()
-
     /**
      * Remove line break at a specific line, by replacing the new-line with
      * a space character. The routine reconstruct the subtile text by first
@@ -1022,23 +998,23 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * is being replaced by a space before the next line is appended on.
      * @return true if the routine carried out without errors, false otherwise.
      */
-    public boolean removeLineBreak(int line_number){
-        try{
+    public boolean removeLineBreak(int line_number) {
+        try {
             Vector<String> text_list = getTextList();
             int len = text_list.size();
             StringBuffer b = new StringBuffer();
-            for (int i=0; i < len; i++){
+            for (int i = 0; i < len; i++) {
                 String text_line = text_list.elementAt(i);
                 b.append(text_line);
 
                 boolean is_required_line = (i == line_number);
-                boolean is_last_line = (i == len-1);
-                if (is_required_line){
-                    if (! is_last_line){
+                boolean is_last_line = (i == len - 1);
+                if (is_required_line) {
+                    if (!is_last_line) {
                         b.append(char_sp);
                     }//end if (! is_text_empty)
-                }else{
-                    if (! is_last_line){
+                } else {
+                    if (!is_last_line) {
                         b.append(UNIX_NL);
                     }//end if (! is_text_empty)
                 }//end if (is_required_line)                
@@ -1046,8 +1022,103 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             String text = b.toString();
             setText(text);
             return true;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return false;
         }
     }//end public boolean removeLineBreak(int line_number)
-}
+    public boolean copyText(SubEntry source) {
+        try {
+            String txt = source.getText();
+            setText(txt);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }//end public boolean copyText(SubEntry source)
+    public boolean copyTime(SubEntry source) {
+        try {
+            Time new_start_time = source.getStartTime();
+            Time new_finish_time = source.getFinishTime();
+            setStartTime(new_start_time);
+            setFinishTime(new_finish_time);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }//end public boolean copyTime(SubEntry source)
+    public boolean copyImage(SubEntry source) throws Exception {
+        boolean is_this_img = (this instanceof ImageTypeSubtitle);
+        boolean is_source_img = (source instanceof ImageTypeSubtitle);
+        boolean is_type = (is_this_img && is_source_img);
+        if (!is_type) {
+            if (!is_this_img) {
+                throw new IncompatibleRecordTypeException(this.getClass(), ImageTypeSubtitle.class);
+            }
+
+            if (!is_source_img) {
+                throw new IncompatibleRecordTypeException(source.getClass(), ImageTypeSubtitle.class);
+            }
+        }
+
+        ImageTypeSubtitle import_img_sub = (ImageTypeSubtitle) source;
+        ImageTypeSubtitle current_img_sub = (ImageTypeSubtitle) this;
+        current_img_sub.setImage(import_img_sub.getImage());
+        return true;
+    }//end public boolean copyImage(SubEntry source)
+    public boolean copyHeader(SubEntry source) throws Exception {
+        boolean is_this_hdr = (this instanceof HeaderedTypeSubtitle);
+        boolean is_source_hdr = (source instanceof HeaderedTypeSubtitle);
+        boolean is_type = (is_this_hdr && is_source_hdr);
+        if (!is_type) {
+            if (!is_this_hdr) {
+                throw new IncompatibleRecordTypeException(this.getClass(), HeaderedTypeSubtitle.class);
+            }
+            if (!is_source_hdr) {
+                throw new IncompatibleRecordTypeException(source.getClass(), HeaderedTypeSubtitle.class);
+            }
+        }
+
+        HeaderedTypeSubtitle hdr_import_entry = (HeaderedTypeSubtitle) source;
+        HeaderedTypeSubtitle hdr_current_entry = (HeaderedTypeSubtitle) this;
+        Object import_header = hdr_import_entry.getHeader();
+        hdr_current_entry.setHeader(import_header);
+        return true;
+    }//end public boolean copyHeader(SubEntry source)
+    public boolean cutText() {
+        try {
+            setText(new String());
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }//end public boolean copyText(SubEntry source)
+    public boolean cutTime() {
+        try {
+            setStartTime(new Time(0));
+            setFinishTime(new Time(0));
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }//end public boolean copyTime(SubEntry source)
+    public boolean cutImage() throws Exception {
+        boolean is_type = (this instanceof ImageTypeSubtitle);
+        if (!is_type) {
+            throw new IncompatibleRecordTypeException(this.getClass(), ImageTypeSubtitle.class);
+        }
+
+        ImageTypeSubtitle source_img_sub = (ImageTypeSubtitle) this;
+        source_img_sub.setImage(null);
+        return true;
+    }//end public boolean copyImage(SubEntry source)
+    public boolean cutHeader() throws Exception {
+        boolean is_type = (this instanceof HeaderedTypeSubtitle);
+        if (!is_type) {
+            throw new IncompatibleRecordTypeException(this.getClass(), HeaderedTypeSubtitle.class);
+        }
+        HeaderedTypeSubtitle hdr_source_entry = (HeaderedTypeSubtitle) this;
+        hdr_source_entry.setHeader(null);
+        return true;
+    }//end public boolean copyHeader(SubEntry source)    
+}//end public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef
+

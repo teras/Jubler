@@ -21,13 +21,13 @@
  */
 package com.panayotis.jubler.subs.records.SON;
 
+import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
@@ -55,7 +55,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public String image_filename = null;
     private File imageFile = null;
     private ImageIcon image = null;
-        
+
     public SonHeader getHeader() {
         return header;
     }
@@ -74,7 +74,6 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             this.header = (SonHeader) header;
         }
     }//public void setHeader(Object header)
-
     public Object getDefaultHeader() {
         SonHeader new_header = new SonHeader();
         new_header.makeDefaultHeader();
@@ -175,13 +174,13 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             super.copyRecord(o);
             if (header == null) {
                 SonHeader new_son_header = new SonHeader();
-                header = new_son_header;
                 try {
                     o_son = (SonSubEntry) o;
                     new_son_header.copyRecord(o_son.header);
                 } catch (Exception ex) {
                     new_son_header.makeDefaultHeader();
                 }
+                header = new_son_header;
             }//end if
 
             o_son = (SonSubEntry) o;
@@ -196,14 +195,11 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             if (o_son.display_area != null) {
                 display_area = Share.copyShortArray(o_son.display_area);
             }
-            if (o_son.imageFile != null) {
-                imageFile = o_son.imageFile;
-            }
+            imageFile = o_son.imageFile;
             image = o_son.image;
         } catch (Exception ex) {
         }
     }//public void copyRecord(SubEntry o)
-
     public void setImage(ImageIcon image) {
         this.image = image;
     }
@@ -215,4 +211,20 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public void setImageFile(File imageFile) {
         this.imageFile = imageFile;
     }
+
+    public boolean cutImage() throws Exception {
+        this.setImage(null);
+        this.setImageFile(null);
+        return true;
+    }//end public boolean copyImage(SubEntry source)
+    public boolean copyImage(SubEntry source) throws Exception {
+        try {
+            ImageTypeSubtitle source_img_sub = (ImageTypeSubtitle) source;
+            setImage(source_img_sub.getImage());
+            setImageFile(source_img_sub.getImageFile());
+            return true;
+        } catch (Exception ex) {
+            throw new IncompatibleRecordTypeException(ex.getMessage());
+        }
+    }//end public boolean copyImage(SubEntry source)
 }

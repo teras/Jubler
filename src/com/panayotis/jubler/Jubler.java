@@ -39,11 +39,11 @@ import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.CommonDef;
+import com.panayotis.jubler.subs.DropDownFunctionList;
+import com.panayotis.jubler.subs.DropDownFunctionList.FunctionList;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
-import com.panayotis.jubler.subs.Share;
-import com.panayotis.jubler.subs.Share.SubtitleRecordComponent;
-import com.panayotis.jubler.subs.Share.FunctionList;
+import com.panayotis.jubler.subs.RecordComponent;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
@@ -74,6 +74,7 @@ import com.panayotis.jubler.tools.JTranslate;
 import com.panayotis.jubler.tools.duplication.RemoveBottomTopLineDuplication;
 import com.panayotis.jubler.tools.duplication.RemoveTimeDuplication;
 import com.panayotis.jubler.tools.duplication.RemoveTopLineDuplication;
+import com.panayotis.jubler.tools.duplication.SplitSONSubtitleAction;
 import com.panayotis.jubler.tools.editing.BalanceText;
 import com.panayotis.jubler.tools.editing.EditCopy;
 import com.panayotis.jubler.tools.editing.EditCut;
@@ -126,7 +127,7 @@ public class Jubler extends JFrame implements CommonDef{
 
     public static JublerList windows;
     public static ArrayList<SubEntry> copybuffer;
-    public static SubtitleRecordComponent selectedComponent = SubtitleRecordComponent.CP_RECORD;
+    public static int selectedComponent = RecordComponent.CP_RECORD;
     public static JPreferences prefs;
     /** File chooser dialog to open/ save subtitles */
     private JFileChooser filedialog;
@@ -163,7 +164,7 @@ public class Jubler extends JFrame implements CommonDef{
     private boolean unsaved_data = false;
     private int numberOfLine = 1;
     private FunctionList fnOption = FunctionList.FN_GOTO_LINE;
-    private ComboBoxModel fnComboboxModel = new javax.swing.DefaultComboBoxModel(Share.fnNames);
+    private ComboBoxModel fnComboboxModel = new javax.swing.DefaultComboBoxModel(DropDownFunctionList.fnNames);
     /* Jubler tools */
     private JStyler styler;
     private JShiftTime shift;
@@ -197,7 +198,8 @@ public class Jubler extends JFrame implements CommonDef{
     private EditCut editCut = new EditCut(this);
     private EditPaste editPaste = new EditPaste(this);
     private OCRAction ocrAction = new OCRAction(this);
-
+    private SplitSONSubtitleAction splitSONSubtitleAction = new SplitSONSubtitleAction(this);
+    
     static {
         windows = new JublerList();
         copybuffer = new ArrayList<SubEntry>();
@@ -254,11 +256,13 @@ public class Jubler extends JFrame implements CommonDef{
         ocrAction.setLanguage("eng");
         ocrAction.setTessPath(USER_CURRENT_DIR + "tesseract"  + FILE_SEP);
         
+        SplitSONSubtitleFile.addActionListener(splitSONSubtitleAction);
+        
         /**
          * This is to make sure that the combo-box index matches the currently
          * selected options, especially when new instance is created.
          */
-        int sel_index = Share.getFunctionIndex(fnOption);
+        int sel_index = DropDownFunctionList.getFunctionIndex(fnOption);
         OptTextLineActList.setSelectedIndex(sel_index);
 
         SubSplitPane.add(preview, JSplitPane.TOP);
@@ -509,6 +513,7 @@ public class Jubler extends JFrame implements CommonDef{
         jSeparator20 = new javax.swing.JSeparator();
         ImportComponentFM = new javax.swing.JMenuItem();
         AppendFromFileFM = new javax.swing.JMenuItem();
+        SplitSONSubtitleFile = new javax.swing.JMenuItem();
         jSeparator21 = new javax.swing.JSeparator();
         QuitFM = new javax.swing.JMenuItem();
         EditM = new javax.swing.JMenu();
@@ -708,8 +713,8 @@ public class Jubler extends JFrame implements CommonDef{
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 
-        SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setComponentPopupMenu(SubsPop);
+        SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setDefaultRenderer(Object.class, TableRenderer);
         SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
             public void mousePressed(MouseEvent e) {
@@ -984,6 +989,10 @@ public class Jubler extends JFrame implements CommonDef{
         AppendFromFileFM.setEnabled(false);
         AppendFromFileFM.setName("FAF"); // NOI18N
         FileM.add(AppendFromFileFM);
+
+        SplitSONSubtitleFile.setText(_("Split SON Subtitle File"));
+        SplitSONSubtitleFile.setName("TDS"); // NOI18N
+        FileM.add(SplitSONSubtitleFile);
         FileM.add(jSeparator21);
 
         QuitFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -1650,17 +1659,17 @@ public class Jubler extends JFrame implements CommonDef{
             else if (evt.getSource() == TextBalancingOnTheWholeTable) {
                 Jubler.this.TextBalancingOnTheWholeTableActionPerformed(evt);
             }
-            else if (evt.getSource() == FAQHM) {
-                Jubler.this.FAQHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == AboutHM) {
-                Jubler.this.AboutHMActionPerformed(evt);
-            }
             else if (evt.getSource() == OCRSelected) {
                 Jubler.this.OCRSelectedActionPerformed(evt);
             }
             else if (evt.getSource() == OCRAll) {
                 Jubler.this.OCRAllActionPerformed(evt);
+            }
+            else if (evt.getSource() == FAQHM) {
+                Jubler.this.FAQHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == AboutHM) {
+                Jubler.this.AboutHMActionPerformed(evt);
             }
         }
 
@@ -2247,7 +2256,7 @@ private void OptNumberOfLineActionPerformed(java.awt.event.ActionEvent evt) {//G
 private void OptTextLineActListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptTextLineActListActionPerformed
     try {
         int selected_action_index = this.OptTextLineActList.getSelectedIndex();
-        fnOption = Share.FunctionListArray[selected_action_index];
+        fnOption = DropDownFunctionList.FunctionListArray[selected_action_index];
     } catch (Exception ex) {
     }
 }//GEN-LAST:event_OptTextLineActListActionPerformed
@@ -2285,7 +2294,8 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 
 private void byLineNumberEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byLineNumberEMActionPerformed
     try {
-        int goto_line_function_index = Share.getFunctionIndex(Share.FunctionList.FN_GOTO_LINE);
+        int goto_line_function_index = DropDownFunctionList.getFunctionIndex(
+                DropDownFunctionList.FunctionList.FN_GOTO_LINE);
         OptTextLineActList.setSelectedIndex(goto_line_function_index);
         this.gotoLine();
     } catch (Exception ex) {
@@ -2439,6 +2449,7 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JPanel SortTP;
     private javax.swing.JMenuItem SpellTM;
     private javax.swing.JMenuItem SplitRecordTM;
+    private javax.swing.JMenuItem SplitSONSubtitleFile;
     private javax.swing.JMenuItem SplitTM;
     private javax.swing.JLabel Stats;
     private javax.swing.JMenuItem StepwiseREM;

@@ -69,4 +69,10 @@ public interface CommonDef {
     public static final String son_time = digits + ":" + digits + ":" + digits + ":" + digits;
     public static final String srt_time = digits + ":" + digits + ":" + digits + "," + digits;
     public static final String sp_digits = sp_maybe + digits;
+    
+    public static final String UNDER_SCORE = "[_]{1}";
+    public static final String DOT = "[.]{1}";
+    public static final String char_dot = ".";
+    public static final String char_ucore = "_";
+    
 }

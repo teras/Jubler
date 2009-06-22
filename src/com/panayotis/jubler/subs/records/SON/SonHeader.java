@@ -54,13 +54,13 @@ import java.util.Vector;
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SonHeader implements SONPatternDef, Cloneable {
+
     /**
      * this is to flag that the record is a default header generated and
      * further modification might be required. This is useful when conversion
      * from other record types are performed.
      */
     private boolean defaultHeader = false;
-
     public float FPS = 25f;
     public int st_format = -1;
     public String display_start = null;
@@ -108,7 +108,14 @@ public class SonHeader implements SONPatternDef, Cloneable {
         b.append(UNIX_NL);
 
         b.append("TV_Type").append("\t");
-        b.append(is_new ? moptions.getVideoFormat() : tv_type);
+        if (is_new) {
+            try {
+                tv_type = moptions.getVideoFormat();
+            } catch (Exception ex) {
+                tv_type = "PAL";
+            }
+        }
+        b.append(tv_type);
         b.append(UNIX_NL);
 
         b.append("Tape_Type").append("\t");
@@ -126,11 +133,16 @@ public class SonHeader implements SONPatternDef, Cloneable {
         b.append("Directory").append("\t");
         b.append(image_directory == null ? this.subtitle_file.getParent() : image_directory).append(UNIX_NL);
 
+        short w, h;
         if (is_new) {
-            display_area = new short[]{0, 0,
-                        (short) (moptions.getVideoWidth()),
-                        (short) (moptions.getVideoHeight())
-                    };
+            try {
+                w = (short) moptions.getVideoWidth();
+                h = (short) moptions.getVideoHeight();
+            } catch (Exception ex) {
+                w = 720;
+                h = 576;
+            }
+            display_area = new short[]{0, 0, w, h};
         }
 
         boolean has_display_area = (display_area != null);
@@ -267,22 +279,22 @@ public class SonHeader implements SONPatternDef, Cloneable {
         }
     }
 
-    public void makeDefaultHeader(){
-            this.defaultHeader = true;
-            this.FPS = 25;
-            this.st_format = 2;
-            this.display_start = "non_forced";
-            this.tv_type = "PAL";
-            this.tape_type = "NON_DROP";
-            this.pixel_area = new short[]{0, 575};
-            this.colour = new short[]{0, 1, 2, 3};
-            this.contrast = new short[]{0, 15, 15, 15};
-            this.display_area = new short[]{0, 380, 720, 416};
-            this.palletEntry = null;
-            this.image_directory = USER_CURRENT_DIR;
-            this.subtitle_file = new File(USER_CURRENT_DIR);
-            this.max_row_height = 25;
-            this.moptions = null;
+    public void makeDefaultHeader() {
+        this.defaultHeader = true;
+        this.FPS = 25;
+        this.st_format = 2;
+        this.display_start = "non_forced";
+        this.tv_type = "PAL";
+        this.tape_type = "NON_DROP";
+        this.pixel_area = new short[]{0, 575};
+        this.colour = new short[]{0, 1, 2, 3};
+        this.contrast = new short[]{0, 15, 15, 15};
+        this.display_area = new short[]{0, 380, 720, 416};
+        this.palletEntry = null;
+        this.image_directory = USER_CURRENT_DIR;
+        this.subtitle_file = new File(USER_CURRENT_DIR);
+        this.max_row_height = 25;
+        this.moptions = null;
     }
 
     /**

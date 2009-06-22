@@ -25,7 +25,6 @@ package com.panayotis.jubler.subs.loader.text;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Share;
-import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.SubtitleProcessorList;
@@ -301,40 +300,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
      * @return newly converted subtitle vector
      */
     public Subtitles convert(Subtitles current_subs) {
-        TMPGencSubtitleRecord tmpgencEntry = null;
-        String instance_class_name, actual_class_name;
-        boolean is_tmpgenc_class = false;
-        try {
-            for (int i = 0; i < current_subs.size(); i++) {
-                SubEntry old_entry = current_subs.elementAt(i);
-                instance_class_name = old_entry.getClass().getName();
-                actual_class_name = TMPGencSubtitleRecord.class.getName();
-                is_tmpgenc_class = instance_class_name.equals(actual_class_name);
-
-                if (is_tmpgenc_class) {
-                    tmpgencEntry = (TMPGencSubtitleRecord) old_entry;
-                } else {
-                    tmpgencEntry = new TMPGencSubtitleRecord();
-                    /**
-                     * Temporary take the global header
-                     */
-                    tmpgencEntry.setHeaderRecord(header);
-                    /**
-                     * If the header is null, then create a new default
-                     */
-                    tmpgencEntry.copyRecord(old_entry);
-                    current_subs.replace(tmpgencEntry, i);
-                }//end if
-
-                /**
-                 * Reassign the global header in case there were some changes
-                 * above.
-                 */
-                header = tmpgencEntry.getHeaderRecord();
-            }//end for(int i=0; i < current_subs.size(); i++)
-
-        } catch (Exception ex) {
-        }
+        current_subs.convert(TMPGencSubtitleRecord.class);
         return current_subs;
     }//public Subtitles convert(Subtitles current_subs)
 
@@ -353,6 +319,8 @@ public class TMPGenc extends AbstractBinarySubFormat implements
      * @throws java.io.IOException When IO errors occur.
      */
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
+        FileOutputStream os = null;
+        BufferedWriter out = null;        
         TMPGencSubtitleRecord sub = null;
 
         subs = given_subs;
@@ -361,6 +329,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             return false;
         }
 
+        boolean changed = false;
         try {
             StringBuffer buf = new StringBuffer();
             String txt = null;
@@ -379,25 +348,25 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             }//end for(int i=0; i < subs.size(); i++)
 
             /* Write textual part to disk */
-            FileOutputStream os = new FileOutputStream(outfile);
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, ENCODING));
+            os = new FileOutputStream(outfile);
+            out = new BufferedWriter(new OutputStreamWriter(os, ENCODING));
             out.write(buf.toString());
-            out.close();
-
-        /* debugging code
-        buf = new StringBuffer();
-        buf.append("Saved file: ");
-        buf.append(outfile.getAbsoluteFile());
-        buf.append(" with encoding: ");
-        buf.append(ENCODING);
-        System.out.println(buf.toString());
-         */
+            changed = true;
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
-            return false;
+            changed = true;
+        }finally{
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (os != null) {
+                    os.close();
+                }
+            } catch (Exception ex) {
+            }
         }
-        return true;   // There is no need to move any files
-
+        return changed;
     }
 
     /**

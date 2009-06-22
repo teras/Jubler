@@ -244,31 +244,7 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
     @Override
     public Subtitles convert(Subtitles current_subs) {
         init();
-        try {
-            for (int i = 0; i < current_subs.size(); i++) {
-                SubEntry old_entry = current_subs.elementAt(i);
-                if (old_entry instanceof SWTSubEntry){
-                    swtSubEntry = (SWTSubEntry) old_entry;
-                }else{
-                    swtSubEntry = new SWTSubEntry();
-                    /**
-                     * Temporary use the global if any has been done in
-                     * previous run
-                     */
-                    swtSubEntry.header = swtHeader;
-                    /**
-                     * Create new header if the global has not been created
-                     */
-                    swtSubEntry.copyRecord(old_entry);
-                    current_subs.replace(swtSubEntry, i);
-                }//end if
-                /**
-                 * Extract the header's reference to the global for future use.
-                 */
-                swtHeader = (SWTHeader) swtSubEntry.getHeader();
-            }//end for(int i=0; i < current_subs.size(); i++)            
-        } catch (Exception ex) {
-        }
+        current_subs.convert(SWTSubEntry.class);
         return current_subs;
     }
 }

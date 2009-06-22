@@ -47,6 +47,15 @@ import javax.swing.JOptionPane;
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class JImage implements CommonDef{
+    /**
+     * The colour that is used for DVB-T subtitle's transparency.
+     */
+    public static Color DVBT_SUB_TRANSPARENCY = new Color(0, 0, 96);
+    /**
+     * The black background colour in DVB-T subtitle blocks
+     */
+    public static Color DVBT_SUB_BLACK_BC = new Color(31, 31, 31);
+    
     private static boolean remindMissingImage = false;
     
     public static boolean isRemindMissingImage() {
@@ -252,7 +261,7 @@ public class JImage implements CommonDef{
                  */
                 Rectangle sr = getSubImageDimension(
                         img,
-                        Share.DVBT_SUB_TRANSPARENCY,
+                        DVBT_SUB_TRANSPARENCY,
                         tran_image);
                 /**
                  * now crop the transparent image down to the size obtained.

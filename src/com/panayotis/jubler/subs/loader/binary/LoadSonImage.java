@@ -35,11 +35,16 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.events.PostParseActionEvent;
+import com.panayotis.jubler.subs.events.PostParseActionEventListener;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.tools.JImage;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Vector;
 import javax.swing.ImageIcon;
 
 /**
@@ -78,16 +83,53 @@ import javax.swing.ImageIcon;
  */
 public class LoadSonImage extends Thread implements CommonDef {
 
+    private Vector<PostParseActionEventListener> postParseEventList = new Vector<PostParseActionEventListener>();
+    File input_file = null;
     Subtitles sub_list = null;
     String image_dir = null;
     String subtitle_file_dir = null;
     ProgressBar pb = new ProgressBar();
     private Jubler jubler;
+    private boolean loadImages = true;
 
-    public LoadSonImage(Subtitles sub_list, String image_dir, String file_dir) {
+    public LoadSonImage(Subtitles sub_list, String image_dir, File input_file) {
         this.sub_list = sub_list;
         this.image_dir = image_dir;
-        this.subtitle_file_dir = file_dir;
+        this.subtitle_file_dir = input_file.getParent();
+        this.input_file = input_file;
+    }
+
+    public void addPostParseActionEventListener(Collection<PostParseActionEventListener> cl) {
+        this.postParseEventList.addAll(cl);
+    }
+    
+    public void addPostParseActionEventListener(PostParseActionEventListener l) {
+        this.postParseEventList.add(l);
+    }
+
+    public void removePostParseActionEventListener(PostParseActionEventListener l) {
+        this.postParseEventList.remove(l);
+    }
+
+    public void clearPostParseActionEventListener() {
+        this.postParseEventList.clear();
+    }
+
+    public void firePostParseActionEvent() {
+        int len = this.postParseEventList.size();
+        for (int i = len - 1; i >=
+                0; i--) {
+            PostParseActionEvent event = new PostParseActionEvent(
+                    this,
+                    ActionEvent.ACTION_PERFORMED,
+                    "Loaded Images");
+
+            PostParseActionEventListener e = this.postParseEventList.elementAt(i);
+            event.setSubtitleFile(input_file);
+            event.setSubtitleList(sub_list);
+            e.postParseAction(event);
+        }//end for
+
     }
 
     public void run() {
@@ -119,10 +161,12 @@ public class LoadSonImage extends Thread implements CommonDef {
                 throw new IOException(_("A process did not finish yet"));
             }
 
-            pb.setTitle(_("Loading SON images"));
-            pb.setMinValue(0);
-            pb.setMaxValue(len - 1);
-            pb.on();
+            if (this.isLoadImages()) {
+                pb.setTitle(_("Loading SON images"));
+                pb.setMinValue(0);
+                pb.setMaxValue(len - 1);
+                pb.on();
+            }//end if (this.isLoadImages())
 
             int i = 0;
             repeat_search = false;
@@ -140,40 +184,46 @@ public class LoadSonImage extends Thread implements CommonDef {
                     f = new File(dir, image_filename);
                     is_found = (f != null) && f.isFile() && f.exists();
                     if (is_found) {
-                        BufferedImage b_img = JImage.readImage(f);
-                        img = new ImageIcon(b_img);
                         sub_entry.setImageFile(f);
-                        sub_entry.setImage(img);
-                        has_image = (img != null);
-                        has_header = (sub_entry.header != null);
-                        if (has_image && has_header) {
-                            sub_entry.header.updateRowHeight(img.getIconHeight());
-                            count++;
-                            if (jubler != null) {
-                                jubler.getSubtitles().fireTableRowsUpdated(i, i);
-                            }                            
-                        }//end if (has_image)
+                        if (this.isLoadImages()) {
+                            BufferedImage b_img = JImage.readImage(f);
+                            img = new ImageIcon(b_img);
+                            sub_entry.setImage(img);
+
+
+                            has_image = (img != null);
+                            has_header = (sub_entry.header != null);
+                            if (has_image && has_header) {
+                                sub_entry.header.updateRowHeight(img.getIconHeight());
+                                count++;
+                                if (jubler != null) {
+                                    jubler.getSubtitles().fireTableRowsUpdated(i, i);
+                                }
+                            }//end if (has_image)
+                        }//end if (this.isLoadImages())
                     }//end if
                 }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)
 
-                repeat_search = false;
-                if (!is_found) {
-                    DEBUG.debug(_("Cannot find image \"{0}\"", image_filename));
-                    if (JImage.isRemindMissingImage()) {
-                        File backup = last_image_dir;
-                        last_image_dir = JImage.findImageDirectory(image_filename, last_image_dir);
-                        repeat_search =
-                                (last_image_dir != null) &&
-                                (last_image_dir.isDirectory()) &&
-                                (JImage.isRemindMissingImage());
+                if (this.isLoadImages()) {
+                    repeat_search = false;
+                    if (!is_found) {
+                        DEBUG.debug(_("Cannot find image \"{0}\"", image_filename));
+                        if (JImage.isRemindMissingImage()) {
+                            File backup = last_image_dir;
+                            last_image_dir = JImage.findImageDirectory(image_filename, last_image_dir);
+                            repeat_search =
+                                    (last_image_dir != null) &&
+                                    (last_image_dir.isDirectory()) &&
+                                    (JImage.isRemindMissingImage());
 
-                        if (repeat_search) {
-                            path_list.insertAtTop(last_image_dir);
-                        } else {
-                            last_image_dir = backup;
-                        }//end if (repeat_search)
-                    }//end if
-                }//end if (!is_found)
+                            if (repeat_search) {
+                                path_list.insertAtTop(last_image_dir);
+                            } else {
+                                last_image_dir = backup;
+                            }//end if (repeat_search)
+                        }//end if
+                    }//end if (!is_found)
+                }//end if (this.isLoadImages())
 
                 if (!repeat_search) {
                     i++;
@@ -184,7 +234,11 @@ public class LoadSonImage extends Thread implements CommonDef {
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         } finally {
-            pb.off();
+            if (this.isLoadImages()) {
+                pb.off();
+            }//end if (this.isLoadImages()) 
+            
+            firePostParseActionEvent();
         }//end try/catch
     }//end public void run()
     public Jubler getJubler() {
@@ -193,6 +247,14 @@ public class LoadSonImage extends Thread implements CommonDef {
 
     public void setJubler(Jubler jubler) {
         this.jubler = jubler;
+    }
+
+    public boolean isLoadImages() {
+        return loadImages;
+    }
+
+    public void setLoadImages(boolean loadImages) {
+        this.loadImages = loadImages;
     }
 }//end class LoadSonImage extends Thread
 

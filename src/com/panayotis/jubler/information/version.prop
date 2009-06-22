@@ -1,0 +1,4 @@
+version=3.9.9
+longversion=3.9.9.9
+release=@RELEASE@
+packaged=false

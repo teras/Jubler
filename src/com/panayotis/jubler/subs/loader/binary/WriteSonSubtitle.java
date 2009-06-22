@@ -26,9 +26,9 @@
  * Contributor(s):
  * 
  */
-
 package com.panayotis.jubler.subs.loader.binary;
 
+import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.FileCommunicator;
@@ -78,11 +78,11 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
     private File index_outfile = null;
     private String image_out_filename = null;
     private static int maxDigits = 1;
-    private NonDuplicatedVector<File> dirList = null;    
+    private NonDuplicatedVector<File> dirList = null;
     private String encoding = null;
-
+    private Jubler jubler;
     ProgressBar pb = new ProgressBar();
-    
+
     public WriteSonSubtitle() {
     }
 
@@ -93,7 +93,7 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
         this.dir = dir;
         this.FPS = FPS;
         this.encoding = encoding;
-        
+
         // The outfile is:
         //  C:\project\test_data\edwardian\testson.son
         // FileCommunicator.save puts the "temp" extension and it became
@@ -113,7 +113,9 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
 
     @Override
     public void run() {
-        try {            
+        FileOutputStream os = null;
+        BufferedWriter out = null;
+        try {
 
             int dir_count = 1;
             int sub_count = subs.size();
@@ -132,7 +134,7 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
             sonSubEntry = (SonSubEntry) subs.elementAt(0);
             sonHeader = sonSubEntry.getHeader();
             boolean is_default_header = sonSubEntry.getHeader().isDefaultHeader();
-            if (is_default_header){
+            if (is_default_header) {
                 sonHeader.moptions = moptions;
                 sonHeader.FPS = FPS;
                 dirList = JImage.createImageDirectories(dir);
@@ -166,7 +168,7 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
                 boolean has_image = (sonSubEntry.getImage() != null);
                 boolean has_text = (sonSubEntry.getText() != null);
                 boolean is_make_text_image = (has_text && !has_image);
-                if (is_make_text_image){
+                if (is_make_text_image) {
                     id_string = fmt.format(i + 1);
                     img_filename = image_out_filename + "_" + id_string + ".png";
 
@@ -181,21 +183,21 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
                     File image_dir = dirList.elementAt(image_dir_index);
                     makeSubPicture(sonSubEntry, i, image_dir, img_filename);
                     pb.setTitle(img_filename);
-                    //makeSubEntry(sonSubEntry, i, img_filename, buffer);
+                //makeSubEntry(sonSubEntry, i, img_filename, buffer);
                 }//end if
-                
+
                 txt = sonSubEntry.toString();
                 buffer.append(txt);
 
                 pb.setValue(i);
+                jubler.getSubtitles().fireTableRowsUpdated(i, i);
             }//end for (int i = 0; i < subs.size(); i++)
 
             /* Write textual part to disk */
             //String file_name = outfilepath + image_out_filename + ".son";
-            FileOutputStream os = new FileOutputStream(index_outfile);
-            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(os, encoding));
-            out.write(buffer.toString());
-            out.close();
+            os = new FileOutputStream(index_outfile);
+            out = new BufferedWriter(new OutputStreamWriter(os, encoding));
+            out.write(buffer.toString());                        
         } catch (IOException ex) {
             ex.printStackTrace(System.out);
             String msg = ex.getMessage() + UNIX_NL;
@@ -203,6 +205,15 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
             JIDialog.error(null, msg, "DVDMaestro error");
         } finally {
             pb.off();
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (os != null) {
+                    os.close();
+                }
+            } catch (Exception ex) {
+            }
         }
     }
 
@@ -210,7 +221,7 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();
         try {
-            File image_file =  new File(dir, filename);
+            File image_file = new File(dir, filename);
             entry.setImageFile(image_file);
             entry.setImage(new ImageIcon(img));
             ImageIO.write(img, "png", image_file);
@@ -220,4 +231,12 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
 
         return true;
     }//end private boolean makeSubPicture(SubEntry entry, int id, String filename)
+    public Jubler getJubler() {
+        return jubler;
+    }
+
+    public void setJubler(Jubler jubler) {
+        this.jubler = jubler;
+    }
 }//class WriteSonSubtitle extends Thread
+

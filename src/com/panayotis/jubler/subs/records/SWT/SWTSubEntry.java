@@ -68,6 +68,7 @@ public class SWTSubEntry extends SonSubEntry {
         return b.toString();
     }
 
+    @Override
     public Object clone() {
         SWTSubEntry new_object = null;
         try {
@@ -79,6 +80,7 @@ public class SWTSubEntry extends SonSubEntry {
         return new_object;
     }
 
+    @Override
     public void copyRecord(SubEntry o) {
         SWTHeader newSwtHeader = null;
         try {

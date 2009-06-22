@@ -37,7 +37,7 @@ import java.util.Vector;
  * This action detects and removes the duplications that are found on the
  * timing elements of subtitle text. An example of duplication is shown in
  * the following live-subtitled programme:
- ********************************
+ * <pre>
  * 2
  * 00:04:41,020 --> 00:04:41,200
  * love
@@ -62,20 +62,20 @@ import java.util.Vector;
  * 00:04:41,020 --> 00:04:44,090
  * I love this show. 140 people.
  * ladies
- *************************************
+ * </pre>
  *
  * The number of lines on the duplication group is not limited, however, the
  * second line of text, if contains only a single word, will be assembled as
  * a single line of words which are single-space separated. The result of the
  * above example will be as below:
  *
- * *************************************
+ * <pre>
  * 2
  * 00:04:41,020 --> 00:04:44,090
  * love this show. 140 people,
  * I love this show. 140 people.
  * ladies
- * *************************************
+ * </pre>
  * 
  * @author Hoang Duy Tran <hoangduytran@tiscali.co.uk>
  */
@@ -100,7 +100,7 @@ public class RemoveTimeDuplication extends RemoveDuplicationBase {
      * are the same, or too close to another. False otherwise.
      */
     public boolean isDuplidated(SubEntry sub1, SubEntry sub2){
-        boolean is_dup = sub1.isStartTimeSame(sub2) || sub1.isEndTimeSame(sub2);
+        boolean is_dup = sub1.isSameStartTime(sub2) || sub1.isSameEndTime(sub2);
         return is_dup;
     }//end public boolean isDuplidated(SubEntry sub1, SubEntry sub2)
 

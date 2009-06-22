@@ -38,7 +38,7 @@ import java.util.Vector;
  * This action detects and removes the duplications that are found on the
  * first top-line of subtitle text. An example of duplication is shown in
  * the following live-subtitled programme:
- ********************************
+ * <pre>
  * 7
  * I love this show. 140 people.
  * ladies
@@ -70,14 +70,14 @@ import java.util.Vector;
  * 14
  * ladies  and gentlemen. All with the
  * aim.
- *************************************
+ * </pre>
  *
  * The number of lines on the duplication group is not limited, however, the
  * second line of text, if contains only a single word, will be assembled as
  * a single line of words which are single-space separated. The result of the
  * above example will be as below:
  *
- * *************************************
+ * <pre>
  * 7
  * I love this show. 140 people.
  * ladies and gentlemen. All with the
@@ -85,7 +85,7 @@ import java.util.Vector;
  * 8
  * ladies and gentlemen. All with the
  * same aim.
- * *************************************
+ * </pre>
  * 
  * @author Hoang Duy Tran <hoangduytran@tiscali.co.uk>
  */

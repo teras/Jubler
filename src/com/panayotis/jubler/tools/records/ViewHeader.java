@@ -32,12 +32,13 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
-import java.awt.TextArea;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 
 /**
  * This action allows user to view the header record in readable format.
@@ -50,8 +51,10 @@ public class ViewHeader extends JMenuItem implements ActionListener {
 
     private static String action_name = _("View header");
     private Jubler jublerParent = null;
-    private TextArea viewer = null;
+    private JTextArea viewer = null;
+    JScrollPane scrollPane = null;
     private String no_header_message = _("Current record type do not have header to view!");
+
     public ViewHeader() {
         setText(action_name);
         setName(action_name);
@@ -77,13 +80,18 @@ public class ViewHeader extends JMenuItem implements ActionListener {
 
             HeaderedTypeSubtitle headered_entry = (HeaderedTypeSubtitle) entry;
             String header_text = headered_entry.getHeaderAsString();
-            
-            if (viewer == null){
-                viewer = new TextArea();
+
+            if (viewer == null) {
+                viewer = new JTextArea();
+                viewer.setColumns(20);
+                viewer.setRows(5);
+                scrollPane = new javax.swing.JScrollPane();
+                scrollPane.setViewportView(viewer);
+
             }//end if
 
             viewer.setText(header_text);
-            JOptionPane.showMessageDialog(this,viewer, action_name, JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(jublerParent, viewer, action_name, JOptionPane.PLAIN_MESSAGE);
         } catch (Exception ex) {
         }//end try/catch
     }//public void actionPerformed(java.awt.event.ActionEvent evt)

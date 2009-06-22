@@ -389,6 +389,14 @@
                 <Property name="name" type="java.lang.String" value="FAF" noResource="true"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="SplitSONSubtitleFile">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="_(&quot;Split SON Subtitle File&quot;)" type="code"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="TDS" noResource="true"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator21">
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="QuitFM">
@@ -1444,10 +1452,10 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="SubTable">
                   <Properties>
-                    <Property name="autoResizeMode" type="int" value="3"/>
                     <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="SubsPop"/>
                     </Property>
+                    <Property name="autoResizeMode" type="int" value="3"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable () {&#xa;            public void columnMarginChanged(ChangeEvent e)  {&#xa;                super.columnMarginChanged(e);&#xa;                setcolumnchange(true);&#xa;            }&#xa;        };"/>
