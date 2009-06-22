@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN">
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.3//EN">
 <article>
 
 <title>Jubler FAQ</title>
@@ -112,6 +112,92 @@
 
 <section><title>How to save SON images and subtitle text together?</title>
 	<para>You can choose to save the subtitle file in the 'DVD Maestro Extended SWT' format. When SON images present, the file records entries similar to that of the SON, with the additon of the subtitle text that lies underneath the time and picture definition line. This format is ONLY used for editing OCR content and is probably not subitable for any DVD authoring applications. The subtitle text should be saved to a format that the target DVD authoring application, such as <ulink url="http://tmpgenc.pegasys-inc.com/en/product/tda3.html">TMPGEnc DVD Author 3</ulink>, understood. Among other formats, Jubler can load and produce SubRip SRT and TMPGenc's subtitle files.
+	</para>
+</section>
+
+<section><title>I'm dealing with a live-subtitled programmes and there're lots of duplications, can Jubler help?</title>
+	<para>Yes! Live-subtitled programmes produced three major problems, and they are often came in groups:
+		<itemizedlist>
+			<listitem>
+				<para>First text line of the subtile in the group is duplidated when the second line contains only a single word. A typical example of this can be shown here:
+					<literallayout>
+						7
+						I love this show. 140 people.
+						ladies
+					
+						8
+						I love  this show. 140 people.
+						and
+					
+						9
+						I love this     show. 140 people.
+						gentlemen.
+
+					</literallayout>
+					This symptom is identified as 'Top line' duplication. The function 'Top line' under the 'Tools->Duplication' menu will use the first subtitle event within the group as the target subtitle event where text from sub-sequent events are collected, without the duplicated top line, and all single words on the second line are grouped together as one continuous text line. Words are space separated. So the result of this function for the above group would be:
+					<literallayout>
+						7
+						I love this show. 140 people.
+						ladies and gentlemen. 
+					
+					</literallayout>
+					The timing of the subtitle event will be the grouping of the two, so the ending time of the final remain element in the group would have the ending of the last subtitle event.
+					
+				</para>
+			</listitem>
+			<listitem>
+				<para>The bottom text line of the first subtitle event is duplicated on the first line of a sub-sequent event. The grouping contains two events at a time. A typical example would be:				
+					<literallayout>
+						7
+						I love this show. 140 people.
+						ladies and gentlemen. All with the
+						
+						8
+						ladies and gentlemen. All with the
+						same aim.
+						
+					</literallayout>
+					This problem is identified as 'Bottom Top line' duplication. The function located in the 'Tools->Duplication' menu will remove the duplicated top-line of the second event in the group and try to retain it. Jubler will only remove the second event when the it doesn't contain any subtitle text after the removal of the first duplicated line. This applies to events that initially contains only one line of text. When removal occurs, the ending-time of the first event will be changed to ending-time of the removing event. The result of the above example would be:
+					<literallayout>
+						7
+						I love this show. 140 people.
+						ladies and gentlemen. All with the
+						
+						8
+						same aim.
+						
+					</literallayout>
+				</para>
+			</listitem>
+			<listitem>
+				<para>The timing element of subtitle event can also be duplicated, especially the starting-time. A typical example would be:
+					<literallayout>
+						2
+						00:04:41,020 --> 00:04:41,200
+						love
+					
+						3
+						00:04:41,020 --> 00:04:42,210
+						this
+					
+						4
+						00:04:41,020 --> 00:04:42,240
+						show.
+						
+					</literallayout>
+					The grouping include all events that have the starting-time or ending-time duplicated. The function 'Time' located in the 'Tools->Duplication' will try to remove the duplication by taking the first subtitle event in the group as the event to keep and all sub-sequent duplicated events are removed. The ending-time of the event to keep will be set to the last event of the group, when all the subtitle text of duplicated events are appended to the first event. So the result of the above example, after the running of the function would be:
+					<literallayout>
+						2
+						00:04:41,020 --> 00:04:44,090
+						love this show.
+						
+					</literallayout>
+					And since the duplicated events contain only single words in their textual element, the resulted text combines words into a single line, space separated.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</para>
+	<para>Extraction of subtitle images could result to an abnormally large number of events. It is suggested that users use an external OCR application and convert images to text in batches. The resulted text can be combined in Jubler, using 'Append from file' function under the 'File' menu. Alternatively, use the 'Split SON Subtitle File' function under 'File' menu to divide the subtitle file to files with much smaller number of images. Each file can then be brought into Jubler and performing OCR, corrections individually, save the content in a textual format, such as SubRip (SRT), before combining them into one big text file again using file appending function.
 	</para>
 </section>
 
