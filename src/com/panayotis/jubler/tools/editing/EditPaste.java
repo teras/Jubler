@@ -76,6 +76,7 @@ public class EditPaste extends JMenuItem implements ActionListener {
              */
             try {
                 SubEntry pasting_source_sub = Jubler.copybuffer.get(0);
+                subs.setJubler(jublerParent);
                 subs.convert(pasting_source_sub.getClass());
             } catch (Exception ex) {
                 ex.printStackTrace(System.out);

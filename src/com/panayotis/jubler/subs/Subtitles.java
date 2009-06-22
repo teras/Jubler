@@ -60,7 +60,7 @@ public class Subtitles extends AbstractTableModel {
     private SubStyleList styles;
     /* The file representation of this subtitle */
     private SubFile subfile;
-    protected Jubler jubler;
+    private Jubler jubler;
 
     public Subtitles() {
         sublist = new Vector<SubEntry>();
@@ -593,5 +593,13 @@ public class Subtitles extends AbstractTableModel {
             return false;
         }
     }//end public void convert(Class tagert_class)
+
+    public Jubler getJubler() {
+        return jubler;
+    }
+
+    public void setJubler(Jubler jubler) {
+        this.jubler = jubler;
+    }
 }//end public class Subtitles extends AbstractTableModel
 

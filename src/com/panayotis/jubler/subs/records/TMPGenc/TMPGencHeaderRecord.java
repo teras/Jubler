@@ -119,4 +119,11 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
         this.layoutExList = new LayoutDataExRecordList();
         layoutExList.defaultRecord();
     }//public void makeDefaultHeader()
+    
+    public void copyRecord(TMPGencHeaderRecord o){
+        try{
+            this.layoutExList = (LayoutDataExRecordList) o.layoutExList.clone();
+            this.layoutList = (LayoutDataItemRecordList) o.layoutList.clone();
+        }catch(Exception ex){}
+    }//end public void copyRecord(TMPGencHeaderRecord o)
 }

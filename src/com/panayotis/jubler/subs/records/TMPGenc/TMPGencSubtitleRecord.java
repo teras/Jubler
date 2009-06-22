@@ -221,16 +221,21 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     public void copyRecord(SubEntry o) {
         try {
             super.copyRecord(o);
-            boolean has_header = (header != null);
-            if (!has_header) {
-                header = new TMPGencHeaderRecord();
-                header.makeDefaultHeader();
-            }//end if (! has_header)
-
-            TMPGencSubtitleRecord tmp = (TMPGencSubtitleRecord) o;
-            id = tmp.id;
-            layoutIndex = tmp.layoutIndex;
-            enabled = tmp.enabled;
+            if (header == null) {
+                TMPGencHeaderRecord new_header = new TMPGencHeaderRecord();
+                try {
+                    TMPGencSubtitleRecord o_tmpgec = (TMPGencSubtitleRecord) o;
+                    new_header.copyRecord(o_tmpgec.header);
+                } catch (Exception ex) {
+                    new_header.makeDefaultHeader();
+                }
+                header = new_header;
+            }//end if
+            
+            TMPGencSubtitleRecord o_tmpgec = (TMPGencSubtitleRecord) o;
+            id = o_tmpgec.id;
+            layoutIndex = o_tmpgec.layoutIndex;
+            enabled = o_tmpgec.enabled;
         } catch (Exception ex) {
         }
     }//end public void copyRecord(SubEntry o)
