@@ -45,7 +45,8 @@ public interface CommonDef {
     /**
      * Pattern for comma ("[,]{1}")
      */
-    public static final String single_comma = "[,]{1}";
+    //public static final String single_comma = "[,]{1}";
+    public static final String single_comma = "([,])";
     /**
      * Comma character pattern (",")
      */
