@@ -62,6 +62,8 @@ public abstract class ServerViewport extends ExternalViewport {
 
         try {
             proc = Runtime.getRuntime().exec(cmd);
+
+
             cmdpipe = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
             infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             errorpipe = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
