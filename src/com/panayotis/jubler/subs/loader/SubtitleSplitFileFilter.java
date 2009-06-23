@@ -62,7 +62,7 @@ public class SubtitleSplitFileFilter implements FilenameFilter, CommonDef {
     
     private void initPattern() {
         try {            
-            split_file_pattern = printable + UNDER_SCORE + digits + DOT + extension;
+            split_file_pattern = printable + UNDER_SCORE + digits + DOT + "(" + extension + ")";
             pat = Pattern.compile(split_file_pattern);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -78,13 +78,14 @@ public class SubtitleSplitFileFilter implements FilenameFilter, CommonDef {
             String fname = f.getName().toLowerCase();
             Matcher m = pat.matcher(fname);
             boolean is_found = m.find();
+            /*
             for (int i = 0; is_found && i < m.groupCount(); i++) {
                 String part = m.group(i);
                 DEBUG.logger.log(Level.INFO, "part: " + i + " = " + part);
             }//end for
-
+            */
             if (is_found) {
-                String num = getNumberPart(fname);
+                String num = m.group(3);
                 updateNextNumber(num);
             }//end if (is_found)
             return is_found;
@@ -105,9 +106,9 @@ public class SubtitleSplitFileFilter implements FilenameFilter, CommonDef {
     }
     private void updateNextNumber(String exiting_number) {
         try {
-            int number = Integer.valueOf(exiting_number);
+            int number = Integer.valueOf(exiting_number) + 1;
             if (number > nextNumber) {
-                nextNumber = (number + 1);
+                nextNumber = number;
             }
         } catch (Exception ex) {
         }
