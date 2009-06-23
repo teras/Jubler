@@ -62,7 +62,7 @@ public class SubtitleSplitFileFilter implements FilenameFilter, CommonDef {
     
     private void initPattern() {
         try {            
-            split_file_pattern = printable + UNDER_SCORE + digits + DOT + "(" + extension + ")";
+            split_file_pattern = printable + UNDER_SCORE + digits + DOT + extension;
             pat = Pattern.compile(split_file_pattern);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
