@@ -30,7 +30,10 @@ package com.panayotis.jubler.exceptions;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
- *
+ * This class is used to raise exception condition when differences 
+ * between two classes are found. The difference should not based on the result
+ * of 'instanceof' test but on the absolute class-name comparisons, as the
+ * 'instanceof' treats the implementation and inheritance as the same.
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class IncompatibleRecordTypeException extends Exception{
@@ -56,6 +59,14 @@ public class IncompatibleRecordTypeException extends Exception{
 	super(message);
     }
     
+    /**
+     * Constructs a new exception with the specified classes. The names of
+     * two classes are retrieved and included in the message passing to the
+     * exception message, with an 'and' connector, to indicate that the
+     * execption is raised due to the source of problem.
+     * @param source The source of differences.
+     * @param target The target of differences.
+     */
     public IncompatibleRecordTypeException(Class source, Class target) {
 	super(source.getName() + "\n" + _("and") + "\n" + target.getName());
     }    

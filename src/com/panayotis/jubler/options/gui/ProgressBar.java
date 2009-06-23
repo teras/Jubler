@@ -190,8 +190,6 @@ public class ProgressBar extends javax.swing.JPanel {
         dlg = new javax.swing.JDialog();
         progressPanel = new javax.swing.JPanel();
         progressBar = new javax.swing.JProgressBar();
-        cmdPanel = new javax.swing.JPanel();
-        cmdOK = new javax.swing.JButton();
 
         dlg.getContentPane().setLayout(new java.awt.GridLayout(1, 0));
 
@@ -201,26 +199,10 @@ public class ProgressBar extends javax.swing.JPanel {
         progressPanel.add(progressBar);
 
         add(progressPanel, java.awt.BorderLayout.CENTER);
-
-        cmdOK.setText("OK");
-        cmdOK.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdOKActionPerformed(evt);
-            }
-        });
-        cmdPanel.add(cmdOK);
-
-        add(cmdPanel, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdOKActionPerformed
-        getDlg().setVisible(false);
-    }//GEN-LAST:event_cmdOKActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cmdOK;
-    private javax.swing.JPanel cmdPanel;
     private javax.swing.JDialog dlg;
     private javax.swing.JProgressBar progressBar;
     private javax.swing.JPanel progressPanel;

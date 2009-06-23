@@ -463,11 +463,11 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         this.loadImages = loadImages;
     }
 
-    public Collection getPostImageLoadActions() {
+    public Collection<PostParseActionEventListener> getPostImageLoadActions() {
         return postImageLoadActions;
     }
 
-    public void setPostImageLoadActions(Collection postImageLoadActions) {
+    public void setPostImageLoadActions(Collection<PostParseActionEventListener> postImageLoadActions) {
         this.postImageLoadActions = postImageLoadActions;
     }
 }//end public class DVDMaestro extends AbstractBinarySubFormat
