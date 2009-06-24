@@ -24,6 +24,7 @@ package com.panayotis.jubler.subs.loader.binary;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
@@ -44,6 +45,9 @@ import com.panayotis.jubler.subs.events.PreParseActionEventListener;
 import com.panayotis.jubler.subs.events.PreParsingDataLineActionEvent;
 import com.panayotis.jubler.subs.events.PreParsingDataLineActionEventListener;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEventListener;
+import com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEvent;
+import com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEventListener;
+import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEventListener;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.loader.processor.SON.SONColor;
 import com.panayotis.jubler.subs.loader.processor.SON.SONContrast;
@@ -64,6 +68,7 @@ import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,10 +131,9 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
     protected static Pattern pat_son_header = Pattern.compile(p_son_subtitle_event_header);
     protected static Pattern pat_son_palette_entries_header = Pattern.compile(p_son_palette_entries_header);
     private boolean loadImages = true;
-
     public static final String sonExtension = "son";
     public static final String sonExtendedName = "DVDmaestro";
-    
+
     /** Creates a new instance of DVDMaestro */
     public DVDMaestro() {
         moptions = new JMaestroOptions();
@@ -274,14 +278,18 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         }
     }
 
-
+    public void whenRecordUpdated(SubtitleRecordUpdatedEvent e) {
+        int row = e.getRow();
+        Subtitles subs = e.getSubList();
+        subs.fireTableRowsUpdated(row, row);
+    }
     /**
      * The collection of {@link PostParseActionEventListener} is placed here
      * so that external components can place extra code that perform actions
      * after the images has been loaded.
      */
-    private Collection<PostParseActionEventListener> postImageLoadActions = null;
-    
+    private Collection<SubtitleUpdaterPostProcessingEventListener> postImageLoadActions = null;
+
     /**
      * The post parsing action, loading SON images. Also added the collection
      * of {@link #postImageLoadActions} so that after the images has been loaded,
@@ -292,14 +300,22 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         //this task is potentially taking a long-time to complete, so to avoid
         //the GUI display problems, create a separate thread and runs it in the
         //background.
-        LoadSonImage imageLoader = new LoadSonImage(subtitle_list, sonHeader.image_directory, e.getSubtitleFile());        
-        imageLoader.setJubler(jubler);
-        imageLoader.setLoadImages(loadImages);
-        
-        imageLoader.clearPostParseActionEventListener();
-        if (postImageLoadActions != null){
-            imageLoader.addPostParseActionEventListener(postImageLoadActions);            
+        LoadSonImage imageLoader = new LoadSonImage(subtitle_list, sonHeader.image_directory, e.getSubtitleFile());
+        SubtitleRecordUpdatedEventListener updatedListener = new SubtitleRecordUpdatedEventListener() {
+
+            public void recordUpdated(SubtitleRecordUpdatedEvent e) {
+                whenRecordUpdated(e);
+            }
+        };
+
+        imageLoader.setSubList(subtitle_list);
+        imageLoader.addSubtitleRecordUpdatedEventListener(updatedListener);
+
+        if (!Share.isEmpty(postImageLoadActions)) {
+            imageLoader.addSubtitleUpdaterPostProcessingEventListener(postImageLoadActions);
         }//end if
+        
+        imageLoader.setLoadImages(loadImages);
         imageLoader.start();
     }
 
@@ -362,9 +378,18 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         }//end if
 
         Subtitles convert_list = convert(given_subs);
+
         /* Start writing the files in a separate thread */
+        SubtitleRecordUpdatedEventListener updated = new SubtitleRecordUpdatedEventListener() {
+
+            public void recordUpdated(SubtitleRecordUpdatedEvent e) {
+                whenRecordUpdated(e);
+            }
+        };
+
         WriteSonSubtitle writer = new WriteSonSubtitle(this, convert_list, moptions, outfile, dir, FPS, ENCODING);
-        writer.setJubler(jubler);
+        writer.setSubList(given_subs);
+        writer.addSubtitleRecordUpdatedEventListener(updated);
         writer.start();
         return false;   // There is no need to move any files
     }
@@ -377,25 +402,25 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
      * @param outfile
      * @return
      */
-    public boolean produce(Subtitles given_subs, File outfile){
+    public boolean produce(Subtitles given_subs, File outfile) {
         FileOutputStream os = null;
         BufferedWriter out = null;
-        
+
         boolean ok = false;
         int maxDigits = 1;
         NumberFormat fmt = NumberFormat.getInstance();
-        try{
+        try {
             init();
-            sonSubEntry = (SonSubEntry)given_subs.elementAt(0);
+            sonSubEntry = (SonSubEntry) given_subs.elementAt(0);
             sonHeader = sonSubEntry.getHeader();
             StringBuffer buffer = new StringBuffer();
             String txt = sonHeader.toString();
             buffer.append(txt);
-            
+
             maxDigits = Integer.toString(given_subs.size()).length();
             fmt.setMinimumIntegerDigits(maxDigits);
             fmt.setMaximumIntegerDigits(maxDigits);
-            
+
             for (int i = 0; i < given_subs.size(); i++) {
                 sonSubEntry = (SonSubEntry) given_subs.elementAt(i);
                 sonSubEntry.event_id = (short) (i + 1);
@@ -403,17 +428,19 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
 
                 txt = sonSubEntry.toString();
                 buffer.append(txt);
+                DEBUG.logger.log(Level.INFO, "appended: " + txt);
             }//end for (int i = 0; i < subs.size(); i++)
 
             /* Write textual part to disk */
             //String file_name = outfilepath + image_out_filename + ".son";
             os = new FileOutputStream(outfile);
             out = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            out.write(buffer.toString());               
+            out.write(buffer.toString());
             ok = true;
-        }catch(Exception ex){
+            DEBUG.logger.log(Level.INFO, "Writen buffer to " + outfile.getAbsolutePath());
+        } catch (Exception ex) {
             ex.printStackTrace(System.out);
-        }finally{
+        } finally {
             try {
                 if (out != null) {
                     out.close();
@@ -422,11 +449,10 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
                     os.close();
                 }
             } catch (Exception ex) {
-            }            
+            }
         }
         return ok;
     }//end public boolean produce(Subtitles given_subs, File outfile)
-    
     protected String addSubEntryText(SubEntry entry) {
         return "";
     }
@@ -463,11 +489,11 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         this.loadImages = loadImages;
     }
 
-    public Collection<PostParseActionEventListener> getPostImageLoadActions() {
+    public Collection<SubtitleUpdaterPostProcessingEventListener> getPostImageLoadActions() {
         return postImageLoadActions;
     }
 
-    public void setPostImageLoadActions(Collection<PostParseActionEventListener> postImageLoadActions) {
+    public void setPostImageLoadActions(Collection<SubtitleUpdaterPostProcessingEventListener> postImageLoadActions) {
         this.postImageLoadActions = postImageLoadActions;
     }
 }//end public class DVDMaestro extends AbstractBinarySubFormat

@@ -35,6 +35,7 @@ import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
 import com.panayotis.jubler.subs.Share;
+import com.panayotis.jubler.subs.SubtitleUpdaterThread;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.processor.SON.SONPatternDef;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
@@ -65,10 +66,9 @@ import javax.swing.ImageIcon;
  * @see LoadSonImage
  * @author teras && Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
-public class WriteSonSubtitle extends Thread implements SONPatternDef {
+public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatternDef {
 
     private static NumberFormat fmt = NumberFormat.getInstance();
-    private DVDMaestro parent = null;
     private JMaestroOptions moptions = null;
     private SonHeader sonHeader = null;
     private SonSubEntry sonSubEntry = null;
@@ -80,20 +80,18 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
     private static int maxDigits = 1;
     private NonDuplicatedVector<File> dirList = null;
     private String encoding = null;
-    private Jubler jubler;
     ProgressBar pb = new ProgressBar();
 
     public WriteSonSubtitle() {
     }
 
     public WriteSonSubtitle(DVDMaestro parent, Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS, String encoding) {
-        this.parent = parent;
         this.moptions = moptions;
         this.outfile = outfile;
         this.dir = dir;
         this.FPS = FPS;
         this.encoding = encoding;
-
+        
         // The outfile is:
         //  C:\project\test_data\edwardian\testson.son
         // FileCommunicator.save puts the "temp" extension and it became
@@ -109,6 +107,7 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
         this.image_out_filename = image_file.getName();
 
         this.subs = subtitle_list;
+        setSubList(subs);
     }
 
     @Override
@@ -160,6 +159,9 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
 
             String img_filename, id_string;
             image_count = 0;
+            
+            fireSubtitleUpdaterPreProcessingEvent();
+            
             for (int i = 0; i < subs.size(); i++) {
                 sonSubEntry = (SonSubEntry) subs.elementAt(i);
                 sonSubEntry.event_id = (short) (i + 1);
@@ -190,7 +192,10 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
                 buffer.append(txt);
 
                 pb.setValue(i);
-                jubler.getSubtitles().fireTableRowsUpdated(i, i);
+                
+                setRow(i);
+                setEntry(sonSubEntry);
+                fireSubtitleRecordUpdatedEvent();
             }//end for (int i = 0; i < subs.size(); i++)
 
             /* Write textual part to disk */
@@ -214,6 +219,7 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
                 }
             } catch (Exception ex) {
             }
+            fireSubtitleUpdaterPostProcessingEvent();
         }
     }
 
@@ -231,12 +237,5 @@ public class WriteSonSubtitle extends Thread implements SONPatternDef {
 
         return true;
     }//end private boolean makeSubPicture(SubEntry entry, int id, String filename)
-    public Jubler getJubler() {
-        return jubler;
-    }
-
-    public void setJubler(Jubler jubler) {
-        this.jubler = jubler;
-    }
 }//class WriteSonSubtitle extends Thread
 

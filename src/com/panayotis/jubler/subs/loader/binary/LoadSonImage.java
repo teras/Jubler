@@ -34,6 +34,7 @@ import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
+import com.panayotis.jubler.subs.SubtitleUpdaterThread;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.events.PostParseActionEvent;
 import com.panayotis.jubler.subs.events.PostParseActionEventListener;
@@ -81,7 +82,7 @@ import javax.swing.ImageIcon;
  * 
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
-public class LoadSonImage extends Thread implements CommonDef {
+public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
 
     private Vector<PostParseActionEventListener> postParseEventList = new Vector<PostParseActionEventListener>();
     File input_file = null;
@@ -89,7 +90,6 @@ public class LoadSonImage extends Thread implements CommonDef {
     String image_dir = null;
     String subtitle_file_dir = null;
     ProgressBar pb = new ProgressBar();
-    private Jubler jubler;
     private boolean loadImages = true;
 
     public LoadSonImage(Subtitles sub_list, String image_dir, File input_file) {
@@ -97,39 +97,7 @@ public class LoadSonImage extends Thread implements CommonDef {
         this.image_dir = image_dir;
         this.subtitle_file_dir = input_file.getParent();
         this.input_file = input_file;
-    }
-
-    public void addPostParseActionEventListener(Collection<PostParseActionEventListener> cl) {
-        this.postParseEventList.addAll(cl);
-    }
-    
-    public void addPostParseActionEventListener(PostParseActionEventListener l) {
-        this.postParseEventList.add(l);
-    }
-
-    public void removePostParseActionEventListener(PostParseActionEventListener l) {
-        this.postParseEventList.remove(l);
-    }
-
-    public void clearPostParseActionEventListener() {
-        this.postParseEventList.clear();
-    }
-
-    public void firePostParseActionEvent() {
-        int len = this.postParseEventList.size();
-        for (int i = len - 1; i >=
-                0; i--) {
-            PostParseActionEvent event = new PostParseActionEvent(
-                    this,
-                    ActionEvent.ACTION_PERFORMED,
-                    "Loaded Images");
-
-            PostParseActionEventListener e = this.postParseEventList.elementAt(i);
-            event.setSubtitleFile(input_file);
-            event.setSubtitleList(sub_list);
-            e.postParseAction(event);
-        }//end for
-
+        setSubList(sub_list);
     }
 
     public void run() {
@@ -157,11 +125,13 @@ public class LoadSonImage extends Thread implements CommonDef {
 
             int len = sub_list.size();
 
-            if (pb.isOn()) {
-                throw new IOException(_("A process did not finish yet"));
-            }
+            if (loadImages) {
+                if (pb.isOn()) {
+                    throw new IOException(_("A process did not finish yet"));
+                }
+            }//end if
 
-            if (this.isLoadImages()) {
+            if (loadImages) {
                 pb.setTitle(_("Loading SON images"));
                 pb.setMinValue(0);
                 pb.setMaxValue(len - 1);
@@ -170,13 +140,17 @@ public class LoadSonImage extends Thread implements CommonDef {
 
             int i = 0;
             repeat_search = false;
+
+            fireSubtitleUpdaterPreProcessingEvent();
             while (i < len) {
                 if (!repeat_search) {
                     sub_entry = (SonSubEntry) sub_list.elementAt(i);
                     image_filename = sub_entry.image_filename;
-                    pb.setTitle(image_filename);
-                    pb.setValue(i);
-                }//end if
+                    if (loadImages) {
+                        pb.setTitle(image_filename);
+                        pb.setValue(i);
+                    }//end if
+                }//end if            
 
                 is_found = false;
                 for (int j = 0; (!is_found) && (j < path_list.size()); j++) {
@@ -185,26 +159,26 @@ public class LoadSonImage extends Thread implements CommonDef {
                     is_found = (f != null) && f.isFile() && f.exists();
                     if (is_found) {
                         sub_entry.setImageFile(f);
-                        if (this.isLoadImages()) {
+                        if (loadImages) {
                             BufferedImage b_img = JImage.readImage(f);
                             img = new ImageIcon(b_img);
                             sub_entry.setImage(img);
-
 
                             has_image = (img != null);
                             has_header = (sub_entry.header != null);
                             if (has_image && has_header) {
                                 sub_entry.header.updateRowHeight(img.getIconHeight());
                                 count++;
-                                if (jubler != null) {
-                                    jubler.getSubtitles().fireTableRowsUpdated(i, i);
-                                }
+
+                                setRow(i);
+                                setEntry(sub_entry);
+                                fireSubtitleRecordUpdatedEvent();
                             }//end if (has_image)
                         }//end if (this.isLoadImages())
                     }//end if
                 }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)
 
-                if (this.isLoadImages()) {
+                if (loadImages) {
                     repeat_search = false;
                     if (!is_found) {
                         DEBUG.debug(_("Cannot find image \"{0}\"", image_filename));
@@ -237,18 +211,9 @@ public class LoadSonImage extends Thread implements CommonDef {
             if (this.isLoadImages()) {
                 pb.off();
             }//end if (this.isLoadImages()) 
-            
-            firePostParseActionEvent();
+            fireSubtitleUpdaterPostProcessingEvent();
         }//end try/catch
     }//end public void run()
-    public Jubler getJubler() {
-        return jubler;
-    }
-
-    public void setJubler(Jubler jubler) {
-        this.jubler = jubler;
-    }
-
     public boolean isLoadImages() {
         return loadImages;
     }
