@@ -34,11 +34,11 @@ import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.events.PostParseActionEvent;
-import com.panayotis.jubler.subs.events.PostParseActionEventListener;
+import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent;
+import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEventListener;
 import com.panayotis.jubler.subs.loader.SimpleFileFilter;
-import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.subs.loader.SubtitleSplitFileFilter;
+import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.tools.JSubtitleSetSplitter;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -144,14 +144,9 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
             //creates an instance of the subtitle-loader
             sub_loader = new DVDMaestro();
 
-            //Tell it not to load images as this is the cause for memory
-            //shortage problem.
-            sub_loader.setLoadImages(false);
-
-            PostParseActionEventListener postImageLoadListener = new PostParseActionEventListener() {
-
-                public void postParseAction(PostParseActionEvent e) {
-                    Subtitles subs = e.getSubtitleList();
+            SubtitleUpdaterPostProcessingEventListener postImageLoadListener = new SubtitleUpdaterPostProcessingEventListener() {
+                public void postProcessing(SubtitleUpdaterPostProcessingEvent e){
+                    Subtitles subs = e.getSubList();
 
                     if (Share.isEmpty(subs)) {
                         msg = _("No subtitle events were found. Terminate operation.");
@@ -195,11 +190,15 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
                 }//end public void postParseAction(PostParseActionEvent e) 
             };//end PostParseActionEventListener postImageLoadListener = new PostParseActionEventListener()
 
-            Collection<PostParseActionEventListener> post_load_image_lc =
-                    new Vector<PostParseActionEventListener>();
+            Collection<SubtitleUpdaterPostProcessingEventListener> post_load_image_lc =
+                    new Vector<SubtitleUpdaterPostProcessingEventListener>();
             post_load_image_lc.add(postImageLoadListener);
             sub_loader.setPostImageLoadActions(post_load_image_lc);
 
+            //Tell it not to load images as this is the cause for memory
+            //shortage problem.
+            sub_loader.setLoadImages(false);
+            
             //Load the subtitle-events without the images
             Subtitles subs = sub_loader.parse(input_data, 25f, input_file);
             
