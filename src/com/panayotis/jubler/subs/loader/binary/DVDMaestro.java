@@ -47,6 +47,7 @@ import com.panayotis.jubler.subs.events.PreParsingDataLineActionEventListener;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEventListener;
 import com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEvent;
 import com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEventListener;
+import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent;
 import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEventListener;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.loader.processor.SON.SONColor;
@@ -308,8 +309,15 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
             }
         };
 
+        SubtitleUpdaterPostProcessingEventListener loadedListener = new SubtitleUpdaterPostProcessingEventListener(){
+            public void postProcessing(SubtitleUpdaterPostProcessingEvent e){
+                jubler.tableHasChanged(null);
+            }
+        };
+    
         imageLoader.setSubList(subtitle_list);
         imageLoader.addSubtitleRecordUpdatedEventListener(updatedListener);
+        imageLoader.addSubtitleUpdaterPostProcessingEventListener(loadedListener);
 
         if (!Share.isEmpty(postImageLoadActions)) {
             imageLoader.addSubtitleUpdaterPostProcessingEventListener(postImageLoadActions);
