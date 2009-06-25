@@ -30,7 +30,6 @@ package com.panayotis.jubler.tools.editing;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
 import com.panayotis.jubler.subs.RecordComponent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;

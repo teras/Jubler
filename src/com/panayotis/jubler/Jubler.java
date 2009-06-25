@@ -92,6 +92,8 @@ import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -113,6 +115,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton.ToggleButtonModel;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -3120,7 +3123,7 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
         }//end try/catch
         return newsubs;
     }//end private Subtitles loadSubtitleFile()
-
+    
     /**
      * This function takes the value from the editor of the combo-box
      * OptNumberOfLine, which should be an Integer. However, when the
@@ -3135,8 +3138,8 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private void gotoLine() {
         try {
             Integer integer = (Integer) OptNumberOfLine.getEditor().getItem();
-            numberOfLine = integer.intValue();
-            setSelectedSub(numberOfLine - 1, true);
+            numberOfLine = integer.intValue();            
+            setSelectedSub(numberOfLine - 1, true);            
         } catch (Exception ex) {
             OptNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
         }
