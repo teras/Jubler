@@ -2252,6 +2252,7 @@ private void OptNumberOfLineActionPerformed(java.awt.event.ActionEvent evt) {//G
     try {
         value = ((Integer) OptNumberOfLine.getSelectedItem()).intValue();
         numberOfLine = value;
+        DoItTBActionPerformed(evt);
     } catch (Exception ex) {
         OptNumberOfLine.getModel().setSelectedItem(Integer.valueOf(numberOfLine));
     }
