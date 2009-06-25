@@ -75,18 +75,18 @@ import javax.swing.JTable;
  */
 @SuppressWarnings({"serial", "unchecked"})
 public class BalanceText extends JMenuItem implements ActionListener, CommonDef {
+
     /**
      * The default text width of 480
      */
     public static final int DEFAULT_TEXT_WIDTH = 480;
     public static final int MINIMUM_TEXT_WIDTH = 100;
     public static final int MAXIMUM_TEXT_WIDTH = 720;
-    
     private boolean actionOnAllData = false;
     private String action_name = _("Balance text");
     private Jubler jublerParent = null;
     private int textWidth = DEFAULT_TEXT_WIDTH;
-    
+
     public BalanceText() {
         setText(action_name);
         setName(action_name);
@@ -101,12 +101,12 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
      * This defaultMap holds the basic attributes for the line measurer
      */
     private static final Hashtable defaultMap = new Hashtable();
+
     /**
      * The default font attributes for the line measurer.
      * At the moment the font used is Tahoma, the style is plain 
      * and the font size is 24.
-     */    
-
+     */
     static {
         defaultMap.put(TextAttribute.FONT, new Font("Tahoma", Font.PLAIN, 24));
     }
@@ -145,7 +145,6 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
             return defaultMap;
         }
     }//private Hashtable getAttributeMap(SubEntry r)
-
     /**
      * Using {@link LineBreakMeasurer} to perform measurements on text string
      * of input record, based on some prefixed format attributes. String text
@@ -153,8 +152,12 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
      * {@link #DEFAULT_TEXT_WIDTH}.
      * @param r The record input
      */
-    private void balanceText(SubEntry r) {
+    private boolean balanceText(SubEntry r) {
+        boolean text_changed = false;
+        String old_text = null;
         try {
+            old_text = new String(r.getText());
+
             String s = r.getTextWithoutLineBreak();
             int text_len = s.length();
 
@@ -187,10 +190,15 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
 
             r.setText(text_list);
             removeOneWordLastLine(r);
+
+            String new_text = r.getText();
+            text_changed = !(new_text.equals(old_text));
+
         } catch (Exception ex) {
+        } finally {
+            return text_changed;
         }
     }//end balanceText
-
     /**
      * This routine checks to see if the last line indeed contains only
      * a single word, in which case, the last-word is joined with the line
@@ -247,7 +255,17 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
         } catch (Exception ex) {
         }
     }//private void removeOneWordLastLine(SubEntry r)
-
+    private boolean performBalancing(Subtitles subs, int row, int selected_row) {
+        SubEntry r = (SubEntry) subs.elementAt(row);
+        boolean text_changed = balanceText(r);
+        if (text_changed) {
+            if (selected_row == row) {
+                jublerParent.getSubeditor().setData(r);
+            }//end if (selected_row == i)
+            jublerParent.getSubtitles().fireTableRowsUpdated(row, row);
+        }//end if (text_changed)
+        return text_changed;
+    }//end private boolean performBalancing(int row)
     /**
      * This routine runs through the list of selected records,
      * based on the condition sets by {@link #isActionOnAllData}
@@ -264,40 +282,32 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
      * @param evt
      */
     public void actionPerformed(java.awt.event.ActionEvent evt) {
+        //boolean text_changed = false;
         try {
             Subtitles subs = jublerParent.getSubtitles();
             jublerParent.getUndoList().addUndo(new UndoEntry(subs, action_name));
+            JTable tbl = jublerParent.getSubTable();
+            int selected_row = tbl.getSelectedRow();
 
-            Vector<SubEntry> affect_list = new Vector<SubEntry>();
             if (isActionOnAllData()) {
                 int len = subs.size();
                 for (int i = 0; i < len; i++) {
-                    SubEntry r = (SubEntry) subs.elementAt(i);
-                    balanceText(r);
-                    affect_list.add(r);
-                }//end for
-
+                    performBalancing(subs, i, selected_row);
+                }//end for (int i = 0; i < len; i++)
             } else {
-                JTable tbl = jublerParent.getSubTable();
                 int[] selected_rows = tbl.getSelectedRows();
                 int len = selected_rows.length;
                 for (int i = 0; i < len; i++) {
                     int row = selected_rows[i];
-                    SubEntry r = (SubEntry) subs.elementAt(row);
-                    balanceText(r);
-                    affect_list.add(r);
-                }//end for                
-
+                    performBalancing(subs, row, selected_row);
+                }//end for (int i = 0; i < len; i++)
             }//end if (this.isActionOnAllData())/else
 
-            SubEntry[] changed_list = affect_list.toArray(new SubEntry[ affect_list.size()]);
-            jublerParent.tableHasChanged(changed_list);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }//end try/catch
 
     }//public void actionPerformed(java.awt.event.ActionEvent evt)
-
     /**
      * @return the actionOnAllData
      */
@@ -328,3 +338,4 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
         this.jublerParent = jublerParent;
     }
 }//end class
+

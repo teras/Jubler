@@ -145,7 +145,7 @@ public class Jubler extends JFrame implements CommonDef{
     /* This object is public, since it's needed by JSubEditor to attach itself into this panel */
     private JSubPreview preview;
     /* The panel which displays the editor for a subtitle */
-    public JSubEditor subeditor;
+    private JSubEditor subeditor;
     /* The following pointer points to the connected jubler window
      * (used for translating) */
     private Jubler connect_to_other;
@@ -3141,4 +3141,8 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
             OptNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
         }
     }//private void gotoLine()
+
+    public JSubEditor getSubeditor() {
+        return subeditor;
+    }
 }//end public class Jubler extends JFrame
