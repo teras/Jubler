@@ -194,33 +194,6 @@ public class Share implements CommonDef {
     }
 
     /**
-     * Find a character from the end of the string. Search backward.
-     * @param s The string to find the character
-     * @param find_char The character to find
-     * @return index of the found character, or {@link Share#INVALID_INDEX}
-     * if not found.
-     */
-    public static int findCharFromEnd(String s, char find_char) {
-
-        if (isEmpty(s)) {
-            return Share.INVALID_INDEX;
-        }
-
-        int find_index = Share.INVALID_INDEX;
-        char[] char_list = s.toCharArray();
-        int len = char_list.length;
-        for (int i = len - 1; i >= 0; i--) {
-            char found_char = char_list[i];
-            boolean is_found = (found_char == find_char);
-            if (is_found) {
-                find_index = i;
-                break;
-            }//end if
-        }//end for
-        return find_index;
-    }
-
-    /**
      * Test to see if a string has a trailing dot (.) character.
      * @param s The string to be examined.
      * @return true if the string has a trailing dot character, false otherwise.
@@ -230,7 +203,7 @@ public class Share implements CommonDef {
             return false;
         }
 
-        int dot_index = findCharFromEnd(s, '.');
+        int dot_index = s.lastIndexOf('.');
         boolean is_found = (dot_index >= 0);
         return is_found;
     }
@@ -248,7 +221,7 @@ public class Share implements CommonDef {
         }
 
         String file_name = f.getName();
-        int dot_position = findCharFromEnd(file_name, '.');
+        int dot_position = file_name.lastIndexOf('.');
         boolean has_dot = (dot_position >= 0);
         if (has_dot) {
             int from_index = dot_position + (with_dot ? 0 : 1);
@@ -266,6 +239,35 @@ public class Share implements CommonDef {
     public static String getFileExtension(File f) {
         return getFileExtension(f, true);
     }
+    
+    public static File patchFileExtension(File f, String extension){
+        String new_file_name = null;
+        try{
+            String path = f.getParent();    
+            int ext_dot_pos = extension.indexOf(char_dot);
+            String file_name = f.getName();
+            int file_name_dot_pos = file_name.lastIndexOf(char_dot);
+             
+            boolean extension_has_dot = (ext_dot_pos >= 0);
+            boolean file_name_has_dot = (file_name_dot_pos >= 0);
+                        
+            if (extension_has_dot && file_name_has_dot){
+                new_file_name = file_name.substring(0, file_name_dot_pos);
+                new_file_name = new_file_name.concat(extension);
+            }else if (!extension_has_dot && file_name_has_dot){
+                new_file_name = file_name.substring(0, file_name_dot_pos);
+                new_file_name = new_file_name.concat(char_dot).concat(extension);                
+            }else if (extension_has_dot && !file_name_has_dot){
+                new_file_name = file_name.concat(extension);
+            }else if (!extension_has_dot && !file_name_has_dot){
+                new_file_name = file_name.concat(char_dot).concat(extension);                
+            }
+            return new File(path, new_file_name);            
+        }catch(Exception ex){
+            return f;
+        }
+    }//end public static patchFileExtension(File f, String extension)
+    
     public static String search_file_extension = "";
     public static Component parent = null;
     private static JFileChooser jfc = null;

@@ -97,8 +97,8 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
     private File getInputFile() {
         SimpleFileFilter son_filter =
                 new SimpleFileFilter(
-                DVDMaestro.sonExtension,
-                DVDMaestro.sonExtendedName);
+                DVDMaestro.sonExtendedName,
+                DVDMaestro.sonExtension);
 
         filedialog = new JFileChooser();
         filedialog.setMultiSelectionEnabled(false);

@@ -15,12 +15,15 @@
  */
 package com.panayotis.jubler.tools.ocr;
 
+import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.tools.JImage;
 import com.sun.media.imageio.plugins.tiff.TIFFImageWriteParam;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Vector;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -29,6 +32,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -36,9 +40,9 @@ import javax.imageio.stream.ImageOutputStream;
  */
 public class JImageIOHelper {
 
-    final static String OUTPUT_FILE_NAME = "TessTempFile";
-    final static String TIFF_EXT = ".tif";
-    final static String TIFF_FORMAT = "tiff";
+    private final static String OUTPUT_FILE_NAME = "TessTempFile";
+    public final static String TIFF_EXT = ".tif";
+    public final static String TIFF_FORMAT = "tiff";
 
     public static ArrayList<File> createImageFile(BufferedImage source) throws Exception {
         ImageOutputStream ios = null;
@@ -79,7 +83,6 @@ public class JImageIOHelper {
         }
         return tempImageFiles;
     }//end public static ArrayList<File> createImageFiles(BufferedImage) throws Exception 
-
     public static ArrayList<File> createImageFiles(File imageFile, int index) throws Exception {
         ArrayList<File> tempImageFiles = new ArrayList<File>();
 
@@ -135,6 +138,119 @@ public class JImageIOHelper {
         return tempImageFiles;
     }
 
+    /**
+     * This method takes an array-list of images and an output file. It writes
+     * all images in the sequence ordered by the array-list provided. Each 
+     * image is converted to B/W before writing out to external tiff file. Note
+     * the file must containt a valid extension. The result is a multi-paged
+     * tiff file, which contains all images given.
+     * @param imageList The list of icon images to write
+     * @param output_file The multi-page tiff output file.
+     */
+    public static void createPackedTiff(ArrayList<ImageIcon> imageList, File output_file) {
+        ImageOutputStream ios = null;
+        ImageWriter writer = null;
+        try {
+            //Set up the writeParam
+            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+            
+            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
+
+            //Get tif writer and set output to file
+            Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+            writer = (ImageWriter) writers.next();
+
+
+            //Get the stream metadata
+            IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
+            ios = ImageIO.createImageOutputStream(output_file);
+            writer.setOutput(ios);
+            writer.prepareWriteSequence(streamMetadata);
+
+            for (ImageIcon image : imageList) {
+
+                BufferedImage b_img = JImage.bwConversion(image);
+                IIOImage iio_img = new IIOImage(b_img, null, null);
+                writer.writeToSequence(iio_img, tiffWriteParam);
+            }//end for for (ImageIcon image : imageList)
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                if (ios != null) {
+                    ios.close();
+                }
+                if (writer != null) {
+                    writer.dispose();
+                }
+            } catch (Exception ex) {
+            }
+        }
+    }//end public static boolean createImageFiles(ArrayList<ImageIcon> imageList, File output_file) throws Exception
+    public static void createPackedTiff(File[] imageFileList, File output_file) {
+        ImageReader reader = null;
+        ImageInputStream iis = null;
+        ImageOutputStream ios = null;
+        ImageWriter writer = null;
+        IIOImage iio_img = null;
+        try {
+
+            //Set up the writeParam
+            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+
+            //Get tif writer and set output to file
+            Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+            writer = (ImageWriter) writers.next();
+
+
+            //Get the stream metadata
+            IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
+            ios = ImageIO.createImageOutputStream(output_file);
+            writer.setOutput(ios);
+            writer.prepareWriteSequence(streamMetadata);
+
+            for (File imageFile : imageFileList) {
+
+                String imageFileName = imageFile.getName();
+                String imageFormat = imageFileName.substring(imageFileName.lastIndexOf('.') + 1);
+
+                Iterator readers = ImageIO.getImageReadersByFormatName(imageFormat);
+                reader = (ImageReader) readers.next();
+                if (reader == null) {
+                    System.out.println(_("No reader found. Unable to load image: {0}", imageFileName));
+                    continue;
+                }
+
+                iis = ImageIO.createImageInputStream(imageFile);
+                reader.setInput(iis);
+
+                BufferedImage bi = reader.read(0);
+                iio_img = new IIOImage(bi, null, null);
+                writer.writeToSequence(iio_img, tiffWriteParam);
+
+            }//end for for (ImageIcon image : imageList)
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                if (iis != null) {
+                    iis.close();
+                }
+                if (reader != null) {
+                    reader.dispose();
+                }
+
+                if (ios != null) {
+                    ios.close();
+                }
+                if (writer != null) {
+                    writer.dispose();
+                }
+            } catch (Exception ex) {
+            }
+        }
+    }//end public static boolean createImageFiles(ArrayList<ImageIcon> imageList, File output_file) throws Exception
     public static ArrayList<File> createImageFiles(ArrayList<IIOImage> imageList, int index) throws Exception {
         ArrayList<File> tempImageFiles = new ArrayList<File>();
 
@@ -210,7 +326,7 @@ public class JImageIOHelper {
                     reader.dispose();
                 }
             } catch (Exception e) {
-                // ignore
+            // ignore
             }
         }
     }
@@ -221,7 +337,6 @@ public class JImageIOHelper {
     for (IIOImage iioImage : iioImageList) {
     al.add(new ImageIconScalable((BufferedImage) iioImage.getRenderedImage()));
     }
-    
     return al;
     } catch (Exception e) {
     return null;

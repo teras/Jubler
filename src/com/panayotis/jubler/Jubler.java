@@ -82,6 +82,8 @@ import com.panayotis.jubler.tools.editing.EditPaste;
 import com.panayotis.jubler.tools.editing.InsertBlankLine;
 import com.panayotis.jubler.tools.editing.MoveText;
 import com.panayotis.jubler.tools.ocr.OCRAction;
+import com.panayotis.jubler.tools.ocr.PackingImageFilesToTiffAction;
+import com.panayotis.jubler.tools.ocr.PackingImagesToTiffAction;
 import com.panayotis.jubler.tools.records.AppendFromFile;
 import com.panayotis.jubler.tools.records.ImportComponent;
 import com.panayotis.jubler.tools.records.MergeRecords;
@@ -92,8 +94,6 @@ import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
 import java.awt.Color;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -115,7 +115,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton.ToggleButtonModel;
-import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -202,6 +201,8 @@ public class Jubler extends JFrame implements CommonDef{
     private EditPaste editPaste = new EditPaste(this);
     private OCRAction ocrAction = new OCRAction(this);
     private SplitSONSubtitleAction splitSONSubtitleAction = new SplitSONSubtitleAction(this);
+    private PackingImagesToTiffAction packingImagesToTiffAction = new PackingImagesToTiffAction(this);
+    private PackingImageFilesToTiffAction packingImageFilesToTiffAction = new PackingImageFilesToTiffAction(this);
     
     static {
         windows = new JublerList();
@@ -260,6 +261,8 @@ public class Jubler extends JFrame implements CommonDef{
         ocrAction.setTessPath(USER_CURRENT_DIR + "tesseract"  + FILE_SEP);
         
         SplitSONSubtitleFile.addActionListener(splitSONSubtitleAction);
+        PackingImagesToTiffM.addActionListener(packingImagesToTiffAction);
+        PackingImageFilesToTiffFM.addActionListener(packingImageFilesToTiffAction);
         
         /**
          * This is to make sure that the combo-box index matches the currently
@@ -517,6 +520,7 @@ public class Jubler extends JFrame implements CommonDef{
         ImportComponentFM = new javax.swing.JMenuItem();
         AppendFromFileFM = new javax.swing.JMenuItem();
         SplitSONSubtitleFile = new javax.swing.JMenuItem();
+        PackingImageFilesToTiffFM = new javax.swing.JMenuItem();
         jSeparator21 = new javax.swing.JSeparator();
         QuitFM = new javax.swing.JMenuItem();
         EditM = new javax.swing.JMenu();
@@ -602,6 +606,7 @@ public class Jubler extends JFrame implements CommonDef{
         OCRTM = new javax.swing.JMenu();
         OCRSelected = new javax.swing.JMenuItem();
         OCRAll = new javax.swing.JMenuItem();
+        PackingImagesToTiffM = new javax.swing.JMenuItem();
         HelpM = new javax.swing.JMenu();
         FAQHM = new javax.swing.JMenuItem();
         AboutHM = new javax.swing.JMenuItem();
@@ -996,6 +1001,10 @@ public class Jubler extends JFrame implements CommonDef{
         SplitSONSubtitleFile.setText(_("Split SON Subtitle File"));
         SplitSONSubtitleFile.setName("TDS"); // NOI18N
         FileM.add(SplitSONSubtitleFile);
+
+        PackingImageFilesToTiffFM.setText(_("Packing image files to TIFF"));
+        PackingImageFilesToTiffFM.setName("FPT"); // NOI18N
+        FileM.add(PackingImageFilesToTiffFM);
         FileM.add(jSeparator21);
 
         QuitFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
@@ -1387,6 +1396,11 @@ public class Jubler extends JFrame implements CommonDef{
         OCRAll.addActionListener(formListener);
         OCRTM.add(OCRAll);
 
+        PackingImagesToTiffM.setText(_("Images to Tiff"));
+        PackingImagesToTiffM.setName("TOT"); // NOI18N
+        PackingImagesToTiffM.addActionListener(formListener);
+        OCRTM.add(PackingImagesToTiffM);
+
         ToolsM.add(OCRTM);
 
         JublerMenuBar.add(ToolsM);
@@ -1673,6 +1687,9 @@ public class Jubler extends JFrame implements CommonDef{
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == PackingImagesToTiffM) {
+                Jubler.this.PackingImagesToTiffMActionPerformed(evt);
             }
         }
 
@@ -2345,6 +2362,10 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     ocrAction.actionPerformed(evt);
 }//GEN-LAST:event_OCRAllActionPerformed
 
+private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PackingImagesToTiffMActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_PackingImagesToTiffMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2412,6 +2433,8 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     private javax.swing.JMenuItem OpenFM;
     private javax.swing.JComboBox OptNumberOfLine;
     private javax.swing.JComboBox OptTextLineActList;
+    private javax.swing.JMenuItem PackingImageFilesToTiffFM;
+    private javax.swing.JMenuItem PackingImagesToTiffM;
     private javax.swing.JMenuItem PasteEM;
     private javax.swing.JMenuItem PasteP;
     private javax.swing.JMenuItem PasteSpecialEM;
