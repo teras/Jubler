@@ -1830,6 +1830,7 @@ public class Jubler extends JFrame implements CommonDef{
 
     private void StepwiseREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepwiseREMActionPerformed
         JReplace replace = new JReplace(this, SubTable.getSelectedRow(), undo);
+        replace.setFindText(subeditor.getSelectedText());
         replace.setVisible(true);
     }//GEN-LAST:event_StepwiseREMActionPerformed
 

@@ -79,10 +79,14 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
      * The default text width of 480
      */
     public static final int DEFAULT_TEXT_WIDTH = 480;
+    public static final int MINIMUM_TEXT_WIDTH = 100;
+    public static final int MAXIMUM_TEXT_WIDTH = 720;
+    
     private boolean actionOnAllData = false;
     private String action_name = _("Balance text");
-    protected Jubler jublerParent = null;
-
+    private Jubler jublerParent = null;
+    private int textWidth = DEFAULT_TEXT_WIDTH;
+    
     public BalanceText() {
         setText(action_name);
         setName(action_name);
@@ -168,7 +172,7 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
             int start_index = 0;
             Vector<String> text_list = new Vector<String>();
             while (line_measurer.getPosition() < text_len) {
-                TextLayout layout = line_measurer.nextLayout(DEFAULT_TEXT_WIDTH);
+                TextLayout layout = line_measurer.nextLayout(textWidth);
                 int num_char = layout.getCharacterCount();
                 int end_index = Math.max(0, Math.min(start_index + num_char, text_len));
                 int len = (end_index - start_index);
@@ -264,11 +268,13 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
             Subtitles subs = jublerParent.getSubtitles();
             jublerParent.getUndoList().addUndo(new UndoEntry(subs, action_name));
 
+            Vector<SubEntry> affect_list = new Vector<SubEntry>();
             if (isActionOnAllData()) {
                 int len = subs.size();
                 for (int i = 0; i < len; i++) {
                     SubEntry r = (SubEntry) subs.elementAt(i);
                     balanceText(r);
+                    affect_list.add(r);
                 }//end for
 
             } else {
@@ -279,11 +285,13 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
                     int row = selected_rows[i];
                     SubEntry r = (SubEntry) subs.elementAt(row);
                     balanceText(r);
+                    affect_list.add(r);
                 }//end for                
 
             }//end if (this.isActionOnAllData())/else
 
-            jublerParent.tableHasChanged(null);
+            SubEntry[] changed_list = affect_list.toArray(new SubEntry[ affect_list.size()]);
+            jublerParent.tableHasChanged(changed_list);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }//end try/catch
@@ -302,5 +310,21 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
      */
     public void setActionOnAllData(boolean actionOnAllData) {
         this.actionOnAllData = actionOnAllData;
+    }
+
+    public int getTextWidth() {
+        return textWidth;
+    }
+
+    public void setTextWidth(int textWidth) {
+        this.textWidth = textWidth;
+    }
+
+    public Jubler getJublerParent() {
+        return jublerParent;
+    }
+
+    public void setJublerParent(Jubler jublerParent) {
+        this.jublerParent = jublerParent;
     }
 }//end class

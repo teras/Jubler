@@ -35,10 +35,12 @@ import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
+import com.panayotis.jubler.tools.editing.BalanceText;
 import com.panayotis.jubler.undo.UndoEntry;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -81,11 +83,22 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     
     /* Remember where this is attached to */
     private boolean is_attached = false;
-    
-    
+    private boolean isBalancingText = false;
+    private BalanceText balance_text_action = null;
     /** Creates new form JSubEditor */
     public JSubEditor(Jubler parent) {
         initComponents();
+        TextBalancingSlider.setVisible(isBalancingText);
+        TextBalancingB.setSelected(isBalancingText);
+        TextBalancingSlider.setMinimum(BalanceText.MINIMUM_TEXT_WIDTH);
+        TextBalancingSlider.setMaximum(BalanceText.MAXIMUM_TEXT_WIDTH);
+        TextBalancingSlider.setValue(BalanceText.DEFAULT_TEXT_WIDTH);
+        int max_jump = BalanceText.MINIMUM_TEXT_WIDTH /10;
+        int min_jump = BalanceText.MINIMUM_TEXT_WIDTH /100;
+        TextBalancingSlider.setMajorTickSpacing( max_jump );
+        TextBalancingSlider.setMinorTickSpacing( min_jump );
+        //TextBalancingSlider.setPaintTicks(true);
+        //TextBalancingSlider.setPaintLabels(true);
         
         SubStart = new JTimeSpinner();
         SubFinish = new JTimeSpinner();
@@ -248,6 +261,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         SubText.setEnabled(enabled);
         EditB.setEnabled(enabled);
         setStyleListEnabled(enabled);
+        TextBalancingB.setEnabled(enabled);
         
         L1.setEnabled(enabled);
         L2.setEnabled(enabled);
@@ -362,6 +376,9 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel2 = new javax.swing.JPanel();
         TrashB = new javax.swing.JButton();
         ShowStyleB = new javax.swing.JToggleButton();
+        TextBalancingPanel = new javax.swing.JPanel();
+        TextBalancingB = new javax.swing.JToggleButton();
+        TextBalancingSlider = new javax.swing.JSlider();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -438,7 +455,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
         SubText.setFont(new java.awt.Font("Dialog", 1, 14));
         SubText.setToolTipText(_("Editor of the subtitle text"));
-        SubText.setPreferredSize(new java.awt.Dimension(200, 30));
+        SubText.setPreferredSize(new java.awt.Dimension(0, 30));
         SubText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 SubTextCaretUpdate(evt);
@@ -562,6 +579,28 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel7.add(jPanel2);
 
+        TextBalancingPanel.setLayout(new javax.swing.BoxLayout(TextBalancingPanel, javax.swing.BoxLayout.LINE_AXIS));
+
+        TextBalancingB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/textbalance.png"))); // NOI18N
+        TextBalancingB.setToolTipText(_("Enable/Disable text balancing"));
+        TextBalancingB.setEnabled(false);
+        TextBalancingB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextBalancingBActionPerformed(evt);
+            }
+        });
+        TextBalancingPanel.add(TextBalancingB);
+
+        TextBalancingSlider.setToolTipText(_("Change slider to alter text's width"));
+        TextBalancingSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                TextBalancingSliderStateChanged(evt);
+            }
+        });
+        TextBalancingPanel.add(TextBalancingSlider);
+
+        jPanel7.add(TextBalancingPanel);
+
         StyleP.add(jPanel7, java.awt.BorderLayout.WEST);
 
         add(StyleP, java.awt.BorderLayout.SOUTH);
@@ -669,6 +708,30 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private void Lock1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Lock1ActionPerformed
         lockTimeSpinners(true);
     }//GEN-LAST:event_Lock1ActionPerformed
+
+    private void TextBalancingBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextBalancingBActionPerformed
+        isBalancingText = TextBalancingB.isSelected();
+        TextBalancingSlider.setVisible(isBalancingText);
+    }//GEN-LAST:event_TextBalancingBActionPerformed
+
+    private void TextBalancingSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TextBalancingSliderStateChanged
+        if (! isBalancingText)
+            return;
+        
+        int text_width_value = TextBalancingSlider.getValue();
+        if (Share.isEmpty(balance_text_action)){
+            balance_text_action = new BalanceText();
+        }//end if (Share.isEmpty(balance_text_action))
+        
+        balance_text_action.setActionOnAllData(false);
+        balance_text_action.setJublerParent(parent);
+        balance_text_action.setTextWidth(text_width_value);
+        balance_text_action.actionPerformed(
+                new ActionEvent(this, 
+                ActionEvent.ACTION_PERFORMED, 
+                "Text Balancing"));
+        
+    }//GEN-LAST:event_TextBalancingSliderStateChanged
     
     
     public void changeStyle(StyleType type, Object value) {
@@ -702,6 +765,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         // We don't care for these events - we have our own!
     }
     
+    public String getSelectedText(){
+        return SubText.getSelectedText();
+    }//end public String getSelectedText()
+    
     Thread stylethread = new Thread() {
         public void run() {
             showStyle();
@@ -730,6 +797,9 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JComboBox StyleListC;
     private javax.swing.JPanel StyleP;
     private javax.swing.JTextPane SubText;
+    private javax.swing.JToggleButton TextBalancingB;
+    private javax.swing.JPanel TextBalancingPanel;
+    private javax.swing.JSlider TextBalancingSlider;
     private javax.swing.JToggleButton TimeB;
     private javax.swing.ButtonGroup TimeLock;
     private javax.swing.JPanel TimeP;

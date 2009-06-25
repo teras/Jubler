@@ -49,6 +49,11 @@ public class JReplace extends javax.swing.JDialog {
         FindT.requestFocusInWindow();
     }
     
+    public void setFindText(String find_text){
+        if (find_text != null){
+            this.FindT.setText(find_text);
+        }//end if (find_text != null)
+    }//end public void setFindText(String find_text)
     
     public void findNextWord() {
         String what, inwhich;
