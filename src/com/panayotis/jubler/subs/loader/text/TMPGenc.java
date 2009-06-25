@@ -300,8 +300,9 @@ public class TMPGenc extends AbstractBinarySubFormat implements
      * @return newly converted subtitle vector
      */
     public Subtitles convert(Subtitles current_subs) {
-        current_subs.convert(TMPGencSubtitleRecord.class);
-        return current_subs;
+        Subtitles convert_subs = new Subtitles(current_subs);
+        convert_subs.convert(TMPGencSubtitleRecord.class);
+        return convert_subs;
     }//public Subtitles convert(Subtitles current_subs)
 
     /**

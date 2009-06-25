@@ -243,8 +243,8 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
 
     @Override
     public Subtitles convert(Subtitles current_subs) {
-        init();
-        current_subs.convert(SWTSubEntry.class);
-        return current_subs;
+        Subtitles convert_subs = new Subtitles(current_subs);
+        convert_subs.convert(SWTSubEntry.class);
+        return convert_subs;
     }
 }

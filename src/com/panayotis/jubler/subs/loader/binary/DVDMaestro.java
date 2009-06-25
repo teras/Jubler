@@ -353,9 +353,9 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
      * @return newly converted subtitle vector
      */
     public Subtitles convert(Subtitles current_subs) {
-        init();
-        current_subs.convert(SonSubEntry.class);
-        return current_subs;
+        Subtitles convert_subs = new Subtitles(current_subs);
+        convert_subs.convert(SonSubEntry.class);
+        return convert_subs;
     }
 
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {

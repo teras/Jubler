@@ -22,10 +22,8 @@
  */
 package com.panayotis.jubler.subs;
 
-import com.panayotis.jubler.os.DEBUG;
 import java.awt.Color;
 import java.awt.Component;
-import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -37,7 +35,7 @@ import javax.swing.table.TableCellRenderer;
  */
 //public class SubRenderer extends DefaultTableCellRenderer {
 public class SubRenderer extends JLabel implements TableCellRenderer {
-    public static final int DEFAULT_ROW_HEIGHT = 20; //originally 16
+    public static final int DEFAULT_ROW_HEIGHT = 16;
     private int table_row_height,  image_row_height;
 
     public SubRenderer() {
@@ -50,9 +48,6 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
         SubEntry entry;
 
         setEnabled(table == null || table.isEnabled()); // Always do that
-
-        //super.getTableCellRendererComponent(table, value, selected, focused, row, column);
-
         if (selected) {
             setBackground(table.getSelectionBackground());
             setForeground(table.getSelectionForeground());
@@ -79,7 +74,7 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
             this.image_row_height = img.getIconHeight();
             boolean is_taller = (table_row_height < image_row_height);
             if (is_taller) {
-                table.setRowHeight(row, image_row_height);
+                table.setRowHeight(image_row_height);
                 table.repaint();
             }//end if
         } else {
@@ -88,9 +83,6 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
                 String s_value = (String) value;
                 setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
                 setText(s_value);
-                //int row_height = table.getRowHeight();
-                //DEBUG.logger.log(Level.INFO, "row_height: " + row_height);
-                table.setRowHeight(row, DEFAULT_ROW_HEIGHT);
             }//end if
         }//end if
 
