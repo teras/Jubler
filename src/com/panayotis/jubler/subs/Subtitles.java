@@ -529,29 +529,37 @@ public class Subtitles extends AbstractTableModel {
      */
     public boolean convert(Class target_class) {
         HeaderedTypeSubtitle target_hdr_sub = null;
-        
+
         /**
          * Global header object for all records.
          */
         Object header = null;
         try {
-            SubEntry src_entry = elementAt(0);
-            String current_class_name = (src_entry.getClass().getName());
-            String target_class_name = target_class.getName();
-            boolean is_same = (current_class_name.equals(target_class_name));
-            if (is_same) {
-                return true;
-            }
-
+            SubEntry src_entry = null;
+            boolean is_saved_for_undo = false;
             String action_name = _("Convert records");
-            jubler.getUndoList().addUndo(new UndoEntry(this, action_name));
             for (int i = 0; i < size(); i++) {
                 target_hdr_sub = null;
-
-                /**
-                 * Get the current entry and treat as the source of copying action
-                 */
+                //get the current entry
                 src_entry = elementAt(i);
+
+                //compare class names, if match then don't do the conversion
+                //else do the conversion.
+                String current_class_name = (src_entry.getClass().getName());
+                String target_class_name = target_class.getName();
+                boolean is_same = (current_class_name.equals(target_class_name));
+                if (is_same) {
+                    continue;
+                }//end if (is_same)
+
+                //check to see if the list is saved for undo or not.
+                //if not saved, else ignore. Put it here so the undo list is
+                //only created when there are changes.
+                if (!is_saved_for_undo) {
+                    jubler.getUndoList().addUndo(new UndoEntry(this, action_name));
+                    is_saved_for_undo = true;
+                }//end if is_saved_for_undo
+
                 /**
                  * Create a new instance of the target using its class name.
                  */
@@ -574,7 +582,7 @@ public class Subtitles extends AbstractTableModel {
                 if (target_hdr_sub != null) {
                     target_hdr_sub.setHeader(header);
                 }//end if
-                
+
                 /**
                  * now performs the copying of the source record to target.
                  */
@@ -593,7 +601,6 @@ public class Subtitles extends AbstractTableModel {
             return false;
         }
     }//end public void convert(Class tagert_class)
-
     public Jubler getJubler() {
         return jubler;
     }
