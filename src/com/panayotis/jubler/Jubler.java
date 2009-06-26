@@ -256,7 +256,7 @@ public class Jubler extends JFrame implements CommonDef{
         PasteTB.addActionListener(editPaste);
         PasteEM.addActionListener(editPaste);
         PasteP.addActionListener(editPaste);
-        
+
         ocrAction.setLanguage("eng");
         ocrAction.setTessPath(USER_CURRENT_DIR + "tesseract"  + FILE_SEP);
         

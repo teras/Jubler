@@ -39,7 +39,6 @@ import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
@@ -66,6 +65,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
     private String language;
     private String tessPath;
     private boolean ocrAllList = false;
+    private boolean usingOriginalImage = false;
     private JTable subTable = null;
     private Subtitles subs = null;
     private int len = 0;
@@ -112,7 +112,6 @@ public class OCRAction extends JMenuItem implements ActionListener {
                     int row;
                     SubEntry sub;
                     ImageTypeSubtitle img_sub;
-                    File[] file_list;
                     ImageIcon image = null;
 
                     ProgressBar pb = new ProgressBar();
@@ -148,19 +147,18 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             pb.setTitle(msg);
                             pb.setValue(i);
 
-                            /**
-                             * Convert to B/W image to obtain better OCR result.
-                             */
-                            BufferedImage bw_image = JImage.bwConversion(img_sub.getImage());
-
-                            final ArrayList<File> image_file_list =
-                                    JImageIOHelper.createImageFile(
-                                    bw_image);
-
-                            file_list = image_file_list.toArray(new File[image_file_list.size()]);
-
-                            JOCR ocrEngine = new JOCR(tessPath);
-                            String result = ocrEngine.recognizeText(file_list, language);                            
+                            File imageFile = null;
+                            String result = null;
+                            
+                            JOCR ocrEngine = new JOCR(tessPath);                            
+                            if (usingOriginalImage){
+                                imageFile = img_sub.getImageFile();
+                                result = ocrEngine.ocrUsingOriginalImage(imageFile, language);
+                            }else{
+                                imageFile = JImage.bwConversionToBMPTempFile(image);
+                                result = ocrEngine.ocrUsingTempFile(imageFile, language);
+                            }//end if
+                                                        
                             sub.setText(result.trim());
                             subs.fireTableRowsUpdated(row, row);
                             
@@ -205,5 +203,13 @@ public class OCRAction extends JMenuItem implements ActionListener {
 
     public void setOcrAllList(boolean ocrAllList) {
         this.ocrAllList = ocrAllList;
+    }
+
+    public boolean isUsingOriginalImage() {
+        return usingOriginalImage;
+    }
+
+    public void setUsingOriginalImage(boolean usingOriginalImage) {
+        this.usingOriginalImage = usingOriginalImage;
     }
 }//end public class OCRAction extends JMenuItem implements ActionListener 

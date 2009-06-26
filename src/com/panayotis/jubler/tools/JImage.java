@@ -282,6 +282,19 @@ public class JImage implements CommonDef {
             return null;
         }
     }//public static ImageIcon readImage(File f)
+    
+    public static File bwConversionToBMPTempFile(ImageIcon source) {
+        String img_ext = "bmp";
+        try{
+            BufferedImage bw_img = bwConversion(source);
+            File tempFile = File.createTempFile("JublerTempImg", char_dot + img_ext);
+            writeImage(bw_img, tempFile, img_ext);
+            return tempFile;
+        }catch(Exception ex){
+            return null;
+        }
+    }//end public static File bwConversionToTempFile(ImageIcon source) 
+    
     public static BufferedImage bwConversion(ImageIcon source) {
         BufferedImage new_image = null;
         int w, h;

@@ -15,6 +15,7 @@
  */
 package com.panayotis.jubler.tools.ocr;
 
+import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.tools.JImage;
 import com.sun.media.imageio.plugins.tiff.TIFFImageWriteParam;
@@ -23,7 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Vector;
+import java.util.logging.Level;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -51,7 +52,8 @@ public class JImageIOHelper {
         ArrayList<File> tempImageFiles = new ArrayList<File>();
         try {
             //Set up the writeParam
-            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.getDefault());
+            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+            DEBUG.logger.log(Level.INFO, tiffWriteParam.toString());
             tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
 
             //Get tif writer and set output to file

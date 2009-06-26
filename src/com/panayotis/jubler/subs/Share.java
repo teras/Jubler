@@ -232,6 +232,26 @@ public class Share implements CommonDef {
     }
 
     /**
+     * Get the file-name out of the original file, but remove the extension.
+     * @param f The file where the name is extracted from.
+     * @return The file-name without the extension if it has any, null if there
+     * are errors.
+     */
+    public static String getFileNameWithoutExtension(File f) {
+        try {
+            String file_name = f.getPath();
+            int dot_pos = file_name.lastIndexOf(char_dot);
+            if (dot_pos >= 0) {
+                String name_without_ext = file_name.substring(0, dot_pos);
+                return name_without_ext;
+            } else {
+                return file_name;
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }//end private String getFileNameWithoutExtension(File name)
+    /**
      * Get file's extension with a dot '.' leading.
      * @param f {@link File} to be extracted.
      * @return A string represent the file's extension with a leading dot character(.), if there is one. Null otherwise.
@@ -239,35 +259,34 @@ public class Share implements CommonDef {
     public static String getFileExtension(File f) {
         return getFileExtension(f, true);
     }
-    
-    public static File patchFileExtension(File f, String extension){
+
+    public static File patchFileExtension(File f, String extension) {
         String new_file_name = null;
-        try{
-            String path = f.getParent();    
+        try {
+            String path = f.getParent();
             int ext_dot_pos = extension.indexOf(char_dot);
             String file_name = f.getName();
             int file_name_dot_pos = file_name.lastIndexOf(char_dot);
-             
+
             boolean extension_has_dot = (ext_dot_pos >= 0);
             boolean file_name_has_dot = (file_name_dot_pos >= 0);
-                        
-            if (extension_has_dot && file_name_has_dot){
+
+            if (extension_has_dot && file_name_has_dot) {
                 new_file_name = file_name.substring(0, file_name_dot_pos);
                 new_file_name = new_file_name.concat(extension);
-            }else if (!extension_has_dot && file_name_has_dot){
+            } else if (!extension_has_dot && file_name_has_dot) {
                 new_file_name = file_name.substring(0, file_name_dot_pos);
-                new_file_name = new_file_name.concat(char_dot).concat(extension);                
-            }else if (extension_has_dot && !file_name_has_dot){
+                new_file_name = new_file_name.concat(char_dot).concat(extension);
+            } else if (extension_has_dot && !file_name_has_dot) {
                 new_file_name = file_name.concat(extension);
-            }else if (!extension_has_dot && !file_name_has_dot){
-                new_file_name = file_name.concat(char_dot).concat(extension);                
+            } else if (!extension_has_dot && !file_name_has_dot) {
+                new_file_name = file_name.concat(char_dot).concat(extension);
             }
-            return new File(path, new_file_name);            
-        }catch(Exception ex){
+            return new File(path, new_file_name);
+        } catch (Exception ex) {
             return f;
         }
     }//end public static patchFileExtension(File f, String extension)
-    
     public static String search_file_extension = "";
     public static Component parent = null;
     private static JFileChooser jfc = null;
@@ -278,7 +297,8 @@ public class Share implements CommonDef {
             File search_file = new File(start_directory, file_name);
             search_file_extension = Share.getFileExtension(search_file);
 
-            jfc = new  JFileChooser( ) { 
+            jfc = new JFileChooser() {
+
                 public boolean accept(File f) {
                     try {
                         if (f.isDirectory()) {
@@ -308,7 +328,6 @@ public class Share implements CommonDef {
         }
         return accepted_file;
     }//end public static File browseFile(String file_name, File start_directory)
-
     public static File[] browseDir(File start_directory) {
         File f = null;
         File[] accepted_file = null;
@@ -326,7 +345,6 @@ public class Share implements CommonDef {
         }
         return accepted_file;
     }//end public static File browseFile(String file_name, File start_directory)
-
     public static int fileCount(File start_directory) throws Exception {
         return start_directory.list().length;
     }
@@ -346,7 +364,6 @@ public class Share implements CommonDef {
             return 0;
         }
     }//end public static int wordCount(String text_line)
-
     /**
      * Checks to see if a string of text only contains a single word or not.
      * @param txt The string of text to be examined.
@@ -357,6 +374,5 @@ public class Share implements CommonDef {
         boolean is_one_word = (count == 1);
         return is_one_word;
     }//end public static boolean isOneWord(String txt)
-    
 }//end Share
 
