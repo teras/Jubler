@@ -395,7 +395,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
             }
         };
 
-        WriteSonSubtitle writer = new WriteSonSubtitle(this, convert_list, moptions, outfile, dir, FPS, ENCODING);
+        WriteSonSubtitle writer = new WriteSonSubtitle(convert_list, moptions, outfile, dir, FPS, ENCODING);
         writer.setSubList(given_subs);
         writer.addSubtitleRecordUpdatedEventListener(updated);
         writer.start();
