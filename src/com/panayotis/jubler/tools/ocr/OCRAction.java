@@ -70,7 +70,8 @@ public class OCRAction extends JMenuItem implements ActionListener {
     private Subtitles subs = null;
     private int len = 0;
     private int row_count = 0;
-
+    private int selected_row = -1;
+    
     public OCRAction() {
         setText(action_name);
         setName(action_name);
@@ -89,6 +90,8 @@ public class OCRAction extends JMenuItem implements ActionListener {
             row_count = subTable.getSelectedRowCount();
             len = (isOcrAllList() ? subs.size() : row_count);
 
+            selected_row = subTable.getSelectedRow();
+            
             LanguageSelection lang_sel = LanguageSelection.getInstance();
 
             lang_sel.setJubler(jublerParent);
@@ -157,10 +160,14 @@ public class OCRAction extends JMenuItem implements ActionListener {
                             file_list = image_file_list.toArray(new File[image_file_list.size()]);
 
                             JOCR ocrEngine = new JOCR(tessPath);
-                            String result = ocrEngine.recognizeText(file_list, language);
+                            String result = ocrEngine.recognizeText(file_list, language);                            
                             sub.setText(result.trim());
-                        }//end for(int i=0; i < len; i++)
-                        jublerParent.tableHasChanged(null);
+                            subs.fireTableRowsUpdated(row, row);
+                            
+                            if (row == selected_row){
+                                jublerParent.getSubeditor().setData(sub);
+                            }//end if
+                        }//end for(int i=0; i < len; i++)                        
                     } catch (Exception e) {
                         e.printStackTrace(System.out);
                     } finally {

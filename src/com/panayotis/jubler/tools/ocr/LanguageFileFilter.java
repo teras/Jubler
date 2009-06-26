@@ -27,6 +27,8 @@
  */
 package com.panayotis.jubler.tools.ocr;
 
+import com.panayotis.jubler.subs.CommonDef;
+import com.panayotis.jubler.subs.Share;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -60,7 +62,7 @@ import java.util.Map;
  * the availableLanguageMap.
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
-public class LanguageFileFilter implements FilenameFilter {
+public class LanguageFileFilter implements FilenameFilter, CommonDef {
 
     private Map<String, String> availableLanguageMap = null;
 
@@ -81,13 +83,24 @@ public class LanguageFileFilter implements FilenameFilter {
             }
 
             String fname = pathname.getName().toLowerCase();
-            int dot = fname.indexOf(".");
+            int dot = fname.indexOf(char_dot);
+            boolean has_dot = (dot >= 0);
+            if (!has_dot) {
+                return false;
+            }
+
             String language_code = fname.substring(0, dot);
+            String language_name = LanguageSelection.languageMap.get(language_code);
+
+            if (Share.isEmpty(language_name)) {
+                return false;
+            }
+
             is_language_file = LanguageSelection.languageMap.containsKey(language_code);
             boolean is_there_already = is_language_file &&
-                    availableLanguageMap.containsKey(language_code);
+                    availableLanguageMap.containsKey(language_name);
+
             if (!is_there_already) {
-                String language_name = LanguageSelection.languageMap.get(language_code);
                 availableLanguageMap.put(language_name, language_code);
             }//end if (! is_there_already)            
         } catch (Exception ex) {
