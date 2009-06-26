@@ -66,7 +66,7 @@ public class TMPGencLayoutExDataItem extends SubtitlePatternProcessor implements
         try {
             LayoutDataExRecord r = (LayoutDataExRecord) record;
             r.centered = Integer.parseInt(matched_data[1]);
-            r.readingDirection = Integer.parseInt(matched_data[2]);
+            r.readingDirection = Integer.parseInt(matched_data[3]);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }

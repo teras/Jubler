@@ -95,23 +95,30 @@ public class MoveText extends JMenuItem implements ActionListener {
                 String text_line = entry.getText();
                 text_list.add(text_line);
                 entry.setText(new String());
+                subs.fireTableRowsUpdated(i, i);
             }//end for(int i= selected_line; i < subs.size(); i++)
 
+            
             /* now place the text lines to the target line, if the target
              * line is not there, ignore it.
              */
             for (int i = 0; i < text_list.size(); i++, target_line++) {
-                String text_line = text_list.elementAt(i);;
+                String text_line = text_list.elementAt(i);
+               
                 try {
-                    SubEntry entry = subs.elementAt(target_line);                    
+                    SubEntry entry = subs.elementAt(target_line);
                     entry.setText(text_line);
+                    subs.fireTableRowsUpdated(target_line, target_line);
+                    
+                    if (target_line == selected_line){
+                        jublerParent.getSubeditor().setData(entry);
+                    }//end if (i == selected_line)
                 } catch (Exception ex) {
                     System.out.println(_("Removed text: {0}", text_line));
                 }
+             
             }//end for(int i=0; i < text_list.size(); i++)
-
             jublerParent.tableHasChanged(null);
-
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }//end try/catch

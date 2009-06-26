@@ -115,21 +115,21 @@ public class TMPGencLayoutDataItem extends SubtitlePatternProcessor implements T
         try {
             LayoutDataItemRecord r = (LayoutDataItemRecord) record;
             r.setName(matched_data[1]);
-            r.setDisplayArea(Byte.parseByte(matched_data[2]));
-            r.setFontName(matched_data[3]);
-            r.setForntSize(Float.parseFloat(matched_data[4]));
-            r.setFontColour(Double.parseDouble(matched_data[5]));
+            r.setDisplayArea(Byte.parseByte(matched_data[3]));
+            r.setFontName(matched_data[5]);
+            r.setForntSize(Float.parseFloat(matched_data[7]));
+            r.setFontColour(Double.parseDouble(matched_data[9]));
 
-            r.setStyleBold(Byte.parseByte(matched_data[6]));
-            r.setStyleItalic(Byte.parseByte(matched_data[7]));
-            r.setStyleUnderScore(Byte.parseByte(matched_data[8]));
-            r.setStyleStrikeThrough(Byte.parseByte(matched_data[9]));
-            r.setAlignmentHorizontal(Byte.parseByte(matched_data[10]));
-            r.setAlignmentVertical(Byte.parseByte(matched_data[11]));
-            r.setTextRotation(Byte.parseByte(matched_data[12]));
-            r.setTextBorder(Byte.parseByte(matched_data[13]));
-            r.setBorderSize(Float.parseFloat(matched_data[14]));
-            r.setBorderColour(Long.parseLong(matched_data[15]));
+            r.setStyleBold(Byte.parseByte(matched_data[11]));
+            r.setStyleItalic(Byte.parseByte(matched_data[13]));
+            r.setStyleUnderScore(Byte.parseByte(matched_data[15]));
+            r.setStyleStrikeThrough(Byte.parseByte(matched_data[17]));
+            r.setAlignmentHorizontal(Byte.parseByte(matched_data[19]));
+            r.setAlignmentVertical(Byte.parseByte(matched_data[21]));
+            r.setTextRotation(Byte.parseByte(matched_data[23]));
+            r.setTextBorder(Byte.parseByte(matched_data[25]));
+            r.setBorderSize(Float.parseFloat(matched_data[27]));
+            r.setBorderColour(Long.parseLong(matched_data[29]));
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }

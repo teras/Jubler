@@ -76,12 +76,12 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
             int id = Integer.parseInt(matched_data[1]);
             r.setId(id);
 
-            int stream_id = Integer.parseInt(matched_data[2]);
+            int stream_id = Integer.parseInt(matched_data[3]);
             r.setEnabled(stream_id);
 
             Time start, finish;
-            start = new Time(matched_data[3], matched_data[4], matched_data[5], matched_data[6]);
-            finish = new Time(matched_data[7], matched_data[8], matched_data[9], matched_data[10]);
+            start = new Time(matched_data[5], matched_data[6], matched_data[7], matched_data[8]);
+            finish = new Time(matched_data[10], matched_data[11], matched_data[12], matched_data[13]);
 
             r.setStartTime(start);
             r.setFinishTime(finish);
