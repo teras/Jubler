@@ -85,7 +85,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
     public WriteSonSubtitle() {
     }
 
-    public WriteSonSubtitle(DVDMaestro parent, Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS, String encoding) {
+    public WriteSonSubtitle(Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS, String encoding) {
         this.moptions = moptions;
         this.outfile = outfile;
         this.dir = dir;
