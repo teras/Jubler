@@ -56,66 +56,6 @@ public class JImage implements CommonDef {
      * The black background colour in DVB-T subtitle blocks
      */
     public static Color DVBT_SUB_BLACK_BC = new Color(31, 31, 31);
-    private static boolean remindMissingImage = false;
-
-    public static boolean isRemindMissingImage() {
-        return remindMissingImage;
-    }
-
-    public static void setRemindMissingImage(boolean aRemindMissingImage) {
-        remindMissingImage = aRemindMissingImage;
-    }
-
-    /**
-     * Display an option panel which allows, among other options,
-     * browsing for directories where image file can be found. Other options
-     * include the ability to obmit the search, the ability to set the
-     * flag not to remind the missing of image again in the future. Setting
-     * the "Do not remind again!" will deny the ability to search for
-     * missing images for the rest of the file. Option "No" will only
-     * stops the searching for the current missing image only.
-     * @param image_name The name of the file which holds the image.
-     * @param default_directory The default directory at which the file-chooser
-     * dialog will change to when it starts.
-     * @return The new directory to search for or Null if nothing was selected,
-     * or cancel was chosen.
-     */
-    public static File findImageDirectory(
-            String image_name, File default_directory) {
-        Object[] options = {
-            _("Browse..."),
-            _("Not this image"),
-            _("Do not remind again!")
-        };
-
-        StringBuffer b = new StringBuffer();
-        b.append(_("Image \"{0}\"", image_name)).append(" ");
-        b.append(_("is missing")).append(UNIX_NL);
-        b.append(_("Would you like to find the missing image ?"));
-        String msg = b.toString();
-        String title = _("Find directory for the missing image");
-
-        int selected_option = JOptionPane.showOptionDialog(null,
-                msg,
-                title,
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        switch (selected_option) {
-            case JOptionPane.YES_OPTION: //Browse...
-                File directory = Share.browseFile(image_name, default_directory);
-                return directory;
-            case JOptionPane.NO_OPTION: //Not this image
-                break;
-            case JOptionPane.CANCEL_OPTION: //No/Not remind again!
-                setRemindMissingImage(false);
-                break;
-        }//end selected_option
-        return null;
-    }
 
     /**
      * Display an option panel which allows, among other options,
@@ -241,18 +181,17 @@ public class JImage implements CommonDef {
         ImageIcon ico = null;
         try {
             img = ImageIO.read(f);
-            boolean is_empty = (img == null);            
+            boolean is_empty = (img == null);
             if (is_empty) {
                 return null;
             } else {
+                int w = img.getWidth();
+                int h = img.getHeight();
+                /**
+                 * make the transparent image first
+                 */
+                tran_image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
                 try {
-                    int w = img.getWidth();
-                    int h = img.getHeight();
-                    /**
-                     * make the transparent image first
-                     */
-                    tran_image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-
                     /**
                      * Whilst running the loop to find boundary, also update the
                      * transparent image with desired pixel, ignoring the colour
@@ -273,28 +212,26 @@ public class JImage implements CommonDef {
                             sr.height);
                     return sub_img;
                 } catch (Exception ex) {
-                    ex.printStackTrace(System.out);
+                    //ex.printStackTrace(System.out);
                     //return the original image
-                    return img;
+                    return tran_image;
                 }
             }//end if            
         } catch (Exception ex) {
             return null;
         }
     }//public static ImageIcon readImage(File f)
-    
     public static File bwConversionToBMPTempFile(ImageIcon source) {
         String img_ext = "bmp";
-        try{
+        try {
             BufferedImage bw_img = bwConversion(source);
             File tempFile = File.createTempFile("JublerTempImg", char_dot + img_ext);
             writeImage(bw_img, tempFile, img_ext);
             return tempFile;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return null;
         }
     }//end public static File bwConversionToTempFile(ImageIcon source) 
-    
     public static BufferedImage bwConversion(ImageIcon source) {
         BufferedImage new_image = null;
         int w, h;

@@ -28,7 +28,7 @@
  */
 package com.panayotis.jubler.subs;
 
-import java.awt.Color;
+import com.panayotis.jubler.subs.loader.SimpleFileFilter;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.Component;
 import java.io.File;
@@ -292,45 +292,31 @@ public class Share implements CommonDef {
     private static JFileChooser jfc = null;
 
     public static File browseFile(String file_name, File start_directory) {
-        File accepted_file = null;
+        File accepted_dir = null;
         try {
             File search_file = new File(start_directory, file_name);
             search_file_extension = Share.getFileExtension(search_file);
 
-            jfc = new JFileChooser() {
-
-                public boolean accept(File f) {
-                    try {
-                        if (f.isDirectory()) {
-                            return true;
-                        } else {
-                            String found_file_extension = Share.getFileExtension(f);
-                            boolean match = found_file_extension.equalsIgnoreCase(search_file_extension);
-                            return match;
-                        }//end if
-                    } catch (Exception ex) {
-                    }
-                    return false;
-                }//end public boolean accept(File f)
-            };
-
+            SimpleFileFilter filter = new SimpleFileFilter(_("Images"), search_file_extension);
+            jfc = new JFileChooser();
+            jfc.addChoosableFileFilter(filter);            
             jfc.setCurrentDirectory(start_directory);
             jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             jfc.setSelectedFile(search_file);
             int option = jfc.showDialog(parent, _("Accept"));
             if (option == JFileChooser.APPROVE_OPTION) {
-                accepted_file = jfc.getSelectedFile();
-                if (accepted_file.isFile()) {
-                    accepted_file = accepted_file.getParentFile();
+                accepted_dir = jfc.getSelectedFile();
+                if (accepted_dir.isFile()) {
+                    accepted_dir = accepted_dir.getParentFile();
                 }//end if
             }//end if
         } catch (Exception ex) {
         }
-        return accepted_file;
+        return accepted_dir;
     }//end public static File browseFile(String file_name, File start_directory)
     public static File[] browseDir(File start_directory) {
         File f = null;
-        File[] accepted_file = null;
+        File[] accepted_dir = null;
         try {
             jfc = new JFileChooser();
             jfc.setCurrentDirectory(start_directory);
@@ -338,12 +324,12 @@ public class Share implements CommonDef {
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             int option = jfc.showDialog(parent, _("Accept"));
             if (option == JFileChooser.APPROVE_OPTION) {
-                accepted_file = jfc.getSelectedFiles();
+                accepted_dir = jfc.getSelectedFiles();
                 f = jfc.getSelectedFile();
             }//end if
         } catch (Exception ex) {
         }
-        return accepted_file;
+        return accepted_dir;
     }//end public static File browseFile(String file_name, File start_directory)
     public static int fileCount(File start_directory) throws Exception {
         return start_directory.list().length;

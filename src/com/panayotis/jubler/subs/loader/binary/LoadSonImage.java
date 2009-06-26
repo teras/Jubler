@@ -28,7 +28,6 @@
  */
 package com.panayotis.jubler.subs.loader.binary;
 
-import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.DEBUG;
@@ -36,15 +35,12 @@ import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
 import com.panayotis.jubler.subs.SubtitleUpdaterThread;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.events.PostParseActionEvent;
 import com.panayotis.jubler.subs.events.PostParseActionEventListener;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.tools.JImage;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 
@@ -84,12 +80,10 @@ import javax.swing.ImageIcon;
  */
 public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
 
-    private Vector<PostParseActionEventListener> postParseEventList = new Vector<PostParseActionEventListener>();
     File input_file = null;
     Subtitles sub_list = null;
     String image_dir = null;
     String subtitle_file_dir = null;
-    ProgressBar pb = new ProgressBar();
     private boolean loadImages = true;
 
     public LoadSonImage(Subtitles sub_list, String image_dir, File input_file) {
@@ -97,118 +91,61 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
         this.image_dir = image_dir;
         this.subtitle_file_dir = input_file.getParent();
         this.input_file = input_file;
-        setSubList(sub_list);
+        this.sub_list = sub_list;
     }
 
     public void run() {
-        NonDuplicatedVector<File> path_list = new NonDuplicatedVector<File>();
-        String image_filename = null;
-        SonSubEntry sub_entry = null;
-        File f, last_image_dir;
-        File dir;
-        boolean is_found = false;
-        ImageIcon img = null;
-        int count = 0;
-        boolean has_image, has_header, repeat_search;
+        ProgressBar pb = null;
         try {
-            JImage.setRemindMissingImage(true);
+            //1. locate the image files
+            ImageFileListManager file_list_man = new ImageFileListManager(sub_list);
+            file_list_man.addSearchPath(image_dir);
+            file_list_man.addSearchPath(subtitle_file_dir);
+            file_list_man.loadFileList();
+            if (!loadImages) {
+                return;
+            }//end if (!loadImages)
 
-            File f_img = new File(image_dir);
-            if (!f_img.isDirectory()) {
-                f_img = new File(subtitle_file_dir);
-            }
-            last_image_dir = f_img;
-
-            path_list.add(last_image_dir);
-            path_list.add(new File(USER_CURRENT_DIR));
-            path_list.add(new File(USER_HOME_DIR));
-
+            //2. Using the located files, load the images.
+            //If 'loadImages' is set to true, that is.
             int len = sub_list.size();
 
-            if (loadImages) {
-                if (pb.isOn()) {
-                    throw new IOException(_("A process did not finish yet"));
-                }
-            }//end if
-
-            if (loadImages) {
-                pb.setTitle(_("Loading SON images"));
-                pb.setMinValue(0);
-                pb.setMaxValue(len - 1);
-                pb.on();
-            }//end if (this.isLoadImages())
-
-            int i = 0;
-            repeat_search = false;
+            pb = new ProgressBar();
+            pb.setTitle(_("Loading SON images"));
+            pb.setMinValue(0);
+            pb.setMaxValue(len - 1);
+            pb.on();
 
             fireSubtitleUpdaterPreProcessingEvent();
-            while (i < len) {
-                if (!repeat_search) {
-                    sub_entry = (SonSubEntry) sub_list.elementAt(i);
-                    image_filename = sub_entry.image_filename;
-                    if (loadImages) {
-                        pb.setTitle(image_filename);
-                        pb.setValue(i);
-                    }//end if
-                }//end if            
+            int count = 0;
+            ImageIcon img = null;
+            for (int i = 0; i < len; i++) {
+                SonSubEntry sub_entry = (SonSubEntry) sub_list.elementAt(i);
+                File f = sub_entry.getImageFile();
+                BufferedImage b_img = JImage.readImage(f);
+                boolean has_image = (b_img != null);
+                boolean has_header = (sub_entry.header != null);
+                if (has_image) {
+                    img = new ImageIcon(b_img);
+                    sub_entry.setImage(img);
+                    count++;
+                    setRow(i);
+                    setEntry(sub_entry);
+                    fireSubtitleRecordUpdatedEvent();
+                }//end if (has_image)
 
-                is_found = false;
-                for (int j = 0; (!is_found) && (j < path_list.size()); j++) {
-                    dir = path_list.elementAt(j);
-                    f = new File(dir, image_filename);
-                    is_found = (f != null) && f.isFile() && f.exists();
-                    if (is_found) {
-                        sub_entry.setImageFile(f);
-                        if (loadImages) {
-                            BufferedImage b_img = JImage.readImage(f);
-                            has_image = (b_img != null);
-                            has_header = (sub_entry.header != null);
-                            if (has_image) {
-                                img = new ImageIcon(b_img);
-                                sub_entry.setImage(img);
-                                count++;
-                                setRow(i);
-                                setEntry(sub_entry);
-                                fireSubtitleRecordUpdatedEvent();
-                            }//end if (has_image)
-                            if (has_header && has_image){
-                                sub_entry.header.updateRowHeight(img.getIconHeight());                                
-                            }//end if (has_header && has_image)
-                        }//end if (this.isLoadImages())
-                    }//end if
-                }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)
+                if (has_header && has_image) {
+                    sub_entry.header.updateRowHeight(img.getIconHeight());
+                }//end if (has_header && has_image)
 
-                if (loadImages) {
-                    repeat_search = false;
-                    if (!is_found) {
-                        DEBUG.debug(_("Cannot find image \"{0}\"", image_filename));
-                        if (JImage.isRemindMissingImage()) {
-                            File backup = last_image_dir;
-                            last_image_dir = JImage.findImageDirectory(image_filename, last_image_dir);
-                            repeat_search =
-                                    (last_image_dir != null) &&
-                                    (last_image_dir.isDirectory()) &&
-                                    (JImage.isRemindMissingImage());
-
-                            if (repeat_search) {
-                                path_list.insertAtTop(last_image_dir);
-                            } else {
-                                last_image_dir = backup;
-                            }//end if (repeat_search)
-                        }//end if
-                    }//end if (!is_found)
-                }//end if (this.isLoadImages())
-
-                if (!repeat_search) {
-                    i++;
-                }//end if (! repeat_search)
-            }//end while(i < len)
-
+                pb.setTitle(sub_entry.getImageFileName());
+                pb.setValue(i);
+            }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)
             DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         } finally {
-            if (this.isLoadImages()) {
+            if (this.isLoadImages() && (pb != null)) {
                 pb.off();
             }//end if (this.isLoadImages()) 
             fireSubtitleUpdaterPostProcessingEvent();

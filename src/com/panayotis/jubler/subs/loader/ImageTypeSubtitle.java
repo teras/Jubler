@@ -23,7 +23,6 @@
 
 package com.panayotis.jubler.subs.loader;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.swing.ImageIcon;
 
@@ -36,6 +35,8 @@ public interface ImageTypeSubtitle {
     public int getMaxImageHeight();
     public ImageIcon getImage();
     public void setImage(ImageIcon img);
+    public String getImageFileName();
+    public void setImageFileName(String name);
     public File getImageFile();
     public void setImageFile(File imageFile);
 }

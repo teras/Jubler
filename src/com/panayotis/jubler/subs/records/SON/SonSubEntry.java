@@ -212,6 +212,13 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
         this.imageFile = imageFile;
     }
 
+    public String getImageFileName(){
+        return this.image_filename;
+    }
+    public void setImageFileName(String name){
+        this.image_filename = name;
+    }
+    
     public boolean cutImage() throws Exception {
         this.setImage(null);
         this.setImageFile(null);
