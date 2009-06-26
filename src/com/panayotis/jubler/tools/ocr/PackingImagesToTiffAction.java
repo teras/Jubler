@@ -106,14 +106,13 @@ public class PackingImagesToTiffAction extends JMenuItem implements ActionListen
     }
 
     public void actionPerformed(java.awt.event.ActionEvent evt) {
-        int opt = RecordComponent.CP_RECORD;
         try {
-            SubEntry sub = null;
-            int row = -1;
-
             Subtitles subs = jublerParent.getSubtitles();
 
             File output_file = getOutputFile();
+            if (Share.isEmpty(output_file)) {
+                return;
+            }
             ArrayList<ImageIcon> image_list = this.getImageList(subs);
             boolean has_image = (image_list.size() > 0);
             if (!has_image) {
