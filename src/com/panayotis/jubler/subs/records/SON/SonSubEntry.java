@@ -28,6 +28,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
+import com.panayotis.jubler.time.Time;
 import java.io.File;
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
@@ -138,9 +139,22 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             b.append("\t\t");
 
 
-            b.append(getStartTime().getSecondsFrames(header.FPS)).append(" ");
-            b.append(getFinishTime().getSecondsFrames(header.FPS)).append(" ");
-            b.append(imageFile.getName()).append(UNIX_NL);
+            Time st = getStartTime();
+            if (st != null){
+                txt = st.getSecondsFrames(header.FPS);
+                b.append(txt).append(" ");
+            }
+            
+            Time ft = getFinishTime();
+            if (ft != null){
+                txt = ft.getSecondsFrames(header.FPS);
+                b.append(txt).append(" ");
+            }
+            
+            if (imageFile != null){
+                txt = imageFile.getName();
+                b.append(txt).append(UNIX_NL);
+            }            
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
