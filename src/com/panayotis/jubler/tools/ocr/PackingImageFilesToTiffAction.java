@@ -33,9 +33,12 @@ import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.RecordComponent;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.loader.SimpleFileFilter;
+import com.panayotis.jubler.tools.FileNameComparator;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.lang.Object;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 
@@ -47,7 +50,9 @@ public class PackingImageFilesToTiffAction extends JMenuItem implements ActionLi
 
     private static String action_name = _("Packing images files to multipage tiff");
     private Jubler jublerParent = null;
-
+    private File[] input_files = null;
+    private File output_file = null;
+    
     public PackingImageFilesToTiffAction() {
         setText(action_name);
         setName(action_name);
@@ -94,20 +99,22 @@ public class PackingImageFilesToTiffAction extends JMenuItem implements ActionLi
             File this_file = f_list[i];
 
             boolean is_invalid_file = (this_file.isDirectory() || this_file.isHidden());
-            if (! is_invalid_file) {
+            if (!is_invalid_file) {
                 storage_list.add(this_file);
             }//end if (new_file.isFile())                
         }//end for (int i=0; i < file_list.length; i++)
 
         File[] result_file_list = storage_list.toArray(new File[storage_list.size()]);
+        FileNameComparator file_comparator = new FileNameComparator();
+        Arrays.sort(result_file_list, file_comparator);
         return result_file_list;
     }//end private File[] getInputFiles()
     private File getOutputFile() {
-        
+
         SimpleFileFilter out_filter = new SimpleFileFilter(
                 JImageIOHelper.TIFF_FORMAT,
                 JImageIOHelper.TIFF_EXT);
-        
+
         JFileChooser out_filedialog = new JFileChooser();
 
         out_filedialog.addChoosableFileFilter(out_filter);
@@ -127,22 +134,27 @@ public class PackingImageFilesToTiffAction extends JMenuItem implements ActionLi
         } else {
             File new_file = Share.patchFileExtension(this_file, JImageIOHelper.TIFF_EXT);
             return new_file;
-        }
+        }//end if (is_invalid_file)
     }//end private File getOutputFile()
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         int opt = RecordComponent.CP_RECORD;
         try {
-            File[] input_files = this.getInputFiles();
+            input_files = this.getInputFiles();
             if (Share.isEmpty(input_files)) {
                 return;
             }
 
-            File output_file = getOutputFile();
+            output_file = getOutputFile();
             if (Share.isEmpty(output_file)) {
                 return;
             }
 
-            JImageIOHelper.createPackedTiff(input_files, output_file);
+            Thread th = new Thread(){
+                public void run(){
+                    JImageIOHelper.createPackedTiff(input_files, output_file);
+                }//end 
+            };
+            th.start();
         } catch (Exception ex) {
         }//end try/catch
     }//public void actionPerformed(java.awt.event.ActionEvent evt)

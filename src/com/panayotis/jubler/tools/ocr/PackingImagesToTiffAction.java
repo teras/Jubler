@@ -30,7 +30,6 @@ package com.panayotis.jubler.tools.ocr;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.os.FileCommunicator;
-import com.panayotis.jubler.subs.RecordComponent;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -52,6 +51,8 @@ public class PackingImagesToTiffAction extends JMenuItem implements ActionListen
     private static String action_name = _("Packing images to multipage tiff");
     private Jubler jublerParent = null;
     private JFileChooser filedialog;
+    private ArrayList<ImageIcon> image_list = null;
+    private File output_file = null;
 
     public PackingImagesToTiffAction() {
         setText(action_name);
@@ -109,16 +110,25 @@ public class PackingImagesToTiffAction extends JMenuItem implements ActionListen
         try {
             Subtitles subs = jublerParent.getSubtitles();
 
-            File output_file = getOutputFile();
+            output_file = getOutputFile();
             if (Share.isEmpty(output_file)) {
                 return;
             }
-            ArrayList<ImageIcon> image_list = this.getImageList(subs);
+            
+            image_list = this.getImageList(subs);
             boolean has_image = (image_list.size() > 0);
             if (!has_image) {
                 return;
             }
-            JImageIOHelper.createPackedTiff(image_list, output_file);
+            
+            Thread th = new Thread(){
+                public void run(){
+                    JImageIOHelper.createPackedTiff(image_list, output_file);
+                }//end 
+            };
+            th.start();
+            
+            
 
         } catch (Exception ex) {
             ex.printStackTrace(System.out);

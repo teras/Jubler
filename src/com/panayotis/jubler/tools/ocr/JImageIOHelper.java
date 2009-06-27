@@ -15,6 +15,7 @@
  */
 package com.panayotis.jubler.tools.ocr;
 
+import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.tools.JImage;
@@ -43,8 +44,8 @@ public class JImageIOHelper {
 
     private final static String OUTPUT_FILE_NAME = "TessTempFile";
     public final static String TIFF_EXT = ".tif";
-    public final static String TIFF_FORMAT = "tiff";
-
+    public final static String TIFF_FORMAT = "tiff";    
+    
     public static ArrayList<File> createImageFile(BufferedImage source) throws Exception {
         ImageOutputStream ios = null;
         ImageWriter writer = null;
@@ -152,6 +153,7 @@ public class JImageIOHelper {
     public static void createPackedTiff(ArrayList<ImageIcon> imageList, File output_file) {
         ImageOutputStream ios = null;
         ImageWriter writer = null;
+        ProgressBar pb = new ProgressBar();
         try {
             //Set up the writeParam
             TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
@@ -169,11 +171,17 @@ public class JImageIOHelper {
             writer.setOutput(ios);
             writer.prepareWriteSequence(streamMetadata);
 
-            for (ImageIcon image : imageList) {
-
+            pb.setMinValue(0);
+            pb.setMaxValue(imageList.size());            
+            pb.on();            
+            int i=0;
+            for (ImageIcon image : imageList) {                
                 BufferedImage b_img = JImage.bwConversion(image);
                 IIOImage iio_img = new IIOImage(b_img, null, null);
                 writer.writeToSequence(iio_img, tiffWriteParam);
+                i++;
+                pb.setTitle(_("Packaging image number: " + i));
+                pb.setValue(i);
             }//end for for (ImageIcon image : imageList)
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -187,14 +195,16 @@ public class JImageIOHelper {
                 }
             } catch (Exception ex) {
             }
+            pb.off();
         }
     }//end public static boolean createImageFiles(ArrayList<ImageIcon> imageList, File output_file) throws Exception
-    public static void createPackedTiff(File[] imageFileList, File output_file) {
+    public static void createPackedTiff(File[] imageFileList, File output_file) {        
         ImageReader reader = null;
         ImageInputStream iis = null;
         ImageOutputStream ios = null;
         ImageWriter writer = null;
         IIOImage iio_img = null;
+        ProgressBar pb = new ProgressBar();
         try {
 
             //Set up the writeParam
@@ -212,6 +222,10 @@ public class JImageIOHelper {
             writer.setOutput(ios);
             writer.prepareWriteSequence(streamMetadata);
 
+            pb.setMinValue(0);
+            pb.setMaxValue(imageFileList.length);            
+            pb.on();            
+            int i=0;
             for (File imageFile : imageFileList) {
 
                 String imageFileName = imageFile.getName();
@@ -231,6 +245,10 @@ public class JImageIOHelper {
                 iio_img = new IIOImage(bi, null, null);
                 writer.writeToSequence(iio_img, tiffWriteParam);
 
+                i++;
+                pb.setTitle(_("Packaging image file: " + imageFileName));
+                pb.setValue(i);
+                
             }//end for for (ImageIcon image : imageList)
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -251,6 +269,7 @@ public class JImageIOHelper {
                 }
             } catch (Exception ex) {
             }
+            pb.off();            
         }
     }//end public static boolean createImageFiles(ArrayList<ImageIcon> imageList, File output_file) throws Exception
     public static ArrayList<File> createImageFiles(ArrayList<IIOImage> imageList, int index) throws Exception {
