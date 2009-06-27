@@ -36,6 +36,11 @@ public interface CommonDef {
     public static final String FILE_SEP = System.getProperty("file.separator");
     public static final String USER_HOME_DIR = System.getProperty("user.home") + FILE_SEP;
     public static final String USER_CURRENT_DIR = System.getProperty("user.dir") + FILE_SEP;
+    /**
+     * Set up the path for tesseract's language files. This value could be null
+     * if the environment variable 'TESSDATA_PREFIX' is not set, or it is set
+     * but the system is not refreshed properly.
+     */
     public static final String TESSDATA_PREFIX = System.getenv("TESSDATA_PREFIX");
     
     public static final String EOL = System.getProperty("line.separator");
