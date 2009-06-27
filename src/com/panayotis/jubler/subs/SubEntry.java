@@ -1063,6 +1063,8 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         ImageTypeSubtitle import_img_sub = (ImageTypeSubtitle) source;
         ImageTypeSubtitle current_img_sub = (ImageTypeSubtitle) this;
         current_img_sub.setImage(import_img_sub.getImage());
+        current_img_sub.setImageFileName(import_img_sub.getImageFileName());
+        current_img_sub.setImageFile(import_img_sub.getImageFile());
         return true;
     }//end public boolean copyImage(SubEntry source)
     public boolean copyHeader(SubEntry source) throws Exception {
@@ -1077,9 +1079,25 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 throw new IncompatibleRecordTypeException(source.getClass(), HeaderedTypeSubtitle.class);
             }
         }
-
+        
+        //now check to see if two headers are of the same type, using their literal class names.
         HeaderedTypeSubtitle hdr_import_entry = (HeaderedTypeSubtitle) source;
         HeaderedTypeSubtitle hdr_current_entry = (HeaderedTypeSubtitle) this;
+
+        String current_entry_header_class_name = hdr_current_entry.getHeader().getClass().getName();
+        String import_entry_header_class_name = hdr_import_entry.getHeader().getClass().getName();
+        
+        boolean is_same_type = (
+                current_entry_header_class_name.equals(import_entry_header_class_name)
+                );
+        
+        if (! is_same_type){
+            throw new IncompatibleRecordTypeException(
+                    hdr_current_entry.getClass(), 
+                    hdr_import_entry.getClass());
+        }//end if (! is_same_type)
+        
+        
         Object import_header = hdr_import_entry.getHeader();
         hdr_current_entry.setHeader(import_header);
         return true;
