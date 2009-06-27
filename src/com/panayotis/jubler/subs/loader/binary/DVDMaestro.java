@@ -362,6 +362,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
      */
     public Subtitles convert(Subtitles current_subs) {
         Subtitles convert_subs = new Subtitles(current_subs);
+        convert_subs.setJubler(jubler);
         convert_subs.convert(SonSubEntry.class);
         return convert_subs;
     }
@@ -386,18 +387,8 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         }//end if
 
         Subtitles convert_list = convert(given_subs);
-
-        /* Start writing the files in a separate thread */
-        SubtitleRecordUpdatedEventListener updated = new SubtitleRecordUpdatedEventListener() {
-
-            public void recordUpdated(SubtitleRecordUpdatedEvent e) {
-                whenRecordUpdated(e);
-            }
-        };
-
         WriteSonSubtitle writer = new WriteSonSubtitle(convert_list, moptions, outfile, dir, FPS, ENCODING);
         writer.setSubList(given_subs);
-        writer.addSubtitleRecordUpdatedEventListener(updated);
         writer.start();
         return false;   // There is no need to move any files
     }
