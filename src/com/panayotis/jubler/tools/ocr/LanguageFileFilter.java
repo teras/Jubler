@@ -33,6 +33,9 @@ import static com.panayotis.jubler.i18n.I18N._;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 /**
  * Filter the name of the file in the tessdata directory. Only the
@@ -65,6 +68,8 @@ import java.util.Map;
 public class LanguageFileFilter implements FilenameFilter, CommonDef {
 
     private Map<String, String> availableLanguageMap = null;
+    private static final String tess_lang_file_pattern = "([a-z]{3})" + "([.])" + printable;
+    private static final Pattern pat = Pattern.compile(tess_lang_file_pattern);
 
     public Map<String, String> getAvailableLanguageMap() {
         return availableLanguageMap;
@@ -75,6 +80,7 @@ public class LanguageFileFilter implements FilenameFilter, CommonDef {
     }
 
     public boolean accept(File dir, String name) {
+
         boolean is_language_file = false;
         try {
             File pathname = new File(name);
@@ -82,27 +88,25 @@ public class LanguageFileFilter implements FilenameFilter, CommonDef {
                 return false;
             }
 
+            File search_path = new File(dir, name);
+            //JOptionPane.showMessageDialog(null, search_path);
+            
             String fname = pathname.getName().toLowerCase();
-            int dot = fname.indexOf(char_dot);
-            boolean has_dot = (dot >= 0);
-            if (!has_dot) {
-                return false;
-            }
+            Matcher m = pat.matcher(fname);
+            is_language_file = m.matches();
+            if (is_language_file) {
+                String language_code = m.group(1);
+                String language_name = LanguageSelection.languageMap.get(language_code);
 
-            String language_code = fname.substring(0, dot);
-            String language_name = LanguageSelection.languageMap.get(language_code);
-
-            if (Share.isEmpty(language_name)) {
-                return false;
-            }
-
-            is_language_file = LanguageSelection.languageMap.containsKey(language_code);
-            boolean is_there_already = is_language_file &&
-                    availableLanguageMap.containsKey(language_name);
-
-            if (!is_there_already) {
-                availableLanguageMap.put(language_name, language_code);
-            }//end if (! is_there_already)            
+                if (Share.isEmpty(language_name)) {
+                    return false;
+                }
+                boolean is_there_already = availableLanguageMap.containsKey(language_name);
+                if (!is_there_already) {
+                    availableLanguageMap.put(language_name, language_code);
+                }//end if (! is_there_already)            
+            }//end if
+            return is_language_file;
         } catch (Exception ex) {
             is_language_file = false;
             ex.printStackTrace(System.out);

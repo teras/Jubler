@@ -23,15 +23,15 @@
 package com.panayotis.jubler.tools.ocr;
 
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
+import com.panayotis.jubler.subs.Share;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
+import java.util.Vector;
 import javax.swing.JOptionPane;
 
 /**
@@ -67,7 +67,6 @@ public class LanguageSelection implements CommonDef {
      * The display name of the language held in the current system's locale.
      */
     public static String currentLanguageName = currentLocale.getDisplayLanguage();
-    
     /**
      * The path to 'tesseract' executable.
      */
@@ -85,7 +84,6 @@ public class LanguageSelection implements CommonDef {
      * for instance the pair [eng, English] for English language.
      */
     public static Map<String, String> languageMap = new HashMap<String, String>();
-    
     /**
      * The map holds the actual available languages in the 'tessdata' directory.
      * The value pairs are in the format [language display name, language code]
@@ -95,7 +93,6 @@ public class LanguageSelection implements CommonDef {
      * operation requires it, such as OCR action.
      */
     public static Map<String, String> availableLanguageMap = new HashMap<String, String>();
-    
 
     /**
      * This routine loads the value pairs 
@@ -109,15 +106,15 @@ public class LanguageSelection implements CommonDef {
             languageMap.put(loc.getISO3Language(), loc.getDisplayLanguage());
         }//end for(String language : languages)
     }//end static
-
     private static LanguageSelection instance = null;
-    
-    public static LanguageSelection getInstance(){
-        if (instance == null)
+
+    public static LanguageSelection getInstance() {
+        if (instance == null) {
             instance = new LanguageSelection();
+        }
         return instance;
     }
-        
+
     public LanguageSelection() {
     }
 
@@ -133,6 +130,34 @@ public class LanguageSelection implements CommonDef {
         return showDialog(_("Language Selection"));
     }
 
+    private LanguageFileFilter setupLanguageFilter() {
+        if (langFileFilter == null) {
+            langFileFilter = new LanguageFileFilter();
+        }//end if (langFileFilter == null) 
+
+        langFileFilter.setAvailableLanguageMap(availableLanguageMap);
+
+        return langFileFilter;
+    }
+
+    private Vector<File> setupSearchablePathList() {
+        String[] searchable_dir_set = new String[]{
+            tessPath + TESSERACT_LANGUAGE_PATH,
+            TESSDATA_PREFIX
+        };
+
+        Vector<File> searchable_path = new Vector<File>();
+        for (String languagePath : searchable_dir_set) {
+            if (!Share.isEmpty(languagePath)) {
+                File f = new File(languagePath);
+                boolean valid_dir = (f.isDirectory());
+                if (valid_dir) {
+                    searchable_path.add(new File(languagePath));
+                }//end if (valid_dir) 
+            }//end if (!Share.isEmpty(languagePath)) 
+        }//end for
+        return searchable_path;
+    }//end private Vector<File> setupSearchablePathList()
     /**
      * Load a new language map by getting the list of files in the
      * 'tesseract/tessdata' directory, where language files reside.
@@ -141,26 +166,27 @@ public class LanguageSelection implements CommonDef {
      */
     public boolean loadLanguageList() {
         boolean result = false;
+
         try {
             availableLanguageMap.clear();
-            String languagePath = tessPath + TESSERACT_LANGUAGE_PATH;
-            File dir = new File(languagePath);
-            if (langFileFilter == null) {
-                langFileFilter = new LanguageFileFilter();
-            }//end if (langFileFilter == null) 
-            
-            langFileFilter.setAvailableLanguageMap(availableLanguageMap);
-            //now pull the list, this should fill the availableLanguageMap
-            dir.list(langFileFilter);
+
+            Vector<File> searchable_path = setupSearchablePathList();
+            setupLanguageFilter();
+            //search through all the paths in the list and update
+            //the availableLanguageMap.
+            for (File search_dir : searchable_path) {
+                search_dir.list(langFileFilter);
+            }//end for(File search_dir : searchable_path)
+
             //DEBUG.logger.log(Level.INFO, "Available languages: " + availableLanguageMap.toString());
             result = (availableLanguageMap.size() > 0);
+
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         } finally {
             return result;
         }
     }//private void loadLanguageList()
-
     /**
      * Show the dialog which contains a combo-box of items that use can
      * select. Each item represents a language that the operation
@@ -179,7 +205,7 @@ public class LanguageSelection implements CommonDef {
             Collection<String> languages = availableLanguageMap.keySet();
             int len = languages.size();
             String[] available_language_name_list = languages.toArray(new String[len]);
-            
+
             Object sel = JOptionPane.showInputDialog(
                     jubler,
                     _("Select a languages in 'tessdata' directory:"),
@@ -190,13 +216,12 @@ public class LanguageSelection implements CommonDef {
                     currentLanguageName);
 
             String sel_language_name = (String) sel;
-            sel_code = (String) availableLanguageMap.get(sel_language_name);            
+            sel_code = (String) availableLanguageMap.get(sel_language_name);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
         return sel_code;
     }//end public String showDialog(String title)
-
     public Jubler getJubler() {
         return jubler;
     }
@@ -213,3 +238,4 @@ public class LanguageSelection implements CommonDef {
         this.tessPath = tessPath;
     }
 }//end public class ComponentSelection
+

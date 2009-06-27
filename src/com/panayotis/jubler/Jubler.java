@@ -112,6 +112,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton.ToggleButtonModel;
@@ -258,7 +259,11 @@ public class Jubler extends JFrame implements CommonDef{
         PasteP.addActionListener(editPaste);
 
         ocrAction.setLanguage("eng");
-        ocrAction.setTessPath(USER_CURRENT_DIR + "tesseract"  + FILE_SEP);
+        String working_dir = FileCommunicator.getCurrentPath();
+        File tesseract_path = new File(working_dir, "tesseract");
+        String tesseract_path_as_string = tesseract_path.getAbsolutePath();
+        
+        ocrAction.setTessPath(tesseract_path_as_string + FILE_SEP);
         
         SplitSONSubtitleFile.addActionListener(splitSONSubtitleAction);
         PackingImagesToTiffM.addActionListener(packingImagesToTiffAction);

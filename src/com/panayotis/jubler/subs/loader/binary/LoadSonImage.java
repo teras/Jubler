@@ -32,16 +32,12 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
-import com.panayotis.jubler.subs.NonDuplicatedVector;
 import com.panayotis.jubler.subs.SubtitleUpdaterThread;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.events.PostParseActionEventListener;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.tools.JImage;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Vector;
 import javax.swing.ImageIcon;
 
 /**
@@ -98,9 +94,10 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
         ProgressBar pb = null;
         try {
             //1. locate the image files
-            ImageFileListManager file_list_man = new ImageFileListManager(sub_list);
+            ImageFileListManager file_list_man = new ImageFileListManager(sub_list);            
             file_list_man.addSearchPath(image_dir);
             file_list_man.addSearchPath(subtitle_file_dir);
+            file_list_man.setImageFilePath(input_file.getParentFile());
             file_list_man.loadFileList();
             if (!loadImages) {
                 return;

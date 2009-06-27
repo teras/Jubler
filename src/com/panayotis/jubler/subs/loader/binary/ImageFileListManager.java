@@ -47,12 +47,12 @@ import javax.swing.JOptionPane;
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class ImageFileListManager implements CommonDef {
+
     /**
      * If this variable is set to true, manual intervention in the searching of
      * the files is not allowed. By default, it should be set to true.
      */
     private boolean remindMissingImage = true;
-    
     /**
      * The list of subitle-entries that has been parsed and loaded, where
      * file-names can be found.
@@ -68,7 +68,6 @@ public class ImageFileListManager implements CommonDef {
      * These values can be examined by the external routines.
      */
     private int searchImageSelectedOption = JOptionPane.CANCEL_OPTION;
-    
     /**
      * List of searchable paths. By default, the application working directory
      * ie. Jubler's excuting directory, and user's home-directory are added
@@ -76,7 +75,9 @@ public class ImageFileListManager implements CommonDef {
      * this list.
      */
     NonDuplicatedVector<File> searchPathList = new NonDuplicatedVector<File>();
-
+    private File lastSearchedPath = null;
+    private File imageFilePath = null;
+    
     public ImageFileListManager() {
         initPathList();
     }
@@ -93,7 +94,6 @@ public class ImageFileListManager implements CommonDef {
         searchPathList.add(new File(USER_CURRENT_DIR));
         searchPathList.add(new File(USER_HOME_DIR));
     }//end private void initPathList()
-    
     /**
      * The main routine which runs through the list of subtitle entries
      * and try to locate the actual image file from the file-name that
@@ -121,6 +121,54 @@ public class ImageFileListManager implements CommonDef {
         }
     }//end private void loadFileList()
     /**
+     * Search through the existing search path list and try to locate a file
+     * matching the image-filename input.
+     * @param image_filename The name of the image-file to locate
+     * @return The located file or null if the search is exausted and not
+     * file matching that name has been found.
+     */
+    private File automaticFindImageFileInSearchPath(String image_filename) {
+        boolean is_found = false;
+        File located_file = null;
+        for (int i = 0; i < searchPathList.size(); i++) {
+            lastSearchedPath = searchPathList.elementAt(i);
+            located_file = new File(lastSearchedPath, image_filename);
+            is_found = located_file.exists() && (!located_file.isDirectory());
+            if (is_found) {
+                return located_file;
+            }//end if (is_found)
+        }//end for (File search_dir : path_list) 
+        return null;
+    }//end private File findImageInSearchPath(String image_filename)
+    /**
+     * Manually find the image using a diaglog. User have the option of
+     * selecting a correct directory or a file, where images can be found,
+     * ignoring the current image and do not load it, or do not remind
+     * again to ignore the rest of the search. The newly selected path,
+     * if selected, is inserted into the top of list of searchable paths, 
+     * and the search could continue using the latest chosen path.
+     * @param image_filename The name of the file to search for.
+     * @param root_dir The starting directory where the search commence.
+     * @return true if the a path has been selected where images could be 
+     * found, or false if the user has either choosen not to load the current 
+     * image, or decided to ignore the whole searching process.
+     */
+    private boolean manualFindImagePath(String image_filename, File root_dir) {
+        //manually locate the file
+        File new_dir = findImageDirectory(image_filename, root_dir);
+        boolean abandon_this =
+                Share.isEmpty(new_dir) ||
+                (!isRemindMissingImage()) ||
+                (searchImageSelectedOption == JOptionPane.NO_OPTION);
+        if (abandon_this) {
+            return false;
+        } else {
+            lastSearchedPath = new_dir;
+            searchPathList.insertAtTop(new_dir);
+            return true;
+        }//end if
+    }//end private File manualSearch(String file_name, File root_dir)
+    /**
      * Try to locate a single file using its name and the local list of
      * searchable-paths. Optionally, this routine allow manual interaction
      * from user to locale a directory where image file may be found. When
@@ -132,39 +180,21 @@ public class ImageFileListManager implements CommonDef {
      */
     private File locateFile(String image_filename) {
         boolean is_found = false;
-        File localed_file = null;
+        boolean is_continue = true;
+        File located_file = null;
         try {
-            while (!is_found && isRemindMissingImage()) {
-                for (File search_dir : searchPathList) {
-                    localed_file = new File(search_dir, image_filename);
-                    is_found = localed_file.exists() && (!localed_file.isDirectory());
-                    if (is_found) {
-                        break;
-                    } else if (isRemindMissingImage()){
-                        File new_dir = findImageDirectory(image_filename, search_dir);
-                        boolean abandon_this = 
-                                (this.searchImageSelectedOption == JOptionPane.NO_OPTION);
-                        if (abandon_this){
-                            return null;
-                        }//end if
-                        
-                        if (!Share.isEmpty(new_dir) && new_dir.isDirectory()) {
-                            searchPathList.insertAtTop(new_dir);
-                            
-                            //break out here so that the updated list can be 
-                            //started again, also avoid concurrency update as
-                            //we are within the loop of the update list.
-                            break; 
-                        }//end if (!Share.isEmpty(new_dir))
-                    }//end if (is_found) 
-                }//end for (File search_dir : path_list) 
+            while (is_continue && (!is_found) && isRemindMissingImage()) {
+                located_file = automaticFindImageFileInSearchPath(image_filename);
+                is_found = (!Share.isEmpty(located_file));
+                if (!is_found) {
+                    is_continue = manualFindImagePath(image_filename, imageFilePath);
+                }//end if (! is_found)
             }//end while (!is_found && JImage.isRemindMissingImage())
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
-        return localed_file;
+        return located_file;
     }//private void locateFile()
-    
     /**
      * Display an option panel which allows, among other options,
      * browsing for directories where image file can be found. Other options
@@ -225,7 +255,7 @@ public class ImageFileListManager implements CommonDef {
     public void setRemindMissingImage(boolean aRemindMissingImage) {
         remindMissingImage = aRemindMissingImage;
     }
-    
+
     public Subtitles getSubList() {
         return subList;
     }
@@ -263,5 +293,13 @@ public class ImageFileListManager implements CommonDef {
         } catch (Exception ex) {
         }
     }//end public void addSearchPath(String name)
+
+    public File getImageFilePath() {
+        return imageFilePath;
+    }
+
+    public void setImageFilePath(File imageFilePath) {
+        this.imageFilePath = imageFilePath;
+    }
 }//end public class FileListManager
 
