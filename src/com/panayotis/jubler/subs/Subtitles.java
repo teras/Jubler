@@ -34,7 +34,6 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
-import com.panayotis.jubler.undo.UndoEntry;
 import java.io.File;
 import java.util.Collection;
 import javax.swing.JTable;
@@ -551,14 +550,6 @@ public class Subtitles extends AbstractTableModel {
                 if (is_same) {
                     continue;
                 }//end if (is_same)
-
-                //check to see if the list is saved for undo or not.
-                //if not saved, else ignore. Put it here so the undo list is
-                //only created when there are changes.
-                if (!is_saved_for_undo) {
-                    jubler.getUndoList().addUndo(new UndoEntry(this, action_name));
-                    is_saved_for_undo = true;
-                }//end if is_saved_for_undo
 
                 /**
                  * Create a new instance of the target using its class name.
