@@ -201,6 +201,30 @@
 	</para>
 </section>
 
+<section><title>How can Jubler help with using an external OCR</title>
+	<para>There are several ways that Jubler can help dealing with external OCR. It is often more convenience if images are packed into a single multi-paged 'tiff' image file before it is passed to an external OCR package. Jubler can perform this function in two ways.
+		<itemizedlist>
+			<listitem>
+				<para>If a SON index file has been loaded into Jubler with it images, these images are actually cut down in size, and thus you will not see the blue transparent colour that exists in the original images. By choosing the function 'Tool->Perform OCR->Images to Tiff', you can write these transformed images to a single multi-paged 'Tiff' file. Images are converted to black and white (b/w) images before they are written to the file, as OCR processing on b/w image would produce a much more consitent result and less errors than the multi-coloured ones. The written tiff file is uncompressed, and thus, there are not need to worry about having the library that deals with the compression and decompression. You only need to have an OCR application that undertood the multi-paged uncompressed 'tiff' file.
+				</para>
+			</listitem>
+			<listitem>
+				<para>You can also pack subtitle images to a single uncompressed 'tiff' file without having to load images into Jubler, using the function in 'File->Packing image files to TIFF'. You can either select a number of images to pack, or select a directory where images resides. Selecting images give a more precise selection, as images are picked by you. When you select a directory, all image types in that directory will be considered. So images of extensions "jpg", "gif", "bmp", "png", "tif" are all loaded and will be considered to be the part of the result multi-paged file. Loaded images are sorted in ascending order of their file-names.
+				</para>
+			</listitem>
+			<listitem>
+				<para>If a SON subtitle file contains an extremely large number of images, and thus preventing you to load the whole files into the Jubler, due to the shortage of memory. You can split the subtitle file into several fragments, each contain an equal or so divident of images, with header in-tag, by using the function in 'File->Split SON Subtitle File'. This function will ask you for the number of fragments you wish to split the original file to, and it will write fragments to the same directory where the original subtitle file resides. After splitting, each fragment can then be loaded into Jubler, as if it was a single unit, and you can then carry out OCR tasks and corrections. You can choose to save edited file as a 'DVDMaestro extended SWT' to hold both images and text information, or any other non-image format, such as SRT. All fragmented text out-put files, after OCR and editions, can be brought together as a single file, using 'File->Append From File'. The first file in the sequence must be loaded, before appending are carried out.
+				</para>
+			</listitem>			
+		</itemizedlist>
+	</para>
+</section>
+
+<section><title>Importing header from a TMPGenc subtitle file</title>
+	<para>As Jubler does not yet have the capacity to edit the TMPGenc subtitle header blocks, where styles for subtitle events are held, it can however, allow you to import the header from an external TMPGenc subtitle file that has been saved or exported from <ulink url="http://tmpgenc.pegasys-inc.com/en/product/tda3.html">TMPGEnc DVD Author</ulink> software. This can be done using function 'File->Import Component' and select 'Header'. This section is only applied to 'TMPGenc subtitle' files, however, files with headers, such as SON/SWT can use the same import function to replace the header information from an external file of the same format.
+    </para>
+</section>
+
 <section><title>I found a problem!</title>
     <para>I am always happy to listen to problems of Jubler, especially those not mentioned here - although I am happier when you report success issues! The best way to inform me is through the <ulink url="http://www.jubler.org">Jubler site</ulink>. Sometimes the site has problems, reload the page and it will show up. The preferred way is through the forum, but if the forum is down (or I haven't answer in 2-3 days) email me directly.</para>
 </section>
