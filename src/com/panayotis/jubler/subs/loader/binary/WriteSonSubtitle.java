@@ -28,20 +28,18 @@
  */
 package com.panayotis.jubler.subs.loader.binary;
 
-import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.FileCommunicator;
-import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
 import com.panayotis.jubler.subs.Share;
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitleUpdaterThread;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.processor.SON.SONPatternDef;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
-import com.panayotis.jubler.tools.JImage;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -49,6 +47,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
+import java.util.Vector;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -78,7 +77,6 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
     private File index_outfile = null;
     private String image_out_filename = null;
     private static int maxDigits = 1;
-    private NonDuplicatedVector<File> dirList = null;
     private String encoding = null;
     ProgressBar pb = new ProgressBar();
 
@@ -91,125 +89,63 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
         this.dir = dir;
         this.FPS = FPS;
         this.encoding = encoding;
-        
-        // The outfile is:
-        //  C:\project\test_data\edwardian\testson.son
-        // FileCommunicator.save puts the "temp" extension and it became
-        //  C:\project\test_data\edwardian\testson.son.temp
-        // Stripped 'temp' from the outfile, so it remains
-        //  C:\project\test_data\edwardian\testson.son
-        index_outfile = FileCommunicator.stripFileFromExtension(outfile);
-        //outfilepath = index_outfile.getParentFile();
 
-        //dir.getPath() + System.getProperty("file.separator");
-        //The 'image_out_filename' = "testson"
+        index_outfile = FileCommunicator.stripFileFromExtension(outfile);
+
         File image_file = FileCommunicator.stripFileFromExtension(index_outfile);
         this.image_out_filename = image_file.getName();
 
         this.subs = subtitle_list;
         setSubList(subs);
+
+        maxDigits = Integer.toString(subs.size()).length();
+        fmt.setMinimumIntegerDigits(maxDigits);
+        fmt.setMaximumIntegerDigits(maxDigits);
+
     }
 
     @Override
     public void run() {
+        this.prepareHeader(subs, index_outfile);
+        this.writeImages(subs, index_outfile);
+        this.writeSubtitleText(subs, index_outfile, encoding);
+    }//end public void run()
+    private void prepareHeader(Subtitles sub_list, File out_file) {
+        sonSubEntry = (SonSubEntry) sub_list.elementAt(0);
+        sonHeader = sonSubEntry.getHeader();
+        sonHeader.moptions = moptions;
+        sonHeader.FPS = FPS;
+        sonHeader.image_directory = out_file.getParent();
+    }
+
+    private boolean writeSubtitleText(Subtitles sub_list, File output_file, String encode) {
+        boolean ok = false;
         FileOutputStream os = null;
         BufferedWriter out = null;
+
         try {
-
-            int dir_count = 1;
-            int sub_count = subs.size();
-            int files_per_dir_count = sub_count;
-            int image_count = 0;
-            int image_dir_index = 0;
-
-            String txt = null;
-
-            pb.setMinValue(0);
-            pb.setMaxValue(sub_count - 1);
-            pb.on();
-            pb.setTitle(_("Saving \"{0}\"", index_outfile.getName()));
-            StringBuffer buffer = new StringBuffer();
-
-            sonSubEntry = (SonSubEntry) subs.elementAt(0);
+            StringBuffer bf = new StringBuffer();
+            sonSubEntry = (SonSubEntry) sub_list.elementAt(0);
             sonHeader = sonSubEntry.getHeader();
-            boolean is_default_header = sonSubEntry.getHeader().isDefaultHeader();
-            if (is_default_header) {
-                sonHeader.moptions = moptions;
-                sonHeader.FPS = FPS;
-                dirList = JImage.createImageDirectories(dir);
-                if (Share.isEmpty(dirList)) {
-                    dirList.add(dir);
-                }//end if (Share.isEmpty(dirList))
+            String header_text = sonHeader.getHeaderAsString();
+            bf.append(header_text);
 
-                dir_count = dirList.size();
-                files_per_dir_count = (sub_count / dir_count);
-                File first_image_dir = dirList.elementAt(0);
-                sonHeader.image_directory = first_image_dir.getAbsolutePath();
-                sonHeader.setDefaultHeader(false);
-            }//end if
-
-            sonHeader.subtitle_file = outfile;
-            txt = sonHeader.toString();
-            buffer.append(txt);
-
-            /* create digits prependable string */
-            maxDigits = Integer.toString(subs.size()).length();
-            fmt.setMinimumIntegerDigits(maxDigits);
-            fmt.setMaximumIntegerDigits(maxDigits);
-
-            String img_filename, id_string;
-            image_count = 0;
-            
-            fireSubtitleUpdaterPreProcessingEvent();
-            
-            for (int i = 0; i < subs.size(); i++) {
-                sonSubEntry = (SonSubEntry) subs.elementAt(i);
-                sonSubEntry.event_id = (short) (i + 1);
+            for (int i = 0; i < sub_list.size(); i++) {
+                sonSubEntry = (SonSubEntry) sub_list.elementAt(i);
                 sonSubEntry.max_digits = maxDigits;
+                sonSubEntry.event_id = (short) (i + 1);
 
-                boolean has_image = (sonSubEntry.getImage() != null);
-                boolean has_text = (sonSubEntry.getText() != null);
-                boolean is_make_text_image = (has_text && !has_image);
-                if (is_make_text_image) {
-                    id_string = fmt.format(i + 1);
-                    img_filename = image_out_filename + "_" + id_string + ".png";
+                String entry_txt = sonSubEntry.toString();
+                bf.append(entry_txt);
+            }//end for (int i=0; i < sub_list.size(); i++ {
 
-                    image_count++;
-                    if (dir_count > 0) {
-                        image_dir_index += (image_count % files_per_dir_count == 0 ? 1 : 0);
-                        if (image_dir_index > dir_count - 1) {
-                            image_dir_index = dir_count - 1;
-                        }//end if (image_dir_index > dir_count - 1)
-                    }//end if (dir_count > 0)
-
-                    File image_dir = dirList.elementAt(image_dir_index);
-                    makeSubPicture(sonSubEntry, i, image_dir, img_filename);
-                    pb.setTitle(img_filename);
-                //makeSubEntry(sonSubEntry, i, img_filename, buffer);
-                }//end if
-
-                txt = sonSubEntry.toString();
-                buffer.append(txt);
-
-                pb.setValue(i);
-                
-                setRow(i);
-                setEntry(sonSubEntry);
-                fireSubtitleRecordUpdatedEvent();
-            }//end for (int i = 0; i < subs.size(); i++)
-
-            /* Write textual part to disk */
-            //String file_name = outfilepath + image_out_filename + ".son";
-            os = new FileOutputStream(index_outfile);
-            out = new BufferedWriter(new OutputStreamWriter(os, encoding));
-            out.write(buffer.toString());                        
-        } catch (IOException ex) {
+            os = new FileOutputStream(output_file);
+            out = new BufferedWriter(new OutputStreamWriter(os, encode));
+            out.write(bf.toString());
+            ok = true;
+        } catch (Exception ex) {
             ex.printStackTrace(System.out);
-            String msg = ex.getMessage() + UNIX_NL;
-            msg += _("Unable to create subtitle file {0}.", outfile.getAbsolutePath());
-            JIDialog.error(null, msg, "DVDMaestro error");
         } finally {
-            pb.off();
             try {
                 if (out != null) {
                     out.close();
@@ -219,10 +155,45 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
                 }
             } catch (Exception ex) {
             }
-            fireSubtitleUpdaterPostProcessingEvent();
-        }
-    }
+        }//end try/catch/finally
 
+        return ok;
+    }//end private boolean writeSubtitleText(File output_file)
+    private void writeImages(Subtitles sub_list, File output_file) {
+        try {
+            pb.setMaxValue(sub_list.size() - 1);
+            pb.setMinValue(0);
+            pb.on();
+            for (int i = 0; i < sub_list.size(); i++) {
+                sonSubEntry = (SonSubEntry) sub_list.elementAt(i);
+
+                boolean has_image = !Share.isEmpty(sonSubEntry.getImage());
+                boolean has_text = !Share.isEmpty(sonSubEntry.getText());
+
+                if (has_text && has_image) {
+                //do nothing - supposed to save new images?
+                } else if (has_text && !has_image) {
+
+                    String id_string = fmt.format(i + 1);
+                    String img_filename = image_out_filename + "_" + id_string + ".png";
+
+                    pb.setTitle(img_filename);
+                    pb.setValue(i);
+
+                    makeSubPicture(sonSubEntry, i + 1, output_file.getParentFile(), img_filename);
+                } else if (!has_text && has_image) {
+                //do nothing - supposed to save new images?
+                } else if (!has_text && !has_image) {
+                //do nothing
+                }//end if
+            }//end for(SubEntry entry : sub_entry_list)        
+
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            pb.off();
+        }
+    }//end private void writeImages(Subtitles sub_list, File output_file)
     private boolean makeSubPicture(SonSubEntry entry, int id, File dir, String filename) {
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();
@@ -232,6 +203,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
             entry.setImage(new ImageIcon(img));
             ImageIO.write(img, "png", image_file);
         } catch (IOException ex) {
+            ex.printStackTrace(System.out);
             return false;
         }
 
