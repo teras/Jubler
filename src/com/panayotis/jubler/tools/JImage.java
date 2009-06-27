@@ -85,7 +85,7 @@ public class JImage implements CommonDef {
         b.append(_("and select them for storing images?")).append(UNIX_NL);
         b.append(_("Note:"));
         b.append(_("(Images are divided equally over the group")).append(UNIX_NL);
-        b.append(_("of selected directoriess.)"));
+        b.append(_("of selected directories.)"));
         String msg = b.toString();
         String title = _("Creating directories for images");
 
