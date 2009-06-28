@@ -835,7 +835,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * will be compared to the this instance.
      * @return true if the starting-times are identical or their difference
      * is considered to be too small. False otherwise.
-     * @see SMALL_MILLI
+     * @see #SMALL_MILLI
      */
     public boolean isSameStartTime(SubEntry o) {
         try {
@@ -854,7 +854,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * will be compared to the this instance.
      * @return true if the ending-times are identical or their difference
      * is considered to be too small. False otherwise.
-     * @see SMALL_MILLI
+     * @see #SMALL_MILLI
      */
     public boolean isSameEndTime(SubEntry o) {
         try {

@@ -62,7 +62,7 @@ public class JNumberSelection {
     
     /**
      * Calling the {@link #showDialog} with predefined string
-     * @return
+     * @return The number selected.
      */
     public int showDialog() {
         String title_s = (title == null ? DEFAULT_TITLE : title);

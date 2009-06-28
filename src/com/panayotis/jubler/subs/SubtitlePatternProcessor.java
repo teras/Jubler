@@ -194,7 +194,7 @@ public abstract class SubtitlePatternProcessor {
     
     /**
      * 
-     * @return
+     * @return The array of matched groups
      */
     public String[] matchPattern() {
         try {
@@ -217,12 +217,12 @@ public abstract class SubtitlePatternProcessor {
      * 
      * @param input
      * @param matching_index_list
-     * @return
+     * @return The matched group of data, null if no match is found.
      */
     public String[] matchPattern(String input, int[] matching_index_list) {
         try {
-            setFound_list(matchPattern(input));
-            boolean has_result = (getFound_list() != null);
+            setFoundList(matchPattern(input));
+            boolean has_result = (getFoundList() != null);
             if (has_result) {
                 int index_len = matching_index_list.length;
                 boolean is_selective = (matching_index_list != null && index_len > 0);
@@ -231,7 +231,7 @@ public abstract class SubtitlePatternProcessor {
                     for (int i = 0; i < index_len; i++) {
                         int matching_group_index = matching_index_list[i];
                         try {
-                            selective_values[i] = getFound_list()[matching_group_index];
+                            selective_values[i] = getFoundList()[matching_group_index];
                         } catch (Exception ex) {
                         }
                     }//end for (int i=0; i < index_len; i++)
@@ -241,7 +241,7 @@ public abstract class SubtitlePatternProcessor {
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
-        return getFound_list();
+        return getFoundList();
     }//end public String[] matchPattern(String input, int[] matching_index_list)
 
     /**
@@ -250,30 +250,30 @@ public abstract class SubtitlePatternProcessor {
      * groups of data within the input. The group of matched data
      * is obtained by the  
      * @param input
-     * @return
+     * @return The array of matched group, null if no match was found.
      */
     public String[] matchPattern(String input) { 
-        setFound_list(null);
+        setFoundList(null);
         try {
             Pattern pat = getPattern().getWorkPattern();
             Matcher m = pat.matcher(input);
             boolean is_found = m.find();
             if (is_found) {
                 int group_count = m.groupCount() + 1;
-                setFound_list(new String[group_count]);
+                setFoundList(new String[group_count]);
                 for (int k = 0; k < group_count; k++) {
-                    getFound_list()[k] = m.group(k);
+                    getFoundList()[k] = m.group(k);
                 }//end for            
             }//end String[] found_list
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
-        return getFound_list();
+        return getFoundList();
     }//end public String[] matchPattern(String input)
 
     /**
      * 
-     * @return
+     * @return The reference to pattern definition.
      */
     public SubtitlePatternDefinition getPattern() {
         return pattern;
@@ -289,7 +289,8 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The array of matching indices, null if the reference has not
+     * been set.
      */
     public int[] getMatchIndexList() {
         return matchIndexList;
@@ -311,7 +312,8 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The textual input data of the file, null if the reference has
+     * not been set.
      */
     public String getInputData() {
         return inputData;
@@ -327,7 +329,7 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The frame rate per second, 25fps is the default setting.
      */
     public float getFPS() {
         return FPS;
@@ -343,7 +345,7 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The reference of the input file.
      */
     public File getInputFile() {
         return inputFile;
@@ -366,7 +368,8 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The reference to the target object, null if the object has not
+     * been created.
      */
     public Object getTargetObject() {
         return targetObject;
@@ -386,7 +389,7 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return true if the processor is removable, false otherwise.
      */
     public boolean isRemovable() {
         return removable;
@@ -402,7 +405,7 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The class-name of the target object.
      */
     public String getTargetObjectClassName() {
         return targetObjectClassName;
@@ -418,7 +421,7 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The text line currently being processed.
      */
     public String getTextLine() {
         return textLine;
@@ -434,9 +437,9 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * 
-     * @return
+     * @return The reference to the found
      */
-    public String[] getFound_list() {
+    public String[] getFoundList() {
         return found_list;
     }
 
@@ -444,7 +447,7 @@ public abstract class SubtitlePatternProcessor {
      * 
      * @param found_list
      */
-    public void setFound_list(String[] found_list) {
+    public void setFoundList(String[] found_list) {
         this.found_list = found_list;
     }
 }

@@ -72,8 +72,9 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * Sets the enability
-     * @param value for the enability
+     * Sets the enability of the susbtitle event. That is whether
+     * the subtitle event will be displayed on playback or not.
+     * @param enabled 0 to enable the on playback, 1 to not display.
      */
     public void setEnabled(int enabled) {
         this.enabled = enabled;
@@ -107,8 +108,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
      * Converts the record to a string representation. If the version for
      * writing out to files is required than the new line character will be made
      * platform dependent.
-     * @param is_write flag to indicate whether the version for writting
-     * out to files is used or not.
+     * @param separator
      * @return the string representation of the record
      */
     public String toString(String separator) {
@@ -178,7 +178,8 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * @param header the header to set
+     * 
+     * @param headerRecord
      */
     public void setHeaderRecord(TMPGencHeaderRecord headerRecord) {
         this.header = headerRecord;

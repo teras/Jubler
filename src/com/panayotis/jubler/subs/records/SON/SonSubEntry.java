@@ -56,6 +56,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public String image_filename = null;
     private File imageFile = null;
     private ImageIcon image = null;
+    private int maxImageHeight = 0;
 
     public SonHeader getHeader() {
         return header;
@@ -82,10 +83,12 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     }
 
     public int getMaxImageHeight() {
-        if (header != null) {
-            return header.max_row_height;
-        } else {
-            return -1;
+        return maxImageHeight;
+    }
+
+    public void setMaxImageHeight(int value) {
+        if (value > maxImageHeight) {
+            maxImageHeight = value;
         }
     }
 
@@ -140,21 +143,21 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
 
 
             Time st = getStartTime();
-            if (st != null){
+            if (st != null) {
                 txt = st.getSecondsFrames(header.FPS);
                 b.append(txt).append(" ");
             }
-            
+
             Time ft = getFinishTime();
-            if (ft != null){
+            if (ft != null) {
                 txt = ft.getSecondsFrames(header.FPS);
                 b.append(txt).append(" ");
             }
-            
-            if (imageFile != null){
+
+            if (imageFile != null) {
                 txt = imageFile.getName();
                 b.append(txt).append(UNIX_NL);
-            }            
+            }
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
@@ -216,6 +219,10 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     }//public void copyRecord(SubEntry o)
     public void setImage(ImageIcon image) {
         this.image = image;
+        if (image != null) {
+            int h = image.getIconHeight();
+            setMaxImageHeight(h);
+        }//end if (image != null)
     }
 
     public File getImageFile() {
@@ -226,13 +233,14 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
         this.imageFile = imageFile;
     }
 
-    public String getImageFileName(){
+    public String getImageFileName() {
         return this.image_filename;
     }
-    public void setImageFileName(String name){
+
+    public void setImageFileName(String name) {
         this.image_filename = name;
     }
-    
+
     public boolean cutImage() throws Exception {
         this.setImage(null);
         this.setImageFile(null);

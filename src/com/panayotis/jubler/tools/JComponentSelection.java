@@ -93,7 +93,8 @@ public class JComponentSelection {
 
     /**
      * Calling the {@link #showDialog} with predefined string
-     * @return
+     * @return The selected component, 
+     * or {@link RecordComponent#CP_INVALID} if the user cancelled.
      */
     public int showDialog() {
         return showDialog(_("Component required"));
@@ -104,8 +105,8 @@ public class JComponentSelection {
      * select. Each item represents a record's component that the operation
      * will act on.
      * @param title The title for the dialog box.
-     * @return One of the selected components in {@link SubtitleRecordComponent}, 
-     * {@link SubtitleRecordComponent.CP_INVALID} if the user cancelled.
+     * @return One of the selected components in {@link RecordComponent}, 
+     * {@link RecordComponent#CP_INVALID} if the user cancelled.
      */
     public int showDialog(String title) {
         selectedComponent = RecordComponent.CP_INVALID;
@@ -129,12 +130,12 @@ public class JComponentSelection {
     /**
      * Display the dialog, allow user to choose a selected component, then
      * return the selected component for use internally. Optionally update the
-     * global {@link Jubler.selectedComponent}.
+     * global {@link Jubler#selectedComponent}.
      * @param jublerParent Reference to the {@link Jubler} screen where the
      * dialog is based on.
-     * @param set_global_var true to update the {@link Jubler.selectedComponent}
+     * @param set_global_var true to update the {@link Jubler#selectedComponent}
      * with the new selection. false otherwise.
-     * @return One of the enumeration {@link SubtitleRecordComponent} or null
+     * @return One of the enumeration {@link RecordComponent} or null
      * if user cancelled.
      */
     public static synchronized int getSelectedComponent(Jubler jublerParent, boolean set_global_var) {

@@ -397,9 +397,9 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
      * This is a simple produce routine, it writes out the son subtitle file
      * assuming every part is correct and doesn't allow interaction. It is 
      * needed 
-     * @param given_subs
-     * @param outfile
-     * @return
+     * @param given_subs The list of subtitle events.
+     * @param outfile The file that the list will be written to.
+     * @return true if the process was carried out without errors, false otherwise.
      */
     public boolean produce(Subtitles given_subs, File outfile) {
         FileOutputStream os = null;

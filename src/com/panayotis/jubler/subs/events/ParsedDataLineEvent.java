@@ -25,8 +25,10 @@ import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import java.awt.event.ActionEvent;
 
 /**
- *
- *
+ * This event is generated after a data line is parsed. 
+ * The event is only applied to model which uses the 
+ * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat AbstractBinarySubFormat} 
+ * parsing model.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class ParsedDataLineEvent extends ActionEvent {
@@ -48,10 +50,21 @@ public class ParsedDataLineEvent extends ActionEvent {
         super(source, id, command);
     }
 
+    /**
+     * Gets the reference to the internal processor currently generated
+     * this event.
+     * @return Reference to the current instance of processor. 
+     * Null if the reference has not been set.
+     */
     public SubtitlePatternProcessor getProcessor() {
         return processor;
     }
 
+    /**
+     * Sets the reference for the processor who generated this event.
+     * @param processor The reference of the processor who generated
+     * this event.
+     */
     public void setProcessor(SubtitlePatternProcessor processor) {
         this.processor = processor;
     }

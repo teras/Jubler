@@ -35,7 +35,6 @@ import java.io.FilenameFilter;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
 
 /**
  * Filter the name of the file in the tessdata directory. Only the
@@ -52,7 +51,7 @@ import javax.swing.JOptionPane;
  * must have the 'dot' to separate the language and the font-name.
  * When a file matching the characteristic above, the 'language_code' is 
  * extracted and comparing with the global list of all languages. This list is
- * held in {@link LanguageSelection.languageMap} and is computed at the loading
+ * held in {@link LanguageSelection#languageMap} and is computed at the loading
  * of the {@link LanguageSelection} class. If the language code exists, then
  * the language display name (ie. 'English' for code 'eng') is extracted
  * and the value pair [language code, language display name] is held within
@@ -61,8 +60,7 @@ import javax.swing.JOptionPane;
  * The parsing is done here to avoid repeat efforts to parse the language-code
  * from the name of the file in later stages. Routines using this needs to pass
  * the initialised instance of [Map<String, String> availableLanguageMap] 
- * and call the {@link File.list(LanguageFileFilter filter)} method to fill
- * the availableLanguageMap.
+ * and call the {@link File#list} method to fill the availableLanguageMap.
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class LanguageFileFilter implements FilenameFilter, CommonDef {
@@ -89,8 +87,7 @@ public class LanguageFileFilter implements FilenameFilter, CommonDef {
             }
 
             File search_path = new File(dir, name);
-            //JOptionPane.showMessageDialog(null, search_path);
-            
+            //DEBUG.logger.log(Level.INFO, search_path.getAbsolutePath());
             String fname = pathname.getName().toLowerCase();
             Matcher m = pat.matcher(fname);
             is_language_file = m.matches();

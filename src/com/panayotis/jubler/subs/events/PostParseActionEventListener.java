@@ -23,9 +23,22 @@
 package com.panayotis.jubler.subs.events;
 
 /**
- *
+ * This class represents the template for listeners of 
+ * {@link PostParseActionEvent}. It provides the common gateway to code
+ * block which should be performed after the parsing of a subitle file 
+ * has been completed. 
+ * This event listener should only be used the parsing model presented
+ * in the {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat},
+ * in particular in it's 
+ * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#parse parse}
+ * method.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public interface PostParseActionEventListener {
+    /**
+     * The method provided the gateway to code blocks which should be 
+     * excuted when the {@link PostParseActionEvent} has been generated.
+     * @param e The action event parameter.
+     */
     public void postParseAction(PostParseActionEvent e);
 }

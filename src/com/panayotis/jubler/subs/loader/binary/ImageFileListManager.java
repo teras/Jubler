@@ -206,8 +206,6 @@ public class ImageFileListManager implements CommonDef {
      * @param image_name The name of the file which holds the image.
      * @param default_directory The default directory at which the file-chooser
      * dialog will change to when it starts.
-     * @param selected_option One of the JOptionPane options, 
-     * YES_OPTION, NO_OPTION, CANCEL_OPTION returned from the result of JOptionPane
      * @return The new directory to search for or Null if nothing was selected,
      * or cancel was chosen.
      */
@@ -268,7 +266,7 @@ public class ImageFileListManager implements CommonDef {
      * Add a searchable path to the top of the local list, so that it can be 
      * used first in the searching loop. It checks for the validity of the
      * input before insertion is carried out.
-     * @param f The name of the directory to be added.
+     * @param name The name of the file to be added to the search list.
      */
     public void addSearchPath(String name) {
         try {

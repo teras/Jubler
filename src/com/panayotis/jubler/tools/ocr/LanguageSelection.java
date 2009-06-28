@@ -80,17 +80,17 @@ public class LanguageSelection implements CommonDef {
     private LanguageFileFilter langFileFilter = null;
     /**
      * The map holds instances of value pairs [language code, language display name]
-     * where language code is a 3 characters long code defines in the ISO-639.
-     * for instance the pair [eng, English] for English language.
+     * where language code is a 3 characters long code defined in the ISO-639.
+     * For instance the pair [eng, English] is for English language.
      */
     public static Map<String, String> languageMap = new HashMap<String, String>();
     /**
-     * The map holds the actual available languages in the 'tessdata' directory.
-     * The value pairs are in the format [language display name, language code]
-     * which is the reverse order of the 'languageMap'. This map is searched
-     * when the user select a 'language display name' and for the matching entry,
-     * it will draw the 3 character long 'language code' to provide for the
-     * operation requires it, such as OCR action.
+     * The map holds the actual available languages in the 'tessdata' directory in
+     * the form of value pairs [language display name, language code]. This
+     * order is the reverse of the 'languageMap'. This map is searched
+     * for the 3 character long 'language code' when an user selected 
+     * a 'language display name'. The language code is needed by operation 
+     * such as OCR action.
      */
     public static Map<String, String> availableLanguageMap = new HashMap<String, String>();
 
@@ -106,14 +106,6 @@ public class LanguageSelection implements CommonDef {
             languageMap.put(loc.getISO3Language(), loc.getDisplayLanguage());
         }//end for(String language : languages)
     }//end static
-    private static LanguageSelection instance = null;
-
-    public static LanguageSelection getInstance() {
-        if (instance == null) {
-            instance = new LanguageSelection();
-        }
-        return instance;
-    }
 
     public LanguageSelection() {
     }
@@ -122,9 +114,14 @@ public class LanguageSelection implements CommonDef {
         this.jubler = jubler;
     }
 
+    public LanguageSelection(Jubler jubler, String tessPath) {
+        this(jubler);
+        this.tessPath = tessPath;
+    }
+    
     /**
      * Calling the {@link #showDialog} with predefined string
-     * @return
+     * @return The language name selected, null if the user cancelled.
      */
     public String showDialog() {
         return showDialog(_("Language Selection"));
@@ -196,7 +193,7 @@ public class LanguageSelection implements CommonDef {
      * or null  if the user cancelled.
      */
     public String showDialog(String title) {
-        String sel_code = "";
+        String sel_code = null;
         try {
             //perform loading again, allowing the language files to be added
             //without having to close down the application and reload pictures

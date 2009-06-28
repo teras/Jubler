@@ -129,8 +129,8 @@ public class RecordComponent {
      * Converting the selected value to the enumeration value of the 
      * selected component.
      * @param value The string value selected from list
-     * @return One of the value listed in {@link SubtitleRecordComponent}, null
-     * if the input value is not found in {@link componentNames}
+     * @return One of the value listed in {@link RecordComponent}, null
+     * if the input value is not found in {@link #componentNames}
      */
     public static int getSelectedComponent(String value) {
         int sel = CP_INVALID;

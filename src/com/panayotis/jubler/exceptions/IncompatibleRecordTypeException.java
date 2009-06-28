@@ -37,6 +37,10 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class IncompatibleRecordTypeException extends Exception{
+    /**
+     * The default message "Incompatible type detected". 
+     * This message is used with the default constructor.
+     */
     public static final String DEFAULT_MSG = _("Incompatible type detected.");
     /**
      * Constructs a new exception with <code>null</code> as its detail message.
@@ -51,8 +55,7 @@ public class IncompatibleRecordTypeException extends Exception{
      * Constructs a new exception with the specified detail message.  The
      * cause is not initialized, and may subsequently be initialized by
      * a call to {@link #initCause}.
-     *
-     * @param   message   the detail message. The detail message is saved for 
+     * @param message the detail message. The detail message is saved for 
      *          later retrieval by the {@link #getMessage()} method.
      */
     public IncompatibleRecordTypeException(String message) {

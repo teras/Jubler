@@ -96,7 +96,7 @@ public class SubtitlePatternDefinition {
 
     /**
      * Gets the compiled test pattern.
-     * @return 
+     * @return The compiled pattern, null if the pattern has not been set.
      */
     public Pattern getTestPattern() {
         return testPattern;

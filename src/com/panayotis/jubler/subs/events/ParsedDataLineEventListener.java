@@ -22,9 +22,17 @@
 package com.panayotis.jubler.subs.events;
 
 /**
- *
+ * This interface templates the listener for {@link ParsedDataLineEvent}.
+ * The method {@link #dataLineParsed dataLineParsed} will be the
+ * entry point to execute codes after the event {@link ParsedDataLineEvent}
+ * has been generated.
  * @author Hoang Duy Tran
  */
 public interface ParsedDataLineEventListener {
+    /**
+     * The entry point for code execution after the
+     * {@link ParsedDataLineEvent} has been generated.
+     * @param e The event arguments.
+     */
     public void dataLineParsed(ParsedDataLineEvent e);
 }

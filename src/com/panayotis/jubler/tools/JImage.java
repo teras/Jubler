@@ -139,6 +139,14 @@ public class JImage implements CommonDef {
      * @param extension The extension, indicating the type ie. png, jpg, bmp
      * @return true if the image was written without errors, false otherwise.
      */
+    
+    /**
+     * Write an image to a pre-defined file.
+     * @param img The image to write.
+     * @param file The file to write the image to.
+     * @param extension The image format, recognised by the file's extension.
+     * @return true if the operation carried out without errors, false otherwise.
+     */
     public static boolean writeImage(BufferedImage img, File file, String extension) {
         try {
             ImageIO.write(img, extension, file);

@@ -33,6 +33,7 @@ import javax.swing.ImageIcon;
 public interface ImageTypeSubtitle {
 
     public int getMaxImageHeight();
+    public void setMaxImageHeight(int value);
     public ImageIcon getImage();
     public void setImage(ImageIcon img);
     public String getImageFileName();

@@ -131,10 +131,6 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
                     fireSubtitleRecordUpdatedEvent();
                 }//end if (has_image)
 
-                if (has_header && has_image) {
-                    sub_entry.header.updateRowHeight(img.getIconHeight());
-                }//end if (has_header && has_image)
-
                 pb.setTitle(sub_entry.getImageFileName());
                 pb.setValue(i);
             }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)

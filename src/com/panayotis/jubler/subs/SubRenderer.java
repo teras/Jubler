@@ -71,11 +71,12 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
             setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             ImageIcon img = (ImageIcon) value;
             setIcon(img);
-            this.image_row_height = img.getIconHeight();
+            table_row_height = table.getRowHeight();
+            image_row_height = img.getIconHeight();
             boolean is_taller = (table_row_height < image_row_height);
             if (is_taller) {
                 table.setRowHeight(image_row_height);
-                table.repaint();
+                //table.repaint();
             }//end if
         } else {
             boolean is_string = (value instanceof String);
