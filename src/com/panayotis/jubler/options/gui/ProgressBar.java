@@ -31,24 +31,15 @@ import java.awt.Dimension;
  * @author  Hoang Duy Tran
  */
 public class ProgressBar extends javax.swing.JPanel {
-    private static ProgressBar instance = null;
-    /**
-     * Gets the internal instance, create a new one if the instance has not been instantiated.
-     * @return Reference to the internal instance.
-     */
-    public static ProgressBar getInstance(){
-        if (instance == null){
-            instance = new ProgressBar();
-        }
-        return instance;
-    }
-
     private int minValue;
     private int maxValue;
     private int value;
     private String title;
 
-    /** Creates new form Progress */
+    /**
+     * Creates new dialog form for a progress bar and packing the dialog, 
+     * ready for use.
+     */
     public ProgressBar() {
         initComponents();
         progressBar.setStringPainted(true);
@@ -64,22 +55,31 @@ public class ProgressBar extends javax.swing.JPanel {
         title = null;
     }
 
+    /**
+     * Checking to see if the progress bar is visible or not.
+     * @return True if the progress bar is visible, false otherwise.
+     */
     public boolean isOn(){
         return dlg.isVisible();
     }
 
+    /**
+     * Checking to see if the progress bar is invisible or not.
+     * @return True if the progress bar is not visible, false otherwise.
+     */
     public boolean isOff(){
         return !isOn();
     }
     
     /**
-     * Sets the display ON
+     * Sets the display ON. This action makes the progress-bar visible on
+     * the screen.
      */
     public void on(){
         dlg.setVisible(true);
     }
     /**
-     * Sets the display OFF and reset internal values back to zero
+     * Sets the display OFF and reset internal values back to zero.
      */
     public void off(){
         dlg.setVisible(false);
@@ -101,14 +101,6 @@ public class ProgressBar extends javax.swing.JPanel {
      */
     public javax.swing.JProgressBar getProgressBar() {
         return progressBar;
-    }
-
-    /**
-     * Sets the preference of the progress bar.
-     * @param aInstance A new reference to set to.
-     */
-    public static void setInstance(ProgressBar aInstance) {
-        instance = aInstance;
     }
 
     /**
