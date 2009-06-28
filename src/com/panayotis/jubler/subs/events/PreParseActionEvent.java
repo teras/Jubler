@@ -49,8 +49,17 @@ import java.io.File;
  */
 public class PreParseActionEvent extends ActionEvent {
 
+    /**
+     * Subitle input file.
+     */
     private File subtitleFile = null;
+    /**
+     * textual data content of the subtitle file.
+     */
     private String inputData = null;
+    /**
+     * Frame rate per second
+     */
     private float FPS = 25f;
     /**
      * Constructs an <code>PreParseActionEvent</code> object.

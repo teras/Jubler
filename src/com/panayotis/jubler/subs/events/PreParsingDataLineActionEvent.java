@@ -26,7 +26,20 @@ import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import java.awt.event.ActionEvent;
 
 /**
- *
+ * This action event is generated before the data line is being parsed. The
+ * data line has been read and is ready for parsing, but there are actions
+ * to examine the data line before parsing really starts. An an example is
+ * that this event provides a mechanism for the data line to be examined
+ * and see if the data line should be commited towards the parsing or not,
+ * or that a data-line will signifies an action or a flag to be set before
+ * the parsing is carried out.
+ * The event holds parameters:
+ * <ol>
+ *      <li>The reference to {@link SubtitlePatternProcessor}. This is the
+ *      reference to the current processor, within which one could find
+ *      information such as 'text input', 'pattern' etc..
+ *      </li>
+ * </ol>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class PreParsingDataLineActionEvent extends ActionEvent {
@@ -51,10 +64,19 @@ public class PreParsingDataLineActionEvent extends ActionEvent {
         super(source, id, command);
     }
 
+    /**
+     * Gets the reference to the current processor.
+     * @return Reference to the current processor, null if the reference has
+     * not been set.
+     */
     public SubtitlePatternProcessor getProcessor() {
         return processor;
     }
 
+    /**
+     * Sets the reference of the current processor.
+     * @param processor Reference to the current processor.
+     */
     public void setProcessor(SubtitlePatternProcessor processor) {
         this.processor = processor;
     }
