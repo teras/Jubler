@@ -26,7 +26,23 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionEvent;
 
 /**
- * This event should be fired after a subtitle record has been updated.
+ * This event should be fired after a subtitle record has been updated. 
+ * An example of such time that this even could occurs is when the
+ * textual part of the subtitle has been loaded, but another part has not
+ * been done, and is being process by another thread. 
+ * This event is generated when the thread updates the subtitle record
+ * with the remaining content, subh as an image, causing changes to subtitle 
+ * record, and changes must be reflected to the display. By listtening to this
+ * event, processes could refresh the display or perform other actions as
+ * necessary.
+ * This event argument holds several pieces of data:
+ * <ol>
+ *      <li>The reference to the subtitle entry that is being changed.</li>
+ *      <li>The reference to the lis of {@link Subtitles}.</li>
+ *      <li>The row number of the subtitle entry on the list (ie. it's index).</li>
+ * </ol>
+ * Processes could make use of these references and perform extra operations,
+ * such as firing updated events of the {@link Subtitles}.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SubtitleRecordUpdatedEvent extends ActionEvent {

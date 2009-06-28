@@ -24,11 +24,21 @@ package com.panayotis.jubler.subs.events;
 import java.awt.event.ActionEvent;
 
 /**
- *
+ * This event is generated when the a record of the subtite-event, such as
+ * the header record, the subtitle record itself, has been created.
+ * The event holds in its argument the reference to the created object.
+ * The event is is currently being used in the
+ * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
+ * but it can be used by any process which extends 
+ * {@link com.panayotis.jubler.subs.SubtitleUpdaterThread}.
+ * This event holds references to the {@link #createdObject}.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SubtitleRecordCreatedEvent extends ActionEvent {
 
+    /**
+     * The reference to the created object.
+     */
     private Object createdObject = null;
 
     /**
@@ -48,10 +58,19 @@ public class SubtitleRecordCreatedEvent extends ActionEvent {
         super(source, id, command);
     }
 
+    /**
+     * Gets the reference to the created object.
+     * @return Reference to the created object, null if the reference has not
+     * been set.
+     */
     public Object getCreatedObject() {
         return createdObject;
     }
 
+    /**
+     * Sets the reference of the created object.
+     * @param createdObject Reference of the created object.
+     */
     public void setCreatedObject(Object createdObject) {
         this.createdObject = createdObject;
     }
