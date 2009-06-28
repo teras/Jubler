@@ -37,15 +37,41 @@ import javax.imageio.stream.ImageOutputStream;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author Quan Nguyen (nguyenq@users.sf.net)
+ * This class holds methods to help with image files creations. It's dominantly
+ * uses the library <b>jai_imageio</b> and {@link javax.imageio.ImageIO} to
+ * implement routines.
+ * @author Quan Nguyen (nguyenq@users.sf.net) & Hoang Duy Tran (hoangduytran1960@googlemail.com)
  */
 public class JImageIOHelper {
 
-    private final static String OUTPUT_FILE_NAME = "TessTempFile";
+    /**
+     * The front part of the temporary image files.
+     */
+    private final static String OUTPUT_FILE_NAME = "JublerTempFile";
+    /**
+     * The default extension for a tiff (Tagged Image File Format) image type
+     * file.
+     */
     public final static String TIFF_EXT = ".tif";
-    public final static String TIFF_FORMAT = "tiff";    
-    
+    /**
+     * The default name that can be recognised by a format writer locator.
+     */
+    public final static String TIFF_FORMAT = "tiff";
+
+    /**
+     * This method writes a {@link BufferedImage} to a temporary file and
+     * return the name of the file in an {@link ArrayList}. The temporary
+     * file is system generated and will be of tiff format and will reside
+     * in the system's temporary directory - depending on what operating
+     * system user using. This file can then be used by other operation,
+     * such as OCR action.
+     * @param source The reference to an instance of {@link BufferedImage}.
+     * @return An {@link ArrayList} contains the temporary file generated if
+     * the operation was carried out without errors.
+     * @throws java.lang.Exception When an error occurs, a
+     * {@link RuntimeException} will be generated containing the original
+     * exeption information.
+     */
     public static ArrayList<File> createImageFile(BufferedImage source) throws Exception {
         ImageOutputStream ios = null;
         ImageWriter writer = null;
@@ -85,120 +111,18 @@ public class JImageIOHelper {
             }
         }
         return tempImageFiles;
-    }//end public static ArrayList<File> createImageFiles(BufferedImage) throws Exception 
-    public static ArrayList<File> createImageFiles(File imageFile, int index) throws Exception {
-        ArrayList<File> tempImageFiles = new ArrayList<File>();
-
-        String imageFileName = imageFile.getName();
-        String imageFormat = imageFileName.substring(imageFileName.lastIndexOf('.') + 1);
-
-        Iterator readers = ImageIO.getImageReadersByFormatName(imageFormat);
-        ImageReader reader = (ImageReader) readers.next();
-
-        ImageInputStream iis = ImageIO.createImageInputStream(imageFile);
-        reader.setInput(iis);
-        //Read the stream metadata
-        //IIOMetadata streamMetadata = reader.getStreamMetadata();
-
-        //Set up the writeParam
-        TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
-        tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
-
-        //Get tif writer and set output to file
-        Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
-        ImageWriter writer = (ImageWriter) writers.next();
-
-        //Read the stream metadata
-        IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
-
-        BufferedImage out;
-        if (index == -1) {
-            int imageTotal = reader.getNumImages(true);
-
-            for (int i = 0; i < imageTotal; i++) {
-                BufferedImage bi = reader.read(i);
-                IIOImage image = new IIOImage(bi, null, reader.getImageMetadata(i));
-                File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
-                ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
-                writer.setOutput(ios);
-                writer.write(streamMetadata, image, tiffWriteParam);
-                ios.close();
-                tempImageFiles.add(tempFile);
-            }
-        } else {
-            BufferedImage bi = reader.read(index);
-            IIOImage image = new IIOImage(bi, null, reader.getImageMetadata(index));
-            File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
-            ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
-            writer.setOutput(ios);
-            writer.write(streamMetadata, image, tiffWriteParam);
-            ios.close();
-            tempImageFiles.add(tempFile);
-        }
-        writer.dispose();
-        reader.dispose();
-
-        return tempImageFiles;
-    }
+    }//end public static ArrayList<File> createImageFiles(BufferedImage) throws Exception
 
     /**
-     * This method takes an array-list of images and an output file. It writes
-     * all images in the sequence ordered by the array-list provided. Each 
-     * image is converted to B/W before writing out to external tiff file. Note
-     * the file must containt a valid extension. The result is a multi-paged
-     * tiff file, which contains all images given.
-     * @param imageList The list of icon images to write
-     * @param output_file The multi-page tiff output file.
+     * This method takes a list of image files, and an output file with
+     * '.tif' extension and write all images in the input files to this
+     * single output file in sequence. The output file is a uncompressed,
+     * multi-paged 'tiff' image file. Many OCR application support the reading
+     * of such as file.
+     * @param image_file_list The list of files that contain images.
+     * @param output_file The '.tif' output file.
      */
-    public static void createPackedTiff(ArrayList<ImageIcon> imageList, File output_file) {
-        ImageOutputStream ios = null;
-        ImageWriter writer = null;
-        ProgressBar pb = new ProgressBar();
-        try {
-            //Set up the writeParam
-            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
-            
-            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
-
-            //Get tif writer and set output to file
-            Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
-            writer = (ImageWriter) writers.next();
-
-
-            //Get the stream metadata
-            IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
-            ios = ImageIO.createImageOutputStream(output_file);
-            writer.setOutput(ios);
-            writer.prepareWriteSequence(streamMetadata);
-
-            pb.setMinValue(0);
-            pb.setMaxValue(imageList.size());            
-            pb.on();            
-            int i=0;
-            for (ImageIcon image : imageList) {                
-                BufferedImage b_img = JImage.bwConversion(image);
-                IIOImage iio_img = new IIOImage(b_img, null, null);
-                writer.writeToSequence(iio_img, tiffWriteParam);
-                i++;
-                pb.setTitle(_("Packaging image number: " + i));
-                pb.setValue(i);
-            }//end for for (ImageIcon image : imageList)
-        } catch (Exception ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            try {
-                if (ios != null) {
-                    ios.close();
-                }
-                if (writer != null) {
-                    writer.dispose();
-                }
-            } catch (Exception ex) {
-            }
-            pb.off();
-        }
-    }//end public static boolean createImageFiles(ArrayList<ImageIcon> imageList, File output_file) throws Exception
-    public static void createPackedTiff(File[] imageFileList, File output_file) {        
+    public static void createPackedTiff(File[] image_file_list, File output_file) {
         ImageReader reader = null;
         ImageInputStream iis = null;
         ImageOutputStream ios = null;
@@ -223,12 +147,12 @@ public class JImageIOHelper {
             writer.prepareWriteSequence(streamMetadata);
 
             pb.setMinValue(0);
-            pb.setMaxValue(imageFileList.length);            
-            pb.on();            
-            int i=0;
-            for (File imageFile : imageFileList) {
+            pb.setMaxValue(image_file_list.length);
+            pb.on();
+            int i = 0;
+            for (File image_file : image_file_list) {
 
-                String imageFileName = imageFile.getName();
+                String imageFileName = image_file.getName();
                 String imageFormat = imageFileName.substring(imageFileName.lastIndexOf('.') + 1);
 
                 Iterator readers = ImageIO.getImageReadersByFormatName(imageFormat);
@@ -238,7 +162,7 @@ public class JImageIOHelper {
                     continue;
                 }
 
-                iis = ImageIO.createImageInputStream(imageFile);
+                iis = ImageIO.createImageInputStream(image_file);
                 reader.setInput(iis);
 
                 BufferedImage bi = reader.read(0);
@@ -248,7 +172,7 @@ public class JImageIOHelper {
                 i++;
                 pb.setTitle(_("Packaging image file: " + imageFileName));
                 pb.setValue(i);
-                
+
             }//end for for (ImageIcon image : imageList)
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
@@ -269,52 +193,244 @@ public class JImageIOHelper {
                 }
             } catch (Exception ex) {
             }
-            pb.off();            
+            pb.off();
         }
-    }//end public static boolean createImageFiles(ArrayList<ImageIcon> imageList, File output_file) throws Exception
-    public static ArrayList<File> createImageFiles(ArrayList<IIOImage> imageList, int index) throws Exception {
+    }//end public static void createPackedTiff(File[] image_file_list, File output_file) {
+
+    /**
+     * This method takes an array-list of images and an output file. It writes
+     * all images in the sequence ordered by the array-list provided. Each
+     * image is converted to B/W before writing out to external tiff file. Note
+     * the file must containt a valid extension. The result is a multi-paged
+     * tiff file, which contains all images given.
+     * @param imageList The list of icon images to write
+     * @param output_file The multi-page tiff output file.
+     */
+    public static void createPackedTiff(ArrayList<ImageIcon> imageList, File output_file) {
+        ImageOutputStream ios = null;
+        ImageWriter writer = null;
+        ProgressBar pb = new ProgressBar();
+        try {
+            //Set up the writeParam
+            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+
+            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DEFAULT);
+
+            //Get tif writer and set output to file
+            Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+            writer = (ImageWriter) writers.next();
+
+
+            //Get the stream metadata
+            IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
+            ios = ImageIO.createImageOutputStream(output_file);
+            writer.setOutput(ios);
+            writer.prepareWriteSequence(streamMetadata);
+
+            pb.setMinValue(0);
+            pb.setMaxValue(imageList.size());
+            pb.on();
+            int i = 0;
+            for (ImageIcon image : imageList) {
+                BufferedImage b_img = JImage.bwConversion(image);
+                IIOImage iio_img = new IIOImage(b_img, null, null);
+                writer.writeToSequence(iio_img, tiffWriteParam);
+                i++;
+                pb.setTitle(_("Packaging image number: " + i));
+                pb.setValue(i);
+            }//end for for (ImageIcon image : imageList)
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                if (ios != null) {
+                    ios.close();
+                }
+                if (writer != null) {
+                    writer.dispose();
+                }
+            } catch (Exception ex) {
+            }
+            pb.off();
+        }
+    }//end public static void createPackedTiff(ArrayList<ImageIcon> imageList, File output_file) 
+
+    /**
+     * This method takes an image file, with the potential that the file could
+     * contain many images, and convert each image within the input file to a
+     * temporary tiff formatted image file, in the system's temporary directory.
+     * The list of temporary files generated will be returned in a non-null
+     * {@link ArrayList}.
+     * @param imageFile The image file where images are to be extracted
+     * @param index The index of the image within a file. -1 to indicate that
+     * all images are to be extracted.
+     * @return A non-null instance of {@link ArrayList}. The list will containt
+     * a list of temporary tiff image files that it was generated.
+     * @throws java.lang.Exception When an error occurs, a
+     * {@link RuntimeException} will be generated containing the original
+     * exeption information.
+     */
+    public static ArrayList<File> createImageFiles(File imageFile, int index) throws Exception {
+        ImageReader reader = null;
+        ImageInputStream iis = null;
+        ImageOutputStream ios = null;
+        ImageWriter writer = null;
         ArrayList<File> tempImageFiles = new ArrayList<File>();
+        try {
+            String imageFileName = imageFile.getName();
+            String imageFormat = imageFileName.substring(imageFileName.lastIndexOf('.') + 1);
 
-        //Set up the writeParam
-        TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
-        tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+            Iterator readers = ImageIO.getImageReadersByFormatName(imageFormat);
+            reader = (ImageReader) readers.next();
 
-        //Get tif writer and set output to file
-        Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
-        ImageWriter writer = (ImageWriter) writers.next();
+            iis = ImageIO.createImageInputStream(imageFile);
+            reader.setInput(iis);
+            //Read the stream metadata
+            //IIOMetadata streamMetadata = reader.getStreamMetadata();
 
-        //Get the stream metadata
-        IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
+            //Set up the writeParam
+            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
 
-        if (index == -1) {
-            for (IIOImage image : imageList) {
+            //Get tif writer and set output to file
+            Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+            writer = (ImageWriter) writers.next();
+
+            //Read the stream metadata
+            IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
+
+            BufferedImage out;
+            if (index == -1) {
+                int imageTotal = reader.getNumImages(true);
+
+                for (int i = 0; i < imageTotal; i++) {
+                    BufferedImage bi = reader.read(i);
+                    IIOImage image = new IIOImage(bi, null, reader.getImageMetadata(i));
+                    File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
+                    ios = ImageIO.createImageOutputStream(tempFile);
+                    writer.setOutput(ios);
+                    writer.write(streamMetadata, image, tiffWriteParam);
+                    ios.close();
+                    tempImageFiles.add(tempFile);
+                }
+            } else {
+                BufferedImage bi = reader.read(index);
+                IIOImage image = new IIOImage(bi, null, reader.getImageMetadata(index));
                 File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
-                ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
+                ios = ImageIO.createImageOutputStream(tempFile);
+                writer.setOutput(ios);
+                writer.write(streamMetadata, image, tiffWriteParam);
+                ios.close();
+                tempImageFiles.add(tempFile);
+            }//end if/else
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            try {
+                if (iis != null) {
+                    iis.close();
+                }
+                if (reader != null) {
+                    reader.dispose();
+                }
+
+                if (ios != null) {
+                    ios.close();
+                }
+                if (writer != null) {
+                    writer.dispose();
+                }
+            } catch (Exception ex) {
+            }
+            return tempImageFiles;
+        }//end try/catch/finally
+    }//end public static ArrayList<File> createImageFiles(File imageFile, int index) throws Exception
+
+    /**
+     * This method takes an array of images and convert each image to a
+     * temporary tiff formatted image file, in the system's temporary directory.
+     * The list of temporary files generated will be returned in a non-null
+     * {@link ArrayList}. 
+     * @param imageList The list of images to be written to their temporary
+     * files.
+     * @param index The index of the image within a file. -1 to indicate that
+     * all images are to be written.
+     * @return A non-null instance of {@link ArrayList}. The list will containt
+     * a list of temporary tiff image files that it was generated.
+     * @throws java.lang.Exception When an error occurs, 
+     * an instance of {@link RuntimeException} will be generated containing
+     * the original exeption information.
+     */
+    public static ArrayList<File> createImageFiles(ArrayList<IIOImage> imageList, int index) throws Exception {
+        ImageReader reader = null;
+        ImageInputStream iis = null;
+        ImageOutputStream ios = null;
+        ImageWriter writer = null;
+        ArrayList<File> tempImageFiles = new ArrayList<File>();
+        try {
+            //Set up the writeParam
+            TIFFImageWriteParam tiffWriteParam = new TIFFImageWriteParam(Locale.US);
+            tiffWriteParam.setCompressionMode(ImageWriteParam.MODE_DISABLED);
+
+            //Get tif writer and set output to file
+            Iterator writers = ImageIO.getImageWritersByFormatName(TIFF_FORMAT);
+            writer = (ImageWriter) writers.next();
+
+            //Get the stream metadata
+            IIOMetadata streamMetadata = writer.getDefaultStreamMetadata(tiffWriteParam);
+
+            if (index == -1) {
+                for (IIOImage image : imageList) {
+                    File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
+                    ios = ImageIO.createImageOutputStream(tempFile);
+                    writer.setOutput(ios);
+                    writer.write(streamMetadata, image, tiffWriteParam);
+                    ios.close();
+                    tempImageFiles.add(tempFile);
+                }
+            } else {
+                IIOImage image = imageList.get(index);
+                File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
+                ios = ImageIO.createImageOutputStream(tempFile);
                 writer.setOutput(ios);
                 writer.write(streamMetadata, image, tiffWriteParam);
                 ios.close();
                 tempImageFiles.add(tempFile);
             }
-        } else {
-            IIOImage image = imageList.get(index);
-            File tempFile = File.createTempFile(OUTPUT_FILE_NAME, TIFF_EXT);
-            ImageOutputStream ios = ImageIO.createImageOutputStream(tempFile);
-            writer.setOutput(ios);
-            writer.write(streamMetadata, image, tiffWriteParam);
-            ios.close();
-            tempImageFiles.add(tempFile);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            try {
+                if (iis != null) {
+                    iis.close();
+                }
+                if (reader != null) {
+                    reader.dispose();
+                }
+
+                if (ios != null) {
+                    ios.close();
+                }
+                if (writer != null) {
+                    writer.dispose();
+                }
+            } catch (Exception ex) {
+            }
+            return tempImageFiles;
         }
-        writer.dispose();
+    }//end public static ArrayList<File> createImageFiles(ArrayList<IIOImage> imageList, int index) throws Exception 
 
-        return tempImageFiles;
-    }
-
+    /**
+     * Reading a possible multi-paged image file, and return them in a non-null
+     * array.
+     * @param imageFile The possible multi-paged image file.
+     * @return The non-null array which contains the images read from the file.
+     */
     public static ArrayList<IIOImage> getIIOImageList(File imageFile) {
         ImageReader reader = null;
         ImageInputStream iis = null;
-
+        ArrayList<IIOImage> iioImageList = new ArrayList<IIOImage>();
         try {
-            ArrayList<IIOImage> iioImageList = new ArrayList<IIOImage>();
 
             String imageFileName = imageFile.getName();
             String imageFormat = imageFileName.substring(imageFileName.lastIndexOf('.') + 1);
@@ -347,7 +463,7 @@ public class JImageIOHelper {
                     reader.dispose();
                 }
             } catch (Exception e) {
-            // ignore
+                // ignore
             }
         }
     }
