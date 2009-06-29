@@ -66,6 +66,7 @@ public interface CommonDef {
     public static final String UNIX_NL = "\n";
     //public static final String nl = "\\\n";
     public static final String nl = "([\\r\\n]+)";
+    public static final String single_nl = "([\\n])";
     public static final String sp = "([ \\t]+)";
     public static final String white_sp = "(\\p{Space}+)";
     public static final String sp_maybe = "([ \\t]*)";
