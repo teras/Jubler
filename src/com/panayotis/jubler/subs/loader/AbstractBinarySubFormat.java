@@ -33,10 +33,7 @@ import com.panayotis.jubler.subs.events.PostParseActionEventListener;
 import com.panayotis.jubler.subs.events.PreParseActionEvent;
 import com.panayotis.jubler.subs.events.PreParseActionEventListener;
 import java.awt.event.ActionEvent;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -75,6 +72,14 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
         }
     }
 
+    /**
+     * The parsing of the data file. The input data, though has been loaded,
+     * cannot be used 
+     * @param input
+     * @param FPS
+     * @param f
+     * @return
+     */
     public Subtitles parse(String input, float FPS, File f) {
         boolean is_sub_type = isSubType(input, f);
         if (!is_sub_type) {
@@ -98,12 +103,11 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
 
             firePreParseActionEvent();
 
-            FileInputStream fileInputStream = new FileInputStream(f);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, ENCODING);
-            
-            BufferedReader in = new BufferedReader(inputStreamReader);
-            while ((textLine = in.readLine()) != null) {
-                int line_no = processorList.getTextLineNumber() + 1;
+            String[] text_list = input.split(single_nl);
+            for(int i=0; i < text_list.length; i++)
+            {
+                textLine = text_list[i];
+                int line_no = i+1;                
                 processorList.setTextLineNumber(line_no);
                 
                 textLine = textLine.trim();
@@ -115,15 +119,14 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
                 subtitle_list = null;
             } else {
                 firePostParseActionEvent();
-            }//end if
-            processorList.restoreList();
+            }//end if            
             return subtitle_list;
-        } catch (Exception e) {
-            this.processorList.restoreList();
+        } catch (Exception e) {            
             e.printStackTrace(System.out);
             return null;
-        }//end try/catch                
-    //parseBinary(FPS, in);        
+        }finally{
+            processorList.restoreList();
+        }
     }
 
     public void addPostParseActionEventListener(PostParseActionEventListener l) {
