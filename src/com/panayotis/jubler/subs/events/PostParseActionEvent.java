@@ -27,11 +27,7 @@ import java.io.File;
 
 /**
  * This event is generated after the parsing of all data lines have been
- * performed. This event is only generated in the parsing model presented
- * in the {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat},
- * in particular in it's 
- * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#parse parse}
- * method.
+ * performed.
  * There are several parameters that should be filed by routines that generate
  * this event, such as in the
  * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#firePostParseActionEvent 
@@ -45,6 +41,11 @@ import java.io.File;
  *          is passed over from the preferences dialog, when the file is being
  *          loaded.</li>
  * </ol>
+ * At the moment, this is being used in the parsing model using
+ * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat},
+ * in particular the 
+ * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#parse parse}
+ * method. But it can be used in other context where it fits the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class PostParseActionEvent extends ActionEvent {

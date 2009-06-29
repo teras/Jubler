@@ -25,13 +25,29 @@ import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import java.awt.event.ActionEvent;
 
 /**
- * This event is generated after a data line is parsed. 
- * The event is only applied to model which uses the 
- * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat AbstractBinarySubFormat} 
- * parsing model.
+ * This event is generated after a data line is parsed. It can be used to 
+ * signify processors to carry out task that concerns either the parsed object
+ * or the parsing process itself. A typical example is after a subtitle-record
+ * has been created due to the parsing action, it might be necessary to tell
+ * the subtitle-processor to create a new object for the next parsing task,
+ * such as after a subtitle-detail record has been parsed and created, as this
+ * record is the last item in the processing chain of a multi-attributes
+ * subtitle-event, where attributes are set before the detail line (ie. 
+ * {@link com.panayotis.jubler.subs.loader.binary.DVDMaestro}), it is necessary
+ * to tell the processor not to use the current subtitle record, but creating
+ * a new one instead.<br/>
+ * This is currently being used within the 
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList SubtitleProcessorList},
+ * inparticular the 
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList#parse parse} method.
+ * But it can be used
+ * in another context where it fits the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class ParsedDataLineEvent extends ActionEvent {
+    /**
+     * The processor that parsed the data line.
+     */
     private SubtitlePatternProcessor processor = null;
     /**
      * Constructs an <code>ParsedDataLineEvent</code> object.

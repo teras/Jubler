@@ -39,16 +39,20 @@ import java.io.File;
  *          is passed over from the preferences dialog, when the file is being
  *          loaded.</li>
  * </ol>
- * This event is generated before the parsing of a subtitle file is started and
- * only generated within the parsing model presented in the 
- * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat}, 
- * in particular in it's 
+ * The event should be generated before the entire subtitle file is commited
+ * to the parsing loop where individual data lines is examined by 
+ * {@link com.panayotis.jubler.subs.SubtitlePatternProcessor processors}. 
+ * It is the event that occurs at the top of the production line in the
+ * process of parsing a subtitle-data file.<br/><br/>
+ * At the moment, this is being used in the parsing model using
+ * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat},
+ * in particular the
  * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#parse parse}
- * method. 
+ * method. But it can be used in other context where it fits the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class PreParseActionEvent extends ActionEvent {
-
+    
     /**
      * Subitle input file.
      */

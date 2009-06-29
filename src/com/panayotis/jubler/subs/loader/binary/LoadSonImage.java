@@ -45,11 +45,12 @@ import javax.swing.ImageIcon;
  * shown to indicate what images is being loaded.
  * 
  * The list of subtitle records - {@link SonSubEntry} - is used to load the
- * image using its file-name that was parsed from the read subtitle file.
+ * images using its file-name that was parsed from the reading of the 
+ * textual content of the subtitle file.
  * 
- * There is an option to allow searching for missing image manually when
- * a list of default directories have been exhausted. 
- * The list of default directories includes
+ * There is an option to allow manual searching for missing images. Each
+ * image, when loading, is attached to a list of default paths. The list of
+ * default paths includes
  * <ul>
  * <li>Image directory held in the "Directory" element of the header.</li>
  * <li>The directory where the subtitle file resides.</li>
@@ -57,9 +58,9 @@ import javax.swing.ImageIcon;
  * <li>The user's home directory, such as $HOME</li>
  * </ul>
  * 
- * When an image is not found within the default set of directories, use is
- * prompted to search the directory where the missing image can be found. User
- * can choose to 
+ * When an image is not found within the default set of directories, users are
+ * prompted to search for a directory where the missing image might be found. 
+ * User  can choose to: 
  * <ul>
  * <li>Ignore the current missing image.</li>
  * <li>Ignore the current missing image and set the program to not prompt again
@@ -67,10 +68,9 @@ import javax.swing.ImageIcon;
  * <li>Browse directories where images can be found. User can select a file
  * within the directory or just select a directory.</li>
  * </ul>
- * If a directory is chosen, it is added to the top of the searched list
- * and the searching is repeated, and with the lastest directory being on top
- * of the list, the image is likely to be found and loaed within the first turn
- * of the searching loop.
+ * If a directory is chosen, it is added to the top of the default path list
+ * and the searching is repeated. Since the new entry is added to the top of
+ * the list, the last one added will be searched first.
  * 
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */

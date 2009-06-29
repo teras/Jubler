@@ -25,10 +25,12 @@ package com.panayotis.jubler.subs.events;
  * This class provides a template for processes listens to 
  * {@link SubtitleRecordCreatedEvent}. It provides a mechanism for
  * inserting code blocks that must be executed when the event is raised.
- * The event is currently only being used in the 
- * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage},
- * but it can be used by any process which extends 
- * {@link com.panayotis.jubler.subs.SubtitleUpdaterThread}.
+ * <br/><br/>
+ * At the moment, this is being used in the parsing model using
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList},
+ * in particular the
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList#parse parse}
+ * method. But it can be used in other context where it fits the purpose.
  * @author Hoang Duy Tran
  */
 public interface SubtitleRecordCreatedEventListener {

@@ -19,16 +19,22 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
-
 package com.panayotis.jubler.subs.events;
 
 /**
  * This is the template for the {@link PreParsingDataLineActionEvent}'s
  * listener. It provides the entry point for code blocks that must be
- * executed before a data-line is being parsed.
+ * executed before a data-line is being parsed.<br/><br/>
+ * This is currently being used within the 
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList SubtitleProcessorList},
+ * inparticular the 
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList#parse parse} method.
+ * But it can be used
+ * in another context where it fits the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public interface PreParsingDataLineActionEventListener {
+
     /**
      * The entry point for code blocks that must be executed before
      * the parsing of a data line is carried out.

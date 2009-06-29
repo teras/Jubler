@@ -42,7 +42,7 @@ public class NonDuplicatedVector<E> extends Vector<E> {
      * Appends the specified element to the end of this Vector.
      *
      * @param e element to be appended to this Vector
-     * @return {@code true} (as specified by {@link Collection#add})
+     * @return {@code true}
      * @since 1.2
      */
     @Override

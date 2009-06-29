@@ -42,7 +42,12 @@ import java.awt.event.ActionEvent;
  *      <li>The row number of the subtitle entry on the list (ie. it's index).</li>
  * </ol>
  * Processes could make use of these references and perform extra operations,
- * such as firing updated events of the {@link Subtitles}.
+ * such as firing updated events of the {@link Subtitles}.<br/><br/>
+ * This is currently being used within the 
+ * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
+ * which extends the
+ * {@link com.panayotis.jubler.subs.SubtitleUpdaterThread}. But it can be used
+ * in another context where it fit the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SubtitleRecordUpdatedEvent extends ActionEvent {
@@ -68,26 +73,52 @@ public class SubtitleRecordUpdatedEvent extends ActionEvent {
         super(source, id, command);
     }
 
+    /**
+     * Gets the reference to the subtitle entry.
+     * @return The reference to the subtitle entry, 
+     * or null if the reference has not been set.
+     */
     public SubEntry getSubEntry() {
         return subEntry;
     }
 
+    /**
+     * Sets the reference of the subtitle entry.
+     * @param subEntry The reference to the subtitle entry
+     */
     public void setSubEntry(SubEntry subEntry) {
         this.subEntry = subEntry;
     }
 
+    /**
+     * Gets the reference to the subtitle list.
+     * @return Reference to the subtitle list.
+     * or null if the reference has not been set.
+     */
     public Subtitles getSubList() {
         return subList;
     }
 
+    /**
+     * Sets the reference of the subtitle list.
+     * @param subList The reference to the subtitle list.
+     */
     public void setSubList(Subtitles subList) {
         this.subList = subList;
     }
 
+    /**
+     * Gets the row number.
+     * @return The row number, or -1 if the row number has not been  set.
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * Sets the row number.
+     * @param row The row number to be set.
+     */
     public void setRow(int row) {
         this.row = row;
     }

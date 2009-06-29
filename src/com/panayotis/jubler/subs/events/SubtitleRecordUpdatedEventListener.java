@@ -22,8 +22,14 @@
 package com.panayotis.jubler.subs.events;
 
 /**
- *
- * @author Hoang Duy Tran
+ * This class provides a template for code blocks that must be executed
+ * when {@link SubtitleRecordUpdatedEvent} occurs.<br/><br/>
+  * This is currently being used within the 
+ * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
+ * which extends the
+ * {@link com.panayotis.jubler.subs.SubtitleUpdaterThread}. But it can be used
+ * in another context where it fit the purpose.
+* @author Hoang Duy Tran
  */
 public interface SubtitleRecordUpdatedEventListener {
     public void recordUpdated(SubtitleRecordUpdatedEvent e);

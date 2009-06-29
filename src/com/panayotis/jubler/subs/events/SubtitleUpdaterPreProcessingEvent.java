@@ -25,7 +25,12 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionEvent;
 
 /**
- * The event should be fired before the processing loop begins.
+ * The event should be fired before the processing loop begins.<br/><br/>
+ * This is currently being used within the 
+ * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
+ * which extends the
+ * {@link com.panayotis.jubler.subs.SubtitleUpdaterThread}. But it can be used
+ * in another context where it fit the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SubtitleUpdaterPreProcessingEvent extends ActionEvent {

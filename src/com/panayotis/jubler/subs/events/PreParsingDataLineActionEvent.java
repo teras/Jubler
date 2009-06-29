@@ -40,6 +40,12 @@ import java.awt.event.ActionEvent;
  *      information such as 'text input', 'pattern' etc..
  *      </li>
  * </ol>
+ * This is currently being used within the 
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList SubtitleProcessorList},
+ * inparticular the 
+ * {@link com.panayotis.jubler.subs.SubtitleProcessorList#parse parse} method.
+ * But it can be used
+ * in another context where it fits the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class PreParsingDataLineActionEvent extends ActionEvent {

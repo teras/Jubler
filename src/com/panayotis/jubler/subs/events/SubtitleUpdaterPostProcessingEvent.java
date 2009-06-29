@@ -25,11 +25,27 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionEvent;
 
 /**
- * This event should be fired after the processing loop completed.
+ * This event should be fired after the updating processing loop completed.
+ * A typical use of this event is that after the subsequent loading of 
+ * subtitle-images, which is a separate thread, after all the textual components
+ * of the subtitle event has been processed, it is necessary to allow external
+ * processors to be informed of the event, allowing to setup code blocks that
+ * must be executed after the updating process has completed, such as in
+ * {@link  com.panayotis.jubler.tools.duplication.SplitSONSubtitleAction
+ * SplitSONSubtitleAction} application, where subtitle file must be loaded
+ * off-line and process in a batch-mode style. As image loading is performed
+ * after the whole textual content of the subtitle file was parsed, 
+ * the code that must be performed after the entire process is completed 
+ * must listen to this event.<br/><br/>
+ * This is currently being used within the 
+ * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
+ * which extends the
+ * {@link com.panayotis.jubler.subs.SubtitleUpdaterThread}. But it can be used
+ * in another context where it fit the purpose.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SubtitleUpdaterPostProcessingEvent extends ActionEvent {
-
+     
     private Subtitles subList = null;
     
     /**
