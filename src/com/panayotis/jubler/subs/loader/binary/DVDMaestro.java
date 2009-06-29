@@ -289,7 +289,8 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
      * so that external components can place extra code that perform actions
      * after the images has been loaded.
      */
-    private Collection<SubtitleUpdaterPostProcessingEventListener> postImageLoadActions = null;
+    private Collection<SubtitleUpdaterPostProcessingEventListener> postImageLoadActions = 
+           new Vector<SubtitleUpdaterPostProcessingEventListener>();
 
     /**
      * The post parsing action, loading SON images. Also added the collection
@@ -490,10 +491,6 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
 
     public Collection<SubtitleUpdaterPostProcessingEventListener> getPostImageLoadActions() {
         return postImageLoadActions;
-    }
-
-    public void setPostImageLoadActions(Collection<SubtitleUpdaterPostProcessingEventListener> postImageLoadActions) {
-        this.postImageLoadActions = postImageLoadActions;
     }
 }//end public class DVDMaestro extends AbstractBinarySubFormat
 
