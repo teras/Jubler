@@ -190,10 +190,8 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
                 }//end public void postParseAction(PostParseActionEvent e) 
             };//end PostParseActionEventListener postImageLoadListener = new PostParseActionEventListener()
 
-            Collection<SubtitleUpdaterPostProcessingEventListener> post_load_image_lc =
-                    new Vector<SubtitleUpdaterPostProcessingEventListener>();
-            post_load_image_lc.add(postImageLoadListener);
-            sub_loader.setPostImageLoadActions(post_load_image_lc);
+            sub_loader.getPostImageLoadActions().clear();
+            sub_loader.getPostImageLoadActions().add(postImageLoadListener);            
 
             //Tell it not to load images as this is the cause for memory
             //shortage problem.
