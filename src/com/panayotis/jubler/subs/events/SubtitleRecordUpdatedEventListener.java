@@ -23,7 +23,7 @@ package com.panayotis.jubler.subs.events;
 
 /**
  * This class provides a template for code blocks that must be executed
- * when {@link SubtitleRecordUpdatedEvent} occurs.<br/><br/>
+ * when {@link SubtitleRecordUpdatedEvent} occurs.<br><br>
   * This is currently being used within the 
  * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
  * which extends the

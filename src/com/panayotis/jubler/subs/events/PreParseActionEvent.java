@@ -43,7 +43,7 @@ import java.io.File;
  * to the parsing loop where individual data lines is examined by 
  * {@link com.panayotis.jubler.subs.SubtitlePatternProcessor processors}. 
  * It is the event that occurs at the top of the production line in the
- * process of parsing a subtitle-data file.<br/><br/>
+ * process of parsing a subtitle-data file.<br><br>
  * At the moment, this is being used in the parsing model using
  * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat},
  * in particular the

@@ -42,7 +42,7 @@ import java.awt.event.ActionEvent;
  *      <li>The row number of the subtitle entry on the list (ie. it's index).</li>
  * </ol>
  * Processes could make use of these references and perform extra operations,
- * such as firing updated events of the {@link Subtitles}.<br/><br/>
+ * such as firing updated events of the {@link Subtitles}.<br><br>
  * This is currently being used within the 
  * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
  * which extends the

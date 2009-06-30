@@ -28,15 +28,18 @@ import java.util.regex.Pattern;
 /**
  * This is a template for pattern processor. It's incharge of pattern
  * matching, using the pre-defined pattern (the workPattern), and returns
- * the matched groups. The orginal list of group - from the Pattern.matcher() -
- * is returned if the matchIndexList is null, otherwise indexes from the
- * list is used to obtain the parsed data, resulting in a zero-based ordered 
- * list of the matching result, so instead of having to access to
+ * the matched groups of data. 
+ * The orginal list of group - from the Pattern.matcher() -
+ * is returned if the {@link #matchIndexList}  
+ * is null, otherwise indexes from the
+ * list are used to obtain the parsed data, 
+ * resulting in a zero-based ordered 
+ * list of the matching results, so instead of having to access to
  * individual data item using the index from the original group list, 
  * programmers can use zero as the first item, one for second item and so on.
- * <pre>
+ * <br>
  * example:
- * 
+ * <pre>
  * private String pattern = digits + sp + son_time + sp + son_time + sp + printable;
  * int index[] = new int[]{1, 3, 4, 5, 6, 8, 9, 10, 11, 13};
  * public SONSubtitleEvent() {
@@ -60,9 +63,10 @@ import java.util.regex.Pattern;
  * }
  * </pre>
  * 
- * To work out the indexes, either count the pattern, or do not set index,
+ * To work out the indexes, either count the patterns, or do not set index
+ * at all,
  * leaving it to null. The pattern matched result will return in the 
- * matched_data.
+ * array <code>matched_data</code>.
  * @author Hoang Duy Tran <hoang_tran>
  */
 public abstract class SubtitlePatternProcessor {

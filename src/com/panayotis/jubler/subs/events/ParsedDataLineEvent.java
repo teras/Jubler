@@ -25,6 +25,7 @@ import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import java.awt.event.ActionEvent;
 
 /**
+ * <p>
  * This event is generated after a data line is parsed. It can be used to 
  * signify processors to carry out task that concerns either the parsed object
  * or the parsing process itself. A typical example is after a subtitle-record
@@ -35,13 +36,14 @@ import java.awt.event.ActionEvent;
  * subtitle-event, where attributes are set before the detail line (ie. 
  * {@link com.panayotis.jubler.subs.loader.binary.DVDMaestro}), it is necessary
  * to tell the processor not to use the current subtitle record, but creating
- * a new one instead.<br/>
+ * a new one instead.</p><p>
  * This is currently being used within the 
  * {@link com.panayotis.jubler.subs.SubtitleProcessorList SubtitleProcessorList},
  * inparticular the 
  * {@link com.panayotis.jubler.subs.SubtitleProcessorList#parse parse} method.
  * But it can be used
  * in another context where it fits the purpose.
+ * </p>
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class ParsedDataLineEvent extends ActionEvent {

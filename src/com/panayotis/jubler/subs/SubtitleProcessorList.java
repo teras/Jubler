@@ -39,40 +39,61 @@ import java.util.logging.Level;
  *
  * This class is used to hold the list of {@link SubtitlePatternProcessor}s,
  * each will be in charge of a recognising and parsing a data line. 
- * There are a groups of action events to be fired:
+ * There are a group of action events to be fired:
+ * 
  * <ul>
- * <li>{@link PreParsingDataLineActionEvent}</li> Occurs before the data line is parsed.
+ * <li>{@link PreParsingDataLineActionEvent}</li> 
+ * Occurs before the data line is parsed.
  * It is possible to set flag to ignore the data line using 
- * {@link #setIgnoreData(boolean)}
- * <li>{@link SubtitleRecordCreatedEvent}</li> Occurs before the data line is parsed and
- * when either {@link #isCreateNewObject()}flag is set or the reference to the
- * target object of the {@link SubtitlePatternProcessor} is "null". Initialisation
- * to the created object or changing the state of the 
- * {@link SubtitlePatternProcessor}s are possible using this event. Record 
+ * {@link #setIgnoreData setIgnoreData}
+ * <li>{@link SubtitleRecordCreatedEvent}</li> 
+ * Occurs before the data line is parsed and when either 
+ * {@link #isCreateNewObject isCreateNewObject}
+ * flag is set or the reference to the target object of the 
+ * {@link SubtitlePatternProcessor} 
+ * is "null". 
+ * Initialisation to the created object or changing the state of the 
+ * {@link SubtitlePatternProcessor} are possible using this event. Record 
  * creation is possible using the name of the target class, therefore the
- * {@link SubtitlePatternProcessor}'s getTargetObjectClassName() is used. 
- * As this uses the Class.forname().newInstance(), the default constructor is
- * used and no parameterised constructors are recognised.
- * <li>{@link ParsedDataLineEvent}</li> Occurs after the data line has been parsed by a
- * SubtitlePatternProcessor. Resetting of the {@link #isCreateNewObject()} flag
- * is possible within this event to commence the creation of a new record on the
- * next parsing turn.
+ * {@link SubtitlePatternProcessor#getTargetObjectClassName 
+ * getTargetObjectClassName} is used. 
+ * As this uses the <code>Class.forname(String).newInstance()</code>, 
+ * the default constructor of the target class is called 
+ * and no parameterised constructors are recognised.
+ * <li>{@link ParsedDataLineEvent}</li> 
+ * Occurs after the data line has been parsed by a
+ * {@link SubtitlePatternProcessor}. 
+ * Resetting of the {@link #isCreateNewObject isCreateNewObject} 
+ * flag is possible within this event to commence the creation of 
+ * a new record on the next parsing turn.
  * </ul>
- * The {@link #parse} routine also removes the {@link SubtitlePatternProcessor}
- * from the list after it has completed parsing the data line it's set to
- * removable. This is to avoid the unnecessary testing of pattern in the next
- * run, when the pattern is known to be occurred only once. Voluntary removal 
- * of processors is possible within processing events, for instance after a
- * certain point of processing occured. Instance of 
+ * 
+ * The {@link #parse parse} routine also removes the 
+ * {@link SubtitlePatternProcessor}
+ * from the list after it has completed parsing the data line and 
+ * it's set to be {@link SubtitlePatternProcessor#isRemovable isRemovable}. 
+ * This is to avoid the unnecessary testing of pattern in the next
+ * run, when the pattern is known to be occurred only once. 
+ * 
+ * Voluntary removal of processors is possible within processing events, 
+ * for instance after a certain point of processing occured. Instance of 
  * {@link SubtitlePatternProcessor} must have access to the 
- * SubtitleProcessorList in order to do this.
- * The {@link #parse()} routine terminates after an instance of 
+ * {@link SubtitleProcessorList} in order to do this.
+ * 
+ * The {@link #parse parse} routine terminates after an instance of 
  * {@link SubtitlePatternProcessor} processed its data. 
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
 
-    private Vector<SubtitlePatternProcessor> patternProcessorListCopy = new Vector<SubtitlePatternProcessor>();
+    /**
+     * A copy of processors and their orders are kept in this list. This
+     * list is used to restore the list of processors when the parsing of
+     * a data file is completed, ready for the next data file. It is doing
+     * so to avoid the removed processors will be missed in the next task.
+     */
+    private Vector<SubtitlePatternProcessor> patternProcessorListCopy =
+            new Vector<SubtitlePatternProcessor>();
     private Vector<SubtitleRecordCreatedEventListener> recordCreatedEventList = new Vector<SubtitleRecordCreatedEventListener>();
     private Vector<ParsedDataLineEventListener> parsedEventList = new Vector<ParsedDataLineEventListener>();
     private Vector<PreParsingDataLineActionEventListener> preParsingEventList = new Vector<PreParsingDataLineActionEventListener>();
@@ -83,9 +104,9 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
     private File inputFile = null;
     private boolean createNewObject = false;
     private Object createdRecord = null;
-    private boolean ignoreData = false;    
+    private boolean ignoreData = false;
     private SubtitlePatternProcessor currentProcessor = null;
-    private boolean isFound = false;
+    private boolean found = false;
 
     public SubtitleProcessorList() {
         super();
@@ -325,13 +346,11 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
         this.ignoreData = ignoreData;
     }
 
-    
     public void parse(String input_data) {
         setInputData(input_data);
         parse();
     }
 
-   
     public void parse() {
         try {
             for (int i = 0; i < this.size(); i++) {
@@ -348,34 +367,38 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
                     setIgnoreData(false);
                     return;
                 }//end if
-                
-                String[] matched_data = ps.matchPattern();
-                isFound = (matched_data != null);
-                if (isIsFound()) {
-                    boolean is_create_new = (ps.getTargetObject() == null || this.isCreateNewObject());
-                    if (is_create_new) {
-                        String class_name = ps.getTargetObjectClassName();
-                        boolean is_empty = Share.isEmpty(class_name);
-                        if (is_empty) {
-                            String msg = "Cannot create new record. Processor: [" + ps.getClass().getName() + "]. Reason: target object class name is empty.";
-                            DEBUG.logger.log(Level.SEVERE, msg);
-                            throw new Exception(msg);
-                        }//if (is_empty)
-                        Object new_object = Class.forName(class_name).newInstance();
-                        ps.setTargetObject(new_object);
-                        setCreateNewObject(false);
-                        setCreatedRecord(new_object);
-                        fireSubtitleRecordCreatedEvent();
-                    }//end if (is_create_new)
 
-                    ps.parsePattern(matched_data, ps.getTargetObject());
-                    fireSubtitleDataParsedEvent();
-                    boolean is_remove = ps.isRemovable();
-                    if (is_remove) {
-                        this.remove(ps);
-                    }//end if (is_remove)
-                    return;
-                }//end if (is_found)
+                String[] matched_data = ps.matchPattern();
+                found = (matched_data != null);
+                if (!isFound()) {
+                    continue;
+                }
+
+                // found a processor that can process the data line.
+                boolean is_create_new = (ps.getTargetObject() == null || this.isCreateNewObject());
+                if (is_create_new) {
+                    String class_name = ps.getTargetObjectClassName();
+                    boolean is_empty = Share.isEmpty(class_name);
+                    if (is_empty) {
+                        String msg = "Cannot create new record. Processor: [" + ps.getClass().getName() + "]. Reason: target object class name is empty.";
+                        DEBUG.logger.log(Level.SEVERE, msg);
+                        throw new Exception(msg);
+                    }//if (is_empty)
+                    Object new_object = Class.forName(class_name).newInstance();
+                    ps.setTargetObject(new_object);
+                    setCreateNewObject(false);
+                    setCreatedRecord(new_object);
+                    fireSubtitleRecordCreatedEvent();
+                }//end if (is_create_new)
+
+                Object target_obj = ps.getTargetObject();
+                ps.parsePattern(matched_data, target_obj);
+                fireSubtitleDataParsedEvent();
+                boolean is_remove = ps.isRemovable();
+                if (is_remove) {
+                    this.remove(ps);
+                }//end if (is_remove)
+                return;
             }//end for (int i = 0; i < this.getPatternList().size(); i++) 
         } catch (Exception e) {
             e.printStackTrace(System.out);
@@ -401,8 +424,8 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
         return currentProcessor;
     }
 
-    public boolean isIsFound() {
-        return isFound;
+    public boolean isFound() {
+        return found;
     }
 }//public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor>
 

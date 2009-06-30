@@ -42,10 +42,10 @@ import java.util.logging.Level;
  * using a loop to call individual SubtitleProcessor to parse the data line
  * that is read by the loop. The loop is surrounded by a PreParseActionEvent and 
  * a PostParseActionEvent, making it possible to re-initialise processor list
- * and post-processing the subtitle-list that is the result of the parsing.
+ * and post-processing the loaded subtitle records. 
  * Processing of the data line is done within the 
- * {@link com.panayotis.jubler.subs.SubtitlePatternProcessor SubtitlePatternProcessor}'s 
- * parse routine.
+ * {@link com.panayotis.jubler.subs.SubtitlePatternProcessor#parsePattern parsePattern}
+ * routine.
  * 
  * @see com.panayotis.jubler.subs.SubtitlePatternProcessor
  * @author teras & Hoang Duy Tran

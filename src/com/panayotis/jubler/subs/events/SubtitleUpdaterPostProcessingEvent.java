@@ -36,7 +36,7 @@ import java.awt.event.ActionEvent;
  * off-line and process in a batch-mode style. As image loading is performed
  * after the whole textual content of the subtitle file was parsed, 
  * the code that must be performed after the entire process is completed 
- * must listen to this event.<br/><br/>
+ * must listen to this event.<br><br>
  * This is currently being used within the 
  * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
  * which extends the

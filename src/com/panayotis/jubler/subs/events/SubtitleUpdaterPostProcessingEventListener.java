@@ -23,7 +23,7 @@ package com.panayotis.jubler.subs.events;
 
 /**
  * The template provides a mechanism for code blocks the be executed when
- * {@link SubtitleUpdaterPostProcessingEvent} occurs.<br/><br/>
+ * {@link SubtitleUpdaterPostProcessingEvent} occurs.<br><br>
  * This is currently being used within the 
  * {@link com.panayotis.jubler.subs.loader.binary.LoadSonImage LoadSonImage} 
  * which extends the

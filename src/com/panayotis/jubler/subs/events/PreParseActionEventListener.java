@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs.events;
 /**
  * This class is the templates for {@link PreParseActionEvent}'s listener.
  * The listener provides entry point for code blocks that must be executed
- * before the parsing action begins.<br/><br/>
+ * before the parsing action begins.<br><br>
  * At the moment, this is being used in the parsing model using
  * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat},
  * in particular the

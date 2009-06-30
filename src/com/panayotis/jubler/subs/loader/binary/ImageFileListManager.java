@@ -78,10 +78,21 @@ public class ImageFileListManager implements CommonDef {
     private File lastSearchedPath = null;
     private File imageFilePath = null;
     
+    /**
+     * The default constructor. Initialise the path-list by adding default
+     * paths to the local searchable list.
+     */
     public ImageFileListManager() {
         initPathList();
     }
 
+    /**
+     * Peforms the default constructor's tasks, and then
+     * set the reference of the input subtitle list to the local
+     * reference.
+     * @param sub_list The external subtitle-list whose images will be 
+     * searched and located.
+     */
     public ImageFileListManager(Subtitles sub_list) {
         this();
         this.subList = sub_list;
@@ -178,7 +189,7 @@ public class ImageFileListManager implements CommonDef {
      * @return The full-path of the image, null if the user has chosen to 
      * ignore it, or abandon the searching altogether.
      */
-    private File locateFile(String image_filename) {
+    public File locateFile(String image_filename) {
         boolean is_found = false;
         boolean is_continue = true;
         File located_file = null;
@@ -193,7 +204,7 @@ public class ImageFileListManager implements CommonDef {
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }
-        return located_file;
+        return located_file;         
     }//private void locateFile()
     /**
      * Display an option panel which allows, among other options,
@@ -246,10 +257,30 @@ public class ImageFileListManager implements CommonDef {
         return null;
     }
 
+    /**
+     * Checks to see if the flag set to remind the missing image is turned
+     * on or not. This flag, when set to on, will prompt a dialog allowing
+     * users to manually locate the directory where the missing image can
+     * be found. When this flag is turned off and the image is not found
+     * no images will be loaded if the image is missing.
+     * @return true of the flag set to remind the missing image is turned on,
+     * false otherwise.
+     * @see #locateFile
+     */
     public boolean isRemindMissingImage() {
         return remindMissingImage;
     }
 
+    /**
+     * Sets the flag to remind the missing image. 
+     * This flag, when set to on, will prompt a dialog allowing
+     * users to manually locate the directory where the missing image can
+     * be found. When this flag is turned off and the image is not found
+     * no images will be loaded if the image is missing.
+     * @param aRemindMissingImage true of the flag set to remind the missing image is turned on,
+     * false otherwise.
+     * @see #locateFile
+     */
     public void setRemindMissingImage(boolean aRemindMissingImage) {
         remindMissingImage = aRemindMissingImage;
     }
