@@ -42,8 +42,6 @@ public class DropDownFunctionList {
         FN_MOVE_TEXT_DOWN,
         FN_INSERT_BLANK_LINE_ABOVE,
         FN_INSERT_BLANK_LINE_BELOW,
-        FN_IMPORT_COMPONENT,
-        FN_APPEND_FROM_FILE
     };
     /**
      * This is used to simplify the function selection, a translation
@@ -55,8 +53,6 @@ public class DropDownFunctionList {
         FunctionList.FN_MOVE_TEXT_DOWN,
         FunctionList.FN_INSERT_BLANK_LINE_ABOVE,
         FunctionList.FN_INSERT_BLANK_LINE_BELOW,
-        FunctionList.FN_IMPORT_COMPONENT,
-        FunctionList.FN_APPEND_FROM_FILE
     };
 
     /**
@@ -92,8 +88,6 @@ public class DropDownFunctionList {
         _("Move text down"),
         _("Blank line above"),
         _("Blank line below"),
-        _("Import component"),
-        _("Append from file")
     };    
     
 }//end public class DropDownFunctionList
