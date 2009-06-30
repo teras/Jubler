@@ -77,7 +77,7 @@ import java.util.regex.Pattern;
  * This file is used to read, parse and produce SON subtitle format with images.
  * The example for index file which hold reference to images is shown here:
  * </p>
- * <pre>
+ * <blockquote><pre>
  * st_format	2
  * Display_Start	non_forced
  * TV_Type		PAL
@@ -99,13 +99,13 @@ import java.util.regex.Pattern;
  * Contrast	(0 15 15 15)
  * Display_Area	(000 446 720 518)
  * 0001		00:00:11:01	00:00:15:08	Edwardians In Colour _st00001p1.bmp
- * </pre>
+ * </pre></blockquote>
  * <p>
  * The file has a header section (from "st_format" to "Directory") and the line
  * 
- * <pre>
+ * <blockquote><pre>
  * "SP_NUMBER	START		END		FILE_NAME"
- * </pre>
+ * </pre></blockquote>
  * 
  * is used as a signature for the format. This is the line that the format
  * loader uses to recognise if the file is the right format for this loader.
@@ -304,7 +304,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         getDetailProcessorListGroup().clear();
         getDetailProcessorListGroup().add(new SONSubtitleEvent());
 
-        processorList = new SubtitleProcessorList();
+        processorList.clear();
         processorList.addAll(getHeaderProcessorListGroup());
         processorList.addAll(getAttributeProcessorListGroup());
         processorList.addAll(getDetailProcessorListGroup());
@@ -351,7 +351,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         processorList.setAllTargetObject(getHeaderProcessorListGroup(), null);
         processorList.setAllTargetObject(getAttributeProcessorListGroup(), null);
         processorList.setAllTargetObject(getDetailProcessorListGroup(), null);
-        processorList.setCreateNewObject(true);
+        processorList.setCreateNewObject(true);        
     }
 
     /**<p>

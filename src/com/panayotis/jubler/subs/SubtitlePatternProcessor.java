@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * programmers can use zero as the first item, one for second item and so on.
  * <br>
  * example:
- * <pre>
+ * <blockquote><pre>
  * private String pattern = digits + sp + son_time + sp + son_time + sp + printable;
  * int index[] = new int[]{1, 3, 4, 5, 6, 8, 9, 10, 11, 13};
  * public SONSubtitleEvent() {
@@ -61,7 +61,7 @@ import java.util.regex.Pattern;
  *          sonSubEntry.image_filename = matched_data[9];
  *      }//end if
  * }
- * </pre>
+ * </pre></blockquote>
  * 
  * To work out the indexes, either count the patterns, or do not set index
  * at all,

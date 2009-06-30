@@ -162,7 +162,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
 
     private void definePatternList() {
         init();
-        processorList = new SubtitleProcessorList();
+        processorList.clear();
         layoutDataItemProcessor = new TMPGencLayoutDataItem();
         layoutDataExItemProcessor = new TMPGencLayoutExDataItem();
         subtitleEventProcessor = new TMPGencSubtitleEvent();

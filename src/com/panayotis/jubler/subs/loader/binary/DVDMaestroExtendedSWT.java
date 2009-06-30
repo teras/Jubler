@@ -49,7 +49,7 @@ import java.util.regex.Pattern;
  * <p>
  * The example for index file which hold reference to images and text
  * is shown here:</p>
- *<pre>
+ *<blockquote><pre>
  * st_format	2
  * Display_Start	non_forced
  * TV_Type		PAL
@@ -78,7 +78,7 @@ import java.util.regex.Pattern;
  * 0002		00:00:15:23	00:00:19:11	Edwardians In Colour _st00002p1.bmp
  * <i><font color=blue>on a transatlantic voyage
  * to New York.</font></i>
- * </pre>
+ * </pre></blockquote>
  * <p>
  * The file has a header section (from "st_format" to "Directory") and the line
  * 
@@ -167,8 +167,8 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
     /**
      * Cheks to see if the data line input is empty or not.
      * If it is empty then it signifies a change in the data block.
-     * Check to see a subtitle entry (detail) record has been created.
-     * If it has, then it means that old an instance of {@link SWTSubEntry}
+     * Check to see if a subtitle entry (detail) record has been created.
+     * If it has, then it means that an old instance of {@link SWTSubEntry}
      * has been parsed successfully, and a new record 
      * must now be created to hold the next block of data.
      * @param input The text line input.
