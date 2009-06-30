@@ -57,8 +57,8 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
     protected Subtitles subtitle_list = null;
     protected SubtitleProcessorList processorList = null;
     protected File subtitleFile = null;
-    private String textLine = null;
-    private String inputData = null;
+    protected String textLine = null;
+    protected String inputData = null;
 
     @Override
     public void init() {
@@ -103,17 +103,7 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
 
             firePreParseActionEvent();
 
-            String[] text_list = input.split(single_nl);
-            for(int i=0; i < text_list.length; i++)
-            {
-                textLine = text_list[i];
-                int line_no = i+1;                
-                processorList.setTextLineNumber(line_no);
-                
-                textLine = textLine.trim();
-                processorList.setTextLine(textLine);
-                processorList.parse();
-            }//end while
+            parsingData();
             
             if (subtitle_list.isEmpty()) {
                 subtitle_list = null;
@@ -121,12 +111,35 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
                 firePostParseActionEvent();
             }//end if            
             return subtitle_list;
-        } catch (Exception e) {            
+        } catch (Exception e) {
             e.printStackTrace(System.out);
             return null;
-        }finally{
+        } finally {
             processorList.restoreList();
         }
+    }
+
+    /**
+     * Default line by line parsing. This routine split the textual
+     * content into lines at the single new-line ('\n') character.
+     * This will gives each separacte text line on a new-line of the
+     * array list, including the empty line that separate blocks.
+     * Each processor in the processor list will take turns to 
+     * process the text line. Extended classes can override this routine
+     * to modify the behaviour of the parsing model.
+     */
+    protected void parsingData() {
+        String input = processorList.getInputData();
+        String[] text_list = input.split(single_nl);
+        for (int i = 0; i < text_list.length; i++) {
+            textLine = text_list[i];
+            int line_no = i + 1;
+            processorList.setTextLineNumber(line_no);
+
+            textLine = textLine.trim();
+            processorList.setTextLine(textLine);
+            processorList.parse();
+        }//end while         
     }
 
     public void addPostParseActionEventListener(PostParseActionEventListener l) {
@@ -196,6 +209,6 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
         this.textLine = textLine;
     }
 
-    public abstract boolean isSubType(String input, File f);    
+    public abstract boolean isSubType(String input, File f);
     //protected abstract void parseBinary(float FPS, BufferedReader in);    
 }
