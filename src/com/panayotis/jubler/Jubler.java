@@ -2306,12 +2306,6 @@ private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
             insertBlankLine.setAbove(false);
             insertBlankLine.actionPerformed(evt);
             break;
-        case FN_IMPORT_COMPONENT:
-            importComponent.actionPerformed(evt);
-            break;
-        case FN_APPEND_FROM_FILE:
-            appendFromFile.actionPerformed(evt);
-            break;
         case FN_GOTO_LINE:
             this.gotoLine();
             break;
