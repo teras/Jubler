@@ -138,19 +138,6 @@ public class ImageFileListManager implements CommonDef {
      * @return The located file or null if the search is exausted and not
      * file matching that name has been found.
      */
-    private File automaticFindImageFileInSearchPath(String image_filename) {
-        boolean is_found = false;
-        File located_file = null;
-        for (int i = 0; i < searchPathList.size(); i++) {
-            lastSearchedPath = searchPathList.elementAt(i);
-            located_file = new File(lastSearchedPath, image_filename);
-            is_found = located_file.exists() && (!located_file.isDirectory());
-            if (is_found) {
-                return located_file;
-            }//end if (is_found)
-        }//end for (File search_dir : path_list) 
-        return null;
-    }//end private File findImageInSearchPath(String image_filename)
     /**
      * Manually find the image using a diaglog. User have the option of
      * selecting a correct directory or a file, where images can be found,
@@ -164,6 +151,19 @@ public class ImageFileListManager implements CommonDef {
      * found, or false if the user has either choosen not to load the current 
      * image, or decided to ignore the whole searching process.
      */
+    private File automaticFindImagePath(String image_filename) {
+        boolean is_found = false;
+        File located_file = null;
+        for (int i = 0; i < searchPathList.size(); i++) {
+            lastSearchedPath = searchPathList.elementAt(i);
+            located_file = new File(lastSearchedPath, image_filename);
+            is_found = located_file.exists() && (!located_file.isDirectory());
+            if (is_found) {
+                return located_file;
+            }//end if (is_found)
+        }//end for (File search_dir : path_list) 
+        return null;
+    }//end private File findImageInSearchPath(String image_filename)
     private boolean manualFindImagePath(String image_filename, File root_dir) {
         //manually locate the file
         File new_dir = findImageDirectory(image_filename, root_dir);
@@ -195,7 +195,7 @@ public class ImageFileListManager implements CommonDef {
         File located_file = null;
         try {
             while (is_continue && (!is_found) && isRemindMissingImage()) {
-                located_file = automaticFindImageFileInSearchPath(image_filename);
+                located_file = automaticFindImagePath(image_filename);
                 is_found = (!Share.isEmpty(located_file));
                 if (!is_found) {
                     is_continue = manualFindImagePath(image_filename, imageFilePath);
