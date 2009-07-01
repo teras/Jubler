@@ -452,10 +452,6 @@ is divided into following sections:
                 <globmapper from="*" to="lib/*"/>
             </chainedmapper>
         </pathconvert>
-        <taskdef classname="org.netbeans.modules.java.j2seproject.copylibstask.CopyLibs" classpath="${libs.CopyLibs.classpath}" name="copylibs"/>
-        <copylibs compress="${jar.compress}" jarfile="${dist.jar}" runtimeclasspath="${run.classpath.without.build.classes.dir}">
-            <fileset dir="${build.classes.dir}"/>
-        </copylibs>
     </target>
     <target name="-post-jar">
         <!-- Empty placeholder for easier customization. -->
