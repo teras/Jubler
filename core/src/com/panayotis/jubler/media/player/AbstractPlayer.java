@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.Networking;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
 import java.util.StringTokenizer;
@@ -121,6 +122,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));
         replaceValues(cmds, "%j", SystemFileFinder.getJublerAppPath());
+        replaceValues(cmds, "%i",Integer.toOctalString(Networking.getRandomPort()));
         
         StringBuffer cm = new StringBuffer();
         for (int i = 0 ; i < cmds.length ; i++) {

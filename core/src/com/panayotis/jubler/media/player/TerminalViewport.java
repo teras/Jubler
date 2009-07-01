@@ -4,34 +4,36 @@
  */
 package com.panayotis.jubler.media.player;
 
+import com.panayotis.jubler.media.player.terminals.PlayerTerminal;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 /**
  *
  * @author teras
  */
-public abstract class ServerViewport extends ExternalViewport {
+public abstract class TerminalViewport extends ExternalViewport {
 
-    protected Process proc;
+    protected PlayerTerminal terminal;
     protected BufferedWriter cmdpipe;
-    protected BufferedReader infopipe;
+    protected BufferedReader outpipe;
     protected BufferedReader errorpipe;
-    protected Thread out_t,  error_t;
+    protected Thread out_t, error_t;
+    private final TerminalViewport self;
 
     protected abstract String[] getPostInitCommand();
 
-    public ServerViewport(AbstractPlayer player) {
+    public TerminalViewport(AbstractPlayer player, PlayerTerminal terminal) {
         super(player);
+        this.terminal = terminal;
+        self = this;
     }
 
     protected void sendData(String data) throws IOException {
-        if (cmdpipe==null)
+        if (cmdpipe == null)
             throw new IOException("Can not receive commands, pipe non existent.");
         cmdpipe.write(data + "\n");
         cmdpipe.flush();
@@ -42,10 +44,7 @@ public abstract class ServerViewport extends ExternalViewport {
             out_t.join(500);
         } catch (InterruptedException ex) {
         }
-        
-        if (proc != null)
-            proc.destroy();
-        proc = null;
+        terminal.terminate();
         try {
             cmdpipe.close();
         } catch (IOException ce) {
@@ -61,14 +60,12 @@ public abstract class ServerViewport extends ExternalViewport {
         isPaused = false;
 
         try {
-            proc = Runtime.getRuntime().exec(cmd);
+            terminal.start(cmd);
+            cmdpipe = terminal.getCmdPipe();
+            outpipe = terminal.getOutPipe();
+            errorpipe = terminal.getErrorPipe();
 
-
-            cmdpipe = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
-            infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            errorpipe = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-
-            if (infopipe == null || cmdpipe == null || proc == null)
+            if (outpipe == null || cmdpipe == null)
                 throw new ExtProgramException(new NullPointerException());
 
             out_t = new OutputParser();
@@ -89,20 +86,10 @@ public abstract class ServerViewport extends ExternalViewport {
         public void run() {
             String info;
             try {
-                int first, second;
-                while ((info = infopipe.readLine()) != null) {
-                    first = info.indexOf("V:");
-                    if (first >= 0) {
-                        first++;
-                        while (info.charAt(++first) == ' ');
-                        second = first;
-                        while (info.charAt(++second) != ' ');
-                        position = getDouble(info.substring(first, second).trim());
-                    } else {
-                        DEBUG.debug("[Player] " + info);
-                        if (info.startsWith("ANS_volume"))
-                            feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=') + 1)) / 100f);
-                    }
+                while ((info = outpipe.readLine()) != null) {
+                    info = terminal.parseOutStream(info, feedback, self);
+                    if (info != null)
+                        DEBUG.debug("[" + player.getName() + "] " + info);
                 }
             } catch (IOException e) {
             }
@@ -118,10 +105,17 @@ public abstract class ServerViewport extends ExternalViewport {
         public void run() {
             String info;
             try {
-                while ((info = errorpipe.readLine()) != null)
-                    DEBUG.debug("[Player] " + info);
+                while ((info = errorpipe.readLine()) != null) {
+                    info = terminal.parseErrorStream(info, feedback, self);
+                    if (info != null)
+                        DEBUG.debug("*" + player.getName() + "* " + info);
+                }
             } catch (IOException e) {
             }
         }
+    }
+
+    public void setPosition(double position) {
+        this.position = position;
     }
 }

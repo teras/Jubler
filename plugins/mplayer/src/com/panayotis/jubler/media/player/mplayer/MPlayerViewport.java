@@ -22,17 +22,17 @@ package com.panayotis.jubler.media.player.mplayer;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-import com.panayotis.jubler.media.player.CommandLineViewport;
+import com.panayotis.jubler.media.player.TerminalViewport;
 
 /**
  *
  * @author teras
  */
-public class MPlayerViewport extends CommandLineViewport {
+public class MPlayerViewport extends TerminalViewport {
 
     /** Creates a new instance of MPlayer */
     public MPlayerViewport(MPlayer player) {
-        super(player);
+        super(player, new MPlayerTerminal());
     }
 
     protected String[] getPostInitCommand() {
