@@ -123,7 +123,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));
         replaceValues(cmds, "%j", SystemFileFinder.getJublerAppPath());
-        replaceValues(cmds, "%i", Integer.toOctalString(Networking.getRandomPort()));
+        replaceValues(cmds, "%i", Integer.toString(Networking.getRandomPort()));
 
         StringBuffer cm = new StringBuffer();
         for (int i = 0; i < cmds.length; i++)
