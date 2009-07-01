@@ -79,7 +79,7 @@ public abstract class ExternalViewport implements Viewport {
         this.when = when;
     }
 
-    protected static double getDouble(String info) {
+    public static double getDouble(String info) {
         try {
             return Double.parseDouble(info);
         } catch (NumberFormatException e) {

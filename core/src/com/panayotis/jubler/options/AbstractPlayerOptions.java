@@ -85,7 +85,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         Help1L.setText(_("Advanced argument list:"));
         HelpP.add(Help1L);
 
-        Help2L.setText("    %p=player %v=video_file %s=subtiles_file");
+        Help2L.setText("    %p=player %v=video_file %s=subtiles_file %i=random_port");
         HelpP.add(Help2L);
 
         Help3L.setText("    %t=start_time %j=Jubler_path %x=x_offset %y=y_offset");

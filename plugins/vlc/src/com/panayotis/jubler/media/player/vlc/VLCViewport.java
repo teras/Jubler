@@ -4,16 +4,16 @@
  */
 package com.panayotis.jubler.media.player.vlc;
 
-import com.panayotis.jubler.media.player.CommandLineViewport;
+import com.panayotis.jubler.media.player.TerminalViewport;
 
 /**
  *
  * @author teras
  */
-public class VLCViewport extends CommandLineViewport {
+public class VLCViewport extends TerminalViewport {
 
     public VLCViewport(VLC player) {
-        super(player);
+        super(player, new VLCTerminal());
     }
 
     protected String[] getPostInitCommand() {
