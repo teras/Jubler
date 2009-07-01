@@ -53,14 +53,14 @@ public abstract class TerminalViewport extends ExternalViewport {
     }
 
     public void start() throws ExtProgramException {
-        player.cleanUp();   // Make sure player is in it's initial position (i.e. no subtitle files hanging around)
-
-        String cmd[] = player.getCommandArguments(mfile, sub, when);
-        position = 0;
-        isPaused = false;
-
         try {
+            player.cleanUp();   // Make sure player is in it's initial position (i.e. no subtitle files hanging around)
+
+            String cmd[] = player.getCommandArguments(mfile, sub, when);
+            position = 0;
+            isPaused = false;
             terminal.start(cmd);
+
             cmdpipe = terminal.getCmdPipe();
             outpipe = terminal.getOutPipe();
             errorpipe = terminal.getErrorPipe();
@@ -75,6 +75,9 @@ public abstract class TerminalViewport extends ExternalViewport {
 
             sendCommands(getPostInitCommand());     // Get information for current volume position
             return;
+        } catch (ExtProgramException ex) {
+            player.cleanUp();
+            throw ex;
         } catch (Exception e) {
             player.cleanUp();
             throw new ExtProgramException(e);
@@ -84,12 +87,14 @@ public abstract class TerminalViewport extends ExternalViewport {
     private class OutputParser extends Thread {
 
         public void run() {
+            if (outpipe == null)
+                return;
             String info;
             try {
                 while ((info = outpipe.readLine()) != null) {
                     info = terminal.parseOutStream(info, feedback, self);
                     if (info != null)
-                        DEBUG.debug("[" + player.getName() + "] " + info);
+                        DEBUG.debug(player.getName() + "> " + info);
                 }
             } catch (IOException e) {
             }
@@ -103,12 +108,14 @@ public abstract class TerminalViewport extends ExternalViewport {
     private class ErrorParser extends Thread {
 
         public void run() {
+            if (errorpipe == null)
+                return;
             String info;
             try {
                 while ((info = errorpipe.readLine()) != null) {
                     info = terminal.parseErrorStream(info, feedback, self);
                     if (info != null)
-                        DEBUG.debug("*" + player.getName() + "* " + info);
+                        DEBUG.debug(player.getName() + "! " + info);
                 }
             } catch (IOException e) {
             }

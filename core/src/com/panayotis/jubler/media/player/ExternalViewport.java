@@ -88,6 +88,8 @@ public abstract class ExternalViewport implements Viewport {
     }
 
     protected boolean sendCommands(String[] com) {
+        if (com == null)
+            return true;
         for (int i = 0; i < com.length; i++) {
             if (!isActive)
                 return true;    // Ignore commands if viewport is inactive

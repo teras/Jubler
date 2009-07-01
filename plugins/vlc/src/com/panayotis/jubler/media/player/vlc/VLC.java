@@ -20,7 +20,7 @@ public class VLC extends AbstractPlayer implements Plugin {
     }
 
     public String getDefaultArguments() {
-        return "%p --no-save-config --extraintf=rc --sub-file=%s %v";
+        return "%p --no-save-config --extraintf=rc --rc-fake-tty --rc-host=127.0.0.1:%i --sub-file=%s %v";
     }
 
     public String[] getTestParameters() {
