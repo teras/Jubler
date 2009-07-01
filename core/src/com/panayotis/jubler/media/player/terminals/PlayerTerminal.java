@@ -7,6 +7,7 @@ package com.panayotis.jubler.media.player.terminals;
 
 import com.panayotis.jubler.media.console.PlayerFeedback;
 import com.panayotis.jubler.media.player.TerminalViewport;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 
@@ -16,7 +17,7 @@ import java.io.BufferedWriter;
  */
 public interface PlayerTerminal {
 
-    public void start(String[] cmd);
+    public void start(String[] cmd) throws ExtProgramException;
 
     public BufferedWriter getCmdPipe();
 
