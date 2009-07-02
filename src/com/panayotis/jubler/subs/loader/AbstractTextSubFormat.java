@@ -42,7 +42,24 @@ import java.nio.charset.CharsetEncoder;
 
 /**
  * This class provides a basic textual processing foundation class for
- * classes processing text based subtitle files.
+ * classes processing text based subtitle files. Each implemented instance
+ * should provide a {@link #getTestPattern test-pattern}
+ * for program to recognise its format signature, and a 
+ * {@link #getPattern working-pattern} for parsing records. By default, 
+ * the test-pattern is the same as working-pattern, but one can overrride the
+ * {@link getTestPattern} to accomodate for differences, if desired.
+ * 
+ * Implementation for {@link #getSubEntry getSubEntry} provides a mechanism
+ * for creating a subtitle record when the data-input matched a working
+ * pattern, and the implementation of 
+ * {@link #appendSubEntry appendSubEntry} allows the record to be written
+ * to a string buffer for writing to a file.
+ * 
+ * This model suited simple subtitle format, where pattern of 
+ * subtitle entries repeats. It does allow extensions of parsing other 
+ * components in the {@link #initLoader initLoader} and writing them 
+ * out in {@link #initSaver initSaver}
+ * 
  * @author teras
  */
 public abstract class AbstractTextSubFormat extends SubFormat {

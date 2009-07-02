@@ -33,16 +33,15 @@ import com.panayotis.jubler.subs.records.TMPGenc.LayoutDataItemRecord;
 
 /**
  * This class hold a pattern to identify item lines from the "[LayoutData]"
- * section of TMPGenc subtitle file.
+ * section of TMPGenc subtitle file. An example of such data line is shown
+ * here:
  * <pre>
  * "Picture bottom layout",4,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0
  * </pre>
- * This class is used to parse the following line of data
- * <pre><b>"Picture bottom layout",0,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0</b></pre>
  *
- * The definition of each component is defined below:
+ * The definition of each component within the pattern is defined below:
  * <pre>
- * Name : "Picture top layout",
+ * Layout name : "Picture top layout",
  * Display Area:
  *      Picture bottom = 0
  *      Picture top = 1
@@ -52,7 +51,7 @@ import com.panayotis.jubler.subs.records.TMPGenc.LayoutDataItemRecord;
  *      Picture bottom (Computer display) = 5
  *      Picture top (Computer display) = 6
  * Font : Tahoma,
- * Size%: 0.7 (7/10)
+ * Font size%: 0.7
  * Font colour:
  *      red: (255,0,0 = #FF0000) TMP: 17587891077120 => 0x0FFF 0000 0000
  *      yellow: (255,255,0 = #FFFF00) TMP: 17588159447040 => 0x0FFF 0FFF 0000
@@ -106,30 +105,33 @@ public class TMPGencLayoutDataItem extends SubtitlePatternProcessor implements T
             single_comma +
             digits; //border-colour
 
+    int index[] = new int[]{1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29};
+    
     public TMPGencLayoutDataItem() {
         super(pattern);
+        this.setMatchIndexList(index);
         setTargetObjectClassName(LayoutDataItemRecord.class.getName());
     }
 
     public void parsePattern(String[] matched_data, Object record) {
         try {
             LayoutDataItemRecord r = (LayoutDataItemRecord) record;
-            r.setName(matched_data[1]);
-            r.setDisplayArea(Byte.parseByte(matched_data[3]));
-            r.setFontName(matched_data[5]);
-            r.setForntSize(Float.parseFloat(matched_data[7]));
-            r.setFontColour(Double.parseDouble(matched_data[9]));
+            r.setName(matched_data[0]);
+            r.setDisplayArea(Byte.parseByte(matched_data[1]));
+            r.setFontName(matched_data[2]);
+            r.setForntSize(Float.parseFloat(matched_data[3]));
+            r.setFontColour(Double.parseDouble(matched_data[4]));
 
-            r.setStyleBold(Byte.parseByte(matched_data[11]));
-            r.setStyleItalic(Byte.parseByte(matched_data[13]));
-            r.setStyleUnderScore(Byte.parseByte(matched_data[15]));
-            r.setStyleStrikeThrough(Byte.parseByte(matched_data[17]));
-            r.setAlignmentHorizontal(Byte.parseByte(matched_data[19]));
-            r.setAlignmentVertical(Byte.parseByte(matched_data[21]));
-            r.setTextRotation(Byte.parseByte(matched_data[23]));
-            r.setTextBorder(Byte.parseByte(matched_data[25]));
-            r.setBorderSize(Float.parseFloat(matched_data[27]));
-            r.setBorderColour(Long.parseLong(matched_data[29]));
+            r.setStyleBold(Byte.parseByte(matched_data[5]));
+            r.setStyleItalic(Byte.parseByte(matched_data[6]));
+            r.setStyleUnderScore(Byte.parseByte(matched_data[7]));
+            r.setStyleStrikeThrough(Byte.parseByte(matched_data[8]));
+            r.setAlignmentHorizontal(Byte.parseByte(matched_data[9]));
+            r.setAlignmentVertical(Byte.parseByte(matched_data[10]));
+            r.setTextRotation(Byte.parseByte(matched_data[11]));
+            r.setTextBorder(Byte.parseByte(matched_data[12]));
+            r.setBorderSize(Float.parseFloat(matched_data[13]));
+            r.setBorderColour(Long.parseLong(matched_data[14]));
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }

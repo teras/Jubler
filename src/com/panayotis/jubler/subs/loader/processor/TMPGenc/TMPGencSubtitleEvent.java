@@ -65,28 +65,32 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
             digits + //layout-index
             single_comma;
 
+    int index[] = new int[]{1, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15};
+    
     public TMPGencSubtitleEvent() {
         super(pattern);
+        setMatchIndexList(index);
         setTargetObjectClassName(TMPGencSubtitleRecord.class.getName());
+        
     }
 
     public void parsePattern(String[] matched_data, Object record) {
         try {
             TMPGencSubtitleRecord r = (TMPGencSubtitleRecord) record;
-            int id = Integer.parseInt(matched_data[1]);
+            int id = Integer.parseInt(matched_data[0]);
             r.setId(id);
 
-            int stream_id = Integer.parseInt(matched_data[3]);
+            int stream_id = Integer.parseInt(matched_data[1]);
             r.setEnabled(stream_id);
 
             Time start, finish;
-            start = new Time(matched_data[5], matched_data[6], matched_data[7], matched_data[8]);
-            finish = new Time(matched_data[10], matched_data[11], matched_data[12], matched_data[13]);
+            start = new Time(matched_data[2], matched_data[3], matched_data[4], matched_data[5]);
+            finish = new Time(matched_data[6], matched_data[7], matched_data[8], matched_data[9]);
 
             r.setStartTime(start);
             r.setFinishTime(finish);
 
-            int layout_idx = Integer.parseInt(matched_data[11]);
+            int layout_idx = Integer.parseInt(matched_data[10]);
             r.setLayoutIndex(layout_idx);
 
             String txt = getSubTextManually();

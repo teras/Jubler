@@ -56,17 +56,18 @@ public class TMPGencLayoutExDataItem extends SubtitlePatternProcessor implements
 
     private static final String pattern = digits + single_comma + digits;
 
+    int index[] = new int[]{1, 3};
     public TMPGencLayoutExDataItem() {
         super(pattern);
+        setMatchIndexList(index);
         setTargetObjectClassName(LayoutDataExRecord.class.getName());
     }
 
     public void parsePattern(String[] matched_data, Object record) {
-        //System.out.println(matched_data[0]);
         try {
             LayoutDataExRecord r = (LayoutDataExRecord) record;
-            r.centered = Integer.parseInt(matched_data[1]);
-            r.readingDirection = Integer.parseInt(matched_data[3]);
+            r.centered = Integer.parseInt(matched_data[0]);
+            r.readingDirection = Integer.parseInt(matched_data[1]);
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         }

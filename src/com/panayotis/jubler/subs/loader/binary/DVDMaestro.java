@@ -497,9 +497,9 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
 
         boolean is_empty = (is_empty_line || is_header_line || is_comment_line || is_palette_header);
         processorList.setIgnoreData(is_empty);
-
-        if (isHeaderLine(data)) {
-            processorList.remove(son_palette_entry);
+        
+        processorList.remove(son_palette_entry, is_header_line);        
+        if (is_header_line) {
             resetAfterHeaderLineDetected();
         }
     }

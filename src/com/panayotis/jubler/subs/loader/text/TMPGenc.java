@@ -270,16 +270,10 @@ public class TMPGenc extends AbstractBinarySubFormat implements
 
         //Remove processors that are no longer required at certain stage
         //of processing order.
-        if (is_layout_data_ex_header_line) {
-            processorList.remove(layoutDataItemProcessor);
-        }//end if
-
-        if (is_data_item_header_line) {
-            processorList.remove(layoutDataItemProcessor); //this is just incase
-
-            processorList.remove(layoutDataExItemProcessor);
-        }//end if
-
+        processorList.remove(layoutDataItemProcessor, 
+                is_layout_data_ex_header_line || is_data_item_header_line);
+        
+        processorList.remove(layoutDataExItemProcessor, is_data_item_header_line);
     }
 
     public boolean isSubType(String input, File f) {
