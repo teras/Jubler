@@ -29,7 +29,16 @@ package com.panayotis.jubler.subs.loader;
  * @author Hoang Duy Tran
  */
 public interface HeaderedTypeSubtitle {
+    /**
+     * Gets the reference of a header object.
+     * @return Reference of a header object, or null if the reference has not
+     * been set.
+     */
     public Object getHeader();
+    /**
+     * Sets the 
+     * @param header
+     */
     public void setHeader(Object header);
     public Object getDefaultHeader();
     public String getHeaderAsString();

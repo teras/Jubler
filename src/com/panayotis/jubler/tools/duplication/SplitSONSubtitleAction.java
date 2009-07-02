@@ -57,7 +57,10 @@ import javax.swing.JOptionPane;
  * extreme large amount of events making it impossible to load such an index 
  * file into Jubler to split, and thus this operation MUST be done off-line.
  * This action will load the subtitle file into memory, without loading the
- * images, and based on the number of fragments that user selected, split and
+ * images, using a 
+ * {@link SubtitleUpdaterPostProcessingEventListener} that attaches to an
+ * instance of {@link DVDMaestro}, 
+ * and based on the number of fragments that user selected, split and
  * write the fragments to the same directory as the input file. Each file will
  * inherit the original name with "_number" (ie. _01, _02 ...) attached to the
  * end of the file-name, before the 'son' extension. The number of subtitles
@@ -66,7 +69,7 @@ import javax.swing.JOptionPane;
  * will produce two files, first one will have 2 records, the second one will 
  * have 3 records. The same file when divided into 3 will produce (2, 2, 1)
  * fragments. Each file will hold the same heading as the original file.
- * <br/>
+ * <br><br>
  * Once the file has been divided into much smaller fragments, each file can be
  * brought into Jubler and process without worrying too much about the memmory 
  * problem.

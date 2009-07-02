@@ -75,7 +75,13 @@ public class ImageFileListManager implements CommonDef {
      * this list.
      */
     NonDuplicatedVector<File> searchPathList = new NonDuplicatedVector<File>();
+    /**
+     * The last searched path.
+     */
     private File lastSearchedPath = null;
+    /**
+     * The original path of image file.
+     */
     private File imageFilePath = null;
     
     /**
@@ -138,19 +144,6 @@ public class ImageFileListManager implements CommonDef {
      * @return The located file or null if the search is exausted and not
      * file matching that name has been found.
      */
-    /**
-     * Manually find the image using a diaglog. User have the option of
-     * selecting a correct directory or a file, where images can be found,
-     * ignoring the current image and do not load it, or do not remind
-     * again to ignore the rest of the search. The newly selected path,
-     * if selected, is inserted into the top of list of searchable paths, 
-     * and the search could continue using the latest chosen path.
-     * @param image_filename The name of the file to search for.
-     * @param root_dir The starting directory where the search commence.
-     * @return true if the a path has been selected where images could be 
-     * found, or false if the user has either choosen not to load the current 
-     * image, or decided to ignore the whole searching process.
-     */
     private File automaticFindImagePath(String image_filename) {
         boolean is_found = false;
         File located_file = null;
@@ -164,6 +157,19 @@ public class ImageFileListManager implements CommonDef {
         }//end for (File search_dir : path_list) 
         return null;
     }//end private File findImageInSearchPath(String image_filename)
+    /**
+     * Manually find the image using a diaglog. User have the option of
+     * selecting a correct directory or a file, where images can be found,
+     * ignoring the current image and do not load it, or do not remind
+     * again to ignore the rest of the search. The newly selected path,
+     * if selected, is inserted into the top of list of searchable paths, 
+     * and the search could continue using the latest chosen path.
+     * @param image_filename The name of the file to search for.
+     * @param root_dir The starting directory where the search commence.
+     * @return true if the a path has been selected where images could be 
+     * found, or false if the user has either choosen not to load the current 
+     * image, or decided to ignore the whole searching process.
+     */
     private boolean manualFindImagePath(String image_filename, File root_dir) {
         //manually locate the file
         File new_dir = findImageDirectory(image_filename, root_dir);
@@ -285,10 +291,19 @@ public class ImageFileListManager implements CommonDef {
         remindMissingImage = aRemindMissingImage;
     }
 
+    /**
+     * Gets the reference to the subtitle list.
+     * @return Reference to the subtitle list, or null if the reference has
+     * not been set.
+     */
     public Subtitles getSubList() {
         return subList;
     }
 
+    /**
+     * Sets the reference of the subtitle list.
+     * @param subList Reference of a subtitle list.
+     */
     public void setSubList(Subtitles subList) {
         this.subList = subList;
     }
@@ -323,10 +338,19 @@ public class ImageFileListManager implements CommonDef {
         }
     }//end public void addSearchPath(String name)
 
+    /**
+     * Gets the reference of the image-file path.
+     * @return Reference of the image-file path, or null if the reference
+     * has not been set.
+     */
     public File getImageFilePath() {
         return imageFilePath;
     }
 
+    /**
+     * Sets the reference of the image-file path.
+     * @param imageFilePath Reference of an image-file path.
+     */
     public void setImageFilePath(File imageFilePath) {
         this.imageFilePath = imageFilePath;
     }

@@ -64,8 +64,7 @@ import java.util.regex.Pattern;
  * </pre></blockquote>
  * 
  * To work out the indexes, either count the patterns, or do not set index
- * at all,
- * leaving it to null. The pattern matched result will return in the 
+ * at all, leaving it to null. The pattern matched result will return in the 
  * array <code>matched_data</code>.
  * @author Hoang Duy Tran <hoang_tran>
  */
@@ -171,6 +170,7 @@ public abstract class SubtitlePatternProcessor {
     /**
      * Creates the pattern definition from the pattern string and set
      * the working, testing pattern to be the same as
+     * @param pattern
      */
     public SubtitlePatternProcessor(String pattern){
         this.pattern = new SubtitlePatternDefinition(pattern, true);

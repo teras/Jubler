@@ -40,10 +40,9 @@ import java.util.logging.Level;
 /**
  * The parse routine is modified to use the list of processors and a mechanism
  * using a loop to call individual 
- * {@link SubtitleProcessor} to parse the data line
- * that is read by the loop. The loop is surrounded by a 
- * {@link PreParseActionEvent}  and 
- * a {@link PostParseActionEvent}, 
+ * {@link com.panayotis.jubler.subs.SubtitlePatternProcessor} 
+ * to parse the data line that is read by the loop. The loop is surrounded by a 
+ * {@link PreParseActionEvent} and a {@link PostParseActionEvent}, 
  * making it possible to re-initialise processor list
  * and post-processing the loaded subtitle records. 
  * Processing of the data line is done within the 
@@ -53,7 +52,7 @@ import java.util.logging.Level;
  * A class making use of this pattern processing mechanism 
  * must create a number of processors, each deals with a single pattern.
  * The class, at startup, must initialise all processors and instances
- * of them are put into the {@link #processorList processorList}.
+ * of them are put into the {@link SubtitleProcessorList processorList}.
  * The processor list must know the target-record type, and whether the 
  * processors are removed once the parsing of a single line of data 
  * is completed. 
@@ -242,18 +241,32 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
         }//end while         
     }
 
+    /**
+     * Add a post-parsing action listener.
+     * @param l The listener to add.
+     */
     public void addPostParseActionEventListener(PostParseActionEventListener l) {
         this.postParseEventList.add(l);
     }
 
+    /**
+     * Remove the post-parsing action listener.
+     * @param l The listener to be removed.
+     */
     public void removePostParseActionEventListener(PostParseActionEventListener l) {
         this.postParseEventList.remove(l);
     }
 
+    /**
+     * Clear all post-parsing action listeners.
+     */
     public void clearPostParseActionEventListener() {
         this.postParseEventList.clear();
     }
 
+    /**
+     * Fire all post-parsing action listeners.
+     */
     public void firePostParseActionEvent() {
         int len = this.postParseEventList.size();
         for (int i = len - 1; i >=
@@ -271,18 +284,32 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
 
     }
 
+    /**
+     * Add a pre-parsing action listener.
+     * @param l The listener to add.
+     */
     public void addPreParseActionEventListener(PreParseActionEventListener l) {
         this.preParseEventList.add(l);
     }
 
+    /**
+     * Remove the pre-parsing action listener.
+     * @param l The listener to be removed.
+     */
     public void removePreParseActionEventListener(PreParseActionEventListener l) {
         this.preParseEventList.remove(l);
     }
 
+    /**
+     * Clear all pre-parsing action listeners.
+     */
     public void clearPreParseActionEventListener() {
         this.preParseEventList.clear();
     }
 
+    /**
+     * Fire all pre-parsing action listeners.
+     */
     public void firePreParseActionEvent() {
         int len = this.preParseEventList.size();
         for (int i = len - 1; i >=
@@ -301,14 +328,30 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
 
     }
 
+    /**
+     * Gets the reference to the text-line being parsed.
+     * @return Reference to the text-line being parsed.
+     */
     public String getTextLine() {
         return textLine;
     }
 
+    /**
+     * Sets the reference of the text-line being parsed.
+     * @param textLine Reference to the text-line being parsed.
+     */
     public void setTextLine(String textLine) {
         this.textLine = textLine;
     }
 
+    /**
+     * Checking to see if the input contains the pattern that matches
+     * the file's signature pattern. Also it is possible to user the
+     * file reference to check for the ceontent or extension etc..
+     * @param input The textual content of the file being parsed.
+     * @param f The reference of the file being parsed.
+     * @return true if the data contains the signature pattern
+     */
     public abstract boolean isSubType(String input, File f);
     //protected abstract void parseBinary(float FPS, BufferedReader in);    
 }

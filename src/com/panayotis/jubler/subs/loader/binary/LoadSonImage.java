@@ -76,12 +76,43 @@ import javax.swing.ImageIcon;
  */
 public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
 
+    /**
+     * Reference of the input subtitle file.
+     */
     File input_file = null;
+    /**
+     * Reference of the list of subtitle events that has been parsed.
+     */
     Subtitles sub_list = null;
+    /**
+     * Reference of the image directory that was parsed, ie. from the key
+     * "Directory".
+     * @see DVDMaestro
+     * @see com.panayotis.jubler.subs.loader.processor.SON.SONImageDirectory
+     */
     String image_dir = null;
+    /**
+     * The parent path of the input subtitle file. This path is one of the
+     * default searchable paths.
+     */
     String subtitle_file_dir = null;
+    /**
+     * Flag to indicate if images are loaded into memory after their files 
+     * are located or not. Loading of images often causing a huge demand on
+     * memory availability and can cause the program's crashes due to the
+     * shortage of heap-space. This flag allows the control of this demand
+     * as necessarily.
+     */
     private boolean loadImages = true;
 
+    /**
+     * Parameterised constructor. Required that references of 
+     * these components must be satisfied.
+     * @param sub_list Reference of the list of subtitle events that has been parsed.
+     * @param image_dir Reference of the image directory that was parsed, ie. from the key
+     * "Directory".
+     * @param input_file Reference of the input subtitle file.
+     */
     public LoadSonImage(Subtitles sub_list, String image_dir, File input_file) {
         this.sub_list = sub_list;
         this.image_dir = image_dir;
@@ -90,6 +121,53 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
         this.sub_list = sub_list;
     }
 
+    /**
+     * Run method performs in two stages. 
+     * <ol>
+     *  <li>Locate the image files. The names of images has already
+     *      been parsed and isolated from the loading of the textual
+     *      content of the subtitle file. This process will run through
+     *      the list of subtitle events and search for the actual image
+     *      files. This task makes use of {@link ImageFileListManager} 
+     *      by giving it the sutitle-list, the image directory, and 
+     *      the path of the subtitle file. These directories will be searched
+     *      first. If image is not found in the search paths given above,
+     *      a manual intervention is required. This will allow user to add
+     *      their own directories on top of the current list, allowing the
+     *      search routine to locate the missing image. There are options
+     *      which allow user to temporary by-pass the missing image, or
+     *      completely abandon the task altogether.</li>
+     *  <li>If the flag {@link #isLoadImages} was set to true, then the
+     *      routine of loading of images will commence. There will be a 
+     *      visual progress bar to indicate the completion percentages and
+     *      the name of the file being loaded. The routine will try to locate
+     *      the image, using its file-path that has been done above. If the
+     *      image is read and loaded successfully, it will be trimmed down to
+     *      the visual subtitle area (ie. black background) and all transparent
+     *      colour (the blue surrounding) are removed, making the image looks
+     *      as it was visible during the play-back of the original video.
+     *      The image is turned into an ImageIcon for display.<br><br>
+     *      If the image was not found, due to the abandoning or skipping action
+     *      from the user in previous stage of the task, no image will be 
+     *      visible.<br><br>
+     *      If the flag {@link #isLoadImages} was set to false, the routine
+     *      return immediately to the caller, an no image will be visible.</li>
+     * </ol>
+     * When loading of the images in progress, there are several events the
+     * caller can listen to:
+     * <ol>
+     *  <li>{@link com.panayotis.jubler.subs.events.SubtitleUpdaterPreProcessingEvent} 
+     *  This event happens before the loading loop commencement.</li>
+     *  <li>{@link com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEvent} 
+     *  This event only happens when an image has been loaded successfully.</li>
+     *  <li>{@link com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent} 
+     *  This event happens after the loop finished.</li>
+     * </ol>
+     * @see ImageFileListManager
+     * @see JImage#readImage
+     * @see SubtitleUpdaterThread
+     * @see com.panayotis.jubler.tools.duplication.SplitSONSubtitleAction
+     */
     public void run() {
         ProgressBar pb = null;
         try {
