@@ -527,20 +527,14 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
 
             public void recordUpdated(SubtitleRecordUpdatedEvent e) {
                 int row = e.getRow();
-                e.getSubList().fireTableRowsUpdated(row, row);
-            }
-        };
-
-        SubtitleUpdaterPostProcessingEventListener loadedListener = new SubtitleUpdaterPostProcessingEventListener() {
-
-            public void postProcessing(SubtitleUpdaterPostProcessingEvent e) {
-                jubler.tableHasChanged(null);
+                try{
+                    jubler.getSubtitles().fireTableRowsUpdated(row, row);
+                }catch(Exception ex){}
             }
         };
 
         imageLoader.setSubList(subtitle_list);
         imageLoader.addSubtitleRecordUpdatedEventListener(updatedListener);
-        imageLoader.addSubtitleUpdaterPostProcessingEventListener(loadedListener);
 
         if (!Share.isEmpty(postImageLoadActions)) {
             imageLoader.addSubtitleUpdaterPostProcessingEventListener(postImageLoadActions);
