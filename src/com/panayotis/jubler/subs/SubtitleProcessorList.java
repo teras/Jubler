@@ -20,6 +20,7 @@
  */
 package com.panayotis.jubler.subs;
 
+import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEvent;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEventListener;
@@ -106,6 +107,7 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
     private Object createdRecord = null;
     private boolean ignoreData = false;
     private SubtitlePatternProcessor currentProcessor = null;
+    private Vector<SubtitlePatternProcessor> removeList = new Vector<SubtitlePatternProcessor>();
     private boolean found = false;
 
     public SubtitleProcessorList() {
@@ -380,7 +382,7 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
                     String class_name = ps.getTargetObjectClassName();
                     boolean is_empty = Share.isEmpty(class_name);
                     if (is_empty) {
-                        String msg = "Cannot create new record. Processor: [" + ps.getClass().getName() + "]. Reason: target object class name is empty.";
+                        String msg = _("Cannot create new record. Processor: [") + ps.getClass().getName() + _("]. Reason: target object class name is empty.");
                         DEBUG.logger.log(Level.SEVERE, msg);
                         throw new Exception(msg);
                     }//if (is_empty)
@@ -396,14 +398,49 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
                 fireSubtitleDataParsedEvent();
                 boolean is_remove = ps.isRemovable();
                 if (is_remove) {
-                    this.remove(ps);
+                    removeList.add(ps);
                 }//end if (is_remove)
-                return;
+                break;
             }//end for (int i = 0; i < this.getPatternList().size(); i++) 
         } catch (Exception e) {
             e.printStackTrace(System.out);
+        } finally {
+            boolean has_removable = (removeList.size() > 0);
+            if (has_removable) {
+                removeAll(removeList);
+                removeList.clear();
+            }//end if
         }
+
     }//end public Object parse()
+    
+    /**
+     * Add a instance of {@link SubtitlePatternProcessor} to the removable list,
+     * but only doing so if the instance exists in the processor list.
+     * @param ps The processor to add to removable list.
+     */
+    public void remove(SubtitlePatternProcessor ps) {
+        boolean is_remove = (this.contains(ps));
+        if (is_remove) {
+            this.removeList.add(ps);
+        }//if (is_remove)
+    }//end public void remove(SubtitlePatternProcessor ps) {
+
+    /**
+     * Add a instance of {@link SubtitlePatternProcessor} to the removable list
+     * under the condition provided, but only doing so if the instance exists
+     * in the processor list.
+     * @param ps The processor to add to removable list.
+     * @param condition true if the processesor is to be added to the
+     * removable list, false otherwise.
+     */
+    public void remove(SubtitlePatternProcessor ps, boolean condition) {
+        boolean is_remove = (condition && this.contains(ps));
+        if (is_remove) {
+            this.removeList.add(ps);
+        }//if (is_remove)
+    }//end public void remove(SubtitlePatternProcessor ps, boolean condition) 
+
     public String getTextLine() {
         return textLine;
     }
@@ -426,6 +463,14 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
 
     public boolean isFound() {
         return found;
+    }
+
+    public Vector<SubtitlePatternProcessor> getRemoveList() {
+        return removeList;
+    }
+
+    public void setRemoveList(Vector<SubtitlePatternProcessor> removeList) {
+        this.removeList = removeList;
     }
 }//public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor>
 
