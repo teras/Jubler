@@ -125,12 +125,12 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
             }
 
             //Get a number to split the original file to
-            JNumberSelection sel_split_number = 
+            JNumberSelection sel_split_number =
                     new JNumberSelection(
-                    jublerParent, 
+                    jublerParent,
                     _("Divide the subtitle file"),
                     null); //use default prompt
-            
+
             split_numb = sel_split_number.showDialog();
             if (split_numb < 2) {
                 return;
@@ -148,7 +148,10 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
             sub_loader = new DVDMaestro();
 
             SubtitleUpdaterPostProcessingEventListener postImageLoadListener = new SubtitleUpdaterPostProcessingEventListener() {
-                public void postProcessing(SubtitleUpdaterPostProcessingEvent e){
+
+                boolean ok = false;
+
+                public void postProcessing(SubtitleUpdaterPostProcessingEvent e) {
                     Subtitles subs = e.getSubList();
 
                     if (Share.isEmpty(subs)) {
@@ -171,7 +174,7 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
                             DVDMaestro.sonExtension,
                             DVDMaestro.sonExtendedName);
 
-                    JSubtitleSetSplitter spliter = new JSubtitleSetSplitter(                            
+                    JSubtitleSetSplitter spliter = new JSubtitleSetSplitter(
                             subs,
                             split_numb,
                             input_file,
@@ -187,22 +190,24 @@ public class SplitSONSubtitleAction extends JMenuItem implements ActionListener,
                         File f = fileList.elementAt(i);
                         Subtitles subSet = splitSet.get(f);
 
-                        sub_loader.produce(subSet, f);
+                        ok |= sub_loader.produce(subSet, f);
                     }//end for (int i=0; i < fileList.size(); i++)
-                    showFileList(fileList);
+                    if (ok) {
+                        showFileList(fileList);
+                    }//end if
                 }//end public void postParseAction(PostParseActionEvent e) 
             };//end PostParseActionEventListener postImageLoadListener = new PostParseActionEventListener()
 
             sub_loader.getPostImageLoadActions().clear();
-            sub_loader.getPostImageLoadActions().add(postImageLoadListener);            
+            sub_loader.getPostImageLoadActions().add(postImageLoadListener);
 
             //Tell it not to load images as this is the cause for memory
             //shortage problem.
             sub_loader.setLoadImages(false);
-            
+
             //Load the subtitle-events without the images
             Subtitles subs = sub_loader.parse(input_data, 25f, input_file);
-            
+
         } catch (Exception ex) {
             msg = _("Unexpected error:") + ex.getMessage();
             JOptionPane.showMessageDialog(jublerParent, msg);

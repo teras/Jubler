@@ -80,13 +80,28 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
     private String encoding = null;
     ProgressBar pb = new ProgressBar();
 
+    /**
+     * Basic constructor.
+     */
     public WriteSonSubtitle() {
     }
 
-    public WriteSonSubtitle(Subtitles subtitle_list, JMaestroOptions moptions, File outfile, File dir, float FPS, String encoding) {
+    /**
+     * Parameterised constructor. This constructor sstrip the incoming
+     * file of the '.tmp' extension, as the filename already included the '.son'
+     * extension and there is no need for {@link FileCommunicator#save} to
+     * rename the temporary file, since this code is executed in a separate
+     * thread from the Jubler's thread.
+     * @param subtitle_list The list of subtitle-events to write.
+     * @param moptions  The media options, containing FPS, and TV system etc...
+     * @param outfile   The output file to write to.
+     * @param FPS       Frame Per Second rate, often comes from the defaul 
+     *                  preference (ie. 25)
+     * @param encoding  The text encoding scheme (ie. UTF-8).
+     */
+    public WriteSonSubtitle(Subtitles subtitle_list, JMaestroOptions moptions, File outfile, float FPS, String encoding) {
         this.moptions = moptions;
         this.outfile = outfile;
-        this.dir = dir;
         this.FPS = FPS;
         this.encoding = encoding;
 
@@ -98,18 +113,32 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
         this.subs = subtitle_list;
         setSubList(subs);
 
-        maxDigits = Integer.toString(subs.size()).length();
-        fmt.setMinimumIntegerDigits(maxDigits);
-        fmt.setMaximumIntegerDigits(maxDigits);
-
     }
 
+    /**
+     * When this thread run, it performs three major tasks.
+     * <ol>
+     *  <li>Extract the header record from the first SON record in the 
+     *      subtitle list, and setup the header record with FPS, 
+     *      media-options, and the image output directory.</li>
+     *  <li>Write images (if the subtitle events have text without images).</li>
+     *  <li>Write the subtitle-index file.</li>
+     * </ol>
+     * The above tasks are run in succession, one after another.
+     */
     @Override
     public void run() {
         this.prepareHeader(subs, index_outfile);
         this.writeImages(subs, index_outfile);
         this.writeSubtitleText(subs, index_outfile, encoding);
     }//end public void run()
+    /**
+     * Extract the header record from the first SON record in the 
+     * subtitle list, and setup the header record with FPS, 
+     * media-options, and the image output directory.
+     * @param sub_list The list of subtitle events.
+     * @param out_file The output file.
+     */
     private void prepareHeader(Subtitles sub_list, File out_file) {
         sonSubEntry = (SonSubEntry) sub_list.elementAt(0);
         sonHeader = sonSubEntry.getHeader();
@@ -118,12 +147,29 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
         sonHeader.image_directory = out_file.getParent();
     }
 
-    private boolean writeSubtitleText(Subtitles sub_list, File output_file, String encode) {
+    /**
+     * A string buffer is created to hold the entire textual content of the
+     * file. This buffer will be written to the output file at the end of 
+     * the routine.
+     * The header record is extracted from the first element of the subtitle
+     * and it's string content is formed and stored in the string buffer for
+     * final output.
+     * The 
+     * @param sub_list
+     * @param output_file
+     * @param encode
+     * @return
+     */
+    public boolean writeSubtitleText(Subtitles sub_list, File output_file, String encode) {
         boolean ok = false;
         FileOutputStream os = null;
         BufferedWriter out = null;
 
         try {
+            maxDigits = Integer.toString(sub_list.size()).length();
+            fmt.setMinimumIntegerDigits(maxDigits);
+            fmt.setMaximumIntegerDigits(maxDigits);
+
             StringBuffer bf = new StringBuffer();
             sonSubEntry = (SonSubEntry) sub_list.elementAt(0);
             sonHeader = sonSubEntry.getHeader();
@@ -159,7 +205,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
 
         return ok;
     }//end private boolean writeSubtitleText(File output_file)
-    private void writeImages(Subtitles sub_list, File output_file) {
+    public void writeImages(Subtitles sub_list, File output_file) {
         try {
             pb.setMaxValue(sub_list.size() - 1);
             pb.setMinValue(0);

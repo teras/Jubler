@@ -222,10 +222,19 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
             fireSubtitleUpdaterPostProcessingEvent();
         }//end try/catch
     }//end public void run()
+    /**
+     * Checks to see if loading images is required.
+     * @return true if loading of images is required, false no images will
+     * be loaded, even though the image'files location is active.
+     */
     public boolean isLoadImages() {
         return loadImages;
     }
 
+    /**
+     * Sets the flag to indicate that loading of images is required.
+     * @param loadImages true if loading of images is required, false otherwise.
+     */
     public void setLoadImages(boolean loadImages) {
         this.loadImages = loadImages;
     }

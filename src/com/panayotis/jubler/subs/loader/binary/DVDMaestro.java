@@ -657,8 +657,7 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
         }//end if
 
         Subtitles convert_list = convert(given_subs);
-        WriteSonSubtitle writer = new WriteSonSubtitle(convert_list, moptions, outfile, dir, FPS, ENCODING);
-        writer.setSubList(given_subs);
+        WriteSonSubtitle writer = new WriteSonSubtitle(convert_list, moptions, outfile, FPS, ENCODING);
         writer.start();
         return false;   // There is no need to move any files
     }
@@ -667,61 +666,15 @@ public class DVDMaestro extends AbstractBinarySubFormat implements
      * This is a simple produce routine. It writes out the son subtitle file
      * assuming every part is correct and doesn't allow interaction. It is 
      * needed when processing the SON subtitle file off-line, in batch mode,
-     * and do not requires any manual interventions.
+     * and do not requires any manual interventions. Output encoding is 
+     * assumed to be UTF-8.
      * @param given_subs The list of subtitle events.
      * @param outfile The file that the list will be written to.
      * @return true if the process was carried out without errors, false otherwise.
      */
     public boolean produce(Subtitles given_subs, File outfile) {
-        FileOutputStream os = null;
-        BufferedWriter out = null;
-
-        boolean ok = false;
-        int maxDigits = 1;
-        NumberFormat fmt = NumberFormat.getInstance();
-        try {
-            init();
-            sonSubEntry = (SonSubEntry) given_subs.elementAt(0);
-            sonHeader = sonSubEntry.getHeader();
-            StringBuffer buffer = new StringBuffer();
-            String txt = sonHeader.toString();
-            buffer.append(txt);
-
-            maxDigits = Integer.toString(given_subs.size()).length();
-            fmt.setMinimumIntegerDigits(maxDigits);
-            fmt.setMaximumIntegerDigits(maxDigits);
-
-            for (int i = 0; i < given_subs.size(); i++) {
-                sonSubEntry = (SonSubEntry) given_subs.elementAt(i);
-                sonSubEntry.event_id = (short) (i + 1);
-                sonSubEntry.max_digits = maxDigits;
-
-                txt = sonSubEntry.toString();
-                buffer.append(txt);
-                DEBUG.logger.log(Level.INFO, "appended: " + txt);
-            }//end for (int i = 0; i < subs.size(); i++)
-
-            /* Write textual part to disk */
-            //String file_name = outfilepath + image_out_filename + ".son";
-            os = new FileOutputStream(outfile);
-            out = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            out.write(buffer.toString());
-            ok = true;
-            DEBUG.logger.log(Level.INFO, "Writen buffer to " + outfile.getAbsolutePath());
-        } catch (Exception ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-                if (os != null) {
-                    os.close();
-                }
-            } catch (Exception ex) {
-            }
-        }
-        return ok;
+         WriteSonSubtitle writer = new WriteSonSubtitle();
+        return writer.writeSubtitleText(given_subs, outfile, "UTF-8");        
     }//end public boolean produce(Subtitles given_subs, File outfile)
     
     /**
