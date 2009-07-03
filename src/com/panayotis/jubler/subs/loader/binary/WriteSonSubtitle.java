@@ -154,11 +154,16 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
      * The header record is extracted from the first element of the subtitle
      * and it's string content is formed and stored in the string buffer for
      * final output.
-     * The 
-     * @param sub_list
-     * @param output_file
-     * @param encode
-     * @return
+     * Every record in the subtitle list is accessed and asked to produce
+     * the string version of its content. This textual presentation of the
+     * subtitle is appended to the output buffer.
+     * The entire output buffer is flushed to the chosen ouput file.
+     * @param sub_list The list of subtitle events.
+     * @param output_file The output file where the textual content of the 
+     * subtitle list is written to.
+     * @param encode The encoding scheme for the written file.
+     * @return true if the process was carrie dout without errors, false
+     * otherwise.
      */
     public boolean writeSubtitleText(Subtitles sub_list, File output_file, String encode) {
         boolean ok = false;
@@ -205,6 +210,19 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
 
         return ok;
     }//end private boolean writeSubtitleText(File output_file)
+    /**
+     * Writting images in a list of subtitle events out to their respective
+     * file, All images are located at the same directory where
+     * the index file resides. If a subtitle event has text and do not
+     * have an image, the text is converted to an image, and a file-name
+     * is automatically generated. The image format, when converted from
+     * text, will be of Portable Network Graphic (png) format. If the subtitle
+     * already contains an image, no image will be produced. There will be the
+     * presence of a visual progress-bar showing the progress percentage, and 
+     * the name of the image file being written.
+     * @param sub_list The list of subtitle events.
+     * @param output_file The output file.
+     */
     public void writeImages(Subtitles sub_list, File output_file) {
         try {
             pb.setMaxValue(sub_list.size() - 1);
@@ -240,6 +258,14 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
             pb.off();
         }
     }//end private void writeImages(Subtitles sub_list, File output_file)
+    /**
+     * Make a subtitle picture by drawing text 
+     * @param entry
+     * @param id
+     * @param dir
+     * @param filename
+     * @return
+     */
     private boolean makeSubPicture(SonSubEntry entry, int id, File dir, String filename) {
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();

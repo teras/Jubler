@@ -51,17 +51,25 @@ import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
 /**
- * Perform balancing text on {@link SubEntry}. At the moment, the routine makes 
- * use of some fixed format definitions:
+ * Perform balancing text on {@link SubEntry}. There is a default format
+ * definitions:
  * <pre>
  *      defaultMap.put(TextAttribute.FONT, new Font("Tahoma", Font.PLAIN, 18));
  * </pre>
  * to set {@link AttributedString}. The routine uses {@link LineBreakMeasurer} 
  * to measure the break points of the {@link SubEntry} text.
- * The disadvantages of using this is the fixed width and other hard-coded
- * attributes.
  * 
- * The balancing action will be based on the {@link #actionOnAllData} flag.
+ * These attribute parameters can also be obtained from the subtitle's style.
+ * When the action is performed, it will try to accquire the current setting
+ * of the subtitle, such as:
+ * <ol>
+ *  <li>Font-name</li>
+ *  <li>Font-size</li>
+ *  <li>Font-styles</li>
+ * </ol>
+ * 
+ * The balancing action will be based on the {@link #isActionOnAllData
+ * isActionOnAllData} flag.
  * When the flag is false, the table selection will be used to perform the
  * balancing, when true, the balancing will be performed on every record in
  * the table.
@@ -72,19 +80,40 @@ import javax.swing.JTable;
  * trying to fit the text, at the word boundary, into the prefixed length,
  * with the format given. So care must be taken before this function is called.
  * @author Hoang Duy Tran <hoangduytran@tiscali.co.uk>
+ * //@SuppressWarnings({"serial", "unchecked"})
  */
-@SuppressWarnings({"serial", "unchecked"})
 public class BalanceText extends JMenuItem implements ActionListener, CommonDef {
 
     /**
      * The default text width of 480
      */
     public static final int DEFAULT_TEXT_WIDTH = 480;
+    /**
+     * The minimum text width of 100
+     */
     public static final int MINIMUM_TEXT_WIDTH = 100;
+    /**
+     * The maximum text width of 720, screen width
+     */
     public static final int MAXIMUM_TEXT_WIDTH = 720;
+    /**
+     * The flag to indicate if the action is to carried out on all
+     * events of the subtitle-list.
+     */
     private boolean actionOnAllData = false;
+    /**
+     * The action name _("Balance text");
+     */
     private String action_name = _("Balance text");
+    /**
+     * The reference to Jubler.
+     */
     private Jubler jublerParent = null;
+    /**
+     * The width of the text to be used. This value is defaulted to
+     * {@link #DEFAULT_TEXT_WIDTH} but it can be changed during the
+     * run-time of the program.
+     */
     private int textWidth = DEFAULT_TEXT_WIDTH;
 
     public BalanceText() {
@@ -309,31 +338,55 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
 
     }//public void actionPerformed(java.awt.event.ActionEvent evt)
     /**
-     * @return the actionOnAllData
+     * Cheks to see if the flag to perform text-balancing 
+     * action on all subtitle-events is switched on or not.
+     * @return the actionOnAllData true if the action is to perform
+     * on all events, false to perform on selected items only.
      */
     public boolean isActionOnAllData() {
         return actionOnAllData;
     }
 
     /**
-     * @param actionOnAllData the actionOnAllData to set
+     * Sets the flag to indicate that text-balancing action is to be performed 
+     * on all subtitle-events or not.
+     * @param actionOnAllData the actionOnAllData true if the action is to 
+     * be performed on all events, false to perform on selected items only.
      */
     public void setActionOnAllData(boolean actionOnAllData) {
         this.actionOnAllData = actionOnAllData;
     }
 
+    /**
+     * Gets the current setting value for text-width per line.
+     * Default value is {@link #DEFAULT_TEXT_WIDTH}.
+     * @return The current value for text-width per line.
+     */
     public int getTextWidth() {
         return textWidth;
     }
 
+    /**
+     * Sets the current setting value for text-width per line.
+     * Default value is {@link #DEFAULT_TEXT_WIDTH}.
+     * @param textWidth New value for text-width per line.
+     */
     public void setTextWidth(int textWidth) {
         this.textWidth = textWidth;
     }
 
+    /**
+     * Gets the reference to the Jubler parent currently running.
+     * @return Reference to the Jubler parent currently running.
+     */
     public Jubler getJublerParent() {
         return jublerParent;
     }
 
+    /**
+     * Sets the reference to the Jubler parent currently running.
+     * @param jublerParent Reference to the Jubler parent currently running.
+     */
     public void setJublerParent(Jubler jublerParent) {
         this.jublerParent = jublerParent;
     }

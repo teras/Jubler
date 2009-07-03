@@ -124,24 +124,24 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
     /**
      * Run method performs in two stages. 
      * <ol>
-     *  <li>Locate the image files. The names of images has already
+     *  <li>Locate the image files. The names of images have already
      *      been parsed and isolated from the loading of the textual
      *      content of the subtitle file. This process will run through
      *      the list of subtitle events and search for the actual image
      *      files. This task makes use of {@link ImageFileListManager} 
      *      by giving it the sutitle-list, the image directory, and 
      *      the path of the subtitle file. These directories will be searched
-     *      first. If image is not found in the search paths given above,
+     *      first. If an image is not found in the search paths given above,
      *      a manual intervention is required. This will allow user to add
      *      their own directories on top of the current list, allowing the
      *      search routine to locate the missing image. There are options
      *      which allow user to temporary by-pass the missing image, or
      *      completely abandon the task altogether.</li>
      *  <li>If the flag {@link #isLoadImages} was set to true, then the
-     *      routine of loading of images will commence. There will be a 
+     *      routine to load images will commence. There will be a 
      *      visual progress bar to indicate the completion percentages and
      *      the name of the file being loaded. The routine will try to locate
-     *      the image, using its file-path that has been done above. If the
+     *      the image, using its file-path that has been located above. If the
      *      image is read and loaded successfully, it will be trimmed down to
      *      the visual subtitle area (ie. black background) and all transparent
      *      colour (the blue surrounding) are removed, making the image looks
@@ -150,9 +150,11 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
      *      If the image was not found, due to the abandoning or skipping action
      *      from the user in previous stage of the task, no image will be 
      *      visible.<br><br>
-     *      If the flag {@link #isLoadImages} was set to false, the routine
-     *      return immediately to the caller, an no image will be visible.</li>
+     *      If the flag {@link #isLoadImages isLoadImages} was set to false, 
+     *      the routine return immediately to the caller, and no image will 
+     *      be visible.</li>
      * </ol>
+     * <p>
      * When loading of the images in progress, there are several events the
      * caller can listen to:
      * <ol>
@@ -163,6 +165,7 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
      *  <li>{@link com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent} 
      *  This event happens after the loop finished.</li>
      * </ol>
+     * </p>
      * @see ImageFileListManager
      * @see JImage#readImage
      * @see SubtitleUpdaterThread

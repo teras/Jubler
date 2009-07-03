@@ -39,11 +39,13 @@ import javax.swing.JOptionPane;
 
 /**
  * This class locate the files for images. It uses the subtitle list that
- * has been parsed, and the name of the the image in the subtitle entries
- * and a list of parent-path to search for image files. It optionally allow
- * the manual intervene from the user to search for files that it could not
- * locate. The each subtitle-entry is updated with the image file. The updated
- * list will then may be used in the process of loading the actual image files.
+ * has been parsed, and try to locate the actual image-files using their names.
+ * A list of default paths should be given by the caller to help it search for 
+ * image file, but this is not compulsory. If an image is not found,
+ * there is an option to allow manual intervention from the user. 
+ * The subtitle-entries will be updated with the image files that has been
+ * located successfully. The updated list can be used in the process 
+ * of loading the actual image files into memory for displaying.
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class ImageFileListManager implements CommonDef {
@@ -61,7 +63,7 @@ public class ImageFileListManager implements CommonDef {
     /**
      * When manual intervention of the file-locationing is used, the dialog
      * is displayed and user have three options to choose from, OK, Ignore,
-     * of 'Do not remind again'. This variable holds one of those values.
+     * or 'Do not remind again'. This variable holds one of those values.
      * JOptionPane.YES_OPTION,      Yes, browse the directory for new dir.
      * JOptionPane.NO_OPTION:       Do not load this image.
      * JOptionPane.CANCEL_OPTION:   Not remind again!
@@ -69,10 +71,10 @@ public class ImageFileListManager implements CommonDef {
      */
     private int searchImageSelectedOption = JOptionPane.CANCEL_OPTION;
     /**
-     * List of searchable paths. By default, the application working directory
+     * List of searchable paths. By default, the application's working directory
      * ie. Jubler's excuting directory, and user's home-directory are added
      * to this list. Additionally, external routines can add futher paths to
-     * this list.
+     * this list using {@link #addSearchPath addSearchPath}.
      */
     NonDuplicatedVector<File> searchPathList = new NonDuplicatedVector<File>();
     /**

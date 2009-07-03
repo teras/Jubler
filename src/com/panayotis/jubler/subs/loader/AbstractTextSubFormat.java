@@ -47,13 +47,14 @@ import java.nio.charset.CharsetEncoder;
  * for program to recognise its format signature, and a 
  * {@link #getPattern working-pattern} for parsing records. By default, 
  * the test-pattern is the same as working-pattern, but one can overrride the
- * {@link getTestPattern} to accomodate for differences, if desired.
+ * {@link #getTestPattern test-pattern} to accomodate for differences, 
+ * if desired.
  * 
  * Implementation for {@link #getSubEntry getSubEntry} provides a mechanism
  * for creating a subtitle record when the data-input matched a working
  * pattern, and the implementation of 
  * {@link #appendSubEntry appendSubEntry} allows the record to be written
- * to a string buffer for writing to a file.
+ * to a string buffer before they are writen to a file.
  * 
  * This model suited simple subtitle format, where pattern of 
  * subtitle entries repeats. It does allow extensions of parsing other 
