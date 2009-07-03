@@ -4,12 +4,14 @@
  */
 package com.panayotis.jubler.media.player.terminals;
 
+import com.panayotis.jubler.media.player.PlayerArguments;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.concurrent.TimeoutException;
 
 /**
  *
@@ -19,18 +21,19 @@ public class ServerTerminal extends AbstractTerminal {
 
     private Process proc;
     private Socket socket;
+    private final static int TIMEOUT = 15;
 
-    public void start(String[] command) throws ExtProgramException {
+    public void start(PlayerArguments args) throws ExtProgramException {
         proc = null;
         cmd = null;
         out = error = null;
         int counter = 0;
         try {
-            proc = Runtime.getRuntime().exec(command);
-            while (socket == null) {
+            proc = Runtime.getRuntime().exec(args.arguments);
+            while (socket == null && counter <= TIMEOUT)
                 try {
                     Thread.sleep(1000);
-                    socket = new Socket((String) null, 55600);
+                    socket = new Socket((String) null, args.port);
                 } catch (Exception ex) {
                     try {
                         socket.close();
@@ -39,11 +42,14 @@ public class ServerTerminal extends AbstractTerminal {
                     socket = null;
                     counter++;
                 }
-            }
+
+            if (socket == null)
+                throw new ExtProgramException(new TimeoutException("Timeout while trying to contact server."));
+
             cmd = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             out = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception ex) {
-            System.out.println("ti skata pali "+ex.getMessage());
+            System.out.println("ti skata pali " + ex.getMessage());
             throw new ExtProgramException(ex);
         }
         System.out.println("all ok?");

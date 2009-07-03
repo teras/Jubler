@@ -17,7 +17,7 @@ public class VLCViewport extends TerminalViewport {
     }
 
     protected String[] getPostInitCommand() {
-        return null;
+        return new String[] {"play"};
     }
 
     protected String[] getPauseCommand() {
@@ -29,22 +29,22 @@ public class VLCViewport extends TerminalViewport {
     }
 
     protected String[] getSeekCommand(int secs) {
-        return new String[] {""};
+        return null;
     }
 
     protected String[] getSkipCommand(int secs) {
-        return new String[] {""};
+        return null;
     }
 
     protected String[] getSubDelayCommand(float secs) {
-        return new String[] {""};
+        return null;
     }
 
     protected String[] getSpeedCommand(float secs) {
-        return new String[] {""};
+        return null;
     }
 
     protected String[] getVolumeCommand(int vol) {
-        return new String[] {""};
+        return null;
     }
 }

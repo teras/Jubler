@@ -7,7 +7,6 @@ package com.panayotis.jubler.media.player.vlc;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
-import com.panayotis.jubler.tools.externals.AvailExternals;
 
 /**
  *
@@ -66,17 +65,5 @@ public class VLC extends AbstractPlayer implements Plugin {
 
     public String getName() {
         return "VLC";
-    }
-
-    public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
-    }
-
-    public void postInit(Object o) {
-        if (o instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) o;
-            if (l.getType().equals(family))
-                l.add(this);
-        }
     }
 }

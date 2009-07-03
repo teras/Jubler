@@ -56,10 +56,10 @@ public abstract class TerminalViewport extends ExternalViewport {
         try {
             player.cleanUp();   // Make sure player is in it's initial position (i.e. no subtitle files hanging around)
 
-            String cmd[] = player.getCommandArguments(mfile, sub, when);
+            PlayerArguments args = player.getCommandArguments(mfile, sub, when);
             position = 0;
             isPaused = false;
-            terminal.start(cmd);
+            terminal.start(args);
 
             cmdpipe = terminal.getCmdPipe();
             outpipe = terminal.getOutPipe();
