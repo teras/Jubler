@@ -89,15 +89,4 @@ public class MPlayer extends AbstractPlayer implements Plugin {
         return " ass ";
     }
 
-    public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
-    }
-
-    public void postInit(Object o) {
-        if (o instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) o;
-            if (l.getType().equals(family))
-                l.add(this);
-        }
-    }
 }

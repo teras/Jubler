@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.media.player.terminals;
 
+import com.panayotis.jubler.media.player.PlayerArguments;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,12 +20,12 @@ public class CommandLineTerminal extends AbstractTerminal {
 
     private Process proc;
 
-    public void start(String[] command) throws ExtProgramException {
+    public void start(PlayerArguments args) throws ExtProgramException {
         proc = null;
         cmd = null;
         out = error = null;
         try {
-            proc = Runtime.getRuntime().exec(command);
+            proc = Runtime.getRuntime().exec(args.arguments);
             cmd = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
             out = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             error = new BufferedReader(new InputStreamReader(proc.getErrorStream()));

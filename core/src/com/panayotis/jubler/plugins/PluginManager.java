@@ -71,8 +71,9 @@ public class PluginManager {
 
     private Object getClass(String classname) {
         try {
-            return cl.loadClass(classname).newInstance();
-        } catch (Exception ex) {
+            Object res = cl.loadClass(classname).newInstance();
+            return res;
+        } catch (Throwable ex) {
         }
         return null;
     }

@@ -35,6 +35,7 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.Networking;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.externals.AvailExternals;
 import java.util.StringTokenizer;
 
 /**
@@ -87,7 +88,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         }
     }
 
-    public String[] getCommandArguments(MediaFile mfile, Subtitles sub, Time when) {
+    public PlayerArguments getCommandArguments(MediaFile mfile, Subtitles sub, Time when) {
 
         /* Frist, find out if we need different audio stream */
         String options = opts.getArguments();
@@ -123,13 +124,16 @@ public abstract class AbstractPlayer extends VideoPlayer {
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));
         replaceValues(cmds, "%j", SystemFileFinder.getJublerAppPath());
-        replaceValues(cmds, "%i", Integer.toString(Networking.getRandomPort()));
+        int port = Networking.getRandomPort();
+        replaceValues(cmds, "%i", Integer.toString(port));
 
-        StringBuffer cm = new StringBuffer();
-        for (int i = 0; i < cmds.length; i++)
-            cm.append(cmds[i]).append(' ');
-        DEBUG.debug(cm.toString());
-        return cmds;
+        PlayerArguments a= new PlayerArguments();
+        a.arguments = cmds;
+        a.port = port;
+        a.subfile = subpath;
+        a.videofile = mfile.getVideoFile().getPath();
+        DEBUG.debug(a.toString());
+        return a;
     }
 
     public JExtBasicOptions getOptionsPanel() {
@@ -147,5 +151,17 @@ public abstract class AbstractPlayer extends VideoPlayer {
 
     public int getLocationY() {
         return y;
+    }
+
+    public String[] getAffectionList() {
+        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
+    }
+
+    public void postInit(Object o) {
+        if (o instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals) o;
+            if (l.getType().equals(family))
+                l.add(this);
+        }
     }
 }
