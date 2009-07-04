@@ -33,12 +33,16 @@ public class JublerApp extends Application implements Plugin {
     public void postInit(Object o) {
         if (o instanceof Jubler) {
             Jubler jubler = (Jubler) o;
-            jubler.AboutHM.getParent().remove(jubler.AboutHM);
-            jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
-            jubler.QuitFM.getParent().remove(jubler.QuitFM);
-            setComponentDraggable(jubler, jubler.JublerTools);
-            setComponentDraggable(jubler, jubler.Info);
-            setComponentDraggable(jubler, jubler.Stats);
+            if (jubler.AboutHM == null) {
+                jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
+            } else {
+                jubler.AboutHM.getParent().remove(jubler.AboutHM);
+                jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
+                jubler.QuitFM.getParent().remove(jubler.QuitFM);
+                setComponentDraggable(jubler, jubler.JublerTools);
+                setComponentDraggable(jubler, jubler.Info);
+                setComponentDraggable(jubler, jubler.Stats);
+            }
         }
     }
 

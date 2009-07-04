@@ -196,13 +196,14 @@ public class Jubler extends JFrame {
     
     /** Creates new form JubEdit */
     public Jubler() {
+        Main.plugins.callPostInitListeners(this);
         subs = null;
         mfile = new MediaFile();
         connected_consoles = new Vector<JVideoConsole>();
-        
+
         undo = new UndoList(this);
                 
-        
+
         initComponents();
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
