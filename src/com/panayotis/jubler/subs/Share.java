@@ -41,27 +41,6 @@ import javax.swing.JFileChooser;
  */
 public class Share implements CommonDef {
 
-    public static short[] copyShortArray(short[] orig) {
-        if (orig == null) {
-            return null;
-        }
-
-        int len = orig.length;
-        short[] new_array = new short[len];
-        System.arraycopy(orig, 0, new_array, 0, len);
-        return new_array;
-    }
-
-    public static int[] copyIntArray(int[] orig) {
-        if (orig == null) {
-            return null;
-        }
-
-        int len = orig.length;
-        int[] new_array = new int[len];
-        System.arraycopy(orig, 0, new_array, 0, len);
-        return new_array;
-    }
     public static final int INVALID_INDEX = -1;
 
     /**
@@ -360,5 +339,40 @@ public class Share implements CommonDef {
         boolean is_one_word = (count == 1);
         return is_one_word;
     }//end public static boolean isOneWord(String txt)
+    
+    public static String shortArrayToString(short[] a, String title) {
+        StringBuffer b = new StringBuffer();
+        if (a != null && a.length > 3) {
+            b.append(title).append("\t").append("(");
+            b.append(a[0] + " " + a[1] + " " + a[2] + " " + a[3]);
+            b.append(")").append(UNIX_NL);
+            return b.toString();
+        } else {
+            return null;
+        }
+    }    
+    
+    public static short[] copyShortArray(short[] orig) {
+        if (orig == null) {
+            return null;
+        }
+
+        int len = orig.length;
+        short[] new_array = new short[len];
+        System.arraycopy(orig, 0, new_array, 0, len);
+        return new_array;
+    }
+
+    public static int[] copyIntArray(int[] orig) {
+        if (orig == null) {
+            return null;
+        }
+
+        int len = orig.length;
+        int[] new_array = new int[len];
+        System.arraycopy(orig, 0, new_array, 0, len);
+        return new_array;
+    }
+    
 }//end Share
 

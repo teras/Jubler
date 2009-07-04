@@ -22,7 +22,6 @@
 package com.panayotis.jubler.subs.records.SON;
 
 import com.panayotis.jubler.subs.Share;
-import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.binary.JMaestroOptions;
 import com.panayotis.jubler.subs.loader.processor.SON.SONPatternDef;
@@ -67,10 +66,8 @@ public class SonHeader implements SONPatternDef, Cloneable {
     public String tv_type = null;
     public String tape_type = null;
     public short[] pixel_area = null;
-    public short[] colour = null;
-    public short[] contrast = null;
-    public short[] display_area = null;
-    private Vector<SonPaletteEntry> palletEntry = null;
+    public SonAttribute son_attribute = null;
+    public Vector<SonPaletteEntry> palletEntry = null;
     public String image_directory = null;
     public File subtitle_file = null;
     public int max_row_height = -1;
@@ -135,6 +132,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
 
         short w, h;
         if (is_new) {
+            son_attribute = new SonAttribute();
             try {
                 w = (short) moptions.getVideoWidth();
                 h = (short) moptions.getVideoHeight();
@@ -142,23 +140,16 @@ public class SonHeader implements SONPatternDef, Cloneable {
                 w = 720;
                 h = 576;
             }
-            display_area = new short[]{0, 0, w, h};
+            
+            son_attribute.display_area = new short[]{0, 0, w, h};
+            son_attribute.colour = new short[]{0, 1, 0, 0};
+            son_attribute.contrast = new short[]{15, 15, 15, 0};
         }
 
-        boolean has_display_area = (display_area != null);
-        if (has_display_area) {
-            txt = SonSubEntry.shortArrayToString(display_area, "Display_Area");
+        boolean has_attribute = (son_attribute != null);
+        if (has_attribute) {
+            txt = son_attribute.toString();
             b.append(txt);
-        }
-
-        if (is_new) {
-            contrast = new short[]{15, 15, 15, 0};
-        }
-
-        boolean has_constrast = (this.contrast != null);
-        if (has_constrast) {
-            txt = SonSubEntry.shortArrayToString(contrast, "Contrast");
-            b.append(txt).append(UNIX_NL);
         }
 
         if (is_new) {
@@ -180,20 +171,6 @@ public class SonHeader implements SONPatternDef, Cloneable {
         }//end if (has_palette)
 
         addDetailHeader(b);
-
-        if (is_new) {
-            this.colour = new short[]{0, 1, 0, 0};
-        }//end if (is_new)
-
-        boolean has_color = (this.colour != null && this.colour.length == 4);
-        if (has_color) {
-            b.append("Color" + "\t" + "(" +
-                    this.colour[0] + " " +
-                    this.colour[1] + " " +
-                    this.colour[2] + " " +
-                    this.colour[3] + ")").append(UNIX_NL);
-        }//end if (has_color)
-
         return b.toString();
     }
 
@@ -244,9 +221,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             new_header.tv_type = (tv_type == null ? null : new String(tv_type));
             new_header.tape_type = (tape_type == null ? null : new String(tape_type));
             new_header.pixel_area = Share.copyShortArray(pixel_area);
-            new_header.colour = Share.copyShortArray(colour);
-            new_header.contrast = Share.copyShortArray(contrast);
-            new_header.display_area = Share.copyShortArray(display_area);
+            new_header.son_attribute = (son_attribute == null ? null : (SonAttribute) son_attribute.clone());
             new_header.palletEntry = (palletEntry == null ? null : (Vector<SonPaletteEntry>) palletEntry.clone());
             new_header.image_directory = (image_directory == null ? null : new String(image_directory));
             new_header.subtitle_file = subtitle_file;
@@ -267,9 +242,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             this.tv_type = (o.tv_type == null ? null : new String(o.tv_type));
             this.tape_type = (o.tape_type == null ? null : new String(o.tape_type));
             this.pixel_area = Share.copyShortArray(o.pixel_area);
-            this.colour = Share.copyShortArray(o.colour);
-            this.contrast = Share.copyShortArray(o.contrast);
-            this.display_area = Share.copyShortArray(o.display_area);
+            this.son_attribute = (o.son_attribute == null ? null : (SonAttribute) o.son_attribute.clone());
             this.palletEntry = (o.palletEntry == null ? null : (Vector<SonPaletteEntry>) o.palletEntry.clone());
             this.image_directory = (o.image_directory == null ? null : new String(o.image_directory));
             this.subtitle_file = o.subtitle_file;
@@ -287,9 +260,8 @@ public class SonHeader implements SONPatternDef, Cloneable {
         this.tv_type = "PAL";
         this.tape_type = "NON_DROP";
         this.pixel_area = new short[]{0, 575};
-        this.colour = new short[]{0, 1, 2, 3};
-        this.contrast = new short[]{0, 15, 15, 15};
-        this.display_area = new short[]{0, 380, 720, 416};
+        this.son_attribute = new SonAttribute();
+        this.son_attribute.makeDefaulRecord();
         this.palletEntry = null;
         this.image_directory = USER_CURRENT_DIR;
         this.subtitle_file = new File(USER_CURRENT_DIR);
@@ -310,4 +282,12 @@ public class SonHeader implements SONPatternDef, Cloneable {
     public void setDefaultHeader(boolean defaultHeader) {
         this.defaultHeader = defaultHeader;
     }
+
+    public SonAttribute getCreteSonAttribute() {
+        if (this.son_attribute == null) {
+            this.son_attribute = new SonAttribute();
+        }
+        return this.son_attribute;
+    }
+    
 }

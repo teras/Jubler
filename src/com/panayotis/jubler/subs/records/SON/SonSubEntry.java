@@ -50,9 +50,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public int max_digits = 4;
     public SonHeader header = null;
     public short event_id = 0;
-    public short[] colour = null;
-    public short[] contrast = null;
-    public short[] display_area = null;
+    public SonAttribute son_attribute = null;
     public String image_filename = null;
     private File imageFile = null;
     private ImageIcon image = null;
@@ -96,6 +94,15 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
         return image;
     }
 
+    public static short[] makeAttributeEntry(String[] matched_data) {
+        short[] array = new short[4];
+        array[0] = DVDMaestro.parseShort(matched_data[0]);
+        array[1] = DVDMaestro.parseShort(matched_data[1]);
+        array[2] = DVDMaestro.parseShort(matched_data[2]);
+        array[3] = DVDMaestro.parseShort(matched_data[3]);
+        return array;
+    }
+
     public static String shortArrayToString(short[] a, String title) {
         StringBuffer b = new StringBuffer();
         if (a != null && a.length > 3) {
@@ -108,32 +115,16 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
         }
     }
 
-    public static short[] makeAttributeEntry(String[] matched_data) {
-        short[] array = new short[4];
-        array[0] = DVDMaestro.parseShort(matched_data[0]);
-        array[1] = DVDMaestro.parseShort(matched_data[1]);
-        array[2] = DVDMaestro.parseShort(matched_data[2]);
-        array[3] = DVDMaestro.parseShort(matched_data[3]);
-        return array;
-    }
-
     public String toString() {
         NumberFormat fmt = NumberFormat.getInstance();
         StringBuffer b = new StringBuffer();
         String txt = null;
         try {
-            txt = shortArrayToString(colour, "Color");
-            if (txt != null) {
+            if (son_attribute != null) {
+                txt = son_attribute.toString();
                 b.append(txt);
             }
-            txt = shortArrayToString(contrast, "Contrast");
-            if (txt != null) {
-                b.append(txt);
-            }
-            txt = shortArrayToString(display_area, "Display_Area");
-            if (txt != null) {
-                b.append(txt);
-            }
+
             fmt.setMinimumIntegerDigits(max_digits);
             fmt.setMaximumIntegerDigits(max_digits);
             fmt.setGroupingUsed(false);
@@ -172,9 +163,8 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             new_object.max_digits = max_digits;
             new_object.header = (header == null ? null : (SonHeader) header.clone());
             new_object.event_id = event_id;
-            new_object.colour = Share.copyShortArray(colour);
-            new_object.contrast = Share.copyShortArray(contrast);
-            new_object.display_area = Share.copyShortArray(display_area);
+            new_object.son_attribute = (this.son_attribute == null ? null : (SonAttribute) son_attribute.clone());
+
             //avoid making copy of image as there aren't many option to alter its content
             //so make a shallow copy here for the time being.
             new_object.imageFile = imageFile;
@@ -203,14 +193,9 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             o_son = (SonSubEntry) o;
             max_digits = o_son.max_digits;
             event_id = o_son.event_id;
-            if (o_son.colour != null) {
-                colour = Share.copyShortArray(o_son.colour);
-            }
-            if (o_son.contrast != null) {
-                contrast = Share.copyShortArray(o_son.contrast);
-            }
-            if (o_son.display_area != null) {
-                display_area = Share.copyShortArray(o_son.display_area);
+
+            if (o_son.son_attribute != null) {
+                this.son_attribute = (SonAttribute) o_son.son_attribute.clone();
             }
             imageFile = o_son.imageFile;
             image = o_son.image;
@@ -256,4 +241,10 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             throw new IncompatibleRecordTypeException(ex.getMessage());
         }
     }//end public boolean copyImage(SubEntry source)
+    public SonAttribute getCreteSonAttribute() {
+        if (this.son_attribute == null) {
+            this.son_attribute = new SonAttribute();
+        }
+        return this.son_attribute;
+    }
 }

@@ -55,12 +55,12 @@ public class SONDisplayArea extends SubtitlePatternProcessor implements CommonDe
         short[] array = SonSubEntry.makeAttributeEntry(matched_data);
         if (record instanceof SonHeader) {
             setSonHeader((SonHeader) record);
-            sonHeader.display_area = array;
+            sonHeader.getCreteSonAttribute().display_area = array;
         }//end if (record instanceof SonHeader)
 
         if (record instanceof SonSubEntry) {
             setSonSubEntry((SonSubEntry) record);
-            sonSubEntry.display_area = array;
+            sonSubEntry.getCreteSonAttribute().display_area = array;
         }//end if (record instanceof SonSubEntry)
     }//end if
 

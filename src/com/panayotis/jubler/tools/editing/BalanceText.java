@@ -129,7 +129,7 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
     /**
      * This defaultMap holds the basic attributes for the line measurer
      */
-    private static final Hashtable defaultMap = new Hashtable();
+    private static final Hashtable<TextAttribute, Font> defaultMap = new Hashtable<TextAttribute, Font>();
 
     /**
      * The default font attributes for the line measurer.
@@ -149,7 +149,7 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
      * for the subtitle-event, if the attributes are set, or the default
      * mapping if not.
      */
-    private Hashtable getAttributeMap(SubEntry r) {
+    private Hashtable<TextAttribute, Font> getAttributeMap(SubEntry r) {
         try {
             SubStyle style = r.getStyle();
             String font_name = (String) style.get(StyleType.FONTNAME);
@@ -165,7 +165,8 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
             if (is_italic) {
                 font_attrib |= Font.ITALIC;
             }
-            Hashtable new_map = new Hashtable();
+            Hashtable<TextAttribute, Font> new_map = 
+                    new Hashtable<TextAttribute, Font>();
             new_map.put(
                     TextAttribute.FONT,
                     new Font(font_name, font_attrib, font_size));
@@ -190,7 +191,8 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
             String s = r.getTextWithoutLineBreak();
             int text_len = s.length();
 
-            Hashtable attribute_map = this.getAttributeMap(r);
+            Hashtable<TextAttribute, Font> attribute_map = 
+                    getAttributeMap(r);
 
             AttributedString att_text = new AttributedString(s, attribute_map);
             AttributedCharacterIterator para = att_text.getIterator();
