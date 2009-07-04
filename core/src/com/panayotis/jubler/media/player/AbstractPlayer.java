@@ -77,7 +77,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
             f.delete();
     }
 
-    private void replaceValues(String[] args, String pattern, String value) {
+    public static void replaceValues(String[] args, String pattern, String value) {
         int pos;
         for (int i = 0; i < args.length; i++) {
             pos = args[i].indexOf(pattern);
@@ -127,7 +127,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         int port = Networking.getRandomPort();
         replaceValues(cmds, "%i", Integer.toString(port));
 
-        PlayerArguments a= new PlayerArguments();
+        PlayerArguments a = new PlayerArguments();
         a.arguments = cmds;
         a.port = port;
         a.subfile = subpath;
