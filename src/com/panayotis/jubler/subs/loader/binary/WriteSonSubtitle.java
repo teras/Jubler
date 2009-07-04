@@ -244,7 +244,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
                     pb.setTitle(img_filename);
                     pb.setValue(i);
 
-                    makeSubPicture(sonSubEntry, i + 1, output_file.getParentFile(), img_filename);
+                    makeSubPicture(sonSubEntry, output_file.getParentFile(), img_filename);
                 } else if (!has_text && has_image) {
                 //do nothing - supposed to save new images?
                 } else if (!has_text && !has_image) {
@@ -259,14 +259,16 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
         }
     }//end private void writeImages(Subtitles sub_list, File output_file)
     /**
-     * Make a subtitle picture by drawing text 
-     * @param entry
-     * @param id
-     * @param dir
-     * @param filename
-     * @return
+     * Make a subtitle picture by drawing text onto an image, create an
+     * image file, update the subtitle entry's content of the new image
+     * and file-name, then write the image to the crteated file using
+     * 'PNG' format.
+     * @param entry The subtitle entry where its text component will be drawn.
+     * @param dir The directory where the image file will reside.
+     * @param filename The fully constructed name of the file to be written to.
+     * @return true if the process completes without errors, false otherwise.
      */
-    private boolean makeSubPicture(SonSubEntry entry, int id, File dir, String filename) {
+    private boolean makeSubPicture(SonSubEntry entry, File dir, String filename) {
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();
         try {

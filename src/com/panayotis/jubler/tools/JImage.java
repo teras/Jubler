@@ -27,6 +27,9 @@ import com.panayotis.jubler.subs.NonDuplicatedVector;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.Share;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -525,5 +528,16 @@ public class JImage implements CommonDef {
     //    FileImageOutputStream output = new FileImageOutputStream(file);
     //    writer.setOutput(output); writer.write(null, new IIOImage(image, null,null), param);
     }//end public static BufferedImage compressImage(BufferedImage image, float quality) throws IOException
+    
+    public static BufferedImage captureComponentGraphic(Component comp){
+        BufferedImage img = null;
+        try{
+            Dimension dim = comp.getSize();
+            img = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_INT_ARGB);
+            Graphics g2d = img.getGraphics();
+            comp.paint(g2d);
+        }catch(Exception ex){}
+        return img;
+    }//end 
 }//end public class JImage
 

@@ -3170,4 +3170,8 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     public JSubEditor getSubeditor() {
         return subeditor;
     }
+
+    public BalanceText getBalanceText() {
+        return balanceText;
+    }
 }//end public class Jubler extends JFrame
