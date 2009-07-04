@@ -128,9 +128,11 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
             }
         if ( !player.supportSpeed()) {
             SpeedS.setEnabled(false);
+            ResetSpeedB.setEnabled(false);
         }
         if ( !player.supportAudio()) {
             AudioS.setEnabled(false);
+            AudioB.setEnabled(false);
         }
         if ( !player.supportChangeSubs()) {
             LoadSubsB.setEnabled(false);
@@ -431,13 +433,14 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel8.add(jPanel13);
 
         SpeedS.setMajorTickSpacing(3);
-        SpeedS.setMaximum(6);
+        SpeedS.setMaximum(3);
+        SpeedS.setMinimum(-3);
         SpeedS.setMinorTickSpacing(1);
         SpeedS.setOrientation(javax.swing.JSlider.VERTICAL);
         SpeedS.setPaintTicks(true);
         SpeedS.setSnapToTicks(true);
         SpeedS.setToolTipText(_("Change playback speed"));
-        SpeedS.setValue(3);
+        SpeedS.setValue(0);
         SpeedS.setMinimumSize(new java.awt.Dimension(30, 36));
         SpeedS.setPreferredSize(new java.awt.Dimension(30, 40));
         SpeedS.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -794,7 +797,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }//GEN-LAST:event_selectMark
     
     private void ResetSpeedBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetSpeedBActionPerformed
-        SpeedS.setValue(3);
+        SpeedS.setValue(0);
     }//GEN-LAST:event_ResetSpeedBActionPerformed
     
     private void LoadSubsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadSubsBActionPerformed
@@ -825,24 +828,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     private void SpeedSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SpeedSStateChanged
         if ( SpeedS.getValueIsAdjusting()) return;
-        float speed = 1f;
-        switch (SpeedS.getValue()) {
-            case 0:
-                speed = 0.333333f; break;
-            case 1:
-                speed = 0.5f; break;
-            case 2:
-                speed = 0.666666f; break;
-            case 3:
-                speed = 1f; break;
-            case 4:
-                speed = 1.5f; break;
-            case 5:
-                speed = 2f; break;
-            case 6:
-                speed = 3f; break;
-        }
-        checkValid(view.setSpeed(speed));
+        checkValid(view.setSpeed(SpeedS.getValue()));
     }//GEN-LAST:event_SpeedSStateChanged
     
     

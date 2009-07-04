@@ -51,7 +51,7 @@ public class VLC extends AbstractPlayer implements Plugin {
     }
 
     public boolean supportAudio() {
-        return false;
+        return true;
     }
 
     public boolean supportChangeSubs() {

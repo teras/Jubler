@@ -64,7 +64,7 @@ public abstract class ExternalViewport implements Viewport {
 
     protected abstract String[] getSubDelayCommand(float secs);
 
-    protected abstract String[] getSpeedCommand(float secs);
+    protected abstract String[] getSpeedCommand(int secs);
 
     protected abstract String[] getVolumeCommand(int vol);
 
@@ -138,7 +138,7 @@ public abstract class ExternalViewport implements Viewport {
         return sendCommands(getSubDelayCommand(secs));
     }
 
-    public boolean setSpeed(float secs) {
+    public boolean setSpeed(int secs) {
         isPaused = false;
         return sendCommands(getSpeedCommand(secs));
     }
