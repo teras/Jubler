@@ -96,7 +96,7 @@ public abstract class TerminalViewport extends ExternalViewport {
                     if (info != null)
                         DEBUG.debug(player.getName() + "> " + info);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
             }
             if (quit_is_fatal)
                 feedback.requestQuit();
@@ -117,7 +117,7 @@ public abstract class TerminalViewport extends ExternalViewport {
                     if (info != null)
                         DEBUG.debug(player.getName() + "! " + info);
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
             }
         }
     }

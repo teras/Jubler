@@ -4,7 +4,10 @@
  */
 package com.panayotis.jubler.media.player.vlc;
 
+import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.media.player.PlayerArguments;
 import com.panayotis.jubler.media.player.TerminalViewport;
+import com.panayotis.jubler.media.player.terminals.ServerTerminal;
 
 /**
  *
@@ -17,7 +20,11 @@ public class VLCViewport extends TerminalViewport {
     }
 
     protected String[] getPostInitCommand() {
-        return new String[] {"play"};
+        PlayerArguments args = ((ServerTerminal)terminal).getArguments();
+        String[] values = {"clear", "add \"%v\" :sub-file=%s"};
+        AbstractPlayer.replaceValues(values, "%v", args.videofile);
+        AbstractPlayer.replaceValues(values, "%s", args.subfile);
+        return values;
     }
 
     protected String[] getPauseCommand() {

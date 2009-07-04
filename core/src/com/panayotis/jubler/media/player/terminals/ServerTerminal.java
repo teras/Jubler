@@ -22,6 +22,7 @@ public class ServerTerminal extends AbstractTerminal {
     private Process proc;
     private Socket socket;
     private final static int TIMEOUT = 15;
+    private PlayerArguments args;
 
     public void start(PlayerArguments args) throws ExtProgramException {
         proc = null;
@@ -49,10 +50,13 @@ public class ServerTerminal extends AbstractTerminal {
             cmd = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             out = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception ex) {
-            System.out.println("ti skata pali " + ex.getMessage());
             throw new ExtProgramException(ex);
         }
-        System.out.println("all ok?");
+        this.args = args;
+    }
+
+    public PlayerArguments getArguments() {
+        return args;
     }
 
     public void terminate() {
