@@ -273,17 +273,23 @@ public class JSubPreview extends javax.swing.JPanel {
         AudioPlay = new javax.swing.JToggleButton();
         NewSub = new javax.swing.JToggleButton();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
+        MainPanel.setOpaque(false);
         MainPanel.setLayout(new java.awt.BorderLayout());
 
+        AudioPanel.setOpaque(false);
         AudioPanel.setLayout(new java.awt.BorderLayout());
 
+        BottomPanel.setOpaque(false);
         BottomPanel.setLayout(new javax.swing.BoxLayout(BottomPanel, javax.swing.BoxLayout.Y_AXIS));
 
+        TimelineP.setOpaque(false);
         TimelineP.setLayout(new java.awt.BorderLayout());
         BottomPanel.add(TimelineP);
 
+        EditorPanel.setOpaque(false);
         EditorPanel.setLayout(new java.awt.BorderLayout());
 
         slider.setBlockIncrement(100);
@@ -302,6 +308,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
         MainPanel.add(AudioPanel, java.awt.BorderLayout.CENTER);
 
+        InfoPanel.setOpaque(false);
         InfoPanel.setLayout(new java.awt.BorderLayout());
 
         TimePosL.setText(" ");
@@ -309,6 +316,7 @@ public class JSubPreview extends javax.swing.JPanel {
         TimePosL.setPreferredSize(new java.awt.Dimension(50, 16));
         InfoPanel.add(TimePosL, java.awt.BorderLayout.CENTER);
 
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         ZoomS.setSnapToTicks(true);
@@ -341,6 +349,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.setFloatable(false);
         ToolBar.setOrientation(JToolBar.VERTICAL);
         ToolBar.setRollover(true);
+        ToolBar.setOpaque(false);
 
         Orientation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turndown.png"))); // NOI18N
         Orientation.setToolTipText(_("Change orientation of Preview panel"));
