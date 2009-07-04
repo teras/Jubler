@@ -35,11 +35,12 @@ public class SubRenderer extends DefaultTableCellRenderer {
 
     private static final Color[] MarkColors = {Color.WHITE, new Color(255, 200, 220), new Color(255, 255, 170), new Color(200, 255, 255)};
     private static final Color[] MarkColorsDark = new Color[MarkColors.length];
-    private static final float percent = 0.85f;
+    private static final float percent = 0.92f;
 
 
     static {
-        for (int i = 0; i < MarkColors.length; i++) {
+        MarkColorsDark[0] = new Color(235, 240, 253);
+        for (int i = 1; i < MarkColors.length; i++) {
             Color c = MarkColors[i];
             MarkColorsDark[i] = new Color((int) (c.getRed() * percent), (int) (c.getGreen() * percent), (int) (c.getBlue() * percent));
         }
