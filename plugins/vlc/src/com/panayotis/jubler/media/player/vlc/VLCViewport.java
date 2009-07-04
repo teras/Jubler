@@ -60,8 +60,15 @@ public class VLCViewport extends TerminalViewport {
         return new String[]{"key " + command};
     }
 
-    protected String[] getSubDelayCommand(float secs) {
-        return null;
+    protected synchronized String[] getSubDelayCommand(float secs) {
+        int steps = (int) Math.abs(secs * 20);
+        if (steps == 0)
+            return null;
+        String tag = secs > 0 ? "key key-subdelay-up" : "key key-subdelay-down";
+        String[] cmd = new String[steps];
+        for (int i = 0; i < steps; i++)
+            cmd[i] = tag;
+        return cmd;
     }
 
     protected String[] getSpeedCommand(VideoPlayer.SpeedLevel level) {
