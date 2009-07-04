@@ -52,8 +52,10 @@ public interface Viewport {
 
     public abstract boolean setActive(boolean status, Subtitles newsubs);
 
-    public abstract boolean setSpeed(float speed);
+    /* Values form -3..0..3 */
+    public abstract boolean setSpeed(int scale);
 
+    /* values from 0..10 */
     public abstract boolean setVolume(int volume);
 
     public abstract double getTime();

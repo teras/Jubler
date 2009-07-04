@@ -59,8 +59,33 @@ public class MPlayerViewport extends TerminalViewport {
         return new String[]{"sub_delay " + secs};
     }
 
-    protected String[] getSpeedCommand(float secs) {
-        return new String[]{"speed_set " + secs};
+    protected String[] getSpeedCommand(int scale) {
+        float speed = 1f;
+        switch (scale) {
+            case -3:
+                speed = 0.333333f;
+                break;
+            case -2:
+                speed = 0.5f;
+                break;
+            case -1:
+                speed = 0.666666f;
+                break;
+            case 0:
+                speed = 1f;
+                break;
+            case 1:
+                speed = 1.5f;
+                break;
+            case 2:
+                speed = 2f;
+                break;
+            case 3:
+                speed = 3f;
+                break;
+        }
+
+        return new String[]{"speed_set " + speed};
     }
 
     protected String[] getVolumeCommand(int vol) {
