@@ -433,14 +433,13 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel8.add(jPanel13);
 
         SpeedS.setMajorTickSpacing(3);
-        SpeedS.setMaximum(3);
-        SpeedS.setMinimum(-3);
+        SpeedS.setMaximum(6);
         SpeedS.setMinorTickSpacing(1);
         SpeedS.setOrientation(javax.swing.JSlider.VERTICAL);
         SpeedS.setPaintTicks(true);
         SpeedS.setSnapToTicks(true);
         SpeedS.setToolTipText(_("Change playback speed"));
-        SpeedS.setValue(0);
+        SpeedS.setValue(3);
         SpeedS.setMinimumSize(new java.awt.Dimension(30, 36));
         SpeedS.setPreferredSize(new java.awt.Dimension(30, 40));
         SpeedS.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -797,7 +796,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }//GEN-LAST:event_selectMark
     
     private void ResetSpeedBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetSpeedBActionPerformed
-        SpeedS.setValue(0);
+        SpeedS.setValue(3);
     }//GEN-LAST:event_ResetSpeedBActionPerformed
     
     private void LoadSubsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadSubsBActionPerformed
@@ -814,7 +813,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         if (value > 0)
             last_volume_value = value;
         setAudioIcon(value == 0);
-        checkValid(view.setVolume(value));
+        checkValid(view.setVolume(VideoPlayer.SoundLevel.values()[value]));
     }//GEN-LAST:event_AudioSStateChanged
     
     private void MarkBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MarkBActionPerformed
@@ -828,7 +827,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     private void SpeedSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SpeedSStateChanged
         if ( SpeedS.getValueIsAdjusting()) return;
-        checkValid(view.setSpeed(SpeedS.getValue()));
+        checkValid(view.setSpeed(VideoPlayer.SpeedLevel.values()[SpeedS.getValue()]));
     }//GEN-LAST:event_SpeedSStateChanged
     
     
@@ -844,19 +843,19 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     
     
     private void FFMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FFMovieBActionPerformed
-        checkValid(view.skip(30));
+        checkValid(view.skip(VideoPlayer.SkipLevel.ForthLong));
     }//GEN-LAST:event_FFMovieBActionPerformed
     
     private void FMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMovieBActionPerformed
-        checkValid(view.skip(10));
+        checkValid(view.skip(VideoPlayer.SkipLevel.ForthShort));
     }//GEN-LAST:event_FMovieBActionPerformed
     
     private void BMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BMovieBActionPerformed
-        checkValid(view.skip(-10));
+        checkValid(view.skip(VideoPlayer.SkipLevel.BackSort));
     }//GEN-LAST:event_BMovieBActionPerformed
     
     private void BBMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBMovieBActionPerformed
-        checkValid(view.skip(-30));
+        checkValid(view.skip(VideoPlayer.SkipLevel.BackLong));
     }//GEN-LAST:event_BBMovieBActionPerformed
     
     private void QuitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitBActionPerformed
