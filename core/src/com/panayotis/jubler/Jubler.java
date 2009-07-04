@@ -2274,10 +2274,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     }
     
     public void enablePreview(boolean status) {
-        BasicPanel.remove(SubSplitPane);
-        BasicPanel.remove(SubsScrollPane);
-        SubSplitPane.remove(SubsScrollPane);
-
         EnablePreviewC.setSelected(status);
         PreviewTB.setSelected(status);
         VideoPreviewC.setEnabled(status);
@@ -2297,6 +2293,9 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             preview.subsHaveChanged(SubTable.getSelectedRows());
 
             /* Reposition Visual Elements */
+            BasicPanel.remove(SubSplitPane);
+            BasicPanel.remove(SubsScrollPane);
+            SubSplitPane.remove(SubsScrollPane);
             BasicPanel.add(SubSplitPane);
             SubSplitPane.setBottomComponent(SubsScrollPane);
         } else {
@@ -2309,6 +2308,9 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             preview.setEnabled(false);
 
             /* Reposition Visual Elements */
+            BasicPanel.remove(SubSplitPane);
+            BasicPanel.remove(SubsScrollPane);
+            SubSplitPane.remove(SubsScrollPane);
             BasicPanel.add(SubsScrollPane);
         }
         SubSplitPane.resetToPreferredSizes();
