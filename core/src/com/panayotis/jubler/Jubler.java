@@ -574,14 +574,19 @@ public class Jubler extends JFrame {
         setForeground(java.awt.Color.white);
         addWindowListener(formListener);
 
+        BasicPanel.setBackground(SystemDependent.getWindowBackgroundColor(BasicPanel));
         BasicPanel.setLayout(new java.awt.BorderLayout());
 
+        LowerPartP.setBackground(new java.awt.Color(0, 255, 255));
+        LowerPartP.setOpaque(false);
         LowerPartP.setLayout(new java.awt.BorderLayout());
 
+        SubEditP.setOpaque(false);
         SubEditP.setLayout(new java.awt.BorderLayout());
         LowerPartP.add(SubEditP, java.awt.BorderLayout.CENTER);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         Info.setLabelFor(ShiftTimeTM);
@@ -598,6 +603,7 @@ public class Jubler extends JFrame {
         BasicPanel.add(LowerPartP, java.awt.BorderLayout.SOUTH);
 
         SubSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        SubSplitPane.setOpaque(false);
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 

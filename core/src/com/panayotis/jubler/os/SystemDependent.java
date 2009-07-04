@@ -26,6 +26,8 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 
 import com.panayotis.jubler.tools.externals.ExtPath;
+import java.awt.Color;
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -49,7 +51,6 @@ public class SystemDependent {
     protected final static boolean IS_WINDOWS;
     protected final static boolean IS_MACOSX;
     protected final static String PROG_EXT;
-
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
@@ -116,6 +117,14 @@ public class SystemDependent {
     public static void setSmallDecoration(JRootPane pane) {
         pane.putClientProperty("Window.style", "small");
     }
+
+    public static Color getWindowBackgroundColor(Component c) {
+        if (IS_MACOSX)
+            return background;
+        else
+            return c.getBackground();
+    }
+    private final static Color background = new Color(228, 228, 228);
 
     public static int countKeyMods() {
         return 4;

@@ -364,11 +364,14 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         TrashB = new javax.swing.JButton();
         ShowStyleB = new javax.swing.JToggleButton();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
+        TimeP.setOpaque(false);
         TimeP.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(3, 1));
 
         L1.setText(_("Start"));
@@ -382,8 +385,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         TimeP.add(jPanel3, java.awt.BorderLayout.WEST);
 
+        jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.GridLayout(3, 1));
 
+        PSStart.setOpaque(false);
         PSStart.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock1);
@@ -400,6 +405,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel4.add(PSStart);
 
+        PSFinish.setOpaque(false);
         PSFinish.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock2);
@@ -416,6 +422,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel4.add(PSFinish);
 
+        PSDur.setOpaque(false);
         PSDur.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock3);
@@ -454,8 +461,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         StyleP.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 0, 2, 0));
+        StyleP.setOpaque(false);
         StyleP.setLayout(new java.awt.BorderLayout());
 
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         L4.setText(_("Style"));
@@ -482,9 +491,11 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         StyleP.add(jPanel6, java.awt.BorderLayout.EAST);
 
+        jPanel7.setOpaque(false);
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
 
         DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
+        DetachP.setOpaque(false);
         DetachP.setLayout(new javax.swing.BoxLayout(DetachP, javax.swing.BoxLayout.LINE_AXIS));
 
         DetachB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/detach.png"))); // NOI18N
@@ -500,6 +511,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel7.add(DetachP);
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         TimeB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/time.png"))); // NOI18N
@@ -548,6 +560,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel7.add(jPanel1);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
+        jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.GridLayout(0, 2, 2, 0));
 
         TrashB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/trash.png"))); // NOI18N
