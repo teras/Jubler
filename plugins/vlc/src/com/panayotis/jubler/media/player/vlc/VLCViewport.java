@@ -7,6 +7,7 @@ package com.panayotis.jubler.media.player.vlc;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.PlayerArguments;
 import com.panayotis.jubler.media.player.TerminalViewport;
+import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.media.player.terminals.ServerTerminal;
 
 /**
@@ -21,7 +22,8 @@ public class VLCViewport extends TerminalViewport {
 
     protected String[] getPostInitCommand() {
         PlayerArguments args = ((ServerTerminal) terminal).getArguments();
-        String[] values = {"clear", "add \"%v\" :sub-file=%s", "volume 512"};
+        int start = (int) args.when.toSeconds();
+        String[] values = {"clear", "add \"%v\" :start-time=" + start + " :sub-file=%s", "volume 512"};
         AbstractPlayer.replaceValues(values, "%v", args.videofile);
         AbstractPlayer.replaceValues(values, "%s", args.subfile);
         return values;
@@ -39,15 +41,31 @@ public class VLCViewport extends TerminalViewport {
         return new String[]{"seek " + secs};
     }
 
-    protected String[] getSkipCommand(int secs) {
-        return null;
+    protected String[] getSkipCommand(VideoPlayer.SkipLevel level) {
+        String command;
+        switch (level) {
+            case BackLong:
+                command = "key-jump-medium";
+                break;
+            case BackSort:
+                command = "key-jump-short";
+                break;
+            case ForthShort:
+                command = "key-jump+short";
+                break;
+            default:
+                command = "key-jump+medium";
+                break;
+        }
+        return new String[]{"key " + command};
     }
 
     protected String[] getSubDelayCommand(float secs) {
         return null;
     }
 
-    protected String[] getSpeedCommand(int scale) {
+    protected String[] getSpeedCommand(VideoPlayer.SpeedLevel level) {
+        int scale = level.ordinal() - 3;
         String[] cmd = new String[]{"normal", "", "", ""};
         for (int i = scale; i < 0; i++)
             cmd[-i] = "slower";
@@ -56,11 +74,7 @@ public class VLCViewport extends TerminalViewport {
         return cmd;
     }
 
-    protected String[] getVolumeCommand(int vol) {
-        if (vol < 0)
-            vol = 0;
-        if (vol > 10)
-            vol = 10;
-        return new String[]{"volume " + vol * 102}; // 1024/3 = 93. + 93/2
+    protected String[] getVolumeCommand(VideoPlayer.SoundLevel level) {
+        return new String[]{"volume " + level.ordinal() * 102}; // 1024/3 = 93. + 93/2
     }
 }

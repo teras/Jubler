@@ -60,13 +60,13 @@ public abstract class ExternalViewport implements Viewport {
 
     protected abstract String[] getSeekCommand(int secs);
 
-    protected abstract String[] getSkipCommand(int secs);
+    protected abstract String[] getSkipCommand(VideoPlayer.SkipLevel level);
 
     protected abstract String[] getSubDelayCommand(float secs);
 
-    protected abstract String[] getSpeedCommand(int secs);
+    protected abstract String[] getSpeedCommand(VideoPlayer.SpeedLevel level);
 
-    protected abstract String[] getVolumeCommand(int vol);
+    protected abstract String[] getVolumeCommand(VideoPlayer.SoundLevel level);
 
     protected abstract void sendData(String data) throws IOException;   // Low level command to send data to the binary
 
@@ -120,9 +120,9 @@ public abstract class ExternalViewport implements Viewport {
         return false;
     }
 
-    public boolean skip(int secs) {
+    public boolean skip(VideoPlayer.SkipLevel level) {
         isPaused = false;
-        return sendCommands(getSkipCommand(secs));
+        return sendCommands(getSkipCommand(level));
     }
 
     public boolean seek(int secs) {
@@ -138,14 +138,14 @@ public abstract class ExternalViewport implements Viewport {
         return sendCommands(getSubDelayCommand(secs));
     }
 
-    public boolean setSpeed(int secs) {
+    public boolean setSpeed(VideoPlayer.SpeedLevel level) {
         isPaused = false;
-        return sendCommands(getSpeedCommand(secs));
+        return sendCommands(getSpeedCommand(level));
     }
 
-    public boolean setVolume(int vol) {
+    public boolean setVolume(VideoPlayer.SoundLevel level) {
         isPaused = false;
-        sendCommands(getVolumeCommand(vol));
+        sendCommands(getVolumeCommand(level));
         return true;
     }
 

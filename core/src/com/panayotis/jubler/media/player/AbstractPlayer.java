@@ -132,6 +132,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         a.port = port;
         a.subfile = subpath;
         a.videofile = mfile.getVideoFile().getPath();
+        a.when = when;
         DEBUG.debug(a.toString());
         return a;
     }

@@ -23,6 +23,7 @@ package com.panayotis.jubler.media.player.mplayer;
  *
  */
 import com.panayotis.jubler.media.player.TerminalViewport;
+import com.panayotis.jubler.media.player.VideoPlayer;
 
 /**
  *
@@ -47,8 +48,23 @@ public class MPlayerViewport extends TerminalViewport {
         return new String[]{"quit"};
     }
 
-    protected String[] getSkipCommand(int secs) {
-        return new String[]{"seek " + secs + " 0"};
+    protected String[] getSkipCommand(VideoPlayer.SkipLevel level) {
+        String command;
+        switch (level) {
+            case BackLong:
+                command = "-30";
+                break;
+            case BackSort:
+                command = "-10";
+                break;
+            case ForthShort:
+                command = "10";
+                break;
+            default:
+                command = "30";
+                break;
+        }
+        return new String[]{"seek " + command + " 0"};
     }
 
     protected String[] getSeekCommand(int secs) {
@@ -59,41 +75,40 @@ public class MPlayerViewport extends TerminalViewport {
         return new String[]{"sub_delay " + secs};
     }
 
-    protected String[] getSpeedCommand(int scale) {
+    protected String[] getSpeedCommand(VideoPlayer.SpeedLevel level) {
         float speed = 1f;
-        switch (scale) {
-            case -3:
+        switch (level) {
+            case TooSlow:
                 speed = 0.333333f;
                 break;
-            case -2:
+            case VerySlow:
                 speed = 0.5f;
                 break;
-            case -1:
+            case Slow:
                 speed = 0.666666f;
                 break;
-            case 0:
+            case Normal:
                 speed = 1f;
                 break;
-            case 1:
+            case Fast:
                 speed = 1.5f;
                 break;
-            case 2:
+            case VeryFast:
                 speed = 2f;
                 break;
-            case 3:
+            case TooFast:
                 speed = 3f;
                 break;
         }
-
         return new String[]{"speed_set " + speed};
     }
 
-    protected String[] getVolumeCommand(int vol) {
+    protected String[] getVolumeCommand(VideoPlayer.SoundLevel level) {
         int i;
-        String[] cv = new String[10 + vol];
+        String[] cv = new String[10 + level.ordinal()];
         for (i = 0; i < 10; i++)
             cv[i] = "volume -1";
-        for (i = 0; i < vol; i++)
+        for (i = 0; i < level.ordinal(); i++)
             cv[i + 10] = "volume 1";
         return cv;
     }
