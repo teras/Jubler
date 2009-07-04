@@ -97,7 +97,8 @@ public abstract class ExternalViewport implements Viewport {
                 if (com[i] != null)
                     sendData(com[i] + "\n");
             } catch (IOException e) {
-                quit();
+                if (!quit_is_pending)
+                    quit();
                 return false;
             }
         }
@@ -110,14 +111,17 @@ public abstract class ExternalViewport implements Viewport {
         isPaused = pause;
         return sendCommands(getPauseCommand());
     }
+    private boolean quit_is_pending = false;
 
     public boolean quit() {
-        sendCommands(getQuitCommand());
+        quit_is_pending = true;
         try {
+            sendCommands(getQuitCommand());
             Thread.sleep(100);
-        } catch (InterruptedException e) {
+            terminate();
+        } catch (Exception e) {
         }
-        terminate();
+        quit_is_pending = false;
         return false;
     }
 

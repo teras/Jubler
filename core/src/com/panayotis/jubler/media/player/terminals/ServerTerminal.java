@@ -8,6 +8,7 @@ import com.panayotis.jubler.media.player.PlayerArguments;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -62,5 +63,10 @@ public class ServerTerminal extends AbstractTerminal {
     public void terminate() {
         if (proc != null)
             proc.destroy();
+        try {
+            socket.close();
+        } catch (IOException ex) {
+        }
+        socket = null;
     }
 }
