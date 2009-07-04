@@ -194,7 +194,7 @@ public class Jubler extends JFrame {
     
     
     
-    /** Creates new form JubEdit */
+    /** Creates new form */
     public Jubler() {
         Main.plugins.callPostInitListeners(this);
         subs = null;
@@ -202,7 +202,6 @@ public class Jubler extends JFrame {
         connected_consoles = new Vector<JVideoConsole>();
 
         undo = new UndoList(this);
-                
 
         initComponents();
         setIconImage(FrameIcon);
