@@ -61,10 +61,10 @@ public class Main {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         splash = new MainSplash("/icons/splash.jpg");
 
+        SystemDependent.setLookAndFeel();
+
         DynamicClassLoader.guessMainPath("Jubler", "com.panayotis.jubler.Jubler");
         plugins = new PluginManager();
-
-        SystemDependent.setLookAndFeel();
 
         /* Remember how many autosaves we have, so that to start autosave deamon afterwards */
         File[] autosavelist = AutoSaver.getAutoSaveList();
