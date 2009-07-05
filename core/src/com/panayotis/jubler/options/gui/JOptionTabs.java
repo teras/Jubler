@@ -57,7 +57,7 @@ public class JOptionTabs extends JPanel {
         selector.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         Dimension d = selector.getPreferredSize();
         if (d.width < 100)
-            d.width = 100;
+            d.width = 70;
         selector.setPreferredSize(d);
         selector.setMinimumSize(d);
         selector.setMaximumSize(d);
