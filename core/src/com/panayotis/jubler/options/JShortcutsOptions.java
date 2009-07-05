@@ -72,7 +72,7 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
     }
     
     public JPanel getTabPanel() { return this; }
-    public String getTabName() { return _("Menu Shortcuts"); }
+    public String getTabName() { return _("Shortcuts"); }
     public String getTabTooltip() { return _("Set the menu keyboard shortcuts"); }
     public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/shortcut_pref.png")); }
     public void changeProgram() {}
