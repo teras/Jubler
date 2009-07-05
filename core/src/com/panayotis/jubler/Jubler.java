@@ -2217,7 +2217,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     
     
     private void testVideo(Time t) {
-        if (!mfile.validateMediaFile(subs, false))
+        if (!mfile.validateMediaFile(subs, false, this))
             return;
         JVideoConsole console = JVideoConsole.initialize(this, prefs.getVideoPlayer());
         if (console == null) {
@@ -2283,7 +2283,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         PreviewTB.setToolTipText(PreviewTB.isSelected() ? _("Disable Preview") : _("Enable Preview"));
 
         if (status) {
-            mfile.validateMediaFile(subs, false);
+            mfile.validateMediaFile(subs, false, this);
             mfile.initAudioCache(preview.getDecoderListener());
 
             preview.updateMediaFile(mfile);
