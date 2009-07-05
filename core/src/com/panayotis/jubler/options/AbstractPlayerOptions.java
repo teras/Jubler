@@ -25,6 +25,7 @@ package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.os.SystemDependent;
 import java.awt.BorderLayout;
 
 /**
@@ -101,6 +102,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
 
         deflt.setText(_("Defaults"));
         deflt.setToolTipText(_("Use default player parameters"));
+        SystemDependent.setCommandButtonStyle(deflt, "only");
         deflt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 defltActionPerformed(evt);
