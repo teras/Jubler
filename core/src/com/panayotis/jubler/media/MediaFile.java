@@ -34,6 +34,7 @@ import com.panayotis.jubler.media.preview.decoders.FFMPEG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
+import java.awt.Frame;
 import java.awt.Image;
 import java.io.File;
 
@@ -72,7 +73,7 @@ public class MediaFile {
     }
     
     
-    public boolean validateMediaFile(Subtitles subs, boolean force_new) {
+    public boolean validateMediaFile(Subtitles subs, boolean force_new, Frame frame) {
         if ( (!force_new) && isValid(vfile) )
             return true;
         
@@ -86,7 +87,7 @@ public class MediaFile {
         /* Now let the user select which files are the proper media files */
         boolean isok;
         do {
-            if ( ! JIDialog.action(null, videoselector, _("Select video")) ) {
+            if ( ! JIDialog.action(frame, videoselector, _("Select video")) ) {
                 vfile = old_v;
                 afile = old_a;
                 cfile = old_c;
