@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.options.gui;
 
+import com.panayotis.jubler.Jubler;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.JIDialog;
@@ -123,7 +124,7 @@ public class JRateChooser extends JPanel {
     
     private void FromFPSBFPSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromFPSBFPSBActionPerformed
         if (mfile==null) return;
-        if (! mfile.validateMediaFile(subs, false)) return;
+        if (! mfile.validateMediaFile(subs, false, Jubler.windows.elementAt(0))) return;
         
         float fps = mfile.getVideoFile().getFPS();
         if (fps>0) FPSChooser.setSelectedItem(fps);

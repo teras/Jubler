@@ -302,12 +302,12 @@ public class Jubler extends JFrame {
         lbl.append("T:").append(m.length);
         lbl.append(" L:").append(m.lines);
         lbl.append(" C:").append(m.maxlength);
-        Stats.setText(lbl.toString());
+        subeditor.Stats.setText(lbl.toString());
         
         if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength)) {
-            Stats.setForeground(Color.RED);
+            subeditor.Stats.setForeground(Color.RED);
         } else {
-            Stats.setForeground(SystemColor.controlText);
+            subeditor.Stats.setForeground(SystemColor.controlText);
         }
     }
     
@@ -376,11 +376,7 @@ public class Jubler extends JFrame {
         jSeparator11 = new javax.swing.JSeparator();
         PlayVideoP = new javax.swing.JMenuItem();
         BasicPanel = new javax.swing.JPanel();
-        LowerPartP = new javax.swing.JPanel();
         SubEditP = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        Info = new javax.swing.JLabel();
-        Stats = new javax.swing.JLabel();
         SubSplitPane = new javax.swing.JSplitPane();
         SubsScrollPane = new javax.swing.JScrollPane();
         SubTable = new JTable () {
@@ -576,30 +572,10 @@ public class Jubler extends JFrame {
         BasicPanel.setBackground(SystemDependent.getWindowBackgroundColor(BasicPanel));
         BasicPanel.setLayout(new java.awt.BorderLayout());
 
-        LowerPartP.setBackground(new java.awt.Color(0, 255, 255));
-        LowerPartP.setOpaque(false);
-        LowerPartP.setLayout(new java.awt.BorderLayout());
-
+        SubEditP.setBackground(new java.awt.Color(0, 255, 255));
         SubEditP.setOpaque(false);
         SubEditP.setLayout(new java.awt.BorderLayout());
-        LowerPartP.add(SubEditP, java.awt.BorderLayout.CENTER);
-
-        jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.BorderLayout());
-
-        Info.setLabelFor(ShiftTimeTM);
-        Info.setText(" ");
-        jPanel5.add(Info, java.awt.BorderLayout.CENTER);
-
-        Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Stats.setText("-");
-        Stats.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
-        jPanel5.add(Stats, java.awt.BorderLayout.EAST);
-
-        LowerPartP.add(jPanel5, java.awt.BorderLayout.SOUTH);
-
-        BasicPanel.add(LowerPartP, java.awt.BorderLayout.SOUTH);
+        BasicPanel.add(SubEditP, java.awt.BorderLayout.SOUTH);
 
         SubSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         SubSplitPane.setOpaque(false);
@@ -1998,7 +1974,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenu GoEM;
     public javax.swing.JCheckBoxMenuItem HalfSizeC;
     private javax.swing.JMenu HelpM;
-    public javax.swing.JLabel Info;
     private javax.swing.JMenuItem InfoFM;
     private javax.swing.JButton InfoTB;
     private javax.swing.JMenu InsertEM;
@@ -2006,7 +1981,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     public javax.swing.JMenuBar JublerMenuBar;
     public javax.swing.JToolBar JublerTools;
     private javax.swing.JButton LoadTB;
-    public javax.swing.JPanel LowerPartP;
     private javax.swing.JMenu MarkEM;
     private javax.swing.JMenu MarkP;
     private javax.swing.JSeparator MarkSep;
@@ -2055,7 +2029,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JPanel SortTP;
     private javax.swing.JMenuItem SpellTM;
     private javax.swing.JMenuItem SplitTM;
-    public javax.swing.JLabel Stats;
     private javax.swing.JMenuItem StepwiseREM;
     private javax.swing.JMenu StyleEM;
     private javax.swing.JMenu StyleP;
@@ -2083,7 +2056,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem bySelectionMEM;
     private javax.swing.JMenuItem bySelectionSEM;
     private javax.swing.JMenuItem byTimeGEM;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
@@ -2438,7 +2410,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     }
     
     public void showInfo() {
-        Info.setText(_("Number of subtitles : {0}    {1}", subs.size(), (isUnsaved() ? "-" + _("Unsaved") + "-" : "")));
+        subeditor.Info.setText(Integer.toString(subs.size()));
+        subeditor.Unsaved.setEnabled(isUnsaved());
         if (subs.getSubFile().getStrippedFile() != null) {
             String title = subs.getSubFile().getStrippedFile().getName();
             if (isUnsaved()) {

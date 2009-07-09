@@ -253,7 +253,8 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         L1.setEnabled(enabled);
         L2.setEnabled(enabled);
         L3.setEnabled(enabled);
-        L4.setEnabled(enabled);
+        Info.setEnabled(enabled);
+        Stats.setEnabled(enabled);
         
         /* Fix the attributes of the sub text area */
         if (entry==null|| (!enabled)) {
@@ -349,7 +350,6 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         SubText = new javax.swing.JTextPane();
         StyleP = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        L4 = new javax.swing.JLabel();
         StyleListC = new javax.swing.JComboBox();
         EditB = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
@@ -363,6 +363,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel2 = new javax.swing.JPanel();
         TrashB = new javax.swing.JButton();
         ShowStyleB = new javax.swing.JToggleButton();
+        jPanel8 = new javax.swing.JPanel();
+        Info = new javax.swing.JLabel();
+        Stats = new javax.swing.JLabel();
+        Unsaved = new javax.swing.JLabel();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -461,15 +465,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         StyleP.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 0, 2, 0));
-        StyleP.setOpaque(false);
-        StyleP.setLayout(new java.awt.BorderLayout());
+        StyleP.setLayout(new java.awt.BorderLayout(12, 0));
 
         jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.BorderLayout());
-
-        L4.setText(_("Style"));
-        L4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 2, 0, 5));
-        jPanel6.add(L4, java.awt.BorderLayout.WEST);
 
         StyleListC.setToolTipText(_("Style list"));
         StyleListC.addActionListener(new java.awt.event.ActionListener() {
@@ -492,7 +491,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         StyleP.add(jPanel6, java.awt.BorderLayout.EAST);
 
         jPanel7.setOpaque(false);
-        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel7.setLayout(new java.awt.BorderLayout());
 
         DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
         DetachP.setOpaque(false);
@@ -509,7 +508,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         DetachP.add(DetachB);
 
-        jPanel7.add(DetachP);
+        jPanel7.add(DetachP, java.awt.BorderLayout.WEST);
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
@@ -557,7 +556,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel1.add(MetricsB);
 
-        jPanel7.add(jPanel1);
+        jPanel7.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
         jPanel2.setOpaque(false);
@@ -585,9 +584,27 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel2.add(ShowStyleB);
 
-        jPanel7.add(jPanel2);
+        jPanel7.add(jPanel2, java.awt.BorderLayout.EAST);
 
         StyleP.add(jPanel7, java.awt.BorderLayout.WEST);
+
+        jPanel8.setOpaque(false);
+        jPanel8.setLayout(new java.awt.BorderLayout(8, 0));
+
+        Info.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lines.png"))); // NOI18N
+        Info.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jPanel8.add(Info, java.awt.BorderLayout.WEST);
+
+        Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        Stats.setText("-");
+        jPanel8.add(Stats, java.awt.BorderLayout.CENTER);
+
+        Unsaved.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
+        Unsaved.setEnabled(false);
+        Unsaved.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        jPanel8.add(Unsaved, java.awt.BorderLayout.EAST);
+
+        StyleP.add(jPanel8, java.awt.BorderLayout.CENTER);
 
         add(StyleP, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -740,10 +757,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JPanel DetachP;
     private javax.swing.JButton EditB;
     private javax.swing.JToggleButton FontB;
+    public javax.swing.JLabel Info;
     private javax.swing.JLabel L1;
     private javax.swing.JLabel L2;
     private javax.swing.JLabel L3;
-    private javax.swing.JLabel L4;
     private javax.swing.JToggleButton Lock1;
     private javax.swing.JToggleButton Lock2;
     private javax.swing.JToggleButton Lock3;
@@ -752,13 +769,15 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JPanel PSFinish;
     private javax.swing.JPanel PSStart;
     private javax.swing.JToggleButton ShowStyleB;
+    public javax.swing.JLabel Stats;
     private javax.swing.JComboBox StyleListC;
-    private javax.swing.JPanel StyleP;
+    public javax.swing.JPanel StyleP;
     private javax.swing.JTextPane SubText;
     private javax.swing.JToggleButton TimeB;
     private javax.swing.ButtonGroup TimeLock;
     private javax.swing.JPanel TimeP;
     private javax.swing.JButton TrashB;
+    public javax.swing.JLabel Unsaved;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -766,6 +785,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
     

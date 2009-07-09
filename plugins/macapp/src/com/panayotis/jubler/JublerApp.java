@@ -40,8 +40,7 @@ public class JublerApp extends Application implements Plugin {
                 jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
                 jubler.QuitFM.getParent().remove(jubler.QuitFM);
                 setComponentDraggable(jubler, jubler.JublerTools);
-                setComponentDraggable(jubler, jubler.Info);
-                setComponentDraggable(jubler, jubler.Stats);
+                setComponentDraggable(jubler, jubler.subeditor.StyleP);
             }
         }
     }
