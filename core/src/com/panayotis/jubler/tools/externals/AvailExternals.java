@@ -29,7 +29,7 @@ import java.util.Vector;
  *
  * @author teras
  */
-public class AvailExternals<E> extends Vector<ExtProgram> {
+public class AvailExternals extends Vector<ExtProgram> {
 
     private String type;
     private String localtype;
