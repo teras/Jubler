@@ -23,7 +23,6 @@
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.tools.externals.AvailExternals;
-import com.panayotis.jubler.tools.externals.ExtProgram;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.CardLayout;
 import javax.swing.Icon;
@@ -45,14 +44,20 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         initComponents();
         this.list = list;
 
+        String def = Options.getOption("List.Default." + list.getType(), "").toLowerCase();
+        int selected = 0;
+
         for (int i = 0; i < list.size(); i++) {
             PList.addItem(list.nameAt(i));
+            if (list.nameAt(i).toLowerCase().equals(def))
+                selected = i;
             JExtBasicOptions opts = list.programAt(i).getOptionsPanel();
             ParamsP.add((opts == null ? new JPanel() : opts), Integer.toString(i));
         }
         SelectorL.setText(_("Select a {0} from the following list", _(list.getType()).toLowerCase()));
+        System.out.println(list.getType());
         if (PList.getModel().getSize() > 0)
-            PList.setSelectedIndex(0);
+            PList.setSelectedIndex(selected);
     }
 
     public Object getObject() {
@@ -97,7 +102,9 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     }// </editor-fold>//GEN-END:initComponents
 
     private void PListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PListActionPerformed
-        ((CardLayout) ParamsP.getLayout()).show(ParamsP, Integer.toString(PList.getSelectedIndex()));
+        int selected = PList.getSelectedIndex();
+        ((CardLayout) ParamsP.getLayout()).show(ParamsP, Integer.toString(selected));
+        Options.setOption("List.Default." + list.getType(), list.nameAt(selected));
         changeProgram();
     }//GEN-LAST:event_PListActionPerformed
 
