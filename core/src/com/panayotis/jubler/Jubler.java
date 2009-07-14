@@ -2411,7 +2411,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     
     public void showInfo() {
         subeditor.Info.setText(Integer.toString(subs.size()));
-        subeditor.Unsaved.setEnabled(isUnsaved());
+        subeditor.setUnsaved(isUnsaved());
         if (subs.getSubFile().getStrippedFile() != null) {
             String title = subs.getSubFile().getStrippedFile().getName();
             if (isUnsaved()) {
