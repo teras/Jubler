@@ -280,6 +280,14 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
             b.setIcon(Lock[1]);
         }
     }
+
+    public void setUnsaved(boolean status) {
+        Unsaved.setEnabled(status);
+        if(status)
+            Unsaved.setToolTipText(_("Subtitles need to be saved"));
+        else
+            Unsaved.setToolTipText(null);
+    }
     
     public void setAttached(boolean attached) {
         if (attached) {
@@ -592,11 +600,13 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel8.setLayout(new java.awt.BorderLayout(8, 0));
 
         Info.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lines.png"))); // NOI18N
+        Info.setToolTipText(_("Total subtitles"));
         Info.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jPanel8.add(Info, java.awt.BorderLayout.WEST);
 
         Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         Stats.setText("-");
+        Stats.setToolTipText(_("T: total number of characters\nL: number of lines\nC: characters of the longest line"));
         jPanel8.add(Stats, java.awt.BorderLayout.CENTER);
 
         Unsaved.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N

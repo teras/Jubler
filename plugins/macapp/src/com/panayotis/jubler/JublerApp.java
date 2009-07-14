@@ -6,6 +6,7 @@ package com.panayotis.jubler;
 
 import com.apple.eawt.Application;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.subs.JSubEditorDialog;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.Window;
@@ -20,6 +21,8 @@ import javax.swing.SwingUtilities;
  * @author teras
  */
 public class JublerApp extends Application implements Plugin {
+
+    private boolean ignore_click = false;
 
     public JublerApp() {
         setEnabledPreferencesMenu(true);
@@ -41,11 +44,14 @@ public class JublerApp extends Application implements Plugin {
                 jubler.QuitFM.getParent().remove(jubler.QuitFM);
                 setComponentDraggable(jubler, jubler.JublerTools);
                 setComponentDraggable(jubler, jubler.subeditor.StyleP);
+                setComponentDraggable(jubler, jubler.subeditor.Unsaved);
+                setComponentDraggable(jubler, jubler.subeditor.Stats);
+                setComponentDraggable(jubler, jubler.subeditor.Info);
             }
         }
     }
 
-    public final static void setComponentDraggable(Window window, Component component) {
+    public final void setComponentDraggable(Window window, Component component) {
         if (component instanceof JToolBar)
             ((JToolBar) component).setFloatable(false);
 
@@ -57,6 +63,15 @@ public class JublerApp extends Application implements Plugin {
         comp.addMouseListener(new MouseAdapter() {
 
             public void mousePressed(MouseEvent e) {
+                Component c = e.getComponent();
+                while (c.getParent() != null) {
+                    if (c instanceof JSubEditorDialog) {
+                        ignore_click = true;
+                        return;
+                    }
+                    c = c.getParent();
+                }
+                ignore_click = false;
                 oldpos.setLocation(e.getPoint());
                 SwingUtilities.convertPointToScreen(oldpos, comp);
                 oldpos.x -= wind.getX();
@@ -67,6 +82,8 @@ public class JublerApp extends Application implements Plugin {
         comp.addMouseMotionListener(new MouseMotionAdapter() {
 
             public void mouseDragged(MouseEvent e) {
+                if (ignore_click)
+                    return;
                 newpos.setLocation(e.getPoint());
                 SwingUtilities.convertPointToScreen(newpos, comp);
                 wind.setLocation(newpos.x - oldpos.x, newpos.y - oldpos.y);
