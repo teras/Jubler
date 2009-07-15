@@ -19,7 +19,11 @@ public class VLC extends AbstractPlayer implements Plugin {
     }
 
     public String getDefaultArguments() {
-        return "%p --video-on-top --no-save-config --extraintf=rc --rc-fake-tty --rc-host=127.0.0.1:%i";
+        String OS = System.getProperty("os.name").toLowerCase();
+        String fake_tty = "";
+        if (OS.indexOf("windows") == 0)
+            fake_tty = "--rc-fake-tty ";
+        return "%p --video-on-top --no-save-config --extraintf=rc " + fake_tty + "--rc-host=127.0.0.1:%i";
     }
 
     public String[] getTestParameters() {
