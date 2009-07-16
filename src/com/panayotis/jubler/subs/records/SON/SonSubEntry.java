@@ -50,7 +50,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public int max_digits = 4;
     public SonHeader header = null;
     public short event_id = 0;
-    public SonAttribute son_attribute = null;
+    public SubtitleImageAttribute son_attribute = null;
     public String image_filename = null;
     private File imageFile = null;
     private ImageIcon image = null;
@@ -163,7 +163,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             new_object.max_digits = max_digits;
             new_object.header = (header == null ? null : (SonHeader) header.clone());
             new_object.event_id = event_id;
-            new_object.son_attribute = (this.son_attribute == null ? null : (SonAttribute) son_attribute.clone());
+            new_object.son_attribute = (this.son_attribute == null ? null : (SubtitleImageAttribute) son_attribute.clone());
 
             //avoid making copy of image as there aren't many option to alter its content
             //so make a shallow copy here for the time being.
@@ -195,7 +195,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             event_id = o_son.event_id;
 
             if (o_son.son_attribute != null) {
-                this.son_attribute = (SonAttribute) o_son.son_attribute.clone();
+                this.son_attribute = (SubtitleImageAttribute) o_son.son_attribute.clone();
             }
             imageFile = o_son.imageFile;
             image = o_son.image;
@@ -241,10 +241,17 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             throw new IncompatibleRecordTypeException(ex.getMessage());
         }
     }//end public boolean copyImage(SubEntry source)
-    public SonAttribute getCreteSonAttribute() {
+    public SubtitleImageAttribute getCreteSonAttribute() {
         if (this.son_attribute == null) {
-            this.son_attribute = new SonAttribute();
+            this.son_attribute = new SubtitleImageAttribute();
         }
         return this.son_attribute;
     }
+    
+    public SubtitleImageAttribute getImageAttribute(){
+        return this.son_attribute;
+    }
+    public void setImageAttribute(SubtitleImageAttribute attrib){
+        this.son_attribute = attrib;
+    }    
 }

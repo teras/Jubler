@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.subs.records.SON.SubtitleImageAttribute;
 import java.io.File;
 import javax.swing.ImageIcon;
 
@@ -40,4 +41,6 @@ public interface ImageTypeSubtitle {
     public void setImageFileName(String name);
     public File getImageFile();
     public void setImageFile(File imageFile);
+    public SubtitleImageAttribute getImageAttribute();
+    public void setImageAttribute(SubtitleImageAttribute attrib);
 }

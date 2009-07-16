@@ -24,6 +24,7 @@ package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestroExtendedSWT;
+import com.panayotis.jubler.subs.loader.binary.SUPCompressedImage;
 import com.panayotis.jubler.subs.loader.text.AdvancedSubStation;
 import com.panayotis.jubler.subs.loader.text.MPL2;
 import com.panayotis.jubler.subs.loader.text.MicroDVD;
@@ -46,6 +47,7 @@ import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 public class AvailSubFormats {
 
     public static final SubFormat[] Formats = {
+        new SUPCompressedImage(),
         new TMPGenc(),
         new DVDMaestroExtendedSWT(), //added by HDT
         new DVDMaestro(), //added by HDT

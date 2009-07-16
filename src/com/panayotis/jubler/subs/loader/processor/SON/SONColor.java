@@ -30,6 +30,7 @@ package com.panayotis.jubler.subs.loader.processor.SON;
 
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
+import com.panayotis.jubler.subs.records.SON.SubtitleImageAttribute;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 /**
@@ -39,10 +40,11 @@ import com.panayotis.jubler.subs.records.SON.SonSubEntry;
  * Color	(0 1 6 7)
  * </pre>
  * A short array is created for the values parsed, and is stored in either
- * the {@link SonSubEntry#colour} or {@link SonHeader#colour}, depending on
- * the object currently active, indicating where the component was found.
+ * the {@link SonSubEntry#son_attribute} or {@link SonHeader#son_attribute}, 
+ * depending on the object currently active.
  * @see SonSubEntry
  * @see SonHeader
+ * @see SubtitleImageAttribute
  * @see com.panayotis.jubler.subs.loader.binary.DVDMaestro
  * @author Hoang Duy Tran <hoang_tran>
  */
@@ -77,30 +79,48 @@ public class SONColor extends SubtitlePatternProcessor implements CommonDef {
     /**
      * For the matched group of data, a short array is created and all
      * digits representing selection of colours 
-     * @param matched_data
-     * @param record
+     * @param matched_data The array of matched data, 
+     * result of the parsing the pattern.
+     * @param record The record currently active, it should be either
+     * an instance of either {@link SonHeader} or {@link SonSubEntry}.
      */
     public void parsePattern(String[] matched_data, Object record) {
+        SubtitleImageAttribute at = null;
         short[] array = SonSubEntry.makeAttributeEntry(matched_data);
         if (record instanceof SonHeader) {
             sonHeader = (SonHeader) record;
-            sonHeader.getCreteSonAttribute().colour = array;
+            at = sonHeader.getCreteSonAttribute();
+            at.colour = array;
         }//end if (record instanceof SonHeader)
 
         if (record instanceof SonSubEntry) {
-            setSonSubEntry((SonSubEntry) record);
-            sonSubEntry.getCreteSonAttribute().colour = array;
+            sonSubEntry = (SonSubEntry) record;
+            at = sonSubEntry.getCreteSonAttribute();
+            at.colour = array;
         }//end if (record instanceof SonSubEntry)
     }//end if
 
+    /**
+     * Gets the reference to the header record.
+     * @return Reference to the header record, null if the reference has not
+     * been set.
+     */
     public SonHeader getSonHeader() {
         return sonHeader;
     }
 
+    /**
+     * Sets the reference to the header record.
+     * @param sonHeader Reference of the header record.
+     */
     public void setSonHeader(SonHeader sonHeader) {
         this.sonHeader = sonHeader;
     }
 
+    /**
+     * Gets the reference of the subtitle-event record.
+     * @return Reference of the subtitle-event record.
+     */
     public SonSubEntry getSonSubEntry() {
         return sonSubEntry;
     }

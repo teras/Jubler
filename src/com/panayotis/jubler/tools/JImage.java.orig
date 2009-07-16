@@ -208,38 +208,23 @@ public class JImage implements CommonDef {
      * @return The sub-image
      */
     public static BufferedImage cutImage(BufferedImage img) {
-        BufferedImage sub_img, tran_image = null;
+        BufferedImage sub_img = img;
         try {
             int w = img.getWidth();
             int h = img.getHeight();
-            /**
-             * make the transparent image first
-             */
-            tran_image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-            /**
-             * Whilst running the loop to find boundary, also update the
-             * transparent image with desired pixel, ignoring the colour
-             * that are transparent.
-             */
+            sub_img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             Rectangle sr = getSubImageDimension(
                     img,
                     DVBT_SUB_TRANSPARENCY,
-                    tran_image);
-
-            /**
-             * now crop the transparent image down to the size obtained.
-             */
-            sub_img = tran_image.getSubimage(
+                    sub_img);
+            sub_img = sub_img.getSubimage(
                     sr.x,
                     sr.y,
                     sr.width,
                     sr.height);
-            return sub_img;
         } catch (Exception ex) {
-            //ex.printStackTrace(System.out);
-            //return the original image
-            return tran_image;
         }
+        return sub_img;
     }//end public static BufferedImage cutImage(BufferedImage img)
     public static File bwConversionToBMPTempFile(ImageIcon source) {
         String img_ext = "bmp";
@@ -265,19 +250,6 @@ public class JImage implements CommonDef {
             return null;
         }
     }//public static BufferedImage bwConversion(BufferedImage source)
-    public static BufferedImage icoToBufferedImage(ImageIcon source) {
-        BufferedImage new_image = null;
-        int w, h;
-        try {
-            w = source.getIconWidth();
-            h = source.getIconHeight();
-            new_image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-            new_image.getGraphics().drawImage(source.getImage(), 0, 0, null);
-            return new_image;
-        } catch (Exception ex) {
-            return null;
-        }        
-    }//end public static BufferedImage icoToBufferedImage(ImageIcon source) 
     /**
      * Creates a new buffered image using TYPE_BYTE_GRAY meaning converts
      * the current image to gray scale.
@@ -298,6 +270,7 @@ public class JImage implements CommonDef {
             return source;
         }
     }//public static BufferedImage bwConversion(BufferedImage source)
+
     /**
      * This routine gets the sub-image boundary using the specified colour
      * that will be treated as transparent within an existing image. It 
@@ -364,7 +337,7 @@ public class JImage implements CommonDef {
              */
             int[] image_data = source.getRGB(0, 0, img_w, img_h, null, 0, img_w);
             int[] dest_image_data = new int[img_w * img_h];
-            int f_rgb = find_colour.getRGB();            
+            int f_rgb = find_colour.getRGB();
             for (int i = 0,  x = 0,  y = 0; i < image_data.length; i++) {
                 boolean is_reset_xy = (i > 0) && (i % img_w == 0);
                 if (is_reset_xy) {
@@ -425,7 +398,7 @@ public class JImage implements CommonDef {
 
             int[] image_data = source.getRGB(0, 0, w, h, null, 0, w);
             int[] dest_image_data = new int[w * h];
-            int f_rgb = find_colour.getRGB();            
+            int f_rgb = find_colour.getRGB();
             for (int i = 0; i < image_data.length; i++) {
                 int img_rgb = image_data[i];
                 boolean is_same = (f_rgb == img_rgb);
@@ -433,7 +406,7 @@ public class JImage implements CommonDef {
                     dest_image_data[i] = img_rgb;
                 }//end if
             }//end for(int i=0; i < image_data.length; i++)
-            tran_image.setRGB(0, 0, w, h, dest_image_data, 0, w);            
+            tran_image.setRGB(0, 0, w, h, dest_image_data, 0, w);
         } catch (Exception ex) {
         }
         return tran_image;
@@ -471,9 +444,8 @@ public class JImage implements CommonDef {
              * search top-left down to bottom-right and find the excluding 
              * colour. The smaller value is held.
              */
-            
             int[] image_data = img.getRGB(0, 0, img_w, img_h, null, 0, img_w);
-            int f_rgb = find_colour.getRGB();            
+            int f_rgb = find_colour.getRGB();
             for (int i = 0,  x = 0,  y = 0; i < image_data.length; i++) {
                 boolean is_reset_xy = (i > 0) && (i % img_w == 0);
                 if (is_reset_xy) {
@@ -500,7 +472,7 @@ public class JImage implements CommonDef {
                     }
                 }//end if
             }//end for(int i=0; i < image_data.length; i++)
-            
+
             /**
              * Calculate the width and height
              */

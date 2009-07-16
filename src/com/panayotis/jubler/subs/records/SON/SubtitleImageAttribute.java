@@ -1,5 +1,5 @@
 /*
- *  SonAttribute.java 
+ *  SubtitleImageAttribute.java 
  * 
  *  Created on: Jul 4, 2009 at 6:31:19 PM
  * 
@@ -29,6 +29,7 @@ package com.panayotis.jubler.subs.records.SON;
 
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.Share;
+import javax.swing.ImageIcon;
 
 /**
  * This class store the three data items from a SON's format file. Example
@@ -41,7 +42,7 @@ import com.panayotis.jubler.subs.Share;
  * 
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
-public class SonAttribute implements Cloneable, CommonDef {
+public class SubtitleImageAttribute implements Cloneable, CommonDef {
 
     public short[] colour = null;
     public short[] contrast = null;
@@ -61,6 +62,22 @@ public class SonAttribute implements Cloneable, CommonDef {
         this.display_area = new short[]{0, 380, 720, 416};
     }
 
+    public void makeDefaulRecord(ImageIcon ico) {
+        centreImage(ico.getIconWidth(), ico.getIconHeight());
+    }
+    
+    private void centreImage(int w, int h){
+        int fix_y = 470;
+        int x1 = (720 - w / 2);
+        int y1 = fix_y - h;
+        
+        x1 = Math.max(0, Math.min(x1, 720));
+        y1 = Math.max(0, Math.min(y1, 576));
+        
+        int x2 = x1 + w;
+        int y2 = fix_y; 
+        display_area = new short[]{(short)x1, (short)y1, (short)x2, (short)y2};
+    }//end private void centreImage(int w, int h)
     /**
      * Produce the string presentation of this. Example of such data:
      * <blockquote><pre>
@@ -95,9 +112,9 @@ public class SonAttribute implements Cloneable, CommonDef {
      * @return The clone version of the record.
      */
     public Object clone() {
-        SonAttribute n = null;
+        SubtitleImageAttribute n = null;
         try {
-            n = (SonAttribute) super.clone();
+            n = (SubtitleImageAttribute) super.clone();
             n.colour = Share.copyShortArray(colour);
             n.contrast = Share.copyShortArray(contrast);
             n.display_area = Share.copyShortArray(display_area);
@@ -109,7 +126,7 @@ public class SonAttribute implements Cloneable, CommonDef {
      * Copy the record's content.
      * @param o The old record.
      */
-    public void copyRecord(SonAttribute o) {
+    public void copyRecord(SubtitleImageAttribute o) {
         try {
             colour = Share.copyShortArray(o.colour);
             contrast = Share.copyShortArray(o.contrast);
@@ -117,5 +134,5 @@ public class SonAttribute implements Cloneable, CommonDef {
         } catch (Exception ex) {
         }
     }//end public void copyRecord(SonHeader o)
-}//end public class SonAttribute
+}//end public class SubtitleImageAttribute
 

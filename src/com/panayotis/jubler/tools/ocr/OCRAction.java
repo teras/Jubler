@@ -185,22 +185,25 @@ public class OCRAction extends JMenuItem implements ActionListener {
                                 continue;
                             }
                             
-                            String msg = _("OCR:") + img_sub.getImageFile().getName();
-                            pb.setTitle(msg);
-                            pb.setValue(i);
-
-                            File imageFile = null;
-                            String result = null;
+                            File imageFile = img_sub.getImageFile();
+                            usingOriginalImage = (imageFile != null);
+                            
+                            String result = null;                            
+                            String msg = _("OCR:");
                             
                             JOCR ocrEngine = new JOCR(tessPath);                            
                             if (usingOriginalImage){
+                                msg += img_sub.getImageFile().getName();
                                 imageFile = img_sub.getImageFile();
                                 result = ocrEngine.ocrUsingOriginalImage(imageFile, language);
                             }else{
                                 imageFile = JImage.bwConversionToBMPTempFile(image);
                                 result = ocrEngine.ocrUsingTempFile(imageFile, language);
                             }//end if
-                                                        
+                                                         
+                            pb.setTitle(msg);
+                            pb.setValue(i);
+                            
                             sub.setText(result.trim());
                             subs.fireTableRowsUpdated(row, row);
                             

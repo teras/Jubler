@@ -32,7 +32,11 @@ import com.panayotis.jubler.subs.loader.SimpleFileFilter;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.Component;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
+import java.util.TimeZone;
 import javax.swing.JFileChooser;
 
 /**
@@ -41,6 +45,12 @@ import javax.swing.JFileChooser;
  */
 public class Share implements CommonDef {
 
+    private static double _videoframerate = 3600.0;
+    public static DateFormat time_format_1 = new SimpleDateFormat("HH:mm:ss.SSS");
+    public static DateFormat time_format_2 = new SimpleDateFormat("HH:mm:ss:SSS");
+    public static DateFormat time_format_3 = new SimpleDateFormat("dd.MM.yy  HH:mm");
+    public static DateFormat time_format_4 = new SimpleDateFormat("HH:mm:ss");
+    
     public static final int INVALID_INDEX = -1;
 
     /**
@@ -372,6 +382,42 @@ public class Share implements CommonDef {
         int[] new_array = new int[len];
         System.arraycopy(orig, 0, new_array, 0, len);
         return new_array;
+    }
+    
+    public static String adaptString(String str, int len) {
+        StringBuffer strbuf = new StringBuffer(str.trim());
+
+        while (strbuf.length() < len) {
+            strbuf.insert(0, "0");
+        }
+
+        return strbuf.toString();
+    }
+
+    public static String adaptString(int str, int len) {
+        return adaptString(String.valueOf(str), len);
+    }
+
+    public static String formatTime_2(long time_value, long frame_rate) {
+        time_format_2.setTimeZone(TimeZone.getTimeZone("GMT+0:00"));
+        String time_str = time_format_2.format(new Date(time_value));
+
+        int time_len = time_str.length();
+        int sub_time_len = time_len - 3;
+
+        String time_sub_str = time_str.substring(0, sub_time_len);
+
+        int n1 = Integer.parseInt(time_str.substring(time_str.length() - 3));
+        int n1_mul_90 = n1 * 90;
+        int n1_div_frame_rate = n1_mul_90 / (int) frame_rate;
+
+        String part = adaptString(n1_div_frame_rate, 2);
+
+        return (time_sub_str + part);
+    }    
+    
+    public static int getVideoframerate() {
+        return (int) _videoframerate;
     }
     
 }//end Share

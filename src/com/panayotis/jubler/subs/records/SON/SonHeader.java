@@ -66,7 +66,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
     public String tv_type = null;
     public String tape_type = null;
     public short[] pixel_area = null;
-    public SonAttribute son_attribute = null;
+    public SubtitleImageAttribute son_attribute = null;
     public Vector<SonPaletteEntry> palletEntry = null;
     public String image_directory = null;
     public File subtitle_file = null;
@@ -89,8 +89,8 @@ public class SonHeader implements SONPatternDef, Cloneable {
 
     }
 
+    @Override
     public String toString() {
-        short[] short_array = null;
         String txt = null;
 
         boolean is_new = (st_format == -1);
@@ -132,7 +132,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
 
         short w, h;
         if (is_new) {
-            son_attribute = new SonAttribute();
+            son_attribute = new SubtitleImageAttribute();
             try {
                 w = (short) moptions.getVideoWidth();
                 h = (short) moptions.getVideoHeight();
@@ -221,7 +221,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             new_header.tv_type = (tv_type == null ? null : new String(tv_type));
             new_header.tape_type = (tape_type == null ? null : new String(tape_type));
             new_header.pixel_area = Share.copyShortArray(pixel_area);
-            new_header.son_attribute = (son_attribute == null ? null : (SonAttribute) son_attribute.clone());
+            new_header.son_attribute = (son_attribute == null ? null : (SubtitleImageAttribute) son_attribute.clone());
             new_header.palletEntry = (palletEntry == null ? null : (Vector<SonPaletteEntry>) palletEntry.clone());
             new_header.image_directory = (image_directory == null ? null : new String(image_directory));
             new_header.subtitle_file = subtitle_file;
@@ -242,7 +242,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             this.tv_type = (o.tv_type == null ? null : new String(o.tv_type));
             this.tape_type = (o.tape_type == null ? null : new String(o.tape_type));
             this.pixel_area = Share.copyShortArray(o.pixel_area);
-            this.son_attribute = (o.son_attribute == null ? null : (SonAttribute) o.son_attribute.clone());
+            this.son_attribute = (o.son_attribute == null ? null : (SubtitleImageAttribute) o.son_attribute.clone());
             this.palletEntry = (o.palletEntry == null ? null : (Vector<SonPaletteEntry>) o.palletEntry.clone());
             this.image_directory = (o.image_directory == null ? null : new String(o.image_directory));
             this.subtitle_file = o.subtitle_file;
@@ -260,7 +260,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
         this.tv_type = "PAL";
         this.tape_type = "NON_DROP";
         this.pixel_area = new short[]{0, 575};
-        this.son_attribute = new SonAttribute();
+        this.son_attribute = new SubtitleImageAttribute();
         this.son_attribute.makeDefaulRecord();
         this.palletEntry = null;
         this.image_directory = USER_CURRENT_DIR;
@@ -283,9 +283,9 @@ public class SonHeader implements SONPatternDef, Cloneable {
         this.defaultHeader = defaultHeader;
     }
 
-    public SonAttribute getCreteSonAttribute() {
+    public SubtitleImageAttribute getCreteSonAttribute() {
         if (this.son_attribute == null) {
-            this.son_attribute = new SonAttribute();
+            this.son_attribute = new SubtitleImageAttribute();
         }
         return this.son_attribute;
     }
