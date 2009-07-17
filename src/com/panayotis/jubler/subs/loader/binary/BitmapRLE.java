@@ -37,7 +37,7 @@ import java.util.ArrayList;
  * run-length of data from subtitle images.
  * 
  * Some of the notes were found on 
- * <href a='http://www.subrip.fr.st'>(submagic@netcourrier.com)</a>.
+ * <a href='http://www.subrip.fr.st'>(submagic@netcourrier.com)</a>.
  * 
  * <h4>Encoding the graphics</h4>
  * The image data of the subtitle-picture, is variable run-length encoded, 

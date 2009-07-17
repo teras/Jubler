@@ -179,7 +179,8 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
         SUPCompressImageProcessor proc = new SUPCompressImageProcessor(outfile);
         proc.setSubList(given_subs);
-        proc.readSupFile();
+        proc.setReading(false);
+        proc.start();
         return false;
     }
 }//end public class SUPCompressedImage extends AbstractBinarySubFormat

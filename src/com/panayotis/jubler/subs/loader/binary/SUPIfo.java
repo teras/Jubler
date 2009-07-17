@@ -215,7 +215,7 @@ public class SUPIfo {
             color = YUVtoRGB(Y, Cr, Cb, 0xff);
 
             color_table.add("" + color);
-            System.out.println("(getPGCColors)loaded argb:" + Integer.toHexString(color));
+            //System.out.println("(getPGCColors)loaded argb:" + Integer.toHexString(color));
         }//end private static byte[] setPGCColors(byte ifo[], Object color_table[]) throws IOException
         return color_table;
     }//end private static byte[] setPGCColors(byte ifo[], Object color_table[]) throws IOException 

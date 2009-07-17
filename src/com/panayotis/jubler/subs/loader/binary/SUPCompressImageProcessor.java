@@ -347,6 +347,54 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         System.arraycopy(packet_data, 0, compressedImageData, 0, section_pos);
         System.arraycopy(packet_data, section_pos, sections, 0, sections.length);
 
+        decodingData();
+        return true;
+    }//end private boolean getImageData(FileInputStream in) throws Exception 
+
+    private boolean getImageData() {
+        FileInputStream in = null;
+        boolean ok = false;
+        try {
+            in = new FileInputStream(inputFile);
+            int data_size = in.available();
+            byte[] data = new byte[data_size];
+            in.read(data);
+            in.close();
+
+            int increment = 1;
+            for (int i = 0; i < data.length; i += increment) {
+
+                System.arraycopy(data, i, RLEheader, 0, RLEheader.length);
+                increment = RLEheader.length;
+
+                int packet_size = (0x00ff & RLEheader[10]) << 8 | (0x00ff & RLEheader[11]);
+                int section_pos = (0x00ff & RLEheader[12]) << 8 | (0x00ff & RLEheader[13]);
+                packet_size -= 4;
+                section_pos -= 2;
+
+                compressedImageData = new byte[section_pos];
+                System.arraycopy(data, i + RLEheader.length, compressedImageData, 0, section_pos);
+                System.arraycopy(data, i + RLEheader.length + section_pos, sections, 0, sections.length);
+                
+                increment += packet_size;
+
+                decodingData();
+            }//end for
+            ok = true;
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception ex) {
+            }
+        }
+        return ok;
+    }//end private boolean getImageData()
+
+    private void decodingData() throws Exception{
         // color index 3,2 + 1,0
         int color_index_value = (0x00ff & sections[3]) << 8 |
                 (0x00ff & sections[4]);
@@ -431,9 +479,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
                 min_x, min_y, max_x, max_y,
                 start_time_millis, end_time_millis,
                 width, height, imageData);
-        return true;
-    }
-
+    }//private decodingData()    
     private ArrayList<String> intToArray(int mixed_value) {
         ArrayList<String> array = new ArrayList<String>();
         for (int a = 0; a < 4; a++) {
@@ -544,7 +590,11 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         if (!ok) {
             makeDefaultColourTable();
         }//end if (! ok)
-        processImageData();
+        this.setRow(0);
+        fireSubtitleUpdaterPreProcessingEvent();
+        getImageData();
+        fireSubtitleUpdaterPostProcessingEvent();
+    //processImageData();
     }//end public void readSupFile() 
     public void run() {
         if (this.reading) {
