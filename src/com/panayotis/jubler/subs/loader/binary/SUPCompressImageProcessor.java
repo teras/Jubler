@@ -282,7 +282,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         this.inputFile = f;
     }
 
-    private void makeDefaultColourTable() {
+    public void makeDefaultColourTable() {
         if (color_table == null) {
             color_table = new ArrayList<String>();
         }
@@ -301,7 +301,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
             return false;
         }
     }//end private boolean getUserColourTable()
-    private boolean updateUserColourTable(int[] image_pixels) {
+    public boolean updateUserColourTable(int[] image_pixels) {
         try {
             if (color_table == null) {
                 color_table = new ArrayList<String>();
@@ -472,13 +472,16 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         brle.setPgcAlphaIndexList(alphaIndexList);
         brle.setPgcColorIndexList(colorIndexList);
         brle.decompress();
-
+        brle.makeTranparencyList();
+        
         imageData = brle.getUncompressedData();
 
-        createSubtitleRecord(
-                min_x, min_y, max_x, max_y,
+        createSubtitleRecord(                
                 start_time_millis, end_time_millis,
-                width, height, imageData);
+                width, height, imageData, 
+                new Integer[]{min_x, min_y, max_x, max_y},
+                brle.getPgcColorIndexList().toArray(), 
+                brle.getPgcAlphaIndexList().toArray());
     }//private decodingData()    
     private ArrayList<String> intToArray(int mixed_value) {
         ArrayList<String> array = new ArrayList<String>();
@@ -489,33 +492,35 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         return array;
     }//end private int[] intToArray(int value)
     private void createSubtitleRecord(
-            int min_x, int min_y, int max_x, int max_y,
             long start_time, long end_time,
             int w, int h,
-            int[] img_data) {
+            int[] img_data, 
+            Object[] display_area,
+            Object[] colors,
+            Object[] alphas) {
         Time starting_time = new Time((int) start_time);
         Time finished_time = new Time((int) end_time);
-        short[] display_area = {(short) min_x, (short) min_y, (short) max_x, (short) max_y};
 
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-        img.setRGB(0, 0, w, h, imageData, 0, w);
-        img = JImage.cutImage(img);
-        ImageIcon ico = new ImageIcon(img);
-
-        SonSubEntry son_entry = new SonSubEntry();
-        son_entry.getCreteSonAttribute().display_area = display_area;
-        son_entry.setStartTime(starting_time);
-        son_entry.setFinishTime(finished_time);
-        son_entry.setImage(ico);
+        img.setRGB(0, 0, w, h, img_data, 0, w);
 
         if (son_header == null) {
             son_header = new SonHeader();
             son_header.makeDefaultHeader();
+            son_header.color_table = color_table;
             son_header.subtitle_file = this.inputFile;
             son_header.image_directory = inputFile.getParent();
         }//end if
+        
+        SonSubEntry son_entry = new SonSubEntry();
+        son_entry.getCreateSonAttribute().setDisplayArea(display_area);
+        son_entry.getCreateSonAttribute().setColour(colors);
+        //son_entry.getCreateSonAttribute().setContrast(alphas); //use default 0,15,15,15
+        son_entry.setStartTime(starting_time);
+        son_entry.setFinishTime(finished_time);        
         son_entry.setHeader(son_header);
-
+        son_entry.makeTransparentImage(img);
+        
         this.setEntry(son_entry);
 
         int row = this.getRow() + 1;
@@ -597,6 +602,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     //processImageData();
     }//end public void readSupFile() 
     public void run() {
+        SonSubEntry.reset();
         if (this.reading) {
             this.readSupFile();
         } else {
@@ -797,6 +803,14 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
 
     public void setReading(boolean reading) {
         this.reading = reading;
+    }
+
+    public ArrayList<String> getUserColorTable() {
+        return color_table;
+    }
+
+    public void setUserColorTable(ArrayList<String> color_table) {
+        this.color_table = color_table;
     }
 }//end public class SUPCompressImageProcessor extends Thread
 

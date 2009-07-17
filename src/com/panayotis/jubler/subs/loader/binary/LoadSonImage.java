@@ -34,7 +34,9 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.SubtitleUpdaterThread;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
+import com.panayotis.jubler.subs.records.SON.SubtitleImageAttribute;
 import com.panayotis.jubler.tools.JImage;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -104,6 +106,10 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
      * as necessarily.
      */
     private boolean loadImages = true;
+    /**
+     * Using this class to get the color-table
+     */
+    private SUPCompressImageProcessor simp = null;
 
     /**
      * Parameterised constructor. Required that references of 
@@ -121,6 +127,17 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
         this.sub_list = sub_list;
     }
 
+    private void updateUserColorTable(BufferedImage img) {
+        if (this.simp == null) {
+            simp = new SUPCompressImageProcessor();
+        }//end if
+        try {
+            int[] image_pixels =
+                    img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
+            simp.updateUserColourTable(image_pixels);
+        } catch (Exception ex) {
+        }
+    }//end private void updateUserColorTable(BufferedImage img) 
     /**
      * Run method performs in two stages. 
      * <ol>
@@ -175,7 +192,7 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
         ProgressBar pb = null;
         try {
             //1. locate the image files
-            ImageFileListManager file_list_man = new ImageFileListManager(sub_list);            
+            ImageFileListManager file_list_man = new ImageFileListManager(sub_list);
             file_list_man.addSearchPath(image_dir);
             file_list_man.addSearchPath(subtitle_file_dir);
             file_list_man.setImageFilePath(input_file.getParentFile());
@@ -197,15 +214,21 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
             fireSubtitleUpdaterPreProcessingEvent();
             int count = 0;
             ImageIcon img = null;
+            SonHeader header = null;
+            BufferedImage b_img = null, sub_img = null;
+            SonSubEntry.reset();
             for (int i = 0; i < len; i++) {
                 SonSubEntry sub_entry = (SonSubEntry) sub_list.elementAt(i);
+                header = sub_entry.getHeader();
                 File f = sub_entry.getImageFile();
-                BufferedImage b_img = JImage.readImage(f);
+                b_img = JImage.readImage(f);
+
                 boolean has_image = (b_img != null);
-                boolean has_header = (sub_entry.header != null);
                 if (has_image) {
-                    img = new ImageIcon(b_img);
-                    sub_entry.setImage(img);
+                    //update the color table from original image to get full-list.
+                    updateUserColorTable(b_img);
+                    header.color_table = simp.getUserColorTable();
+                    sub_entry.makeTransparentImage(b_img);
                     count++;
                     setRow(i);
                     setEntry(sub_entry);
@@ -215,6 +238,9 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
                 pb.setTitle(sub_entry.getImageFileName());
                 pb.setValue(i);
             }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)
+            if (header != null) {
+                header.color_table = (simp == null ? null : simp.getUserColorTable());
+            }//end if (header != null)
             DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
         } catch (Exception ex) {
             ex.printStackTrace(System.out);

@@ -23,12 +23,13 @@ package com.panayotis.jubler.subs.records.SON;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
 import com.panayotis.jubler.subs.CommonDef;
-import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.JImage;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.NumberFormat;
 import javax.swing.ImageIcon;
@@ -241,7 +242,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             throw new IncompatibleRecordTypeException(ex.getMessage());
         }
     }//end public boolean copyImage(SubEntry source)
-    public SubtitleImageAttribute getCreteSonAttribute() {
+    public SubtitleImageAttribute getCreateSonAttribute() {
         if (this.son_attribute == null) {
             this.son_attribute = new SubtitleImageAttribute();
         }
@@ -254,4 +255,46 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public void setImageAttribute(SubtitleImageAttribute attrib){
         this.son_attribute = attrib;
     }    
+    
+    
+    private static Object[] color_list = null;
+    private static Object[] trans_list = null;
+    public static void reset(){
+        color_list = null;
+        trans_list = null;
+    }
+    public void makeTransparentImage(BufferedImage img) {
+        try {
+            SubtitleImageAttribute global_list = header.getCreateSonAttribute();
+            if (color_list == null) {
+                color_list = global_list.getColor();
+            }
+            if (trans_list == null) {
+                trans_list = global_list.getContrast();
+            }
+
+            SubtitleImageAttribute local_list = getImageAttribute();
+            boolean is_using_local_color =
+                    !(local_list == null || local_list.colour == null);
+            if (is_using_local_color) {
+                color_list = local_list.getColor();
+            }//end if
+
+            boolean is_using_local_trans =
+                    !(local_list == null || local_list.contrast == null);
+            if (is_using_local_trans) {
+                trans_list = local_list.getContrast();
+            }//end if
+
+            Object[] color_tbl = header.color_table.toArray();
+            
+            BufferedImage tran_img =
+                    JImage.makeTransparentImage(img, color_list, trans_list, color_tbl);
+
+            ImageIcon ico = new ImageIcon(tran_img);
+            setImage(ico);
+        } catch (Exception ex) {
+        }
+    }//end private SonSubEntry makeTransparentImage(BufferedImage img, SonSubEntry entry)
+    
 }

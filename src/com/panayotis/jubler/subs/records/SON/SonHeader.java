@@ -26,6 +26,7 @@ import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.binary.JMaestroOptions;
 import com.panayotis.jubler.subs.loader.processor.SON.SONPatternDef;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -72,7 +73,8 @@ public class SonHeader implements SONPatternDef, Cloneable {
     public File subtitle_file = null;
     public int max_row_height = -1;
     public JMaestroOptions moptions = null;
-
+    public ArrayList<String> color_table = null;
+    
     public Object getHeader() {
         return this;
     }
@@ -227,6 +229,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             new_header.subtitle_file = subtitle_file;
             new_header.max_row_height = max_row_height;
             new_header.moptions = moptions;
+            new_header.color_table = (color_table == null ? null : (ArrayList<String>)color_table.clone());
         } catch (Exception ex) {
         }
         return new_header;
@@ -248,6 +251,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             this.subtitle_file = o.subtitle_file;
             this.max_row_height = o.max_row_height;
             this.moptions = o.moptions;
+            this.color_table = (o.color_table == null ? null : (ArrayList<String>)o.color_table.clone());
         } catch (Exception ex) {
         }
     }
@@ -267,6 +271,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
         this.subtitle_file = new File(USER_CURRENT_DIR);
         this.max_row_height = 25;
         this.moptions = null;
+        this.color_table = null;
     }
 
     /**
@@ -283,7 +288,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
         this.defaultHeader = defaultHeader;
     }
 
-    public SubtitleImageAttribute getCreteSonAttribute() {
+    public SubtitleImageAttribute getCreateSonAttribute() {
         if (this.son_attribute == null) {
             this.son_attribute = new SubtitleImageAttribute();
         }

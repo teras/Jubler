@@ -29,6 +29,7 @@ package com.panayotis.jubler.subs.records.SON;
 
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.Share;
+import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 /**
@@ -48,6 +49,79 @@ public class SubtitleImageAttribute implements Cloneable, CommonDef {
     public short[] contrast = null;
     public short[] display_area = null;
 
+    public Object[] getColor(){
+        ArrayList<String> list = new ArrayList<String>();
+        try{
+            this.colour = new short[]{0, 1, 2, 3};
+            for(int i=0; i < this.colour.length; i++){
+                    String val_s = "" + colour[i];
+                    list.add(val_s);
+            }//end for(int i=0; i < this.colour.length; i++)
+        }catch(Exception ex){            
+        }
+        return list.toArray();
+    }//end public Object[] getColor()
+
+    public Object[] getContrast(){
+        ArrayList<String> list = new ArrayList<String>();
+        try{
+            this.colour = new short[]{0, 1, 2, 3};
+            for(int i=0; i < this.contrast.length; i++){
+                    String val_s = "" + contrast[i];
+                    list.add(val_s);
+            }//end for(int i=0; i < this.contrast.length; i++)
+        }catch(Exception ex){            
+        }
+        return list.toArray();
+    }//end public Object[] getColor()
+
+    public Object[] getDisplayArea(){
+        ArrayList<String> list = new ArrayList<String>();
+        try{
+            this.colour = new short[]{0, 1, 2, 3};
+            for(int i=0; i < this.display_area.length; i++){
+                    String val_s = "" + display_area[i];
+                    list.add(val_s);
+            }//end for(int i=0; i < this.contrast.length; i++)
+        }catch(Exception ex){            
+        }
+        return list.toArray();
+    }//end public Object[] getColor()
+    
+    public void setColour(Object[] list){
+        try{
+            this.colour = new short[]{0, 1, 2, 3};
+            for(int i=0; i < list.length; i++){
+                if (i < colour.length){
+                    String color_s = list[i].toString();
+                    colour[i] = Short.parseShort(color_s);
+                }//end if
+            }//end for(int i=0; i < colour_list.length; i++)
+        }catch(Exception ex){}
+    }//end public void setColour(Object[] colour_list)
+    public void setContrast(Object[] list){
+        try{
+            this.contrast = new short[]{0, 15, 15, 15};
+            for(int i=0; i < list.length; i++){
+                if (i < contrast.length){
+                    String contrast_s = list[i].toString();
+                    short new_val = Short.parseShort(contrast_s);
+                    contrast[i] = new_val;
+                }//end if
+            }//end for(int i=0; i < colour_list.length; i++)
+        }catch(Exception ex){}
+    }//end public void setColour(Object[] colour_list)
+    public void setDisplayArea(Object[] list){
+        try{
+            this.display_area = new short[]{0, 380, 720, 416};
+            for(int i=0; i < list.length; i++){
+                if (i < display_area.length){
+                    String val_s = list[i].toString();
+                    display_area[i] = Short.parseShort(val_s);
+                }//end if
+            }//end for(int i=0; i < colour_list.length; i++)
+        }catch(Exception ex){}
+    }//end public void setColour(Object[] colour_list)
     /**
      * Default data. The record is set with the following settings:
      * <blockquote><pre>

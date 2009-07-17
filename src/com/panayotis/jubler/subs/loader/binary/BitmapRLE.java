@@ -312,6 +312,27 @@ public class BitmapRLE {
             return 0; //force 0 index
         }
     }//end private int getColour(int index)
+    private int getColorTransparency(int pgc_index){
+        try{
+            int color = getUserColor(pgc_index);
+            int transparency = (0xf & (color >>> 24));
+            
+            return transparency;
+        }catch(Exception ex){
+            return 0;
+        }
+    }//end private int getColorTransparency(int color)
+    public void makeTranparencyList(){
+        try{
+            this.pgcAlphaIndexList = new ArrayList<String>();
+            for(String pgc_index_s : this.pgcColorIndexList){
+                int pgc_index = Integer.parseInt(pgc_index_s);
+                int color = getUserColor(pgc_index);
+                int transparency = (0xf & (color >>> 24));
+                pgcAlphaIndexList.add("" + transparency);
+            }//end for(String color : this.pgcColorIndexList)
+        }catch(Exception ex){}
+    }//end private void makeTranparencyList()
     private int getUserColor(int pgc_index) {
         try {
             String pgc_index_s = pgcColorIndexList.get(pgc_index);

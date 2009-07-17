@@ -89,13 +89,13 @@ public class SONColor extends SubtitlePatternProcessor implements CommonDef {
         short[] array = SonSubEntry.makeAttributeEntry(matched_data);
         if (record instanceof SonHeader) {
             sonHeader = (SonHeader) record;
-            at = sonHeader.getCreteSonAttribute();
+            at = sonHeader.getCreateSonAttribute();
             at.colour = array;
         }//end if (record instanceof SonHeader)
 
         if (record instanceof SonSubEntry) {
             sonSubEntry = (SonSubEntry) record;
-            at = sonSubEntry.getCreteSonAttribute();
+            at = sonSubEntry.getCreateSonAttribute();
             at.colour = array;
         }//end if (record instanceof SonSubEntry)
     }//end if

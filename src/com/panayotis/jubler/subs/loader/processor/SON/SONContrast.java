@@ -55,12 +55,12 @@ public class SONContrast extends SubtitlePatternProcessor implements CommonDef {
         short[] array = SonSubEntry.makeAttributeEntry(matched_data);
         if (record instanceof SonHeader) {
             sonHeader = (SonHeader) record;
-            sonHeader.getCreteSonAttribute().contrast = array;
+            sonHeader.getCreateSonAttribute().contrast = array;
         }//end if (record instanceof SonHeader)
 
         if (record instanceof SonSubEntry) {
             setSonSubEntry((SonSubEntry) record);
-            sonSubEntry.getCreteSonAttribute().contrast = array;
+            sonSubEntry.getCreateSonAttribute().contrast = array;
         }//end if (record instanceof SonSubEntry)
     }//end if
 
