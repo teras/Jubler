@@ -2628,7 +2628,7 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
         }
 
         /* Convert file into subtitle data */
-        newsubs.populate(f, data, is_autoload ? 25 : prefs.getLoadFPS());
+        newsubs.populate(work, f, data, is_autoload ? 25 : prefs.getLoadFPS());
         if (newsubs.size() == 0) {
             JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
             return;
@@ -3134,7 +3134,7 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
             }
 
             /* Convert file into subtitle data */
-            SubFormat format_handler = newsubs.populate(f, data, prefs.getLoadFPS());
+            SubFormat format_handler = newsubs.populate(this, f, data, prefs.getLoadFPS());
             if (newsubs.size() == 0) {
                 JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
                 return null;
