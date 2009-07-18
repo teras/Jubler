@@ -105,10 +105,11 @@ public class Subtitles extends AbstractTableModel {
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
-    public SubFormat populate(File f, String data, float FPS) {
+    public SubFormat populate(Jubler work, File f, String data, float FPS) {
         Subtitles load;
         AvailSubFormats formats;
 
+        this.jubler = work;
         if (data == null) {
             return null;
         }
@@ -124,7 +125,7 @@ public class Subtitles extends AbstractTableModel {
         SubFormat format_handler = null;
         while (load == null && formats.hasMoreElements()) {
             format_handler = formats.nextElement();
-            format_handler.setJubler(jubler);
+            format_handler.setJubler(work);
             format_handler.init();
             load = format_handler.parse(data, FPS, f);
             if (load != null && load.size() < 1) {
