@@ -128,7 +128,7 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
         subtitleList = new Subtitles();
         blank_record= new SonSubEntry();
         subtitleList.add(blank_record);
-        SUPCompressImageProcessor proc = new SUPCompressImageProcessor(f);
+        SUPReader proc = new SUPReader(f);
         proc.setSubList(subtitleList);
 
         SubtitleRecordUpdatedEventListener rul = new SubtitleRecordUpdatedEventListener() {
@@ -171,20 +171,18 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
 
         proc.addSubtitleUpdaterPostProcessingEventListener(pud);
 
-        proc.setReading(true);
         proc.start();
 
         return subtitleList;
     }
 
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
-        /*
+        
         File sup_file =  FileCommunicator.stripFileFromExtension(outfile);
-        SUPCompressImageProcessor proc = new SUPCompressImageProcessor(sup_file);
+        SUPWriter proc = new SUPWriter(sup_file);
         proc.setSubList(given_subs);
-        proc.setReading(false);
         proc.start();
-         */
+        
         return false;
     }
 }//end public class SUPCompressedImage extends AbstractBinarySubFormat

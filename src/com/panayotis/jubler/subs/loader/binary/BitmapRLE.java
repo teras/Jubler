@@ -620,7 +620,7 @@ public class BitmapRLE {
         boolean encoded = false;
         try {
             out = new ByteArrayOutputStream();
-
+            bottomFieldStartPost = 0;
             int len = this.uncompressedData.length;
             // read out interlaced RGB
             for (int i = 0,  l = 0,  a = 0,  b = 0,  color = 0;
@@ -655,7 +655,7 @@ public class BitmapRLE {
                 alignRLE();
 
                 if (bottomFieldStartPost == 0) {
-                    bottomFieldStartPost = out.size() - 10;
+                    bottomFieldStartPost = out.size();
                 }// save startpos of bottom_field (size-14)
             }//end for (int i = 0,  l = 0,  a = 0,  b = 0,  color = 0; i < 2; i++)
 

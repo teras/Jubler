@@ -58,13 +58,16 @@ public class SONSubtitleEvent extends SubtitlePatternProcessor implements Common
             sonSubEntry.event_id = DVDMaestro.parseShort(matched_data[0]);
 
             Time start, finish;
-            start = new Time(matched_data[1], matched_data[2], matched_data[3], matched_data[4]);
-            finish = new Time(matched_data[5], matched_data[6], matched_data[7], matched_data[8]);
+            
+            start = new Time(0);
+            start.setTimeLiteral(matched_data[1], matched_data[2], matched_data[3], matched_data[4]);
+            
+            finish = new Time(0);
+            finish.setTimeLiteral(matched_data[5], matched_data[6], matched_data[7], matched_data[8]);
 
             sonSubEntry.setStartTime(start);
             sonSubEntry.setFinishTime(finish);
             sonSubEntry.image_filename = matched_data[9];
-System.out.println("Start_time: " + start.getMilli() + " End_time: " + finish.getMilli());
         }//end if (record instanceof SonSubEntry)
 
     }//end if

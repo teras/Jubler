@@ -133,6 +133,20 @@ public class Time implements Comparable<Time> {
         }
     }
 
+    public void setTimeLiteral(String h, String m, String s, String f) {
+        short hour, min, sec, milli;
+        int flength;
+        try {
+            hour = Short.parseShort(h);
+            min = Short.parseShort(m);
+            sec = Short.parseShort(s);
+            milli = Short.parseShort(f);
+            setTime(hour, min, sec, milli);
+        } catch (NumberFormatException e) {
+            invalidate();
+        }
+    }
+    
     private void setTime(String h, String m, String s, String f) {
         short hour, min, sec, milli;
         int flength;
@@ -327,6 +341,14 @@ public class Time implements Comparable<Time> {
         return (time_sub_str + milli_part);
     }
 
+    /**
+     * This routine return the number of frames/second, given that the the
+     * internal milliseconds used to store this value. This takes the
+     * default 90,000 frames per hour, and since it was stored in the
+     * milliseconds, the value stored will be multiplied by 90.
+     * @param frame_rates The frame-rate, ie. PAL=36000, NTSC=3003
+     * @return The frame-count per second equivalent of the millisecond stored.
+     */
     public int getFrames(long frame_rates){
         int frame_count = 0;
         try{
