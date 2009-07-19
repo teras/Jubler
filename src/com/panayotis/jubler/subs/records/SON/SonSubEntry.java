@@ -203,6 +203,12 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
         } catch (Exception ex) {
         }
     }//public void copyRecord(SubEntry o)
+    public void setBufferedImage(BufferedImage image) {
+        if (image != null){
+            ImageIcon ico = new ImageIcon(image);
+            setImage(ico);
+        }//end if
+    }
     public void setImage(ImageIcon image) {
         this.image = image;
         if (image != null) {

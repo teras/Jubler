@@ -140,6 +140,9 @@ public class SubtitleImageAttribute implements Cloneable, CommonDef {
         centreImage(ico.getIconWidth(), ico.getIconHeight());
     }
     
+    public void centreImage(ImageIcon ico){
+        centreImage(ico.getIconWidth(), ico.getIconHeight());
+    }
     private void centreImage(int w, int h){
         int fix_y = 470;
         int x1 = (720 - w / 2);

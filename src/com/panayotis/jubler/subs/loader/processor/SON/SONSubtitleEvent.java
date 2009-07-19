@@ -64,6 +64,7 @@ public class SONSubtitleEvent extends SubtitlePatternProcessor implements Common
             sonSubEntry.setStartTime(start);
             sonSubEntry.setFinishTime(finish);
             sonSubEntry.image_filename = matched_data[9];
+System.out.println("Start_time: " + start.getMilli() + " End_time: " + finish.getMilli());
         }//end if (record instanceof SonSubEntry)
 
     }//end if

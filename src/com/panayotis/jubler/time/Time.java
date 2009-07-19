@@ -22,20 +22,62 @@
  */
 package com.panayotis.jubler.time;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  *
  * @author teras
  */
 public class Time implements Comparable<Time> {
 
+    public static double PAL_VIDEOFRAMERATE = 3600.0;
+    public static double NTSC_VIDEOFRAMERATE = 3003.0;
+    public static DateFormat time_format_1 = new SimpleDateFormat("HH:mm:ss.SSS");
+    public static DateFormat time_format_2 = new SimpleDateFormat("HH:mm:ss:SSS");
+    public static DateFormat time_format_3 = new SimpleDateFormat("dd.MM.yy  HH:mm");
+    public static DateFormat time_format_4 = new SimpleDateFormat("HH:mm:ss");
     protected int msecs = -1;
     public static final int MAX_TIME = 3600 * 24;   // in seconds
     public static final int MAX_MILLI_TIME = MAX_TIME * 1000;   // in seconds
 
-    public Time(int msecs){
+    /**
+     * This is to generate end-time, using starting frame-count and 
+     * the duration in the 10th.
+     * @param frames The starting time in frame-count.
+     * @param frame_rate The frame-rate.
+     * @param duration The duration 
+     */
+    public Time(long frames, long frame_rate, int duration) {
+        this(frames, frame_rate);
+        this.msecs += (duration * 10);
+    }
+    /**
+     * This is to generate the start-time from a frame-count, that is
+     * says 25 frames/second, 1500 frames/minute and 90,000 frames/hour.
+     * By dividing the frames to 90, the value is suitable for
+     * Date, which uses milliseconds, however the millisecond part needs
+     * to convert by (mill * 90 / frame_rate) to get the time-equipvalent.
+     * @param frames The frame count.
+     * @param frame_rate The frame-rate, ie. 36000
+     */
+    public Time(long frames, long frame_rate) {
+        frames /= 90;
+        String time_s = formatTime(frames, frame_rate, true);        
+        try {
+            Date dt = time_format_2.parse(time_s);
+            this.msecs = (int)dt.getTime();            
+        } catch (Exception ex) {
+        }
+    }
+
+    public Time(int msecs) {
         this.setMilli(msecs);
     }
     /* Time in seconds */
+
     public Time(double time) {
         setTime(time);
     }
@@ -64,14 +106,16 @@ public class Time implements Comparable<Time> {
     }
 
     public void addTime(double d) {
-        if (!isValid())
+        if (!isValid()) {
             return;
+        }
         setTime(toSeconds() + d);
     }
 
     public void recodeTime(double beg, double fac) {
-        if (!isValid())
+        if (!isValid()) {
             return;
+        }
         setTime((toSeconds() - beg) * fac + beg);
     }
 
@@ -97,8 +141,9 @@ public class Time implements Comparable<Time> {
             min = Short.parseShort(m);
             sec = Short.parseShort(s);
             flength = f.length();
-            if (flength < 3)
+            if (flength < 3) {
                 f = f + "000".substring(flength);
+            }
             milli = Short.parseShort(f);
             setTime(hour, min, sec, milli);
         } catch (NumberFormatException e) {
@@ -115,7 +160,7 @@ public class Time implements Comparable<Time> {
     }
 
     public void setTime(double time) {
-        msecs = (int)(time * 1000d+0.5d);
+        msecs = (int) (time * 1000d + 0.5d);
     }
 
     public void setTime(Time time) {
@@ -127,18 +172,22 @@ public class Time implements Comparable<Time> {
     }
 
     private void setMilliSeconds(int msecs) {
-        if (msecs < 0)
+        if (msecs < 0) {
             msecs = 0;
-        if (msecs > MAX_MILLI_TIME)
+        }
+        if (msecs > MAX_MILLI_TIME) {
             msecs = MAX_MILLI_TIME;
+        }
         this.setMilli(msecs);
     }
 
     public int compareTo(Time t) {
-        if (msecs < t.msecs)
+        if (msecs < t.msecs) {
             return -1;
-        if (msecs > t.msecs)
+        }
+        if (msecs > t.msecs) {
             return 1;
+        }
         return 0;
     }
 
@@ -156,22 +205,27 @@ public class Time implements Comparable<Time> {
         time /= 60;
         hour = time;
 
-        if (hour < 10)
+        if (hour < 10) {
             res.append("0");
+        }
         res.append(hour);
         res.append(":");
-        if (min < 10)
+        if (min < 10) {
             res.append("0");
+        }
         res.append(min);
         res.append(":");
-        if (sec < 10)
+        if (sec < 10) {
             res.append("0");
+        }
         res.append(sec);
         res.append(",");
-        if (milli < 100)
+        if (milli < 100) {
             res.append("0");
-        if (milli < 10)
+        }
+        if (milli < 10) {
             res.append("0");
+        }
         res.append(milli);
         return res.toString();
     }
@@ -190,22 +244,26 @@ public class Time implements Comparable<Time> {
         time /= 60;
         hour = time;
 
-        if (hour < 10)
+        if (hour < 10) {
             res.append("0");
+        }
         res.append(hour);
         res.append(":");
-        if (min < 10)
+        if (min < 10) {
             res.append("0");
+        }
         res.append(min);
         res.append(":");
-        if (sec < 10)
+        if (sec < 10) {
             res.append("0");
+        }
         res.append(sec);
         res.append(":");
 
         frm = Math.round(milli * FPS / 1000f);
-        if (frm < 10)
+        if (frm < 10) {
             res.append("0");
+        }
         res.append(frm);
         return res.toString();
     }
@@ -217,6 +275,7 @@ public class Time implements Comparable<Time> {
     public double toSeconds() {
         return msecs / 1000d;
     }
+
     public String toString() {
         return getSeconds();
     }
@@ -233,5 +292,79 @@ public class Time implements Comparable<Time> {
      */
     public void setMilli(int msecs) {
         this.msecs = msecs;
+    }
+
+    /**
+     * Converts the time that includes the frame-count in the time-value by
+     * extracts the millisecond part and convert it appropriately to 
+     * time unit. The time input must have been divided by 90, 
+     * (ie. taken from 90,000 frames per hour), before passing to this
+     * routine.
+     * @param time_value The time includes the frame-count.
+     * @param frame_rate The frame-rate for TV system used.
+     * @param is_to_time true if it is converted to time, false back to frames.
+     * @return The string representing time format, suitable to be parsed
+     * by a DateFormat instance.
+     */
+    private String formatTime(long time_value, long frame_rate, boolean is_to_time) {
+        time_format_2.setTimeZone(TimeZone.getTimeZone("GMT+0:00"));
+        String time_str = time_format_2.format(new Date(time_value));
+
+        int time_len = time_str.length();
+        int sub_time_len = time_len - 3;
+
+        String time_sub_str = time_str.substring(0, sub_time_len);
+
+        int n1 = Integer.parseInt(time_str.substring(time_str.length() - 3));
+
+        int milli_part = 0;
+        if (is_to_time) {
+            milli_part = n1 * 90 / (int) frame_rate;
+        } else {
+            milli_part = n1 * (int) frame_rate / 90;
+        }
+
+        return (time_sub_str + milli_part);
+    }
+
+    public int getFrames(long frame_rates){
+        int frame_count = 0;
+        try{
+            String time_s = this.formatTime(msecs, frame_rates, false);
+            Date dt = time_format_2.parse(time_s);
+            frame_count = (int)(dt.getTime() * 90L);            
+        }catch(Exception ex){}
+        return frame_count;
+    }
+    /**
+     * Inserting zeros into the back of the value input, based on the 
+     * total length required. If the length of the original is equal or longer
+     * than the total length required, the original is returned.
+     * @param str The value that need patching with zeros at the back.
+     * @param len the total length of the result string. 
+     * @return The string patched with zeros if needed, and the length of it
+     * must have a minimum required length.
+     */
+    private String adaptString(String str, int len) {
+        StringBuffer strbuf = new StringBuffer(str.trim());
+
+        while (strbuf.length() < len) {
+            strbuf.insert(0, "0");
+        }
+
+        return strbuf.toString();
+    }
+
+    /**
+     * Inserting zeros into the back of the value input, based on the 
+     * total length required. If the length of the original is equal or longer
+     * than the total length required, the original is returned.
+     * @param str The value that need patching with zeros at the back.
+     * @param len the total length of the result string. 
+     * @return The string patched with zeros if needed, and the length of it
+     * must have a minimum required length.
+     */
+    private String adaptString(int str, int len) {
+        return adaptString(String.valueOf(str), len);
     }
 }

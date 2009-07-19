@@ -27,6 +27,7 @@
  */
 package com.panayotis.jubler.subs.loader.binary;
 
+import static com.panayotis.jubler.subs.style.StyleType.*;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubtitleUpdaterThread;
@@ -35,8 +36,12 @@ import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.records.SON.SonHeader;
 import com.panayotis.jubler.subs.records.SON.SonSubEntry;
 import com.panayotis.jubler.subs.records.SON.SubtitleImageAttribute;
+import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.subs.style.gui.AlphaColor;
+import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.tools.JImage;
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -44,8 +49,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Date;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * The SUP file contains a sequence of subitle packets, each packet has the
@@ -274,12 +279,31 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         (byte) 0xFF     // end of sequ: timedur in pts/1100, size s.a. , add 0xFF if size is not WORD aligned
     };
     private boolean reading = true;
+    private boolean is_text = false;
 
     public SUPCompressImageProcessor() {
+        reset();
     }
 
     public SUPCompressImageProcessor(File f) {
+        this();
         this.inputFile = f;
+    }
+
+    public void reset() {
+        inputFile = null;
+        color_table = null;
+        offsetList = null;
+        sizeList = null;
+        imageData = null;
+        compressedImageData = null;
+        out = null;
+        son_header = null;
+        colorIndexList = null;
+        alphaIndexList = null;
+        brle = null;
+        reading = true;
+        is_text = false;
     }
 
     public void makeDefaultColourTable() {
@@ -301,25 +325,52 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
             return false;
         }
     }//end private boolean getUserColourTable()
+    private boolean addColor(int color) {
+        String color_s = "" + color;
+        boolean is_there = (color_table.contains(color_s));
+        if (is_there) {
+            return false;
+        }//end if (is_there)
+
+        color_table.add(color_s);
+        return true;
+    }
+
+    public boolean updateUserColourTable(Color color) {
+        try {
+            if (color_table == null) {
+                color_table = new ArrayList<String>();
+            }
+            return addColor(color.getRGB());
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public boolean updateUserColourTable(Color[] colors) {
+        try {
+            if (color_table == null) {
+                color_table = new ArrayList<String>();
+            }
+            for (int i = 0,  color = 0; i < colors.length; i++) {
+                addColor(colors[i].getRGB());
+            }//end for(int color: default_sup_colors)
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }//end private void updateUserColourTable()
     public boolean updateUserColourTable(int[] image_pixels) {
         try {
             if (color_table == null) {
                 color_table = new ArrayList<String>();
             }
             for (int i = 0,  color = 0; i < image_pixels.length; i++) {
-                boolean is_diff = (color != image_pixels[i]);
-                if (!is_diff) {
-                    continue;
-                }//end if (! is_diff)
                 color = image_pixels[i];
-
-                String color_s = "" + color;
-                boolean is_there = (color_table.contains(color_s));
-                if (is_there) {
-                    continue;
-                }//end if (is_there)
-
-                color_table.add(color_s);
+                boolean is_diff = !color_table.contains(color);
+                if (is_diff) {
+                    addColor(color);
+                }//end if (! is_diff)
             }//end for(int color: default_sup_colors)
             return true;
         } catch (Exception ex) {
@@ -350,7 +401,6 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         decodingData();
         return true;
     }//end private boolean getImageData(FileInputStream in) throws Exception 
-
     private boolean getImageData() {
         FileInputStream in = null;
         boolean ok = false;
@@ -375,7 +425,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
                 compressedImageData = new byte[section_pos];
                 System.arraycopy(data, i + RLEheader.length, compressedImageData, 0, section_pos);
                 System.arraycopy(data, i + RLEheader.length + section_pos, sections, 0, sections.length);
-                
+
                 increment += packet_size;
 
                 decodingData();
@@ -393,8 +443,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         }
         return ok;
     }//end private boolean getImageData()
-
-    private void decodingData() throws Exception{
+    private void decodingData() throws Exception {
         // color index 3,2 + 1,0
         int color_index_value = (0x00ff & sections[3]) << 8 |
                 (0x00ff & sections[4]);
@@ -411,13 +460,16 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
                 ((0x00ff & RLEheader[4]) << 16) |
                 ((0x00ff & RLEheader[5]) << 24);
 
-        int play_time = ((0x00ff & sections[22]) << 8) |
+        int duration = ((0x00ff & sections[22]) << 8) |
                 (0x00ff & sections[23]);
 
-        long start_time_millis = getTimeMillis(start_time / 90);
-        long end_time_millis = getTimeMillis((start_time / 90) + (play_time * 10));
+        //long start_time_millis = getTimeMillis(start_time / 90);
+        //long end_time_millis = getTimeMillis((start_time / 90) + (play_time * 10));
+        //Time starting_time = new Time(start_time, (long)Time.PAL_VIDEOFRAMERATE);
+        //String st_s = starting_time.toString();
 
-        //Time starting_time = new Time((int) start_time_millis);        
+        //int frames = starting_time.getFrames((long)Time.PAL_VIDEOFRAMERATE);
+
         //Time finished_time = new Time((int) end_time_millis);
         //String st_s = starting_time.toString();
         //String ed_s = finished_time.toString();
@@ -473,14 +525,14 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         brle.setPgcColorIndexList(colorIndexList);
         brle.decompress();
         brle.makeTranparencyList();
-        
+
         imageData = brle.getUncompressedData();
 
-        createSubtitleRecord(                
-                start_time_millis, end_time_millis,
-                width, height, imageData, 
+        createSubtitleRecord(
+                start_time, duration,
+                width, height, imageData,
                 new Integer[]{min_x, min_y, max_x, max_y},
-                brle.getPgcColorIndexList().toArray(), 
+                brle.getPgcColorIndexList().toArray(),
                 brle.getPgcAlphaIndexList().toArray());
     }//private decodingData()    
     private ArrayList<String> intToArray(int mixed_value) {
@@ -492,14 +544,15 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         return array;
     }//end private int[] intToArray(int value)
     private void createSubtitleRecord(
-            long start_time, long end_time,
+            int start_time, int duration,
             int w, int h,
-            int[] img_data, 
+            int[] img_data,
             Object[] display_area,
             Object[] colors,
             Object[] alphas) {
-        Time starting_time = new Time((int) start_time);
-        Time finished_time = new Time((int) end_time);
+
+        Time starting_time = new Time(start_time, (long) Time.PAL_VIDEOFRAMERATE);
+        Time finished_time = new Time(start_time, (long) Time.PAL_VIDEOFRAMERATE, duration);
 
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, w, h, img_data, 0, w);
@@ -511,16 +564,17 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
             son_header.subtitle_file = this.inputFile;
             son_header.image_directory = inputFile.getParent();
         }//end if
-        
+
         SonSubEntry son_entry = new SonSubEntry();
         son_entry.getCreateSonAttribute().setDisplayArea(display_area);
         son_entry.getCreateSonAttribute().setColour(colors);
         //son_entry.getCreateSonAttribute().setContrast(alphas); //use default 0,15,15,15
         son_entry.setStartTime(starting_time);
-        son_entry.setFinishTime(finished_time);        
+        son_entry.setFinishTime(finished_time);
         son_entry.setHeader(son_header);
+        //son_entry.setBufferedImage(img);
         son_entry.makeTransparentImage(img);
-        
+
         this.setEntry(son_entry);
 
         int row = this.getRow() + 1;
@@ -534,12 +588,6 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     //JOptionPane.showMessageDialog(null, lbl);
     //System.out.println("Showed the image!");        
     }//end private void createSubtitleRecord()
-    private long getTimeMillis(int time_value) throws Exception {
-        String time_s = Share.formatTime_2(time_value, Share.getVideoframerate());
-        Date dt = Share.time_format_2.parse(time_s);
-        long final_millis = dt.getTime();
-        return final_millis;
-    }//end private int getTimeMillis(int time_value)
     public int getNumberOfImages() {
         FileInputStream in = null;
         int count = 0;
@@ -612,8 +660,26 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     private ImageTypeSubtitle getImageTypeEntry(SubEntry entry) {
         ImageTypeSubtitle img_entry;
         boolean has_image = (entry instanceof ImageTypeSubtitle);
+        boolean has_text = (!Share.isEmpty(entry.getText()));
+
         if (!has_image) {
-            return null;
+            if (has_text) {
+                SubImage simg = new SubImage(entry);
+                BufferedImage img = simg.getImage();
+
+                SonSubEntry son_entry = new SonSubEntry();
+                son_entry.setHeader(son_header);
+                son_entry.copyRecord(entry);
+
+                ImageIcon ico = new ImageIcon(img);
+                son_entry.setImage(ico);
+                son_entry.getCreateSonAttribute().centreImage(ico);
+                son_header = son_entry.getHeader();
+                is_text = true;
+                return son_entry;
+            } else {
+                return null;
+            }//end if
         } else {
             img_entry = (ImageTypeSubtitle) entry;
             return img_entry;
@@ -627,7 +693,20 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         w = img.getWidth();
         h = img.getHeight();
         imageData = img.getRGB(0, 0, w, h, null, 0, w);
-        updateUserColourTable(imageData);
+        if (is_text == false) {
+            updateUserColourTable(imageData);
+        } else {
+            SubEntry entry = (SubEntry) img_entry;
+            SubStyle style = entry.getStyle();
+            Color[] color_list = new Color[]{
+                (new Color(0)),
+                ((AlphaColor) style.get(SHADOW)).getAColor(),
+                ((AlphaColor) style.get(OUTLINE)).getAColor(),
+                ((AlphaColor) style.get(PRIMARY)).getAColor(),
+                ((AlphaColor) style.get(SECONDARY)).getAColor()
+            };
+            updateUserColourTable(color_list);
+        }//end if
         return new Rectangle(0, 0, w, h);
     }//end private Rectangle getSubtitleImageData(ImageTypeSubtitle img_entry)
     private boolean compressImageData(Rectangle rec) {
@@ -639,7 +718,10 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         brle.setColorTable(color_table);
         ok = brle.compress();
         if (ok) {
+            brle.makeTranparencyList();
             compressedImageData = brle.getCompressedData();
+        } else {
+            compressedImageData = null;
         }//end if (!ok)
         return ok;
     }//end private boolean compressImageData(Rectangle rec)
@@ -680,8 +762,15 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     }
 
     public int setPGClinks(BitmapRLE rle) {
-        Object pgc_color_links[] = rle.getPgcColorIndexList().toArray();
-        Object pgc_alpha_links[] = rle.getColorTable().toArray();
+        Object[] pgc_color_links;
+        Object[] pgc_alpha_links;
+        if (is_text == true) {
+            pgc_color_links = new Object[]{"0", "1", "2", "3"};
+            pgc_alpha_links = this.color_table.toArray();
+        } else {
+            pgc_color_links = rle.getPgcColorIndexList().toArray();
+            pgc_alpha_links = rle.getColorTable().toArray();
+        }//end if
         int pgc_colors = 0xFE10;
         int pgc_alphas = 0xFFF9;
         int pgc_color_value, pgc_alpha_value;
@@ -704,15 +793,10 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         try {
             Subtitles sub_list = this.getSubList();
             int sub_len = sub_list.size();
-            entry = sub_list.elementAt(0);
-            img_entry = this.getImageTypeEntry(entry);
-            if (Share.isEmpty(img_entry)) {
-                return;
-            }
-
             of = new FileOutputStream(outfile);
             out = new ByteArrayOutputStream();
             for (int i = 0; i < sub_len; i++) {
+                out.reset();
                 out.write(RLEheader);
 
                 //1. extract the subtitle entry's image data
@@ -739,16 +823,16 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
                 SubtitleImageAttribute attrib = img_entry.getImageAttribute();
                 if (Share.isEmpty(attrib)) {
                     attrib = new SubtitleImageAttribute();
-                    attrib.makeDefaulRecord(img_entry.getImage());
+                    attrib.centreImage(img_entry.getImage());
                 } else {
                     if (Share.isEmpty(attrib.display_area)) {
-                        attrib.makeDefaulRecord(img_entry.getImage());
+                        attrib.centreImage(img_entry.getImage());
                     }//end if
                 }//end if (! Share.isEmpty(attrib))
                 x1 = attrib.display_area[0];
                 y1 = attrib.display_area[1];
-                x2 = attrib.display_area[3];
-                y2 = attrib.display_area[4];
+                x2 = attrib.display_area[2];
+                y2 = attrib.display_area[3];
 
                 setScreenPosition(x1, y1, x2, y2);
                 setControlBlockPosition(control_block_pos, brle.getBottomFieldStartPost());
@@ -771,7 +855,20 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
                 picture_packet[12] = (byte) (0xFF & pack >>> 8);
                 picture_packet[13] = (byte) (0xFF & pack);
 
-                long in_time = entry.getStartTime().getMilli() * 90;
+                int in_time = entry.getStartTime().getFrames((long) Time.PAL_VIDEOFRAMERATE);
+                int out_time = entry.getFinishTime().getFrames((long) Time.PAL_VIDEOFRAMERATE);
+                int play_time = (out_time = in_time) / 10;
+                /*
+                String old_start_time_s = entry.getStartTime().toString();                                
+                int old_in_time = entry.getStartTime().getMilli();
+                int in_time = makeTimeMillis(old_in_time);
+                long start_time_millis = getTimeMillis(in_time / 90);
+                Time starting_time = new Time((int) start_time_millis);        
+                //long end_time_millis = getTimeMillis((in_time / 90) + (play_time * 10));
+                //Time finished_time = new Time((int) end_time_millis);
+                String new_start_time_s = starting_time.toString();
+                //String ed_s = finished_time.toString();
+                 */
                 picture_packet[2] = (byte) (0xff & in_time);
                 picture_packet[3] = (byte) (0xff & in_time >>> 8);
                 picture_packet[4] = (byte) (0xff & in_time >>> 16);
@@ -781,18 +878,30 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
                     picture_packet[a + 2] = (byte) (0xFF & in_time >>> (a * 8));
                 }
 
-                long play_time = (in_time - (entry.getFinishTime().getMilli() * 90)) / 10;
+                //long play_time = (in_time - (entry.getFinishTime().getMilli() * 90)) / 10;
                 picture_packet[onscreen_time_pos] = (byte) (0xFF & play_time >>> 8);
                 picture_packet[onscreen_time_pos + 1] = (byte) (0xFF & play_time);
+                of.write(picture_packet);
 
                 setEntry(entry);
                 setRow(i);
                 fireSubtitleRecordUpdatedEvent();
-            }//end for(int i=0; i < sub_len; i++)            
+
+            }//end for(int i=0; i < sub_len; i++)
+            
+            String output_filename = outfile.getAbsolutePath();
+            SUPIfo.createIfo(output_filename, color_table.toArray());
+            
         } catch (Exception ex) {
         } finally {
             try {
-                of.close();
+                if (out != null) {
+                    out.close();
+                }
+                if (of != null) {
+                    of.flush();
+                    of.close();
+                }
             } catch (Exception e) {
             }
         }//end try/catch

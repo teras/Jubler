@@ -214,7 +214,6 @@ import java.util.ArrayList;
  *  '----------'   '-------------------'   '----------' 
  *     2 bits           12 bits a 0            2 bits
  * </pre>
-
  * !!! After a end of line you MUST synchronize on the next entire Byte !!!
  * <pre>
  * Eg: 10 11 00 00 00 00 00 00 00 01 00 00 11 10 01 11
@@ -246,7 +245,7 @@ import java.util.ArrayList;
  * 00 00 00 00 00 00 00 11                      11 To the end of line
  * 
  * 10 11 00 00 00 00 00 00 00 10 00 00 11 01	11 11 , 10 To the end of line, 01 01 01 on the next line
-			      ^Nul^
+^Nul^
  * 
  * You must then deentrelace the lines
  * </pre>
@@ -283,55 +282,66 @@ public class BitmapRLE {
     private int getPGCColorIndex(int color_index) {
         int pgc_index = 0;
         String color_index_s = ("" + color_index);
-        pgc_index = pgcColorIndexList.indexOf(color_index_s);
-        boolean is_there = (pgc_index >= 0);
-        if (!is_there) {
-            int index_len = pgcColorIndexList.size();
-            //only allow maximum 4 values
-            if (index_len < DEFAULT_MAX_PGC_INDEX) {
-                pgcColorIndexList.add(color_index_s);
-            }//end if (index_len < DEFAULT_MAX_PGC_INDEX)
-            pgc_index = pgcColorIndexList.size()-1;
-        }//end 
+        if (pgcColorIndexList == null) {
+            pgcColorIndexList = new ArrayList<String>();
+            pgcColorIndexList.add(color_index_s);
+        } else {
+            pgc_index = pgcColorIndexList.indexOf(color_index_s);
+            boolean is_there = (pgc_index >= 0);
+            if (!is_there) {
+                int index_len = pgcColorIndexList.size();
+                //only allow maximum 4 values
+                if (index_len < DEFAULT_MAX_PGC_INDEX) {
+                    pgcColorIndexList.add(color_index_s);
+                }//end if (index_len < DEFAULT_MAX_PGC_INDEX)
+                pgc_index = pgcColorIndexList.size() - 1;
+            }//end 
+        }//end if
         return pgc_index;
     }//private int getPGCColorIndex(int colour_index)
     private int getUserColorIndex(int color) {
-        int pgc_index = 0;
+        int pgc_index = 0, color_index = 0;
         try {
             String color_s = "" + color;
-            int color_index = colorTable.indexOf(color_s);
-            boolean is_there = (color_index >= 0);
-            if (!is_there) {
+            if (colorTable == null) {
+                colorTable = new ArrayList<String>();
                 colorTable.add(color_s);
-                color_index = colorTable.size()-1;
+            } else {
+                color_index = colorTable.indexOf(color_s);
+                boolean is_there = (color_index >= 0);
+                if (!is_there) {
+                    colorTable.add(color_s);
+                    color_index = colorTable.size() - 1;
+                }//end if
             }//end if
-            
+
             pgc_index = getPGCColorIndex(color_index);
             return pgc_index;
         } catch (Exception ex) {
             return 0; //force 0 index
         }
     }//end private int getColour(int index)
-    private int getColorTransparency(int pgc_index){
-        try{
+    private int getColorTransparency(int pgc_index) {
+        try {
             int color = getUserColor(pgc_index);
             int transparency = (0xf & (color >>> 24));
-            
+
             return transparency;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return 0;
         }
     }//end private int getColorTransparency(int color)
-    public void makeTranparencyList(){
-        try{
+    public void makeTranparencyList() {
+        try {
             this.pgcAlphaIndexList = new ArrayList<String>();
-            for(String pgc_index_s : this.pgcColorIndexList){
+            for (String pgc_index_s : this.pgcColorIndexList) {
                 int pgc_index = Integer.parseInt(pgc_index_s);
                 int color = getUserColor(pgc_index);
                 int transparency = (0xf & (color >>> 24));
                 pgcAlphaIndexList.add("" + transparency);
             }//end for(String color : this.pgcColorIndexList)
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }//end private void makeTranparencyList()
     private int getUserColor(int pgc_index) {
         try {
@@ -678,9 +688,6 @@ public class BitmapRLE {
 
     public void setColorTable(ArrayList<String> colorTable) {
         this.colorTable = colorTable;
-        if (this.colorTable != null) {
-            this.colorTable.set(0, "" + DEFAULT_BG_COLOR);
-        }//end if (this.colorTable != null)
     }
 
     public int getWidth() {

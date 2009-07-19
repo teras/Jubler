@@ -30,6 +30,7 @@ package com.panayotis.jubler.subs.loader.binary;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.gui.ProgressBar;
+import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
@@ -177,10 +178,13 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     }
 
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
-        SUPCompressImageProcessor proc = new SUPCompressImageProcessor(outfile);
+        /*
+        File sup_file =  FileCommunicator.stripFileFromExtension(outfile);
+        SUPCompressImageProcessor proc = new SUPCompressImageProcessor(sup_file);
         proc.setSubList(given_subs);
         proc.setReading(false);
         proc.start();
+         */
         return false;
     }
 }//end public class SUPCompressedImage extends AbstractBinarySubFormat
