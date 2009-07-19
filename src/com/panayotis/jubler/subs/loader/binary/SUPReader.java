@@ -328,10 +328,10 @@ public class SUPReader extends SUPCompressImageProcessor {
         }
     }//end private boolean getUserColourTable()    
     public void readSupFile() {
-        //boolean ok = getUserColourTable();
-        //if (!ok) {
+        boolean ok = getUserColourTable();
+        if (!ok) {
             makeDefaultColourTable();
-        //}//end if (! ok)
+        }//end if (! ok)
         this.setRow(0);
         fireSubtitleUpdaterPreProcessingEvent();
         getImageData();

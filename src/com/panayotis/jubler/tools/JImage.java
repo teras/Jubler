@@ -239,11 +239,21 @@ public class JImage implements CommonDef {
              * transparent image with desired pixel, ignoring the colour
              * that are transparent.
              */
-            getSubImageDimension(
+            Rectangle sr = getSubImageDimension(
                     img,
                     color,
                     tran_image);
-            return tran_image;
+
+            /**
+             * now crop the transparent image down to the size obtained.
+             */
+            sub_img = tran_image.getSubimage(
+                    sr.x,
+                    sr.y,
+                    sr.width,
+                    sr.height);
+            
+            return sub_img;
         } catch (Exception ex) {
             return img;
         }
