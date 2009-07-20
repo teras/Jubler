@@ -28,15 +28,13 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
+import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SimpleFileFilter;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.Component;
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
-import java.util.TimeZone;
 import javax.swing.JFileChooser;
 
 /**
@@ -44,7 +42,7 @@ import javax.swing.JFileChooser;
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class Share implements CommonDef {
-    
+
     public static final int INVALID_INDEX = -1;
 
     /**
@@ -274,7 +272,7 @@ public class Share implements CommonDef {
     public static Component parent = null;
     private static JFileChooser jfc = null;
 
-    public static File browseFile(String file_name, File start_directory) {
+    public static File browseDir(String file_name, File start_directory) {
         File accepted_dir = null;
         try {
             File search_file = new File(start_directory, file_name);
@@ -282,7 +280,7 @@ public class Share implements CommonDef {
 
             SimpleFileFilter filter = new SimpleFileFilter(_("Images"), search_file_extension);
             jfc = new JFileChooser();
-            jfc.addChoosableFileFilter(filter);            
+            jfc.addChoosableFileFilter(filter);
             jfc.setCurrentDirectory(start_directory);
             jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             jfc.setSelectedFile(search_file);
@@ -296,7 +294,7 @@ public class Share implements CommonDef {
         } catch (Exception ex) {
         }
         return accepted_dir;
-    }//end public static File browseFile(String file_name, File start_directory)
+    }//end public static File browseDir(String file_name, File start_directory)
     public static File[] browseDir(File start_directory) {
         File f = null;
         File[] accepted_dir = null;
@@ -313,7 +311,7 @@ public class Share implements CommonDef {
         } catch (Exception ex) {
         }
         return accepted_dir;
-    }//end public static File browseFile(String file_name, File start_directory)
+    }//end public static File browseDir(String file_name, File start_directory)
     public static int fileCount(File start_directory) throws Exception {
         return start_directory.list().length;
     }
@@ -343,7 +341,6 @@ public class Share implements CommonDef {
         boolean is_one_word = (count == 1);
         return is_one_word;
     }//end public static boolean isOneWord(String txt)
-    
     public static String shortArrayToString(short[] a, String title) {
         StringBuffer b = new StringBuffer();
         if (a != null && a.length > 3) {
@@ -354,8 +351,8 @@ public class Share implements CommonDef {
         } else {
             return null;
         }
-    }    
-    
+    }
+
     public static short[] copyShortArray(short[] orig) {
         if (orig == null) {
             return null;
@@ -376,6 +373,41 @@ public class Share implements CommonDef {
         int[] new_array = new int[len];
         System.arraycopy(orig, 0, new_array, 0, len);
         return new_array;
-    }      
+    }
+
+    public static boolean changeDir(Subtitles subs, int from, File new_dir) {
+        File new_file = null;
+        boolean ok = !(Share.isEmpty(subs) || Share.isEmpty(new_dir));
+        if (!ok) {
+            return false;
+        }
+        try {
+            int size = subs.size();
+            for (int i = from; i < size; i++) {
+                ImageTypeSubtitle entry = getImageSubtitleEntry(subs.elementAt(i));
+                if (entry == null) {
+                    throw new IncompatibleRecordTypeException();
+                }
+
+                File ff = entry.getImageFile();
+                boolean has_file = (ff != null);
+                if (has_file) {
+                    String name = ff.getName();
+                    new_file = new File(new_dir, name);
+                    entry.setImageFile(new_file);
+                }//if (has_file) 
+            }//end for(int i=1; i <= size; i++)
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }//public void changeDir(int from)
+    public static ImageTypeSubtitle getImageSubtitleEntry(SubEntry entry) {
+        if (entry instanceof ImageTypeSubtitle) {
+            return (ImageTypeSubtitle) entry;
+        } else {
+            return null;
+        }
+    }//end private ImageTypeSubtitle getImageSubtitleEntry(SubEntry entry)
 }//end Share
 

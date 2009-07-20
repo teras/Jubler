@@ -34,7 +34,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
-import javax.swing.ImageIcon;
+
 
 /**
  * This class holds methods to help with image files creations. It's dominantly
@@ -173,7 +173,7 @@ public class JImageIOHelper {
                 pb.setTitle(_("Packaging image file: " + imageFileName));
                 pb.setValue(i);
 
-            }//end for for (ImageIcon image : imageList)
+            }//end for for (BufferedImage image : imageList)
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         } finally {
@@ -206,7 +206,7 @@ public class JImageIOHelper {
      * @param imageList The list of icon images to write
      * @param output_file The multi-page tiff output file.
      */
-    public static void createPackedTiff(ArrayList<ImageIcon> imageList, File output_file) {
+    public static void createPackedTiff(ArrayList<BufferedImage> imageList, File output_file) {
         ImageOutputStream ios = null;
         ImageWriter writer = null;
         ProgressBar pb = new ProgressBar();
@@ -231,14 +231,14 @@ public class JImageIOHelper {
             pb.setMaxValue(imageList.size());
             pb.on();
             int i = 0;
-            for (ImageIcon image : imageList) {
+            for (BufferedImage image : imageList) {
                 BufferedImage b_img = JImage.bwConversion(image);
                 IIOImage iio_img = new IIOImage(b_img, null, null);
                 writer.writeToSequence(iio_img, tiffWriteParam);
                 i++;
                 pb.setTitle(_("Packaging image number: " + i));
                 pb.setValue(i);
-            }//end for for (ImageIcon image : imageList)
+            }//end for for (BufferedImage image : imageList)
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         } finally {
@@ -253,7 +253,7 @@ public class JImageIOHelper {
             }
             pb.off();
         }
-    }//end public static void createPackedTiff(ArrayList<ImageIcon> imageList, File output_file) 
+    }//end public static void createPackedTiff(ArrayList<BufferedImage> imageList, File output_file) 
 
     /**
      * This method takes an image file, with the potential that the file could
@@ -468,11 +468,11 @@ public class JImageIOHelper {
         }
     }
     /*
-    public static ArrayList<ImageIconScalable> getImageList(ArrayList<IIOImage> iioImageList) {
+    public static ArrayList<BufferedImageScalable> getImageList(ArrayList<IIOImage> iioImageList) {
     try {
-    ArrayList<ImageIconScalable> al = new ArrayList<ImageIconScalable>();
+    ArrayList<BufferedImageScalable> al = new ArrayList<BufferedImageScalable>();
     for (IIOImage iioImage : iioImageList) {
-    al.add(new ImageIconScalable((BufferedImage) iioImage.getRenderedImage()));
+    al.add(new BufferedImageScalable((BufferedImage) iioImage.getRenderedImage()));
     }
     return al;
     } catch (Exception e) {

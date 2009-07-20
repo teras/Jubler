@@ -23,9 +23,9 @@
 
 package com.panayotis.jubler.subs.loader;
 
-import com.panayotis.jubler.subs.records.SON.SubtitleImageAttribute;
+import com.panayotis.jubler.subs.loader.binary.SON.record.SubtitleImageAttribute;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.swing.ImageIcon;
 
 /**
  * This file is a template for subtitle which contains images.
@@ -35,8 +35,8 @@ public interface ImageTypeSubtitle {
 
     public int getMaxImageHeight();
     public void setMaxImageHeight(int value);
-    public ImageIcon getImage();
-    public void setImage(ImageIcon img);
+    public BufferedImage getImage();
+    public void setImage(BufferedImage img);
     public String getImageFileName();
     public void setImageFileName(String name);
     public File getImageFile();

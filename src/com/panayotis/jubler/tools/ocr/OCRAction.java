@@ -37,8 +37,8 @@ import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.tools.JImage;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 
@@ -154,7 +154,7 @@ public class OCRAction extends JMenuItem implements ActionListener {
                     int row;
                     SubEntry sub;
                     ImageTypeSubtitle img_sub;
-                    ImageIcon image = null;
+                    BufferedImage image = null;
 
                     ProgressBar pb = new ProgressBar();
                     pb.setMinValue(0);

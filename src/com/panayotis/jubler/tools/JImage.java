@@ -26,20 +26,12 @@ import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.Share;
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
-import java.awt.image.ImageProducer;
-import java.awt.image.RGBImageFilter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -144,14 +136,6 @@ public class JImage implements CommonDef {
     }//end public static Vector<File> createImageDirectory(File default_directory)
     /**
      * Write an image to a pre-defined file.
-     * @param img The image to write
-     * @param dir The directory to write to
-     * @param filename The image's filename
-     * @param extension The extension, indicating the type ie. png, jpg, bmp
-     * @return true if the image was written without errors, false otherwise.
-     */
-    /**
-     * Write an image to a pre-defined file.
      * @param img The image to write.
      * @param file The file to write the image to.
      * @param extension The image format, recognised by the file's extension.
@@ -162,11 +146,28 @@ public class JImage implements CommonDef {
             ImageIO.write(img, extension, file);
             return true;
         } catch (Exception ex) {
-            //ex.printStackTrace(System.out);
+            ex.printStackTrace(System.out);
             return false;
         }
     }
-
+    /**
+     * Write an image to a pre-defined file.
+     * @param ico The image to write
+     * @param file The file to write to
+     * @param extension The extension, indicating the type ie. png, jpg, bmp
+     * @return true if the image was written without errors, false otherwise.
+     */
+    public static boolean writeImage(ImageIcon ico, File file, String extension) {
+        try {
+            BufferedImage img = icoToBufferedImage(ico);
+            ImageIO.write(img, extension, file);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+            return false;
+        }
+    }
+    
     /**
      * Writes an image to a file.
      * @param img The image to write
@@ -181,7 +182,7 @@ public class JImage implements CommonDef {
             ImageIO.write(img, extension, image_file);
             return true;
         } catch (Exception ex) {
-            //ex.printStackTrace(System.out);
+            ex.printStackTrace(System.out);
             return false;
         }
     }//end public static void writeImage(BufferedImage img, String file_name)
@@ -307,7 +308,7 @@ public class JImage implements CommonDef {
     public static BufferedImage cutImage(BufferedImage img) {
         return cutImage(img, DVBT_SUB_TRANSPARENCY);
     }//end public static BufferedImage cutImage(BufferedImage img)
-    public static File bwConversionToBMPTempFile(ImageIcon source) {
+    public static File bwConversionToBMPTempFile(BufferedImage source) {
         String img_ext = "bmp";
         try {
             BufferedImage bw_img = bwConversion(source);

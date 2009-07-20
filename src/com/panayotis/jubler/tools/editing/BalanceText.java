@@ -241,24 +241,22 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
      * looking worst than the original text. An example is shown below:
      *
      * Before
-     *********************************     *
+     * <blockquote><pre>
      * Fabrizio. Thinks. It makes him
      * a tough guy, man.
-     *********************************
-     * 
+     * </pre></blockquote>
      * After:
-     *********************************
+     * <blockquote><pre>
      * Fabrizio. Thinks. It makes him a tough guy, man.
-     *********************************
-     *
+     *</pre></blockquote>
      * In the above example, the last word 'man' was at the bottom line after
      * the balancing routine run. Like this:
-     *********************************
+     * <blockquote><pre>
      * Fabrizio. Thinks. It makes him a tough guy,
      * man.
-     *********************************
-     * It was the the {@link #removeOneWordLastLine} that brought it back up
-     * to the previous line.
+     * </pre></blockquote>
+     * This routine brought the single word in the last line 
+     * back up to the previous line.
      *
      * @param r The subtitle event which the text will be examined and if
      * the last-line contains only a single word, the last word will be joined
@@ -300,17 +298,17 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
     /**
      * This routine runs through the list of selected records,
      * based on the condition sets by {@link #isActionOnAllData}
-     * and performs text balancing action on each record, in the selection,
-     * or through the entire table.
-     * Every single record in the collection of will be used in the balancing
+     * and performs text balancing action on each record, 
+     * either in the selection, or through all elements the entire table.
+     * Every single record in the group will be used in the balancing
      * action. Each text line is converted into individual characters.
      * The list of characters are then measures against the font size and
-     * the maximum length of the line to work out the maximum number of words
-     * each text line can have.
+     * the maximum length of the line is used to work out the maximum number 
+     * of words each text line can hold.
      * Once the maximum number of words per line is worked out, 
-     * words of resemble back to a subtitle text line, and this is how the
-     * text balancing works.
-     * @param evt
+     * words are resembled back to form subtitle text lines, and lines are 
+     * put together using the new-line character of the OS being used.
+     * @param evt Action event argument
      */
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         //boolean text_changed = false;

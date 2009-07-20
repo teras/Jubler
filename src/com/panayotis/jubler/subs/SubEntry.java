@@ -268,10 +268,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             case 6:
                 boolean is_image_type = (this instanceof ImageTypeSubtitle);
                 if (is_image_type) {
-                    ImageTypeSubtitle img_type = (ImageTypeSubtitle) this;
-                    ImageIcon img = img_type.getImage();
-                    boolean has_image = (img != null);
+                    ImageTypeSubtitle img_type = (ImageTypeSubtitle) this;                    
+                    boolean has_image = (img_type.getImage() != null);
                     if (has_image) {
+                        ImageIcon img = new ImageIcon(img_type.getImage());
                         return img;
                     }//end if (has_image)
                 } else {

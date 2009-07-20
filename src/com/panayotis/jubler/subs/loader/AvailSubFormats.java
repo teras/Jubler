@@ -22,9 +22,9 @@
  */
 package com.panayotis.jubler.subs.loader;
 
-import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
-import com.panayotis.jubler.subs.loader.binary.DVDMaestroExtendedSWT;
-import com.panayotis.jubler.subs.loader.binary.SUPCompressedImage;
+import com.panayotis.jubler.subs.loader.binary.SON.DVDMaestro;
+import com.panayotis.jubler.subs.loader.binary.SWT.DVDMaestroExtendedSWT;
+import com.panayotis.jubler.subs.loader.binary.SUP.SUPCompressedImage;
 import com.panayotis.jubler.subs.loader.text.AdvancedSubStation;
 import com.panayotis.jubler.subs.loader.text.MPL2;
 import com.panayotis.jubler.subs.loader.text.MicroDVD;
@@ -37,7 +37,7 @@ import com.panayotis.jubler.subs.loader.text.SubRip;
 import com.panayotis.jubler.subs.loader.text.SubStationAlpha;
 import com.panayotis.jubler.subs.loader.text.SubViewer;
 import com.panayotis.jubler.subs.loader.text.SubViewer2;
-import com.panayotis.jubler.subs.loader.text.TMPGenc;
+import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGenc;
 import com.panayotis.jubler.subs.loader.text.W3CTimedText;
 
 /**

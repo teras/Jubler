@@ -33,8 +33,8 @@ import java.util.TimeZone;
  */
 public class Time implements Comparable<Time> {
 
-    public static double PAL_VIDEOFRAMERATE = 3600.0;
-    public static double NTSC_VIDEOFRAMERATE = 3003.0;
+    public static float PAL_VIDEOFRAMERATE = 3600.0f;
+    public static float NTSC_VIDEOFRAMERATE = 3003.0f;
     public static DateFormat time_format_1 = new SimpleDateFormat("HH:mm:ss.SSS");
     public static DateFormat time_format_2 = new SimpleDateFormat("HH:mm:ss:SSS");
     public static DateFormat time_format_3 = new SimpleDateFormat("dd.MM.yy  HH:mm");
@@ -50,7 +50,7 @@ public class Time implements Comparable<Time> {
      * @param frame_rate The frame-rate.
      * @param duration The duration 
      */
-    public Time(long frames, long frame_rate, int duration) {
+    public Time(long frames, float frame_rate, int duration) {
         this(frames, frame_rate);
         this.msecs += (duration * 10);
     }
@@ -63,12 +63,14 @@ public class Time implements Comparable<Time> {
      * @param frames The frame count.
      * @param frame_rate The frame-rate, ie. 36000
      */
-    public Time(long frames, long frame_rate) {
+    public Time(long frames, float frame_rate) {
         frames /= 90;
+        long remain = (frames % 90);
         String time_s = formatTime(frames, frame_rate, true);        
         try {
             Date dt = time_format_2.parse(time_s);
-            this.msecs = (int)dt.getTime();            
+            this.msecs = (int)dt.getTime();       
+            //this.msecs += remain;
         } catch (Exception ex) {
         }
     }
@@ -320,7 +322,7 @@ public class Time implements Comparable<Time> {
      * @return The string representing time format, suitable to be parsed
      * by a DateFormat instance.
      */
-    private String formatTime(long time_value, long frame_rate, boolean is_to_time) {
+    private String formatTime(long time_value, float frame_rate, boolean is_to_time) {
         time_format_2.setTimeZone(TimeZone.getTimeZone("GMT+0:00"));
         String time_str = time_format_2.format(new Date(time_value));
 
@@ -333,9 +335,9 @@ public class Time implements Comparable<Time> {
 
         int milli_part = 0;
         if (is_to_time) {
-            milli_part = n1 * 90 / (int) frame_rate;
+            milli_part = (int)(n1 * 90f / frame_rate);
         } else {
-            milli_part = n1 * (int) frame_rate / 90;
+            milli_part = (int)(n1 * frame_rate / 90f);
         }
 
         return (time_sub_str + milli_part);
@@ -349,7 +351,7 @@ public class Time implements Comparable<Time> {
      * @param frame_rates The frame-rate, ie. PAL=36000, NTSC=3003
      * @return The frame-count per second equivalent of the millisecond stored.
      */
-    public int getFrames(long frame_rates){
+    public int getFrameCount(float frame_rates){
         int frame_count = 0;
         try{
             String time_s = this.formatTime(msecs, frame_rates, false);

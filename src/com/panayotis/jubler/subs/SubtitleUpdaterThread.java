@@ -27,6 +27,8 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEvent;
 import com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEventListener;
 import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent;
@@ -45,6 +47,10 @@ import java.util.Vector;
  */
 public class SubtitleUpdaterThread extends Thread {
 
+    protected float FPS;
+    protected String ENCODING;
+    protected Jubler jubler;
+    
     private Subtitles subList = null;
     private SubEntry entry = null;
     private int row = -1;
@@ -52,12 +58,33 @@ public class SubtitleUpdaterThread extends Thread {
     private Vector<SubtitleUpdaterPreProcessingEventListener> updaterPreProcessingEventList = new Vector<SubtitleUpdaterPreProcessingEventListener>();
     private Vector<SubtitleUpdaterPostProcessingEventListener> updaterPostProcessingEventList = new Vector<SubtitleUpdaterPostProcessingEventListener>();
 
+    public SubtitleUpdaterThread(){
+        
+    }
+
+    public SubtitleUpdaterThread(Jubler jubler, float fps, String encoding){
+        this.jubler = jubler;
+        this.FPS = fps;
+        this.ENCODING = encoding;
+        init();
+    }
+    
+    public void init() {
+        JPreferences prefs = Jubler.prefs;
+        if (prefs == null) {
+            FPS = 25f;
+            ENCODING = "UTF-8";
+        } else {
+            FPS = prefs.getLoadFPS();
+            ENCODING = prefs.getLoadEncodings()[0];
+        }
+    }
 
     public void addSubtitleUpdaterPreProcessingEventListener(
             Collection<SubtitleUpdaterPreProcessingEventListener> cl) {
         this.updaterPreProcessingEventList.addAll(cl);
     }
-    
+
     public void addSubtitleUpdaterPreProcessingEventListener(SubtitleUpdaterPreProcessingEventListener l) {
         this.updaterPreProcessingEventList.add(l);
     }
@@ -88,7 +115,7 @@ public class SubtitleUpdaterThread extends Thread {
             Collection<SubtitleRecordUpdatedEventListener> cl) {
         this.recordUpdatedEventList.addAll(cl);
     }
-    
+
     public void addSubtitleRecordUpdatedEventListener(SubtitleRecordUpdatedEventListener l) {
         this.recordUpdatedEventList.add(l);
     }
@@ -116,12 +143,12 @@ public class SubtitleUpdaterThread extends Thread {
             e.recordUpdated(event);
         }//end for
     }
-     
+
     public void addSubtitleUpdaterPostProcessingEventListener(
             Collection<SubtitleUpdaterPostProcessingEventListener> cl) {
         this.updaterPostProcessingEventList.addAll(cl);
     }
-    
+
     public void addSubtitleUpdaterPostProcessingEventListener(SubtitleUpdaterPostProcessingEventListener l) {
         this.updaterPostProcessingEventList.add(l);
     }
@@ -143,11 +170,11 @@ public class SubtitleUpdaterThread extends Thread {
         int len = this.updaterPostProcessingEventList.size();
         for (int i = len - 1; i >=
                 0; i--) {
-            SubtitleUpdaterPostProcessingEventListener e = this.updaterPostProcessingEventList.elementAt(i);            
+            SubtitleUpdaterPostProcessingEventListener e = this.updaterPostProcessingEventList.elementAt(i);
             e.postProcessing(event);
         }//end for
-    }  
-    
+    }
+
     public Subtitles getSubList() {
         return subList;
     }

@@ -38,7 +38,7 @@ import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent;
 import com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEventListener;
 import com.panayotis.jubler.subs.loader.SimpleFileFilter;
 import com.panayotis.jubler.subs.loader.SubtitleSplitFileFilter;
-import com.panayotis.jubler.subs.loader.binary.DVDMaestro;
+import com.panayotis.jubler.subs.loader.binary.SON.DVDMaestro;
 import com.panayotis.jubler.tools.JSubtitleSetSplitter;
 import java.awt.event.ActionListener;
 import java.io.File;

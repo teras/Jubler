@@ -36,9 +36,9 @@ import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SimpleFileFilter;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 
@@ -51,7 +51,7 @@ public class PackingImagesToTiffAction extends JMenuItem implements ActionListen
     private static String action_name = _("Packing images to multipage tiff");
     private Jubler jublerParent = null;
     private JFileChooser filedialog;
-    private ArrayList<ImageIcon> image_list = null;
+    private ArrayList<BufferedImage> image_list = null;
     private File output_file = null;
 
     public PackingImagesToTiffAction() {
@@ -87,8 +87,8 @@ public class PackingImagesToTiffAction extends JMenuItem implements ActionListen
         return new_file;
     }
 
-    private ArrayList<ImageIcon> getImageList(Subtitles subs) {
-        ArrayList<ImageIcon> image_list = new ArrayList<ImageIcon>();
+    private ArrayList<BufferedImage> getImageList(Subtitles subs) {
+        ArrayList<BufferedImage> image_list = new ArrayList<BufferedImage>();
         try {
             int len = subs.size();
             for (int i = 0; i < len; i++) {
@@ -98,7 +98,7 @@ public class PackingImagesToTiffAction extends JMenuItem implements ActionListen
                     continue;
                 }
                 ImageTypeSubtitle img_sub = (ImageTypeSubtitle) sub;
-                ImageIcon img = img_sub.getImage();
+                BufferedImage img = img_sub.getImage();
                 image_list.add(img);
             }//end for(int i=0; i < len; i++)
         } catch (Exception ex) {
