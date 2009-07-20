@@ -181,7 +181,25 @@ import java.util.ArrayList;
  * be multiply by 4, and so on. Since two bytes is the minimumlength and the
  * mixture of length and color is 4 bits, there should be a maximum of 4 
  * cases to examine. When a positive value for length is obtained, next 2 
- * bits must hold the color for the length. 
+ * bits must hold the color for the length. Notice that the order of bits 
+ * must be maintained when decoding, therefore two variables must be maintained,
+ * that is the current-byte and the current-bit. The current-byte will be set
+ * to 0, and the current-bit is set to 7 when starting. The value of 
+ * current-byte is then shifted to the right by current-bit - 1:
+ * <pre>
+ *      value = data[current-byte] >> current-bit - 1;
+ *      (ie. current-bit - 1 = 6), 
+ * </pre>
+ * leaving the two bits for examination:
+ * <pre>
+ *      value &= 0x03
+ * </pre>
+ * Once examined, the current-bit is reduced by 2:
+ * <pre>
+ *      current-bit -= 2
+ * </pre>
+ * When the current-bit gone negative, move current-byte to next byte and reset
+ * the current-bit to 7.
  * <pre>
  * Decompression example :
  * 
