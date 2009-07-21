@@ -584,15 +584,10 @@ public class BitmapRLE {
                 b2 = compressedData[i + 1];
                 b3 = compressedData[i + 2];
 
-                is_end_line_with_align_byte =
-                        (this.isEndLine(b1, b2) && this.isEndLine(b2, b3));
+                is_end_line = (this.isEndLine(b1, b2)
+                        && !(this.isEndLine(b2, b3)));
 
-                is_end_line = (!is_end_line_with_align_byte) &&
-                        this.isEndLine(b1, b2);
-
-                if (is_end_line_with_align_byte) {
-                    increment = 3;
-                } else if (is_end_line) {
+                if (is_end_line) {
                     increment = 2;
                 } else {
                     increment = 1;
