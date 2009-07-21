@@ -257,7 +257,8 @@ import java.util.ArrayList;
  *      0000 0001 | 0011 1000 => 0138 (hex)
  * </pre>
  * By reading two bytes at a time we have the following sequence. Note that
- * when reading result to zero, we skip ahead.
+ * when reading results to zero, we skip ahead, noting the number of byte 
+ * skipped (for the multiplication of the value when one is unpacked).
  * <pre>
  *      00|00|00|01| 0011 1000
  *        0  0  0  1 
