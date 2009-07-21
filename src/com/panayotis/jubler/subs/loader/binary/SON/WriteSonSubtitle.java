@@ -307,6 +307,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();
         entry.setImage(img);
+        entry.getCreateSonAttribute().centreImage(img);
         try {
             ImageIO.write(img, PNG_EXT, image_file);
         } catch (IOException ex) {
