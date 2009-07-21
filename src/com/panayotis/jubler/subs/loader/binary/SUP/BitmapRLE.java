@@ -55,7 +55,7 @@ import java.util.ArrayList;
  * 
  * The size of 'X' encoded value spans from 4 bits to 16 bits (2 bytes) 
  * (ie. 4, 8, 12, 16). <br><br>
- * <ul>
+ * <ol>
  *  <li>When 'X' is spanned over two bytes (ie. 3 to 4 nibbles or 16 bits)
  * <pre>
  *      X > 0XFF => * 1111 1111 - where '*' denote another nibble. 
@@ -77,14 +77,23 @@ import java.util.ArrayList;
  * <pre>
  *      0XFF & X >>> 4
  * </pre>
- * The remaining 4 bits is kept to join with the next value
+ * The remaining 4 bits is memorised so that it can join the next value.
  * </li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * <li></li>
- * </ul>
+ * <li>When 'X' is within 1 byte (ie. 1 to 2 nibbles)
+ * <pre>
+ *      X > 0xF => * 1111
+ * </pre>
+ * Then 'X' is written out.
+ * </li>
+ * <li>When 'X' is within 1 nibble, 'X' is memorised to join the next
+ * value.</li>
+ * </ol>
+ * When memorised value exists (ie. non-zero), the 4 cases above will be
+ * re-examined with the inclusion of the memorised value, only this time,
+ * the memorised value is patched in front of the written byte. Since the
+ * memorised value is always within the nibble boundary, the value
+ * written out must be shifted by a multiple of 4 bits to the right.
+ * 
  * <h4>Color indices and alpha values</h4>
  * The color-index is computed using two tables, the user-color-table and
  * the image's color-index-table. The list of colors of the every
@@ -227,8 +236,8 @@ import java.util.ArrayList;
  * <pre>
  *      current-bit -= 2
  * </pre>
- * When the current-bit gone negative, move current-byte to next byte and reset
- * the current-bit to 7.
+ * When the current-bit goes negative, move current-byte to next byte and 
+ * reset the current-bit to 7.
  * <pre>
  * Decompression example :
  * In order to understand the decompression, we starts with the compression
@@ -568,6 +577,8 @@ public class BitmapRLE {
         byte b1, b2, b3;
         ArrayList<Byte> compressed_sequence = new ArrayList<Byte>();
         try {
+            //this code is survivable given that ending 4 zeros is always
+            //there.
             for (int i = from; i < to; i += increment) {
                 b1 = compressedData[i];
                 b2 = compressedData[i + 1];
