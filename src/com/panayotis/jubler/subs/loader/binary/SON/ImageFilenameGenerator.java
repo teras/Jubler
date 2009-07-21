@@ -57,8 +57,8 @@ public class ImageFilenameGenerator {
         boolean ok = !(subList == null || f == null);
         if (ok) {
             this.f = FileCommunicator.stripFileFromExtension(f);
-            prefix = f.getName();
-            dir = f.getParentFile();
+            prefix = this.f.getName();
+            dir = this.f.getParentFile();
         }//if (f != null)
         if (sub_fix != null) {
             this.subFix = sub_fix;
@@ -94,7 +94,8 @@ public class ImageFilenameGenerator {
             int len = ("" + size).length();
             int max_digits = Math.max(len, MAX_DIGITS);
             fmt.setMinimumIntegerDigits(max_digits);
-            for (int i = 1; i <= size; i++) {
+            fmt.setGroupingUsed(false);
+            for (int i = 0; i < size; i++) {
                 ImageTypeSubtitle entry = Share.getImageSubtitleEntry(subList.elementAt(i));
                 if (entry == null) {
                     throw new IncompatibleRecordTypeException(entry.getClass(), ImageTypeSubtitle.class);
@@ -102,7 +103,7 @@ public class ImageFilenameGenerator {
 
                 boolean has_file = (entry.getImageFile() != null);                
                 if (!has_file) {
-                    new_file = this.newFile(i);
+                    new_file = this.newFile(i+1);
                     entry.setImageFile(new_file);
                 }else if (is_force){
                     new_file = usingOldFile(entry.getImageFile());
