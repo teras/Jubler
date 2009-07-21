@@ -202,7 +202,78 @@ import java.util.ArrayList;
  * the current-bit to 7.
  * <pre>
  * Decompression example :
+ * In order to understand the decompression, we starts with the compression
+ * example, then working backward to the original value so we can see how the
+ * mechanism really works.
+ * Says if we have 78 length of color 0. In hex the value is 4E, binary is:
+ * <pre>
+ *      0100 1110 => 4E (hex)
+ * </pre>
+ * Shift this value to the left 2 bits, and OR with 0 we have two bytes:
+ * <pre>
+ *      0000 0001 | 0011 1000 => 0138 (hex)
+ * </pre>
+ * So 0x0138 is written to the encoded file. Now when we are reading it back,
+ * we have the sequence
+ * <pre>
+ *      0000 0001 | 0011 1000 => 0138 (hex)
+ * </pre>
+ * By reading two bytes at a time we have the following sequence. Note that
+ * when reading result to zero, we skip ahead.
+ * <pre>
+ *      00|00|00|01| 0011 1000
+ *        0  0  0  1 
+ *        2  4  8  16 => must read 8 bits
+ * </pre>
+ * When packing first 2 bits, we got 0, so move to the next two bits, where we
+ * also got zero, next two bits also produced zero, and the next two bits 
+ * we got 1. This indicates that the next eight bits must be fully read, and
+ * they must be read in the group of 4 bits at a time. When reading the group
+ * of 4 bits, result of the first 2 bits is multiply by 4 then add this to
+ * the result of the next 2 bits. When 2 groups of 4 bits are unpacked, the
+ * result of the first group is multiply by 16 and added to the result of the
+ * second 4 bits group. For example:
+ * <pre>
+ *      1. uncompressed 4 bits
+ *      -----------------------
+ *      00|00|00|01| 0011 1000
+ *        0  0  0  1 
+ *        2  4  8  16 => must uncompress next 8 bits
+ *                 |
+ *                 1 * 4 = 4
  * 
+ *      00|00|00|01| 00 | 11 1000
+ *        0  0  0  1    0
+ *        2  4  8  16   |
+ *                      4 * 16 = 64 + 0 = 64
+ * 
+ *     2. uncompressed next 4 bits
+ *     ---------------------------
+ *      00|00|00|01| 00 | 11 | 1000
+ *        0  0  0  1    0    3
+ *        2  4  8  16        |
+ *                           3 * 4 = 12
+ *                           |
+ *      00|00|00|01| 00 | 11 | 10 | 00
+ *        0  0  0  1    0    3    2
+ *        2  4  8  16   |         |
+ *                      |         12 + 2 = 14
+ *     3. Join the results
+ *     -------------------
+ *       64 + 14 = 78
+ * </pre>
+ * We know that next to bits are for color, so unpack another 2 bits
+ * <pre>
+ * 
+ *      00|00|00|01| 00 | 11 | 10 | 00 |
+ *        0  0  0  1    0    3    2    0
+ *        2  4  8  16                  |
+ *                                     0 => color
+ * </pre>
+ * At the end of the decoding sequence, we've got 78 length, 0 color, which
+ * is what it was encoded at the begining.
+ * Here under are some uncompressed sequences:
+ * <pre>
  * Data                                         Data
  * Compressed                                   Decompressed
  * 
