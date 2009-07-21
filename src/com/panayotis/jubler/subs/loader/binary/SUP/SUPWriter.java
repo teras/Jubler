@@ -96,11 +96,11 @@ public class SUPWriter extends SUPCompressImageProcessor {
         int w, h;
         BufferedImage img = img_entry.getImage();
 
-        JLabel lbl = new JLabel(new ImageIcon(img));
-        lbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        lbl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        JOptionPane.showMessageDialog(null, lbl);
-        System.out.println("Showed the image!");
+        //JLabel lbl = new JLabel(new ImageIcon(img));
+        //lbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        //lbl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        //JOptionPane.showMessageDialog(null, lbl);
+        //System.out.println("Showed the image!");
 
         w = img.getWidth();
         h = img.getHeight();
