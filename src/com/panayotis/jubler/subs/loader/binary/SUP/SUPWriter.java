@@ -38,17 +38,14 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SubtitleImageAttribute;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
-import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.JImage;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 /**
  * See {@link SUPCompressImageProcessor} for descriptions.
@@ -60,7 +57,7 @@ public class SUPWriter extends SUPCompressImageProcessor {
         super(jubler, fps, encoding);
         inputFile = f;
     }
-    
+
     public SUPWriter(File f) {
         super(f);
     }
@@ -72,15 +69,15 @@ public class SUPWriter extends SUPCompressImageProcessor {
 
         if (!has_image) {
             if (has_text) {
-                SubImage simg = new SubImage(entry);
-                BufferedImage img = simg.getImage();
-
                 SonSubEntry son_entry = new SonSubEntry();
                 son_entry.setHeader(son_header);
                 son_entry.copyRecord(entry);
 
-                son_entry.setImage(img);
-                son_entry.getCreateSonAttribute().centreImage(img);
+                BufferedImage img = son_entry.makeSubtitleTextImage();
+                if (img != null) {
+                    son_entry.setImage(img);
+                    son_entry.getCreateSonAttribute().centreImage(img);                    
+                }//end if
                 son_header = son_entry.getHeader();
                 is_text = true;
                 return son_entry;
@@ -111,7 +108,7 @@ public class SUPWriter extends SUPCompressImageProcessor {
             SubEntry entry = (SubEntry) img_entry;
             SubStyle style = entry.getStyle();
             Color[] color_list = new Color[]{
-                (new Color(0)),
+                (new Color(JImage.DVBT_SUB_TRANSPARENCY)),
                 ((AlphaColor) style.get(SHADOW)).getAColor(),
                 ((AlphaColor) style.get(OUTLINE)).getAColor(),
                 ((AlphaColor) style.get(PRIMARY)).getAColor(),

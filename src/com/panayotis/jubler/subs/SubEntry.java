@@ -34,8 +34,12 @@ import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverCharacter;
 import com.panayotis.jubler.subs.style.event.StyleoverFull;
+import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.JImage;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
@@ -268,7 +272,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             case 6:
                 boolean is_image_type = (this instanceof ImageTypeSubtitle);
                 if (is_image_type) {
-                    ImageTypeSubtitle img_type = (ImageTypeSubtitle) this;                    
+                    ImageTypeSubtitle img_type = (ImageTypeSubtitle) this;
                     boolean has_image = (img_type.getImage() != null);
                     if (has_image) {
                         ImageIcon img = new ImageIcon(img_type.getImage());
@@ -1079,25 +1083,23 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 throw new IncompatibleRecordTypeException(source.getClass(), HeaderedTypeSubtitle.class);
             }
         }
-        
+
         //now check to see if two headers are of the same type, using their literal class names.
         HeaderedTypeSubtitle hdr_import_entry = (HeaderedTypeSubtitle) source;
         HeaderedTypeSubtitle hdr_current_entry = (HeaderedTypeSubtitle) this;
 
         String current_entry_header_class_name = hdr_current_entry.getHeader().getClass().getName();
         String import_entry_header_class_name = hdr_import_entry.getHeader().getClass().getName();
-        
-        boolean is_same_type = (
-                current_entry_header_class_name.equals(import_entry_header_class_name)
-                );
-        
-        if (! is_same_type){
+
+        boolean is_same_type = (current_entry_header_class_name.equals(import_entry_header_class_name));
+
+        if (!is_same_type) {
             throw new IncompatibleRecordTypeException(
-                    hdr_current_entry.getClass(), 
+                    hdr_current_entry.getClass(),
                     hdr_import_entry.getClass());
         }//end if (! is_same_type)
-        
-        
+
+
         Object import_header = hdr_import_entry.getHeader();
         hdr_current_entry.setHeader(import_header);
         return true;
@@ -1137,6 +1139,44 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         HeaderedTypeSubtitle hdr_source_entry = (HeaderedTypeSubtitle) this;
         hdr_source_entry.setHeader(null);
         return true;
-    }//end public boolean copyHeader(SubEntry source)    
+    }//end public boolean copyHeader(SubEntry source)   
+    /**
+     * This routine made use of {@link SubImage} to draw the text image.
+     * The text image will might not fill the 720 screen width, and hence
+     * another image is created, with 720 width and the same height as text
+     * image. The new image will be filled with the default transparency color
+     * and the text image is painted over, at the centre of the new image.
+     * The result image should be fit for video overlay.
+     * @return The newly created image with center text image overlaid, or null
+     * if there are errors during the image creation.
+     */
+    public BufferedImage makeSubtitleTextImage() {
+        Graphics2D g = null;
+        BufferedImage n_img = null;
+        try {
+            SubImage simg = new SubImage(this);
+            BufferedImage text_img = simg.getImage();
+
+            int cw = text_img.getWidth();
+            int ch = text_img.getHeight();
+
+            int dw = JImage.DEFAULT_SCREEN_WIDTH;
+            n_img = new BufferedImage(dw, ch, BufferedImage.TYPE_INT_ARGB);
+            g = (Graphics2D) n_img.getGraphics();
+            g.setColor(new Color(JImage.DVBT_SUB_TRANSPARENCY));
+            g.fillRect(0, 0, dw, ch);
+
+            g.translate((dw - cw) / 2, 0);
+            g.drawImage(text_img, null, null);
+            return n_img;
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+            return null;
+        } finally {
+            if (g != null) {
+                g.dispose();
+            }
+        }
+    }//end public BufferedImage makeSubtitleTextImage()
 }//end public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef
 

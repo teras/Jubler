@@ -59,6 +59,10 @@ public class JImage implements CommonDef {
      * The black background colour in DVB-T subtitle blocks
      */
     public static Color DVBT_SUB_BLACK_BC = new Color(31, 31, 31);
+    /**
+     * Default subtitle image's width (ie. screen width)
+     */
+    public static int DEFAULT_SCREEN_WIDTH = 720;
 
     /**
      * Display an option panel which allows, among other options,
