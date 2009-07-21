@@ -50,12 +50,41 @@ import java.util.ArrayList;
  * 
  * Each encoded value 'X' is formed using the follwing formular:
  * <pre>
- *      X = length &lt&lt 2 | color-index //(0-3)
+ *      X = length &lt&lt 2 | color-index //(0-3) <!- X = length << 2 | color-index ->
  * </pre>
  * 
  * The size of 'X' encoded value spans from 4 bits to 16 bits (2 bytes) 
- * (ie. 4, 8, 12, 16). See the {@link BitmapRLE} for details.<br><br>
- * 
+ * (ie. 4, 8, 12, 16). <br><br>
+ * <ul>
+ *  <li>When 'X' is spanned over two bytes (ie. 3 to 4 nibbles or 16 bits)
+ * <pre>
+ *      X > 0XFF => * 1111 1111 - where '*' denote another nibble. 
+ * </pre>
+ * then write the two bytes out, the MSB (Most Significant Byte) first, 
+ * <pre>
+ *      0xFF & l >>> 8
+ * </pre>
+ * then the LSB (Least Significant Byte)
+ * <pre>
+ *      0xFF & l
+ * </pre>
+ * </li>
+ * <li>When 'X' is spanned over one byte (ie. 2 to 3 nibbles or 12 bits)
+ * <pre>
+ *      X > 0x3F => * ??11 1111 - where '?' denotes bits that might be '1'.
+ * </pre>
+ * then the first 12 bits of 'X' is written out
+ * <pre>
+ *      0XFF & X >>> 4
+ * </pre>
+ * The remaining 4 bits is kept to join with the next value
+ * </li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * <li></li>
+ * </ul>
  * <h4>Color indices and alpha values</h4>
  * The color-index is computed using two tables, the user-color-table and
  * the image's color-index-table. The list of colors of the every
