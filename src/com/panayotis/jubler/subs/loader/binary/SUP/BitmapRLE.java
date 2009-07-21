@@ -573,9 +573,9 @@ public class BitmapRLE {
      */
     private void decodeRLE(int from, int to) {
         boolean is_end_line = false,
-                is_end_line_with_align_byte = false;
+                is_end_file = false;
         int increment = 1;
-        byte b1, b2, b3;
+        byte b1, b2, b3, b4;
         ArrayList<Byte> compressed_sequence = new ArrayList<Byte>();
         try {
             //this code is survivable given that ending 4 zeros is always
@@ -585,8 +585,7 @@ public class BitmapRLE {
                 b2 = compressedData[i + 1];
                 b3 = compressedData[i + 2];
 
-                is_end_line = (this.isEndLine(b1, b2)
-                        && !(this.isEndLine(b2, b3)));
+                is_end_line = (this.isEndLine(b1, b2) && !(this.isEndLine(b2, b3)));
 
                 if (is_end_line) {
                     increment = 2;
@@ -594,7 +593,7 @@ public class BitmapRLE {
                     increment = 1;
                 }
 
-                if (is_end_line_with_align_byte || is_end_line) {
+                if (is_end_file || is_end_line) {
                     decodeRLE(compressed_sequence);
                     compressed_sequence.clear();
                     moveDecoderNextLine();
@@ -602,6 +601,9 @@ public class BitmapRLE {
                     compressed_sequence.add(b1);
                 }
             }//end for(int i=0; i < this.compressedData.length; i++)
+            //decode the last line.
+            decodeRLE(compressed_sequence);
+            compressed_sequence.clear();
         } catch (Exception ex) {
         }
     }//end private void decodeRLE()
