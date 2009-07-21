@@ -593,7 +593,7 @@ public class BitmapRLE {
                     increment = 1;
                 }
 
-                if (is_end_file || is_end_line) {
+                if (is_end_line) {
                     decodeRLE(compressed_sequence);
                     compressed_sequence.clear();
                     moveDecoderNextLine();
@@ -602,9 +602,12 @@ public class BitmapRLE {
                 }
             }//end for(int i=0; i < this.compressedData.length; i++)
             //decode the last line.
-            decodeRLE(compressed_sequence);
-            compressed_sequence.clear();
         } catch (Exception ex) {
+        }finally{
+            if (compressed_sequence.size() > 0) {
+                decodeRLE(compressed_sequence);
+                compressed_sequence.clear();
+            }//end if            
         }
     }//end private void decodeRLE()
     public void decompress() {
