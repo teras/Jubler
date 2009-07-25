@@ -305,9 +305,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
                 boolean has_image = (img != null);
                 if (has_image) {
                     boolean is_translated = (ico != null);
-                    if (is_translated){
-                        return ico;
-                    }else{
+                    if (! is_translated){
                         BufferedImage tran_image = this.makeTransparentImage(image);
                         ico = new ImageIcon(tran_image);
                     }//end if
