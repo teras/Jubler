@@ -33,14 +33,11 @@ import static com.panayotis.jubler.subs.style.StyleType.*;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.color.ReduceColorDepth;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SubtitleImageAttribute;
-import com.panayotis.jubler.subs.style.SubStyle;
-import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.time.Time;
-import com.panayotis.jubler.tools.JImage;
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -93,29 +90,18 @@ public class SUPWriter extends SUPCompressImageProcessor {
         int w, h;
         BufferedImage img = img_entry.getImage();
 
-        //JLabel lbl = new JLabel(new ImageIcon(img));
-        //lbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        //lbl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        //JOptionPane.showMessageDialog(null, lbl);
-        //System.out.println("Showed the image!");
+        //down-sample the image to 4 colors
+        ReduceColorDepth red = new ReduceColorDepth(img, 4);
+        BufferedImage n_img = red.getReducedImage();
 
+        //debugging code
+        //JPanel pan = ds.getDebugPanel(n_img);
+        //JOptionPane.showMessageDialog(null, pan);
+        
         w = img.getWidth();
-        h = img.getHeight();
-        imageData = img.getRGB(0, 0, w, h, null, 0, w);
-        if (is_text == false) {
-            updateUserColourTable(imageData);
-        } else {
-            SubEntry entry = (SubEntry) img_entry;
-            SubStyle style = entry.getStyle();
-            Color[] color_list = new Color[]{
-                (new Color(JImage.DVBT_SUB_TRANSPARENCY)),
-                ((AlphaColor) style.get(SHADOW)).getAColor(),
-                ((AlphaColor) style.get(OUTLINE)).getAColor(),
-                ((AlphaColor) style.get(PRIMARY)).getAColor(),
-                ((AlphaColor) style.get(SECONDARY)).getAColor()
-            };
-            updateUserColourTable(color_list);
-        }//end if
+        h = img.getHeight();        
+        imageData = n_img.getRGB(0, 0, w, h, null, 0, w);
+        updateUserColourTable(imageData);        
         return new Rectangle(0, 0, w, h);
     }//end private Rectangle getSubtitleImageData(ImageTypeSubtitle img_entry)
     private boolean compressImageData(Rectangle rec) {
