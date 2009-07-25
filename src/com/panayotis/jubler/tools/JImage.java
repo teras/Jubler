@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -304,6 +305,20 @@ public class JImage implements CommonDef {
             return tran_image;
         }
     }//public static BufferedImage cutImage(BufferedImage img, int color)
+    /**
+     * Creates a default blank image 720x32 with blue background default.
+     * @return A blank image of dimension 720x32 with blue background color.
+     */
+    public static BufferedImage getDefaultBlankImage() {
+        int w=720, h=32;
+        BufferedImage image = 
+                new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = image.createGraphics();
+        g.setColor(new Color(DVBT_SUB_TRANSPARENCY));
+        g.fillRect(0, 0, w, h);
+        g.dispose();
+        return image;
+    }//end public static BufferedImage cutImage(BufferedImage img)
     /**
      * Cut the image and produce the transparent image of the original
      * @param img The image to cut
