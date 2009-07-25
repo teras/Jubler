@@ -56,7 +56,8 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     private File imageFile = null;
     private BufferedImage image = null;
     private int maxImageHeight = 0;
-
+    private ImageIcon ico = null;
+    
     public int getMaxImageHeight() {
         return maxImageHeight;
     }
@@ -303,8 +304,13 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
                 BufferedImage img = getImage();
                 boolean has_image = (img != null);
                 if (has_image) {
-                    BufferedImage tran_image = this.makeTransparentImage(image);
-                    ImageIcon ico = new ImageIcon(tran_image);
+                    boolean is_translated = (ico != null);
+                    if (is_translated){
+                        return ico;
+                    }else{
+                        BufferedImage tran_image = this.makeTransparentImage(image);
+                        ico = new ImageIcon(tran_image);
+                    }//end if
                     return ico;
                 } else {
                     return super.getData(row, col);
