@@ -145,7 +145,7 @@ public class SubtitleImageAttribute implements Cloneable, CommonDef {
     }
     private void centreImage(int w, int h){
         int fix_y = 470;
-        int x1 = (720 - w / 2);
+        int x1 = (720 - w) / 2;
         int y1 = fix_y - h;
         
         x1 = Math.max(0, Math.min(x1, 720));

@@ -47,7 +47,8 @@ package com.panayotis.jubler.subs.color;
  */
 public class Quantize {
 
-/*
+/**
+ * <pre>
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                             %
 %                                                                             %
@@ -188,7 +189,7 @@ public class Quantize {
 %
 %    Ep = 0
 %    while number of nodes with (n2 > 0) > required maximum number of colors
-%      prune all nodes such that E <= Ep
+%      prune all nodes such that E &lt= Ep
 %      Set Ep to minimum E in remaining nodes
 %
 %  This has the effect of minimizing any quantization error when merging
@@ -235,7 +236,7 @@ public class Quantize {
 %  The names of ISI and USC are not used in advertising or publicity
 %  pertaining to distribution of the software without prior specific
 %  written permission from ISI.
-%
+% </pre>
 */
     
     final static boolean QUICK = true;
@@ -347,6 +348,7 @@ public class Quantize {
          *   depth. The combination of these sums and n2 will
          *   ultimately characterize the mean color of a set of pixels
          *   represented by this node.
+         * 
          */
         void classification() {
             int pixels[][] = this.pixels;

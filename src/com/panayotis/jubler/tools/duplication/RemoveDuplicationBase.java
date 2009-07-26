@@ -38,21 +38,28 @@ import javax.swing.JMenuItem;
 import java.util.Vector;
 
 /**
- * This base setout the basic routines for the dealing with duplications,
+ * This base setout the basic routines to deal with duplications,
  * such as top line, bottom and top line, and time duplications.
- * The routine holds the list of duplication group, which is working out by
- * the use of an abstract {@link #isDuplidated}. The implementation of
- * the abstract {@link #resolveDuplication} takes the goup of duplicated
- * records and deals with the problem. The local {@link #delList} holds the
+ * The routine holds the list of duplication groups, which is worked out by
+ * the implementation of abstract method {@link #isDuplidated}. <br><br>
+ * 
+ * The implementation of the abstract method 
+ * {@link #resolveDuplication} takes the goup of duplicated
+ * records and resolve the duplications. <br><br>
+ * 
+ * The local {@link #delList} holds the
  * list of records that are to be removed. This list is expected to hold
  * references of duplicated records and is used to remove from the existing
- * list at the end of the run.
- * By default, all duplicated records are grouped into a single duplicated
- * group record, however, the number of records in the group may affect the
- * performance and increase the difficulty for the implementation of the
- * {@link #resolveDuplication} routine, and thus, the {@link #maxGroupCount}
- * is used to control the number of duplicated records to be on the dup-group
- * at any one time. This, however, may requires users to re-run the duplication
+ * list at the end of the run.<br><br>
+ * 
+ * By default, all duplicated records are grouped into a single list of 
+ * duplicated records, however, the number of records in the group may affect the
+ * performance and increase the complexity for the implementation of the
+ * {@link #resolveDuplication} routine, therefore the {@link #maxGroupCount}
+ * is used to control the number of duplicated records to be on the duplicated 
+ * group at any one time. 
+ * 
+ * This, however, may requires users to re-run the duplication
  * removal task more than once.
  * @author Hoang Duy Tran <hoangduytran@tiscali.co.uk>
  */

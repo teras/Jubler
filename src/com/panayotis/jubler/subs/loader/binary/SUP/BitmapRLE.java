@@ -144,7 +144,7 @@ import java.util.ArrayList;
  *          [2] = 15    Opaque
  *          [3] = 15    Opaque     
  * </pre>
- * Note: The default color palette and alpha values value is:
+ * Note: The default values for color palette and alpha channels are:
  * <pre>
  *      color-palette:     0xFE110
  *      alpha-channesl:    0xFFF9 
@@ -152,7 +152,7 @@ import java.util.ArrayList;
  * This palette will present when the bitmap contains only the background color,
  * and nothing else.<br><br>
  *  
- * 
+ * <h4>Interlaced order of color lines</h4>
  * The picture is interlaced, for instance for a 40 lines picture :
  * 
  * <pre>
@@ -205,25 +205,29 @@ import java.util.ArrayList;
  * If the displaying resolution is low, you can choose to only display even 
  * lines, for instance. 
  * 
- * <h5>Decoding mechanism:</h5>
+ * <h5>Color and frequency decoding mechanism:</h5>
  * Since the bits, when encoding is performed, are shifted to the left all the
  * time, 2 bits at a time, plus with maximum of 255 &lt&lt 2 or (0xff &lt&lt 2),
  * it is possible that the recorded value is spanned over 2 bytes, most likely
  * the top nibble of the second byte is 0, therefore, when decoding, the
- * reverse operation must be done, that is to extract bits from the right
- * to the left, that is from the most-significant part back to the least 
- * significant part, 2 bits at a time. The first 2 bits should contain the
- * length of the color and the next 2 bits should hold the color, ranging from
- * 0 to 3. When zero are encountered, the value is expected to be multiplied
- * by 4, so when the first nibble gives zero, popping of the next to bits must
- * be multiply by 4, and so on. Since two bytes is the minimumlength and the
+ * reverse operation must be done, that is bits must be extracted from right
+ * to left, 2 bits at a time. The first 2 bits should contain the
+ * length of the color and the next 2 bits should hold the index of the 
+ * color, ranging from 0 to 3. When zero are encountered, the value is expected 
+ * to be multiplied by 4, so when the first nibble gives zero, popping of the 
+ * next to bits must be multiply by 4, and so on. <br><br>
+ * 
+ * As two bytes is the minimumlength and the
  * mixture of length and color is 4 bits, there should be a maximum of 4 
  * cases to examine. When a positive value for length is obtained, next 2 
  * bits must hold the color for the length. Notice that the order of bits 
  * must be maintained when decoding, therefore two variables must be maintained,
- * that is the current-byte and the current-bit. The current-byte will be set
- * to 0, and the current-bit is set to 7 when starting. The value of 
- * current-byte is then shifted to the right by current-bit - 1:
+ * the index to the current-byte and the number of bits to be shifting,
+ * ie. current-bit. The current-byte will be set
+ * to 0, and the current-bit is set to 7 when decoding start, and reset at
+ * every new byte or new color line. The value of 
+ * current-byte is then shifted to the right by current-bit - 1 to get the
+ * length of the color. ie.:
  * <pre>
  *      value = data[current-byte] >> current-bit - 1;
  *      (ie. current-bit - 1 = 6), 
@@ -239,7 +243,7 @@ import java.util.ArrayList;
  * When the current-bit goes negative, move current-byte to next byte and 
  * reset the current-bit to 7.
  * <pre>
- * Decompression example :
+ * <h5>Decompression example :</h5>
  * In order to understand the decompression, we starts with the compression
  * example, then working backward to the original value so we can see how the
  * mechanism really works.

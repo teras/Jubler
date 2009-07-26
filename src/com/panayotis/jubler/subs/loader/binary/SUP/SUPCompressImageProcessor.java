@@ -247,7 +247,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         0xFF80EBEB, //cyan lighter
         0 // full transparency black bg
     };
-    protected File inputFile = null;
+    protected File processFile = null;
     protected ArrayList<String> color_table = null;
     protected ArrayList<String> color_table_hex = new ArrayList<String>();
     protected ArrayList<Integer> offsetList = null;
@@ -258,6 +258,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     protected SonHeader son_header = null;
     protected ArrayList<String> colorIndexList = null;
     protected ArrayList<String> alphaIndexList = null;
+    protected int width = 0, height = 0;
     protected BitmapRLE brle = null;
     protected byte[] RLEheader = {0x53, 0x50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; // startcode + later reverse 5PTS, DTS=0
     protected byte[] sections = {
@@ -275,27 +276,27 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     };
     protected boolean is_text = false;
 
-    public SUPCompressImageProcessor(Jubler jubler, float fps, String encoding){
+    public SUPCompressImageProcessor(Jubler jubler, float fps, String encoding) {
         super(jubler, fps, encoding);
         reset();
     }
 
-    public SUPCompressImageProcessor(Jubler jubler, float fps, String encoding, File f){
+    public SUPCompressImageProcessor(Jubler jubler, float fps, String encoding, File f) {
         this();
-        this.inputFile = f;
+        this.processFile = f;
     }
-    
-    public SUPCompressImageProcessor() {        
+
+    public SUPCompressImageProcessor() {
         reset();
     }
 
     public SUPCompressImageProcessor(File f) {
         this();
-        this.inputFile = f;
+        this.processFile = f;
     }
 
     public void reset() {
-        inputFile = null;
+        processFile = null;
         color_table = null;
         color_table_hex.clear();
         offsetList = null;
@@ -311,10 +312,14 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         super.init();
     }
 
-    public void makeDefaultColourTable() {
+    private void createColorTableIfNeeded() {
         if (color_table == null) {
             color_table = new ArrayList<String>();
         }
+    }
+
+    public void makeDefaultColourTable() {
+        createColorTableIfNeeded();
         color_table.clear();
         for (int color : default_sup_colors) {
             String color_s = "" + color;
@@ -335,9 +340,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
 
     public boolean updateUserColourTable(Color color) {
         try {
-            if (color_table == null) {
-                color_table = new ArrayList<String>();
-            }
+            createColorTableIfNeeded();
             return addColor(color.getRGB());
         } catch (Exception ex) {
             return false;
@@ -346,9 +349,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
 
     public boolean updateUserColourTable(Color[] colors) {
         try {
-            if (color_table == null) {
-                color_table = new ArrayList<String>();
-            }
+            createColorTableIfNeeded();
             for (int i = 0,  color = 0; i < colors.length; i++) {
                 color = colors[i].getRGB();
                 addColor(color);
@@ -358,27 +359,20 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
             return false;
         }
     }//end private void updateUserColourTable()
-    public boolean updateUserColourTable(int[] image_pixels) {
+    public boolean updateUserColourTable(int[] color_list) {
         try {
-            if (color_table == null) {
-                color_table = new ArrayList<String>();
-            }
-            for (int i = 0,  color = 0; i < image_pixels.length; i++) {
-                color = image_pixels[i];
-                boolean is_diff = !color_table.contains(color);
-                if (is_diff) {
-                    addColor(color);
-                }//end if (! is_diff)
+            createColorTableIfNeeded();
+            for (int i = 0,  color = 0; i < color_list.length; i++) {
+                color = color_list[i];
+                addColor(color);
             }//end for(int color: default_sup_colors)
             return true;
         } catch (Exception ex) {
             return false;
         }
     }//end private void updateUserColourTable()
-   
     public void run() {
     }//end public void run()
-
     public ArrayList<String> getUserColorTable() {
         return color_table;
     }

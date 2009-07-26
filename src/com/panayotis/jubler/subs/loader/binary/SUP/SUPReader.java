@@ -50,7 +50,7 @@ public class SUPReader extends SUPCompressImageProcessor {
     
     public SUPReader(Jubler jubler, float fps, String encoding, File f) {
         super(jubler, fps, encoding);
-        inputFile = f;
+        processFile = f;
     }
     
     private boolean getImageData(FileInputStream in) throws Exception {
@@ -81,7 +81,7 @@ public class SUPReader extends SUPCompressImageProcessor {
         FileInputStream in = null;
         boolean ok = false;
         try {
-            in = new FileInputStream(inputFile);
+            in = new FileInputStream(processFile);
             int data_size = in.available();
             byte[] data = new byte[data_size];
             in.read(data);
@@ -166,8 +166,8 @@ public class SUPReader extends SUPCompressImageProcessor {
         max_x += 1;
         max_y += 1;
 
-        int width = max_x - min_x;
-        int height = max_y - min_y;
+        width = max_x - min_x;
+        height = max_y - min_y;
 
         ///control_block and bottom_field_position
         //starting x0, y0
@@ -229,8 +229,8 @@ public class SUPReader extends SUPCompressImageProcessor {
             son_header = new SonHeader();
             son_header.makeDefaultHeader();
             son_header.color_table = color_table;
-            son_header.subtitle_file = this.inputFile;
-            son_header.image_directory = inputFile.getParent();
+            son_header.subtitle_file = this.processFile;
+            son_header.image_directory = processFile.getParent();
         }//end if
 
         SonSubEntry son_entry = new SonSubEntry();
@@ -259,7 +259,7 @@ public class SUPReader extends SUPCompressImageProcessor {
         FileInputStream in = null;
         int count = 0;
         try {
-            in = new FileInputStream(inputFile);
+            in = new FileInputStream(processFile);
             int size = in.available();
             byte[] data = new byte[size];
             in.read(data);
@@ -288,7 +288,7 @@ public class SUPReader extends SUPCompressImageProcessor {
         this.setRow(0);
         fireSubtitleUpdaterPreProcessingEvent();
         try {
-            in = new FileInputStream(inputFile);
+            in = new FileInputStream(processFile);
             while (ok) {
                 ok = getImageData(in);
             }//end while
@@ -317,7 +317,7 @@ public class SUPReader extends SUPCompressImageProcessor {
     }
     private boolean getUserColourTable() {
         try {
-            String file_name = inputFile.getAbsolutePath();
+            String file_name = processFile.getAbsolutePath();
             color_table = SUPIfo.readIFO(file_name);
             updateHexColorTable();
             return true;

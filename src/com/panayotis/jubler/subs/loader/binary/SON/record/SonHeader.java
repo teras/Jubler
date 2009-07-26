@@ -112,14 +112,21 @@ public class SonHeader implements SONPatternDef, Cloneable {
             try {
                 tv_type = moptions.getVideoFormat();
             } catch (Exception ex) {
-                tv_type = "PAL";
+                if (this.FPS == 25f)
+                    tv_type = "PAL";
+                else
+                    tv_type = "NTSC";
             }
         }
         b.append(tv_type);
         b.append(UNIX_NL);
 
         b.append("Tape_Type").append("\t");
-        b.append(is_new ? "NON_DROP" : tape_type);
+        if (tv_type.equals("PAL")){
+            b.append(is_new ? "NON_DROP" : tape_type);
+        }else{
+            b.append(is_new ? "DROP" : tape_type);
+        }
         b.append(UNIX_NL);
 
         b.append("Pixel_Area").append("\t").append("(");
