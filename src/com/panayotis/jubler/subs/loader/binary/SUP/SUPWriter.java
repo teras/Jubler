@@ -85,23 +85,24 @@ public class SUPWriter extends SUPCompressImageProcessor {
         boolean has_text = (!Share.isEmpty(entry.getText()));
 
         if (!has_image) {
-            if (has_text) {
-                SonSubEntry son_entry = new SonSubEntry();
-                son_entry.setHeader(son_header);
-                son_entry.copyRecord(entry);
+            SonSubEntry son_entry = new SonSubEntry();
+            son_entry.setHeader(son_header);
+            son_entry.copyRecord(entry);
 
-                BufferedImage img = son_entry.makeSubtitleTextImage();
-                if (img != null) {
-                    son_entry.setImage(img);
-                    son_entry.getCreateSonAttribute().centreImage(img);
-                }//end if
-                son_header = son_entry.getHeader();
-                son_header.FPS = this.FPS;
-                is_text = true;
-                return son_entry;
+            BufferedImage img = null;
+            if (has_text) {
+                img = son_entry.makeSubtitleTextImage();
             } else {
-                return null;
+                img = JImage.getDefaultBlankImage();
             }
+            son_entry.setImage(img);
+            if (img != null) {
+                son_entry.getCreateSonAttribute().centreImage(img);
+            }//end if
+            son_header = son_entry.getHeader();
+            son_header.FPS = this.FPS;
+            is_text = true;
+            return son_entry;
         } else {
             img_entry = (ImageTypeSubtitle) entry;
             has_image = (img_entry.getImage() != null);
@@ -212,26 +213,30 @@ public class SUPWriter extends SUPCompressImageProcessor {
     }
 
     public int setPGClinks(BitmapRLE rle) {
-        Object[] pgc_color_links;
-        Object[] pgc_alpha_links;
-        if (is_text == true) {
-            pgc_color_links = new Object[]{"0", "1", "2", "3"};
-            pgc_alpha_links = this.color_table.toArray();
-        } else {
-            pgc_color_links = rle.getPgcColorIndexList().toArray();
-            pgc_alpha_links = rle.getColorTable().toArray();
-        }//end if
         int pgc_colors = 0xFE10;
-        int pgc_alphas = 0xFFF9;
-        int pgc_color_value, pgc_alpha_value;
+        int pgc_alphas = 0xFFF9;        
+        try {
+            Object[] pgc_color_links;
+            Object[] pgc_alpha_links;
+            if (is_text == true) {
+                pgc_color_links = new Object[]{"0", "1", "2", "3"};
+                pgc_alpha_links = this.color_table.toArray();
+            } else {
+                pgc_color_links = rle.getPgcColorIndexList().toArray();
+                pgc_alpha_links = rle.getColorTable().toArray();
+            }//end if
 
-        for (int a = 0; a < 4; a++) {
-            if (a < pgc_color_links.length) {
-                pgc_color_value = 0xF & Integer.parseInt(pgc_color_links[a].toString());
-                pgc_alpha_value = 0xF & Integer.parseInt(pgc_alpha_links[pgc_color_value].toString()) >>> 28;
-                pgc_colors = (pgc_colors & ~(0xF << (a * 4))) | pgc_color_value << (a * 4);
-                pgc_alphas = (pgc_alphas & ~(0xF << (a * 4))) | pgc_alpha_value << (a * 4);
+            int pgc_color_value, pgc_alpha_value;
+            int max_tbl_size = Math.min(pgc_alpha_links.length, pgc_color_links.length);
+            for (int a = 0; a < 4; a++) {
+                if (a < max_tbl_size) {
+                    pgc_color_value = 0xF & Integer.parseInt(pgc_color_links[a].toString());
+                    pgc_alpha_value = 0xF & Integer.parseInt(pgc_alpha_links[pgc_color_value].toString()) >>> 28;
+                    pgc_colors = (pgc_colors & ~(0xF << (a * 4))) | pgc_color_value << (a * 4);
+                    pgc_alphas = (pgc_alphas & ~(0xF << (a * 4))) | pgc_alpha_value << (a * 4);
+                }
             }
+        } catch (Exception ex) {
         }
         return (pgc_alphas << 16 | pgc_colors);
     }//end public int setPGClinks(BitmapRLE rle)

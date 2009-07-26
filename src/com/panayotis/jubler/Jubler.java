@@ -1980,7 +1980,7 @@ public class Jubler extends JFrame implements CommonDef{
         }
 
         Subtitles s = new Subtitles();
-        s.add(new SubEntry(new Time(0), new Time(5), ""));
+        s.add(new SubEntry(new Time(0), new Time(10), ""));
         curjubler.setSubs(s);
         curjubler.initNewFile(FileCommunicator.getCurrentPath() + _("Untitled"));
     }//GEN-LAST:event_FileNFMActionPerformed

@@ -261,9 +261,12 @@ public class JImage implements CommonDef {
             
             return sub_img;
         } catch (Exception ex) {
-            return img;
+            if (tran_image != null)
+                return tran_image;
+            else
+                return img;
         }
-    }
+    }//end public static BufferedImage makeTransparentImage(BufferedImage img, int color) 
 
     /**
      * Cut the image and produce the transparent image of the original

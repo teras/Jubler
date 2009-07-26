@@ -60,8 +60,9 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     public static final String extendedName = "SUP file";
     Subtitles subtitleList = null;
     private int record_count = 0;
-    private ProgressBar pb = null;
+    private ProgressBar pb = new ProgressBar();
     SonSubEntry blank_record = null;
+
     public SUPCompressedImage() {
 
     }
@@ -191,7 +192,7 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
         }
 
         subtitleList = new Subtitles();
-        blank_record= new SonSubEntry();
+        blank_record = new SonSubEntry();
         subtitleList.add(blank_record);
         SUPReader proc = new SUPReader(jubler, FPS, ENCODING, f);
         proc.setSubList(subtitleList);
@@ -204,11 +205,11 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
                 SonSubEntry entry = (SonSubEntry) e.getSubEntry();
                 subs.add(entry);
                 int row = e.getRow();
-                if (row == 1){
+                if (row == 1) {
                     subs.remove(blank_record);
                     blank_record = null;
                 }
-                subs.fireTableDataChanged();                
+                subs.fireTableDataChanged();
 
                 String msg = "" + row + "/" + record_count;
                 pb.setTitle(msg);
@@ -224,8 +225,8 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
                 if (pb != null) {
                     pb.off();
                 }
-                
-                if (blank_record != null){
+
+                if (blank_record != null) {
                     Jubler jub = jubler;
                     Subtitles subs = jub.getSubtitles();
                     subs.remove(blank_record);
@@ -234,12 +235,9 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
         };
 
         record_count = proc.getNumberOfImages();
-        if (pb == null) {
-            pb = new ProgressBar();
-            pb.setMinValue(0);
-            pb.setMaxValue(record_count);
-            pb.on();
-        }//end if
+        pb.setMinValue(0);
+        pb.setMaxValue(record_count);
+        pb.on();
 
         proc.addSubtitleUpdaterPostProcessingEventListener(pud);
 
@@ -262,12 +260,12 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
      * @throws java.io.IOException When references to components caused errors.
      */
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
-        
-        File sup_file =  FileCommunicator.stripFileFromExtension(outfile);
+
+        File sup_file = FileCommunicator.stripFileFromExtension(outfile);
         SUPWriter proc = new SUPWriter(this.jubler, this.FPS, this.ENCODING, sup_file);
         proc.setSubList(given_subs);
         proc.start();
-        
+
         return false;
     }
 }//end public class SUPCompressedImage extends AbstractBinarySubFormat
