@@ -141,12 +141,7 @@ public class SUPWriter extends SUPCompressImageProcessor {
         width = img.getWidth();
         height = img.getHeight();
         imageData = n_img.getRGB(0, 0, width, height, null, 0, width);
-        int[] palette = reducer.getPalette();
-        if (Share.isEmpty(palette)) {
-            updateUserColourTable(imageData);
-        } else {
-            updateUserColourTable(palette);
-        }
+        updateUserColourTable(imageData);
     }//end private Rectangle getSubtitleImageData(ImageTypeSubtitle img_entry)
     /**
      * Creates an instance of {@link BitmapRLE} and pass it the local
