@@ -45,11 +45,7 @@ public class ReduceColorDepth {
     private BufferedImage srcImage = null;
     private int colorDepth = 1;
     private BufferedImage newImage = null;
-    private int[] palette = null;
     private int[] coloredPixel = null;
-    private int[] indexedPixel;
-    private int[][] indexed2d;
-    
     private int width = 0,  height = 0;
 
     public ReduceColorDepth() {
@@ -84,17 +80,16 @@ public class ReduceColorDepth {
      * Set the image from an indexed color array.
      */
     private void updatePixels(int palette[], int pixels[][]) {
+        
         int w = width = pixels.length;
         int h = height = pixels[0].length;
         int size = width * height;
         coloredPixel = new int[size];
-        indexedPixel = new int[size];
 
         // convert to RGB
         for (int x = w; x-- > 0;) {
             for (int y = h; y-- > 0;) {
                 coloredPixel[y * w + x] = palette[pixels[x][y]];
-                indexedPixel[y * w + x] = pixels[x][y];
             }
         }
     }
@@ -111,6 +106,8 @@ public class ReduceColorDepth {
     }
 
     public void reduceColor() {
+        int[] palette = null;
+        int[][] indexed2d;
         try {
             indexed2d = this.getData();
             palette = Quantize.quantizeImage(indexed2d, this.colorDepth);
@@ -152,20 +149,8 @@ public class ReduceColorDepth {
         return pan;
     }
 
-    public int[] getPalette() {
-        return palette;
-    }
-
     public int[] getColoredData() {
         return coloredPixel;
-    }
-
-    public int[] getIndexedData() {
-        return indexedPixel;
-    }
-
-    public int[][] getIndexedData2d() {
-        return indexed2d;
     }
 }//end public class ReduceColorDepth 
 
