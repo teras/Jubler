@@ -311,7 +311,7 @@ public class Quantize {
             root = new Node(this);
         }
 
-        /*
+        /**
          * Procedure Classification begins by initializing a color
          * description tree of sufficient depth to represent each
          * possible input color in a leaf. However, it is impractical
@@ -321,34 +321,34 @@ public class Quantize {
          * precision, so that cmax= 2k-1, the tree would need k levels
          * below the root node to allow representing each possible
          * input color in a leaf. This becomes prohibitive because the
-         * tree's total number of nodes is 1 + sum(i=1,k,8k).
+         * tree's total number of nodes is 1 + sum(i=1,k,8k).<br><br>
          *
          * A complete tree would require 19,173,961 nodes for k = 8,
          * cmax = 255. Therefore, to avoid building a fully populated
          * tree, QUANTIZE: (1) Initializes data structures for nodes
          * only as they are needed; (2) Chooses a maximum depth for
          * the tree as a function of the desired number of colors in
-         * the output image (currently log2(colormap size)).
+         * the output image (currently log2(colormap size)).<br><br>
          *
          * For each pixel in the input image, classification scans
          * downward from the root of the color description tree. At
          * each level of the tree it identifies the single node which
          * represents a cube in RGB space containing It updates the
          * following data for each such node:
+         * <ol>
+         *   <li>number_pixels : Number of pixels whose color is contained
+         *   in the RGB cube which this node represents;</li>
          *
-         *   number_pixels : Number of pixels whose color is contained
-         *   in the RGB cube which this node represents;
-         *
-         *   unique : Number of pixels whose color is not represented
+         *   <li>unique : Number of pixels whose color is not represented
          *   in a node at lower depth in the tree; initially, n2 = 0
-         *   for all nodes except leaves of the tree.
+         *   for all nodes except leaves of the tree.</li>
          *
-         *   total_red/green/blue : Sums of the red, green, and blue
+         *   <li>total_red/green/blue : Sums of the red, green, and blue
          *   component values for all pixels not classified at a lower
          *   depth. The combination of these sums and n2 will
          *   ultimately characterize the mean color of a set of pixels
-         *   represented by this node.
-         * 
+         *   represented by this node.</li>
+         * </ol>
          */
         void classification() {
             int pixels[][] = this.pixels;
@@ -393,7 +393,7 @@ public class Quantize {
             }
         }
 
-        /*
+        /**
          * reduction repeatedly prunes the tree until the number of
          * nodes with unique > 0 is less than or equal to the maximum
          * number of colors allowed in the output image.
@@ -421,20 +421,20 @@ public class Quantize {
             int color_number;
         }
 
-        /*
+        /**
          * Procedure assignment generates the output image from the
          * pruned tree. The output image consists of two parts: (1) A
          * color map, which is an array of color descriptions (RGB
          * triples) for each color present in the output image; (2) A
          * pixel array, which represents each pixel as an index into
-         * the color map array.
+         * the color map array.<br><br>
          *
          * First, the assignment phase makes one pass over the pruned
          * color description tree to establish the image's color map.
          * For each node with n2 > 0, it divides Sr, Sg, and Sb by n2.
          * This produces the mean color of all pixels that classify no
          * lower than this node. Each of these colors becomes an entry
-         * in the color map.
+         * in the color map.<br><br>
          *
          * Finally, the assignment phase reclassifies each pixel in
          * the pruned tree to identify the deepest node containing the
@@ -622,7 +622,7 @@ public class Quantize {
                 return next_threshold;
             }
 
-            /*
+            /**
              * colormap traverses the color cube tree and notes each
              * colormap entry. A colormap entry is any node in the
              * color cube tree where the number of unique colors is
@@ -648,7 +648,8 @@ public class Quantize {
                 }
             }
 
-            /* ClosestColor traverses the color cube tree at a
+            /**
+             * ClosestColor traverses the color cube tree at a
              * particular node and determines which colormap entry
              * best represents the input color.
              */
