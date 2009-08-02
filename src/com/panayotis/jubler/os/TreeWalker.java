@@ -100,6 +100,7 @@ public class TreeWalker {
         boolean valid = false, sig_valid = false, test_valid = false;
         BufferedReader infopipe = null;
         Process proc = null;
+        String line = null;
         String[] cmd = new String[parameters.length + 1];
         cmd[0] = exec.getAbsolutePath();
         if (parameters.length > 0) {
@@ -116,19 +117,18 @@ public class TreeWalker {
 
             proc = Runtime.getRuntime().exec(cmd);
             infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-            valid = false;
-            sig_valid = false;
-            test_valid = true;
-
-            String line;
+            
             while ((line = infopipe.readLine()) != null) {
-                if ((app_signature != null) && (!sig_valid)) {
+                boolean must_find_app_signature = !((app_signature == null) || sig_valid);
+                if (must_find_app_signature) {
                     sig_valid = line.toLowerCase().contains(app_signature);
                 }
 
-                if ((test_signature != null) && (!test_valid)) {
+                boolean must_find_test_signature = !((test_signature == null) || test_valid);
+                if (must_find_test_signature) {
                     test_valid = (!test_valid) && line.toLowerCase().contains(test_signature);
+                }else{
+                    test_valid = true;
                 }
             }//end while ((line = infopipe.readLine()) != null)
 
