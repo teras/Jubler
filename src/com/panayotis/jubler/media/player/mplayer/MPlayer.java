@@ -60,7 +60,7 @@ public class MPlayer extends AbstractPlayer {
     }
 
     public String getTestSignature() {
-        return " ass ";
+        return " ass";
     }
     
 }

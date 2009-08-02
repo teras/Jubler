@@ -43,44 +43,53 @@ public class TreeWalker {
         SystemDependent.appendPathApplication(paths);
         SystemDependent.appendLocateApplication(application, paths);
 
-        if (parameters == null)
+        if (parameters == null) {
             parameters = new String[0];
+        }
 
         for (ExtPath path : paths) {
             DEBUG.debug(_("Wizard is looking inside {0}", path.getPath()));
             File f = new File(path.getPath());
-            if (path.searchForFile() && (!f.isFile()))
-                continue;   // If we want a file and this is not, ignore this entry
+            if (path.searchForFile() && (!f.isFile())) {
+                continue;
+            }   // If we want a file and this is not, ignore this entry
             File res = searchExecutable(f, application.toLowerCase(), parameters, test_signature, path.getRecStatus());
-            if (res != null)
+            if (res != null) {
                 return res;
+            }
         }
         return null;
     }
 
     /* filename is already in lower case... */
     public static File searchExecutable(File root, String program, String[] parameters, String test_signature, int recursive) {
-        if (!root.exists())
+        if (!root.exists()) {
             return null;
+        }
         if (root.isFile()) {
-            if (!root.canRead())
+            if (!root.canRead()) {
                 return null;
-            if (!root.getName().toLowerCase().equals(program + SystemDependent.PROG_EXT))
+            }
+            if (!root.getName().toLowerCase().equals(program + SystemDependent.PROG_EXT)) {
                 return null;
-            if (!execIsValid(root, parameters, program, test_signature))
+            }
+            if (!execIsValid(root, parameters, program, test_signature)) {
                 return null;
+            }
             /* All checks OK - valid executable! */
             return root;
         } else {
-            if (recursive <= ExtPath.FILE_ONLY)
-                return null;   // No more recursive should be done
+            if (recursive <= ExtPath.FILE_ONLY) {
+                return null;
+            }   // No more recursive should be done
             recursive--;
             File[] childs = root.listFiles();
             if (childs != null) {
                 for (int i = 0; i < childs.length; i++) {
                     File res = searchExecutable(childs[i], program, parameters, test_signature, recursive);
-                    if (res != null)
+                    if (res != null) {
                         return res;
+                    }
                 }
             }
         }
@@ -88,11 +97,14 @@ public class TreeWalker {
     }
 
     public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
+        boolean valid = false, sig_valid = false, test_valid = false;
+        BufferedReader infopipe = null;
         Process proc = null;
         String[] cmd = new String[parameters.length + 1];
         cmd[0] = exec.getAbsolutePath();
-        if (parameters.length > 0)
+        if (parameters.length > 0) {
             System.arraycopy(parameters, 0, cmd, 1, parameters.length);
+        }
 
         try {
             StringBuffer buf = new StringBuffer();
@@ -103,31 +115,35 @@ public class TreeWalker {
             DEBUG.debug(buf.toString());
 
             proc = Runtime.getRuntime().exec(cmd);
-            BufferedReader infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+            valid = false;
+            sig_valid = false;
+            test_valid = true;
+
             String line;
-            line = infopipe.readLine() + infopipe.readLine();
-            if (!line.toLowerCase().contains(app_signature)) {
-                proc.destroy();
-                return false;
-            }
-            if (test_signature == null) {
-                proc.destroy();
-                return true;
-            }
             while ((line = infopipe.readLine()) != null) {
-                if (line.toLowerCase().contains(test_signature)) {
-                    DEBUG.debug(_("Valid executable found: {0}", exec.getAbsolutePath()));
-                    proc.destroy();
-                    return true;
+                if ((app_signature != null) && (!sig_valid)) {
+                    sig_valid = line.toLowerCase().contains(app_signature);
                 }
-            }
+
+                if ((test_signature != null) && (!test_valid)) {
+                    test_valid = (!test_valid) && line.toLowerCase().contains(test_signature);
+                }
+            }//end while ((line = infopipe.readLine()) != null)
+
+            valid = (sig_valid && test_valid);
         } catch (Exception ex) {
         } finally {
+            try {
+                infopipe.close();
+            } catch (Exception e) {
+            }
             try {
                 proc.destroy();
             } catch (Exception e) {
             }
         }
-        return false;
+        return valid;
     }
 }
