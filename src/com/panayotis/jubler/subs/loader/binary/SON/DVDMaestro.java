@@ -100,9 +100,11 @@ import java.util.regex.Pattern;
  * 
  * is used as a signature for the format. This is the line that the format
  * loader uses to recognise if the file is the right format for this loader.
- * When a signature, or a data pattern matched what was expected by a format
- * loader, the loader's parse method will be called to capture the data and
- * convert it to subtitle-records, suitable for processing with the application.
+ * When a signature, or a data pattern {@link #isSubType matched} 
+ * what was expected by a format loader, the loader's 
+ * {@link AbstractBinarySubFormat#parse parse} method will continue to capture 
+ * the data and convert it to subtitle-records, suitable for processing with 
+ * the application.
  * </p><p>
  * The data file is processed line by line, and due to the multi-patterns 
  * and multi-group of patterns nature, plus the fact that the same pattern
