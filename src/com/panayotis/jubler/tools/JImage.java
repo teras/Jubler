@@ -54,14 +54,11 @@ public class JImage implements CommonDef {
 
     /**
      * The colour that is used for DVB-T subtitle's transparency.
+     * (0x00000060) or RGB(0, 0, 96).
      */
     public static int DVBT_SUB_TRANSPARENCY = 0x60;
     /**
-     * The black background colour in DVB-T subtitle blocks
-     */
-    public static Color DVBT_SUB_BLACK_BC = new Color(31, 31, 31);
-    /**
-     * Default subtitle image's width (ie. screen width)
+     * Default subtitle image's width (ie. screen width) = 720 pixels.
      */
     public static int DEFAULT_SCREEN_WIDTH = 720;
 
@@ -155,6 +152,7 @@ public class JImage implements CommonDef {
             return false;
         }
     }
+
     /**
      * Write an image to a pre-defined file.
      * @param ico The image to write
@@ -172,7 +170,7 @@ public class JImage implements CommonDef {
             return false;
         }
     }
-    
+
     /**
      * Writes an image to a file.
      * @param img The image to write
@@ -258,16 +256,16 @@ public class JImage implements CommonDef {
                     sr.y,
                     sr.width,
                     sr.height);
-            
+
             return sub_img;
         } catch (Exception ex) {
-            if (tran_image != null)
+            if (tran_image != null) {
                 return tran_image;
-            else
+            } else {
                 return img;
+            }
         }
     }//end public static BufferedImage makeTransparentImage(BufferedImage img, int color) 
-
     /**
      * Cut the image and produce the transparent image of the original
      * @param img The image to cut
@@ -313,8 +311,8 @@ public class JImage implements CommonDef {
      * @return A blank image of dimension 720x32 with blue background color.
      */
     public static BufferedImage getDefaultBlankImage() {
-        int w=720, h=32;
-        BufferedImage image = 
+        int w = 720, h = 32;
+        BufferedImage image =
                 new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         g.setColor(new Color(DVBT_SUB_TRANSPARENCY));
@@ -387,7 +385,6 @@ public class JImage implements CommonDef {
             return source;
         }
     }//public static BufferedImage bwConversion(BufferedImage source)
- 
     /**
      * This routine gets the sub-image boundary using the specified colour
      * that will be treated as transparent within an existing image. It 
@@ -463,9 +460,9 @@ public class JImage implements CommonDef {
                     x++;
                 }
                 int img_rgb = image_data[i];
-                
+
                 //force checking the RGB components only, excludes the Transparency bits.
-                int mask = 0x00ffffff; 
+                int mask = 0x00ffffff;
                 boolean is_same = (find_colour & mask) == (img_rgb & mask);
                 if (!is_same) {
                     dest_image_data[i] = img_rgb;
@@ -521,7 +518,7 @@ public class JImage implements CommonDef {
             for (int i = 0; i < image_data.length; i++) {
                 int img_rgb = image_data[i];
                 //force checking the RGB components only, excludes the Transparency bits.
-                int mask = 0x00ffffff; 
+                int mask = 0x00ffffff;
                 boolean is_same = (f_rgb & mask) == (img_rgb & mask);
                 if (!is_same) {
                     dest_image_data[i] = img_rgb;
@@ -575,9 +572,9 @@ public class JImage implements CommonDef {
                 } else {
                     x++;
                 }
-                
+
                 int img_rgb = image_data[i];
-                int mask = 0x00ffffff; 
+                int mask = 0x00ffffff;
                 boolean is_same = (f_rgb & mask) == (img_rgb & mask);
                 if (!is_same) {
                     if (x < lx) {
@@ -667,5 +664,44 @@ public class JImage implements CommonDef {
         }
         return img;
     }//end 
+
+    /**
+     * This routine creates a blank image, by default 720x32, filled with the 
+     * default {@link JImage#DVBT_SUB_TRANSPARENCY transparency color}. 
+     * If the input image is not empty, the input image will be 
+     * centered on the default image, and the height of the return 
+     * image is taken from the input image.
+     * @param center_image The input image that will be overlaid in the center
+     * of the background image.
+     * @return The background image, with input image centered if any, or null
+     * if there are errors.
+     */
+    public static BufferedImage makeSubBackgroundImage(BufferedImage center_image) {
+        Graphics2D g = null;
+        BufferedImage n_img = null;
+        try {
+            int cw = (center_image == null ? JImage.DEFAULT_SCREEN_WIDTH : center_image.getWidth());
+            int ch = (center_image == null ? 32 : center_image.getHeight());
+
+            int dw = JImage.DEFAULT_SCREEN_WIDTH;
+            n_img = new BufferedImage(dw, ch, BufferedImage.TYPE_INT_ARGB);
+            g = (Graphics2D) n_img.getGraphics();
+            g.setColor(new Color(JImage.DVBT_SUB_TRANSPARENCY));
+            g.fillRect(0, 0, dw, ch);
+
+            if (center_image != null) {
+                g.translate((dw - cw) / 2, 0);
+                g.drawImage(center_image, null, null);
+            }//end if (center_image != null)
+            return n_img;
+        } catch (Exception ex) {
+            ex.printStackTrace(System.out);
+            return null;
+        } finally {
+            if (g != null) {
+                g.dispose();
+            }
+        }
+    }//end public static BufferedImage makeSubBackgroundImage(BufferedImage current_image)
 }//end public class JImage
 

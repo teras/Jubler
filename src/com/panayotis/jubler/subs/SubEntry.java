@@ -1141,41 +1141,20 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         return true;
     }//end public boolean copyHeader(SubEntry source)   
     /**
-     * This routine made use of {@link SubImage} to draw the text image.
-     * The text image will might not fill the 720 screen width, and hence
-     * another image is created, with 720 width and the same height as text
-     * image. The new image will be filled with the default transparency color
-     * and the text image is painted over, at the centre of the new image.
-     * The result image should be fit for video overlay.
-     * @return The newly created image with center text image overlaid, or null
-     * if there are errors during the image creation.
+     * This routine made use of {@link SubImage} to draw the text image. When
+     * creating the image, all the text attributes such as font, size, outline,
+     * shadow etc.. will be taken into account.
+     * @return The image of the text, or null if there are errors 
+     * during the image creation.
      */
     public BufferedImage makeSubtitleTextImage() {
-        Graphics2D g = null;
-        BufferedImage n_img = null;
         try {
             SubImage simg = new SubImage(this);
             BufferedImage text_img = simg.getImage();
-
-            int cw = text_img.getWidth();
-            int ch = text_img.getHeight();
-
-            int dw = JImage.DEFAULT_SCREEN_WIDTH;
-            n_img = new BufferedImage(dw, ch, BufferedImage.TYPE_INT_ARGB);
-            g = (Graphics2D) n_img.getGraphics();
-            g.setColor(new Color(JImage.DVBT_SUB_TRANSPARENCY));
-            g.fillRect(0, 0, dw, ch);
-
-            g.translate((dw - cw) / 2, 0);
-            g.drawImage(text_img, null, null);
-            return n_img;
+            return text_img;
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
             return null;
-        } finally {
-            if (g != null) {
-                g.dispose();
-            }
         }
     }//end public BufferedImage makeSubtitleTextImage()
 }//end public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef

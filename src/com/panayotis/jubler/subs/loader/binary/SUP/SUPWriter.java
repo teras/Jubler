@@ -91,14 +91,13 @@ public class SUPWriter extends SUPCompressImageProcessor {
 
             BufferedImage img = null;
             if (has_text) {
-                img = son_entry.makeSubtitleTextImage();
+                BufferedImage text_img = son_entry.makeSubtitleTextImage();
+                son_entry.getCreateSonAttribute().centreImage(text_img);
+                img = JImage.makeSubBackgroundImage(text_img);                
             } else {
-                img = JImage.getDefaultBlankImage();
+                img = JImage.getDefaultBlankImage();                
             }
             son_entry.setImage(img);
-            if (img != null) {
-                son_entry.getCreateSonAttribute().centreImage(img);
-            }//end if
             son_header = son_entry.getHeader();
             son_header.FPS = this.FPS;
             is_text = true;
