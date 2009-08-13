@@ -125,8 +125,8 @@ public class ImageFileListManager implements CommonDef {
             int len = subList.size();
             for (int i = 0; i < len; i++) {
                 SubEntry entry = subList.elementAt(i);
-                boolean should_has_file = (entry instanceof ImageTypeSubtitle);
-                if (should_has_file) {
+                boolean should_have_file = (entry instanceof ImageTypeSubtitle);
+                if (should_have_file) {
                     ImageTypeSubtitle img_entry = (ImageTypeSubtitle) entry;
                     String file_name = img_entry.getImageFileName();
                     File image_file = this.locateFile(file_name);
