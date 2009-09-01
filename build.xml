@@ -136,6 +136,11 @@
         <exec dir="resources/ffmpeg/ffdecode" executable="make" failonerror="true"> <arg line="darwin"/> </exec>
 
         <delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
+        <delete file="/tmp/Jubler-template.dmg" quiet="true"/>
+		<exec executable="hdiutil" failonerror="false">
+			<arg line="detach /Volumes/Jubler-template"/>
+		</exec>
+
         <bunzip2 src="resources/installers/macosx/Jubler-template.dmg.bz2" dest="/tmp/Jubler-template.dmg"/>
         <exec executable="hdiutil" failonerror="true">
             <arg line="attach -noautoopen -mountpoint /Volumes/Jubler-template /tmp/Jubler-template.dmg"/>
