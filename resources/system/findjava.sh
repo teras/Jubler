@@ -110,7 +110,9 @@ find_in_paths () {
 
 # Search in macosx styled paths
 find_in_macosx() {
-	check_java /System/Library/Frameworks/JavaVM.framework/Versions/$VERSION/Home
+	check_java /System/Library/Frameworks/JavaVM.framework/Versions/1.7/Home
+	check_java /System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home
+	check_java /System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home
 }
 
 # Search in system $PATH

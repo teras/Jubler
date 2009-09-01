@@ -82,6 +82,16 @@ ifeq (${MAKESYS},darwin_ppc)
 	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
+ifeq (${MAKESYS},darwin_x86_64)
+	XLIBS=-lz -lbz2
+	CCPREF=
+	ARCH=x86_64
+	LD=${CC} -dynamiclib -framework JavaVM
+	LIBNAME=${PROJ}.x86_64
+	XFCONFIG=--enable-shared --arch=x86_64
+	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
+	STRIP=echo No stripping on 
+endif
 ifeq (${MAKESYS},darwin_i386)
 	XLIBS=-lz -lbz2
 	CCPREF=
@@ -168,13 +178,15 @@ win32:javacheck distclean
 
 darwin:javacheck
 	${MAKE} distclean
+	${MAKE} -e LIB MAKESYS=darwin_x86_64
+	${MAKE} distclean
 	${MAKE} -e LIB MAKESYS=darwin_ppc
 	${MAKE} distclean
 	${MAKE} -e LIB MAKESYS=darwin_i386
 	${MAKE} distclean
-	lipo ${PROJ}.ppc ${PROJ}.i386 -create -output ${MACLIBNAME}
+	lipo ${PROJ}.ppc ${PROJ}.i386 ${PROJ}.x86_64 -create -output ${MACLIBNAME}
 	TIGER=`otool -vR ${MACLIBNAME} | grep UNIX` ; if [ -n "$$TIGER" ] ; then echo "Tiger compatibility problem!" ; echo $$TIGER ; exit 1 ; fi
-	rm -f ${PROJ}.ppc ${PROJ}.i386
+	rm -f ${PROJ}.ppc ${PROJ}.i386 ${PROJ}.x86_64
 	${MAKE} -e libinstall LIBNAME=${MACLIBNAME}
 
 library:clean ${LIBNAME} libinstall
