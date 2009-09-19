@@ -108,7 +108,7 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
      * The entire textual content of the subtitle file.
      */
     protected String inputData = null;
-
+    protected JPreferences prefs = null;
     /**
      * Initialise the frame rate per second and the encoding scheme.
      * If the preference is not available, set default to
@@ -119,7 +119,7 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
      */
     @Override
     public void init() {
-        JPreferences prefs = Jubler.prefs;
+        prefs = Jubler.prefs;
         if (prefs == null) {
             FPS = 25f;
             ENCODING = "UTF-8";
