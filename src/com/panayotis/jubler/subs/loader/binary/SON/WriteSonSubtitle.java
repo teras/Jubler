@@ -28,14 +28,15 @@
  */
 package com.panayotis.jubler.subs.loader.binary.SON;
 
+import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.gui.ProgressBar;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubtitleUpdaterThread;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.binary.SON.ImageSubListInfo.ImageSubAttribute;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
-import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.tools.JImage;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -45,8 +46,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -70,13 +69,14 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
     private JMaestroOptions moptions = null;
     private SonHeader sonHeader = null;
     private SonSubEntry sonSubEntry = null;
-    private Subtitles subs;
+    private Subtitles subList;
     private File outfile,  dir;
     private File index_outfile = null;
     private String image_out_filename = null;
     private static int maxDigits = 1;
     private String encoding = null;
     ProgressBar pb = new ProgressBar();
+    JPreferences prefs = null;
 
     /**
      * Basic constructor.
@@ -97,7 +97,8 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
      *                  preference (ie. 25)
      * @param encoding  The text encoding scheme (ie. UTF-8).
      */
-    public WriteSonSubtitle(Subtitles subtitle_list, JMaestroOptions moptions, File outfile, float FPS, String encoding) {
+    public WriteSonSubtitle(Subtitles subtitle_list, JMaestroOptions moptions, File outfile, float FPS, String encoding, JPreferences prefs) {
+        this.prefs = prefs;
         this.moptions = moptions;
         this.outfile = outfile;
         this.FPS = FPS;
@@ -108,9 +109,8 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
         File image_file = FileCommunicator.stripFileFromExtension(index_outfile);
         this.image_out_filename = image_file.getName();
 
-        this.subs = subtitle_list;
-        setSubList(subs);
-
+        this.subList = subtitle_list;
+        setSubList(subList);
     }
 
     /**
@@ -126,9 +126,9 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
      */
     @Override
     public void run() {
-        this.prepareHeader(subs, index_outfile);
-        this.writeImages(subs, index_outfile);
-        this.writeSubtitleText(subs, index_outfile, encoding);
+        this.prepareHeader(subList, index_outfile);
+        this.writeImages(subList, index_outfile);
+        this.writeSubtitleText(subList, index_outfile, encoding);
     }//end public void run()
     /**
      * Extract the header record from the first SON record in the 
@@ -224,75 +224,107 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
     public void writeImages(Subtitles sub_list, File output_file) {
         boolean changed = false;
         try {
-            pb.setMaxValue(sub_list.size() - 1);
-            pb.setMinValue(0);
-            pb.on();
 
-            ImageFilenameGenerator gen =
-                    new ImageFilenameGenerator(sub_list, output_file, PNG_EXT);
-            gen.generate();
-            confirmationRequired = true;
-            for (int i = 0; i < sub_list.size(); i++) {
-                sonSubEntry = (SonSubEntry) sub_list.elementAt(i);
+            ImageSubListInfo info = new ImageSubListInfo(sub_list);
+            boolean valid = info.checkInfo();
+            if (!valid) {
+                return;
+            }
 
-                boolean has_image = !Share.isEmpty(sonSubEntry.getImage());
-                boolean has_text = !Share.isEmpty(sonSubEntry.getText());
+            ImageSubAttribute has_what = info.getHasWhat();
+            ImageSubAttribute has_image_file = info.getHasImageFile();
 
-                boolean gen_image_from_text = (has_text && !has_image);
-                if (gen_image_from_text) {
-                    changed = makeSubPicture(sonSubEntry, sonSubEntry.getImageFile());
-                } else if (has_image) {
-                    changed = writeSubPicture(sonSubEntry, subs, i);
-                }//end if
-                if (changed){
-                    pb.setTitle(sonSubEntry.getImageFile().getName());
-                    pb.setValue(i);                    
-                }//end if
-            }//end for(SubEntry entry : sub_entry_list)        
-
+            if (has_what == ImageSubAttribute.HAS_TEXT_ONLY) {
+                this.writeTextAsImage(sub_list, output_file);
+            } else if (has_what == ImageSubAttribute.HAS_IMAGE_ONLY ||
+                    has_what == ImageSubAttribute.HAS_TEXT_AND_IMAGE) {
+                if (has_image_file == ImageSubAttribute.IMAGES_DONOT_HAVE_FILES) {
+                    this.writeImageAsPNG(sub_list, output_file);
+                } else if (has_image_file == ImageSubAttribute.SOME_IMAGES_HAVE_FILES_SOME_DONT) {
+                    this.writeImageAsPNGWhereImageDoesntExist(sub_list, output_file);
+                }
+            } else if (has_what == ImageSubAttribute.MIXED_TEXT_AND_IMAGE) {
+                this.writeMixedTextAndImage(sub_list, output_file);
+            }
         } catch (Exception ex) {
             ex.printStackTrace(System.out);
         } finally {
-            pb.off();
         }
     }//end private void writeImages(Subtitles sub_list, File output_file)
-    private boolean writeSubPicture(SonSubEntry entry, Subtitles subs, int index) {
-        File new_dir = null;
-        try {
-            File f = entry.getImageFile();
-            boolean is_there = (f.exists() && !f.isDirectory());
-            if (is_there) {
-                if (noToAll) {
-                    return true;
-                }//end if (noToAll)
+    private void writeTextAsImage(Subtitles sub_list, File output_file) {
+        /**
+         * Generate new files if needed, ie. when the filename is null
+         */
+        ImageFilenameGenerator gen =
+                new ImageFilenameGenerator(sub_list, output_file, PNG_EXT);
+        gen.generate();
+        for (int i = 0; i < sub_list.size(); i++) {
+            sonSubEntry = (SonSubEntry) sub_list.elementAt(i);
+            boolean has_text = !Share.isEmpty(sonSubEntry.getText());
+            if (has_text) {
+                makeSubPicture(sonSubEntry, sonSubEntry.getImageFile());
+            }//end if (has_text)
+        }//end for(SubEntry entry : sub_entry_list)                
+    }//end private void writeTextAsImage(Subtitles subList)
+    private void writeImageAsPNG(Subtitles sub_list, File output_file) {
+        /**
+         * Generate new files if needed, ie. when the filename is null
+         */
+        ImageFilenameGenerator gen =
+                new ImageFilenameGenerator(sub_list, output_file, PNG_EXT);
+        gen.generate();
+        for (int i = 0; i < sub_list.size(); i++) {
+            sonSubEntry = (SonSubEntry) sub_list.elementAt(i);
+            boolean has_image = !Share.isEmpty(sonSubEntry.getImage());
+            if (has_image) {
+                writeImageIfNotThere();
+            }//end if (has_text)
+        }//end for(SubEntry entry : sub_entry_list)                        
+    }//end private void writeImageToFile(Subtitles sub_list, File output_file)
+    private void writeImageAsPNGWhereImageDoesntExist(Subtitles sub_list, File output_file) {
+        /**
+         * Generate new files if needed, ie. when the filename is null
+         */
+        ImageFilenameGenerator gen =
+                new ImageFilenameGenerator(sub_list, output_file, PNG_EXT);
+        gen.generate();
+        for (int i = 0; i < sub_list.size(); i++) {
+            sonSubEntry = (SonSubEntry) sub_list.elementAt(i);
+            boolean has_image = !Share.isEmpty(sonSubEntry.getImage());
+            if (has_image) {
+                writeImageIfNotThere();
+            }//end if (has_text)
+        }//end for(SubEntry entry : sub_entry_list)                        
+    }//end private void writeImageToFile(Subtitles sub_list, File output_file)
+    private void writeMixedTextAndImage(Subtitles sub_list, File output_file) {
+        /**
+         * Generate new files if needed, ie. when the filename is null
+         */
+        ImageFilenameGenerator gen =
+                new ImageFilenameGenerator(sub_list, output_file, PNG_EXT);
+        gen.generate();
+        for (int i = 0; i < sub_list.size(); i++) {
+            sonSubEntry = (SonSubEntry) sub_list.elementAt(i);
+            boolean has_text = !Share.isEmpty(sonSubEntry.getText());
+            boolean has_image = !Share.isEmpty(sonSubEntry.getImage());
 
-                if (confirmationRequired) {
-                    String file_name = f.getName();
-                    File old_dir = f.getParentFile();
-                    new_dir = confirmOverWriteImage(file_name, old_dir);
-                    Share.changeDir(subs, index, new_dir);
-
-                    //reload the last file which might has been changed
-                    f = sonSubEntry.getImageFile();
-                }//end if
-
-                if (overWriteAll) {
-                    //1st try to write in the original format                            
-                    String ext = Share.getFileExtension(f, false).toLowerCase();
-                    boolean ok = JImage.writeImage(entry.getImage(), f, ext);
-                    //if it fails, try to write in the PNG format.
-                    if (!ok) {
-                        ok = JImage.writeImage(entry.getImage(), f, PNG_EXT);
-                    }//end if
-                }//end if (overWriteAll)
-            } else { //do not have image, simply write the new one
-                JImage.writeImage(entry.getImage(), f, PNG_EXT);
-            }//end if (is_there)
-            return true;
-        } catch (Exception ex) {
-            return false;
+            if (has_text && has_image) {
+                writeImageIfNotThere();
+            } else if (has_text) {
+                makeSubPicture(sonSubEntry, sonSubEntry.getImageFile());
+            } else if (has_image) {
+                writeImageIfNotThere();
+            }
+        }//end for(SubEntry entry : sub_entry_list)                        
+    }//end private void writeImageToFile(Subtitles sub_list, File output_file)
+    
+    private void writeImageIfNotThere() {
+        File f = sonSubEntry.getImageFile();
+        if (!f.exists()) {
+            JImage.writeImage(sonSubEntry.getImage(), f, PNG_EXT);
         }
-    }//end private boolean writeSubPicture(SonSubEntry entry)
+    }//end private void writeImage()
+
     /**
      * Make a subtitle picture by drawing text onto an image, create an
      * image file, update the subtitle entry's content of the new image
@@ -304,8 +336,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
      * @return true if the process completes without errors, false otherwise.
      */
     private boolean makeSubPicture(SonSubEntry entry, File image_file) {
-        SubImage simg = new SubImage(entry);
-        BufferedImage img = simg.getImage();
+        BufferedImage img = entry.makeSubtitleTextImage();
         entry.setImage(img);
         entry.setImageFile(image_file);
         entry.getCreateSonAttribute().centreImage(img);
@@ -315,81 +346,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
             ex.printStackTrace(System.out);
             return false;
         }
-
         return true;
     }//end private boolean makeSubPicture(SubEntry entry, int id, String filename)
-    /**
-     * When manual intervention of the file-locationing is used, the dialog
-     * is displayed and user have three options to choose from, OK, Ignore,
-     * or 'Do not remind again'. This variable holds one of those values.
-     * JOptionPane.YES_OPTION,      Yes, browse the directory for new dir.
-     * JOptionPane.NO_OPTION:       Do not load this image.
-     * JOptionPane.CANCEL_OPTION:   Not remind again!
-     * These values can be examined by the external routines.
-     */
-    private int searchImageSelectedOption = JOptionPane.CANCEL_OPTION;
-    /**
-     * If this variable is set to true, manual intervention in the searching of
-     * the files is not allowed. By default, it should be set to true.
-     */
-    private boolean confirmationRequired = true;
-    private boolean overWriteAll = false;
-    private boolean noToAll = false;
-
-    /**
-     * Display an option panel which allows the confirmation to overwrite
-     * an image or not, optionally setting the flag to indicate that .
-     * @param image_file_name The target image file.
-     * @param default_directory The default directory at which the file-chooser
-     * dialog will change to when it starts.
-     * @return The new directory to search for or Null if nothing was selected,
-     * or cancel was chosen.
-     */
-    public File confirmOverWriteImage(
-            String image_file_name, File default_directory) {
-        Object[] options = {
-            _("Overwrite all"),
-            _("New directory..."),
-            _("No to all")
-        };
-
-        StringBuffer b = new StringBuffer();
-        b.append(_("Image \"{0}\"", image_file_name)).append(" ");
-        b.append(_("exists!")).append(UNIX_NL);
-        b.append(_("Would you like to overwrite?"));
-        String msg = b.toString();
-        String title = _("Overwrite confirmation!");
-
-        confirmationRequired = true;
-        overWriteAll = false;
-        noToAll = false;
-
-        searchImageSelectedOption = JOptionPane.showOptionDialog(null,
-                msg,
-                title,
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[0]);
-
-        switch (searchImageSelectedOption) {
-            case JOptionPane.YES_OPTION: //Yes overwrite all
-                this.confirmationRequired = false;
-                overWriteAll = true;
-                break;
-            case JOptionPane.NO_OPTION: //New directory
-                File directory = Share.browseDir(image_file_name, default_directory);
-                boolean dir_ok = (directory != null && directory.isDirectory());
-                confirmationRequired = !dir_ok;
-                overWriteAll = dir_ok;
-                return directory;
-            case JOptionPane.CANCEL_OPTION: //No to all
-                noToAll = true;
-                this.confirmationRequired = false;
-                break;
-        }//end selected_option
-        return null;
-    }
 }//class WriteSonSubtitle extends Thread
 
