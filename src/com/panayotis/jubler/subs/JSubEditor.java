@@ -46,6 +46,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -83,7 +84,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private boolean is_attached = false;
     private boolean isBalancingText = false;
     private BalanceText balance_text_action = null;
-    private AntialiasedJTextPane SubText = new AntialiasedJTextPane();
+    private JTextPane SubText = new JTextPane();
 
     /**
      * Creates new form JSubEditor 
