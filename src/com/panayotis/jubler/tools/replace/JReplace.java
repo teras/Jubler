@@ -7,6 +7,7 @@ package com.panayotis.jubler.tools.replace;
 
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
@@ -16,6 +17,9 @@ import javax.swing.text.StyleConstants;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.SubEntry;
+import java.awt.Point;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -26,7 +30,7 @@ public class JReplace extends javax.swing.JDialog {
     private Jubler parent;
     private Subtitles subs;
     private UndoList undo;
-    private int row,  foundpos,  nextpos,  length;
+    private int row, foundpos, nextpos, length;
 
     /**
      * Creates new form JReplace
@@ -53,25 +57,146 @@ public class JReplace extends javax.swing.JDialog {
             this.FindT.setText(find_text);
         }//end if (find_text != null)
     }//end public void setFindText(String find_text)
+
+    /**
+     * Search for word using pattern matching mechanism provided by Java.
+     * It uses "\b" to bracket the find-word pattern when asked to find
+     * the whole word. In simple case this works, but when using with
+     * Regular Expression (RE) the result depends very much on the RE's
+     * definition.
+     * If the word is found, returns the starting position and the length
+     * of the expression found in the input string in a Point structure, where
+     * Point.x = start-position, Point.y = length of expression found. Return
+     * null if error or no expression is found.
+     * @param findWord The expression to find.
+     * @param inputString The string input where searches perform.
+     * @param position The starting position where the search commences.
+     * @param is_case_insensitive Flag indicate if NO CASE SENSITIVE
+     * comparison is to be performed.
+     * @param is_whole_word The flag indicate if WHOLE WORD is to be searched.
+     * @param is_regular_expression Flag to indicate if the search pattern
+     * contains RE(s).
+     * @return An instance of Pointer p, where
+     * <pre>
+     *  p.x = first position in the input string where expression is found.
+     *  p.y = length of the expression found in the input string.
+     * </pre>
+     * or null if nothing is found or errors has occured.
+     */
+    public Point findByRE(
+            String findWord,
+            String inputString,
+            int position,
+            boolean is_case_insensitive,
+            boolean is_whole_word,
+            boolean is_regular_expression) {
+
+        Pattern wpat = null;
+
+        String find_pattern = null;
+        try {
+            position = Math.max(0, Math.min(position, inputString.length() - 1));
+            if (is_whole_word) {
+                find_pattern = "\\b" + findWord + "\\b";
+            } else {
+                find_pattern = findWord;
+            }
+            
+            String encoding = Jubler.prefs.getSaveEncoding();
+            boolean is_unicode = (encoding.startsWith("UTF-"));
+
+            int pattern_flag = 0x0;
+            if (is_case_insensitive) {
+                pattern_flag |= Pattern.CASE_INSENSITIVE;
+            }
+            if (is_unicode) {
+                pattern_flag |= Pattern.UNICODE_CASE;
+            }            
+            if (is_regular_expression) {
+                pattern_flag |= Pattern.DOTALL;
+            }
+            wpat = Pattern.compile(find_pattern, pattern_flag);
+            Matcher m = wpat.matcher(inputString);
+            if (m.find(position)) {
+                int start = m.start();
+                int end = m.end();
+                int len = (end - start);
+                Point p = new Point(start, len);
+                return p;
+            } else {
+                return null;
+            }
+        } catch (Exception ex) {
+            return null;
+        }
+    }//end public int findByRE(String findByRE, String inputString, int position)
+
+    /**
+     * Run through the subtitle list, starting at the currently selected,
+     * or stopped row, and check to see if the input expression is found
+     * in the text of subtitle-entries. This takes into account flags
+     * such as case-sesitive or not, using RE or not, and whole word searching
+     * or not.
+     * @return true if an the search pattern is found in the input, false if
+     * it is not found when it reaches the end of the subtitle, or user chosen
+     * to cancel out of the loop.
+     */
     public boolean findNextWord() {
         String what, inwhich;
+        boolean is_found;
 
         what = FindT.getText();
-        if (IgnoreC.isSelected()) {
-            what = what.toLowerCase();
-        }
-        length = what.length();
-        if (subs.size() < 1) {
+        /**
+         * HDT: 20090923 - Added sanity validation code for parameters.
+         */
+        boolean valid_find_text = (!Share.isEmpty(what));
+        boolean valid_input_text = (!Share.isEmpty(subs));
+        boolean valid_input = (valid_find_text && valid_input_text);
+        if (!valid_input) {
             return false;
         }
 
         while (true) {
+            is_found = false;
+            /**
+             * HDT: 20090923 - added this to eliminate errors in the
+             * index, especially when row reached pass the end of the
+             * subtitle list when re-entering the loop.
+             */
+            row = Math.max(0, Math.min(row, subs.size()-1));
+            
             inwhich = subs.elementAt(row).getText();
             if (IgnoreC.isSelected()) {
                 inwhich = inwhich.toLowerCase();
             }
-            foundpos = inwhich.indexOf(what, nextpos);
-            if (foundpos >= 0) {
+
+            boolean is_whole_word = this.WordBoundary.isSelected();
+            boolean is_regular_ex = this.RegularExpression.isSelected();
+            boolean is_case_insensitive = IgnoreC.isSelected();
+
+            if (is_whole_word || is_regular_ex) {
+                Point p = this.findByRE(
+                        what,
+                        inwhich,
+                        nextpos,
+                        is_case_insensitive,
+                        is_whole_word,
+                        is_regular_ex);
+
+                is_found = (p != null);
+                if (is_found) {
+                    foundpos = p.x;
+                    length = p.y;
+                }//if (is_found)
+            } else {
+                foundpos = inwhich.indexOf(what, nextpos);
+                is_found = (foundpos >= 0);
+                if (is_found) {
+                    length = (what.length());
+                }//end if (is_found)
+            }//end if (this.WordBoundary.isSelected())
+
+            if (is_found) {
                 ReplaceB.setEnabled(true);
                 ReplaceAllB.setEnabled(true);
                 nextpos = foundpos + length;
@@ -83,13 +208,18 @@ public class JReplace extends javax.swing.JDialog {
             nextpos = 0;
             if (row == subs.size()) {
                 if (!JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles"))) {
-                    prepareExit();
+                    /* prepareExit();
+                     HDT 20090923 - comment this out to allow continue to
+                     search from the top without re-entering the dialog from
+                     menu again. If user wanted to exit, they can use close
+                     button.
+                     */
                     return false;
                 }
                 row = 0;
-            }
-        }
-    }
+            }//end if (row == subs.size())
+        }//end while (true)
+    }//end public boolean findNextWord()
 
     private SubEntry[] replaceWord() {
         /* We keep track of the undo list ONLY the first time a change has been done.
@@ -146,7 +276,10 @@ public class JReplace extends javax.swing.JDialog {
         ContextT = new javax.swing.JTextPane();
         FindT = new javax.swing.JTextField();
         ReplaceT = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
         IgnoreC = new javax.swing.JCheckBox();
+        WordBoundary = new javax.swing.JCheckBox();
+        RegularExpression = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         FindB = new javax.swing.JButton();
@@ -202,9 +335,21 @@ public class JReplace extends javax.swing.JDialog {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.LINE_AXIS));
+
         IgnoreC.setText(_("Ignore case"));
-        IgnoreC.setToolTipText("Ignore the case of the found text");
-        jPanel1.add(IgnoreC, java.awt.BorderLayout.SOUTH);
+        IgnoreC.setToolTipText(_("Ignore the case of the found text"));
+        jPanel7.add(IgnoreC);
+
+        WordBoundary.setText(_("Whole Word"));
+        WordBoundary.setToolTipText(_("Find text at word boundary, excluding punctuations"));
+        jPanel7.add(WordBoundary);
+
+        RegularExpression.setText(_("Regular Expression"));
+        RegularExpression.setToolTipText(_("Find a Regular Expression"));
+        jPanel7.add(RegularExpression);
+
+        jPanel1.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -274,7 +419,7 @@ public class JReplace extends javax.swing.JDialog {
 
     private void ReplaceAllBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceAllBActionPerformed
         boolean found = true;
-        int count=0;
+        int count = 0;
         try {
             for (row = 0; (row < subs.size()) && found;) {
                 found = findNextWord();
@@ -283,13 +428,12 @@ public class JReplace extends javax.swing.JDialog {
                     count++;
                 }//end if (found)
             }//for(row =0; row < subs.size();)
-            if (count>0){
+            if (count > 0) {
                 parent.tableHasChanged(null);
             }//end if
         } catch (Exception ex) {
         }
 }//GEN-LAST:event_ReplaceAllBActionPerformed
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CloseB;
     private javax.swing.JTextPane ContextT;
@@ -297,9 +441,11 @@ public class JReplace extends javax.swing.JDialog {
     private javax.swing.JTextField FindT;
     private javax.swing.JPanel IconPanel;
     private javax.swing.JCheckBox IgnoreC;
+    private javax.swing.JCheckBox RegularExpression;
     private javax.swing.JButton ReplaceAllB;
     private javax.swing.JButton ReplaceB;
     private javax.swing.JTextField ReplaceT;
+    private javax.swing.JCheckBox WordBoundary;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -310,6 +456,7 @@ public class JReplace extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
