@@ -32,7 +32,9 @@ import com.panayotis.jubler.subs.NonDuplicatedVector;
 import javax.swing.DefaultComboBoxModel;
 
 /**
- *
+ * Extends the DefaultComboBoxModel and replaced the default vector with
+ * a non-duplicated one. This vector hold String type only and will check
+ * for existing content when new items are added, to avoid duplications.
  * @author hoang_tran <hoangduytran1960@googlemail.com>
  */
 public class NonDuplicatedComboBoxModel extends DefaultComboBoxModel{
