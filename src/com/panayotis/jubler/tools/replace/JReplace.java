@@ -5,6 +5,7 @@
  */
 package com.panayotis.jubler.tools.replace;
 
+import com.panayotis.jubler.tools.NonDuplicatedComboBoxModel;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.Share;
@@ -26,7 +27,8 @@ import java.util.regex.Pattern;
  * @author  teras
  */
 public class JReplace extends javax.swing.JDialog {
-
+    private static NonDuplicatedComboBoxModel findTModel = new NonDuplicatedComboBoxModel();
+    private static NonDuplicatedComboBoxModel replaceTModel = new NonDuplicatedComboBoxModel();
     private Jubler parent;
     private Subtitles subs;
     private UndoList undo;
@@ -49,12 +51,15 @@ public class JReplace extends javax.swing.JDialog {
 
         subs = parent.getSubtitles();
         initComponents();
+        FindT.setModel(findTModel);
+        ReplaceT.setModel(replaceTModel);
         FindT.requestFocusInWindow();
     }
-
+    
     public void setFindText(String find_text) {
         if (find_text != null) {
-            this.FindT.setText(find_text);
+            this.FindT.setSelectedItem(find_text);
+            this.FindT.addItem(find_text);
         }//end if (find_text != null)
     }//end public void setFindText(String find_text)
 
@@ -145,7 +150,7 @@ public class JReplace extends javax.swing.JDialog {
         String what, inwhich;
         boolean is_found;
 
-        what = FindT.getText();
+        what = (String) FindT.getSelectedItem();
         /**
          * HDT: 20090923 - Added sanity validation code for parameters.
          */
@@ -207,6 +212,7 @@ public class JReplace extends javax.swing.JDialog {
                 nextpos = foundpos + length;
                 setSentence(subs.elementAt(row).getText(), foundpos, length);
                 parent.setSelectedSub(row, true);
+                FindT.addItem(what);
                 return true;
             }
             row++;
@@ -237,11 +243,12 @@ public class JReplace extends javax.swing.JDialog {
 
         SubEntry[] selected = parent.getSelectedSubs();
 
-        String repl = ReplaceT.getText();
+        String repl = (String) ReplaceT.getSelectedItem();
         String older = subs.elementAt(row).getText();
         String newer = older.substring(0, foundpos) + repl + older.substring(foundpos + length);
         nextpos = foundpos + repl.length();
         subs.elementAt(row).setText(newer);
+        ReplaceT.addItem(repl); //remember replaced text
         return selected;
     }//end private SubEntry[] replaceWord()
 
@@ -279,8 +286,8 @@ public class JReplace extends javax.swing.JDialog {
         jLabel3 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         ContextT = new javax.swing.JTextPane();
-        FindT = new javax.swing.JTextField();
-        ReplaceT = new javax.swing.JTextField();
+        FindT = new javax.swing.JComboBox();
+        ReplaceT = new javax.swing.JComboBox();
         jPanel7 = new javax.swing.JPanel();
         IgnoreC = new javax.swing.JCheckBox();
         WordBoundary = new javax.swing.JCheckBox();
@@ -329,10 +336,11 @@ public class JReplace extends javax.swing.JDialog {
         ContextT.setToolTipText(_("The context of the found text"));
         jPanel4.add(ContextT);
 
-        FindT.setColumns(20);
-        FindT.setToolTipText(_("What to search for"));
+        FindT.setEditable(true);
+        FindT.setToolTipText(_("Find text in this"));
         jPanel4.add(FindT);
 
+        ReplaceT.setEditable(true);
         ReplaceT.setToolTipText(_("Replace found text with this"));
         jPanel4.add(ReplaceT);
 
@@ -443,13 +451,13 @@ public class JReplace extends javax.swing.JDialog {
     private javax.swing.JButton CloseB;
     private javax.swing.JTextPane ContextT;
     private javax.swing.JButton FindB;
-    private javax.swing.JTextField FindT;
+    private javax.swing.JComboBox FindT;
     private javax.swing.JPanel IconPanel;
     private javax.swing.JCheckBox IgnoreC;
     private javax.swing.JCheckBox RegularExpression;
     private javax.swing.JButton ReplaceAllB;
     private javax.swing.JButton ReplaceB;
-    private javax.swing.JTextField ReplaceT;
+    private javax.swing.JComboBox ReplaceT;
     private javax.swing.JCheckBox WordBoundary;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

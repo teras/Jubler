@@ -136,16 +136,23 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="FindT">
+                <Component class="javax.swing.JComboBox" name="FindT">
                   <Properties>
-                    <Property name="columns" type="int" value="20"/>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;What to search for&quot;)" type="code"/>
+                      <Connection code="_(&quot;Find text in this&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="ReplaceT">
+                <Component class="javax.swing.JComboBox" name="ReplaceT">
                   <Properties>
+                    <Property name="editable" type="boolean" value="true"/>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="0"/>
+                    </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Replace found text with this&quot;)" type="code"/>
                     </Property>
