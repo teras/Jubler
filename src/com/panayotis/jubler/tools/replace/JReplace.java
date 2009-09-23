@@ -248,6 +248,9 @@ public class JReplace extends javax.swing.JDialog {
         String newer = older.substring(0, foundpos) + repl + older.substring(foundpos + length);
         nextpos = foundpos + repl.length();
         subs.elementAt(row).setText(newer);
+        //HDT:20090923 - reset the display of the highlighted to allow users to see
+        //the changes, especially the last one when the dialog prompted.
+        setSentence(newer, foundpos, repl.length());
         ReplaceT.addItem(repl); //remember replaced text
         return selected;
     }//end private SubEntry[] replaceWord()
