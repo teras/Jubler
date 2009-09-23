@@ -189,6 +189,11 @@ public class JReplace extends javax.swing.JDialog {
                     length = p.y;
                 }//if (is_found)
             } else {
+                if (is_case_insensitive){
+                    what = what.toLowerCase();
+                    inwhich = inwhich.toLowerCase();
+                }
+
                 foundpos = inwhich.indexOf(what, nextpos);
                 is_found = (foundpos >= 0);
                 if (is_found) {
