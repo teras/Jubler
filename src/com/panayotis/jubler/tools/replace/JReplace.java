@@ -56,6 +56,8 @@ public class JReplace extends javax.swing.JDialog {
         initComponents();
         FindT.setModel(findTModel);
         ReplaceT.setModel(replaceTModel);
+        FindT.setSelectedItem("");
+        ReplaceT.setSelectedItem("");
         FindT.requestFocusInWindow();
     }
 
