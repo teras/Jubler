@@ -27,12 +27,15 @@ import java.util.regex.Pattern;
  * @author  teras
  */
 public class JReplace extends javax.swing.JDialog {
+
     private static NonDuplicatedComboBoxModel findTModel = new NonDuplicatedComboBoxModel();
     private static NonDuplicatedComboBoxModel replaceTModel = new NonDuplicatedComboBoxModel();
     private Jubler parent;
     private Subtitles subs;
     private UndoList undo;
     private int row, foundpos, nextpos, length;
+    Pattern wpat = null;
+    Matcher m = null;
 
     /**
      * Creates new form JReplace
@@ -55,7 +58,7 @@ public class JReplace extends javax.swing.JDialog {
         ReplaceT.setModel(replaceTModel);
         FindT.requestFocusInWindow();
     }
-    
+
     public void setFindText(String find_text) {
         if (find_text != null) {
             this.FindT.setSelectedItem(find_text);
@@ -96,8 +99,6 @@ public class JReplace extends javax.swing.JDialog {
             boolean is_whole_word,
             boolean is_regular_expression) {
 
-        Pattern wpat = null;
-
         String find_pattern = null;
         try {
             position = Math.max(0, Math.min(position, inputString.length() - 1));
@@ -106,7 +107,7 @@ public class JReplace extends javax.swing.JDialog {
             } else {
                 find_pattern = findWord;
             }
-            
+
             String encoding = Jubler.prefs.getSaveEncoding();
             boolean is_unicode = (encoding.startsWith("UTF-"));
 
@@ -116,12 +117,12 @@ public class JReplace extends javax.swing.JDialog {
             }
             if (is_unicode) {
                 pattern_flag |= Pattern.UNICODE_CASE;
-            }            
+            }
             if (is_regular_expression) {
                 pattern_flag |= Pattern.DOTALL;
             }
             wpat = Pattern.compile(find_pattern, pattern_flag);
-            Matcher m = wpat.matcher(inputString);
+            m = wpat.matcher(inputString);
             if (m.find(position)) {
                 int start = m.start();
                 int end = m.end();
@@ -168,8 +169,8 @@ public class JReplace extends javax.swing.JDialog {
              * index, especially when row reached pass the end of the
              * subtitle list when re-entering the loop.
              */
-            row = Math.max(0, Math.min(row, subs.size()-1));
-            
+            row = Math.max(0, Math.min(row, subs.size() - 1));
+
             inwhich = subs.elementAt(row).getText();
             if (IgnoreC.isSelected()) {
                 inwhich = inwhich.toLowerCase();
@@ -194,7 +195,7 @@ public class JReplace extends javax.swing.JDialog {
                     length = p.y;
                 }//if (is_found)
             } else {
-                if (is_case_insensitive){
+                if (is_case_insensitive) {
                     what = what.toLowerCase();
                     inwhich = inwhich.toLowerCase();
                 }
@@ -220,10 +221,10 @@ public class JReplace extends javax.swing.JDialog {
             if (row == subs.size()) {
                 if (!JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles"))) {
                     /* prepareExit();
-                     HDT 20090923 - comment this out to allow continue to
-                     search from the top without re-entering the dialog from
-                     menu again. If user wanted to exit, they can use close
-                     button.
+                    HDT 20090923 - comment this out to allow continue to
+                    search from the top without re-entering the dialog from
+                    menu again. If user wanted to exit, they can use close
+                    button.
                      */
                     return false;
                 }
@@ -241,19 +242,45 @@ public class JReplace extends javax.swing.JDialog {
             undo = null;
         }
 
+        boolean is_regular_ex = this.RegularExpression.isSelected();
         SubEntry[] selected = parent.getSelectedSubs();
 
         String repl = (String) ReplaceT.getSelectedItem();
+        repl = this.convertControlCodes(repl);
+
         String older = subs.elementAt(row).getText();
-        String newer = older.substring(0, foundpos) + repl + older.substring(foundpos + length);
-        nextpos = foundpos + repl.length();
-        subs.elementAt(row).setText(newer);
+
+        String newer = null;
+        int replaced_length = 0;
+        if (is_regular_ex) {
+            newer = m.replaceAll(repl);
+            replaced_length = (newer.length() - nextpos - 1);
+            nextpos = newer.length() - replaced_length - 1;
+        } else {
+            newer = older.substring(0, foundpos) + repl + older.substring(foundpos + length);
+            replaced_length = repl.length();
+            nextpos = foundpos + replaced_length;
+        }
         //HDT:20090923 - reset the display of the highlighted to allow users to see
         //the changes, especially the last one when the dialog prompted.
         setSentence(newer, foundpos, repl.length());
+        subs.elementAt(row).setText(newer);
         ReplaceT.addItem(repl); //remember replaced text
         return selected;
     }//end private SubEntry[] replaceWord()
+
+
+    private String convertControlCodes(String old_text) {
+        String new_string = old_text.replace("\\n", "\n");
+        old_text = new_string;
+        new_string = old_text.replace("\\r", "\r");
+        old_text = new_string;
+        new_string = old_text.replace("\\t", "\t");
+        old_text = new_string;
+        new_string = old_text.replace("\\f", "\f");
+        old_text = new_string;
+        return new_string;
+    }//end private String convertControlCodes(String old_text)
 
     private void prepareExit() {
         setVisible(false);
