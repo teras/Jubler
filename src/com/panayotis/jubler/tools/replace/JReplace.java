@@ -53,6 +53,8 @@ public class JReplace extends javax.swing.JDialog {
         initComponents();
         FindT.setModel(findTModel);
         ReplaceT.setModel(replaceTModel);
+        FindT.setEditor(new JComboBoxEditorAsJTextArea());
+        ReplaceT.setEditor(new JComboBoxEditorAsJTextArea());
         FindT.requestFocusInWindow();
     }
     
