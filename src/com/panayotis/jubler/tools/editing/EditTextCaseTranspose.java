@@ -37,6 +37,7 @@ import com.panayotis.jubler.subs.events.WordLocatedEvent;
 import com.panayotis.jubler.subs.events.WordLocatedEventListener;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
@@ -174,6 +175,42 @@ public class EditTextCaseTranspose extends JMenuItem implements ActionListener, 
     }//public void actionPerformed(java.awt.event.ActionEvent evt)
 
     /**
+     * Split text into a word-list, at word-boundary,
+     * then filter out the empty words and only select the non-empty words
+     * into the list for examinations.
+     * @param current_text The text to be split
+     * @return A vector of words. It might be empty.
+     */
+    private Vector<String> getWordList(String current_text){
+        String[] word_list = current_text.split(word_boundary);
+        Vector<String>actual_word_list = new Vector<String>();
+        for (String word : word_list){
+            if (! Share.isEmpty(word)){
+                actual_word_list.add(word);
+            }//end if (! Share.isEmpty(word))
+        }//end for (String word : word_list)
+        return actual_word_list;
+    }//end private String[] getWordList(String text)
+
+    /**
+     * Checks to see if a vector of strings contains words
+     * with length greater than one or not.
+     * @param word_list The vector contains words
+     * @return true if all words contain only a single letter, false
+     * if one of them is longer.
+     */
+    private boolean isSingleLetterWord(Vector<String> word_list){
+        if (Share.isEmpty(word_list))
+            return false;
+
+        for(String word: word_list){
+            int len = word.length();
+            if (len > 1)
+                return false;
+        }//end for(String word: word_list)
+        return true;
+    }//end private boolean isSingleLetterWord(Vector<String> word_list)
+    /**
      * Based on the status of the current text, works out what should
      * be the next case-transpose action should be taken.
      * <blockquote><ol>
@@ -193,7 +230,12 @@ public class EditTextCaseTranspose extends JMenuItem implements ActionListener, 
             String upper_text = current_text.toUpperCase();
             boolean is_upper = (current_text.compareTo(upper_text) == 0);
             if (is_upper) {
-                return CaseAction.TO_FIRST_CHARACTER_UPPER;
+                Vector<String> word_list = getWordList(current_text);
+                boolean is_to_lower = isSingleLetterWord(word_list);
+                if (is_to_lower)
+                    return CaseAction.TO_LOWER_CASE;
+                else
+                    return CaseAction.TO_FIRST_CHARACTER_UPPER;
             } else {
                 return CaseAction.TO_LOWER_CASE;
             }
