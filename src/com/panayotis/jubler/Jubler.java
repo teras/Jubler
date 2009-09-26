@@ -79,6 +79,7 @@ import com.panayotis.jubler.tools.editing.BalanceText;
 import com.panayotis.jubler.tools.editing.EditCopy;
 import com.panayotis.jubler.tools.editing.EditCut;
 import com.panayotis.jubler.tools.editing.EditPaste;
+import com.panayotis.jubler.tools.editing.EditTextCaseTranspose;
 import com.panayotis.jubler.tools.editing.InsertBlankLine;
 import com.panayotis.jubler.tools.editing.MoveText;
 import com.panayotis.jubler.tools.ocr.OCRAction;
@@ -203,6 +204,7 @@ public class Jubler extends JFrame implements CommonDef{
     private SplitSONSubtitleAction splitSONSubtitleAction = new SplitSONSubtitleAction(this);
     private PackingImagesToTiffAction packingImagesToTiffAction = new PackingImagesToTiffAction(this);
     private PackingImageFilesToTiffAction packingImageFilesToTiffAction = new PackingImageFilesToTiffAction(this);
+    private EditTextCaseTranspose caseTransposeAction = new EditTextCaseTranspose(this);
     
     static {
         windows = new JublerList();
@@ -267,7 +269,8 @@ public class Jubler extends JFrame implements CommonDef{
         SplitSONSubtitleFile.addActionListener(splitSONSubtitleAction);
         PackingImagesToTiffM.addActionListener(packingImagesToTiffAction);
         PackingImageFilesToTiffFM.addActionListener(packingImageFilesToTiffAction);
-        
+
+        CaseTranspose.addActionListener(caseTransposeAction);
         /**
          * This is to make sure that the combo-box index matches the currently
          * selected options, especially when new instance is created.
@@ -570,6 +573,7 @@ public class Jubler extends JFrame implements CommonDef{
         UndoEM = new javax.swing.JMenuItem();
         RedoEM = new javax.swing.JMenuItem();
         ToolsM = new javax.swing.JMenu();
+        CaseTranspose = new javax.swing.JMenuItem();
         SplitTM = new javax.swing.JMenuItem();
         JoinTM = new javax.swing.JMenuItem();
         ReparentTM = new javax.swing.JMenuItem();
@@ -1220,6 +1224,10 @@ public class Jubler extends JFrame implements CommonDef{
         ToolsM.setText(_("&Tools"));
         ToolsM.setEnabled(false);
 
+        CaseTranspose.setText(_("Case Transpose"));
+        CaseTranspose.setName("TTR"); // NOI18N
+        ToolsM.add(CaseTranspose);
+
         SplitTM.setText(_("Split file"));
         SplitTM.setName("TSP"); // NOI18N
         SplitTM.addActionListener(formListener);
@@ -1686,14 +1694,14 @@ public class Jubler extends JFrame implements CommonDef{
             else if (evt.getSource() == OCRAll) {
                 Jubler.this.OCRAllActionPerformed(evt);
             }
+            else if (evt.getSource() == PackingImagesToTiffM) {
+                Jubler.this.PackingImagesToTiffMActionPerformed(evt);
+            }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == PackingImagesToTiffM) {
-                Jubler.this.PackingImagesToTiffMActionPerformed(evt);
             }
         }
 
@@ -2373,6 +2381,7 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JMenuItem BeforeIEM;
     private javax.swing.JMenuItem BeginningTTM;
     private javax.swing.JMenuItem BottomGEM;
+    private javax.swing.JMenuItem CaseTranspose;
     private javax.swing.JMenuItem ChildNFM;
     private javax.swing.JMenuItem CloseFM;
     private javax.swing.JMenuItem CopyComponentEM;

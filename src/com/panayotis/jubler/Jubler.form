@@ -863,6 +863,14 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="CaseTranspose">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="_(&quot;Case Transpose&quot;)" type="code"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="TTR" noResource="true"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SplitTM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">

@@ -111,6 +111,14 @@ public interface CommonDef {
      */
     public static final String printable = "(\\p{Print}+)";
     /**
+     * "(\\p{Punct}+)"
+     */
+    public static final String punctuation = "(\\p{Punct}+)";
+    /**
+     * "[" + white_sp +  "|" + punctuation + "]";
+     */
+    public static final String word_boundary = "[" + white_sp +  "|" + punctuation + "]";
+    /**
      * "(.*?)"
      */
     public static final String anything = "(.*?)";

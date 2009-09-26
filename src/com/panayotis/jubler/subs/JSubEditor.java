@@ -84,7 +84,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private boolean is_attached = false;
     private boolean isBalancingText = false;
     private BalanceText balance_text_action = null;
-    private JTextPane SubText = new JTextPane();
+    private JTextPane subTextEditor = new JTextPane();
 
     /**
      * Creates new form JSubEditor 
@@ -94,17 +94,17 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         initComponents();
 
-        SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
-        SubText.setFont(new java.awt.Font("Dialog", 1, 14));
-        SubText.setToolTipText(_("Editor of the subtitle text"));
-        SubText.setPreferredSize(new java.awt.Dimension(0, 30));
-        SubText.addCaretListener(new javax.swing.event.CaretListener() {
+        subTextEditor.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
+        subTextEditor.setFont(new java.awt.Font("Dialog", 1, 14));
+        subTextEditor.setToolTipText(_("Editor of the subtitle text"));
+        subTextEditor.setPreferredSize(new java.awt.Dimension(0, 30));
+        subTextEditor.addCaretListener(new javax.swing.event.CaretListener() {
 
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
                 SubTextCaretUpdate(evt);
             }
         });
-        jScrollPane1.setViewportView(SubText);
+        jScrollPane1.setViewportView(subTextEditor);
 
 
         TextBalancingSlider.setVisible(isBalancingText);
@@ -128,8 +128,8 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         set.addAttribute(StyleConstants.ParagraphConstants.Alignment, new Integer(StyleConstants.ParagraphConstants.ALIGN_CENTER));
         //set.addAttribute(StyleConstants.StrikeThrough, new Boolean(true));
 
-        SubText.getStyledDocument().setParagraphAttributes(0, 1, set, false);
-        SubText.getDocument().addDocumentListener(this);
+        subTextEditor.getStyledDocument().setParagraphAttributes(0, 1, set, false);
+        subTextEditor.getDocument().addDocumentListener(this);
 
         setSpinnerProps();
 
@@ -149,7 +149,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     public void setData(SubEntry entry) {
         this.entry = entry;
         String txt = entry.getText();
-        SubText.setText(txt);
+        subTextEditor.setText(txt);
         SubStart.setTimeValue(entry.getStartTime());
         SubFinish.setTimeValue(entry.getFinishTime());
         SubDur.setTimeValue(new Time(entry.getFinishTime().toSeconds() - entry.getStartTime().toSeconds()));
@@ -173,11 +173,11 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     }
 
     public void focusOnText() {
-        SubText.requestFocusInWindow();
+        subTextEditor.requestFocusInWindow();
     }
 
     public String getSubText() {
-        return SubText.getText();
+        return subTextEditor.getText();
     }
 
     public void spinnerChanged(JTimeSpinner which) {
@@ -302,7 +302,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         Lock3.setEnabled(enabled);
         lockTimeSpinners(enabled);
 
-        SubText.setEnabled(enabled);
+        subTextEditor.setEnabled(enabled);
         EditB.setEnabled(enabled);
         setStyleListEnabled(enabled);
         TextBalancingB.setEnabled(enabled);
@@ -315,8 +315,8 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         /* Fix the attributes of the sub text area */
         if (entry == null || (!enabled)) {
-            SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.background"));
-            SubText.setForeground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
+            subTextEditor.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.background"));
+            subTextEditor.setForeground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
         } else {
             SubStyle style = entry.getStyle();
             if (style == null) {
@@ -364,17 +364,17 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         ignore_style_list_changes = true;
         StyleListC.setSelectedIndex(styles.getStyleIndex(entry));
         SimpleAttributeSet set = new SimpleAttributeSet();
-        SubText.getStyledDocument().setCharacterAttributes(0, SubText.getText().length(), set, true);
+        subTextEditor.getStyledDocument().setCharacterAttributes(0, subTextEditor.getText().length(), set, true);
         if (ShowStyleB.isSelected()) {
-            entry.applyAttributesToDocument(SubText);
+            entry.applyAttributesToDocument(subTextEditor);
         } else {
-            SubText.setBackground(Color.WHITE);
-            SubText.setCaretColor(Color.BLACK);
+            subTextEditor.setBackground(Color.WHITE);
+            subTextEditor.setCaretColor(Color.BLACK);
             set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
             set.addAttribute(StyleConstants.FontFamily, "Arial");
             set.addAttribute(StyleConstants.FontSize, 24);
             set.addAttribute(StyleConstants.Foreground, Color.BLACK);
-            SubText.getStyledDocument().setParagraphAttributes(0, SubText.getText().length(), set, true);
+            subTextEditor.getStyledDocument().setParagraphAttributes(0, subTextEditor.getText().length(), set, true);
         }
         ignore_style_list_changes = false;
     }
@@ -807,12 +807,12 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
     public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
-        entry.setOverStyle(type, value, SubText.getSelectionStart(), SubText.getSelectionEnd());
+        entry.setOverStyle(type, value, subTextEditor.getSelectionStart(), subTextEditor.getSelectionEnd());
         SwingUtilities.invokeLater(stylethread);
         focusOnText();
     }
 
-    /* Document listener methods to get feedback from the change of the SubText
+    /* Document listener methods to get feedback from the change of the subTextEditor
      * The style update SHOULD be done asynchronusly
      */
     public void insertUpdate(DocumentEvent e) {
@@ -824,7 +824,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         SwingUtilities.invokeLater(stylethread);
     }
 
-    /* Document listener methods to get feedback from the change of the SubText
+    /* Document listener methods to get feedback from the change of the subTextEditor
      * The style update SHOULD be done asynchronusly
      */
     public void removeUpdate(DocumentEvent e) {
@@ -841,7 +841,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     }
 
     public String getSelectedText() {
-        return SubText.getSelectedText();
+        return subTextEditor.getSelectedText();
     }//end public String getSelectedText()
     Thread stylethread = new Thread() {
 
@@ -888,4 +888,11 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the subTextEditor
+     */
+    public JTextPane getSubTextEditor() {
+        return subTextEditor;
+    }
 }
