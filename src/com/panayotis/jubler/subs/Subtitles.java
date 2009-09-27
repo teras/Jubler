@@ -667,5 +667,12 @@ public class Subtitles extends AbstractTableModel {
 
         fireTableRowsUpdated(first, last);
     }
+
+    /**
+     * @param jubler the jubler to set
+     */
+    public void setJubler(Jubler jubler) {
+        this.jubler = jubler;
+    }
 }//end public class Subtitles extends AbstractTableModel
 
