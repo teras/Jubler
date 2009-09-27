@@ -29,15 +29,12 @@
 package com.panayotis.jubler.tools.editing;
 
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.undo.UndoEntry;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 import javax.swing.JMenuItem;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
 /**
  * This routine moves the subtile recordS up or down the vector of the
@@ -83,11 +80,8 @@ public class MoveRecord extends JMenuItem implements ActionListener {
             int range_from = selected_rows[0];
             int range_to = selected_rows[len - 1];
             subs.moveRow(range_from, range_to, target_line);
-        } catch (Exception ex) {
-            ex.printStackTrace(System.out);
-        } finally {
             jublerParent.tableHasChanged(null);
-        }//end try/catch
+        } catch (Exception ex) {}
     }//public void actionPerformed(java.awt.event.ActionEvent evt)
 
     /**
