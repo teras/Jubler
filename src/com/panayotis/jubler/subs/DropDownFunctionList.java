@@ -38,6 +38,8 @@ public class DropDownFunctionList {
     public static enum FunctionList {
 
         FN_GOTO_LINE,
+        FN_MOVE_RECORDS_UP,
+        FN_MOVE_RECORDS_DOWN,
         FN_MOVE_TEXT_UP,
         FN_MOVE_TEXT_DOWN,
         FN_INSERT_BLANK_LINE_ABOVE,
@@ -49,6 +51,8 @@ public class DropDownFunctionList {
      */
     public static FunctionList[] FunctionListArray = new FunctionList[]{
         FunctionList.FN_GOTO_LINE,
+        FunctionList.FN_MOVE_RECORDS_UP,
+        FunctionList.FN_MOVE_RECORDS_DOWN,
         FunctionList.FN_MOVE_TEXT_UP,
         FunctionList.FN_MOVE_TEXT_DOWN,
         FunctionList.FN_INSERT_BLANK_LINE_ABOVE,
@@ -84,10 +88,12 @@ public class DropDownFunctionList {
      */
     public static String[] fnNames = new String[]{
         _("Goto line"),
+        _("Move Record(s) up"),
+        _("Move Record(s) down"),
         _("Move text up"),
         _("Move text down"),
-        _("Blank line above"),
-        _("Blank line below"),
+        _("Inser Blank line above"),
+        _("Insert Blank line below"),
     };    
     
 }//end public class DropDownFunctionList

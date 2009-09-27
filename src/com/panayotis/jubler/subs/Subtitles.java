@@ -480,7 +480,7 @@ public class Subtitles extends AbstractTableModel {
             ex.printStackTrace(System.out);
             return null;
         }
-    //return sublist.elementAt(row).getData(row, visibleToReal(col));
+        //return sublist.elementAt(row).getData(row, visibleToReal(col));
 
     }
 
@@ -511,6 +511,7 @@ public class Subtitles extends AbstractTableModel {
             }//if (visiblecols[i])
         }//end for (int i = 0; i < visiblecols.length; i++)
     }//end public void recalculateTableSize(JTable t)
+
     /**
      * This routine will convert the current subtitle-entries to a target class
      * using the implementation of 'copyRecord' method in {@link SubEntry} and
@@ -593,12 +594,78 @@ public class Subtitles extends AbstractTableModel {
             return false;
         }
     }//end public void convert(Class tagert_class)
+
     public Jubler getJubler() {
         return jubler;
     }
 
-    public void setJubler(Jubler jubler) {
-        this.jubler = jubler;
+    /**
+     * @param sublist the sublist to set
+     */
+    public void setSublist(Vector<SubEntry> sublist) {
+        this.sublist = sublist;
+    }
+
+    private static int gcd(int i, int j) {
+        return (j == 0) ? i : gcd(j, i % j);
+    }
+
+    private static void rotate(Vector<SubEntry> v, int a, int b, int shift) {
+        int size = b - a;
+        int r = size - shift;
+        int g = gcd(size, r);
+        for (int i = 0; i < g; i++) {
+            int to = i;
+            SubEntry tmp = v.elementAt(a + to);
+            for (int from = (to + r) % size; from != i; from = (to + r) % size) {
+                v.setElementAt(v.elementAt(a + from), a + to);
+                to = from;
+            }
+            v.setElementAt(tmp, a + to);
+        }
+    }
+
+    /**
+     *  Moves one or more rows from the inclusive range <code>start</code> to
+     *  <code>end</code> to the <code>to</code> position in the model.
+     *  After the move, the row that was at index <code>start</code>
+     *  will be at index <code>to</code>.
+     *  This method will send a <code>tableChanged</code> notification
+     *  message to all the listeners. <p>
+     *
+     *  <pre>
+     *  Examples of moves:
+     *  <p>
+     *  1. moveRow(1,3,5);
+     *          a|B|C|D|e|f|g|h|i|j|k   - before
+     *          a|e|f|g|h|B|C|D|i|j|k   - after
+     *  <p>
+     *  2. moveRow(6,7,1);
+     *          a|b|c|d|e|f|G|H|i|j|k   - before
+     *          a|G|H|b|c|d|e|f|i|j|k   - after
+     *  <p>
+     *  </pre>
+     *
+     * @param   start       the starting row index to be moved
+     * @param   end         the ending row index to be moved
+     * @param   to          the destination of the rows to be moved
+     * @exception  ArrayIndexOutOfBoundsException  if any of the elements
+     * would be moved out of the table's range
+     *
+     */
+    public void moveRow(int start, int end, int to) {
+        int shift = to - start;
+        int first, last;
+        if (shift < 0) {
+            first = to;
+            last = end;
+        } else {
+            first = start;
+            last = to + end - start;
+        }
+        rotate(sublist, first, last + 1, shift);
+
+        fireTableRowsUpdated(first, last);
     }
 }//end public class Subtitles extends AbstractTableModel
 

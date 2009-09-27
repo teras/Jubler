@@ -81,6 +81,7 @@ import com.panayotis.jubler.tools.editing.EditCut;
 import com.panayotis.jubler.tools.editing.EditPaste;
 import com.panayotis.jubler.tools.editing.EditTextCaseTranspose;
 import com.panayotis.jubler.tools.editing.InsertBlankLine;
+import com.panayotis.jubler.tools.editing.MoveRecord;
 import com.panayotis.jubler.tools.editing.MoveText;
 import com.panayotis.jubler.tools.ocr.OCRAction;
 import com.panayotis.jubler.tools.ocr.PackingImageFilesToTiffAction;
@@ -193,6 +194,7 @@ public class Jubler extends JFrame implements CommonDef{
     private AppendFromFile appendFromFile = new AppendFromFile(this);
     private SplitRecord splitRecord = new SplitRecord();
     private ImportComponent importComponent = new ImportComponent(this);
+    private MoveRecord moveRecord = new MoveRecord(this);
     private MoveText moveText = new MoveText(this);
     private InsertBlankLine insertBlankLine = new InsertBlankLine(this);
     private BalanceText balanceText = new BalanceText(this);
@@ -2298,6 +2300,14 @@ private void OptTextLineActListActionPerformed(java.awt.event.ActionEvent evt) {
 private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DoItTBActionPerformed
     evt.setSource(this);
     switch (fnOption) {
+        case FN_MOVE_RECORDS_UP:
+            moveRecord.setMoveDown(false);
+            moveRecord.actionPerformed(evt);
+            break;
+        case FN_MOVE_RECORDS_DOWN:
+            moveRecord.setMoveDown(true);
+            moveRecord.actionPerformed(evt);
+            break;
         case FN_MOVE_TEXT_UP:
             moveText.setMoveTextDown(false);
             moveText.actionPerformed(evt);
