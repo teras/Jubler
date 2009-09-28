@@ -2711,7 +2711,6 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
         DropDownActionNumberOfLine.setEnabled(true);
         DropDownActionNumberOfLine.setEditable(true);
         DropDownActionList.setEnabled(true);
-        LineNumOrNumLineSwitcher.setEnabled(true);
         AppendFromFileFM.setEnabled(true);
         ImportComponentFM.setEnabled(true);
 
