@@ -278,7 +278,7 @@ public class Jubler extends JFrame implements CommonDef{
          * selected options, especially when new instance is created.
          */
         int sel_index = DropDownFunctionList.getFunctionIndex(fnOption);
-        OptTextLineActList.setSelectedIndex(sel_index);
+        DropDownActionList.setSelectedIndex(sel_index);
 
         SubSplitPane.add(preview, JSplitPane.TOP);
         enablePreview(false);
@@ -505,8 +505,8 @@ public class Jubler extends JFrame implements CommonDef{
         PreviewTB = new javax.swing.JButton();
         jSeparator15 = new javax.swing.JToolBar.Separator();
         MoveTextTP = new javax.swing.JPanel();
-        OptTextLineActList = new javax.swing.JComboBox();
-        OptNumberOfLine = new javax.swing.JComboBox();
+        DropDownActionList = new javax.swing.JComboBox();
+        DropDownActionNumberOfLine = new javax.swing.JComboBox();
         DoItTB = new javax.swing.JButton();
         jSeparator18 = new javax.swing.JToolBar.Separator();
         JublerMenuBar = new javax.swing.JMenuBar();
@@ -871,26 +871,26 @@ public class Jubler extends JFrame implements CommonDef{
         MoveTextTP.setPreferredSize(new java.awt.Dimension(300, 31));
         MoveTextTP.setLayout(new java.awt.GridBagLayout());
 
-        OptTextLineActList.setModel(fnComboboxModel);
-        OptTextLineActList.setToolTipText(_("Quick operations"));
-        OptTextLineActList.setEnabled(false);
-        OptTextLineActList.setMaximumSize(new java.awt.Dimension(100, 22));
-        OptTextLineActList.setPreferredSize(new java.awt.Dimension(150, 22));
-        OptTextLineActList.addActionListener(formListener);
+        DropDownActionList.setModel(fnComboboxModel);
+        DropDownActionList.setToolTipText(_("Quick operations"));
+        DropDownActionList.setEnabled(false);
+        DropDownActionList.setMaximumSize(new java.awt.Dimension(100, 22));
+        DropDownActionList.setPreferredSize(new java.awt.Dimension(150, 22));
+        DropDownActionList.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
-        MoveTextTP.add(OptTextLineActList, gridBagConstraints);
+        MoveTextTP.add(DropDownActionList, gridBagConstraints);
 
-        OptNumberOfLine.setModel(new IntegerComboBoxModel(new int[]{1,2,3,5,7,10,15,30,50,100}));
-        OptNumberOfLine.setToolTipText(_("Number of lines"));
-        OptNumberOfLine.setEnabled(false);
-        OptNumberOfLine.setMaximumSize(new java.awt.Dimension(50, 22));
-        OptNumberOfLine.setPreferredSize(new java.awt.Dimension(50, 22));
-        OptNumberOfLine.addActionListener(formListener);
+        DropDownActionNumberOfLine.setModel(new IntegerComboBoxModel(new int[]{1,2,3,5,7,10,15,30,50,100}));
+        DropDownActionNumberOfLine.setToolTipText(_("Number of lines"));
+        DropDownActionNumberOfLine.setEnabled(false);
+        DropDownActionNumberOfLine.setMaximumSize(new java.awt.Dimension(50, 22));
+        DropDownActionNumberOfLine.setPreferredSize(new java.awt.Dimension(50, 22));
+        DropDownActionNumberOfLine.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -898,10 +898,10 @@ public class Jubler extends JFrame implements CommonDef{
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        MoveTextTP.add(OptNumberOfLine, gridBagConstraints);
+        MoveTextTP.add(DropDownActionNumberOfLine, gridBagConstraints);
 
-        DoItTB.setText("Do it");
-        DoItTB.setToolTipText(_("Perform quick operation"));
+        DoItTB.setText(_("Do it"));
+        DoItTB.setToolTipText(_("Perform drop-down operation"));
         DoItTB.setEnabled(false);
         DoItTB.setMaximumSize(new java.awt.Dimension(60, 32));
         DoItTB.setMinimumSize(new java.awt.Dimension(40, 32));
@@ -1471,11 +1471,11 @@ public class Jubler extends JFrame implements CommonDef{
             else if (evt.getSource() == PreviewTB) {
                 Jubler.this.PreviewTBCurrentTTMActionPerformed(evt);
             }
-            else if (evt.getSource() == OptTextLineActList) {
-                Jubler.this.OptTextLineActListActionPerformed(evt);
+            else if (evt.getSource() == DropDownActionList) {
+                Jubler.this.DropDownActionListActionPerformed(evt);
             }
-            else if (evt.getSource() == OptNumberOfLine) {
-                Jubler.this.OptNumberOfLineActionPerformed(evt);
+            else if (evt.getSource() == DropDownActionNumberOfLine) {
+                Jubler.this.DropDownActionNumberOfLineActionPerformed(evt);
             }
             else if (evt.getSource() == DoItTB) {
                 Jubler.this.DoItTBActionPerformed(evt);
@@ -2278,24 +2278,24 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
 
-private void OptNumberOfLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptNumberOfLineActionPerformed
+private void DropDownActionNumberOfLineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DropDownActionNumberOfLineActionPerformed
     int value = numberOfLine;
     try {
-        value = ((Integer) OptNumberOfLine.getSelectedItem()).intValue();
+        value = ((Integer) DropDownActionNumberOfLine.getSelectedItem()).intValue();
         numberOfLine = value;
         DoItTBActionPerformed(evt);
     } catch (Exception ex) {
-        OptNumberOfLine.getModel().setSelectedItem(Integer.valueOf(numberOfLine));
+        DropDownActionNumberOfLine.getModel().setSelectedItem(Integer.valueOf(numberOfLine));
     }
-}//GEN-LAST:event_OptNumberOfLineActionPerformed
+}//GEN-LAST:event_DropDownActionNumberOfLineActionPerformed
 
-private void OptTextLineActListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OptTextLineActListActionPerformed
+private void DropDownActionListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DropDownActionListActionPerformed
     try {
-        int selected_action_index = this.OptTextLineActList.getSelectedIndex();
+        int selected_action_index = this.DropDownActionList.getSelectedIndex();
         fnOption = DropDownFunctionList.FunctionListArray[selected_action_index];
     } catch (Exception ex) {
     }
-}//GEN-LAST:event_OptTextLineActListActionPerformed
+}//GEN-LAST:event_DropDownActionListActionPerformed
 
 private void DoItTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DoItTBActionPerformed
     evt.setSource(this);
@@ -2334,7 +2334,7 @@ private void byLineNumberEMActionPerformed(java.awt.event.ActionEvent evt) {//GE
     try {
         int goto_line_function_index = DropDownFunctionList.getFunctionIndex(
                 DropDownFunctionList.FunctionList.FN_GOTO_LINE);
-        OptTextLineActList.setSelectedIndex(goto_line_function_index);
+        DropDownActionList.setSelectedIndex(goto_line_function_index);
         this.gotoLine();
     } catch (Exception ex) {
     }
@@ -2408,6 +2408,8 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JMenu DeleteEM;
     private javax.swing.JMenuItem DeleteP;
     private javax.swing.JButton DoItTB;
+    private javax.swing.JComboBox DropDownActionList;
+    private javax.swing.JComboBox DropDownActionNumberOfLine;
     private javax.swing.JMenu DuplicationTM;
     private javax.swing.JMenu EditM;
     private javax.swing.JPanel EditTP;
@@ -2448,8 +2450,6 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JMenuItem OCRSelected;
     private javax.swing.JMenu OCRTM;
     private javax.swing.JMenuItem OpenFM;
-    private javax.swing.JComboBox OptNumberOfLine;
-    private javax.swing.JComboBox OptTextLineActList;
     private javax.swing.JMenuItem PackingImageFilesToTiffFM;
     private javax.swing.JMenuItem PackingImagesToTiffM;
     private javax.swing.JMenuItem PasteEM;
@@ -2708,9 +2708,10 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
         DoItTB.setEnabled(true);
-        OptNumberOfLine.setEnabled(true);
-        OptNumberOfLine.setEditable(true);
-        OptTextLineActList.setEnabled(true);
+        DropDownActionNumberOfLine.setEnabled(true);
+        DropDownActionNumberOfLine.setEditable(true);
+        DropDownActionList.setEnabled(true);
+        LineNumOrNumLineSwitcher.setEnabled(true);
         AppendFromFileFM.setEnabled(true);
         ImportComponentFM.setEnabled(true);
 
@@ -3178,11 +3179,11 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
      */
     private void gotoLine() {
         try {
-            Integer integer = (Integer) OptNumberOfLine.getEditor().getItem();
+            Integer integer = (Integer) DropDownActionNumberOfLine.getEditor().getItem();
             numberOfLine = integer.intValue();            
             setSelectedSub(numberOfLine - 1, true);            
         } catch (Exception ex) {
-            OptNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
+            DropDownActionNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
         }
     }//private void gotoLine()
 
