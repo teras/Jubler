@@ -98,6 +98,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.dnd.DropTarget;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -108,6 +109,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ComboBoxModel;
+import javax.swing.DropMode;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -415,6 +417,10 @@ public class Jubler extends JFrame implements CommonDef{
         BasicPanel.setTransferHandler(r);
         JublerTools.setTransferHandler(r);
         SubTable.setTransferHandler(r);
+        SubTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        SubTable.setDropMode(DropMode.INSERT_ROWS);
+        SubTable.setDragEnabled(true);
+        //SubTable.setDropTarget(new DropTarget(SubTable, r));
     }
 
     private void updateRecentFile(File recent) {

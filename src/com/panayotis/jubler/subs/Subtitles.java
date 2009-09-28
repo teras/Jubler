@@ -296,6 +296,10 @@ public class Subtitles extends AbstractTableModel {
         sublist.remove(sub);
     }
 
+    public void removeAll(Vector<SubEntry> subs) {
+        sublist.removeAll(subs);
+    }
+
     public SubEntry elementAt(int i) {
         return sublist.elementAt(i);
     }
@@ -467,6 +471,13 @@ public class Subtitles extends AbstractTableModel {
         return COLNAME[visibleToReal(index)];
     }
 
+    public SubEntry getRecordAtRow(int row){
+        try{
+            return (SubEntry) sublist.elementAt(row);
+        }catch(Exception ex){
+            return null;
+        }
+    }
     public Object getValueAt(int row, int col) {
         Object value;
         int column;
