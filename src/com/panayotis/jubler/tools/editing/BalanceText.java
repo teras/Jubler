@@ -314,7 +314,9 @@ public class BalanceText extends JMenuItem implements ActionListener, CommonDef 
         //boolean text_changed = false;
         try {
             Subtitles subs = jublerParent.getSubtitles();
-            jublerParent.getUndoList().addUndo(new UndoEntry(subs, action_name));
+            //Remove the undo feature, since it causes so much memory allocation
+            //that would eventually generates OutOfMemory error. HDT:20090929
+            //jublerParent.getUndoList().addUndo(new UndoEntry(subs, action_name));
             JTable tbl = jublerParent.getSubTable();
             int selected_row = tbl.getSelectedRow();
 
