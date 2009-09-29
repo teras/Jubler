@@ -76,9 +76,6 @@ import com.panayotis.jubler.tools.duplication.RemoveTimeDuplication;
 import com.panayotis.jubler.tools.duplication.RemoveTopLineDuplication;
 import com.panayotis.jubler.tools.duplication.SplitSONSubtitleAction;
 import com.panayotis.jubler.tools.editing.BalanceText;
-import com.panayotis.jubler.tools.editing.EditCopy;
-import com.panayotis.jubler.tools.editing.EditCut;
-import com.panayotis.jubler.tools.editing.EditPaste;
 import com.panayotis.jubler.tools.editing.EditTextCaseTranspose;
 import com.panayotis.jubler.tools.editing.InsertBlankLine;
 import com.panayotis.jubler.tools.editing.MoveRecord;
@@ -95,6 +92,7 @@ import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -107,6 +105,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.AbstractButton;
+import javax.swing.Action;
 import javax.swing.ComboBoxModel;
 import javax.swing.DropMode;
 import javax.swing.ImageIcon;
@@ -120,6 +119,7 @@ import javax.swing.JTable;
 import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -128,7 +128,7 @@ import javax.swing.event.ListSelectionListener;
  * The main GUI entrance into the application.
  * @author  teras
  */
-public class Jubler extends JFrame implements CommonDef{
+public class Jubler extends JFrame implements CommonDef {
 
     public static JublerList windows;
     public static ArrayList<SubEntry> copybuffer;
@@ -200,15 +200,12 @@ public class Jubler extends JFrame implements CommonDef{
     private InsertBlankLine insertBlankLine = new InsertBlankLine(this);
     private BalanceText balanceText = new BalanceText(this);
     private ViewHeader viewHeader = new ViewHeader(this);
-    private EditCopy editCopy = new EditCopy(this);
-    private EditCut editCut = new EditCut(this);
-    private EditPaste editPaste = new EditPaste(this);
     private OCRAction ocrAction = new OCRAction(this);
     private SplitSONSubtitleAction splitSONSubtitleAction = new SplitSONSubtitleAction(this);
     private PackingImagesToTiffAction packingImagesToTiffAction = new PackingImagesToTiffAction(this);
     private PackingImageFilesToTiffAction packingImageFilesToTiffAction = new PackingImageFilesToTiffAction(this);
     private EditTextCaseTranspose caseTransposeAction = new EditTextCaseTranspose(this);
-    
+
     static {
         windows = new JublerList();
         copybuffer = new ArrayList<SubEntry>();
@@ -250,25 +247,13 @@ public class Jubler extends JFrame implements CommonDef{
         SplitRecordTM.addActionListener(splitRecord);
         ViewHeaderTM.addActionListener(viewHeader);
 
-        CutTB.addActionListener(editCut);
-        CutEM.addActionListener(editCut);
-        CutP.addActionListener(editCut);
-
-        CopyTB.addActionListener(editCopy);
-        CopyEM.addActionListener(editCopy);
-        CopyP.addActionListener(editCopy);
-
-        PasteTB.addActionListener(editPaste);
-        PasteEM.addActionListener(editPaste);
-        PasteP.addActionListener(editPaste);
-
         ocrAction.setLanguage("eng");
         String working_dir = FileCommunicator.getCurrentPath();
         File tesseract_path = new File(working_dir, "tesseract");
         String tesseract_path_as_string = tesseract_path.getAbsolutePath();
-        
+
         ocrAction.setTessPath(tesseract_path_as_string + FILE_SEP);
-        
+
         SplitSONSubtitleFile.addActionListener(splitSONSubtitleAction);
         PackingImagesToTiffM.addActionListener(packingImagesToTiffAction);
         PackingImageFilesToTiffFM.addActionListener(packingImageFilesToTiffAction);
@@ -435,7 +420,7 @@ public class Jubler extends JFrame implements CommonDef{
         if (filename == null) {
             Jubler jub = new Jubler(new Subtitles(subs));
             jub.initNewFile(subs.getCurrentFile().getPath() + _("_clone"));
-        /* The user wants to clone current file */
+            /* The user wants to clone current file */
         } else {
             loadFileFromHere(new File(filename), false);
         }
@@ -542,9 +527,6 @@ public class Jubler extends JFrame implements CommonDef{
         CopyEM = new javax.swing.JMenuItem();
         PasteEM = new javax.swing.JMenuItem();
         PasteSpecialEM = new javax.swing.JMenuItem();
-        jSeparator22 = new javax.swing.JSeparator();
-        CutComponentEM = new javax.swing.JMenuItem();
-        CopyComponentEM = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JSeparator();
         DeleteEM = new javax.swing.JMenu();
         bySelectionDEM = new javax.swing.JMenuItem();
@@ -629,12 +611,15 @@ public class Jubler extends JFrame implements CommonDef{
         FormListener formListener = new FormListener();
 
         CutP.setText(_("Cut"));
+        CutP.addActionListener(formListener);
         SubsPop.add(CutP);
 
         CopyP.setText(_("Copy"));
+        CopyP.addActionListener(formListener);
         SubsPop.add(CopyP);
 
         PasteP.setText(_("Paste"));
+        PasteP.addActionListener(formListener);
         SubsPop.add(PasteP);
 
         DeleteP.setText(_("Delete"));
@@ -800,16 +785,19 @@ public class Jubler extends JFrame implements CommonDef{
         CutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cut.png"))); // NOI18N
         CutTB.setToolTipText(_("Cut"));
         CutTB.setEnabled(false);
+        CutTB.addActionListener(formListener);
         EditTP.add(CutTB);
 
         CopyTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/copy.png"))); // NOI18N
         CopyTB.setToolTipText(_("Copy"));
         CopyTB.setEnabled(false);
+        CopyTB.addActionListener(formListener);
         EditTP.add(CopyTB);
 
         PasteTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/paste.png"))); // NOI18N
         PasteTB.setToolTipText(_("Paste"));
         PasteTB.setEnabled(false);
+        PasteTB.addActionListener(formListener);
         EditTP.add(PasteTB);
 
         JublerTools.add(EditTP);
@@ -1035,33 +1023,23 @@ public class Jubler extends JFrame implements CommonDef{
 
         CutEM.setText(_("Cut subtitles"));
         CutEM.setName("ECU"); // NOI18N
+        CutEM.addActionListener(formListener);
         EditM.add(CutEM);
 
         CopyEM.setText(_("Copy subtitles"));
         CopyEM.setName("ECO"); // NOI18N
+        CopyEM.addActionListener(formListener);
         EditM.add(CopyEM);
 
         PasteEM.setText(_("Paste subtitles"));
         PasteEM.setName("EPA"); // NOI18N
+        PasteEM.addActionListener(formListener);
         EditM.add(PasteEM);
 
         PasteSpecialEM.setText(_("Paste special"));
         PasteSpecialEM.setName("EPS"); // NOI18N
         PasteSpecialEM.addActionListener(formListener);
         EditM.add(PasteSpecialEM);
-        EditM.add(jSeparator22);
-
-        CutComponentEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.ALT_MASK));
-        CutComponentEM.setText(_("Cut Component"));
-        CutComponentEM.setName("ECC"); // NOI18N
-        CutComponentEM.addActionListener(formListener);
-        EditM.add(CutComponentEM);
-
-        CopyComponentEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.ALT_MASK));
-        CopyComponentEM.setText(_("Copy Component"));
-        CopyComponentEM.setName("ECP"); // NOI18N
-        CopyComponentEM.addActionListener(formListener);
-        EditM.add(CopyComponentEM);
         EditM.add(jSeparator9);
 
         DeleteEM.setText(_("Delete"));
@@ -1417,7 +1395,6 @@ public class Jubler extends JFrame implements CommonDef{
 
         PackingImagesToTiffM.setText(_("Images to Tiff"));
         PackingImagesToTiffM.setName("TOT"); // NOI18N
-        PackingImagesToTiffM.addActionListener(formListener);
         OCRTM.add(PackingImagesToTiffM);
 
         ToolsM.add(OCRTM);
@@ -1460,6 +1437,15 @@ public class Jubler extends JFrame implements CommonDef{
             }
             else if (evt.getSource() == InfoTB) {
                 Jubler.this.InfoFMActionPerformed(evt);
+            }
+            else if (evt.getSource() == CutTB) {
+                Jubler.this.CutTBActionPerformed(evt);
+            }
+            else if (evt.getSource() == CopyTB) {
+                Jubler.this.CopyTBActionPerformed(evt);
+            }
+            else if (evt.getSource() == PasteTB) {
+                Jubler.this.PasteTBActionPerformed(evt);
             }
             else if (evt.getSource() == UndoTB) {
                 Jubler.this.UndoEMActionPerformed(evt);
@@ -1554,14 +1540,17 @@ public class Jubler extends JFrame implements CommonDef{
             else if (evt.getSource() == QuitFM) {
                 Jubler.this.QuitFMActionPerformed(evt);
             }
+            else if (evt.getSource() == CutEM) {
+                Jubler.this.CutEMActionPerformed(evt);
+            }
+            else if (evt.getSource() == CopyEM) {
+                Jubler.this.CopyEMActionPerformed(evt);
+            }
+            else if (evt.getSource() == PasteEM) {
+                Jubler.this.PasteEMActionPerformed(evt);
+            }
             else if (evt.getSource() == PasteSpecialEM) {
                 Jubler.this.PasteSpecialEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == CutComponentEM) {
-                Jubler.this.CutComponentEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == CopyComponentEM) {
-                Jubler.this.CopyComponentEMActionPerformed(evt);
             }
             else if (evt.getSource() == bySelectionDEM) {
                 Jubler.this.bySelectionDEMActionPerformed(evt);
@@ -1701,14 +1690,20 @@ public class Jubler extends JFrame implements CommonDef{
             else if (evt.getSource() == OCRAll) {
                 Jubler.this.OCRAllActionPerformed(evt);
             }
-            else if (evt.getSource() == PackingImagesToTiffM) {
-                Jubler.this.PackingImagesToTiffMActionPerformed(evt);
-            }
             else if (evt.getSource() == FAQHM) {
                 Jubler.this.FAQHMActionPerformed(evt);
             }
             else if (evt.getSource() == AboutHM) {
                 Jubler.this.AboutHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == CutP) {
+                Jubler.this.CutPActionPerformed(evt);
+            }
+            else if (evt.getSource() == CopyP) {
+                Jubler.this.CopyPActionPerformed(evt);
+            }
+            else if (evt.getSource() == PasteP) {
+                Jubler.this.PastePActionPerformed(evt);
             }
         }
 
@@ -2363,16 +2358,6 @@ private void TextBalancingOnTheWholeTableActionPerformed(java.awt.event.ActionEv
     balanceText.actionPerformed(evt);
 }//GEN-LAST:event_TextBalancingOnTheWholeTableActionPerformed
 
-private void CutComponentEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutComponentEMActionPerformed
-    editCut.setCutComponent(true);
-    editCut.actionPerformed(evt);
-}//GEN-LAST:event_CutComponentEMActionPerformed
-
-private void CopyComponentEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyComponentEMActionPerformed
-    editCopy.setCopyComponent(true);
-    editCopy.actionPerformed(evt);
-}//GEN-LAST:event_CopyComponentEMActionPerformed
-
 private void OCRSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OCRSelectedActionPerformed
     ocrAction.setOcrAllList(false);
     ocrAction.actionPerformed(evt);
@@ -2383,9 +2368,47 @@ private void OCRAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     ocrAction.actionPerformed(evt);
 }//GEN-LAST:event_OCRAllActionPerformed
 
-private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PackingImagesToTiffMActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_PackingImagesToTiffMActionPerformed
+private void CopyTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyTBActionPerformed
+    Action copyAction = TransferHandler.getCopyAction();
+    evt.setSource(SubTable);
+    copyAction.actionPerformed(evt);
+}//GEN-LAST:event_CopyTBActionPerformed
+
+private void CutTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutTBActionPerformed
+    Action cutAction = TransferHandler.getCutAction();
+    evt.setSource(SubTable);
+    cutAction.actionPerformed(evt);
+}//GEN-LAST:event_CutTBActionPerformed
+
+private void PasteTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteTBActionPerformed
+    Action pasteAction = TransferHandler.getPasteAction();
+    evt.setSource(SubTable);
+    pasteAction.actionPerformed(evt);
+}//GEN-LAST:event_PasteTBActionPerformed
+
+private void CutEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutEMActionPerformed
+    CutTBActionPerformed(evt);
+}//GEN-LAST:event_CutEMActionPerformed
+
+private void CopyEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyEMActionPerformed
+    CopyTBActionPerformed(evt);
+}//GEN-LAST:event_CopyEMActionPerformed
+
+private void PasteEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteEMActionPerformed
+    PasteTBActionPerformed(evt);
+}//GEN-LAST:event_PasteEMActionPerformed
+
+private void CutPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutPActionPerformed
+    CutTBActionPerformed(evt);
+}//GEN-LAST:event_CutPActionPerformed
+
+private void CopyPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CopyPActionPerformed
+    CopyTBActionPerformed(evt);
+}//GEN-LAST:event_CopyPActionPerformed
+
+private void PastePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PastePActionPerformed
+    PasteTBActionPerformed(evt);
+}//GEN-LAST:event_PastePActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
@@ -2399,12 +2422,10 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JMenuItem CaseTranspose;
     private javax.swing.JMenuItem ChildNFM;
     private javax.swing.JMenuItem CloseFM;
-    private javax.swing.JMenuItem CopyComponentEM;
     private javax.swing.JMenuItem CopyEM;
     private javax.swing.JMenuItem CopyP;
     private javax.swing.JButton CopyTB;
     private javax.swing.JMenuItem CurrentTTM;
-    private javax.swing.JMenuItem CutComponentEM;
     private javax.swing.JMenuItem CutEM;
     private javax.swing.JMenuItem CutP;
     private javax.swing.JButton CutTB;
@@ -2550,7 +2571,6 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator20;
     private javax.swing.JSeparator jSeparator21;
-    private javax.swing.JSeparator jSeparator22;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
@@ -2559,6 +2579,7 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     // End of variables declaration//GEN-END:variables
+
     public void setDoText(String text, boolean isUndo) {
         JMenuItem domenu;
         JButton dobutton;
@@ -3169,7 +3190,7 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
         }//end try/catch
         return newsubs;
     }//end private Subtitles loadSubtitleFile()
-    
+
     /**
      * This function takes the value from the editor of the combo-box
      * OptNumberOfLine, which should be an Integer. However, when the
@@ -3184,8 +3205,8 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
     private void gotoLine() {
         try {
             Integer integer = (Integer) DropDownActionNumberOfLine.getEditor().getItem();
-            numberOfLine = integer.intValue();            
-            setSelectedSub(numberOfLine - 1, true);            
+            numberOfLine = integer.intValue();
+            setSelectedSub(numberOfLine - 1, true);
         } catch (Exception ex) {
             DropDownActionNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
         }
@@ -3199,3 +3220,4 @@ private void PackingImagesToTiffMActionPerformed(java.awt.event.ActionEvent evt)
         return balanceText;
     }
 }//end public class Jubler extends JFrame
+

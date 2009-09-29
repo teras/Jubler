@@ -103,10 +103,12 @@ public class Dropper extends TransferHandler {
             int[] selection = table.getSelectedRows();
             Vector<SubEntry> selectedRows = new Vector<SubEntry>();
             model = (Subtitles) table.getModel();
+            Jubler.copybuffer.clear();
             for (int j = 0; j < selection.length; j++) {
                 record = (SubEntry) model.getRecordAtRow(selection[j]);
                 if (record != null) {
                     selectedRows.add(record);
+                    Jubler.copybuffer.add((SubEntry) record.clone());
                     //DEBUG.logger.log(Level.INFO, "Export: " + record.toString());
                 }//end if (record != null)
             }//end for (int j = 0; j < selection.length; j++)
@@ -136,6 +138,7 @@ public class Dropper extends TransferHandler {
                 model = (Subtitles) table.getModel();
                 model.removeAll(record_list);
                 parent.tableHasChanged(null);
+                //DEBUG.logger.log(Level.WARNING, "Export done!");
             }//end if (action == MOVE)
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, "Export done failed: " + ex.toString());
@@ -249,13 +252,11 @@ public class Dropper extends TransferHandler {
      * @return true if the dropping of data is to be performed, false otherwise.
      */
     public boolean importData(TransferHandler.TransferSupport info) {
-        if (!info.isDrop()) {
-            return false;
-        }
+        //DEBUG.logger.log(Level.INFO, "importData: " + info.toString());
         Transferable t = info.getTransferable();
         for (DataFlavor data : info.getDataFlavors()) {
             String mime = data.getHumanPresentableName();
-            DEBUG.logger.log(Level.INFO, "Mime type: " + mime);
+            //DEBUG.logger.log(Level.INFO, "Mime type: " + mime);
             if (mime.equals("text/uri-list") || mime.equals("application/x-java-file-list")) {
                 AbstractList<File> files = getFileListString(t, data);
                 if (files == null) {
@@ -268,10 +269,15 @@ public class Dropper extends TransferHandler {
                 }//end for (File f : files)
                 break;
             } else if (mime.equals("List")) {
-                try {                    
+                int drop_row = -1;
+                try {
                     Component c = info.getComponent();
                     JTable tbl = (JTable) info.getComponent();
-                    int drop_row = tbl.getDropLocation().getRow();
+                    try {
+                        drop_row = tbl.getDropLocation().getRow();
+                    } catch (Exception ex) {
+                        drop_row = tbl.getSelectedRow();
+                    }
                     Subtitles model = (Subtitles) tbl.getModel();
 
                     Subtitles subs = parent.getSubtitles();
