@@ -280,7 +280,7 @@ public class JWizard extends JDialog {
             case 1:
                 if (ManualB.isSelected()) {
                     cardid++;
-                    ContinueB.setEnabled(TreeWalker.execIsValid(new File(deflt), testparameters, test_signature, name.toLowerCase()));
+                    ContinueB.setEnabled(TreeWalker.execIsValid(new File(deflt), testparameters, test_signature));
                     FilenameT.setText(deflt);
                 } else {
                     CancelB.setEnabled(false);

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.panayotis.jubler.media.player.mplayer;
 
 import com.panayotis.jubler.media.console.PlayerFeedback;
@@ -14,6 +13,7 @@ import com.panayotis.jubler.media.player.terminals.CommandLineTerminal;
  * @author teras
  */
 public class MPlayerTerminal extends CommandLineTerminal {
+
     public String parseOutStream(String info, PlayerFeedback feedback, TerminalViewport viewport) {
         int first, second;
         first = info.indexOf("V:");

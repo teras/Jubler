@@ -20,7 +20,7 @@ public class MPlayerSystemDependent extends SystemDependent {
         int version = 1;
         try {
             version = Integer.parseInt(Options.getOption("System.Preferences.Version", "1"));
-        } catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
         }
         String params = Options.getOption("Player.MPlayer.Arguments", "");
         if (version < 2 && (!params.equals(""))) {

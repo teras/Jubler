@@ -62,7 +62,7 @@ public class TreeWalker {
                 return null;
             if (!root.getName().toLowerCase().equals(program + SystemDependent.PROG_EXT))
                 return null;
-            if (!execIsValid(root, parameters, program, test_signature))
+            if (!execIsValid(root, parameters, test_signature))
                 return null;
             /* All checks OK - valid executable! */
             return root;
@@ -83,9 +83,9 @@ public class TreeWalker {
     }
 
     /* when no parameters are set, while checking executable,
-     no real execution of the application is required */
-    public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
-        if (parameters==null)
+     * no real execution of the application is required */
+    public static boolean execIsValid(File exec, String[] parameters, String test_signature) {
+        if (parameters == null || test_signature == null)
             return exec.isFile();
 
         Process proc = null;
@@ -101,19 +101,9 @@ public class TreeWalker {
                 buf.append(cmd[i]).append(' ');
             }
             DEBUG.debug(buf.toString());
-
             proc = Runtime.getRuntime().exec(cmd);
             BufferedReader infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line;
-            line = infopipe.readLine() + infopipe.readLine();
-            if (!line.toLowerCase().contains(app_signature)) {
-                proc.destroy();
-                return false;
-            }
-            if (test_signature == null) {
-                proc.destroy();
-                return true;
-            }
             while ((line = infopipe.readLine()) != null) {
                 if (line.toLowerCase().contains(test_signature)) {
                     DEBUG.debug("Valid executable found: " + exec.getAbsolutePath());
