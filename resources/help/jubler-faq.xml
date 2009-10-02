@@ -15,16 +15,16 @@
 </para>
 </section>
 
+<section><title>Installing MPlayer/ASpell tools</title>
+    <para>In order to use any external tool, you have to manually download the tool and install it in your system. You need to follow the usual installation procedure of your operating system for proper installation. When Jubler needs this tool, it will launch a Wizard to search for the location of the external tool.</para>
+	<para>Due to various issues with MPlayer, there is a need to mirror a tested/working version of MPlayer. Working versions can be <ulink url="https://sourceforge.net/projects/jubler/files/Support%20Applications/MPlayer/">found here in SourceForge</ulink>. Make sure to download the appropriate package for your operating system.</para>
+	<para>ASpell can be found for <ulink url="http://aspell.net/">POSIX/Linux environment</ulink>, <ulink url="http://people.ict.usc.edu/~leuski/cocoaspell/">Mac OS X</ulink> and <ulink url="http://aspell.net/win32/">Windows</ulink>. Do not forget to download the apropriate <ulink url="http://ftp.gnu.org/gnu/aspell/dict/0index.html">language definitions</ulink> afterwards.</para>
+</section>
+
 <section><title>How to translate to my own language</title>
     <para>To translate Jubler to your own language, there is a simple method, with a little help of poedit (and me!). At first contact me to update the language template file in the SVN. The file can be found in <ulink url="http://jubler.svn.sourceforge.net/viewvc/jubler/src/resources/i18n/">Sourceforge SVN</ulink> and is named "jubler.pot". Rename this file into your locale 2-letter name (e.g. english should have been en.po) with the .po extension instead of .pot .</para>
 
 	<para>You can edit this file with either <ulink url="http://www.poedit.net/">poedit</ulink> (recommended) or any other plain text editor. Prepare the translation and then send the .po file back to me. If you want to compile the translation yourself (you are brave, aren't you) just place the file under resources/i18n and execute the "i18n" ant task (if you don't know what I am talking about, don't worry, just sent the file back).</para>
-</section>
-
-<section><title>Installing MPlayer/ASpell tools</title>
-    <para>In order to use any external tool, you have to manually download the tool and install it in your system. You need to follow the usual installation procedure of your operating system for proper installation. When Jubler needs this tool, it will launch a Wizard to search for the location of the external tool.</para>
-	<para>MPlayer can be downloaded form the  <ulink url="http://www.mplayerhq.hu/design7/dload.html">MPlayer website</ulink>. Under Windows make sure that you do <emphasis>not</emphasis> download the GUI version, since Jubler uses it's own GUI.</para>
-	<para>ASpell can be found for <ulink url="http://aspell.net/">POSIX/Linux environment</ulink>, <ulink url="http://people.ict.usc.edu/~leuski/cocoaspell/">Mac OS X</ulink> and <ulink url="http://aspell.net/win32/">Windows</ulink>. Do not forget to download the apropriate <ulink url="http://ftp.gnu.org/gnu/aspell/dict/0index.html">language definitions</ulink> afterwards.</para>
 </section>
 
 <section><title>How can I enter translation mode?</title>
