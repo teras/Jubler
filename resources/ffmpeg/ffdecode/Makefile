@@ -99,7 +99,7 @@ ifeq (${MAKESYS},darwin_i386)
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
 	XFCONFIG=--enable-shared --arch=unknown
-	GCCOPTS=-fno-common -mmacosx-version-min=10.4
+	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
 ifeq (${MAKESYS},linux_i686)
