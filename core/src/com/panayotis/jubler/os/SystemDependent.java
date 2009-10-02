@@ -79,10 +79,8 @@ public class SystemDependent {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 System.setProperty("apple.laf.useScreenMenuBar", "true");
             }
-        } catch (ClassNotFoundException e) {
-        } catch (InstantiationException e) {
-        } catch (IllegalAccessException e) {
-        } catch (UnsupportedLookAndFeelException e) {
+        } catch (Exception e) {
+            DEBUG.debug(e);
         }
     }
 
