@@ -25,7 +25,6 @@ package com.panayotis.jubler.media.player.mplayer;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
-import com.panayotis.jubler.tools.externals.AvailExternals;
 
 /**
  *
