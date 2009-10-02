@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader.binary;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -34,29 +33,31 @@ import java.awt.Dimension;
  * @author  teras
  */
 public class JMaestroOptions extends javax.swing.JPanel {
-    
+
     /** Creates new form JMaestroOptions */
     public JMaestroOptions() {
         initComponents();
     }
-    
+
     public void updateValues(Subtitles subs, MediaFile media) {
-        media.validateMediaFile(subs,false);
-        
+        media.validateMediaFile(subs, false, null);
+
         XSize.setValue(media.getVideoFile().getWidth());
         YSize.setValue(media.getVideoFile().getWidth());
     }
-    
+
     public String getVideoFormat() {
         return Format.getSelectedItem().toString();
     }
+
     public int getVideoWidth() {
-        return (Integer)XSize.getValue();
+        return (Integer) XSize.getValue();
     }
+
     public int getVideoHeight() {
-        return (Integer)YSize.getValue();
+        return (Integer) YSize.getValue();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -99,8 +100,6 @@ public class JMaestroOptions extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox Format;
     private javax.swing.JSpinner XSize;
@@ -111,5 +110,4 @@ public class JMaestroOptions extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
-    
 }
