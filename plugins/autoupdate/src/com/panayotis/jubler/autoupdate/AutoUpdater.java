@@ -47,7 +47,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin {
             Updater upd = new Updater(URL, info, this);
             upd.actionDisplay();
         } catch (UpdaterException ex) {
-            DEBUG.debug(ex);
+            DEBUG.debug(ex.getMessage());
         }
     }
 }
