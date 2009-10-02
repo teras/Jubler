@@ -1507,6 +1507,8 @@ public class Jubler extends JFrame {
         curjubler.subs.getSubFile().appendToFilename(_("_child"));
         curjubler.showInfo();
         curjubler.connect_to_other = this;
+        curjubler.enableSaveControls();
+        StaticJubler.updateRecents();
     }//GEN-LAST:event_ChildNFMActionPerformed
     
     private void bySelectionSEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionSEMActionPerformed
