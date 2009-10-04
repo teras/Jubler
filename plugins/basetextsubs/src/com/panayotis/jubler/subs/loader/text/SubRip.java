@@ -49,7 +49,7 @@ public class SubRip extends StyledTextSubFormat {
     
     static {
         pat = Pattern.compile(
-                "(?s)(\\d+)"+sp+nl+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"-->"+
+                "(?s)(\\d+)"+sp+nl+"(\\d{1,2}):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"-->"+
                 sp+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"(X1:\\d.*?)??"+nl+"(.*?)"+nl+nl
                 );
         stylepat = Pattern.compile("<(.*?)>");
