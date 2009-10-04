@@ -59,12 +59,21 @@ public class FileCommunicator {
 
     public static String load(SubFile sfile) {
         String res;
+        String enc;
 
-        String enc = sfile.getEncoding();
         /* First chech already known data */
+        enc = sfile.getEncoding();
         res = load(sfile, enc, _("Found defined encoding {0}", enc), false);
         if (res != null)
             return res;
+
+        /* Then check if encoding is tagged on the file */
+        enc = ByteOrderFactory.getEncoding(sfile.getSaveFile());
+        if (enc != null) {
+            res = load(sfile, enc, _("Found tagged encoding {0}", enc), false);
+            if (res != null)
+                return res;
+        }
 
         /* Then guess and be strict */
         for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
