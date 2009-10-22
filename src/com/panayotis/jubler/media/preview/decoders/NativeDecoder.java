@@ -28,6 +28,7 @@ import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.os.DEBUG;
 import java.io.File;
+import java.util.logging.Level;
 
 /**
  *
@@ -48,7 +49,7 @@ public abstract class NativeDecoder implements DecoderInterface {
         
         /* Make sanity checks */
         if (!isDecoderValid()) {
-            DEBUG.debug(_("Decoder not active. Aborting audio cache creation."));
+            DEBUG.logger.log(Level.WARNING, _("Decoder not active. Aborting audio cache creation."));
             return false;
         }
         if (cacher != null ) {
@@ -56,15 +57,16 @@ public abstract class NativeDecoder implements DecoderInterface {
             return false;
         }
         if (afile==null) {
-            DEBUG.debug(_("Unable to create cache to unknown audio file"));
+            DEBUG.logger.log(Level.WARNING, _("Unable to create cache to unknown audio file"));
             return false;    /* We HAVE to have defined the cached file */
         }
         if (cfile==null) {
-            DEBUG.debug(_("Unable to create unset cache file"));
+            DEBUG.logger.log(Level.WARNING, _("Unable to create unset cache file"));
             return false;    /* We HAVE to have defined the cached file */
         }
         if (AudioPreview.isAudioPreview(cfile)) {
-            DEBUG.debug(_("Jubler audio cache detected for audio input: {0}", cfile.getPath()));
+            DEBUG.logger.log(Level.WARNING,
+                    _("Jubler audio cache detected for audio input: {0}", cfile.getPath()));
             return true;
         }
         
@@ -93,7 +95,7 @@ public abstract class NativeDecoder implements DecoderInterface {
     }
     /* This is also a callback function to use the standard DEBUG object in C */
     private void debug(String debug) {
-        DEBUG.debug(debug);
+        DEBUG.logger.log(Level.WARNING, debug);
     }
 
     /* This method is used again as a callback, to see if the user clicked on the cancel button */

@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -38,6 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.logging.Level;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -148,7 +150,7 @@ public class JImage implements CommonDef {
             ImageIO.write(img, extension, file);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return false;
         }
     }
@@ -166,7 +168,7 @@ public class JImage implements CommonDef {
             ImageIO.write(img, extension, file);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return false;
         }
     }
@@ -185,7 +187,7 @@ public class JImage implements CommonDef {
             ImageIO.write(img, extension, image_file);
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return false;
         }
     }//end public static void writeImage(BufferedImage img, String file_name)
@@ -301,7 +303,7 @@ public class JImage implements CommonDef {
                     sr.height);
             return sub_img;
         } catch (Exception ex) {
-            //ex.printStackTrace(System.out);
+            //DEBUG.logger.log(Level.WARNING, ex.toString());
             //return the original image
             return tran_image;
         }
@@ -695,7 +697,6 @@ public class JImage implements CommonDef {
             }//end if (center_image != null)
             return n_img;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
             return null;
         } finally {
             if (g != null) {

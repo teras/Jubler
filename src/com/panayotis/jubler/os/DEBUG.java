@@ -27,13 +27,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
  *
  * @author  teras
  */
-public class DEBUG {
+public class DEBUG extends Handler{
 
     private static FileWriter log;
     private static String NL = System.getProperty("line.separator");
@@ -47,6 +49,9 @@ public class DEBUG {
         }
     }
 
+    public DEBUG(){
+        logger.addHandler(this);
+    }
     public static void beep() {
         java.awt.Toolkit.getDefaultToolkit().beep();
     }
@@ -71,6 +76,12 @@ public class DEBUG {
         e.printStackTrace(new PrintWriter(str));
         debug(str.toString());
     }
+
+    public static void debug(Throwable e, String extra_msg) {
+        StringWriter str = new StringWriter();
+        e.printStackTrace(new PrintWriter(str));
+        debug(str.toString() + " " + extra_msg);
+    }
     
     public static String toString(String[] array) {
         StringBuffer buf = new StringBuffer();
@@ -79,4 +90,19 @@ public class DEBUG {
         }
         return buf.substring(0, buf.length() - 1);
     }
+
+    public void publish(LogRecord record){
+        String text =
+                record.getSourceClassName() + "." +
+                record.getSourceMethodName() + "\t" +
+                record.getMessage();
+        debug(text);
+    }
+
+    public void flush(){
+    }
+
+    public void close() throws SecurityException{
+    }
+
 }

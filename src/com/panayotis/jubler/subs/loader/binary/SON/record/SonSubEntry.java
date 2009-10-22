@@ -22,6 +22,7 @@
 package com.panayotis.jubler.subs.loader.binary.SON.record;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
@@ -32,6 +33,7 @@ import com.panayotis.jubler.tools.JImage;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.NumberFormat;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 
 /**
@@ -128,7 +130,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
                 b.append(txt).append(UNIX_NL);
             }
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return b.toString();
     }
@@ -148,7 +150,7 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             new_object.imageFile = imageFile;
             new_object.image = image;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return new_object;
     }

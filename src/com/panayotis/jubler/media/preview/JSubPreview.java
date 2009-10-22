@@ -188,8 +188,8 @@ public class JSubPreview extends javax.swing.JPanel {
         } else {
             MainPanel.add(frame, BorderLayout.NORTH);
         }
-        parent.setPreviewOrientation(horizontal);
-        parent.resetPreviewPanels();
+        parent.fn.setPreviewOrientation(horizontal);
+        parent.fn.resetPreviewPanels();
         AutoSaveOptions.setPreviewOrientation(horizontal);
     }
 
@@ -207,14 +207,14 @@ public class JSubPreview extends javax.swing.JPanel {
         VideoShow.setSelected(status);
         parent.VideoPreviewC.setSelected(status);
         frame.setEnabled(status);
-        parent.resetPreviewPanels();
+        parent.fn.resetPreviewPanels();
     }
 
     public void setVideoZoom(boolean status) {
         VideoZoom.setSelected(status);
         parent.HalfSizeC.setSelected(status);
         frame.setResize(status ? 0.5f : 1f);
-        parent.resetPreviewPanels();
+        parent.fn.resetPreviewPanels();
     }
 
     public void setAudioShow(boolean status) {
@@ -489,7 +489,7 @@ public class JSubPreview extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
-        parent.addNewSubtitle(true);
+        parent.fn.addNewSubtitle(true);
     }//GEN-LAST:event_NewSubActionPerformed
 
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged

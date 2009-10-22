@@ -31,11 +31,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.console.PlayerFeedback;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
+import java.util.logging.Level;
 
 /**
  *
@@ -204,7 +204,7 @@ public class MPlayerViewport implements Viewport {
             start();
             return true;
         } catch (Exception e) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         }
         return false;
     }
@@ -248,7 +248,7 @@ public class MPlayerViewport implements Viewport {
                         while (info.charAt(++second) != ' ');
                         position = getDouble(info.substring(first, second).trim());
                     } else {
-                        DEBUG.debug("[mplayer:out] "+info);
+                        DEBUG.logger.log(Level.WARNING, "[mplayer:out] "+info);
                         if (info.startsWith("ANS_volume")) {
                             feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=') + 1)) / 100f);
                         }
@@ -269,7 +269,7 @@ public class MPlayerViewport implements Viewport {
             String info;
             try {
                 while ((info = errorpipe.readLine()) != null) {
-                    DEBUG.debug("[mplayer:err] "+info);
+                    DEBUG.logger.log(Level.WARNING, "[mplayer:err] "+info);
                 }
             } catch (IOException e) {
             }

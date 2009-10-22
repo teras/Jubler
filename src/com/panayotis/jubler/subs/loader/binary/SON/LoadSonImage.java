@@ -40,6 +40,7 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
 import com.panayotis.jubler.tools.JImage;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 
 /**
@@ -242,9 +243,9 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
             if (header != null) {
                 header.color_table = (simp == null ? null : simp.getUserColorTable());
             }//end if (header != null)
-            DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
+            //DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         } finally {
             if (this.isLoadImages() && (pb != null)) {
                 pb.off();

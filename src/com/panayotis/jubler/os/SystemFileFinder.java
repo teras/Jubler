@@ -25,6 +25,7 @@ package com.panayotis.jubler.os;
 
 import java.io.File;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 
 /**
  *
@@ -62,7 +63,7 @@ public class SystemFileFinder {
                 System.load(libfile.getAbsolutePath());
                 return true;
             } catch (UnsatisfiedLinkError e) {
-                e.printStackTrace();
+                DEBUG.logger.log(Level.WARNING, e.toString());
             }
         }
         return false;

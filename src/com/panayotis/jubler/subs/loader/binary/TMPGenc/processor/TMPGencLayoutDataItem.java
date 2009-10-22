@@ -28,9 +28,11 @@
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.processor;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.record.LayoutDataItemRecord;
+import java.util.logging.Level;
 
 /**
  * This class hold a pattern to identify item lines from the "[LayoutData]"
@@ -134,7 +136,7 @@ public class TMPGencLayoutDataItem extends SubtitlePatternProcessor implements T
             r.setBorderSize(Float.parseFloat(matched_data[13]));
             r.setBorderColour(Long.parseLong(matched_data[14]));
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
 
     }//end if

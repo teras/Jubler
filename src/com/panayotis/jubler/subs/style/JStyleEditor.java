@@ -42,6 +42,7 @@ import com.panayotis.jubler.subs.style.gui.JAlphaColorDialog;
 import com.panayotis.jubler.subs.style.gui.JDirection;
 import com.panayotis.jubler.subs.style.gui.tri.TriColorButton;
 import java.util.Collections;
+import java.util.logging.Level;
 import javax.swing.JButton;
 
 /**
@@ -722,7 +723,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         try {
             current.set(FONTSIZE, FontSize.getModel().getSelectedItem().toString());
         } catch (NumberFormatException e) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         }
         
         current.set(BOLD, Bold.isSelected());

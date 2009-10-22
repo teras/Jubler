@@ -21,7 +21,9 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.io.File;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -212,7 +214,7 @@ public abstract class SubtitlePatternProcessor {
                 }//end if if (has_index_list)
             }//end if (has_data)
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return null;
     }
@@ -243,7 +245,7 @@ public abstract class SubtitlePatternProcessor {
                 }//end if (is_selective)
             }//end if (has_result)
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return getFoundList();
     }//end public String[] matchPattern(String input, int[] matching_index_list)
@@ -270,7 +272,7 @@ public abstract class SubtitlePatternProcessor {
                 }//end for            
             }//end String[] found_list
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return getFoundList();
     }//end public String[] matchPattern(String input)

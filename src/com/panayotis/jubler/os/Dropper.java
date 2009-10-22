@@ -25,7 +25,7 @@ package com.panayotis.jubler.os;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.undo.UndoEntry;
+import com.panayotis.jubler.events.menu.edit.undo.UndoEntry;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -43,6 +43,7 @@ import java.util.logging.Level;
 import javax.swing.JComponent;
 import javax.swing.JTable;
 import javax.swing.TransferHandler;
+import static com.panayotis.jubler.i18n.I18N._;
 
 /**
  * Allowing drag/drop of external files and records within the JTables. When
@@ -137,11 +138,13 @@ public class Dropper extends TransferHandler {
                         getListOfExportedRecords(t, list.getListFlavor());
                 model = (Subtitles) table.getModel();
                 model.removeAll(record_list);
-                parent.tableHasChanged(null);
+                parent.fn.tableHasChanged(null);
                 //DEBUG.logger.log(Level.WARNING, "Export done!");
             }//end if (action == MOVE)
         } catch (Exception ex) {
-            DEBUG.logger.log(Level.WARNING, "Export done failed: " + ex.toString());
+            DEBUG.logger.log(
+                    Level.WARNING,
+                    ex.toString() + " " + _("Export done failed!"));
         }
     }//end public void exportDone(JComponent c, Transferable t, int action)
 
@@ -191,9 +194,9 @@ public class Dropper extends TransferHandler {
                 return (AbstractList<File>) t.getTransferData(flavor);
             }
         } catch (UnsupportedFlavorException e) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         } catch (IOException e) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         }
         return null;
     }
@@ -264,7 +267,7 @@ public class Dropper extends TransferHandler {
                 }
                 for (File f : files) {
                     if (f.isFile()) {
-                        parent.loadFile(f, false);
+                        parent.fn.loadFile(f, false);
                     }//end if (f.isFile())
                 }//end for (File f : files)
                 break;
@@ -287,7 +290,7 @@ public class Dropper extends TransferHandler {
                     model.addAll(record_list, drop_row);
                     break;
                 } catch (Exception ex) {
-                    DEBUG.logger.log(Level.WARNING, "Drop failed: " + ex.toString());
+                    DEBUG.logger.log(Level.WARNING, ex.toString() + " " + "Drop failed!");
                 }
             }//end if (mime.equals...)
         }//end for (DataFlavor data : t.getTransferDataFlavors())

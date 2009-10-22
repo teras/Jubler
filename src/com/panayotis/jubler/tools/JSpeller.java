@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools;
 import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.tools.spell.JSpellChecker;
+import com.panayotis.jubler.events.menu.tool.spell.JSpellChecker;
 
 import static com.panayotis.jubler.i18n.I18N._;
 

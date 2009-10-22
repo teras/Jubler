@@ -30,7 +30,7 @@ import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.gui.JTimeArea;
 import com.panayotis.jubler.time.gui.JTimeFullSelection;
 import com.panayotis.jubler.time.gui.JTimeRegion;
-import com.panayotis.jubler.undo.UndoEntry;
+import com.panayotis.jubler.events.menu.edit.undo.UndoEntry;
 import java.awt.BorderLayout;
 import java.util.Vector;
 import javax.swing.JPanel;
@@ -68,7 +68,7 @@ public abstract class JTool extends JPanel {
             return false;
         
         jparent.getUndoList().addUndo( new UndoEntry(subs, getToolTitle()));
-        SubEntry [] selectedsubs = jparent.getSelectedSubs();
+        SubEntry [] selectedsubs = jparent.fn.getSelectedSubs();
         
         affected_list = pos.getAffectedSubs();
         if ( affected_list.size() == 0 ) return false;
@@ -80,7 +80,7 @@ public abstract class JTool extends JPanel {
         }
         if (!finalizing()) return false;
         
-        jparent.tableHasChanged(selectedsubs);
+        jparent.fn.tableHasChanged(selectedsubs);
         return true;
     }
     

@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
+import java.util.logging.Level;
 
 /**
  * This class provides a basic textual processing foundation class for
@@ -90,7 +91,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         try{
             if ( ! getTestPattern().matcher(input).find() ) return null;    // Not valid - test pattern does not match
             
-            DEBUG.debug(_("Found file {0}", _(getExtendedName())));
+            DEBUG.logger.log(Level.INFO, _("Found file {0}", _(getExtendedName())));
             subtitle_list = new Subtitles();
             setFPS(FPS);
             input = initLoader(input);
@@ -108,7 +109,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             if ( subtitle_list.isEmpty()) return null;
             return subtitle_list;
         } catch(Exception e) {
-            e.printStackTrace();
+            DEBUG.logger.log(Level.WARNING, e.toString());
             return null;
         }
     }

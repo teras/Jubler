@@ -25,7 +25,6 @@ package com.panayotis.jubler.options.gui;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JPanel;

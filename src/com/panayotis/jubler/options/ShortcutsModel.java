@@ -32,6 +32,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JMenu;
@@ -72,7 +73,7 @@ public class ShortcutsModel extends AbstractTableModel {
         }
         String err = isValidCodes();
         if (err != null) {
-            DEBUG.debug("Error in shortcut entry:" + err);
+            DEBUG.logger.log(Level.WARNING, "Error in shortcut entry:" + err);
         }
     }
 

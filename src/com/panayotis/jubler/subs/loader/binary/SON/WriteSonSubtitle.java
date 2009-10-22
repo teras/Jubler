@@ -30,6 +30,7 @@ package com.panayotis.jubler.subs.loader.binary.SON;
 
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.gui.ProgressBar;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubtitleUpdaterThread;
@@ -45,8 +46,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.NumberFormat;
+import java.util.logging.Level;
 import javax.imageio.ImageIO;
-import static com.panayotis.jubler.i18n.I18N._;
 
 /**
  * This class writes SON index file, and images if the subtitle list is not
@@ -193,7 +194,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
             out.write(bf.toString());
             ok = true;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         } finally {
             try {
                 if (out != null) {
@@ -247,7 +248,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
                 this.writeMixedTextAndImage(sub_list, output_file);
             }
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         } finally {
         }
     }//end private void writeImages(Subtitles sub_list, File output_file)
@@ -343,7 +344,7 @@ public class WriteSonSubtitle extends SubtitleUpdaterThread implements SONPatter
         try {
             ImageIO.write(img, PNG_EXT, image_file);
         } catch (IOException ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return false;
         }
         return true;

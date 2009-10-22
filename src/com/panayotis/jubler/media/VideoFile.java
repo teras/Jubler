@@ -34,6 +34,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
 
 /**
  *
@@ -110,7 +111,8 @@ public class VideoFile extends File {
             width = DEFAULT_WIDTH;
             length = DEFAULT_LENGTH;
             fps = DEFAULT_FPS;
-            DEBUG.debug(_("Could not retrieve actual video properties. Using defaults."));
+            DEBUG.logger.log(Level.WARNING,
+                    _("Could not retrieve actual video properties. Using defaults."));
         }
     }
     

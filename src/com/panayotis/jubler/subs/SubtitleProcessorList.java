@@ -403,7 +403,7 @@ public class SubtitleProcessorList extends Vector<SubtitlePatternProcessor> {
                 break;
             }//end for (int i = 0; i < this.getPatternList().size(); i++) 
         } catch (Exception e) {
-            e.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         } finally {
             boolean has_removable = (removeList.size() > 0);
             if (has_removable) {

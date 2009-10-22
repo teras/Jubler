@@ -23,6 +23,7 @@
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
@@ -36,11 +37,10 @@ import com.panayotis.jubler.subs.style.event.StyleoverCharacter;
 import com.panayotis.jubler.subs.style.event.StyleoverFull;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.time.Time;
-import com.panayotis.jubler.tools.JImage;
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JTextPane;
 import javax.swing.text.StyleConstants;
@@ -457,7 +457,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 }//end for (int i = 0; i < overstyle.length; i++)
             }//end if (overstyle != null)
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }//end try/catch
         return new_sub;
     }//end public Object clone()
@@ -510,7 +510,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             Vector<String> text2 = o.getTextList();
             appendText(text2);
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
 
         //part2: join time
@@ -527,7 +527,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             this.getFinishTime().setMilli(new_end_time);
             this.computeDuration();
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }//end public SubEntry mergeRecord(SubEntry o)
     /**
@@ -596,7 +596,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             }//end if
 
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             new_sub.setText(new String());
         }
 
@@ -620,7 +620,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             new_sub.getStartTime().setMilli(ts2);
             new_sub.getFinishTime().setMilli(te2);
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return new_sub;
     }//end public SubEntry splitRecord()
@@ -1153,7 +1153,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             BufferedImage text_img = simg.getImage();
             return text_img;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return null;
         }
     }//end public BufferedImage makeSubtitleTextImage()

@@ -43,6 +43,7 @@ import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.JFileChooser;
 
 /**
@@ -118,7 +119,7 @@ public class FileCommunicator {
         for (int i = 0 ; i < encs.length ; i++ ) {
             res = loadFromFile(infile, encs[i]);
             if ( res != null) {
-                DEBUG.debug(_("Found file {0}", encs[i]));
+                DEBUG.logger.log(Level.WARNING, _("Found file {0}", encs[i]));
                 return res;
             }
         }

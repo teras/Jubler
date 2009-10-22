@@ -27,6 +27,7 @@
  */
 package com.panayotis.jubler.subs.loader.binary.SON;
 
+import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
@@ -35,6 +36,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import java.io.File;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 
 /**
@@ -135,7 +137,7 @@ public class ImageFileListManager implements CommonDef {
             }//end for
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return false;
         }
     }//end private void loadFileList()
@@ -210,7 +212,7 @@ public class ImageFileListManager implements CommonDef {
                 }//end if (! is_found)
             }//end while (!is_found && JImage.isRemindMissingImage())
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return located_file;         
     }//private void locateFile()

@@ -28,6 +28,7 @@
 package com.panayotis.jubler.subs.loader.binary.SUP;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
 import com.panayotis.jubler.time.Time;
@@ -35,9 +36,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import java.util.logging.Level;
 
 /**
  * See {@link SUPCompressImageProcessor} for descriptions.
@@ -108,7 +107,7 @@ public class SUPReader extends SUPCompressImageProcessor {
             }//end for
             ok = true;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         } finally {
             try {
                 if (in != null) {
@@ -294,7 +293,7 @@ public class SUPReader extends SUPCompressImageProcessor {
             }//end while
 
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         } finally {
             try {
                 if (in != null) {

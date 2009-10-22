@@ -14,6 +14,7 @@ import java.io.FilenameFilter;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
 
 /**
  *
@@ -44,11 +45,13 @@ public class AutoSaver {
                 dir.mkdirs();
                 olds.mkdir();
                 if (!(dir.isDirectory() && dir.canWrite())) {
-                    DEBUG.debug(_("ERROR: Could not use autosave directory \"{0}\".", dir.getPath()));
+                    String msg = _("ERROR: Could not use autosave directory \"{0}\".", dir.getPath());
+                    DEBUG.logger.log(Level.WARNING, msg);
                     return;
                 }
                 if (!(olds.isDirectory() && olds.canWrite())) {
-                    DEBUG.debug(_("ERROR: Could not use autosave directory for old files \"{0}\".", olds.getPath()));
+                    String msg = _("ERROR: Could not use autosave directory for old files \"{0}\".", olds.getPath());
+                    DEBUG.logger.log(Level.WARNING, msg);
                     return;
                 }
 

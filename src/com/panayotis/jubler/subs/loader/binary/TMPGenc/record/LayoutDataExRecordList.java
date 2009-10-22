@@ -20,8 +20,10 @@
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * This class is used to hold a collection of
@@ -81,7 +83,7 @@ public class LayoutDataExRecordList extends Vector<LayoutDataExRecord> implement
         try {
             n = (LayoutDataExRecordList) super.clone();
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return n;
     }//end clone

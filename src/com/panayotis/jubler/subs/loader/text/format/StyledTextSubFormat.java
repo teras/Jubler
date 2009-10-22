@@ -41,6 +41,7 @@ import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -155,7 +156,8 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     
                             }
                         } catch (Exception e) {
-                            DEBUG.debug(_("Exception {0} while loading style {1}: {2}", e.getClass().getName(), sf.style.name(), e.getMessage()));
+                            String msg = _("Exception {0} while loading style {1}: {2}", e.getClass().getName(), sf.style.name(), e.getMessage());
+                            DEBUG.logger.log(Level.WARNING, msg);
                         }
                         break;
                     }

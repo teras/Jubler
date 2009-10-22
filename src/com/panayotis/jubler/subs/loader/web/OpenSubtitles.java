@@ -22,9 +22,11 @@
  */
 package com.panayotis.jubler.subs.loader.web;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.logging.Level;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -56,7 +58,7 @@ public class OpenSubtitles {
             SAXParser saxParser = factory.newSAXParser();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            DEBUG.logger.log(Level.WARNING, e.toString());
         }
 
     }

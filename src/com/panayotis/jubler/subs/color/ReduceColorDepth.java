@@ -27,9 +27,11 @@
  */
 package com.panayotis.jubler.subs.color;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -72,7 +74,7 @@ public class ReduceColorDepth {
             }
             return pixels;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return null;
         }
     }//end private int[][] getData()
@@ -100,7 +102,7 @@ public class ReduceColorDepth {
             newImage.setRGB(0, 0, width, height, coloredPixel, 0, width);
             
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return newImage;
     }
@@ -113,7 +115,7 @@ public class ReduceColorDepth {
             palette = Quantize.quantizeImage(indexed2d, this.colorDepth);
             updatePixels(palette, indexed2d);
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }//end public BufferedImage getReducedImage()
     public BufferedImage getSrcImage() {

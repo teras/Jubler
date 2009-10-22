@@ -21,8 +21,10 @@
  */
 package com.panayotis.jubler.subs.loader.binary.SWT.record;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
+import java.util.logging.Level;
 
 /**
  * Similar to SonSubEntry apart from the production of subtitle text
@@ -63,7 +65,7 @@ public class SWTSubEntry extends SonSubEntry {
             }//end if
             b.append(UNIX_NL); //separator
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return b.toString();
     }
@@ -75,7 +77,7 @@ public class SWTSubEntry extends SonSubEntry {
             new_object = (SWTSubEntry) super.clone();
             new_object.header = (header == null ? null : (SWTHeader) header.clone());
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return new_object;
     }

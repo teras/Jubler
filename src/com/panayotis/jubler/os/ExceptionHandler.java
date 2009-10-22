@@ -25,6 +25,7 @@ package com.panayotis.jubler.os;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Level;
 
 /**
  *
@@ -36,6 +37,6 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
         StringWriter trace = new StringWriter();
         PrintWriter wr = new PrintWriter(trace);
         e.printStackTrace(wr);
-        DEBUG.debug(e);
+        DEBUG.logger.log(Level.WARNING, e.toString());
     }
 }

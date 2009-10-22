@@ -21,11 +21,13 @@
 
 package com.panayotis.jubler.i18n;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 
 /**
@@ -137,9 +139,9 @@ public abstract class GettextResource extends ResourceBundle {
                     try {
                         localValue = lookupMethod.invoke(catalog, new Object[] { msgid });
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        DEBUG.logger.log(Level.WARNING, e.toString());
                     } catch (InvocationTargetException e) {
-                        e.getTargetException().printStackTrace();
+                        DEBUG.logger.log(Level.WARNING, e.getTargetException().toString());
                     }
                     if (localValue != null) {
                         if (localValue instanceof String)
@@ -153,9 +155,9 @@ public abstract class GettextResource extends ResourceBundle {
                                 if (!(i >= 0 && i < pluralforms.length))
                                     i = 0;
                             } catch (IllegalAccessException e) {
-                                e.printStackTrace();
+                                DEBUG.logger.log(Level.WARNING, e.toString());
                             } catch (InvocationTargetException e) {
-                                e.getTargetException().printStackTrace();
+                                DEBUG.logger.log(Level.WARNING, e.getTargetException().toString());
                             }
                             return pluralforms[(int)i];
                         }
@@ -166,9 +168,10 @@ public abstract class GettextResource extends ResourceBundle {
                     try {
                         localValue = handleGetObjectMethod.invoke(catalog, new Object[] { msgid });
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        DEBUG.logger.log(Level.WARNING, e.toString());
                     } catch (InvocationTargetException e) {
-                        e.getTargetException().printStackTrace();
+                        DEBUG.logger.log(Level.WARNING,
+                                e.getTargetException().toString());
                     }
                     if (localValue != null) {
                         // Found the value. It doesn't depend on n in this case.
@@ -179,9 +182,9 @@ public abstract class GettextResource extends ResourceBundle {
                 try {
                     parentCatalog = getParentMethod.invoke(catalog, new Object[0]);
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                    DEBUG.logger.log(Level.WARNING, e.toString());
                 } catch (InvocationTargetException e) {
-                    e.getTargetException().printStackTrace();
+                    DEBUG.logger.log(Level.WARNING, e.getTargetException().toString());
                 }
                 if (parentCatalog != catalog)
                     catalog = (ResourceBundle)parentCatalog;

@@ -28,6 +28,7 @@ import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.SystemFileFinder;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.JFrame;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
@@ -73,7 +74,9 @@ public class HelpBrowser extends javax.swing.JDialog {
             }
             HelpPane.setPage(url);
         } catch (IOException e) {
-            DEBUG.debug(_("Error while opening FAQ file \"{0}\"", url) + " : "+e.getClass().getName());
+            DEBUG.logger.log(Level.WARNING, e.toString() + " " +
+                    _("Error while opening FAQ file \"{0}\"", url)
+                    );
         }
     }
     

@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.util.Collections;
@@ -36,6 +37,7 @@ import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import java.io.File;
 import java.util.Collection;
+import java.util.logging.Level;
 import javax.swing.JTable;
 
 /**
@@ -488,7 +490,7 @@ public class Subtitles extends AbstractTableModel {
             value = entry.getData(row, column);
             return value;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             return null;
         }
         //return sublist.elementAt(row).getData(row, visibleToReal(col));

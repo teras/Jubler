@@ -20,9 +20,11 @@
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
+import java.util.logging.Level;
 
 /**
  * This class is used to hold the following data line
@@ -144,7 +146,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
             bld.append(separator);
 
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return bld.toString();
     }
@@ -212,7 +214,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
             n.layoutIndex = this.layoutIndex;
             n.enabled = this.enabled;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return n;
     }//end clone

@@ -24,6 +24,7 @@ package com.panayotis.jubler.subs.loader.binary.TMPGenc;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.Subtitles;
@@ -38,7 +39,6 @@ import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEventListener;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.processor.TMPGencLayoutDataItem;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.processor.TMPGencLayoutExDataItem;
-import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.processor.TMPGencSubtitleEvent;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.record.LayoutDataExRecord;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.record.LayoutDataExRecordList;
@@ -52,6 +52,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -347,7 +348,7 @@ public class TMPGenc extends AbstractBinarySubFormat implements
             out.write(buf.toString());
             changed = true;
         } catch (IOException ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
             changed = true;
         }finally{
             try {

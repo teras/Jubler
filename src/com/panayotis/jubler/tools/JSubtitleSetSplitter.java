@@ -27,6 +27,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -36,6 +37,7 @@ import java.text.NumberFormat;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * This class splits a subtitle data set into the required number of fragments.
@@ -78,7 +80,7 @@ public class JSubtitleSetSplitter implements CommonDef{
             numRecLoaded = data.size();
             numRecPerFile = (numRecLoaded / splitNumber);
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }
 
@@ -114,7 +116,7 @@ public class JSubtitleSetSplitter implements CommonDef{
                 fileList.add(f);
             }//end for (int i=1; i <= num_files_needed; i++)  
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }
 
@@ -137,7 +139,7 @@ public class JSubtitleSetSplitter implements CommonDef{
                 subs.add(entry);
             }//end for (int i = from; i < to; i++)
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return subs;
     }
@@ -167,7 +169,7 @@ public class JSubtitleSetSplitter implements CommonDef{
                 index += numRecPerFile;
             }//end for (int i=0; i < num_files_needed; i++)
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return range_map;
     }
@@ -188,7 +190,7 @@ public class JSubtitleSetSplitter implements CommonDef{
                 data_set.put(f, subs);
             }//end for(int = 0; i < fileList.size(); i++)        
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return data_set;
     }

@@ -23,11 +23,13 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.RecordComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -123,6 +125,7 @@ public class JComponentSelection {
                 selectedComponent = RecordComponent.CP_INVALID;
             }//end if (is_cancel)
         } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return selectedComponent;
     }//end public SubtitleRecordComponent showDialog(String title)

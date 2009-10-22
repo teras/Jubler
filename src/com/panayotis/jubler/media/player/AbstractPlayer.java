@@ -38,6 +38,7 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.time.Time;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 /**
  *
  * @author teras
@@ -132,7 +133,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         for (int i = 0 ; i < cmds.length ; i++) {
             cm.append(cmds[i]).append(' ');
         }
-        DEBUG.debug(cm.toString());
+        DEBUG.logger.log(Level.WARNING, cm.toString());
         return cmds;
     }
     

@@ -28,9 +28,11 @@
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.processor;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.record.LayoutDataExRecord;
+import java.util.logging.Level;
 
 /**
  * This class hold the pattern to identify item lines from the "[LayoutDataEx]" section
@@ -70,7 +72,7 @@ public class TMPGencLayoutExDataItem extends SubtitlePatternProcessor implements
             r.centered = Integer.parseInt(matched_data[0]);
             r.readingDirection = Integer.parseInt(matched_data[1]);
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }//end if
 }

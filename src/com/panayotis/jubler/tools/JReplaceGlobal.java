@@ -25,8 +25,8 @@ package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.tools.replace.JReplaceList;
-import com.panayotis.jubler.tools.replace.ReplaceModel;
+import com.panayotis.jubler.events.menu.tool.replace.JReplaceList;
+import com.panayotis.jubler.events.menu.tool.replace.ReplaceModel;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

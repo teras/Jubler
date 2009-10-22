@@ -21,7 +21,9 @@
 
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
+import java.util.logging.Level;
 
 /**
  * This class hold patterns to recognise and parse data line from the
@@ -79,7 +81,7 @@ public class LayoutDataExRecord implements TMPGencPatternDef{
             n.readingDirection = readingDirection;
             n.centered = centered;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return n;
     }//end clone

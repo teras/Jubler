@@ -27,7 +27,7 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
-import com.panayotis.jubler.undo.UndoEntry;
+import com.panayotis.jubler.events.menu.edit.undo.UndoEntry;
 import java.awt.event.MouseWheelEvent;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -401,7 +401,7 @@ public class JSubTimeline extends JPanel {
         selection_mode=NONE;
         /* The visual changes will come as a callback from the Jubler event dispach of the chaneg subtitles */
         //ignore_new_selection_list = true;
-        parent.setSelectedSub(sel, true);
+        parent.fn.setSelectedSub(sel, true);
         //ignore_new_selection_list = false;
     }
     

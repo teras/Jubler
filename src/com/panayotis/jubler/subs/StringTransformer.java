@@ -27,11 +27,12 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.events.WordLocatedEvent;
 import com.panayotis.jubler.subs.events.WordLocatedEventListener;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
-import java.util.regex.Matcher;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 /**
@@ -116,33 +117,24 @@ public class StringTransformer {
      * was found, taken into account the length of the replaced word.
      */
     public void transformWord() {
-        String word = null;
-        boolean finished = false;
-        boolean is_found = false;
-        int pattern_len = 0;
-
         try {
-            Pattern pat = Pattern.compile(pattern);
-            int last_pos = 0;
-            while (!finished) {
-                Matcher m = pat.matcher(text);
-                is_found = m.find(last_pos);
-                finished = !is_found;
-                if (is_found){
-                    pattern_len = (m.end() - m.start());
-                    word = text.substring(last_pos, m.start());
-                    WordLocatedEvent wle = new WordLocatedEvent(this, ActionEvent.ACTION_PERFORMED, "Word Transform");
-                    wle.setWord(word);
-                    fireWordLocatedEventListener(wle);
-                    
-                    word = wle.getWord();
-                    String first_part = text.substring(0, last_pos);
-                    String last_part = text.substring(m.start());
-                    text = first_part + word + last_part;
-                    last_pos += word.length() + pattern_len;
-                }//end if
-            }//end while(! finished)
+            WordList w_list = new WordList(text, pattern);
+            w_list.split();
+            for (int i = 0; i < w_list.size(); i++) {
+                WordRecord w_rec = w_list.elementAt(i);
+                String word = w_rec.getWord();
+
+                WordLocatedEvent wle = new WordLocatedEvent(this, ActionEvent.ACTION_PERFORMED, "Word Transform");
+                wle.setWord(word);
+                //System.out.println("about to transform the word: [" + word + "]");
+                fireWordLocatedEventListener(wle);
+                String new_word = wle.getWord();
+                //System.out.println("transformed word: [" + word + "]");
+                w_rec.setWord(new_word);
+            }//end for(int i=0; i < w_list.size(); i++)
+            this.text = w_list.restore();
         } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }//end public void split()
 
@@ -173,6 +165,147 @@ public class StringTransformer {
     public void setPattern(String pattern) {
         this.pattern = pattern;
     }
-
 }//end public class StringTransformer
 
+class WordList extends Vector<WordRecord> {
+
+    private String text;
+    private String pattern;
+
+    public WordList(String text, String pattern) {
+        super();
+        this.text = text;
+        this.pattern = pattern;
+    }
+
+    public void split() {
+        try {
+            String[] word_list = text.split(pattern);
+            int start_from = 0;
+            int word_len = 0;
+            int len = word_list.length;
+            for (int i = 0; i < len; i++) {
+                String word = word_list[i];
+                int start_index = text.indexOf(word, start_from);
+                word_len = word.length();
+                WordRecord w_rec = new WordRecord(word, start_index, word_len);
+                add(w_rec);
+                start_from += word_len;
+            }//end for(int i=0; i < len; i++)
+        } catch (Exception ex) {
+        }
+    }//end public void split()
+
+    public String restore() {
+        StringBuffer buf = new StringBuffer();
+        int len = this.size();
+        int non_word_start = 0;
+        int non_word_end = 0;
+        String non_word = "";
+        for (int i = 0; i < len; i++) {
+            WordRecord w_rec = elementAt(i);
+            int w_start = w_rec.getStart();
+            int w_len = w_rec.getLen();
+            String word = w_rec.getWord();
+            
+            if (w_start > 0) {
+                non_word_end = w_start;
+                non_word = text.substring(non_word_start, non_word_end);
+                buf.append(non_word);
+            }//end if (w_start > 0)
+            non_word_start = w_start + w_len;
+            buf.append(word);
+        }//end for (int i=0; i < len; i++)
+        if (non_word_start < text.length()){
+            non_word = text.substring(non_word_start);
+            buf.append(non_word);
+        }//end if (non_word_start < text.length())
+        return buf.toString();
+    }//end public void restore()
+
+    /**
+     * @return the text
+     */
+    public String getText() {
+        return text;
+    }
+
+    /**
+     * @param text the text to set
+     */
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    /**
+     * @return the pattern
+     */
+    public String getPattern() {
+        return pattern;
+    }
+
+    /**
+     * @param pattern the pattern to set
+     */
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+}//end class WordList
+
+class WordRecord {
+
+    private String word;
+    private int start;
+    private int len;
+
+    public WordRecord() {
+    }
+
+    public WordRecord(String word, int start, int len) {
+        this.word = word;
+        this.start = start;
+        this.len = len;
+    }//end public WordRecord(String word, int start, int len)
+
+    /**
+     * @return the word
+     */
+    public String getWord() {
+        return word;
+    }
+
+    /**
+     * @param word the word to set
+     */
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    /**
+     * @return the start
+     */
+    public int getStart() {
+        return start;
+    }
+
+    /**
+     * @param start the start to set
+     */
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    /**
+     * @return the len
+     */
+    public int getLen() {
+        return len;
+    }
+
+    /**
+     * @param len the len to set
+     */
+    public void setLen(int len) {
+        this.len = len;
+    }
+}//end class WordRecord

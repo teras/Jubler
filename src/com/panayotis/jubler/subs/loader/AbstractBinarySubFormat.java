@@ -207,7 +207,7 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
                 firePostParseActionEvent();
             }//end if                        
         } catch (Exception e) {
-            e.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, e.toString());
             return null;
         } finally {
             try {

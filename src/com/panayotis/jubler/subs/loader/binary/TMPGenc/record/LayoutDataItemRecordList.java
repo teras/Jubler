@@ -20,8 +20,10 @@
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  * This class holds a collection of {@link LayoutDataItemRecord}(s).
@@ -80,7 +82,7 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
         try {
             n = (LayoutDataItemRecordList) super.clone();
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return n;
     }//end clone
@@ -148,7 +150,7 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
                 this.add(list[i]);
             }//end for(int i=0; i<list.length; i++)
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }//try/catch(Exception ex)
     }//public void defaultRecord()
 }

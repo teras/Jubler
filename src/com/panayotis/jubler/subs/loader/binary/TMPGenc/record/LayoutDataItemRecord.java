@@ -20,8 +20,10 @@
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 import java.text.NumberFormat;
+import java.util.logging.Level;
 
 /**
  * This class is used to store the following line of data
@@ -489,7 +491,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
             bld.append(char_comma);
             bld.append(borderColour);
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return bld.toString();
     }
@@ -519,7 +521,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
             n.borderSize = this.borderSize;
             n.borderColour = this.borderColour;
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         return n;
     }//end clone

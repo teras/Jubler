@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -110,13 +111,13 @@ public final class FFMPEG extends NativeDecoder {
         } catch (LineUnavailableException e) {
             cleanUp(_("Line unavailable"), wav);
         } catch (Exception e) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
             cleanUp(null, wav);
         }
     }
     
     private void cleanUp(String msg, File f) {
-        DEBUG.debug(msg);
+        DEBUG.logger.log(Level.WARNING, msg);
         if (f!=null && f.exists()) f.delete();
     }
     

@@ -33,6 +33,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
 /**
  *
  * @author teras
@@ -63,11 +64,13 @@ public class Options {
         if (oldconfig.exists()) {
             if (!newconfig.exists()) {
                 boolean success = oldconfig.renameTo(newconfig);
+                String msg;
                 if (!success) {
-                    DEBUG.debug(_("Unable to move configuration file to {0}", newconfig.getPath()));
+                    msg =_("Unable to move configuration file to {0}", newconfig.getPath());
                 } else {
-                    DEBUG.debug(_("Configuration file moved to {0}", newconfig.getPath()));
+                    msg = _("Configuration file moved to {0}", newconfig.getPath());
                 }
+                DEBUG.logger.log(Level.WARNING, msg);
             }
         }
         return newconfig.getPath();
@@ -81,7 +84,8 @@ public class Options {
             File oldpref = new File(preffile+".old");
             if (oldpref.exists()) oldpref.delete();
             new File(preffile).renameTo(oldpref);
-            DEBUG.debug(_("Updated configuration file. Old configuration moved to {0}", oldpref.getPath()));
+            DEBUG.logger.log(Level.WARNING,
+                    _("Updated configuration file. Old configuration moved to {0}", oldpref.getPath()));
         }   
         setOption("System.Preferences.Version", Integer.toString(CURRENT_VERSION));
         saveOptions();
@@ -100,7 +104,7 @@ public class Options {
         try {
             opts.storeToXML(new FileOutputStream(preffile), "Jubler file");
         } catch ( IOException e ) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         }
     }
     

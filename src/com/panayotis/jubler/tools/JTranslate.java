@@ -24,8 +24,8 @@ package com.panayotis.jubler.tools;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.tools.translate.AvailTranslators;
-import com.panayotis.jubler.tools.translate.Translator;
+import com.panayotis.jubler.events.menu.tool.translate.AvailTranslators;
+import com.panayotis.jubler.events.menu.tool.translate.Translator;
 import javax.swing.DefaultComboBoxModel;
 
 /**

@@ -35,8 +35,8 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
-import com.panayotis.jubler.tools.editing.BalanceText;
-import com.panayotis.jubler.undo.UndoEntry;
+import com.panayotis.jubler.events.menu.toobar.BalanceText;
+import com.panayotis.jubler.events.menu.edit.undo.UndoEntry;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -191,7 +191,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         if (row < 0) {
             return;
         }
-        parent.keepUndo(entry);
+        parent.fn.keepUndo(entry);
 
 
         tstart = SubStart.getTimeValue().toSeconds();
@@ -233,7 +233,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         SubDur.setTimeValue(new Time(tdur));
         entry.setStartTime(new Time(tstart));
         entry.setFinishTime(new Time(tfinish));
-        parent.rowHasChanged(row, true);
+        parent.fn.rowHasChanged(row, true);
         ignore_sub_changes = false;
 
     }
@@ -708,10 +708,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         if (res < 0) {
             return;
         }
-        parent.keepUndo(entry);
+        parent.fn.keepUndo(entry);
         entry.setStyle(styles.elementAt(res));
         showStyle();
-        parent.rowHasChanged(row, false);
+        parent.fn.rowHasChanged(row, false);
     }//GEN-LAST:event_StyleListCActionPerformed
 
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
@@ -747,7 +747,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         showStyle();
         setStyleListEnabled(true);
         parent.getUndoList().addUndo(undo);
-        parent.tableHasChanged(null);
+        parent.fn.tableHasChanged(null);
     }//GEN-LAST:event_EditBActionPerformed
 
     private void DetachBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetachBActionPerformed
@@ -778,7 +778,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         int text_width_value = TextBalancingSlider.getValue();
         if (Share.isEmpty(balance_text_action)) {
-            balance_text_action = parent.getBalanceText();
+            balance_text_action = parent.getActionMap().getBalanceText();
         }//end if (Share.isEmpty(balance_text_action))
 
         balance_text_action.setActionOnAllData(false);
@@ -806,7 +806,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 }//GEN-LAST:event_VisualiseTextLayoutBActionPerformed
 
     public void changeStyle(StyleType type, Object value) {
-        parent.subTextChanged();    // We need this for the undo function
+        parent.fn.subTextChanged();    // We need this for the undo function
         entry.setOverStyle(type, value, subTextEditor.getSelectionStart(), subTextEditor.getSelectionEnd());
         SwingUtilities.invokeLater(stylethread);
         focusOnText();
@@ -819,7 +819,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         if (ignore_sub_changes) {
             return;
         }
-        parent.subTextChanged();
+        parent.fn.subTextChanged();
         entry.insertText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
     }
@@ -831,7 +831,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         if (ignore_sub_changes) {
             return;
         }
-        parent.subTextChanged();
+        parent.fn.subTextChanged();
         entry.removeText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
     }

@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler;
 
-import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.DEBUG;
@@ -49,6 +48,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        new DEBUG(); //initialise the debug so that we can add handler to it.
         /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
         ExceptionHandler eh = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(eh);
@@ -75,15 +75,17 @@ public class Main {
                             sublist.remove(0);
 
                             File f = new File(sub);
-                            if (f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX))
+                            if (f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX)) {
                                 autosave_counter++;
-
-                            if (f.exists() && f.isFile() && f.canRead()) {
-                                Jubler.windows.elementAt(0).loadFile(f, false);
                             }
 
-                            if (autosave_counter == autosaves)
+                            if (f.exists() && f.isFile() && f.canRead()) {
+                                Jubler.windows.elementAt(0).fn.loadFile(f, false);
+                            }
+
+                            if (autosave_counter == autosaves) {
                                 AutoSaver.init();
+                            }
                         }
                         synchronized (this) {
                             wait();
@@ -105,13 +107,14 @@ public class Main {
             asyncAddSubtitle(file.getPath());
         }
         /* Force starting autosaver, if no autosaves were found */
-        if (autosaves == 0)
+        if (autosaves == 0) {
             AutoSaver.init();
+        }
 
         /* Load arguments, in a mac way */
         SystemDependent.initApplication();
 
-        new Jubler();   // Display initial Jubler window
+        Jubler jb = new Jubler();   // Display initial Jubler window
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
     }

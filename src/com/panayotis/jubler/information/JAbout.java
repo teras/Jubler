@@ -28,6 +28,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.DEBUG;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -77,7 +78,7 @@ public class JAbout extends javax.swing.JPanel {
             r = current.getProperty("release", r);
             d = current.getProperty("packaged", d).toLowerCase();
         } catch (IOException ex) {
-            DEBUG.debug(ex);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         version = v;
         release = r;

@@ -29,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Vector;
+import java.util.logging.Level;
 
 /**
  *
@@ -48,7 +49,8 @@ public class TreeWalker {
         }
 
         for (ExtPath path : paths) {
-            DEBUG.debug(_("Wizard is looking inside {0}", path.getPath()));
+            String msg = _("Wizard is looking inside {0}", path.getPath());
+            DEBUG.logger.log(Level.WARNING, msg);
             File f = new File(path.getPath());
             if (path.searchForFile() && (!f.isFile())) {
                 continue;
@@ -113,7 +115,7 @@ public class TreeWalker {
             for (int i = 0; i < cmd.length; i++) {
                 buf.append(cmd[i]).append(' ');
             }
-            DEBUG.debug(buf.toString());
+            DEBUG.logger.log(Level.WARNING, buf.toString());
 
             proc = Runtime.getRuntime().exec(cmd);
             infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));

@@ -28,10 +28,12 @@
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.processor;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.record.TMPGencSubtitleRecord;
 import com.panayotis.jubler.time.Time;
+import java.util.logging.Level;
 
 /**
  * Pattern to recognize the TMPGenc's subtitle detail line
@@ -112,7 +114,7 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
 
             r.setText(txt);
         } catch (Exception ex) {
-            ex.printStackTrace(System.out);
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }//end if
 

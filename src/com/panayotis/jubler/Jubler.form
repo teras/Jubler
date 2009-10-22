@@ -14,9 +14,6 @@
               <Connection code="_(&quot;Cut&quot;)" type="code"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CutPActionPerformed"/>
-          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="CopyP">
           <Properties>
@@ -24,9 +21,6 @@
               <Connection code="_(&quot;Copy&quot;)" type="code"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CopyPActionPerformed"/>
-          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="PasteP">
           <Properties>
@@ -34,9 +28,6 @@
               <Connection code="_(&quot;Paste&quot;)" type="code"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PastePActionPerformed"/>
-          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="DeleteP">
           <Properties>
@@ -44,9 +35,6 @@
               <Connection code="_(&quot;Delete&quot;)" type="code"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DeletePActionPerformed"/>
-          </Events>
         </MenuItem>
         <Menu class="javax.swing.JMenu" name="MarkP">
           <Properties>
@@ -61,9 +49,6 @@
                   <Connection code="_(&quot;None&quot;)" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NoneMPActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="PinkMP">
               <Properties>
@@ -71,9 +56,6 @@
                   <Connection code="_(&quot;Pink&quot;)" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PinkMPActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="YellowMP">
               <Properties>
@@ -81,9 +63,6 @@
                   <Connection code="_(&quot;Yellow&quot;)" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="YellowMPActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="CyanMP">
               <Properties>
@@ -91,9 +70,6 @@
                   <Connection code="_(&quot;Cyan&quot;)" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CyanMPActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -120,9 +96,6 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="0"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
-              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="Jubler_ShowNumberP"/>
               </AuxValues>
@@ -134,9 +107,6 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="1"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowEndP">
               <Properties>
@@ -145,9 +115,6 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="2"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowDurationP">
               <Properties>
@@ -156,9 +123,6 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="3"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowLayerP">
               <Properties>
@@ -167,9 +131,6 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="4"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowStyleP">
               <Properties>
@@ -178,9 +139,6 @@
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="5"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -192,9 +150,6 @@
               <Connection code="_(&quot;Test video&quot;)" type="code"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CurrentTTMActionPerformed"/>
-          </Events>
         </MenuItem>
       </SubComponents>
     </Container>
@@ -229,9 +184,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="FNF" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FileNFMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="ChildNFM">
                   <Properties>
@@ -241,9 +193,6 @@
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="FNC" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ChildNFMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -257,9 +206,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="FOP" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OpenFMActionPerformed"/>
-              </Events>
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="WebFM">
               <Properties>
@@ -278,9 +224,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="RFW" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RetrieveWFMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -292,9 +235,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FRE" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RevertFMActionPerformed"/>
-              </Events>
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="RecentsFM">
               <Properties>
@@ -317,9 +257,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FSV" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveFMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SaveAsFM">
               <Properties>
@@ -329,9 +266,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FSA" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveAsFMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="CloseFM">
               <Properties>
@@ -343,9 +277,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="FCL" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CloseFMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator7">
             </MenuItem>
@@ -360,9 +291,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FIN" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InfoFMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="PrefsFM">
               <Properties>
@@ -374,9 +302,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="FPR" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PrefsFMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator20">
             </MenuItem>
@@ -426,9 +351,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="FQU" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="QuitFMActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -447,9 +369,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="ECU" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CutEMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="CopyEM">
               <Properties>
@@ -458,9 +377,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="ECO" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CopyEMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="PasteEM">
               <Properties>
@@ -469,9 +385,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="EPA" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasteEMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="PasteSpecialEM">
               <Properties>
@@ -480,9 +393,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="EPS" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasteSpecialEMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator9">
             </MenuItem>
@@ -500,9 +410,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EDS" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionDEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="EmptyLinesDEM">
                   <Properties>
@@ -511,9 +418,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EDE" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmptyLinesDEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -534,9 +438,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="ERS" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="StepwiseREMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="GloballyREM">
                   <Properties>
@@ -548,9 +449,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="ERG" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GloballyREMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -572,9 +470,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="b"/>
                     <Property name="name" type="java.lang.String" value="EIB" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertSubEntry"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="AfterIEM">
                   <Properties>
@@ -587,9 +482,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="a"/>
                     <Property name="name" type="java.lang.String" value="EIA" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="insertSubEntry"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -611,9 +503,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="p"/>
                     <Property name="name" type="java.lang.String" value="EGP" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="NextGEM">
                   <Properties>
@@ -626,9 +515,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="n"/>
                     <Property name="name" type="java.lang.String" value="EGN" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="PreviousPageGEM">
                   <Properties>
@@ -641,9 +527,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="u"/>
                     <Property name="name" type="java.lang.String" value="EGU" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="NextPageGEM">
                   <Properties>
@@ -656,9 +539,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="d"/>
                     <Property name="name" type="java.lang.String" value="EGD" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="TopGEM">
                   <Properties>
@@ -671,9 +551,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="t"/>
                     <Property name="name" type="java.lang.String" value="EGT" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="BottomGEM">
                   <Properties>
@@ -686,9 +563,6 @@
                     <Property name="actionCommand" type="java.lang.String" value="b"/>
                     <Property name="name" type="java.lang.String" value="EGB" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="goToSubtitle"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JSeparator" name="jSeparator2">
                 </MenuItem>
@@ -699,9 +573,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EGM" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="byTimeGEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="byLineNumberEM">
                   <Properties>
@@ -713,9 +584,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EGL" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="byLineNumberEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -735,9 +603,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMN" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NoneMEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="PinkMEM">
                   <Properties>
@@ -746,9 +611,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMP" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PinkMEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="YellowMEM">
                   <Properties>
@@ -757,9 +619,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMY" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="YellowMEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="CyanMEM">
                   <Properties>
@@ -768,9 +627,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMC" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CyanMEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JSeparator" name="MarkSep">
                 </MenuItem>
@@ -781,9 +637,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMS" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionMEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -803,9 +656,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="ESS" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionSEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -822,9 +672,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="EUN" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UndoEMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="RedoEM">
               <Properties>
@@ -837,9 +684,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="ERE" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RedoEMActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -866,9 +710,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TSP" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SplitTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="JoinTM">
               <Properties>
@@ -878,9 +719,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="TJO" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JoinTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ReparentTM">
               <Properties>
@@ -890,9 +728,6 @@
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="TPA" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReparentTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="SynchronizeTM">
               <Properties>
@@ -901,9 +736,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TSY" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SynchronizeTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator8">
             </MenuItem>
@@ -914,9 +746,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TSH" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ShiftTimeTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="RecodeTM">
               <Properties>
@@ -925,9 +754,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TCO" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RecodeTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="FixTM">
               <Properties>
@@ -936,9 +762,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TFI" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FixTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="RoundTM">
               <Properties>
@@ -947,9 +770,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TRO" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RoundTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator5">
             </MenuItem>
@@ -963,9 +783,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TLL" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SpellTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="TranslateTM">
               <Properties>
@@ -974,9 +791,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="TTM" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TranslateTMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator3">
             </MenuItem>
@@ -997,9 +811,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TTB" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BeginningTTMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="CurrentTTM">
                   <Properties>
@@ -1011,9 +822,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TTC" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CurrentTTMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -1034,9 +842,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPE" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EnablePreviewCActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JSeparator" name="jSeparator6">
                 </MenuItem>
@@ -1048,9 +853,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPV" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VideoPreviewCActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
@@ -1062,9 +864,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPH" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="HalfSizeCActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
@@ -1079,9 +878,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TAP" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AudioPreviewCActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
@@ -1093,9 +889,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPM" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MaxWaveCActionPerformed"/>
-                  </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
@@ -1107,9 +900,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPP" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PlayAudioCActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -1132,9 +922,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TRJ" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JoinRecordTMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="SplitRecordTM">
                   <Properties>
@@ -1146,9 +933,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TRS" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SplitRecordTMActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="ViewHeaderTM">
                   <Properties>
@@ -1222,9 +1006,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TBT" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextBalancingOnSelectionActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="TextBalancingOnTheWholeTable">
                   <Properties>
@@ -1236,9 +1017,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TTW" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextBalancingOnTheWholeTableActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -1256,9 +1034,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TOS" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OCRSelectedActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="OCRAll">
                   <Properties>
@@ -1267,9 +1042,6 @@
                     </Property>
                     <Property name="name" type="java.lang.String" value="TOA" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OCRAllActionPerformed"/>
-                  </Events>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="PackingImagesToTiffM">
                   <Properties>
@@ -1297,9 +1069,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="HFQ" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FAQHMActionPerformed"/>
-              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="AboutHM">
               <Properties>
@@ -1311,9 +1080,6 @@
                 </Property>
                 <Property name="name" type="java.lang.String" value="HAB" noResource="true"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AboutHMActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -1331,15 +1097,13 @@
     <SyntheticProperty name="menuBar" type="java.lang.String" value="JublerMenuBar"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
-  <Events>
-    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
-  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="2"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="1"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
@@ -1464,14 +1228,14 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="SubTable">
                   <Properties>
+                    <Property name="autoResizeMode" type="int" value="3"/>
                     <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="SubsPop"/>
                     </Property>
-                    <Property name="autoResizeMode" type="int" value="3"/>
                   </Properties>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JTable () {&#xa;            public void columnMarginChanged(ChangeEvent e)  {&#xa;                super.columnMarginChanged(e);&#xa;                setcolumnchange(true);&#xa;            }&#xa;        };"/>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="        SubTable.setDefaultRenderer(Object.class, TableRenderer);&#xa;        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){&#xa;            public void mousePressed(MouseEvent e) {&#xa;                setcolumnchange(false);&#xa;            }&#xa;            public void mouseReleased(MouseEvent e) {&#xa;                if (getcolumnchange()) subs.updateColumnWidth(SubTable);&#xa;                setcolumnchange(false);&#xa;            }&#xa;        });&#xa;        SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (e.getValueIsAdjusting()) return; //Ignore extra messages&#xa;                ListSelectionModel lsm = (ListSelectionModel)e.getSource();&#xa;                if (!lsm.isSelectionEmpty()) {&#xa;                    displaySubData();&#xa;                }&#xa;            }&#xa;        });&#xa;"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="        SubTable.setDefaultRenderer(Object.class, TableRenderer);&#xa;        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){&#xa;            public void mousePressed(MouseEvent e) {&#xa;                setcolumnchange(false);&#xa;            }&#xa;            public void mouseReleased(MouseEvent e) {&#xa;                if (getcolumnchange()) subs.updateColumnWidth(SubTable);&#xa;                setcolumnchange(false);&#xa;            }&#xa;        });&#xa;        SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {&#xa;            public void valueChanged(ListSelectionEvent e) {&#xa;                if (e.getValueIsAdjusting()) return; //Ignore extra messages&#xa;                ListSelectionModel lsm = (ListSelectionModel)e.getSource();&#xa;                if (!lsm.isSelectionEmpty()) {&#xa;                    fn.displaySubData();&#xa;                }&#xa;            }&#xa;        });&#xa;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -1502,9 +1266,6 @@
                   <Connection code="_(&quot;New&quot;)" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FileNFMActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="LoadTB">
               <Properties>
@@ -1515,9 +1276,6 @@
                   <Connection code="_(&quot;Load&quot;)" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="OpenFMActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="SaveTB">
               <Properties>
@@ -1529,9 +1287,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SaveTBActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="InfoTB">
               <Properties>
@@ -1543,9 +1298,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InfoFMActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1579,9 +1331,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CutTBActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="CopyTB">
               <Properties>
@@ -1593,9 +1342,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CopyTBActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="PasteTB">
               <Properties>
@@ -1607,9 +1353,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasteTBActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1629,9 +1372,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UndoEMActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="RedoTB">
               <Properties>
@@ -1643,9 +1383,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RedoEMActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1685,9 +1422,6 @@
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SortTBActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1707,9 +1441,6 @@
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CurrentTTMActionPerformed"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="PreviewTB">
               <Properties>
@@ -1724,9 +1455,6 @@
                   <Image iconType="3" name="/icons/preview.png"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PreviewTBCurrentTTMActionPerformed"/>
-              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="        PreviewTB.setModel(new ToggleButtonModel()); "/>
               </AuxValues>
@@ -1767,9 +1495,6 @@
                   <Dimension value="[150, 22]"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DropDownActionListActionPerformed"/>
-              </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                   <GridBagConstraints gridX="0" gridY="0" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
@@ -1792,9 +1517,6 @@
                   <Dimension value="[50, 22]"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DropDownActionNumberOfLineActionPerformed"/>
-              </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                   <GridBagConstraints gridX="1" gridY="0" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="5" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>
@@ -1820,9 +1542,6 @@
                   <Dimension value="[57, 32]"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DoItTBActionPerformed"/>
-              </Events>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                   <GridBagConstraints gridX="2" gridY="0" gridWidth="1" gridHeight="1" fill="2" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="5" insetsBottom="0" insetsRight="0" anchor="17" weightX="1.0" weightY="0.0"/>

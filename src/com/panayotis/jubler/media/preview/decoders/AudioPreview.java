@@ -27,9 +27,9 @@ import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.logging.Level;
 
 /**
  *
@@ -85,7 +85,7 @@ public class AudioPreview {
             }
             file.close();
         } catch (IOException e) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         }
         
         if (header.toString().equals("JACACHE")) return true;
@@ -107,7 +107,7 @@ public class AudioPreview {
             name = file.readUTF().trim();
             file.close();
         } catch (IOException e) {
-            DEBUG.debug(e);
+            DEBUG.logger.log(Level.WARNING, e.toString());
         }
         if (name.equals("")) name = null;
         return name;
