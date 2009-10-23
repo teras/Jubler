@@ -60,7 +60,7 @@ public class ChildAction extends MenuAction {
         curjubler.fn.setSubs(s);
 
         String fname = subs.getCurrentFile().getPath() + _("_child");
-        curjubler.fn.initNewFile(fname);
+        curjubler.getFileManager().initNewFile(fname);
         jb.setConnectToOther(jb);
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class ChildAction extends MenuAction

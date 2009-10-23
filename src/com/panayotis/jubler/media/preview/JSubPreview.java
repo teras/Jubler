@@ -37,6 +37,7 @@ import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JSplitPane;
 
 /**
  *
@@ -45,7 +46,7 @@ import javax.swing.ImageIcon;
 public class JSubPreview extends javax.swing.JPanel {
 
     public final static Icon[] cursors;
-    
+    private javax.swing.JSplitPane SubSplitPane;
 
     static {
         cursors = new Icon[4];
@@ -69,6 +70,7 @@ public class JSubPreview extends javax.swing.JPanel {
     public JSubPreview(Jubler parent) {
         initComponents();
 
+        SubSplitPane = parent.getSubSplitPane();
         view = new ViewWindow();
         timecaption = new JRuler(view);
         timeline = new JSubTimeline(parent, view, this);
@@ -188,9 +190,21 @@ public class JSubPreview extends javax.swing.JPanel {
         } else {
             MainPanel.add(frame, BorderLayout.NORTH);
         }
-        parent.fn.setPreviewOrientation(horizontal);
-        parent.fn.resetPreviewPanels();
+        setPreviewOrientation(horizontal);
+        resetPreviewPanels();
         AutoSaveOptions.setPreviewOrientation(horizontal);
+    }
+
+    public void resetPreviewPanels() {
+        SubSplitPane.resetToPreferredSizes();
+    }
+
+    public void setPreviewOrientation(boolean horizontal) {
+        if (horizontal) {
+            SubSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        } else {
+            SubSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        }
     }
 
     public Point getFrameLocation() {
@@ -207,14 +221,14 @@ public class JSubPreview extends javax.swing.JPanel {
         VideoShow.setSelected(status);
         parent.VideoPreviewC.setSelected(status);
         frame.setEnabled(status);
-        parent.fn.resetPreviewPanels();
+        resetPreviewPanels();
     }
 
     public void setVideoZoom(boolean status) {
         VideoZoom.setSelected(status);
         parent.HalfSizeC.setSelected(status);
         frame.setResize(status ? 0.5f : 1f);
-        parent.fn.resetPreviewPanels();
+        resetPreviewPanels();
     }
 
     public void setAudioShow(boolean status) {

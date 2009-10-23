@@ -36,6 +36,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JWindow;
 
 /**
@@ -48,10 +49,10 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        new DEBUG(); //initialise the debug so that we can add handler to it.
         /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
         ExceptionHandler eh = new ExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(eh);
+        new DEBUG(); //initialise the debug so that we can add handler to it.
 
         splash = new MainSplash("/icons/splash.jpg");
         SystemDependent.setLookAndFeel();
@@ -80,7 +81,7 @@ public class Main {
                             }
 
                             if (f.exists() && f.isFile() && f.canRead()) {
-                                Jubler.windows.elementAt(0).fn.loadFile(f, false);
+                                Jubler.windows.elementAt(0).getFileManager().loadFile(f, false);
                             }
 
                             if (autosave_counter == autosaves) {
@@ -91,7 +92,9 @@ public class Main {
                             wait();
                         }
                     } catch (InterruptedException ex) {
+                        DEBUG.logger.log(Level.WARNING, ex.toString());
                     } catch (ArrayIndexOutOfBoundsException ex) {
+                        DEBUG.logger.log(Level.WARNING, ex.toString());
                     }
                 }
             }

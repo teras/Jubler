@@ -61,7 +61,7 @@ public class AppendFromFile extends MenuAction {
             
             Subtitles newsubs;
 
-            newsubs = jublerParent.fn.loadSubtitleFile();
+            newsubs = jublerParent.getFileManager().loadSubtitleFile();
             if (newsubs == null) {
                 return;
             }

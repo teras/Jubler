@@ -104,8 +104,8 @@ public class SplitSubtitleAction extends MenuAction {
         UndoList new_win_undo = newwindow.getUndoList();
         new_win_undo.invalidateSaveMark();
 
-        newwindow.fn.setFile(new File(oldsubs.getCurrentFile() + "_2"), true);
-        jb.fn.setFile(new File(oldsubs.getCurrentFile() + "_1"), false);
+        newwindow.getFileManager().setFile(new File(oldsubs.getCurrentFile() + "_2"), true);
+        jb.getFileManager().setFile(new File(oldsubs.getCurrentFile() + "_1"), false);
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class SplitSubtitleAction extends MenuAction
 

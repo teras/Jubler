@@ -58,7 +58,7 @@ public class ImportComponent extends MenuAction {
         boolean changed = false;
         SubEntry current_entry, import_entry;
         try {
-            newsubs = jublerParent.fn.loadSubtitleFile();
+            newsubs = jublerParent.getFileManager().loadSubtitleFile();
             if (newsubs == null) {
                 return;
             }

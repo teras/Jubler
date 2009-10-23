@@ -267,7 +267,7 @@ public class Dropper extends TransferHandler {
                 }
                 for (File f : files) {
                     if (f.isFile()) {
-                        parent.fn.loadFile(f, false);
+                        parent.getFileManager().loadFile(f, false);
                     }//end if (f.isFile())
                 }//end for (File f : files)
                 break;

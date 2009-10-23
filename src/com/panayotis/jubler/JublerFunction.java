@@ -253,17 +253,6 @@ public class JublerFunction {
         return where;
     }
 
-    public void initNewFile(String fname) {
-        UndoList undo = jb.getUndoList();
-        JSubEditor subeditor = jb.getSubeditor();
-
-        undo.invalidateSaveMark();
-        setFile(new File(fname), true);
-        SaveFM.setEnabled(false);
-        RevertFM.setEnabled(false);
-        subeditor.focusOnText();
-    }
-
     public void setDropHandler() {
         Dropper r = new Dropper(jb);
         BasicPanel.setTransferHandler(r);
@@ -273,28 +262,6 @@ public class JublerFunction {
         SubTable.setDropMode(DropMode.INSERT_ROWS);
         SubTable.setDragEnabled(true);
         //SubTable.setDropTarget(new DropTarget(SubTable, r));
-    }
-
-    public void updateRecentFile(File recent) {
-        Subtitles subs = jb.getSubtitles();
-
-        if (subs != null) {
-            subs.setLastOpenedFile(recent);
-        }
-        FileCommunicator.updateRecentsList(recent);
-        FileCommunicator.updateRecentsMenu();
-    }
-
-    /* This method is called when an item in the recent menu is clicked */
-    public void recentMenuCallback(String filename) {
-        Subtitles subs = jb.getSubtitles();
-        if (filename == null) {
-            Jubler jub = new Jubler(new Subtitles(subs));
-            initNewFile(subs.getCurrentFile().getPath() + _("_clone"));
-            /* The user wants to clone current file */
-        } else {
-            loadFileFromHere(new File(filename), false);
-        }
     }
 
     public void addNewSubtitle(boolean is_after) {
@@ -389,92 +356,6 @@ public class JublerFunction {
         tableHasChanged(selected);
     }
 
-    public void saveFile(File f) {
-        UndoList undo = jb.getUndoList();
-        Subtitles subs = jb.getSubtitles();
-
-        String ext = "." + Jubler.prefs.getSaveFormat().getExtension();
-        f = FileCommunicator.stripFileFromVideoExtension(f);
-        f = new File(f.getPath() + ext);
-
-
-        String result = FileCommunicator.save(subs, f, Jubler.prefs, jb.getMediaFile());
-        if (result == null) {
-            /* Saving succesfull */
-            undo.setSaveMark();
-            setFile(f, false);
-        } else {
-            JIDialog.error(jb, result, _("Error while saving file"));
-        }
-    }
-
-    public void loadFileFromHere(File f, boolean force_into_same_window) {
-        StaticJubler.setWindowPosition(jb, false);    // Use jb window as a base for open dialogs
-
-        loadFile(f, force_into_same_window);
-    }
-
-    public void loadFile(File f, boolean force_into_same_window) {
-        String data;
-        Subtitles newsubs;
-        Jubler work;
-        boolean is_autoload;
-
-        Subtitles subs = jb.getSubtitles();
-
-        /* Find where to display jb subtitle file */
-        if (subs == null || force_into_same_window) {
-            work = jb;
-        } else {
-            work = new Jubler();
-        }
-
-        /* Initialize Subtitles */
-        newsubs = new Subtitles(jb);
-        newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
-
-        /* Check if jb is an auto-load subtitle file */
-        is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
-
-        /* Load file into memory */
-        if (!is_autoload) {
-            Jubler.prefs.showLoadDialog(work, work.getMediaFile(), newsubs); //Fileload dialog, if desired
-
-        }
-        data = FileCommunicator.load(f, is_autoload ? null : Jubler.prefs);
-        if (data == null) {
-            JIDialog.error(jb, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
-            return;
-        }
-        /* Strip autosave prefix from filename */
-        if (is_autoload) {
-            f = new File(f.getName().substring(AutoSaver.AUTOSAVEPREFIX.length() + 5));
-            newsubs.setCurrentFile(f);
-        }
-
-        /* Convert file into subtitle data */
-        newsubs.populate(work, f, data, is_autoload ? 25 : Jubler.prefs.getLoadFPS());
-        if (newsubs.size() == 0) {
-            JIDialog.error(jb, _("File not recognized!"), _("Error while loading file"));
-            return;
-        }
-
-        Subtitles work_subs = work.getSubtitles();
-        UndoList work_undo = work.getUndoList();
-        if (work_subs != null) {
-            work_undo.addUndo(new UndoEntry(work_subs, _("Reload subtitles")));
-        }
-
-        if (is_autoload) {
-            work_undo.invalidateSaveMark();
-        } else {
-            work_undo.setSaveMark();
-        }
-        work.fn.setSubs(newsubs);
-        work.fn.setFile(f, true);
-        work.getSaveFM().setEnabled(true);
-    }
-
     public void testVideo(Time t) {
         Subtitles subs = jb.getSubtitles();
         MediaFile mfile = jb.getMediaFile();
@@ -502,40 +383,6 @@ public class JublerFunction {
         }
         for (int i = 0; i < connected_consoles.size(); i++) {
             connected_consoles.elementAt(i).setTime(t);
-        }
-    }
-
-    /* Set the filename of jb project and enanble the buttons */
-    public void setFile(File f, boolean reset_selection) {
-        RevertFM.setEnabled(true);
-        ChildNFM.setEnabled(true);
-        SaveFM.setEnabled(true);
-        SaveAsFM.setEnabled(true);
-        InfoFM.setEnabled(true);
-        EditM.setEnabled(true);
-        ToolsM.setEnabled(true);
-
-        SaveTB.setEnabled(true);
-        InfoTB.setEnabled(true);
-        CutTB.setEnabled(true);
-        CopyTB.setEnabled(true);
-        PasteTB.setEnabled(true);
-        SortTB.setEnabled(true);
-        TestTB.setEnabled(true);
-        PreviewTB.setEnabled(true);
-        DoItTB.setEnabled(true);
-        DropDownActionNumberOfLine.setEnabled(true);
-        DropDownActionNumberOfLine.setEditable(true);
-        DropDownActionList.setEnabled(true);
-        AppendFromFileFM.setEnabled(true);
-        ImportComponentFM.setEnabled(true);
-
-        Subtitles subs = jb.getSubtitles();
-        subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
-        updateRecentFile(f);
-        showInfo();
-        if (reset_selection) {
-            setSelectedSub(0, true);
         }
     }
 

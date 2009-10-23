@@ -25,14 +25,12 @@ package com.panayotis.jubler;
 import com.panayotis.jubler.events.app.WindowEventHandler;
 import com.panayotis.jubler.information.HelpBrowser;
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.subs.loader.SubFileFilter;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.IntegerComboBoxModel;
 import com.panayotis.jubler.options.ShortcutsModel;
-import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.DropDownFunctionList;
 import com.panayotis.jubler.subs.DropDownFunctionList.FunctionList;
 import com.panayotis.jubler.subs.JSubEditor;
@@ -41,18 +39,15 @@ import com.panayotis.jubler.subs.RecordComponent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.tools.JDelSelection;
-import com.panayotis.jubler.tools.JFixer;
 import com.panayotis.jubler.tools.JMarker;
 import com.panayotis.jubler.tools.JRecodeTime;
-import com.panayotis.jubler.tools.JReplaceGlobal;
-import com.panayotis.jubler.tools.JRounder;
 import com.panayotis.jubler.tools.JShiftTime;
-import com.panayotis.jubler.tools.JSpeller;
 import com.panayotis.jubler.tools.JSubSplit;
 import com.panayotis.jubler.tools.JToolRealTime;
 import com.panayotis.jubler.tools.JTranslate;
 import com.panayotis.jubler.events.menu.edit.undo.UndoList;
+import com.panayotis.jubler.io.JublerFile;
+import com.panayotis.jubler.io.JublerFileChooser;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -75,6 +70,7 @@ import javax.swing.event.ListSelectionListener;
  * @author  teras
  */
 public class Jubler extends JFrame {
+
     public static JublerList windows;
     public static ArrayList<SubEntry> copybuffer;
     public static int selectedComponent = RecordComponent.CP_RECORD;
@@ -85,10 +81,9 @@ public class Jubler extends JFrame {
     /* Window frame icon */
     public final static Image FrameIcon;
     private final static SubRenderer TableRenderer = new SubRenderer();
-
-
     /** File chooser dialog to open/ save subtitles */
-    private JFileChooser filedialog;
+    private JublerFileChooser filedialog;
+    private JublerFile fileManager;
     /*
      * Where the subtitles for this window is stored
      */
@@ -125,18 +120,11 @@ public class Jubler extends JFrame {
     private ComboBoxModel fnComboboxModel = new javax.swing.DefaultComboBoxModel(DropDownFunctionList.fnNames);
     /* Jubler tools */
     private JShiftTime shift;
-    private JSpeller spell;
-    private JRounder round;
-    private JFixer fix;
-    private JReplaceGlobal repg;
-    private JDelSelection dels;
-    private JMarker mark;
     private JRecodeTime recode;
-    private JSubSplit split;
     private JTranslate translate;
     private boolean column_change;
     private JActionMap actionMap = null;
-    
+
     static {
         windows = new JublerList();
         copybuffer = new ArrayList<SubEntry>();
@@ -149,48 +137,24 @@ public class Jubler extends JFrame {
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
         FrameIcon = new ImageIcon(Jubler.class.getResource("/icons/frame.png")).getImage();
     }
+    public JublerFunction fn = null;
 
-    public JublerFunction fn  = null;
-    
     /** Creates new this JubEdit */
     public Jubler() {
         initComponents();
-        fn  = new JublerFunction(this);
         initApp();
     }
 
-    public void initApp(){
+    public void initApp() {
         subs = null;
-        mfile = new MediaFile();
-        connected_consoles = new Vector<JVideoConsole>();
-
-        undo = new UndoList(this);
-        /* Initialize Tools */
-        shift = new JShiftTime();
-        spell = new JSpeller();
-        round = new JRounder();
-        fix = new JFixer();
-        repg = new JReplaceGlobal();
-        dels = new JDelSelection();
-        mark = new JMarker();
-        recode = new JRecodeTime();
-        split = new JSubSplit();
-        translate = new JTranslate();
-
-        /* Set JFileChooser properties */
-        filedialog = new JFileChooser();
-        filedialog.setMultiSelectionEnabled(false);
-        filedialog.addChoosableFileFilter(new SubFileFilter());
-        FileCommunicator.getDefaultDialogPath(filedialog);
+        fn = new JublerFunction(this);
+        filedialog = new JublerFileChooser(this);
+        fileManager = new JublerFile(this);        
 
         setIconImage(FrameIcon);
-        preview = new JSubPreview(this);
-
         subeditor = new JSubEditor(this);
         subeditor.setAttached(true);
-
-        //this must be run after all control's initialisation has been done.        
-        SubSplitPane.add(preview, JSplitPane.TOP);
+        SubSplitPane.add(getPreview(), JSplitPane.TOP);
         fn.enablePreview(false);
 
         WebFM.setVisible(false);
@@ -206,7 +170,6 @@ public class Jubler extends JFrame {
         ShortcutsModel.updateMenuNames(JublerMenuBar);
         StaticJubler.putWindowPosition(this);
         fn.openWindow();
-        fn.updateRecentFile(null);
         actionMap = new JActionMap(this);
         /**
          * This is to make sure that the combo-box index matches the currently
@@ -215,8 +178,9 @@ public class Jubler extends JFrame {
         int sel_index = DropDownFunctionList.getFunctionIndex(this.getFnOption());
         DropDownActionList.setSelectedIndex(sel_index);
         addWindowListener(new WindowEventHandler(this));
+        fileManager.updateRecentFile(null);
     }
-    
+
     public Jubler(Subtitles data) {
         this();
         fn.setSubs(data);
@@ -1120,7 +1084,6 @@ public class Jubler extends JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1292,10 +1255,16 @@ public class Jubler extends JFrame {
     // End of variables declaration//GEN-END:variables
 
     public JToolRealTime getRecoder() {
+        if (recode == null) {
+            recode = new JRecodeTime();
+        }
         return recode;
     }
 
     public JToolRealTime getShifter() {
+        if (shift == null) {
+            shift = new JShiftTime();
+        }
         return shift;
     }
 
@@ -1328,6 +1297,9 @@ public class Jubler extends JFrame {
     }
 
     public UndoList getUndoList() {
+        if (undo == null) {
+            undo = new UndoList(this);
+        }
         return undo;
     }
 
@@ -1377,7 +1349,7 @@ public class Jubler extends JFrame {
     public JSubEditor getSubeditor() {
         return subeditor;
     }
-    
+
     /**
      * @return the SubsScrollPane
      */
@@ -1488,20 +1460,19 @@ public class Jubler extends JFrame {
      * @return the mfile
      */
     public MediaFile getMediaFile() {
+        if (mfile == null) {
+            mfile = new MediaFile();
+        }
         return mfile;
-    }
-
-    /**
-     * @param mfile the mfile to set
-     */
-    public void setMediaFile(MediaFile mfile) {
-        this.mfile = mfile;
     }
 
     /**
      * @return the connected_consoles
      */
     public Vector<JVideoConsole> getConnectedConsoles() {
+        if (connected_consoles == null) {
+            connected_consoles = new Vector<JVideoConsole>();
+        }
         return connected_consoles;
     }
 
@@ -1789,6 +1760,9 @@ public class Jubler extends JFrame {
      * @return the preview
      */
     public JSubPreview getPreview() {
+        if (preview == null) {
+            preview = new JSubPreview(this);
+        }
         return preview;
     }
 
@@ -1831,6 +1805,9 @@ public class Jubler extends JFrame {
      * @return the translate
      */
     public JTranslate getTranslate() {
+        if (translate == null) {
+            translate = new JTranslate();
+        }
         return translate;
     }
 
@@ -1847,7 +1824,6 @@ public class Jubler extends JFrame {
     public javax.swing.JButton getNewTB() {
         return NewTB;
     }
-
 
     /**
      * @param RedoTB the RedoTB to set
@@ -2149,7 +2125,8 @@ public class Jubler extends JFrame {
     public javax.swing.JMenuItem getRetrieveWFM() {
         return RetrieveWFM;
     }
-   /**
+
+    /**
      * @return the RoundTM
      */
     public javax.swing.JMenuItem getRoundTM() {
@@ -2344,4 +2321,19 @@ public class Jubler extends JFrame {
     public javax.swing.JMenu getToolsM() {
         return ToolsM;
     }
+
+    /**
+     * @return the fileManager
+     */
+    public JublerFile getFileManager() {
+        return fileManager;
+    }
+
+    /**
+     * @return the RecentsFM
+     */
+    public javax.swing.JMenu getRecentsFM() {
+        return RecentsFM;
+    }
 }//end public class Jubler extends JFrame
+

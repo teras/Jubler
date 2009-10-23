@@ -189,7 +189,7 @@ public class StaticJubler {
     public static void populateRecentsMenu(ArrayList<String> files) {
         JMenu recent_menu;
         for (Jubler j : Jubler.windows) {
-            recent_menu = j.RecentsFM;
+            recent_menu = j.getRecentsFM();
 
             /* Add clone entry */
             recent_menu.removeAll();
@@ -223,9 +223,9 @@ public class StaticJubler {
 
             public void actionPerformed(ActionEvent e) {
                 if (isclone_f) {
-                    jub_f.fn.recentMenuCallback(null);
+                    jub_f.getFileManager().recentMenuCallback(null);
                 } else {
-                    jub_f.fn.recentMenuCallback(text_f);
+                    jub_f.getFileManager().recentMenuCallback(text_f);
                 }
             }
         });

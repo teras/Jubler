@@ -83,7 +83,8 @@ public class SystemDependent {
                 .compareTo("16006")) >= 0;
         try {
            if (newjava || IS_WINDOWS || IS_MACOSX) {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+               UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
            }
         } catch ( ClassNotFoundException e ) {
         } catch ( InstantiationException e ) {

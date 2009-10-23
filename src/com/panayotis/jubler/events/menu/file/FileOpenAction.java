@@ -57,7 +57,7 @@ public class FileOpenAction extends MenuAction {
             return;
         }
         FileCommunicator.setDefaultDialogPath(filedialog);
-        jb.fn.loadFileFromHere(filedialog.getSelectedFile(), false);
+        jb.getFileManager().loadFileFromHere(filedialog.getSelectedFile(), false);
 
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class FileOpenAction extends MenuAction

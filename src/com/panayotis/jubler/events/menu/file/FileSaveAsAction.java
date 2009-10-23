@@ -66,7 +66,7 @@ public class FileSaveAsAction extends MenuAction {
         Jubler.prefs.setShowSaveDiaglog(true);
         Jubler.prefs.showSaveDialog(jb, mfile, subs); //Show the "save options" dialog, if desired
 
-        jb.fn.saveFile(filedialog.getSelectedFile());
+        jb.getFileManager().saveFile(filedialog.getSelectedFile());
 
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class FileSaveAsAction extends MenuAction

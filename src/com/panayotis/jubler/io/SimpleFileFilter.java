@@ -1,7 +1,7 @@
 /*
- *  RevertFileAction.java 
+ *  SimpleFileFilter.java 
  * 
- *  Created on: 19-Oct-2009 at 13:46:12
+ *  Created on: 22-Oct-2009 at 20:42:12
  * 
  *  
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
@@ -25,31 +25,35 @@
  * Contributor(s):
  * 
  */
+package com.panayotis.jubler.io;
 
-package com.panayotis.jubler.events.menu.file;
-
-import com.panayotis.jubler.Jubler;
-import com.panayotis.jubler.MenuAction;
-import com.panayotis.jubler.subs.Subtitles;
-import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  *
- * @author  teras
+ * @author hoang_tran <hoangduytran1960@googlemail.com>
  */
-public class RevertFileAction extends MenuAction {
+public class SimpleFileFilter extends javax.swing.filechooser.FileFilter implements java.io.FileFilter {
 
-    public RevertFileAction(Jubler parent) {
-        super(parent);
+    String desc = null;
+    String ext = null;
+
+    public SimpleFileFilter(String ext, String desc){
+        this.desc = desc;
+        this.ext = ext;
+    }
+    
+    public boolean accept(File pathname) {
+        if (pathname.isDirectory()) {
+            return true;
+        }
+        String fname = pathname.getName().toLowerCase();
+        boolean found = fname.endsWith(ext.toLowerCase());
+        return found;
     }
 
-    /**
-     *
-     * @param e Action Event
-     */
-    public void actionPerformed(ActionEvent evt) {
-        Jubler jb = jublerParent;
-        Subtitles subs = jb.getSubtitles();
-        jb.getFileManager().loadFileFromHere(subs.getLastOpenedFile(), true);
-    }//end public void actionPerformed(ActionEvent evt)
-}//end public class RevertFileAction extends MenuAction
+    public String getDescription() {
+        return desc;
+    }
+}//end public class SimpleFileFilter
+

@@ -65,7 +65,7 @@ public class FileNewAction extends MenuAction {
         Subtitles s = new Subtitles();
         s.add(new SubEntry(new Time(0), new Time(10), ""));
         curjubler.fn.setSubs(s);
-        curjubler.fn.initNewFile(FileCommunicator.getCurrentPath() + _("Untitled"));
+        curjubler.getFileManager().initNewFile(FileCommunicator.getCurrentPath() + _("Untitled"));
 
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class FileNewAction extends MenuAction
