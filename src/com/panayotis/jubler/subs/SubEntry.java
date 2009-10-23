@@ -97,7 +97,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     };
     protected Time start,  finish,  duration;
     protected String subtext;
-    protected int mark;
+    private int mark;
     protected SubStyle style;
     /** The following parameter is lazily used. It is initialized only when data
      * are needed to be added.
@@ -108,7 +108,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         this.start = new Time(start);
         this.finish = new Time(finish);
         this.subtext = line;
-        mark = 0;
+        setMark(0);
         style = null;
     }
 
@@ -116,13 +116,13 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         this.start = new Time(start);
         this.finish = new Time(finish);
         this.subtext = line;
-        mark = 0;
+        setMark(0);
         style = null;
     }
 
     public SubEntry(SubEntry old) {
         this(old.getStartTime(), old.getFinishTime(), new String(old.getText()));
-        mark = old.mark;
+        setMark(old.mark);
         style = old.style;
         if (old.overstyle != null) {
             overstyle = new AbstractStyleover[old.overstyle.length];
@@ -187,14 +187,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         return start.compareTo(other.start);
     }
 
-    public void setMark(int i) {
-        mark = i;
-    }
-
-    public int getMark() {
-        return mark;
-    }
-
     public void setStyle(SubStyle th) {
         style = th;
     }
@@ -255,9 +247,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 if (this.hasDuration()) {
                     if (this.isDurationSmall()) {
                         this.setMark(4); //Orange
-                    } else {
-                        this.setMark(0); //White
-                    }
+                    }//end if (this.isDurationSmall())
                     return duration.toString();
                 } else {
                     return "";
@@ -417,7 +407,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 setMark(attr.getMaxColor());
                 return true;
             }
-            if (mark == attr.getMaxColor()) {
+            if (getMark() == attr.getMaxColor()) {
                 setMark(0);
             }
         }
@@ -445,7 +435,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             if (subtext != null) {
                 new_sub.subtext = new String(subtext);
             }
-            new_sub.mark = mark;
+            new_sub.setMark(getMark());
             new_sub.style = style;
             if (overstyle != null) {
                 new_sub.overstyle = new AbstractStyleover[overstyle.length];
@@ -480,7 +470,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             if (o.subtext != null) {
                 subtext = new String(o.getText());
             }
-            mark = o.mark;
+            setMark(o.getMark());
             style = o.style;
             if (o.overstyle != null) {
                 int len = o.overstyle.length;
@@ -1157,5 +1147,38 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return null;
         }
     }//end public BufferedImage makeSubtitleTextImage()
+
+    /**
+     * @return the mark
+     */
+    public int getMark() {
+        return mark;
+    }
+
+    /**
+     * @param mark the mark to set
+     */
+    public void setMark(int mark) {
+        /* debugging code
+        boolean is_low_to_high = false;
+        boolean is_high_to_low = false;
+
+        int old_mark = this.mark;
+        int new_mark = mark;
+
+        boolean is_changed = (old_mark != new_mark);
+        if (is_changed){
+            is_low_to_high = (old_mark < new_mark);
+            is_high_to_low = (old_mark > new_mark);
+        }*/
+        this.mark = mark;
+        /* debugging code
+        if (is_changed && is_high_to_low){
+            System.out.println("Mark is changed from high to low");
+        }
+        if (is_changed && is_low_to_high){
+            System.out.println("Mark is changed from low to high");
+        }*/
+    }
 }//end public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef
 
