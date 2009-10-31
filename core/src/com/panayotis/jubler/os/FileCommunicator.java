@@ -77,6 +77,7 @@ public class FileCommunicator {
 
         /* Then guess and be strict */
         for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
+            enc = SubFile.getDefaultEncoding(i);
             res = load(sfile, enc, _("Found strict encoding {0}", enc), true);
             if (res != null)
                 return res;
