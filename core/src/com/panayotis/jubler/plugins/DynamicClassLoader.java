@@ -41,8 +41,7 @@ import java.util.zip.ZipFile;
  */
 public class DynamicClassLoader extends URLClassLoader {
 
-    private final static String FS = System.getProperty("file.separator");
-    private final static String UD = System.getProperty("user.dir") + FS;
+    private final static String UD = System.getProperty("user.dir") + File.separator;
     private final static String plugins_list_filename = "plugins.list";
     //
     private static String MainPath = UD;  // Base directory to look for plugins
@@ -114,19 +113,18 @@ public class DynamicClassLoader extends URLClassLoader {
     }
 
     public void setClassPath() {
-        String sep = System.getProperty("path.separator");
         StringBuffer buf = new StringBuffer(System.getProperty("java.class.path"));
         URL[] urls = getURLs();
 
         for (int i = 0; i < urls.length; i++)
-            buf.append(sep).append(urls[i].getFile());
+            buf.append(File.pathSeparatorChar).append(urls[i].getFile());
         String cp = buf.toString();
         System.setProperty("java.class.path", cp);
     }
 
     public static void guessMainPath(String basename, String baseclass) {
         String path;
-        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), System.getProperty("path.separator"));
+        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), File.pathSeparator);
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
             File file = new File(path);
@@ -135,12 +133,12 @@ public class DynamicClassLoader extends URLClassLoader {
                 file = new File(path);
             }
             if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
-                MainPath = file.getParent() + FS;
+                MainPath = file.getParent() + File.separator;
                 JarBased = true;
                 return;
             }
-            if (new File(path + FS + baseclass.replace('.', FS.charAt(0)) + ".class").exists()) {
-                MainPath = path + FS;
+            if (new File(path + File.separator + baseclass.replace('.', File.separatorChar) + ".class").exists()) {
+                MainPath = path + File.separator;
                 JarBased = false;
                 return;
             }

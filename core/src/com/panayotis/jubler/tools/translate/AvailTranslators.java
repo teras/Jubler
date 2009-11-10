@@ -4,7 +4,7 @@
  */
 package com.panayotis.jubler.tools.translate;
 
-import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.plugins.PluginManager;
 import java.util.Vector;
 
 /**
@@ -14,7 +14,7 @@ import java.util.Vector;
 public class AvailTranslators extends Vector<Translator> {
 
     public AvailTranslators() {
-        StaticJubler.plugins.callPostInitListeners(this);
+        PluginManager.manager.callPostInitListeners(this);
     }
 
     public String[] getNamesList() {

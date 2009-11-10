@@ -23,6 +23,7 @@
 package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.plugins.PluginManager;
 import java.util.Vector;
 
 /**
@@ -39,7 +40,7 @@ public class AvailExternals extends Vector<ExtProgram> {
         this.type = type;
         this.localtype = localtype;
         this.iconname = iconname;
-        StaticJubler.plugins.callPostInitListeners(this);
+        PluginManager.manager.callPostInitListeners(this);
     }
 
     public String nameAt(int i) {

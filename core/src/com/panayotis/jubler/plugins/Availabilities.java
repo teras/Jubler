@@ -4,8 +4,6 @@
  */
 package com.panayotis.jubler.plugins;
 
-import com.panayotis.jubler.StaticJubler;
-import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 
 /**
@@ -14,11 +12,5 @@ import com.panayotis.jubler.subs.loader.AvailSubFormats;
  */
 public class Availabilities {
 
-    public final static AvailSubFormats formats;
-
-    static {
-        formats = new AvailSubFormats();
-        StaticJubler.plugins.callPostInitListeners(formats);
-        SubFile.updateBasicFormat();
-    }
+    public final static AvailSubFormats formats = new AvailSubFormats();
 }

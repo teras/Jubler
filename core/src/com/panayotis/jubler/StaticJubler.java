@@ -29,7 +29,6 @@ import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.options.gui.JUnsaved;
 import com.panayotis.jubler.os.AutoSaver;
-import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerServer;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
@@ -58,10 +57,8 @@ public class StaticJubler {
     /* */
     private static Stack<SubFile> recent_files;
     private static int screen_x, screen_y, screen_width, screen_height, screen_state;
-    public static PluginManager plugins;
 
     static {
-        plugins = new PluginManager();
         loadWindowPosition();
         recent_files = Options.loadFileList();
     }

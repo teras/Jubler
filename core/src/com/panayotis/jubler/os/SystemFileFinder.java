@@ -34,7 +34,7 @@ public class SystemFileFinder {
     
     private static File findFile(String name) {
         String classpath = System.getProperty("java.class.path");
-        StringTokenizer tok = new StringTokenizer(classpath, System.getProperty("path.separator"));
+        StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
         
         String path;
         while (tok.hasMoreTokens()) {
