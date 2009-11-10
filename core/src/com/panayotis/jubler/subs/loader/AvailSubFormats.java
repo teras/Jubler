@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.plugins.PluginManager;
 import java.util.ArrayList;
 
 /**
@@ -30,13 +31,15 @@ import java.util.ArrayList;
  */
 public class AvailSubFormats {
 
-    private final ArrayList<SubFormat> Formats = new ArrayList<SubFormat>();
+    private final ArrayList<SubFormat> Formats;
     int current;
 
     /** Creates a new instance of SubFormats */
     public AvailSubFormats() {
         current = 0;
-        Formats.add(new PlainText());
+        Formats = new ArrayList<SubFormat>();
+        PluginManager.manager.callPostInitListeners(this);
+        add(new PlainText());
     }
 
     public boolean hasMoreElements() {
@@ -75,7 +78,7 @@ public class AvailSubFormats {
         return Formats.get(i);
     }
 
-    void add(SubFormat format) {
+    public void add(SubFormat format) {
         Formats.add(format);
     }
 }

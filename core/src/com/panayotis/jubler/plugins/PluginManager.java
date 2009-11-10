@@ -31,6 +31,8 @@ import java.util.HashMap;
  */
 public class PluginManager {
 
+    public final static PluginManager manager = new PluginManager();
+
     private DynamicClassLoader cl;
     private HashMap<String, ArrayList<Plugin>> connections;
 

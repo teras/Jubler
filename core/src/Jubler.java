@@ -27,6 +27,7 @@ import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.DynamicClassLoader;
+import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
 import java.awt.Dimension;
@@ -76,7 +77,7 @@ public class Jubler {
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
 
-        StaticJubler.plugins.callPostInitListeners(null, StaticJubler.POSTLOADER);
+        PluginManager.manager.callPostInitListeners(null, StaticJubler.POSTLOADER);
     }
 }
 class MainSplash extends JWindow {

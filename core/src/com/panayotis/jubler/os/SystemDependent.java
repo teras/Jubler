@@ -39,7 +39,6 @@ import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -247,7 +246,7 @@ public class SystemDependent {
     }
 
     public static void appendPathApplication(Vector<ExtPath> res) {
-        StringTokenizer st = new StringTokenizer(System.getenv("PATH"), System.getProperty("path.separator"));
+        StringTokenizer st = new StringTokenizer(System.getenv("PATH"), File.pathSeparator);
         while (st.hasMoreTokens())
             res.add(new ExtPath(st.nextToken(), 1));
 
