@@ -3,20 +3,20 @@
  *
  * Created on 13 Ιούλιος 2005, 1:28 μμ
  * 
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.SystemDependent;
 
 
@@ -34,11 +34,11 @@ import com.panayotis.jubler.os.SystemDependent;
  * @author  teras
  */
 public class JSubEditorDialog extends javax.swing.JDialog {
-    Jubler parent;
+    JubFrame parent;
     JSubEditor editor;
     
     /** Creates new form JSubEditor */
-    public JSubEditorDialog(Jubler parent, JSubEditor editor) {
+    public JSubEditorDialog(JubFrame parent, JSubEditor editor) {
         super(parent, false);
         SystemDependent.setSmallDecoration(getRootPane());
 

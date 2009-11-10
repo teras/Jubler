@@ -3,27 +3,27 @@
  *
  * Created on 3 Ιούλιος 2005, 1:44 πμ
  * 
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
 
 package com.panayotis.jubler.undo;
 
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.Subtitles;
 import java.util.Stack;
 
@@ -32,13 +32,13 @@ import java.util.Stack;
  * @author teras
  */
 public class UndoList extends Stack<UndoEntry> {
-    private Jubler jub;
+    private JubFrame jub;
     private UndoList redo;
     
     /* Mark which undo is what has been saved */
     private int unsaved_pos = 0;
     
-    public UndoList (Jubler j) {
+    public UndoList (JubFrame j) {
         super();
         if (j == null) return;  // This is a REDO list
         jub = j;

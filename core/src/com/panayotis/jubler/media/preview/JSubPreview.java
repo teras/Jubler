@@ -3,20 +3,20 @@
  *
  * Created on 21 Σεπτέμβριος 2005, 10:03 πμ
  *
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -24,7 +24,7 @@ package com.panayotis.jubler.media.preview;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.options.AutoSaveOptions;
@@ -60,7 +60,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private JRuler timecaption;
     private JFramePreview frame;
     private JWavePreview wave;
-    private Jubler parent;
+    private JubFrame parent;
     private boolean ignore_slider_changes = false;
     private boolean ignore_zoomfactor_changes = false;
     /* Here we store the start/end/videoduration values of the window*/
@@ -68,7 +68,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private MediaFile last_media_file = null;
 
     /** Creates new form JSubPreview */
-    public JSubPreview(Jubler parent) {
+    public JSubPreview(JubFrame parent) {
         initComponents();
 
         view = new ViewWindow();

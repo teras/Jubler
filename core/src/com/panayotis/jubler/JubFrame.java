@@ -1,22 +1,22 @@
 /*
- * Jubler.java
+ * JubFrame.java
  *
  * Created on 22 ΈëœÖΈ≥ΈΩœçœÉœ³ΈΩœÖ 2005, 1:27 ΈΦΈΦ
  *
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -104,7 +104,7 @@ import javax.swing.event.ListSelectionListener;
  * @author  teras
  */
 
-public class Jubler extends JFrame {
+public class JubFrame extends JFrame {
     
     public static JublerList windows;
     
@@ -135,7 +135,7 @@ public class Jubler extends JFrame {
     
     /* The following pointer points to the connected jubler window
      * (used for translating) */
-    private Jubler connect_to_other;
+    private JubFrame connect_to_other;
     
     private Vector<JVideoConsole> connected_consoles;
     
@@ -157,7 +157,7 @@ public class Jubler extends JFrame {
     private boolean unsaved_data = false;
     
     
-    /* Jubler tools */
+    /* JubFrame tools */
     private JStyler styler;
     private JShiftTime shift;
     private JSpeller spell;
@@ -183,20 +183,20 @@ public class Jubler extends JFrame {
         copybuffer = new ArrayList<SubEntry>();
         
         /* Could NOT initialize prefs here. Although prefs is static,
-         * it needs a "late binding", *after* any Jubler instance is
+         * it needs a "late binding", *after* any JubFrame instance is
          * initialize. */
         /* prefs = new JPreferences(); */
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
-        FrameIcon = new ImageIcon(Jubler.class.getResource("/icons/frame.png")).getImage();
+        FrameIcon = new ImageIcon(JubFrame.class.getResource("/icons/frame.png")).getImage();
         fdialog = new JSubFileDialog();
     }
     
     
     
     /** Creates new form */
-    public Jubler() {
-        Main.plugins.callPostInitListeners(this);
+    public JubFrame() {
+        StaticJubler.plugins.callPostInitListeners(this);
         subs = null;
         mfile = new MediaFile();
         connected_consoles = new Vector<JVideoConsole>();
@@ -216,7 +216,7 @@ public class Jubler extends JFrame {
         WebFM.setVisible(false);
         setDropHandler();
         
-        /* If this is the first Jubler instance, initialize preferences */
+        /* If this is the first JubFrame instance, initialize preferences */
         /* We have to do this AFTER we process the menu items (since some would be missing */
         if (prefs==null) prefs = new JPreferences(this);
         StaticJubler.updateMenus(this);
@@ -238,11 +238,11 @@ public class Jubler extends JFrame {
         
         StaticJubler.putWindowPosition(this);
 
-        Main.plugins.callPostInitListeners(this);
+        StaticJubler.plugins.callPostInitListeners(this);
     }
     
     
-    public Jubler(Subtitles data) {
+    public JubFrame(Subtitles data) {
         this();
         setVisible(true);
         setSubs(data);
@@ -336,7 +336,7 @@ public class Jubler extends JFrame {
         if (sfile==null) {
             Subtitles newsubs = new Subtitles(subs);
             newsubs.getSubFile().appendToFilename("_clone");
-            Jubler jub = new Jubler(newsubs);
+            JubFrame jub = new JubFrame(newsubs);
             jub.enableSaveControls();
             jub.showInfo();
             StaticJubler.updateRecents();
@@ -1127,250 +1127,250 @@ public class Jubler extends JFrame {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == NewTB) {
-                Jubler.this.FileNFMActionPerformed(evt);
+                JubFrame.this.FileNFMActionPerformed(evt);
             }
             else if (evt.getSource() == LoadTB) {
-                Jubler.this.OpenFMActionPerformed(evt);
+                JubFrame.this.OpenFMActionPerformed(evt);
             }
             else if (evt.getSource() == SaveTB) {
-                Jubler.this.SaveTBActionPerformed(evt);
+                JubFrame.this.SaveTBActionPerformed(evt);
             }
             else if (evt.getSource() == InfoTB) {
-                Jubler.this.InfoFMActionPerformed(evt);
+                JubFrame.this.InfoFMActionPerformed(evt);
             }
             else if (evt.getSource() == CutTB) {
-                Jubler.this.CutEMActionPerformed(evt);
+                JubFrame.this.CutEMActionPerformed(evt);
             }
             else if (evt.getSource() == CopyTB) {
-                Jubler.this.CopyEMActionPerformed(evt);
+                JubFrame.this.CopyEMActionPerformed(evt);
             }
             else if (evt.getSource() == PasteTB) {
-                Jubler.this.PasteEMActionPerformed(evt);
+                JubFrame.this.PasteEMActionPerformed(evt);
             }
             else if (evt.getSource() == UndoTB) {
-                Jubler.this.UndoEMActionPerformed(evt);
+                JubFrame.this.UndoEMActionPerformed(evt);
             }
             else if (evt.getSource() == RedoTB) {
-                Jubler.this.RedoEMActionPerformed(evt);
+                JubFrame.this.RedoEMActionPerformed(evt);
             }
             else if (evt.getSource() == SortTB) {
-                Jubler.this.SortTBActionPerformed(evt);
+                JubFrame.this.SortTBActionPerformed(evt);
             }
             else if (evt.getSource() == TestTB) {
-                Jubler.this.CurrentTTMActionPerformed(evt);
+                JubFrame.this.CurrentTTMActionPerformed(evt);
             }
             else if (evt.getSource() == PreviewTB) {
-                Jubler.this.PreviewTBCurrentTTMActionPerformed(evt);
+                JubFrame.this.PreviewTBCurrentTTMActionPerformed(evt);
             }
             else if (evt.getSource() == CutP) {
-                Jubler.this.CutEMActionPerformed(evt);
+                JubFrame.this.CutEMActionPerformed(evt);
             }
             else if (evt.getSource() == CopyP) {
-                Jubler.this.CopyEMActionPerformed(evt);
+                JubFrame.this.CopyEMActionPerformed(evt);
             }
             else if (evt.getSource() == PasteP) {
-                Jubler.this.PasteEMActionPerformed(evt);
+                JubFrame.this.PasteEMActionPerformed(evt);
             }
             else if (evt.getSource() == DeleteP) {
-                Jubler.this.DeletePActionPerformed(evt);
+                JubFrame.this.DeletePActionPerformed(evt);
             }
             else if (evt.getSource() == NoneMP) {
-                Jubler.this.NoneMPActionPerformed(evt);
+                JubFrame.this.NoneMPActionPerformed(evt);
             }
             else if (evt.getSource() == PinkMP) {
-                Jubler.this.PinkMPActionPerformed(evt);
+                JubFrame.this.PinkMPActionPerformed(evt);
             }
             else if (evt.getSource() == YellowMP) {
-                Jubler.this.YellowMPActionPerformed(evt);
+                JubFrame.this.YellowMPActionPerformed(evt);
             }
             else if (evt.getSource() == CyanMP) {
-                Jubler.this.CyanMPActionPerformed(evt);
+                JubFrame.this.CyanMPActionPerformed(evt);
             }
             else if (evt.getSource() == ShowNumberP) {
-                Jubler.this.showTableColumn(evt);
+                JubFrame.this.showTableColumn(evt);
             }
             else if (evt.getSource() == ShowStartP) {
-                Jubler.this.showTableColumn(evt);
+                JubFrame.this.showTableColumn(evt);
             }
             else if (evt.getSource() == ShowEndP) {
-                Jubler.this.showTableColumn(evt);
+                JubFrame.this.showTableColumn(evt);
             }
             else if (evt.getSource() == ShowLayerP) {
-                Jubler.this.showTableColumn(evt);
+                JubFrame.this.showTableColumn(evt);
             }
             else if (evt.getSource() == ShowStyleP) {
-                Jubler.this.showTableColumn(evt);
+                JubFrame.this.showTableColumn(evt);
             }
             else if (evt.getSource() == PlayVideoP) {
-                Jubler.this.CurrentTTMActionPerformed(evt);
+                JubFrame.this.CurrentTTMActionPerformed(evt);
             }
             else if (evt.getSource() == FileNFM) {
-                Jubler.this.FileNFMActionPerformed(evt);
+                JubFrame.this.FileNFMActionPerformed(evt);
             }
             else if (evt.getSource() == ChildNFM) {
-                Jubler.this.ChildNFMActionPerformed(evt);
+                JubFrame.this.ChildNFMActionPerformed(evt);
             }
             else if (evt.getSource() == OpenFM) {
-                Jubler.this.OpenFMActionPerformed(evt);
+                JubFrame.this.OpenFMActionPerformed(evt);
             }
             else if (evt.getSource() == RetrieveWFM) {
-                Jubler.this.RetrieveWFMActionPerformed(evt);
+                JubFrame.this.RetrieveWFMActionPerformed(evt);
             }
             else if (evt.getSource() == RevertFM) {
-                Jubler.this.RevertFMActionPerformed(evt);
+                JubFrame.this.RevertFMActionPerformed(evt);
             }
             else if (evt.getSource() == SaveFM) {
-                Jubler.this.SaveFMActionPerformed(evt);
+                JubFrame.this.SaveFMActionPerformed(evt);
             }
             else if (evt.getSource() == SaveAsFM) {
-                Jubler.this.SaveAsFMActionPerformed(evt);
+                JubFrame.this.SaveAsFMActionPerformed(evt);
             }
             else if (evt.getSource() == CloseFM) {
-                Jubler.this.CloseFMActionPerformed(evt);
+                JubFrame.this.CloseFMActionPerformed(evt);
             }
             else if (evt.getSource() == InfoFM) {
-                Jubler.this.InfoFMActionPerformed(evt);
+                JubFrame.this.InfoFMActionPerformed(evt);
             }
             else if (evt.getSource() == PrefsFM) {
-                Jubler.this.PrefsFMActionPerformed(evt);
+                JubFrame.this.PrefsFMActionPerformed(evt);
             }
             else if (evt.getSource() == QuitFM) {
-                Jubler.this.QuitFMActionPerformed(evt);
+                JubFrame.this.QuitFMActionPerformed(evt);
             }
             else if (evt.getSource() == CutEM) {
-                Jubler.this.CutEMActionPerformed(evt);
+                JubFrame.this.CutEMActionPerformed(evt);
             }
             else if (evt.getSource() == CopyEM) {
-                Jubler.this.CopyEMActionPerformed(evt);
+                JubFrame.this.CopyEMActionPerformed(evt);
             }
             else if (evt.getSource() == PasteEM) {
-                Jubler.this.PasteEMActionPerformed(evt);
+                JubFrame.this.PasteEMActionPerformed(evt);
             }
             else if (evt.getSource() == PasteSpecialEM) {
-                Jubler.this.PasteSpecialEMActionPerformed(evt);
+                JubFrame.this.PasteSpecialEMActionPerformed(evt);
             }
             else if (evt.getSource() == bySelectionDEM) {
-                Jubler.this.bySelectionDEMActionPerformed(evt);
+                JubFrame.this.bySelectionDEMActionPerformed(evt);
             }
             else if (evt.getSource() == EmptyLinesDEM) {
-                Jubler.this.EmptyLinesDEMActionPerformed(evt);
+                JubFrame.this.EmptyLinesDEMActionPerformed(evt);
             }
             else if (evt.getSource() == StepwiseREM) {
-                Jubler.this.StepwiseREMActionPerformed(evt);
+                JubFrame.this.StepwiseREMActionPerformed(evt);
             }
             else if (evt.getSource() == GloballyREM) {
-                Jubler.this.GloballyREMActionPerformed(evt);
+                JubFrame.this.GloballyREMActionPerformed(evt);
             }
             else if (evt.getSource() == BeforeIEM) {
-                Jubler.this.insertSubEntry(evt);
+                JubFrame.this.insertSubEntry(evt);
             }
             else if (evt.getSource() == AfterIEM) {
-                Jubler.this.insertSubEntry(evt);
+                JubFrame.this.insertSubEntry(evt);
             }
             else if (evt.getSource() == PreviousGEM) {
-                Jubler.this.goToSubtitle(evt);
+                JubFrame.this.goToSubtitle(evt);
             }
             else if (evt.getSource() == NextGEM) {
-                Jubler.this.goToSubtitle(evt);
+                JubFrame.this.goToSubtitle(evt);
             }
             else if (evt.getSource() == PreviousPageGEM) {
-                Jubler.this.goToSubtitle(evt);
+                JubFrame.this.goToSubtitle(evt);
             }
             else if (evt.getSource() == NextPageGEM) {
-                Jubler.this.goToSubtitle(evt);
+                JubFrame.this.goToSubtitle(evt);
             }
             else if (evt.getSource() == TopGEM) {
-                Jubler.this.goToSubtitle(evt);
+                JubFrame.this.goToSubtitle(evt);
             }
             else if (evt.getSource() == BottomGEM) {
-                Jubler.this.goToSubtitle(evt);
+                JubFrame.this.goToSubtitle(evt);
             }
             else if (evt.getSource() == byTimeGEM) {
-                Jubler.this.byTimeGEMActionPerformed(evt);
+                JubFrame.this.byTimeGEMActionPerformed(evt);
             }
             else if (evt.getSource() == NoneMEM) {
-                Jubler.this.NoneMEMActionPerformed(evt);
+                JubFrame.this.NoneMEMActionPerformed(evt);
             }
             else if (evt.getSource() == PinkMEM) {
-                Jubler.this.PinkMEMActionPerformed(evt);
+                JubFrame.this.PinkMEMActionPerformed(evt);
             }
             else if (evt.getSource() == YellowMEM) {
-                Jubler.this.YellowMEMActionPerformed(evt);
+                JubFrame.this.YellowMEMActionPerformed(evt);
             }
             else if (evt.getSource() == CyanMEM) {
-                Jubler.this.CyanMEMActionPerformed(evt);
+                JubFrame.this.CyanMEMActionPerformed(evt);
             }
             else if (evt.getSource() == bySelectionMEM) {
-                Jubler.this.bySelectionMEMActionPerformed(evt);
+                JubFrame.this.bySelectionMEMActionPerformed(evt);
             }
             else if (evt.getSource() == bySelectionSEM) {
-                Jubler.this.bySelectionSEMActionPerformed(evt);
+                JubFrame.this.bySelectionSEMActionPerformed(evt);
             }
             else if (evt.getSource() == UndoEM) {
-                Jubler.this.UndoEMActionPerformed(evt);
+                JubFrame.this.UndoEMActionPerformed(evt);
             }
             else if (evt.getSource() == RedoEM) {
-                Jubler.this.RedoEMActionPerformed(evt);
+                JubFrame.this.RedoEMActionPerformed(evt);
             }
             else if (evt.getSource() == SplitTM) {
-                Jubler.this.SplitTMActionPerformed(evt);
+                JubFrame.this.SplitTMActionPerformed(evt);
             }
             else if (evt.getSource() == JoinTM) {
-                Jubler.this.JoinTMActionPerformed(evt);
+                JubFrame.this.JoinTMActionPerformed(evt);
             }
             else if (evt.getSource() == ReparentTM) {
-                Jubler.this.ReparentTMActionPerformed(evt);
+                JubFrame.this.ReparentTMActionPerformed(evt);
             }
             else if (evt.getSource() == SynchronizeTM) {
-                Jubler.this.SynchronizeTMActionPerformed(evt);
+                JubFrame.this.SynchronizeTMActionPerformed(evt);
             }
             else if (evt.getSource() == ShiftTimeTM) {
-                Jubler.this.ShiftTimeTMActionPerformed(evt);
+                JubFrame.this.ShiftTimeTMActionPerformed(evt);
             }
             else if (evt.getSource() == RecodeTM) {
-                Jubler.this.RecodeTMActionPerformed(evt);
+                JubFrame.this.RecodeTMActionPerformed(evt);
             }
             else if (evt.getSource() == FixTM) {
-                Jubler.this.FixTMActionPerformed(evt);
+                JubFrame.this.FixTMActionPerformed(evt);
             }
             else if (evt.getSource() == RoundTM) {
-                Jubler.this.RoundTMActionPerformed(evt);
+                JubFrame.this.RoundTMActionPerformed(evt);
             }
             else if (evt.getSource() == SpellTM) {
-                Jubler.this.SpellTMActionPerformed(evt);
+                JubFrame.this.SpellTMActionPerformed(evt);
             }
             else if (evt.getSource() == TranslateTM) {
-                Jubler.this.TranslateTMActionPerformed(evt);
+                JubFrame.this.TranslateTMActionPerformed(evt);
             }
             else if (evt.getSource() == BeginningTTM) {
-                Jubler.this.BeginningTTMActionPerformed(evt);
+                JubFrame.this.BeginningTTMActionPerformed(evt);
             }
             else if (evt.getSource() == CurrentTTM) {
-                Jubler.this.CurrentTTMActionPerformed(evt);
+                JubFrame.this.CurrentTTMActionPerformed(evt);
             }
             else if (evt.getSource() == EnablePreviewC) {
-                Jubler.this.EnablePreviewCActionPerformed(evt);
+                JubFrame.this.EnablePreviewCActionPerformed(evt);
             }
             else if (evt.getSource() == VideoPreviewC) {
-                Jubler.this.VideoPreviewCActionPerformed(evt);
+                JubFrame.this.VideoPreviewCActionPerformed(evt);
             }
             else if (evt.getSource() == HalfSizeC) {
-                Jubler.this.HalfSizeCActionPerformed(evt);
+                JubFrame.this.HalfSizeCActionPerformed(evt);
             }
             else if (evt.getSource() == AudioPreviewC) {
-                Jubler.this.AudioPreviewCActionPerformed(evt);
+                JubFrame.this.AudioPreviewCActionPerformed(evt);
             }
             else if (evt.getSource() == MaxWaveC) {
-                Jubler.this.MaxWaveCActionPerformed(evt);
+                JubFrame.this.MaxWaveCActionPerformed(evt);
             }
             else if (evt.getSource() == PlayAudioC) {
-                Jubler.this.PlayAudioCActionPerformed(evt);
+                JubFrame.this.PlayAudioCActionPerformed(evt);
             }
             else if (evt.getSource() == FAQHM) {
-                Jubler.this.FAQHMActionPerformed(evt);
+                JubFrame.this.FAQHMActionPerformed(evt);
             }
             else if (evt.getSource() == AboutHM) {
-                Jubler.this.AboutHMActionPerformed(evt);
+                JubFrame.this.AboutHMActionPerformed(evt);
             }
         }
 
@@ -1381,8 +1381,8 @@ public class Jubler extends JFrame {
         }
 
         public void windowClosing(java.awt.event.WindowEvent evt) {
-            if (evt.getSource() == Jubler.this) {
-                Jubler.this.formWindowClosing(evt);
+            if (evt.getSource() == JubFrame.this) {
+                JubFrame.this.formWindowClosing(evt);
             }
         }
 
@@ -1422,14 +1422,14 @@ public class Jubler extends JFrame {
         rep = new JReparent(this, connect_to_other);
         
         if ( JIDialog.action(this, rep, _("Reparent subtitles file")) ) {
-            Jubler newp = rep.getDesiredParent();
+            JubFrame newp = rep.getDesiredParent();
             if (newp == null) {
                 /* the user cancelled the parenting */
                 connect_to_other = null;
                 return;
             } else {
                 /* The user set the parenting, we have to check for circles */
-                Jubler pointer = newp;
+                JubFrame pointer = newp;
                 while ( (pointer=pointer.connect_to_other) != null ) {
                     if (pointer==this) {
                         /*  A circle was found */
@@ -1496,7 +1496,7 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_showTableColumn
     
     private void ChildNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChildNFMActionPerformed
-        Jubler curjubler = new Jubler();
+        JubFrame curjubler = new JubFrame();
         curjubler.setVisible(true);
 
         Subtitles s = new Subtitles(subs);
@@ -1663,11 +1663,11 @@ public class Jubler extends JFrame {
     }//GEN-LAST:event_CutEMActionPerformed
     
     private void FileNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileNFMActionPerformed
-        Jubler curjubler;
+        JubFrame curjubler;
         if ( subs == null )
             curjubler = this;
         else
-            curjubler = new Jubler();
+            curjubler = new JubFrame();
         curjubler.setVisible(true);
 
         Subtitles s = new Subtitles();
@@ -1796,7 +1796,7 @@ public class Jubler extends JFrame {
         
         if ( JIDialog.action(this, join, _("Join two subtitles")) ) {
             Subtitles newsubs;
-            Jubler other;
+            JubFrame other;
             double dt;
             
             undo.addUndo(new UndoEntry(subs, _("Join subtitles")));
@@ -1849,7 +1849,7 @@ public class Jubler extends JFrame {
             }
             
             setSubs(subs1);
-            Jubler newwindow = new Jubler(subs2);
+            JubFrame newwindow = new JubFrame(subs2);
 
             undo.invalidateSaveMark();
             newwindow.undo.invalidateSaveMark();
@@ -1898,7 +1898,7 @@ public class Jubler extends JFrame {
     
     private void OpenFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFMActionPerformed
         MediaFile mf = new MediaFile();
-        Jubler newj = loadFileFromHere(fdialog.getLoadFile(this, mf), false);
+        JubFrame newj = loadFileFromHere(fdialog.getLoadFile(this, mf), false);
         if (newj!=null)
             newj.mfile = mf;
     }//GEN-LAST:event_OpenFMActionPerformed
@@ -2127,24 +2127,24 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             JIDialog.error(this, result, _("Error while saving file"));
     }
     
-    private Jubler loadFileFromHere(SubFile file, boolean force_into_same_window) {
+    private JubFrame loadFileFromHere(SubFile file, boolean force_into_same_window) {
         if (file == null)
             return null;
         StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
         return loadFile(file, force_into_same_window);
     }
     
-    public Jubler loadFile(SubFile sfile, boolean force_into_same_window) {
+    public JubFrame loadFile(SubFile sfile, boolean force_into_same_window) {
         String data;
         Subtitles newsubs;
-        Jubler work;
+        JubFrame work;
         boolean is_autoload;
 
         /* Find where to display this subtitle file */
         if (subs == null || force_into_same_window)
             work = this;
         else
-            work = new Jubler();
+            work = new JubFrame();
 
         /* Check if this is an auto-load subtitle file */
         is_autoload = sfile.getSaveFile().getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
@@ -2306,7 +2306,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         preview.setEnabled(false);
         
         windows.remove(this);
-        for (Jubler w : windows) {
+        for (JubFrame w : windows) {
             if (w.connect_to_other==this) {
                 w.connect_to_other = null;
             }
@@ -2321,7 +2321,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             if (keep_application_alive && subs!=null) {
                 StaticJubler.setWindowPosition(this, true);
                 StaticJubler.jumpWindowPosition(false);
-                new Jubler().setVisible(true);
+                new JubFrame().setVisible(true);
             } else {
                 if (StaticJubler.requestQuit(this))
                     System.exit(0);

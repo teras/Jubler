@@ -7,7 +7,7 @@
 package com.panayotis.jubler.tools.replace;
 
 import com.panayotis.jubler.os.JIDialog;
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
@@ -25,7 +25,7 @@ import com.panayotis.jubler.subs.SubEntry;
  */
 public class JReplace extends javax.swing.JDialog {
     
-    private Jubler parent;
+    private JubFrame parent;
     private Subtitles subs;
     private UndoList undo;
     
@@ -34,7 +34,7 @@ public class JReplace extends javax.swing.JDialog {
     /**
      * Creates new form JReplace
      */
-    public JReplace(Jubler parent, int row, UndoList undo) {
+    public JReplace(JubFrame parent, int row, UndoList undo) {
         super(parent, false);
         
         this.parent = parent;

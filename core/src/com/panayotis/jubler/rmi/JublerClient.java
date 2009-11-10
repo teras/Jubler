@@ -7,7 +7,6 @@ package com.panayotis.jubler.rmi;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.util.Vector;
 
 /**
  *
@@ -30,12 +29,10 @@ public class JublerClient {
         }
     }
 
-    public static void setFileList(Vector<String> sublist) {
-        for (String file : sublist) {
-            try {
-                stub.addFile(file);
-            } catch (RemoteException ex) {
-            }
+    public static void setFileList(String file) {
+        try {
+            stub.addFile(file);
+        } catch (RemoteException ex) {
         }
     }
 }

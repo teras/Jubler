@@ -3,20 +3,20 @@
  *
  * Created on 7 Σεπτέμβριος 2005, 1:04 μμ
  *
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -27,7 +27,7 @@ package com.panayotis.jubler.subs.style;
 import static com.panayotis.jubler.i18n.I18N._;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
@@ -48,7 +48,7 @@ import javax.swing.JComponent;
  * @author  teras
  */
 public class JOverStyles extends javax.swing.JPanel {
-    private Jubler parent;
+    private JubFrame parent;
     
     /* live button icons */
     private JAlphaIcon PrimaryI, SecondaryI, OutlineI, ShadowI;
@@ -57,7 +57,7 @@ public class JOverStyles extends javax.swing.JPanel {
     private TriObject[] visuals;
     
     /** Creates new form JOverStyles */
-    public JOverStyles(Jubler parent) {
+    public JOverStyles(JubFrame parent) {
         initComponents();
         
         visuals = new TriObject[StyleType.values().length];

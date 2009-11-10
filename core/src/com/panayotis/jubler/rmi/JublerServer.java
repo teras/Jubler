@@ -4,8 +4,8 @@
  */
 package com.panayotis.jubler.rmi;
 
-import com.panayotis.jubler.Main;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.LoaderThread;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -42,6 +42,6 @@ public class JublerServer implements JublerRMI {
     }
 
     public void addFile(String URL) throws RemoteException {
-        Main.asyncAddSubtitle(URL);
+        LoaderThread.getLoader().addSubtitle(URL);
     }
 }
