@@ -5,6 +5,7 @@
 package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 
 /**
@@ -18,5 +19,6 @@ public class Availabilities {
     static {
         formats = new AvailSubFormats();
         StaticJubler.plugins.callPostInitListeners(formats);
+        SubFile.updateBasicFormat();
     }
 }
