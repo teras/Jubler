@@ -23,7 +23,6 @@
 package com.panayotis.jubler.subs.loader.gui;
 
 import com.panayotis.jubler.options.gui.JRateChooser;
-import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N._;

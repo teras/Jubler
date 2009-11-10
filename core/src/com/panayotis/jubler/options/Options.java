@@ -40,10 +40,10 @@ import java.util.Stack;
  */
 public class Options {
 
-    private final static Properties opts;
-    private final static String preffile;
     public final static int CURRENT_VERSION = 2;
     private final static int MAX_RECENTS = 10;
+    private final static Properties opts;
+    private final static String preffile;
 
     static {
         opts = new Properties();
@@ -131,8 +131,6 @@ public class Options {
 
     public static Stack<SubFile> loadFileList() {
         Stack<SubFile> files = new Stack<SubFile>();
-
-        String fname;
         File f;
         for (int i = MAX_RECENTS; i > 0; i--) {
             try {

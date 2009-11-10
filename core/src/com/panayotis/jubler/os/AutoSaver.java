@@ -23,8 +23,7 @@ public class AutoSaver {
     private final static long AUTOSAVE_SECONDS = 30;
     private final static Random rnd;
     private final static Timer timer;
-    private final static File dir,  olds;
-
+    private final static File dir, olds;
 
     static {
         rnd = new Random();
