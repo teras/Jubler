@@ -52,16 +52,18 @@ import javax.swing.KeyStroke;
  */
 public class StaticJubler {
 
-    private static Stack<SubFile> recent_files = Options.loadFileList();
-    private static int screen_x, screen_y, screen_width, screen_height, screen_state;
     private static final int SCREEN_DELTAX = 24;
     private static final int SCREEN_DELTAY = 24;
     public static final String POSTLOADER = "com.panayotis.jubler.StaticJubler";
+    /* */
+    private static Stack<SubFile> recent_files;
+    private static int screen_x, screen_y, screen_width, screen_height, screen_state;
     public static PluginManager plugins;
 
     static {
-        loadWindowPosition();
         plugins = new PluginManager();
+        loadWindowPosition();
+        recent_files = Options.loadFileList();
     }
 
     public static void setWindowPosition(JubFrame current_window, boolean save) {

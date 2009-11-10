@@ -55,7 +55,6 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
             ParamsP.add((opts == null ? new JPanel() : opts), Integer.toString(i));
         }
         SelectorL.setText(_("Select a {0} from the following list", _(list.getType()).toLowerCase()));
-        System.out.println(list.getType());
         if (PList.getModel().getSize() > 0)
             PList.setSelectedIndex(selected);
     }

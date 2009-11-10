@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.panayotis.jubler.plugins;
 
+import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 
 /**
@@ -13,5 +13,10 @@ import com.panayotis.jubler.subs.loader.AvailSubFormats;
  */
 public class Availabilities {
 
-    public final static AvailSubFormats formats = new AvailSubFormats();
+    public final static AvailSubFormats formats;
+
+    static {
+        formats = new AvailSubFormats();
+        StaticJubler.plugins.callPostInitListeners(formats);
+    }
 }
