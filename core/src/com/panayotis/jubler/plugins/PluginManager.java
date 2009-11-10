@@ -43,7 +43,7 @@ public class PluginManager {
         if (DynamicClassLoader.isJarBased())
             cl.addPaths(new String[]{"lib"});
         else
-            cl.addPaths(new String[]{"../../../dist/lib"});
+            cl.addPaths(new String[]{"../dist/lib"});
         cl.setClassPath();
 
         String[] affectlist;

@@ -75,7 +75,7 @@ public class DynamicClassLoader extends URLClassLoader {
     public void addJAR(File path) {
         if (path.isFile() && path.getPath().toLowerCase().endsWith(".jar"))
             try {
-                addURL(path.toURL());
+                addURL(path.toURI().toURL());
                 addPluginsList(path);
             } catch (MalformedURLException ex) {
             }
