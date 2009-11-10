@@ -30,12 +30,12 @@ public class JublerApp extends Application implements Plugin {
     }
 
     public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.Jubler"};
+        return new String[]{"com.panayotis.jubler.JubFrame"};
     }
 
     public void postInit(Object o) {
-        if (o instanceof Jubler) {
-            Jubler jubler = (Jubler) o;
+        if (o instanceof JubFrame) {
+            JubFrame jubler = (JubFrame) o;
             if (jubler.AboutHM == null) {
                 jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
             } else {

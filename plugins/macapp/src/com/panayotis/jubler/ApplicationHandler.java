@@ -6,6 +6,7 @@ package com.panayotis.jubler;
 
 import com.apple.eawt.ApplicationAdapter;
 import com.apple.eawt.ApplicationEvent;
+import com.panayotis.jubler.os.LoaderThread;
 
 /**
  *
@@ -22,8 +23,8 @@ public class ApplicationHandler extends ApplicationAdapter {
     }
 
     public void handlePreferences(ApplicationEvent event) {
-        if (Jubler.prefs != null) {
-            Jubler.prefs.showPreferencesDialog();
+        if (JubFrame.prefs != null) {
+            JubFrame.prefs.showPreferencesDialog();
             event.setHandled(true);
         }
     }
@@ -35,6 +36,6 @@ public class ApplicationHandler extends ApplicationAdapter {
     }
 
     public void handleOpenFile(ApplicationEvent event) {
-        Main.asyncAddSubtitle(event.getFilename());
+        LoaderThread.getLoader().addSubtitle(event.getFilename());
     }
 }
