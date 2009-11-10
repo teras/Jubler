@@ -3,20 +3,20 @@
  *
  * Created on 9 Φεβρουάριος 2006, 9:56 μμ
  *
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -29,6 +29,7 @@ import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.options.gui.JUnsaved;
 import com.panayotis.jubler.os.AutoSaver;
+import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerServer;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
@@ -52,16 +53,18 @@ import javax.swing.KeyStroke;
 public class StaticJubler {
 
     private static Stack<SubFile> recent_files = Options.loadFileList();
-    private static int screen_x,  screen_y,  screen_width,  screen_height,  screen_state;
+    private static int screen_x, screen_y, screen_width, screen_height, screen_state;
     private static final int SCREEN_DELTAX = 24;
     private static final int SCREEN_DELTAY = 24;
-
+    public static final String POSTLOADER = "com.panayotis.jubler.StaticJubler";
+    public static PluginManager plugins;
 
     static {
         loadWindowPosition();
+        plugins = new PluginManager();
     }
 
-    public static void setWindowPosition(Jubler current_window, boolean save) {
+    public static void setWindowPosition(JubFrame current_window, boolean save) {
         if (current_window == null)
             return;
         screen_x = current_window.getX();
@@ -77,7 +80,7 @@ public class StaticJubler {
         jumpWindowPosition(true);
     }
 
-    public static void putWindowPosition(Jubler new_window) {
+    public static void putWindowPosition(JubFrame new_window) {
         if (screen_width <= 0)
             return;
 
@@ -119,12 +122,12 @@ public class StaticJubler {
     }
 
     public static void showAbout() {
-        JIDialog.about(Jubler.windows.get(0), new JAbout(), _("About Jubler"), "/icons/jubler-logo.png");
+        JIDialog.about(JubFrame.windows.get(0), new JAbout(), _("About Jubler"), "/icons/jubler-logo.png");
     }
 
-    public static boolean requestQuit(Jubler request) {
+    public static boolean requestQuit(JubFrame request) {
         Vector<String> unsaved = new Vector<String>();
-        for (Jubler j : Jubler.windows)
+        for (JubFrame j : JubFrame.windows)
             if (j.isUnsaved())
                 unsaved.add(j.getSubtitles().getSubFile().getStrippedFile().getName());
         if (unsaved.size() > 0)
@@ -133,8 +136,8 @@ public class StaticJubler {
 
         JublerServer.stopServer();
 
-        if (request == null && Jubler.windows.size() > 0)
-            request = Jubler.windows.get(Jubler.windows.size() - 1);
+        if (request == null && JubFrame.windows.size() > 0)
+            request = JubFrame.windows.get(JubFrame.windows.size() - 1);
         if (request != null)
             setWindowPosition(request, true);
 
@@ -142,19 +145,19 @@ public class StaticJubler {
         return true;
     }
 
-    public static void updateMenus(Jubler j) {
-        Jubler.prefs.setMenuShortcuts(j.JublerMenuBar);
+    public static void updateMenus(JubFrame j) {
+        JubFrame.prefs.setMenuShortcuts(j.JublerMenuBar);
     }
 
     public static void updateAllMenus() {
-        for (Jubler j : Jubler.windows)
+        for (JubFrame j : JubFrame.windows)
             updateMenus(j);
     }
 
     public static void updateRecents() {
         /* Get filenames of all files */
         Subtitles subs;
-        for (Jubler j : Jubler.windows) {
+        for (JubFrame j : JubFrame.windows) {
             subs = j.getSubtitles();
             if (subs != null) {
                 SubFile sfile = subs.getSubFile();
@@ -174,7 +177,7 @@ public class StaticJubler {
         /* Get filenames of closed files */
         Stack<SubFile> menulist = new Stack<SubFile>();
         menulist.addAll(recent_files);
-        for (Jubler j : Jubler.windows) {
+        for (JubFrame j : JubFrame.windows) {
             subs = j.getSubtitles();
             if (subs != null)
                 menulist.remove(subs.getSubFile());
@@ -182,7 +185,7 @@ public class StaticJubler {
 
         /* Update menus */
         JMenu recent_menu;
-        for (Jubler j : Jubler.windows) {
+        for (JubFrame j : JubFrame.windows) {
             recent_menu = j.RecentsFM;
 
             /* Add clone entry */
@@ -201,7 +204,7 @@ public class StaticJubler {
         }
     }
 
-    private static JMenuItem addNewMenu(String text, boolean isclone, boolean enabled, Jubler jub, int counter) {
+    private static JMenuItem addNewMenu(String text, boolean isclone, boolean enabled, JubFrame jub, int counter) {
         JMenuItem item = new JMenuItem(text);
         item.setEnabled(enabled);
         if (counter >= 0)
@@ -209,7 +212,7 @@ public class StaticJubler {
 
         final boolean isclone_f = isclone;
         final String text_f = text;
-        final Jubler jub_f = jub;
+        final JubFrame jub_f = jub;
         item.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {

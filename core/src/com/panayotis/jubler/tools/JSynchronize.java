@@ -3,26 +3,26 @@
  *
  * Created on 4 Μάρτιος 2006, 1:35 πμ
  *
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
 
 package com.panayotis.jubler.tools;
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubEntry;
@@ -35,7 +35,7 @@ import java.util.Vector;
  */
 public class JSynchronize extends JTool {
     
-    private Jubler modeljubler;
+    private JubFrame modeljubler;
     
     private Subtitles target, model;
     private boolean copytime, copytext;
@@ -46,20 +46,20 @@ public class JSynchronize extends JTool {
         super(true);
     }
     
-    public void updateData(Jubler current) {
+    public void updateData(JubFrame current) {
         super.updateData(current);
         
         target = current.getSubtitles();
-        Jubler cjubler, oldjubler;
+        JubFrame cjubler, oldjubler;
         int cid = -1;
 
         JubSelector.removeAllItems();
-        int old_id = Jubler.windows.indexOf(modeljubler);
+        int old_id = JubFrame.windows.indexOf(modeljubler);
         modeljubler = null; // Clear memory - variable not needed any more
         
         String label;
-        for ( int i = 0 ; i <Jubler.windows.size() ; i++) {
-            cjubler = Jubler.windows.elementAt(i);
+        for ( int i = 0 ; i <JubFrame.windows.size() ; i++) {
+            cjubler = JubFrame.windows.elementAt(i);
             label = cjubler.getSubtitles().getSubFile().getStrippedFile().getName();
             if (cjubler==current) {
                 label += "  "+_("-current-");
@@ -81,7 +81,7 @@ public class JSynchronize extends JTool {
     }
     
     public void storeSelections() {
-        modeljubler = Jubler.windows.get(JubSelector.getSelectedIndex());
+        modeljubler = JubFrame.windows.get(JubSelector.getSelectedIndex());
         model = modeljubler.getSubtitles();
         copytime = InTimeS.isSelected();
         copytext = InTextS.isSelected();

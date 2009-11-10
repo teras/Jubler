@@ -4,7 +4,7 @@
  */
 package com.panayotis.jubler.os;
 
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
@@ -55,7 +55,7 @@ public class AutoSaver {
 
                 /* Autosave unsaved files */
                 Subtitles subs;
-                for (Jubler j : Jubler.windows) {
+                for (JubFrame j : JubFrame.windows) {
                     if (j.isUnsaved()) {
                         subs = j.getSubtitles();
                         String fname = AUTOSAVEPREFIX +

@@ -22,7 +22,7 @@
  */
 package com.panayotis.jubler.subs.loader;
 
-import com.panayotis.jubler.Main;
+import com.panayotis.jubler.StaticJubler;
 import java.util.ArrayList;
 
 /**
@@ -37,7 +37,7 @@ public class AvailSubFormats {
     /** Creates a new instance of SubFormats */
     public AvailSubFormats() {
         current = 0;
-        Main.plugins.callPostInitListeners(this);
+        StaticJubler.plugins.callPostInitListeners(this);
         Formats.add(new PlainText());
     }
 

@@ -74,6 +74,9 @@
 			</trycatch>
 			</sequential>
 		</for>
+		<delete file="dist/lib/binarysubs.jar"/>
+		<delete file="dist/lib/vlc.jar"/>
+		<delete file="dist/lib/websubs.jar"/>
 	</target>
 
 

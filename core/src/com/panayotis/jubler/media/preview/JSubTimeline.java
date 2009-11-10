@@ -3,27 +3,27 @@
  *
  * Created on 21 Σεπτέμβριος 2005, 9:44 πμ
  *
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
 
 package com.panayotis.jubler.media.preview;
 
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
@@ -79,7 +79,7 @@ public class JSubTimeline extends JPanel {
     private int current_action = AUTO_ACTION;
     
     
-    private Jubler parent;
+    private JubFrame parent;
     
     private ArrayList<SubInfo> vislist;
     private ArrayList<SubInfo> sellist;
@@ -115,7 +115,7 @@ public class JSubTimeline extends JPanel {
     
     
     /** Creates a new instance of JSubTimeline */
-    public JSubTimeline(Jubler parent, ViewWindow view, JSubPreview preview) {
+    public JSubTimeline(JubFrame parent, ViewWindow view, JSubPreview preview) {
         this.parent = parent;
         vislist = new ArrayList<SubInfo>();
         sellist = new ArrayList<SubInfo>();
@@ -148,7 +148,7 @@ public class JSubTimeline extends JPanel {
     
     public void setAction(int action) { current_action = action; }
     public void setWavePreview(JWavePreview wave) { this.wave = wave; }
-    public Jubler getJubler() { return parent; }
+    public JubFrame getJubler() { return parent; }
     
     ArrayList<SubInfo> getSelectedList() {
         return sellist;
@@ -399,7 +399,7 @@ public class JSubTimeline extends JPanel {
         }
         
         selection_mode=NONE;
-        /* The visual changes will come as a callback from the Jubler event dispach of the chaneg subtitles */
+        /* The visual changes will come as a callback from the JubFrame event dispach of the chaneg subtitles */
         //ignore_new_selection_list = true;
         parent.setSelectedSub(sel, true);
         //ignore_new_selection_list = false;

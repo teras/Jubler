@@ -3,20 +3,20 @@
  *
  * Created on 27 Ιούνιος 2005, 1:56 πμ
  *
- * This file is part of Jubler.
+ * This file is part of JubFrame.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * JubFrame is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * JubFrame is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
+ * along with JubFrame; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -24,7 +24,7 @@
 package com.panayotis.jubler.media.console;
 
 import com.panayotis.jubler.os.JIDialog;
-import com.panayotis.jubler.Jubler;
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.subs.SubEntry;
@@ -61,7 +61,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private Viewport view;
     private VideoPlayer player;
     private Timer timer;
-    private Jubler parent;
+    private JubFrame parent;
     private JSubSimpleGraph diagram;
     
     private TimeSync sync1, sync2;  /* Use these variables to perform time sync */
@@ -95,13 +95,13 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private boolean request_quit;
     
     /** Creates new form JVideoConsole */
-    public static JVideoConsole initialize(Jubler jubler, VideoPlayer videoPlayer) {
+    public static JVideoConsole initialize(JubFrame jubler, VideoPlayer videoPlayer) {
         if (videoPlayer == null)
             return null;
         return new JVideoConsole(jubler, videoPlayer);
     }
 
-    private JVideoConsole(Jubler parent, VideoPlayer player) {
+    private JVideoConsole(JubFrame parent, VideoPlayer player) {
         super(parent, false);
         SystemDependent.setSmallDecoration(getRootPane());
         
