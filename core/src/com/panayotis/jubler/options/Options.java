@@ -50,7 +50,7 @@ public class Options {
         preffile = updateConfigFile();
         try {
             opts.loadFromXML(new FileInputStream(preffile));
-        } catch (IOException e) {
+        } catch (Exception e) {
         }
     }
 
