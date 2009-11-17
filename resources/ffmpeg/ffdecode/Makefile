@@ -64,7 +64,7 @@ endif
 
 ifeq (${MAKESYS},win32)
 	XLIBS=
-	CCPREF=i586-mingw32msvc-
+	CCPREF=i386-mingw32-
 	ARCH=i386
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
 	LIBNAME=${PROJ}.dll
