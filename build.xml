@@ -38,8 +38,8 @@
     </target>
   
 	<target name="help">
-        <exec dir="resources/help" executable="docbook2html" failonerror="false">
-            <arg line="-u jubler-faq.xml"/>
+        <exec dir="resources/help" executable="xmlto" failonerror="true">
+            <arg line="html-nochunks jubler-faq.xml"/>
         </exec>
         <mkdir dir="dist/help"/>
         <move file="resources/help/jubler-faq.html" todir="dist/help"/>
@@ -117,7 +117,7 @@
         <jarbundler
             dir="dist"
             jars="dist/Jubler.jar"
-            mainclass="com.panayotis.jubler.Main"
+            mainclass="Jubler"
             name="Jubler"
             aboutmenuname="Jubler"
             antialiasedgraphics="true"
