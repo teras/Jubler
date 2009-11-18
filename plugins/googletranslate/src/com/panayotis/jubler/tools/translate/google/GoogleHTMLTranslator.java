@@ -20,8 +20,11 @@ import java.util.Vector;
  */
 public class GoogleHTMLTranslator extends GenericWebTranslator implements Plugin {
 
+    private final static String SIGNATURE = "name=gtrans";
+    private final static String FROMTAG = "value=\"";
+    private final static String TOTAG = "\"";
+    private final static String BREAK="&lt;br&gt;";
     private static Vector<Language> lang;
-
 
     static {
         lang = new Vector<Language>();
@@ -85,16 +88,20 @@ public class GoogleHTMLTranslator extends GenericWebTranslator implements Plugin
     }
 
     protected String getTranslationURL(String from_language, String to_language) throws MalformedURLException {
-        return "http://translate.google.com/translate_t?&ie=utf-8&oe=utf-8&sl=" + findLanguage(from_language) + "&tl=" + findLanguage(to_language);
+        return "http://translate.google.com/?&hl=en&ie=utf-8&oe=utf-8&sl=" + findLanguage(from_language) + "&tl=" + findLanguage(to_language);
     }
 
     protected String retrieveSubData(String line) {
-        int from = line.indexOf("id=result_box");
-        if (from >= 0) {
-            from = line.indexOf(">", from) + 1;
+        int sig = line.indexOf(SIGNATURE);
+        if (sig >= 0) {
+            sig += SIGNATURE.length();
+            int from = line.indexOf(FROMTAG, sig);
             if (from >= 0) {
-                int to = line.indexOf("</div>", from);
-                return line.substring(from, to).replace("<br>", "\n");
+                from += FROMTAG.length();
+                int to = line.indexOf(TOTAG, from);
+                if (to < 0)
+                    to = line.length();
+                return line.substring(from, to).replace(BREAK, "\n");
             }
         }
         return null;
