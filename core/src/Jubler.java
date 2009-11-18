@@ -23,6 +23,7 @@
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
@@ -37,8 +38,8 @@ import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import javax.swing.JWindow;
-
 
 /**
  *
@@ -63,12 +64,20 @@ public class Jubler {
 
         DynamicClassLoader.guessMainPath("Jubler", "com.panayotis.jubler.Jubler");
 
+
         /* Load all startup files in a separate process */
         LoaderThread loader = new LoaderThread();
+
+        /* Add autosave subtitles */
+        for (File file : AutoSaver.getAutoSaveListOnLoad())
+            loader.addSubtitle(file.getPath());
+        AutoSaver.init();
+
+
         /* Parse arguments */
         loader.addSubList(args);
         if (JublerClient.isRunning())
-            loader.goToMaster();    // this application will terminate here
+            loader.goToMaster();
 
         /* Start RMI server, so only one instance of JubFrame will be opened at all times */
         JublerServer.startServer();
@@ -80,6 +89,7 @@ public class Jubler {
         PluginManager.manager.callPostInitListeners(null, StaticJubler.POSTLOADER);
     }
 }
+
 class MainSplash extends JWindow {
 
     private Image logo;
