@@ -54,7 +54,7 @@ public class AutoSaver {
 
                 /* Autosave unsaved files */
                 Subtitles subs;
-                for (JubFrame j : JubFrame.windows) {
+                for (JubFrame j : JubFrame.windows)
                     if (j.isUnsaved()) {
                         subs = j.getSubtitles();
                         String fname = AUTOSAVEPREFIX +
@@ -63,7 +63,6 @@ public class AutoSaver {
                                 subs.getSubFile().getStrippedFile().getName();
                         FileCommunicator.save(subs, new SubFile(new File(dir, fname)), null);
                     }
-                }
 
                 /* cleanup old files */
                 for (File current : olds.listFiles())
@@ -73,7 +72,7 @@ public class AutoSaver {
         }, 1000l, AUTOSAVE_SECONDS * 1000);
     }
 
-    public static File[] getAutoSaveList() {
+    public static File[] getAutoSaveListOnLoad() {
         File[] empty = new File[0];
 
         if (!dir.exists())

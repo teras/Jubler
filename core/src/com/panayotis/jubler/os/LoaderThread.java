@@ -19,8 +19,6 @@ public class LoaderThread extends Thread {
     private static final LoaderThread loader;
     private Vector<String> sublist;
     /* Remember how many autosaves we have, so that to start autosave deamon afterwards */
-    private File[] autosavelist;
-    private final int autosaves;
 
     static {
         loader = new LoaderThread();
@@ -28,14 +26,6 @@ public class LoaderThread extends Thread {
 
     {
         sublist = new Vector<String>();
-        autosavelist = AutoSaver.getAutoSaveList();
-        autosaves = autosavelist.length;
-        /* Add autosave subtitles */
-        for (File file : autosavelist)
-            addSubtitle(file.getPath());
-        /* Force starting autosaver, if no autosaves were found */
-        if (autosaves == 0)
-            AutoSaver.init();
     }
 
     public static LoaderThread getLoader() {
@@ -55,8 +45,6 @@ public class LoaderThread extends Thread {
 
                     if (f.exists() && f.isFile() && f.canRead())
                         JubFrame.windows.elementAt(0).loadFile(new SubFile(f, SubFile.EXTENSION_GIVEN), false);
-                    if (autosave_counter == autosaves)
-                        AutoSaver.init();
                     sublist.remove(0);
                 }
                 synchronized (this) {
