@@ -11,7 +11,7 @@
 	
 	<taskdef name="jarbundler"
         onerror="report"
-        classpath="../../Tools/jarbundler/jarbundler-1.9.jar"
+        classpath="/opt/local/share/java/jarbundler.jar"
         classname="net.sourceforge.jarbundler.JarBundler" />
 
    <taskdef name="izpack"

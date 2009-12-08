@@ -56,6 +56,8 @@ JNIEXPORT jfloatArray JNICALL Java_com_panayotis_jubler_media_preview_decoders_F
     dimension = (*env)->NewFloatArray(env, 4);
     if (dimension==NULL) return NULL;
     
+	DEBUG(env, this, "grabInformation", "Check!");
+
     /* get array data position */
     matrixdata = (*env)->GetFloatArrayElements(env, dimension, 0);
     
