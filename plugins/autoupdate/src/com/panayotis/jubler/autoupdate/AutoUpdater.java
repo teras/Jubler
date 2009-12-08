@@ -4,7 +4,6 @@ package com.panayotis.jubler.autoupdate;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.panayotis.jubler.Main;
 import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.os.DEBUG;
@@ -36,7 +35,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin {
     }
 
     public String[] getAffectionList() {
-        return new String[]{Main.POSTLOADER};
+        return new String[]{StaticJubler.POSTLOADER};
     }
 
 
