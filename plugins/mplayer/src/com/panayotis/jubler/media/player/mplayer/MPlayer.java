@@ -88,4 +88,7 @@ public class MPlayer extends AbstractPlayer implements Plugin {
         return " ass ";
     }
 
+    public String[] getEnvironment() {
+        return MPlayerSystemDependent.getMPlayerEnvironment(this);
+    }
 }
