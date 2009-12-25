@@ -25,7 +25,7 @@ public class CommandLineTerminal extends AbstractTerminal {
         cmd = null;
         out = error = null;
         try {
-            proc = Runtime.getRuntime().exec(args.arguments);
+            proc = Runtime.getRuntime().exec(args.arguments, args.environment);
             cmd = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
             out = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             error = new BufferedReader(new InputStreamReader(proc.getErrorStream()));

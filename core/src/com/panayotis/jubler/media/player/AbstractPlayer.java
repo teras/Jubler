@@ -56,6 +56,8 @@ public abstract class AbstractPlayer extends VideoPlayer {
 
     public abstract String[] getTestParameters();
 
+    public abstract String[] getEnvironment();
+
     public abstract String getTestSignature();
 
     /* Create Subtitle File for testing*/
@@ -133,6 +135,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
         a.subfile = subpath;
         a.videofile = mfile.getVideoFile().getPath();
         a.when = when;
+        a.environment = getEnvironment();
         DEBUG.debug(a.toString());
         return a;
     }

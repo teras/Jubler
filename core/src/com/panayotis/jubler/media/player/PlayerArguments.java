@@ -13,6 +13,7 @@ import com.panayotis.jubler.time.Time;
 public class PlayerArguments {
 
     public String[] arguments;
+    public String[] environment;
     public int port;
     public String videofile;
     public String subfile;
