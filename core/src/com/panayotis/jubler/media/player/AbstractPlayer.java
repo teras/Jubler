@@ -56,7 +56,9 @@ public abstract class AbstractPlayer extends VideoPlayer {
 
     public abstract String[] getTestParameters();
 
-    public abstract String[] getEnvironment();
+    public String[] getEnvironment() {
+        return null;
+    }
 
     public abstract String getTestSignature();
 
