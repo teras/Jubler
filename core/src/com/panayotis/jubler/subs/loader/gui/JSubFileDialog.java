@@ -1,12 +1,24 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * JSubFileDialog.java
  *
  * Created on Dec 21, 2008, 10:57:59 AM
+ *
+ * This file is part of Jubler.
+ *
+ * Jubler is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, version 2.
+ *
+ *
+ * Jubler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Jubler; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
  */
 package com.panayotis.jubler.subs.loader.gui;
 
@@ -102,7 +114,6 @@ public class JSubFileDialog extends javax.swing.JDialog {
         isAccepted = evt.getActionCommand().equals(JFileChooser.APPROVE_SELECTION);
         setVisible(false);
     }//GEN-LAST:event_chooserActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser chooser;
     // End of variables declaration//GEN-END:variables
