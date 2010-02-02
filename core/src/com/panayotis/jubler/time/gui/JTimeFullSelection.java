@@ -216,7 +216,7 @@ public class JTimeFullSelection extends JTimeArea {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         Type.add(byRange);
-        byRange.setText(_("By region"));
+        byRange.setText(_("By time range"));
         byRange.setToolTipText(_("Select subtitles depending on a specified region"));
         byRange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
