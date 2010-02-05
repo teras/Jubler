@@ -8,7 +8,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="_(&quot;Video Console&quot;)" type="code"/>
+      <Connection code="InitialTitle" type="code"/>
     </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
