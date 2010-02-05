@@ -19,6 +19,7 @@
  */
 package com.panayotis.jubler.rmi;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -48,6 +49,7 @@ public class JublerClient {
         try {
             stub.addFile(file);
         } catch (RemoteException ex) {
+            DEBUG.debug(ex);
         }
     }
 }

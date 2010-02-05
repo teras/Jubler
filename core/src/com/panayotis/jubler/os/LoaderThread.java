@@ -32,7 +32,7 @@ import java.util.Vector;
 public class LoaderThread extends Thread {
 
     private static final LoaderThread loader;
-    private Vector<String> sublist;
+    private final Vector<String> sublist;
     /* Remember how many autosaves we have, so that to start autosave deamon afterwards */
 
     static {
@@ -52,29 +52,33 @@ public class LoaderThread extends Thread {
         while (true)
             try {
                 /* Here we do the actual work */
-                while (sublist.size() > 0) {
-                    String sub = sublist.elementAt(0);
+                while (loader.sublist.size() > 0) {
+                    String sub = loader.sublist.elementAt(0);
                     File f = new File(sub);
                     if (f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX))
                         autosave_counter++;
 
                     if (f.exists() && f.isFile() && f.canRead())
                         JubFrame.windows.elementAt(0).loadFile(new SubFile(f, SubFile.EXTENSION_GIVEN), false);
-                    sublist.remove(0);
+                    loader.sublist.remove(0);
                 }
-                synchronized (this) {
-                    wait();
+                synchronized (loader.sublist) {
+                    // AutoSaver SHOULD be called after the initial loading has been performed, or else auto-saved files will vanish!
+                    AutoSaver.launch();
+                    try {
+                        loader.sublist.wait();
+                    } catch (InterruptedException ex) {
+                    }
                 }
-            } catch (InterruptedException ex) {
             } catch (ArrayIndexOutOfBoundsException ex) {
             }
     }
 
     /* Asynchronous add files to load */
     public void addSubtitle(String sub) {
-        sublist.add(sub);
-        synchronized (loader) {
-            loader.notify();
+        synchronized (loader.sublist) {
+            loader.sublist.add(sub);
+            loader.sublist.notifyAll();
         }
     }
 
@@ -87,7 +91,7 @@ public class LoaderThread extends Thread {
     }
 
     public void goToMaster() {
-        for (String item : sublist)
+        for (String item : loader.sublist)
             JublerClient.setFileList(item);
         System.exit(0);
     }
