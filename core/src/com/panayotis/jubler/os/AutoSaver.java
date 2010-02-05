@@ -37,54 +37,57 @@ public class AutoSaver {
     public final static String AUTOSAVEPREFIX = "autosave.";
     private final static long AUTOSAVE_SECONDS = 30;
     private final static Random rnd;
-    private final static Timer timer;
     private final static File dir, olds;
+    private static Timer timer;
+    private static final TimerTask task = new TimerTask() {
+
+        public void run() {
+            /* Create autosave path */
+            dir.mkdirs();
+            olds.mkdir();
+            if (!(dir.isDirectory() && dir.canWrite())) {
+                DEBUG.debug("ERROR: Could not use autosave directory " + dir.getPath());
+                return;
+            }
+            if (!(olds.isDirectory() && olds.canWrite())) {
+                DEBUG.debug("ERROR: Could not use autosave directory for old files " + olds.getPath());
+                return;
+            }
+
+            /* Move old autosave files to olds */
+            for (File current : dir.listFiles(new AutoSubFileFilter()))
+                current.renameTo(new File(olds, current.getName()));
+
+            /* Autosave unsaved files */
+            Subtitles subs;
+            for (JubFrame j : JubFrame.windows)
+                if (j.isUnsaved()) {
+                    subs = j.getSubtitles();
+                    String fname = AUTOSAVEPREFIX
+                            + String.format("%04x", rnd.nextInt() & 0xffff)
+                            + "."
+                            + subs.getSubFile().getStrippedFile().getName();
+                    FileCommunicator.save(subs, new SubFile(new File(dir, fname)), null);
+                }
+
+            /* cleanup old files */
+            for (File current : olds.listFiles())
+                current.delete();
+            olds.delete();
+        }
+    };
 
     static {
         rnd = new Random();
-        timer = new Timer();
         dir = new File(SystemDependent.getAppSupportDirPath() + "autosave");
         olds = new File(dir, "olds");
     }
 
-    public static void init() {
-        timer.schedule(new TimerTask() {
-
-            public void run() {
-                /* Create autosave path */
-                dir.mkdirs();
-                olds.mkdir();
-                if (!(dir.isDirectory() && dir.canWrite())) {
-                    DEBUG.debug("ERROR: Could not use autosave directory " + dir.getPath());
-                    return;
-                }
-                if (!(olds.isDirectory() && olds.canWrite())) {
-                    DEBUG.debug("ERROR: Could not use autosave directory for old files " + olds.getPath());
-                    return;
-                }
-
-                /* Move old autosave files to olds */
-                for (File current : dir.listFiles(new AutoSubFileFilter()))
-                    current.renameTo(new File(olds, current.getName()));
-
-                /* Autosave unsaved files */
-                Subtitles subs;
-                for (JubFrame j : JubFrame.windows)
-                    if (j.isUnsaved()) {
-                        subs = j.getSubtitles();
-                        String fname = AUTOSAVEPREFIX +
-                                String.format("%04x", rnd.nextInt() & 0xffff) +
-                                "." +
-                                subs.getSubFile().getStrippedFile().getName();
-                        FileCommunicator.save(subs, new SubFile(new File(dir, fname)), null);
-                    }
-
-                /* cleanup old files */
-                for (File current : olds.listFiles())
-                    current.delete();
-                olds.delete();
-            }
-        }, 1000l, AUTOSAVE_SECONDS * 1000);
+    public static void launch() {
+        if (timer == null) {
+            timer = new Timer();
+            timer.schedule(task, 1000l, AUTOSAVE_SECONDS * 1000);
+        }
     }
 
     public static File[] getAutoSaveListOnLoad() {
@@ -111,7 +114,8 @@ public class AutoSaver {
     }
 
     public static void cleanup() {
-        timer.cancel();
+        if (timer != null)
+            timer.cancel();
         deleteDirContents(olds);
         deleteDirContents(dir);
         olds.delete();

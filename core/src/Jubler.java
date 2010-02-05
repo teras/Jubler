@@ -68,16 +68,14 @@ public class Jubler {
         /* Load all startup files in a separate process */
         LoaderThread loader = new LoaderThread();
 
-        /* Add autosave subtitles */
-        for (File file : AutoSaver.getAutoSaveListOnLoad())
-            loader.addSubtitle(file.getPath());
-        AutoSaver.init();
-
-
         /* Parse arguments */
         loader.addSubList(args);
         if (JublerClient.isRunning())
             loader.goToMaster();
+
+        /* Add autosave subtitles */
+        for (File file : AutoSaver.getAutoSaveListOnLoad())
+            loader.addSubtitle(file.getPath());
 
         /* Start RMI server, so only one instance of JubFrame will be opened at all times */
         JublerServer.startServer();
