@@ -27,7 +27,6 @@ import com.panayotis.jubler.os.SystemDependent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.externals.wizard.JWizard;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 
@@ -36,8 +35,6 @@ import javax.swing.JPanel;
  * @author  teras
  */
 public class JExtBasicOptions extends JPanel {
-    private JFileChooser fdialog;
-    
     protected String name;
     protected String family;
     protected String[] testparameters;
@@ -53,9 +50,6 @@ public class JExtBasicOptions extends JPanel {
         this.test_signature = test_signature;
         
         initComponents();
-
-        fdialog = new JFileChooser();
-        fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
     }
     
     /** This method is called from within the constructor to
