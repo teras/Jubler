@@ -30,13 +30,14 @@ LIBRARIES=${CPATH}/../libraries
 # Path of Jubler distribution
 JUBLER=${CPATH}/../../..
 
-WININCLOC=${JUBLER}/../../Tools/jvm/win32
-
 # RELATIVE Path of ffdecode to top Jubler directory
 FFDECODE=resources/ffmpeg/ffdecode
 
 # Where javah lives
 JAVAH=${JAVA_HOME}/bin/javah
+
+# Where Windows include files for JNI can be found
+WININCLOC=${JUBLER}/../../Tools/jvm/include
 
 # Various options
 FFCONF=configure
@@ -63,13 +64,20 @@ else
 endif
 
 ifeq (${MAKESYS},win32)
+	JINCLUDE=-I${WININCLOC} -I${WININCLOC}/win32
+else
+	JINCLUDE=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM}
+endif
+
+ifeq (${MAKESYS},win32)
 	XLIBS=
-	CCPREF=i386-mingw32-
+	M586=$(shell which i586-mingw32msvc-gcc)
+	CCPREF=$(shell if test Q != ${M586}Q  ; then echo i586-mingw32msvc- ; else echo i386-mingw32- ; fi)
 	ARCH=i386
-	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-a -shared
+	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -shared
 	LIBNAME=${PROJ}.dll
 	XFCONFIG=--cross-prefix=${CCPREF} --enable-memalign-hack --target-os=mingw32
-	GCCOPTS=-I${WININCLOC}
+	GCCOPTS=-D_JNI_IMPLEMENTATION_
 	STRIP=${CCPREF}strip -s
 endif
 ifeq (${MAKESYS},darwin_ppc)
@@ -144,7 +152,7 @@ MACLIBNAME=lib${PROJ}.jnilib
 .SUFFIXES:.o .c
 
 .c.o:
-	${CC} ${CFLAGS} ${GCCOPTS} -std=c99 -pedantic -O3 -Wall ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -c -o $@ $?
+	${CC} ${CFLAGS} ${GCCOPTS} -std=c99 -pedantic -O3 -Wall ${INCS} ${JINCLUDE} -c -o $@ $?
 
 
 develop:javacheck
