@@ -190,6 +190,10 @@ public class SubEntry implements Comparable<SubEntry> {
                 }
                 return style.toString();
             case 5:
+               return (subtext==null || subtext.length() == 0)
+                   ?"0"
+                   :Math.round((subtext.length()*(60/((finish.getMillis() - start.getMillis())/1000d))))+"";
+            case 6:
                 return subtext.replace('\n', '|');
         }
         return null;

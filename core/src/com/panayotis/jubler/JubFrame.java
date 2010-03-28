@@ -344,6 +344,7 @@ public class JubFrame extends JFrame {
         ShowEndP = new javax.swing.JCheckBoxMenuItem();
         ShowLayerP = new javax.swing.JCheckBoxMenuItem();
         ShowStyleP = new javax.swing.JCheckBoxMenuItem();
+        ShowCPMP = new javax.swing.JCheckBoxMenuItem();
         jSeparator11 = new javax.swing.JSeparator();
         PlayVideoP = new javax.swing.JMenuItem();
         BasicPanel = new javax.swing.JPanel();
@@ -527,6 +528,11 @@ public class JubFrame extends JFrame {
         ShowStyleP.setActionCommand("4");
         ShowStyleP.addActionListener(formListener);
         ShowColP.add(ShowStyleP);
+
+        ShowCPMP.setText(_("Characters per second"));
+        ShowCPMP.setActionCommand("5");
+        ShowCPMP.addActionListener(formListener);
+        ShowColP.add(ShowCPMP);
 
         SubsPop.add(ShowColP);
         SubsPop.add(jSeparator11);
@@ -1343,6 +1349,9 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
             }
+            else if (evt.getSource() == ShowCPMP) {
+                JubFrame.this.showTableColumn(evt);
+            }
         }
 
         public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -1927,6 +1936,7 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2006,6 +2016,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem SaveFM;
     private javax.swing.JButton SaveTB;
     private javax.swing.JMenuItem ShiftTimeTM;
+    private javax.swing.JCheckBoxMenuItem ShowCPMP;
     private javax.swing.JMenu ShowColP;
     private javax.swing.JCheckBoxMenuItem ShowEndP;
     private javax.swing.JCheckBoxMenuItem ShowLayerP;

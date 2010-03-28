@@ -217,4 +217,7 @@ public class Time implements Comparable<Time> {
     public String toString() {
         return getSeconds();
     }
+    public long getMillis() {
+        return msecs;
+    }
 }
