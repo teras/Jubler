@@ -41,10 +41,10 @@ import javax.swing.JTable;
  */
 public class Subtitles extends AbstractTableModel {
 
-    private static final String COLUMNID = "#FELS";
+    private static final String COLUMNID = "#FELCS";
     private static final String DEFAULTCOLUMNID = "FE";
-    private static final String COLNAME[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Subtitle")};
-    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50";
+    private static final String COLNAME[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Cpm"), _("Subtitle")};
+    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50,50,530";
     private boolean[] visiblecols = AutoSaveOptions.getVisibleColumns(COLUMNID, DEFAULTCOLUMNID);
     private int prefcolwidth[] = AutoSaveOptions.getColumnWidth(COLUMNID.length(), DEFAULTCOLWIDTH);
     private final static int FIRST_EDITABLE_COL = COLNAME.length;
