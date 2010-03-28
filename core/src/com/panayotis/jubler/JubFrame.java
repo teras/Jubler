@@ -529,7 +529,7 @@ public class JubFrame extends JFrame {
         ShowStyleP.addActionListener(formListener);
         ShowColP.add(ShowStyleP);
 
-        ShowCPMP.setText(_("Characters per second"));
+        ShowCPMP.setText(_("Characters per minute"));
         ShowCPMP.setActionCommand("5");
         ShowCPMP.addActionListener(formListener);
         ShowColP.add(ShowCPMP);
