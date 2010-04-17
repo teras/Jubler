@@ -12,9 +12,6 @@
 # Name of the produced library
 PROJ=ffdecode
 
-# Paths of include files
-JAVA_HOME=${shell /bin/sh ../../system/findjava.sh -j}
-
 # Current Path
 CPATH=${shell pwd}
 
@@ -41,7 +38,6 @@ JAVAH=${JAVA_HOME}/bin/javah
 # Various options
 FFCONF=configure
 LIBSUF=_${SYSTEM}.${ARCH}
-MAKEOPTS=-j3
 
 # Find requested files
 NATIVES=${shell cd ../../src && grep -r ' native ' * | grep -v '/.svn/' | gawk -F ':' '{print $$1}' | uniq | sed -e 's/\.java$$//g' | tr '/' '.' }
@@ -119,7 +115,6 @@ FCONFIG=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disab
 CCPREF_NOS=${shell echo ${CCPREF} | sed -e 's/-$$//g' }
 DCONFIG=--with-mp4v2 --host=${CCPREF_NOS}
 
-CC=${CCPREF}gcc
 RANLIB=${CCPREF}ranlib
 
 ifeq (${NOSTRIP},) 
@@ -134,7 +129,7 @@ MACLIBNAME=lib${PROJ}.jnilib
 .SUFFIXES:.o .c
 
 .c.o:
-	${CC} ${CFLAGS} ${GCCOPTS} -std=c99 -pedantic -O3 -Wall ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -c -o $@ $?
+	${CC} ${CFLAGS} ${GCCOPTS} -std=c99 -pedantic -Wall ${INCS} -I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -c -o $@ $?
 
 
 develop:javacheck

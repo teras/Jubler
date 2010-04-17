@@ -54,15 +54,12 @@ public class SystemFileFinder {
     }
     
     public static boolean loadLibrary(String name) {
-        File libfile = findFile("lib"+FileCommunicator.FS+System.mapLibraryName(name));
-        if (libfile!=null) {
             try {
-                System.load(libfile.getAbsolutePath());
+                System.loadLibrary(name);
                 return true;
             } catch (UnsatisfiedLinkError e) {
                 e.printStackTrace();
             }
-        }
         return false;
     }
     

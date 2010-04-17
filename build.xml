@@ -3,28 +3,6 @@
     <description>Builds, tests, and runs the project Jubler.</description>
     <property file="core/src/com/panayotis/jubler/information/version.prop" />
 
-	<taskdef resource="net/sf/antcontrib/antlib.xml">
-		<classpath>
-			<pathelement location="resources/libs/ant-contrib/ant-contrib-1.0b3.jar"/>
-		</classpath>
-	</taskdef>
-	
-	<taskdef name="jarbundler"
-        onerror="report"
-        classpath="../../../Tools/jarbundler/jarbundler-1.9.jar"
-        classname="net.sourceforge.jarbundler.JarBundler" />
-
-   <taskdef name="izpack"
-        onerror="report"
-        classpath="../../../Tools/IzPack/standalone-compiler.jar"
-        classname="com.izforge.izpack.ant.IzPackTask"/>
-
-    <taskdef name="launch4j"
-        onerror="report"
-        classpath="../../../Tools/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
-        classname="net.sf.launch4j.ant.Launch4jTask"/>
-
-
 
 	<target name="i18n">
         <exec dir="resources/i18n" executable="bash" failonerror="true">
