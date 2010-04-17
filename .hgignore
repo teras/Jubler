@@ -7,5 +7,6 @@ syntax:glob
 
 syntax: regexp
 
-^stable/resources/libraries
-^stable/nbproject/private
+^stable/resources/ffmpeg/libraries
+
+nbproject/private
