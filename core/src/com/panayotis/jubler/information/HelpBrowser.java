@@ -93,6 +93,7 @@ public class HelpBrowser extends javax.swing.JDialog {
         HelpPane = new javax.swing.JEditorPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Jubler FAQ");
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 8, 8));
         jPanel3.setLayout(new java.awt.BorderLayout());

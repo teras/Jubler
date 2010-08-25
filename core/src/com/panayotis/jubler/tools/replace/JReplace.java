@@ -71,12 +71,12 @@ public class JReplace extends javax.swing.JDialog {
             }
             row ++;
             nextpos = 0;
-            if ( row == subs.size()) {
-                if ( ! JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles")) ) {
-                    prepareExit();
-                    return;
-                }
+            if (row == subs.size()) {
                 row = 0;
+                ContextT.setText("");
+                if (!JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles"))) {
+                    break;
+                }
             }
         }
     }
