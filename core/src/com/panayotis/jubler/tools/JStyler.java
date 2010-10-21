@@ -65,7 +65,7 @@ public class JStyler extends JTool {
     }
     
     protected void affect(int index) {
-        affected_list.elementAt(index).setStyle(style);
+        affected_list.get(index).setStyle(style);
     }
     
     /** This method is called from within the constructor to

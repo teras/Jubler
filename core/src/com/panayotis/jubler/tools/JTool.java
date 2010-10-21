@@ -32,7 +32,7 @@ import com.panayotis.jubler.time.gui.JTimeFullSelection;
 import com.panayotis.jubler.time.gui.JTimeRegion;
 import com.panayotis.jubler.undo.UndoEntry;
 import java.awt.BorderLayout;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 
@@ -45,7 +45,7 @@ public abstract class JTool extends JPanel {
     protected Subtitles subs;
     protected int[] selected;
     
-    protected Vector<SubEntry> affected_list;
+    protected ArrayList<SubEntry> affected_list;
     protected JubFrame jparent;
     
     
@@ -71,7 +71,7 @@ public abstract class JTool extends JPanel {
         SubEntry [] selectedsubs = jparent.getSelectedSubs();
         
         affected_list = pos.getAffectedSubs();
-        if ( affected_list.size() == 0 ) return false;
+        if ( affected_list.isEmpty() ) return false;
         pos.updateSubsMark(affected_list);
         
         storeSelections();

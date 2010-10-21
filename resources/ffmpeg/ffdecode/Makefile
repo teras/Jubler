@@ -19,7 +19,7 @@ JAVA_HOME=${shell /bin/sh ../../system/findjava.sh -j}
 CPATH=${shell pwd}
 
 # Path of the local ffmpeg source structure (already inside the source version of Jubler)
-FFMPEG=${CPATH}/../ffmpeg-0.5
+FFMPEG=${CPATH}/../ffmpeg-0.6
 
 # Path of local FAAD2 library
 FAAD=${CPATH}/../ffmpeg-libs/faad2
@@ -59,8 +59,8 @@ ifeq (${STATIC},no)
 else
 	LIBRARYREQ=${LIBRARIES}/libavformat${LIBSUF}.a
 	RANLIBREQ=ranlib
-	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lfaad${LIBSUF} -lm ${XLIBS}
-	INCS=-I${FFMPEG}
+	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lfaad${LIBSUF} -lswscale${LIBSUF} -lm ${XLIBS}
+	INCS=-I${FFMPEG} -I${LIBRARIES}/include/${LIBSUF}
 endif
 
 ifeq (${MAKESYS},win32)
@@ -86,7 +86,7 @@ ifeq (${MAKESYS},darwin_ppc)
 	ARCH=ppc
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.ppc
-	XFCONFIG=--enable-shared --arch=powerpc --enable-cross-compile --disable-altivec
+	XFCONFIG=--enable-shared --arch=powerpc --enable-cross-compile --disable-altivec --target-os=darwin
 	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
@@ -96,7 +96,7 @@ ifeq (${MAKESYS},darwin_x86_64)
 	ARCH=x86_64
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.x86_64
-	XFCONFIG=--enable-shared --arch=x86_64
+	XFCONFIG=--enable-shared --arch=x86_64 --target-os=darwin
 	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
 	STRIP=echo No stripping on 
 endif
@@ -106,8 +106,8 @@ ifeq (${MAKESYS},darwin_i386)
 	ARCH=i386
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.i386
-	XFCONFIG=--enable-shared --arch=unknown
-	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
+	XFCONFIG=--enable-shared --arch=x86 --target-os=darwin --disable-mmx --disable-mmx2 --disable-sse --disable-ssse3 --disable-amd3dnow --disable-amd3dnowext --enable-pic
+	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4 -read_only_relocs suppress
 	STRIP=echo No stripping on 
 endif
 ifeq (${MAKESYS},linux_i686)
@@ -131,8 +131,7 @@ ifeq (${MAKESYS},linux_x86_64)
 	STRIP=${CCPREF}strip -s
 endif
 
-
-FCONFIG=--disable-debug --enable-gpl --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-encoders --enable-encoder=pcm_s16le --enable-encoder=pcm_s16be --disable-muxers --enable-muxer=wav --disable-devices --disable-vhook --disable-ipv6 --disable-network --disable-libdc1394 --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG}
+FCONFIG=--disable-debug --enable-gpl --enable-nonfree --enable-pthreads --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-ffprobe --disable-encoders --enable-encoder=pcm_s16le --enable-encoder=pcm_s16be --disable-muxers --enable-muxer=wav --disable-devices --disable-doc --disable-network --disable-libdc1394 --disable-postproc --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG}
 
 CCPREF_NOS=${shell echo ${CCPREF} | sed -e 's/-$$//g' }
 DCONFIG=--with-mp4v2 --host=${CCPREF_NOS}
@@ -186,11 +185,11 @@ win32:javacheck distclean
 
 darwin:javacheck
 	${MAKE} distclean
-	${MAKE} -e LIB MAKESYS=darwin_x86_64
+	${MAKE} -e LIB MAKESYS=darwin_i386
 	${MAKE} distclean
 	${MAKE} -e LIB MAKESYS=darwin_ppc
 	${MAKE} distclean
-	${MAKE} -e LIB MAKESYS=darwin_i386
+	${MAKE} -e LIB MAKESYS=darwin_x86_64
 	${MAKE} distclean
 	lipo ${PROJ}.ppc ${PROJ}.i386 ${PROJ}.x86_64 -create -output ${MACLIBNAME}
 	TIGER=`otool -vR ${MACLIBNAME} | grep UNIX` ; if [ -n "$$TIGER" ] ; then echo "Tiger compatibility problem!" ; echo $$TIGER ; exit 1 ; fi
@@ -251,6 +250,9 @@ ${LIBRARYREQ}: ${LIBRARIES}/libfaad${LIBSUF}.a
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/libavutil.a ${LIBRARIES}/libavutil${LIBSUF}.a
+	cp ${FFMPEG}/libswscale/libswscale.a ${LIBRARIES}/libswscale${LIBSUF}.a
+	mkdir -p ${LIBRARIES}/include/${LIBSUF}/libavutil
+	cp ${FFMPEG}/libavutil/avconfig.h ${LIBRARIES}/include/${LIBSUF}/libavutil
 	cd ${FFMPEG} && ${MAKE} distclean
 	rm -f ${FFMPEG}/libswscale/libswscale-uninstalled.pc ${FFMPEG}/libswscale/libswscale.pc
 	rm -f ${LIBRARIES}/libfaad.a
@@ -261,3 +263,4 @@ ranlib:
 	${RANLIB} ${LIBRARIES}/libavformat${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavcodec${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavutil${LIBSUF}.a
+	${RANLIB} ${LIBRARIES}/libswscale${LIBSUF}.a

@@ -74,6 +74,7 @@ public class JTranslate extends JTool {
     protected void affect(int index) {
     }
 
+    @Override
     protected boolean finalizing() {
         if (trans == null) {
             DEBUG.debug("No active translators found!");

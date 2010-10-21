@@ -21,7 +21,7 @@
 
     <taskdef name="launch4j"
         onerror="report"
-        classpath="../../Tools/launch4j/launch4j.jar:../TOOLS/launch4j/lib/xstream.jar" 
+        classpath="/opt/local/share/launch4j/launch4j.jar:/opt/local/share/launch4j/lib/xstream.jar" 
         classname="net.sf.launch4j.ant.Launch4jTask"/>
 
 	<target name="jupidator">

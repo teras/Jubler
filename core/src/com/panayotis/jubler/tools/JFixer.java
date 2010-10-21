@@ -91,6 +91,7 @@ public class JFixer extends JTool {
         }
     }
     
+    @Override
     public boolean execute(JubFrame jub) {
         boolean res = super.execute(jub);
         if (res) {
@@ -103,7 +104,7 @@ public class JFixer extends JTool {
     }
     
     protected void affect(int index) {
-        SubEntry sub = affected_list.elementAt(index);
+        SubEntry sub = affected_list.get(index);
         
         double curstart; /* The original start time */
         double curdur;  /* The original duration of the subtitle */
@@ -152,9 +153,9 @@ public class JFixer extends JTool {
         
         /* Find limits depending on their neighbour subtitles */
         if (index==0) lowerlimit = 0;
-        else lowerlimit = affected_list.elementAt(index-1).getFinishTime().toSeconds();
+        else lowerlimit = affected_list.get(index-1).getFinishTime().toSeconds();
         if (index==(affected_list.size()-1)) upperlimit = Time.MAX_TIME;
-        else upperlimit = affected_list.elementAt(index+1).getStartTime().toSeconds();
+        else upperlimit = affected_list.get(index+1).getStartTime().toSeconds();
         
         /* Fix time by pushing the subtitles up */
         if (pushmodel == 2) {
@@ -164,7 +165,7 @@ public class JFixer extends JTool {
                 /* Ooops, time is not enough, we have to push everything up from now on */
                 SubEntry uppersub;
                 for (int i = index + 1; i < affected_list.size(); i++) {
-                    uppersub = affected_list.elementAt(i);
+                    uppersub = affected_list.get(i);
                     uppersub.getStartTime().addTime(dt);
                     uppersub.getFinishTime().addTime(dt);
                 }
@@ -178,7 +179,7 @@ public class JFixer extends JTool {
                 double timesplit = (lowerlimit - curstart + gap) / 2d;
                 if (timesplit > 0) {
                     sub.getStartTime().setTime(curstart + timesplit);
-                    affected_list.elementAt(index - 1).getFinishTime().setTime(lowerlimit - timesplit);
+                    affected_list.get(index - 1).getFinishTime().setTime(lowerlimit - timesplit);
                 }
             }
             return;

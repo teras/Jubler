@@ -36,7 +36,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  *
@@ -69,11 +69,12 @@ public abstract class WebTranslator implements Translator, ActionListener {
         this.blocksize = blocksize;
     }
 
-    public boolean translate(final Vector<SubEntry> subs, final String from_language, final String to_language) {
+    public boolean translate(final ArrayList<SubEntry> subs, final String from_language, final String to_language) {
         errorstream = "";
         proc.setValues(subs.size(), _("Translating to {0}", to_language));
         transt = new Thread() {
 
+            @Override
             public void run() {
                 for (int i = 0; i < subs.size(); i += blocksize) {
                     proc.updateProgress(i);
@@ -104,19 +105,19 @@ public abstract class WebTranslator implements Translator, ActionListener {
 
     protected abstract boolean isProtocolPOST();
 
-    protected abstract String getConvertedSubtitleText(Vector<SubEntry> subs) throws UnsupportedEncodingException;
+    protected abstract String getConvertedSubtitleText(ArrayList<SubEntry> subs) throws UnsupportedEncodingException;
 
-    protected abstract void parseResults(Vector<SubEntry> subs, BufferedReader in) throws IOException;
+    protected abstract String parseResults(ArrayList<SubEntry> subs, BufferedReader in) throws IOException;
 
-    private String translatePart(Vector<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
+    private String translatePart(ArrayList<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
         BufferedReader in = null;
         OutputStreamWriter out = null;
         String error = null;
         try {
-            Vector<SubEntry> group = getSubtitlesGroup(subs, fromsub, tosub);
+            ArrayList<SubEntry> group = getSubtitlesGroup(subs, fromsub, tosub);
             String txt = getConvertedSubtitleText(group);
 
-            URL req = new URL(getTranslationURL(from_language, to_language) + (isProtocolPOST() ? "" : txt));
+            URL req = new URL(getTranslationURL(from_language, to_language) + (isProtocolPOST() ? "" : "&" + txt));
             URLConnection conn = req.openConnection();
             conn.setConnectTimeout(connect_timeout);
             conn.setReadTimeout(transfer_timeout);
@@ -131,8 +132,8 @@ public abstract class WebTranslator implements Translator, ActionListener {
             DEBUG.debug("Translation session intialized.");
 
             in = new BufferedReader(new InputStreamReader(conn.getInputStream(), Charset.forName("UTF-8")));
-            parseResults(group, in);
-
+            error = parseResults(group, in);
+            
         } catch (IOException ex) {
             error = ex.toString();
         } finally {
@@ -150,11 +151,10 @@ public abstract class WebTranslator implements Translator, ActionListener {
         return error;
     }
 
-    private Vector<SubEntry> getSubtitlesGroup(Vector<SubEntry> subs, int from, int to) {
-        Vector<SubEntry> part = new Vector<SubEntry>();
-        for (int i = from; i < to; i++) {
+    private ArrayList<SubEntry> getSubtitlesGroup(ArrayList<SubEntry> subs, int from, int to) {
+        ArrayList<SubEntry> part = new ArrayList<SubEntry>();
+        for (int i = from; i < to; i++)
             part.add(subs.get(i));
-        }
         return part;
     }
 }

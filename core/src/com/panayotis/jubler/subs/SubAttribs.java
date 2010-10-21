@@ -33,11 +33,13 @@ public class SubAttribs {
     private final String source;
     private final String comments;
     
-    private int maxchars;
-    private int maxcolor;
+    private final int maxchars;
+    private final int maxcolor;
+    private final boolean isMaxCPS;
     
     private static final int DEFAULT_MAXCOLOR = 1;
     private static final int DEFAULT_MAXCHARS = 40;
+    private static final boolean DEFAULT_ISMAXCPS = false;
     
     /** Creates a new instance of SubAttribs */
     public SubAttribs() {
@@ -45,14 +47,14 @@ public class SubAttribs {
     }
     
     public SubAttribs(String title, String author, String source, String comments) {
-        this(title, author, source, comments, DEFAULT_MAXCHARS, DEFAULT_MAXCOLOR);
+        this(title, author, source, comments, DEFAULT_MAXCHARS, DEFAULT_MAXCOLOR, DEFAULT_ISMAXCPS);
     }
     
     public SubAttribs( SubAttribs old ) {
-        this(old.title, old.author, old.source, old.comments, old.maxchars, old.maxcolor);
+        this(old.title, old.author, old.source, old.comments, old.maxchars, old.maxcolor, old.isMaxCPS);
     }
     
-    public SubAttribs(String title, String author, String source, String comments, int maxchars, int maxcolor) {
+    public SubAttribs(String title, String author, String source, String comments, int maxchars, int maxcolor, boolean isMaxCPS) {
         if (title==null) title = "";
         if (source==null) source = "";
         if (author==null) author = System.getProperty("user.name");
@@ -64,14 +66,16 @@ public class SubAttribs {
         this.comments = comments;
         this.maxchars = maxchars;
         this.maxcolor = maxcolor;
+        this.isMaxCPS = isMaxCPS;
     }
     
+    @Override
     public boolean equals(Object o) {
         if (o instanceof SubAttribs) {
             SubAttribs s = (SubAttribs)o;
             return title.equals(s.title) && author.equals(s.author) && 
                     source.equals(s.source) && comments.equals(s.comments) && 
-                    maxchars==s.maxchars && maxcolor==s.maxcolor;
+                    maxchars==s.maxchars && maxcolor==s.maxcolor && isMaxCPS == s.isMaxCPS;
         }
         return super.equals(o);
     }
@@ -83,4 +87,5 @@ public class SubAttribs {
     public int getMaxCharacters() { return Math.abs(maxchars); }
     public int getMaxColor() { return maxcolor; }
     public boolean isMaxCharsEnabled() { return maxchars > 0; }
+    public boolean isMaxCPS() { return isMaxCPS; }
 }

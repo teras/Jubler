@@ -220,4 +220,8 @@ public class Time implements Comparable<Time> {
     public long getMillis() {
         return msecs;
     }
+
+    public double differenceInSecs(Time other) {
+        return (msecs - other.msecs) / 1000d;
+    }
 }

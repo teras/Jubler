@@ -24,12 +24,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.spell.checkers;
 
-import java.util.Hashtable;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.plugins.Plugin;
@@ -40,18 +40,19 @@ import com.panayotis.jubler.tools.spell.SpellError;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Vector;
 
 public class ZemberekSpellChecker extends SpellChecker implements Plugin {
-    
+
     private Method kelimeDenetle, oner;
     private Object zemberek;
-    
+
     public ZemberekSpellChecker() {
     }
-    
-    public Vector<SpellError> checkSpelling(String text) {
-        Hashtable<String, Integer> lastPositions = new Hashtable<String, Integer>();
-        Vector<SpellError> ret = new Vector<SpellError>();
+
+    public ArrayList<SpellError> checkSpelling(String text) {
+        HashMap<String, Integer> lastPositions = new HashMap<String, Integer>();
+        ArrayList<SpellError> ret = new ArrayList<SpellError>();
         StringTokenizer tok = new StringTokenizer(text, "!'#%&/()=?-_:.,;\"\r\n\t ");
         while (tok.hasMoreTokens()) {
             String word = tok.nextToken();
@@ -60,14 +61,13 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
                 pos = text.indexOf(word, lastPositions.get(word) + word.length());
             else
                 pos = text.indexOf(word);
-            lastPositions.put(word,pos);
+            lastPositions.put(word, pos);
             try {
-                boolean status = (Boolean)kelimeDenetle.invoke(zemberek, new Object[] {word});
+                boolean status = (Boolean) kelimeDenetle.invoke(zemberek, new Object[]{word});
                 if (!status) {
                     Vector<String> sug = new Vector<String>();
-                    String sugs[] = (String[]) oner.invoke(zemberek, new Object[] {word});
-                    for (int i = 0; i < sugs.length; i++)
-                        sug.add(sugs[i]);
+                    String sugs[] = (String[]) oner.invoke(zemberek, new Object[]{word});
+                    sug.addAll(Arrays.asList(sugs));
                     ret.add(new SpellError(pos, word, sug));
                 }
             } catch (IllegalAccessException e) {
@@ -77,49 +77,55 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
         }
         return ret;
     }
-    
+
     @SuppressWarnings("unchecked")
     public void start() throws ExtProgramException {
         try {
             Class zemberekClass = Class.forName("net.zemberek.erisim.Zemberek");
-            Class dilAyarlariClass=Class.forName("net.zemberek.yapi.DilAyarlari");
-            Class turkiyeTurkcesiClass=Class.forName("net.zemberek.tr.yapi.TurkiyeTurkcesi");
+            Class dilAyarlariClass = Class.forName("net.zemberek.yapi.DilAyarlari");
+            Class turkiyeTurkcesiClass = Class.forName("net.zemberek.tr.yapi.TurkiyeTurkcesi");
             kelimeDenetle = zemberekClass.getDeclaredMethod("kelimeDenetle", String.class);
             oner = zemberekClass.getDeclaredMethod("oner", String.class);
-            Constructor zemberekConstructor=zemberekClass.getDeclaredConstructor(dilAyarlariClass);
-            Object turkiyeTurkcesi=turkiyeTurkcesiClass.newInstance();
+            Constructor zemberekConstructor = zemberekClass.getDeclaredConstructor(dilAyarlariClass);
+            Object turkiyeTurkcesi = turkiyeTurkcesiClass.newInstance();
             zemberek = zemberekConstructor.newInstance(turkiyeTurkcesi);
             return;
         } catch (Throwable t) {
             throw new ExtProgramException(t);
         }
     }
-    
+
     public boolean insertWord(String word) {
         return false;
     }
-    
+
     public void stop() {
         zemberek = null;
         kelimeDenetle = null;
         oner = null;
     }
-    
-    public boolean supportsInsert() { return false; }
-    public JExtBasicOptions getOptionsPanel() { return null; }
-    public String getName() { return "Zemberek"; }
+
+    public boolean supportsInsert() {
+        return false;
+    }
+
+    public JExtBasicOptions getOptionsPanel() {
+        return null;
+    }
+
+    public String getName() {
+        return "Zemberek";
+    }
 
     public String[] getAffectionList() {
-        return new String[] {"com.panayotis.jubler.tools.externals.AvailExternals"};
+        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
     }
 
     public void postInit(Object o) {
         if (o instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals)o;
+            AvailExternals l = (AvailExternals) o;
             if (l.getType().equals(family))
                 l.add(this);
         }
     }
-    
 }
-

@@ -19,27 +19,34 @@
  */
 package com.panayotis.jubler.tools.translate.google;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.translate.AvailTranslators;
+import com.panayotis.jubler.tools.translate.HTMLTextUtils;
 import static com.panayotis.jubler.i18n.I18N._;
 
-import com.panayotis.jubler.tools.translate.GenericWebTranslator;
+import com.panayotis.jubler.tools.translate.SimpleWebTranslator;
 import com.panayotis.jubler.tools.translate.Language;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import java.net.MalformedURLException;
-import java.util.Vector;
+import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
  * @author teras
  */
-public class GoogleJSONTranslator extends GenericWebTranslator implements Plugin {
+public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin {
 
-    private static Vector<Language> lang;
-
+    private static final ArrayList<Language> lang;
 
     static {
-        lang = new Vector<Language>();
+        lang = new ArrayList<Language>();
         lang.add(new Language("sq", _("Albanian")));
         lang.add(new Language("ar", _("Arabic")));
         lang.add(new Language("bg", _("Bulgarian")));
@@ -85,15 +92,15 @@ public class GoogleJSONTranslator extends GenericWebTranslator implements Plugin
 
     public GoogleJSONTranslator() {
         super();
-        setSubtitleBlock(10);
+        setSubtitleBlock(100);
     }
 
-    protected Vector<Language> getLanguages() {
+    protected ArrayList<Language> getLanguages() {
         return lang;
     }
 
     public String getDefinition() {
-        return _("Google translate") + " (JSON)";
+        return _("Google translate") + " (API)";
     }
 
     public String getDefaultSourceLanguage() {
@@ -108,38 +115,41 @@ public class GoogleJSONTranslator extends GenericWebTranslator implements Plugin
         return "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=" + findLanguage(from_language) + "%7C" + findLanguage(to_language);
     }
 
-    protected String retrieveSubData(String line) {
-        int from = line.indexOf("translatedText");
-        if (from >= 0) {
-            from += "translatedText\":\"".length();
-            int to = line.indexOf("\"},", from);
-            return line.substring(from, to);
-        }
-        return null;
-    }
-
-    protected String getQueryTag() {
-        return "&q";
-    }
-
+    @Override
     protected boolean isProtocolPOST() {
-        return false;
+        return true;
     }
 
-    protected String makeIDTag(int id) {
-        return "S" + id + ".";
+    @Override
+    protected String getConvertedSubtitleText(ArrayList<SubEntry> subs) throws UnsupportedEncodingException {
+        StringBuilder str = new StringBuilder();
+        for (SubEntry entry : subs)
+            str.append("&q=").append(HTMLTextUtils.encode(entry.getText()));
+        return (str.length() > 1) ? str.substring(1) : "";
     }
 
-    protected String getNewLineTag() {
-        return "\n";
-    }
-
-    protected boolean isIDTag(String data) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    protected int getIDTagFromData(String data) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    @Override
+    protected String parseResults(ArrayList<SubEntry> subs, BufferedReader in) throws IOException {
+        StringBuilder data = new StringBuilder();
+        String line = null;
+        while ((line = in.readLine()) != null)
+            data.append(line);
+        JSONObject json;
+        try {
+            System.out.println(data.toString());
+            json = new JSONObject(data.toString());
+            JSONArray responds = json.getJSONArray("responseData");
+            if (subs.size() != responds.length())
+                return _("Original text and translation does not match!");
+            DEBUG.debug("Google JSON returned " + responds.length() + " elements.");
+            for (int i = 0; i < subs.size(); i++) {
+                JSONObject res = (JSONObject) responds.get(i);
+                subs.get(i).setText(HTMLTextUtils.decode(res.getJSONObject("responseData").getString("translatedText")));
+            }
+            return null;
+        } catch (Exception ex) {
+            return ex.getClass().getName() + ": " + ex.getMessage();
+        }
     }
 
     public String[] getAffectionList() {
@@ -147,9 +157,7 @@ public class GoogleJSONTranslator extends GenericWebTranslator implements Plugin
     }
 
     public void postInit(Object o) {
-        if (o instanceof AvailTranslators) {
-            AvailTranslators av = (AvailTranslators) o;
-            av.add(this);
-        }
+        if (o instanceof AvailTranslators)
+            ((AvailTranslators) o).add(this);
     }
 }

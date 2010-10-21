@@ -25,8 +25,7 @@ package com.panayotis.jubler.tools.spell;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
 import java.awt.Color;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.text.SimpleAttributeSet;
@@ -34,6 +33,7 @@ import javax.swing.text.StyleConstants;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import java.io.IOException;
+import java.util.HashMap;
 
 
 /**
@@ -45,16 +45,16 @@ public class JSpellChecker extends JDialog {
     
     private JFrame jparent;
     private SpellChecker checker;
-    private Vector<SubEntry> textlist;
+    private ArrayList<SubEntry> textlist;
     private int pos_in_list;
     
-    private Vector<String> ignored;
-    private Hashtable<String,String> replaced;
+    private ArrayList<String> ignored;
+    private HashMap<String,String> replaced;
     
-    private Vector<SpellError> errors;
+    private ArrayList<SpellError> errors;
     
     /** Creates new form JSpellChecker */
-    public JSpellChecker(JFrame parent, SpellChecker checker, Vector<SubEntry> list) {
+    public JSpellChecker(JFrame parent, SpellChecker checker, ArrayList<SubEntry> list) {
         super(parent, true);
         
         while(true) {
@@ -81,9 +81,9 @@ public class JSpellChecker extends JDialog {
         count_changes = 0;
         pos_in_list = -1;
         
-        errors = new Vector<SpellError>();
-        ignored = new Vector<String> ();
-        replaced = new Hashtable<String,String> ();
+        errors = new ArrayList<SpellError>();
+        ignored = new ArrayList<String> ();
+        replaced = new HashMap<String,String> ();
         
         if (!checker.supportsInsert()) {
             InsertB.setEnabled(false);
@@ -94,7 +94,7 @@ public class JSpellChecker extends JDialog {
     /* Use this method to remove from error list possible known errors */
     private void updateKnownErrors() {
         for (int i = errors.size()-1 ; i>= 0 ; i-- ) {
-            String original = errors.elementAt(i).original; /* Get the misspelled word */
+            String original = errors.get(i).original; /* Get the misspelled word */
             if ( ignored.indexOf(original) >= 0 ) { /* The user said to ignore it */
                 errors.remove(i);
             } else if (replaced.containsKey(original) ) { /* The user said to replace it */
@@ -122,7 +122,7 @@ public class JSpellChecker extends JDialog {
         /* If the current error list is empty, refill it with next error bunch */
         while ( errors.isEmpty() && ( (++pos_in_list) < textlist.size()) ) {
             /* Get next (multi)line of text */
-            errors  = checker.checkSpelling(textlist.elementAt(pos_in_list).getText());
+            errors  = checker.checkSpelling(textlist.get(pos_in_list).getText());
             updateKnownErrors();
         }
         if (errors.isEmpty()) {
@@ -132,11 +132,11 @@ public class JSpellChecker extends JDialog {
         }
         
         /* For convenience, get a pointer for this error */
-        SpellError mistake = errors.elementAt(0);
+        SpellError mistake = errors.get(0);
         
         Unknown.setText(mistake.original);  /* set the text of the mistaken word */
         SugList.setListData(mistake.alternatives);  /* set the list of spell suggestions */
-        setSentence(textlist.elementAt(pos_in_list).getText().replace('\n','|'), mistake.position, mistake.original.length());
+        setSentence(textlist.get(pos_in_list).getText().replace('\n','|'), mistake.position, mistake.original.length());
         
         /* use a default suggestion */
         if ( SugList.getModel().getSize() > 0 ) {
@@ -437,16 +437,16 @@ public class JSpellChecker extends JDialog {
     }//GEN-LAST:event_StopBActionPerformed
     
     private void replaceText(String txt, int index) {
-        int pos = errors.elementAt(index).position;
-        int len = errors.elementAt(index).original.length();
+        int pos = errors.get(index).position;
+        int len = errors.get(index).original.length();
         
-        String olds = textlist.elementAt(pos_in_list).getText();
+        String olds = textlist.get(pos_in_list).getText();
         String news = olds.substring(0, pos)  + txt + olds.substring(pos+len);
-        textlist.elementAt(pos_in_list).setText(news);
+        textlist.get(pos_in_list).setText(news);
         
-        int dlength = txt.length() - errors.elementAt(index).original.length(); /* size differences */
+        int dlength = txt.length() - errors.get(index).original.length(); /* size differences */
         for ( int i = index+1 ; i < errors.size() ; i++ ) { /* Propagate size differences to following errors (if any) */
-            errors.elementAt(i).position += dlength;
+            errors.get(i).position += dlength;
         }
     }
     

@@ -58,7 +58,7 @@ public class JMarker extends JTool {
     }
     
     protected void affect(int index) {
-        affected_list.elementAt(index).setMark(mark);
+        affected_list.get(index).setMark(mark);
     }
     
     /** This method is called from within the constructor to

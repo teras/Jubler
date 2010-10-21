@@ -77,7 +77,7 @@ public class JShiftTime extends JToolRealTime {
     }
     
     protected void affect(int index) {
-        SubEntry sub = affected_list.elementAt(index);
+        SubEntry sub = affected_list.get(index);
         sub.getStartTime().addTime(shift);
         sub.getFinishTime().addTime(shift);
     }
