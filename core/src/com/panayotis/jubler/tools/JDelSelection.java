@@ -50,7 +50,7 @@ public class JDelSelection extends JTool {
     protected void storeSelections() {}
     
     protected void affect(int index) {
-        subs.remove(affected_list.elementAt(index));
+        subs.remove(affected_list.get(index));
     }
     
     /** This method is called from within the constructor to

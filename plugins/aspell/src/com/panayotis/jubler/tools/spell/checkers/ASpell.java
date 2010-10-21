@@ -124,8 +124,8 @@ public class ASpell extends SpellChecker implements Plugin {
     
     public boolean supportsInsert() { return true; }
     
-    public Vector<SpellError> checkSpelling(String text) {
-        Vector<SpellError> ret = new Vector<SpellError>();
+    public ArrayList<SpellError> checkSpelling(String text) {
+        ArrayList<SpellError> ret = new ArrayList<SpellError>();
         String input;
         
         String orig;

@@ -291,6 +291,7 @@ public class SubEntry implements Comparable<SubEntry> {
         overstyle = null;
     }
 
+    @Override
     public String toString() {
         return start.toString() + "->" + finish.toString() + " " + subtext;
     }
@@ -320,7 +321,7 @@ public class SubEntry implements Comparable<SubEntry> {
 
     public boolean updateMaxCharStatus(SubAttribs attr, int maxlength) {
         if (attr.isMaxCharsEnabled()) {
-            if (maxlength > attr.getMaxCharacters()) {
+            if (attr.isMaxCPS() ? (((double) maxlength) / attr.getMaxCharacters()) > finish.differenceInSecs(start) : maxlength > attr.getMaxCharacters()) {
                 setMark(attr.getMaxColor());
                 return true;
             }

@@ -65,7 +65,7 @@ public class JRounder extends JTool {
     }
     
     protected void affect(int index) {
-        SubEntry sub = affected_list.elementAt(index);
+        SubEntry sub = affected_list.get(index);
         roundTime(sub.getStartTime());
         roundTime(sub.getFinishTime());
     }

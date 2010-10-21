@@ -17,25 +17,34 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.translate;
 
-import com.panayotis.jubler.subs.SubEntry;
 import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public interface Translator {
+public abstract class SimpleWebTranslator extends WebTranslator {
 
-    public abstract String[] getSourceLanguages();
-    public abstract String[] getDestinationLanguagesFor(String from);
-    
-    public abstract String getDefaultSourceLanguage();
-    public abstract String getDefaultDestinationLanguage();
+    protected abstract ArrayList<Language> getLanguages();
 
-    public abstract String getDefinition();
-    
-    public abstract boolean translate (ArrayList<SubEntry> subs, String from_language, String to_language);
+    public String[] getSourceLanguages() {
+        ArrayList<Language> lang = getLanguages();
+        String[] langs = new String[lang.size()];
+        for (int i = 0; i < lang.size(); i++)
+            langs[i] = lang.get(i).getName();
+        return langs;
+    }
+
+    public String[] getDestinationLanguagesFor(String from) {
+        return getSourceLanguages();
+    }
+
+    public String findLanguage(String language) {
+        for (Language l : getLanguages())
+            if (l.getName().equals(language))
+                return l.getID();
+        return "";
+    }
 }

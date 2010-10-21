@@ -56,7 +56,7 @@ import com.panayotis.jubler.tools.JMarker;
 import com.panayotis.jubler.tools.JPaster;
 import com.panayotis.jubler.tools.JRecodeTime;
 import com.panayotis.jubler.tools.JReparent;
-import com.panayotis.jubler.tools.JReplaceGlobal;
+import com.panayotis.jubler.tools.JRegExpReplace;
 import com.panayotis.jubler.tools.JRounder;
 import com.panayotis.jubler.tools.JShiftTime;
 import com.panayotis.jubler.tools.JSpeller;
@@ -144,7 +144,7 @@ public class JubFrame extends JFrame {
     private JSpeller spell;
     private JRounder round;
     private JFixer fix;
-    private JReplaceGlobal repg;
+    private JRegExpReplace repg;
     private JDelSelection dels;
     private JMarker mark;
     private JRecodeTime recode;
@@ -204,7 +204,7 @@ public class JubFrame extends JFrame {
         spell = new JSpeller();
         round = new JRounder();
         fix = new JFixer();
-        repg = new JReplaceGlobal();
+        repg = new JRegExpReplace();
         dels = new JDelSelection();
         mark = new JMarker();
         recode = new JRecodeTime();
@@ -403,7 +403,7 @@ public class JubFrame extends JFrame {
         EmptyLinesDEM = new javax.swing.JMenuItem();
         ReplaceEM = new javax.swing.JMenu();
         StepwiseREM = new javax.swing.JMenuItem();
-        GloballyREM = new javax.swing.JMenuItem();
+        RegExpREM = new javax.swing.JMenuItem();
         InsertEM = new javax.swing.JMenu();
         BeforeIEM = new javax.swing.JMenuItem();
         AfterIEM = new javax.swing.JMenuItem();
@@ -722,7 +722,6 @@ public class JubFrame extends JFrame {
 
         WebFM.setText(_("Web"));
 
-        RetrieveWFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
         RetrieveWFM.setText(_("Retrieve"));
         RetrieveWFM.setName("RFW"); // NOI18N
         RetrieveWFM.addActionListener(formListener);
@@ -826,11 +825,11 @@ public class JubFrame extends JFrame {
         StepwiseREM.addActionListener(formListener);
         ReplaceEM.add(StepwiseREM);
 
-        GloballyREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, java.awt.event.InputEvent.CTRL_MASK));
-        GloballyREM.setText(_("Globally"));
-        GloballyREM.setName("ERG"); // NOI18N
-        GloballyREM.addActionListener(formListener);
-        ReplaceEM.add(GloballyREM);
+        RegExpREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        RegExpREM.setText(_("Regular Expression"));
+        RegExpREM.setName("ERG"); // NOI18N
+        RegExpREM.addActionListener(formListener);
+        ReplaceEM.add(RegExpREM);
 
         EditM.add(ReplaceEM);
 
@@ -1178,6 +1177,9 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == ShowStyleP) {
                 JubFrame.this.showTableColumn(evt);
             }
+            else if (evt.getSource() == ShowCPMP) {
+                JubFrame.this.showTableColumn(evt);
+            }
             else if (evt.getSource() == PlayVideoP) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
             }
@@ -1235,8 +1237,8 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == StepwiseREM) {
                 JubFrame.this.StepwiseREMActionPerformed(evt);
             }
-            else if (evt.getSource() == GloballyREM) {
-                JubFrame.this.GloballyREMActionPerformed(evt);
+            else if (evt.getSource() == RegExpREM) {
+                JubFrame.this.RegExpREMActionPerformed(evt);
             }
             else if (evt.getSource() == BeforeIEM) {
                 JubFrame.this.insertSubEntry(evt);
@@ -1348,9 +1350,6 @@ public class JubFrame extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == ShowCPMP) {
-                JubFrame.this.showTableColumn(evt);
             }
         }
 
@@ -1708,9 +1707,9 @@ public class JubFrame extends JFrame {
         loadFileFromHere(subs.getSubFile(), true);
     }//GEN-LAST:event_RevertFMActionPerformed
 
-    private void GloballyREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GloballyREMActionPerformed
+    private void RegExpREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegExpREMActionPerformed
         repg.execute(this);
-    }//GEN-LAST:event_GloballyREMActionPerformed
+    }//GEN-LAST:event_RegExpREMActionPerformed
 
     private void bySelectionDEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionDEMActionPerformed
         int lastrow = SubTable.getSelectedRow();
@@ -1967,7 +1966,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem FileNFM;
     private javax.swing.JPanel FileTP;
     private javax.swing.JMenuItem FixTM;
-    private javax.swing.JMenuItem GloballyREM;
     private javax.swing.JMenu GoEM;
     public javax.swing.JCheckBoxMenuItem HalfSizeC;
     private javax.swing.JMenu HelpM;
@@ -2007,6 +2005,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem RecodeTM;
     private javax.swing.JMenuItem RedoEM;
     private javax.swing.JButton RedoTB;
+    private javax.swing.JMenuItem RegExpREM;
     private javax.swing.JMenuItem ReparentTM;
     private javax.swing.JMenu ReplaceEM;
     private javax.swing.JMenuItem RetrieveWFM;

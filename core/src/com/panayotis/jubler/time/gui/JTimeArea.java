@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
-import java.util.Vector;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
@@ -46,7 +46,7 @@ public abstract class JTimeArea extends JPanel {
     
     protected static int selection_model = DEFAULTS_BYSELECTION;
     
-    public abstract Vector<SubEntry> getAffectedSubs() ;
+    public abstract ArrayList<SubEntry> getAffectedSubs() ;
 
     
     /** Creates a new instance of JTimeArea */
@@ -97,7 +97,7 @@ public abstract class JTimeArea extends JPanel {
         return max;
     }
     
-    public void updateSubsMark(Vector<SubEntry> affected) {
+    public void updateSubsMark(ArrayList<SubEntry> affected) {
         if (!ChSubColorB.isEnabled())
             return;
         int new_mark = ChSubColorC.getSelectedIndex();

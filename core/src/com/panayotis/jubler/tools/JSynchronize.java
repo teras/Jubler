@@ -24,10 +24,9 @@
 package com.panayotis.jubler.tools;
 import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  *
@@ -88,16 +87,16 @@ public class JSynchronize extends JTool {
         offset = ((Integer)OffsetS.getValue()).intValue();
         
         if (offset<0) { // We have to invert the selected subtitles!
-            Vector<SubEntry> inv_affected = new Vector<SubEntry>();
+            ArrayList<SubEntry> inv_affected = new ArrayList<SubEntry>();
             for (int i = affected_list.size()-1; i >= 0 ; i--) {
-                inv_affected.add(affected_list.elementAt(i));
+                inv_affected.add(affected_list.get(i));
             }
             affected_list = inv_affected;
         }
     }
     
     public void affect(int which) {
-        SubEntry to = affected_list.elementAt(which);
+        SubEntry to = affected_list.get(which);
         
         int modid = target.indexOf(to)+offset;
         if (modid<0 || modid >= model.size()) return;

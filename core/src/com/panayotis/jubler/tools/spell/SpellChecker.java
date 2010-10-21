@@ -25,7 +25,7 @@ package com.panayotis.jubler.tools.spell;
 
 import com.panayotis.jubler.tools.externals.ExtProgram;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 /**
@@ -37,7 +37,7 @@ public abstract class SpellChecker extends ExtProgram {
     public static final String family = "Speller";
 
     public abstract void start() throws ExtProgramException ;
-    public abstract Vector<SpellError> checkSpelling(String text);
+    public abstract ArrayList<SpellError> checkSpelling(String text);
     public abstract void stop();
     
     public abstract boolean insertWord(String word);

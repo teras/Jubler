@@ -19,6 +19,9 @@
  */
 package com.panayotis.jubler.tools.translate;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 
 /**
@@ -28,7 +31,6 @@ import java.util.HashMap;
 public class HTMLTextUtils {
 
     private static final HashMap<String, String> unicode;
-    
 
     static {
         unicode = new HashMap<String, String>();
@@ -135,24 +137,34 @@ public class HTMLTextUtils {
         unicode.put("yuml", "\u00FF");
     }
 
-    public static String convertToString(String txt) {
+    public static String decode(String txt) {
         int where, upto;
+        try {
+            txt = URLDecoder.decode(txt, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+        }
         while ((where = txt.lastIndexOf("&")) >= 0) {
             upto = txt.indexOf(";", where + 1);
-            if (upto >= 0) {
+            if (upto >= 0)
                 txt = txt.substring(0, where) + convertFromTable(txt.substring(where + 1, upto)) + txt.substring(upto + 1, txt.length());
-            }
         }
         return txt;
     }
 
-    public static String convertFromTable(String value) {
-        if (value.startsWith("#")) {
+    private static String convertFromTable(String value) {
+        if (value.startsWith("#"))
             return new String(Character.toChars(Integer.parseInt(value.substring(1))));
-        }
         String res = unicode.get(value);
         if (res != null)
             return res;
         return "<" + value + ">";
+    }
+
+    public static String encode(String txt) {
+        try {
+            return URLEncoder.encode(txt, "UTF-8");
+        } catch (UnsupportedEncodingException ex) {
+        }
+        return txt;
     }
 }

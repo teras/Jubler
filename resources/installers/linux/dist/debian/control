@@ -3,7 +3,7 @@ Version: @VERSION@
 Section: text
 Priority: optional
 Architecture: @ARCH@
-Depends: sun-java5-jre | sun-java6-jre, libavformat1d, libavcodec1d, libavcodec1d
+Depends: sun-java5-jre | sun-java6-jre
 Recommends: aspell, mplayer
 Installed-Size: 900
 Maintainer: Panayotis Katsaloulis <panayotis@panayotis.com>

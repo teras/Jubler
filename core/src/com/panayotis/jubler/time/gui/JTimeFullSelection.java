@@ -26,7 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
-import java.util.Vector;
+import java.util.ArrayList;
 import com.panayotis.jubler.subs.style.SubStyle;
 
 /**
@@ -49,6 +49,7 @@ public class JTimeFullSelection extends JTimeArea {
         tregion.remove(tregion.SubCP);
     }
 
+    @Override
     public void updateData(Subtitles subs, int[] selected) {
         super.updateData(subs, selected);
         tregion.updateData(subs, selected);
@@ -56,9 +57,8 @@ public class JTimeFullSelection extends JTimeArea {
         // Update styles
         int selvalue = StyleSel.getSelectedIndex();
         StyleSel.removeAllItems();
-        for (SubStyle style : subs.getStyleList()) {
+        for (SubStyle style : subs.getStyleList())
             StyleSel.addItem(style);
-        }
         if (subs.getStyleList().size() < 2) {
             if (byStyle.isSelected())
                 bySelection.setSelected(true);
@@ -72,7 +72,7 @@ public class JTimeFullSelection extends JTimeArea {
             if (selvalue < subs.getStyleList().size())
                 StyleSel.setSelectedIndex(selvalue);
         }
-        
+
         // Select wanted widget
         switch (selection_model) {
             case DEFAULTS_BYSELECTION:
@@ -90,27 +90,25 @@ public class JTimeFullSelection extends JTimeArea {
         }
     }
 
-    public Vector<SubEntry> getAffectedSubs() {
-        Vector<SubEntry> affected;
+    public ArrayList<SubEntry> getAffectedSubs() {
+        ArrayList<SubEntry> affected;
         SubEntry csub;
         int i;
 
-        affected = new Vector<SubEntry>();
+        affected = new ArrayList<SubEntry>();
 
-        if (bySelection.isSelected()) {
+        if (bySelection.isSelected())
             /* Select affected subtitles by user selection */
-            for (i = 0; i < selected.length; i++) {
+            for (i = 0; i < selected.length; i++)
                 affected.add(subs.elementAt(selected[i]));
-            }
-        } else if (byColor.isSelected()) {
+        else if (byColor.isSelected()) {
             /* Select affected subtitles by marking */
             int selmark = ColorSel.getSelectedIndex();
 
             for (i = 0; i < subs.size(); i++) {
                 csub = subs.elementAt(i);
-                if (selmark == csub.getMark()) {
+                if (selmark == csub.getMark())
                     affected.add(csub);
-                }
             }
         } else if (byStyle.isSelected()) {
             /* Select affected subtitles by marking */
@@ -118,13 +116,11 @@ public class JTimeFullSelection extends JTimeArea {
 
             for (i = 0; i < subs.size(); i++) {
                 csub = subs.elementAt(i);
-                if (style == csub.getStyle()) {
+                if (style == csub.getStyle())
                     affected.add(csub);
-                }
             }
-        } else {
+        } else
             affected = tregion.getAffectedSubs();
-        }
         return affected;
     }
 
@@ -260,7 +256,6 @@ public class JTimeFullSelection extends JTimeArea {
         StyleSel.setEnabled(false);
         selection_model = DEFAULTS_BYSELECTION;
     }//GEN-LAST:event_bySelectionActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ColorSel;
     private javax.swing.JPanel SelectionPanel;

@@ -25,7 +25,7 @@ package com.panayotis.jubler.time.gui;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -49,31 +49,33 @@ public class JTimeRegion extends JTimeArea {
         TimesP.add(endtime);
       }
 
+    @Override
     public void setEnabled(boolean status) {
         super.setEnabled(status);
         starttime.setEnabled(status);
         endtime.setEnabled(status);
     }
 
+    @Override
     public void updateData(Subtitles subs, int[] selected) {
         super.updateData(subs, selected);
         starttime.updateData(findFirstInList(subs, selected));
         endtime.updateData(findLastInList(subs, selected));
     }
 
-    public Vector<SubEntry> getAffectedSubs() {
+    public ArrayList<SubEntry> getAffectedSubs() {
         /* Select affected subtitles by time region */
         double tstart, tfinish;
         double tcurrent;
 
-        Vector<SubEntry> affected;
+        ArrayList<SubEntry> affected;
         SubEntry csub;
         int i;
 
         tstart = getStartTime();
         tfinish = getFinishTime();
 
-        affected = new Vector<SubEntry>();
+        affected = new ArrayList<SubEntry>();
         for (i = 0; i < subs.size(); i++) {
             csub = subs.elementAt(i);
             tcurrent = csub.getStartTime().toSeconds();

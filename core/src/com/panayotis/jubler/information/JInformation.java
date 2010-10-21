@@ -32,6 +32,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.TotalSubMetrics;
 import java.awt.BorderLayout;
+import javax.swing.JComboBox;
 
 import javax.swing.JDialog;
 
@@ -42,6 +43,8 @@ import javax.swing.JDialog;
 public class JInformation extends JDialog {
     private Subtitles subs;
     private MediaFile media;
+
+    private static final String[] CTTypesData = {_("per line"), _("per second")};
     
     /** Creates new form JProperties */
     public JInformation(JubFrame parent) {
@@ -74,7 +77,8 @@ public class JInformation extends JDialog {
         updateMaxCharsWidgets();
         MaxColC.setSelectedIndex(attr.getMaxColor()-1);
         MaxCharsS.setValue(attr.getMaxCharacters());
-        
+        CPType.setSelectedIndex(attr.isMaxCPS()?1:0);
+
         pack();
         setLocationRelativeTo(null);
     }
@@ -128,8 +132,11 @@ public class JInformation extends JDialog {
         MaxColL = new javax.swing.JLabel();
         MaxColC = new javax.swing.JComboBox();
         jPanel12 = new javax.swing.JPanel();
-        MaxCharsL = new javax.swing.JLabel();
         MaxCharsS = new javax.swing.JSlider();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        CPType = new JComboBox(CTTypesData);
+        MaxCharsL = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         OKB = new javax.swing.JButton();
@@ -275,9 +282,6 @@ public class JInformation extends JDialog {
 
         jPanel12.setLayout(new java.awt.BorderLayout());
 
-        MaxCharsL.setText(_("Maximum number of characters per line"));
-        jPanel12.add(MaxCharsL, java.awt.BorderLayout.CENTER);
-
         MaxCharsS.setMajorTickSpacing(10);
         MaxCharsS.setMinimum(10);
         MaxCharsS.setMinorTickSpacing(1);
@@ -287,6 +291,18 @@ public class JInformation extends JDialog {
         MaxCharsS.setToolTipText(_("The maximum number of characters per line which are permitted"));
         MaxCharsS.setValue(40);
         jPanel12.add(MaxCharsS, java.awt.BorderLayout.SOUTH);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        jPanel14.setLayout(new java.awt.BorderLayout());
+        jPanel14.add(CPType, java.awt.BorderLayout.CENTER);
+
+        MaxCharsL.setText(_("Maximum number of characters:"));
+        jPanel14.add(MaxCharsL, java.awt.BorderLayout.WEST);
+
+        jPanel7.add(jPanel14, java.awt.BorderLayout.WEST);
+
+        jPanel12.add(jPanel7, java.awt.BorderLayout.NORTH);
 
         jPanel10.add(jPanel12, java.awt.BorderLayout.SOUTH);
 
@@ -335,7 +351,7 @@ public class JInformation extends JDialog {
     public SubAttribs getAttribs() {
         return new SubAttribs(TitleT.getText(), AuthorT.getText(), SourceT.getText(), CommentsT.getText(),
                 MaxInfUserB.isSelected() ? MaxCharsS.getValue() : - MaxCharsS.getValue(),
-                MaxColC.getSelectedIndex()+1 );
+                MaxColC.getSelectedIndex()+1, CPType.getSelectedIndex()==1 );
     }
     
     
@@ -345,11 +361,13 @@ public class JInformation extends JDialog {
         MaxColL.setEnabled(status);
         MaxCharsS.setEnabled(status);
         MaxCharsL.setEnabled(status);
+        CPType.setEnabled(status);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AuthorL;
     private javax.swing.JTextField AuthorT;
+    private javax.swing.JComboBox CPType;
     private javax.swing.JTextArea CommentsT;
     private javax.swing.JLabel FilePathL;
     private javax.swing.JTextField FilePathT;
@@ -386,11 +404,13 @@ public class JInformation extends JDialog {
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;

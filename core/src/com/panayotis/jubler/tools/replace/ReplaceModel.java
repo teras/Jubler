@@ -20,12 +20,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.replace;
 
-import com.panayotis.jubler.options.Options;
-import java.util.Properties;
 import java.util.Vector;
+import com.panayotis.jubler.options.Options;
 import javax.swing.table.AbstractTableModel;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -34,49 +32,52 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
+@SuppressWarnings("UseOfObsoleteCollectionType")
 public class ReplaceModel extends AbstractTableModel {
-    
-    private Vector<ReplaceEntry>  replacelist;
-    
+
+    private Vector<ReplaceEntry> replacelist;
     private final static String[][] def_replace = {
         {"\\[.*\\]", ""},
         {"@.*@", ""},
         {"\\{.*\\}", ""},
         {"<.*>", ""}
     };
-    
+
     /** Creates a new instance of ReplaceModel */
     public ReplaceModel() {
         replacelist = new Vector<ReplaceEntry>();
         loadOptions();
     }
-    
-    public Object getValueAt(int row, int column){
-        return replacelist.elementAt(row).getValue(column);
+
+    public Object getValueAt(int row, int column) {
+        return replacelist.get(row).getValue(column);
     }
-    
+
     public int getColumnCount() {
         return 3;
     }
-    
+
     public int getRowCount() {
         return replacelist.size();
     }
-    
+
+    @Override
     public void setValueAt(Object value, int row, int col) {
-        if ( row == (replacelist.size()-1)) {
+        if (row == (replacelist.size() - 1))
             replacelist.add(new ReplaceEntry());
-        }
-        replacelist.elementAt(row).setValue(col, value);
-        if ( col > 0 ) replacelist.elementAt(row).setValue(0, true);
+        replacelist.get(row).setValue(col, value);
+        if (col > 0)
+            replacelist.get(row).setValue(0, true);
     }
-    
-    
+
+    @Override
     public Class getColumnClass(int column) {
-        if ( column == 0 ) return Boolean.class;
+        if (column == 0)
+            return Boolean.class;
         return String.class;
     }
-    
+
+    @Override
     public String getColumnName(int index) {
         switch (index) {
             case 0:
@@ -86,63 +87,63 @@ public class ReplaceModel extends AbstractTableModel {
         }
         return _("New value");
     }
-    
+
+    @Override
     public boolean isCellEditable(int row, int col) {
         return true;
     }
-    
-    
+
     public int size() {
         return replacelist.size();
     }
-    
+
     public ReplaceEntry elementAt(int row) {
-        return replacelist.elementAt(row);
+        return replacelist.get(row);
     }
-    
+
     public void remove(int row) {
-        if ( row >= (replacelist.size()-1)) return;
-        else if ( row < 0 ) return;
+        if (row >= (replacelist.size() - 1))
+            return;
+        else if (row < 0)
+            return;
         replacelist.remove(row);
         fireTableDataChanged();
     }
-    
+
     public Vector<String> getReplaceList() {
         Vector<String> res = new Vector<String>();
         String dat;
-        for (int i = 0 ; i < replacelist.size() ; i++ ) {
+        for (int i = 0; i < replacelist.size(); i++) {
             dat = replacelist.elementAt(i).getTransformation();
-            if ( dat != null ) res.add(dat);
+            if (dat != null)
+                res.add(dat);
         }
         return res;
     }
-    
-    
-    public void loadOptions() {
+
+    public final void loadOptions() {
         String data = Options.getOption("Replace.Global", "");
-        if ( data == null || data.equals("")) {
+        if (data == null || data.equals("")) {
             reset();
             return;
-        } else {
+        } else
             ReplaceEntry.setData(replacelist, data);
-        }
         replacelist.add(new ReplaceEntry());
     }
-    
+
     public void saveOptions() {
-        StringBuffer data = new StringBuffer();
-        for (int i = 0 ; i < (replacelist.size()-1) ; i++ ) {
+        StringBuilder data = new StringBuilder();
+        for (int i = 0; i < (replacelist.size() - 1); i++)
             data.append(replacelist.elementAt(i));
-        }
         Options.setOption("Replace.Global", data.toString());
         Options.saveOptions();
     }
-    
+
     public void reset() {
         replacelist.clear();
-        for ( int i = 0 ; i < def_replace.length ; i++ ) {
+        for (int i = 0; i < def_replace.length; i++)
             replacelist.add(new ReplaceEntry(false, def_replace[i][0], def_replace[i][1]));
-        }
         replacelist.add(new ReplaceEntry());
+        fireTableDataChanged();
     }
 }
