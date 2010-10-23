@@ -487,8 +487,7 @@ public class JSONObject {
         if (o instanceof JSONArray) {
             return (JSONArray)o;
         }
-        throw new JSONException("JSONObject[" + quote(key) +
-                "] is not a JSONArray.");
+        return new JSONArray("["+toString()+"]");
     }
 
 

@@ -138,14 +138,14 @@ public class HTMLTextUtils {
     }
 
     public static String decode(String txt) {
-        int where, upto;
         try {
             txt = URLDecoder.decode(txt, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
         }
-        while ((where = txt.lastIndexOf("&")) >= 0) {
-            upto = txt.indexOf(";", where + 1);
-            if (upto >= 0)
+        int where = -1, upto;
+        while ((where = txt.indexOf('&', where + 1)) >= 0) {
+            upto = txt.indexOf(';', where + 1);
+            if (upto > 0 && (upto - where) < 10)
                 txt = txt.substring(0, where) + convertFromTable(txt.substring(where + 1, upto)) + txt.substring(upto + 1, txt.length());
         }
         return txt;

@@ -136,7 +136,6 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
             data.append(line);
         JSONObject json;
         try {
-            System.out.println(data.toString());
             json = new JSONObject(data.toString());
             JSONArray responds = json.getJSONArray("responseData");
             if (subs.size() != responds.length())
