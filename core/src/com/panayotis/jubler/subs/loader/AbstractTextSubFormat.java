@@ -56,7 +56,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     protected abstract Pattern getPattern();
 
     /* Saving functions */
-    protected abstract void appendSubEntry(SubEntry sub, StringBuffer str);
+    protected abstract void appendSubEntry(SubEntry sub, StringBuilder str);
 
     protected Pattern getTestPattern() {
         return getPattern();
@@ -98,7 +98,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     }
 
     public boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException {
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
         initSaver(subs, media, res);
         for (int i = 0; i < subs.size(); i++)
             appendSubEntry(subs.elementAt(i), res);
@@ -118,10 +118,10 @@ public abstract class AbstractTextSubFormat extends SubFormat {
         return true;
     }
 
-    protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
+    protected void initSaver(Subtitles subs, MediaFile media, StringBuilder header) {
     }
 
-    protected void cleanupSaver(StringBuffer footer) {
+    protected void cleanupSaver(StringBuilder footer) {
     }
 
     protected void updateAttributes(String input, Pattern title, Pattern author, Pattern source, Pattern comments) {
@@ -141,7 +141,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             attrs[2] = m.group(1).trim();
 
         m = comments.matcher(input);
-        StringBuffer com_b = new StringBuffer();
+        StringBuilder com_b = new StringBuilder();
         while (m.find())
             if (!(m.start() != 0 && input.charAt(m.start() - 1) != '\n'))
                 com_b.append(m.group(1).trim()).append('\n');

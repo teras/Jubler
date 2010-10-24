@@ -249,7 +249,7 @@ public class SubFile {
     }
 
     public String getPacked() {
-        StringBuffer b = new StringBuffer();
+        StringBuilder b = new StringBuilder();
         b.append(";").append(encoding);
         b.append(";").append(FPS);
         b.append(";").append(savefile.getPath());

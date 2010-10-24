@@ -66,7 +66,7 @@ public class PlainText extends AbstractTextSubFormat {
         return _("Plain text");
     }
 
-    protected void appendSubEntry(SubEntry sub, StringBuffer str) {
+    protected void appendSubEntry(SubEntry sub, StringBuilder str) {
         str.append(sub.getText()).append('\n');
     }
 

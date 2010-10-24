@@ -51,9 +51,9 @@ public class JublerApp extends Application implements Plugin {
     public void postInit(Object o) {
         if (o instanceof JubFrame) {
             JubFrame jubler = (JubFrame) o;
-            if (jubler.AboutHM == null) {
+            if (jubler.AboutHM == null)
                 jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
-            } else {
+            else {
                 jubler.AboutHM.getParent().remove(jubler.AboutHM);
                 jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
                 jubler.QuitFM.getParent().remove(jubler.QuitFM);

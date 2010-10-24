@@ -40,7 +40,6 @@ import com.panayotis.jubler.tools.spell.SpellError;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Vector;
 
 public class ZemberekSpellChecker extends SpellChecker implements Plugin {
 
@@ -65,7 +64,8 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
             try {
                 boolean status = (Boolean) kelimeDenetle.invoke(zemberek, new Object[]{word});
                 if (!status) {
-                    Vector<String> sug = new Vector<String>();
+                    @SuppressWarnings("UseOfObsoleteCollectionType")
+                    java.util.Vector<String> sug = new java.util.Vector<String>();
                     String sugs[] = (String[]) oner.invoke(zemberek, new Object[]{word});
                     sug.addAll(Arrays.asList(sugs));
                     ret.add(new SpellError(pos, word, sug));

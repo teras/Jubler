@@ -113,7 +113,7 @@ public class DynamicClassLoader extends URLClassLoader {
     }
 
     public void setClassPath() {
-        StringBuffer buf = new StringBuffer(System.getProperty("java.class.path"));
+        StringBuilder buf = new StringBuilder(System.getProperty("java.class.path"));
         URL[] urls = getURLs();
 
         for (int i = 0; i < urls.length; i++)

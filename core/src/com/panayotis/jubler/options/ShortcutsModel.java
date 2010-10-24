@@ -224,7 +224,7 @@ public class ShortcutsModel extends AbstractTableModel {
     }
 
     public void savePreferences() {
-        StringBuffer keys = new StringBuffer();
+        StringBuilder keys = new StringBuilder();
         for (Shortcut s : list)
             if (s != null && s.key_id != KeyEvent.CHAR_UNDEFINED)
                 keys.append(',').append(s.toString());
@@ -349,8 +349,9 @@ public class ShortcutsModel extends AbstractTableModel {
             item.setAccelerator(KeyStroke.getKeyStroke(key_id, mask));
         }
 
+        @Override
         public String toString() {
-            StringBuffer ret = new StringBuffer();
+            StringBuilder ret = new StringBuilder();
             ret.append(name).append('=');
             for (int i = 0; i < mods.length; i++)
                 ret.append(getFlag(i));

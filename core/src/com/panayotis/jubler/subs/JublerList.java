@@ -23,11 +23,11 @@
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public class JublerList extends Vector<JubFrame> {
+public class JublerList extends ArrayList<JubFrame> {
 }

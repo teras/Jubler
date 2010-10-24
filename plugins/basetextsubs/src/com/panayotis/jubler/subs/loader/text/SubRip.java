@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.subs.style.StyleType.*;
@@ -33,28 +32,25 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.format.StyledFormat;
 import com.panayotis.jubler.subs.loader.format.StyledTextSubFormat;
-import java.util.Vector;
-
+import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
 public class SubRip extends StyledTextSubFormat {
-    
+
     private static final Pattern pat, stylepat;
-    private static final Vector<StyledFormat> sdict;
-    
+    private static final ArrayList<StyledFormat> sdict;
     private int counter = 0;
-    
+
     static {
         pat = Pattern.compile(
-                "(?s)(\\d+)"+sp+nl+"(\\d{1,2}):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"-->"+
-                sp+"(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)"+sp+"(X1:\\d.*?)??"+nl+"(.*?)"+nl+nl
-                );
+                "(?s)(\\d+)" + sp + nl + "(\\d{1,2}):(\\d\\d):(\\d\\d),(\\d\\d\\d)" + sp + "-->"
+                + sp + "(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d\\d)" + sp + "(X1:\\d.*?)??" + nl + "(.*?)" + nl + nl);
         stylepat = Pattern.compile("<(.*?)>");
-        
-        sdict = new Vector<StyledFormat>();
+
+        sdict = new ArrayList<StyledFormat>();
         sdict.add(new StyledFormat(ITALIC, "i", true));
         sdict.add(new StyledFormat(ITALIC, "/i", false));
         sdict.add(new StyledFormat(BOLD, "b", true));
@@ -64,21 +60,39 @@ public class SubRip extends StyledTextSubFormat {
         sdict.add(new StyledFormat(STRIKETHROUGH, "s", true));
         sdict.add(new StyledFormat(STRIKETHROUGH, "/s", false));
     }
-    
-    protected Pattern getPattern() { return pat; }
-    
-    protected Pattern getStylePattern() { return stylepat; }
-    protected String getTokenizer() { return "><"; } // Should not be useful
-    protected String getEventIntro() { return "<"; }
-    protected String getEventFinal() { return ">"; }
-    protected String getEventMark() { return ""; }
-    protected boolean isEventCompact() { return false; }
-    
-    
-    protected Vector<StyledFormat> getStylesDictionary() { return sdict; }
-    
-    
-    
+
+    protected Pattern getPattern() {
+        return pat;
+    }
+
+    protected Pattern getStylePattern() {
+        return stylepat;
+    }
+
+    protected String getTokenizer() {
+        return "><";
+    } // Should not be useful
+
+    protected String getEventIntro() {
+        return "<";
+    }
+
+    protected String getEventFinal() {
+        return ">";
+    }
+
+    protected String getEventMark() {
+        return "";
+    }
+
+    protected boolean isEventCompact() {
+        return false;
+    }
+
+    protected ArrayList<StyledFormat> getStylesDictionary() {
+        return sdict;
+    }
+
     protected SubEntry getSubEntry(Matcher m) {
         Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
         Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
@@ -87,17 +101,16 @@ public class SubRip extends StyledTextSubFormat {
         parseSubText(entry);
         return entry;
     }
-    
-    
+
     public String getExtension() {
         return "srt";
     }
-    
+
     public String getName() {
         return "SubRip";
     }
-    
-    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+
+    protected void appendSubEntry(SubEntry sub, StringBuilder str) {
         str.append(Integer.toString(counter++));
         str.append("\n");
         str.append(sub.getStartTime().getSeconds());
@@ -107,10 +120,13 @@ public class SubRip extends StyledTextSubFormat {
         str.append(rebuildSubText(sub));
         str.append("\n\n");
     }
-    
-    protected void initSaver(Subtitles subs, MediaFile media, StringBuffer header) {
+
+    @Override
+    protected void initSaver(Subtitles subs, MediaFile media, StringBuilder header) {
         counter = 1;
     }
-    
-    public boolean supportsFPS() { return false; }
+
+    public boolean supportsFPS() {
+        return false;
+    }
 }

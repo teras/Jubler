@@ -20,13 +20,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
+
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -37,23 +36,24 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 import java.io.File;
 import java.util.ArrayList;
+
+@SuppressWarnings("UseOfObsoleteCollectionType")
 public class ASpellOptions extends JExtBasicOptions {
-    
-    Vector<ASpellDict> dictionaries;
-    
+
+    private java.util.Vector<ASpellDict> dictionaries;
     private static final String default_language = "en";
-    
+
     /** Creates new form ASpellOptions */
     public ASpellOptions(String family, String name) {
-        super(family, name, new String[] {"-?"}, null);
+        super(family, name, new String[]{"-?"}, null);
         initComponents();
-        
-        dictionaries = new Vector<ASpellDict>();
+
+        dictionaries = new java.util.Vector<ASpellDict>();
         updateOptionsPanel();
-        
+
         add(BrowserP, BorderLayout.NORTH);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -80,35 +80,33 @@ public class ASpellOptions extends JExtBasicOptions {
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-    
 
-    public void updateOptionsPanel() {
+    @Override
+    public final void updateOptionsPanel() {
         String old_lang = getLanguageName();
         dictionaries.removeAllElements();
-        
+
         /* load dictionaries list from aspell */
         getDictsFromPath(null);
-        
+
         File cocoaspell = new File("/Library/Application Support/cocoAspell");
         if (cocoaspell.exists() && cocoaspell.isDirectory()) {
             getDictsFromPath(cocoaspell);
-            File [] childs = cocoaspell.listFiles();
-            for (int i = 0 ; i < childs.length ; i++ ) {
+            File[] childs = cocoaspell.listFiles();
+            for (int i = 0; i < childs.length; i++)
                 if (childs[i].isDirectory())
                     getDictsFromPath(childs[i]);
-            }
         }
         /* Now update list */
         LangList.setListData(dictionaries);
         /* ... and update selected language */
         setSelectedLanguage(old_lang);
     }
-    
-    
+
     /* Find the selected language */
     private void setSelectedLanguage(String lng) {
         ASpellDict current;
-        for (int i = 0 ; i < dictionaries.size() ; i++) {
+        for (int i = 0; i < dictionaries.size(); i++) {
             current = dictionaries.get(i);
             if (current.lang.equals(lng)) {
                 LangList.setSelectedIndex(i);
@@ -117,76 +115,76 @@ public class ASpellOptions extends JExtBasicOptions {
             }
         }
         /* Select first dictionary, if nothing ws found */
-        if (LangList.getSelectedIndex()<0 && LangList.getModel().getSize() > 0)
+        if (LangList.getSelectedIndex() < 0 && LangList.getModel().getSize() > 0)
             LangList.setSelectedIndex(0);
     }
-    
-    
-    
-    private void getDictsFromPath( File path ) {
+
+    private void getDictsFromPath(File path) {
         ArrayList<String> cmd = new ArrayList<String>();
         cmd.add(getExecFileName());
         cmd.add("dicts");
-        if (path!=null && path.exists()) cmd.add("--dict-dir="+path);
+        if (path != null && path.exists())
+            cmd.add("--dict-dir=" + path);
         try {
             Process proc = Runtime.getRuntime().exec(cmd.toArray(new String[1]));
-            BufferedReader get = new BufferedReader( new InputStreamReader(proc.getInputStream()));
-            
+            BufferedReader get = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
             String d;
-            while ( (d=get.readLine()) != null ) {
+            while ((d = get.readLine()) != null)
                 dictionaries.add(new ASpellDict(d, path));
-            }
         } catch (IOException e) {
         }
     }
-    
-    
+
+    @Override
     protected void savePreferences() {
         super.savePreferences();
         Options.setOption(family + "." + name + ".Language", getLanguageName());
     }
-    
+
+    @Override
     public void loadPreferences() {
         super.loadPreferences();
         updateOptionsPanel();
         setSelectedLanguage(Options.getOption(family + "." + name + ".Language", default_language));
     }
-    
-    
+
     public ASpellDict getLanguage() {
         int which = LangList.getSelectedIndex();
-        if ( which >= 0 )
-            return (ASpellDict)LangList.getModel().getElementAt(which);
+        if (which >= 0)
+            return (ASpellDict) LangList.getModel().getElementAt(which);
         return null;
     }
+
     public String getLanguageName() {
         ASpellDict language = getLanguage();
-        if (language==null) return default_language;
+        if (language == null)
+            return default_language;
         return language.lang;
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList LangList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    
-    
+
     public class ASpellDict {
+
         public String lang;
         public String path;
+
         public ASpellDict(String lang, File path) {
             this.lang = lang;
-            if (path!=null) this.path = path.getPath();
-            else this.path = null;
+            if (path != null)
+                this.path = path.getPath();
+            else
+                this.path = null;
         }
-        
+
+        @Override
         public String toString() {
             return lang;
         }
     }
-    
 }
-
-

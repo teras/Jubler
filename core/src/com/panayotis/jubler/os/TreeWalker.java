@@ -26,7 +26,7 @@ import com.panayotis.jubler.tools.externals.ExtPath;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  *
@@ -35,7 +35,7 @@ import java.util.Vector;
 public class TreeWalker {
 
     public static File searchExecutable(String application, String[] parameters, String test_signature, String deflt) {
-        Vector<ExtPath> paths = new Vector<ExtPath>();
+        ArrayList<ExtPath> paths = new ArrayList<ExtPath>();
         paths.add(new ExtPath(deflt, ExtPath.FILE_ONLY));
         SystemDependent.appendSpotlightApplication(application, paths);
         SystemDependent.appendPathApplication(paths);
@@ -94,7 +94,7 @@ public class TreeWalker {
             System.arraycopy(parameters, 0, cmd, 1, parameters.length);
 
         try {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append("Testing: ");
             for (int i = 0; i < cmd.length; i++)
                 buf.append(cmd[i]).append(' ');

@@ -106,8 +106,7 @@ public class SubStyle implements Comparable {
     public void setValues(SubStyle old) {
         Name = old.Name;
         values = new Object[StyleType.values().length];
-        for (int i = 0; i < values.length; i++)
-            values[i] = old.values[i];
+        System.arraycopy(old.values, 0, values, 0, values.length);
     }
 
     public void setValues(String newvalues) {
@@ -125,7 +124,7 @@ public class SubStyle implements Comparable {
     }
 
     public String getValues() {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
 
         for (int i = 0; i < values.length - 1; i++)  // Ignore last "unknown" event
             out.append('|').append(values[i]);
@@ -153,6 +152,7 @@ public class SubStyle implements Comparable {
             values[where] = which.init(what);
     }
 
+    @Override
     public String toString() {
         return getName();
     }
@@ -195,19 +195,19 @@ public class SubStyle implements Comparable {
         /* Check if the name already exists */
         private boolean findNameInList(NameList list, Object obj) {
             for (int i = 0; i < list.size(); i++)
-                if (list.elementAt(i) != obj && list.getNameAt(i).equals(newname))
+                if (list.getElementAt(i) != obj && list.getNameAt(i).equals(newname))
                     return true;
             return false;
         }
 
-        private final void normalizeInternalName(NameList list, Object obj) {
+        private void normalizeInternalName(NameList list, Object obj) {
             /* go through all objects of the list and find the one with the maximum
              * value AND same base text */
             UniqName other;
             for (int i = 0; i < list.size(); i++) {
                 /* Split names of list element in two (again) */
                 other = new UniqName(list.getNameAt(i));
-                if (list.elementAt(i) != obj && other.numb_name >= numb_name && other.text_name.equals(text_name))
+                if (list.getElementAt(i) != obj && other.numb_name >= numb_name && other.text_name.equals(text_name))
                     /* update number */
                     numb_name = other.numb_name + 1;
             }

@@ -140,10 +140,10 @@ public class Time implements Comparable<Time> {
     }
 
     public String getSeconds() {
-        StringBuffer res;
+        StringBuilder res;
         int hour, min, sec, milli;
 
-        res = new StringBuffer();
+        res = new StringBuilder();
         int time;
         milli = msecs % 1000;
         time = msecs / 1000;
@@ -174,10 +174,10 @@ public class Time implements Comparable<Time> {
     }
 
     public String getSecondsFrames(float FPS) {
-        StringBuffer res;
+        StringBuilder res;
         int hour, min, sec, milli, frm;
 
-        res = new StringBuffer();
+        res = new StringBuilder();
         int time;
         milli = msecs % 1000;
         time = msecs / 1000;

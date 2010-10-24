@@ -38,7 +38,6 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
-import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +65,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     protected abstract String getEventMark();
 
     /* Get the dictionary of the supported styles */
-    protected abstract Vector<StyledFormat> getStylesDictionary();
+    protected abstract ArrayList<StyledFormat> getStylesDictionary();
 
     /* Since ASS/SSA uses OS/2 font metrics, we need to recalculate the font size with a factor */
     protected float getFontFactor() {
@@ -75,7 +74,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
 
     @SuppressWarnings("unchecked")
     protected void parseSubText(SubEntry entry) {
-        StringBuffer sbuf = new StringBuffer(entry.getText());
+        StringBuilder sbuf = new StringBuilder(entry.getText());
         Matcher m = getStylePattern().matcher(sbuf);
         ArrayList<SubEv> events = new ArrayList<SubEv>();
         SubEv s;
@@ -104,7 +103,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         cols.put(SHADOW, (AlphaColor) entry.getStyle().get(SHADOW));
         AlphaColor ccol;
 
-        Vector<StyledFormat> dict = getStylesDictionary();
+        ArrayList<StyledFormat> dict = getStylesDictionary();
         String tag;
         /* Go through all events */
         for (SubEv se : events) {
@@ -173,7 +172,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         StyleoverEvent ev;
 
         entry.cleanupEvents();
-        Vector<StyledFormat> dict = getStylesDictionary();
+        ArrayList<StyledFormat> dict = getStylesDictionary();
         /* Put all events in a sorted list */
         if (entry.overstyle != null)  // First assure that the overstyle list is not empty
             for (StyledFormat sf : getStylesDictionary()) { // Iterate for every supported format. Note: only supported formats are saved
@@ -218,7 +217,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                     }
             }
 
-        StringBuffer btxt = new StringBuffer(entry.getText());
+        StringBuilder btxt = new StringBuilder(entry.getText());
         for (SubEv cevent : events) {
             if ((!isEventCompact()) || (!btxt.substring(cevent.start).startsWith(getEventIntro())))
                 btxt.insert(cevent.start, getEventIntro() + getEventFinal());
@@ -258,7 +257,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     }
     private final static String zeros = "0000000000000000";
 
-    protected static final String getDirectionKey(HashMap<String, Direction> dict, Direction dir) {
+    protected static String getDirectionKey(HashMap<String, Direction> dict, Direction dir) {
         if (dir == null)
             dir = Direction.BOTTOM;
         for (Entry<String, Direction> en : dict.entrySet())

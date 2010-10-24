@@ -20,9 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.spell.checkers;
-
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
@@ -35,7 +33,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
@@ -46,57 +43,54 @@ import java.util.ArrayList;
  * @author teras
  */
 public class ASpell extends SpellChecker implements Plugin {
+
     BufferedWriter send;
     BufferedReader get;
-    
     ASpellOptions opts;
-    
     Process proc;
-    
     /**
      * Creates a new instance of ASpell
      */
-    
     private final static boolean forceutf8;
-        /* Force ASpell to use UTF-8 encoding - broken on Windows */
+    /* Force ASpell to use UTF-8 encoding - broken on Windows */
+
     static {
         boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
         forceutf8 = !IS_WINDOWS;
     }
 
-
     public ASpell() {
         opts = new ASpellOptions(family, getName());
     }
-    
+
     public void start() throws ExtProgramException {
         try {
             ArrayList<String> cmd = new ArrayList<String>();
             cmd.add(opts.getExecFileName());
-            if (forceutf8) cmd.add("--encoding=utf-8");
-            
+            if (forceutf8)
+                cmd.add("--encoding=utf-8");
+
             ASpellOptions.ASpellDict lang = opts.getLanguage();
-            if ( lang != null ) {
-                if (lang.path != null) {
-                    cmd.add("--dict-dir="+lang.path);
-                }
+            if (lang != null) {
+                if (lang.path != null)
+                    cmd.add("--dict-dir=" + lang.path);
                 cmd.add("-d");
                 cmd.add(lang.lang);
             }
             cmd.add("pipe");
-            
+
             String[] c = cmd.toArray(new String[1]);
             proc = Runtime.getRuntime().exec(c);
             DEBUG.debug(DEBUG.toString(c));
-            
+
             if (forceutf8) {
-                send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));
-                get = new BufferedReader( new InputStreamReader(proc.getInputStream(), "UTF-8"));
+                send = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream(), "UTF-8"));
+                get = new BufferedReader(new InputStreamReader(proc.getInputStream(), "UTF-8"));
             } else {
-                send = new BufferedWriter( new OutputStreamWriter(proc.getOutputStream()));
-                get = new BufferedReader( new InputStreamReader(proc.getInputStream()));
+                send = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
+                get = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             }
-            
+
             get.readLine();
             /* Read aspell information */
             send.write("!\n");  /* Enter terse mode */
@@ -104,72 +98,80 @@ public class ASpell extends SpellChecker implements Plugin {
             throw new ExtProgramException(e);
         }
     }
-    
+
     public void stop() {
-        if ( proc != null ) proc.destroy();
+        if (proc != null)
+            proc.destroy();
         proc = null;
     }
-    
+
     public boolean insertWord(String word) {
-        if ( proc != null ) {
+        if (proc != null)
             try {
-                send.write('*'+word+"\n#\n");
+                send.write('*' + word + "\n#\n");
                 send.flush();
                 return true;
-            } catch (IOException e) {}
-        }
+            } catch (IOException e) {
+            }
         return false;
     }
-    
-    
-    public boolean supportsInsert() { return true; }
-    
+
+    public boolean supportsInsert() {
+        return true;
+    }
+
+    @SuppressWarnings("UseOfObsoleteCollectionType")
     public ArrayList<SpellError> checkSpelling(String text) {
         ArrayList<SpellError> ret = new ArrayList<SpellError>();
         String input;
-        
+
         String orig;
         int pos;
-        Vector<String> sug;
-        
+        java.util.Vector<String> sug;
+
         try {
-            send.write('^' + text.replace('\n', '|').replace('\r', '|') +'\n');
+            send.write('^' + text.replace('\n', '|').replace('\r', '|') + '\n');
             send.flush();
-            
-            while ( !(input=get.readLine()).equals("")) {
-                StringTokenizer token = new StringTokenizer(input," \t\r\n:,");
+
+            while (!(input = get.readLine()).equals("")) {
+                StringTokenizer token = new StringTokenizer(input, " \t\r\n:,");
                 String part = token.nextToken();
-                if ( part.equals("&") ) {
-                    sug = new Vector<String>();
+                if (part.equals("&")) {
+                    sug = new java.util.Vector<String>();
                     orig = token.nextToken();
                     token.nextToken();
                     pos = Integer.parseInt(token.nextToken()) - 1;
-                    while ( token.hasMoreTokens()) {
+                    while (token.hasMoreTokens())
                         sug.add(token.nextToken());
-                    }
                     ret.add(new SpellError(pos, orig, sug));
-                } else if ( part.equals("#")) {
-                    sug = new Vector<String>();
+                } else if (part.equals("#")) {
+                    sug = new java.util.Vector<String>();
                     orig = token.nextToken();
                     pos = Integer.parseInt(token.nextToken()) - 1;
                     ret.add(new SpellError(pos, orig, sug));
                 }
             }
             return ret;
-        } catch (IOException e) {}
+        } catch (IOException e) {
+        }
         return ret;
     }
-    
-    public JExtBasicOptions getOptionsPanel() { return opts; }
-    public String getName() { return "ASpell"; }
+
+    public JExtBasicOptions getOptionsPanel() {
+        return opts;
+    }
+
+    public String getName() {
+        return "ASpell";
+    }
 
     public String[] getAffectionList() {
-        return new String[] {"com.panayotis.jubler.tools.externals.AvailExternals"};
+        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
     }
 
     public void postInit(Object o) {
         if (o instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals)o;
+            AvailExternals l = (AvailExternals) o;
             if (l.getType().equals(family))
                 l.add(this);
         }

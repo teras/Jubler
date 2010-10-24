@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
@@ -31,54 +30,53 @@ import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-
 /**
  *
  * @author teras
  */
 public class MPL2 extends AbstractTextSubFormat {
-    
+
     private static final Pattern pat;
-    
+
     /** Creates a new instance of SubFormat */
     static {
-        pat = Pattern.compile("\\[(\\d+)\\]"+sp+"\\[(\\d+)\\]"+sp+"(.*?)"+nl);
+        pat = Pattern.compile("\\[(\\d+)\\]" + sp + "\\[(\\d+)\\]" + sp + "(.*?)" + nl);
     }
-    
+
     protected Pattern getPattern() {
         return pat;
     }
-    
 
     protected SubEntry getSubEntry(Matcher m) {
-        Time start = new Time(Double.valueOf(m.group(1)) / 10d );
+        Time start = new Time(Double.valueOf(m.group(1)) / 10d);
         Time finish = new Time(Double.valueOf(m.group(2)) / 10d);
-        return new SubEntry (start, finish, m.group(3).replace("|","\n"));
+        return new SubEntry(start, finish, m.group(3).replace("|", "\n"));
     }
-    
-    
+
     public String getExtension() {
         return "txt";
     }
-    
+
     public String getName() {
         return "MPL2";
     }
-     
+
+    @Override
     public String getExtendedName() {
         return "MPL2 Subtitle file";
-    } 
-    
-    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+    }
+
+    protected void appendSubEntry(SubEntry sub, StringBuilder str) {
         str.append("[");
         str.append(Math.round(sub.getStartTime().toSeconds() * 10));
         str.append("][");
-        str.append(Math.round(sub.getFinishTime().toSeconds() * 10) );
+        str.append(Math.round(sub.getFinishTime().toSeconds() * 10));
         str.append("] ");
-        str.append(sub.getText().replace('\n','|'));
+        str.append(sub.getText().replace('\n', '|'));
         str.append("\n");
     }
 
-    public boolean supportsFPS() { return false; }
-    
+    public boolean supportsFPS() {
+        return false;
+    }
 }

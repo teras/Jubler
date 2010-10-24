@@ -32,11 +32,13 @@ public class ApplicationHandler extends ApplicationAdapter {
     public ApplicationHandler() {
     }
 
+    @Override
     public void handleAbout(ApplicationEvent event) {
         StaticJubler.showAbout();
         event.setHandled(true);
     }
 
+    @Override
     public void handlePreferences(ApplicationEvent event) {
         if (JubFrame.prefs != null) {
             JubFrame.prefs.showPreferencesDialog();
@@ -44,12 +46,14 @@ public class ApplicationHandler extends ApplicationAdapter {
         }
     }
 
+    @Override
     public void handleQuit(ApplicationEvent event) {
         if (StaticJubler.requestQuit(null))
             System.exit(0);
         event.setHandled(false);
     }
 
+    @Override
     public void handleOpenFile(ApplicationEvent event) {
         LoaderThread.getLoader().addSubtitle(event.getFilename());
     }

@@ -127,7 +127,7 @@ public class FileCommunicator {
     }
 
     private static String loadFromFile(File infile, String encoding, boolean strict) {
-        StringBuffer res;
+        StringBuilder res;
         String dat;
         CharsetDecoder decoder;
 
@@ -140,7 +140,7 @@ public class FileCommunicator {
             unmappable = CodingErrorAction.REPLACE;
         }
 
-        res = new StringBuffer();
+        res = new StringBuilder();
         try {
             decoder = Charset.forName(encoding).newDecoder().onMalformedInput(malformed).onUnmappableCharacter(unmappable);
             BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(infile), decoder));

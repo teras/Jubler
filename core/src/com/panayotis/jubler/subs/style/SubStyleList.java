@@ -25,13 +25,13 @@ package com.panayotis.jubler.subs.style;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.SubEntry;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public class SubStyleList extends Vector<SubStyle> implements NameList {
+public class SubStyleList extends ArrayList<SubStyle> implements NameList {
 
     private static final SubStyle default_style;
 
@@ -44,24 +44,24 @@ public class SubStyleList extends Vector<SubStyle> implements NameList {
     /** Creates a new instance of SubStyleList */
     public SubStyleList() {
         add(new SubStyle(default_style));
-        elementAt(0).setDefault(true);
+        get(0).setDefault(true);
     }
 
     public SubStyleList(SubStyleList old) {
         for (int i = 0; i < old.size(); i++)
-            add(new SubStyle(old.elementAt(i)));
-        elementAt(0).setDefault(true);
+            add(new SubStyle(old.get(i)));
+        get(0).setDefault(true);
     }
 
     public String getNameAt(int i) {
-        return elementAt(i).Name;
+        return get(i).Name;
     }
 
     public int getStyleIndex(SubEntry entry) {
         SubStyle style = entry.getStyle();
         int res;
         if (style == null || (res = indexOf(style)) < 0) {
-            entry.setStyle(elementAt(0));
+            entry.setStyle(get(0));
             return 0;
         }
         return res;
@@ -69,18 +69,22 @@ public class SubStyleList extends Vector<SubStyle> implements NameList {
 
     public int findStyleIndex(String name) {
         for (int i = 0; i < size(); i++)
-            if (name.equals(elementAt(i).Name))
+            if (name.equals(get(i).Name))
                 return i;
         return 0;
     }
 
     public SubStyle getStyleByName(String name) {
-        return elementAt(findStyleIndex(name));
+        return get(findStyleIndex(name));
     }
 
     public SubStyle clearList() {
-        SubStyle d = elementAt(0);
-        removeAllElements();
+        SubStyle d = get(0);
+        clear();
         return d;
+    }
+
+    public SubStyle getElementAt(int i) {
+        return get(i);
     }
 }

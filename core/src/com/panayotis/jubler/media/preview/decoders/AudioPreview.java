@@ -75,7 +75,7 @@ public class AudioPreview {
         if ((!cfile.exists()) || cfile.length() < 10)
             return false;
 
-        StringBuffer header = new StringBuffer();
+        StringBuilder header = new StringBuilder();
         RandomAccessFile file;
         try {
             file = new RandomAccessFile(cfile, "r");

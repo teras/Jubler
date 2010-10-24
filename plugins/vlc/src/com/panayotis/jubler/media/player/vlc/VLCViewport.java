@@ -76,7 +76,7 @@ public class VLCViewport extends TerminalViewport {
     }
 
     protected synchronized String[] getSubDelayCommand(float secs) {
-        int steps =  Math.round(Math.abs(secs * 20));
+        int steps = Math.round(Math.abs(secs * 20));
         if (steps == 0)
             return null;
         String tag = secs > 0 ? "key key-subdelay-up" : "key key-subdelay-down";

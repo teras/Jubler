@@ -48,9 +48,8 @@ public class OpenSubtitles {
                     new InputStreamReader(
                     new URL(url).openConnection().getInputStream()));
             String dat;
-            while ((dat = in.readLine()) != null) {
+            while ((dat = in.readLine()) != null)
                 System.out.println(dat);
-            }
 
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
