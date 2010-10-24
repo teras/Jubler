@@ -22,20 +22,19 @@
  */
 package com.panayotis.jubler.tools.spell;
 
-import java.util.Vector;
-
 /**
  *
  * @author teras
  */
+@SuppressWarnings("UseOfObsoleteCollectionType")
 public class SpellError {
 
     public int position;
     public String original;
-    public Vector<String> alternatives;
+    public java.util.Vector<String> alternatives;
 
     /** Creates a new instance of SpellMistake */
-    public SpellError(int position, String original, Vector<String> alts) {
+    public SpellError(int position, String original, java.util.Vector<String> alts) {
         this.position = position;
         this.original = original;
         alternatives = alts;

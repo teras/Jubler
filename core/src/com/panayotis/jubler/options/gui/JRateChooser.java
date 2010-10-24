@@ -66,6 +66,7 @@ public class JRateChooser extends JPanel {
         return FPSChooser.getSelectedItem().toString();
     }
 
+    @Override
     public void setEnabled(boolean value) {
         super.setEnabled(value);
         FPSChooser.setEnabled(value);
@@ -124,7 +125,7 @@ public class JRateChooser extends JPanel {
     private void FromFPSBFPSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromFPSBFPSBActionPerformed
         if (mfile == null)
             return;
-        if (!mfile.validateMediaFile(subs, false, JubFrame.windows.elementAt(0)))
+        if (!mfile.validateMediaFile(subs, false, JubFrame.windows.get(0)))
             return;
 
         float fps = mfile.getVideoFile().getFPS();

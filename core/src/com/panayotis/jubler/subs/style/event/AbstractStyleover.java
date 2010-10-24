@@ -236,7 +236,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
     }
 
     public String dump() {
-        StringBuffer ret = new StringBuffer();
+        StringBuilder ret = new StringBuilder();
         ret.append('{');
         for (AbstractStyleover.Entry entry : this) {
             ret.append('(').append(entry.prev.toString());

@@ -80,7 +80,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -125,7 +124,7 @@ public class JubFrame extends JFrame {
     /* The following pointer points to the connected jubler window
      * (used for translating) */
     private JubFrame connect_to_other;
-    private Vector<JVideoConsole> connected_consoles;
+    private ArrayList<JVideoConsole> connected_consoles;
     /* the last changed subtitle - used for undo */
     private SubEntry last_changed_sub = null;
     /* Control variable to ensure that no feedback will be given when explicit change the
@@ -174,7 +173,7 @@ public class JubFrame extends JFrame {
         PluginManager.manager.callPostInitListeners(this);
         subs = null;
         mfile = new MediaFile();
-        connected_consoles = new Vector<JVideoConsole>();
+        connected_consoles = new ArrayList<JVideoConsole>();
 
         undo = new UndoList(this);
 
@@ -272,7 +271,7 @@ public class JubFrame extends JFrame {
     private void updateStatsLabel(SubEntry entry) {
         /* Update information label */
         SubMetrics m = entry.getMetrics();
-        StringBuffer lbl = new StringBuffer();
+        StringBuilder lbl = new StringBuilder();
         lbl.append("T:").append(m.length);
         lbl.append(" L:").append(m.lines);
         lbl.append(" C:").append(m.maxlength);
@@ -2145,7 +2144,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 
         /* Convert file into subtitle data */
         newsubs.populate(newsubs.getSubFile(), data);
-        if (newsubs.size() == 0) {
+        if (newsubs.isEmpty()) {
             JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
             return null;
         }
@@ -2186,7 +2185,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         if (disable_consoles_update)
             return;
         for (int i = 0; i < connected_consoles.size(); i++)
-            connected_consoles.elementAt(i).setTime(t);
+            connected_consoles.get(i).setTime(t);
     }
 
 
@@ -2283,8 +2282,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             if (w.connect_to_other == this)
                 w.connect_to_other = null;
         if (windows.size() == 1) {
-            windows.elementAt(0).JoinTM.setEnabled(false);
-            windows.elementAt(0).ReparentTM.setEnabled(false);
+            windows.get(0).JoinTM.setEnabled(false);
+            windows.get(0).ReparentTM.setEnabled(false);
         }
         StaticJubler.updateRecents();
 
@@ -2300,14 +2299,15 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         dispose();
     }
 
+    @Override
     public void setVisible(boolean status) {
         super.setVisible(status);
         if (status && (!windows.contains(this))) {
             windows.add(this);
             if (windows.size() > 1)
                 for (int i = 0; i < windows.size(); i++) {
-                    windows.elementAt(i).JoinTM.setEnabled(true);
-                    windows.elementAt(i).ReparentTM.setEnabled(true);
+                    windows.get(i).JoinTM.setEnabled(true);
+                    windows.get(i).ReparentTM.setEnabled(true);
                 }
         }
         StaticJubler.updateRecents();

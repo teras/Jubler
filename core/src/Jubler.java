@@ -111,6 +111,7 @@ class MainSplash extends JWindow {
 
         addMouseListener(new MouseAdapter() {
 
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 setVisible(false);
                 dispose();
@@ -121,6 +122,7 @@ class MainSplash extends JWindow {
         setVisible(true);
     }
 
+    @Override
     public void paint(Graphics g) {
         g.drawImage(logo, 0, 0, this);
     }

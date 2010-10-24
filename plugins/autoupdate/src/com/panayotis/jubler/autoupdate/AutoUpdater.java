@@ -53,7 +53,6 @@ public class AutoUpdater implements UpdatedApplication, Plugin {
         return new String[]{StaticJubler.POSTLOADER};
     }
 
-
     public void postInit(Object null_argument) {
         try {
             ApplicationInfo info = new ApplicationInfo(SystemFileFinder.getJublerAppPath(), SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());

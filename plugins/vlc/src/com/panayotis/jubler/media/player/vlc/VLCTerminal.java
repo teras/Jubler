@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.player.vlc;
 
 import com.panayotis.jubler.media.player.terminals.ServerTerminal;
@@ -27,5 +26,4 @@ import com.panayotis.jubler.media.player.terminals.ServerTerminal;
  * @author teras
  */
 public class VLCTerminal extends ServerTerminal {
-
 }

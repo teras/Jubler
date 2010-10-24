@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader.binary;
 
 import com.panayotis.jubler.media.MediaFile;
@@ -37,40 +36,40 @@ import java.io.IOException;
  * @author teras
  */
 public class ScanTitle extends AbstractBinarySubFormat {
-    
+
     /** Creates a new instance of ScanTitle */
     public ScanTitle() {
     }
-    
+
     public String getExtension() {
         return "890";
     }
-    
+
     public String getName() {
         return "ScanTitle";
     }
-    
+
     public void parseBinary(float FPS, BufferedReader in) {
         // Add code to load subtitles from input buffer
         // Example:
         int subframestart;
         int subframeend;
         String subtext;
-        
+
         //while (have more entries  , in.read())
-            subframestart = 10; //
-            subframeend = 20;
-            subtext = "test";
-            
-            subtitle_list.add(new SubEntry(subframestart/FPS, subframeend/FPS, subtext));
+        subframestart = 10; //
+        subframeend = 20;
+        subtext = "test";
+
+        subtitle_list.add(new SubEntry(subframestart / FPS, subframeend / FPS, subtext));
         //}
     }
 
-    public boolean supportsFPS() { return true; }
+    public boolean supportsFPS() {
+        return true;
+    }
 
     public boolean produce(Subtitles subs, File out, MediaFile media) throws IOException {
         return true;
     }
-    
-    
 }

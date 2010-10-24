@@ -26,7 +26,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -37,20 +37,20 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class JSubJoin extends javax.swing.JPanel {
 
     private JTimeSpinner joinpos;
-    private Vector<JubFrame> privlist;
+    private ArrayList<JubFrame> privlist;
 
     /** Creates new form JSplit */
-    public JSubJoin(Vector<JubFrame> list, JubFrame current) {
+    public JSubJoin(ArrayList<JubFrame> list, JubFrame current) {
         joinpos = new JTimeSpinner();
-        privlist = new Vector<JubFrame>();
+        privlist = new ArrayList<JubFrame>();
 
         initComponents();
         TShift.add(joinpos, BorderLayout.CENTER);
 
         for (int i = 0; i < list.size(); i++)
-            if (list.elementAt(i) != current) {
-                SubWindow.addItem(list.elementAt(i).getSubtitles().getSubFile().getStrippedFile().getName());
-                privlist.add(list.elementAt(i));
+            if (list.get(i) != current) {
+                SubWindow.addItem(list.get(i).getSubtitles().getSubFile().getStrippedFile().getName());
+                privlist.add(list.get(i));
             }
         joinpos.setToolTipText(_("Use the selected amount of time as space between the two subtitles"));
     }
@@ -60,7 +60,7 @@ public class JSubJoin extends javax.swing.JPanel {
     }
 
     public JubFrame getOtherSubs() {
-        return privlist.elementAt(SubWindow.getSelectedIndex());
+        return privlist.get(SubWindow.getSelectedIndex());
     }
 
     public Time getGap() {

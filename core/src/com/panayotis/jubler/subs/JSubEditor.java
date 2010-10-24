@@ -230,6 +230,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         setLockIcon(Lock3);
     }
 
+    @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
 
@@ -263,7 +264,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         } else {
             SubStyle style = entry.getStyle();
             if (style == null)
-                style = styles.elementAt(0);
+                style = styles.get(0);
             showStyle();
         }
     }
@@ -670,13 +671,13 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         if (res < 0)
             return;
         parent.keepUndo(entry);
-        entry.setStyle(styles.elementAt(res));
+        entry.setStyle(styles.get(res));
         showStyle();
         parent.rowHasChanged(row, false);
     }//GEN-LAST:event_StyleListCActionPerformed
 
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
-        SubStyle cstyle = styles.elementAt(styles.getStyleIndex(entry));
+        SubStyle cstyle = styles.get(styles.getStyleIndex(entry));
         SubStyle backup = new SubStyle(cstyle);
         UndoEntry undo = new UndoEntry(parent.getSubtitles(), _("Edit style"));
 
@@ -761,6 +762,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     }
     Thread stylethread = new Thread() {
 
+        @Override
         public void run() {
             showStyle();
             parent.getSubPreview().forceRepaintFrame();

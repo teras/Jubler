@@ -20,13 +20,13 @@
 package com.panayotis.jubler.tools.translate;
 
 import com.panayotis.jubler.plugins.PluginManager;
-import java.util.Vector;
+import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public class AvailTranslators extends Vector<Translator> {
+public class AvailTranslators extends ArrayList<Translator> {
 
     public AvailTranslators() {
         PluginManager.manager.callPostInitListeners(this);

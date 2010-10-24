@@ -97,7 +97,7 @@ public class ReplaceEntry {
     }
 
     private static String getSafe(String in) {
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
         for (int i = 0; i < in.length(); i++)
             if (in.charAt(i) == '\\' && i < (in.length() - 1)) {
                 i++;

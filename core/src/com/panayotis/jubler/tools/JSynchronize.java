@@ -44,6 +44,7 @@ public class JSynchronize extends JTool {
         super(true);
     }
 
+    @Override
     public void updateData(JubFrame current) {
         super.updateData(current);
 
@@ -57,7 +58,7 @@ public class JSynchronize extends JTool {
 
         String label;
         for (int i = 0; i < JubFrame.windows.size(); i++) {
-            cjubler = JubFrame.windows.elementAt(i);
+            cjubler = JubFrame.windows.get(i);
             label = cjubler.getSubtitles().getSubFile().getStrippedFile().getName();
             if (cjubler == current) {
                 label += "  " + _("-current-");

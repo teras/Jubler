@@ -39,7 +39,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Stack;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
@@ -125,7 +124,8 @@ public class StaticJubler {
     }
 
     public static boolean requestQuit(JubFrame request) {
-        Vector<String> unsaved = new Vector<String>();
+        @SuppressWarnings("UseOfObsoleteCollectionType")
+        java.util.Vector<String> unsaved = new java.util.Vector<String>();
         for (JubFrame j : JubFrame.windows)
             if (j.isUnsaved())
                 unsaved.add(j.getSubtitles().getSubFile().getStrippedFile().getName());

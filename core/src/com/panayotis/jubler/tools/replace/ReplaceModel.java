@@ -22,7 +22,7 @@
  */
 package com.panayotis.jubler.tools.replace;
 
-import java.util.Vector;
+import java.util.ArrayList;
 import com.panayotis.jubler.options.Options;
 import javax.swing.table.AbstractTableModel;
 
@@ -32,10 +32,9 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
-@SuppressWarnings("UseOfObsoleteCollectionType")
 public class ReplaceModel extends AbstractTableModel {
 
-    private Vector<ReplaceEntry> replacelist;
+    private ArrayList<ReplaceEntry> replacelist;
     private final static String[][] def_replace = {
         {"\\[.*\\]", ""},
         {"@.*@", ""},
@@ -45,7 +44,7 @@ public class ReplaceModel extends AbstractTableModel {
 
     /** Creates a new instance of ReplaceModel */
     public ReplaceModel() {
-        replacelist = new Vector<ReplaceEntry>();
+        replacelist = new ArrayList<ReplaceEntry>();
         loadOptions();
     }
 
@@ -110,11 +109,12 @@ public class ReplaceModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
-    public Vector<String> getReplaceList() {
-        Vector<String> res = new Vector<String>();
+    @SuppressWarnings("UseOfObsoleteCollectionType")
+    public java.util.Vector<String> getReplaceList() {
+        java.util.Vector<String> res = new java.util.Vector<String>();
         String dat;
         for (int i = 0; i < replacelist.size(); i++) {
-            dat = replacelist.elementAt(i).getTransformation();
+            dat = replacelist.get(i).getTransformation();
             if (dat != null)
                 res.add(dat);
         }
@@ -134,7 +134,7 @@ public class ReplaceModel extends AbstractTableModel {
     public void saveOptions() {
         StringBuilder data = new StringBuilder();
         for (int i = 0; i < (replacelist.size() - 1); i++)
-            data.append(replacelist.elementAt(i));
+            data.append(replacelist.get(i));
         Options.setOption("Replace.Global", data.toString());
         Options.saveOptions();
     }

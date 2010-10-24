@@ -37,7 +37,7 @@ public class AutoSaveOptions {
     }
 
     public static void setVisibleColumns(boolean[] visiblecols, String COLUMNID) {
-        StringBuffer out = new StringBuffer();
+        StringBuilder out = new StringBuilder();
         for (int i = 0; i < visiblecols.length; i++)
             if (visiblecols[i])
                 out.append(COLUMNID.charAt(i));
@@ -57,7 +57,7 @@ public class AutoSaveOptions {
     }
 
     public static void setColumnWidth(int[] prefcolwidth) {
-        StringBuffer widths = new StringBuffer();
+        StringBuilder widths = new StringBuilder();
         for (int i = 0; i < prefcolwidth.length; i++)
             widths.append(prefcolwidth[i]).append(',');
         Options.setOption("System.ColumnWidth", widths.substring(0, widths.length() - 1));

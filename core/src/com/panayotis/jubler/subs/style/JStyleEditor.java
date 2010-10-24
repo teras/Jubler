@@ -116,7 +116,7 @@ public class JStyleEditor extends javax.swing.JDialog {
     public void setVisible(SubStyle style) {
         if (style == null) {
             SubStyleList list = parent.getSubtitles().getStyleList();
-            SubStyle def_value = list.elementAt(0);
+            SubStyle def_value = list.get(0);
             list.remove(0);
             Collections.sort(list);
             list.add(0, def_value);
@@ -682,7 +682,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         DirtyIndicator.setBackground(Color.GREEN);
 
         String newname = StyleName.getText().trim();
-        StringBuffer realname = new StringBuffer();
+        StringBuilder realname = new StringBuilder();
         char letter;
 
         for (int i = 0; i < newname.length(); i++) {

@@ -28,11 +28,11 @@ import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.util.Collections;
-import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JTable;
 
 /**
@@ -51,7 +51,7 @@ public class Subtitles extends AbstractTableModel {
     /** Attributes of these subtiles */
     private SubAttribs attribs;
     /** List of subtitles */
-    private Vector<SubEntry> sublist;
+    private ArrayList<SubEntry> sublist;
     /** List of possible predefined styles */
     private SubStyleList styles;
     /* The file representation of this subtitle */
@@ -62,7 +62,7 @@ public class Subtitles extends AbstractTableModel {
     }
 
     public Subtitles(SubFile sfile) {
-        sublist = new Vector<SubEntry>();
+        sublist = new ArrayList<SubEntry>();
         styles = new SubStyleList();
         attribs = new SubAttribs();
         if (sfile == null)
@@ -74,13 +74,11 @@ public class Subtitles extends AbstractTableModel {
     public Subtitles(Subtitles old) {
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
-
-        for (int i = 0; i < visiblecols.length; i++)
-            visiblecols[i] = old.visiblecols[i];
+        System.arraycopy(old.visiblecols, 0, visiblecols, 0, visiblecols.length);
 
         subfile = new SubFile(old.subfile);
 
-        sublist = new Vector<SubEntry>();
+        sublist = new ArrayList<SubEntry>();
         SubEntry newentry, oldentry;
         for (int i = 0; i < old.size(); i++) {
             oldentry = old.elementAt(i);
@@ -121,13 +119,13 @@ public class Subtitles extends AbstractTableModel {
     }
 
     public void sort(double mintime, double maxtime) {
-        Vector<SubEntry> sorted;
+        ArrayList<SubEntry> sorted;
         SubEntry sub;
         double time;
         int lastpos;
 
         lastpos = -1;
-        sorted = new Vector<SubEntry>();
+        sorted = new ArrayList<SubEntry>();
 
         /* Get affected subtitles */
         for (int i = size() - 1; i >= 0; i--) {
@@ -154,17 +152,17 @@ public class Subtitles extends AbstractTableModel {
         sublist.addAll(newsubs.sublist);
         /* Deal with default style first: change it's values if it is nessesary */
         if (newStylePriority)
-            styles.elementAt(0).setValues(newsubs.styles.elementAt(0));
+            styles.get(0).setValues(newsubs.styles.get(0));
         SubStyle style;
         /* Go through all remaining new styles */
         for (int i = 1; i < newsubs.styles.size(); i++) {
-            SubStyle newstyle = newsubs.styles.elementAt(i);
+            SubStyle newstyle = newsubs.styles.get(i);
             int res = styles.findStyleIndex(newstyle.Name);
             /* We have found that a style with the same name already exists ! */
             if (res != 0) {
                 /* If we give priority to the new styles, ONLY THEN set the data to the new values */
                 if (newStylePriority)
-                    styles.elementAt(0).setValues(newstyle);
+                    styles.get(0).setValues(newstyle);
             } else /* It doesn't exits, just append it */
 
                 styles.add(newstyle);
@@ -191,7 +189,7 @@ public class Subtitles extends AbstractTableModel {
 
         max = 0;
         for (int i = 0; i < sublist.size(); i++) {
-            cur = sublist.elementAt(i).getFinishTime().toSeconds();
+            cur = sublist.get(i).getFinishTime().toSeconds();
             if (cur > max)
                 max = cur;
         }
@@ -201,18 +199,18 @@ public class Subtitles extends AbstractTableModel {
     public int addSorted(SubEntry sub) {
         double time = sub.getStartTime().toSeconds();
         int pos = 0;
-        while (sublist.size() > pos && sublist.elementAt(pos).getStartTime().toSeconds() < time)
+        while (sublist.size() > pos && sublist.get(pos).getStartTime().toSeconds() < time)
             pos++;
         sublist.add(pos, sub);
         if (sub.getStyle() == null)
-            sub.setStyle(styles.elementAt(0));
+            sub.setStyle(styles.get(0));
         return pos;
     }
 
     public void add(SubEntry sub) {
         sublist.add(sub);
         if (sub.getStyle() == null)
-            sub.setStyle(styles.elementAt(0));
+            sub.setStyle(styles.get(0));
     }
 
     public void remove(int i) {
@@ -224,7 +222,7 @@ public class Subtitles extends AbstractTableModel {
     }
 
     public SubEntry elementAt(int i) {
-        return sublist.elementAt(i);
+        return sublist.get(i);
     }
 
     public boolean isEmpty() {
@@ -255,7 +253,7 @@ public class Subtitles extends AbstractTableModel {
         SubEntry entry;
         double cdiff;
         for (int i = 0; i < sublist.size(); i++) {
-            entry = sublist.elementAt(i);
+            entry = sublist.get(i);
             if (entry.isInTime(time))
                 return i;
             if (fuzzyMatch) {
@@ -277,7 +275,7 @@ public class Subtitles extends AbstractTableModel {
         for (SubEntry entry : sublist) {
             SubStyle style = entry.getStyle();
             if (style == null || styles.indexOf(style) < 0)
-                entry.setStyle(styles.elementAt(0));
+                entry.setStyle(styles.get(0));
         }
     }
 
@@ -321,13 +319,15 @@ public class Subtitles extends AbstractTableModel {
         return COLNAME.length - 1;   // Return last column
     }
 
+    @Override
     public void setValueAt(Object value, int row, int col) {
         col = visibleToReal(col);
         if (col >= FIRST_EDITABLE_COL && row < sublist.size())
-            sublist.elementAt(row).setData(col, value);
+            sublist.get(row).setData(col, value);
         fireTableCellUpdated(row, col);
     }
 
+    @Override
     public boolean isCellEditable(int row, int col) {
         //if ( col >= FIRST_EDITABLE_COL) return true;
         return false;
@@ -345,12 +345,13 @@ public class Subtitles extends AbstractTableModel {
         return cols;
     }
 
+    @Override
     public String getColumnName(int index) {
         return COLNAME[visibleToReal(index)];
     }
 
     public Object getValueAt(int row, int col) {
-        return sublist.elementAt(row).getData(row, visibleToReal(col));
+        return sublist.get(row).getData(row, visibleToReal(col));
     }
 
     public void updateColumnWidth(JTable t) {

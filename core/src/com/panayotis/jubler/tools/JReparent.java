@@ -22,10 +22,7 @@
  */
 package com.panayotis.jubler.tools;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 import com.panayotis.jubler.JubFrame;
-import java.util.Vector;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import java.util.ArrayList;
@@ -48,7 +45,7 @@ public class JReparent extends javax.swing.JPanel {
 
         JubSelector.addItem(_("-No parent available-"));
         for (int i = 0; i < JubFrame.windows.size(); i++) {
-            cjubler = JubFrame.windows.elementAt(i);
+            cjubler = JubFrame.windows.get(i);
             if (cjubler != current) {
                 jublerlist.add(cjubler);
                 if (cjubler == parent)

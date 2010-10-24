@@ -34,8 +34,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
 import javax.swing.AbstractButton;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
@@ -71,7 +71,7 @@ public class SystemDependent {
         return 7;
     }
 
-    public final static void setLookAndFeel() {
+    public static void setLookAndFeel() {
         boolean newjava = (System.getProperty("java.version").replaceAll("\\.", "").replaceAll("_", "").compareTo("160")) >= 0;
         try {
             if (newjava || IS_WINDOWS || IS_MACOSX) {
@@ -83,31 +83,31 @@ public class SystemDependent {
         }
     }
 
-    private final static void setButtonStyle(AbstractButton button, String pos, String style) {
+    private static void setButtonStyle(AbstractButton button, String pos, String style) {
         button.putClientProperty("JButton.buttonType", style);
         button.putClientProperty("JButton.segmentPosition", pos);
         if (!pos.equals("only") && button.isFocusable())
             button.setFocusable(false);
     }
 
-    public final static void setConsoleButtonStyle(AbstractButton button, String pos) {
+    public static void setConsoleButtonStyle(AbstractButton button, String pos) {
         setButtonStyle(button, pos, "segmented");
     }
 
-    public final static void setCommandButtonStyle(AbstractButton button, String pos) {
+    public static void setCommandButtonStyle(AbstractButton button, String pos) {
         setButtonStyle(button, pos, "segmentedTextured");
     }
 
-    public final static void setDirectionButtonStyle(AbstractButton button) {
+    public static void setDirectionButtonStyle(AbstractButton button) {
         setButtonStyle(button, "only", "segmentedCapsule");
     }
 
-    public final static void setToolBarButtonStyle(AbstractButton button, String pos) {
+    public static void setToolBarButtonStyle(AbstractButton button, String pos) {
         button.setFocusable(false);
         setButtonStyle(button, pos, "segmentedCapsule");
     }
 
-    public final static void setColorButtonStyle(AbstractButton button, String pos) {
+    public static void setColorButtonStyle(AbstractButton button, String pos) {
         setButtonStyle(button, pos, "segmentedRoundRect");
     }
 
@@ -129,7 +129,7 @@ public class SystemDependent {
 
     public static String getKeyMods(boolean[] mods) {
         if (IS_MACOSX) {
-            StringBuffer res = new StringBuffer();
+            StringBuilder res = new StringBuilder();
             if (mods[0])
                 res.append("\u2318");
             if (mods[1])
@@ -143,7 +143,7 @@ public class SystemDependent {
             return res.toString();
         }
 
-        StringBuffer res = new StringBuffer();
+        StringBuilder res = new StringBuilder();
         if (mods[0])
             res.append("+Meta");
         if (mods[1])
@@ -202,7 +202,7 @@ public class SystemDependent {
      * It uses Spotlight to find a desired application.
      * Under other platforms does not do anything
      */
-    public static void appendSpotlightApplication(String name, Vector<ExtPath> res) {
+    public static void appendSpotlightApplication(String name, ArrayList<ExtPath> res) {
         if (!IS_MACOSX)
             return;
         if (name == null)
@@ -223,7 +223,7 @@ public class SystemDependent {
         }
     }
 
-    public static void appendLocateApplication(String name, Vector<ExtPath> res) {
+    public static void appendLocateApplication(String name, ArrayList<ExtPath> res) {
         if (IS_WINDOWS)
             return;
         if (name == null)
@@ -245,7 +245,7 @@ public class SystemDependent {
         }
     }
 
-    public static void appendPathApplication(Vector<ExtPath> res) {
+    public static void appendPathApplication(ArrayList<ExtPath> res) {
         StringTokenizer st = new StringTokenizer(System.getenv("PATH"), File.pathSeparator);
         while (st.hasMoreTokens())
             res.add(new ExtPath(st.nextToken(), 1));
@@ -301,7 +301,7 @@ public class SystemDependent {
         return ret;
     }
 
-    public final static String getConfigPath() {
+    public static String getConfigPath() {
         String home = System.getProperty("user.home") + FileCommunicator.FS;
 
         if (IS_WINDOWS)
@@ -311,7 +311,7 @@ public class SystemDependent {
         return home + ".jubler/config";
     }
 
-    public final static String getLogPath() {
+    public static String getLogPath() {
         String home = System.getProperty("user.home") + FileCommunicator.FS;
 
         if (IS_WINDOWS)
@@ -322,7 +322,7 @@ public class SystemDependent {
     }
 
     /** This function always return the directory seperator at the end of the filename */
-    public final static String getAppSupportDirPath() {
+    public static String getAppSupportDirPath() {
         String home = System.getProperty("user.home") + FileCommunicator.FS;
 
         if (IS_WINDOWS)

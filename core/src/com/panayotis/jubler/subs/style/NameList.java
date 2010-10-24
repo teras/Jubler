@@ -1,5 +1,5 @@
 /*
- * UniqNameList.java
+ * NameList.java
  *
  * Created on 3 Σεπτέμβριος 2005, 6:51 μμ
  *
@@ -30,7 +30,7 @@ public interface NameList {
 
     public String getNameAt(int i);
 
-    public Object elementAt(int i);
+    public Object getElementAt(int i);
 
     public int size();
 }

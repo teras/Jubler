@@ -74,7 +74,7 @@ public class DEBUG {
     }
 
     public static String toString(String[] array) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
         for (int i = 0; i < array.length; i++)
             buf.append(array[i]).append(' ');
         return buf.substring(0, buf.length() - 1);

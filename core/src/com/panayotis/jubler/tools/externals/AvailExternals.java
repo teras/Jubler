@@ -22,15 +22,15 @@
  */
 package com.panayotis.jubler.tools.externals;
 
-import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.plugins.PluginManager;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public class AvailExternals extends Vector<ExtProgram> {
+public class AvailExternals extends ArrayList<ExtProgram> {
 
     private String type;
     private String localtype;
@@ -58,7 +58,7 @@ public class AvailExternals extends Vector<ExtProgram> {
             i = 0;
         if (i >= size())
             i = size() - 1;
-        return elementAt(i);
+        return get(i);
     }
 
     /* Get the type of this external program, useful to save options */

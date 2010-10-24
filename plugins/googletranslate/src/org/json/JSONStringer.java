@@ -22,8 +22,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
-
+ */
 import java.io.StringWriter;
 
 /**
@@ -57,6 +56,7 @@ import java.io.StringWriter;
  * @version 2008-09-18
  */
 public class JSONStringer extends JSONWriter {
+
     /**
      * Make a fresh JSONStringer. It can be used to build one JSON text.
      */
@@ -72,6 +72,7 @@ public class JSONStringer extends JSONWriter {
      * <code>endArray</code>).
      * @return The JSON text.
      */
+    @Override
     public String toString() {
         return this.mode == 'd' ? this.writer.toString() : null;
     }

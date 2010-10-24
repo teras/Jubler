@@ -24,19 +24,19 @@ package com.panayotis.jubler.options.gui;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-import java.util.Vector;
 import javax.swing.JList;
 
 /**
  *
  * @author  teras
  */
+@SuppressWarnings("UseOfObsoleteCollectionType")
 public class JUnsaved extends javax.swing.JPanel {
 
-    Vector<String> unsaved;
+    private java.util.Vector<String> unsaved;
 
     /** Creates new form JUnsaved */
-    public JUnsaved(Vector<String> un) {
+    public JUnsaved(java.util.Vector<String> un) {
         unsaved = un;
         initComponents();
     }
