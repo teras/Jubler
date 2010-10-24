@@ -1,0 +1,200 @@
+#!/bin/bash
+
+# VARIABLES DEFINING SOURCE FILES 
+FFMPEG_V=0.6.1
+FAAD2_V=2.7
+
+FFMPEG_C=ffmpeg-$FFMPEG_V.tar.bz2
+FAAD2_C=faad2-${FAAD2_V}.zip
+
+FFMPEG_URL=http://ffmpeg.org/releases/$FFMPEG_C
+FAAD2_URL=http://downloads.sourceforge.net/faac/$FAAD2_C
+
+FFMPEG_SRC=ffmpeg-$FFMPEG_V
+FAAD2_SRC=faad2-$FAAD2_V
+
+
+
+# END OF SOURCE FILE VARIABLES
+
+CDIR=`pwd`
+WORKDIR=$CDIR/work
+DISTROOT=$WORKDIR/dist
+LIBROOT=$WORKDIR/lib
+INCDIR=$WORKDIR/include
+MAKE=make
+
+
+#FUNCTIONS
+
+# Usage
+usage () {
+	echo "Usage:"
+	echo "`basename $0` [win32|darwin|linux]"
+	echo "`basename $0` [--help|--clean|--distclean]"
+	exit $1
+}
+
+# Download and unzip source file
+fetch () {
+	pushd >/dev/null .
+	eval TAR=\$$1_C
+	eval URL=\$$1_URL
+	eval SRC=\$$1_SRC
+
+	mkdir -p ${WORKDIR}
+	cd $WORKDIR
+	if [ ! -f $TAR ] ; then
+		wget "$URL" || exit 1
+	fi
+	rm -rf $SRC
+
+	ISBZ2=`echo $TAR | grep bz2`
+	ISGZ=`echo $TAR | grep gz`
+	ISZIP=`echo $TAR | grep zip`
+	if test -n "$ISBZ2" ; then ZIPCMD="tar jxf"
+	elif test -n "$ISGZ" ; then ZIPCMD="tar zxf"
+	elif test -n "$ISZIP" ; then ZIPCMD="unzip -q"
+	fi
+	echo Unzip $TAR
+	$ZIPCMD $TAR || exit 1
+	cd $SRC
+
+	popd >/dev/null
+}
+
+
+
+
+
+
+# Arguments
+SYSTEM=`uname -s | tr [A-Z] [a-z]`
+ARCH=`uname -m`
+CCPREF=
+
+while [ $# -gt 0 ]; do
+	case "$1" in 
+	--clean)
+		rm -rf $WORKDIR/$FAAD2_SRC $WORKDIR/$FFMPEG_SRC $LIBROOT
+		exit 0
+		;;
+	--distclean)
+		rm -rf $WORKDIR
+		exit 0
+		;;
+	--help)
+		usage 0
+		;;
+win32|darwin_i386|darwin_x86_64|darwin_ppc|linux_x86_64|linux_i686|darwin|linux)
+		SYSTEM=$1
+		;;
+	*)
+		if [ -n "$1" ] ; then
+			echo Unknown argument $1
+			usage 1
+		fi
+		;;
+	esac
+	shift
+done
+
+DISTDIR=$DISTROOT/$SYSTEM
+LIBDIR=$LIBROOT/$SYSTEM
+mkdir -p "$DISTDIR"
+mkdir -p "$LIBDIR"
+
+
+# Define SYSTEM variables
+case $SYSTEM in
+win32)
+    XLIBS=
+	IS586=`which i586-mingw32msvc-gcc`
+	if [ -z "$IS586" ] ; then CCPREF=i386-mingw32
+	else CCPREF=i586-mingw32msvc
+	fi
+    ARCH=i386
+    XFCONFIG="--cross-prefix=${CCPREF}- --enable-memalign-hack --target-os=mingw32 --arch=x86"
+    GCCOPTS=
+	;;
+darwin)
+	$0 darwin_ppc || exit 1
+	$0 darwin_i386 || exit 1
+	$0 darwin_x86_64 || exit 1
+	lipo $DISTROOT/darwin_ppc/ffmpeg $DISTROOT/darwin_i386/ffmpeg $DISTROOT/darwin_x86_64/ffmpeg -create -output $DISTDIR/ffmpeg || exit 1
+	rm -rf $DISTROOT/darwin_ppc $DISTROOT/darwin_i386 $DISTROOT/darwin_x86_64
+	exit 0
+	;;
+darwin_ppc)
+    XLIBS="-lz -lbz2"
+    ARCH=ppc
+    XFCONFIG="--arch=powerpc --enable-cross-compile --disable-altivec --target-os=darwin --enable-pthreads"
+    GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4"
+	;;
+darwin_x86_64)
+    XLIBS="-lz -lbz2"
+    ARCH=x86_64
+    XFCONFIG="--arch=x86_64 --target-os=darwin --enable-pthreads"
+    GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4"
+	;;
+darwin_i386)
+    XLIBS="-lz -lbz2"
+    ARCH=i386
+    XFCONFIG="--arch=x86 --target-os=darwin --disable-mmx --disable-mmx2 --disable-sse --disable-ssse3 --disable-amd3dnow --disable-amd3dnowext --enable-pic --enable-pthreads"
+    GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4 -read_only_relocs suppress"
+	;;
+linux)
+	$0 linux_$ARCH || exit 1
+	rmdir $DISTROOT/linux
+	exit 0
+	;;
+linux_i686)
+    XLIBS="-lz -lbz2"
+    #ARCH=`uname -m`
+    XFCONFIG=--enable-pthreads
+    GCCOPTS=
+	;;
+linux_x86_64)
+    XLIBS="-lz -lbz2"
+    #ARCH=`uname -m`
+    XFCONFIG="--disable-mmx --enable-pthreads"
+    GCCOPTS=-fPIC
+	;;
+*)
+	echo Unknown system.
+	exit 1
+	;;
+esac
+
+
+if [ -f "$DISTDIR/ffmpeg" ] ; then exit 0 ; fi
+
+FFMPEG_CFG="--disable-shared --enable-static --disable-debug --enable-pthreads --disable-ffserver --disable-ffplay --disable-ffprobe --disable-devices --disable-doc --disable-network --disable-libdc1394 --disable-postproc --enable-gpl --enable-nonfree --enable-swscale --enable-avfilter --enable-avfilter-lavf"
+#FFMPEG_CFG="--disable-shared --enable-static --disable-debug --enable-pthreads --disable-ffserver --disable-ffplay --disable-ffprobe --disable-encoders --enable-encoder=pcm_s16le --enable-encoder=s8 --disable-muxers --enable-muxer=wav --disable-devices --disable-doc --disable-network --disable-libdc1394 --disable-postproc --enable-gpl --enable-nonfree --enable-swscale --enable-avfilter --enable-avfilter-lavf"
+#FAAD2_CFG="--without-bmp --without-xmms --without-drm --without-mpeg4ip --with-mp4v2 --host=$CCPREF"
+FAAD2_CFG="--without-xmms --without-drm --without-mpeg4ip --host=$CCPREF"
+
+INCLUDE="-I$WORKDIR/$FAAD2_SRC/include"
+
+# Create FAAD
+if [ ! -f "$LIBDIR/libfaad.a" ] ; then
+	fetch FAAD2 || exit 1
+	cd $WORKDIR/$FAAD2_SRC
+	autoreconf -if || exit 1
+	./configure $FAAD2_CFG || exit 1
+	$MAKE -j3 || exit 1
+	mv libfaad/.libs/libfaad.a $LIBDIR
+fi
+
+# Create ffmpeg
+fetch FFMPEG || exit 1
+
+cd $WORKDIR/$FFMPEG_SRC
+for i in `ls $CDIR/arch/$SYSTEM/patches` ; do
+	patch <"$CDIR/arch/$SYSTEM/patches/$i" -p0 || exit 1
+done
+
+./configure $FFMPEG_CFG --extra-cflags="$INCLUDE $GCCOPTS" --extra-ldflags="-L$LIBDIR $GCCOPTS" $XFCONFIG || exit 1
+$MAKE || exit 1
+mv "$WORKDIR/$FFMPEG_SRC/ffmpeg" "$DISTDIR/ffmpeg" || exit 1
+
