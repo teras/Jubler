@@ -44,7 +44,6 @@ public class SubEntry implements Comparable<SubEntry> {
 
     private static final AbstractStyleover[] styleover_template;
 
-
     static {
 
         /* this is a template of the handler of the AbstractStyleover Event
@@ -79,7 +78,7 @@ public class SubEntry implements Comparable<SubEntry> {
     }
     /* Markings */
     public static final String[] MarkNames = {_("None"), _("Pink"), _("Yellow"), _("Cyan")};
-    private Time start,  finish;
+    private Time start, finish;
     private String subtext;
     private int mark;
     private SubStyle style;
@@ -110,12 +109,11 @@ public class SubEntry implements Comparable<SubEntry> {
         style = old.style;
         if (old.overstyle != null) {
             overstyle = new AbstractStyleover[old.overstyle.length];
-            for (int i = 0; i < overstyle.length; i++) {
+            for (int i = 0; i < overstyle.length; i++)
                 if (old.overstyle[i] != null) {
                     overstyle[i] = (AbstractStyleover) styleover_template[i].clone();
                     overstyle[i].updateClone(old.overstyle[i]);
                 }
-            }
         }
     }
 
@@ -153,16 +151,13 @@ public class SubEntry implements Comparable<SubEntry> {
             int textsize = text.length();
             int emptystyles = 0;
             for (int i = 0; i < overstyle.length; i++) {
-                if (overstyle[i] != null) {
+                if (overstyle[i] != null)
                     overstyle[i] = overstyle[i].setMaxStylePosition(textsize);
-                }
-                if (overstyle[i] == null) {
+                if (overstyle[i] == null)
                     emptystyles++;
-                }
             }
-            if (emptystyles == overstyle.length) {
+            if (emptystyles == overstyle.length)
                 overstyle = null;
-            }
         }
     }
 
@@ -185,14 +180,13 @@ public class SubEntry implements Comparable<SubEntry> {
             case 3:
                 return "0";
             case 4:
-                if (style == null) {
+                if (style == null)
                     return "?Default";
-                }
                 return style.toString();
             case 5:
-               return (subtext==null || subtext.length() == 0)
-                   ?"0"
-                   :Math.round((subtext.length()*(60/((finish.getMillis() - start.getMillis())/1000d))))+"";
+                return (subtext == null || subtext.length() == 0)
+                        ? "0"
+                        : Math.round((subtext.length() * (60 / ((finish.getMillis() - start.getMillis()) / 1000d)))) + "";
             case 6:
                 return subtext.replace('\n', '|');
         }
@@ -213,27 +207,22 @@ public class SubEntry implements Comparable<SubEntry> {
 
     void setData(int col, Object data) {
         JIDialog.error(null, "BUG IN PROGRAM: SET DATA WAS SELECTED\nPlease contact author", _("Error!"));
-        if (col == 3) {
+        if (col == 3)
             subtext = data.toString();
-        }
     }
 
     public boolean isInTime(double t) {
-        if (t >= start.toSeconds() && t <= finish.toSeconds()) {
+        if (t >= start.toSeconds() && t <= finish.toSeconds())
             return true;
-        }
         return false;
     }
 
     public void cleanupEvents() {
-        if (overstyle == null) {
+        if (overstyle == null)
             return;
-        }
-        for (int i = 0; i < overstyle.length - 1; i++) {    // Ignore last "unknown" event
-            if (overstyle[i] != null) {
+        for (int i = 0; i < overstyle.length - 1; i++)    // Ignore last "unknown" event
+            if (overstyle[i] != null)
                 overstyle[i].cleanupEvents(style.get(i), subtext);
-            }
-        }
     }
 
     public void addOverStyle(StyleType type, Object value, int start) {
@@ -246,9 +235,8 @@ public class SubEntry implements Comparable<SubEntry> {
 
     private AbstractStyleover getStyleover(StyleType type) {
         // Create style array, if it doesn't exist
-        if (overstyle == null) {
+        if (overstyle == null)
             overstyle = new AbstractStyleover[styleover_template.length];
-        }
 
         // Create style array, if it doesn't exist
         int idx = type.ordinal();
@@ -262,29 +250,23 @@ public class SubEntry implements Comparable<SubEntry> {
     public void applyAttributesToDocument(JTextPane pane) {
         pane.setBackground((Color) style.get(StyleType.SHADOW));
         pane.setCaretColor((Color) style.get(StyleType.SECONDARY));
-        for (int i = 0; i < styleover_template.length; i++) {
-            if (overstyle == null || overstyle[i] == null) {
+        for (int i = 0; i < styleover_template.length; i++)
+            if (overstyle == null || overstyle[i] == null)
                 StyleoverCharacter.applyAttributesToDocument(pane.getStyledDocument(), style.get(i), styleover_template[i], subtext.length());
-            } else {
+            else
                 overstyle[i].applyAttributesToDocument(pane.getStyledDocument(), style.get(i), subtext.length());
-            }
-        }
     }
 
     public void insertText(int start, int length) {
-        for (int i = 0; i < styleover_template.length; i++) {
-            if (overstyle != null && overstyle[i] != null) {
+        for (int i = 0; i < styleover_template.length; i++)
+            if (overstyle != null && overstyle[i] != null)
                 overstyle[i].insertText(start, length);
-            }
-        }
     }
 
     public void removeText(int start, int length) {
-        for (int i = 0; i < styleover_template.length; i++) {
-            if (overstyle != null && overstyle[i] != null) {
+        for (int i = 0; i < styleover_template.length; i++)
+            if (overstyle != null && overstyle[i] != null)
                 overstyle[i].removeText(start, length, subtext.length(), style.get(i), subtext);
-            }
-        }
     }
 
     public void resetOverStyle() {
@@ -302,20 +284,16 @@ public class SubEntry implements Comparable<SubEntry> {
         m.length = subtext.length();
 
         int curcol = 0;
-        for (int idx = 0; idx < m.length; idx++) {
+        for (int idx = 0; idx < m.length; idx++)
             if (subtext.charAt(idx) == '\n') {
                 m.lines++;
-                if (curcol > m.maxlength) {
+                if (curcol > m.maxlength)
                     m.maxlength = curcol;
-                }
                 curcol = 0;
-            } else {
+            } else
                 curcol++;
-            }
-        }
-        if (curcol > m.maxlength) {
+        if (curcol > m.maxlength)
             m.maxlength = curcol;
-        }
         return m;
     }
 
@@ -325,9 +303,8 @@ public class SubEntry implements Comparable<SubEntry> {
                 setMark(attr.getMaxColor());
                 return true;
             }
-            if (mark == attr.getMaxColor()) {
+            if (mark == attr.getMaxColor())
                 setMark(0);
-            }
         }
         return false;
     }

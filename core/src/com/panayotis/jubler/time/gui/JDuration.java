@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time.gui;
 
 import java.text.DecimalFormat;
@@ -34,29 +33,32 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JDuration extends javax.swing.JPanel {
-    
+
     /** Creates new form JDuration */
     public JDuration() {
         initComponents();
     }
-    
-    
+
     public double getAbsTime() {
-        if (!AbsoluteT.isSelected()) return -1;
+        if (!AbsoluteT.isSelected())
+            return -1;
         try {
             return Double.parseDouble(AbsBox.getText()) / 1000;
-        } catch ( NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
         return -1;
     }
-    
+
     public double getCPSTime() {
-        if (!CPSecT.isSelected()) return -1;
+        if (!CPSecT.isSelected())
+            return -1;
         try {
             return Double.parseDouble(CPSBox.getText()) / 1000;
-        } catch ( NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
         return -1;
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -115,23 +117,21 @@ public class JDuration extends javax.swing.JPanel {
         CPSBox.setEnabled(false);
         add(CPSBox);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void CPSecTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CPSecTActionPerformed
         AbsBox.setEnabled(false);
         CPSBox.setEnabled(true);
     }//GEN-LAST:event_CPSecTActionPerformed
-    
+
     private void AbsoluteTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbsoluteTActionPerformed
         AbsBox.setEnabled(true);
         CPSBox.setEnabled(false);
     }//GEN-LAST:event_AbsoluteTActionPerformed
-    
+
     private void IgnoreBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IgnoreBoxActionPerformed
         AbsBox.setEnabled(false);
         CPSBox.setEnabled(false);
     }//GEN-LAST:event_IgnoreBoxActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField AbsBox;
     private javax.swing.JRadioButton AbsoluteT;
@@ -140,12 +140,9 @@ public class JDuration extends javax.swing.JPanel {
     private javax.swing.JRadioButton IgnoreBox;
     private javax.swing.ButtonGroup TimeType;
     // End of variables declaration//GEN-END:variables
-    
-    
-    
+
     private Format getFormatter() {
         DecimalFormat formatter = new DecimalFormat("#######");
         return formatter;
     }
-    
 }

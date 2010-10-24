@@ -32,10 +32,11 @@ public class Language {
         this.name = name;
         this.id = id;
     }
-    
+
     public String getName() {
         return name;
     }
+
     public String getID() {
         return id;
     }

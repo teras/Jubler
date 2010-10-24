@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
+
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
@@ -34,31 +34,31 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JPaster extends javax.swing.JPanel {
+
     private JTimeSpinner pastepos;
-    
-    
+
     /** Creates new form JPaster */
     public JPaster(Time t) {
-        
+
         initComponents();
-        for ( int i = 0 ; i < SubEntry.MarkNames.length ; i++ ) {
+        for (int i = 0; i < SubEntry.MarkNames.length; i++)
             ColSel.addItem(SubEntry.MarkNames[i]);
-        }
 
         pastepos = new JTimeSpinner();
         pastepos.setValue(t);
         SpinP.add(pastepos, BorderLayout.CENTER);
     }
-    
-    public int getMark () {
-        if ( !ChColor.isSelected()) return -1;
+
+    public int getMark() {
+        if (!ChColor.isSelected())
+            return -1;
         return ColSel.getSelectedIndex();
     }
-    
+
     public Time getStartTime() {
-        return (Time)pastepos.getValue();
+        return (Time) pastepos.getValue();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -98,13 +98,10 @@ public class JPaster extends javax.swing.JPanel {
     private void ChColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChColorActionPerformed
         ColSel.setEnabled(ChColor.isSelected());
     }//GEN-LAST:event_ChColorActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ChColor;
     private javax.swing.JComboBox ColSel;
     private javax.swing.JPanel SpinP;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-    
 }

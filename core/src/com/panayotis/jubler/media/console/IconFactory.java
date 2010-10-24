@@ -44,6 +44,7 @@ public class IconFactory {
     public static ImageIcon getRolloverIcon(ImageIcon from) {
         return getIcon(from, roll);
     }
+
     public static ImageIcon getPressedIcon(ImageIcon from) {
         return getIcon(from, press);
     }

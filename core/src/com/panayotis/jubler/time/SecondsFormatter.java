@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time;
 
 import java.text.ParseException;
@@ -33,28 +32,28 @@ import javax.swing.text.MaskFormatter;
  * @author teras
  */
 public class SecondsFormatter extends MaskFormatter {
+
     private static Pattern pat;
-    
+
     static {
         pat = Pattern.compile("(\\d+):(\\d+):(\\d+),(\\d\\d\\d)\\d*");
     }
-    
-    public SecondsFormatter () throws ParseException { 
+
+    public SecondsFormatter() throws ParseException {
         super("##:##:##,###");
         setPlaceholder(null);
         setPlaceholderCharacter('0');
     }
-    
+
     public Object stringToValue(String text) throws ParseException {
         Matcher m = pat.matcher(text);
-        if ( !m.matches()) {
-            throw new ParseException("",0);
-        }
+        if (!m.matches())
+            throw new ParseException("", 0);
         Time res = new Time(m.group(1), m.group(2), m.group(3), m.group(4));
         return res;
     }
-        
+
     public String valueToString(Object value) {
-        return ((Time)value).getSeconds();
+        return ((Time) value).getSeconds();
     }
 }

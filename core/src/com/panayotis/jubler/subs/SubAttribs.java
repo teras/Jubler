@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 /**
@@ -28,38 +27,41 @@ package com.panayotis.jubler.subs;
  * @author teras
  */
 public class SubAttribs {
+
     private final String title;
     private final String author;
     private final String source;
     private final String comments;
-    
     private final int maxchars;
     private final int maxcolor;
     private final boolean isMaxCPS;
-    
     private static final int DEFAULT_MAXCOLOR = 1;
     private static final int DEFAULT_MAXCHARS = 40;
     private static final boolean DEFAULT_ISMAXCPS = false;
-    
+
     /** Creates a new instance of SubAttribs */
     public SubAttribs() {
         this(null, null, null, null);
     }
-    
+
     public SubAttribs(String title, String author, String source, String comments) {
         this(title, author, source, comments, DEFAULT_MAXCHARS, DEFAULT_MAXCOLOR, DEFAULT_ISMAXCPS);
     }
-    
-    public SubAttribs( SubAttribs old ) {
+
+    public SubAttribs(SubAttribs old) {
         this(old.title, old.author, old.source, old.comments, old.maxchars, old.maxcolor, old.isMaxCPS);
     }
-    
+
     public SubAttribs(String title, String author, String source, String comments, int maxchars, int maxcolor, boolean isMaxCPS) {
-        if (title==null) title = "";
-        if (source==null) source = "";
-        if (author==null) author = System.getProperty("user.name");
-        if (comments==null) comments = "Edited with Jubler subtitle editor";
-        
+        if (title == null)
+            title = "";
+        if (source == null)
+            source = "";
+        if (author == null)
+            author = System.getProperty("user.name");
+        if (comments == null)
+            comments = "Edited with Jubler subtitle editor";
+
         this.title = title;
         this.author = author;
         this.source = source;
@@ -68,24 +70,47 @@ public class SubAttribs {
         this.maxcolor = maxcolor;
         this.isMaxCPS = isMaxCPS;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof SubAttribs) {
-            SubAttribs s = (SubAttribs)o;
-            return title.equals(s.title) && author.equals(s.author) && 
-                    source.equals(s.source) && comments.equals(s.comments) && 
-                    maxchars==s.maxchars && maxcolor==s.maxcolor && isMaxCPS == s.isMaxCPS;
+            SubAttribs s = (SubAttribs) o;
+            return title.equals(s.title) && author.equals(s.author)
+                    && source.equals(s.source) && comments.equals(s.comments)
+                    && maxchars == s.maxchars && maxcolor == s.maxcolor && isMaxCPS == s.isMaxCPS;
         }
         return super.equals(o);
     }
-    
-    public String getTitle() { return title; }
-    public String getAuthor() { return author; }
-    public String getSource() { return source; }
-    public String getComments() { return comments; }
-    public int getMaxCharacters() { return Math.abs(maxchars); }
-    public int getMaxColor() { return maxcolor; }
-    public boolean isMaxCharsEnabled() { return maxchars > 0; }
-    public boolean isMaxCPS() { return isMaxCPS; }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public int getMaxCharacters() {
+        return Math.abs(maxchars);
+    }
+
+    public int getMaxColor() {
+        return maxcolor;
+    }
+
+    public boolean isMaxCharsEnabled() {
+        return maxchars > 0;
+    }
+
+    public boolean isMaxCPS() {
+        return isMaxCPS;
+    }
 }

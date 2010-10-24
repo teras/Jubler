@@ -66,12 +66,12 @@ public abstract class SubFormat implements Plugin {
     }
 
     public String[] getAffectionList() {
-        return new String [] {"com.panayotis.jubler.subs.loader.AvailSubFormats"};
+        return new String[]{"com.panayotis.jubler.subs.loader.AvailSubFormats"};
     }
 
     public void postInit(Object o) {
         if (o instanceof AvailSubFormats) {
-            AvailSubFormats l = (AvailSubFormats)o;
+            AvailSubFormats l = (AvailSubFormats) o;
             l.add(this);
         }
     }

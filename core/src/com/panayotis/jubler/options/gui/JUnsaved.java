@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options.gui;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -33,14 +32,15 @@ import javax.swing.JList;
  * @author  teras
  */
 public class JUnsaved extends javax.swing.JPanel {
+
     Vector<String> unsaved;
-    
+
     /** Creates new form JUnsaved */
     public JUnsaved(Vector<String> un) {
         unsaved = un;
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -66,13 +66,10 @@ public class JUnsaved extends javax.swing.JPanel {
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList UnsavedL;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    
 }

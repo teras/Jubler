@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.replace;
 
 import javax.swing.ListSelectionModel;
@@ -32,8 +31,9 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JReplaceList extends javax.swing.JPanel {
+
     ReplaceModel model;
-    
+
     /**
      * Creates new form JReplaceList
      */
@@ -44,7 +44,7 @@ public class JReplaceList extends javax.swing.JPanel {
         TTable.getColumnModel().getColumn(0).setMaxWidth(30);
         TTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -140,29 +140,26 @@ public class JReplaceList extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void DeleteMarkedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMarkedActionPerformed
         model.remove(TTable.getSelectedRow());
     }//GEN-LAST:event_DeleteMarkedActionPerformed
-    
+
     private void InverseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InverseActionPerformed
-        for ( int i = 0 ; i < (model.size()-1) ; i++ ) {
+        for (int i = 0; i < (model.size() - 1); i++)
             model.elementAt(i).usable = !model.elementAt(i).usable;
-        }
         model.fireTableDataChanged();
     }//GEN-LAST:event_InverseActionPerformed
-    
+
     private void ClearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearAllActionPerformed
-        for ( int i = 0 ; i < (model.size()-1) ; i++ ) {
+        for (int i = 0; i < (model.size() - 1); i++)
             model.elementAt(i).usable = false;
-        }
         model.fireTableDataChanged();
     }//GEN-LAST:event_ClearAllActionPerformed
-    
+
     private void MarkAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MarkAllActionPerformed
-        for ( int i = 0 ; i < (model.size()-1) ; i++ ) {
+        for (int i = 0; i < (model.size() - 1); i++)
             model.elementAt(i).usable = true;
-        }
         model.fireTableDataChanged();
     }//GEN-LAST:event_MarkAllActionPerformed
 
@@ -177,11 +174,10 @@ public class JReplaceList extends javax.swing.JPanel {
     private void SaveValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveValuesActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_SaveValuesActionPerformed
-    
+
     public ReplaceModel getModel() {
         return model;
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ClearAll;
     private javax.swing.JButton DeleteMarked;
@@ -195,5 +191,4 @@ public class JReplaceList extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
-    
 }

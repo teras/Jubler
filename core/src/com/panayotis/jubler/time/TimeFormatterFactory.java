@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time;
 
 import java.text.ParseException;
@@ -31,13 +30,13 @@ import javax.swing.JFormattedTextField;
  * @author teras
  */
 public class TimeFormatterFactory extends JFormattedTextField.AbstractFormatterFactory {
-    
-    public JFormattedTextField.AbstractFormatter getFormatter(JFormattedTextField tf)  {
+
+    public JFormattedTextField.AbstractFormatter getFormatter(JFormattedTextField tf) {
         try {
             return new SecondsFormatter();
-      //      return new FramesFormatter();
-        } catch ( ParseException e) {}
+            //      return new FramesFormatter();
+        } catch (ParseException e) {
+        }
         return null;
     }
-    
 }

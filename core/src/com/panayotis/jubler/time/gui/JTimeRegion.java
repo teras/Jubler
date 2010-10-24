@@ -35,8 +35,8 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 public class JTimeRegion extends JTimeArea {
 
-    private JTimeSelector starttime,  endtime;
-    
+    private JTimeSelector starttime, endtime;
+
     /** Creates new form jTimeRegion */
     public JTimeRegion() {
         super();
@@ -47,7 +47,7 @@ public class JTimeRegion extends JTimeArea {
         endtime = new JTimeSelector(false);
         TimesP.add(starttime);
         TimesP.add(endtime);
-      }
+    }
 
     @Override
     public void setEnabled(boolean status) {
@@ -79,9 +79,8 @@ public class JTimeRegion extends JTimeArea {
         for (i = 0; i < subs.size(); i++) {
             csub = subs.elementAt(i);
             tcurrent = csub.getStartTime().toSeconds();
-            if (tcurrent >= tstart && tcurrent <= tfinish) {
+            if (tcurrent >= tstart && tcurrent <= tfinish)
                 affected.add(csub);
-            }
         }
         return affected;
     }
@@ -93,7 +92,7 @@ public class JTimeRegion extends JTimeArea {
     public double getFinishTime() {
         return endtime.getTime();
     }
-    
+
     public void setRegionToMaximum() {
         starttime.setTimeToEdge();
         endtime.setTimeToEdge();
@@ -116,7 +115,6 @@ public class JTimeRegion extends JTimeArea {
         TimesP.setLayout(new java.awt.GridLayout(1, 2));
         add(TimesP, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup FromGroup;
     private javax.swing.JPanel TimesP;

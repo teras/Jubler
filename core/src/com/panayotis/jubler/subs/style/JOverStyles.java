@@ -20,8 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
-
 package com.panayotis.jubler.subs.style;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -48,18 +46,16 @@ import javax.swing.JComponent;
  * @author  teras
  */
 public class JOverStyles extends javax.swing.JPanel {
+
     private JubFrame parent;
-    
     /* live button icons */
     private JAlphaIcon PrimaryI, SecondaryI, OutlineI, ShadowI;
-    
-    
     private TriObject[] visuals;
-    
+
     /** Creates new form JOverStyles */
     public JOverStyles(JubFrame parent) {
         initComponents();
-        
+
         visuals = new TriObject[StyleType.values().length];
 
         FontAttP.add((JComponent) (visuals[0] = new TriComboBox(SubStyle.FontNames)), BorderLayout.CENTER);
@@ -92,55 +88,49 @@ public class JOverStyles extends javax.swing.JPanel {
             SystemDependent.setColorButtonStyle((AbstractButton) visuals[i], "only");
             ((AbstractButton) visuals[i]).setToolTipText(_(TriColorButton.tooltips[i - 6]));
         }
-        
-        
-        for (int i = 10 ; i < visuals.length ; i++) {
+
+
+        for (int i = 10; i < visuals.length; i++)
             visuals[i] = new TriDummy();
-        }
-        
-        TextAttP.add((JComponent)(visuals[DIRECTION.ordinal()] = new TriDirectionButton(parent)));
-        SystemDependent.setToolBarButtonStyle((AbstractButton)visuals[DIRECTION.ordinal()], "only");
-        ((AbstractButton)visuals[DIRECTION.ordinal()]).setToolTipText(_("Alignment"));
-        
-        for (int i = 0 ; i < visuals.length ; i++) {
-            ((TriObject)visuals[i]).setStyle(StyleType.values()[i]);
-        }
-        
+
+        TextAttP.add((JComponent) (visuals[DIRECTION.ordinal()] = new TriDirectionButton(parent)));
+        SystemDependent.setToolBarButtonStyle((AbstractButton) visuals[DIRECTION.ordinal()], "only");
+        ((AbstractButton) visuals[DIRECTION.ordinal()]).setToolTipText(_("Alignment"));
+
+        for (int i = 0; i < visuals.length; i++)
+            ((TriObject) visuals[i]).setStyle(StyleType.values()[i]);
+
         FontP.setVisible(false);
         ColorP.setVisible(false);
-        
+
         this.parent = parent;
     }
-    
-    
+
     public void setStyleChangeListener(StyleChangeListener listener) {
-        for (int i = 0 ; i < visuals.length ; i++) {
-            ((TriObject)visuals[i]).setListener(listener);
-        }
+        for (int i = 0; i < visuals.length; i++)
+            ((TriObject) visuals[i]).setListener(listener);
     }
-    
+
     public void setPanelVisible(String what, boolean isVisible) {
-        if (what.endsWith("font")) FontP.setVisible(isVisible);
-        if (what.endsWith("color")) ColorP.setVisible(isVisible);
+        if (what.endsWith("font"))
+            FontP.setVisible(isVisible);
+        if (what.endsWith("color"))
+            ColorP.setVisible(isVisible);
         validate();
     }
-    
-    
-    
+
     public void updateVisualData(SubStyle style, AbstractStyleover[] over, int start, int end, String subtext) {
-        for (int i = 0 ; i < visuals.length ; i++) {
+        for (int i = 0; i < visuals.length; i++) {
             Object basic = style.get(i);
             Object data;
-            if (over == null || over[i] == null) {
+            if (over == null || over[i] == null)
                 data = basic;
-            } else {
+            else
                 data = over[i].getValue(start, end, basic, subtext);
-            }
             visuals[i].setData(data);
         }
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -175,14 +165,10 @@ public class JOverStyles extends javax.swing.JPanel {
         ColorP.setLayout(new java.awt.GridLayout(1, 0, 2, 0));
         add(ColorP);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ColorP;
     private javax.swing.JPanel FontAttP;
     private javax.swing.JPanel FontP;
     private javax.swing.JPanel TextAttP;
     // End of variables declaration//GEN-END:variables
-    
 }

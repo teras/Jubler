@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.options.JPreferences;
@@ -36,16 +35,14 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 
-
-
 /**
  *
  * @author teras
  */
 public abstract class AbstractBinarySubFormat extends SubFormat {
-    
+
     protected Subtitles subtitle_list;
-    
+
     public Subtitles parse(String input, float FPS, File f) {
         // read binary
         subtitle_list = new Subtitles();
@@ -53,10 +50,10 @@ public abstract class AbstractBinarySubFormat extends SubFormat {
             BufferedReader in = new BufferedReader(new FileReader(f));
             parseBinary(FPS, in);
             return subtitle_list;
-        } catch (FileNotFoundException e ) { }
+        } catch (FileNotFoundException e) {
+        }
         return null;
     }
-    
+
     protected abstract void parseBinary(float FPS, BufferedReader in);
-    
 }

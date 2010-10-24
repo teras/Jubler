@@ -138,7 +138,6 @@ public class JSaveOptions extends JFileOptions {
     private void CFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CFormatActionPerformed
         updateVisualFPS();
     }//GEN-LAST:event_CFormatActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CEnc;
     private javax.swing.JLabel CEncL;

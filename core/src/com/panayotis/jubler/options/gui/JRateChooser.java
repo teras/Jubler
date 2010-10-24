@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options.gui;
 
 import com.panayotis.jubler.JubFrame;
@@ -32,22 +31,20 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JPanel;
 
-
 /**
  *
  * @author  teras
  */
 public class JRateChooser extends JPanel {
-       
+
     private MediaFile mfile = null;
     private Subtitles subs = null;
-    
+
     /** Creates new form JRateChooser */
     public JRateChooser() {
         initComponents();
     }
-    
-    
+
     public float getFPSValue() {
         try {
             return Float.parseFloat(getFPS());
@@ -55,26 +52,26 @@ public class JRateChooser extends JPanel {
         }
         return SubFile.getDefaultFPS();
     }
-    
+
     public void setDataFiles(MediaFile m, Subtitles s) {
         mfile = m;
         subs = s;
     }
-    
+
     public void setFPS(float fps) {
         FPSChooser.setSelectedItem(fps);
     }
-    
+
     public String getFPS() {
         return FPSChooser.getSelectedItem().toString();
     }
-    
+
     public void setEnabled(boolean value) {
         super.setEnabled(value);
         FPSChooser.setEnabled(value);
         FromFPSB.setEnabled(value);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -112,8 +109,10 @@ public class JRateChooser extends JPanel {
 
     private void FPSChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FPSChooserActionPerformed
         String action = evt.getActionCommand().trim();
-        if ( action.equals("")) return;
-        if ( action.startsWith("combo")) return;
+        if (action.equals(""))
+            return;
+        if (action.startsWith("combo"))
+            return;
         try {
             Float.parseFloat(action);
             FPSChooser.setSelectedItem(action);
@@ -121,19 +120,19 @@ public class JRateChooser extends JPanel {
             JIDialog.error(this, "Not a valid number: {0}", _("Wrong FPS"));
         }
     }//GEN-LAST:event_FPSChooserActionPerformed
-    
+
     private void FromFPSBFPSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromFPSBFPSBActionPerformed
-        if (mfile==null) return;
-        if (! mfile.validateMediaFile(subs, false, JubFrame.windows.elementAt(0))) return;
-        
+        if (mfile == null)
+            return;
+        if (!mfile.validateMediaFile(subs, false, JubFrame.windows.elementAt(0)))
+            return;
+
         float fps = mfile.getVideoFile().getFPS();
-        if (fps>0) FPSChooser.setSelectedItem(fps);
+        if (fps > 0)
+            FPSChooser.setSelectedItem(fps);
     }//GEN-LAST:event_FromFPSBFPSBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox FPSChooser;
     private javax.swing.JButton FromFPSB;
     // End of variables declaration//GEN-END:variables
-    
 }

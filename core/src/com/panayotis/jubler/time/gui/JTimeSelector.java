@@ -9,9 +9,7 @@ import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.BorderLayout;
-import java.awt.Point;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 /**
  *
@@ -26,10 +24,8 @@ public class JTimeSelector extends JPanel {
     /* static variable to store the last used selection model */
     protected final static boolean REGION_EDGE = false;
     protected final static boolean REGION_SELECTION = true;
-
     protected static boolean region_from_model = REGION_SELECTION;
     protected static boolean region_to_model = REGION_SELECTION;
-    
 
     /** Creates new form JTimeSelector */
     public JTimeSelector(boolean start_position) {
@@ -58,16 +54,17 @@ public class JTimeSelector extends JPanel {
 
     void updateData(Time t) {
         selected_time = t;
-        
+
         boolean region_model;
-        if (is_start_position) region_model = region_from_model;
-        else region_model = region_to_model;
-        
-        if (region_model == REGION_SELECTION) {
+        if (is_start_position)
+            region_model = region_from_model;
+        else
+            region_model = region_to_model;
+
+        if (region_model == REGION_SELECTION)
             SelectM.doClick();
-        } else {
+        else
             EdgeM.doClick();
-        }
     }
 
     void setTimeToEdge() {
@@ -80,7 +77,6 @@ public class JTimeSelector extends JPanel {
     double getTime() {
         return spinner.getTimeValue().toSeconds();
     }
-    
 
     /** This method is called from within the constructor to
      * initialize the form.
@@ -132,16 +128,19 @@ public class JTimeSelector extends JPanel {
 
     private void EdgeMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EdgeMActionPerformed
         setTimeToEdge();
-        if (is_start_position) region_from_model = REGION_EDGE;
-        else region_to_model = REGION_EDGE;
+        if (is_start_position)
+            region_from_model = REGION_EDGE;
+        else
+            region_to_model = REGION_EDGE;
 }//GEN-LAST:event_EdgeMActionPerformed
 
     private void SelectMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectMActionPerformed
         spinner.setTimeValue(selected_time);
-        if (is_start_position) region_from_model = REGION_SELECTION;
-        else region_to_model = REGION_SELECTION;
+        if (is_start_position)
+            region_from_model = REGION_SELECTION;
+        else
+            region_to_model = REGION_SELECTION;
     }//GEN-LAST:event_SelectMActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EdgeB;
     private javax.swing.JMenuItem EdgeM;

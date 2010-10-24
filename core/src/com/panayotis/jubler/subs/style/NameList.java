@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style;
 
 /**
@@ -28,8 +27,10 @@ package com.panayotis.jubler.subs.style;
  * @author teras
  */
 public interface NameList {
-    
+
     public String getNameAt(int i);
+
     public Object elementAt(int i);
+
     public int size();
 }

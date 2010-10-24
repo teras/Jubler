@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.options.gui.TabPage;
@@ -30,7 +29,8 @@ import com.panayotis.jubler.options.gui.TabPage;
  * @author teras
  */
 public interface OptionsHolder extends TabPage {
-    public abstract void loadPreferences();
-    public abstract void savePreferences();
 
+    public abstract void loadPreferences();
+
+    public abstract void savePreferences();
 }

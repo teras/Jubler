@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.gui;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -34,12 +33,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
 /**
  *
  * @author  teras
  */
 public class JAlphaColorDialog extends JDialog implements ActionListener, ChangeListener {
+
     private JColorChooser chooser;
     private AlphaPanel apanel;
     private AlphaColor retcolor, origcolor;
@@ -51,30 +50,29 @@ public class JAlphaColorDialog extends JDialog implements ActionListener, Change
         chooser = new JColorChooser();
         chooser.setBorder(new EmptyBorder(4, 4, 4, 4));
         apanel = new AlphaPanel(new AlphaColor(Color.CYAN, 255));
-        
+
         add(chooser, BorderLayout.CENTER);
         AlphaP.add(apanel, BorderLayout.CENTER);
-        
+
         chooser.getSelectionModel().addChangeListener(this);
-        
+
         pack();
     }
-    
-    
+
     public void setAlphaColor(AlphaColor c) {
-        if (c==null) return;
+        if (c == null)
+            return;
         chooser.setColor(c);
         AlphaS.setValue(c.getAlpha());
         apanel.setAlphaColor(c);
         origcolor = c;
         retcolor = null;
     }
-    
+
     public AlphaColor getAlphaColor() {
         return retcolor;
     }
-     
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -143,26 +141,25 @@ public class JAlphaColorDialog extends JDialog implements ActionListener, Change
         }
     }
     // </editor-fold>//GEN-END:initComponents
-    
+
     private void ResetBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetBActionPerformed
         chooser.setColor(origcolor);
         apanel.setAlphaColor(origcolor);
         AlphaS.setValue(origcolor.getAlpha());
     }//GEN-LAST:event_ResetBActionPerformed
-    
+
     private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
         setVisible(false);
     }//GEN-LAST:event_CancelBActionPerformed
-    
+
     private void OKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKBActionPerformed
         retcolor = new AlphaColor(chooser.getColor(), AlphaS.getValue());
         setVisible(false);
     }//GEN-LAST:event_OKBActionPerformed
-    
+
     public void stateChanged(ChangeEvent e) {
         apanel.setColorOnly(chooser.getColor());
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AlphaP;
     private javax.swing.JSlider AlphaS;
@@ -172,5 +169,4 @@ public class JAlphaColorDialog extends JDialog implements ActionListener, Change
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
-    
 }

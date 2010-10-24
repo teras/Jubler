@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -28,15 +27,15 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.SystemDependent;
 
-
 /**
  *
  * @author  teras
  */
 public class JSubEditorDialog extends javax.swing.JDialog {
+
     JubFrame parent;
     JSubEditor editor;
-    
+
     /** Creates new form JSubEditor */
     public JSubEditorDialog(JubFrame parent, JSubEditor editor) {
         super(parent, false);
@@ -46,7 +45,7 @@ public class JSubEditorDialog extends javax.swing.JDialog {
         this.editor = editor;
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -70,9 +69,6 @@ public class JSubEditorDialog extends javax.swing.JDialog {
         remove(editor);
         editor.setAttached(true);
     }//GEN-LAST:event_formWindowClosing
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
 }

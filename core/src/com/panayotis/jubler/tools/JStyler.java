@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
+
 import com.panayotis.jubler.JubFrame;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -32,42 +32,42 @@ import com.panayotis.jubler.subs.style.SubStyle;
  * @author  teras
  */
 public class JStyler extends JTool {
-    
+
     SubStyle style;
-    
+
     public JStyler() {
         super(true);
     }
-    
+
     public void initialize() {
         initComponents();
     }
-    
+
     protected void updateData(JubFrame jub) {
         super.updateData(jub);
-        
+
         int selvalue = StyleSel.getSelectedIndex();
         StyleSel.removeAllItems();
-        for ( SubStyle style : subs.getStyleList() )
+        for (SubStyle style : subs.getStyleList())
             StyleSel.addItem(style);
-        if ( selvalue < 0 )
+        if (selvalue < 0)
             selvalue = 0;
-        if ( selvalue < subs.getStyleList().size() )
+        if (selvalue < subs.getStyleList().size())
             StyleSel.setSelectedIndex(selvalue);
     }
-    
+
     protected String getToolTitle() {
         return _("Set region style");
     }
-    
+
     protected void storeSelections() {
-        style = (SubStyle)StyleSel.getSelectedItem();
+        style = (SubStyle) StyleSel.getSelectedItem();
     }
-    
+
     protected void affect(int index) {
         affected_list.get(index).setStyle(style);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -95,12 +95,9 @@ public class JStyler extends JTool {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JPanel2;
     private javax.swing.JComboBox StyleSel;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-    
 }

@@ -20,49 +20,48 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time.gui;
+
 import com.panayotis.jubler.time.Time;
 import java.awt.BorderLayout;
-
-import static com.panayotis.jubler.i18n.I18N._;
 
 /**
  *
  * @author  teras
  */
 public class JTimeSingleSelection extends javax.swing.JPanel {
+
     private JTimeSpinner splitpos;
     private String DialogLabel;
-    
+
     /** Creates new form JJoin */
     public JTimeSingleSelection(Time t, String DialogLabel) {
         this(DialogLabel);
         setTime(t);
     }
-    
+
     public JTimeSingleSelection(String DialogLabel) {
         splitpos = new JTimeSpinner();
         this.DialogLabel = DialogLabel;
         initComponents();
         ViewP.add(splitpos, BorderLayout.CENTER);
     }
-    
+
     public void setToolTip(String txt) {
         splitpos.setToolTipText(txt);
     }
+
     public void setLabel(String txt) {
-        
     }
-    
+
     public void setTime(Time t) {
         splitpos.setValue(t);
     }
-    
+
     public Time getTime() {
-        return (Time)splitpos.getValue();
+        return (Time) splitpos.getValue();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -83,11 +82,8 @@ public class JTimeSingleSelection extends javax.swing.JPanel {
         add(ViewP, java.awt.BorderLayout.NORTH);
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel TimeLabel;
     private javax.swing.JPanel ViewP;
     // End of variables declaration//GEN-END:variables
-    
 }

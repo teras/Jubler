@@ -37,7 +37,7 @@ import javax.swing.JToggleButton;
 public class JOptionTabs extends JPanel {
 
     private ArrayList<TabPage> tabs;
-        JToggleButton first;
+    JToggleButton first;
     private Window parent;
 
     /**
@@ -62,7 +62,7 @@ public class JOptionTabs extends JPanel {
         selector.setMinimumSize(d);
         selector.setMaximumSize(d);
 
-        if (first==null)
+        if (first == null)
             first = selector;
         TabsBG.add(selector);
         tabs.add(page);
@@ -95,6 +95,7 @@ public class JOptionTabs extends JPanel {
         Tabs.revalidate();
         return Tabs;
     }
+
     public void putTabBack() {
         add(Tabs, BorderLayout.CENTER);
     }

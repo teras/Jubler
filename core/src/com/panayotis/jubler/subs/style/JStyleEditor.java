@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -50,50 +49,42 @@ import javax.swing.JButton;
  * @author  teras
  */
 public class JStyleEditor extends javax.swing.JDialog {
+
     private JAlphaIcon PrimaryI, SecondaryI, OutlineI, ShadowI;
-    
     private JAlphaColorDialog color;
     private JDirection jdir;
-    
-    
     private SubStyle current;
     private JubFrame parent;
-    
     private boolean ignore_values_change = false;
-    
     /* delete_button_selected  is used as a feedback so that main program will know that the delete button was pressed */
     private boolean delete_button_selected = false;
-    
     /* is_cloned is used when the "Clone" button is pressed, so we will know that
      * the current style is cloned (and should be deleted) */
     private boolean is_cloned = false;
-    
     /* The following variables mark the start and end of the text we want to mark with secondary color */
     int tagTextStart, tagTextLength;
-    
+
     /** Creates new form JStyleEditor */
     public JStyleEditor(JubFrame parent) {
         super(parent, true);
         SystemDependent.setSmallDecoration(getRootPane());
         initComponents();
-        
+
         this.parent = parent;
-        
+
         Primary.setIcon(PrimaryI = new JAlphaIcon(new AlphaColor(Color.WHITE, 180)));
         Secondary.setIcon(SecondaryI = new JAlphaIcon(new AlphaColor(Color.WHITE, 180)));
         Outline.setIcon(OutlineI = new JAlphaIcon(new AlphaColor(Color.WHITE, 180)));
         Shadow.setIcon(ShadowI = new JAlphaIcon(new AlphaColor(Color.WHITE, 180)));
-        
+
         BorderStyle.addItem(_("Outline"));
         BorderStyle.addItem(_("Opaque box"));
-        
-        for ( String name : SubStyle.FontNames) {
+
+        for (String name : SubStyle.FontNames)
             FontName.addItem(name);
-        }
-        for( Integer size : SubStyle.FontSizes) {
+        for (Integer size : SubStyle.FontSizes)
             FontSize.addItem(size);
-        }
-        
+
         setSpinner(BorderSize, 0, 100);
         setSpinner(ShadowSize, 0, 100);
         setSpinner(LeftMargin, 0, 1000);
@@ -103,29 +94,27 @@ public class JStyleEditor extends javax.swing.JDialog {
         setSpinner(Spacing, 0, 100);
         setSpinner(XScale, 1, 1000);
         setSpinner(YScale, 1, 1000);
-        
+
         jdir = new JDirection();
         JDirPanel.add(jdir, BorderLayout.CENTER);
-        
+
         color = new JAlphaColorDialog(parent);
-        
+
         current = null;
         setOptionsVisible(false);
         pack();
     }
 
-
     private void setSpinner(JSpinner spin, int min, int max) {
-        SpinnerNumberModel model = (SpinnerNumberModel)spin.getModel();
+        SpinnerNumberModel model = (SpinnerNumberModel) spin.getModel();
         model.setMinimum(min);
         model.setMaximum(max);
         model.setStepSize(1);
     }
-    
-    
-    @SuppressWarnings ("unchecked")
+
+    @SuppressWarnings("unchecked")
     public void setVisible(SubStyle style) {
-        if (style==null) {
+        if (style == null) {
             SubStyleList list = parent.getSubtitles().getStyleList();
             SubStyle def_value = list.elementAt(0);
             list.remove(0);
@@ -144,7 +133,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
         setVisible(true);
     }
-     
+
     private void setOptionsVisible(boolean isVisible) {
         if (isVisible) {
             AdvancedSelect.setToolTipText(_("Hide the advanced options for this style"));
@@ -154,15 +143,15 @@ public class JStyleEditor extends javax.swing.JDialog {
             Advanced.setVisible(false);
         }
     }
-    
-    
+
     public boolean closedByDelete() {
         return delete_button_selected;
     }
-    
+
     /* We call it "other", since it does not gather font attributes (they are already gathered */
     private void getOtherValues() {
-        if (current == null) return;
+        if (current == null)
+            return;
         current.set(BORDERSTYLE, BorderStyle.getSelectedIndex());
         current.set(BORDERSIZE, BorderSize.getModel().getValue());
         current.set(SHADOWSIZE, ShadowSize.getModel().getValue());
@@ -175,10 +164,10 @@ public class JStyleEditor extends javax.swing.JDialog {
         current.set(YSCALE, YScale.getModel().getValue());
         current.set(DIRECTION, jdir.getDirection());
     }
-    
+
     private void setValues() {
         ignore_values_change = true;
-        
+
         StyleName.setText(current.Name);
         DirtyIndicator.setBackground(Color.GREEN);
         if (current.isDefault()) {
@@ -190,42 +179,42 @@ public class JStyleEditor extends javax.swing.JDialog {
             Delete.setEnabled(true);
             Save.setEnabled(false);
         }
-        
+
         FontName.getModel().setSelectedItem(current.get(FONTNAME));
         FontSize.getModel().setSelectedItem(current.get(FONTSIZE));
-        Bold.setSelected((Boolean)current.get(BOLD));
-        Italic.setSelected((Boolean)current.get(ITALIC));
-        Underline.setSelected((Boolean)current.get(UNDERLINE));
-        Strike.setSelected((Boolean)current.get(STRIKETHROUGH));
-        
-        PrimaryI.setAlphaColor((AlphaColor)current.get(PRIMARY));
-        SecondaryI.setAlphaColor((AlphaColor)current.get(SECONDARY));
-        OutlineI.setAlphaColor((AlphaColor)current.get(OUTLINE));
-        ShadowI.setAlphaColor((AlphaColor)current.get(SHADOW));
-        
-        BorderStyle.setSelectedIndex((Integer)current.get(BORDERSTYLE));
-        BorderSize.getModel().setValue(((Float)current.get(BORDERSIZE)).intValue());
-        ShadowSize.getModel().setValue(((Float)current.get(SHADOWSIZE)).intValue());
-        
+        Bold.setSelected((Boolean) current.get(BOLD));
+        Italic.setSelected((Boolean) current.get(ITALIC));
+        Underline.setSelected((Boolean) current.get(UNDERLINE));
+        Strike.setSelected((Boolean) current.get(STRIKETHROUGH));
+
+        PrimaryI.setAlphaColor((AlphaColor) current.get(PRIMARY));
+        SecondaryI.setAlphaColor((AlphaColor) current.get(SECONDARY));
+        OutlineI.setAlphaColor((AlphaColor) current.get(OUTLINE));
+        ShadowI.setAlphaColor((AlphaColor) current.get(SHADOW));
+
+        BorderStyle.setSelectedIndex((Integer) current.get(BORDERSTYLE));
+        BorderSize.getModel().setValue(((Float) current.get(BORDERSIZE)).intValue());
+        ShadowSize.getModel().setValue(((Float) current.get(SHADOWSIZE)).intValue());
+
         LeftMargin.getModel().setValue(current.get(LEFTMARGIN));
         RightMargin.getModel().setValue(current.get(RIGHTMARGIN));
         Vertical.getModel().setValue(current.get(VERTICAL));
-        
-        Angle.getModel().setValue(((Float)current.get(ANGLE)).intValue());
-        Spacing.getModel().setValue(((Float)current.get(SPACING)).intValue());
+
+        Angle.getModel().setValue(((Float) current.get(ANGLE)).intValue());
+        Spacing.getModel().setValue(((Float) current.get(SPACING)).intValue());
         XScale.getModel().setValue(current.get(XSCALE));
         YScale.getModel().setValue(current.get(YSCALE));
-        
-        jdir.setDirection((SubStyle.Direction)current.get(DIRECTION));
-        
+
+        jdir.setDirection((SubStyle.Direction) current.get(DIRECTION));
+
         ignore_values_change = false;
         setText(null);
     }
-    
+
     public SubStyle getStyle() {
         return current;
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -653,59 +642,61 @@ public class JStyleEditor extends javax.swing.JDialog {
         public void windowOpened(java.awt.event.WindowEvent evt) {
         }
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         current = null;
     }//GEN-LAST:event_formWindowClosing
-    
+
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         getOtherValues(); /* First we need to gather the values from the control buttons */
         String vals = current.getValues();
         Options.setOption("Styles.Default", vals);
         Options.saveOptions();
     }//GEN-LAST:event_SaveActionPerformed
-    
+
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        if ( ! JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style"))) 
+        if (!JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style")))
             return;
         delete_button_selected = true;  // Delete will be handled by JSubEditor, not here (like Cancel)
         setVisible(null);
     }//GEN-LAST:event_DeleteActionPerformed
-    
+
     private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
-        if (is_cloned) parent.getSubtitles().getStyleList().remove(current);
+        if (is_cloned)
+            parent.getSubtitles().getStyleList().remove(current);
         current = null;
         setVisible(null);
     }//GEN-LAST:event_CancelBActionPerformed
-    
+
     private void OKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKBActionPerformed
         setVisible(null);
     }//GEN-LAST:event_OKBActionPerformed
-    
+
     private void StyleNameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_StyleNameKeyTyped
-        if (evt.getKeyChar()=='\n') return;
+        if (evt.getKeyChar() == '\n')
+            return;
         DirtyIndicator.setBackground(Color.RED);
     }//GEN-LAST:event_StyleNameKeyTyped
-    
+
     private void StyleNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StyleNameActionPerformed
         DirtyIndicator.setBackground(Color.GREEN);
-        
+
         String newname = StyleName.getText().trim();
         StringBuffer realname = new StringBuffer();
         char letter;
-        
-        for (int i = 0 ; i < newname.length() ; i++) {
+
+        for (int i = 0; i < newname.length(); i++) {
             letter = newname.charAt(i);
-            if ( (letter >= '0' && letter <= '9')
-            || (letter >='a' && letter <='z')
-            || (letter >='A' && letter <='Z')
-            || (letter == '-' || letter == '_' || letter == '.' )) {
+            if ((letter >= '0' && letter <= '9')
+                    || (letter >= 'a' && letter <= 'z')
+                    || (letter >= 'A' && letter <= 'Z')
+                    || (letter == '-' || letter == '_' || letter == '.'))
                 realname.append(letter);
-            }
         }
         newname = realname.toString();
-        if (!Character.isLetter(newname.charAt(0))) newname = "";
-        
+        if (!Character.isLetter(newname.charAt(0)))
+            newname = "";
+
         if (newname.equals("")) {
             DEBUG.beep();
             return;
@@ -713,12 +704,13 @@ public class JStyleEditor extends javax.swing.JDialog {
         current.setName(newname, parent.getSubtitles().getStyleList());
         StyleName.setText(current.Name);
     }//GEN-LAST:event_StyleNameActionPerformed
-    
+
     private void CloneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloneActionPerformed
         SubStyleList list = parent.getSubtitles().getStyleList();
         String newname = current.Name;
-        
-        if (current.isDefault()) newname = "Style1";
+
+        if (current.isDefault())
+            newname = "Style1";
         current = new SubStyle(current);
         current.setName(newname, list);
         list.add(current);
@@ -726,27 +718,28 @@ public class JStyleEditor extends javax.swing.JDialog {
         Clone.setEnabled(false);
         is_cloned = true;
     }//GEN-LAST:event_CloneActionPerformed
-    
+
     private void setText(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setText
-        if (ignore_values_change || current == null) return;
+        if (ignore_values_change || current == null)
+            return;
         current.set(FONTNAME, FontName.getModel().getSelectedItem().toString());
         try {
             current.set(FONTSIZE, FontSize.getModel().getSelectedItem().toString());
         } catch (NumberFormatException e) {
             DEBUG.debug(e);
         }
-        
+
         current.set(BOLD, Bold.isSelected());
         current.set(ITALIC, Italic.isSelected());
         current.set(UNDERLINE, Underline.isSelected());
         current.set(STRIKETHROUGH, Strike.isSelected());
-        
+
         current.set(PRIMARY, PrimaryI.getAlphaColor());
         current.set(SECONDARY, SecondaryI.getAlphaColor());
         current.set(OUTLINE, OutlineI.getAlphaColor());
         current.set(SHADOW, ShadowI.getAlphaColor());
-        
-        
+
+
         /* Set text attributes */
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.Bold, current.get(BOLD));
@@ -756,51 +749,47 @@ public class JStyleEditor extends javax.swing.JDialog {
         set.addAttribute(StyleConstants.Foreground, current.get(PRIMARY));
         set.addAttribute(StyleConstants.FontFamily, current.get(FONTNAME));
         set.addAttribute(StyleConstants.FontSize, current.get(FONTSIZE));
-        TestText.setBackground((Color)current.get(SHADOW));
+        TestText.setBackground((Color) current.get(SHADOW));
         TestText.getStyledDocument().setParagraphAttributes(0, 1, set, true);
-        
+
         set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.Foreground, current.get(SECONDARY));
         TestText.getStyledDocument().setCharacterAttributes(tagTextStart, tagTextLength, set, false);
         TestText.updateUI();
         pack();
     }//GEN-LAST:event_setText
-    
-    
+
     private void AdvancedSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AdvancedSelectActionPerformed
         setOptionsVisible(AdvancedSelect.isSelected());
         pack();
     }//GEN-LAST:event_AdvancedSelectActionPerformed
-    
+
     private void setColor(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setColor
-        JAlphaIcon icon = ((JAlphaIcon)((JButton)evt.getSource()).getIcon());
+        JAlphaIcon icon = ((JAlphaIcon) ((JButton) evt.getSource()).getIcon());
         color.setAlphaColor(icon.getAlphaColor());
         color.setVisible(true);
         AlphaColor newc = color.getAlphaColor();
-        if (newc!= null) {
+        if (newc != null) {
             icon.setAlphaColor(newc);
             setText(evt);
         }
     }//GEN-LAST:event_setColor
-    
-    
-    
+
     private String setTestText() {
         /* Make following code idiot proof */
         String full = _("Welcome to the (Jubler) world!");
-        if (full.equals("")) full="()";
+        if (full.equals(""))
+            full = "()";
         int tagTextFinish;
-        
+
         tagTextStart = full.indexOf('(');
-        tagTextFinish = full.indexOf(')')-1;
-        
+        tagTextFinish = full.indexOf(')') - 1;
+
         tagTextLength = tagTextFinish - tagTextStart;
-        return full.substring(0, tagTextStart) +
-                full.substring(tagTextStart+1, tagTextFinish+1) +
-                full.subSequence(tagTextFinish+2, full.length());
+        return full.substring(0, tagTextStart)
+                + full.substring(tagTextStart + 1, tagTextFinish + 1)
+                + full.subSequence(tagTextFinish + 2, full.length());
     }
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Advanced;
     private javax.swing.JCheckBox AdvancedSelect;
@@ -860,5 +849,4 @@ public class JStyleEditor extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel9;
     // End of variables declaration//GEN-END:variables
-    
 }

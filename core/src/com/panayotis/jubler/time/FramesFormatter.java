@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time;
 
 import java.text.NumberFormat;
@@ -32,14 +31,15 @@ import javax.swing.text.NumberFormatter;
  * @author teras
  */
 public class FramesFormatter extends NumberFormatter {
+
     private final static NumberFormat format;
-    
+
     static {
         format = NumberFormat.getIntegerInstance();
         format.setMaximumIntegerDigits(7);
     }
-            
-    public FramesFormatter () throws ParseException {
-        super (format);
+
+    public FramesFormatter() throws ParseException {
+        super(format);
     }
 }

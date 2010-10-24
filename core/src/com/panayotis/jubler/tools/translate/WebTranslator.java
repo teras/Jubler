@@ -133,7 +133,7 @@ public abstract class WebTranslator implements Translator, ActionListener {
 
             in = new BufferedReader(new InputStreamReader(conn.getInputStream(), Charset.forName("UTF-8")));
             error = parseResults(group, in);
-            
+
         } catch (IOException ex) {
             error = ex.toString();
         } finally {

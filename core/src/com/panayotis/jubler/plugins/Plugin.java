@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.plugins;
 
 /**
@@ -26,7 +25,7 @@ package com.panayotis.jubler.plugins;
  */
 public interface Plugin {
 
-        public String[] getAffectionList();
+    public String[] getAffectionList();
 
-        public void postInit(Object o);
+    public void postInit(Object o);
 }

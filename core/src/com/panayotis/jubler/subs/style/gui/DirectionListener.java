@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.gui;
 
 /**
@@ -28,6 +27,8 @@ package com.panayotis.jubler.subs.style.gui;
  * @author teras
  */
 public interface DirectionListener {
-    public void directionUpdated() ;
+
+    public void directionUpdated();
+
     public void focusLost();
 }

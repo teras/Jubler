@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
@@ -36,38 +35,38 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JSubJoin extends javax.swing.JPanel {
+
     private JTimeSpinner joinpos;
     private Vector<JubFrame> privlist;
-    
+
     /** Creates new form JSplit */
     public JSubJoin(Vector<JubFrame> list, JubFrame current) {
         joinpos = new JTimeSpinner();
         privlist = new Vector<JubFrame>();
-        
+
         initComponents();
         TShift.add(joinpos, BorderLayout.CENTER);
-        
-        for ( int i = 0 ; i <list.size() ; i++) {
-            if ( list.elementAt(i) != current ) {
+
+        for (int i = 0; i < list.size(); i++)
+            if (list.elementAt(i) != current) {
                 SubWindow.addItem(list.elementAt(i).getSubtitles().getSubFile().getStrippedFile().getName());
                 privlist.add(list.elementAt(i));
             }
-        }
         joinpos.setToolTipText(_("Use the selected amount of time as space between the two subtitles"));
     }
-    
+
     public boolean isPrepend() {
         return RPrepend.isSelected();
     }
-    
+
     public JubFrame getOtherSubs() {
         return privlist.elementAt(SubWindow.getSelectedIndex());
     }
-    
+
     public Time getGap() {
-        return (Time)(joinpos.getModel().getValue());
+        return (Time) (joinpos.getModel().getValue());
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -110,8 +109,6 @@ public class JSubJoin extends javax.swing.JPanel {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup Position;
     private javax.swing.JRadioButton RAppend;
@@ -120,5 +117,4 @@ public class JSubJoin extends javax.swing.JPanel {
     private javax.swing.JPanel TShift;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-    
 }

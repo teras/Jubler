@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.spell;
+
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
 import java.awt.Color;
@@ -35,94 +35,89 @@ import static com.panayotis.jubler.i18n.I18N._;
 import java.io.IOException;
 import java.util.HashMap;
 
-
 /**
  *
  * @author  teras
  */
 public class JSpellChecker extends JDialog {
+
     int count_changes;
-    
     private JFrame jparent;
     private SpellChecker checker;
     private ArrayList<SubEntry> textlist;
     private int pos_in_list;
-    
     private ArrayList<String> ignored;
-    private HashMap<String,String> replaced;
-    
+    private HashMap<String, String> replaced;
     private ArrayList<SpellError> errors;
-    
+
     /** Creates new form JSpellChecker */
     public JSpellChecker(JFrame parent, SpellChecker checker, ArrayList<SubEntry> list) {
         super(parent, true);
-        
-        while(true) {
+
+        while (true)
             try {
                 checker.start();
                 break;
             } catch (Exception ex) {
-                if (! (ex.getCause() instanceof IOException) ) {
+                if (!(ex.getCause() instanceof IOException)) {
                     stop();
                     return;
-                } else {
+                } else
                     if (!checker.getOptionsPanel().requestExecutable()) {
                         stop();
                         return;
                     }
-                }
             }
-        }
-        
+
         initComponents();
         jparent = parent;
         textlist = list;
         this.checker = checker;
         count_changes = 0;
         pos_in_list = -1;
-        
+
         errors = new ArrayList<SpellError>();
-        ignored = new ArrayList<String> ();
-        replaced = new HashMap<String,String> ();
-        
-        if (!checker.supportsInsert()) {
+        ignored = new ArrayList<String>();
+        replaced = new HashMap<String, String>();
+
+        if (!checker.supportsInsert())
             InsertB.setEnabled(false);
-        }
     }
-    
-    
+
     /* Use this method to remove from error list possible known errors */
     private void updateKnownErrors() {
-        for (int i = errors.size()-1 ; i>= 0 ; i-- ) {
+        for (int i = errors.size() - 1; i >= 0; i--) {
             String original = errors.get(i).original; /* Get the misspelled word */
-            if ( ignored.indexOf(original) >= 0 ) { /* The user said to ignore it */
+            if (ignored.indexOf(original) >= 0) /* The user said to ignore it */
+
                 errors.remove(i);
-            } else if (replaced.containsKey(original) ) { /* The user said to replace it */
+            else if (replaced.containsKey(original)) { /* The user said to replace it */
                 count_changes++;
                 replaceText(replaced.get(original), i);
                 errors.remove(i);
             }
         }
     }
-    
-    
+
     public void findNextWord() {
         /* If the system is not properly initialized, means we should NOT spell check */
-        if (errors==null) return;
-        
+        if (errors == null)
+            return;
+
         /* Remove last error - if any.
          * We need to do it here, since some methods require the last error
          * to be the first in the list of possible errors.
          */
-        if (!errors.isEmpty()) errors.remove(0);
-        
+        if (!errors.isEmpty())
+            errors.remove(0);
+
         /* Make sure that the remaining errors are not known ones */
         updateKnownErrors();
-        
+
         /* If the current error list is empty, refill it with next error bunch */
-        while ( errors.isEmpty() && ( (++pos_in_list) < textlist.size()) ) {
+        while (errors.isEmpty() && ((++pos_in_list) < textlist.size())) {
             /* Get next (multi)line of text */
-            errors  = checker.checkSpelling(textlist.get(pos_in_list).getText());
+            errors = checker.checkSpelling(textlist.get(pos_in_list).getText());
             updateKnownErrors();
         }
         if (errors.isEmpty()) {
@@ -130,45 +125,44 @@ public class JSpellChecker extends JDialog {
             stop();
             return;
         }
-        
+
         /* For convenience, get a pointer for this error */
         SpellError mistake = errors.get(0);
-        
+
         Unknown.setText(mistake.original);  /* set the text of the mistaken word */
         SugList.setListData(mistake.alternatives);  /* set the list of spell suggestions */
-        setSentence(textlist.get(pos_in_list).getText().replace('\n','|'), mistake.position, mistake.original.length());
-        
+        setSentence(textlist.get(pos_in_list).getText().replace('\n', '|'), mistake.position, mistake.original.length());
+
         /* use a default suggestion */
-        if ( SugList.getModel().getSize() > 0 ) {
+        if (SugList.getModel().getSize() > 0)
             SugList.setSelectedIndex(0);
-        } else {
+        else
             Replace.setText(mistake.original);
-        }
-        
+
         /* Make this dialog visible, if it is not already */
         setVisible(true);
     }
-    
-    private void setSentence( String txt, int pos, int len) {
+
+    private void setSentence(String txt, int pos, int len) {
         Sentence.setText(txt);
-        
+
         /* Change color of error to red */
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.ColorConstants.Foreground, Color.RED);
         Sentence.getStyledDocument().setCharacterAttributes(pos, len, set, true);
     }
-    
+
     private void useSuggestedWord() {
         int which = SugList.getSelectedIndex();
-        if ( which < 0 ) {
-            if (SugList.getModel().getSize() == 0 ) return;
+        if (which < 0) {
+            if (SugList.getModel().getSize() == 0)
+                return;
             SugList.setSelectedIndex(0);
             return;
         }
         Replace.setText(SugList.getModel().getElementAt(which).toString());
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -388,69 +382,67 @@ public class JSpellChecker extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void UnknownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UnknownActionPerformed
         Replace.setText(Unknown.getText());
     }//GEN-LAST:event_UnknownActionPerformed
-    
+
     private void SugListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_SugListValueChanged
         useSuggestedWord();
     }//GEN-LAST:event_SugListValueChanged
-    
+
     private void SugListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SugListMouseClicked
         useSuggestedWord();
     }//GEN-LAST:event_SugListMouseClicked
-    
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         stop();
     }//GEN-LAST:event_formWindowClosing
-    
+
     private void IgnoreBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IgnoreBActionPerformed
         findNextWord();
     }//GEN-LAST:event_IgnoreBActionPerformed
-    
+
     private void AIgnoreBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AIgnoreBActionPerformed
         ignored.add(Unknown.getText());
         findNextWord();
     }//GEN-LAST:event_AIgnoreBActionPerformed
-    
+
     private void ReplaceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceBActionPerformed
         replaceText(Replace.getText(), 0);
         count_changes++;
         findNextWord();
     }//GEN-LAST:event_ReplaceBActionPerformed
-    
+
     private void AReplaceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AReplaceBActionPerformed
         replaceText(Replace.getText(), 0);
         count_changes++;
         replaced.put(Unknown.getText(), Replace.getText());
         findNextWord();
     }//GEN-LAST:event_AReplaceBActionPerformed
-    
+
     private void InsertBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertBActionPerformed
         checker.insertWord(Unknown.getText());
         findNextWord();
     }//GEN-LAST:event_InsertBActionPerformed
-    
+
     private void StopBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopBActionPerformed
         stop();
     }//GEN-LAST:event_StopBActionPerformed
-    
+
     private void replaceText(String txt, int index) {
         int pos = errors.get(index).position;
         int len = errors.get(index).original.length();
-        
+
         String olds = textlist.get(pos_in_list).getText();
-        String news = olds.substring(0, pos)  + txt + olds.substring(pos+len);
+        String news = olds.substring(0, pos) + txt + olds.substring(pos + len);
         textlist.get(pos_in_list).setText(news);
-        
+
         int dlength = txt.length() - errors.get(index).original.length(); /* size differences */
-        for ( int i = index+1 ; i < errors.size() ; i++ ) { /* Propagate size differences to following errors (if any) */
+        for (int i = index + 1; i < errors.size(); i++) /* Propagate size differences to following errors (if any) */
+
             errors.get(i).position += dlength;
-        }
     }
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AIgnoreB;
     private javax.swing.JButton AReplaceB;
@@ -483,14 +475,17 @@ public class JSpellChecker extends JDialog {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    
+
     private void stop() {
-        if ( checker!= null) checker.stop();
-        if (!isVisible()) return ; /* we have already hidden this dialog */
+        if (checker != null)
+            checker.stop();
+        if (!isVisible())
+            return; /* we have already hidden this dialog */
         setVisible(false);
         dispose();
         String msg = _("Number of affected words: {0}", count_changes);
-        if ( count_changes == 0) msg = _("No changes have been done");
+        if (count_changes == 0)
+            msg = _("No changes have been done");
         JIDialog.info(jparent, msg, _("Speller changes"));
     }
 }

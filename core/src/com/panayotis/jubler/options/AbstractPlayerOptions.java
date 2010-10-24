@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -33,32 +32,33 @@ import java.awt.BorderLayout;
  * @author  teras
  */
 public class AbstractPlayerOptions extends JExtBasicOptions {
-    
+
     private String args_default;
-    
+
     /** Creates new form AbstractPlayerOptions */
     public AbstractPlayerOptions(String family, AbstractPlayer player) {
         super(family, player.getName(), player.getTestParameters(), player.getTestSignature());
         args_default = player.getDefaultArguments();
-        
+
         initComponents();
-        
+
         add(BrowserP, BorderLayout.NORTH);
     }
-    
+
     protected void loadPreferences() {
         super.loadPreferences();
-        args.setText(Options.getOption("Player."+name+".Arguments", args_default));
+        args.setText(Options.getOption("Player." + name + ".Arguments", args_default));
     }
-    
+
     public void savePreferences() {
         super.savePreferences();
-        Options.setOption("Player."+name+".Arguments", args.getText());
+        Options.setOption("Player." + name + ".Arguments", args.getText());
     }
-    
-    public String getArguments() { return args.getText(); }
-    
-    
+
+    public String getArguments() {
+        return args.getText();
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -112,12 +112,10 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
 
         add(ArgsP, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void defltActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_defltActionPerformed
         args.setText(args_default);
     }//GEN-LAST:event_defltActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ArgsP;
     private javax.swing.JLabel Help1L;
@@ -128,5 +126,4 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
     private javax.swing.JTextField args;
     private javax.swing.JButton deflt;
     // End of variables declaration//GEN-END:variables
-    
 }

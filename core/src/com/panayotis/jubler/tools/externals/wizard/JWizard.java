@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.externals.wizard;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -39,33 +38,31 @@ import javax.swing.JFileChooser;
  * @author  teras
  */
 public class JWizard extends JDialog {
-    
+
     private int cardid = 1;
     private JExtBasicOptions ext;
-    
     private String name;
     private String[] testparameters;
     private String test_signature;
     private String deflt;
-    
     private JFileChooser fdialog;
-    
+
     /** Creates new form JWizard */
     public JWizard(String name, String[] testparameters, String test_signature, String deflt) {
-        super((Frame)null, true);
-        
+        super((Frame) null, true);
+
         this.name = name;
         this.deflt = deflt;
         this.testparameters = testparameters;
         this.test_signature = test_signature;
-        
+
         fdialog = new JFileChooser();
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        
+
         initComponents();
         this.setLocationRelativeTo(null);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -254,15 +251,16 @@ public class JWizard extends JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void autoFind() {
         Thread auto = new Thread() {
+
             public void run() {
                 File f = TreeWalker.searchExecutable(name, testparameters, test_signature, deflt);
-                
+
                 ContinueB.setEnabled(true);
                 AutoProgress.setVisible(false);
-                if (f==null) {
+                if (f == null) {
                     AutoL.setText(_("Unable to find executable"));
                     CancelB.setEnabled(true);
                 } else {
@@ -273,8 +271,7 @@ public class JWizard extends JDialog {
         };
         auto.start();
     }
-    
-    
+
     private void clickContinue() {
         switch (cardid) {
             case 1:
@@ -304,15 +301,15 @@ public class JWizard extends JDialog {
             case 4:
                 setVisible(false);
         }
-        ((CardLayout)CardsP.getLayout()).show(CardsP,"card"+(++cardid));
+        ((CardLayout) CardsP.getLayout()).show(CardsP, "card" + (++cardid));
     }
-    
-    
+
     private void BrowseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseBActionPerformed
         BrowseStatusL.setVisible(false);
-        if ( fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION) return;
+        if (fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+            return;
         File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), name.toLowerCase(), testparameters, test_signature, SystemDependent.getBundleOrFileID());
-        if (newexe!=null) {
+        if (newexe != null) {
             FilenameT.setText(newexe.getPath());
             ContinueB.setEnabled(true);
         } else {
@@ -321,21 +318,22 @@ public class JWizard extends JDialog {
             ContinueB.setEnabled(false);
         }
     }//GEN-LAST:event_BrowseBActionPerformed
-    
+
     private void ContinueBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ContinueBActionPerformed
         clickContinue();
     }//GEN-LAST:event_ContinueBActionPerformed
-    
+
     private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
         FilenameT.setText("");
         setVisible(false);
     }//GEN-LAST:event_CancelBActionPerformed
-    
+
     public String getExecFilename() {
-        if (FilenameT.getText().equals("")) return null;
-        else return FilenameT.getText();
+        if (FilenameT.getText().equals(""))
+            return null;
+        else
+            return FilenameT.getText();
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton AutoB;
     private javax.swing.JLabel AutoL;
@@ -366,5 +364,4 @@ public class JWizard extends JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     // End of variables declaration//GEN-END:variables
-    
 }

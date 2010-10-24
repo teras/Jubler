@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.player.terminals;
 
 import com.panayotis.jubler.media.console.PlayerFeedback;
@@ -43,9 +42,7 @@ public interface PlayerTerminal {
 
     public void terminate();
 
-
     public String parseOutStream(String info, PlayerFeedback feedback, TerminalViewport viewport);
 
     public String parseErrorStream(String info, PlayerFeedback feedback, TerminalViewport viewport);
-
 }

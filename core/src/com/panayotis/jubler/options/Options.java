@@ -60,16 +60,14 @@ public class Options {
         File oldconfig = new File(System.getProperty("user.home") + FileCommunicator.FS + ".jublerrc");
         newconfig.getParentFile().mkdirs();
 
-        if (oldconfig.exists()) {
+        if (oldconfig.exists())
             if (!newconfig.exists()) {
                 boolean success = oldconfig.renameTo(newconfig);
-                if (!success) {
+                if (!success)
                     DEBUG.debug("Unable to move configuration file to " + newconfig.getPath());
-                } else {
+                else
                     DEBUG.debug("Configuration file moved to " + newconfig.getPath());
-                }
             }
-        }
         return newconfig.getPath();
     }
 
@@ -98,15 +96,13 @@ public class Options {
     }
 
     public static void loadSystemPreferences(JPreferences prefs) {
-        for (TabPage opt : prefs.Tabs.getTabArray()) {
+        for (TabPage opt : prefs.Tabs.getTabArray())
             ((OptionsHolder) opt).loadPreferences();
-        }
     }
 
     public static void saveSystemPreferences(JPreferences prefs) {
-        for (TabPage opt : prefs.Tabs.getTabArray()) {
+        for (TabPage opt : prefs.Tabs.getTabArray())
             ((OptionsHolder) opt).savePreferences();
-        }
         saveOptions();
     }
 
@@ -132,7 +128,7 @@ public class Options {
     public static Stack<SubFile> loadFileList() {
         Stack<SubFile> files = new Stack<SubFile>();
         File f;
-        for (int i = MAX_RECENTS; i > 0; i--) {
+        for (int i = MAX_RECENTS; i > 0; i--)
             try {
                 SubFile sf = new SubFile(getOption("System.Lastfile" + i, ""));
                 f = sf.getSaveFile();
@@ -140,7 +136,6 @@ public class Options {
                     files.push(sf);
             } catch (InstantiationException er) {
             }
-        }
         return files;
     }
 }

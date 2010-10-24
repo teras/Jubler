@@ -3,7 +3,6 @@
  *
  * Created on 28 Ιούλιος 2005, 12:29 μμ
  */
-
 package com.panayotis.jubler.tools.replace;
 
 import com.panayotis.jubler.os.JIDialog;
@@ -18,84 +17,83 @@ import javax.swing.text.StyleConstants;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.SubEntry;
 
-
 /**
  *
  * @author  teras
  */
 public class JReplace extends javax.swing.JDialog {
-    
+
     private JubFrame parent;
     private Subtitles subs;
     private UndoList undo;
-    
     private int row, foundpos, nextpos, length;
-    
+
     /**
      * Creates new form JReplace
      */
     public JReplace(JubFrame parent, int row, UndoList undo) {
         super(parent, false);
-        
+
         this.parent = parent;
         this.row = row;
-        if ( this.row < 0 ) this.row = 0;
+        if (this.row < 0)
+            this.row = 0;
         nextpos = 0;
         foundpos = -1;
         this.undo = undo;
-        
+
         subs = parent.getSubtitles();
         initComponents();
         FindT.requestFocusInWindow();
     }
-    
-    
+
     public void findNextWord() {
         String what, inwhich;
-        
+
         what = FindT.getText();
-        if ( IgnoreC.isSelected()) what = what.toLowerCase();
+        if (IgnoreC.isSelected())
+            what = what.toLowerCase();
         length = what.length();
-        if ( subs.size() < 1) return;
-        
-        while ( true ) {
+        if (subs.size() < 1)
+            return;
+
+        while (true) {
             inwhich = subs.elementAt(row).getText();
-            if ( IgnoreC.isSelected()) inwhich = inwhich.toLowerCase();
+            if (IgnoreC.isSelected())
+                inwhich = inwhich.toLowerCase();
             foundpos = inwhich.indexOf(what, nextpos);
-            if ( foundpos >= 0 ) {
+            if (foundpos >= 0) {
                 ReplaceB.setEnabled(true);
                 nextpos = foundpos + length;
                 setSentence(subs.elementAt(row).getText(), foundpos, length);
                 parent.setSelectedSub(row, true);
                 return;
             }
-            row ++;
+            row++;
             nextpos = 0;
             if (row == subs.size()) {
                 row = 0;
                 ContextT.setText("");
-                if (!JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles"))) {
+                if (!JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles")))
                     break;
-                }
             }
         }
     }
-    
+
     private void prepareExit() {
         setVisible(false);
         dispose();
     }
-    
-    
+
     private void setSentence(String txt, int pos, int len) {
-        ContextT.setText(txt.replace('\n','|'));
-        
+        ContextT.setText(txt.replace('\n', '|'));
+
         /* Change color of error to red */
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.ColorConstants.Foreground, Color.RED);
         ContextT.getStyledDocument().setCharacterAttributes(pos, len, set, true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -220,37 +218,35 @@ public class JReplace extends javax.swing.JDialog {
         pack();
     }
     // </editor-fold>//GEN-END:initComponents
-    
+
     private void ReplaceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceBActionPerformed
         /* We keep track of the undo list ONLY the first time a change has been done.
          * Then we "forget" this pointer in order to prevent a double
          * insertion of a undo action */
-        if ( undo != null ) {
+        if (undo != null) {
             undo.addUndo(new UndoEntry(subs, _("Replace")));
             undo = null;
         }
-        
-        SubEntry [] selected = parent.getSelectedSubs();
-        
+
+        SubEntry[] selected = parent.getSelectedSubs();
+
         String repl = ReplaceT.getText();
         String older = subs.elementAt(row).getText();
-        String newer = older.substring(0, foundpos) + repl + older.substring(foundpos+length);
+        String newer = older.substring(0, foundpos) + repl + older.substring(foundpos + length);
         nextpos = foundpos + repl.length();
         subs.elementAt(row).setText(newer);
-        
+
         parent.tableHasChanged(selected);
         findNextWord();
     }//GEN-LAST:event_ReplaceBActionPerformed
-    
+
     private void FindBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FindBActionPerformed
         findNextWord();
     }//GEN-LAST:event_FindBActionPerformed
-    
+
     private void CloseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CloseBActionPerformed
         prepareExit();
     }//GEN-LAST:event_CloseBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CloseB;
     private javax.swing.JTextPane ContextT;
@@ -272,5 +268,4 @@ public class JReplace extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
-    
 }

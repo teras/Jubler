@@ -71,13 +71,12 @@ public class TreeWalker {
                 return null;   // No more recursive should be done
             recursive--;
             File[] childs = root.listFiles();
-            if (childs != null) {
+            if (childs != null)
                 for (int i = 0; i < childs.length; i++) {
                     File res = searchExecutable(childs[i], program, parameters, test_signature, recursive);
                     if (res != null)
                         return res;
                 }
-            }
         }
         return null;
     }
@@ -97,20 +96,18 @@ public class TreeWalker {
         try {
             StringBuffer buf = new StringBuffer();
             buf.append("Testing: ");
-            for (int i = 0; i < cmd.length; i++) {
+            for (int i = 0; i < cmd.length; i++)
                 buf.append(cmd[i]).append(' ');
-            }
             DEBUG.debug(buf.toString());
             proc = Runtime.getRuntime().exec(cmd);
             BufferedReader infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String line;
-            while ((line = infopipe.readLine()) != null) {
+            while ((line = infopipe.readLine()) != null)
                 if (line.toLowerCase().contains(test_signature)) {
                     DEBUG.debug("Valid executable found: " + exec.getAbsolutePath());
                     proc.destroy();
                     return true;
                 }
-            }
         } catch (Exception ex) {
         } finally {
             try {

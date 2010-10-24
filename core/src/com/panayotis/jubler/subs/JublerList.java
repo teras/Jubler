@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
@@ -31,6 +30,4 @@ import java.util.Vector;
  * @author teras
  */
 public class JublerList extends Vector<JubFrame> {
-    
-    
 }

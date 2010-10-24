@@ -32,7 +32,6 @@ public class SelectedPenIconFilter extends RGBImageFilter {
 
     private final static BufferedImage dot;
 
-
     static {
         BufferedImage val = null;
         try {

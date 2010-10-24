@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.Subtitles;
@@ -33,26 +32,27 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JDelSelection extends JTool {
-    
+
     /** Creates new form JDelSelection */
     public JDelSelection() {
         super(true);
     }
-    
+
     public void initialize() {
         initComponents();
     }
-    
+
     protected String getToolTitle() {
         return _("Delete selection");
     }
-    
-    protected void storeSelections() {}
-    
+
+    protected void storeSelections() {
+    }
+
     protected void affect(int index) {
         subs.remove(affected_list.get(index));
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -65,9 +65,6 @@ public class JDelSelection extends JTool {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
 }

@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options.gui;
 
 import javax.swing.Icon;
@@ -31,11 +30,15 @@ import javax.swing.JPanel;
  * @author teras
  */
 public interface TabPage {
+
     public abstract JPanel getTabPanel();
+
     public abstract String getTabName();
+
     public abstract String getTabTooltip();
+
     public abstract Icon getTabIcon();
-    
+
     /* Fire this method if the tab should be updated */
     public abstract void changeProgram();
 }

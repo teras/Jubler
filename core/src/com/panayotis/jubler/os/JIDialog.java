@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 import static com.panayotis.jubler.i18n.I18N._;
 import javax.swing.ImageIcon;
 
-
 /**
  *
  * @author teras
@@ -43,22 +42,27 @@ public class JIDialog extends JOptionPane {
         ImageIcon icon = new ImageIcon(JIDialog.class.getResource(iconpath));
         showMessage(parent, message, title, PLAIN_MESSAGE, icon, ok_opts);
     }
+
     public static void info(Component parent, Object message, String title) {
         showMessage(parent, message, title, INFORMATION_MESSAGE, null, ok_opts);
     }
+
     public static boolean action(Component parent, Object message, String title) {
         return showMessage(parent, message, title, INFORMATION_MESSAGE, null, ok_cancel_opts);
     }
+
     public static boolean question(Component parent, Object message, String title) {
         return showMessage(parent, message, title, QUESTION_MESSAGE, null, yes_no_opts);
     }
+
     public static void warning(Component parent, Object message, String title) {
         showMessage(parent, message, title, WARNING_MESSAGE, null, ok_opts);
     }
+
     public static void error(Component parent, Object message, String title) {
         showMessage(parent, message, title, ERROR_MESSAGE, null, ok_opts);
     }
-    
+
     private static boolean showMessage(Component parent, Object message, String title, int type, ImageIcon icon, Object[] buttons) {
         return showOptionDialog(parent, message, title, DEFAULT_OPTION, type, icon, buttons, buttons[0]) == OK_OPTION;
     }

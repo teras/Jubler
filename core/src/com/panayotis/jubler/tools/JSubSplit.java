@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -35,29 +34,29 @@ import java.awt.BorderLayout;
  * @author  teras
  */
 public class JSubSplit extends javax.swing.JPanel {
+
     private JTimeSingleSelection split;
-    
     private Subtitles subs;
-    
+
     /** Creates new form JSubSplit */
     public JSubSplit() {
         initComponents();
         split = new JTimeSingleSelection(_("Splitting time"));
         split.setToolTip(_("Use the following time (inclusive) in order to create the new splitted subtitles"));
-        
+
         TimeContainer.add(split, BorderLayout.CENTER);
     }
-    
+
     public void setSubtitle(Subtitles subs, int index) {
         this.subs = subs;
-        SplitS.setValue(100*index/subs.size());
+        SplitS.setValue(100 * index / subs.size());
         split.setTime(subs.elementAt(index).getStartTime());
     }
-    
+
     public Time getTime() {
         return split.getTime();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -106,10 +105,8 @@ public class JSubSplit extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void SplitSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SplitSStateChanged
-        split.setTime(subs.elementAt(SplitS.getValue() * (subs.size()-1) / 100).getStartTime());
+        split.setTime(subs.elementAt(SplitS.getValue() * (subs.size() - 1) / 100).getStartTime());
     }//GEN-LAST:event_SplitSStateChanged
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider SplitS;
     private javax.swing.JPanel TimeContainer;
@@ -117,5 +114,4 @@ public class JSubSplit extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
-    
 }

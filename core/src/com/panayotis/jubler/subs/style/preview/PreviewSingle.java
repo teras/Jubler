@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.preview;
 
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
@@ -31,18 +30,20 @@ import java.text.AttributedString;
  *
  * @author teras
  */
-public class PreviewSingle  extends PreviewElement {
-    
+public class PreviewSingle extends PreviewElement {
+
     /**
      * Creates a new instance of PreviewSingle 
      */
-    public PreviewSingle (Object deflt, AbstractStyleover over) {
+    public PreviewSingle(Object deflt, AbstractStyleover over) {
         super(deflt, over);
     }
 
     /* Ignore these methods, we don't need them, since this attribute is not character based */
-    protected Attribute getStyle() { return null;}
-    public void addAttribute(AttributedString str, Object value, int from, int to) {}
-    
-    
+    protected Attribute getStyle() {
+        return null;
+    }
+
+    public void addAttribute(AttributedString str, Object value, int from, int to) {
+    }
 }

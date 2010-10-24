@@ -2,7 +2,7 @@
  * SubEv.java
  *
  * Created on September 8, 2007, 2:17 PM
-  *
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader.format;
 
 /**
@@ -28,23 +27,27 @@ package com.panayotis.jubler.subs.loader.format;
  * @author teras
  */
 public class SubEv implements Comparable<SubEv> {
+
     String value;
     int start;
-    
+
     public SubEv(String val, int start) {
         value = val;
         this.start = start;
     }
-    
+
     public boolean equals(Comparable other) {
-        return compareTo((SubEv)other) == 0;
+        return compareTo((SubEv) other) == 0;
     }
-    
+
     /* Since we want ot add the events in reverse order, the sorting is done on reverse! */
     public int compareTo(SubEv other) {
-        if (start < other.start) return 1;
-        if (start > other.start) return -1;
-        if (value.equals(other.value)) return 0;
+        if (start < other.start)
+            return 1;
+        if (start > other.start)
+            return -1;
+        if (value.equals(other.value))
+            return 0;
         return -1;  // In all other occasions, means that it's a different object so just put it somewhere
     }
 }

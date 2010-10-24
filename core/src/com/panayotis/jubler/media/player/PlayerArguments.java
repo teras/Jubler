@@ -34,14 +34,15 @@ public class PlayerArguments {
     public String subfile;
     public Time when;
 
+    @Override
     public String toString() {
-        StringBuffer cm = new StringBuffer();
+        StringBuilder cm = new StringBuilder();
         for (int i = 0; i < arguments.length; i++)
             cm.append(arguments[i]).append(' ');
-        cm.append("# Port:" + port);
-        cm.append(" VideoFile:\"" + videofile);
-        cm.append("\" SubtitleFile:\"" + subfile);
-        cm.append("\" At:" + when.toString());
+        cm.append("# Port:").append(port);
+        cm.append(" VideoFile:\"").append(videofile);
+        cm.append("\" SubtitleFile:\"").append(subfile);
+        cm.append("\" At:").append(when.toString());
         return cm.toString();
     }
 }

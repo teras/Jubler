@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.subs.SubEntry;
@@ -30,7 +29,6 @@ import com.panayotis.jubler.subs.SubEntry;
  * @author teras
  */
 public interface StyleChangeListener {
-    
-    
-    public void changeStyle( StyleType type, Object value);
+
+    public void changeStyle(StyleType type, Object value);
 }

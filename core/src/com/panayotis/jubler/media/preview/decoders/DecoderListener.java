@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.preview.decoders;
 
 /**
@@ -28,14 +27,13 @@ package com.panayotis.jubler.media.preview.decoders;
  * @author teras
  */
 public interface DecoderListener {
-    
+
     /* Start creation of cache file */
     public void startCacheCreation();
-    
+
     /* Finish creation of cache file */
     public void stopCacheCreation();
-    
+
     /* Update the status of cache */
     public void updateCacheCreation(float position);
-    
 }
