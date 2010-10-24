@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.externals;
 
 /**
@@ -28,29 +27,30 @@ package com.panayotis.jubler.tools.externals;
  * @author teras
  */
 public class ExtPath {
+
     private String path;
     private int recursive;
-    
     public static final int FILE_ONLY = 0;
     public static final int BUNDLE_ONLY = 50;
-        
+
     /** Creates a new instance of ExtPath */
     public ExtPath(String path, int rec) {
         this.path = path;
         recursive = rec;
     }
-    
+
     public String toString() {
-        return path+":"+recursive;
+        return path + ":" + recursive;
     }
-    
+
     public boolean searchForFile() {
-        return (recursive==FILE_ONLY);
+        return (recursive == FILE_ONLY);
     }
-    
+
     public String getPath() {
         return path;
     }
+
     public int getRecStatus() {
         return recursive;
     }

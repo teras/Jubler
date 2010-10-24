@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.preview.decoders;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -41,68 +40,72 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-
 /**
  *
  * @author teras
  */
 public final class FFMPEG extends NativeDecoder {
+
     private static boolean library_is_present = false;
-    
+
     static {
         library_is_present = SystemFileFinder.loadLibrary("ffdecode");
     }
-    
+
     /** Creates a new instance of FFMPEG */
-    public FFMPEG() {}
-    
+    public FFMPEG() {
+    }
+
     public Image getFrame(VideoFile vfile, double time, float resize) {
-        if ( vfile==null || (!isDecoderValid()) ) return null;
-        
+        if (vfile == null || (!isDecoderValid()))
+            return null;
+
         time *= 1000000;
-        byte[] data = grabFrame(vfile.getPath(), (long)time, resize);
-        if (data==null) return null;
+        byte[] data = grabFrame(vfile.getPath(), (long) time, resize);
+        if (data == null)
+            return null;
 
         /* The last 4 bytes is the image resolution */
-        int X = data[data.length-4] * 128 + data[data.length-3];
-        int Y = data[data.length-2] * 128 + data[data.length-1];
+        int X = data[data.length - 4] * 128 + data[data.length - 3];
+        int Y = data[data.length - 2] * 128 + data[data.length - 1];
 
         BufferedImage image = new BufferedImage(X, Y, BufferedImage.TYPE_3BYTE_BGR);
         WritableRaster raster = image.getRaster();
         raster.setDataElements(0, 0, X, Y, data);
         return image;
     }
-    
-    
+
     public void playAudioClip(AudioFile afile, double from, double to) {
-        if (afile==null || (!isDecoderValid())) return;
-        
+        if (afile == null || (!isDecoderValid()))
+            return;
+
         from *= 1000000;
-        to   *= 1000000;
+        to *= 1000000;
         File wav = null;
         try {
-            final File wavfile = File.createTempFile("jublerclip_",".wav");
+            final File wavfile = File.createTempFile("jublerclip_", ".wav");
             wav = wavfile;
-            if (!createClip(afile.getPath(), wavfile.getPath(), (long)from, (long)to)) {
+            if (!createClip(afile.getPath(), wavfile.getPath(), (long) from, (long) to)) {
                 /* Something went wrong */
                 cleanUp(_("Count not create audio clip"), wav);
                 return;
             }
-            
+
             AudioInputStream stream = AudioSystem.getAudioInputStream(wavfile);
             final Clip clip = AudioSystem.getClip();
             clip.addLineListener(new LineListener() {
-                public void update(LineEvent event)  {
+
+                public void update(LineEvent event) {
                     if (event.getType().equals(LineEvent.Type.STOP)) {
                         wavfile.delete();
                         clip.close();
                     }
                 }
             });
-            
+
             clip.open(stream);
             clip.start();
-            
+
         } catch (IOException e) {
             cleanUp(_("Open file error"), wav);
         } catch (UnsupportedAudioFileException e) {
@@ -114,32 +117,33 @@ public final class FFMPEG extends NativeDecoder {
             cleanUp(null, wav);
         }
     }
-    
+
     private void cleanUp(String msg, File f) {
         DEBUG.debug(msg);
-        if (f!=null && f.exists()) f.delete();
+        if (f != null && f.exists())
+            f.delete();
     }
-    
+
     public void retrieveInformation(VideoFile vfile) {
-        if (!isDecoderValid()) return;
-        
+        if (!isDecoderValid())
+            return;
+
         float[] info = grabInformation(vfile.getPath());
-        if (info == null) return;
+        if (info == null)
+            return;
         vfile.setInformation(Math.round(info[0]), Math.round(info[1]), info[2], info[3]);
     }
-    
+
     public boolean isDecoderValid() {
         return library_is_present;
     }
-    
+
     /* Get the image for this timestamp */
     private native byte[] grabFrame(String video, long time, float resize);
-    
+
     /* Create a wav file from the specified time stamps */
     private native boolean createClip(String audio, String wav, long from, long to);
 
     /* Get the dimensions of a video file */
     public native float[] grabInformation(String vfile);
-    
-    
 }

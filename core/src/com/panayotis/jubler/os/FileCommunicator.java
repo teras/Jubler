@@ -104,8 +104,8 @@ public class FileCommunicator {
         try {
             outfile = sfile.getSaveFile();
             tempout = new File(outfile.getPath() + ".temp");
-            if (!SystemDependent.canWrite(tempout.getParentFile()) ||
-                    (outfile.exists() && (!SystemDependent.canWrite(outfile))))
+            if (!SystemDependent.canWrite(tempout.getParentFile())
+                    || (outfile.exists() && (!SystemDependent.canWrite(outfile))))
                 return _("File {0} is unwritable", outfile.getPath());
             sfile.getFormat().updateFormat(sfile);   // This is required to update FPS & encoding of the current format
             if (sfile.getFormat().produce(subs, tempout, media)) {  // produce & check if should rename file

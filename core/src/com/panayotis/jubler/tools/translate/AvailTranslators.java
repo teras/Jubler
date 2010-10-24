@@ -33,7 +33,7 @@ public class AvailTranslators extends Vector<Translator> {
     }
 
     public String[] getNamesList() {
-        if (size()<1)
+        if (size() < 1)
             return null;
         String[] ret = new String[size()];
         for (int i = 0; i < ret.length; i++)

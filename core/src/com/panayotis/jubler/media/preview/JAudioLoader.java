@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.preview;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -31,26 +30,27 @@ import com.panayotis.jubler.media.MediaFile;
  * @author  teras
  */
 public class JAudioLoader extends javax.swing.JPanel {
+
     private MediaFile mfile;
-    
+
     /** Creates new form JAudioLoader */
     public JAudioLoader() {
         initComponents();
     }
-    
+
     public void setValue(int value) {
         ProgressB.setValue(value);
     }
-    
+
     public void setFilename(String fname) {
         FileL.setText(fname);
         validate();
     }
-    
+
     public void updateMediaFile(MediaFile mfile) {
         this.mfile = mfile;
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -85,16 +85,13 @@ public class JAudioLoader extends javax.swing.JPanel {
     // </editor-fold>//GEN-END:initComponents
 
     private void AssignInterruptBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssignInterruptBActionPerformed
-        if (mfile!=null)
+        if (mfile != null)
             mfile.interruptCacheCreation(true);
     }//GEN-LAST:event_AssignInterruptBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AssignInterruptB;
     private javax.swing.JLabel FileL;
     private javax.swing.JProgressBar ProgressB;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-    
 }

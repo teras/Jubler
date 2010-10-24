@@ -244,11 +244,10 @@ public class JubFrame extends JFrame {
     }
 
     public void setPreviewOrientation(boolean horizontal) {
-        if (horizontal) {
+        if (horizontal)
             SubSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        } else {
+        else
             SubSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        }
     }
 
     public void resetPreviewPanels() {
@@ -279,11 +278,10 @@ public class JubFrame extends JFrame {
         lbl.append(" C:").append(m.maxlength);
         subeditor.Stats.setText(lbl.toString());
 
-        if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength)) {
+        if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength))
             subeditor.Stats.setForeground(Color.RED);
-        } else {
+        else
             subeditor.Stats.setForeground(SystemColor.controlText);
-        }
     }
 
     public int addSubEntry(SubEntry entry) {
@@ -313,9 +311,8 @@ public class JubFrame extends JFrame {
             jub.showInfo();
             StaticJubler.updateRecents();
             /* The user wants to clone current file */
-        } else {
+        } else
             loadFileFromHere(sfile, false);
-        }
     }
 
     /** This method is called from within the constructor to
@@ -1409,13 +1406,12 @@ public class JubFrame extends JFrame {
             } else {
                 /* The user set the parenting, we have to check for circles */
                 JubFrame pointer = newp;
-                while ((pointer = pointer.connect_to_other) != null) {
+                while ((pointer = pointer.connect_to_other) != null)
                     if (pointer == this) {
                         /*  A circle was found */
                         JIDialog.error(this, _("Cyclic dependency while setting new parent.\nParenting will be cancelled"), _("Reparent error"));
                         return;
                     }
-                }
                 /* No cyclic dependency was found */
                 connect_to_other = newp;
             }
@@ -1433,9 +1429,8 @@ public class JubFrame extends JFrame {
         JTimeSingleSelection go = new JTimeSingleSelection(new Time(3600d), _("Go to the specified time"));
         go.setToolTip(_("Into which time moment do you want to go to"));
 
-        if (JIDialog.action(this, go, _("Go to subtitle"))) {
+        if (JIDialog.action(this, go, _("Go to subtitle")))
             setSelectedSub(subs.findSubEntry(go.getTime().toSeconds(), true), true);
-        }
     }//GEN-LAST:event_byTimeGEMActionPerformed
 
     private void goToSubtitle(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToSubtitle
@@ -1479,9 +1474,8 @@ public class JubFrame extends JFrame {
         curjubler.setVisible(true);
 
         Subtitles s = new Subtitles(subs);
-        for (int i = 0; i < s.size(); i++) {
+        for (int i = 0; i < s.size(); i++)
             s.elementAt(i).setText("");
-        }
         curjubler.setSubs(s);
         curjubler.subs.getSubFile().appendToFilename(_("_child"));
         curjubler.showInfo();
@@ -1503,9 +1497,8 @@ public class JubFrame extends JFrame {
         subs.setAttribs(info.getAttribs());
         tableHasChanged(getSelectedSubs());
 
-        if (!subs.getAttribs().equals(oldattr)) {
+        if (!subs.getAttribs().equals(oldattr))
             undo.addUndo(entry);
-        }
     }//GEN-LAST:event_InfoFMActionPerformed
 
     private void StepwiseREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepwiseREMActionPerformed
@@ -1531,9 +1524,8 @@ public class JubFrame extends JFrame {
         int row = -1;
         if (is_after) {
             int[] allrows = SubTable.getSelectedRows();
-            if (allrows.length > 0) {
+            if (allrows.length > 0)
                 row = allrows[allrows.length - 1];
-            }
             if (row == -1)
                 row = subs.size() - 1;
         } else {
@@ -1634,9 +1626,8 @@ public class JubFrame extends JFrame {
         int[] selected = SubTable.getSelectedRows();
 
         copybuffer.clear();
-        for (int i = selected.length - 1; i >= 0; i--) {
+        for (int i = selected.length - 1; i >= 0; i--)
             copybuffer.add(new SubEntry(subs.elementAt(selected[i])));
-        }
     }//GEN-LAST:event_CopyEMActionPerformed
 
     private void CutEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutEMActionPerformed
@@ -1697,9 +1688,8 @@ public class JubFrame extends JFrame {
     private void DeletePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeletePActionPerformed
         undo.addUndo(new UndoEntry(subs, _("Delete subtitles")));
         int sel[] = SubTable.getSelectedRows();
-        for (int i = sel.length - 1; i >= 0; i--) {
+        for (int i = sel.length - 1; i >= 0; i--)
             subs.remove(sel[i]);
-        }
         tableHasChanged(null);
     }//GEN-LAST:event_DeletePActionPerformed
 
@@ -1738,9 +1728,8 @@ public class JubFrame extends JFrame {
         if (u != null) {
             undo.addUndo(u);
             tableHasChanged(null);
-        } else {
+        } else
             JIDialog.info(this, _("No lines affected"), _("Remove empty lines"));
-        }
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed
 
     private void bySelectionMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionMEMActionPerformed
@@ -1797,11 +1786,10 @@ public class JubFrame extends JFrame {
             other = join.getOtherSubs();
             dt = join.getGap().toSeconds();
 
-            if (join.isPrepend()) {
+            if (join.isPrepend())
                 newsubs.joinSubs(other.subs, subs, dt);
-            } else {
+            else
                 newsubs.joinSubs(subs, other.subs, dt);
-            }
 
             setSubs(newsubs);
             other.closeWindow(false, true);
@@ -1831,9 +1819,9 @@ public class JubFrame extends JFrame {
 
             for (int i = 0; i < subs.size(); i++) {
                 csub = subs.elementAt(i);
-                if (csub.getStartTime().toSeconds() < stime) {
+                if (csub.getStartTime().toSeconds() < stime)
                     subs1.add(csub);
-                } else {
+                else {
                     csub.getStartTime().addTime(-stime);
                     csub.getFinishTime().addTime(-stime);
                     subs2.add(csub);
@@ -1935,7 +1923,6 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2096,9 +2083,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private void setMark(int[] rows, int mark) {
         undo.addUndo(new UndoEntry(subs, _("Mark subtitles as {0}", SubEntry.MarkNames[mark])));
         SubEntry[] selected = getSelectedSubs();
-        for (int i = 0; i < rows.length; i++) {
+        for (int i = 0; i < rows.length; i++)
             subs.elementAt(rows[i]).setMark(mark);
-        }
         tableHasChanged(selected);
     }
 
@@ -2199,9 +2185,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private void updateConsoles(double t) {
         if (disable_consoles_update)
             return;
-        for (int i = 0; i < connected_consoles.size(); i++) {
+        for (int i = 0; i < connected_consoles.size(); i++)
             connected_consoles.elementAt(i).setTime(t);
-        }
     }
 
 
@@ -2282,41 +2267,35 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
     private void closeWindow(boolean unsave_check, boolean keep_application_alive) {
-        if (isUnsaved() && unsave_check) {
+        if (isUnsaved() && unsave_check)
             if (!JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation")))
                 return;
-        }
 
         /* Close all running consoles */
-        for (JVideoConsole c : connected_consoles) {
+        for (JVideoConsole c : connected_consoles)
             c.requestQuit();
-        }
 
         /* Clean up previewers */
         preview.setEnabled(false);
 
         windows.remove(this);
-        for (JubFrame w : windows) {
-            if (w.connect_to_other == this) {
+        for (JubFrame w : windows)
+            if (w.connect_to_other == this)
                 w.connect_to_other = null;
-            }
-        }
         if (windows.size() == 1) {
             windows.elementAt(0).JoinTM.setEnabled(false);
             windows.elementAt(0).ReparentTM.setEnabled(false);
         }
         StaticJubler.updateRecents();
 
-        if (windows.size() == 0) {
+        if (windows.size() == 0)
             if (keep_application_alive && subs != null) {
                 StaticJubler.setWindowPosition(this, true);
                 StaticJubler.jumpWindowPosition(false);
                 new JubFrame().setVisible(true);
-            } else {
+            } else
                 if (StaticJubler.requestQuit(this))
                     System.exit(0);
-            }
-        }
 
         dispose();
     }
@@ -2359,16 +2338,15 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     public SubEntry[] getSelectedSubs() {
         int[] sels = SubTable.getSelectedRows();
         SubEntry[] selects = new SubEntry[sels.length];
-        for (int i = 0; i < selects.length; i++) {
+        for (int i = 0; i < selects.length; i++)
             selects[i] = subs.elementAt(sels[i]);
-        }
         return selects;
     }
 
     public void tableHasChanged(SubEntry[] oldselections) {
         /* Try to reset the last selected row, after an update to the table has been performed
          * if no other information has been provided */
-        if (oldselections == null || oldselections.length == 0) {
+        if (oldselections == null || oldselections.length == 0)
             if (subs.size() == 0)
                 oldselections = new SubEntry[0];
             else {
@@ -2380,7 +2358,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
                     selected = 0;
                 oldselections[0] = subs.elementAt(selected);
             }
-        }
 
         int[] last_selected = new int[oldselections.length];
         int which;
@@ -2413,14 +2390,12 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             if (isUnsaved()) {
                 title = "*" + title;
                 getRootPane().putClientProperty("windowModified", Boolean.TRUE);
-            } else {
+            } else
                 getRootPane().putClientProperty("windowModified", Boolean.FALSE);
-            }
             setTitle(title + " - Jubler");
             getRootPane().putClientProperty("Window.documentFile", subs.getSubFile().getSaveFile());
-        } else {
+        } else
             setTitle("Jubler");
-        }
     }
 
     public void setUnsaved(boolean status) {
@@ -2534,9 +2509,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         SubEntry sel = subs.elementAt(subrow);
         subeditor.setData(sel);
 
-        if (preview.isVisible()) {
+        if (preview.isVisible())
             preview.subsHaveChanged(SubTable.getSelectedRows());
-        }
 
 
         if (connect_to_other != null) {
@@ -2573,9 +2547,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         SubStyleList list = subs.getStyleList();
         for (int i = 0; i < list.size(); i++) {
             JMenuItem item = new JMenuItem(list.getNameAt(i));
-            if (i <= 9 && add_shortkey) {
+            if (i <= 9 && add_shortkey)
                 item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0 + i, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | java.awt.event.InputEvent.ALT_MASK));
-            }
             menu.add(item);
             item.addActionListener(listener);
         }
@@ -2586,9 +2559,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         int[] rows = SubTable.getSelectedRows();
         SubStyle style = subs.getStyleList().getStyleByName(stylename);
         SubEntry[] selected = getSelectedSubs();
-        for (int i = 0; i < rows.length; i++) {
+        for (int i = 0; i < rows.length; i++)
             subs.elementAt(rows[i]).setStyle(style);
-        }
         tableHasChanged(selected);
     }
 }

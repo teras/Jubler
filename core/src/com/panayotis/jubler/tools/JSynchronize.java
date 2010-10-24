@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
+
 import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.subs.SubEntry;
@@ -33,21 +33,20 @@ import java.util.ArrayList;
  * @author  teras
  */
 public class JSynchronize extends JTool {
-    
+
     private JubFrame modeljubler;
-    
     private Subtitles target, model;
     private boolean copytime, copytext;
     private int offset;
-    
+
     /** Creates new form JSynchronize */
     public JSynchronize() {
         super(true);
     }
-    
+
     public void updateData(JubFrame current) {
         super.updateData(current);
-        
+
         target = current.getSubtitles();
         JubFrame cjubler, oldjubler;
         int cid = -1;
@@ -55,61 +54,61 @@ public class JSynchronize extends JTool {
         JubSelector.removeAllItems();
         int old_id = JubFrame.windows.indexOf(modeljubler);
         modeljubler = null; // Clear memory - variable not needed any more
-        
+
         String label;
-        for ( int i = 0 ; i <JubFrame.windows.size() ; i++) {
+        for (int i = 0; i < JubFrame.windows.size(); i++) {
             cjubler = JubFrame.windows.elementAt(i);
             label = cjubler.getSubtitles().getSubFile().getStrippedFile().getName();
-            if (cjubler==current) {
-                label += "  "+_("-current-");
+            if (cjubler == current) {
+                label += "  " + _("-current-");
                 cid = i;
             }
             JubSelector.addItem(label);
         }
-        if (old_id < 0) old_id = cid;
+        if (old_id < 0)
+            old_id = cid;
         JubSelector.setSelectedIndex(old_id);
     }
-    
-    
+
     public void initialize() {
         initComponents();
     }
-    
+
     public String getToolTitle() {
         return _("Synchronize");
     }
-    
+
     public void storeSelections() {
         modeljubler = JubFrame.windows.get(JubSelector.getSelectedIndex());
         model = modeljubler.getSubtitles();
         copytime = InTimeS.isSelected();
         copytext = InTextS.isSelected();
-        offset = ((Integer)OffsetS.getValue()).intValue();
-        
-        if (offset<0) { // We have to invert the selected subtitles!
+        offset = ((Integer) OffsetS.getValue()).intValue();
+
+        if (offset < 0) { // We have to invert the selected subtitles!
             ArrayList<SubEntry> inv_affected = new ArrayList<SubEntry>();
-            for (int i = affected_list.size()-1; i >= 0 ; i--) {
+            for (int i = affected_list.size() - 1; i >= 0; i--)
                 inv_affected.add(affected_list.get(i));
-            }
             affected_list = inv_affected;
         }
     }
-    
+
     public void affect(int which) {
         SubEntry to = affected_list.get(which);
-        
-        int modid = target.indexOf(to)+offset;
-        if (modid<0 || modid >= model.size()) return;
-        
+
+        int modid = target.indexOf(to) + offset;
+        if (modid < 0 || modid >= model.size())
+            return;
+
         SubEntry from = model.elementAt(modid);
         if (copytime) {
             to.setStartTime(from.getStartTime());
             to.setFinishTime(from.getFinishTime());
         }
-        if (copytext) to.setText(from.getText());
+        if (copytext)
+            to.setText(from.getText());
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -163,8 +162,6 @@ public class JSynchronize extends JTool {
         add(jPanel1, java.awt.BorderLayout.SOUTH);
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox InTextS;
     private javax.swing.JCheckBox InTimeS;
@@ -175,5 +172,4 @@ public class JSynchronize extends JTool {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
-    
 }

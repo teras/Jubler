@@ -20,21 +20,18 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time;
 
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 
-
-
 /**
  *
  * @author teras
  */
 public class TimeSpinnerEditor extends JSpinner.DefaultEditor {
-    
+
     /** Creates a new instance of TimeSpinnerEditor */
     public TimeSpinnerEditor(JSpinner spinner) {
         super(spinner);
@@ -45,5 +42,4 @@ public class TimeSpinnerEditor extends JSpinner.DefaultEditor {
         ftf.setHorizontalAlignment(JFormattedTextField.RIGHT);
         ftf.setFormatterFactory(new TimeFormatterFactory());
     }
-    
 }

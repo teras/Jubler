@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.os.SystemDependent;
@@ -29,29 +28,29 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.tools.externals.wizard.JWizard;
 import javax.swing.JPanel;
 
-
 /**
  *
  * @author  teras
  */
 public class JExtBasicOptions extends JPanel {
+
     protected String name;
     protected String family;
     protected String[] testparameters;
     protected String test_signature;
-    
+
     /** Creates new form MPlay */
     public JExtBasicOptions(String family, String name, String[] testparameters, String test_signature) {
         super();
-        
+
         this.family = family;
         this.name = name;
         this.testparameters = testparameters;
         this.test_signature = test_signature;
-        
+
         initComponents();
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -90,53 +89,50 @@ public class JExtBasicOptions extends JPanel {
 
         add(BrowserP, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
     private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
         searchForExecutable();
     }//GEN-LAST:event_WizardBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JPanel BrowserP;
     private javax.swing.JLabel FileL;
     private javax.swing.JTextField FilenameT;
     private javax.swing.JButton WizardB;
     // End of variables declaration//GEN-END:variables
-    
+
     protected void loadPreferences() {
-        FilenameT.setText( Options.getOption(family + "." + name + ".Path", name.toLowerCase()) );
+        FilenameT.setText(Options.getOption(family + "." + name + ".Path", name.toLowerCase()));
     }
-    
+
     protected void savePreferences() {
         Options.setOption(family + "." + name + ".Path", FilenameT.getText());
     }
-    
+
     public String getExecFileName() {
         return FilenameT.getText();
     }
-    
+
     public JPanel getOptionsPanel() {
         return this;
     }
-    
+
     /* Use this method every time an update to the panel is needed */
-    protected void updateOptionsPanel() {}
-    
-    
+    protected void updateOptionsPanel() {
+    }
+
     /* Use this method when we want to search for the executable path */
     private boolean searchForExecutable() {
         JWizard wiz = new JWizard(name, testparameters, test_signature, FilenameT.getText());
         wiz.setVisible(true);
         String fname = wiz.getExecFilename();
-        if (fname!=null) {
+        if (fname != null) {
             FilenameT.setText(fname);
             updateOptionsPanel();
             return true;
         }
         return false;
     }
-    
+
     /** Request the executable path and save this information */
     public boolean requestExecutable() {
         boolean found = searchForExecutable();

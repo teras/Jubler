@@ -36,7 +36,7 @@ public class AvailExternals extends Vector<ExtProgram> {
     private String localtype;
     private String iconname;
 
-    public AvailExternals (String type, String localtype, String iconname) {
+    public AvailExternals(String type, String localtype, String iconname) {
         this.type = type;
         this.localtype = localtype;
         this.iconname = iconname;
@@ -61,7 +61,7 @@ public class AvailExternals extends Vector<ExtProgram> {
         return elementAt(i);
     }
 
-        /* Get the type of this external program, useful to save options */
+    /* Get the type of this external program, useful to save options */
     public String getType() {
         return type;
     }
@@ -75,5 +75,4 @@ public class AvailExternals extends Vector<ExtProgram> {
     public String getIconName() {
         return iconname;
     }
-
 }

@@ -47,7 +47,6 @@ import javax.swing.JToolBar;
 public class JSubPreview extends javax.swing.JPanel {
 
     public final static Icon[] cursors;
-    
 
     static {
         cursors = new Icon[4];
@@ -130,7 +129,7 @@ public class JSubPreview extends javax.swing.JPanel {
         if (subid.length == 0) {
             min = 0d;
             max = 0d;
-        } else {
+        } else
             for (int i = 0; i < subid.length; i++) {
                 entry = subs.elementAt(subid[i]);
                 val = entry.getStartTime().toSeconds();
@@ -140,7 +139,6 @@ public class JSubPreview extends javax.swing.JPanel {
                 if (max < val)
                     max = val;
             }
-        }
         /* Although we have a minimum duration in ViewWindow, this is too small.
          * When displaying subtitles for the first time make sure we display a generous amount of time */
         view.setWindow(min, max, true);
@@ -185,11 +183,10 @@ public class JSubPreview extends javax.swing.JPanel {
 
     private void setOrientation(boolean horizontal) {
         MainPanel.remove(frame);
-        if (horizontal) {
+        if (horizontal)
             MainPanel.add(frame, BorderLayout.WEST);
-        } else {
+        else
             MainPanel.add(frame, BorderLayout.NORTH);
-        }
         parent.setPreviewOrientation(horizontal);
         parent.resetPreviewPanels();
         AutoSaveOptions.setPreviewOrientation(horizontal);
@@ -550,7 +547,6 @@ public class JSubPreview extends javax.swing.JPanel {
     private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
         parent.addNewSubtitle(true);
 }//GEN-LAST:event_NewSubActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
     public javax.swing.JToggleButton AudioPlay;

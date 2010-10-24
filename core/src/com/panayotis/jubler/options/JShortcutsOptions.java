@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.os.SystemDependent;
@@ -39,45 +38,61 @@ import javax.swing.event.ListSelectionListener;
  * @author  teras
  */
 public class JShortcutsOptions extends JPanel implements OptionsHolder {
-    
+
     private ShortcutsModel smodel;
-    
+
     /** Creates new form JShortcutsOptions */
     public JShortcutsOptions(JMenuBar bar) {
         smodel = new ShortcutsModel(bar);
         initComponents();
-        
-        ShortT.getSelectionModel().addListSelectionListener( new ListSelectionListener() {
+
+        ShortT.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
             public void valueChanged(ListSelectionEvent e) {
                 //Ignore extra messages.
-                if (e.getValueIsAdjusting()) return;
-                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-                if (lsm.isSelectionEmpty()) return;
+                if (e.getValueIsAdjusting())
+                    return;
+                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                if (lsm.isSelectionEmpty())
+                    return;
                 smodel.setSelection(ShortT.getSelectedRow());
             }
         });
         ShortT.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        
+
     }
-    
+
     public void applyMenuShortcuts(JMenuBar bar) {
         smodel.applyMenuShortcuts(bar);
     }
-    
+
     public void loadPreferences() {
         smodel.loadPreferences();
     }
-    
+
     public void savePreferences() {
         smodel.savePreferences();
     }
-    
-    public JPanel getTabPanel() { return this; }
-    public String getTabName() { return _("Shortcuts"); }
-    public String getTabTooltip() { return _("Set the menu keyboard shortcuts"); }
-    public Icon getTabIcon() { return new ImageIcon(getClass().getResource("/icons/shortcut_pref.png")); }
-    public void changeProgram() {}
-    
+
+    public JPanel getTabPanel() {
+        return this;
+    }
+
+    public String getTabName() {
+        return _("Shortcuts");
+    }
+
+    public String getTabTooltip() {
+        return _("Set the menu keyboard shortcuts");
+    }
+
+    public Icon getTabIcon() {
+        return new ImageIcon(getClass().getResource("/icons/shortcut_pref.png"));
+    }
+
+    public void changeProgram() {
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -137,24 +152,22 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
 
         add(jPanel2, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void ResetSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetSBActionPerformed
         smodel.resetAllShortcuts();
     }//GEN-LAST:event_ResetSBActionPerformed
-    
+
     private void ClearSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearSBActionPerformed
         smodel.removeShortcut();
     }//GEN-LAST:event_ClearSBActionPerformed
-    
+
     private void ShortTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ShortTKeyReleased
         smodel.keyReleased(evt.getKeyCode());
     }//GEN-LAST:event_ShortTKeyReleased
-    
+
     private void ShortTKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ShortTKeyPressed
         smodel.keyPressed(evt.getKeyCode());
     }//GEN-LAST:event_ShortTKeyPressed
-  
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ClearSB;
     private javax.swing.JButton ResetSB;
@@ -164,6 +177,4 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    
-    
 }

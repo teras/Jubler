@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.preview.decoders;
 
 import com.panayotis.jubler.media.AudioFile;
@@ -33,19 +32,22 @@ import java.awt.Image;
  * @author teras
  */
 public interface DecoderInterface {
-    
+
     public abstract boolean isDecoderValid();
 
     public abstract boolean initAudioCache(AudioFile afile, CacheFile cfile, DecoderListener fback);
+
     public abstract void setInterruptStatus(boolean interrupt);
+
     public abstract boolean getInterruptStatus();
+
     public abstract void closeAudioCache(CacheFile cache);
 
     public abstract AudioPreview getAudioPreview(CacheFile cache, double from, double to);
 
     public abstract Image getFrame(VideoFile video, double time, float resize);
+
     public abstract void retrieveInformation(VideoFile vfile);
-    
+
     public abstract void playAudioClip(AudioFile audio, double from, double to);
-    
 }

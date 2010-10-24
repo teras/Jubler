@@ -60,7 +60,7 @@ public class JLoadOptions extends JFileOptions {
         CFPS.setDataFiles(mfile, subs);
         setUnicodeVisible(false);
         OptsP.add(getPresetsButton(), BorderLayout.EAST);
-        for(int i = 0 ; i < CEnc.length ; i++)
+        for (int i = 0; i < CEnc.length; i++)
             setListItem(CEnc[i], SubFile.getDefaultEncoding(i));
         CFPS.setFPS(SubFile.getDefaultFPS());
     }

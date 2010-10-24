@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.console;
 
 /**
@@ -28,11 +27,10 @@ package com.panayotis.jubler.media.console;
  * @author teras
  */
 public interface PlayerFeedback {
-    
+
     /* Volume has been changed (values between 0..1)*/
     public void volumeUpdate(float vol);
-    
+
     /* The Video Player requested a quit action - i.e. no more streaming */
     public void requestQuit();
-    
 }

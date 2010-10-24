@@ -112,7 +112,7 @@ public class Time implements Comparable<Time> {
     }
 
     public void setTime(double time) {
-        setMilliSeconds((int)(time * 1000d+0.5d));
+        setMilliSeconds((int) (time * 1000d + 0.5d));
     }
 
     public void setTime(Time time) {
@@ -214,9 +214,11 @@ public class Time implements Comparable<Time> {
     public double toSeconds() {
         return msecs / 1000d;
     }
+
     public String toString() {
         return getSeconds();
     }
+
     public long getMillis() {
         return msecs;
     }

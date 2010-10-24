@@ -43,6 +43,7 @@ public abstract class JToolRealTime extends JTool {
         super(value);
     }
 
+    @Override
     protected void updateData(JubFrame jub) {
         super.updateData(jub);
         if (should_maximize_values) {

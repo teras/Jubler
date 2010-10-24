@@ -20,16 +20,14 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.externals;
 
 /**
  *
  * @author teras
  */
-public class ExtProgramException extends Exception{
-    
-     
+public class ExtProgramException extends Exception {
+
     /**
      * Creates a new instance of ExtProgramException
      */

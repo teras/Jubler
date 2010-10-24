@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.console;
 
 /**
@@ -28,24 +27,24 @@ package com.panayotis.jubler.media.console;
  * @author teras
  */
 public class TimeSync {
-    
+
     public double timepos;
     public double timediff;
-    
+
     /** Creates a new instance of TimeSync */
     public TimeSync(double pos, double diff) {
         timepos = pos;
         timediff = diff;
     }
-    
+
     public String toString() {
-        return "[Position="+timepos+", Difference="+timediff+"]";
+        return "[Position=" + timepos + ", Difference=" + timediff + "]";
     }
-    
+
     public boolean smallerThan(TimeSync t) {
         return timepos < t.timepos;
     }
-    
+
     public boolean isEqualDiff(TimeSync t) {
         return Math.abs(timediff - t.timediff) < 0.001;
     }

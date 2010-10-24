@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.os;
 
 import java.io.IOException;
@@ -29,7 +28,7 @@ import java.net.ServerSocket;
  */
 public class Networking {
 
-        public static int getRandomPort() {
+    public static int getRandomPort() {
         ServerSocket soc;
         for (int i = 50000; i < 51000; i++) {
             soc = null;

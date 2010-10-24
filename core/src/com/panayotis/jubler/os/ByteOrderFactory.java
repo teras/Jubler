@@ -70,12 +70,11 @@ public class ByteOrderFactory {
         try {
             in = new FileInputStream(f);
             in.read(buffer);
-            for (int i = 0; i < orders.length; i++) {
+            for (int i = 0; i < orders.length; i++)
                 if (orders[i].match(buffer)) {
                     in.close();
                     return orders[i].encoding;
                 }
-            }
         } catch (IOException ex) {
         } finally {
             try {

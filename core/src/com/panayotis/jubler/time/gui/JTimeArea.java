@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time.gui;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -35,39 +34,37 @@ import javax.swing.JPanel;
  * @author teras
  */
 public abstract class JTimeArea extends JPanel {
+
     protected Subtitles subs;
-    protected int [] selected;
-    
+    protected int[] selected;
     /* Use these variables to make new time dialogs to open with meaningful defaults */
     protected final static int DEFAULTS_BYSELECTION = 0;
     protected final static int DEFAULTS_BYCOLOR = 1;
     protected final static int DEFAULTS_BYTHEME = 2;
     protected final static int DEFAULTS_BYREGION = 3;
-    
     protected static int selection_model = DEFAULTS_BYSELECTION;
-    
-    public abstract ArrayList<SubEntry> getAffectedSubs() ;
 
-    
+    public abstract ArrayList<SubEntry> getAffectedSubs();
+
     /** Creates a new instance of JTimeArea */
     public JTimeArea() {
         super();
         initComponents();
     }
-    
-    public void updateData(Subtitles subs, int [] selected) {
+
+    public void updateData(Subtitles subs, int[] selected) {
         this.subs = subs;
         this.selected = selected;
     }
-    
+
     Time findFirstInList(Subtitles subs, int[] selected) {
         Time min, cur;
         double minsecs, cursecs;
         int i;
-        
+
         minsecs = Time.MAX_TIME;
         min = new Time(0d);
-        for ( i = 0 ; i < selected.length ; i++) {
+        for (i = 0; i < selected.length; i++) {
             cur = subs.elementAt(selected[i]).getStartTime();
             cursecs = cur.toSeconds();
             if (cursecs < minsecs) {
@@ -77,16 +74,15 @@ public abstract class JTimeArea extends JPanel {
         }
         return min;
     }
-    
-    
+
     Time findLastInList(Subtitles subs, int[] selected) {
         Time max, cur;
         double maxsecs, cursecs;
         int i;
-        
+
         maxsecs = 0;
         max = new Time(0d);
-        for ( i = 0 ; i < selected.length ; i++) {
+        for (i = 0; i < selected.length; i++) {
             cur = subs.elementAt(selected[i]).getFinishTime();
             cursecs = cur.toSeconds();
             if (cursecs > maxsecs) {
@@ -96,16 +92,15 @@ public abstract class JTimeArea extends JPanel {
         }
         return max;
     }
-    
+
     public void updateSubsMark(ArrayList<SubEntry> affected) {
         if (!ChSubColorB.isEnabled())
             return;
         int new_mark = ChSubColorC.getSelectedIndex();
-        for(SubEntry sub:affected) {
+        for (SubEntry sub : affected)
             sub.setMark(new_mark);
-        }
     }
-       
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -141,12 +136,9 @@ public abstract class JTimeArea extends JPanel {
     private void ChSubColorBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChSubColorBActionPerformed
         ChSubColorC.setEnabled(ChSubColorB.isSelected());
     }//GEN-LAST:event_ChSubColorBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ChSubColorB;
     private javax.swing.JComboBox ChSubColorC;
     protected javax.swing.JPanel SubCP;
     // End of variables declaration//GEN-END:variables
-    
 }

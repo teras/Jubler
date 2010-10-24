@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
 import java.util.ArrayList;
@@ -38,19 +37,18 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JRegExpReplace extends JTool {
-    
+
     private ArrayList<Pattern> patterns;
     private ArrayList<String> texts;
-    
     private JReplaceList rlist;
-    
+
     /**
      * Creates new form JRegExpReplace
      */
     public JRegExpReplace() {
         super(true);
     }
-    
+
     public void initialize() {
         initComponents();
         rlist = new JReplaceList();
@@ -58,36 +56,35 @@ public class JRegExpReplace extends JTool {
         patterns = new ArrayList<Pattern>();
         texts = new ArrayList<String>();
     }
-    
+
     protected String getToolTitle() {
         return _("Regular Expression replace");
     }
-    
+
     protected void storeSelections() {
         ReplaceModel model = rlist.getModel();
         patterns.clear();
         texts.clear();
-        for (int i = 0 ; i < model.size() ; i++) {
+        for (int i = 0; i < model.size(); i++)
             if (model.elementAt(i).usable) {
                 patterns.add(Pattern.compile(model.elementAt(i).fromS));
                 texts.add(model.elementAt(i).toS);
             }
-        }
     }
-    
+
     protected void affect(int index) {
         SubEntry sub = affected_list.get(index);
         String res;
         Matcher m;
 
         res = sub.getText();
-        for (int i = 0 ; i < patterns.size() ; i ++) {
+        for (int i = 0; i < patterns.size(); i++) {
             m = patterns.get(i).matcher(res);
             res = m.replaceAll(texts.get(i));
         }
         sub.setText(res);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -124,12 +121,12 @@ public class JRegExpReplace extends JTool {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
         int ret;
-        Object [] options = {_("Use"), _("Cancel"), _("Reset")};
+        Object[] options = {_("Use"), _("Cancel"), _("Reset")};
         ret = JOptionPane.showOptionDialog(this, rlist, _("Edit regular expression replace list"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
-        switch ( ret) {
+        switch (ret) {
             case 0:
                 //do
                 rlist.getModel().saveOptions();
@@ -147,8 +144,6 @@ public class JRegExpReplace extends JTool {
         }
         TextList.setListData(rlist.getModel().getReplaceList());
     }//GEN-LAST:event_EditBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EditB;
     private javax.swing.JList TextList;
@@ -156,4 +151,3 @@ public class JRegExpReplace extends JTool {
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
-

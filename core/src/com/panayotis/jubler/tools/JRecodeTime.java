@@ -37,8 +37,8 @@ public class JRecodeTime extends JToolRealTime {
 
     private double factor;
     private double center;
-    private TimeSync t1,  t2;
-    private JRateChooser FromR,  ToR;
+    private TimeSync t1, t2;
+    private JRateChooser FromR, ToR;
 
     /** Creates new form JRecodeTime */
     public JRecodeTime() {
@@ -107,11 +107,10 @@ public class JRecodeTime extends JToolRealTime {
         center = 0;
         factor = 1;
         try {
-            if (AutoB.isSelected()) {
+            if (AutoB.isSelected())
                 factor = FromR.getFPSValue() / ToR.getFPSValue();
-            } else {
+            else
                 factor = Double.parseDouble(CustomF.getText());
-            }
             center = Double.parseDouble(CustomC.getText());
         } catch (NumberFormatException e) {
         }

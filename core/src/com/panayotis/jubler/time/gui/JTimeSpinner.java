@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.time.Time;
@@ -39,50 +38,53 @@ import javax.swing.JSpinner;
  * @author teras
  */
 public class JTimeSpinner extends JSpinner {
-    
+
     /** Creates a new instance of JTimeSpinner */
     public JTimeSpinner() {
         super();
-        
+
         final TimeSpinnerModel model = new TimeSpinnerModel();
         setModel(model);
-        
+
         /* Modify the speed of the spinner, if the "alt" key is pressed" */
         JButton c;
-        for (int i = 0 ; i < getComponentCount(); i ++ ) {  // It's a hack, but can't do anything else :-(
+        for (int i = 0; i < getComponentCount(); i++)  // It's a hack, but can't do anything else :-(
             if (getComponent(i) instanceof JButton) {
-                c = (JButton)getComponent(i);
+                c = (JButton) getComponent(i);
                 c.addMouseListener(new MouseAdapter() {
+
                     public void mousePressed(MouseEvent e) {
-                        if( (e.getModifiers()&MouseEvent.ALT_MASK) > 0) model.setSpeed(0.1);
-                        else model.setSpeed(1);
+                        if ((e.getModifiers() & MouseEvent.ALT_MASK) > 0)
+                            model.setSpeed(0.1);
+                        else
+                            model.setSpeed(1);
                     }
                 });
             }
-        }
-        
+
         setEditor(new TimeSpinnerEditor(this));
-        
+
         /* Get mousewheel event, and modify speed if the alt key is pressed */
-        addMouseWheelListener( new MouseWheelListener() {
+        addMouseWheelListener(new MouseWheelListener() {
+
             public void mouseWheelMoved(MouseWheelEvent e) {
-                if ( e.getModifiers() == InputEvent.ALT_MASK ) model.setSpeed(0.1);
-                else model.setSpeed(1);
+                if (e.getModifiers() == InputEvent.ALT_MASK)
+                    model.setSpeed(0.1);
+                else
+                    model.setSpeed(1);
                 model.increaseValue(-e.getWheelRotation());
                 model.setSpeed(1);
             }
         });
-        
+
     }
-    
-    
+
     public Time getTimeValue() {
-        return (Time)getModel().getValue();
+        return (Time) getModel().getValue();
     }
-    
-    public void setTimeValue( Time t ){
+
+    public void setTimeValue(Time t) {
         getModel().setValue(t);
         this.getChangeListeners();
     }
 }
-

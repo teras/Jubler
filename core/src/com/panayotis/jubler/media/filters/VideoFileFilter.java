@@ -20,35 +20,34 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.filters;
 
 import java.io.File;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
-
 /**
  *
  * @author teras
  */
 public class VideoFileFilter extends MediaFileFilter {
-    
+
     private static final String exts[] = {".avi", ".mpg", ".mpeg", ".m1v", ".m2v", ".mov", ".mkv", ".ogm", ".divx", ".bin", ".wmv", ".flv", ".mp4", "m4v"};
-    
+
     public String[] getExtensions() {
         return exts;
     }
-    
+
     public boolean accept(File pathname) {
-        if (pathname.isDirectory()) return true;
+        if (pathname.isDirectory())
+            return true;
         String fname = pathname.getName().toLowerCase();
-        for ( int i = 0 ; i < exts.length ; i++) {
-            if (fname.endsWith(exts[i])) return true;
-        }
+        for (int i = 0; i < exts.length; i++)
+            if (fname.endsWith(exts[i]))
+                return true;
         return false;
     }
-    
+
     public String getDescription() {
         return _("All Video files");
     }

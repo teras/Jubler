@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time;
 
 import javax.swing.AbstractSpinnerModel;
@@ -30,42 +29,42 @@ import javax.swing.AbstractSpinnerModel;
  * @author teras
  */
 public class TimeSpinnerModel extends AbstractSpinnerModel {
-        
+
     private Time time;
     private double speed = 1;
-    
+
     public TimeSpinnerModel() {
         time = new Time(0d);
     }
-    
+
     public Object getPreviousValue() {
         Time nvalue = new Time(time);
         nvalue.addTime(-speed);
         return nvalue;
     }
-    
+
     public Object getNextValue() {
         Time nvalue = new Time(time);
         nvalue.addTime(speed);
         return nvalue;
     }
-    
+
     public Object getValue() {
         return time;
     }
-    
+
     public void setValue(Object newtime) {
         if (newtime != null && newtime instanceof Time) {
-            time.setTime((Time)newtime);
+            time.setTime((Time) newtime);
             fireStateChanged();
         }
     }
-    
+
     public void increaseValue(int value) {
-        time.addTime(value*speed);
+        time.addTime(value * speed);
         fireStateChanged();
     }
-    
+
     public void setSpeed(double newspeed) {
         speed = newspeed;
     }

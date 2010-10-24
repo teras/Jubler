@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
@@ -39,124 +38,129 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JFixer extends JTool {
-    
+
     private JDuration mintime, maxtime;
-    
     private boolean fix;
     private int pushmodel;
-    
     private double min_abs, min_cps, max_abs, max_cps, gap;
-    
+
     /** Creates new form JFixer */
     public JFixer() {
         super(false);
     }
-    
+
     public void initialize() {
         initComponents();
-        
+
         mintime = new JDuration();
         MinTimeP.add(mintime, BorderLayout.CENTER);
         maxtime = new JDuration();
         MaxTimeP.add(maxtime, BorderLayout.CENTER);
     }
-    
+
     protected String getToolTitle() {
         return _("Fix time inconsistencies");
     }
-    
+
     protected void storeSelections() {
-        
-        
+
+
         /* Sort subtitles first */
         if (SortB.isSelected())
-            subs.sort(((JTimeRegion)pos).getStartTime(), ((JTimeRegion)pos).getFinishTime());
-        
+            subs.sort(((JTimeRegion) pos).getStartTime(), ((JTimeRegion) pos).getFinishTime());
+
         /* What to do with the remaining duration */
         fix = FixT.isSelected();
-        if ( fix ) {
+        if (fix)
             pushmodel = PushModelB.getSelectedIndex();
-        }
-        
+
         min_abs = mintime.getAbsTime();
         min_cps = mintime.getCPSTime();
         max_abs = maxtime.getAbsTime();
         max_cps = maxtime.getCPSTime();
-        
+
         gap = 0;
-        if ( GapB.isSelected()) {
+        if (GapB.isSelected())
             try {
                 gap = Double.parseDouble(GapNum.getText()) / 1000;
-            } catch (NumberFormatException e) {}
-        }
+            } catch (NumberFormatException e) {
+            }
     }
-    
+
     @Override
     public boolean execute(JubFrame jub) {
         boolean res = super.execute(jub);
-        if (res) {
+        if (res)
             if (SortB.isSelected()) {
-                subs.sort(((JTimeRegion)pos).getStartTime(), ((JTimeRegion)pos).getFinishTime());
+                subs.sort(((JTimeRegion) pos).getStartTime(), ((JTimeRegion) pos).getFinishTime());
                 return true;
             }
-        }
         return false;
     }
-    
+
     protected void affect(int index) {
         SubEntry sub = affected_list.get(index);
-        
+
         double curstart; /* The original start time */
         double curdur;  /* The original duration of the subtitle */
         int charcount;  /* The number of characters of the subtitle */
         double mindur, maxdur;  /* minimum & maximum duration of the subtitle */
         double lowerlimit, upperlimit; /* limits dictated by the neighbour subtitles */
         double avail; /* Maximum space available for the subtitle */
-        
+
         /* Get current information */
         curstart = sub.getStartTime().toSeconds();
         curdur = sub.getFinishTime().toSeconds() - curstart;
         charcount = sub.getText().length();
-        
+
         /* initialize minimum/maximum duration */
         mindur = maxdur = -1;
         /* Calculate minimum /maximum duration */
-        if ( min_abs >= 0 ) mindur = min_abs;
-        else if (min_cps >= 0 ) mindur = charcount * min_cps;
-        if ( max_abs >= 0 ) maxdur = max_abs;
-        else if (max_cps >= 0 ) maxdur = charcount * max_cps;
-        
+        if (min_abs >= 0)
+            mindur = min_abs;
+        else if (min_cps >= 0)
+            mindur = charcount * min_cps;
+        if (max_abs >= 0)
+            maxdur = max_abs;
+        else if (max_cps >= 0)
+            maxdur = charcount * max_cps;
+
         /* Make sure min & max have a valid value */
-        if ( mindur < 0 && maxdur < 0) {
+        if (mindur < 0 && maxdur < 0)
             mindur = maxdur = curdur;
-        } else if ( mindur < 0 ) {
+        else if (mindur < 0)
             mindur = (curdur > maxdur) ? maxdur : curdur;
-        } else if ( maxdur < 0 ) {
+        else if (maxdur < 0)
             maxdur = (curdur < mindur) ? mindur : curdur;
-        }
-        
+
         /* Fix duration depending on their values */
-        if (curdur>maxdur) curdur = maxdur;
-        if (curdur<mindur) curdur = mindur;
+        if (curdur > maxdur)
+            curdur = maxdur;
+        if (curdur < mindur)
+            curdur = mindur;
 
         /* If smart duration fix is not wanted, set duration time and exit */
-        if ( !fix ) {
+        if (!fix) {
             /* Do not fix time */
-            sub.getFinishTime().setTime(curstart+curdur);
+            sub.getFinishTime().setTime(curstart + curdur);
             /* That was easy! */
             return;
         }
-        
+
         /* The following part of the code is executed *only* when the user wanted
-         to fix the subtitle times
+        to fix the subtitle times
          */
-        
+
         /* Find limits depending on their neighbour subtitles */
-        if (index==0) lowerlimit = 0;
-        else lowerlimit = affected_list.get(index-1).getFinishTime().toSeconds();
-        if (index==(affected_list.size()-1)) upperlimit = Time.MAX_TIME;
-        else upperlimit = affected_list.get(index+1).getStartTime().toSeconds();
-        
+        if (index == 0)
+            lowerlimit = 0;
+        else
+            lowerlimit = affected_list.get(index - 1).getFinishTime().toSeconds();
+        if (index == (affected_list.size() - 1))
+            upperlimit = Time.MAX_TIME;
+        else
+            upperlimit = affected_list.get(index + 1).getStartTime().toSeconds();
+
         /* Fix time by pushing the subtitles up */
         if (pushmodel == 2) {
             sub.getFinishTime().setTime(curstart + curdur);   /* Calculate new finish time */
@@ -187,43 +191,46 @@ public class JFixer extends JTool {
 
 
         /* Try to cleverly rearrange the subtitles */
-        
+
         /* Available space */
         avail = upperlimit - lowerlimit;
-        
+
         /* The real work starts here */
-        if (  (curdur+2*gap) <= avail ) {
+        if ((curdur + 2 * gap) <= avail) {
             /* We have enough space, phewwww... */
             double fulldur = curdur + 2 * gap;  /* The new full duration, i.e. subtitle + 2 gaps */
-            double center = curstart + (curdur/2) ; /* Calculate the old center of the subtitle display */
-            double newstart = center - (fulldur/2); /* Calculate the new *full* start of the subtitle */
-            double newfinish = center + (fulldur/2);    /* Calculate the new *full* finish of the subtitle */
+            double center = curstart + (curdur / 2); /* Calculate the old center of the subtitle display */
+            double newstart = center - (fulldur / 2); /* Calculate the new *full* start of the subtitle */
+            double newfinish = center + (fulldur / 2);    /* Calculate the new *full* finish of the subtitle */
             double dt = 0;  /* Initialize deviation of the desired center */
-            if ( newfinish > upperlimit ) dt = upperlimit - newfinish;   /* Make sure duration does not leak to the right */
-            else if ( newstart < lowerlimit ) dt = lowerlimit - newstart;   /* Make sure duration does not leak to the left */
+            if (newfinish > upperlimit)
+                dt = upperlimit - newfinish;   /* Make sure duration does not leak to the right */
+
+            else if (newstart < lowerlimit)
+                dt = lowerlimit - newstart;   /* Make sure duration does not leak to the left */
             newstart += dt + gap;   /* Calculate new start WITHOUT the gap */
             sub.getStartTime().setTime(newstart);
-            sub.getFinishTime().setTime(newstart+curdur);
-        } else {
-            if ( mindur >= avail ) {
+            sub.getFinishTime().setTime(newstart + curdur);
+        } else
+            if (mindur >= avail) {
                 /* We don't have space at all... */
                 sub.getStartTime().setTime(lowerlimit);
-                sub.getFinishTime().setTime(lowerlimit+avail);
+                sub.getFinishTime().setTime(lowerlimit + avail);
             } else {
                 /* We try to evenly distribute the time between the subtitles and the gap */
                 double dcur = curdur - mindur;  /* The difference between current and minimum subtitle */
-                double factor = (avail-mindur) / (dcur+2*gap); /* calculate normalization factor */
+                double factor = (avail - mindur) / (dcur + 2 * gap); /* calculate normalization factor */
                 double newdur = (dcur * factor) + mindur; /* Calculate new duration */
-                
+
                 double newbegin = lowerlimit;    /* Calculate new beginnig */
-                if(index>0) newbegin += (gap *factor);     /* Add the gap only if it's between subtitles (to fix an error with the first subtitle)
+                if (index > 0)
+                    newbegin += (gap * factor);     /* Add the gap only if it's between subtitles (to fix an error with the first subtitle)
                 /* Fianlly, set net times */
                 sub.getStartTime().setTime(newbegin);
-                sub.getFinishTime().setTime(newbegin+newdur);
+                sub.getFinishTime().setTime(newbegin + newdur);
             }
-        }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -317,21 +324,21 @@ public class JFixer extends JTool {
 
         add(jPanel4, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void GapBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GapBActionPerformed
         GapNum.setEnabled(GapB.isSelected());
     }//GEN-LAST:event_GapBActionPerformed
-    
+
     private void FixTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FixTActionPerformed
         boolean en = FixT.isSelected();
         PushModelB.setEnabled(en);
         GapB.setEnabled(en);
-        
-        if ( en ) GapNum.setEnabled(GapB.isSelected());
-        else GapNum.setEnabled(false);
+
+        if (en)
+            GapNum.setEnabled(GapB.isSelected());
+        else
+            GapNum.setEnabled(false);
     }//GEN-LAST:event_FixTActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox FixT;
     private javax.swing.JCheckBox GapB;
@@ -347,5 +354,4 @@ public class JFixer extends JTool {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     // End of variables declaration//GEN-END:variables
-    
 }

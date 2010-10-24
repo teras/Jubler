@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.media.filters;
 
 /**
@@ -28,6 +27,6 @@ package com.panayotis.jubler.media.filters;
  * @author teras
  */
 public abstract class MediaFileFilter extends javax.swing.filechooser.FileFilter implements java.io.FileFilter {
-    
+
     public abstract String[] getExtensions();
 }

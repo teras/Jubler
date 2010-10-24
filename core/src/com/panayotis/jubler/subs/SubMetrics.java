@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 /**
@@ -28,17 +27,17 @@ package com.panayotis.jubler.subs;
  * @author teras
  */
 public class SubMetrics {
-    
+
     public int length = 0;
     public int maxlength = 0;
     public int lines = 1;
-    
+
     public void updateToMaxValues(SubMetrics m) {
-        if ( length<m.length )
+        if (length < m.length)
             length = m.length;
-        if ( lines<m.lines )
+        if (lines < m.lines)
             lines = m.lines;
-        if ( maxlength<m.maxlength )
+        if (maxlength < m.maxlength)
             maxlength = m.maxlength;
     }
 }

@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader.format;
 
 import static com.panayotis.jubler.subs.loader.format.StyledFormat.*;
@@ -48,75 +47,79 @@ import java.util.regex.Pattern;
  * @author teras
  */
 public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
-    
+
     /* Get the pattern that matches the style events */
     protected abstract Pattern getStylePattern();
-    
+
     /* Get the String that matches the seperator between events at the same time position */
     protected abstract String getTokenizer();
-    
+
     /* Get the String which introduces and finalizes new event */
     protected abstract String getEventIntro();
+
     protected abstract String getEventFinal();
     /* Define whether this format is compact (i.e. multiple events are under the same intro+final markers */
+
     protected abstract boolean isEventCompact();
-    
+
     /* The special character that an event has - sometimes the same as getTokenizer */
     protected abstract String getEventMark();
-    
+
     /* Get the dictionary of the supported styles */
     protected abstract Vector<StyledFormat> getStylesDictionary();
-    
+
     /* Since ASS/SSA uses OS/2 font metrics, we need to recalculate the font size with a factor */
-    protected float getFontFactor() { return 1; }
-    
+    protected float getFontFactor() {
+        return 1;
+    }
+
     @SuppressWarnings("unchecked")
     protected void parseSubText(SubEntry entry) {
         StringBuffer sbuf = new StringBuffer(entry.getText());
         Matcher m = getStylePattern().matcher(sbuf);
         ArrayList<SubEv> events = new ArrayList<SubEv>();
         SubEv s;
-        int startoffset = 0 ; /* In order for not parsing the events when the text will be truncated, store the offset right here and substruct it on any new event */
+        int startoffset = 0; /* In order for not parsing the events when the text will be truncated, store the offset right here and substruct it on any new event */
         /* First parse the sub text and add all events */
         while (m.find()) {
-            s = new SubEv(m.group(1), m.start(1)-1-startoffset);
+            s = new SubEv(m.group(1), m.start(1) - 1 - startoffset);
             events.add(s);
             startoffset += s.value.length() + 2;
         }
-        
+
         /* Fix the Subtitle text */
-        for (SubEv se : events) {
-            sbuf.delete(se.start, se.start + se.value.length()+2);
-        }
+        for (SubEv se : events)
+            sbuf.delete(se.start, se.start + se.value.length() + 2);
         entry.setText(sbuf.toString());
-        
-        
+
+
         String tok; // Where to store the current event
         StringTokenizer tokens; // handler for the tokens of events
-        
+
         /* Intialize color values */
         HashMap<StyleType, AlphaColor> cols = new HashMap<StyleType, AlphaColor>(4);
-        cols.put(PRIMARY, (AlphaColor)entry.getStyle().get(PRIMARY));
-        cols.put(SECONDARY, (AlphaColor)entry.getStyle().get(SECONDARY));
-        cols.put(OUTLINE, (AlphaColor)entry.getStyle().get(OUTLINE));
-        cols.put(SHADOW, (AlphaColor)entry.getStyle().get(SHADOW));
+        cols.put(PRIMARY, (AlphaColor) entry.getStyle().get(PRIMARY));
+        cols.put(SECONDARY, (AlphaColor) entry.getStyle().get(SECONDARY));
+        cols.put(OUTLINE, (AlphaColor) entry.getStyle().get(OUTLINE));
+        cols.put(SHADOW, (AlphaColor) entry.getStyle().get(SHADOW));
         AlphaColor ccol;
-        
+
         Vector<StyledFormat> dict = getStylesDictionary();
         String tag;
         /* Go through all events */
         for (SubEv se : events) {
-            tokens = new StringTokenizer(se.value,  getTokenizer());
+            tokens = new StringTokenizer(se.value, getTokenizer());
             while (tokens.hasMoreElements()) {  // ... and subevents
                 tok = tokens.nextToken();
-                for (StyledFormat sf : dict) {  // Try to find the specific event
+                for (StyledFormat sf : dict)  // Try to find the specific event
                     if (tok.startsWith(sf.tag)) {
                         tag = tok.substring(sf.tag.length());
                         try {
-                            switch(sf.style.getType()) {
+                            switch (sf.style.getType()) {
                                 case FORMAT_INTEGRAL:
-                                    int numb = (int)parseNumber(tag);
-                                    if (sf.style.equals(FONTSIZE)) numb /= getFontFactor() ;  // A hack to decrease font size
+                                    int numb = (int) parseNumber(tag);
+                                    if (sf.style.equals(FONTSIZE))
+                                        numb /= getFontFactor();  // A hack to decrease font size
                                     entry.addOverStyle(sf.style, numb, se.start);
                                     break;
                                 case FORMAT_REAL:
@@ -127,76 +130,73 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                     break;
                                 case FORMAT_COLOR:
                                     ccol = cols.get(sf.style);
-                                    int rgb = ccol.getRGB()&0xffffff;
+                                    int rgb = ccol.getRGB() & 0xffffff;
                                     int alpha = ccol.getAlpha();
-                                    switch((Byte)sf.value) {
+                                    switch ((Byte) sf.value) {
                                         case COLOR_REVERSE:
-                                            rgb = reverseByteOrder((int)parseNumber(tag));
+                                            rgb = reverseByteOrder((int) parseNumber(tag));
                                             break;
                                         case COLOR_ALPHA_NORMAL:
-                                            alpha = (int)parseNumber(tag);
+                                            alpha = (int) parseNumber(tag);
                                             break;
                                         case COLOR_ALPHA_REVERSE:
-                                            alpha = invertAlpha((int)parseNumber(tag));
+                                            alpha = invertAlpha((int) parseNumber(tag));
                                             break;
                                         default:
-                                            rgb = (int)parseNumber(tag);
+                                            rgb = (int) parseNumber(tag);
                                     }
-                                    AlphaColor newcol = new AlphaColor(rgb|(alpha<<24));
+                                    AlphaColor newcol = new AlphaColor(rgb | (alpha << 24));
                                     cols.put(sf.style, newcol);
                                     entry.addOverStyle(sf.style, newcol, se.start);
                                     break;
                                 case FORMAT_DIRECTION:
-                                    entry.setOverStyle(sf.style, ((HashMap<String, Direction>)sf.value).get(tag), se.start, se.start);
+                                    entry.setOverStyle(sf.style, ((HashMap<String, Direction>) sf.value).get(tag), se.start, se.start);
                                     break;
                                 default:
                                     entry.addOverStyle(sf.style, tag, se.start);
-                                    
+
                             }
                         } catch (Exception e) {
                             DEBUG.debug("Exception " + e.getClass().getName() + " while loading style " + sf.style.name() + ": " + e.getMessage());
                         }
                         break;
                     }
-                }
             }
         }
         entry.cleanupEvents();
     }
-    
-    
-    
+
     @SuppressWarnings("unchecked")
     protected String rebuildSubText(SubEntry entry) {
         TreeSet<SubEv> events = new TreeSet<SubEv>();
         AbstractStyleover over;
         StyleoverEvent ev;
-        
+
         entry.cleanupEvents();
         Vector<StyledFormat> dict = getStylesDictionary();
         /* Put all events in a sorted list */
-        if (entry.overstyle != null) {  // First assure that the overstyle list is not empty
+        if (entry.overstyle != null)  // First assure that the overstyle list is not empty
             for (StyledFormat sf : getStylesDictionary()) { // Iterate for every supported format. Note: only supported formats are saved
                 over = entry.overstyle[sf.style.ordinal()]; // Get this AbstractStyleover for this format entry
-                if (sf.storable && over!=null) {
-                    for (int j = 0 ; j < over.size() ; j++) {   // Iterate through all events in this AbstractStyleover list
+                if (sf.storable && over != null)
+                    for (int j = 0; j < over.size(); j++) {   // Iterate through all events in this AbstractStyleover list
                         ev = over.getVisibleEvent(j);           // Get the value data
-                        switch(sf.style.getType()) {
+                        switch (sf.style.getType()) {
                             case FORMAT_FLAG:
-                                if (sf.value.equals(ev.value) )
+                                if (sf.value.equals(ev.value))
                                     events.add(new SubEv(sf.tag, ev.position));
                                 break;
                             case FORMAT_DIRECTION:
-                                String dirkey = getDirectionKey( (HashMap<String, Direction>)sf.value, (Direction)ev.value );
-                                if (dirkey!=null)
-                                    events.add(new SubEv(sf.tag+dirkey, ev.position) );
+                                String dirkey = getDirectionKey((HashMap<String, Direction>) sf.value, (Direction) ev.value);
+                                if (dirkey != null)
+                                    events.add(new SubEv(sf.tag + dirkey, ev.position));
                                 break;
                             case FORMAT_COLOR:
-                                AlphaColor acol = (AlphaColor)ev.value;
+                                AlphaColor acol = (AlphaColor) ev.value;
                                 String data;
-                                switch((Byte)sf.value) {
+                                switch ((Byte) sf.value) {
                                     case COLOR_REVERSE:
-                                        data = produceHexNumber(reverseByteOrder(acol.getRGB()&0xffffff), true, 6);
+                                        data = produceHexNumber(reverseByteOrder(acol.getRGB() & 0xffffff), true, 6);
                                         break;
                                     case COLOR_ALPHA_NORMAL:
                                         data = produceHexNumber(acol.getAlpha(), true, 2);
@@ -205,38 +205,36 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
                                         data = produceHexNumber(invertAlpha(acol.getAlpha()), true, 2);
                                         break;
                                     default:
-                                        data = produceHexNumber(acol.getRGB()&0xffffff, true, 6);
+                                        data = produceHexNumber(acol.getRGB() & 0xffffff, true, 6);
                                 }
-                                events.add(new SubEv(sf.tag+data, ev.position));
+                                events.add(new SubEv(sf.tag + data, ev.position));
                                 break;
                             default:
                                 String value = ev.value.toString();
                                 if (sf.style.equals(StyleType.FONTSIZE))
-                                    value = String.valueOf( Math.round( ((Integer)ev.value) * getFontFactor() ) ) ;  // A hack to increase font size
-                                events.add(new SubEv(sf.tag+value, ev.position));
+                                    value = String.valueOf(Math.round(((Integer) ev.value) * getFontFactor()));  // A hack to increase font size
+                                events.add(new SubEv(sf.tag + value, ev.position));
                         }
                     }
-                }
             }
-        }
-        
+
         StringBuffer btxt = new StringBuffer(entry.getText());
         for (SubEv cevent : events) {
-            if ( (!isEventCompact()) || (! btxt.substring(cevent.start).startsWith(getEventIntro())) )
-                btxt.insert(cevent.start, getEventIntro()+getEventFinal());
-            btxt.insert(cevent.start+getEventIntro().length(), getEventMark()+cevent.value);
+            if ((!isEventCompact()) || (!btxt.substring(cevent.start).startsWith(getEventIntro())))
+                btxt.insert(cevent.start, getEventIntro() + getEventFinal());
+            btxt.insert(cevent.start + getEventIntro().length(), getEventMark() + cevent.value);
         }
         return btxt.toString();
     }
-    
-    
-    
+
     protected int invertAlpha(int alpha) {
-        return 0xff-(alpha&0xff);
+        return 0xff - (alpha & 0xff);
     }
+
     protected int reverseByteOrder(int old) {
-        return ((old&0xff0000)>>16) | (old&0xff00) | ((old&0xff)<<16);
+        return ((old & 0xff0000) >> 16) | (old & 0xff00) | ((old & 0xff) << 16);
     }
+
     protected long parseNumber(String value) {
         long ret = 0;
         value = value.toLowerCase();
@@ -244,31 +242,28 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
             if (value.startsWith("&h")) {
                 value = value.substring(2);
                 if (value.endsWith("&"))
-                    value = value.substring(0, value.length()-1);
+                    value = value.substring(0, value.length() - 1);
                 ret = Long.parseLong(value, 16);
-            } else {
+            } else
                 ret = Long.parseLong(value);
-            }
-        } catch ( NumberFormatException e) {}
+        } catch (NumberFormatException e) {
+        }
         return ret;
     }
-    
+
     protected String produceHexNumber(long number, boolean trailing_and, int length) {
         String n = Long.toHexString(number).toUpperCase();
-        n = zeros.substring(0, length-n.length()) + n;
-        return "&H"+n+(trailing_and ? "&" : "");
+        n = zeros.substring(0, length - n.length()) + n;
+        return "&H" + n + (trailing_and ? "&" : "");
     }
     private final static String zeros = "0000000000000000";
-    
-    
+
     protected static final String getDirectionKey(HashMap<String, Direction> dict, Direction dir) {
-        if (dir==null) dir = Direction.BOTTOM;
-        for (Entry<String, Direction> en : dict.entrySet()) {
-            if (en.getValue().equals(dir) ) {
+        if (dir == null)
+            dir = Direction.BOTTOM;
+        for (Entry<String, Direction> en : dict.entrySet())
+            if (en.getValue().equals(dir))
                 return en.getKey();
-            }
-        }
         return "";
     }
-    
 }

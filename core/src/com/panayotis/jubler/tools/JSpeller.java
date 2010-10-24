@@ -20,29 +20,26 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
+
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.tools.spell.JSpellChecker;
 
 import static com.panayotis.jubler.i18n.I18N._;
-
 
 /**
  *
  * @author  teras
  */
 public class JSpeller extends JTool {
-   
-    public JSpeller () {
-        super (true);
+
+    public JSpeller() {
+        super(true);
     }
-    
-    
+
     public void initialize() {
         initComponents();
     }
-    
 
     protected String getToolTitle() {
         return _("Spell check");
@@ -52,11 +49,12 @@ public class JSpeller extends JTool {
         JSpellChecker checkvisual = new JSpellChecker(jparent, JubFrame.prefs.getSpellChecker(), affected_list);
         checkvisual.findNextWord();
     }
-    
+
     /* All work has been done in JSpellChecker */
     /* We ignore default JTool for-loop */
-    protected void affect(int index) {}
-    
+    protected void affect(int index) {
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -66,9 +64,6 @@ public class JSpeller extends JTool {
     private void initComponents() {
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
 }

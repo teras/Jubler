@@ -20,36 +20,35 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.event;
-
-import static com.panayotis.jubler.subs.style.event.AbstractStyleover.PREV;
-import static com.panayotis.jubler.subs.style.event.AbstractStyleover.NEXT;
 
 /**
  *
  * @author teras
  */
 public class StyleoverEvent {
+
     public Object value;
     public int position;
-    
+
     public StyleoverEvent(Object value, int position) {
         this.value = value;
         this.position = position;
     }
-    
+
     public StyleoverEvent(StyleoverEvent old) {
         value = old.value;
         position = old.position;
     }
-    
+
+    @Override
     public String toString() {
-        return value.toString()+","+position;
+        return value.toString() + "," + position;
     }
-    
+
+    @Override
     public boolean equals(Object value) {
         StyleoverEvent e = (StyleoverEvent) value;
-        return e.value.equals(value) && e.position==position;
+        return e.value.equals(value) && e.position == position;
     }
 }

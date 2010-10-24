@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.preview;
 
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
@@ -33,9 +32,10 @@ import java.text.AttributedString;
  * @author teras
  */
 public class PreviewFontsize extends PreviewElement {
+
     private AbstractStyleover over;
     private Object deflt;
-    
+
     protected Attribute getStyle() {
         return TextAttribute.SIZE;
     }
@@ -43,9 +43,8 @@ public class PreviewFontsize extends PreviewElement {
     public PreviewFontsize(Object deflt, AbstractStyleover over) {
         super(deflt, over);
     }
-    
-   public void addAttribute(AttributedString str, Object value, int from, int to) {
-        super.addAttribute(str, new Float((Integer)value), from, to);
-    }
 
+    public void addAttribute(AttributedString str, Object value, int from, int to) {
+        super.addAttribute(str, new Float((Integer) value), from, to);
+    }
 }

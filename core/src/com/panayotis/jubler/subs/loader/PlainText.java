@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.subs.SubEntry;
@@ -35,52 +34,48 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author teras
  */
 public class PlainText extends AbstractTextSubFormat {
-    
+
     private static final Pattern pat;
-    
     private double current_time = 0;
-    
+
     static {
-        pat = Pattern.compile("(.*?)"+nl);
+        pat = Pattern.compile("(.*?)" + nl);
     }
-    
-    protected Pattern getPattern () {
+
+    protected Pattern getPattern() {
         return pat;
     }
-    
-    
-    
+
     protected SubEntry getSubEntry(Matcher m) {
         Time start = new Time(current_time);
         current_time += 2;
         Time finish = new Time(current_time);
         current_time += 1;
-        return new SubEntry (start, finish, m.group(1));
+        return new SubEntry(start, finish, m.group(1));
     }
-    
-    
+
     public String getExtension() {
         return "txt";
     }
-    
+
     public String getName() {
         return "PlainText";
     }
-    
+
     public String getExtendedName() {
         return _("Plain text");
     }
-    
-    protected void appendSubEntry(SubEntry sub, StringBuffer str){
+
+    protected void appendSubEntry(SubEntry sub, StringBuffer str) {
         str.append(sub.getText()).append('\n');
     }
-    
-    
+
     protected String initLoader(String input) {
         current_time = 0;
         return super.initLoader(input);
     }
 
-    public boolean supportsFPS() { return false; }
-
+    public boolean supportsFPS() {
+        return false;
+    }
 }

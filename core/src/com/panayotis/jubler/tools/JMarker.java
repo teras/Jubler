@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
@@ -33,34 +32,31 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JMarker extends JTool {
-   
+
     int mark;
-    
-    public JMarker () {
-        super (true);
+
+    public JMarker() {
+        super(true);
     }
-    
-    
+
     public void initialize() {
         initComponents();
-        for ( int i = 0 ; i < SubEntry.MarkNames.length ; i++ ) {
+        for (int i = 0; i < SubEntry.MarkNames.length; i++)
             ColSel.addItem(SubEntry.MarkNames[i]);
-        }
     }
-    
 
     protected String getToolTitle() {
         return _("Mark region");
     }
-    
+
     protected void storeSelections() {
         mark = ColSel.getSelectedIndex();
     }
-    
+
     protected void affect(int index) {
         affected_list.get(index).setMark(mark);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -88,12 +84,9 @@ public class JMarker extends JTool {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ColSel;
     private javax.swing.JPanel JPanel2;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-    
 }

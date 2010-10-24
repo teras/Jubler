@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
+
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.JubFrame;
@@ -35,32 +35,36 @@ import java.util.ArrayList;
  * @author  teras
  */
 public class JReparent extends javax.swing.JPanel {
+
     private ArrayList<JubFrame> jublerlist;
-    
+
     /** Creates new form JSplit */
     public JReparent(JubFrame current, JubFrame parent) {
         initComponents();
         jublerlist = new ArrayList<JubFrame>();
-        
+
         int selection = 0;
         JubFrame cjubler;
-        
+
         JubSelector.addItem(_("-No parent available-"));
-        for ( int i = 0 ; i <JubFrame.windows.size() ; i++) {
+        for (int i = 0; i < JubFrame.windows.size(); i++) {
             cjubler = JubFrame.windows.elementAt(i);
-            if ( cjubler != current ) {
+            if (cjubler != current) {
                 jublerlist.add(cjubler);
-                if (cjubler==parent) selection = jublerlist.size();
+                if (cjubler == parent)
+                    selection = jublerlist.size();
                 JubSelector.addItem(cjubler.getSubtitles().getSubFile().getStrippedFile().getName());
             }
         }
         JubSelector.setSelectedIndex(selection);
     }
-    
+
     public JubFrame getDesiredParent() {
-        if (JubSelector.getSelectedIndex()<1) return null;
-        return jublerlist.get(JubSelector.getSelectedIndex()-1);
+        if (JubSelector.getSelectedIndex() < 1)
+            return null;
+        return jublerlist.get(JubSelector.getSelectedIndex() - 1);
     }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -82,12 +86,9 @@ public class JReparent extends javax.swing.JPanel {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox JubSelector;
     private javax.swing.ButtonGroup Position;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
-    
 }

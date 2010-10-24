@@ -58,14 +58,14 @@ public class Subtitles extends AbstractTableModel {
     private SubFile subfile;
 
     public Subtitles() {
-        this((SubFile)null);
+        this((SubFile) null);
     }
 
     public Subtitles(SubFile sfile) {
         sublist = new Vector<SubEntry>();
         styles = new SubStyleList();
         attribs = new SubAttribs();
-        if (sfile==null)
+        if (sfile == null)
             subfile = new SubFile();
         else
             subfile = sfile;
@@ -75,9 +75,8 @@ public class Subtitles extends AbstractTableModel {
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
 
-        for (int i = 0; i < visiblecols.length; i++) {
+        for (int i = 0; i < visiblecols.length; i++)
             visiblecols[i] = old.visiblecols[i];
-        }
 
         subfile = new SubFile(old.subfile);
 
@@ -87,9 +86,8 @@ public class Subtitles extends AbstractTableModel {
             oldentry = old.elementAt(i);
             newentry = new SubEntry(oldentry);
             sublist.add(newentry);
-            if (newentry.getStyle() != null) {
+            if (newentry.getStyle() != null)
                 newentry.setStyle(styles.getStyleByName(oldentry.getStyle().getName()));
-            }
         }
     }
 
@@ -141,9 +139,8 @@ public class Subtitles extends AbstractTableModel {
                 remove(i);
             }
         }
-        if (lastpos == -1) {
-            return; /* None affected */
-        }
+        if (lastpos == -1)
+            return;
 
         /* Sort affected subtitles */
         Collections.sort(sorted);
@@ -152,14 +149,12 @@ public class Subtitles extends AbstractTableModel {
     }
 
     private void appendSubs(Subtitles newsubs, boolean newStylePriority) {
-        if (newsubs == null) {
+        if (newsubs == null)
             return;
-        }
         sublist.addAll(newsubs.sublist);
         /* Deal with default style first: change it's values if it is nessesary */
-        if (newStylePriority) {
+        if (newStylePriority)
             styles.elementAt(0).setValues(newsubs.styles.elementAt(0));
-        }
         SubStyle style;
         /* Go through all remaining new styles */
         for (int i = 1; i < newsubs.styles.size(); i++) {
@@ -168,12 +163,11 @@ public class Subtitles extends AbstractTableModel {
             /* We have found that a style with the same name already exists ! */
             if (res != 0) {
                 /* If we give priority to the new styles, ONLY THEN set the data to the new values */
-                if (newStylePriority) {
+                if (newStylePriority)
                     styles.elementAt(0).setValues(newstyle);
-                }
-            } else { /* It doesn't exits, just append it */
+            } else /* It doesn't exits, just append it */
+
                 styles.add(newstyle);
-            }
         }
     }
 
@@ -198,9 +192,8 @@ public class Subtitles extends AbstractTableModel {
         max = 0;
         for (int i = 0; i < sublist.size(); i++) {
             cur = sublist.elementAt(i).getFinishTime().toSeconds();
-            if (cur > max) {
+            if (cur > max)
                 max = cur;
-            }
         }
         return max;
     }
@@ -208,21 +201,18 @@ public class Subtitles extends AbstractTableModel {
     public int addSorted(SubEntry sub) {
         double time = sub.getStartTime().toSeconds();
         int pos = 0;
-        while (sublist.size() > pos && sublist.elementAt(pos).getStartTime().toSeconds() < time) {
+        while (sublist.size() > pos && sublist.elementAt(pos).getStartTime().toSeconds() < time)
             pos++;
-        }
         sublist.add(pos, sub);
-        if (sub.getStyle() == null) {
+        if (sub.getStyle() == null)
             sub.setStyle(styles.elementAt(0));
-        }
         return pos;
     }
 
     public void add(SubEntry sub) {
         sublist.add(sub);
-        if (sub.getStyle() == null) {
+        if (sub.getStyle() == null)
             sub.setStyle(styles.elementAt(0));
-        }
     }
 
     public void remove(int i) {
@@ -248,9 +238,8 @@ public class Subtitles extends AbstractTableModel {
     /* Calculate maximum character length & maximum lines */
     public TotalSubMetrics getTotalMetrics() {
         TotalSubMetrics max = new TotalSubMetrics();
-        for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size(); i++)
             max.updateToMaxValues(elementAt(i).getMetrics());
-        }
         return max;
     }
 
@@ -267,9 +256,8 @@ public class Subtitles extends AbstractTableModel {
         double cdiff;
         for (int i = 0; i < sublist.size(); i++) {
             entry = sublist.elementAt(i);
-            if (entry.isInTime(time)) {
+            if (entry.isInTime(time))
                 return i;
-            }
             if (fuzzyMatch) {
                 cdiff = Math.abs(time - entry.getStartTime().toSeconds());
                 if (cdiff > 0 && cdiff < fuzzyDiff) {
@@ -288,9 +276,8 @@ public class Subtitles extends AbstractTableModel {
     public void revalidateStyles() {
         for (SubEntry entry : sublist) {
             SubStyle style = entry.getStyle();
-            if (style == null || styles.indexOf(style) < 0) {
+            if (style == null || styles.indexOf(style) < 0)
                 entry.setStyle(styles.elementAt(0));
-            }
         }
     }
 
@@ -301,16 +288,15 @@ public class Subtitles extends AbstractTableModel {
 
     public void setAttribs(SubAttribs newattr) {
         attribs = newattr;
-        for (SubEntry entry : sublist) {
+        for (SubEntry entry : sublist)
             entry.updateMaxCharStatus(attribs, entry.getMetrics().maxlength);
-        }
     }
 
     public SubFile getSubFile() {
         return subfile;
     }
 
-    public void setSubFile( SubFile sfile) {
+    public void setSubFile(SubFile sfile) {
         subfile = sfile;
     }
 
@@ -327,21 +313,18 @@ public class Subtitles extends AbstractTableModel {
     private int visibleToReal(int col) {
         int vispointer = -1;
         for (int i = 0; i < visiblecols.length; i++) {
-            if (visiblecols[i]) {
+            if (visiblecols[i])
                 vispointer++;
-            }
-            if (vispointer == col) {
+            if (vispointer == col)
                 return i;
-            }
         }
         return COLNAME.length - 1;   // Return last column
     }
 
     public void setValueAt(Object value, int row, int col) {
         col = visibleToReal(col);
-        if (col >= FIRST_EDITABLE_COL && row < sublist.size()) {
+        if (col >= FIRST_EDITABLE_COL && row < sublist.size())
             sublist.elementAt(row).setData(col, value);
-        }
         fireTableCellUpdated(row, col);
     }
 
@@ -356,11 +339,9 @@ public class Subtitles extends AbstractTableModel {
 
     public int getColumnCount() {
         int cols = 1; // At least one column is visible
-        for (int i = 0; i < visiblecols.length; i++) {
-            if (visiblecols[i]) {
+        for (int i = 0; i < visiblecols.length; i++)
+            if (visiblecols[i])
                 cols++;
-            }
-        }
         return cols;
     }
 
@@ -375,12 +356,11 @@ public class Subtitles extends AbstractTableModel {
     public void updateColumnWidth(JTable t) {
         int ccolumn = 0;
 
-        for (int i = 0; i < visiblecols.length; i++) {
+        for (int i = 0; i < visiblecols.length; i++)
             if (visiblecols[i]) {
                 prefcolwidth[i] = t.getColumnModel().getColumn(ccolumn).getWidth();
                 ccolumn++;
             }
-        }
         AutoSaveOptions.setColumnWidth(prefcolwidth);
     }
 
@@ -390,13 +370,12 @@ public class Subtitles extends AbstractTableModel {
         int MIN_COLUMN_WIDTH = 10;
         int MAX_COLUMN_WIDTH = 400;
 
-        for (int i = 0; i < visiblecols.length; i++) {
+        for (int i = 0; i < visiblecols.length; i++)
             if (visiblecols[i]) {
                 t.getColumnModel().getColumn(ccolumn).setMinWidth(MIN_COLUMN_WIDTH);
                 t.getColumnModel().getColumn(ccolumn).setMaxWidth(MAX_COLUMN_WIDTH);
                 t.getColumnModel().getColumn(ccolumn).setPreferredWidth(prefcolwidth[i]);
                 ccolumn++;
             }
-        }
     }
 }

@@ -37,7 +37,6 @@ public class DEBUG {
     private static FileWriter log;
     private static String NL = System.getProperty("line.separator");
 
-
     static {
         try {
             File logfile = new File(SystemDependent.getLogPath());
@@ -76,9 +75,8 @@ public class DEBUG {
 
     public static String toString(String[] array) {
         StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < array.length; i++) {
+        for (int i = 0; i < array.length; i++)
             buf.append(array[i]).append(' ');
-        }
         return buf.substring(0, buf.length() - 1);
     }
 }

@@ -2,7 +2,7 @@
  * JDirectionDialog.java
  *
  * Created on 7 Σεπτέμβριος 2005, 1:16 μμ
-*
+ *
  * This file is part of JubFrame.
  *
  * JubFrame is free software; you can redistribute it and/or modify
@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.gui;
 
 import com.panayotis.jubler.JubFrame;
@@ -30,14 +29,14 @@ import java.awt.Point;
 import javax.swing.Icon;
 import javax.swing.JWindow;
 
-
 /**
  *
  * @author  teras
  */
 public class JDirectionDialog extends JWindow {
+
     private JDirection direction;
-    
+
     /** Creates new form JDirectionDIalog */
     public JDirectionDialog(JubFrame parent) {
         super(parent);
@@ -46,40 +45,40 @@ public class JDirectionDialog extends JWindow {
         add(direction);
         pack();
     }
-    
+
     public void setVisible(boolean isVisible) {
         super.setVisible(isVisible);
         if (isVisible) {
             Point where = MouseInfo.getPointerInfo().getLocation();
             int width = getWidth();
             int height = getHeight();
-            where.x -= width/6 + direction.getControlX() * width / 3;
-            where.y -= height/6 + direction.getControlY() * height / 3;
+            where.x -= width / 6 + direction.getControlX() * width / 3;
+            where.y -= height / 6 + direction.getControlY() * height / 3;
             setLocation(where);
             direction.requestFocusInWindow();
         }
     }
-    
+
     public Direction getDirection() {
         return direction.getDirection();
     }
-    
+
     public Icon getIcon() {
         return direction.getIcon();
     }
-    
+
     public Icon getIcon(Direction d) {
         return direction.getIcon(d);
     }
-    
+
     public void setListener(DirectionListener listener) {
         direction.setListener(listener);
     }
-    
-    public void setDirection (Direction d) {
+
+    public void setDirection(Direction d) {
         direction.setDirection(d);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -96,13 +95,10 @@ public class JDirectionDialog extends JWindow {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
+
     private void formFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusLost
         setVisible(false);
     }//GEN-LAST:event_formFocusLost
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
 }

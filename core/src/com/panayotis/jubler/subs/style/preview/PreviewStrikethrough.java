@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.preview;
 
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
@@ -32,7 +31,7 @@ import java.text.AttributedCharacterIterator.Attribute;
  * @author teras
  */
 public class PreviewStrikethrough extends PreviewBoolean {
-    
+
     protected Object getEnabledValue() {
         return TextAttribute.STRIKETHROUGH_ON;
     }
@@ -41,7 +40,6 @@ public class PreviewStrikethrough extends PreviewBoolean {
         return TextAttribute.STRIKETHROUGH;
     }
 
-    
     /** Creates a new instance of PreviewBoolean */
     public PreviewStrikethrough(Object deflt, AbstractStyleover over) {
         super(deflt, over);

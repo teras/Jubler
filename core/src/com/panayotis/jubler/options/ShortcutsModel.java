@@ -85,18 +85,17 @@ public class ShortcutsModel extends AbstractTableModel {
     }
 
     public void applyMenuShortcuts(JMenuBar bar) {
-        for (int i = 0; i < bar.getMenuCount(); i++) {
+        for (int i = 0; i < bar.getMenuCount(); i++)
             applyItemsShortcuts(bar.getMenu(i));
-        }
     }
 
     private void applyItemsShortcuts(JMenu menu) {
         Component c;
         for (int i = 0; i < menu.getMenuComponentCount(); i++) {
             c = menu.getMenuComponent(i);
-            if (c instanceof JMenu) {
+            if (c instanceof JMenu)
                 applyItemsShortcuts((JMenu) c);
-            } else if (c instanceof JMenuItem) {
+            else if (c instanceof JMenuItem) {
                 JMenuItem item = (JMenuItem) c;
                 int pos = findShortcut(item.getName());
                 if (pos >= 0)
@@ -119,20 +118,18 @@ public class ShortcutsModel extends AbstractTableModel {
         String res = "";
         try {
             Shortcut entry = list.get(row);
-            if (col == 0) {
+            if (col == 0)
                 if (entry == null)
                     res = " --- ";
                 else
                     res = entry.text;
-            }
             if (col == 1 && entry != null && entry.key_id != KeyEvent.CHAR_UNDEFINED) {
                 res += SystemDependent.getKeyMods(entry.mods);
                 res += KeyEvent.getKeyText(entry.key_id);
             }
         } catch (IndexOutOfBoundsException e) {
-            for (int i = 0; i < list.size(); i++) {
+            for (int i = 0; i < list.size(); i++)
                 DEBUG.debug(list.get(i) + " - " + deflist.get(i));
-            }
             return "??";
         }
         return res;
@@ -228,11 +225,9 @@ public class ShortcutsModel extends AbstractTableModel {
 
     public void savePreferences() {
         StringBuffer keys = new StringBuffer();
-        for (Shortcut s : list) {
-            if (s != null && s.key_id != KeyEvent.CHAR_UNDEFINED) {
+        for (Shortcut s : list)
+            if (s != null && s.key_id != KeyEvent.CHAR_UNDEFINED)
                 keys.append(',').append(s.toString());
-            }
-        }
         Options.setOption("Shortcut.keys", keys.substring(1));
         StaticJubler.updateAllMenus();
     }
@@ -256,7 +251,7 @@ public class ShortcutsModel extends AbstractTableModel {
 
     private String isValidCodes() {
         HashSet<String> set = new HashSet<String>();
-        for (Shortcut s : deflist) {
+        for (Shortcut s : deflist)
             if (s != null) {
                 if (s.name == null)
                     return s.text;
@@ -266,7 +261,6 @@ public class ShortcutsModel extends AbstractTableModel {
                     return s.name;
                 set.add(s.name);
             }
-        }
         return null;
     }
 
@@ -275,14 +269,13 @@ public class ShortcutsModel extends AbstractTableModel {
         Shortcut sh;
         for (int i = 0; i < oldlist.size(); i++) {
             sh = oldlist.get(i);
-            if (sh != null) {
+            if (sh != null)
                 if (only_names)
                     newlist.add(new Shortcut(sh.text, sh.name));
                 else
                     newlist.add(new Shortcut(sh));
-            } else {
+            else
                 newlist.add(null);
-            }
         }
         return newlist;
     }
@@ -303,18 +296,16 @@ public class ShortcutsModel extends AbstractTableModel {
 
         public Shortcut(Shortcut s) {
             mods = new boolean[SystemDependent.countKeyMods()];
-            for (int i = 0; i < mods.length; i++) {
+            for (int i = 0; i < mods.length; i++)
                 mods[i] = s.mods[i];
-            }
             key_id = s.key_id;
             text = s.text;
             name = s.name;
         }
 
         public void cleanValues() {
-            for (int i = 0; i < mods.length; i++) {
+            for (int i = 0; i < mods.length; i++)
                 mods[i] = false;
-            }
             key_id = KeyEvent.CHAR_UNDEFINED;
         }
 
@@ -334,10 +325,9 @@ public class ShortcutsModel extends AbstractTableModel {
                 return false;
             if (s.key_id != key_id)
                 return false;
-            for (int i = 0; i < mods.length; i++) {
+            for (int i = 0; i < mods.length; i++)
                 if (s.mods[i] != mods[i])
                     return false;
-            }
             return true;
         }
 
@@ -362,9 +352,8 @@ public class ShortcutsModel extends AbstractTableModel {
         public String toString() {
             StringBuffer ret = new StringBuffer();
             ret.append(name).append('=');
-            for (int i = 0; i < mods.length; i++) {
+            for (int i = 0; i < mods.length; i++)
                 ret.append(getFlag(i));
-            }
             ret.append(key_id);
             return ret.toString();
         }
@@ -383,9 +372,8 @@ public class ShortcutsModel extends AbstractTableModel {
         }
 
         public void setValues(String mod, String kid) {
-            for (int i = 0; i < mods.length; i++) {
+            for (int i = 0; i < mods.length; i++)
                 mods[i] = (mod.charAt(i) == 'T');
-            }
             key_id = Integer.parseInt(kid);
         }
     }

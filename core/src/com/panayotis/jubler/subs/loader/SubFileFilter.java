@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.plugins.Availabilities;
@@ -33,17 +32,17 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author teras
  */
 public class SubFileFilter extends javax.swing.filechooser.FileFilter implements java.io.FileFilter {
-    
-    
+
     public boolean accept(File pathname) {
-        if (pathname.isDirectory()) return true;
+        if (pathname.isDirectory())
+            return true;
         String fname = pathname.getName().toLowerCase();
-        for ( int i = 0 ; i < Availabilities.formats.size() ; i++) {
-            if (fname.endsWith(Availabilities.formats.get(i).getExtension())) return true;
-        }
+        for (int i = 0; i < Availabilities.formats.size(); i++)
+            if (fname.endsWith(Availabilities.formats.get(i).getExtension()))
+                return true;
         return false;
     }
-    
+
     public String getDescription() {
         return _("Subtitle files");
     }

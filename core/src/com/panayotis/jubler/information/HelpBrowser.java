@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.information;
+
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
@@ -37,23 +37,24 @@ import javax.swing.event.HyperlinkListener;
  * @author  teras
  */
 public class HelpBrowser extends javax.swing.JDialog {
-    
+
     private ArrayList<String> history;
-    
+
     /** Creates new form HelpBrowser */
     public HelpBrowser(String start) {
-        super((JFrame)null, false);
+        super((JFrame) null, false);
         initComponents();
-        
+
         history = new ArrayList<String>();
-        
-        String initpage = "file:"+SystemFileFinder.getJublerAppPath()+"/help/jubler-faq.html";
+
+        String initpage = "file:" + SystemFileFinder.getJublerAppPath() + "/help/jubler-faq.html";
         setPage(initpage);
         history.add(initpage);
-        
-        HelpPane.addHyperlinkListener( new HyperlinkListener() {
+
+        HelpPane.addHyperlinkListener(new HyperlinkListener() {
+
             public void hyperlinkUpdate(HyperlinkEvent evt) {
-                if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED){
+                if (evt.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                     String currentURL = evt.getURL().toString();
                     setPage(currentURL);
                     if (!currentURL.startsWith("http"))
@@ -63,8 +64,7 @@ public class HelpBrowser extends javax.swing.JDialog {
             }
         });
     }
-    
-    
+
     private void setPage(String url) {
         try {
             if (url.startsWith("http")) {
@@ -76,7 +76,7 @@ public class HelpBrowser extends javax.swing.JDialog {
             DEBUG.debug("Error while opening FAQ file \"" + url + "\" : " + e.getClass().getName());
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -126,17 +126,14 @@ public class HelpBrowser extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void BackBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackBActionPerformed
-        int last = history.size()-1;
+        int last = history.size() - 1;
         history.remove(last);
-        setPage(history.get(last-1));
-        if (last<2) {
+        setPage(history.get(last - 1));
+        if (last < 2)
             BackB.setEnabled(false);
-        }
     }//GEN-LAST:event_BackBActionPerformed
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackB;
     private javax.swing.JEditorPane HelpPane;
@@ -145,6 +142,4 @@ public class HelpBrowser extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
-    
-    
 }

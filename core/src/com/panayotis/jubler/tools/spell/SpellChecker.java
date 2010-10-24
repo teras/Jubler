@@ -20,13 +20,11 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools.spell;
 
 import com.panayotis.jubler.tools.externals.ExtProgram;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.util.ArrayList;
-
 
 /**
  *
@@ -36,12 +34,13 @@ public abstract class SpellChecker extends ExtProgram {
 
     public static final String family = "Speller";
 
-    public abstract void start() throws ExtProgramException ;
+    public abstract void start() throws ExtProgramException;
+
     public abstract ArrayList<SpellError> checkSpelling(String text);
+
     public abstract void stop();
-    
+
     public abstract boolean insertWord(String word);
-    
+
     public abstract boolean supportsInsert();
-    
 }

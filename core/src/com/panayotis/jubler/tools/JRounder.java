@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
@@ -33,13 +32,14 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JRounder extends JTool {
+
     int precise;
-    
+
     /** Creates new form JRounder */
     public JRounder() {
         super(true);
     }
-    
+
     public void initialize() {
         initComponents();
     }
@@ -47,9 +47,9 @@ public class JRounder extends JTool {
     protected String getToolTitle() {
         return _("Round timing");
     }
-    
+
     protected void storeSelections() {
-        switch ( PrecS.getValue()) {
+        switch (PrecS.getValue()) {
             case 0:
                 precise = 1;
                 break;
@@ -63,18 +63,18 @@ public class JRounder extends JTool {
                 precise = 1000;
         }
     }
-    
+
     protected void affect(int index) {
         SubEntry sub = affected_list.get(index);
         roundTime(sub.getStartTime());
         roundTime(sub.getFinishTime());
     }
-    
+
     private void roundTime(Time t) {
         double round = t.toSeconds();
         round *= precise;
         round = Math.round(round);
-        t.setTime(round/precise);
+        t.setTime(round / precise);
     }
 
     /** This method is called from within the constructor to
@@ -107,12 +107,9 @@ public class JRounder extends JTool {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider PrecS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
-    
 }

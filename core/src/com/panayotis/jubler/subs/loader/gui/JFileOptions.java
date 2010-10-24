@@ -45,7 +45,6 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
     public static final String[] AvailEncodings;
 
-
     static {
         SortedMap encs = Charset.availableCharsets();
         AvailEncodings = new String[encs.size()];
@@ -876,9 +875,9 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
     private void selectPreEncodings(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectPreEncodings
         String enc = evt.getActionCommand();
-        if (enc.startsWith("Mac") ||
-                enc.equals("Johab") ||
-                enc.endsWith("874"))
+        if (enc.startsWith("Mac")
+                || enc.equals("Johab")
+                || enc.endsWith("874"))
             enc = "x-" + enc;
         setPreEncoding(enc);
     }//GEN-LAST:event_selectPreEncodings

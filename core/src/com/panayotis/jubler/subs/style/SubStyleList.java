@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.options.Options;
@@ -33,61 +32,55 @@ import java.util.Vector;
  * @author teras
  */
 public class SubStyleList extends Vector<SubStyle> implements NameList {
-    
-        private static final SubStyle default_style;
 
-        static {
-            default_style = new SubStyle("Default");
-            default_style.setDefault(true);
-            default_style.setValues(Options.getOption("Styles.Default", ""));
-        }
+    private static final SubStyle default_style;
 
-    
+    static {
+        default_style = new SubStyle("Default");
+        default_style.setDefault(true);
+        default_style.setValues(Options.getOption("Styles.Default", ""));
+    }
+
     /** Creates a new instance of SubStyleList */
     public SubStyleList() {
         add(new SubStyle(default_style));
         elementAt(0).setDefault(true);
     }
-    
-    
+
     public SubStyleList(SubStyleList old) {
-        for (int i = 0 ; i < old.size() ; i++) {
+        for (int i = 0; i < old.size(); i++)
             add(new SubStyle(old.elementAt(i)));
-        }
         elementAt(0).setDefault(true);
     }
-    
+
     public String getNameAt(int i) {
         return elementAt(i).Name;
     }
-    
+
     public int getStyleIndex(SubEntry entry) {
         SubStyle style = entry.getStyle();
         int res;
-        if (style == null || (res = indexOf(style)) < 0 ) {
+        if (style == null || (res = indexOf(style)) < 0) {
             entry.setStyle(elementAt(0));
             return 0;
         }
         return res;
     }
-    
+
     public int findStyleIndex(String name) {
-        for (int i = 0 ; i < size() ; i++ ) {
-            if ( name.equals(elementAt(i).Name) ) {
+        for (int i = 0; i < size(); i++)
+            if (name.equals(elementAt(i).Name))
                 return i;
-            }
-        }
         return 0;
     }
-    
+
     public SubStyle getStyleByName(String name) {
         return elementAt(findStyleIndex(name));
     }
-    
+
     public SubStyle clearList() {
         SubStyle d = elementAt(0);
         removeAllElements();
         return d;
     }
-    
 }

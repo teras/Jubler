@@ -37,7 +37,6 @@ public class I18N {
     private static final String PATH = "com.panayotis.jubler.i18n.Messages_";
     private static final DynamicClassLoader cl = new DynamicClassLoader();
 
-
     static {
         String ls = System.getProperty("user.language");
         String ll = ls + "_" + System.getProperty("user.country");

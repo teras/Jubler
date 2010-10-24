@@ -18,7 +18,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.time.gui;
 
 import java.awt.Frame;
@@ -30,18 +29,17 @@ import static com.panayotis.jubler.i18n.I18N._;
  * @author  teras
  */
 public class JLongProcess extends javax.swing.JDialog {
-    
+
     private ActionListener listener;
-    
+
     /** Creates new form JLongProcess */
     public JLongProcess(ActionListener listener) {
-        super((Frame)null, true);
+        super((Frame) null, true);
         this.listener = listener;
         initComponents();
-        CancelB.setEnabled(listener!=null);
+        CancelB.setEnabled(listener != null);
     }
-    
-    
+
     public void setValues(int size, String label) {
         setTitle(label);
         ProgBar.setMaximum(size);
@@ -50,11 +48,11 @@ public class JLongProcess extends javax.swing.JDialog {
         pack();
         setLocationRelativeTo(null);
     }
-    
+
     public void updateProgress(int id) {
         ProgBar.setValue(id);
     }
-      
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -101,14 +99,11 @@ public class JLongProcess extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
 private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelBActionPerformed
-    if (listener!=null) {
+    if (listener != null) {
         listener.actionPerformed(evt);
         CancelB.setEnabled(false);
     }
 }//GEN-LAST:event_CancelBActionPerformed
-    
- 
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelB;
     private javax.swing.JLabel InfoL;
@@ -117,5 +112,4 @@ private void CancelBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
-    
 }

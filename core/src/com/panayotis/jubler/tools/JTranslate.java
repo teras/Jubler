@@ -37,7 +37,6 @@ public class JTranslate extends JTool {
 
     private static AvailTranslators translators;
 
-
     static {
         translators = new AvailTranslators();
     }
@@ -175,7 +174,6 @@ public class JTranslate extends JTool {
 private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransMachineActionPerformed
     trans = translators.get(TransMachine.getSelectedIndex());
 }//GEN-LAST:event_TransMachineActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox FromLang;
     private javax.swing.JComboBox ToLang;

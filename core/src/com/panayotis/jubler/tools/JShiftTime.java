@@ -20,8 +20,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.tools;
+
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
@@ -36,52 +36,53 @@ import com.panayotis.jubler.media.console.TimeSync;
  * @author  teras
  */
 public class JShiftTime extends JToolRealTime {
+
     private JTimeSpinner dt;
     double shift;
-    
-    
+
     public JShiftTime() {
         super(true);
     }
-    
+
     public void initialize() {
         dt = new JTimeSpinner();
         initComponents();
         PNewTime.add(dt, BorderLayout.CENTER);
         dt.setToolTipText(_("The amount of time in order to shift the subtitles"));
     }
-    
+
     protected String getToolTitle() {
         return _("Shift time by absolute value");
     }
-    
+
     public boolean setValues(TimeSync first, TimeSync second) {
         super.setValues(first, second);
-        
+
         double time = first.timediff;
-        if (Math.abs(time) < 0.001) return false;
-        
-        if (time<0) {
+        if (Math.abs(time) < 0.001)
+            return false;
+
+        if (time < 0) {
             CSign.setSelectedIndex(1);
             time = -time;
-        } else {
+        } else
             CSign.setSelectedIndex(0);
-        }
         dt.setTimeValue(new Time(time));
         return true;
     }
-    
+
     public void storeSelections() {
-        shift = ((Time)(dt.getModel().getValue())).toSeconds();
-        if ( CSign.getSelectedIndex() == 1) shift = -shift;
+        shift = ((Time) (dt.getModel().getValue())).toSeconds();
+        if (CSign.getSelectedIndex() == 1)
+            shift = -shift;
     }
-    
+
     protected void affect(int index) {
         SubEntry sub = affected_list.get(index);
         sub.getStartTime().addTime(shift);
         sub.getFinishTime().addTime(shift);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -105,11 +106,8 @@ public class JShiftTime extends JToolRealTime {
 
     }
     // </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CSign;
     private javax.swing.JPanel PNewTime;
     // End of variables declaration//GEN-END:variables
-    
 }

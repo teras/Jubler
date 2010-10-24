@@ -18,7 +18,6 @@
  */
 
 /* This file is slightly modified by Panayotis Katsaloulis */
-
 package com.panayotis.jubler.i18n;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -27,7 +26,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
 
 /**
  * This class implements the main GNU libintl functions in Java.
@@ -69,7 +67,7 @@ import java.util.ResourceBundle;
  * @author Bruno Haible
  */
 public abstract class GettextResource extends ResourceBundle {
-    
+
     /**
      * Returns the translation of <VAR>msgid</VAR>.
      * @param catalog a ResourceBundle
@@ -78,16 +76,17 @@ public abstract class GettextResource extends ResourceBundle {
      *         none is found
      */
     public static String gettext(ResourceBundle catalog, String msgid) {
-        if (catalog == null ) return msgid;
+        if (catalog == null)
+            return msgid;
         try {
-            String result = (String)catalog.getObject(msgid);
+            String result = (String) catalog.getObject(msgid);
             if (result != null)
                 return result;
         } catch (MissingResourceException e) {
         }
         return msgid;
     }
-    
+
     /**
      * Returns the plural form for <VAR>n</VAR> of the translation of
      * <VAR>msgid</VAR>.
@@ -103,19 +102,20 @@ public abstract class GettextResource extends ResourceBundle {
         // is that we want the generated ResourceBundles to be completely
         // standalone, so that migration from the Sun approach to the GNU gettext
         // approach (without use of plurals) is as straightforward as possible.
-        
+
         if (catalog == null) {
-            if (n==1) return msgid;
+            if (n == 1)
+                return msgid;
             return msgid_plural;
         }
-        
+
         ResourceBundle origCatalog = catalog;
         do {
             // Try catalog itself.
             Method handleGetObjectMethod = null;
             Method getParentMethod = null;
             try {
-                handleGetObjectMethod = catalog.getClass().getMethod("handleGetObject", new Class[] { java.lang.String.class });
+                handleGetObjectMethod = catalog.getClass().getMethod("handleGetObject", new Class[]{java.lang.String.class});
                 getParentMethod = catalog.getClass().getMethod("getParent", new Class[0]);
             } catch (NoSuchMethodException e) {
             } catch (SecurityException e) {
@@ -127,8 +127,8 @@ public abstract class GettextResource extends ResourceBundle {
                 Method lookupMethod = null;
                 Method pluralEvalMethod = null;
                 try {
-                    lookupMethod = catalog.getClass().getMethod("lookup", new Class[] { java.lang.String.class });
-                    pluralEvalMethod = catalog.getClass().getMethod("pluralEval", new Class[] { Long.TYPE });
+                    lookupMethod = catalog.getClass().getMethod("lookup", new Class[]{java.lang.String.class});
+                    pluralEvalMethod = catalog.getClass().getMethod("pluralEval", new Class[]{Long.TYPE});
                 } catch (NoSuchMethodException e) {
                 } catch (SecurityException e) {
                 }
@@ -136,21 +136,21 @@ public abstract class GettextResource extends ResourceBundle {
                     // A GNU gettext created class with plural handling.
                     Object localValue = null;
                     try {
-                        localValue = lookupMethod.invoke(catalog, new Object[] { msgid });
+                        localValue = lookupMethod.invoke(catalog, new Object[]{msgid});
                     } catch (IllegalAccessException e) {
                         DEBUG.debug(e);
                     } catch (InvocationTargetException e) {
                         DEBUG.debug(e.getTargetException());
                     }
-                    if (localValue != null) {
+                    if (localValue != null)
                         if (localValue instanceof String)
                             // Found the value. It doesn't depend on n in this case.
-                            return (String)localValue;
+                            return (String) localValue;
                         else {
-                            String[] pluralforms = (String[])localValue;
+                            String[] pluralforms = (String[]) localValue;
                             long i = 0;
                             try {
-                                i = ((Long) pluralEvalMethod.invoke(catalog, new Object[] { new Long(n) })).longValue();
+                                i = ((Long) pluralEvalMethod.invoke(catalog, new Object[]{new Long(n)})).longValue();
                                 if (!(i >= 0 && i < pluralforms.length))
                                     i = 0;
                             } catch (IllegalAccessException e) {
@@ -158,23 +158,21 @@ public abstract class GettextResource extends ResourceBundle {
                             } catch (InvocationTargetException e) {
                                 DEBUG.debug(e.getTargetException());
                             }
-                            return pluralforms[(int)i];
+                            return pluralforms[(int) i];
                         }
-                    }
                 } else {
                     // A GNU gettext created class without plural handling.
                     Object localValue = null;
                     try {
-                        localValue = handleGetObjectMethod.invoke(catalog, new Object[] { msgid });
+                        localValue = handleGetObjectMethod.invoke(catalog, new Object[]{msgid});
                     } catch (IllegalAccessException e) {
                         DEBUG.debug(e);
                     } catch (InvocationTargetException e) {
                         DEBUG.debug(e.getTargetException());
                     }
-                    if (localValue != null) {
+                    if (localValue != null)
                         // Found the value. It doesn't depend on n in this case.
-                        return (String)localValue;
-                    }
+                        return (String) localValue;
                 }
                 Object parentCatalog = catalog;
                 try {
@@ -185,7 +183,7 @@ public abstract class GettextResource extends ResourceBundle {
                     DEBUG.debug(e.getTargetException());
                 }
                 if (parentCatalog != catalog)
-                    catalog = (ResourceBundle)parentCatalog;
+                    catalog = (ResourceBundle) parentCatalog;
                 else
                     break;
             } else
@@ -205,7 +203,7 @@ public abstract class GettextResource extends ResourceBundle {
             }
             if (value != null)
                 // Found the value. It doesn't depend on n in this case.
-                return (String)value;
+                return (String) value;
         }
         // Default: English strings and Germanic plural rule.
         return (n != 1 ? msgid_plural : msgid);

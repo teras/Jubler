@@ -20,20 +20,18 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.style.preview;
 
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import java.awt.font.TextAttribute;
 import java.text.AttributedCharacterIterator.Attribute;
 
-
 /**
  *
  * @author teras
  */
 public class PreviewUnderline extends PreviewBoolean {
-    
+
     protected Object getEnabledValue() {
         return TextAttribute.UNDERLINE_ON;
     }
@@ -42,7 +40,6 @@ public class PreviewUnderline extends PreviewBoolean {
         return TextAttribute.UNDERLINE;
     }
 
-    
     /** Creates a new instance of PreviewBoolean */
     public PreviewUnderline(Object deflt, AbstractStyleover over) {
         super(deflt, over);
