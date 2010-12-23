@@ -1,7 +1,4 @@
 /*
- * DecoderInterface.java
- *
- * Created on October 3, 2005, 4:21 PM
  *
  * This file is part of Jubler.
  *
@@ -22,8 +19,6 @@
  */
 package com.panayotis.jubler.media.preview.decoders;
 
-import com.panayotis.jubler.media.AudioFile;
-import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.media.VideoFile;
 import java.awt.Image;
 
@@ -31,23 +26,9 @@ import java.awt.Image;
  *
  * @author teras
  */
-public interface DecoderInterface {
-
-    public abstract boolean isDecoderValid();
-
-    public abstract boolean initAudioCache(AudioFile afile, CacheFile cfile, DecoderListener fback);
-
-    public abstract void setInterruptStatus(boolean interrupt);
-
-    public abstract boolean getInterruptStatus();
-
-    public abstract void closeAudioCache(CacheFile cache);
-
-    public abstract AudioPreview getAudioPreview(CacheFile cache, double from, double to);
+public interface VideoDecoder {
 
     public abstract Image getFrame(VideoFile video, double time, float resize);
 
     public abstract void retrieveInformation(VideoFile vfile);
-
-    public abstract void playAudioClip(AudioFile audio, double from, double to);
 }

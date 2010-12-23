@@ -31,7 +31,7 @@ import java.util.StringTokenizer;
  */
 public class SystemFileFinder {
 
-    private static File findFile(String name) {
+    public static File findFile(String name) {
         String classpath = System.getProperty("java.class.path");
         StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
 

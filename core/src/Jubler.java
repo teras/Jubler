@@ -92,6 +92,7 @@ class MainSplash extends JWindow {
 
     private Image logo;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public MainSplash(String filename) {
         super();
         logo = Toolkit.getDefaultToolkit().createImage(Jubler.class.getResource(filename));

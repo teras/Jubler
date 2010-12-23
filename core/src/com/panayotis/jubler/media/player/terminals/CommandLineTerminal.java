@@ -20,37 +20,20 @@
 package com.panayotis.jubler.media.player.terminals;
 
 import com.panayotis.jubler.media.player.PlayerArguments;
+import com.panayotis.jubler.os.ExtProgram;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 /**
  *
  * @author teras
  */
-public class CommandLineTerminal extends AbstractTerminal {
+public abstract class CommandLineTerminal extends ExtProgram implements PlayerTerminal {
 
-    private Process proc;
-
-    public void start(PlayerArguments args) throws ExtProgramException {
-        proc = null;
-        cmd = null;
-        out = error = null;
-        try {
-            proc = Runtime.getRuntime().exec(args.arguments, args.environment);
-            cmd = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
-            out = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            error = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-        } catch (IOException ex) {
-            throw new ExtProgramException(ex);
-        }
+    public void start(PlayerArguments args, Closure<String> outparser, Closure<String> errparser) throws ExtProgramException {
+        start(args.arguments, args.environment, getOutClosure(), getErrClosure());
     }
 
-    public void terminate() {
-        if (proc != null)
-            proc.destroy();
-    }
+    protected abstract Closure<String> getOutClosure();
+
+    protected abstract Closure<String> getErrClosure();
 }

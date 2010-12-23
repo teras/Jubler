@@ -25,7 +25,9 @@ package com.panayotis.jubler.media;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.filters.MediaFileFilter;
-import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
+import com.panayotis.jubler.media.preview.decoders.DecoderManager;
+import com.panayotis.jubler.media.preview.decoders.MovieInfo;
+import com.panayotis.jubler.media.preview.decoders.VideoDecoder;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
@@ -54,20 +56,20 @@ public class VideoFile extends File {
     private float fps = INVALID;
 
     /** Creates a new instance of VideoFile */
-    public VideoFile(String vfile, DecoderInterface decoder) {
+    public VideoFile(String vfile) {
         super(vfile);
-        getVideoProperties(decoder);
+        getVideoProperties();
     }
 
-    public VideoFile(File vf, DecoderInterface decoder) {
-        this(vf.getPath(), decoder);
+    public VideoFile(File vf) {
+        this(vf.getPath());
     }
 
-    public void setInformation(int width, int height, float length, float fps) {
-        this.width = width;
-        this.height = height;
-        this.length = length;
-        this.fps = fps;
+    public void setInformation(MovieInfo info) {
+        this.width = info.width;
+        this.height = info.height;
+        this.length = info.length;
+        this.fps = info.fps;
     }
 
     public int getWidth() {
@@ -86,7 +88,8 @@ public class VideoFile extends File {
         return fps;
     }
 
-    public void getVideoProperties(DecoderInterface decoder) {
+    public final void getVideoProperties() {
+        VideoDecoder decoder = DecoderManager.getVideoDecoder();
         if (decoder != null)
             decoder.retrieveInformation(this);
         if (width < 0) {
@@ -134,7 +137,9 @@ public class VideoFile extends File {
 
     /* The following function is used in order to guess the filename of the avi/audio/jacache based
      *  on the name of the original file */
-    public static VideoFile guessFile(Subtitles subs, MediaFileFilter filter, DecoderInterface decoder) {
+    public static VideoFile guessFile(Subtitles subs, MediaFileFilter filter) {
+        VideoDecoder decoder = DecoderManager.getVideoDecoder();
+
         File dir;   /* the parent directory of the subtitle */
         File files[];   /* List of video files in the same directory as the subtitle */
         int matchcount;  /* best match so far */
@@ -151,7 +156,7 @@ public class VideoFile extends File {
 
         dir = subfile.getParentFile();
         if (dir == null)
-            return new VideoFile(subfile.getPath() + "." + filter.getExtensions()[0], decoder);
+            return new VideoFile(subfile.getPath() + "." + filter.getExtensions()[0]);
 
 
         subfilename = subfile.getPath().toLowerCase();
@@ -175,8 +180,8 @@ public class VideoFile extends File {
                     }
                 }
             if (match != null)
-                return new VideoFile(match.getPath(), decoder);
+                return new VideoFile(match.getPath());
         }
-        return new VideoFile(subfile.getPath() + filter.getExtensions()[0], decoder);
+        return new VideoFile(subfile.getPath() + filter.getExtensions()[0]);
     }
 }

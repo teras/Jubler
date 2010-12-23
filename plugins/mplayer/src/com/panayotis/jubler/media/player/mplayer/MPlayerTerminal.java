@@ -19,9 +19,10 @@
  */
 package com.panayotis.jubler.media.player.mplayer;
 
-import com.panayotis.jubler.media.console.PlayerFeedback;
 import com.panayotis.jubler.media.player.TerminalViewport;
+import com.panayotis.jubler.media.player.terminals.Closure;
 import com.panayotis.jubler.media.player.terminals.CommandLineTerminal;
+import com.panayotis.jubler.os.DEBUG;
 
 /**
  *
@@ -29,20 +30,49 @@ import com.panayotis.jubler.media.player.terminals.CommandLineTerminal;
  */
 public class MPlayerTerminal extends CommandLineTerminal {
 
-    public String parseOutStream(String info, PlayerFeedback feedback, TerminalViewport viewport) {
-        int first, second;
-        first = info.indexOf("V:");
-        if (first >= 0) {
-            first++;
-            while (info.charAt(++first) == ' ');
-            second = first;
-            while (info.charAt(++second) != ' ');
-            viewport.setPosition(TerminalViewport.getDouble(info.substring(first, second).trim()));
-            return null;
-        } else {
-            if (info.startsWith("ANS_volume"))
-                feedback.volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=') + 1)) / 100f);
-            return info;
-        }
+    private MPlayerViewport viewport;
+
+    public void setViewport(MPlayerViewport viewport) {
+        this.viewport = viewport;
+    }
+
+    @Override
+    protected Closure<String> getOutClosure() {
+        return new Closure<String>() {
+
+            @SuppressWarnings("empty-statement")
+            public void exec(String info) {
+                if (info.equals("QUIT"))
+                    if (viewport.isQuitFatal())
+                        viewport.getFeedback().requestQuit();
+                    else
+                        viewport.setQuitFatal();
+                else {
+                    int first, second;
+                    first = info.indexOf("V:");
+                    if (first >= 0) {
+                        first++;
+                        while (info.charAt(++first) == ' ');
+                        second = first;
+                        while (info.charAt(++second) != ' ');
+                        viewport.setPosition(TerminalViewport.getDouble(info.substring(first, second).trim()));
+                    } else {
+                        DEBUG.debug(". " + info);
+                        if (info.startsWith("ANS_volume"))
+                            viewport.getFeedback().volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=') + 1)) / 100f);
+                    }
+                }
+            }
+        };
+    }
+
+    @Override
+    protected Closure<String> getErrClosure() {
+        return new Closure<String>() {
+
+            public void exec(String t) {
+                DEBUG.debug("! " + t);
+            }
+        };
     }
 }

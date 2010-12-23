@@ -44,19 +44,10 @@ public class AudioPreview {
         cache = new float[channels][length][2];
     }
 
-    public AudioPreview(float[] data) {
+    public AudioPreview(float[][][] data) {
         if (data == null)
             throw new NullPointerException(_("Trying to initialize audio preview with null data"));
-        if ((data.length % (length * 2)) != 0)
-            throw new ArrayIndexOutOfBoundsException(_("Trying to intialize audio preview with wrong size {0}", data.length));
-        byte channels = (byte) (data.length / (length * 2));
-        cache = new float[channels][length][2];
-        int pointer = 0;
-        for (int i = 0; i < length; i++)
-            for (int j = 0; j < channels; j++) {
-                cache[j][i][0] = data[pointer++];
-                cache[j][i][1] = data[pointer++];
-            }
+        cache = data;
     }
 
     public int channels() {

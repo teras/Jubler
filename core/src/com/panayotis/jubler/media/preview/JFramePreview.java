@@ -25,6 +25,7 @@ package com.panayotis.jubler.media.preview;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.preview.decoders.DecoderManager;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import java.awt.Color;
@@ -77,10 +78,12 @@ public class JFramePreview extends JPanel {
         setEnabled(false);
     }
 
+    @Override
     public Dimension getMinimumSize() {
         return getPreferredSize();
     }
 
+    @Override
     public Dimension getPreferredSize() {
         return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null) + 2 * REEL_OFFSET);
     }
@@ -89,7 +92,8 @@ public class JFramePreview extends JPanel {
         this.mfile = mfile;
     }
 
-    public void setEnabled(boolean enabled) {
+    @Override
+    public final void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         repaint();
     }
@@ -104,6 +108,7 @@ public class JFramePreview extends JPanel {
         subimg = null;
     }
 
+    @Override
     public void repaint() {
         /* Check if this object should be repainted, or just silently exit */
         if (sub == null || callback == null || (!callback.isEnabled()))
@@ -140,6 +145,7 @@ public class JFramePreview extends JPanel {
         repaint();
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         g.setColor(background);
         int imgheight = frameimg.getHeight(null);
@@ -160,7 +166,7 @@ public class JFramePreview extends JPanel {
             g.drawImage(subimg.getImage(), subimg.getXOffset(frameimg), subimg.getYOffset(frameimg) + REEL_OFFSET, (ImageObserver) null);
 
         /* Draw visual representation that ffdecode library is not present */
-        if (!mfile.getDecoder().isDecoderValid()) {
+        if (DecoderManager.getVideoDecoder() != null) {
             Font f = Font.decode(null);
             g.setFont(f);
             TextLayout layout = new TextLayout(inactive_decoder_message, f, ((Graphics2D) g).getFontRenderContext());

@@ -908,7 +908,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
 
     private void createNewSyncMark(boolean is_first) {
-        TimeSync sync = new TimeSync(view.getTime() + subsdelay, -subsdelay);
+         TimeSync sync = new TimeSync(view.getTime() + subsdelay, -subsdelay);
         if (is_first)
             sync1 = sync;
         else

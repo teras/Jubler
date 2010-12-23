@@ -1,4 +1,5 @@
 /*
+ * FFMpegPlugin
  *
  * This file is part of Jubler.
  *
@@ -17,20 +18,29 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jubler.media.player.terminals;
+package com.panayotis.jubler.media.player.ffmpeg;
 
-import com.panayotis.jubler.media.player.PlayerArguments;
-import com.panayotis.jubler.tools.externals.ExtProgramException;
+import com.panayotis.jubler.media.preview.decoders.DecoderManager;
+import com.panayotis.jubler.plugins.Plugin;
 
 /**
  *
  * @author teras
  */
-public interface PlayerTerminal {
+public class FFMpegPlugin implements Plugin {
 
-    public void start(PlayerArguments args, Closure<String> outparser, Closure<String> errparser) throws ExtProgramException;
+    public String[] getAffectionList() {
+        return new String[]{"com.panayotis.jubler.media.preview.decoders.DecoderManager"};
+    }
 
-    public void terminate();
-
-    public void sendCommand(String string);
+    public void postInit(Object o) {
+        if (!(o instanceof DecoderManager))
+            return;
+        DecoderManager mgr = (DecoderManager) o;
+        FFMpeg ffmpeg = new FFMpeg();
+        if (ffmpeg.isDecoderValid()) {
+            mgr.registerVideoDecoder(ffmpeg);
+            mgr.registerAudioDecoder(ffmpeg);
+        }
+    }
 }

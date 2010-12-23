@@ -39,14 +39,14 @@ public abstract class ExternalViewport implements Viewport {
     protected AbstractPlayer player;
     protected MediaFile mfile;
     protected Subtitles sub;
-    protected PlayerFeedback feedback;
+    private PlayerFeedback feedback;
     protected Time when;
     protected boolean isPaused;
     //
     /* Use this flag when a "quit" is not really fatal, like a subtitle reloading.
      * This flag automatically turns back to true, whenever a quit has been detected.
      */
-    protected boolean quit_is_fatal = true;
+    private boolean quit_is_fatal = true;
     private final static int SEEK_OFFSET = -3;
 
     /** Creates a new instance of MPlayer */
@@ -85,6 +85,14 @@ public abstract class ExternalViewport implements Viewport {
         } catch (NumberFormatException e) {
         }
         return 0;
+    }
+
+    public boolean isQuitFatal() {
+        return quit_is_fatal;
+    }
+
+    public void setQuitFatal() {
+        quit_is_fatal = true;
     }
 
     protected boolean sendCommands(String[] com) {
@@ -198,5 +206,9 @@ public abstract class ExternalViewport implements Viewport {
             isActive = false;
         }
         return true;
+    }
+
+    public PlayerFeedback getFeedback() {
+        return feedback;
     }
 }

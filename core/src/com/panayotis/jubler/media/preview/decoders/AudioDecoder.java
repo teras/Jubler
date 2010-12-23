@@ -17,20 +17,26 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jubler.media.player.terminals;
+package com.panayotis.jubler.media.preview.decoders;
 
-import com.panayotis.jubler.media.player.PlayerArguments;
-import com.panayotis.jubler.tools.externals.ExtProgramException;
+import com.panayotis.jubler.media.AudioFile;
+import com.panayotis.jubler.media.CacheFile;
 
 /**
  *
  * @author teras
  */
-public interface PlayerTerminal {
+public interface AudioDecoder {
 
-    public void start(PlayerArguments args, Closure<String> outparser, Closure<String> errparser) throws ExtProgramException;
+    public abstract boolean initAudioCache(AudioFile afile, CacheFile cfile, DecoderListener fback);
 
-    public void terminate();
+    public abstract void setInterruptStatus(boolean interrupt);
 
-    public void sendCommand(String string);
+    public abstract boolean getInterruptStatus();
+
+    public abstract void closeAudioCache(CacheFile cache);
+
+    public abstract AudioPreview getAudioPreview(CacheFile cache, double from, double to);
+
+    public abstract void playAudioClip(AudioFile audio, double from, double to);
 }

@@ -108,14 +108,14 @@ mkdir -p "$LIBDIR"
 # Define SYSTEM variables
 case $SYSTEM in
 win32)
-    XLIBS=
+	XLIBS=
 	IS586=`which i586-mingw32msvc-gcc`
 	if [ -z "$IS586" ] ; then CCPREF=i386-mingw32
 	else CCPREF=i586-mingw32msvc
 	fi
-    ARCH=i386
-    XFCONFIG="--cross-prefix=${CCPREF}- --enable-memalign-hack --target-os=mingw32 --arch=x86"
-    GCCOPTS=
+	ARCH=i386
+	XFCONFIG="--cross-prefix=${CCPREF}- --enable-memalign-hack --target-os=mingw32 --arch=x86"
+	GCCOPTS=
 	;;
 darwin)
 	$0 darwin_ppc || exit 1
@@ -126,22 +126,22 @@ darwin)
 	exit 0
 	;;
 darwin_ppc)
-    XLIBS="-lz -lbz2"
-    ARCH=ppc
-    XFCONFIG="--arch=powerpc --enable-cross-compile --disable-altivec --target-os=darwin --enable-pthreads"
-    GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4"
+	XLIBS="-lz -lbz2"
+	ARCH=ppc
+	XFCONFIG="--arch=powerpc --enable-cross-compile --disable-altivec --target-os=darwin --enable-pthreads"
+	GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4"
 	;;
 darwin_x86_64)
-    XLIBS="-lz -lbz2"
-    ARCH=x86_64
-    XFCONFIG="--arch=x86_64 --target-os=darwin --enable-pthreads"
-    GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4"
+	XLIBS="-lz -lbz2"
+	ARCH=x86_64
+	XFCONFIG="--arch=x86_64 --target-os=darwin --enable-pthreads"
+	GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4"
 	;;
 darwin_i386)
-    XLIBS="-lz -lbz2"
-    ARCH=i386
-    XFCONFIG="--arch=x86 --target-os=darwin --disable-mmx --disable-mmx2 --disable-sse --disable-ssse3 --disable-amd3dnow --disable-amd3dnowext --enable-pic --enable-pthreads"
-    GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4 -read_only_relocs suppress"
+	XLIBS="-lz -lbz2"
+	ARCH=i386
+	XFCONFIG="--arch=x86 --target-os=darwin --disable-mmx --disable-mmx2 --disable-sse --disable-ssse3 --disable-amd3dnow --disable-amd3dnowext --enable-pic --enable-pthreads"
+	GCCOPTS="-fno-common -arch ${ARCH} -mmacosx-version-min=10.4 -read_only_relocs suppress"
 	;;
 linux)
 	$0 linux_$ARCH || exit 1
@@ -149,16 +149,16 @@ linux)
 	exit 0
 	;;
 linux_i686)
-    XLIBS="-lz -lbz2"
-    #ARCH=`uname -m`
-    XFCONFIG=--enable-pthreads
-    GCCOPTS=
+	XLIBS="-lz -lbz2"
+	#ARCH=`uname -m`
+	XFCONFIG=--enable-pthreads
+	GCCOPTS=
 	;;
 linux_x86_64)
-    XLIBS="-lz -lbz2"
-    #ARCH=`uname -m`
-    XFCONFIG="--disable-mmx --enable-pthreads"
-    GCCOPTS=-fPIC
+	XLIBS="-lz -lbz2"
+	#ARCH=`uname -m`
+	XFCONFIG="--disable-mmx --enable-pthreads"
+	GCCOPTS=-fPIC
 	;;
 *)
 	echo Unknown system.
