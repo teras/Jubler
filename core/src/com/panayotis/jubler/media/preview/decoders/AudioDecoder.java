@@ -39,4 +39,6 @@ public interface AudioDecoder {
     public abstract AudioPreview getAudioPreview(CacheFile cache, double from, double to);
 
     public abstract void playAudioClip(AudioFile audio, double from, double to);
+
+    public abstract boolean isDecoderValid();
 }

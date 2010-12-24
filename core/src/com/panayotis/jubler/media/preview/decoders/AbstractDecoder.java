@@ -126,8 +126,6 @@ public abstract class AbstractDecoder implements AudioDecoder, VideoDecoder {
         return new AudioPreview(grabCache(cfile.getPath(), from, to));
     }
 
-    protected abstract boolean isDecoderValid();
-
     public Image getFrame(VideoFile vfile, double time, float resize) {
         if (vfile == null || vfile.getPath() == null || (!isDecoderValid()))
             return null;

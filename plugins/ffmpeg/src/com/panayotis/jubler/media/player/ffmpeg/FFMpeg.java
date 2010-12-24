@@ -91,7 +91,7 @@ public class FFMpeg extends AbstractDecoder {
     }
 
     @Override
-    protected boolean isDecoderValid() {
+    public boolean isDecoderValid() {
         return FFMPEG != null;
     }
 

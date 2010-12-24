@@ -31,4 +31,6 @@ public interface VideoDecoder {
     public abstract Image getFrame(VideoFile video, double time, float resize);
 
     public abstract void retrieveInformation(VideoFile vfile);
+
+    public abstract boolean isDecoderValid();
 }

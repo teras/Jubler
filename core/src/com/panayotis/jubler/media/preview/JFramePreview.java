@@ -166,7 +166,7 @@ public class JFramePreview extends JPanel {
             g.drawImage(subimg.getImage(), subimg.getXOffset(frameimg), subimg.getYOffset(frameimg) + REEL_OFFSET, (ImageObserver) null);
 
         /* Draw visual representation that ffdecode library is not present */
-        if (DecoderManager.getVideoDecoder() != null) {
+        if (DecoderManager.getVideoDecoder() == null || (!DecoderManager.getVideoDecoder().isDecoderValid())) {
             Font f = Font.decode(null);
             g.setFont(f);
             TextLayout layout = new TextLayout(inactive_decoder_message, f, ((Graphics2D) g).getFontRenderContext());
