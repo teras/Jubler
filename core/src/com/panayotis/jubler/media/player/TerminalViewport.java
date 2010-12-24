@@ -54,7 +54,7 @@ public abstract class TerminalViewport extends ExternalViewport {
             PlayerArguments args = player.getCommandArguments(mfile, sub, when);
             position = 0;
             isPaused = false;
-            terminal.start(args, null, null);
+            terminal.start(args);
             sendCommands(getPostInitCommand());     // Get information for current volume position
             return;
         } catch (ExtProgramException ex) {

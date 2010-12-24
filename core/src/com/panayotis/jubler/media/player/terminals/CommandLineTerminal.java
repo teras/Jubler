@@ -20,20 +20,22 @@
 package com.panayotis.jubler.media.player.terminals;
 
 import com.panayotis.jubler.media.player.PlayerArguments;
-import com.panayotis.jubler.os.ExtProgram;
+import com.panayotis.jubler.tools.externals.ExtLauncher;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 
 /**
  *
  * @author teras
  */
-public abstract class CommandLineTerminal extends ExtProgram implements PlayerTerminal {
+public abstract class CommandLineTerminal extends ExtLauncher implements PlayerTerminal {
 
-    public void start(PlayerArguments args, Closure<String> outparser, Closure<String> errparser) throws ExtProgramException {
-        start(args.arguments, args.environment, getOutClosure(), getErrClosure());
+    public void start(PlayerArguments args) throws ExtProgramException {
+        setOutclosure(getOutClosure());
+        setErrclosure(getErrClosure());
+        start(args.arguments, args.environment);
     }
 
-    protected abstract Closure<String> getOutClosure();
+    protected abstract Validator<String> getOutClosure();
 
-    protected abstract Closure<String> getErrClosure();
+    protected abstract Validator<String> getErrClosure();
 }

@@ -28,7 +28,7 @@ import com.panayotis.jubler.tools.externals.ExtProgramException;
  */
 public interface PlayerTerminal {
 
-    public void start(PlayerArguments args, Closure<String> outparser, Closure<String> errparser) throws ExtProgramException;
+    public void start(PlayerArguments args) throws ExtProgramException;
 
     public void terminate();
 

@@ -20,8 +20,8 @@
 package com.panayotis.jubler.media.player.mplayer;
 
 import com.panayotis.jubler.media.player.TerminalViewport;
-import com.panayotis.jubler.media.player.terminals.Closure;
 import com.panayotis.jubler.media.player.terminals.CommandLineTerminal;
+import com.panayotis.jubler.media.player.terminals.Validator;
 import com.panayotis.jubler.os.DEBUG;
 
 /**
@@ -37,11 +37,11 @@ public class MPlayerTerminal extends CommandLineTerminal {
     }
 
     @Override
-    protected Closure<String> getOutClosure() {
-        return new Closure<String>() {
+    protected Validator<String> getOutClosure() {
+        return new Validator<String>() {
 
             @SuppressWarnings("empty-statement")
-            public void exec(String info) {
+            public boolean exec(String info) {
                 if (info.equals("QUIT"))
                     if (viewport.isQuitFatal())
                         viewport.getFeedback().requestQuit();
@@ -62,16 +62,18 @@ public class MPlayerTerminal extends CommandLineTerminal {
                             viewport.getFeedback().volumeUpdate(Float.parseFloat(info.substring(info.indexOf('=') + 1)) / 100f);
                     }
                 }
+                return true;
             }
         };
     }
 
     @Override
-    protected Closure<String> getErrClosure() {
-        return new Closure<String>() {
+    protected Validator<String> getErrClosure() {
+        return new Validator<String>() {
 
-            public void exec(String t) {
+            public boolean exec(String t) {
                 DEBUG.debug("! " + t);
+                return true;
             }
         };
     }

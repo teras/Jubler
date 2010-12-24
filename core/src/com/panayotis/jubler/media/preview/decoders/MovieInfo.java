@@ -14,4 +14,9 @@ public class MovieInfo {
     public int height;
     public float length;
     public float fps;
+
+    @Override
+    public String toString() {
+        return "Movie(w=" + width + ", h=" + height + ", l=" + length + " fps=" + fps + ")";
+    }
 }
