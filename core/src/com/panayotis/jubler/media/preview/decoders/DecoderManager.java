@@ -27,7 +27,7 @@ import com.panayotis.jubler.plugins.PluginManager;
  */
 public class DecoderManager {
 
-    private static DecoderManager mgr = new DecoderManager();
+    private final static DecoderManager mgr = new DecoderManager();
     private AudioDecoder adec;
     private VideoDecoder vdec;
 
@@ -40,11 +40,11 @@ public class DecoderManager {
     }
 
     public void registerVideoDecoder(VideoDecoder vdec) {
-        mgr.vdec = vdec;
+        this.vdec = vdec;
     }
 
     public void registerAudioDecoder(AudioDecoder adec) {
-        mgr.adec = adec;
+        this.adec = adec;
     }
 
     @SuppressWarnings("LeakingThisInConstructor")

@@ -22,7 +22,6 @@ package com.panayotis.jubler.media.player.mplayer;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-import com.panayotis.jubler.media.console.PlayerFeedback;
 import com.panayotis.jubler.media.player.TerminalViewport;
 import com.panayotis.jubler.media.player.VideoPlayer;
 

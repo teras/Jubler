@@ -30,8 +30,6 @@ import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.os.DEBUG;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.AudioInputStream;
@@ -146,7 +144,7 @@ public abstract class AbstractDecoder implements AudioDecoder, VideoDecoder {
         try {
             final File wavfile = File.createTempFile("jublerclip_", ".wav");
             wav = wavfile;
-            if (!createClip(afile.getPath(), wavfile.getPath(), (long) from, (long) to)) {
+            if (!createClip(afile.getPath(), wavfile.getPath(), from, to)) {
                 /* Something went wrong */
                 cleanUp(_("Count not create audio clip"), wav);
                 return;
@@ -220,7 +218,7 @@ public abstract class AbstractDecoder implements AudioDecoder, VideoDecoder {
     protected abstract MovieInfo grabInformation(String path);
 
     /** Method guaranteed not to receive null parameters */
-    protected abstract boolean createClip(String sourcefile, String outfile, long l, long l0);
+    protected abstract boolean createClip(String sourcefile, String outfile, double from, double to);
 
     /** Method guaranteed not to receive null parameters */
     protected abstract Image grabFrame(String videfile, double time, float resize);
