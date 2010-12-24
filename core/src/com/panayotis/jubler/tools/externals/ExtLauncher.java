@@ -5,13 +5,12 @@
 package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.media.player.terminals.Validator;
+import com.panayotis.jubler.os.DEBUG;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -47,6 +46,25 @@ public class ExtLauncher {
         readyToQuit = false;
 
         try {
+            {
+                String[] debug = new String[3 + (args == null ? 0 : args.length) + (env == null ? 0 : env.length)];
+                debug[0] = "Launching:";
+                if (args == null)
+                    debug[1] = "ARGS=EMPTY";
+                else {
+                    debug[1] = "ARGS=";
+                    System.arraycopy(args, 0, debug, 2, args.length);
+                }
+                int envloc = args == null ? 2 : 2 + args.length;
+                if (env == null)
+                    debug[envloc] = "ENV=EMPTY";
+                else {
+                    debug[envloc] = "ENV=";
+                    System.arraycopy(env, 0, debug, envloc, env.length);
+                }
+                DEBUG.debug(debug);
+            }
+
             proc = Runtime.getRuntime().exec(args, env);
             cmdpipe = new BufferedWriter(new OutputStreamWriter(proc.getOutputStream()));
             outpipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));

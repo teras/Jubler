@@ -79,4 +79,14 @@ public class DEBUG {
             buf.append(array[i]).append(' ');
         return buf.substring(0, buf.length() - 1);
     }
+
+    public static void debug(String[] debug) {
+        StringWriter out = new StringWriter();
+        for (String part : debug)
+            out.append(part).append(" ");
+        String conc = out.toString();
+        if (conc.length() > 1)
+            conc = conc.substring(0, conc.length() - 1);
+        debug(conc);
+    }
 }

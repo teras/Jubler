@@ -74,7 +74,7 @@ public class FFMpeg extends AbstractDecoder {
 
     @Override
     protected boolean createClip(String sourcefile, String outfile, double from, double to) {
-        callFFMPEG(new String[]{FFMPEG, "-i", outfile, "-ss", Double.toString(from), "-t", Double.toString(to - from), outfile}, null, null, WaitStatus.TERMINATION, true);
+        callFFMPEG(new String[]{FFMPEG, "-y", "-i", sourcefile, "-ss", Double.toString(from), "-t", Double.toString(to - from), "-ac", "2", outfile}, null, null, WaitStatus.TERMINATION, true);
         return true;
     }
 

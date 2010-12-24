@@ -136,8 +136,6 @@ public abstract class AbstractDecoder implements AudioDecoder, VideoDecoder {
         if (afile == null || afile.getPath() == null || (!isDecoderValid()))
             return;
 
-        from *= 1000000;
-        to *= 1000000;
         File wav = null;
         try {
             final File wavfile = File.createTempFile("jublerclip_", ".wav");
