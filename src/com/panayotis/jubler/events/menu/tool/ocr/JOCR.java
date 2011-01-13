@@ -34,6 +34,7 @@ public class JOCR implements CommonDef {
     private static final String CMD_LANGUAGE_OPTION = "-l";
     private static final String TESS_OUT_FILE = "JublerTessOutput";
     private static final String TESS_OUT_EXT = ".txt";
+    private static String TEMP_IMG_FILE = "tmp";
     private String tesseract_path;
 
     /** Creates a new instance of OCR */
@@ -52,7 +53,7 @@ public class JOCR implements CommonDef {
         f_list[0] = tempImageFile;
         return performOCR(f_list, language_code, true);
     }//end public String recognizeText(final File tempImageFile, final String language_code) throws Exception 
-        
+
     public String performOCR(File[] imgFiles, String language_code, boolean remove_image_file) throws Exception {
 
         File tessOutTempFile = File.createTempFile(TESS_OUT_FILE, TESS_OUT_EXT);
@@ -74,8 +75,17 @@ public class JOCR implements CommonDef {
 
         //Run throught the image list.
         for (File imgFile : imgFiles) {
+            //prepare to change image's filename to something without spaces
+            //and rename the image file to it.
+            String ext = Share.getFileExtension(imgFile);
+            String temp_img_filename = TEMP_IMG_FILE + ext;
+
+            File temp_img_file = new File(imgFile.getParentFile(), temp_img_filename);
+            // DEBUG.debug("Change " + imgFile.getAbsolutePath() + " to " + temp_img_file.getAbsolutePath());
+            imgFile.renameTo(temp_img_file);
+
             //fillin the input file as the data is now available.
-            system_command.set(1, imgFile.getPath());
+            system_command.set(1, temp_img_file.getPath());
 
             //now set the command to be executed.
             process_bld.command(system_command);
@@ -86,6 +96,9 @@ public class JOCR implements CommonDef {
             //Start the process, execute the command line.
             Process process = process_bld.start();
             int process_returned_value = process.waitFor();
+
+            //restore the temporary image file back to the original
+            temp_img_file.renameTo(imgFile);
 
             if (remove_image_file) {
                 imgFile.delete();
