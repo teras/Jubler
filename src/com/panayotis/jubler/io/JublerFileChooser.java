@@ -62,7 +62,7 @@ public class JublerFileChooser extends JFileChooser {
     private SimpleFileFilter makeFilter(SubFormat format) {
         String desc = format.getDescription();
         String ext = format.getExtension();
-        SimpleFileFilter filter = new SimpleFileFilter(ext, desc);
+        SimpleFileFilter filter = new SimpleFileFilter(ext, desc, format);
         return filter;
     }
 

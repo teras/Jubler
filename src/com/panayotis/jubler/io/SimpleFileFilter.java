@@ -27,6 +27,7 @@
  */
 package com.panayotis.jubler.io;
 
+import com.panayotis.jubler.subs.loader.SubFormat;
 import java.io.File;
 
 /**
@@ -37,10 +38,12 @@ public class SimpleFileFilter extends javax.swing.filechooser.FileFilter impleme
 
     String desc = null;
     String ext = null;
+    private SubFormat formatHandler = null;
 
-    public SimpleFileFilter(String ext, String desc){
+    public SimpleFileFilter(String ext, String desc, SubFormat formatHandler){
         this.desc = desc;
         this.ext = ext;
+        this.formatHandler = formatHandler;
     }
     
     public boolean accept(File pathname) {
