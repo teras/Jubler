@@ -36,7 +36,7 @@ public class SubAttribs {
     private int maxchars;
     private int maxcolor;
     
-    private static final int DEFAULT_MAXCOLOR = SubEntry.MarkColors.length;
+    private static final int DEFAULT_MAXCOLOR = SubEntry.MarkColors.length-1;
     private static final int DEFAULT_MAXCHARS = 40;
     
     /** Creates a new instance of SubAttribs */
