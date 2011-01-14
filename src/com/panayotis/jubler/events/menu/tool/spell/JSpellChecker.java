@@ -22,9 +22,11 @@
  */
 
 package com.panayotis.jubler.events.menu.tool.spell;
+import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Color;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -48,7 +50,8 @@ public class JSpellChecker extends JDialog {
     private JFrame jparent;
     private SpellChecker checker;
     private Vector<SubEntry> textlist;
-    private int pos_in_list;
+    private int pos_in_list, pos_of_first_index;
+    private int highlightedIndex = -1;
     
     private Vector<String> ignored;
     private Hashtable<String,String> replaced;
@@ -83,6 +86,7 @@ public class JSpellChecker extends JDialog {
         this.checker = checker;
         count_changes = 0;
         pos_in_list = -1;
+        pos_of_first_index = firstItemInList();
         
         errors = new Vector<SpellError>();
         ignored = new Vector<String> ();
@@ -93,6 +97,16 @@ public class JSpellChecker extends JDialog {
         }
     }
     
+    private int firstItemInList(){
+        try{
+            Jubler jb = (Jubler) jparent;
+            SubEntry first_item = (textlist.elementAt(0));
+            Subtitles sub = jb.getSubtitles();
+            int first_index = sub.indexOf(first_item);
+            return first_index;
+        }catch(Exception ex){}
+        return -1;
+    }//private int firstItemInList()
     
     /* Use this method to remove from error list possible known errors */
     private void updateKnownErrors() {
@@ -133,7 +147,11 @@ public class JSpellChecker extends JDialog {
             stop();
             return;
         }
-        
+
+        Jubler jb = (Jubler) jparent;
+        setHighlightedIndex(pos_in_list + pos_of_first_index);
+        jb.fn.setSelectedSub(getHighlightedIndex(), true);
+
         /* For convenience, get a pointer for this error */
         SpellError mistake = errors.elementAt(0);
         
@@ -496,4 +514,19 @@ public class JSpellChecker extends JDialog {
         if ( count_changes == 0) msg = _("No changes have been done");
         JIDialog.info(jparent, msg, _("Speller changes"));
     }
+
+    /**
+     * @return the highlightedIndex
+     */
+    public int getHighlightedIndex() {
+        return highlightedIndex;
+    }
+
+    /**
+     * @param highlightedIndex the highlightedIndex to set
+     */
+    public void setHighlightedIndex(int highlightedIndex) {
+        this.highlightedIndex = highlightedIndex;
+    }
+
 }
