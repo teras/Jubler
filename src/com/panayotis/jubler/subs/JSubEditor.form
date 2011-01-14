@@ -462,10 +462,11 @@
                       <Image iconType="3" name="/icons/preview.png"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Visualise the subtitle with styles&quot;)" type="code"/>
+                      <Connection code="_(&quot;Visualise the subtitle with styles.\nRight click to show currently selected subtitle entry on the table.&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
+                    <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="VisualiseTextLayoutBMouseReleased"/>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="VisualiseTextLayoutBActionPerformed"/>
                   </Events>
                 </Component>

@@ -655,10 +655,15 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel7.add(TextBalancingPanel);
 
-        jPanel8.setLayout(new java.awt.GridLayout());
+        jPanel8.setLayout(new java.awt.GridLayout(1, 0));
 
         VisualiseTextLayoutB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
-        VisualiseTextLayoutB.setToolTipText(_("Visualise the subtitle with styles"));
+        VisualiseTextLayoutB.setToolTipText(_("Visualise the subtitle with styles.\nRight click to show currently selected subtitle entry on the table."));
+        VisualiseTextLayoutB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                VisualiseTextLayoutBMouseReleased(evt);
+            }
+        });
         VisualiseTextLayoutB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VisualiseTextLayoutBActionPerformed(evt);
@@ -804,6 +809,21 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         JOptionPane.showMessageDialog(parent, lbl, _("Subtitle text with styles"), JOptionPane.PLAIN_MESSAGE);
         
 }//GEN-LAST:event_VisualiseTextLayoutBActionPerformed
+
+    private void VisualiseTextLayoutBMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VisualiseTextLayoutBMouseReleased
+        try{
+            int button_released = evt.getButton();
+            boolean is_right_button = (java.awt.event.MouseEvent.BUTTON3 == button_released);
+            if (is_right_button){
+                moveTableViewToSelectedEntry();
+            }//end if (is_right_button)
+        }catch(Exception ex){}
+    }//GEN-LAST:event_VisualiseTextLayoutBMouseReleased
+
+    private void moveTableViewToSelectedEntry(){
+        int selected_row = parent.getSelectedRowIdx();
+        parent.fn.setSelectedSub(selected_row, true);
+    }
 
     public void changeStyle(StyleType type, Object value) {
         parent.fn.subTextChanged();    // We need this for the undo function
