@@ -98,4 +98,20 @@ public class AvailSubFormats {
                 return Formats[i];
         return null;
     }
+
+    public static int findFromNameAndExtension(String name, String ext) {
+        for (int i = 0; i < Formats.length; i++){
+            SubFormat fmt = Formats[i];
+            String fmt_name = fmt.getName();
+            String fmt_ext = fmt.getExtension();
+            boolean is_found = fmt_name.equals(name)
+                    &&
+                    fmt_ext.equals(ext);
+            if (is_found){
+                return i;
+            }
+        }//end for (int i = 0; i < Formats.length; i++)
+        return -1;
+    }
+
 }

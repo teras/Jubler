@@ -58,5 +58,19 @@ public class SimpleFileFilter extends javax.swing.filechooser.FileFilter impleme
     public String getDescription() {
         return desc;
     }
+
+    /**
+     * @return the formatHandler
+     */
+    public SubFormat getFormatHandler() {
+        return formatHandler;
+    }
+
+    /**
+     * @param formatHandler the formatHandler to set
+     */
+    public void setFormatHandler(SubFormat formatHandler) {
+        this.formatHandler = formatHandler;
+    }
 }//end public class SimpleFileFilter
 

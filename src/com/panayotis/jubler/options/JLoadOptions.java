@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -40,6 +41,7 @@ public class JLoadOptions extends JFileOptions {
     
     private JRateChooser CFPS;
     private JComboBox [] CEnc;
+    private SubFormat selectedFormat = null;
     
     /** Creates new form JLoadPrefs */
     public JLoadOptions() {
@@ -157,6 +159,20 @@ public class JLoadOptions extends JFileOptions {
     private javax.swing.JPanel FPSPanel;
     private javax.swing.JPanel OptsP;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the selectedFormat
+     */
+    public SubFormat getSelectedFormat() {
+        return selectedFormat;
+    }
+
+    /**
+     * @param selectedFormat the selectedFormat to set
+     */
+    public void setSelectedFormat(SubFormat selectedFormat) {
+        this.selectedFormat = selectedFormat;
+    }
 
     
 }

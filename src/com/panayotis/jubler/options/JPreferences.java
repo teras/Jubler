@@ -208,4 +208,18 @@ public class JPreferences extends javax.swing.JDialog {
     private javax.swing.JButton CancelB;
     private javax.swing.JPanel LowerP;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the jload
+     */
+    public JLoadOptions getJload() {
+        return jload;
+    }
+
+    /**
+     * @return the jsave
+     */
+    public JSaveOptions getJsave() {
+        return jsave;
+    }
 }

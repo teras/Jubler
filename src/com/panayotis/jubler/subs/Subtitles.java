@@ -116,15 +116,20 @@ public class Subtitles extends AbstractTableModel {
             return null;
         }
         load = null;
-        formats = new AvailSubFormats();
+        SubFormat format_handler = work.prefs.getJload().getSelectedFormat();
+        if (format_handler != null) {
+            format_handler.setJubler(work);
+            format_handler.init();
+            load = format_handler.parse(data, FPS, f);
+        }//end if
 
+        formats = new AvailSubFormats();
         /**
          * Leave the format_handler outside the loop here
          * for easier debugging and see which format handler was selected
          * during the recognition of pattern and subsequently chosen
          * as the loader for the data.
-         */
-        SubFormat format_handler = null;
+         */        
         while (load == null && formats.hasMoreElements()) {
             format_handler = formats.nextElement();
             format_handler.setJubler(work);

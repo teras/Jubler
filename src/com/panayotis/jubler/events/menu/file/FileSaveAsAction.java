@@ -29,9 +29,12 @@ package com.panayotis.jubler.events.menu.file;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.MenuAction;
+import com.panayotis.jubler.io.SimpleFileFilter;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -57,17 +60,26 @@ public class FileSaveAsAction extends MenuAction {
 
         JFileChooser filedialog = jb.getFiledialog();
 
-        filedialog.setDialogTitle(_("Save Subtitles"));
-        filedialog.setSelectedFile(subs.getCurrentFile());
-        if (filedialog.showSaveDialog(jb) != JFileChooser.APPROVE_OPTION) {
-            return;
+        try {
+            filedialog.setDialogTitle(_("Save Subtitles"));
+            filedialog.setSelectedFile(subs.getCurrentFile());
+            if (filedialog.showSaveDialog(jb) != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            FileCommunicator.setDefaultDialogPath(filedialog);
+            SubFormat handler = Jubler.prefs.getSaveFormat();
+            try {
+                SimpleFileFilter selected_filter = (SimpleFileFilter) filedialog.getFileFilter();
+                handler = selected_filter.getFormatHandler();
+            } catch (Exception ex) {}
+            
+            Jubler.prefs.getJsave().setSelectedFormat(handler);
+            Jubler.prefs.showSaveDialog(jb, mfile, subs); //Show the "save options" dialog, if desired
+
+            jb.getFileManager().saveFile(filedialog.getSelectedFile());
+        } catch (Exception ex) {
+            DEBUG.debug(ex.toString());
         }
-        FileCommunicator.setDefaultDialogPath(filedialog);
-        Jubler.prefs.setShowSaveDiaglog(true);
-        Jubler.prefs.showSaveDialog(jb, mfile, subs); //Show the "save options" dialog, if desired
-
-        jb.getFileManager().saveFile(filedialog.getSelectedFile());
-
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class FileSaveAsAction extends MenuAction
 

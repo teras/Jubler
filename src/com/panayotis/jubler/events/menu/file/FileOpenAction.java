@@ -30,6 +30,7 @@ package com.panayotis.jubler.events.menu.file;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.MenuAction;
+import com.panayotis.jubler.io.SimpleFileFilter;
 import com.panayotis.jubler.os.FileCommunicator;
 import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
@@ -57,6 +58,12 @@ public class FileOpenAction extends MenuAction {
             return;
         }
         FileCommunicator.setDefaultDialogPath(filedialog);
+
+        try {
+            SimpleFileFilter filter = (SimpleFileFilter) filedialog.getFileFilter();
+            Jubler.prefs.getJload().setSelectedFormat(filter.getFormatHandler());
+        } catch (Exception ex) {
+        }
         jb.getFileManager().loadFileFromHere(filedialog.getSelectedFile(), false);
 
     }//end public void actionPerformed(ActionEvent evt)
