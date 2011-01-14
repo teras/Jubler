@@ -31,7 +31,6 @@ import com.panayotis.jubler.media.MediaFile;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
-import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.Dropper;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.JIDialog;
@@ -62,6 +61,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
@@ -168,6 +168,15 @@ public class JublerFunction {
     }
 
 
+    public void memoriseCurrentRow(){
+        try{
+            JTable tbl = jb.getSubTable();
+            int current_row = tbl.getSelectedRow() + 1;
+            DropDownActionNumberOfLine.getEditor().setItem(new Integer(current_row));
+        }catch(Exception ex){
+            DEBUG.debug(ex.toString());
+        }
+    }
     /* This method is called EVERY time an undo option is added.
      * It is used in order to inform the system that a new undo command is added.
      *

@@ -114,6 +114,8 @@ import com.panayotis.jubler.events.menu.tool.ViewHeader;
 import com.panayotis.jubler.os.DEBUG;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -162,7 +164,24 @@ public class JActionMap extends HashMap<Object, Object> {
         jb = parent;
         createlActionHandlers();
         addMap();
+        addListeners();
     }//end public JActionMap(Jubler parent)
+
+    private void addListeners() {
+        jb.getDoItTB().addMouseListener(new MouseAdapter() {
+
+            /**
+             * {@inheritDoc}
+             */
+            public void mouseReleased(MouseEvent e) {
+                int button_pressed = e.getButton();
+                boolean is_right_mouse_button = (button_pressed == MouseEvent.BUTTON3);
+                if (is_right_mouse_button){
+                    jb.fn.memoriseCurrentRow();
+                }//end if (is_right_mouse_button)
+            }
+        });
+    }
 
     private void addMap() {
         put(jb.getAboutHM(), new AboutHelpAction(jb));

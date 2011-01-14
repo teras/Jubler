@@ -622,7 +622,7 @@ public class Jubler extends JFrame {
         MoveTextTP.add(DropDownActionNumberOfLine, gridBagConstraints);
 
         DoItTB.setText(_("Do it"));
-        DoItTB.setToolTipText(_("Perform drop-down operation"));
+        DoItTB.setToolTipText(_("Perform drop-down operation. Right click to memorise current row."));
         DoItTB.setEnabled(false);
         DoItTB.setMaximumSize(new java.awt.Dimension(60, 32));
         DoItTB.setMinimumSize(new java.awt.Dimension(40, 32));
