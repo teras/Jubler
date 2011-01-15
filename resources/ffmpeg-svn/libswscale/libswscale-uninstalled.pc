@@ -1,0 +1,12 @@
+prefix=
+exec_prefix=
+libdir=${pcfiledir}
+includedir=/home/hdq/java/jubler_dev/resources/ffmpeg-svn
+
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 0.7.1
+Requires:  libavcodec = 52.6.1
+Conflicts:
+Libs: ${libdir}/libswscale.a 
+Cflags: -I${includedir}
