@@ -35,7 +35,8 @@ public class JReplace extends javax.swing.JDialog {
     private Jubler parent;
     private Subtitles subs;
     private UndoList undo;
-    private int row, foundpos, nextpos, length;
+    private int row,  foundpos,  nextpos,  length;
+    private boolean replaceQuiet = false, replacing=false;
     Pattern wpat = null;
     Matcher m = null;
 
@@ -58,7 +59,7 @@ public class JReplace extends javax.swing.JDialog {
         initComponents();
         FindT.setModel(findTModel);
         ReplaceT.setModel(replaceTModel);
-	FindT.setEditor(new JComboBoxEditorAsJTextArea());
+        FindT.setEditor(new JComboBoxEditorAsJTextArea());
         ReplaceT.setEditor(new JComboBoxEditorAsJTextArea());
         FindT.setSelectedItem("");
         ReplaceT.setSelectedItem("");
@@ -218,7 +219,10 @@ public class JReplace extends javax.swing.JDialog {
                 ReplaceAllB.setEnabled(true);
                 nextpos = foundpos + length;
                 setSentence(subs.elementAt(row).getText(), foundpos, length);
-                parent.fn.setSelectedSub(row, true);
+                boolean is_quiet = (this.isReplacing() && this.isReplaceQuiet());
+                if (!is_quiet) {
+                    parent.fn.setSelectedSub(row, true);
+                }//end if (! this.isReplaceQuiet())
                 FindT.addItem(what);
                 return true;
             }
@@ -268,13 +272,12 @@ public class JReplace extends javax.swing.JDialog {
             nextpos = foundpos + replaced_length;
         }
         //HDT:20090923 - reset the display of the highlighted to allow users to see
-        //the changes, especially the last one when the dialog prompted.
-        setSentence(newer, foundpos, repl.length());
+        //the changes, especially the last one when the dialog prompted.        
+        setSentence(newer, foundpos, repl.length());       
         subs.elementAt(row).setText(newer);
         ReplaceT.addItem(repl); //remember replaced text
         return selected;
     }//end private SubEntry[] replaceWord()
-
 
     private String convertControlCodes(String old_text) {
         String new_string = old_text.replace("\\n", "\n");
@@ -328,6 +331,7 @@ public class JReplace extends javax.swing.JDialog {
         IgnoreC = new javax.swing.JCheckBox();
         WordBoundary = new javax.swing.JCheckBox();
         RegularExpression = new javax.swing.JCheckBox();
+        Quiet = new javax.swing.JCheckBox();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         FindB = new javax.swing.JButton();
@@ -398,6 +402,15 @@ public class JReplace extends javax.swing.JDialog {
         RegularExpression.setToolTipText(_("Find a Regular Expression"));
         jPanel7.add(RegularExpression);
 
+        Quiet.setText(_("Quiet"));
+        Quiet.setToolTipText(_("Perform replace quietly"));
+        Quiet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                QuietActionPerformed(evt);
+            }
+        });
+        jPanel7.add(Quiet);
+
         jPanel1.add(jPanel7, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
@@ -453,9 +466,11 @@ public class JReplace extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void ReplaceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceBActionPerformed
+        this.setReplacing(true);
         SubEntry[] selected = replaceWord();
         parent.fn.tableHasChanged(selected);
         findNextWord();
+        this.setReplacing(false);
     }//GEN-LAST:event_ReplaceBActionPerformed
 
     private void FindBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FindBActionPerformed
@@ -469,6 +484,7 @@ public class JReplace extends javax.swing.JDialog {
     private void ReplaceAllBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceAllBActionPerformed
         boolean found = true;
         int count = 0;
+        this.setReplacing(true);
         try {
             for (row = 0; (row < subs.size()) && found;) {
                 found = findNextWord();
@@ -483,7 +499,13 @@ public class JReplace extends javax.swing.JDialog {
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         }
+        this.setReplacing(false);
 }//GEN-LAST:event_ReplaceAllBActionPerformed
+
+    private void QuietActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuietActionPerformed
+        this.setReplaceQuiet(Quiet.isSelected());
+    }//GEN-LAST:event_QuietActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CloseB;
     private javax.swing.JTextPane ContextT;
@@ -491,6 +513,7 @@ public class JReplace extends javax.swing.JDialog {
     private javax.swing.JComboBox FindT;
     private javax.swing.JPanel IconPanel;
     private javax.swing.JCheckBox IgnoreC;
+    private javax.swing.JCheckBox Quiet;
     private javax.swing.JCheckBox RegularExpression;
     private javax.swing.JButton ReplaceAllB;
     private javax.swing.JButton ReplaceB;
@@ -509,4 +532,32 @@ public class JReplace extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the replaceQuiet
+     */
+    public boolean isReplaceQuiet() {
+        return replaceQuiet;
+    }
+
+    /**
+     * @param replaceQuiet the replaceQuiet to set
+     */
+    public void setReplaceQuiet(boolean replaceQuiet) {
+        this.replaceQuiet = replaceQuiet;
+    }
+
+    /**
+     * @return the replacing
+     */
+    public boolean isReplacing() {
+        return replacing;
+    }
+
+    /**
+     * @param replacing the replacing to set
+     */
+    public void setReplacing(boolean replacing) {
+        this.replacing = replacing;
+    }
 }

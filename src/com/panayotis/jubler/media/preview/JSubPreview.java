@@ -92,10 +92,11 @@ public class JSubPreview extends javax.swing.JPanel {
         boolean orientation = AutoSaveOptions.getPreviewOrientation();
         setOrientation(orientation);
         Orientation.setSelected(!orientation);
+        /*
         SelectFromCurrentToEnd.setPressedIcon(
                 new javax.swing.ImageIcon(getClass().getResource("/icons/sizes_invert.png"))
                 );
-
+                */
     }
 
     public void windowHasChanged(int[] subid) {
