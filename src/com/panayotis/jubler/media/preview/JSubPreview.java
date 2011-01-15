@@ -28,6 +28,7 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.options.AutoSaveOptions;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -38,6 +39,7 @@ import java.awt.Point;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JSplitPane;
+import javax.swing.JTable;
 
 /**
  *
@@ -62,6 +64,8 @@ public class JSubPreview extends javax.swing.JPanel {
     private Jubler parent;
     private boolean ignore_slider_changes = false;
     private boolean ignore_zoomfactor_changes = false;
+    private boolean select_to_end = false;
+    
     /* Here we store the start/end/videoduration values of the window*/
     private ViewWindow view;
     private MediaFile last_media_file = null;
@@ -88,6 +92,10 @@ public class JSubPreview extends javax.swing.JPanel {
         boolean orientation = AutoSaveOptions.getPreviewOrientation();
         setOrientation(orientation);
         Orientation.setSelected(!orientation);
+        SelectFromCurrentToEnd.setPressedIcon(
+                new javax.swing.ImageIcon(getClass().getResource("/icons/sizes_invert.png"))
+                );
+
     }
 
     public void windowHasChanged(int[] subid) {
@@ -284,6 +292,7 @@ public class JSubPreview extends javax.swing.JPanel {
         Resize = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
         NewSub = new javax.swing.JButton();
+        SelectFromCurrentToEnd = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -497,6 +506,16 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         jPanel3.add(NewSub);
 
+        SelectFromCurrentToEnd.setToolTipText(_("Select from current row to end"));
+        SelectFromCurrentToEnd.setMaximumSize(new java.awt.Dimension(26, 26));
+        SelectFromCurrentToEnd.setMinimumSize(new java.awt.Dimension(26, 26));
+        SelectFromCurrentToEnd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectFromCurrentToEndActionPerformed(evt);
+            }
+        });
+        jPanel3.add(SelectFromCurrentToEnd);
+
         ToolPanel.add(jPanel3);
 
         add(ToolPanel, java.awt.BorderLayout.WEST);
@@ -554,6 +573,12 @@ public class JSubPreview extends javax.swing.JPanel {
     private void MaxWaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveActionPerformed
         setMaxWave(MaxWave.isSelected());
 }//GEN-LAST:event_MaxWaveActionPerformed
+
+    private void SelectFromCurrentToEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectFromCurrentToEndActionPerformed
+        this.select_to_end = SelectFromCurrentToEnd.isSelected();
+        selectTableToEnd(this.select_to_end);
+    }//GEN-LAST:event_SelectFromCurrentToEndActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
     public javax.swing.JButton AudioPlay;
@@ -570,6 +595,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JToggleButton Orientation;
     private javax.swing.JToggleButton Resize;
     private javax.swing.JToggleButton Select;
+    private javax.swing.JCheckBox SelectFromCurrentToEnd;
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
     private javax.swing.JPanel ToolPanel;
@@ -585,4 +611,27 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the select_to_end
+     */
+    public boolean isSelectToEnd() {
+        return select_to_end;
+    }
+
+    /**
+     * @param select_to_end the select_to_end to set
+     */
+    public void setSelectToEnd(boolean select_to_end) {
+        SelectFromCurrentToEnd.setSelected(select_to_end);
+    }
+
+    private void selectTableToEnd(boolean is_to_end){
+        JTable tbl = this.parent.getSubTable();
+        int current_row = tbl.getSelectedRow();
+        Subtitles subs = parent.getSubtitles();
+        int end_row = (is_to_end ? subs.getRowCount()-1 : current_row);
+
+        tbl.getSelectionModel().setSelectionInterval(current_row, end_row);
+    }//end private void selectTableToEnd()
 }

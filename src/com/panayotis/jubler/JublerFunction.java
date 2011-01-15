@@ -167,13 +167,12 @@ public class JublerFunction {
         VideoPreviewC = jb.getVideoPreviewC();
     }
 
-
-    public void memoriseCurrentRow(){
-        try{
+    public void memoriseCurrentRow() {
+        try {
             JTable tbl = jb.getSubTable();
             int current_row = tbl.getSelectedRow() + 1;
             DropDownActionNumberOfLine.getEditor().setItem(new Integer(current_row));
-        }catch(Exception ex){
+        } catch (Exception ex) {
             DEBUG.debug(ex.toString());
         }
     }
@@ -184,6 +183,7 @@ public class JublerFunction {
      * This has the effect of keeping up to date jb pointer even if something happens
      * while changing a single subentry.
      */
+
     public void resetUndoMark() {
         jb.setLastChangedSub(null);
     }
@@ -270,7 +270,7 @@ public class JublerFunction {
         SubTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         SubTable.setDropMode(DropMode.INSERT_ROWS);
         SubTable.setDragEnabled(true);
-        //SubTable.setDropTarget(new DropTarget(SubTable, r));
+    //SubTable.setDropTarget(new DropTarget(SubTable, r));
     }
 
     public void addNewSubtitle(boolean is_after) {
@@ -655,6 +655,16 @@ public class JublerFunction {
         return ret;
     }
 
+    public void resetPreview() {
+        JSubPreview jsrv = jb.getPreview();
+        boolean is_preview_shown = jsrv.isShowing();
+        boolean is_preview_select_to_end = jsrv.isSelectToEnd();
+        boolean is_switching_preview_select_to_end = (is_preview_shown && is_preview_select_to_end);
+        if (is_switching_preview_select_to_end) {
+            jsrv.setSelectToEnd(false);
+        }//end if (is_right_mouse_button)
+    }//end public void resetPreview()
+
     /* Use jb method in order to display the data of a subtitle
      * down to the subtitle display area. It is used e.g. when the
      * user clicks on a table row */
@@ -676,9 +686,15 @@ public class JublerFunction {
         SubEntry sel = subs.elementAt(subrow);
         subeditor.setData(sel);
 
-        if (preview.isVisible()) {
-            preview.subsHaveChanged(SubTable.getSelectedRows());
-        }
+        if (preview.isShowing()) {
+            int[] subids = SubTable.getSelectedRows();
+            preview.subsHaveChanged(subids);
+
+            boolean is_turning_off_select_to_end = (preview.isSelectToEnd() && subids.length < 2);
+            if (is_turning_off_select_to_end) {
+                preview.setSelectToEnd(false);
+            }//end if (is_turning_off_select_to_end)
+        }//end if (preview.isShowing())
 
         Jubler connect_to_other = jb.getConnectToOther();
         boolean valid = (connect_to_other != null);

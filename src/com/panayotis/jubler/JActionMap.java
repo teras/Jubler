@@ -111,6 +111,7 @@ import com.panayotis.jubler.events.menu.file.AppendFromFile;
 import com.panayotis.jubler.events.menu.file.ImportComponent;
 import com.panayotis.jubler.events.menu.tool.MergeRecords;
 import com.panayotis.jubler.events.menu.tool.ViewHeader;
+import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.os.DEBUG;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -176,11 +177,12 @@ public class JActionMap extends HashMap<Object, Object> {
             public void mouseReleased(MouseEvent e) {
                 int button_pressed = e.getButton();
                 boolean is_right_mouse_button = (button_pressed == MouseEvent.BUTTON3);
-                if (is_right_mouse_button){
+                if (is_right_mouse_button) {
                     jb.fn.memoriseCurrentRow();
                 }//end if (is_right_mouse_button)
             }
         });
+
     }
 
     private void addMap() {
