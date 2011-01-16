@@ -25,7 +25,6 @@
  * Contributor(s):
  * 
  */
-
 package com.panayotis.jubler.events.menu.tool;
 
 import com.panayotis.jubler.Jubler;
@@ -39,8 +38,11 @@ import java.awt.event.ActionEvent;
  */
 public class TranslateAction extends MenuAction {
 
-    public TranslateAction(Jubler parent) {
+    private boolean directMode = false;
+
+    public TranslateAction(Jubler parent, boolean is_direct) {
         super(parent);
+        directMode = is_direct;
     }
 
     /**
@@ -50,6 +52,25 @@ public class TranslateAction extends MenuAction {
     public void actionPerformed(ActionEvent evt) {
         Jubler jb = jublerParent;
         JTranslate translate = jb.getTranslate();
-        translate.execute(jb);
+        if (this.directMode) {
+            translate.performTranslation(jb.fn.getSelectedSubs());
+            jb.fn.tableHasChanged(jb.fn.getSelectedSubs());
+        } else {
+            translate.execute(jb);
+        }        
     }//end public void actionPerformed(ActionEvent evt)
+
+    /**
+     * @return the directMode
+     */
+    public boolean isDirectMode() {
+        return directMode;
+    }
+
+    /**
+     * @param directMode the directMode to set
+     */
+    public void setDirectMode(boolean directMode) {
+        this.directMode = directMode;
+    }
 }//end public class TranslateAction extends MenuAction

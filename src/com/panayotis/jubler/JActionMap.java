@@ -285,7 +285,8 @@ public class JActionMap extends HashMap<Object, Object> {
         put(jb.getTextBalancingOnSelection(), new TextBalancingOnSelectionAction(jb));
         put(jb.getTextBalancingOnTheWholeTable(), new TextBalancingOnTheWholeTableAction(jb));
         put(jb.getTopGEM(), gotoAction);
-        put(jb.getTranslateTM(), new TranslateAction(jb));
+        put(jb.getTranslateTM(), new TranslateAction(jb, false));
+        put(jb.getTranslateDirectTM(), new TranslateAction(jb, true));
         put(jb.getUndoEM(), undoEdit);
         put(jb.getUndoTB(), undoEdit);
         put(jb.getVideoPreviewC(), new VideoPreviewAction(jb));
@@ -392,7 +393,7 @@ public class JActionMap extends HashMap<Object, Object> {
         showTableColumn =
                 new ShowTableColumnAction(jb);
         showToolTipTextAction =
-                new ShowToolTipTextAction(jb);        
+                new ShowToolTipTextAction(jb);
     }//end private void createlActionHandlers()
 
     public boolean action(JComponent control) {

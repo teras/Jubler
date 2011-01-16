@@ -337,6 +337,7 @@ public class Jubler extends JFrame {
         jSeparator5 = new javax.swing.JSeparator();
         SpellTM = new javax.swing.JMenuItem();
         TranslateTM = new javax.swing.JMenuItem();
+        TranslateDirectTM = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JSeparator();
         TestTM = new javax.swing.JMenu();
         BeginningTTM = new javax.swing.JMenuItem();
@@ -953,6 +954,11 @@ public class Jubler extends JFrame {
         TranslateTM.setText(_("Translate"));
         TranslateTM.setName("TTM"); // NOI18N
         ToolsM.add(TranslateTM);
+
+        TranslateDirectTM.setText(_("Translate Directly"));
+        TranslateDirectTM.setToolTipText(_("Perform translation using current settings"));
+        TranslateDirectTM.setName("DTM");
+        ToolsM.add(TranslateDirectTM);
         ToolsM.add(jSeparator3);
 
         TestTM.setText(_("Test video"));
@@ -1222,6 +1228,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu TextBalancingTM;
     private javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
+    private javax.swing.JMenuItem TranslateDirectTM;
     private javax.swing.JMenuItem TranslateTM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
@@ -2356,6 +2363,20 @@ public class Jubler extends JFrame {
      */
     public void setShowToolTipText(javax.swing.JMenuItem ShowToolTipText) {
         this.ShowToolTipText = ShowToolTipText;
+    }
+
+    /**
+     * @return the TranslateDirectTM
+     */
+    public javax.swing.JMenuItem getTranslateDirectTM() {
+        return TranslateDirectTM;
+    }
+
+    /**
+     * @param TranslateDirectTM the TranslateDirectTM to set
+     */
+    public void setTranslateDirectTM(javax.swing.JMenuItem TranslateDirectTM) {
+        this.TranslateDirectTM = TranslateDirectTM;
     }
 }//end public class Jubler extends JFrame
 
