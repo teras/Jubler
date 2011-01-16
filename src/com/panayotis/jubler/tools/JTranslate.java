@@ -22,24 +22,47 @@
  */
 package com.panayotis.jubler.tools;
 
+
+import com.google.api.translate.Language;
+import com.google.api.translate.Translate;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.subs.SubEntry;
 import static com.panayotis.jubler.i18n.I18N._;
-
-import com.panayotis.jubler.events.menu.tool.translate.AvailTranslators;
-import com.panayotis.jubler.events.menu.tool.translate.Translator;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
-
 /**
  *
  * @author  teras
  */
 public class JTranslate extends JTool {
 
-    private static AvailTranslators translators;
+    public static Map<Language, String> languageMap = new HashMap<Language, String>();
+    public static Map<String, Language> languageReversedMap = new HashMap<String, Language>();
+    public static Vector<String> languageNames = new Vector<String>();
+
+    //private static AvailTranslators translators;
     static {
-        translators = new AvailTranslators();
-    }
-    
-    private Translator trans;
+        //translators = new AvailTranslators();
+
+    /**
+     * This routine loads the value pairs
+     * [language code (3 characters), language display name] of every languages
+     * on Earth as defined ISO-639
+     */
+        String[] languages = Locale.getISOLanguages();
+        for (String lang: languages) {
+            Language lang_entry = Language.fromString(lang);
+            Locale loc = new Locale(lang);
+            String lang_name = loc.getDisplayLanguage();
+            languageNames.add(lang_name);
+            languageMap.put(lang_entry, lang_name);
+            languageReversedMap.put(lang_name, lang_entry);
+        }//end for(String language : languages)
+    }//end static
+
     
     /** Creates new form JRounder */
     public JTranslate() {
@@ -48,14 +71,15 @@ public class JTranslate extends JTool {
 
     public void initialize() {
         initComponents();
-        TransMachine.setModel(new DefaultComboBoxModel(translators.getNamesList()));
-        trans = translators.get(TransMachine.getSelectedIndex());
+        Vector<String> machines = new Vector<String>();
+        machines.add(_("Google Translation (API 0.94)"));
+        TransMachine.setModel(new DefaultComboBoxModel( machines ));
         
-        FromLang.setModel(new DefaultComboBoxModel(trans.getSourceLanguages()));
-        FromLang.setSelectedItem(trans.getDefaultSourceLanguage());
+        FromLang.setModel(new DefaultComboBoxModel(languageNames));
+        FromLang.setSelectedItem(languageMap.get(Language.ENGLISH));
 
-        ToLang.setModel(new DefaultComboBoxModel(trans.getDestinationLanguagesFor(FromLang.getSelectedItem().toString())));
-        ToLang.setSelectedItem(trans.getDefaultDestinationLanguage());
+        ToLang.setModel(new DefaultComboBoxModel(languageNames));
+        ToLang.setSelectedItem(languageMap.get(Language.VIETNAMESE));
     }
 
     protected String getToolTitle() {
@@ -67,7 +91,38 @@ public class JTranslate extends JTool {
     protected void affect(int index) {}
     
     protected boolean finalizing() {
-        return trans.translate(affected_list, FromLang.getSelectedItem().toString(), ToLang.getSelectedItem().toString());
+        //return trans.translate(affected_list, FromLang.getSelectedItem().toString(), ToLang.getSelectedItem().toString());
+        boolean result = false;
+        try{
+            String lang_name = (String) FromLang.getSelectedItem();
+            Language from_language = languageReversedMap.get(lang_name);
+
+            lang_name = (String) ToLang.getSelectedItem();
+            Language to_language = languageReversedMap.get(lang_name);
+
+            boolean is_same = (from_language.toString().equals(to_language.toString()));
+            if (is_same){
+                throw new RuntimeException(_("It is not logical to perform translation from the same set of languages"));
+            }
+
+            Translate.setHttpReferrer("http://www.jubler.org");
+            for (SubEntry sub : affected_list){
+                String original_text = sub.getText();
+                String translated_text = Translate.execute(original_text, from_language, to_language);
+                sub.setToolTipText(original_text);
+                //DEBUG.debug(original_text + " => " + translated_text);
+                boolean is_replace = this.ReplaceCurrentText.isSelected();
+                if (is_replace){
+                    sub.setText(translated_text);
+                }else{                    
+                    sub.setText(translated_text + "\n" + original_text);
+                }//end if
+            }//end for (SubEntry sub : affected_list)
+            result = true;
+        }catch(Exception ex){
+            DEBUG.debug(ex.toString());
+        }
+        return result;
     }
 
     /** This method is called from within the constructor to
@@ -83,6 +138,8 @@ public class JTranslate extends JTool {
         jLabel1 = new javax.swing.JLabel();
         TransMachine = new javax.swing.JComboBox();
         jPanel3 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        ReplaceCurrentText = new javax.swing.JCheckBox();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         FromLang = new javax.swing.JComboBox();
@@ -113,7 +170,15 @@ public class JTranslate extends JTool {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
 
-        jPanel3.setLayout(new java.awt.GridLayout(1, 2));
+        jPanel3.setLayout(new java.awt.GridLayout(1, 3));
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        ReplaceCurrentText.setText(_("Replace Text"));
+        ReplaceCurrentText.setToolTipText(_("Replace current text with translated text."));
+        jPanel7.add(ReplaceCurrentText, java.awt.BorderLayout.CENTER);
+
+        jPanel3.add(jPanel7);
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
@@ -160,11 +225,12 @@ public class JTranslate extends JTool {
     }// </editor-fold>//GEN-END:initComponents
 
 private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransMachineActionPerformed
-        trans = translators.get(TransMachine.getSelectedIndex());
+        //trans = translators.get(TransMachine.getSelectedIndex());
 }//GEN-LAST:event_TransMachineActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox FromLang;
+    private javax.swing.JCheckBox ReplaceCurrentText;
     private javax.swing.JComboBox ToLang;
     private javax.swing.JComboBox TransMachine;
     private javax.swing.JLabel jLabel1;
@@ -176,6 +242,7 @@ private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables

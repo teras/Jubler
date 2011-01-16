@@ -109,9 +109,9 @@ import com.panayotis.jubler.events.menu.tool.ocr.PackingImageFilesToTiffAction;
 import com.panayotis.jubler.events.menu.tool.ocr.PackingImagesToTiffAction;
 import com.panayotis.jubler.events.menu.file.AppendFromFile;
 import com.panayotis.jubler.events.menu.file.ImportComponent;
+import com.panayotis.jubler.events.menu.popup.ShowToolTipTextAction;
 import com.panayotis.jubler.events.menu.tool.MergeRecords;
 import com.panayotis.jubler.events.menu.tool.ViewHeader;
-import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.os.DEBUG;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -159,6 +159,7 @@ public class JActionMap extends HashMap<Object, Object> {
     private PinkMarkAction pinkMark;
     private RedoEditAction redoEdit;
     private ShowTableColumnAction showTableColumn;
+    private ShowToolTipTextAction showToolTipTextAction;
     private YellowMarkAction yellowMark;
 
     public JActionMap(Jubler parent) {
@@ -272,6 +273,7 @@ public class JActionMap extends HashMap<Object, Object> {
         put(jb.getShowNumberP(), showTableColumn);
         put(jb.getShowStartP(), showTableColumn);
         put(jb.getShowStyleP(), showTableColumn);
+        put(jb. getShowToolTipText(), this.showToolTipTextAction);
         put(jb.getSortTB(), new SortAction(jb));
         put(jb.getSpellTM(), new SpellAction(jb));
         put(jb.getSplitRecordTM(), new SplitRecordAction(jb));
@@ -389,6 +391,8 @@ public class JActionMap extends HashMap<Object, Object> {
                 new CurrentTimeVideoAction(jb);
         showTableColumn =
                 new ShowTableColumnAction(jb);
+        showToolTipTextAction =
+                new ShowToolTipTextAction(jb);        
     }//end private void createlActionHandlers()
 
     public boolean action(JComponent control) {

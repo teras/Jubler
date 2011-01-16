@@ -151,6 +151,15 @@
             </Property>
           </Properties>
         </MenuItem>
+        <Component class="javax.swing.JSeparator" name="jSeparator22">
+        </Component>
+        <MenuItem class="javax.swing.JMenuItem" name="ShowToolTipText">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="_(&quot;Show Tool-Tip Text&quot;)" type="code"/>
+            </Property>
+          </Properties>
+        </MenuItem>
       </SubComponents>
     </Container>
     <Component class="javax.swing.ButtonGroup" name="copyOptionGroup">

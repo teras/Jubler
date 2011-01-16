@@ -216,6 +216,8 @@ public class Jubler extends JFrame {
         ShowStyleP = new javax.swing.JCheckBoxMenuItem();
         jSeparator11 = new javax.swing.JSeparator();
         PlayVideoP = new javax.swing.JMenuItem();
+        jSeparator22 = new javax.swing.JSeparator();
+        ShowToolTipText = new javax.swing.JMenuItem();
         copyOptionGroup = new javax.swing.ButtonGroup();
         BasicPanel = new javax.swing.JPanel();
         LowerPartP = new javax.swing.JPanel();
@@ -431,6 +433,10 @@ public class Jubler extends JFrame {
 
         PlayVideoP.setText(_("Test video"));
         SubsPop.add(PlayVideoP);
+        SubsPop.add(jSeparator22);
+
+        ShowToolTipText.setText(_("Show Tool-Tip Text"));
+        SubsPop.add(ShowToolTipText);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Jubler");
@@ -1190,6 +1196,7 @@ public class Jubler extends JFrame {
     private javax.swing.JCheckBoxMenuItem ShowNumberP;
     private javax.swing.JCheckBoxMenuItem ShowStartP;
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
+    private javax.swing.JMenuItem ShowToolTipText;
     private javax.swing.JButton SortTB;
     private javax.swing.JPanel SortTP;
     private javax.swing.JMenuItem SpellTM;
@@ -1245,6 +1252,7 @@ public class Jubler extends JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator20;
     private javax.swing.JSeparator jSeparator21;
+    private javax.swing.JSeparator jSeparator22;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
@@ -2334,6 +2342,20 @@ public class Jubler extends JFrame {
      */
     public javax.swing.JMenu getRecentsFM() {
         return RecentsFM;
+    }
+
+    /**
+     * @return the ShowToolTipText
+     */
+    public javax.swing.JMenuItem getShowToolTipText() {
+        return ShowToolTipText;
+    }
+
+    /**
+     * @param ShowToolTipText the ShowToolTipText to set
+     */
+    public void setShowToolTipText(javax.swing.JMenuItem ShowToolTipText) {
+        this.ShowToolTipText = ShowToolTipText;
     }
 }//end public class Jubler extends JFrame
 

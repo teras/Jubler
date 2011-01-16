@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.ImageIcon;
@@ -35,6 +36,7 @@ import javax.swing.table.TableCellRenderer;
  */
 //public class SubRenderer extends DefaultTableCellRenderer {
 public class SubRenderer extends JLabel implements TableCellRenderer {
+
     public static final int DEFAULT_ROW_HEIGHT = 16;
     private int table_row_height,  image_row_height;
 
@@ -47,46 +49,49 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
         SubEntry entry;
 
-        setEnabled(table == null || table.isEnabled()); // Always do that
-        if (selected) {
-            setBackground(table.getSelectionBackground());
-            setForeground(table.getSelectionForeground());
-        } else {
-            entry = ((Subtitles) table.getModel()).elementAt(row);
-            setBackground(SubEntry.MarkColors[entry.getMark()]);
-            setForeground(Color.BLACK);
+        try {
+            setEnabled(table == null || table.isEnabled()); // Always do that
+            if (selected) {
+                setBackground(table.getSelectionBackground());
+                setForeground(table.getSelectionForeground());
+            } else {
+                entry = ((Subtitles) table.getModel()).elementAt(row);
+                setBackground(SubEntry.MarkColors[entry.getMark()]);
+                setForeground(Color.BLACK);
             /*
             setBackground(table.getBackground());
             setForeground(table.getForeground());
              */
-        }
+            }
 
-        this.table_row_height = table.getRowHeight();
-        setText(null);
-        setIcon(null);
-        setToolTipText(null);
-        setText("");
-        boolean is_image_type = (value instanceof ImageIcon);
-        if (is_image_type) {
-            setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            ImageIcon img = (ImageIcon) value;
-            setIcon(img);
-            table_row_height = table.getRowHeight();
-            image_row_height = img.getIconHeight();
-            boolean is_taller = (table_row_height < image_row_height);
-            if (is_taller) {
-                table.setRowHeight(image_row_height);
+            this.table_row_height = table.getRowHeight();
+            setText(null);
+            setIcon(null);
+            setToolTipText(null);
+            setText("");
+            boolean is_image_type = (value instanceof ImageIcon);
+            if (is_image_type) {
+                setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                ImageIcon img = (ImageIcon) value;
+                setIcon(img);
+                table_row_height = table.getRowHeight();
+                image_row_height = img.getIconHeight();
+                boolean is_taller = (table_row_height < image_row_height);
+                if (is_taller) {
+                    table.setRowHeight(image_row_height);
                 //table.repaint();
+                }//end if
+            } else {
+                boolean is_string = (value instanceof String);
+                if (is_string) {
+                    String s_value = (String) value;
+                    setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+                    setText(s_value);
+                }//end if
             }//end if
-        } else {
-            boolean is_string = (value instanceof String);
-            if (is_string) {
-                String s_value = (String) value;
-                setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-                setText(s_value);
-            }//end if
-        }//end if
-
+        } catch (Exception ex) {
+            DEBUG.debug(ex.toString());
+        }
         return this;
     }
 }

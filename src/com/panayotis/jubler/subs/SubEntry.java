@@ -99,6 +99,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     };
     protected Time start,  finish,  duration;
     protected String subtext;
+    private String toolTipText = null;
     private int mark;
     protected SubStyle style;
     /** The following parameter is lazily used. It is initialized only when data
@@ -1217,6 +1218,20 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     if (is_changed && is_low_to_high){
     System.out.println("Mark is changed from low to high");
     }*/
+    }
+
+    /**
+     * @return the toolTipText
+     */
+    public String getToolTipText() {
+        return toolTipText;
+    }
+
+    /**
+     * @param toolTipText the toolTipText to set
+     */
+    public void setToolTipText(String toolTipText) {
+        this.toolTipText = toolTipText;
     }
 }//end public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef
 
