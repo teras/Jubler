@@ -45,11 +45,13 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         add(BrowserP, BorderLayout.NORTH);
     }
 
+    @Override
     protected void loadPreferences() {
         super.loadPreferences();
         args.setText(Options.getOption("Player." + name + ".Arguments", args_default));
     }
 
+    @Override
     public void savePreferences() {
         super.savePreferences();
         Options.setOption("Player." + name + ".Arguments", args.getText());
