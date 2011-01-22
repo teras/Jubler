@@ -139,13 +139,12 @@ public class Time implements Comparable<Time> {
         return 0;
     }
 
-    public String getSeconds() {
+    public String getRoundSeconds() {
         StringBuilder res;
-        int hour, min, sec, milli;
+        int hour, min, sec;
 
         res = new StringBuilder();
         int time;
-        milli = msecs % 1000;
         time = msecs / 1000;
         sec = time % 60;
         time /= 60;
@@ -164,6 +163,13 @@ public class Time implements Comparable<Time> {
         if (sec < 10)
             res.append("0");
         res.append(sec);
+        return res.toString();
+    }
+
+    public String getSeconds() {
+        StringBuilder res = new StringBuilder(getRoundSeconds());
+        int milli = msecs % 1000;
+
         res.append(",");
         if (milli < 100)
             res.append("0");

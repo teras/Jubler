@@ -180,6 +180,7 @@ is divided into following sections:
         </condition>
         <property name="javac.fork" value="false"/>
         <property name="jar.index" value="false"/>
+        <property name="jar.index.metainf" value="${jar.index}"/>
         <available file="${meta.inf.dir}/persistence.xml" property="has.persistence.xml"/>
     </target>
     <target name="-post-init">
@@ -329,6 +330,7 @@ is divided into following sections:
                     <formatter type="brief" usefile="false"/>
                     <formatter type="xml"/>
                     <jvmarg line="${endorsed.classpath.cmd.line.arg}"/>
+                    <jvmarg value="-ea"/>
                     <jvmarg line="${run.jvmargs}"/>
                 </junit>
             </sequential>
@@ -472,6 +474,7 @@ is divided into following sections:
     </target>
     <target name="-init-macrodef-copylibs">
         <macrodef name="copylibs" uri="http://www.netbeans.org/ns/j2se-project/3">
+            <attribute default="${manifest.file}" name="manifest"/>
             <element name="customize" optional="true"/>
             <sequential>
                 <property location="${build.classes.dir}" name="build.classes.dir.resolved"/>
@@ -487,7 +490,7 @@ is divided into following sections:
                     </chainedmapper>
                 </pathconvert>
                 <taskdef classname="org.netbeans.modules.java.j2seproject.copylibstask.CopyLibs" classpath="${libs.CopyLibs.classpath}" name="copylibs"/>
-                <copylibs compress="${jar.compress}" index="${jar.index}" jarfile="${dist.jar}" manifest="${manifest.file}" runtimeclasspath="${run.classpath.without.build.classes.dir}">
+                <copylibs compress="${jar.compress}" index="${jar.index}" indexMetaInf="${jar.index.metainf}" jarfile="${dist.jar}" manifest="@{manifest}" runtimeclasspath="${run.classpath.without.build.classes.dir}">
                     <fileset dir="${build.classes.dir}"/>
                     <manifest>
                         <attribute name="Class-Path" value="${jar.classpath}"/>
