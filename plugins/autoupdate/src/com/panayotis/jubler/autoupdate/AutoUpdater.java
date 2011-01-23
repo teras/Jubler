@@ -36,7 +36,7 @@ import com.panayotis.jupidator.UpdaterException;
  */
 public class AutoUpdater implements UpdatedApplication, Plugin {
 
-    private static final String URL = "http://www.jubler.org/files/updates/update-new.xml";
+    private static final String URL = "http://www.jubler.org/files/updates/update.xml";
 
     public AutoUpdater() {
     }
