@@ -4,7 +4,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: pt\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
+        "POT-Creation-Date: 2011-01-29 14:45+0200\n"
         "PO-Revision-Date: 2009-03-18 19:15-0300\n"
         "Last-Translator: Doutor Zero <doutor.zero@gmail.com>\n"
         "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@mail.kde.org>\n"
@@ -1423,26 +1423,6 @@ msgstr  "Os seguintes arquivos não foram salvos:"
 #: core/src/com/panayotis/jubler/options/gui/JUnsaved.java:61
 msgid   "Do you want to quit without saving?"
 msgstr  "Deseja sair sem salvar?"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:66
-#, java-format
-msgid   "Found defined encoding {0}"
-msgstr  "Encontrada codificação definida {0}"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:73
-#, java-format
-msgid   "Found tagged encoding {0}"
-msgstr  ""
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:81
-#, java-format
-msgid   "Found strict encoding {0}"
-msgstr  "Encontrada codificação expressa {0}"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:88
-#, java-format
-msgid   "Found relaxed encoding {0}"
-msgstr  "Encontrada codificação relaxada {0}"
 
 #: core/src/com/panayotis/jubler/os/FileCommunicator.java:109
 #, java-format
@@ -2897,136 +2877,47 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "O Assistente está olhando dentro de {0}"
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Não foi possível encontrar o sistema de auto-atualização "
+#~      "Jupidator."
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."
+
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Não foi possível mover o arquivo de configuração para {0}"
 
 #~ msgid        "Testing:"
 #~ msgstr       "Testando:"
 
-#~ msgid        "Global replace"
-#~ msgstr       "Substituição global"
-
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "Exceção {0} ao carregar o estilo {1}: {2}"
-
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Tradução interrompida"
-
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Marcar legenda como amarela"
-
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Arquivo de configuração atualizado. Configuração antiga "
-#~      "movida para {0}"
-
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Marcar legenda como ciano"
-
-#~ msgid        "ERROR: Could not use autosave directory for old files "
-#~      "\"{0}\"."
-#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
-#~      "para arquivos antigos \"{0}\"."
-
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Cache de áudio do Jubler detectado para a entrada de áudio: "
-#~      "{0}"
-
-#~ msgid        "Globally"
-#~ msgstr       "Globalmente"
-
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Atalhos do Menu"
-
 #~ msgid        "Reset to defaults"
 #~ msgstr       "Resetar para os padrões"
-
-#~ msgid        "Mark second synchronization position of the subtitles."
-#~ msgstr       "Marcar a segunda posição de sincronização das legendas."
-
-#~ msgid        "By region"
-#~ msgstr       "Por região"
-
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Executável válido encontrado: {0}"
-
-#~ msgid        "Null value found while setting Style {0} - ignoring."
-#~ msgstr       "Valor nulo ao definir o Estilo {0} - ignorando."
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Marcar legenda como branca"
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "O arquivo de destino {0} não é gravável."
-
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "Erro ao analisar o número real {0}"
-
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Não foi possível criar um arquivo de cache vazio"
-
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "O arquivo {0} não pôde ser apagado."
-
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
-#~      "\"{0}\"."
 
 #~ msgid        "Decoder not active. Aborting audio cache creation."
 #~ msgstr       "O decodificador não está ativo. Abortando a criação do cache "
 #~      "de áudio."
 
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Arquivo de configuração movido para {0}"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Encontrado arquivo {0}"
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "O arquivo {0} foi apagado com sucesso"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Executando {0}"
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
 
 #~ msgid        "Application path can not be null."
 #~ msgstr       "O caminho do Aplicativo não pode ser nulo."
 
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Não foi possível mover o arquivo de configuração para {0}"
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Cache de áudio do Jubler detectado para a entrada de áudio: "
+#~      "{0}"
 
-#~ msgid        "Could not retrieve actual video properties. Using defaults."
-#~ msgstr       "Não foi possível recuperar as propriedades do vídeo atual. "
-#~      "Usando os padrões."
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Executável válido encontrado: {0}"
 
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
+#~ msgid        "Executing {0}"
+#~ msgstr       "Executando {0}"
 
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Não foi possível encontrar o sistema de auto-atualização "
-#~      "Jupidator."
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Marcar legenda como rosa"
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Número de legendas : {0}    {1}"
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "Exceção {0} ao carregar o estilo {1}: {2}"
 
 #~ msgid        "Maximum number of characters per line"
 #~ msgstr       "Número máximo de caracteres por linha"
-
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "Erro ao abrir o arquivo do FAQ \"{0}\""
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "O arquivo atualizado não pode ser nulo."
-
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "Erro ao analisar o número integral {0}"
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Não salvo"
 
 #~ msgid        "Successfully deleted downloaded file {0}"
 #~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
@@ -3035,5 +2926,103 @@ msgstr  ""
 #~ msgstr       "Não é possível criar o cache para um arquivo de áudio "
 #~      "desconhecido"
 
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."
+#~ msgid        "Global replace"
+#~ msgstr       "Substituição global"
+
+#~ msgid        "Found defined encoding {0}"
+#~ msgstr       "Encontrada codificação definida {0}"
+
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Tradução interrompida"
+
+#~ msgid        "Found file {0}"
+#~ msgstr       "Encontrado arquivo {0}"
+
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "Erro ao analisar o número integral {0}"
+
+#~ msgid        "Found relaxed encoding {0}"
+#~ msgstr       "Encontrada codificação relaxada {0}"
+
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "O Assistente está olhando dentro de {0}"
+
+#~ msgid        "Globally"
+#~ msgstr       "Globalmente"
+
+#~ msgid        "Mark second synchronization position of the subtitles."
+#~ msgstr       "Marcar a segunda posição de sincronização das legendas."
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Número de legendas : {0}    {1}"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Não salvo"
+
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Marcar legenda como rosa"
+
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "O arquivo {0} não pôde ser apagado."
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "O arquivo {0} foi apagado com sucesso"
+
+#~ msgid        "ERROR: Could not use autosave directory for old files "
+#~      "\"{0}\"."
+#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
+#~      "para arquivos antigos \"{0}\"."
+
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Marcar legenda como branca"
+
+#~ msgid        "Found strict encoding {0}"
+#~ msgstr       "Encontrada codificação expressa {0}"
+
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Arquivo de configuração movido para {0}"
+
+#~ msgid        "By region"
+#~ msgstr       "Por região"
+
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Marcar legenda como amarela"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Marcar legenda como ciano"
+
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
+#~      "\"{0}\"."
+
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Arquivo de configuração atualizado. Configuração antiga "
+#~      "movida para {0}"
+
+#~ msgid        "Could not retrieve actual video properties. Using defaults."
+#~ msgstr       "Não foi possível recuperar as propriedades do vídeo atual. "
+#~      "Usando os padrões."
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "Erro ao abrir o arquivo do FAQ \"{0}\""
+
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Atalhos do Menu"
+
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Não foi possível criar um arquivo de cache vazio"
+
+#~ msgid        "Null value found while setting Style {0} - ignoring."
+#~ msgstr       "Valor nulo ao definir o Estilo {0} - ignorando."
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "O arquivo de destino {0} não é gravável."
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "O arquivo atualizado não pode ser nulo."
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "Erro ao analisar o número real {0}"

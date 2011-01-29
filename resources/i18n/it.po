@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: PACKAGE VERSION\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
+        "POT-Creation-Date: 2011-01-29 14:45+0200\n"
         "PO-Revision-Date: 2010-11-16 00:16+0100\n"
         "Last-Translator: Michele Gianella <gianella.michele@gmail.com>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1422,26 +1422,6 @@ msgstr  "I seguenti file non sono salvati:"
 #: core/src/com/panayotis/jubler/options/gui/JUnsaved.java:61
 msgid   "Do you want to quit without saving?"
 msgstr  "Vuoi uscire senza salvare?"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:66
-#, java-format
-msgid   "Found defined encoding {0}"
-msgstr  "Trovata codifica definita {0} "
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:73
-#, java-format
-msgid   "Found tagged encoding {0}"
-msgstr  "Trovata codifica etichettata come {0}"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:81
-#, java-format
-msgid   "Found strict encoding {0}"
-msgstr  "Trovata codifica rigida {0}"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:88
-#, java-format
-msgid   "Found relaxed encoding {0}"
-msgstr  "Trovata codifica flessibile di {0} "
 
 #: core/src/com/panayotis/jubler/os/FileCommunicator.java:109
 #, java-format
@@ -2896,38 +2876,50 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Maximum number of characters per line"
-#~ msgstr       "Numero massimo di caratteri per riga"
-
-#~ msgid        "Globally"
-#~ msgstr       "Sostituisci tutto"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Sostituisci tutto"
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Torna ai valori predefiniti"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Percorso dell'applicazione non indicato."
-
-#~ msgid        "Checking directory {0} for classes."
-#~ msgstr       "Cerco classi nella directory {0}."
+#~ msgid        "Checking JAR {0} for classes."
+#~ msgstr       "Cerco classi in JAR {0}."
 
 #~ msgid        "Unable to find Application path {0}."
 #~ msgstr       "Percorso {0} dell'applicazione non trovato."
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "File di destinazione {0} non scrivibile."
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "File {0} eliminato con successo"
+#~ msgid        "Globally"
+#~ msgstr       "Sostituisci tutto"
 
 #~ msgid        "Executing {0}"
 #~ msgstr       "{0} in esecuzione"
 
-#~ msgid        "Checking JAR {0} for classes."
-#~ msgstr       "Cerco classi in JAR {0}."
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Percorso dell'applicazione non indicato."
+
+#~ msgid        "Found strict encoding {0}"
+#~ msgstr       "Trovata codifica rigida {0}"
+
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "Impossibile eliminare il file {0}."
+
+#~ msgid        "Checking directory {0} for classes."
+#~ msgstr       "Cerco classi nella directory {0}."
+
+#~ msgid        "Found relaxed encoding {0}"
+#~ msgstr       "Trovata codifica flessibile di {0} "
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "File di destinazione {0} non scrivibile."
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Torna ai valori predefiniti"
+
+#~ msgid        "Found defined encoding {0}"
+#~ msgstr       "Trovata codifica definita {0} "
+
+#~ msgid        "Global replace"
+#~ msgstr       "Sostituisci tutto"
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "File {0} eliminato con successo"
+
+#~ msgid        "Maximum number of characters per line"
+#~ msgstr       "Numero massimo di caratteri per riga"
 
 #~ msgid        "Cancel updating: Ignoring deleting of file {0}"
 #~ msgstr       "Aggiornamento: Ignora cancellazione file {0}"
@@ -2938,5 +2930,5 @@ msgstr  ""
 #~ msgid        "Successfully deleted downloaded file {0}"
 #~ msgstr       "Il file scaricato {0} è stato cancellato"
 
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Impossibile eliminare il file {0}."
+#~ msgid        "Found tagged encoding {0}"
+#~ msgstr       "Trovata codifica etichettata come {0}"
