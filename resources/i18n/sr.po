@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Jubler\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2010-10-24 17:48+0300\n"
+        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
         "PO-Revision-Date: 2007-11-18 17:27+0200\n"
         "Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,16 +15,7 @@ msgstr  "Project-Id-Version: Jubler\n"
         "Content-Type: text/plain; charset=UTF-8\n"
         "Content-Transfer-Encoding: 8bit\n"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:35
-msgid   "Application path can not be null."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:39
-#, java-format
-msgid   "Unable to find Application path {0}."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:68
+#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:60
 msgid   "Property name could not be null"
 msgstr  ""
 
@@ -33,190 +24,187 @@ msgstr  ""
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:191
-#, java-format
-msgid   "Executing {0}"
+#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:190
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:114
+msgid   "Application cancelled restart"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:43
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementChstatus.java:33
+#, java-format
+msgid   "Unable to provide empty attribute for file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:100
 #, java-format
 msgid   "Unable to initialize URL {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:108
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:102
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:113
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#, java-format
+msgid   "Unable to create directory structure under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:110
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:111
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:115
 #, java-format
 msgid   "Could not remove old downloaded file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:123
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#, java-format
+msgid   "Could not remove old temporary file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:124
 #, java-format
 msgid   "Size of file {0} does not match. Reported {1}, required {2}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:127
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:128
 #, java-format
 msgid   "Checksumming {0} with algorithm {1} failed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:136
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:137
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:140
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:141
 #, java-format
 msgid   "Unable to download file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:151
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:163
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:152
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:153
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:165
-#, java-format
-msgid   "Successfully deleted downloaded file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:169
-#, java-format
-msgid   "Unable to delete file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:171
-#, java-format
-msgid   "Successfully deleted file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:40
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:38
 #, java-format
 msgid   "File {0} will be deleted, if exists."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:45
-#, java-format
-msgid   "Cancel updating: Ignoring deleting of file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:91
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:97
-#, java-format
-msgid   "Checking JAR {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:111
-#, java-format
-msgid   "Unable to extract files from JAR {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:115
-#, java-format
-msgid   "Checking directory {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:147
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:165
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:154
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:172
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:159
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:170
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:177
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:188
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:166
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:176
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:194
 msgid   "Unable to create Deployer"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:43
-msgid   "Application info not provided."
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:294
+#, java-format
+msgid   "Unable to delete file {0}"
 msgstr  ""
 
 #: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:45
+msgid   "Application info not provided."
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:47
 msgid   "UpdaterAppElements not provided."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/compression/ZipCompression.java:59
+#, java-format
+msgid   "Unable to unpack under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/security/PermissionManager.java:76
+msgid   "Unable to initialize restart"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:56
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:35
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:53
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:57
 #, java-format
 msgid   "{0} version {1} is now available - you have {2}."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:44
 msgid   "Do you want to see the detailed changelog? [Y/n] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:49
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:48
 msgid   "Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/"
         "r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:51
 msgid   "Do you want to (R)emind later or (I)nstall? [r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:72
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:71
 msgid   "Wrong answer."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:79
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:78
 msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
         "jupidator/)"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:84
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:83
 #, java-format
 msgid   "Error: {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:87
 msgid   "Downloading successfull"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
 msgid   "Press [RETURN] to restart the application "
 msgstr  ""
 
 #: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:94
+msgid   "Cancel installation"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:99
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:98
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:103
 msgid   "Please wait..."
 msgstr  ""
 
@@ -244,33 +232,29 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:54
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:58
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:87
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:94
 msgid   "Processing update"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:96
 msgid   "Deploying files..."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:99
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:106
 msgid   "Successfully downloaded updates"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:100
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:107
 msgid   "Restart application"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:115
-#, java-format
-msgid   "Download speed: {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:172
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:117
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:187
 #: core/src/com/panayotis/jubler/media/preview/JAudioLoader.java:73
 #: core/src/com/panayotis/jubler/options/JPreferences.java:110
 #: core/src/com/panayotis/jubler/os/JIDialog.java:38
@@ -282,27 +266,32 @@ msgstr  ""
 msgid   "Cancel"
 msgstr  "Ukini"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:183
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:131
+#, java-format
+msgid   "Download speed: {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:198
 msgid   "Downloading..."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:205
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:220
 msgid   "Release Notes"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:242
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:257
 msgid   "Skip this version"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:255
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:270
 msgid   "Remind me later"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:263
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:278
 msgid   "Install Update"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:275
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:290
 msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
@@ -1315,15 +1304,15 @@ msgstr  "Kreiranje kesa u toku. Koristi Ukini dugme za prekid."
 msgid   "Error while loading file {0}"
 msgstr  "Greska pri ucitavanju fajla {0}"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:86
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:88
 msgid   "Advanced argument list:"
 msgstr  "Lista naprednih argumenata:"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:103
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:105
 msgid   "Defaults"
 msgstr  "Defaults"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:104
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:106
 msgid   "Use default player parameters"
 msgstr  ""
 
@@ -2895,194 +2884,47 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Unsaved"
-#~ msgstr       "Nije snimljeno"
-
-#~ msgid        "By region"
-#~ msgstr       "Po regionu"
-
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Obelezi subtitlove kao zute"
-
-#~ msgid        "From the following time"
-#~ msgstr       "Od sledeceg vremena"
-
-#~ msgid        "File preferences"
-#~ msgstr       "Preference fajla"
-
-#~ msgid        "To the following time"
-#~ msgstr       "Do sledeceg vremena"
-
-#~ msgid        "From current time"
-#~ msgstr       "Sa sadasnjeg vremena"
-
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Isprobaj subtitlove"
-
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       "Prikazi preference ucitavanja dok se fajl ucitava"
-
-#~ msgid        "File path"
-#~ msgstr       "Putanja Fajla"
-
-#~ msgid        "No options for this program"
-#~ msgstr       "Nema opcija za ovaj program"
-
-#~ msgid        "Options for {0}"
-#~ msgstr       "Opcije za {0}"
-
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Enkodiranje snimljenog fajla"
-
-#~ msgid        "Subtitles preview"
-#~ msgstr       "Pregled subtitlova"
-
-#~ msgid        "Select the encoding to be searched second"
-#~ msgstr       "Izaberi drugo pretrazivanje enkodiranja"
-
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Pocetak regiona je dato vreme"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Globalna zamena"
-
-#~ msgid        "The end of the region is the selected time"
-#~ msgstr       "Kraj regiona je izabrano vreme"
-
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "Kraj regiona je dato vreme"
-
-#~ msgid        "To current time"
-#~ msgstr       "Do trenutnog vremena"
-
-#~ msgid        "Third Encoding"
-#~ msgstr       "Trece enkodiranje"
-
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Vazno je unaprediti sa URL-a:"
-
-#~ msgid        "Mark second synchronization position of the subtitles."
-#~ msgstr       "Obelezi drugu poziciju sinhronizacije subtitla"
-
-#~ msgid        "The beginning of the region is the start of the file"
-#~ msgstr       "Pocetak regiona je pocetak fajla"
-
-#~ msgid        "New version"
-#~ msgstr       "Nova verzija"
-
-#~ msgid        "To the end"
-#~ msgstr       "Do kraja"
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Obelezi subtitlove kao ruzicaste"
-
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Koristi dato vreme kao kraj regiona"
-
-#~ msgid        "Select the encoding to be searched last"
-#~ msgstr       "Izaberi zadnje pretrazivanje enkodiranja"
-
-#~ msgid        " Show save preferences while saving file"
-#~ msgstr       "Prikazi snimi preference dok se fajl snima"
-
-#~ msgid        "Second Encoding"
-#~ msgstr       "Drugo enkodiranje"
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Obelezi subtitlove kao bele"
-
-#~ msgid        "Start time"
-#~ msgstr       "Pocetno vreme"
-
-#~ msgid        "Use selected time as start of region"
-#~ msgstr       "Koristi obelezeno vreme kao pocetak regiona"
-
-#~ msgid        "Go"
-#~ msgstr       "Kreni"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Nadjen fajl {0}"
-
-#~ msgid        "Open the options for this player"
-#~ msgstr       "Otvori opcije plejera"
-
-#~ msgid        "Attach subtitle editor panel to main Jubler window"
-#~ msgstr       "Spoji subtitl editor panel sa glavnim Jubler-ovim prozom"
-
-#~ msgid        "Could not create temporary file to store the subtitles."
-#~ msgstr       "Nije stvoren privremeni fajl za zapis subtitlova"
-
-#~ msgid        "Error while executing ASpell"
-#~ msgstr       "Greska pri pokretanju ASpell-a"
-
-#~ msgid        "Push subtitles instead of rearranging"
-#~ msgstr       "Pomeri subtitlove umesto ponovnog uredjivanja"
-
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Pocetak regiona je izabrano vreme"
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Vrati na fabricki podeseno"
-
-#~ msgid        "Warning!"
-#~ msgstr       "Upozorenje!"
-
-#~ msgid        "Use selected time as end of region"
-#~ msgstr       "Koristi obelezeno vreme kao kraj regiona"
-
-#~ msgid        "X offset"
-#~ msgstr       "X ofset"
-
-#~ msgid        "The end of the region is the end of the file"
-#~ msgstr       "Kraj regiona je kraj fajla"
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Broj subtitlova : {0}    {1}"
-
-#~ msgid        "Not a valid number: {0}"
-#~ msgstr       "Neprihvatljiv broj: {0}"
+#~ msgid        "Error while executing MPlayer. Executable not found."
+#~ msgstr       "Greska pri pokretanju MPlayer-a. Izvrsni fajl nije nadjen."
 
 #~ msgid        "New Jubler version found!"
 #~ msgstr       "Nova verzija Jublera je nadjena"
 
-#~ msgid        "Unable to load plugin: {0}"
-#~ msgstr       "Nije ucitan plugin: {0}"
+#~ msgid        "Not a valid number: {0}"
+#~ msgstr       "Neprihvatljiv broj: {0}"
 
-#~ msgid        "Current version:"
-#~ msgstr       "Sadasnja verzija"
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Broj subtitlova : {0}    {1}"
 
-#~ msgid        "Y offset"
-#~ msgstr       "Y ofset"
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Dekoder nije aktivan. Prekid kreiranja audio kesa."
 
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Ofset prozora plejera u pixelima"
+#~ msgid        "The end of the region is the end of the file"
+#~ msgstr       "Kraj regiona je kraj fajla"
 
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Spoji subtitl editor panel sa Preglednim prozorom"
-
-#~ msgid        "First Encoding"
-#~ msgstr       "Prvo enkodiranje"
-
-#~ msgid        "Please consider upgrading from the following URL:"
-#~ msgstr       "Molimo vas unapredite sa URL-a:"
+#~ msgid        "X offset"
+#~ msgstr       "X ofset"
 
 #~ msgid        "Jubler audio cache detected for audio input: {0}"
 #~ msgstr       "Jubler audio kes je pronadjen za audio unos: {0}"
 
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Nije nadjena putanja Jubler-a!"
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Spoji subtitl editor panel sa Preglednim prozorom"
 
-#~ msgid        "End time"
-#~ msgstr       "Zaustavno vreme"
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Ofset prozora plejera u pixelima"
 
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "FFDecode kodeci nisu instalirani!"
+#~ msgid        "Y offset"
+#~ msgstr       "Y ofset"
+
+#~ msgid        "Current version:"
+#~ msgstr       "Sadasnja verzija"
+
+#~ msgid        "Please consider upgrading from the following URL:"
+#~ msgstr       "Molimo vas unapredite sa URL-a:"
 
 #~ msgid        "Show preferences every time the user loads a subtitle file"
 #~ msgstr       "Prikazi preference svaki put prilikom ucitavanja subtitla"
-
-#~ msgid        "Error while executing MPlayer. Executable not found."
-#~ msgstr       "Greska pri pokretanju MPlayer-a. Izvrsni fajl nije nadjen."
 
 #~ msgid        "Filename of the external audio file (could be also an audio "
 #~      "cache). Use the \"Browse\" button to change it."
@@ -3092,14 +2934,59 @@ msgstr  ""
 #~ msgid        "Change media file"
 #~ msgstr       "Promeni media fajl"
 
-#~ msgid        "Version found:"
-#~ msgstr       "Pronadjena verzija"
+#~ msgid        "From the following time"
+#~ msgstr       "Od sledeceg vremena"
 
-#~ msgid        "Select the encoding to be searched first"
-#~ msgstr       "Izaberi prvo pretrazivanje enkodiranja"
+#~ msgid        "New version"
+#~ msgstr       "Nova verzija"
 
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Obelezi subtitlove kao svetlo plave"
+#~ msgid        "Push subtitles instead of rearranging"
+#~ msgstr       "Pomeri subtitlove umesto ponovnog uredjivanja"
+
+#~ msgid        "End time"
+#~ msgstr       "Zaustavno vreme"
+
+#~ msgid        "To the following time"
+#~ msgstr       "Do sledeceg vremena"
+
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Isprobaj subtitlove"
+
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       "Prikazi preference ucitavanja dok se fajl ucitava"
+
+#~ msgid        "The beginning of the region is the start of the file"
+#~ msgstr       "Pocetak regiona je pocetak fajla"
+
+#~ msgid        "To current time"
+#~ msgstr       "Do trenutnog vremena"
+
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Pocetak regiona je dato vreme"
+
+#~ msgid        "The end of the region is the selected time"
+#~ msgstr       "Kraj regiona je izabrano vreme"
+
+#~ msgid        "Second Encoding"
+#~ msgstr       "Drugo enkodiranje"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Nije snimljeno"
+
+#~ msgid        "Error while executing ASpell"
+#~ msgstr       "Greska pri pokretanju ASpell-a"
+
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Enkodiranje snimljenog fajla"
+
+#~ msgid        "File path"
+#~ msgstr       "Putanja Fajla"
+
+#~ msgid        "Mark second synchronization position of the subtitles."
+#~ msgstr       "Obelezi drugu poziciju sinhronizacije subtitla"
+
+#~ msgid        "Could not create temporary file to store the subtitles."
+#~ msgstr       "Nije stvoren privremeni fajl za zapis subtitlova"
 
 #~ msgid        "Use given time as start of region"
 #~ msgstr       "Koristi dato vreme kao start regiona"
@@ -3107,5 +2994,107 @@ msgstr  ""
 #~ msgid        "Globally"
 #~ msgstr       "Globalno"
 
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Dekoder nije aktivan. Prekid kreiranja audio kesa."
+#~ msgid        "First Encoding"
+#~ msgstr       "Prvo enkodiranje"
+
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Nije nadjena putanja Jubler-a!"
+
+#~ msgid        "Unable to load plugin: {0}"
+#~ msgstr       "Nije ucitan plugin: {0}"
+
+#~ msgid        "Attach subtitle editor panel to main Jubler window"
+#~ msgstr       "Spoji subtitl editor panel sa glavnim Jubler-ovim prozom"
+
+#~ msgid        "Warning!"
+#~ msgstr       "Upozorenje!"
+
+#~ msgid        "Select the encoding to be searched last"
+#~ msgstr       "Izaberi zadnje pretrazivanje enkodiranja"
+
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Obelezi subtitlove kao ruzicaste"
+
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Obelezi subtitlove kao zute"
+
+#~ msgid        "File preferences"
+#~ msgstr       "Preference fajla"
+
+#~ msgid        "From current time"
+#~ msgstr       "Sa sadasnjeg vremena"
+
+#~ msgid        "Subtitles preview"
+#~ msgstr       "Pregled subtitlova"
+
+#~ msgid        "No options for this program"
+#~ msgstr       "Nema opcija za ovaj program"
+
+#~ msgid        "Options for {0}"
+#~ msgstr       "Opcije za {0}"
+
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Vazno je unaprediti sa URL-a:"
+
+#~ msgid        "Third Encoding"
+#~ msgstr       "Trece enkodiranje"
+
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "Kraj regiona je dato vreme"
+
+#~ msgid        "Global replace"
+#~ msgstr       "Globalna zamena"
+
+#~ msgid        "Select the encoding to be searched first"
+#~ msgstr       "Izaberi prvo pretrazivanje enkodiranja"
+
+#~ msgid        "Open the options for this player"
+#~ msgstr       "Otvori opcije plejera"
+
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "FFDecode kodeci nisu instalirani!"
+
+#~ msgid        "Found file {0}"
+#~ msgstr       "Nadjen fajl {0}"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Obelezi subtitlove kao svetlo plave"
+
+#~ msgid        "Go"
+#~ msgstr       "Kreni"
+
+#~ msgid        "Select the encoding to be searched second"
+#~ msgstr       "Izaberi drugo pretrazivanje enkodiranja"
+
+#~ msgid        "Use selected time as start of region"
+#~ msgstr       "Koristi obelezeno vreme kao pocetak regiona"
+
+#~ msgid        "Use selected time as end of region"
+#~ msgstr       "Koristi obelezeno vreme kao kraj regiona"
+
+#~ msgid        "Start time"
+#~ msgstr       "Pocetno vreme"
+
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Obelezi subtitlove kao bele"
+
+#~ msgid        "To the end"
+#~ msgstr       "Do kraja"
+
+#~ msgid        " Show save preferences while saving file"
+#~ msgstr       "Prikazi snimi preference dok se fajl snima"
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Vrati na fabricki podeseno"
+
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Koristi dato vreme kao kraj regiona"
+
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Pocetak regiona je izabrano vreme"
+
+#~ msgid        "By region"
+#~ msgstr       "Po regionu"
+
+#~ msgid        "Version found:"
+#~ msgstr       "Pronadjena verzija"
