@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Jubler French 1.0\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
+        "POT-Creation-Date: 2011-01-29 14:45+0200\n"
         "PO-Revision-Date: 2010-06-09 14:47+0100\n"
         "Last-Translator: Eric Querelle <ericquerelle@gmail.com>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1429,26 +1429,6 @@ msgstr  "Les fichiers suivants ne sont pas enregistrés:"
 #: core/src/com/panayotis/jubler/options/gui/JUnsaved.java:61
 msgid   "Do you want to quit without saving?"
 msgstr  "Voulez-vous quitter sans enregistrer?"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:66
-#, java-format
-msgid   "Found defined encoding {0}"
-msgstr  "Encodage défini {0} trouvé"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:73
-#, java-format
-msgid   "Found tagged encoding {0}"
-msgstr  ""
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:81
-#, java-format
-msgid   "Found strict encoding {0}"
-msgstr  "Encodage strict {0} trouvé"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:88
-#, java-format
-msgid   "Found relaxed encoding {0}"
-msgstr  "Found relaxed encoding {0}"
 
 #: core/src/com/panayotis/jubler/os/FileCommunicator.java:109
 #, java-format
@@ -2905,327 +2885,336 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Second Encoding"
-#~ msgstr       "Deuxième encodage"
-
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       " Afficher les préférences lors de l'ouverture d'un fichier"
-
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Le début de la région est le moment sélectionné"
-
-#~ msgid        "First Encoding"
-#~ msgstr       "Premier encodage"
-
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "Analyse du Wizard  {0}"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Le chemin vers l'application ne peut pas être vide"
-
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Cache audio de type Jubler detecté pour l'entrée audio: {0}"
+#~ msgid        "X offset"
+#~ msgstr       "Décalage X"
 
 #~ msgid        "Not a valid number: {0}"
 #~ msgstr       "Numéro invalide: {0}"
 
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Impossible de créer le cache pour fichier audio inconnu."
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Marquer les sous-titres en blanc"
 
-#~ msgid        "Select the encoding to be searched last"
-#~ msgstr       "Sélectionne l'encodage à rechercher en dernier"
+#~ msgid        "Do not inform me again for this version"
+#~ msgstr       "Ne plus m'informer sur cette version"
 
-#~ msgid        "Testing:"
-#~ msgstr       "Test:"
-
-#~ msgid        "Use selected time as start of region"
-#~ msgstr       "Utilise la position temporelle courante comme début de région"
+#~ msgid        "Go"
+#~ msgstr       "OK"
 
 #~ msgid        "Options"
 #~ msgstr       "Options"
 
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Position en pixels de la fenêtre du lecteur"
+
+#~ msgid        "Start time"
+#~ msgstr       "Début"
+
+#~ msgid        "First Encoding"
+#~ msgstr       "Premier encodage"
+
+#~ msgid        "Show preferences every time the user loads a subtitle file"
+#~ msgstr       "Afficher les préférences à chaque ouverture de fichier"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Mise à jour annulée: suppression du fichier ignorée {0}"
+
+#~ msgid        "Use given time as start of region"
+#~ msgstr       "Utilise la position temporelle spécifiée comme début de "
+#~      "région"
+
+#~ msgid        "Version found:"
+#~ msgstr       "Version trouvée"
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "Erreur lors de l'analyse du nombre réel {0}"
+
 #~ msgid        "From current time"
 #~ msgstr       "Depuis position courante"
 
-#~ msgid        "Select the encoding to be searched second"
-#~ msgstr       "Sélectionne l'encodage à rechercher en deuxième"
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Impossible de créer le cache pour fichier audio inconnu."
 
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "ERREUR : Auto-sauvegarde du répertoire \"{0}\". impossible "
+#~ msgid        "Select the encoding to be searched first"
+#~ msgstr       "Sélectionne l'encodage à rechercher en premier"
 
-#~ msgid        "The beginning of the region is the start of the file"
-#~ msgstr       "Le début de la région sera le début du fichier"
-
-#~ msgid        "Current version:"
-#~ msgstr       "Version actuelle:"
-
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Impossible de trouver le chemin de Jubler!"
-
-#~ msgid        "Please consider upgrading from the following URL:"
-#~ msgstr       "Veuillez mettre à jour depuis l'adresse suivante SVP:"
-
-#~ msgid        "Maximum number of characters per line"
-#~ msgstr       "Nombre maximum de caractères par ligne"
-
-#~ msgid        "To the following time"
-#~ msgstr       "Jusqu'à :"
-
-#~ msgid        "Change media file"
-#~ msgstr       "Changer de fichier media"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Fichier trouvé {0}"
-
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Prévisualiser les sous-titres"
-
-#~ msgid        "By region"
-#~ msgstr       "Par région"
-
-#~ msgid        "New version"
-#~ msgstr       "Nouvelle version"
-
-#~ msgid        "_clone"
-#~ msgstr       "Cloner"
-
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Utilise la position temporelle spécifiée comme fin de région"
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Suppression du fichier téléchargé {0} réussie."
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Non-enregistré"
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Marquer les sous-titres en blanc"
+#~ msgid        "No options for this program"
+#~ msgstr       "Pas d'options pour ce programme"
 
 #~ msgid        "Filename of the external audio file (could be also an audio "
 #~      "cache). Use the \"Browse\" button to change it."
 #~ msgstr       "Nom du fichier audio externe (peut aussi être un fichier de "
 #~      "cache audio). Utilisez le bouton \"Parcourir\" pour en changer."
 
-#~ msgid        "Options for {0}"
-#~ msgstr       "Options {0}"
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "ERREUR : Auto-sauvegarde du répertoire \"{0}\". impossible "
 
-#~ msgid        "Warning!"
-#~ msgstr       "Alerte!"
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Impossible de trouver le chemin de Jubler!"
 
-#~ msgid        "Could not retrieve actual video properties. Using defaults."
-#~ msgstr       "Impossible de retrouver les propriétés de cette vidéo. "
-#~      "Utilisation des données par défaut."
-
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "La librairie FFDecode est introuvable!"
-
-#~ msgid        "The end of the region is the end of the file"
-#~ msgstr       "La fin de la région sera la fin du fichier"
-
-#, fuzzy
-#~ msgid        "MPlayer options"
-#~ msgstr       "Options du lecteur"
-
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Unable to create unset cache file"
-
-#~ msgid        " Show save preferences while saving file"
-#~ msgstr       " Afficher les préférences à chaque enregistrement de fichier"
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       " Afficher les préférences lors de l'ouverture d'un fichier"
 
 #~ msgid        "Null value found while setting Style {0} - ignoring."
 #~ msgstr       "Valeur nulle lors de l'installation de Style {0} - ignorer"
 
-#~ msgid        "No options for this program"
-#~ msgstr       "Pas d'options pour ce programme"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Remplacer partout"
-
-#~ msgid        "Error while executing MPlayer. Executable not found."
-#~ msgstr       "Erreur lors de l'ouverture de MPlayer. Fichier executable "
-#~      "introuvable."
-
-#~ msgid        "Show preferences every time the user loads a subtitle file"
-#~ msgstr       "Afficher les préférences à chaque ouverture de fichier"
-
-#~ msgid        "Start time"
-#~ msgstr       "Début"
-
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "Erreur lors de l'analyse du nombre réel {0}"
-
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "Exception {0} lors du chargement du style {1}: {2}"
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Mise à jour annulée: suppression du fichier ignorée {0}"
-
-#~ msgid        "To current time"
-#~ msgstr       "Jusqu'à position courante"
-
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Le début de la région est le moment spécifié"
-
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Il est important de mettre à jour depuis l'adresse suivante:"
-
-#~ msgid        "Open the options for this player"
-#~ msgstr       "Ouvrir les options pour ce lecteur"
-
-#~ msgid        "Version found:"
-#~ msgstr       "Version trouvée"
-
-#~ msgid        "Unable to load plugin: {0}"
-#~ msgstr       "Impossible de charger le plugin: {0}"
-
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Raccourcis"
-
-#~ msgid        "Save subtitles options"
-#~ msgstr       "Ne déplacer que les sous-titres"
-
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "Erreur lors de l'analyse du nombre intégral {0}"
-
-#~ msgid        "Globally"
-#~ msgstr       "Partout"
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Nombre de sous-titres : {0}    {1}"
-
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Le decoder n'est pas actif. Annulation de la création du "
-#~      "cache audio."
-
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Fichier de configuration déplacé vers {0}"
-
-#~ msgid        "Show preferences every time the user saves a subtitle file"
-#~ msgstr       "Afficher les préférences à chaque ouverture de fichier"
-
-#~ msgid        "Y offset"
-#~ msgstr       "Décalage Y"
+#~ msgid        "New Jubler version found!"
+#~ msgstr       "Une nouvelle version de Jubler a été trouvée!"
 
 #~ msgid        "Push subtitles instead of rearranging"
 #~ msgstr       "Pousser les sous-titres plutôt que les réarranger"
-
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Marquer les sous-titres en jaune"
-
-#~ msgid        "Mark second synchronization position of the subtitles."
-#~ msgstr       "Marque la deuxième position de synchronisation des sous-"
-#~      "titres"
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Marquer les sous-titres en rose"
-
-#~ msgid        "X offset"
-#~ msgstr       "Décalage X"
-
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "Erreur à l'ouverture du fichier de la FAQ \"{0}\""
-
-#~ msgid        "Select the encoding to be searched first"
-#~ msgstr       "Sélectionne l'encodage à rechercher en premier"
 
 #~ msgid        "Could not create temporary file to store the subtitles."
 #~ msgstr       "Impossible de créer le fichier temporaire pour stocker les "
 #~      "sous-titres."
 
-#~ msgid        "Do not inform me again for this version"
-#~ msgstr       "Ne plus m'informer sur cette version"
+#~ msgid        "Second Encoding"
+#~ msgstr       "Deuxième encodage"
 
-#~ msgid        "Subtitles preview"
-#~ msgstr       "Prévisualisation des sous-titres"
+#~ msgid        "Please consider upgrading from the following URL:"
+#~ msgstr       "Veuillez mettre à jour depuis l'adresse suivante SVP:"
 
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Le fichier mis à jour ne peut pas être vide."
+#~ msgid        "Change media file"
+#~ msgstr       "Changer de fichier media"
 
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Traduction interrompue"
+#~ msgid        "To current time"
+#~ msgstr       "Jusqu'à position courante"
 
-#~ msgid        "Error while executing ASpell"
-#~ msgstr       "Erreur lors de l'éxécution de ASpell"
+#~ msgid        "Attach subtitle editor panel to main Jubler window"
+#~ msgstr       "Ancrer la barre d'édition des sous-titres à la fenêtre "
+#~      "principale de Jubler"
 
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Encodage du fichier enregistré"
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Cache audio de type Jubler detecté pour l'entrée audio: {0}"
 
-#~ msgid        "End time"
-#~ msgstr       "Fin"
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Suppression du fichier téléchargé {0} réussie."
+
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Fichier de configuration déplacé vers {0}"
+
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Ancrer la barre d'édition des sous-titres à la fenêtre de "
+#~      "prévisualisation"
+
+#~ msgid        "Error while executing MPlayer. Executable not found."
+#~ msgstr       "Erreur lors de l'ouverture de MPlayer. Fichier executable "
+#~      "introuvable."
+
+#~ msgid        "Unable to load plugin: {0}"
+#~ msgstr       "Impossible de charger le plugin: {0}"
+
+#, fuzzy
+#~ msgid        "MPlayer options"
+#~ msgstr       "Options du lecteur"
+
+#~ msgid        "Select the encoding to be searched second"
+#~ msgstr       "Sélectionne l'encodage à rechercher en deuxième"
+
+#~ msgid        "Save subtitles options"
+#~ msgstr       "Ne déplacer que les sous-titres"
+
+#~ msgid        "Third Encoding"
+#~ msgstr       "Troisième encodage"
 
 #~ msgid        "ERROR: Could not use autosave directory for old files "
 #~      "\"{0}\"."
 #~ msgstr       "ERREUR : Impossible d'utiliser le répertoire de sauvegarde "
 #~      "pour les anciens fichiers  \"{0}\"."
 
-#~ msgid        "Executing {0}"
-#~ msgstr       "Lancer {0}"
+#~ msgid        "Found relaxed encoding {0}"
+#~ msgstr       "Found relaxed encoding {0}"
 
-#~ msgid        "Go"
-#~ msgstr       "OK"
+#~ msgid        "Found file {0}"
+#~ msgstr       "Fichier trouvé {0}"
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Le fichier de destination {0} est en lecture seule."
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "Le fichier mis à jour ne peut pas être vide."
 
-#~ msgid        "Attach subtitle editor panel to main Jubler window"
-#~ msgstr       "Ancrer la barre d'édition des sous-titres à la fenêtre "
-#~      "principale de Jubler"
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Le début de la région est le moment spécifié"
 
 #~ msgid        "Successfully deleted file {0}"
 #~ msgstr       "Fichier supprimé avec succès {0}"
 
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Ancrer la barre d'édition des sous-titres à la fenêtre de "
-#~      "prévisualisation"
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Unable to create unset cache file"
 
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Impossible de trouver le chemin vers l'application {0}."
+#~ msgid        "Executing {0}"
+#~ msgstr       "Lancer {0}"
 
-#~ msgid        "Third Encoding"
-#~ msgstr       "Troisième encodage"
+#~ msgid        "By region"
+#~ msgstr       "Par région"
 
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Marquer les sous-titres en cyan"
+#~ msgid        "Globally"
+#~ msgstr       "Partout"
 
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "La fin de la région est le temps spécifié"
-
-#~ msgid        "To the end"
-#~ msgstr       "Jusqu'à la fin"
-
-#~ msgid        "File preferences"
-#~ msgstr       "Préférences fichier"
+#~ msgid        "Options for {0}"
+#~ msgstr       "Options {0}"
 
 #~ msgid        "Use selected time as end of region"
 #~ msgstr       "Utilise la position temporelle courante comme fin de région"
 
-#~ msgid        "New Jubler version found!"
-#~ msgstr       "Une nouvelle version de Jubler a été trouvée!"
+#~ msgid        "Current version:"
+#~ msgstr       "Version actuelle:"
 
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Valeurs par défaut"
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Traduction interrompue"
 
-#~ msgid        "Use given time as start of region"
-#~ msgstr       "Utilise la position temporelle spécifiée comme début de "
-#~      "région"
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "La fin de la région est le temps spécifié"
 
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Le fichier {0} n'a pas pu être supprimé."
+#~ msgid        "To the following time"
+#~ msgstr       "Jusqu'à :"
 
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Impossible de déplacer le fichier de configuration vers {0}"
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Il est important de mettre à jour depuis l'adresse suivante:"
 
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Fichier exécutable valide trouvé:{0}"
+#~ msgid        "File preferences"
+#~ msgstr       "Préférences fichier"
 
 #~ msgid        "From the following time"
 #~ msgstr       "Depuis :"
 
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Position en pixels de la fenêtre du lecteur"
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Marquer les sous-titres en rose"
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Nombre de sous-titres : {0}    {1}"
+
+#~ msgid        "Found strict encoding {0}"
+#~ msgstr       "Encodage strict {0} trouvé"
 
 #~ msgid        "File path"
 #~ msgstr       "Chemin du fichier"
 
+#~ msgid        "New version"
+#~ msgstr       "Nouvelle version"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Impossible de trouver le chemin vers l'application {0}."
+
+#~ msgid        "Warning!"
+#~ msgstr       "Alerte!"
+
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Fichier exécutable valide trouvé:{0}"
+
+#~ msgid        "Mark second synchronization position of the subtitles."
+#~ msgstr       "Marque la deuxième position de synchronisation des sous-"
+#~      "titres"
+
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Prévisualiser les sous-titres"
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Valeurs par défaut"
+
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "Analyse du Wizard  {0}"
+
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Utilise la position temporelle spécifiée comme fin de région"
+
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "La librairie FFDecode est introuvable!"
+
+#~ msgid        "_clone"
+#~ msgstr       "Cloner"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "Le fichier de destination {0} est en lecture seule."
+
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "Exception {0} lors du chargement du style {1}: {2}"
+
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Marquer les sous-titres en jaune"
+
+#~ msgid        "Maximum number of characters per line"
+#~ msgstr       "Nombre maximum de caractères par ligne"
+
+#~ msgid        "End time"
+#~ msgstr       "Fin"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Marquer les sous-titres en cyan"
+
+#~ msgid        "Show preferences every time the user saves a subtitle file"
+#~ msgstr       "Afficher les préférences à chaque ouverture de fichier"
+
+#~ msgid        "Select the encoding to be searched last"
+#~ msgstr       "Sélectionne l'encodage à rechercher en dernier"
+
+#~ msgid        "Could not retrieve actual video properties. Using defaults."
+#~ msgstr       "Impossible de retrouver les propriétés de cette vidéo. "
+#~      "Utilisation des données par défaut."
+
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Le decoder n'est pas actif. Annulation de la création du "
+#~      "cache audio."
+
+#~ msgid        "Global replace"
+#~ msgstr       "Remplacer partout"
+
+#~ msgid        "Open the options for this player"
+#~ msgstr       "Ouvrir les options pour ce lecteur"
+
+#~ msgid        "Error while executing ASpell"
+#~ msgstr       "Erreur lors de l'éxécution de ASpell"
+
+#~ msgid        "Testing:"
+#~ msgstr       "Test:"
+
+#~ msgid        "The beginning of the region is the start of the file"
+#~ msgstr       "Le début de la région sera le début du fichier"
+
 #~ msgid        "The end of the region is the selected time"
 #~ msgstr       "La fin de la région est le temps sélectionné"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Non-enregistré"
+
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Encodage du fichier enregistré"
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "Erreur à l'ouverture du fichier de la FAQ \"{0}\""
+
+#~ msgid        "Subtitles preview"
+#~ msgstr       "Prévisualisation des sous-titres"
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Le chemin vers l'application ne peut pas être vide"
+
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Le début de la région est le moment sélectionné"
+
+#~ msgid        " Show save preferences while saving file"
+#~ msgstr       " Afficher les préférences à chaque enregistrement de fichier"
+
+#~ msgid        "To the end"
+#~ msgstr       "Jusqu'à la fin"
+
+#~ msgid        "The end of the region is the end of the file"
+#~ msgstr       "La fin de la région sera la fin du fichier"
+
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Impossible de déplacer le fichier de configuration vers {0}"
+
+#~ msgid        "Y offset"
+#~ msgstr       "Décalage Y"
+
+#~ msgid        "Found defined encoding {0}"
+#~ msgstr       "Encodage défini {0} trouvé"
+
+#~ msgid        "Use selected time as start of region"
+#~ msgstr       "Utilise la position temporelle courante comme début de région"
+
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "Le fichier {0} n'a pas pu être supprimé."
+
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Raccourcis"
+
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "Erreur lors de l'analyse du nombre intégral {0}"

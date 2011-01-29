@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Jubler\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
+        "POT-Creation-Date: 2011-01-29 14:45+0200\n"
         "PO-Revision-Date: 2007-11-18 17:27+0200\n"
         "Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1415,26 +1415,6 @@ msgstr  "Sledeci fajlovi nisu snimljeni"
 #: core/src/com/panayotis/jubler/options/gui/JUnsaved.java:61
 msgid   "Do you want to quit without saving?"
 msgstr  "Da li zelite da izadjete bez snimanja?"
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:66
-#, java-format
-msgid   "Found defined encoding {0}"
-msgstr  ""
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:73
-#, java-format
-msgid   "Found tagged encoding {0}"
-msgstr  ""
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:81
-#, java-format
-msgid   "Found strict encoding {0}"
-msgstr  ""
-
-#: core/src/com/panayotis/jubler/os/FileCommunicator.java:88
-#, java-format
-msgid   "Found relaxed encoding {0}"
-msgstr  ""
 
 #: core/src/com/panayotis/jubler/os/FileCommunicator.java:109
 #, java-format
@@ -2884,142 +2864,85 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Error while executing MPlayer. Executable not found."
-#~ msgstr       "Greska pri pokretanju MPlayer-a. Izvrsni fajl nije nadjen."
+#~ msgid        "Third Encoding"
+#~ msgstr       "Trece enkodiranje"
 
-#~ msgid        "New Jubler version found!"
-#~ msgstr       "Nova verzija Jublera je nadjena"
+#~ msgid        "Change media file"
+#~ msgstr       "Promeni media fajl"
 
-#~ msgid        "Not a valid number: {0}"
-#~ msgstr       "Neprihvatljiv broj: {0}"
+#~ msgid        "Version found:"
+#~ msgstr       "Pronadjena verzija"
 
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Broj subtitlova : {0}    {1}"
+#~ msgid        " Show save preferences while saving file"
+#~ msgstr       "Prikazi snimi preference dok se fajl snima"
 
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Dekoder nije aktivan. Prekid kreiranja audio kesa."
+#~ msgid        "Go"
+#~ msgstr       "Kreni"
 
-#~ msgid        "The end of the region is the end of the file"
-#~ msgstr       "Kraj regiona je kraj fajla"
+#~ msgid        "Mark second synchronization position of the subtitles."
+#~ msgstr       "Obelezi drugu poziciju sinhronizacije subtitla"
 
-#~ msgid        "X offset"
-#~ msgstr       "X ofset"
+#~ msgid        "To current time"
+#~ msgstr       "Do trenutnog vremena"
 
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Jubler audio kes je pronadjen za audio unos: {0}"
+#~ msgid        "The beginning of the region is the start of the file"
+#~ msgstr       "Pocetak regiona je pocetak fajla"
 
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Spoji subtitl editor panel sa Preglednim prozorom"
+#~ msgid        "Error while executing ASpell"
+#~ msgstr       "Greska pri pokretanju ASpell-a"
 
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Ofset prozora plejera u pixelima"
+#~ msgid        "Found file {0}"
+#~ msgstr       "Nadjen fajl {0}"
 
-#~ msgid        "Y offset"
-#~ msgstr       "Y ofset"
+#~ msgid        "Select the encoding to be searched last"
+#~ msgstr       "Izaberi zadnje pretrazivanje enkodiranja"
 
-#~ msgid        "Current version:"
-#~ msgstr       "Sadasnja verzija"
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Vazno je unaprediti sa URL-a:"
+
+#~ msgid        "File preferences"
+#~ msgstr       "Preference fajla"
+
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Nije nadjena putanja Jubler-a!"
+
+#~ msgid        "Push subtitles instead of rearranging"
+#~ msgstr       "Pomeri subtitlove umesto ponovnog uredjivanja"
 
 #~ msgid        "Please consider upgrading from the following URL:"
 #~ msgstr       "Molimo vas unapredite sa URL-a:"
 
-#~ msgid        "Show preferences every time the user loads a subtitle file"
-#~ msgstr       "Prikazi preference svaki put prilikom ucitavanja subtitla"
+#~ msgid        "First Encoding"
+#~ msgstr       "Prvo enkodiranje"
+
+#~ msgid        "Warning!"
+#~ msgstr       "Upozorenje!"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Nije snimljeno"
+
+#~ msgid        "To the following time"
+#~ msgstr       "Do sledeceg vremena"
 
 #~ msgid        "Filename of the external audio file (could be also an audio "
 #~      "cache). Use the \"Browse\" button to change it."
 #~ msgstr       "Ime externog audio fajla (moze biti i audio kes). Koristi "
 #~      "\"Biraj\" dugme za promenu."
 
-#~ msgid        "Change media file"
-#~ msgstr       "Promeni media fajl"
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Pocetak regiona je izabrano vreme"
 
-#~ msgid        "From the following time"
-#~ msgstr       "Od sledeceg vremena"
-
-#~ msgid        "New version"
-#~ msgstr       "Nova verzija"
-
-#~ msgid        "Push subtitles instead of rearranging"
-#~ msgstr       "Pomeri subtitlove umesto ponovnog uredjivanja"
-
-#~ msgid        "End time"
-#~ msgstr       "Zaustavno vreme"
-
-#~ msgid        "To the following time"
-#~ msgstr       "Do sledeceg vremena"
-
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Isprobaj subtitlove"
-
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       "Prikazi preference ucitavanja dok se fajl ucitava"
-
-#~ msgid        "The beginning of the region is the start of the file"
-#~ msgstr       "Pocetak regiona je pocetak fajla"
-
-#~ msgid        "To current time"
-#~ msgstr       "Do trenutnog vremena"
-
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Pocetak regiona je dato vreme"
-
-#~ msgid        "The end of the region is the selected time"
-#~ msgstr       "Kraj regiona je izabrano vreme"
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Spoji subtitl editor panel sa Preglednim prozorom"
 
 #~ msgid        "Second Encoding"
 #~ msgstr       "Drugo enkodiranje"
 
-#~ msgid        "Unsaved"
-#~ msgstr       "Nije snimljeno"
+#~ msgid        "Options for {0}"
+#~ msgstr       "Opcije za {0}"
 
-#~ msgid        "Error while executing ASpell"
-#~ msgstr       "Greska pri pokretanju ASpell-a"
-
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Enkodiranje snimljenog fajla"
-
-#~ msgid        "File path"
-#~ msgstr       "Putanja Fajla"
-
-#~ msgid        "Mark second synchronization position of the subtitles."
-#~ msgstr       "Obelezi drugu poziciju sinhronizacije subtitla"
-
-#~ msgid        "Could not create temporary file to store the subtitles."
-#~ msgstr       "Nije stvoren privremeni fajl za zapis subtitlova"
-
-#~ msgid        "Use given time as start of region"
-#~ msgstr       "Koristi dato vreme kao start regiona"
-
-#~ msgid        "Globally"
-#~ msgstr       "Globalno"
-
-#~ msgid        "First Encoding"
-#~ msgstr       "Prvo enkodiranje"
-
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Nije nadjena putanja Jubler-a!"
-
-#~ msgid        "Unable to load plugin: {0}"
-#~ msgstr       "Nije ucitan plugin: {0}"
-
-#~ msgid        "Attach subtitle editor panel to main Jubler window"
-#~ msgstr       "Spoji subtitl editor panel sa glavnim Jubler-ovim prozom"
-
-#~ msgid        "Warning!"
-#~ msgstr       "Upozorenje!"
-
-#~ msgid        "Select the encoding to be searched last"
-#~ msgstr       "Izaberi zadnje pretrazivanje enkodiranja"
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Obelezi subtitlove kao ruzicaste"
-
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Obelezi subtitlove kao zute"
-
-#~ msgid        "File preferences"
-#~ msgstr       "Preference fajla"
+#~ msgid        "No options for this program"
+#~ msgstr       "Nema opcija za ovaj program"
 
 #~ msgid        "From current time"
 #~ msgstr       "Sa sadasnjeg vremena"
@@ -3027,74 +2950,131 @@ msgstr  ""
 #~ msgid        "Subtitles preview"
 #~ msgstr       "Pregled subtitlova"
 
-#~ msgid        "No options for this program"
-#~ msgstr       "Nema opcija za ovaj program"
-
-#~ msgid        "Options for {0}"
-#~ msgstr       "Opcije za {0}"
-
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Vazno je unaprediti sa URL-a:"
-
-#~ msgid        "Third Encoding"
-#~ msgstr       "Trece enkodiranje"
-
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "Kraj regiona je dato vreme"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Globalna zamena"
+#~ msgid        "End time"
+#~ msgstr       "Zaustavno vreme"
 
 #~ msgid        "Select the encoding to be searched first"
 #~ msgstr       "Izaberi prvo pretrazivanje enkodiranja"
 
-#~ msgid        "Open the options for this player"
-#~ msgstr       "Otvori opcije plejera"
-
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "FFDecode kodeci nisu instalirani!"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Nadjen fajl {0}"
-
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Obelezi subtitlove kao svetlo plave"
-
-#~ msgid        "Go"
-#~ msgstr       "Kreni"
-
-#~ msgid        "Select the encoding to be searched second"
-#~ msgstr       "Izaberi drugo pretrazivanje enkodiranja"
-
 #~ msgid        "Use selected time as start of region"
 #~ msgstr       "Koristi obelezeno vreme kao pocetak regiona"
-
-#~ msgid        "Use selected time as end of region"
-#~ msgstr       "Koristi obelezeno vreme kao kraj regiona"
-
-#~ msgid        "Start time"
-#~ msgstr       "Pocetno vreme"
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Obelezi subtitlove kao bele"
-
-#~ msgid        "To the end"
-#~ msgstr       "Do kraja"
-
-#~ msgid        " Show save preferences while saving file"
-#~ msgstr       "Prikazi snimi preference dok se fajl snima"
 
 #~ msgid        "Reset to defaults"
 #~ msgstr       "Vrati na fabricki podeseno"
 
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Koristi dato vreme kao kraj regiona"
-
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Pocetak regiona je izabrano vreme"
+#~ msgid        "File path"
+#~ msgstr       "Putanja Fajla"
 
 #~ msgid        "By region"
 #~ msgstr       "Po regionu"
 
-#~ msgid        "Version found:"
-#~ msgstr       "Pronadjena verzija"
+#~ msgid        "X offset"
+#~ msgstr       "X ofset"
+
+#~ msgid        "To the end"
+#~ msgstr       "Do kraja"
+
+#~ msgid        "Unable to load plugin: {0}"
+#~ msgstr       "Nije ucitan plugin: {0}"
+
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Obelezi subtitlove kao zute"
+
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "FFDecode kodeci nisu instalirani!"
+
+#~ msgid        "Current version:"
+#~ msgstr       "Sadasnja verzija"
+
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Enkodiranje snimljenog fajla"
+
+#~ msgid        "Select the encoding to be searched second"
+#~ msgstr       "Izaberi drugo pretrazivanje enkodiranja"
+
+#~ msgid        "Use selected time as end of region"
+#~ msgstr       "Koristi obelezeno vreme kao kraj regiona"
+
+#~ msgid        "The end of the region is the selected time"
+#~ msgstr       "Kraj regiona je izabrano vreme"
+
+#~ msgid        "Y offset"
+#~ msgstr       "Y ofset"
+
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Pocetak regiona je dato vreme"
+
+#~ msgid        "Could not create temporary file to store the subtitles."
+#~ msgstr       "Nije stvoren privremeni fajl za zapis subtitlova"
+
+#~ msgid        "Show preferences every time the user loads a subtitle file"
+#~ msgstr       "Prikazi preference svaki put prilikom ucitavanja subtitla"
+
+#~ msgid        "Global replace"
+#~ msgstr       "Globalna zamena"
+
+#~ msgid        "Open the options for this player"
+#~ msgstr       "Otvori opcije plejera"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Obelezi subtitlove kao svetlo plave"
+
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       "Prikazi preference ucitavanja dok se fajl ucitava"
+
+#~ msgid        "Globally"
+#~ msgstr       "Globalno"
+
+#~ msgid        "Error while executing MPlayer. Executable not found."
+#~ msgstr       "Greska pri pokretanju MPlayer-a. Izvrsni fajl nije nadjen."
+
+#~ msgid        "From the following time"
+#~ msgstr       "Od sledeceg vremena"
+
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Obelezi subtitlove kao ruzicaste"
+
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Isprobaj subtitlove"
+
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "Kraj regiona je dato vreme"
+
+#~ msgid        "Use given time as start of region"
+#~ msgstr       "Koristi dato vreme kao start regiona"
+
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Koristi dato vreme kao kraj regiona"
+
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Obelezi subtitlove kao bele"
+
+#~ msgid        "The end of the region is the end of the file"
+#~ msgstr       "Kraj regiona je kraj fajla"
+
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Dekoder nije aktivan. Prekid kreiranja audio kesa."
+
+#~ msgid        "Start time"
+#~ msgstr       "Pocetno vreme"
+
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Jubler audio kes je pronadjen za audio unos: {0}"
+
+#~ msgid        "Not a valid number: {0}"
+#~ msgstr       "Neprihvatljiv broj: {0}"
+
+#~ msgid        "Attach subtitle editor panel to main Jubler window"
+#~ msgstr       "Spoji subtitl editor panel sa glavnim Jubler-ovim prozom"
+
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Ofset prozora plejera u pixelima"
+
+#~ msgid        "New version"
+#~ msgstr       "Nova verzija"
+
+#~ msgid        "New Jubler version found!"
+#~ msgstr       "Nova verzija Jublera je nadjena"
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Broj subtitlova : {0}    {1}"
