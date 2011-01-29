@@ -3,7 +3,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: cs\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2010-10-24 17:48+0300\n"
+        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
         "PO-Revision-Date: 2008-12-11 20:00+0100\n"
         "Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
         "Language-Team:  <el@li.org>\n"
@@ -13,16 +13,7 @@ msgstr  "Project-Id-Version: cs\n"
         "Content-Transfer-Encoding: 8bit\n"
         "X-Generator: KBabel 1.10.2\n"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:35
-msgid   "Application path can not be null."
-msgstr  "Cesta k aplikaci nemůže být prázdná."
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:39
-#, java-format
-msgid   "Unable to find Application path {0}."
-msgstr  "Nemohu najít cestu k aplikaci {0}."
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:68
+#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:60
 msgid   "Property name could not be null"
 msgstr  ""
 
@@ -31,190 +22,187 @@ msgstr  ""
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:191
-#, java-format
-msgid   "Executing {0}"
-msgstr  "Spouštím {0}"
+#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:190
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:114
+msgid   "Application cancelled restart"
+msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:43
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementChstatus.java:33
+#, java-format
+msgid   "Unable to provide empty attribute for file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:100
 #, java-format
 msgid   "Unable to initialize URL {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:108
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:102
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:113
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#, java-format
+msgid   "Unable to create directory structure under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:110
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:111
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:115
 #, java-format
 msgid   "Could not remove old downloaded file {0}"
 msgstr  "Nemohu odstranit starý stažený soubor {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:123
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#, java-format
+msgid   "Could not remove old temporary file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:124
 #, java-format
 msgid   "Size of file {0} does not match. Reported {1}, required {2}"
 msgstr  "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:127
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:128
 #, java-format
 msgid   "Checksumming {0} with algorithm {1} failed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:136
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:137
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  "Soubor {0} úspěšně stažen."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:140
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:141
 #, java-format
 msgid   "Unable to download file {0}"
 msgstr  "Nemohu stáhnout soubor {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:151
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:163
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:152
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  "Nemohu odstranit stažený soubor {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:153
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:165
-#, java-format
-msgid   "Successfully deleted downloaded file {0}"
-msgstr  "Stažený soubor úspěšně odstraněn {0}"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:169
-#, java-format
-msgid   "Unable to delete file {0}"
-msgstr  "Nemohu odstranit soubor {0}"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:171
-#, java-format
-msgid   "Successfully deleted file {0}"
-msgstr  "Soubor úspěšně odstraněn {0}"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:40
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:38
 #, java-format
 msgid   "File {0} will be deleted, if exists."
 msgstr  "Soubor {0} bude odstraněn, pokud existuje."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:45
-#, java-format
-msgid   "Cancel updating: Ignoring deleting of file {0}"
-msgstr  "Update zrušen: Ignoruji odstraňování souboru {0}"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:91
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:97
-#, java-format
-msgid   "Checking JAR {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:111
-#, java-format
-msgid   "Unable to extract files from JAR {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:115
-#, java-format
-msgid   "Checking directory {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:147
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:165
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "Deployer cesta {0} není zapisovatelná."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:154
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:172
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:159
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:170
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:177
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:188
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Deployer uložen v {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:166
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:176
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:194
 msgid   "Unable to create Deployer"
 msgstr  "Nemohu vytvořit Deployer"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:43
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:294
+#, java-format
+msgid   "Unable to delete file {0}"
+msgstr  "Nemohu odstranit soubor {0}"
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:45
 msgid   "Application info not provided."
 msgstr  "Informace o aplikaci není poskytnuta."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:47
 msgid   "UpdaterAppElements not provided."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/compression/ZipCompression.java:59
+#, java-format
+msgid   "Unable to unpack under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/security/PermissionManager.java:76
+msgid   "Unable to initialize restart"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:56
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  "Nová verze programu {0} je k dispozici!"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:35
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:53
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:57
 #, java-format
 msgid   "{0} version {1} is now available - you have {2}."
 msgstr  "{0} verze programu {1} je k dispozici - máte {2}."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:44
 msgid   "Do you want to see the detailed changelog? [Y/n] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:49
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:48
 msgid   "Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/"
         "r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:51
 msgid   "Do you want to (R)emind later or (I)nstall? [r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:72
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:71
 msgid   "Wrong answer."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:79
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:78
 msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
         "jupidator/)"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:84
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:83
 #, java-format
 msgid   "Error: {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:87
 msgid   "Downloading successfull"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
 msgid   "Press [RETURN] to restart the application "
 msgstr  ""
 
 #: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:94
+msgid   "Cancel installation"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:99
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:98
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:103
 msgid   "Please wait..."
 msgstr  ""
 
@@ -242,33 +230,29 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:54
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:58
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  "Nová verze programu {0} nalezena!"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:87
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:94
 msgid   "Processing update"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:96
 msgid   "Deploying files..."
 msgstr  "Rozmisťuji soubory..."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:99
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:106
 msgid   "Successfully downloaded updates"
 msgstr  "Aktualizace úspěšně staženy"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:100
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:107
 msgid   "Restart application"
 msgstr  "Restartovat aplikaci"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:115
-#, java-format
-msgid   "Download speed: {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:172
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:117
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:187
 #: core/src/com/panayotis/jubler/media/preview/JAudioLoader.java:73
 #: core/src/com/panayotis/jubler/options/JPreferences.java:110
 #: core/src/com/panayotis/jubler/os/JIDialog.java:38
@@ -280,27 +264,32 @@ msgstr  ""
 msgid   "Cancel"
 msgstr  "Storno"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:183
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:131
+#, java-format
+msgid   "Download speed: {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:198
 msgid   "Downloading..."
 msgstr  "Stahuji..."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:205
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:220
 msgid   "Release Notes"
 msgstr  "Poznámky k vydání"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:242
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:257
 msgid   "Skip this version"
 msgstr  "Přeskočit tuto verzi"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:255
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:270
 msgid   "Remind me later"
 msgstr  "Připomenout později"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:263
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:278
 msgid   "Install Update"
 msgstr  "Instalovat Aktualizaci"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:275
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:290
 msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
@@ -1314,15 +1303,15 @@ msgstr  "Stále vytvářím cache. Pro přerušení použijte Storno"
 msgid   "Error while loading file {0}"
 msgstr  "Chyba při načítání souboru {0}"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:86
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:88
 msgid   "Advanced argument list:"
 msgstr  "Rozvinutý seznam argumentů:"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:103
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:105
 msgid   "Defaults"
 msgstr  "Výchozí"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:104
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:106
 msgid   "Use default player parameters"
 msgstr  "Použít výchozí parametry přehrávače"
 
@@ -2894,316 +2883,334 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Vyznač titulek bíle"
-
-#~ msgid        "Maximum number of characters per line"
-#~ msgstr       "Maximální počet znaků na řádek"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Globální nahrazení"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Nalezen soubor {0}"
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Nastavit na výchozí"
-
-#~ msgid        "Testing:"
-#~ msgstr       "Testuji:"
-
-#~ msgid        "Mark second synchronization position of the subtitles."
-#~ msgstr       "Označí druhou synchronizační pozici titulků"
-
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "Chyba při parsování integrálního čísla {0}"
-
-#~ msgid        "Start time"
-#~ msgstr       "Začátek"
-
-#~ msgid        "ERROR: Could not use autosave directory for old files "
-#~      "\"{0}\"."
-#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání starých "
-#~      "souborů \"{0}\"."
-
-#~ msgid        "Null value found while setting Style {0} - ignoring."
-#~ msgstr       "Nalezena prázdná hodnota při nastavování Stylu {0} - "
-#~      "ignoruji."
-
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání \"{0}\"."
-
-#~ msgid        "Please consider upgrading from the following URL:"
-#~ msgstr       "Prosím uvažujte o upgradu z následujícího URL:"
-
-#~ msgid        "Do not inform me again for this version"
-#~ msgstr       "Neinformuj mě znovu o téhle verzi"
-
-#~ msgid        "Third Encoding"
-#~ msgstr       "Třetí kódování"
-
-#~ msgid        "Save subtitles options"
-#~ msgstr       "Uložit volby titulků"
-
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Nalezen spouštěcí soubor {0}"
-
-#~ msgid        "Show preferences every time the user loads a subtitle file"
-#~ msgstr       "Ukáže možnosti vždycky, když uživatel načítá titulky"
-
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Začátek oblasti je čas aktuálního výběru"
-
-#~ msgid        "By region"
-#~ msgstr       "Podle oblasti"
-
-#~ msgid        "Y offset"
-#~ msgstr       "Y ofset"
-
-#~ msgid        "New Jubler version found!"
-#~ msgstr       "Byla nalezena nová verze Jubleru!"
-
-#~ msgid        "Debug window"
-#~ msgstr       "Debug okno"
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Vyznač titulek růžově"
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
-
-#~ msgid        "Warning!"
-#~ msgstr       "Varování!"
-
-#~ msgid        "_clone"
-#~ msgstr       "_klonovat"
-
-#~ msgid        "Media Player Error"
-#~ msgstr       "Chyba Media Playeru"
-
-#~ msgid        "Attach subtitle editor panel to main Jubler window"
-#~ msgstr       "Připojit panel s editorem titulku k hlavnímu oknu Jubleru"
-
-#~ msgid        "Change media file"
-#~ msgstr       "Změnit mediální soubor"
-
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "Chyba při načítání FAQ souboru \"{0}\""
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Neuloženo"
-
-#~ msgid        "Version found:"
-#~ msgstr       "Nalezená verze:"
-
-#~ msgid        "Subtitles preview"
-#~ msgstr       "Náhled titulků"
-
-#~ msgid        "File path"
-#~ msgstr       "Soubor"
-
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Nemohu vytvořit cache do neznámého audio souboru"
-
-#~ msgid        "Select the encoding to be searched last"
-#~ msgstr       "Vyberte kódování, které má být hledáno nakonec"
-
-#~ msgid        "First Encoding"
-#~ msgstr       "První kódování"
-
-#~ msgid        "To the end"
-#~ msgstr       "Až na konec"
-
-#~ msgid        "Use predefined encodings..."
-#~ msgstr       "Použít předdefinovaná kódování..."
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Konfigurační soubor byl přesunut do {0}"
 
 #~ msgid        "Not a valid number: {0}"
 #~ msgstr       "Nesprávné číslo: {0}"
 
-#~ msgid        "Chinese"
-#~ msgstr       "Čínština"
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Vyznač titulek bíle"
 
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Vyznač titulek azurově"
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Nemohu najít Jupidator - automatický aktualizační systém."
 
-#~ msgid        "Abnormal exit - please report the author about this "
-#~      "behaviour."
-#~ msgstr       "Abnormální ukončení - prosím podejte zprávu autorovi o tomto "
-#~      "chování."
+#~ msgid        "Maximum number of characters per line"
+#~ msgstr       "Maximální počet znaků na řádek"
 
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "Chyba při parsování reálného čísla {0}"
-
-#~ msgid        "From the following time"
-#~ msgstr       "Od následujícího času"
-
-#~ msgid        "Current version:"
-#~ msgstr       "Stávající verze:"
-
-#~ msgid        "Show preferences every time the user saves a subtitle file"
-#~ msgstr       "Ukáže možnosti vždycky, když uživatel ukládá titulkový soubor"
-
-#~ msgid        "Select the encoding to be searched first"
-#~ msgstr       "Vyberte kódování, které má být hledáno prvně"
-
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Ofset okna přehrávače v pixelech (bodech)"
-
-#~ msgid        "Use selected time as start of region"
-#~ msgstr       "Použít čas výběru jako začátek oblasti"
-
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Připojit panel s editorem titulku k oknu s náhledem"
-
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "Průvodce hledá v {0}"
-
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Překlad byl přerušen"
-
-#~ msgid        "End time"
-#~ msgstr       "Konec"
-
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Nemohu přesunout konfigurační soubor do {0}"
-
-#~ msgid        "X offset"
-#~ msgstr       "X ofset"
-
-#~ msgid        "Invalid executable!"
-#~ msgstr       "Neplatný spustitelný soubor!"
-
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Začátek oblasti je určený čas"
-
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Je důležité upgradovat z následujícího URL:"
-
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Konfigurační soubor byl aktualizován. Starý soubor byl "
-#~      "přesunut do {0}"
-
-#~ msgid        "Load subtitles options"
-#~ msgstr       "Načíst volby titulků"
-
-#~ msgid        "From current time"
-#~ msgstr       "Od aktuálního času"
-
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       " Ukázat možnosti načtení, když otevírám soubor"
-
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Nemohu najít cestu k Jubleru!"
-
-#~ msgid        "File preferences"
-#~ msgstr       "Možnosti souboru"
-
-#~ msgid        "The beginning of the region is the start of the file"
-#~ msgstr       "Začátek oblasti je začátkem souboru"
-
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Vyznač titulek žlutě"
-
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Použít určený čas jako konec oblasti"
-
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "Konec oblasti je určený čas"
-
-#~ msgid        "Second Encoding"
-#~ msgstr       "Druhé kódování"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
-
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Kódování ukládaného souboru"
-
-#~ msgid        "To current time"
-#~ msgstr       "Do aktuálního času"
-
-#~ msgid        "The end of the region is the selected time"
-#~ msgstr       "Konec oblasti je čas aktuálního výběru"
-
-#~ msgid        " Show save preferences while saving file"
-#~ msgstr       " Ukázat možnosti uložení, když ukládám soubor"
-
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "Chyba {0} při načítání souboru {1}: {2}"
-
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Náhled titulků"
-
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Nemohu vytvořit nenastavený cache soubor"
-
-#~ msgid        "Could not create temporary file to store the subtitles."
-#~ msgstr       "Nemohu vytvořit dočasný soubor k uchování titulků"
-
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "FFDecode knihovna není přítomná!"
-
-#~ msgid        "New version"
-#~ msgstr       "Nová verze"
-
-#~ msgid        "Use given time as start of region"
-#~ msgstr       "Použít určený čas jako začátek oblasti"
-
-#~ msgid        "Use selected time as end of region"
-#~ msgstr       "Použít čas výběru jako konec oblasti"
-
-#~ msgid        "Globally"
-#~ msgstr       "Globálně"
-
-#~ msgid        "Select the encoding to be searched second"
-#~ msgstr       "Vyberte kódování, které má být hledáno druhotně"
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Počet titulků: {0}    {1}"
-
-#~ msgid        "Displa/hide metric attributes"
-#~ msgstr       "Zobrazit/skrýt metrické atributy"
-
-#~ msgid        "Push subtitles instead of rearranging"
-#~ msgstr       "Stlačit titulky místo přerovnání"
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "Soubor {0} nemůže být odstraněn."
 
 #~ msgid        "Filename of the external audio file (could be also an audio "
 #~      "cache). Use the \"Browse\" button to change it."
 #~ msgstr       "Jméno extérního audio souboru (může být také audio cache). "
 #~      "Pro změnu použijte \"Procházet\""
 
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Soubor {0} nemůže být odstraněn."
+#~ msgid        "Push subtitles instead of rearranging"
+#~ msgstr       "Stlačit titulky místo přerovnání"
 
-#~ msgid        "To the following time"
-#~ msgstr       "Do následujícího času"
+#~ msgid        "Found file {0}"
+#~ msgstr       "Nalezen soubor {0}"
 
-#~ msgid        "Go"
-#~ msgstr       "Jdi"
+#~ msgid        "Global replace"
+#~ msgstr       "Globální nahrazení"
 
-#~ msgid        "The end of the region is the end of the file"
-#~ msgstr       "Konec oblasti je koncem souboru"
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Nastavit na výchozí"
 
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Dekodér není aktivní. Ruším vytváření audio cache."
+#~ msgid        "Displa/hide metric attributes"
+#~ msgstr       "Zobrazit/skrýt metrické atributy"
 
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Konfigurační soubor byl přesunut do {0}"
+#~ msgid        "Testing:"
+#~ msgstr       "Testuji:"
 
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Jubler audio cache detekován pro audio vstup: {0}"
+#~ msgid        "Select the encoding to be searched second"
+#~ msgstr       "Vyberte kódování, které má být hledáno druhotně"
+
+#~ msgid        "Mark second synchronization position of the subtitles."
+#~ msgstr       "Označí druhou synchronizační pozici titulků"
+
+#~ msgid        "Invalid executable!"
+#~ msgstr       "Neplatný spustitelný soubor!"
+
+#~ msgid        "Chinese"
+#~ msgstr       "Čínština"
+
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Kódování ukládaného souboru"
+
+#~ msgid        "To the end"
+#~ msgstr       "Až na konec"
 
 #~ msgid        "Enable/disable preview"
 #~ msgstr       "Povolit/zakázat náhled"
 
-#~ msgid        "Could not retrieve actual video properties. Using defaults."
-#~ msgstr       "Nemohu získat aktuální vlastnosti videa. Používám výchozí."
+#~ msgid        "Third Encoding"
+#~ msgstr       "Třetí kódování"
+
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "FFDecode knihovna není přítomná!"
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "Chyba při načítání FAQ souboru \"{0}\""
+
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Ofset okna přehrávače v pixelech (bodech)"
+
+#~ msgid        "File preferences"
+#~ msgstr       "Možnosti souboru"
+
+#~ msgid        "Null value found while setting Style {0} - ignoring."
+#~ msgstr       "Nalezena prázdná hodnota při nastavování Stylu {0} - "
+#~      "ignoruji."
+
+#~ msgid        "Load subtitles options"
+#~ msgstr       "Načíst volby titulků"
+
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Začátek oblasti je čas aktuálního výběru"
 
 #~ msgid        "Menu Shortcuts"
 #~ msgstr       "Zkratky Menu"
 
+#~ msgid        "_clone"
+#~ msgstr       "_klonovat"
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
+
+#~ msgid        "File path"
+#~ msgstr       "Soubor"
+
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "Konec oblasti je určený čas"
+
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Překlad byl přerušen"
+
+#~ msgid        "Go"
+#~ msgstr       "Jdi"
+
+#~ msgid        "From the following time"
+#~ msgstr       "Od následujícího času"
+
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "Chyba {0} při načítání souboru {1}: {2}"
+
+#~ msgid        "Start time"
+#~ msgstr       "Začátek"
+
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       " Ukázat možnosti načtení, když otevírám soubor"
+
+#~ msgid        "Please consider upgrading from the following URL:"
+#~ msgstr       "Prosím uvažujte o upgradu z následujícího URL:"
+
+#~ msgid        "The end of the region is the selected time"
+#~ msgstr       "Konec oblasti je čas aktuálního výběru"
+
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Nalezen spouštěcí soubor {0}"
+
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Je důležité upgradovat z následujícího URL:"
+
+#~ msgid        "Y offset"
+#~ msgstr       "Y ofset"
+
+#~ msgid        "New version"
+#~ msgstr       "Nová verze"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
+
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Nemohu přesunout konfigurační soubor do {0}"
+
+#~ msgid        "Attach subtitle editor panel to main Jubler window"
+#~ msgstr       "Připojit panel s editorem titulku k hlavnímu oknu Jubleru"
+
+#~ msgid        "Second Encoding"
+#~ msgstr       "Druhé kódování"
+
+#~ msgid        "Version found:"
+#~ msgstr       "Nalezená verze:"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"
+
+#~ msgid        "Select the encoding to be searched last"
+#~ msgstr       "Vyberte kódování, které má být hledáno nakonec"
+
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Nemohu vytvořit nenastavený cache soubor"
+
+#~ msgid        "The end of the region is the end of the file"
+#~ msgstr       "Konec oblasti je koncem souboru"
+
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Připojit panel s editorem titulku k oknu s náhledem"
+
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Vyznač titulek žlutě"
+
+#~ msgid        "Show preferences every time the user saves a subtitle file"
+#~ msgstr       "Ukáže možnosti vždycky, když uživatel ukládá titulkový soubor"
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Počet titulků: {0}    {1}"
+
+#~ msgid        "Abnormal exit - please report the author about this "
+#~      "behaviour."
+#~ msgstr       "Abnormální ukončení - prosím podejte zprávu autorovi o tomto "
+#~      "chování."
+
+#~ msgid        "Use given time as start of region"
+#~ msgstr       "Použít určený čas jako začátek oblasti"
+
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "Chyba při parsování integrálního čísla {0}"
+
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Nemohu najít cestu k Jubleru!"
+
+#~ msgid        "ERROR: Could not use autosave directory for old files "
+#~      "\"{0}\"."
+#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání starých "
+#~      "souborů \"{0}\"."
+
+#~ msgid        " Show save preferences while saving file"
+#~ msgstr       " Ukázat možnosti uložení, když ukládám soubor"
+
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání \"{0}\"."
+
+#~ msgid        "From current time"
+#~ msgstr       "Od aktuálního času"
+
+#~ msgid        "Do not inform me again for this version"
+#~ msgstr       "Neinformuj mě znovu o téhle verzi"
+
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Dekodér není aktivní. Ruším vytváření audio cache."
+
+#~ msgid        "Save subtitles options"
+#~ msgstr       "Uložit volby titulků"
+
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Konfigurační soubor byl aktualizován. Starý soubor byl "
+#~      "přesunut do {0}"
+
+#~ msgid        "Show preferences every time the user loads a subtitle file"
+#~ msgstr       "Ukáže možnosti vždycky, když uživatel načítá titulky"
+
+#~ msgid        "To current time"
+#~ msgstr       "Do aktuálního času"
+
+#~ msgid        "By region"
+#~ msgstr       "Podle oblasti"
+
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Začátek oblasti je určený čas"
+
+#~ msgid        "New Jubler version found!"
+#~ msgstr       "Byla nalezena nová verze Jubleru!"
+
+#~ msgid        "Use selected time as end of region"
+#~ msgstr       "Použít čas výběru jako konec oblasti"
+
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Vyznač titulek růžově"
+
+#~ msgid        "X offset"
+#~ msgstr       "X ofset"
+
+#~ msgid        "Warning!"
+#~ msgstr       "Varování!"
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
+
+#~ msgid        "Media Player Error"
+#~ msgstr       "Chyba Media Playeru"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Spouštím {0}"
+
+#~ msgid        "Change media file"
+#~ msgstr       "Změnit mediální soubor"
+
+#~ msgid        "Could not create temporary file to store the subtitles."
+#~ msgstr       "Nemohu vytvořit dočasný soubor k uchování titulků"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Neuloženo"
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "Soubor úspěšně odstraněn {0}"
+
+#~ msgid        "Subtitles preview"
+#~ msgstr       "Náhled titulků"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
+
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Nemohu vytvořit cache do neznámého audio souboru"
+
+#~ msgid        "First Encoding"
+#~ msgstr       "První kódování"
+
+#~ msgid        "Could not retrieve actual video properties. Using defaults."
+#~ msgstr       "Nemohu získat aktuální vlastnosti videa. Používám výchozí."
+
+#~ msgid        "Use predefined encodings..."
+#~ msgstr       "Použít předdefinovaná kódování..."
+
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Jubler audio cache detekován pro audio vstup: {0}"
+
+#~ msgid        "End time"
+#~ msgstr       "Konec"
+
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Použít určený čas jako konec oblasti"
+
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "Průvodce hledá v {0}"
+
+#~ msgid        "To the following time"
+#~ msgstr       "Do následujícího času"
+
+#~ msgid        "Use selected time as start of region"
+#~ msgstr       "Použít čas výběru jako začátek oblasti"
+
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Náhled titulků"
+
+#~ msgid        "Select the encoding to be searched first"
+#~ msgstr       "Vyberte kódování, které má být hledáno prvně"
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
+
+#~ msgid        "Current version:"
+#~ msgstr       "Stávající verze:"
+
+#~ msgid        "The beginning of the region is the start of the file"
+#~ msgstr       "Začátek oblasti je začátkem souboru"
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "Chyba při parsování reálného čísla {0}"
+
+#~ msgid        "Globally"
+#~ msgstr       "Globálně"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Vyznač titulek azurově"
+
 #~ msgid        "Updated file could not be null."
 #~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
 
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Nemohu najít Jupidator - automatický aktualizační systém."
+#~ msgid        "Debug window"
+#~ msgstr       "Debug okno"

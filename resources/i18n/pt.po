@@ -4,7 +4,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: pt\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2010-10-24 17:48+0300\n"
+        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
         "PO-Revision-Date: 2009-03-18 19:15-0300\n"
         "Last-Translator: Doutor Zero <doutor.zero@gmail.com>\n"
         "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@mail.kde.org>\n"
@@ -17,16 +17,7 @@ msgstr  "Project-Id-Version: pt\n"
         "X-Generator: KBabel 1.11.4\n"
         "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:35
-msgid   "Application path can not be null."
-msgstr  "O caminho do Aplicativo não pode ser nulo."
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:39
-#, java-format
-msgid   "Unable to find Application path {0}."
-msgstr  "Não foi possível encontrar o caminho do Aplicativo {0}."
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:68
+#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:60
 msgid   "Property name could not be null"
 msgstr  ""
 
@@ -35,190 +26,187 @@ msgstr  ""
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:191
-#, java-format
-msgid   "Executing {0}"
-msgstr  "Executando {0}"
+#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:190
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:114
+msgid   "Application cancelled restart"
+msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:43
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementChstatus.java:33
+#, java-format
+msgid   "Unable to provide empty attribute for file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:100
 #, java-format
 msgid   "Unable to initialize URL {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:108
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:102
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:113
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#, java-format
+msgid   "Unable to create directory structure under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:110
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:111
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:115
 #, java-format
 msgid   "Could not remove old downloaded file {0}"
 msgstr  "Não foi possível remover o arquivo antigo baixado {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:123
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#, java-format
+msgid   "Could not remove old temporary file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:124
 #, java-format
 msgid   "Size of file {0} does not match. Reported {1}, required {2}"
 msgstr  "O tamanho do arquivo {0} não coincide. Reportado {1}, exigido {2}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:127
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:128
 #, java-format
 msgid   "Checksumming {0} with algorithm {1} failed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:136
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:137
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  "O arquivo {0} foi baixado com sucesso"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:140
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:141
 #, java-format
 msgid   "Unable to download file {0}"
 msgstr  "Não foi possível baixar o arquivo {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:151
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:163
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:152
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  "Não foi possível apagar o arquivo baixado {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:153
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:165
-#, java-format
-msgid   "Successfully deleted downloaded file {0}"
-msgstr  "O arquivo baixado {0} foi apagado com sucesso"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:169
-#, java-format
-msgid   "Unable to delete file {0}"
-msgstr  "Não foi possível apagar o arquivo {0}"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:171
-#, java-format
-msgid   "Successfully deleted file {0}"
-msgstr  "O arquivo {0} foi apagado com sucesso"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:40
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:38
 #, java-format
 msgid   "File {0} will be deleted, if exists."
 msgstr  "O arquivo {0} será apagado, se existir."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:45
-#, java-format
-msgid   "Cancel updating: Ignoring deleting of file {0}"
-msgstr  "Cancelar atualização: ignorando o apagamento do arquivo {0}"
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:91
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:97
-#, java-format
-msgid   "Checking JAR {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:111
-#, java-format
-msgid   "Unable to extract files from JAR {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:115
-#, java-format
-msgid   "Checking directory {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:147
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:165
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  "O caminho do Instalador {0} não é gravável."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:154
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:172
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:159
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:170
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:177
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:188
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  "Instalador armazenado em {0}"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:166
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:176
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:194
 msgid   "Unable to create Deployer"
 msgstr  "Não foi possível criar o Instalador"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:43
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:294
+#, java-format
+msgid   "Unable to delete file {0}"
+msgstr  "Não foi possível apagar o arquivo {0}"
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:45
 msgid   "Application info not provided."
 msgstr  "Não foram fornecidas informações sobre o aplicativo."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:47
 msgid   "UpdaterAppElements not provided."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/compression/ZipCompression.java:59
+#, java-format
+msgid   "Unable to unpack under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/security/PermissionManager.java:76
+msgid   "Unable to initialize restart"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:56
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  "Uma nova versão do {0} está disponível!"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:35
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:53
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:57
 #, java-format
 msgid   "{0} version {1} is now available - you have {2}."
 msgstr  "A versão do {0} {1} está disponível agora - você possui a {2}."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:44
 msgid   "Do you want to see the detailed changelog? [Y/n] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:49
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:48
 msgid   "Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/"
         "r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:51
 msgid   "Do you want to (R)emind later or (I)nstall? [r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:72
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:71
 msgid   "Wrong answer."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:79
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:78
 msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
         "jupidator/)"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:84
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:83
 #, java-format
 msgid   "Error: {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:87
 msgid   "Downloading successfull"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
 msgid   "Press [RETURN] to restart the application "
 msgstr  ""
 
 #: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:94
+msgid   "Cancel installation"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:99
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:98
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:103
 msgid   "Please wait..."
 msgstr  ""
 
@@ -246,33 +234,29 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:54
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:58
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  "Foi encontrada uma nova versão do {0}!"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:87
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:94
 msgid   "Processing update"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:96
 msgid   "Deploying files..."
 msgstr  "Instalando arquivos..."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:99
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:106
 msgid   "Successfully downloaded updates"
 msgstr  "Atualizações baixadas com sucesso"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:100
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:107
 msgid   "Restart application"
 msgstr  "Reiniciar aplicativo"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:115
-#, java-format
-msgid   "Download speed: {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:172
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:117
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:187
 #: core/src/com/panayotis/jubler/media/preview/JAudioLoader.java:73
 #: core/src/com/panayotis/jubler/options/JPreferences.java:110
 #: core/src/com/panayotis/jubler/os/JIDialog.java:38
@@ -284,27 +268,32 @@ msgstr  ""
 msgid   "Cancel"
 msgstr  "Cancelar"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:183
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:131
+#, java-format
+msgid   "Download speed: {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:198
 msgid   "Downloading..."
 msgstr  "Baixando..."
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:205
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:220
 msgid   "Release Notes"
 msgstr  "Notas da Versão"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:242
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:257
 msgid   "Skip this version"
 msgstr  "Ignorar esta versão"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:255
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:270
 msgid   "Remind me later"
 msgstr  "Lembrar-me depois"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:263
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:278
 msgid   "Install Update"
 msgstr  "Instalar Atualização"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:275
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:290
 msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
@@ -1322,15 +1311,15 @@ msgstr  "Ainda criando o cache. Use o botão Cancelar para abortar."
 msgid   "Error while loading file {0}"
 msgstr  "Erro ao carregar o arquivo {0}"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:86
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:88
 msgid   "Advanced argument list:"
 msgstr  "Lista de argumentos avançados:"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:103
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:105
 msgid   "Defaults"
 msgstr  "Padrões"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:104
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:106
 msgid   "Use default player parameters"
 msgstr  "Usar os parâmetros padrão do reprodutor"
 
@@ -2908,125 +2897,143 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "Erro ao abrir o arquivo do FAQ \"{0}\""
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "O Assistente está olhando dentro de {0}"
 
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "O decodificador não está ativo. Abortando a criação do cache "
-#~      "de áudio."
+#~ msgid        "Testing:"
+#~ msgstr       "Testando:"
 
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Não foi possível criar um arquivo de cache vazio"
+#~ msgid        "Global replace"
+#~ msgstr       "Substituição global"
 
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
-#~      "\"{0}\"."
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "Exceção {0} ao carregar o estilo {1}: {2}"
 
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Arquivo de configuração movido para {0}"
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Tradução interrompida"
 
-#~ msgid        "Could not retrieve actual video properties. Using defaults."
-#~ msgstr       "Não foi possível recuperar as propriedades do vídeo atual. "
-#~      "Usando os padrões."
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Marcar legenda como amarela"
 
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Executável válido encontrado: {0}"
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Arquivo de configuração atualizado. Configuração antiga "
+#~      "movida para {0}"
 
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "Erro ao analisar o número real {0}"
-
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Não é possível criar o cache para um arquivo de áudio "
-#~      "desconhecido"
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Não salvo"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Encontrado arquivo {0}"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "O arquivo atualizado não pode ser nulo."
-
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Não foi possível encontrar o sistema de auto-atualização "
-#~      "Jupidator."
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Número de legendas : {0}    {1}"
-
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Não foi possível mover o arquivo de configuração para {0}"
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Marcar legenda como branca"
-
-#~ msgid        "Null value found while setting Style {0} - ignoring."
-#~ msgstr       "Valor nulo ao definir o Estilo {0} - ignorando."
-
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "Erro ao analisar o número integral {0}"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
-
-#~ msgid        "By region"
-#~ msgstr       "Por região"
-
-#~ msgid        "Mark second synchronization position of the subtitles."
-#~ msgstr       "Marcar a segunda posição de sincronização das legendas."
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Marcar legenda como rosa"
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Resetar para os padrões"
-
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Atalhos do Menu"
-
-#~ msgid        "Globally"
-#~ msgstr       "Globalmente"
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Marcar legenda como ciano"
 
 #~ msgid        "ERROR: Could not use autosave directory for old files "
 #~      "\"{0}\"."
 #~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
 #~      "para arquivos antigos \"{0}\"."
 
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Marcar legenda como ciano"
-
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Tradução interrompida"
-
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "Exceção {0} ao carregar o estilo {1}: {2}"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Substituição global"
-
-#~ msgid        "Testing:"
-#~ msgstr       "Testando:"
-
 #~ msgid        "Jubler audio cache detected for audio input: {0}"
 #~ msgstr       "Cache de áudio do Jubler detectado para a entrada de áudio: "
 #~      "{0}"
 
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Arquivo de configuração atualizado. Configuração antiga "
-#~      "movida para {0}"
+#~ msgid        "Globally"
+#~ msgstr       "Globalmente"
 
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "O Assistente está olhando dentro de {0}"
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Atalhos do Menu"
 
-#~ msgid        "Maximum number of characters per line"
-#~ msgstr       "Número máximo de caracteres por linha"
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Resetar para os padrões"
 
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Marcar legenda como amarela"
+#~ msgid        "Mark second synchronization position of the subtitles."
+#~ msgstr       "Marcar a segunda posição de sincronização das legendas."
+
+#~ msgid        "By region"
+#~ msgstr       "Por região"
+
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Executável válido encontrado: {0}"
+
+#~ msgid        "Null value found while setting Style {0} - ignoring."
+#~ msgstr       "Valor nulo ao definir o Estilo {0} - ignorando."
+
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Marcar legenda como branca"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "O arquivo de destino {0} não é gravável."
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "Erro ao analisar o número real {0}"
+
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Não foi possível criar um arquivo de cache vazio"
 
 #~ msgid        "File {0} could not be deleted."
 #~ msgstr       "O arquivo {0} não pôde ser apagado."
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "O arquivo de destino {0} não é gravável."
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
+#~      "\"{0}\"."
+
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "O decodificador não está ativo. Abortando a criação do cache "
+#~      "de áudio."
+
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Arquivo de configuração movido para {0}"
+
+#~ msgid        "Found file {0}"
+#~ msgstr       "Encontrado arquivo {0}"
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "O arquivo {0} foi apagado com sucesso"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Executando {0}"
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
+
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Não foi possível mover o arquivo de configuração para {0}"
+
+#~ msgid        "Could not retrieve actual video properties. Using defaults."
+#~ msgstr       "Não foi possível recuperar as propriedades do vídeo atual. "
+#~      "Usando os padrões."
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
+
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Não foi possível encontrar o sistema de auto-atualização "
+#~      "Jupidator."
+
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Marcar legenda como rosa"
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Número de legendas : {0}    {1}"
+
+#~ msgid        "Maximum number of characters per line"
+#~ msgstr       "Número máximo de caracteres por linha"
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "Erro ao abrir o arquivo do FAQ \"{0}\""
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "O arquivo atualizado não pode ser nulo."
+
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "Erro ao analisar o número integral {0}"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Não salvo"
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
+
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Não é possível criar o cache para um arquivo de áudio "
+#~      "desconhecido"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."

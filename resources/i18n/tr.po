@@ -1,7 +1,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: JublerTr v1.0\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2010-10-24 17:48+0300\n"
+        "POT-Creation-Date: 2011-01-29 14:06+0200\n"
         "PO-Revision-Date: 2009-03-22 12:08+0200\n"
         "Last-Translator: Serkan Kaba <serkan@gentoo.org>\n"
         "Language-Team: C-NoNe <yuksel.asim.sinan@gmail.com>\n"
@@ -12,16 +12,7 @@ msgstr  "Project-Id-Version: JublerTr v1.0\n"
         "X-Poedit-Country: TURKEY\n"
         "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:35
-msgid   "Application path can not be null."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:39
-#, java-format
-msgid   "Unable to find Application path {0}."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:68
+#: ../jupidator/src/java/com/panayotis/jupidator/ApplicationInfo.java:60
 msgid   "Property name could not be null"
 msgstr  ""
 
@@ -30,190 +21,187 @@ msgstr  ""
 msgid   "This update is required for the smooth updating of {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:191
-#, java-format
-msgid   "Executing {0}"
+#: ../jupidator/src/java/com/panayotis/jupidator/Updater.java:190
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:114
+msgid   "Application cancelled restart"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/data/UpdaterAppElements.java:43
 #, java-format
 msgid   "Jupidator for {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementChstatus.java:33
+#, java-format
+msgid   "Unable to provide empty attribute for file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:100
 #, java-format
 msgid   "Unable to initialize URL {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:108
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:102
 #, java-format
 msgid   "Can not initialize download file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:113
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:106
+#, java-format
+msgid   "Unable to create directory structure under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:110
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:111
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:115
 #, java-format
 msgid   "Could not remove old downloaded file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:123
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:114
+#, java-format
+msgid   "Could not remove old temporary file {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:124
 #, java-format
 msgid   "Size of file {0} does not match. Reported {1}, required {2}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:127
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:128
 #, java-format
 msgid   "Checksumming {0} with algorithm {1} failed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:136
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:137
 #, java-format
 msgid   "File {0} sucessfully downloaded"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:140
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:141
 #, java-format
 msgid   "Unable to download file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:151
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:163
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:152
 #, java-format
 msgid   "Unable to delete downloaded file {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:153
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:165
-#, java-format
-msgid   "Successfully deleted downloaded file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:169
-#, java-format
-msgid   "Unable to delete file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementFile.java:171
-#, java-format
-msgid   "Successfully deleted file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:40
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:38
 #, java-format
 msgid   "File {0} will be deleted, if exists."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/ElementRm.java:45
-#, java-format
-msgid   "Cancel updating: Ignoring deleting of file {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:91
 #, java-format
 msgid   "Path {0} is not writable."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:97
-#, java-format
-msgid   "Checking JAR {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:111
-#, java-format
-msgid   "Unable to extract files from JAR {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:115
-#, java-format
-msgid   "Checking directory {0} for classes."
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:147
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:165
 #, java-format
 msgid   "Deployer path {0} is not writable."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:154
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:172
 #, java-format
 msgid   "Checking JAR {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:159
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:170
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:177
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:188
 #, java-format
 msgid   "Deployer stored in {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:166
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:184
 #, java-format
 msgid   "Checking Directory {0} for Deployer class."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:176
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:194
 msgid   "Unable to create Deployer"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:43
-msgid   "Application info not provided."
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/FileUtils.java:294
+#, java-format
+msgid   "Unable to delete file {0}"
 msgstr  ""
 
 #: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:45
+msgid   "Application info not provided."
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/JupidatorElement.java:47
 msgid   "UpdaterAppElements not provided."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/compression/ZipCompression.java:59
+#, java-format
+msgid   "Unable to unpack under {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/elements/security/PermissionManager.java:76
+msgid   "Unable to initialize restart"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:33
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:56
 #, java-format
 msgid   "A new version of {0} is available!"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:35
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:53
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:34
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:57
 #, java-format
 msgid   "{0} version {1} is now available - you have {2}."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:45
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:44
 msgid   "Do you want to see the detailed changelog? [Y/n] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:49
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:48
 msgid   "Do you want to (S)kip this version, (R)emind later or (I)nstall? [s/"
         "r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:52
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:51
 msgid   "Do you want to (R)emind later or (I)nstall? [r/i] "
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:72
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:71
 msgid   "Wrong answer."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:79
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:78
 msgid   "Thank you for using Jupidator  (http://sourceforge.net/projects/"
         "jupidator/)"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:84
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:83
 #, java-format
 msgid   "Error: {0}"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:87
 msgid   "Downloading successfull"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:88
 msgid   "Press [RETURN] to restart the application "
 msgstr  ""
 
 #: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:94
+msgid   "Cancel installation"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:99
 #, java-format
 msgid   "Downloading {0}, {1} percent completed."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:98
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/console/ConsoleGUI.java:103
 msgid   "Please wait..."
 msgstr  ""
 
@@ -241,33 +229,29 @@ msgstr  ""
 msgid   "More info can be found in: http://jupidator.sourceforge.net"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:54
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:58
 #, java-format
 msgid   "New version of {0} found!"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:87
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:94
 msgid   "Processing update"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:89
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:96
 msgid   "Deploying files..."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:99
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:106
 msgid   "Successfully downloaded updates"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:100
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:107
 msgid   "Restart application"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:115
-#, java-format
-msgid   "Download speed: {0}"
-msgstr  ""
-
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:172
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:117
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:187
 #: core/src/com/panayotis/jubler/media/preview/JAudioLoader.java:73
 #: core/src/com/panayotis/jubler/options/JPreferences.java:110
 #: core/src/com/panayotis/jubler/os/JIDialog.java:38
@@ -279,27 +263,32 @@ msgstr  ""
 msgid   "Cancel"
 msgstr  "İptal"
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:183
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:131
+#, java-format
+msgid   "Download speed: {0}"
+msgstr  ""
+
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:198
 msgid   "Downloading..."
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:205
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:220
 msgid   "Release Notes"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:242
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:257
 msgid   "Skip this version"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:255
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:270
 msgid   "Remind me later"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:263
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:278
 msgid   "Install Update"
 msgstr  ""
 
-#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:275
+#: ../jupidator/src/java/com/panayotis/jupidator/gui/swing/SwingGUI.java:290
 msgid   "WARNING! This update requires elevated privileges!"
 msgstr  ""
 
@@ -1318,15 +1307,15 @@ msgstr  "Hala önbellek oluşturuluyor.Bitirmeden durdurmak için İptal tuşuna
 msgid   "Error while loading file {0}"
 msgstr  "{0} dosyası yüklenirken hata oluştu"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:86
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:88
 msgid   "Advanced argument list:"
 msgstr  "Gelişmiş argüman listesi:"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:103
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:105
 msgid   "Defaults"
 msgstr  "Varsayılanlar"
 
-#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:104
+#: core/src/com/panayotis/jubler/options/AbstractPlayerOptions.java:106
 msgid   "Use default player parameters"
 msgstr  "Varsayılan oynatıcı parametrelerini kullan"
 
@@ -2898,370 +2887,370 @@ msgstr  ""
 msgid   "translatedText"
 msgstr  ""
 
-#~ msgid        "Change media file"
-#~ msgstr       "Video dosyasını değiştir"
-
-#~ msgid        "Use predefined encodings..."
-#~ msgstr       "Öntanımlı kodlamaları kullan..."
-
-#~ msgid        "Testing:"
-#~ msgstr       "Sınanıyor:"
-
-#~ msgid        "Push subtitles instead of rearranging"
-#~ msgstr       "Yeniden düzenlemek yerine altyazıları itele"
-
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Altyazıyı camgöbeği renginde işaretle"
-
-#~ msgid        "Filename of the external audio file (could be also an audio "
-#~      "cache). Use the \"Browse\" button to change it."
-#~ msgstr       "Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı "
-#~      "değiştirmek için \"Göz At\" düğmesini kullan"
-
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Geçerli çalıştırılabilir dosya bulundu: {0}"
+#~ msgid        "First Encoding"
+#~ msgstr       "İlk Kodlama"
 
 #~ msgid        "Chinese"
 #~ msgstr       "Çince"
 
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Yaratılamadı, bilinmeyen ses dosyası"
+
 #~ msgid        "Save subtitles options"
 #~ msgstr       "Altyazı seçeneklerini kaydet"
 
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Piksel bazında oynatıcı penceresi ofseti"
+
 #~ msgid        "Y offset"
 #~ msgstr       "Y Ofseti"
+
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "Bölgenin sonu verilen zamandır"
 
 #~ msgid        "Show preferences every time the user saves a subtitle file"
 #~ msgstr       "Kullanıcının altyazı dosyasını her kaydetişinde tercihleri "
 #~      "göster"
 
+#~ msgid        "Warning!"
+#~ msgstr       "Uyarı!"
+
 #~ msgid        "MicroDVD format"
 #~ msgstr       "MicroDVD formatı"
 
+#~ msgid        "MPlayer options"
+#~ msgstr       "MPlayer seçenekleri"
+
 #~ msgid        " Show save preferences while saving file"
 #~ msgstr       "Dosyayı kaydederken kaydetme tercihlerini göster"
+
+#~ msgid        "Invalid executable!"
+#~ msgstr       "Geçersiz dosya"
 
 #~ msgid        "The subtitle differences\n"
 #~      " were {0}"
 #~ msgstr       "Altyazı farklılıkları\n"
 #~      " {0}"
 
+#~ msgid        "To the following time"
+#~ msgstr       "Aşağıdaki zamana"
+
 #~ msgid        "Exception {0} while loading style {1}: {2}"
 #~ msgstr       "{1}: {2} stili yüklenirken {0} hatası oluştu"
 
-#~ msgid        "SubViewer format"
-#~ msgstr       "SubViewer formatı"
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Altyazıyı beyaz renkte işaretle"
 
-#~ msgid        "End time"
-#~ msgstr       "Bitiş zamanı"
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Altyazıyı sarı renkte işaretle"
 
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Yapılandırma dosyası {0}'a taşındı"
+#~ msgid        "Global replace"
+#~ msgstr       "Genel değiştirme"
+
+#~ msgid        "Current version:"
+#~ msgstr       "Şu anki sürüm"
+
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Geçerli çalıştırılabilir dosya bulundu: {0}"
+
+#~ msgid        "Start time"
+#~ msgstr       "Başlangıç zamanı"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Kaydedilmemiş"
+
+#~ msgid        "SubRip format"
+#~ msgstr       "Subrip formatı"
+
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Yapılandırma dosyası {0}'a taşınamıyor"
+
+#~ msgid        "X offset"
+#~ msgstr       "X Ofseti"
+
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Altyazıları önizle"
+
+#~ msgid        "The end of the region is the end of the file"
+#~ msgstr       "Bölgenin sonu dosya sonudur"
 
 #~ msgid        "Show preferences every time the user loads a subtitle file"
 #~ msgstr       "Kullanıcının altyazı dosyasını her yükleyişinde tercihleri "
 #~      "göster"
 
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Çevirme işlemi kesildi"
-
-#~ msgid        "Forward subtitles by 100 milliseconds"
-#~ msgstr       "Altyazıları 100 milisaniye ileri kaydır."
-
-#~ msgid        "Text to be replaced"
-#~ msgstr       "Değiştirilecek metin"
-
-#~ msgid        "Media Player Error"
-#~ msgstr       "Çoklu Ortam Oynatıcı Hatası"
-
-#~ msgid        "Open the options for this player"
-#~ msgstr       "Bu oynatıcı için seçenekleri aç"
-
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "HATA: \"{0}\" otomatik kaydetme dizini kullanılamadı."
-
-#~ msgid        "Second Encoding"
-#~ msgstr       "İkinci Kodlama"
+#~ msgid        "File path"
+#~ msgstr       "Dosya yolu"
 
 #~ msgid        "Use selected time as start of region"
 #~ msgstr       "Seçili zamanı bölgenin başlangıcı olarak kullan"
 
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Altyazı düzenleme panelini önizleme penceresine ekle"
-
-#~ msgid        "From current time"
-#~ msgstr       "Şimdiki zaman"
-
-#~ msgid        "To the end"
-#~ msgstr       "Sona doğru"
-
-#~ msgid        "SubRip format"
-#~ msgstr       "Subrip formatı"
-
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Bölgenin başlangıcı seçili zamandır."
-
-#~ msgid        "Maximum number of characters per line"
-#~ msgstr       "Satır başına düşen en fazla karakter sayısı"
-
-#~ msgid        "Not a valid number: {0}"
-#~ msgstr       "Geçerli bir sayı değil: {0}"
-
 #~ msgid        "No options for this program"
 #~ msgstr       "Bu programın seçenekleri yoktur"
 
-#~ msgid        "Subtitles preview"
-#~ msgstr       "Altyazı önizleme"
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Şifre çözücü aktif değil.Ses önbellek oluşturulması "
+#~      "durduruluyor."
 
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "Sihirbaz arıyor {0}"
+#~ msgid        "Testing:"
+#~ msgstr       "Sınanıyor:"
 
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Altyazıyı pembe renkte işaretle"
+#~ msgid        "Error while executing MPlayer. Executable not found."
+#~ msgstr       "MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
+#~      "bulunamadı."
 
-#~ msgid        "Current version:"
-#~ msgstr       "Şu anki sürüm"
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Verilen zamanı bölgenin sonu olarak kullan"
 
-#~ msgid        "Options for {0}"
-#~ msgstr       "{0} için seçenekler"
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Bölgenin başlangıcı verilen süredir"
 
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Kaydedilen dosyanın kodlaması"
-
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "{0} tam sayısı ayrıştırılırken hata oluştu"
-
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Yaratılamadı, bilinmeyen ses dosyası"
-
-#~ msgid        "Start time"
-#~ msgstr       "Başlangıç zamanı"
-
-#~ msgid        "From the following time"
-#~ msgstr       "Aşağıdaki zamandan"
-
-#~ msgid        "Unable to load plugin: {0}"
-#~ msgstr       "{0} eklentisi yüklenemedi"
-
-#~ msgid        "MPlayer parameters have been updated."
-#~ msgstr       "MPlayer parametreleri güncellendi."
+#~ msgid        "_clone"
+#~ msgstr       "_kopyala"
 
 #~ msgid        "Null value found while setting Style {0} - ignoring."
 #~ msgstr       "{0} stili ayarlanırken boş değer bulundu - yoksayılıyor."
 
-#~ msgid        "The end of the region is the selected time"
-#~ msgstr       "Bölgenin sonu seçilen zamandır"
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Menü kısayolları"
 
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "FFDecode kütüphanesi yok!"
+#~ msgid        "End time"
+#~ msgstr       "Bitiş zamanı"
 
-#~ msgid        "Could not retrieve actual video properties. Using defaults."
-#~ msgstr       "Asıl video özellikleri alınamadı. Varsayılan değerler "
-#~      "kullanılıyor."
+#~ msgid        "Load subtitles options"
+#~ msgstr       "Altyazı özelliklerini yükle"
 
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Altyazıları önizle"
+#~ msgid        "Forward subtitles by 100 milliseconds"
+#~ msgstr       "Altyazıları 100 milisaniye ileri kaydır."
 
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Varsayılana dön"
+#~ msgid        "By region"
+#~ msgstr       "Bölge ile"
+
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "HATA: \"{0}\" otomatik kaydetme dizini kullanılamadı."
+
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmek önemli"
+
+#~ msgid        "From current time"
+#~ msgstr       "Şimdiki zaman"
+
+#~ msgid        "SubStationAlpha format"
+#~ msgstr       "SubStationAlpha formatı"
+
+#~ msgid        "Maximum number of characters per line"
+#~ msgstr       "Satır başına düşen en fazla karakter sayısı"
+
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "Sihirbaz arıyor {0}"
+
+#~ msgid        "New Jubler version found!"
+#~ msgstr       "Yeni Jubler sürümü bulundu"
+
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Kaydedilen dosyanın kodlaması"
+
+#~ msgid        "Change media file"
+#~ msgstr       "Video dosyasını değiştir"
+
+#~ msgid        "Select the encoding to be searched last"
+#~ msgstr       "Üçüncü aranacak kodlamayı seçin"
+
+#~ msgid        "File preferences"
+#~ msgstr       "Doysa tercihleri"
+
+#~ msgid        "Delay subtitles by 100 milliseconds"
+#~ msgstr       "Altyazıları 100 milisaniye geciktir."
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Altyazıyı camgöbeği renginde işaretle"
+
+#~ msgid        "Enable/disable preview"
+#~ msgstr       "Ön izleme etkinleştir/etkisizleştir"
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Altyazı sayısı : {0}    {1}"
+
+#~ msgid        "Go"
+#~ msgstr       "Git"
+
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Yaratılamadı, ayarlanmamış önbellek dosyası"
 
 #~ msgid        "To current time"
 #~ msgstr       "Şimdi zamana"
 
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Jubler ses önbelleği ses girişi buldu: {0}"
+#~ msgid        "The beginning of the region is the start of the file"
+#~ msgstr       "Bölgenin başlangıçı dosya başlangıcıdır"
 
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Bölgenin başlangıcı verilen süredir"
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "FFDecode kütüphanesi yok!"
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "\"{0}\" SSS dosyası açılamadı"
+
+#~ msgid        "Unable to load plugin: {0}"
+#~ msgstr       "{0} eklentisi yüklenemedi"
+
+#~ msgid        "Do not inform me again for this version"
+#~ msgstr       "Bu sürüm için beni tekrar bilgilendirme"
+
+#~ msgid        "SubViewer format"
+#~ msgstr       "SubViewer formatı"
+
+#~ msgid        "Select the encoding to be searched first"
+#~ msgstr       "İlk aranacak kodlamayı seçin"
+
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Yapılandırma dosyası {0}'a taşındı"
+
+#~ msgid        "Could not create temporary file to store the subtitles."
+#~ msgstr       "Altyazıları kaydetmek için geçici dosya oluşturulamadı"
+
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Çevirme işlemi kesildi"
+
+#~ msgid        "Error while executing ASpell"
+#~ msgstr       "Yazdım denetiminde hata"
+
+#~ msgid        "Text to be replaced"
+#~ msgstr       "Değiştirilecek metin"
+
+#~ msgid        "Forward subtitles by 1 second"
+#~ msgstr       "Altyazıları 1 saniye ileri kaydır."
+
+#~ msgid        "Open the options for this player"
+#~ msgstr       "Bu oynatıcı için seçenekleri aç"
+
+#~ msgid        "Please consider upgrading from the following URL:"
+#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmeyi göz önünde bulundurun"
+
+#~ msgid        "Second Encoding"
+#~ msgstr       "İkinci Kodlama"
+
+#~ msgid        "New version"
+#~ msgstr       "Yeni Sürüm"
+
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Altyazı düzenleme panelini önizleme penceresine ekle"
+
+#~ msgid        "To the end"
+#~ msgstr       "Sona doğru"
+
+#~ msgid        "Delay subtitles by 1 second"
+#~ msgstr       "Altyazıları 1 saniye geciktir."
+
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Bölgenin başlangıcı seçili zamandır."
+
+#~ msgid        "Not a valid number: {0}"
+#~ msgstr       "Geçerli bir sayı değil: {0}"
+
+#~ msgid        "Subtitles preview"
+#~ msgstr       "Altyazı önizleme"
+
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Altyazıyı pembe renkte işaretle"
+
+#~ msgid        "Options"
+#~ msgstr       "Seçenekler"
+
+#~ msgid        "Options for {0}"
+#~ msgstr       "{0} için seçenekler"
+
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "{0} tam sayısı ayrıştırılırken hata oluştu"
+
+#~ msgid        "Globally"
+#~ msgstr       "Genel"
+
+#~ msgid        "Found file {0}"
+#~ msgstr       "Bulunan dosya {0}"
+
+#~ msgid        "Use predefined encodings..."
+#~ msgstr       "Öntanımlı kodlamaları kullan..."
+
+#~ msgid        "Select the encoding to be searched second"
+#~ msgstr       "İkinci aranacak kodlamayı seçin"
+
+#~ msgid        "Mark second synchronization position of the subtitles."
+#~ msgstr       "Altyazıların ikinci senkron noktasını işaretleyin."
+
+#~ msgid        "Use given time as start of region"
+#~ msgstr       "Verilen zamanı bölgenin başlangıcı olarak kullan"
+
+#~ msgid        "Push subtitles instead of rearranging"
+#~ msgstr       "Yeniden düzenlemek yerine altyazıları itele"
+
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Jubler yolu bulunamadı."
+
+#~ msgid        "Advanced SubStation format"
+#~ msgstr       "Gelişmiş SubStation formatı"
+
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Yapılandırma dosyası güncellendi. Eski yapılandırma dosyası "
+#~      "{0}'a taşındı"
+
+#~ msgid        "Filename of the external audio file (could be also an audio "
+#~      "cache). Use the \"Browse\" button to change it."
+#~ msgstr       "Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı "
+#~      "değiştirmek için \"Göz At\" düğmesini kullan"
+
+#~ msgid        "Use selected time as end of region"
+#~ msgstr       "Seçili zamanı bölgenin bitişiı olarak kullan"
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "{0} reel sayısı ayrıştırılırken hata oluştu"
+
+#~ msgid        "Attach subtitle editor panel to main Jubler window"
+#~ msgstr       "Altyazı düzenleme panelini Jubler ana penceresine ekle"
+
+#~ msgid        "Version found:"
+#~ msgstr       "Bulunan sürüm:"
 
 #~ msgid        "ERROR: Could not use autosave directory for old files "
 #~      "\"{0}\"."
 #~ msgstr       "HATA: \"{0}\" otomatik kaydetme dizini eski dosyalar için "
 #~      "kullanılamadı."
 
-#~ msgid        "Go"
-#~ msgstr       "Git"
-
-#~ msgid        "Attach subtitle editor panel to main Jubler window"
-#~ msgstr       "Altyazı düzenleme panelini Jubler ana penceresine ekle"
-
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Altyazıyı sarı renkte işaretle"
-
-#~ msgid        "Use selected time as end of region"
-#~ msgstr       "Seçili zamanı bölgenin bitişiı olarak kullan"
-
-#~ msgid        "Enable/disable preview"
-#~ msgstr       "Ön izleme etkinleştir/etkisizleştir"
-
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Yapılandırma dosyası güncellendi. Eski yapılandırma dosyası "
-#~      "{0}'a taşındı"
-
-#~ msgid        "Error while executing MPlayer. Executable not found."
-#~ msgstr       "MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
-#~      "bulunamadı."
-
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Jubler yolu bulunamadı."
-
-#~ msgid        "Delay subtitles by 100 milliseconds"
-#~ msgstr       "Altyazıları 100 milisaniye geciktir."
-
-#~ msgid        "Use given time as start of region"
-#~ msgstr       "Verilen zamanı bölgenin başlangıcı olarak kullan"
-
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Yapılandırma dosyası {0}'a taşınamıyor"
-
-#~ msgid        "Select the encoding to be searched second"
-#~ msgstr       "İkinci aranacak kodlamayı seçin"
-
-#~ msgid        "Select the encoding to be searched last"
-#~ msgstr       "Üçüncü aranacak kodlamayı seçin"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Bulunan dosya {0}"
-
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmek önemli"
-
-#~ msgid        "Please consider upgrading from the following URL:"
-#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmeyi göz önünde bulundurun"
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Altyazıyı beyaz renkte işaretle"
-
-#~ msgid        "Error while executing ASpell"
-#~ msgstr       "Yazdım denetiminde hata"
-
-#~ msgid        "Load subtitles options"
-#~ msgstr       "Altyazı özelliklerini yükle"
-
-#~ msgid        "Select the encoding to be searched first"
-#~ msgstr       "İlk aranacak kodlamayı seçin"
-
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Menü kısayolları"
-
-#~ msgid        "Debug window"
-#~ msgstr       "Hata ayıklama penceresi"
-
-#~ msgid        "The beginning of the region is the start of the file"
-#~ msgstr       "Bölgenin başlangıçı dosya başlangıcıdır"
-
 #~ msgid        "Third Encoding"
 #~ msgstr       "Üçüncü Kodlama"
 
-#~ msgid        "X offset"
-#~ msgstr       "X Ofseti"
-
-#~ msgid        "Advanced SubStation format"
-#~ msgstr       "Gelişmiş SubStation formatı"
-
-#~ msgid        "File preferences"
-#~ msgstr       "Doysa tercihleri"
-
-#~ msgid        "Globally"
-#~ msgstr       "Genel"
-
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Şifre çözücü aktif değil.Ses önbellek oluşturulması "
-#~      "durduruluyor."
-
-#~ msgid        "SubStationAlpha format"
-#~ msgstr       "SubStationAlpha formatı"
-
-#~ msgid        "New version"
-#~ msgstr       "Yeni Sürüm"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Genel değiştirme"
-
-#~ msgid        "Could not create temporary file to store the subtitles."
-#~ msgstr       "Altyazıları kaydetmek için geçici dosya oluşturulamadı"
-
-#~ msgid        "Do not inform me again for this version"
-#~ msgstr       "Bu sürüm için beni tekrar bilgilendirme"
-
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Jupidator otomatik güncelleme sistemi bulunamadı."
-
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Verilen zamanı bölgenin sonu olarak kullan"
-
-#~ msgid        "Mark second synchronization position of the subtitles."
-#~ msgstr       "Altyazıların ikinci senkron noktasını işaretleyin."
-
-#~ msgid        "New Jubler version found!"
-#~ msgstr       "Yeni Jubler sürümü bulundu"
-
-#~ msgid        "Delay subtitles by 1 second"
-#~ msgstr       "Altyazıları 1 saniye geciktir."
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Altyazı sayısı : {0}    {1}"
-
-#~ msgid        "By region"
-#~ msgstr       "Bölge ile"
-
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       "Dosya yüklenirken yükleme tercihlerini göster"
-
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "{0} reel sayısı ayrıştırılırken hata oluştu"
-
-#~ msgid        "Options"
-#~ msgstr       "Seçenekler"
-
-#~ msgid        "Forward subtitles by 1 second"
-#~ msgstr       "Altyazıları 1 saniye ileri kaydır."
-
-#~ msgid        "The end of the region is the end of the file"
-#~ msgstr       "Bölgenin sonu dosya sonudur"
-
-#~ msgid        "File path"
-#~ msgstr       "Dosya yolu"
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Kaydedilmemiş"
-
-#~ msgid        "Displa/hide metric attributes"
-#~ msgstr       "Metrik özellikleri sakla/göster"
-
-#~ msgid        "To the following time"
-#~ msgstr       "Aşağıdaki zamana"
-
-#~ msgid        "MPlayer options"
-#~ msgstr       "MPlayer seçenekleri"
-
-#~ msgid        "_clone"
-#~ msgstr       "_kopyala"
-
-#~ msgid        "Warning!"
-#~ msgstr       "Uyarı!"
-
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Yaratılamadı, ayarlanmamış önbellek dosyası"
-
-#~ msgid        "First Encoding"
-#~ msgstr       "İlk Kodlama"
-
-#~ msgid        "Version found:"
-#~ msgstr       "Bulunan sürüm:"
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Jubler ses önbelleği ses girişi buldu: {0}"
 
 #~ msgid        "Abnormal exit - please report the author about this "
 #~      "behaviour."
 #~ msgstr       "Anormal sonlandırma.\n"
 #~      "Lütfen bu durumu yazara bildirin."
 
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "\"{0}\" SSS dosyası açılamadı"
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Varsayılana dön"
 
-#~ msgid        "Invalid executable!"
-#~ msgstr       "Geçersiz dosya"
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Jupidator otomatik güncelleme sistemi bulunamadı."
 
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "Bölgenin sonu verilen zamandır"
+#~ msgid        "Could not retrieve actual video properties. Using defaults."
+#~ msgstr       "Asıl video özellikleri alınamadı. Varsayılan değerler "
+#~      "kullanılıyor."
 
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Piksel bazında oynatıcı penceresi ofseti"
+#~ msgid        "The end of the region is the selected time"
+#~ msgstr       "Bölgenin sonu seçilen zamandır"
+
+#~ msgid        "Debug window"
+#~ msgstr       "Hata ayıklama penceresi"
+
+#~ msgid        "MPlayer parameters have been updated."
+#~ msgstr       "MPlayer parametreleri güncellendi."
+
+#~ msgid        "Displa/hide metric attributes"
+#~ msgstr       "Metrik özellikleri sakla/göster"
+
+#~ msgid        "From the following time"
+#~ msgstr       "Aşağıdaki zamandan"
+
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       "Dosya yüklenirken yükleme tercihlerini göster"
+
+#~ msgid        "Media Player Error"
+#~ msgstr       "Çoklu Ortam Oynatıcı Hatası"
