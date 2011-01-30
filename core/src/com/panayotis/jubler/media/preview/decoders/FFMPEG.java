@@ -87,7 +87,7 @@ public final class FFMPEG extends NativeDecoder {
             wav = wavfile;
             if (!createClip(afile.getPath(), wavfile.getPath(), (long) from, (long) to)) {
                 /* Something went wrong */
-                cleanUp(_("Count not create audio clip"), wav);
+                cleanUp(_("Could not create audio clip"), wav);
                 return;
             }
 
