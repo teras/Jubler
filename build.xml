@@ -50,7 +50,7 @@
 		<delete file="ChangeLog.html"/>
 		<echo message="" file="ChangeLog.html"/>
 		<java fork="true" classname="com.panayotis.jupidator.helpers.ChangeLogCreator" classpath="dist/lib/jupidator.jar">
-			<arg value="http://www.jubler.org/files/jupidator/updater.xml"/>
+			<arg value="http://www.jubler.org/files/updates/update.xml"/>
 			<arg value="ChangeLog.html"/>
 		</java>
 	</target>
@@ -94,28 +94,28 @@
 		<input message="Please give numeric version" addproperty="longversionid"/>
 		<echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}"/>
 		<echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}packaged=@DISTRIBUTION@${line.separator}" file="resources/system/version.prop"/>
-		<antcall target="nodistbased"/>
+		<antcall target="-nodistbased"/>
 	</target>
-	<target name="nodistbased">
+	<target name="-nodistbased">
 		<copy file="resources/system/version.prop" tofile="core/src/com/panayotis/jubler/information/version.prop" overwrite="yes">
 			<filterset><filter token="DISTRIBUTION" value="false"/></filterset>
 		</copy>
 	</target>
-	<target name="distbased">
+	<target name="-distbased">
 		<copy file="resources/system/version.prop" tofile="core/src/com/panayotis/jubler/information/version.prop" overwrite="yes">
 			<filterset><filter token="DISTRIBUTION" value="true"/></filterset>
 		</copy>
 	</target>
 
 
-	<target name="release" depends="clean,allparts,help,changelog">
+	<target name="-release" depends="clean,allparts,help,changelog">
 		<echo message="INFO:  In order to update version numbering, ant task version-update should be called manually" />
 	</target>
 
 
 	<!-- Mac OS X installer -->
-	<target name="macosx" depends="nodistbased,release,font">
-		<copy file="resources/ffmpeg/darwin/libffdecode.jnilib" todir="dist/lib"/>
+	<target name="macosx" depends="-nodistbased,-release,font">
+		<copy file="resources/libs/ffmpeg/dist/darwin/libffdecode.jnilib" todir="dist/lib"/>
 
 		<jarbundler
 			dir="dist"
@@ -177,7 +177,7 @@
 
 
 	<!-- Generic installer -->
-	<target name="generic" depends="nodistbased,release,font">
+	<target name="generic" depends="-nodistbased,-release,font">
 		<copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes">
 			<filterset><filter token="VERSION" value="${version}"/></filterset>
 		</copy>
@@ -187,7 +187,7 @@
 
 
 	<!-- Windows Installer -->
-	<target name="win32exe" depends="nodistbased,release">
+	<target name="win32exe" depends="-nodistbased,-release">
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -214,7 +214,7 @@
 		</launch4j>
 	</target>
 	<target name="win32" depends="win32exe">
-		<copy file="resources/ffmpeg/win32/ffdecode.dll" todir="dist/lib"/>
+		<copy file="resources/libs/ffmpeg/dist/win32/ffdecode.dll" todir="dist/lib"/>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="makensis" failonerror="true">
@@ -227,13 +227,31 @@
 
 
 
-<!-- ***********************
+	<!--
+	 ***********************
 	 *   Linux Installers  *
-	 *********************** -->
+	 ***********************
+	-->
+
+	<!--
+		Specifically define architecture 
+	-->
+	<target name="-set32arch" depends="-linuxproperties">
+		<property name="given.arch" value="i686"/>
+	</target>
+	<target name="-set64arch" depends="-linuxproperties">
+		<property name="given.arch" value="x86_64"/>
+	</target>
+	<target name="-setautoarch" depends="-linuxproperties">
+		<property name="given.arch" value="${os.arch}"/>
+	</target>
 
 
 	<!-- Generic Linux installer -->
-	<target name="genlinux" depends="nodistbased,release,linuxffdecode,linuxproperties">
+	<target name="linux32" depends="-set32arch,-generic-linux"/>
+	<target name="linux64" depends="-set64arch,-generic-linux"/>
+
+	<target name="-generic-linux" depends="-nodistbased,-release,-linuxffdecode">
 		<mkdir dir="self"/>
 		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes">
 			<filterset><filter token="VERSION" value="${version}"/></filterset>
@@ -244,13 +262,13 @@
 		<copy file="resources/installers/linux/dist/generic/install.sh" todir="self"/>
 		<chmod file="self/install.sh" perm="a+x"/>
 		<exec executable="makeself" failonerror="true">
-			<arg line="--bzip2 self Jubler-${version}-linux_${os.arch}.sh 'Jubler installer' ./install.sh"/>
+			<arg line="--bzip2 self Jubler-${version}-linux_${given.arch}.sh 'Jubler installer' ./install.sh"/>
 		</exec>
 		<delete dir="self"/>
 	</target>
 
 	 <!-- Debian Linux installer -->
-	<target name="debian" depends="distbased,release,linuxffdecode,linuxinstall">
+	<target name="debian" depends="-setautoarch,-distbased,-release,-linuxffdecode,-linuxinstall">
 		<mkdir dir="${destdir}/DEBIAN"/>
 		<exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
 			<arg line="usr -type f -exec md5sum {} ;"/>
@@ -259,42 +277,41 @@
 			<fileset dir="resources/installers/linux/dist/debian"/>
 			<filterset>
 				<filter token="VERSION" value="${version}"/>
-				<filter token="ARCH" value="${os.arch}"/>
+				<filter token="ARCH" value="${given.arch}"/>
 			</filterset>
 		</copy>
 		<chmod file="${destdir}/DEBIAN/postinst" perm="755"/>
 		<chmod file="${destdir}/DEBIAN/postrm" perm="755"/>
 
 		<exec executable="fakeroot" failonerror="true">
-			<arg line="dpkg-deb --build ${destdir} jubler_${version}_${os.arch}.deb"/>
+			<arg line="dpkg-deb --build ${destdir} jubler_${version}_${given.arch}.deb"/>
 		</exec>
 	</target>
 
 	<!-- Slackware Linux installer -->
-	<target name="slackware" depends="distbased,release,linuxffdecode,linuxinstall">
+	<target name="slackware" depends="-setautoarch,-distbased,-release,-linuxffdecode,-linuxinstall">
 		<copy todir="${destdir}">
 			<fileset dir="resources/installers/linux/dist/slackware"/>
 		</copy>
 		<exec dir="${destdir}" executable="makepkg" failonerror="true">
-			<arg line="-l y -c n /tmp/jubler-${version}-${os.arch}-1.tgz"/>
+			<arg line="-l y -c n /tmp/jubler-${version}-${given.arch}-1.tgz"/>
 		</exec>
 	</target>
 
 	<!-- Fedora Linux installer -->
 	<target name="redhat" depends="fedora"/>
-	<target name="fedora" depends="distbased,release,linuxffdecodedyn,linuxinstall"/>
-
+	<target name="fedora" depends="-setautoarch,-distbased,-release,-linuxffdecodedyn,-linuxinstall"/>
 
 
 
 	<!-- Clean up destination directory -->
-	<target name="cleandestdir" depends="linuxproperties">
+	<target name="-cleandestdir" depends="-linuxproperties">
 		<!-- Cleanup -->
 		<exec executable="rm" failonerror="true"><arg line="-rf ${destdir}"/></exec>
 	</target>
 
 	<!-- Create an isntallation-like file tree -->
-	<target name="linuxinstall" depends="linuxproperties, cleandestdir, linuxdesktopintegration">
+	<target name="-linuxinstall" depends="-linuxproperties, -cleandestdir, -linuxdesktopintegration">
 		<!-- Basic Jubler files -->
 		<copy file="dist/Jubler.jar" todir="${libdir}"/>
 		<copy todir="${libdir}/lib">
@@ -320,7 +337,7 @@
 	</target>
 
 	<!-- Linux desktop intergration -->
-	<target name="linuxdesktopintegration" depends="linuxproperties">
+	<target name="-linuxdesktopintegration" depends="-linuxproperties">
 		<!-- Icon files -->
 		<copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
 		<copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
@@ -339,16 +356,22 @@
 	</target>
 
    <!-- Linux with static ffdecode library -->
-	<target name="linuxffdecode">
-		<copy file="resources/ffmpeg/linux/dynamic/libffdecode.so" todir="dist/lib"/>
+
+	<target name="ffdecode">
+		<exec executable="make" failonerror="true" dir="resources/ffmpeg/ffdecode"/>
+	</target>
+			
+
+	<target name="-linuxffdecode">
+		<copy file="resources/libs/ffmpeg/dist/linuxs-${given.arch}/libffdecode.so" todir="dist/lib"/>
 	</target>
 
 	<!-- Linux with dynamic ffdecode library -->
-	<target name="linuxffdecodedyn">
-		<copy file="resources/ffmpeg/linux/static/libffdecode.so" todir="dist/lib"/>
+	<target name="-linuxffdecodedyn">
+		<copy file="resources/libs/ffmpeg/dist/linuxd-${given.arch}/libffdecode.so" todir="dist/lib"/>
 	</target>
 
-	<target name="linuxproperties">
+	<target name="-linuxproperties">
 		<!-- Propery files -->
 		<property environment="env"/>
 
