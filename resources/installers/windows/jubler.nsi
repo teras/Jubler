@@ -119,7 +119,7 @@ SectionEnd
 ; JRE Installation
 ;--------------------------------
 !define JRE_VERSION "1.6"
-!define JRE_URL "http://www.jubler.org/support/jre-6-windows-i586.exe"
+!define JRE_URL "http://javadl.sun.com/webapps/download/AutoDL?BundleId=45824"
 Section "Java Runtime Environment" SecJRE
 
   ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
