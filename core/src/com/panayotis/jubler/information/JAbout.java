@@ -39,9 +39,11 @@ public class JAbout extends javax.swing.JPanel {
     private final static String icon_theme = "Nuvola (David Vignoni - http://www.icon-king.com)";
     private final static String[] transl = {
         "Tom\u00e1\u0161 Bambas " + parseMail("seznam.cz", "conyx"),
+        "Rene " + parseMail("hotmail.com", "bmom43"),
         "Julien Escoffier " + parseMail("jcpdt7j.com", "jubler"),
         "Christian Weiske " + parseMail("cweiske.de", "cweiske"),
         "Panayotis Katsaloulis " + parseMail("panayotis.com", "panayotis"),
+        "Michele Gianella "+parseMail("gmail.com", "gianella.michele"),
         "Doutor.Zero " + parseMail("gmail.com", "doutor.zero"),
         "Nikola Karanovic " + parseMail("yahoo.com", "dzonithebatee"),
         "Alfredo Quesada S\u00E1nchez " + parseMail("yahoo.com", "freddy2_es"),
@@ -49,9 +51,11 @@ public class JAbout extends javax.swing.JPanel {
     };
     private final static String[] langs = {
         _("Czech"),
+        _("Dutch"),
         _("French"),
         _("German"),
         _("Greek"),
+        _("Italian"),
         _("Portuguese (Brazilian)"),
         _("Serbian"),
         _("Spanish"),
