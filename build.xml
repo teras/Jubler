@@ -187,7 +187,7 @@
 
 
 	<!-- Windows Installer -->
-	<target name="win32exe" depends="-nodistbased,-release">
+	<target name="win32exe" depends="-nodistbased,core">
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -213,7 +213,7 @@
 			</config>
 		</launch4j>
 	</target>
-	<target name="win32" depends="win32exe">
+	<target name="win32" depends="-release,win32exe">
 		<copy file="resources/libs/ffmpeg/dist/win32/ffdecode.dll" todir="dist/lib"/>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
