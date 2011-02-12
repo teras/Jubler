@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.media.console;
 
+import com.apple.crypto.provider.Debug;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.player.VideoPlayer;
@@ -42,8 +43,9 @@ import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.options.Options;
 import java.awt.Color;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.tools.JToolRealTime;
+import com.panayotis.jubler.tools.RealTimeTool;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -135,7 +137,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         diagram.setToolTipText(_("Map of subtitles"));
         pack();
 
-        timer = new Timer(300, new ActionListener() {
+        timer = new Timer(300, new ActionListener()  {
 
             public void actionPerformed(ActionEvent evt) {
                 informTimePos();
@@ -916,12 +918,19 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         /* We are able to sync - automatically do the syncing !!! */
         if (sync1 != null && sync2 != null) {
-            JToolRealTime tool;
+            RealTimeTool tool;
 
-            if (sync1.isEqualDiff(sync2))
-                tool = parent.getShifter();
-            else
-                tool = parent.getRecoder();
+            if (true)
+            throw new RuntimeException("QQQQ");
+//            if (sync1.isEqualDiff(sync2))
+//                tool = parent.getShifter();
+//            else
+//                tool = parent.getRecoder();
+
+            if (tool == null) {
+                DEBUG.beep();
+                return;
+            }
 
             if (tool.setValues(sync1, sync2)) {
                 /* Parameters are OK */
