@@ -105,4 +105,8 @@ public class JublerApp extends Application implements Plugin {
             }
         });
     }
+
+    public int getVersion() {
+        return 1;
+    }
 }

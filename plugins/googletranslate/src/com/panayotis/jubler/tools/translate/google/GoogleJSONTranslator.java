@@ -159,4 +159,8 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
         if (o instanceof AvailTranslators)
             ((AvailTranslators) o).add(this);
     }
+
+    public int getVersion() {
+        return 1;
+    }
 }

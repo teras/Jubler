@@ -22,19 +22,16 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 /**
  *
  * @author teras
  */
-public class MPL2 extends AbstractTextSubFormat {
+public class MPL2 extends TextSubtitlePluginBundle {
 
     private static final Pattern pat;
 

@@ -63,4 +63,8 @@ public class AutoUpdater implements UpdatedApplication, Plugin {
             DEBUG.debug(ex.getMessage());
         }
     }
+
+    public int getVersion() {
+        return 1;
+    }
 }

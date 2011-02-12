@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N._;

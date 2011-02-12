@@ -161,7 +161,7 @@ public class ASpell extends SpellChecker implements Plugin {
         return opts;
     }
 
-    public String getName() {
+    public final String getName() {
         return "ASpell";
     }
 
@@ -175,5 +175,9 @@ public class ASpell extends SpellChecker implements Plugin {
             if (l.getType().equals(family))
                 l.add(this);
         }
+    }
+
+    public int getVersion() {
+        return 1;
     }
 }
