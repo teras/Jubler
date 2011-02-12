@@ -59,6 +59,7 @@ public class PluginManager {
             } catch (Exception ex) {
             }
 
+        /* Find plugin assosiations */
         for (PluginItem item : plugin_items)
             for (String affection : item.getAffectionList()) {
                 ArrayList<PluginItem> current_list = plugin_list.get(affection);

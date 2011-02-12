@@ -31,7 +31,7 @@ public class JReplace extends javax.swing.JDialog {
     /**
      * Creates new form JReplace
      */
-    public JReplace(JubFrame parent, int row, UndoList undo) {
+    public JReplace(JubFrame parent, int row) {
         super(parent, false);
 
         this.parent = parent;
@@ -40,7 +40,7 @@ public class JReplace extends javax.swing.JDialog {
             this.row = 0;
         nextpos = 0;
         foundpos = -1;
-        this.undo = undo;
+        this.undo = parent.getUndoList();// we need to invalidate undo list later on, so we keep a copy here
 
         subs = parent.getSubtitles();
         initComponents();

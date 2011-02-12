@@ -50,22 +50,7 @@ import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSingleSelection;
-import com.panayotis.jubler.tools.JDelSelection;
-import com.panayotis.jubler.tools.JFixer;
-import com.panayotis.jubler.tools.JMarker;
-import com.panayotis.jubler.tools.JPaster;
-import com.panayotis.jubler.tools.JRecodeTime;
-import com.panayotis.jubler.tools.JReparent;
-import com.panayotis.jubler.tools.JRegExpReplace;
-import com.panayotis.jubler.tools.JRounder;
-import com.panayotis.jubler.tools.JShiftTime;
-import com.panayotis.jubler.tools.JSpeller;
-import com.panayotis.jubler.tools.JStyler;
-import com.panayotis.jubler.tools.JSubJoin;
-import com.panayotis.jubler.tools.JSubSplit;
-import com.panayotis.jubler.tools.JSynchronize;
-import com.panayotis.jubler.tools.JToolRealTime;
-import com.panayotis.jubler.tools.JTranslate;
+import com.panayotis.jubler.tools.JPasterGUI;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
@@ -123,7 +108,7 @@ public class JubFrame extends JFrame {
     public JSubEditor subeditor;
     /* The following pointer points to the connected jubler window
      * (used for translating) */
-    private JubFrame connect_to_other;
+    public JubFrame jparent;
     private ArrayList<JVideoConsole> connected_consoles;
     /* the last changed subtitle - used for undo */
     private SubEntry last_changed_sub = null;
@@ -137,19 +122,7 @@ public class JubFrame extends JFrame {
     boolean disable_consoles_update = false;
     /* Whether this file needs saving or not */
     private boolean unsaved_data = false;
-    /* JubFrame tools */
-    private JStyler styler;
-    private JShiftTime shift;
-    private JSpeller spell;
-    private JRounder round;
-    private JFixer fix;
-    private JRegExpReplace repg;
-    private JDelSelection dels;
-    private JMarker mark;
-    private JRecodeTime recode;
-    private JSynchronize sync;
-    private JSubSplit split;
-    private JTranslate translate;
+    /* Help browser */
     private static HelpBrowser faqbrowse;
     /* Window frame icon */
     public final static Image FrameIcon;
@@ -169,6 +142,7 @@ public class JubFrame extends JFrame {
     }
 
     /** Creates new form */
+    @SuppressWarnings({"LeakingThisInConstructor", "OverridableMethodCallInConstructor"})
     public JubFrame() {
         PluginManager.manager.callPostInitListeners(this);
         subs = null;
@@ -197,25 +171,12 @@ public class JubFrame extends JFrame {
         StaticJubler.updateMenus(this);
         ShortcutsModel.updateMenuNames(JublerMenuBar);
 
-        /* Initialize Tools */
-        shift = new JShiftTime();
-        styler = new JStyler();  //
-        spell = new JSpeller();
-        round = new JRounder();
-        fix = new JFixer();
-        repg = new JRegExpReplace();
-        dels = new JDelSelection();
-        mark = new JMarker();
-        recode = new JRecodeTime();
-        sync = new JSynchronize();
-        split = new JSubSplit();
-        translate = new JTranslate();
-
         StaticJubler.putWindowPosition(this);
 
         PluginManager.manager.callPostInitListeners(this);
     }
 
+    @SuppressWarnings({"OverridableMethodCallInConstructor"})
     public JubFrame(Subtitles data) {
         this();
         setVisible(true);
@@ -431,14 +392,6 @@ public class JubFrame extends JFrame {
         JoinTM = new javax.swing.JMenuItem();
         ReparentTM = new javax.swing.JMenuItem();
         SynchronizeTM = new javax.swing.JMenuItem();
-        jSeparator8 = new javax.swing.JSeparator();
-        ShiftTimeTM = new javax.swing.JMenuItem();
-        RecodeTM = new javax.swing.JMenuItem();
-        FixTM = new javax.swing.JMenuItem();
-        RoundTM = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JSeparator();
-        SpellTM = new javax.swing.JMenuItem();
-        TranslateTM = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JSeparator();
         TestTM = new javax.swing.JMenu();
         BeginningTTM = new javax.swing.JMenuItem();
@@ -803,7 +756,6 @@ public class JubFrame extends JFrame {
 
         bySelectionDEM.setText(_("By Selection"));
         bySelectionDEM.setName("EDS"); // NOI18N
-        bySelectionDEM.addActionListener(formListener);
         DeleteEM.add(bySelectionDEM);
 
         EmptyLinesDEM.setText(_("Empty Lines"));
@@ -925,7 +877,6 @@ public class JubFrame extends JFrame {
 
         bySelectionMEM.setText(_("By Selection"));
         bySelectionMEM.setName("EMS"); // NOI18N
-        bySelectionMEM.addActionListener(formListener);
         MarkEM.add(bySelectionMEM);
 
         EditM.add(MarkEM);
@@ -935,7 +886,6 @@ public class JubFrame extends JFrame {
 
         bySelectionSEM.setText(_("By Selection"));
         bySelectionSEM.setName("ESS"); // NOI18N
-        bySelectionSEM.addActionListener(formListener);
         StyleEM.add(bySelectionSEM);
 
         EditM.add(StyleEM);
@@ -968,52 +918,16 @@ public class JubFrame extends JFrame {
         JoinTM.setText(_("Join files"));
         JoinTM.setEnabled(false);
         JoinTM.setName("TJO"); // NOI18N
-        JoinTM.addActionListener(formListener);
         ToolsM.add(JoinTM);
 
         ReparentTM.setText(_("Reparent"));
         ReparentTM.setEnabled(false);
         ReparentTM.setName("TPA"); // NOI18N
-        ReparentTM.addActionListener(formListener);
         ToolsM.add(ReparentTM);
 
         SynchronizeTM.setText(_("Synchronize"));
         SynchronizeTM.setName("TSY"); // NOI18N
-        SynchronizeTM.addActionListener(formListener);
         ToolsM.add(SynchronizeTM);
-        ToolsM.add(jSeparator8);
-
-        ShiftTimeTM.setText(_("Shift time"));
-        ShiftTimeTM.setName("TSH"); // NOI18N
-        ShiftTimeTM.addActionListener(formListener);
-        ToolsM.add(ShiftTimeTM);
-
-        RecodeTM.setText(_("Recode"));
-        RecodeTM.setName("TCO"); // NOI18N
-        RecodeTM.addActionListener(formListener);
-        ToolsM.add(RecodeTM);
-
-        FixTM.setText(_("Time fix"));
-        FixTM.setName("TFI"); // NOI18N
-        FixTM.addActionListener(formListener);
-        ToolsM.add(FixTM);
-
-        RoundTM.setText(_("Round times"));
-        RoundTM.setName("TRO"); // NOI18N
-        RoundTM.addActionListener(formListener);
-        ToolsM.add(RoundTM);
-        ToolsM.add(jSeparator5);
-
-        SpellTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
-        SpellTM.setText(_("Spell check"));
-        SpellTM.setName("TLL"); // NOI18N
-        SpellTM.addActionListener(formListener);
-        ToolsM.add(SpellTM);
-
-        TranslateTM.setText(_("Translate"));
-        TranslateTM.setName("TTM"); // NOI18N
-        TranslateTM.addActionListener(formListener);
-        ToolsM.add(TranslateTM);
         ToolsM.add(jSeparator3);
 
         TestTM.setText(_("Test video"));
@@ -1224,9 +1138,6 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == PasteSpecialEM) {
                 JubFrame.this.PasteSpecialEMActionPerformed(evt);
             }
-            else if (evt.getSource() == bySelectionDEM) {
-                JubFrame.this.bySelectionDEMActionPerformed(evt);
-            }
             else if (evt.getSource() == EmptyLinesDEM) {
                 JubFrame.this.EmptyLinesDEMActionPerformed(evt);
             }
@@ -1275,47 +1186,11 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == CyanMEM) {
                 JubFrame.this.CyanMEMActionPerformed(evt);
             }
-            else if (evt.getSource() == bySelectionMEM) {
-                JubFrame.this.bySelectionMEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == bySelectionSEM) {
-                JubFrame.this.bySelectionSEMActionPerformed(evt);
-            }
             else if (evt.getSource() == UndoEM) {
                 JubFrame.this.UndoEMActionPerformed(evt);
             }
             else if (evt.getSource() == RedoEM) {
                 JubFrame.this.RedoEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == SplitTM) {
-                JubFrame.this.SplitTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == JoinTM) {
-                JubFrame.this.JoinTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == ReparentTM) {
-                JubFrame.this.ReparentTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == SynchronizeTM) {
-                JubFrame.this.SynchronizeTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == ShiftTimeTM) {
-                JubFrame.this.ShiftTimeTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == RecodeTM) {
-                JubFrame.this.RecodeTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == FixTM) {
-                JubFrame.this.FixTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == RoundTM) {
-                JubFrame.this.RoundTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == SpellTM) {
-                JubFrame.this.SpellTMActionPerformed(evt);
-            }
-            else if (evt.getSource() == TranslateTM) {
-                JubFrame.this.TranslateTMActionPerformed(evt);
             }
             else if (evt.getSource() == BeginningTTM) {
                 JubFrame.this.BeginningTTMActionPerformed(evt);
@@ -1346,6 +1221,9 @@ public class JubFrame extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == SplitTM) {
+                JubFrame.this.SplitTMActionPerformed(evt);
             }
         }
 
@@ -1383,39 +1261,10 @@ public class JubFrame extends JFrame {
         faqbrowse.setVisible(true);
     }//GEN-LAST:event_FAQHMActionPerformed
 
-    private void SynchronizeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SynchronizeTMActionPerformed
-        sync.execute(this);
-    }//GEN-LAST:event_SynchronizeTMActionPerformed
-
     private void QuitFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitFMActionPerformed
         if (StaticJubler.requestQuit(this))
             System.exit(0);
     }//GEN-LAST:event_QuitFMActionPerformed
-
-    private void ReparentTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReparentTMActionPerformed
-        JReparent rep;
-        rep = new JReparent(this, connect_to_other);
-
-        if (JIDialog.action(this, rep, _("Reparent subtitles file"))) {
-            JubFrame newp = rep.getDesiredParent();
-            if (newp == null) {
-                /* the user cancelled the parenting */
-                connect_to_other = null;
-                return;
-            } else {
-                /* The user set the parenting, we have to check for circles */
-                JubFrame pointer = newp;
-                while ((pointer = pointer.connect_to_other) != null)
-                    if (pointer == this) {
-                        /*  A circle was found */
-                        JIDialog.error(this, _("Cyclic dependency while setting new parent.\nParenting will be cancelled"), _("Reparent error"));
-                        return;
-                    }
-                /* No cyclic dependency was found */
-                connect_to_other = newp;
-            }
-        }
-    }//GEN-LAST:event_ReparentTMActionPerformed
 
     private void SortTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortTBActionPerformed
         undo.addUndo(new UndoEntry(subs, _("Sort")));
@@ -1478,14 +1327,10 @@ public class JubFrame extends JFrame {
         curjubler.setSubs(s);
         curjubler.subs.getSubFile().appendToFilename(_("_child"));
         curjubler.showInfo();
-        curjubler.connect_to_other = this;
+        curjubler.jparent = this;
         curjubler.enableSaveControls();
         StaticJubler.updateRecents();
     }//GEN-LAST:event_ChildNFMActionPerformed
-
-    private void bySelectionSEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionSEMActionPerformed
-        styler.execute(this);
-    }//GEN-LAST:event_bySelectionSEMActionPerformed
 
     private void InfoFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoFMActionPerformed
         JInformation info = new JInformation(this);
@@ -1501,17 +1346,9 @@ public class JubFrame extends JFrame {
     }//GEN-LAST:event_InfoFMActionPerformed
 
     private void StepwiseREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepwiseREMActionPerformed
-        JReplace replace = new JReplace(this, SubTable.getSelectedRow(), undo);
+        JReplace replace = new JReplace(this, SubTable.getSelectedRow());
         replace.setVisible(true);
     }//GEN-LAST:event_StepwiseREMActionPerformed
-
-    private void SpellTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SpellTMActionPerformed
-        spell.execute(this);
-    }//GEN-LAST:event_SpellTMActionPerformed
-
-    private void RoundTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RoundTMActionPerformed
-        round.execute(this);
-    }//GEN-LAST:event_RoundTMActionPerformed
 
     public void addNewSubtitle(boolean is_after) {
         double prevtime, nexttime;
@@ -1568,15 +1405,15 @@ public class JubFrame extends JFrame {
         if (copybuffer.isEmpty())
             return;
 
-        JPaster paster;
+        JPasterGUI paster;
         SubEntry entry;
         int row;
 
         row = SubTable.getSelectedRow();
         if (row < 0)
-            paster = new JPaster(new Time(0d));
+            paster = new JPasterGUI(new Time(0d));
         else
-            paster = new JPaster(subs.elementAt(row).getStartTime());
+            paster = new JPasterGUI(subs.elementAt(row).getStartTime());
 
         if (JIDialog.action(this, paster, _("Paste special options"))) {
             int newmark = paster.getMark();
@@ -1656,10 +1493,6 @@ public class JubFrame extends JFrame {
         StaticJubler.updateRecents();
     }//GEN-LAST:event_FileNFMActionPerformed
 
-    private void FixTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FixTMActionPerformed
-        fix.execute(this);
-    }//GEN-LAST:event_FixTMActionPerformed
-
     private void UndoEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoEMActionPerformed
         undo.applyDoCommand(subs, true, SubTable.getSelectedRows());
     }//GEN-LAST:event_UndoEMActionPerformed
@@ -1697,14 +1530,9 @@ public class JubFrame extends JFrame {
     }//GEN-LAST:event_RevertFMActionPerformed
 
     private void RegExpREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegExpREMActionPerformed
-        repg.execute(this);
+        throw new RuntimeException();
+        //new JRegExpReplace().execute(this);
     }//GEN-LAST:event_RegExpREMActionPerformed
-
-    private void bySelectionDEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionDEMActionPerformed
-        int lastrow = SubTable.getSelectedRow();
-        dels.execute(this);
-        setSelectedSub(lastrow, true);
-    }//GEN-LAST:event_bySelectionDEMActionPerformed
 
     private void EmptyLinesDEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmptyLinesDEMActionPerformed
         UndoEntry u = null;
@@ -1730,10 +1558,6 @@ public class JubFrame extends JFrame {
         } else
             JIDialog.info(this, _("No lines affected"), _("Remove empty lines"));
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed
-
-    private void bySelectionMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionMEMActionPerformed
-        mark.execute(this);
-    }//GEN-LAST:event_bySelectionMEMActionPerformed
 
     private void CyanMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CyanMEMActionPerformed
         setMark(SubTable.getSelectedRows(), 3);
@@ -1771,92 +1595,6 @@ public class JubFrame extends JFrame {
         testVideo(t);
     }//GEN-LAST:event_CurrentTTMActionPerformed
 
-    private void JoinTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinTMActionPerformed
-        JSubJoin join = new JSubJoin(windows, this);
-
-        if (JIDialog.action(this, join, _("Join two subtitles"))) {
-            Subtitles newsubs;
-            JubFrame other;
-            double dt;
-
-            undo.addUndo(new UndoEntry(subs, _("Join subtitles")));
-
-            newsubs = new Subtitles(subs.getSubFile());
-            other = join.getOtherSubs();
-            dt = join.getGap().toSeconds();
-
-            if (join.isPrepend())
-                newsubs.joinSubs(other.subs, subs, dt);
-            else
-                newsubs.joinSubs(subs, other.subs, dt);
-
-            setSubs(newsubs);
-            other.closeWindow(false, true);
-        }
-    }//GEN-LAST:event_JoinTMActionPerformed
-
-    private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitTMActionPerformed
-        int row;
-
-        row = SubTable.getSelectedRow();
-        if (row < 0)
-            row = 0;
-        split.setSubtitle(subs, row);
-
-        if (JIDialog.action(this, split, _("Split subtitles in two"))) {
-            Subtitles subs1, subs2;
-            SubEntry csub;
-            double stime;
-
-            undo.addUndo(new UndoEntry(subs, _("Split subtitles")));
-
-            stime = split.getTime().toSeconds();
-            subs1 = new Subtitles(new SubFile(subs.getSubFile()));
-            subs1.getSubFile().appendToFilename("_1");
-            subs2 = new Subtitles(new SubFile(subs.getSubFile()));
-            subs2.getSubFile().appendToFilename("_2");
-
-            for (int i = 0; i < subs.size(); i++) {
-                csub = subs.elementAt(i);
-                if (csub.getStartTime().toSeconds() < stime)
-                    subs1.add(csub);
-                else {
-                    csub.getStartTime().addTime(-stime);
-                    csub.getFinishTime().addTime(-stime);
-                    subs2.add(csub);
-                }
-            }
-
-            setSubs(subs1);
-            JubFrame newwindow = new JubFrame(subs2);
-
-            undo.invalidateSaveMark();
-            newwindow.undo.invalidateSaveMark();
-
-            enableWindowControls(false);
-            newwindow.enableWindowControls(true);
-            showInfo();
-            newwindow.showInfo();
-            StaticJubler.updateRecents();
-        }
-    }//GEN-LAST:event_SplitTMActionPerformed
-
-    public JToolRealTime getRecoder() {
-        return recode;
-    }
-
-    public JToolRealTime getShifter() {
-        return shift;
-    }
-
-    private void RecodeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecodeTMActionPerformed
-        recode.execute(this);
-    }//GEN-LAST:event_RecodeTMActionPerformed
-
-    private void ShiftTimeTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShiftTimeTMActionPerformed
-        shift.execute(this);
-    }//GEN-LAST:event_ShiftTimeTMActionPerformed
-
     private void SaveAsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsFMActionPerformed
         saveFile(fdialog.getSaveFile(this, subs, mfile));
     }//GEN-LAST:event_SaveAsFMActionPerformed
@@ -1883,10 +1621,6 @@ public class JubFrame extends JFrame {
         if (newj != null)
             newj.mfile = mf;
     }//GEN-LAST:event_OpenFMActionPerformed
-
-private void TranslateTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TranslateTMActionPerformed
-    translate.execute(this);
-}//GEN-LAST:event_TranslateTMActionPerformed
 
 private void EnablePreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnablePreviewCActionPerformed
     enablePreview(EnablePreviewC.isSelected());
@@ -1922,6 +1656,16 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
+
+private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitTMActionPerformed
+    // TODO add your handling code here:
+}//GEN-LAST:event_SplitTMActionPerformed
+
+    private void QQQQQdeletebyselection() {
+//        int lastrow = SubTable.getSelectedRow();
+//    dels.execute(this);
+//    setSelectedSub(lastrow, true);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1951,7 +1695,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenu FileM;
     private javax.swing.JMenuItem FileNFM;
     private javax.swing.JPanel FileTP;
-    private javax.swing.JMenuItem FixTM;
     private javax.swing.JMenu GoEM;
     public javax.swing.JCheckBoxMenuItem HalfSizeC;
     private javax.swing.JMenu HelpM;
@@ -1988,7 +1731,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem PreviousPageGEM;
     public javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
-    private javax.swing.JMenuItem RecodeTM;
     private javax.swing.JMenuItem RedoEM;
     private javax.swing.JButton RedoTB;
     private javax.swing.JMenuItem RegExpREM;
@@ -1996,11 +1738,9 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenu ReplaceEM;
     private javax.swing.JMenuItem RetrieveWFM;
     private javax.swing.JMenuItem RevertFM;
-    private javax.swing.JMenuItem RoundTM;
     private javax.swing.JMenuItem SaveAsFM;
     private javax.swing.JMenuItem SaveFM;
     private javax.swing.JButton SaveTB;
-    private javax.swing.JMenuItem ShiftTimeTM;
     private javax.swing.JCheckBoxMenuItem ShowCPMP;
     private javax.swing.JMenu ShowColP;
     private javax.swing.JCheckBoxMenuItem ShowEndP;
@@ -2010,7 +1750,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
     private javax.swing.JButton SortTB;
     private javax.swing.JPanel SortTP;
-    private javax.swing.JMenuItem SpellTM;
     private javax.swing.JMenuItem SplitTM;
     private javax.swing.JMenuItem StepwiseREM;
     private javax.swing.JMenu StyleEM;
@@ -2027,7 +1766,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JPanel TestTP;
     private javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
-    private javax.swing.JMenuItem TranslateTM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
     private javax.swing.JPanel UndoTP;
@@ -2046,10 +1784,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     // End of variables declaration//GEN-END:variables
 
@@ -2199,7 +1935,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
     /* Set the filename of this project and enanble the buttons */
-    private void enableWindowControls(boolean reset_selection) {
+    public void enableWindowControls(boolean reset_selection) {
         RevertFM.setEnabled(true);
         ChildNFM.setEnabled(true);
         SaveFM.setEnabled(true);
@@ -2265,7 +2001,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
         validate();
     }
 
-    private void closeWindow(boolean unsave_check, boolean keep_application_alive) {
+    public void closeWindow(boolean unsave_check, boolean keep_application_alive) {
         if (isUnsaved() && unsave_check)
             if (!JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation")))
                 return;
@@ -2279,8 +2015,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 
         windows.remove(this);
         for (JubFrame w : windows)
-            if (w.connect_to_other == this)
-                w.connect_to_other = null;
+            if (w.jparent == this)
+                w.jparent = null;
         if (windows.size() == 1) {
             windows.get(0).JoinTM.setEnabled(false);
             windows.get(0).ReparentTM.setEnabled(false);
@@ -2292,9 +2028,8 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
                 StaticJubler.setWindowPosition(this, true);
                 StaticJubler.jumpWindowPosition(false);
                 new JubFrame().setVisible(true);
-            } else
-                if (StaticJubler.requestQuit(this))
-                    System.exit(0);
+            } else if (StaticJubler.requestQuit(this))
+                System.exit(0);
 
         dispose();
     }
@@ -2513,9 +2248,9 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             preview.subsHaveChanged(SubTable.getSelectedRows());
 
 
-        if (connect_to_other != null) {
+        if (jparent != null) {
             double newtime = (sel.getStartTime().toSeconds() + sel.getFinishTime().toSeconds()) / 2;
-            connect_to_other.setSelectedSub(connect_to_other.subs.findSubEntry(newtime, true), true);
+            jparent.setSelectedSub(jparent.subs.findSubEntry(newtime, true), true);
         }
 
         updateConsoles(sel.getStartTime().toSeconds());
@@ -2525,7 +2260,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
     private void updateStyleMenu() {
-        ActionListener listener = new ActionListener() {
+        ActionListener listener = new ActionListener()   {
 
             public void actionPerformed(ActionEvent evt) {
                 changeSubtitleStyle(((JMenuItem) evt.getSource()).getText());
