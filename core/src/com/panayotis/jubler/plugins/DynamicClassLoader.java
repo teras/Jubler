@@ -22,18 +22,14 @@
 package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.os.DEBUG;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import java.util.jar.JarFile;
 
 /**
  *
@@ -42,7 +38,8 @@ import java.util.zip.ZipFile;
 public class DynamicClassLoader extends URLClassLoader {
 
     private final static String UD = System.getProperty("user.dir") + File.separator;
-    private final static String plugins_list_filename = "plugins.list";
+    private final static String MANIFEST = "META-INF/MANIFEST.MF";
+    private final static String PLUGINTAG = "Extension-Name";
     //
     private static String MainPath = UD;  // Base directory to look for plugins
     private static boolean JarBased = false;
@@ -76,39 +73,23 @@ public class DynamicClassLoader extends URLClassLoader {
         if (path.isFile() && path.getPath().toLowerCase().endsWith(".jar"))
             try {
                 addURL(path.toURI().toURL());
-                addPluginsList(path);
+                addPlugin(path);
             } catch (MalformedURLException ex) {
             }
     }
 
-    private void addPluginsList(File path) {
-        BufferedReader in = null;
+    private void addPlugin(File path) {
         try {
-            InputStream stream = new ZipFile(path).getInputStream(new ZipEntry(plugins_list_filename));
-            if (stream != null) {
-                in = new BufferedReader(new InputStreamReader(stream));
-                String line;
-                while ((line = in.readLine()) != null) {
-                    line = line.trim();
-                    if (line.length() > 0) {
-                        DEBUG.debug("Registering plugin " + line + " from file " + path.getPath() + ".");
-                        plugins.add(line);
-                    }
-                }
-                in.close();
-                return;
+            String name = new JarFile(path).getManifest().getMainAttributes().getValue(PLUGINTAG);
+            if (name != null) {
+                DEBUG.debug("Registering plugin " + name);
+                plugins.add(name);
             }
         } catch (IOException ex) {
-        } finally {
-            try {
-                if (in != null)
-                    in.close();
-            } catch (IOException ex) {
-            }
         }
     }
 
-    public ArrayList<String> getPluginsList() {
+    public ArrayList<String> getPlugins() {
         return plugins;
     }
 

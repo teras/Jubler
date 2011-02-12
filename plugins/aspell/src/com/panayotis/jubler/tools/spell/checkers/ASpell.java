@@ -25,6 +25,7 @@ package com.panayotis.jubler.tools.spell.checkers;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
 import java.io.BufferedReader;
@@ -42,7 +43,7 @@ import java.util.ArrayList;
  *
  * @author teras
  */
-public class ASpell extends SpellChecker implements Plugin {
+public class ASpell extends SpellChecker implements Plugin, PluginItem {
 
     BufferedWriter send;
     BufferedReader get;
@@ -166,7 +167,7 @@ public class ASpell extends SpellChecker implements Plugin {
     }
 
     public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
+        return new String[]{AvailExternals.class.getName()};
     }
 
     public void postInit(Object o) {
@@ -177,7 +178,7 @@ public class ASpell extends SpellChecker implements Plugin {
         }
     }
 
-    public int getVersion() {
-        return 1;
+    public PluginItem[] getList() {
+        return new PluginItem[]{this};
     }
 }

@@ -32,6 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.format.StyledFormat;
+import com.panayotis.jubler.subs.loader.format.StyledTextSubFormat;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;
@@ -43,7 +44,7 @@ import java.util.HashMap;
  *
  * @author teras
  */
-public class SubStationAlpha extends StyledSubtitlePluginBundle {
+public class SubStationAlpha extends StyledTextSubFormat {
 
     private static final Pattern pat, testpat;
     private static final Pattern title, author, source, comments, styles, stylepattern;

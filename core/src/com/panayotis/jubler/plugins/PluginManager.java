@@ -22,7 +22,10 @@
 package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.SystemDependent;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -33,41 +36,43 @@ public class PluginManager {
 
     public final static PluginManager manager = new PluginManager();
     private DynamicClassLoader cl;
-    private HashMap<String, ArrayList<Plugin>> connections;
+    private HashMap<String, ArrayList<PluginItem>> plugin_list;
 
     public PluginManager() {
-        connections = new HashMap<String, ArrayList<Plugin>>();
+        plugin_list = new HashMap<String, ArrayList<PluginItem>>();
 
+        /* Add plugins path */
         cl = new DynamicClassLoader();
         if (DynamicClassLoader.isJarBased())
-            cl.addPaths(new String[]{"lib"});
+            cl.addPaths(new String[]{"lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
         else
-            cl.addPaths(new String[]{"../dist/lib"});
+            cl.addPaths(new String[]{"../dist/lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
         cl.setClassPath();
 
-        String[] affectlist;
-        Plugin pl;
-        ArrayList<Plugin> current_list;
-        ArrayList<String> plugins = cl.getPluginsList();
-        for (int i = 0; i < plugins.size(); i++) {
-            pl = (Plugin) getClass(plugins.get(i));
-            if (pl != null) {
-                DEBUG.debug("Loading plugin " + plugins.get(i));
-                affectlist = pl.getAffectionList();
-                if (affectlist != null)
-                    for (int j = 0; j < affectlist.length; j++) {
-                        current_list = connections.get(affectlist[j]);
-                        if (current_list == null) {
-                            current_list = new ArrayList<Plugin>();
-                            current_list.add(pl);
-                            connections.put(affectlist[j], current_list);
-                        } else
-                            current_list.add(pl);
-                    }
-            } else
-                DEBUG.debug("Unable to load plugin " + plugins.get(i));
-        }
-        DEBUG.debug(connections.size() + " listeners found for " + plugins.size() + " plugins");
+        /* Find plugins and their plugin items */
+        ArrayList<String> plugins = cl.getPlugins();
+        ArrayList<PluginItem> plugin_items = new ArrayList<PluginItem>();
+        for (String plugin : plugins)
+            try {
+                Plugin p = (Plugin) getClass(plugin);
+                plugin_items.addAll(Arrays.asList(p.getList()));
+            } catch (Exception ex) {
+            }
+
+        for (PluginItem item : plugin_items)
+            for (String affection : item.getAffectionList()) {
+                ArrayList<PluginItem> current_list = plugin_list.get(affection);
+                if (current_list == null) {
+                    current_list = new ArrayList<PluginItem>();
+                    current_list.add(item);
+                    plugin_list.put(affection, current_list);
+                } else
+                    current_list.add(item);
+            }
+
+        DEBUG.debug(plugins.size() + " plugin" + (plugins.size() == 1 ? "" : "s") + " found");
+        DEBUG.debug(plugin_items.size() + " plugin item" + (plugin_items.size() == 1 ? "" : "s") + " found");
+        DEBUG.debug(plugin_list.size() + " listener" + (plugin_list.size() == 1 ? "" : "s") + " found");
     }
 
     private Object getClass(String classname) {
@@ -84,7 +89,7 @@ public class PluginManager {
     }
 
     public void callPostInitListeners(Object o, String tag) {
-        ArrayList<Plugin> pl = connections.get(tag);
+        ArrayList<PluginItem> pl = plugin_list.get(tag);
         if (pl != null)
             for (int i = 0; i < pl.size(); i++)
                 pl.get(i).postInit(o);

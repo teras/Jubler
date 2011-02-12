@@ -21,6 +21,7 @@ package com.panayotis.jubler;
 
 import com.apple.eawt.Application;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
 import java.awt.Component;
 import java.awt.Point;
@@ -35,7 +36,7 @@ import javax.swing.SwingUtilities;
  *
  * @author teras
  */
-public class JublerApp extends Application implements Plugin {
+public class JublerApp extends Application implements Plugin, PluginItem {
 
     private boolean ignore_click = false;
 
@@ -75,8 +76,9 @@ public class JublerApp extends Application implements Plugin {
         final Point oldpos = new Point();
         final Point newpos = new Point();
 
-        comp.addMouseListener(new MouseAdapter() {
+        comp.addMouseListener(new MouseAdapter()  {
 
+            @Override
             public void mousePressed(MouseEvent e) {
                 Component c = e.getComponent();
                 while (c.getParent() != null) {
@@ -94,8 +96,9 @@ public class JublerApp extends Application implements Plugin {
             }
         });
 
-        comp.addMouseMotionListener(new MouseMotionAdapter() {
+        comp.addMouseMotionListener(new MouseMotionAdapter()  {
 
+            @Override
             public void mouseDragged(MouseEvent e) {
                 if (ignore_click)
                     return;
@@ -106,7 +109,7 @@ public class JublerApp extends Application implements Plugin {
         });
     }
 
-    public int getVersion() {
-        return 1;
+    public PluginItem[] getList() {
+        return new PluginItem[]{this};
     }
 }

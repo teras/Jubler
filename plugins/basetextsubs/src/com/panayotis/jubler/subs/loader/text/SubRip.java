@@ -31,13 +31,14 @@ import java.util.regex.Pattern;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.format.StyledFormat;
+import com.panayotis.jubler.subs.loader.format.StyledTextSubFormat;
 import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public class SubRip extends StyledSubtitlePluginBundle {
+public class SubRip extends StyledTextSubFormat {
 
     private static final Pattern pat, stylepat;
     private static final ArrayList<StyledFormat> sdict;

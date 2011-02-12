@@ -80,8 +80,4 @@ public class PlainText extends AbstractTextSubFormat {
     public boolean supportsFPS() {
         return false;
     }
-
-    public int getVersion() {
-        return 1;
-    }
 }

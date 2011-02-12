@@ -194,8 +194,4 @@ public class DVDMaestro extends AbstractBinarySubFormat {
         }
         return true;
     }
-
-    public int getVersion() {
-        return -1;
-    }
 }

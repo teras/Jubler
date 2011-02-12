@@ -30,12 +30,13 @@ import java.util.regex.Pattern;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 
 /**
  *
  * @author teras
  */
-public class SubViewer extends TextSubtitlePluginBundle {
+public class SubViewer extends AbstractTextSubFormat {
 
     private static final Pattern pat, testpat;
     private static final Pattern title, author, source, comments;

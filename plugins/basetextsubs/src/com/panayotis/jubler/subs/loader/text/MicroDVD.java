@@ -23,6 +23,7 @@
 package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ import java.util.regex.Pattern;
  *
  * @author teras
  */
-public class MicroDVD extends TextSubtitlePluginBundle {
+public class MicroDVD extends AbstractTextSubFormat {
 
     private static final Pattern pat;
 

@@ -21,6 +21,7 @@ package com.panayotis.jubler.tools.translate.google;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.translate.AvailTranslators;
 import com.panayotis.jubler.tools.translate.HTMLTextUtils;
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  *
  * @author teras
  */
-public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin {
+public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin, PluginItem {
 
     private static final ArrayList<Language> lang;
 
@@ -152,7 +153,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
     }
 
     public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.translate.AvailTranslators"};
+        return new String[]{AvailTranslators.class.getName()};
     }
 
     public void postInit(Object o) {
@@ -160,7 +161,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
             ((AvailTranslators) o).add(this);
     }
 
-    public int getVersion() {
-        return 1;
+    public PluginItem[] getList() {
+        return new PluginItem[]{this};
     }
 }

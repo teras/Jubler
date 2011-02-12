@@ -25,6 +25,7 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jupidator.ApplicationInfo;
 import com.panayotis.jupidator.UpdatedApplication;
 import com.panayotis.jupidator.Updater;
@@ -34,7 +35,7 @@ import com.panayotis.jupidator.UpdaterException;
  *
  * @author teras
  */
-public class AutoUpdater implements UpdatedApplication, Plugin {
+public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
 
     private static final String URL = "http://www.jubler.org/files/updates/update.xml";
 
@@ -64,7 +65,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin {
         }
     }
 
-    public int getVersion() {
-        return 1;
+    public PluginItem[] getList() {
+        return new PluginItem[]{this};
     }
 }
