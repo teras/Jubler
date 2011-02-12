@@ -63,14 +63,14 @@ public class FileCommunicator {
 
         /* First chech already known data */
         enc = sfile.getEncoding();
-        res = load(sfile, enc, "Found defined encoding {0}" + enc, false);
+        res = load(sfile, enc, "Found defined encoding " + enc, false);
         if (res != null)
             return res;
 
         /* Then check if encoding is tagged on the file */
         enc = ByteOrderFactory.getEncoding(sfile.getSaveFile());
         if (enc != null) {
-            res = load(sfile, enc, "Found tagged encoding {0}" + enc, false);
+            res = load(sfile, enc, "Found tagged encoding " + enc, false);
             if (res != null)
                 return res;
         }
@@ -78,14 +78,14 @@ public class FileCommunicator {
         /* Then guess and be strict */
         for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
             enc = SubFile.getDefaultEncoding(i);
-            res = load(sfile, enc, "Found strict encoding {0}" + enc, true);
+            res = load(sfile, enc, "Found strict encoding " + enc, true);
             if (res != null)
                 return res;
         }
         /* Then be relaxed */
         for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
             enc = SubFile.getDefaultEncoding(i);
-            res = load(sfile, enc, "Found relaxed encoding {0}" + enc, false);
+            res = load(sfile, enc, "Found relaxed encoding " + enc, false);
             if (res != null)
                 return res;
         }

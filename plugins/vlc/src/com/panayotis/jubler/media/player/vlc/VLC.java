@@ -22,12 +22,13 @@ package com.panayotis.jubler.media.player.vlc;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 
 /**
  *
  * @author teras
  */
-public class VLC extends AbstractPlayer implements Plugin {
+public class VLC extends AbstractPlayer implements Plugin, PluginItem {
 
     public VLC() {
         super(family);
@@ -85,7 +86,7 @@ public class VLC extends AbstractPlayer implements Plugin {
         return "VLC";
     }
 
-    public int getVersion() {
-        return 1;
+    public PluginItem[] getList() {
+        return new PluginItem[]{this};
     }
 }

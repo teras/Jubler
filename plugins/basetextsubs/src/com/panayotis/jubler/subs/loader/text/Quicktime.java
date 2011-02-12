@@ -30,12 +30,13 @@ import java.util.regex.Pattern;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 
 /**
  *
  * @author teras
  */
-public class Quicktime extends TextSubtitlePluginBundle {
+public class Quicktime extends AbstractTextSubFormat {
 
     private static final Pattern pat, test_pat;
     private Time start, finish, mediafinish;

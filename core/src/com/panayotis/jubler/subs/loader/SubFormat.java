@@ -23,7 +23,7 @@
 package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
@@ -33,7 +33,7 @@ import java.io.IOException;
  *
  * @author teras
  */
-public abstract class SubFormat implements Plugin {
+public abstract class SubFormat implements PluginItem {
 
     protected float FPS;
     protected String ENCODING;
@@ -66,7 +66,7 @@ public abstract class SubFormat implements Plugin {
     }
 
     public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.subs.loader.AvailSubFormats"};
+        return new String[]{AvailSubFormats.class.getName()};
     }
 
     public void postInit(Object o) {

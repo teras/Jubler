@@ -41,18 +41,22 @@ public class SubViewer2 extends SubViewer {
                 + sp + nl + "(.*?)\\[br\\](.*?)" + nl + nl);
     }
 
+    @Override
     protected Pattern getTestPattern() {
         return testpat;
     }
 
+    @Override
     public String getName() {
         return "SubViewer2";
     }
 
+    @Override
     public String getExtendedName() {
         return _("SubViewer V2");
     }
 
+    @Override
     protected String subreplace(String sub) {
         return sub.replace("\n", "[br]");
     }

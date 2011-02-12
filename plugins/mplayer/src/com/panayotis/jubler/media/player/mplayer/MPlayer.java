@@ -25,12 +25,13 @@ package com.panayotis.jubler.media.player.mplayer;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 
 /**
  *
  * @author teras
  */
-public class MPlayer extends AbstractPlayer implements Plugin {
+public class MPlayer extends AbstractPlayer implements Plugin, PluginItem {
 
     static {
         MPlayerSystemDependent.updateParameters();
@@ -88,11 +89,12 @@ public class MPlayer extends AbstractPlayer implements Plugin {
         return " ass ";
     }
 
+    @Override
     public String[] getEnvironment() {
         return MPlayerSystemDependent.getMPlayerEnvironment(this);
     }
 
-    public int getVersion() {
-        return 1;
+    public PluginItem[] getList() {
+        return new PluginItem[]{this};
     }
 }

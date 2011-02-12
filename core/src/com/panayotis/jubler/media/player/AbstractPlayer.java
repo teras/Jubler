@@ -160,7 +160,7 @@ public abstract class AbstractPlayer extends VideoPlayer {
     }
 
     public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
+        return new String[]{AvailExternals.class.getName()};
     }
 
     public void postInit(Object o) {

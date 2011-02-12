@@ -71,8 +71,4 @@ public class ScanTitle extends AbstractBinarySubFormat {
     public boolean produce(Subtitles subs, File out, MediaFile media) throws IOException {
         return true;
     }
-
-    public int getVersion() {
-        return -1;
-    }
 }

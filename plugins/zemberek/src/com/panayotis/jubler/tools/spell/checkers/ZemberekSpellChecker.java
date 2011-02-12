@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
@@ -41,13 +42,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class ZemberekSpellChecker extends SpellChecker implements Plugin {
+public class ZemberekSpellChecker extends SpellChecker implements Plugin, PluginItem {
 
     private Method kelimeDenetle, oner;
     private Object zemberek;
-
-    public ZemberekSpellChecker() {
-    }
 
     public ArrayList<SpellError> checkSpelling(String text) {
         HashMap<String, Integer> lastPositions = new HashMap<String, Integer>();
@@ -118,7 +116,7 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
     }
 
     public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
+        return new String[]{AvailExternals.class.getName()};
     }
 
     public void postInit(Object o) {
@@ -129,7 +127,7 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
         }
     }
 
-    public int getVersion() {
-        return 1;
+    public PluginItem[] getList() {
+        return new PluginItem[]{this};
     }
 }
