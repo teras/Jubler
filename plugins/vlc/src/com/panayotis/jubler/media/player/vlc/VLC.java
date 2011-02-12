@@ -84,4 +84,8 @@ public class VLC extends AbstractPlayer implements Plugin {
     public String getName() {
         return "VLC";
     }
+
+    public int getVersion() {
+        return 1;
+    }
 }

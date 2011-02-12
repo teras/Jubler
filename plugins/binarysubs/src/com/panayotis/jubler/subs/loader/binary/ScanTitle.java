@@ -23,7 +23,6 @@
 package com.panayotis.jubler.subs.loader.binary;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.subs.loader.AbstractBinarySubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -71,5 +70,9 @@ public class ScanTitle extends AbstractBinarySubFormat {
 
     public boolean produce(Subtitles subs, File out, MediaFile media) throws IOException {
         return true;
+    }
+
+    public int getVersion() {
+        return -1;
     }
 }

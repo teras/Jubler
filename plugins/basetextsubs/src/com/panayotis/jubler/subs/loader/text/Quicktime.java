@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
@@ -36,7 +35,7 @@ import com.panayotis.jubler.subs.Subtitles;
  *
  * @author teras
  */
-public class Quicktime extends AbstractTextSubFormat {
+public class Quicktime extends TextSubtitlePluginBundle {
 
     private static final Pattern pat, test_pat;
     private Time start, finish, mediafinish;

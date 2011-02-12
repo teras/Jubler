@@ -128,4 +128,8 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
                 l.add(this);
         }
     }
+
+    public int getVersion() {
+        return 1;
+    }
 }

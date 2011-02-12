@@ -28,4 +28,6 @@ public interface Plugin {
     public String[] getAffectionList();
 
     public void postInit(Object o);
+    
+    public int getVersion();
 }

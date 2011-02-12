@@ -22,8 +22,6 @@
  */
 package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.tools.JTool;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
