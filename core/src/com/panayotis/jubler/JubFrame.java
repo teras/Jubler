@@ -173,7 +173,7 @@ public class JubFrame extends JFrame {
         if (prefs == null)
             prefs = new JPreferences(this);
 
-        ToolsManager.manager.register(this);
+        ToolsManager.register(this);
         StaticJubler.updateMenus(this);
         ShortcutsModel.updateMenuNames(JublerMenuBar);
 
@@ -1966,7 +1966,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             if (w.jparent == this)
                 w.jparent = null;
         if (windows.size() == 1)
-            ToolsManager.manager.setFileToolsStatus(windows.get(0), false);
+            ToolsManager.setFileToolsStatus(windows.get(0), false);
         StaticJubler.updateRecents();
 
         if (windows.size() == 0)
@@ -1987,7 +1987,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
             windows.add(this);
             if (windows.size() > 1)
                 for (int i = 0; i < windows.size(); i++)
-                    ToolsManager.manager.setFileToolsStatus(windows.get(i), true);
+                    ToolsManager.setFileToolsStatus(windows.get(i), true);
         }
         StaticJubler.updateRecents();
     }

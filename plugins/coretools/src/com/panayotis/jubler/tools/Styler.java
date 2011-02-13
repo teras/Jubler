@@ -23,7 +23,7 @@ public class Styler extends RegionTool {
     }
 
     @Override
-    protected void updateData(JubFrame jub) {
+    public void updateData(JubFrame jub) {
         super.updateData(jub);
         StylerGUI vis = (StylerGUI) getVisuals();
 

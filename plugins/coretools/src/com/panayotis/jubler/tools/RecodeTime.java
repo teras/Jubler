@@ -20,8 +20,15 @@ public class RecodeTime extends RealTimeTool {
     private double center;
     private TimeSync t1, t2;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public RecodeTime() {
         super(true, new ToolMenu(_("Recode"), "TCO", Location.TIMETOOL, 0, 0));
+    }
+
+    @Override
+    public void execPlugin(Object caller, Object param) {
+        super.execPlugin(caller, param);
+        ToolsManager.setRecoder(this);
     }
 
     @Override

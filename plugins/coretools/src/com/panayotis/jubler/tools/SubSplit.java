@@ -13,7 +13,7 @@ import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.undo.UndoEntry;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 /**
  *
@@ -26,20 +26,23 @@ public class SubSplit extends GenericTool {
     }
 
     @Override
-    protected JPanel constructVisuals() {
+    protected JComponent constructVisuals() {
         return new SubSplitGUI();
+    }
+
+    @Override
+    public void updateData(JubFrame current) {
+        SubSplitGUI vis = (SubSplitGUI) getVisuals();
+        int row;
+        row = current.getSelectedRowIdx();
+        if (row < 0)
+            row = 0;
+        vis.setSubtitle(current.getSubtitles(), row);
     }
 
     @Override
     public boolean execute(JubFrame current) {
         SubSplitGUI vis = (SubSplitGUI) getVisuals();
-        int row;
-
-        row = current.getSelectedRowIdx();
-        if (row < 0)
-            row = 0;
-        vis.setSubtitle(current.getSubtitles(), row);
-
         if (JIDialog.action(current, vis, _("Split subtitles in two"))) {
             Subtitles subs1, subs2;
             SubEntry csub;

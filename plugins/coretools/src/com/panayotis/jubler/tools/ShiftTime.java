@@ -18,8 +18,15 @@ public class ShiftTime extends RealTimeTool {
 
     private double shift;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public ShiftTime() {
         super(true, new ToolMenu(_("Shift time"), "TSH", Location.TIMETOOL, 0, 0));
+    }
+
+    @Override
+    public void execPlugin(Object caller, Object param) {
+        super.execPlugin(caller, param);
+        ToolsManager.setShifter(this);
     }
 
     @Override

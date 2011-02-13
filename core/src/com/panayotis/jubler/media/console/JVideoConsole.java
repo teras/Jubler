@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler.media.console;
 
-import com.apple.crypto.provider.Debug;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.player.VideoPlayer;
@@ -47,6 +46,7 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.tools.RealTimeTool;
+import com.panayotis.jubler.tools.ToolsManager;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -138,7 +138,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         diagram.setToolTipText(_("Map of subtitles"));
         pack();
 
-        timer = new Timer(300, new ActionListener()   {
+        timer = new Timer(300, new ActionListener() {
 
             public void actionPerformed(ActionEvent evt) {
                 informTimePos();
@@ -921,13 +921,10 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         if (sync1 != null && sync2 != null) {
             RealTimeTool tool;
 
-            if (true)
-                throw new RuntimeException("QQQQ");
-//            if (sync1.isEqualDiff(sync2))
-//                tool = parent.getShifter();
-//            else
-//                tool = parent.getRecoder();
-
+            if (sync1.isEqualDiff(sync2))
+                tool = ToolsManager.getShifter();
+            else
+                tool = ToolsManager.getRecoder();
             if (tool == null) {
                 DEBUG.beep();
                 return;
@@ -937,6 +934,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                 /* Parameters are OK */
                 timer.stop();
                 checkValid(view.setActive(false, null));
+                tool.updateData(parent);
                 if (tool.execute(parent)) {             // execute tool
                     /* Execution successful */
                     destroySyncMark(true);

@@ -32,7 +32,7 @@ import com.panayotis.jubler.time.gui.JTimeRegion;
 import com.panayotis.jubler.undo.UndoEntry;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 /**
  *
@@ -55,8 +55,8 @@ public abstract class RegionTool extends GenericTool {
     }
 
     /* Update the values, display the dialog and execute this tool */
+    @Override
     public boolean execute(JubFrame jub) {
-        updateData(jub);
         if (!JIDialog.action(jparent, this, getToolTitle()))
             return false;
 
@@ -78,7 +78,8 @@ public abstract class RegionTool extends GenericTool {
         return true;
     }
 
-    protected void updateData(JubFrame jub) {
+    @Override
+    public void updateData(JubFrame jub) {
         subs = jub.getSubtitles();
         selected = jub.getSelectedRows();
         getTimeArea().updateData(subs, selected);
@@ -95,7 +96,7 @@ public abstract class RegionTool extends GenericTool {
     }
 
     @Override
-    protected JPanel constructVisuals() {
+    protected final JComponent constructVisuals() {
         ToolGUI vis = constructToolVisuals();
         vis.initialize();
         vis.add(getTimeArea(), BorderLayout.CENTER);

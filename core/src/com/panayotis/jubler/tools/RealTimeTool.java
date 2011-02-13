@@ -44,7 +44,7 @@ public abstract class RealTimeTool extends RegionTool {
     }
 
     @Override
-    protected void updateData(JubFrame jub) {
+    public void updateData(JubFrame jub) {
         super.updateData(jub);
         if (should_maximize_values) {
             ((JTimeFullSelection) getTimeArea()).forceFullRangeSelection();
