@@ -55,6 +55,7 @@ public class PluginManager {
         for (String plugin : plugins)
             try {
                 Plugin p = (Plugin) getClass(plugin);
+                DEBUG.debug("Registering plugin " + plugin);
                 plugin_items.addAll(Arrays.asList(p.getList()));
             } catch (Exception ex) {
             }

@@ -26,6 +26,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionListener;
@@ -623,7 +624,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         PreEnc.add(MiddleE);
 
-        Presets.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/encs.png"))); // NOI18N
+        Presets.setIcon(Theme.loadIcon("encs.png"));
         Presets.setToolTipText(_("Use predefined encodings"));
         SystemDependent.setCommandButtonStyle(Presets, "only");
         Presets.addMouseListener(this);

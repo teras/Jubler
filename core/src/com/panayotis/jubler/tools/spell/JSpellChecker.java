@@ -32,6 +32,7 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.plugins.Theme;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -213,7 +214,7 @@ public class JSpellChecker extends JDialog {
 
         IconPanel.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/spellcheck.png"))); // NOI18N
+        jLabel1.setIcon(Theme.loadIcon("spellcheck.png"));
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
         IconPanel.add(jLabel1, java.awt.BorderLayout.NORTH);
 

@@ -24,9 +24,9 @@ package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.os.SystemDependent;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.plugins.Theme;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
@@ -87,7 +87,7 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
     }
 
     public Icon getTabIcon() {
-        return new ImageIcon(getClass().getResource("/icons/shortcut_pref.png"));
+        return Theme.loadIcon("shortcut_pref.png");
     }
 
     public void changeProgram() {

@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JPanel;
@@ -86,7 +87,7 @@ public class JRateChooser extends JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        FromFPSB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/videofile.png"))); // NOI18N
+        FromFPSB.setIcon(Theme.loadIcon("videofile.png"));
         FromFPSB.setToolTipText(_("Get FPS from the video file"));
         SystemDependent.setCommandButtonStyle(FromFPSB, "only");
         FromFPSB.addActionListener(new java.awt.event.ActionListener() {

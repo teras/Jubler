@@ -28,6 +28,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.options.AutoSaveOptions;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -37,7 +38,6 @@ import java.awt.IllegalComponentStateException;
 import java.awt.Point;
 import javax.swing.DefaultButtonModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JToolBar;
 
 /**
@@ -50,10 +50,10 @@ public class JSubPreview extends javax.swing.JPanel {
 
     static {
         cursors = new Icon[4];
-        cursors[0] = new ImageIcon(JSubPreview.class.getResource("/icons/auto.png"));
-        cursors[1] = new ImageIcon(JSubPreview.class.getResource("/icons/pointer.png"));
-        cursors[2] = new ImageIcon(JSubPreview.class.getResource("/icons/move.png"));
-        cursors[3] = new ImageIcon(JSubPreview.class.getResource("/icons/resize.png"));
+        cursors[0] = Theme.loadIcon("auto.png");
+        cursors[1] = Theme.loadIcon("pointer.png");
+        cursors[2] = Theme.loadIcon("move.png");
+        cursors[3] = Theme.loadIcon("resize.png");
     }
     private JSubTimeline timeline;
     private JRuler timecaption;
@@ -328,11 +328,11 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         jPanel6.add(ZoomS, java.awt.BorderLayout.CENTER);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomout.png"))); // NOI18N
+        jLabel1.setIcon(Theme.loadIcon("zoomout.png"));
         jLabel1.setToolTipText(_("Zoom out"));
         jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomin.png"))); // NOI18N
+        jLabel2.setIcon(Theme.loadIcon("zoomin.png"));
         jLabel2.setToolTipText(_("Zoom in"));
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
         jPanel6.add(jLabel2, java.awt.BorderLayout.EAST);
@@ -348,12 +348,12 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.setRollover(true);
         ToolBar.setOpaque(false);
 
-        Orientation.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turndown.png"))); // NOI18N
+        Orientation.setIcon(Theme.loadIcon("turndown.png"));
         Orientation.setToolTipText(_("Change orientation of Preview panel"));
         Orientation.setFocusable(false);
         Orientation.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        Orientation.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turn.png"))); // NOI18N
-        Orientation.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/turnright.png"))); // NOI18N
+        Orientation.setPressedIcon(Theme.loadIcon("turn.png"));
+        Orientation.setSelectedIcon(Theme.loadIcon("turnright.png"));
         Orientation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrientationActionPerformed(evt);
@@ -362,12 +362,12 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(Orientation);
         ToolBar.add(jSeparator3);
 
-        VideoShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/frameoff.png"))); // NOI18N
+        VideoShow.setIcon(Theme.loadIcon("frameoff.png"));
         VideoShow.setSelected(true);
         VideoShow.setToolTipText(_("Enable/disable video frame preview"));
         VideoShow.setFocusable(false);
         VideoShow.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        VideoShow.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/frameon.png"))); // NOI18N
+        VideoShow.setSelectedIcon(Theme.loadIcon("frameon.png"));
         VideoShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VideoShowActionPerformed(evt);
@@ -375,11 +375,11 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         ToolBar.add(VideoShow);
 
-        VideoZoom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/framezoomin.png"))); // NOI18N
+        VideoZoom.setIcon(Theme.loadIcon("framezoomin.png"));
         VideoZoom.setToolTipText(_("Zoom frame to original value"));
         VideoZoom.setFocusable(false);
         VideoZoom.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        VideoZoom.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/framezoomout.png"))); // NOI18N
+        VideoZoom.setSelectedIcon(Theme.loadIcon("framezoomout.png"));
         VideoZoom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 VideoZoomFrameActionPerformed(evt);
@@ -388,12 +388,12 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(VideoZoom);
         ToolBar.add(jSeparator4);
 
-        AudioShow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/waveoff.png"))); // NOI18N
+        AudioShow.setIcon(Theme.loadIcon("waveoff.png"));
         AudioShow.setSelected(true);
         AudioShow.setToolTipText(_("Enable/disable waveform preview"));
         AudioShow.setFocusable(false);
         AudioShow.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        AudioShow.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/waveon.png"))); // NOI18N
+        AudioShow.setSelectedIcon(Theme.loadIcon("waveon.png"));
         AudioShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AudioShowActionPerformed(evt);
@@ -401,11 +401,11 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         ToolBar.add(AudioShow);
 
-        MaxWave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavenorm.png"))); // NOI18N
+        MaxWave.setIcon(Theme.loadIcon("wavenorm.png"));
         MaxWave.setToolTipText(_("Maximize waveform visualization"));
         MaxWave.setFocusable(false);
         MaxWave.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        MaxWave.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wavemax.png"))); // NOI18N
+        MaxWave.setSelectedIcon(Theme.loadIcon("wavemax.png"));
         MaxWave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MaxWaveActionPerformed(evt);
@@ -415,7 +415,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(jSeparator1);
 
         CursorGroup.add(Auto);
-        Auto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/auto.png"))); // NOI18N
+        Auto.setIcon(Theme.loadIcon("auto.png"));
         Auto.setSelected(true);
         Auto.setToolTipText(_("Automatically perform operation depending on the mouse position"));
         Auto.setActionCommand(String.valueOf(JSubTimeline.AUTO_ACTION));
@@ -429,7 +429,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(Auto);
 
         CursorGroup.add(Select);
-        Select.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pointer.png"))); // NOI18N
+        Select.setIcon(Theme.loadIcon("pointer.png"));
         Select.setToolTipText(_("Select subtitles only"));
         Select.setActionCommand(String.valueOf(JSubTimeline.SELECT_ACTION));
         Select.setFocusable(false);
@@ -442,7 +442,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(Select);
 
         CursorGroup.add(Move);
-        Move.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/move.png"))); // NOI18N
+        Move.setIcon(Theme.loadIcon("move.png"));
         Move.setToolTipText(_("Move subtitles only"));
         Move.setActionCommand(String.valueOf(JSubTimeline.MOVE_ACTION));
         Move.setFocusable(false);
@@ -455,7 +455,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(Move);
 
         CursorGroup.add(Resize);
-        Resize.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/resize.png"))); // NOI18N
+        Resize.setIcon(Theme.loadIcon("resize.png"));
         Resize.setToolTipText(_("Resize subtitles only"));
         Resize.setActionCommand(String.valueOf(JSubTimeline.RESIZE_ACTION));
         Resize.setFocusable(false);
@@ -468,7 +468,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(Resize);
         ToolBar.add(jSeparator2);
 
-        AudioPlay.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/playback.png"))); // NOI18N
+        AudioPlay.setIcon(Theme.loadIcon("playback.png"));
         AudioPlay.setToolTipText(_("Play current subtitle"));
         AudioPlay.setFocusable(false);
         AudioPlay.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -480,7 +480,7 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         ToolBar.add(AudioPlay);
 
-        NewSub.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/newsub.png"))); // NOI18N
+        NewSub.setIcon(Theme.loadIcon("newsub.png"));
         NewSub.setToolTipText(_("New subtitle after current one"));
         NewSub.setFocusable(false);
         NewSub.setMargin(new java.awt.Insets(0, 0, 0, 0));

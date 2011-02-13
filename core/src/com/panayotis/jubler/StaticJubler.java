@@ -120,7 +120,7 @@ public class StaticJubler {
     }
 
     public static void showAbout() {
-        JIDialog.about(JubFrame.windows.get(0), new JAbout(), _("About Jubler"), "/icons/jubler-logo.png");
+        JIDialog.about(JubFrame.windows.get(0), new JAbout(), _("About Jubler"), "jubler-logo.png");
     }
 
     public static boolean requestQuit(JubFrame request) {
