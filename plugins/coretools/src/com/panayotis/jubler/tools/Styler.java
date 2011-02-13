@@ -17,7 +17,7 @@ public class Styler extends RegionTool {
 
     private SubStyle style;
 
-    public Styler(boolean freeform, ToolMenu toolmenu) {
+    public Styler() {
         super(true, new ToolMenu("By selection", null, "ESS", null));
     }
 

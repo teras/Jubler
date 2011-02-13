@@ -5,13 +5,14 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.plugins.PluginItem;
 import javax.swing.JPanel;
 
 /**
  *
  * @author teras
  */
-public abstract class GenericTool {
+public abstract class GenericTool implements PluginItem {
 
     public final ToolMenu toolmenu;
     private JPanel visuals;
@@ -29,4 +30,11 @@ public abstract class GenericTool {
     }
 
     protected abstract JPanel constructVisuals();
+
+    public Class[] getAffectionList() {
+        return new Class[]{ToolsManager.class};
+    }
+
+    public void execPlugin(Object caller, Object param) {
+    }
 }

@@ -14,8 +14,8 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 public class Speller extends RegionTool {
 
-    public Speller(boolean freeform, ToolMenu toolmenu) {
-        super(freeform, toolmenu);
+    public Speller() {
+        super(true, new ToolMenu(_("Spell check"), null, "TLL", null));
     }
 
     @Override

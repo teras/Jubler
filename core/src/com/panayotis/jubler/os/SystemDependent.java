@@ -326,9 +326,9 @@ public class SystemDependent {
         String home = System.getProperty("user.home") + FileCommunicator.FS;
 
         if (IS_WINDOWS)
-            return System.getenv("APPDATA") + "\\Jubler\\";
+            return System.getenv("APPDATA") + "\\Jubler";
         if (IS_MACOSX)
-            return home + "Library/Application Support/Jubler/";
-        return home + ".jubler/";
+            return home + "Library/Application Support/Jubler";
+        return home + ".jubler";
     }
 }

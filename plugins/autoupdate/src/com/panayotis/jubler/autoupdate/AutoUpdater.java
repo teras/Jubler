@@ -39,22 +39,23 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
 
     private static final String URL = "http://www.jubler.org/files/updates/update.xml";
 
-    public AutoUpdater() {
-    }
-
+    @Override
     public boolean requestRestart() {
         return StaticJubler.requestQuit(null);
     }
 
+    @Override
     public void receiveMessage(String message) {
         DEBUG.debug(message);
     }
 
-    public String[] getAffectionList() {
-        return new String[]{StaticJubler.POSTLOADER};
+    @Override
+    public Class[] getAffectionList() {
+        return new Class[]{StaticJubler.class};
     }
 
-    public void execPlugin(Object null_argument) {
+    @Override
+    public void execPlugin(Object caller, Object param) {
         try {
             ApplicationInfo info = new ApplicationInfo(SystemFileFinder.AppPath, SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
             info.setDistributionBased(JAbout.isDistributionBased());
@@ -65,6 +66,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
         }
     }
 
+    @Override
     public PluginItem[] getList() {
         return new PluginItem[]{this};
     }

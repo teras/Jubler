@@ -144,6 +144,8 @@ public class JubFrame extends JFrame {
     /** Creates new form */
     @SuppressWarnings({"LeakingThisInConstructor", "OverridableMethodCallInConstructor"})
     public JubFrame() {
+        PluginManager.manager.callPluginListeners(this, "BEGIN");
+
         subs = null;
         mfile = new MediaFile();
         connected_consoles = new ArrayList<JVideoConsole>();
@@ -172,7 +174,7 @@ public class JubFrame extends JFrame {
 
         StaticJubler.putWindowPosition(this);
 
-        PluginManager.manager.callPluginListeners(this);
+        PluginManager.manager.callPluginListeners(this, "END");
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})
@@ -2253,7 +2255,7 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     private void updateStyleMenu() {
-        ActionListener listener = new ActionListener()     {
+        ActionListener listener = new ActionListener()       {
 
             public void actionPerformed(ActionEvent evt) {
                 changeSubtitleStyle(((JMenuItem) evt.getSource()).getText());

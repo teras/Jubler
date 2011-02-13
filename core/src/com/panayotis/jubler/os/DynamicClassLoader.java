@@ -47,13 +47,12 @@ public class DynamicClassLoader extends URLClassLoader {
         if (paths == null)
             return;
 
-        File cfile;
-        File[] list;
         for (int i = 0; i < paths.length; i++) {
-            cfile = new File(SystemFileFinder.AppPath + File.separator + paths[i]);
+            File cfile = new File(paths[i]);
+            cfile = cfile.isAbsolute() ? cfile : new File(SystemFileFinder.AppPath, paths[i]);
             addJAR(cfile);
             if (cfile.isDirectory()) {
-                list = cfile.listFiles();
+                File[] list = cfile.listFiles();
                 if (list != null)
                     for (int j = 0; j < list.length; j++)
                         addJAR(list[j]);

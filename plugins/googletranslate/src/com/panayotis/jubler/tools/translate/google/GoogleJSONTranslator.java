@@ -96,22 +96,27 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
         setSubtitleBlock(100);
     }
 
+    @Override
     protected ArrayList<Language> getLanguages() {
         return lang;
     }
 
+    @Override
     public String getDefinition() {
         return _("Google translate") + " (API)";
     }
 
+    @Override
     public String getDefaultSourceLanguage() {
         return _("English");
     }
 
+    @Override
     public String getDefaultDestinationLanguage() {
         return _("French");
     }
 
+    @Override
     protected String getTranslationURL(String from_language, String to_language) throws MalformedURLException {
         return "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=" + findLanguage(from_language) + "%7C" + findLanguage(to_language);
     }
@@ -152,15 +157,18 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
         }
     }
 
-    public String[] getAffectionList() {
-        return new String[]{AvailTranslators.class.getName()};
+    @Override
+    public Class[] getAffectionList() {
+        return new Class[]{AvailTranslators.class};
     }
 
-    public void execPlugin(Object o) {
-        if (o instanceof AvailTranslators)
-            ((AvailTranslators) o).add(this);
+    @Override
+    public void execPlugin(Object caller, Object params) {
+        if (caller instanceof AvailTranslators)
+            ((AvailTranslators) caller).add(this);
     }
 
+    @Override
     public PluginItem[] getList() {
         return new PluginItem[]{this};
     }

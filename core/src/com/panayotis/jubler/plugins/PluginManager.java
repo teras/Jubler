@@ -48,7 +48,7 @@ public class PluginManager {
         if (SystemFileFinder.isJarBased())
             cl.addPaths(new String[]{"lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
         else
-            cl.addPaths(new String[]{"../dist/lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
+            cl.addPaths(new String[]{"../../../dist/lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
         cl.setClassPath();
 
         /* Find plugins and their plugin items */
@@ -64,7 +64,8 @@ public class PluginManager {
 
         /* Find plugin assosiations */
         for (PluginItem item : plugin_items)
-            for (String affection : item.getAffectionList()) {
+            for (Class affectionclass : item.getAffectionList()) {
+                String affection = affectionclass.getName();
                 ArrayList<PluginItem> current_list = plugin_list.get(affection);
                 if (current_list == null) {
                     current_list = new ArrayList<PluginItem>();
@@ -88,14 +89,15 @@ public class PluginManager {
         return null;
     }
 
-    public void callPluginListeners(Object o) {
-        callPluginListeners(o, o.getClass().getName());
+    public void callPluginListeners(Object caller) {
+        callPluginListeners(caller, null);
     }
 
-    public void callPluginListeners(Object o, String tag) {
-        ArrayList<PluginItem> pl = plugin_list.get(tag);
-        if (pl != null)
-            for (int i = 0; i < pl.size(); i++)
-                pl.get(i).execPlugin(o);
+    public void callPluginListeners(Object caller, Object parameter) {
+        Class clazz = caller instanceof Class ? (Class) caller : caller.getClass();
+        ArrayList<PluginItem> list = plugin_list.get(clazz.getName());
+        if (list != null)
+            for (PluginItem item : list)
+                item.execPlugin(caller, parameter);
     }
 }
