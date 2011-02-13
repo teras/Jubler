@@ -25,11 +25,9 @@
 		classname="net.sf.launch4j.ant.Launch4jTask"/>
 
 	<target name="jupidator">
-		<ant antfile="../jupidator/build.xml" inheritall="false" target="jar"/>
+		<ant antfile="../jupidator/build.xml" inheritall="false" target="smalljar"/>
 		<copy file="../jupidator/dist/jupidator.jar" todir="dist/lib"/>
-		<ant antfile="../jupidator/build.xml" inheritall="false" target="clean"/>
 	</target>
-		
 
 	<target name="i18n">
 		<exec dir="resources/i18n" executable="bash" failonerror="true">
@@ -314,7 +312,7 @@
 	</target>
 
 	<!-- Create an isntallation-like file tree -->
-	<target name="-linuxinstall" depends="-linuxproperties, -cleandestdir, -linuxdesktopintegration">
+	<target name="-linuxinstall" depends="-linuxproperties, -cleandestdir, linuxdesktopintegration">
 		<!-- Basic Jubler files -->
 		<copy file="dist/Jubler.jar" todir="${libdir}"/>
 		<copy todir="${libdir}/lib">
@@ -343,7 +341,7 @@
 	</target>
 
 	<!-- Linux desktop intergration -->
-	<target name="-linuxdesktopintegration" depends="-linuxproperties">
+	<target name="linuxdesktopintegration" depends="-linuxproperties">
 		<!-- Icon files -->
 		<copy file="resources/installers/linux/jubler.menu" tofile="${sharedir}/menu/jubler"/>
 		<copy file="resources/installers/linux/jubler.xpm" todir="${sharedir}/pixmaps"/>
@@ -435,6 +433,7 @@
 			<sequential> <ant antfile="@{plugins}/build.xml" inheritall="false" target="clean"/> </sequential>
 		</for>
 		<ant dir="core" target="clean"/>
+		<ant dir="../jupidator" target="clean"/>
 	   <delete>
 			<fileset dir="." includes="*.bz2"/>
 			<fileset dir="." includes="*.exe"/>

@@ -31,7 +31,7 @@ import com.panayotis.jubler.plugins.PluginItem;
  *
  * @author teras
  */
-public class MPlayer extends AbstractPlayer implements Plugin, PluginItem {
+public class MPlayer extends AbstractPlayer implements Plugin {
 
     static {
         MPlayerSystemDependent.updateParameters();

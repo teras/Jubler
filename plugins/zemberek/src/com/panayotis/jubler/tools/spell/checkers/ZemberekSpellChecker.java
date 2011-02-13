@@ -115,13 +115,13 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
         return "Zemberek";
     }
 
-    public String[] getAffectionList() {
-        return new String[]{AvailExternals.class.getName()};
+    public Class[] getAffectionList() {
+        return new Class[]{AvailExternals.class};
     }
 
-    public void execPlugin(Object o) {
-        if (o instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) o;
+    public void execPlugin(Object caller, Object param) {
+        if (caller instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals) caller;
             if (l.getType().equals(family))
                 l.add(this);
         }

@@ -39,7 +39,7 @@ public class AutoSaver {
     private final static Random rnd;
     private final static File dir, olds;
     private static Timer timer;
-    private static final TimerTask task = new TimerTask() {
+    private static final TimerTask task = new TimerTask()  {
 
         public void run() {
             /* Create autosave path */
@@ -79,7 +79,7 @@ public class AutoSaver {
 
     static {
         rnd = new Random();
-        dir = new File(SystemDependent.getAppSupportDirPath() + "autosave");
+        dir = new File(SystemDependent.getAppSupportDirPath() + File.separator + "autosave");
         olds = new File(dir, "olds");
     }
 

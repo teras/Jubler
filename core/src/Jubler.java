@@ -27,7 +27,6 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.os.DynamicClassLoader;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
@@ -81,7 +80,7 @@ public class Jubler {
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
 
-        PluginManager.manager.callPluginListeners(null, StaticJubler.POSTLOADER);
+        PluginManager.manager.callPluginListeners(StaticJubler.class);
     }
 }
 
@@ -107,7 +106,7 @@ class MainSplash extends JWindow {
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((d.width - width) / 2, (d.height - height) / 2);
 
-        addMouseListener(new MouseAdapter()   {
+        addMouseListener(new MouseAdapter()    {
 
             @Override
             public void mouseClicked(MouseEvent evt) {

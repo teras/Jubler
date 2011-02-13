@@ -52,7 +52,6 @@ public class StaticJubler {
 
     private static final int SCREEN_DELTAX = 24;
     private static final int SCREEN_DELTAY = 24;
-    public static final String POSTLOADER = "com.panayotis.jubler.StaticJubler";
     /* */
     private static Stack<SubFile> recent_files;
     private static int screen_x, screen_y, screen_width, screen_height, screen_state;
@@ -211,7 +210,7 @@ public class StaticJubler {
         final boolean isclone_f = isclone;
         final String text_f = text;
         final JubFrame jub_f = jub;
-        item.addActionListener(new ActionListener() {
+        item.addActionListener(new ActionListener()  {
 
             public void actionPerformed(ActionEvent e) {
                 if (isclone_f)

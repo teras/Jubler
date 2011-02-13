@@ -65,13 +65,15 @@ public abstract class SubFormat implements PluginItem {
         this.FPS = sfile.getFPS();
     }
 
-    public String[] getAffectionList() {
-        return new String[]{AvailSubFormats.class.getName()};
+    @Override
+    public Class[] getAffectionList() {
+        return new Class[]{AvailSubFormats.class};
     }
 
-    public void execPlugin(Object o) {
-        if (o instanceof AvailSubFormats) {
-            AvailSubFormats l = (AvailSubFormats) o;
+    @Override
+    public void execPlugin(Object caller, Object parameter) {
+        if (caller instanceof AvailSubFormats) {
+            AvailSubFormats l = (AvailSubFormats) caller;
             l.add(this);
         }
     }

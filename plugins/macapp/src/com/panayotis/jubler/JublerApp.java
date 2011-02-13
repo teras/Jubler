@@ -45,25 +45,27 @@ public class JublerApp extends Application implements Plugin, PluginItem {
         addApplicationListener(new ApplicationHandler());
     }
 
-    public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.JubFrame"};
+    @Override
+    public Class[] getAffectionList() {
+        return new Class[]{JubFrame.class};
     }
 
-    public void execPlugin(Object o) {
-        if (o instanceof JubFrame) {
-            JubFrame jubler = (JubFrame) o;
-            if (jubler.AboutHM == null)
-                jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
-            else {
-                jubler.AboutHM.getParent().remove(jubler.AboutHM);
-                jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
-                jubler.QuitFM.getParent().remove(jubler.QuitFM);
-                setComponentDraggable(jubler, jubler.JublerTools);
-                setComponentDraggable(jubler, jubler.subeditor.StyleP);
-                setComponentDraggable(jubler, jubler.subeditor.Unsaved);
-                setComponentDraggable(jubler, jubler.subeditor.Stats);
-                setComponentDraggable(jubler, jubler.subeditor.Info);
-            }
+    @Override
+    public void execPlugin(Object caller, Object param) {
+        if (!(caller instanceof JubFrame))
+            return;
+        JubFrame jubler = (JubFrame) caller;
+        if (param.equals("BEGIN"))
+            jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
+        else {
+            jubler.AboutHM.getParent().remove(jubler.AboutHM);
+            jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
+            jubler.QuitFM.getParent().remove(jubler.QuitFM);
+            setComponentDraggable(jubler, jubler.JublerTools);
+            setComponentDraggable(jubler, jubler.subeditor.StyleP);
+            setComponentDraggable(jubler, jubler.subeditor.Unsaved);
+            setComponentDraggable(jubler, jubler.subeditor.Stats);
+            setComponentDraggable(jubler, jubler.subeditor.Info);
         }
     }
 
@@ -76,7 +78,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
         final Point oldpos = new Point();
         final Point newpos = new Point();
 
-        comp.addMouseListener(new MouseAdapter()  {
+        comp.addMouseListener(new MouseAdapter()     {
 
             @Override
             public void mousePressed(MouseEvent e) {
@@ -96,7 +98,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
             }
         });
 
-        comp.addMouseMotionListener(new MouseMotionAdapter()  {
+        comp.addMouseMotionListener(new MouseMotionAdapter()     {
 
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -109,6 +111,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
         });
     }
 
+    @Override
     public PluginItem[] getList() {
         return new PluginItem[]{this};
     }
