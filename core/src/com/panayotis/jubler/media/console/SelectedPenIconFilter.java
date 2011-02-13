@@ -19,10 +19,9 @@
  */
 package com.panayotis.jubler.media.console;
 
+import com.panayotis.jubler.plugins.Theme;
 import java.awt.image.BufferedImage;
 import java.awt.image.RGBImageFilter;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  *
@@ -30,16 +29,7 @@ import javax.imageio.ImageIO;
  */
 public class SelectedPenIconFilter extends RGBImageFilter {
 
-    private final static BufferedImage dot;
-
-    static {
-        BufferedImage val = null;
-        try {
-            val = ImageIO.read(SelectedPenIconFilter.class.getResource("/icons/pendot.png"));
-        } catch (IOException ex) {
-        }
-        dot = val;
-    }
+    private final static BufferedImage dot = Theme.loadImage("pendot.png");
 
     public int filterRGB(int x, int y, int rgb) {
         if (x < 8 && y < 8 && dot != null) {

@@ -8,6 +8,7 @@ package com.panayotis.jubler.time.gui;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.plugins.Theme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
@@ -45,6 +46,7 @@ public class JTimeSelector extends JPanel {
         }
     }
 
+    @Override
     public void setEnabled(boolean status) {
         super.setEnabled(status);
         InfoL.setEnabled(status);
@@ -111,7 +113,7 @@ public class JTimeSelector extends JPanel {
         setLayout(new java.awt.BorderLayout());
         add(InfoL, java.awt.BorderLayout.PAGE_START);
 
-        EdgeB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png"))); // NOI18N
+        EdgeB.setIcon(Theme.loadIcon("gear.png"));
         EdgeB.setToolTipText(_("Use predifined time positions"));
         SystemDependent.setCommandButtonStyle(EdgeB, "only");
         EdgeB.addMouseListener(new java.awt.event.MouseAdapter() {

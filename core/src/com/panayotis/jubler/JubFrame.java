@@ -37,6 +37,7 @@ import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.PluginManager;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubAttribs;
@@ -66,7 +67,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.AbstractButton;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -137,7 +137,7 @@ public class JubFrame extends JFrame {
         /* prefs = new JPreferences(); */
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
-        FrameIcon = new ImageIcon(JubFrame.class.getResource("/icons/frame.png")).getImage();
+        FrameIcon = Theme.loadImage("frame.png");
         fdialog = new JSubFileDialog();
     }
 
@@ -539,26 +539,26 @@ public class JubFrame extends JFrame {
 
         FileTP.setLayout(new javax.swing.BoxLayout(FileTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        NewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/new.png"))); // NOI18N
+        NewTB.setIcon(Theme.loadIcon("new.png"));
         NewTB.setToolTipText(_("New"));
         SystemDependent.setToolBarButtonStyle(NewTB, "first");
         NewTB.addActionListener(formListener);
         FileTP.add(NewTB);
 
-        LoadTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/load.png"))); // NOI18N
+        LoadTB.setIcon(Theme.loadIcon("load.png"));
         LoadTB.setToolTipText(_("Load"));
         SystemDependent.setToolBarButtonStyle(LoadTB, "middle");
         LoadTB.addActionListener(formListener);
         FileTP.add(LoadTB);
 
-        SaveTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
+        SaveTB.setIcon(Theme.loadIcon("save.png"));
         SaveTB.setToolTipText(_("Save"));
         SaveTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(SaveTB, "middle");
         SaveTB.addActionListener(formListener);
         FileTP.add(SaveTB);
 
-        InfoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png"))); // NOI18N
+        InfoTB.setIcon(Theme.loadIcon("info.png"));
         InfoTB.setToolTipText(_("Project Information"));
         InfoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(InfoTB, "last");
@@ -570,21 +570,21 @@ public class JubFrame extends JFrame {
         EditTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        CutTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cut.png"))); // NOI18N
+        CutTB.setIcon(Theme.loadIcon("cut.png"));
         CutTB.setToolTipText(_("Cut"));
         CutTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(CutTB, "first");
         CutTB.addActionListener(formListener);
         EditTP.add(CutTB);
 
-        CopyTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/copy.png"))); // NOI18N
+        CopyTB.setIcon(Theme.loadIcon("copy.png"));
         CopyTB.setToolTipText(_("Copy"));
         CopyTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(CopyTB, "middle");
         CopyTB.addActionListener(formListener);
         EditTP.add(CopyTB);
 
-        PasteTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/paste.png"))); // NOI18N
+        PasteTB.setIcon(Theme.loadIcon("paste.png"));
         PasteTB.setToolTipText(_("Paste"));
         PasteTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(PasteTB, "last");
@@ -595,14 +595,14 @@ public class JubFrame extends JFrame {
 
         UndoTP.setLayout(new javax.swing.BoxLayout(UndoTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        UndoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/undo.png"))); // NOI18N
+        UndoTB.setIcon(Theme.loadIcon("undo.png"));
         UndoTB.setToolTipText(_("Undo"));
         UndoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(UndoTB, "first");
         UndoTB.addActionListener(formListener);
         UndoTP.add(UndoTB);
 
-        RedoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/redo.png"))); // NOI18N
+        RedoTB.setIcon(Theme.loadIcon("redo.png"));
         RedoTB.setToolTipText(_("Redo"));
         RedoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(RedoTB, "last");
@@ -614,7 +614,7 @@ public class JubFrame extends JFrame {
         SortTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         SortTP.setLayout(new javax.swing.BoxLayout(SortTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        SortTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sort.png"))); // NOI18N
+        SortTB.setIcon(Theme.loadIcon("sort.png"));
         SortTB.setToolTipText(_("Sort subtitles"));
         SortTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(SortTB, "only");
@@ -625,7 +625,7 @@ public class JubFrame extends JFrame {
 
         TestTP.setLayout(new javax.swing.BoxLayout(TestTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        TestTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/test.png"))); // NOI18N
+        TestTB.setIcon(Theme.loadIcon("test.png"));
         TestTB.setToolTipText(_("Test subtitles from current position"));
         TestTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(TestTB, "first");
@@ -634,10 +634,10 @@ public class JubFrame extends JFrame {
 
         PreviewTB.setModel(new ToggleButtonModel());
         SystemDependent.setToolBarButtonStyle(PreviewTB, "last");
-        PreviewTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/previewc.png"))); // NOI18N
+        PreviewTB.setIcon(Theme.loadIcon("previewc.png"));
         PreviewTB.setToolTipText(_("Enable preview"));
         PreviewTB.setEnabled(false);
-        PreviewTB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/preview.png"))); // NOI18N
+        PreviewTB.setSelectedIcon(Theme.loadIcon("preview.png"));
         PreviewTB.addActionListener(formListener);
         TestTP.add(PreviewTB);
 
@@ -1192,6 +1192,9 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == RedoEM) {
                 JubFrame.this.RedoEMActionPerformed(evt);
             }
+            else if (evt.getSource() == SplitTM) {
+                JubFrame.this.SplitTMActionPerformed(evt);
+            }
             else if (evt.getSource() == BeginningTTM) {
                 JubFrame.this.BeginningTTMActionPerformed(evt);
             }
@@ -1221,9 +1224,6 @@ public class JubFrame extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == SplitTM) {
-                JubFrame.this.SplitTMActionPerformed(evt);
             }
         }
 
@@ -1660,12 +1660,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitTMActionPerformed
     // TODO add your handling code here:
 }//GEN-LAST:event_SplitTMActionPerformed
-
-    private void QQQQQdeletebyselection() {
-//        int lastrow = SubTable.getSelectedRow();
-//    dels.execute(this);
-//    setSelectedSub(lastrow, true);
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -2260,7 +2254,7 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     private void updateStyleMenu() {
-        ActionListener listener = new ActionListener()   {
+        ActionListener listener = new ActionListener()     {
 
             public void actionPerformed(ActionEvent evt) {
                 changeSubtitleStyle(((JMenuItem) evt.getSource()).getText());

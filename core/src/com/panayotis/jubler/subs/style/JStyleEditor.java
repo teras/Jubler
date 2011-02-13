@@ -30,6 +30,7 @@ import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import java.awt.BorderLayout;
@@ -319,7 +320,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel16.add(jPanel15, java.awt.BorderLayout.CENTER);
 
-        Save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
+        Save.setIcon(Theme.loadIcon("save.png"));
         Save.setToolTipText(_("Save default style"));
         Save.addActionListener(formListener);
         jPanel16.add(Save, java.awt.BorderLayout.EAST);
@@ -347,25 +348,25 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
-        Bold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bold.png"))); // NOI18N
+        Bold.setIcon(Theme.loadIcon("bold.png"));
         Bold.setToolTipText(_("Bold"));
         SystemDependent.setCommandButtonStyle(Bold, "first");
         Bold.addActionListener(formListener);
         jPanel3.add(Bold);
 
-        Italic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/italics.png"))); // NOI18N
+        Italic.setIcon(Theme.loadIcon("italics.png"));
         Italic.setToolTipText(_("Italic"));
         SystemDependent.setCommandButtonStyle(Italic, "middle");
         Italic.addActionListener(formListener);
         jPanel3.add(Italic);
 
-        Underline.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/underline.png"))); // NOI18N
+        Underline.setIcon(Theme.loadIcon("underline.png"));
         Underline.setToolTipText(_("Underline"));
         SystemDependent.setCommandButtonStyle(Underline, "middle");
         Underline.addActionListener(formListener);
         jPanel3.add(Underline);
 
-        Strike.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/strike.png"))); // NOI18N
+        Strike.setIcon(Theme.loadIcon("strike.png"));
         Strike.setToolTipText(_("Strikethrough"));
         SystemDependent.setCommandButtonStyle(Strike, "last");
         Strike.addActionListener(formListener);
@@ -523,10 +524,10 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         AdvancedSelect.setText(_("Advanced options"));
         AdvancedSelect.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        AdvancedSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tabclosed.png"))); // NOI18N
+        AdvancedSelect.setIcon(Theme.loadIcon("tabclosed.png"));
         AdvancedSelect.setIconTextGap(10);
-        AdvancedSelect.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tabpressedup.png"))); // NOI18N
-        AdvancedSelect.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tabopenup.png"))); // NOI18N
+        AdvancedSelect.setPressedIcon(Theme.loadIcon("tabpressedup.png"));
+        AdvancedSelect.setSelectedIcon(Theme.loadIcon("tabopenup.png"));
         AdvancedSelect.addActionListener(formListener);
         jPanel14.add(AdvancedSelect, java.awt.BorderLayout.CENTER);
 

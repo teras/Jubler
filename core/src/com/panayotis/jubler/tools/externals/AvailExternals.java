@@ -24,7 +24,6 @@ package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.plugins.PluginManager;
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 /**
  *

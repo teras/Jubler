@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
+import com.panayotis.jubler.plugins.Theme;
 import java.awt.CardLayout;
 import java.awt.Frame;
 import java.io.File;
@@ -142,7 +143,7 @@ public class JWizard extends JDialog {
         WelcomeText.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         WelcomeText.setColumns(20);
         WelcomeText.setEditable(false);
-        WelcomeText.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        WelcomeText.setFont(new java.awt.Font("Lucida Grande", 0, 14));
         WelcomeText.setRows(3);
         WelcomeText.setText(_("Jubler needs {0} executable\nto continue with the requested action.", name));
         jPanel2.add(WelcomeText, java.awt.BorderLayout.CENTER);
@@ -246,7 +247,7 @@ public class JWizard extends JDialog {
 
         getContentPane().add(LowerP, java.awt.BorderLayout.SOUTH);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/wizard.jpg"))); // NOI18N
+        jLabel1.setIcon(Theme.loadIcon("wizard.jpg"));
         getContentPane().add(jLabel1, java.awt.BorderLayout.WEST);
 
         pack();
@@ -255,6 +256,7 @@ public class JWizard extends JDialog {
     private void autoFind() {
         Thread auto = new Thread() {
 
+            @Override
             public void run() {
                 File f = TreeWalker.searchExecutable(name, testparameters, test_signature, deflt);
 

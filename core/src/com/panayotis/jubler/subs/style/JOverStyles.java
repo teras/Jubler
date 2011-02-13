@@ -63,19 +63,19 @@ public class JOverStyles extends javax.swing.JPanel {
         FontAttP.add((JComponent) (visuals[1] = new TriComboBox(SubStyle.FontSizes)), BorderLayout.EAST);
         ((TriComboBox) visuals[1]).setToolTipText(_("Font size"));
 
-        TextAttP.add((JComponent) (visuals[2] = new TriToggleButton("/icons/bold.png")));
+        TextAttP.add((JComponent) (visuals[2] = new TriToggleButton("bold.png")));
         ((AbstractButton) visuals[2]).setToolTipText(_("Bold"));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[2], "first");
 
-        TextAttP.add((JComponent) (visuals[3] = new TriToggleButton("/icons/italics.png")));
+        TextAttP.add((JComponent) (visuals[3] = new TriToggleButton("italics.png")));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[3], "middle");
         ((AbstractButton) visuals[3]).setToolTipText(_("Italic"));
 
-        TextAttP.add((JComponent) (visuals[4] = new TriToggleButton("/icons/underline.png")));
+        TextAttP.add((JComponent) (visuals[4] = new TriToggleButton("underline.png")));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[4], "middle");
         ((AbstractButton) visuals[4]).setToolTipText(_("Underline"));
 
-        TextAttP.add((JComponent) (visuals[5] = new TriToggleButton("/icons/strike.png")));
+        TextAttP.add((JComponent) (visuals[5] = new TriToggleButton("strike.png")));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[5], "last");
         ((AbstractButton) visuals[5]).setToolTipText(_("Strikethrough"));
 

@@ -38,7 +38,6 @@ import java.util.jar.JarFile;
 public class DynamicClassLoader extends URLClassLoader {
 
     private final static String UD = System.getProperty("user.dir") + File.separator;
-    private final static String MANIFEST = "META-INF/MANIFEST.MF";
     private final static String PLUGINTAG = "Extension-Name";
     //
     private static String MainPath = UD;  // Base directory to look for plugins
@@ -81,10 +80,8 @@ public class DynamicClassLoader extends URLClassLoader {
     private void addPlugin(File path) {
         try {
             String name = new JarFile(path).getManifest().getMainAttributes().getValue(PLUGINTAG);
-            if (name != null) {
-                DEBUG.debug("Registering plugin " + name);
+            if (name != null)
                 plugins.add(name);
-            }
         } catch (IOException ex) {
         }
     }
