@@ -39,7 +39,7 @@ public class AvailExternals extends ArrayList<ExtProgram> {
         this.type = type;
         this.localtype = localtype;
         this.iconname = iconname;
-        PluginManager.manager.callPostInitListeners(this);
+        PluginManager.manager.callPluginListeners(this);
     }
 
     public String nameAt(int i) {

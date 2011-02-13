@@ -12,5 +12,5 @@ public interface PluginItem {
 
     public String[] getAffectionList();
 
-    public void postInit(Object o);
+    public void execPlugin(Object o);
 }

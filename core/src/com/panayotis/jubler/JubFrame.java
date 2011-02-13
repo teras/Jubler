@@ -144,7 +144,6 @@ public class JubFrame extends JFrame {
     /** Creates new form */
     @SuppressWarnings({"LeakingThisInConstructor", "OverridableMethodCallInConstructor"})
     public JubFrame() {
-        PluginManager.manager.callPostInitListeners(this);
         subs = null;
         mfile = new MediaFile();
         connected_consoles = new ArrayList<JVideoConsole>();
@@ -173,7 +172,7 @@ public class JubFrame extends JFrame {
 
         StaticJubler.putWindowPosition(this);
 
-        PluginManager.manager.callPostInitListeners(this);
+        PluginManager.manager.callPluginListeners(this);
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})

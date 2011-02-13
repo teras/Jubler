@@ -38,7 +38,7 @@ public class AvailSubFormats {
     public AvailSubFormats() {
         current = 0;
         Formats = new ArrayList<SubFormat>();
-        PluginManager.manager.callPostInitListeners(this);
+        PluginManager.manager.callPluginListeners(this);
         add(new PlainText());
     }
 

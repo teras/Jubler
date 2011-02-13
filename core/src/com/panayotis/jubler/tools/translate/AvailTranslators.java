@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class AvailTranslators extends ArrayList<Translator> {
 
     public AvailTranslators() {
-        PluginManager.manager.callPostInitListeners(this);
+        PluginManager.manager.callPluginListeners(this);
     }
 
     public String[] getNamesList() {

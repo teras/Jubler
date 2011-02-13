@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.os;
 
+import com.panayotis.jubler.JubFrame;
 import java.io.File;
 import java.util.StringTokenizer;
 
@@ -30,6 +31,9 @@ import java.util.StringTokenizer;
  * @author teras
  */
 public class SystemFileFinder {
+
+    private static boolean isJarBased;
+    public static final String AppPath = guessMainPath("Jubler", JubFrame.class.getName());
 
     private static File findFile(String name) {
         String classpath = System.getProperty("java.class.path");
@@ -66,15 +70,29 @@ public class SystemFileFinder {
         return false;
     }
 
-    public static String getJublerAppPath() {
-        File f = findFile("Jubler.jar");
-        if (f == null)
-            f = findFile("Jubler.exe");
-        if (f == null)
-            f = findFile("com");
+    public static String guessMainPath(String basename, String baseclass) {
+        String path;
+        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), File.pathSeparator);
+        while (tok.hasMoreTokens()) {
+            path = tok.nextToken();
+            File file = new File(path);
+            if (!file.isAbsolute()) {
+                path = System.getProperty("user.dir") + File.separator + path;
+                file = new File(path);
+            }
+            if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
+                isJarBased = true;
+                return file.getParentFile().getAbsolutePath();
+            }
+            if (new File(path + File.separator + baseclass.replace('.', File.separatorChar) + ".class").exists()) {
+                isJarBased = false;
+                return file.getAbsolutePath();
+            }
+        }
+        return null;
+    }
 
-        if (f != null)
-            return f.getParent();
-        return "";
+    public static boolean isJarBased() {
+        return isJarBased;
     }
 }

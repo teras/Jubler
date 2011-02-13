@@ -54,9 +54,9 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
         return new String[]{StaticJubler.POSTLOADER};
     }
 
-    public void postInit(Object null_argument) {
+    public void execPlugin(Object null_argument) {
         try {
-            ApplicationInfo info = new ApplicationInfo(SystemFileFinder.getJublerAppPath(), SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
+            ApplicationInfo info = new ApplicationInfo(SystemFileFinder.AppPath, SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
             info.setDistributionBased(JAbout.isDistributionBased());
             Updater upd = new Updater(URL, info, this);
             upd.actionDisplay();

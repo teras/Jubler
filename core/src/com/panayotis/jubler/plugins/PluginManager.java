@@ -21,8 +21,10 @@
  */
 package com.panayotis.jubler.plugins;
 
+import com.panayotis.jubler.os.DynamicClassLoader;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.os.SystemFileFinder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,7 +45,7 @@ public class PluginManager {
 
         /* Add plugins path */
         cl = new DynamicClassLoader();
-        if (DynamicClassLoader.isJarBased())
+        if (SystemFileFinder.isJarBased())
             cl.addPaths(new String[]{"lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
         else
             cl.addPaths(new String[]{"../dist/lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
@@ -86,14 +88,14 @@ public class PluginManager {
         return null;
     }
 
-    public void callPostInitListeners(Object o) {
-        callPostInitListeners(o, o.getClass().getName());
+    public void callPluginListeners(Object o) {
+        callPluginListeners(o, o.getClass().getName());
     }
 
-    public void callPostInitListeners(Object o, String tag) {
+    public void callPluginListeners(Object o, String tag) {
         ArrayList<PluginItem> pl = plugin_list.get(tag);
         if (pl != null)
             for (int i = 0; i < pl.size(); i++)
-                pl.get(i).postInit(o);
+                pl.get(i).execPlugin(o);
     }
 }
