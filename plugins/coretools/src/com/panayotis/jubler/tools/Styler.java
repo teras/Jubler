@@ -8,6 +8,7 @@ import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.tools.ToolMenu.Location;
 
 /**
  *
@@ -18,7 +19,7 @@ public class Styler extends RegionTool {
     private SubStyle style;
 
     public Styler() {
-        super(true, new ToolMenu("By selection", null, "ESS", null));
+        super(true, new ToolMenu(_("By selection"), "ESS", Location.STYLE, 0, 0));
     }
 
     @Override

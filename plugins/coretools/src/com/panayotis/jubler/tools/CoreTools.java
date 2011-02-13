@@ -15,19 +15,19 @@ public class CoreTools implements Plugin {
 
     public PluginItem[] getList() {
         return new PluginItem[]{
-                    new DelSelection(),
-                    new Fixer(),
-                    new Marker(),
-                    new RecodeTime(),
-                    new Reparent(),
-                    new Rounder(),
-                    new ShiftTime(),
-                    new Speller(),
-                    new Styler(),
-                    new SubJoin(),
                     new SubSplit(),
+                    new SubJoin(),
+                    new Reparent(),
                     new Synchronize(),
-                    new Translate()
+                    new ShiftTime(),
+                    new RecodeTime(),
+                    new Fixer(),
+                    new Rounder(),
+                    new Speller(),
+                    new Translate(),
+                    new DelSelection(),
+                    new Marker(),
+                    new Styler()
                 };
     }
 }

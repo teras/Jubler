@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
@@ -21,7 +22,7 @@ public class Fixer extends RegionTool {
     private double min_abs, min_cps, max_abs, max_cps, gap;
 
     public Fixer() {
-        super(false, new ToolMenu(_("Time fix"), null, "TFI", null));
+        super(false, new ToolMenu(_("Time fix"), "TFI", Location.TIMETOOL, 0, 0));
     }
 
     @Override

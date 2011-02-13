@@ -11,14 +11,21 @@ package com.panayotis.jubler.tools;
 public class ToolMenu {
 
     public final String text;
-    public final String parent;
-    public final String key;
-    public final String tag;
+    public final String name;
+    public final Location location;
+    public final int key;
+    public final int mask;
 
-    public ToolMenu(String text, String parent, String key, String tag) {
+    public ToolMenu(String text, String name, Location location, int key, int mask) {
         this.text = text;
-        this.parent = parent;
+        this.name = name;
+        this.location = location;
         this.key = key;
-        this.tag = tag;
+        this.mask = mask;
+    }
+
+    public static enum Location {
+
+        FILETOOL, CONTENTTOOL, TIMETOOL, MARK, DELETE, STYLE;
     }
 }

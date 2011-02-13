@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -22,7 +23,7 @@ public class Synchronize extends RegionTool {
     private int offset;
 
     public Synchronize() {
-        super(true, new ToolMenu(_("Synchronize"), null, "TSY", null));
+        super(true, new ToolMenu(_("Synchronize"), "TSY", Location.FILETOOL, 0, 0));
     }
 
     public String getToolTitle() {

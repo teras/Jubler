@@ -52,10 +52,12 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSingleSelection;
 import com.panayotis.jubler.tools.JPasterGUI;
+import com.panayotis.jubler.tools.ToolsManager;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -71,6 +73,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton.ToggleButtonModel;
@@ -169,6 +172,8 @@ public class JubFrame extends JFrame {
         /* We have to do this AFTER we process the menu items (since some would be missing */
         if (prefs == null)
             prefs = new JPreferences(this);
+
+        ToolsManager.manager.register(this);
         StaticJubler.updateMenus(this);
         ShortcutsModel.updateMenuNames(JublerMenuBar);
 
@@ -357,8 +362,8 @@ public class JubFrame extends JFrame {
         PasteSpecialEM = new javax.swing.JMenuItem();
         jSeparator9 = new javax.swing.JSeparator();
         DeleteEM = new javax.swing.JMenu();
-        bySelectionDEM = new javax.swing.JMenuItem();
         EmptyLinesDEM = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         ReplaceEM = new javax.swing.JMenu();
         StepwiseREM = new javax.swing.JMenuItem();
         RegExpREM = new javax.swing.JMenuItem();
@@ -381,19 +386,12 @@ public class JubFrame extends JFrame {
         YellowMEM = new javax.swing.JMenuItem();
         CyanMEM = new javax.swing.JMenuItem();
         MarkSep = new javax.swing.JSeparator();
-        bySelectionMEM = new javax.swing.JMenuItem();
         StyleEM = new javax.swing.JMenu();
         StyleSepSEM = new javax.swing.JSeparator();
-        bySelectionSEM = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JSeparator();
         UndoEM = new javax.swing.JMenuItem();
         RedoEM = new javax.swing.JMenuItem();
         ToolsM = new javax.swing.JMenu();
-        SplitTM = new javax.swing.JMenuItem();
-        JoinTM = new javax.swing.JMenuItem();
-        ReparentTM = new javax.swing.JMenuItem();
-        SynchronizeTM = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JSeparator();
         TestTM = new javax.swing.JMenu();
         BeginningTTM = new javax.swing.JMenuItem();
         CurrentTTM = new javax.swing.JMenuItem();
@@ -755,14 +753,11 @@ public class JubFrame extends JFrame {
 
         DeleteEM.setText(_("Delete"));
 
-        bySelectionDEM.setText(_("By Selection"));
-        bySelectionDEM.setName("EDS"); // NOI18N
-        DeleteEM.add(bySelectionDEM);
-
         EmptyLinesDEM.setText(_("Empty Lines"));
         EmptyLinesDEM.setName("EDE"); // NOI18N
         EmptyLinesDEM.addActionListener(formListener);
         DeleteEM.add(EmptyLinesDEM);
+        DeleteEM.add(jSeparator3);
 
         EditM.add(DeleteEM);
 
@@ -876,18 +871,10 @@ public class JubFrame extends JFrame {
         MarkEM.add(CyanMEM);
         MarkEM.add(MarkSep);
 
-        bySelectionMEM.setText(_("By Selection"));
-        bySelectionMEM.setName("EMS"); // NOI18N
-        MarkEM.add(bySelectionMEM);
-
         EditM.add(MarkEM);
 
         StyleEM.setText(_("Style"));
         StyleEM.add(StyleSepSEM);
-
-        bySelectionSEM.setText(_("By Selection"));
-        bySelectionSEM.setName("ESS"); // NOI18N
-        StyleEM.add(bySelectionSEM);
 
         EditM.add(StyleEM);
         EditM.add(jSeparator4);
@@ -910,26 +897,6 @@ public class JubFrame extends JFrame {
 
         ToolsM.setText(_("&Tools"));
         ToolsM.setEnabled(false);
-
-        SplitTM.setText(_("Split file"));
-        SplitTM.setName("TSP"); // NOI18N
-        SplitTM.addActionListener(formListener);
-        ToolsM.add(SplitTM);
-
-        JoinTM.setText(_("Join files"));
-        JoinTM.setEnabled(false);
-        JoinTM.setName("TJO"); // NOI18N
-        ToolsM.add(JoinTM);
-
-        ReparentTM.setText(_("Reparent"));
-        ReparentTM.setEnabled(false);
-        ReparentTM.setName("TPA"); // NOI18N
-        ToolsM.add(ReparentTM);
-
-        SynchronizeTM.setText(_("Synchronize"));
-        SynchronizeTM.setName("TSY"); // NOI18N
-        ToolsM.add(SynchronizeTM);
-        ToolsM.add(jSeparator3);
 
         TestTM.setText(_("Test video"));
 
@@ -1192,9 +1159,6 @@ public class JubFrame extends JFrame {
             }
             else if (evt.getSource() == RedoEM) {
                 JubFrame.this.RedoEMActionPerformed(evt);
-            }
-            else if (evt.getSource() == SplitTM) {
-                JubFrame.this.SplitTMActionPerformed(evt);
             }
             else if (evt.getSource() == BeginningTTM) {
                 JubFrame.this.BeginningTTMActionPerformed(evt);
@@ -1657,10 +1621,6 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
-
-private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SplitTMActionPerformed
-    // TODO add your handling code here:
-}//GEN-LAST:event_SplitTMActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1680,7 +1640,7 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JButton CutTB;
     private javax.swing.JMenuItem CyanMEM;
     private javax.swing.JMenuItem CyanMP;
-    private javax.swing.JMenu DeleteEM;
+    public javax.swing.JMenu DeleteEM;
     private javax.swing.JMenuItem DeleteP;
     private javax.swing.JMenu EditM;
     private javax.swing.JPanel EditTP;
@@ -1696,11 +1656,10 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JMenuItem InfoFM;
     private javax.swing.JButton InfoTB;
     private javax.swing.JMenu InsertEM;
-    private javax.swing.JMenuItem JoinTM;
     public javax.swing.JMenuBar JublerMenuBar;
     public javax.swing.JToolBar JublerTools;
     private javax.swing.JButton LoadTB;
-    private javax.swing.JMenu MarkEM;
+    public javax.swing.JMenu MarkEM;
     private javax.swing.JMenu MarkP;
     private javax.swing.JSeparator MarkSep;
     public javax.swing.JCheckBoxMenuItem MaxWaveC;
@@ -1729,7 +1688,6 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JMenuItem RedoEM;
     private javax.swing.JButton RedoTB;
     private javax.swing.JMenuItem RegExpREM;
-    private javax.swing.JMenuItem ReparentTM;
     private javax.swing.JMenu ReplaceEM;
     private javax.swing.JMenuItem RetrieveWFM;
     private javax.swing.JMenuItem RevertFM;
@@ -1745,9 +1703,8 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
     private javax.swing.JButton SortTB;
     private javax.swing.JPanel SortTP;
-    private javax.swing.JMenuItem SplitTM;
     private javax.swing.JMenuItem StepwiseREM;
-    private javax.swing.JMenu StyleEM;
+    public javax.swing.JMenu StyleEM;
     private javax.swing.JMenu StyleP;
     private javax.swing.JSeparator StyleSepSEM;
     public javax.swing.JPanel SubEditP;
@@ -1755,11 +1712,10 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JTable SubTable;
     private javax.swing.JPopupMenu SubsPop;
     private javax.swing.JScrollPane SubsScrollPane;
-    private javax.swing.JMenuItem SynchronizeTM;
     private javax.swing.JButton TestTB;
     private javax.swing.JMenu TestTM;
     private javax.swing.JPanel TestTP;
-    private javax.swing.JMenu ToolsM;
+    public javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
@@ -1768,16 +1724,13 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
-    private javax.swing.JMenuItem bySelectionDEM;
-    private javax.swing.JMenuItem bySelectionMEM;
-    private javax.swing.JMenuItem bySelectionSEM;
     private javax.swing.JMenuItem byTimeGEM;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
@@ -2012,10 +1965,8 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         for (JubFrame w : windows)
             if (w.jparent == this)
                 w.jparent = null;
-        if (windows.size() == 1) {
-            windows.get(0).JoinTM.setEnabled(false);
-            windows.get(0).ReparentTM.setEnabled(false);
-        }
+        if (windows.size() == 1)
+            ToolsManager.manager.setFileToolsStatus(windows.get(0), false);
         StaticJubler.updateRecents();
 
         if (windows.size() == 0)
@@ -2035,10 +1986,8 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         if (status && (!windows.contains(this))) {
             windows.add(this);
             if (windows.size() > 1)
-                for (int i = 0; i < windows.size(); i++) {
-                    windows.get(i).JoinTM.setEnabled(true);
-                    windows.get(i).ReparentTM.setEnabled(true);
-                }
+                for (int i = 0; i < windows.size(); i++)
+                    ToolsManager.manager.setFileToolsStatus(windows.get(i), true);
         }
         StaticJubler.updateRecents();
     }
@@ -2077,7 +2026,7 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         /* Try to reset the last selected row, after an update to the table has been performed
          * if no other information has been provided */
         if (oldselections == null || oldselections.length == 0)
-            if (subs.size() == 0)
+            if (subs.isEmpty())
                 oldselections = new SubEntry[0];
             else {
                 oldselections = new SubEntry[1];
@@ -2255,7 +2204,9 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
     }
 
     private void updateStyleMenu() {
-        ActionListener listener = new ActionListener()       {
+        Component[] list = StyleEM.getMenuComponents();
+        StyleEM.removeAll();
+        ActionListener listener = new ActionListener() {
 
             public void actionPerformed(ActionEvent evt) {
                 changeSubtitleStyle(((JMenuItem) evt.getSource()).getText());
@@ -2263,8 +2214,12 @@ private void SplitTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
         };
         constructStyleMenu(StyleP, listener, false);
         constructStyleMenu(StyleEM, listener, true);
-        StyleEM.add(StyleSepSEM);
-        StyleEM.add(bySelectionSEM);
+
+        int i = 0;
+        while (!(list[i] instanceof JSeparator))
+            i++;
+        for (; i < list.length; i++)
+            StyleEM.add(list[i]);
     }
 
     private void constructStyleMenu(JMenu menu, ActionListener listener, boolean add_shortkey) {
