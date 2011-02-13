@@ -27,7 +27,7 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.plugins.DynamicClassLoader;
+import com.panayotis.jubler.os.DynamicClassLoader;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
@@ -62,9 +62,6 @@ public class Jubler {
 
         SystemDependent.setLookAndFeel();
 
-        DynamicClassLoader.guessMainPath("Jubler", "com.panayotis.jubler.Jubler");
-
-
         /* Load all startup files in a separate process */
         LoaderThread loader = new LoaderThread();
 
@@ -84,7 +81,7 @@ public class Jubler {
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
 
-        PluginManager.manager.callPostInitListeners(null, StaticJubler.POSTLOADER);
+        PluginManager.manager.callPluginListeners(null, StaticJubler.POSTLOADER);
     }
 }
 

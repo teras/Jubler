@@ -49,7 +49,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
         return new String[]{"com.panayotis.jubler.JubFrame"};
     }
 
-    public void postInit(Object o) {
+    public void execPlugin(Object o) {
         if (o instanceof JubFrame) {
             JubFrame jubler = (JubFrame) o;
             if (jubler.AboutHM == null)

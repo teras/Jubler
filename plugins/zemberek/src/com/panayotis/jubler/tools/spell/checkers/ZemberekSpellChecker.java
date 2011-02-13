@@ -119,7 +119,7 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
         return new String[]{AvailExternals.class.getName()};
     }
 
-    public void postInit(Object o) {
+    public void execPlugin(Object o) {
         if (o instanceof AvailExternals) {
             AvailExternals l = (AvailExternals) o;
             if (l.getType().equals(family))

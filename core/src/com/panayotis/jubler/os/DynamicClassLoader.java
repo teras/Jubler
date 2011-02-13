@@ -19,16 +19,15 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-package com.panayotis.jubler.plugins;
+package com.panayotis.jubler.os;
 
-import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.SystemFileFinder;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 import java.util.jar.JarFile;
 
 /**
@@ -37,13 +36,7 @@ import java.util.jar.JarFile;
  */
 public class DynamicClassLoader extends URLClassLoader {
 
-    private final static String UD = System.getProperty("user.dir") + File.separator;
     private final static String PLUGINTAG = "Extension-Name";
-    //
-    private static String MainPath = UD;  // Base directory to look for plugins
-    private static boolean JarBased = false;
-    //
-    private boolean search_recursively = true;
     private final ArrayList<String> plugins = new ArrayList<String>();
 
     public DynamicClassLoader() {
@@ -57,9 +50,9 @@ public class DynamicClassLoader extends URLClassLoader {
         File cfile;
         File[] list;
         for (int i = 0; i < paths.length; i++) {
-            cfile = new File(MainPath + paths[i]);
+            cfile = new File(SystemFileFinder.AppPath + File.separator + paths[i]);
             addJAR(cfile);
-            if (cfile.isDirectory() && search_recursively) {
+            if (cfile.isDirectory()) {
                 list = cfile.listFiles();
                 if (list != null)
                     for (int j = 0; j < list.length; j++)
@@ -98,32 +91,5 @@ public class DynamicClassLoader extends URLClassLoader {
             buf.append(File.pathSeparatorChar).append(urls[i].getFile());
         String cp = buf.toString();
         System.setProperty("java.class.path", cp);
-    }
-
-    public static void guessMainPath(String basename, String baseclass) {
-        String path;
-        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), File.pathSeparator);
-        while (tok.hasMoreTokens()) {
-            path = tok.nextToken();
-            File file = new File(path);
-            if (!file.isAbsolute()) {
-                path = UD + path;
-                file = new File(path);
-            }
-            if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
-                MainPath = file.getParent() + File.separator;
-                JarBased = true;
-                return;
-            }
-            if (new File(path + File.separator + baseclass.replace('.', File.separatorChar) + ".class").exists()) {
-                MainPath = path + File.separator;
-                JarBased = false;
-                return;
-            }
-        }
-    }
-
-    public static boolean isJarBased() {
-        return JarBased;
     }
 }

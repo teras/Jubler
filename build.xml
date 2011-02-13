@@ -162,6 +162,9 @@
 		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib">
 			<fileset dir="dist/lib"/>
 		</copy>
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/themes">
+			<fileset dir="dist/themes"/>
+		</copy>
 		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help">
 			<fileset dir="dist/help"/>
 		</copy>
@@ -316,6 +319,9 @@
 		<copy file="dist/Jubler.jar" todir="${libdir}"/>
 		<copy todir="${libdir}/lib">
 			<fileset dir="dist/lib"/>
+		</copy>
+		<copy todir="${libdir}/themes">
+			<fileset dir="dist/themes"/>
 		</copy>
 		<copy todir="${libdir}/i18n">
 			<fileset dir="dist/i18n"/>

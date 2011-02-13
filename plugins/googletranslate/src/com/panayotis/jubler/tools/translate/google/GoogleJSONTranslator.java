@@ -156,7 +156,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
         return new String[]{AvailTranslators.class.getName()};
     }
 
-    public void postInit(Object o) {
+    public void execPlugin(Object o) {
         if (o instanceof AvailTranslators)
             ((AvailTranslators) o).add(this);
     }

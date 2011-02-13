@@ -53,6 +53,7 @@
             <file src="README" targetdir="$INSTALL_PATH"/>
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
+            <file src="dist/themes" targetdir="$INSTALL_PATH"/>
             <file src="dist/i18n" targetdir="$INSTALL_PATH"/>
             <file src="dist/help" targetdir="$INSTALL_PATH"/>
 			<file src="resources/installers/linux/jubler.png" targetdir="$INSTALL_PATH/lib"/>

@@ -69,7 +69,7 @@ public abstract class SubFormat implements PluginItem {
         return new String[]{AvailSubFormats.class.getName()};
     }
 
-    public void postInit(Object o) {
+    public void execPlugin(Object o) {
         if (o instanceof AvailSubFormats) {
             AvailSubFormats l = (AvailSubFormats) o;
             l.add(this);

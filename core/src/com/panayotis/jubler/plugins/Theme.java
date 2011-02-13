@@ -5,6 +5,7 @@
 package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.SystemFileFinder;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,8 +25,10 @@ public class Theme {
     static {
         ZipFile request = null;
         try {
-            if (DynamicClassLoader.isJarBased())
-                request = new ZipFile(new File("themes" + File.separator + THEME_NAME));
+            if (SystemFileFinder.isJarBased()) {
+                System.out.println(SystemFileFinder.AppPath + File.separator + "themes" + File.separator + THEME_NAME);
+                request = new ZipFile(new File(SystemFileFinder.AppPath + File.separator + "themes" + File.separator + THEME_NAME));
+            }
             else
                 request = new ZipFile(new File("../dist/themes/" + THEME_NAME));
         } catch (IOException ex) {
