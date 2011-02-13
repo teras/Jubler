@@ -6,7 +6,7 @@ package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.plugins.PluginItem;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 /**
  *
@@ -15,21 +15,23 @@ import javax.swing.JPanel;
 public abstract class GenericTool implements PluginItem {
 
     public final ToolMenu toolmenu;
-    private JPanel visuals;
+    private JComponent visuals;
 
     public GenericTool(ToolMenu toolmenu) {
         this.toolmenu = toolmenu;
     }
 
+    public abstract void updateData(JubFrame current);
+
     public abstract boolean execute(JubFrame current);
 
-    public JPanel getVisuals() {
+    public final JComponent getVisuals() {
         if (visuals == null)
             visuals = constructVisuals();
         return visuals;
     }
 
-    protected abstract JPanel constructVisuals();
+    protected abstract JComponent constructVisuals();
 
     @Override
     public Class[] getAffectionList() {
@@ -38,8 +40,8 @@ public abstract class GenericTool implements PluginItem {
 
     @Override
     public void execPlugin(Object caller, Object param) {
-        if (!(caller instanceof ToolsManager))
+        if (!ToolsManager.class.equals(caller))
             return;
-        ((ToolsManager) caller).add(this);
+        ToolsManager.add(this);
     }
 }

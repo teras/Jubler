@@ -23,10 +23,8 @@
 package com.panayotis.jubler.tools;
 
 import java.util.ArrayList;
-import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.replace.JReplaceList;
 import com.panayotis.jubler.tools.replace.ReplaceModel;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -48,6 +46,7 @@ public class JRegExpReplaceGUI extends ToolGUI {
     public JRegExpReplaceGUI() {
     }
 
+    @Override
     public void initialize() {
         initComponents();
         rlist = new JReplaceList();

@@ -8,7 +8,7 @@ import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.JIDialog;
 import java.util.ArrayList;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 /**
  *
@@ -23,7 +23,7 @@ public class Reparent extends GenericTool {
     }
 
     @Override
-    public boolean execute(JubFrame current) {
+    public void updateData(JubFrame current) {
         ReparentGUI vis = (ReparentGUI) getVisuals();
         jublerlist = new ArrayList<JubFrame>();
         int selection = 0;
@@ -37,7 +37,11 @@ public class Reparent extends GenericTool {
                 vis.JubSelector.addItem(entry.getSubtitles().getSubFile().getStrippedFile().getName());
             }
         vis.JubSelector.setSelectedIndex(selection);
+    }
 
+    @Override
+    public boolean execute(JubFrame current) {
+        ReparentGUI vis = (ReparentGUI) getVisuals();
         if (JIDialog.action(current, vis, _("Reparent subtitles file"))) {
             JubFrame newp = getDesiredParent();
             if (newp == null) {
@@ -69,7 +73,7 @@ public class Reparent extends GenericTool {
     }
 
     @Override
-    protected JPanel constructVisuals() {
+    protected JComponent constructVisuals() {
         return new ReparentGUI();
     }
 }

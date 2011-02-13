@@ -21,16 +21,18 @@ import javax.swing.JSeparator;
  * @author teras
  */
 public class ToolsManager {
-    
-    public static final ToolsManager manager = new ToolsManager();
-    private final EnumMap<Location, ArrayList<GenericTool>> tools = new EnumMap<Location, ArrayList<GenericTool>>(Location.class);
-    
-    @SuppressWarnings("LeakingThisInConstructor")
-    private ToolsManager() {
-        PluginManager.manager.callPluginListeners(this);
+
+    private static final EnumMap<Location, ArrayList<GenericTool>> tools = new EnumMap<Location, ArrayList<GenericTool>>(Location.class);
+    private static RealTimeTool recoder, shifter;
+
+    static {
+        PluginManager.manager.callPluginListeners(ToolsManager.class);
     }
-    
-    public void add(GenericTool tool) {
+
+    private ToolsManager() {
+    }
+
+    public static void add(GenericTool tool) {
         ArrayList<GenericTool> list = tools.get(tool.toolmenu.location);
         if (list == null) {
             list = new ArrayList<GenericTool>();
@@ -38,8 +40,8 @@ public class ToolsManager {
         }
         list.add(tool);
     }
-    
-    public void register(JubFrame current) {
+
+    public static void register(JubFrame current) {
         // Backup existing tools menu
         Component[] oldtools = current.ToolsM.getMenuComponents();
         current.ToolsM.removeAll();
@@ -63,20 +65,21 @@ public class ToolsManager {
                 addMenu(current, current.MarkEM, tool);
             for (GenericTool tool : tools.get(Location.STYLE))
                 addMenu(current, current.StyleEM, tool);
-        } catch (NullPointerException ex) {            
+        } catch (NullPointerException ex) {
         }
         // Restore tools menu old entries
         for (Component comp : oldtools)
             current.ToolsM.add(comp);
     }
-    
-    private void addMenu(final JubFrame current, final JMenu ToolsM, final GenericTool tool) {
+
+    private static void addMenu(final JubFrame current, final JMenu ToolsM, final GenericTool tool) {
         JMenuItem item = new JMenuItem(tool.toolmenu.text, tool.toolmenu.key);
         item.setName(tool.toolmenu.name);
         ToolsM.add(item);
-        item.addActionListener(new ActionListener()             {
-            
+        item.addActionListener(new ActionListener()    {
+
             public void actionPerformed(ActionEvent e) {
+                tool.updateData(current);
                 tool.execute(current);
             }
         });
@@ -86,7 +89,7 @@ public class ToolsManager {
      * Join and Reparent are in the first block of menu, or else this code will break,
      * since it searches for the first separator item
      */
-    public void setFileToolsStatus(JubFrame current, boolean status) {
+    public static void setFileToolsStatus(JubFrame current, boolean status) {
         JMenuItem Join = null;
         JMenuItem Reparent = null;
         for (Component item : current.ToolsM.getMenuComponents())
@@ -101,5 +104,23 @@ public class ToolsManager {
             Join.setEnabled(status);
         if (Reparent != null)
             Reparent.setEnabled(status);
+    }
+
+    public static RealTimeTool getRecoder() {
+        if (recoder == null) {
+        }
+        return recoder;
+    }
+
+    public static void setRecoder(RealTimeTool recoder) {
+        ToolsManager.recoder = recoder;
+    }
+
+    public static RealTimeTool getShifter() {
+        return shifter;
+    }
+
+    public static void setShifter(RealTimeTool shifter) {
+        ToolsManager.shifter = shifter;
     }
 }

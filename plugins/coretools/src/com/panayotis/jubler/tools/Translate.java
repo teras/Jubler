@@ -25,13 +25,16 @@ public class Translate extends RegionTool {
         super(true, new ToolMenu(_("Translate"), "TTM", Location.CONTENTTOOL, KeyEvent.VK_E, InputEvent.CTRL_MASK));
     }
 
+    @Override
     protected String getToolTitle() {
         return _("Translate text");
     }
 
+    @Override
     protected void storeSelections() {
     }
 
+    @Override
     protected void affect(int index) {
     }
 

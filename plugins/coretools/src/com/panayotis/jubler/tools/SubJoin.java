@@ -13,7 +13,7 @@ import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.undo.UndoEntry;
 import java.util.ArrayList;
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 /**
  *
@@ -40,14 +40,20 @@ public class SubJoin extends GenericTool {
     }
 
     @Override
-    public boolean execute(JubFrame current) {
+    public void updateData(JubFrame current) {
         SubJoinGUI vis = (SubJoinGUI) getVisuals();
+        privlist.clear();
+        vis.SubWindow.removeAllItems();
         for (JubFrame item : JubFrame.windows)
             if (item != current) {
                 vis.SubWindow.addItem(item.getSubtitles().getSubFile().getStrippedFile().getName());
                 privlist.add(item);
             }
+    }
 
+    @Override
+    public boolean execute(JubFrame current) {
+        SubJoinGUI vis = (SubJoinGUI) getVisuals();
         if (JIDialog.action(current, vis, _("Join two subtitles"))) {
             Subtitles newsubs;
             JubFrame other;
@@ -74,7 +80,7 @@ public class SubJoin extends GenericTool {
     }
 
     @Override
-    protected JPanel constructVisuals() {
+    protected JComponent constructVisuals() {
         return new SubJoinGUI();
     }
 }
