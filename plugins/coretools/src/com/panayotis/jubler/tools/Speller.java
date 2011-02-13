@@ -4,8 +4,11 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.tools.spell.JSpellChecker;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -15,7 +18,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class Speller extends RegionTool {
 
     public Speller() {
-        super(true, new ToolMenu(_("Spell check"), null, "TLL", null));
+        super(true, new ToolMenu(_("Spell check"), "TLL", Location.CONTENTTOOL, KeyEvent.VK_T, InputEvent.CTRL_MASK));
     }
 
     @Override

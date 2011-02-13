@@ -11,6 +11,7 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.undo.UndoEntry;
 import javax.swing.JPanel;
 
@@ -21,7 +22,7 @@ import javax.swing.JPanel;
 public class SubSplit extends GenericTool {
 
     public SubSplit() {
-        super(new ToolMenu(_("Split file"), null, "TSP", null));
+        super(new ToolMenu(_("Split file"), "TSP", Location.FILETOOL, 0, 0));
     }
 
     @Override

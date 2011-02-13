@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
@@ -18,7 +19,7 @@ public class ShiftTime extends RealTimeTool {
     private double shift;
 
     public ShiftTime() {
-        super(true, new ToolMenu(_("Shift time"), null, "TSH", null));
+        super(true, new ToolMenu(_("Shift time"), "TSH", Location.TIMETOOL, 0, 0));
     }
 
     @Override

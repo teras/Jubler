@@ -19,7 +19,7 @@ public class Reparent extends GenericTool {
     private ArrayList<JubFrame> jublerlist;
 
     public Reparent() {
-        super(new ToolMenu(_("Reparent"), null, "TPA", null));
+        super(new ToolMenu(_("Reparent"), "TPA", ToolMenu.Location.FILETOOL, 0, 0));
     }
 
     @Override

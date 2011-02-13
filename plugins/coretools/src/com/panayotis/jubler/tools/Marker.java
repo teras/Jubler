@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -15,7 +16,7 @@ public class Marker extends RegionTool {
     int mark;
 
     public Marker() {
-        super(true, new ToolMenu("By Selection", null, "EMS", null));
+        super(true, new ToolMenu(_("By Selection"), "EMS", Location.MARK, 0, 0));
     }
 
     @Override

@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -14,7 +15,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class DelSelection extends RegionTool {
 
     public DelSelection() {
-        super(true, new ToolMenu(_("By selection"), null, "EDS", null));
+        super(true, new ToolMenu(_("By selection"), "EDS", Location.DELETE, 0, 0));
     }
 
     @Override

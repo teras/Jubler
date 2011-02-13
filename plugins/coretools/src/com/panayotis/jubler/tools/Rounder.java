@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -17,7 +18,7 @@ public class Rounder extends RegionTool {
     private int precise;
 
     public Rounder() {
-        super(true, new ToolMenu(_("Round time"), null, "TRO", null));
+        super(true, new ToolMenu(_("Round time"), "TRO", Location.TIMETOOL, 0, 0));
     }
 
     @Override

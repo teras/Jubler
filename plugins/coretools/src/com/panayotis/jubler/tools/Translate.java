@@ -4,9 +4,12 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.tools.translate.AvailTranslators;
 import com.panayotis.jubler.tools.translate.Translator;
 import com.panayotis.jubler.os.DEBUG;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -19,7 +22,7 @@ public class Translate extends RegionTool {
     private Translator trans;
 
     public Translate() {
-        super(true, null);
+        super(true, new ToolMenu(_("Translate"), "TTM", Location.CONTENTTOOL, KeyEvent.VK_E, InputEvent.CTRL_MASK));
     }
 
     protected String getToolTitle() {

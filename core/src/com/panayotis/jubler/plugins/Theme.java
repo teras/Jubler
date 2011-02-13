@@ -25,10 +25,8 @@ public class Theme {
     static {
         ZipFile request = null;
         try {
-            if (SystemFileFinder.isJarBased()) {
-                System.out.println(SystemFileFinder.AppPath + File.separator + "themes" + File.separator + THEME_NAME);
+            if (SystemFileFinder.isJarBased())
                 request = new ZipFile(new File(SystemFileFinder.AppPath + File.separator + "themes" + File.separator + THEME_NAME));
-            }
             else
                 request = new ZipFile(new File("../dist/themes/" + THEME_NAME));
         } catch (IOException ex) {

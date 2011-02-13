@@ -31,10 +31,15 @@ public abstract class GenericTool implements PluginItem {
 
     protected abstract JPanel constructVisuals();
 
+    @Override
     public Class[] getAffectionList() {
         return new Class[]{ToolsManager.class};
     }
 
+    @Override
     public void execPlugin(Object caller, Object param) {
+        if (!(caller instanceof ToolsManager))
+            return;
+        ((ToolsManager) caller).add(this);
     }
 }

@@ -10,6 +10,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.undo.UndoEntry;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -23,7 +24,7 @@ public class SubJoin extends GenericTool {
     private ArrayList<JubFrame> privlist = new ArrayList<JubFrame>();
 
     public SubJoin() {
-        super(new ToolMenu("Join files", null, "TJO", null));
+        super(new ToolMenu("Join files", "TJO", Location.FILETOOL, 0, 0));
     }
 
     public boolean isPrepend() {

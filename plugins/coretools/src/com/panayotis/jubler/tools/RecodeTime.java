@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
@@ -20,7 +21,7 @@ public class RecodeTime extends RealTimeTool {
     private TimeSync t1, t2;
 
     public RecodeTime() {
-        super(true, new ToolMenu(_("Recode"), null, "TCO", null));
+        super(true, new ToolMenu(_("Recode"), "TCO", Location.TIMETOOL, 0, 0));
     }
 
     @Override
