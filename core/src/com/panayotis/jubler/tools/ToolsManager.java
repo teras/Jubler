@@ -15,6 +15,7 @@ import java.util.EnumMap;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -33,10 +34,10 @@ public class ToolsManager {
     }
 
     public static void add(GenericTool tool) {
-        ArrayList<GenericTool> list = tools.get(tool.toolmenu.location);
+        ArrayList<GenericTool> list = tools.get(tool.menu.location);
         if (list == null) {
             list = new ArrayList<GenericTool>();
-            tools.put(tool.toolmenu.location, list);
+            tools.put(tool.menu.location, list);
         }
         list.add(tool);
     }
@@ -73,10 +74,12 @@ public class ToolsManager {
     }
 
     private static void addMenu(final JubFrame current, final JMenu ToolsM, final GenericTool tool) {
-        JMenuItem item = new JMenuItem(tool.toolmenu.text, tool.toolmenu.key);
-        item.setName(tool.toolmenu.name);
+        JMenuItem item = new JMenuItem(tool.menu.text, tool.menu.key);
+        if (tool.menu.key != 0)
+            item.setAccelerator(KeyStroke.getKeyStroke(tool.menu.key, tool.menu.mask));
+        item.setName(tool.menu.name);
         ToolsM.add(item);
-        item.addActionListener(new ActionListener()    {
+        item.addActionListener(new ActionListener()     {
 
             public void actionPerformed(ActionEvent e) {
                 tool.updateData(current);

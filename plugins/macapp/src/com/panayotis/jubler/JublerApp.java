@@ -64,8 +64,10 @@ public class JublerApp extends Application implements Plugin, PluginItem {
             setComponentDraggable(jubler, jubler.JublerTools);
             setComponentDraggable(jubler, jubler.subeditor.StyleP);
             setComponentDraggable(jubler, jubler.subeditor.Unsaved);
-            setComponentDraggable(jubler, jubler.subeditor.Stats);
-            setComponentDraggable(jubler, jubler.subeditor.Info);
+            setComponentDraggable(jubler, jubler.subeditor.TotalL);
+            setComponentDraggable(jubler, jubler.subeditor.CharsL);
+            setComponentDraggable(jubler, jubler.subeditor.NewlineL);
+            setComponentDraggable(jubler, jubler.subeditor.LongestL);
         }
     }
 
@@ -78,7 +80,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
         final Point oldpos = new Point();
         final Point newpos = new Point();
 
-        comp.addMouseListener(new MouseAdapter()     {
+        comp.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent e) {
@@ -98,7 +100,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
             }
         });
 
-        comp.addMouseMotionListener(new MouseMotionAdapter()     {
+        comp.addMouseMotionListener(new MouseMotionAdapter() {
 
             @Override
             public void mouseDragged(MouseEvent e) {
