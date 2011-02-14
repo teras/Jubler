@@ -22,9 +22,9 @@
  */
 package com.panayotis.jubler;
 
-import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N._;
 
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.media.MediaFile;
@@ -156,6 +156,8 @@ public class JubFrame extends JFrame {
         undo = new UndoList(this);
 
         initComponents();
+        ToolsManager.register(this);
+
         setIconImage(FrameIcon);
         preview = new JSubPreview(this);
 
@@ -173,7 +175,6 @@ public class JubFrame extends JFrame {
         if (prefs == null)
             prefs = new JPreferences(this);
 
-        ToolsManager.register(this);
         StaticJubler.updateMenus(this);
         ShortcutsModel.updateMenuNames(JublerMenuBar);
 
@@ -2082,6 +2083,10 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 
     public boolean isUnsaved() {
         return unsaved_data;
+    }
+
+    public boolean isToolLocked() {
+        return subeditor.LockToolB.isSelected();
     }
 
     public void setDisableConsoleUpdate(boolean status) {

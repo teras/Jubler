@@ -242,6 +242,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         MetricsB.setEnabled(enabled);
         TrashB.setEnabled(enabled);
         ShowStyleB.setEnabled(enabled);
+        LockToolB.setEnabled(enabled);
 
         Lock1.setEnabled(enabled);
         Lock2.setEnabled(enabled);
@@ -378,11 +379,12 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel2 = new javax.swing.JPanel();
         TrashB = new javax.swing.JButton();
         ShowStyleB = new javax.swing.JToggleButton();
+        LockToolB = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         InfoP = new javax.swing.JPanel();
         TotalL = new javax.swing.JLabel();
-        CharsL = new javax.swing.JLabel();
         NewlineL = new javax.swing.JLabel();
+        CharsL = new javax.swing.JLabel();
         LongestL = new javax.swing.JLabel();
         Unsaved = new javax.swing.JLabel();
 
@@ -511,7 +513,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.BorderLayout());
 
-        DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
+        DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 8));
         DetachP.setOpaque(false);
         DetachP.setLayout(new javax.swing.BoxLayout(DetachP, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -529,7 +531,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel7.add(DetachP, java.awt.BorderLayout.WEST);
 
         jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
         TimeB.setIcon(Theme.loadIcon("time.png"));
         TimeB.setSelected(true);
@@ -578,7 +580,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.GridLayout(0, 2, 2, 0));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
         TrashB.setIcon(Theme.loadIcon("trash.png"));
         TrashB.setToolTipText(_("Delete styles of this subtitle"));
@@ -602,6 +604,17 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel2.add(ShowStyleB);
 
+        LockToolB.setIcon(Theme.loadIcon("opentool.png"));
+        LockToolB.setToolTipText(_("When locked, tools will be run with default parameters on the selected subtitles"));
+        LockToolB.setSelectedIcon(Theme.loadIcon("lockedtool.png"));
+        SystemDependent.setCommandButtonStyle(LockToolB, "only");
+        LockToolB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LockToolBActionPerformed(evt);
+            }
+        });
+        jPanel2.add(LockToolB);
+
         jPanel7.add(jPanel2, java.awt.BorderLayout.EAST);
 
         StyleP.add(jPanel7, java.awt.BorderLayout.WEST);
@@ -617,22 +630,22 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         TotalL.setIconTextGap(0);
         InfoP.add(TotalL);
 
-        CharsL.setIcon(Theme.loadIcon("key.png"));
-        CharsL.setToolTipText(_("Total number of characters per subtitle"));
-        CharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
-        CharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        CharsL.setIconTextGap(0);
-        InfoP.add(CharsL);
-
         NewlineL.setIcon(Theme.loadIcon("newline.png"));
         NewlineL.setToolTipText(_("Number of lines per subtitle"));
+        NewlineL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 6));
         NewlineL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         NewlineL.setIconTextGap(0);
         InfoP.add(NewlineL);
 
+        CharsL.setIcon(Theme.loadIcon("key.png"));
+        CharsL.setToolTipText(_("Total number of characters per subtitle"));
+        CharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 6));
+        CharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        CharsL.setIconTextGap(0);
+        InfoP.add(CharsL);
+
         LongestL.setIcon(Theme.loadIcon("longest.png"));
         LongestL.setToolTipText(_("Longest line of subtitle"));
-        LongestL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
         LongestL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         LongestL.setIconTextGap(0);
         InfoP.add(LongestL);
@@ -753,6 +766,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         lockTimeSpinners(true);
     }//GEN-LAST:event_Lock1ActionPerformed
 
+    private void LockToolBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LockToolBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LockToolBActionPerformed
+
     public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
         entry.setOverStyle(type, value, SubText.getSelectionStart(), SubText.getSelectionEnd());
@@ -807,6 +824,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JToggleButton Lock1;
     private javax.swing.JToggleButton Lock2;
     private javax.swing.JToggleButton Lock3;
+    public javax.swing.JToggleButton LockToolB;
     public javax.swing.JLabel LongestL;
     private javax.swing.JToggleButton MetricsB;
     public javax.swing.JLabel NewlineL;

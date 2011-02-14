@@ -160,7 +160,7 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
         return y;
     }
 
-    public Class[] getAffectionList() {
+    public Class[] getPluginAffections() {
         return new Class[]{AvailExternals.class};
     }
 

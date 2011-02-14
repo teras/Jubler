@@ -4,6 +4,8 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 
@@ -13,7 +15,7 @@ import com.panayotis.jubler.plugins.PluginItem;
  */
 public class TextSubPlugin implements Plugin {
 
-    public PluginItem[] getList() {
+    public PluginItem[] getPluginItems() {
         return new PluginItem[]{
                     new AdvancedSubStation(),
                     new SubRip(),
@@ -27,5 +29,13 @@ public class TextSubPlugin implements Plugin {
                     new TextScript(),
                     new W3CTimedText()
                 };
+    }
+
+    public String getPluginName() {
+        return _("Text subtitles");
+    }
+
+    public boolean canDisablePlugin() {
+        return false;
     }
 }

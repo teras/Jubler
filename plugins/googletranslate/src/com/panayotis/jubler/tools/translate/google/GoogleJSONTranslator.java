@@ -158,7 +158,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
     }
 
     @Override
-    public Class[] getAffectionList() {
+    public Class[] getPluginAffections() {
         return new Class[]{AvailTranslators.class};
     }
 
@@ -169,7 +169,15 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
     }
 
     @Override
-    public PluginItem[] getList() {
+    public PluginItem[] getPluginItems() {
         return new PluginItem[]{this};
+    }
+
+    public String getPluginName() {
+        return _("Google translate");
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
     }
 }

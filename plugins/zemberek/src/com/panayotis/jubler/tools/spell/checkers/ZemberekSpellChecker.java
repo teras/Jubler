@@ -26,11 +26,12 @@
  */
 package com.panayotis.jubler.tools.spell.checkers;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
-
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -115,7 +116,7 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
         return "Zemberek";
     }
 
-    public Class[] getAffectionList() {
+    public Class[] getPluginAffections() {
         return new Class[]{AvailExternals.class};
     }
 
@@ -127,7 +128,15 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
         }
     }
 
-    public PluginItem[] getList() {
+    public PluginItem[] getPluginItems() {
         return new PluginItem[]{this};
+    }
+
+    public String getPluginName() {
+        return _("Zemberek spell checker");
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
     }
 }
