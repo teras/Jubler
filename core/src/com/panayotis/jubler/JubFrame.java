@@ -1291,6 +1291,7 @@ public class JubFrame extends JFrame {
             s.elementAt(i).setText("");
         curjubler.setSubs(s);
         curjubler.subs.getSubFile().appendToFilename(_("_child"));
+        curjubler.setUnsaved(true);
         curjubler.showInfo();
         curjubler.jparent = this;
         curjubler.enableSaveControls();
@@ -1451,6 +1452,7 @@ public class JubFrame extends JFrame {
             curjubler = new JubFrame();
         curjubler.setVisible(true);
 
+        curjubler.setUnsaved(true);
         Subtitles s = new Subtitles();
         s.add(new SubEntry(new Time(0), new Time(5), ""));
         curjubler.setSubs(s);
