@@ -238,16 +238,13 @@ public class JubFrame extends JFrame {
     private void updateStatsLabel(SubEntry entry) {
         /* Update information label */
         SubMetrics m = entry.getMetrics();
-        StringBuilder lbl = new StringBuilder();
-        lbl.append("T:").append(m.length);
-        lbl.append(" L:").append(m.lines);
-        lbl.append(" C:").append(m.maxlength);
-        subeditor.Stats.setText(lbl.toString());
-
+        subeditor.CharsL.setText(String.valueOf(m.length));
+        subeditor.NewlineL.setText(String.valueOf(m.lines));
+        subeditor.LongestL.setText(String.valueOf(m.maxlength));
         if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength))
-            subeditor.Stats.setForeground(Color.RED);
+            subeditor.LongestL.setForeground(Color.RED);
         else
-            subeditor.Stats.setForeground(SystemColor.controlText);
+            subeditor.LongestL.setForeground(SystemColor.controlText);
     }
 
     public int addSubEntry(SubEntry entry) {
@@ -2064,7 +2061,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
     public void showInfo() {
-        subeditor.Info.setText(Integer.toString(subs.size()));
+        subeditor.TotalL.setText(Integer.toString(subs.size()));
         subeditor.setUnsaved(isUnsaved());
         if (subs.getSubFile().getStrippedFile() != null) {
             String title = subs.getSubFile().getStrippedFile().getName();

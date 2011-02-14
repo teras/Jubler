@@ -255,8 +255,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         L1.setEnabled(enabled);
         L2.setEnabled(enabled);
         L3.setEnabled(enabled);
-        Info.setEnabled(enabled);
-        Stats.setEnabled(enabled);
+        TotalL.setEnabled(enabled);
+        CharsL.setEnabled(enabled);
+        NewlineL.setEnabled(enabled);
+        LongestL.setEnabled(enabled);
 
         /* Fix the attributes of the sub text area */
         if (entry == null || (!enabled)) {
@@ -377,8 +379,11 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         TrashB = new javax.swing.JButton();
         ShowStyleB = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
-        Info = new javax.swing.JLabel();
-        Stats = new javax.swing.JLabel();
+        InfoP = new javax.swing.JPanel();
+        TotalL = new javax.swing.JLabel();
+        CharsL = new javax.swing.JLabel();
+        NewlineL = new javax.swing.JLabel();
+        LongestL = new javax.swing.JLabel();
         Unsaved = new javax.swing.JLabel();
 
         setOpaque(false);
@@ -571,7 +576,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel7.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.GridLayout(0, 2, 2, 0));
 
@@ -604,19 +609,38 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel8.setOpaque(false);
         jPanel8.setLayout(new java.awt.BorderLayout(8, 0));
 
-        Info.setIcon(Theme.loadIcon("lines.png"));
-        Info.setToolTipText(_("Total subtitles"));
-        Info.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel8.add(Info, java.awt.BorderLayout.WEST);
+        InfoP.setLayout(new javax.swing.BoxLayout(InfoP, javax.swing.BoxLayout.X_AXIS));
 
-        Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Stats.setText("-");
-        Stats.setToolTipText(_("T: total number of characters\nL: number of lines\nC: characters of the longest line"));
-        jPanel8.add(Stats, java.awt.BorderLayout.CENTER);
+        TotalL.setIcon(Theme.loadIcon("lines.png"));
+        TotalL.setToolTipText(_("Total subtitles"));
+        TotalL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        TotalL.setIconTextGap(0);
+        InfoP.add(TotalL);
+
+        CharsL.setIcon(Theme.loadIcon("key.png"));
+        CharsL.setToolTipText(_("Total number of characters per subtitle"));
+        CharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
+        CharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        CharsL.setIconTextGap(0);
+        InfoP.add(CharsL);
+
+        NewlineL.setIcon(Theme.loadIcon("newline.png"));
+        NewlineL.setToolTipText(_("Number of lines per subtitle"));
+        NewlineL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        NewlineL.setIconTextGap(0);
+        InfoP.add(NewlineL);
+
+        LongestL.setIcon(Theme.loadIcon("longest.png"));
+        LongestL.setToolTipText(_("Longest line of subtitle"));
+        LongestL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
+        LongestL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        LongestL.setIconTextGap(0);
+        InfoP.add(LongestL);
+
+        jPanel8.add(InfoP, java.awt.BorderLayout.WEST);
 
         Unsaved.setIcon(Theme.loadIcon("save.png"));
         Unsaved.setEnabled(false);
-        Unsaved.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jPanel8.add(Unsaved, java.awt.BorderLayout.EAST);
 
         StyleP.add(jPanel8, java.awt.BorderLayout.CENTER);
@@ -770,30 +794,33 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         }
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JLabel CharsL;
     private javax.swing.JToggleButton ColorB;
     public javax.swing.JButton DetachB;
     private javax.swing.JPanel DetachP;
     private javax.swing.JButton EditB;
     private javax.swing.JToggleButton FontB;
-    public javax.swing.JLabel Info;
+    public javax.swing.JPanel InfoP;
     private javax.swing.JLabel L1;
     private javax.swing.JLabel L2;
     private javax.swing.JLabel L3;
     private javax.swing.JToggleButton Lock1;
     private javax.swing.JToggleButton Lock2;
     private javax.swing.JToggleButton Lock3;
+    public javax.swing.JLabel LongestL;
     private javax.swing.JToggleButton MetricsB;
+    public javax.swing.JLabel NewlineL;
     private javax.swing.JPanel PSDur;
     private javax.swing.JPanel PSFinish;
     private javax.swing.JPanel PSStart;
     private javax.swing.JToggleButton ShowStyleB;
-    public javax.swing.JLabel Stats;
     private javax.swing.JComboBox StyleListC;
     public javax.swing.JPanel StyleP;
     private javax.swing.JTextPane SubText;
     private javax.swing.JToggleButton TimeB;
     private javax.swing.ButtonGroup TimeLock;
     private javax.swing.JPanel TimeP;
+    public javax.swing.JLabel TotalL;
     private javax.swing.JButton TrashB;
     public javax.swing.JLabel Unsaved;
     private javax.swing.JPanel jPanel1;

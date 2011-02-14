@@ -14,11 +14,11 @@ import javax.swing.JComponent;
  */
 public abstract class GenericTool implements PluginItem {
 
-    public final ToolMenu toolmenu;
+    public final ToolMenu menu;
     private JComponent visuals;
 
     public GenericTool(ToolMenu toolmenu) {
-        this.toolmenu = toolmenu;
+        this.menu = toolmenu;
     }
 
     public abstract void updateData(JubFrame current);
