@@ -22,6 +22,8 @@
  */
 package com.panayotis.jubler.tools.spell.checkers;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
@@ -166,7 +168,7 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
         return "ASpell";
     }
 
-    public Class[] getAffectionList() {
+    public Class[] getPluginAffections() {
         return new Class[]{AvailExternals.class};
     }
 
@@ -178,7 +180,15 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
         }
     }
 
-    public PluginItem[] getList() {
+    public PluginItem[] getPluginItems() {
         return new PluginItem[]{this};
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
+    }
+
+    public String getPluginName() {
+        return _("ASpell checker");
     }
 }

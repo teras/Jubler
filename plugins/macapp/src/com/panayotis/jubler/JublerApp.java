@@ -19,6 +19,8 @@
  */
 package com.panayotis.jubler;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.apple.eawt.Application;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -46,7 +48,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
     }
 
     @Override
-    public Class[] getAffectionList() {
+    public Class[] getPluginAffections() {
         return new Class[]{JubFrame.class};
     }
 
@@ -114,7 +116,15 @@ public class JublerApp extends Application implements Plugin, PluginItem {
     }
 
     @Override
-    public PluginItem[] getList() {
+    public PluginItem[] getPluginItems() {
         return new PluginItem[]{this};
+    }
+
+    public String getPluginName() {
+        return _("OS X application support");
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
     }
 }

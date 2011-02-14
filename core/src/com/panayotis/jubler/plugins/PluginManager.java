@@ -57,14 +57,14 @@ public class PluginManager {
         for (String plugin : plugins)
             try {
                 Plugin p = (Plugin) getClass(plugin);
-                DEBUG.debug("Registering plugin " + plugin);
-                plugin_items.addAll(Arrays.asList(p.getList()));
+                DEBUG.debug("Registering plugin " + p.getPluginName());
+                plugin_items.addAll(Arrays.asList(p.getPluginItems()));
             } catch (Exception ex) {
             }
 
         /* Find plugin assosiations */
         for (PluginItem item : plugin_items)
-            for (Class affectionclass : item.getAffectionList()) {
+            for (Class affectionclass : item.getPluginAffections()) {
                 String affection = affectionclass.getName();
                 ArrayList<PluginItem> current_list = plugin_list.get(affection);
                 if (current_list == null) {

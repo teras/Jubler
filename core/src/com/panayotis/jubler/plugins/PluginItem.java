@@ -10,7 +10,7 @@ package com.panayotis.jubler.plugins;
  */
 public interface PluginItem {
 
-    public Class[] getAffectionList();
+    public Class[] getPluginAffections();
 
     public void execPlugin(Object caller, Object parameter);
 }

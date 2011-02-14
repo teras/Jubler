@@ -34,7 +34,7 @@ public abstract class GenericTool implements PluginItem {
     protected abstract JComponent constructVisuals();
 
     @Override
-    public Class[] getAffectionList() {
+    public Class[] getPluginAffections() {
         return new Class[]{ToolsManager.class};
     }
 

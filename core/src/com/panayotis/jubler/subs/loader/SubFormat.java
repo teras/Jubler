@@ -66,7 +66,7 @@ public abstract class SubFormat implements PluginItem {
     }
 
     @Override
-    public Class[] getAffectionList() {
+    public Class[] getPluginAffections() {
         return new Class[]{AvailSubFormats.class};
     }
 
