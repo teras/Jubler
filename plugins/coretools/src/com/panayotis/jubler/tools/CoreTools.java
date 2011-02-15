@@ -27,6 +27,8 @@ public class CoreTools implements Plugin {
                     new Rounder(),
                     new Speller(),
                     new Translate(),
+                    new JoinEntries(),
+                    new SplitEntries(),
                     new DelSelection(),
                     new Marker(),
                     new Styler()

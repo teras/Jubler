@@ -28,7 +28,7 @@ public class Fixer extends OneByOneTool {
 
     @Override
     protected ToolGUI constructToolVisuals() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new FixerGUI();
     }
 
     protected String getToolTitle() {
@@ -40,7 +40,7 @@ public class Fixer extends OneByOneTool {
 
         /* Sort subtitles first */
         if (vis.SortB.isSelected())
-            subs.sort(((JTimeRegion) getTimeArea()).getStartTime(), ((JTimeRegion) getTimeArea()).getFinishTime());
+            subtitles.sort(((JTimeRegion) getTimeArea()).getStartTime(), ((JTimeRegion) getTimeArea()).getFinishTime());
 
         /* What to do with the remaining duration */
         fix = vis.FixT.isSelected();
@@ -68,7 +68,7 @@ public class Fixer extends OneByOneTool {
         boolean res = super.execute(jub);
         if (res)
             if (((FixerGUI) getVisuals()).SortB.isSelected()) {
-                subs.sort(((JTimeRegion) getTimeArea()).getStartTime(), ((JTimeRegion) getTimeArea()).getFinishTime());
+                subtitles.sort(((JTimeRegion) getTimeArea()).getStartTime(), ((JTimeRegion) getTimeArea()).getFinishTime());
                 return true;
             }
         return false;

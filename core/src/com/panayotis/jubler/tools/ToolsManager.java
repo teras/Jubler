@@ -110,8 +110,6 @@ public class ToolsManager {
     }
 
     public static RealTimeTool getRecoder() {
-        if (recoder == null) {
-        }
         return recoder;
     }
 

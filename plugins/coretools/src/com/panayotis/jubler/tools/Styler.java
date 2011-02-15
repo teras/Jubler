@@ -30,11 +30,11 @@ public class Styler extends OneByOneTool {
 
         int selvalue = vis.StyleSel.getSelectedIndex();
         vis.StyleSel.removeAllItems();
-        for (SubStyle sstyle : subs.getStyleList())
+        for (SubStyle sstyle : subtitles.getStyleList())
             vis.StyleSel.addItem(sstyle);
         if (selvalue < 0)
             selvalue = 0;
-        if (selvalue < subs.getStyleList().size())
+        if (selvalue < subtitles.getStyleList().size())
             vis.StyleSel.setSelectedIndex(selvalue);
     }
 

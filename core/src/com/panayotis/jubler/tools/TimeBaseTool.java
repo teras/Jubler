@@ -41,7 +41,7 @@ import javax.swing.JComponent;
  */
 public abstract class TimeBaseTool extends Tool {
 
-    protected Subtitles subs;
+    protected Subtitles subtitles;
     protected int[] selected;
     protected JubFrame jparent;
     private JTimeArea timepos;
@@ -57,9 +57,9 @@ public abstract class TimeBaseTool extends Tool {
     /* Update the values */
     @Override
     public void updateData(JubFrame jub) {
-        subs = jub.getSubtitles();
+        subtitles = jub.getSubtitles();
         selected = jub.getSelectedRows();
-        getTimeArea().updateData(subs, selected);
+        getTimeArea().updateData(subtitles, selected);
         jparent = jub;
     }
 
@@ -72,7 +72,7 @@ public abstract class TimeBaseTool extends Tool {
                 return false;
 
         // Keep undo list
-        jparent.getUndoList().addUndo(new UndoEntry(subs, getToolTitle()));
+        jparent.getUndoList().addUndo(new UndoEntry(subtitles, getToolTitle()));
         // Remember selected subtitles
         SubEntry[] selectedsubs = jparent.getSelectedSubs();
 
@@ -113,9 +113,12 @@ public abstract class TimeBaseTool extends Tool {
         return vis;
     }
 
-    protected abstract ToolGUI constructToolVisuals();
+    protected ToolGUI constructToolVisuals() {
+        return new ToolGUI();
+    }
 
-    protected abstract void storeSelections();
+    protected void storeSelections() {
+    }
 
     protected abstract boolean affect(List<SubEntry> list);
 

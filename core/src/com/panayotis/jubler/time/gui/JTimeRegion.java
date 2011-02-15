@@ -27,8 +27,6 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 /**
  *
  * @author  teras
