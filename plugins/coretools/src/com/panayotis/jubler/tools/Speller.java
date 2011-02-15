@@ -28,10 +28,6 @@ public class Speller extends TimeBaseTool {
         return _("Spell check");
     }
 
-    @Override
-    protected void storeSelections() {
-    }
-
     /* All work has been done in JSpellChecker */
     /* We ignore default JTool for-loop */
     @Override
@@ -39,10 +35,5 @@ public class Speller extends TimeBaseTool {
         JSpellChecker checkvisual = new JSpellChecker(jparent, JubFrame.prefs.getSpellChecker(), list);
         checkvisual.findNextWord();
         return true;
-    }
-
-    @Override
-    protected ToolGUI constructToolVisuals() {
-        return new ToolGUI();
     }
 }

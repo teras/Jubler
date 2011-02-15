@@ -46,18 +46,23 @@ public class JRuler extends JPanel {
         height = 30;
     }
 
+    @Override
     public Dimension getMinimumSize() {
         return new Dimension(20, height);
     }
 
+    @Override
     public Dimension getPreferredSize() {
         return new Dimension(200, height);
     }
 
+    @Override
     public Dimension getMaximumSize() {
         return new Dimension(30000, height);
     }
 
+    @Override
+    @SuppressWarnings("empty-statement")
     public void paintComponent(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
@@ -101,6 +106,5 @@ public class JRuler extends JPanel {
                 g.drawLine(x, 0, x, getHeight() / 4);
             current++;
         }
-
     }
 }

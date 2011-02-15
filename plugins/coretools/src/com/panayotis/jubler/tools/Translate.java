@@ -33,10 +33,6 @@ public class Translate extends TimeBaseTool {
     }
 
     @Override
-    protected void storeSelections() {
-    }
-
-    @Override
     protected boolean affect(List<SubEntry> list) {
         if (trans == null) {
             DEBUG.debug("No active translators found!");

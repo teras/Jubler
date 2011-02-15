@@ -20,22 +20,13 @@ public class DelSelection extends OneByOneTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
-        return new ToolGUI();
-    }
-
-    @Override
     protected String getToolTitle() {
         return _("Delete selection");
     }
 
     @Override
-    protected void storeSelections() {
-    }
-
-    @Override
     protected void affect(SubEntry sub) {
-        subs.remove(sub);
+        subtitles.remove(sub);
     }
 
     @Override

@@ -751,7 +751,9 @@ public class JubFrame extends JFrame {
         EditM.add(PasteSpecialEM);
         EditM.add(jSeparator5);
 
+        ToolsLockM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         ToolsLockM.setText(_("Tools lock"));
+        ToolsLockM.setName("TLO"); // NOI18N
         ToolsLockM.addActionListener(formListener);
         EditM.add(ToolsLockM);
         EditM.add(jSeparator9);
@@ -1111,6 +1113,9 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == PasteSpecialEM) {
                 JubFrame.this.PasteSpecialEMActionPerformed(evt);
             }
+            else if (evt.getSource() == ToolsLockM) {
+                JubFrame.this.ToolsLockMActionPerformed(evt);
+            }
             else if (evt.getSource() == EmptyLinesDEM) {
                 JubFrame.this.EmptyLinesDEMActionPerformed(evt);
             }
@@ -1194,9 +1199,6 @@ public class JubFrame extends JFrame {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == ToolsLockM) {
-                JubFrame.this.ToolsLockMActionPerformed(evt);
             }
         }
 
@@ -1329,7 +1331,7 @@ public class JubFrame extends JFrame {
         double curdur, gap, avail, requested, center, start;
 
         curdur = 2;
-        gap = 0.5;
+        gap = 0.05;
 
         int row = -1;
         if (is_after) {

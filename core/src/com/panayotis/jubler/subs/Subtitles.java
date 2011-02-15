@@ -146,13 +146,14 @@ public class Subtitles extends AbstractTableModel {
         sublist.addAll(lastpos, sorted);
     }
 
-    private void appendSubs(Subtitles newsubs, boolean newStylePriority) {
+    private void appendSubs(Subtitles newsubs, boolean priority_to_new_style) {
         if (newsubs == null)
             return;
         sublist.addAll(newsubs.sublist);
         /* Deal with default style first: change it's values if it is nessesary */
-        if (newStylePriority)
+        if (priority_to_new_style)
             styles.get(0).setValues(newsubs.styles.get(0));
+        // TODO unused code
         SubStyle style;
         /* Go through all remaining new styles */
         for (int i = 1; i < newsubs.styles.size(); i++) {
@@ -161,12 +162,21 @@ public class Subtitles extends AbstractTableModel {
             /* We have found that a style with the same name already exists ! */
             if (res != 0) {
                 /* If we give priority to the new styles, ONLY THEN set the data to the new values */
-                if (newStylePriority)
+                if (priority_to_new_style)
                     styles.get(0).setValues(newstyle);
             } else /* It doesn't exits, just append it */
 
                 styles.add(newstyle);
         }
+    }
+
+    public void insertSubs(SubEntry location, Subtitles newsubs) {
+        // TODO take care of styles
+        int idx = sublist.indexOf(location);
+        if (idx < 0)
+            appendSubs(newsubs, false);
+        else
+            sublist.addAll(idx + 1, newsubs.sublist);
     }
 
     public void joinSubs(Subtitles s1, Subtitles s2, double dt) {
