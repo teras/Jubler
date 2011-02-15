@@ -75,8 +75,6 @@ public class SubJoin extends GenericTool {
             return true;
         } else
             return false;
-
-
     }
 
     @Override

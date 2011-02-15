@@ -19,7 +19,7 @@
  */
 package com.panayotis.jubler.tools.translate;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -27,10 +27,10 @@ import java.util.ArrayList;
  */
 public abstract class SimpleWebTranslator extends WebTranslator {
 
-    protected abstract ArrayList<Language> getLanguages();
+    protected abstract List<Language> getLanguages();
 
     public String[] getSourceLanguages() {
-        ArrayList<Language> lang = getLanguages();
+        List<Language> lang = getLanguages();
         String[] langs = new String[lang.size()];
         for (int i = 0; i < lang.size(); i++)
             langs[i] = lang.get(i).getName();

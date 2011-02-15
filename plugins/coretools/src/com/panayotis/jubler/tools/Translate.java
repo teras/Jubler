@@ -59,6 +59,8 @@ public class Translate extends RegionTool {
     }
 
     Translator getCurrentTranslator() {
+        if (trans == null)
+            trans = getTranslators().get(0);
         return trans;
     }
 

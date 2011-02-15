@@ -358,6 +358,8 @@ public class JubFrame extends JFrame {
         CopyEM = new javax.swing.JMenuItem();
         PasteEM = new javax.swing.JMenuItem();
         PasteSpecialEM = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        ToolsLockM = new javax.swing.JCheckBoxMenuItem();
         jSeparator9 = new javax.swing.JSeparator();
         DeleteEM = new javax.swing.JMenu();
         EmptyLinesDEM = new javax.swing.JMenuItem();
@@ -747,6 +749,11 @@ public class JubFrame extends JFrame {
         PasteSpecialEM.setName("EPS"); // NOI18N
         PasteSpecialEM.addActionListener(formListener);
         EditM.add(PasteSpecialEM);
+        EditM.add(jSeparator5);
+
+        ToolsLockM.setText(_("Tools lock"));
+        ToolsLockM.addActionListener(formListener);
+        EditM.add(ToolsLockM);
         EditM.add(jSeparator9);
 
         DeleteEM.setText(_("Delete"));
@@ -1188,6 +1195,9 @@ public class JubFrame extends JFrame {
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
             }
+            else if (evt.getSource() == ToolsLockM) {
+                JubFrame.this.ToolsLockMActionPerformed(evt);
+            }
         }
 
         public void windowActivated(java.awt.event.WindowEvent evt) {
@@ -1621,6 +1631,11 @@ private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
     enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
+
+private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockMActionPerformed
+    subeditor.ToolsLockB.setSelected(ToolsLockM.isSelected());
+}//GEN-LAST:event_ToolsLockMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1715,6 +1730,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JButton TestTB;
     private javax.swing.JMenu TestTM;
     private javax.swing.JPanel TestTP;
+    public javax.swing.JCheckBoxMenuItem ToolsLockM;
     public javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem UndoEM;
@@ -1732,6 +1748,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator9;
@@ -2086,7 +2103,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
     public boolean isToolLocked() {
-        return subeditor.LockToolB.isSelected();
+        return subeditor.ToolsLockB.isSelected();
     }
 
     public void setDisableConsoleUpdate(boolean status) {

@@ -20,7 +20,7 @@
 package com.panayotis.jubler.tools.translate;
 
 import com.panayotis.jubler.subs.SubEntry;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -38,5 +38,5 @@ public interface Translator {
 
     public abstract String getDefinition();
 
-    public abstract boolean translate(ArrayList<SubEntry> subs, String from_language, String to_language);
+    public abstract boolean translate(List<SubEntry> subs, String from_language, String to_language);
 }
