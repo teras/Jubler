@@ -99,8 +99,7 @@ public class RecodeTime extends RealTimeTool {
     }
 
     @Override
-    protected void affect(int index) {
-        SubEntry sub = affected_list.get(index);
+    protected void affect(SubEntry sub) {
         sub.getStartTime().recodeTime(center, factor);
         sub.getFinishTime().recodeTime(center, factor);
     }

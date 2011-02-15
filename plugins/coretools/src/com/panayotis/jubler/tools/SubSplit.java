@@ -19,7 +19,7 @@ import javax.swing.JComponent;
  *
  * @author teras
  */
-public class SubSplit extends GenericTool {
+public class SubSplit extends Tool {
 
     public SubSplit() {
         super(new ToolMenu(_("Split file"), "TSP", Location.FILETOOL, 0, 0));

@@ -39,18 +39,17 @@ import javax.swing.JComponent;
  *
  * @author teras
  */
-public abstract class RegionTool extends GenericTool {
+public abstract class TimeBaseTool extends Tool {
 
     protected Subtitles subs;
     protected int[] selected;
-    protected List<SubEntry> affected_list;
     protected JubFrame jparent;
     private JTimeArea timepos;
     //
     private final boolean freeform;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
-    public RegionTool(boolean freeform, ToolMenu toolmenu) {
+    public TimeBaseTool(boolean freeform, ToolMenu toolmenu) {
         super(toolmenu);
         this.freeform = freeform;
     }
@@ -78,19 +77,19 @@ public abstract class RegionTool extends GenericTool {
         SubEntry[] selectedsubs = jparent.getSelectedSubs();
 
         // Find affected list
+        List<SubEntry> list;
         if (jub.isToolLocked())
-            affected_list = Arrays.asList(selectedsubs);
+            list = Arrays.asList(selectedsubs);
         else {
+            list = getTimeArea().getAffectedSubs();
+            getTimeArea().updateSubsMark(list);
             storeSelections();
-            affected_list = getTimeArea().getAffectedSubs();
-            getTimeArea().updateSubsMark(affected_list);
         }
-        if (affected_list.isEmpty())
+        if (list.isEmpty())
             return false;
 
-        for (int i = 0; i < affected_list.size(); i++)
-            affect(i);
-        if (!finalizing())
+        /* Perform tool */
+        if (!affect(list))
             return false;
 
         jparent.tableHasChanged(selectedsubs);
@@ -118,7 +117,7 @@ public abstract class RegionTool extends GenericTool {
 
     protected abstract void storeSelections();
 
-    protected abstract void affect(int index);
+    protected abstract boolean affect(List<SubEntry> list);
 
     protected abstract String getToolTitle();
 

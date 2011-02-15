@@ -13,7 +13,7 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
-public class Rounder extends RegionTool {
+public class Rounder extends OneByOneTool {
 
     private int precise;
 
@@ -44,8 +44,7 @@ public class Rounder extends RegionTool {
     }
 
     @Override
-    protected void affect(int index) {
-        SubEntry sub = affected_list.get(index);
+    protected void affect(SubEntry sub) {
         roundTime(sub.getStartTime());
         roundTime(sub.getFinishTime());
     }

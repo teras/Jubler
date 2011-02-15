@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -12,7 +13,7 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
-public class DelSelection extends RegionTool {
+public class DelSelection extends OneByOneTool {
 
     public DelSelection() {
         super(true, new ToolMenu(_("By selection"), "EDS", Location.DELETE, 0, 0));
@@ -33,8 +34,8 @@ public class DelSelection extends RegionTool {
     }
 
     @Override
-    protected void affect(int index) {
-        subs.remove(affected_list.get(index));
+    protected void affect(SubEntry sub) {
+        subs.remove(sub);
     }
 
     @Override

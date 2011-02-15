@@ -4,6 +4,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -11,7 +12,7 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
-public class Marker extends RegionTool {
+public class Marker extends OneByOneTool {
 
     int mark;
 
@@ -30,8 +31,8 @@ public class Marker extends RegionTool {
     }
 
     @Override
-    protected void affect(int index) {
-        affected_list.get(index).setMark(mark);
+    protected void affect(SubEntry entry) {
+        entry.setMark(mark);
     }
 
     @Override
