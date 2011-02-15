@@ -15,11 +15,12 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
-public class Fixer extends RegionTool {
+public class Fixer extends OneByOneTool {
 
     private boolean fix;
     private int pushmodel;
     private double min_abs, min_cps, max_abs, max_cps, gap;
+    private double push_time;
 
     public Fixer() {
         super(false, new ToolMenu(_("Time fix"), "TFI", Location.TIMETOOL, 0, 0));
@@ -57,6 +58,9 @@ public class Fixer extends RegionTool {
                 gap = Double.parseDouble(vis.GapNum.getText()) / 1000;
             } catch (NumberFormatException e) {
             }
+
+        /* These values are to be used when iterating along the subtitles */
+        push_time = 0;
     }
 
     @Override
@@ -70,15 +74,17 @@ public class Fixer extends RegionTool {
         return false;
     }
 
-    protected void affect(int index) {
-        SubEntry sub = affected_list.get(index);
-
+    protected void affect(SubEntry sub) {
         double curstart; /* The original start time */
         double curdur;  /* The original duration of the subtitle */
         int charcount;  /* The number of characters of the subtitle */
         double mindur, maxdur;  /* minimum & maximum duration of the subtitle */
         double lowerlimit, upperlimit; /* limits dictated by the neighbour subtitles */
         double avail; /* Maximum space available for the subtitle */
+
+        /* Add cumulative changes from older subtitle fixes */
+        sub.getStartTime().addTime(push_time);
+        sub.getFinishTime().addTime(push_time);
 
         /* Get current information */
         curstart = sub.getStartTime().toSeconds();
@@ -119,86 +125,72 @@ public class Fixer extends RegionTool {
             return;
         }
 
-        /* The following part of the code is executed *only* when the user wanted
-        to fix the subtitle times
+        /* The following code is executed *only* when the user wants
+         * to fix subtitle times
          */
 
         /* Find limits depending on their neighbour subtitles */
-        if (index == 0)
-            lowerlimit = 0;
-        else
-            lowerlimit = affected_list.get(index - 1).getFinishTime().toSeconds();
-        if (index == (affected_list.size() - 1))
-            upperlimit = Time.MAX_TIME;
-        else
-            upperlimit = affected_list.get(index + 1).getStartTime().toSeconds();
+        SubEntry next = getNextEntry();
+        SubEntry prev = getPreviousEntry();
+        double dt;
+        lowerlimit = prev == null ? 0 : prev.getFinishTime().toSeconds();
+        upperlimit = next == null ? Time.MAX_TIME : next.getStartTime().toSeconds();
 
-        /* Fix time by pushing the subtitles up */
-        if (pushmodel == 2) {
-            sub.getFinishTime().setTime(curstart + curdur);   /* Calculate new finish time */
-            double dt = curstart + curdur + gap - upperlimit;
-            if (dt > 0) {
-                /* Ooops, time is not enough, we have to push everything up from now on */
-                SubEntry uppersub;
-                for (int i = index + 1; i < affected_list.size(); i++) {
-                    uppersub = affected_list.get(i);
-                    uppersub.getStartTime().addTime(dt);
-                    uppersub.getFinishTime().addTime(dt);
+        switch (pushmodel) {
+            case 2:
+                /* Fix time by pushing the subtitles up */
+                sub.getFinishTime().setTime(curstart + curdur);   /* Calculate new finish time */
+                dt = curstart + curdur + gap - upperlimit;
+                if (dt > 0)
+                    /* Ooops, time is not enough, we have to push everything up from now on */
+                    push_time += dt;
+                break;
+            case 1:
+                /* Fix time by equally divide overlapped subtitle time */
+                if (prev != null) {
+                    double timesplit = (lowerlimit - curstart + gap) / 2d;
+                    if (timesplit > 0) {
+                        sub.getStartTime().setTime(curstart + timesplit);
+                        prev.getFinishTime().setTime(lowerlimit - timesplit);
+                    }
                 }
-            }
-            return;
-        }
+                break;
+            default:
+                /* Try to cleverly rearrange the subtitles */
+                /* Available space */
+                avail = upperlimit - lowerlimit;
+                if ((curdur + 2 * gap) <= avail) {
+                    /* We have enough space, phewwww... */
+                    double fulldur = curdur + 2 * gap;  /* The new full duration, i.e. subtitle + 2 gaps */
+                    double center = curstart + (curdur / 2); /* Calculate the old center of the subtitle display */
+                    double newstart = center - (fulldur / 2); /* Calculate the new *full* start of the subtitle */
+                    double newfinish = center + (fulldur / 2);    /* Calculate the new *full* finish of the subtitle */
+                    dt = 0;  /* Initialize deviation of the desired center */
+                    if (newfinish > upperlimit)
+                        dt = upperlimit - newfinish;   /* Make sure duration does not leak to the right */
 
-        /* Fix time by equally divide overlapped subtitle time */
-        if (pushmodel == 1) {
-            if (index > 0) {
-                double timesplit = (lowerlimit - curstart + gap) / 2d;
-                if (timesplit > 0) {
-                    sub.getStartTime().setTime(curstart + timesplit);
-                    affected_list.get(index - 1).getFinishTime().setTime(lowerlimit - timesplit);
+                    else if (newstart < lowerlimit)
+                        dt = lowerlimit - newstart;   /* Make sure duration does not leak to the left */
+                    newstart += dt + gap;   /* Calculate new start WITHOUT the gap */
+                    sub.getStartTime().setTime(newstart);
+                    sub.getFinishTime().setTime(newstart + curdur);
+                } else if (mindur >= avail) {
+                    /* We don't have space at all... */
+                    sub.getStartTime().setTime(lowerlimit);
+                    sub.getFinishTime().setTime(lowerlimit + avail);
+                } else {
+                    /* We try to evenly distribute the time between the subtitles and the gap */
+                    double dcur = curdur - mindur;  /* The difference between current and minimum subtitle */
+                    double factor = (avail - mindur) / (dcur + 2 * gap); /* calculate normalization factor */
+                    double newdur = (dcur * factor) + mindur; /* Calculate new duration */
+
+                    double newbegin = lowerlimit;    /* Calculate new beginnig */
+                    if (prev != null)
+                        newbegin += (gap * factor);     /* Add the gap only if it's between subtitles (to fix an error with the first subtitle)
+                    /* Fianlly, set net times */
+                    sub.getStartTime().setTime(newbegin);
+                    sub.getFinishTime().setTime(newbegin + newdur);
                 }
-            }
-            return;
-        }
-
-
-        /* Try to cleverly rearrange the subtitles */
-
-        /* Available space */
-        avail = upperlimit - lowerlimit;
-
-        /* The real work starts here */
-        if ((curdur + 2 * gap) <= avail) {
-            /* We have enough space, phewwww... */
-            double fulldur = curdur + 2 * gap;  /* The new full duration, i.e. subtitle + 2 gaps */
-            double center = curstart + (curdur / 2); /* Calculate the old center of the subtitle display */
-            double newstart = center - (fulldur / 2); /* Calculate the new *full* start of the subtitle */
-            double newfinish = center + (fulldur / 2);    /* Calculate the new *full* finish of the subtitle */
-            double dt = 0;  /* Initialize deviation of the desired center */
-            if (newfinish > upperlimit)
-                dt = upperlimit - newfinish;   /* Make sure duration does not leak to the right */
-
-            else if (newstart < lowerlimit)
-                dt = lowerlimit - newstart;   /* Make sure duration does not leak to the left */
-            newstart += dt + gap;   /* Calculate new start WITHOUT the gap */
-            sub.getStartTime().setTime(newstart);
-            sub.getFinishTime().setTime(newstart + curdur);
-        } else if (mindur >= avail) {
-            /* We don't have space at all... */
-            sub.getStartTime().setTime(lowerlimit);
-            sub.getFinishTime().setTime(lowerlimit + avail);
-        } else {
-            /* We try to evenly distribute the time between the subtitles and the gap */
-            double dcur = curdur - mindur;  /* The difference between current and minimum subtitle */
-            double factor = (avail - mindur) / (dcur + 2 * gap); /* calculate normalization factor */
-            double newdur = (dcur * factor) + mindur; /* Calculate new duration */
-
-            double newbegin = lowerlimit;    /* Calculate new beginnig */
-            if (index > 0)
-                newbegin += (gap * factor);     /* Add the gap only if it's between subtitles (to fix an error with the first subtitle)
-            /* Fianlly, set net times */
-            sub.getStartTime().setTime(newbegin);
-            sub.getFinishTime().setTime(newbegin + newdur);
         }
     }
 }

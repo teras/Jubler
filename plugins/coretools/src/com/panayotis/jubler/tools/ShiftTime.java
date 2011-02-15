@@ -60,8 +60,7 @@ public class ShiftTime extends RealTimeTool {
     }
 
     @Override
-    protected void affect(int index) {
-        SubEntry sub = affected_list.get(index);
+    protected void affect(SubEntry sub) {
         sub.getStartTime().addTime(shift);
         sub.getFinishTime().addTime(shift);
     }

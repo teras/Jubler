@@ -4,18 +4,18 @@
  */
 package com.panayotis.jubler.tools;
 
+import java.util.List;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
-import java.util.ArrayList;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
  *
  * @author teras
  */
-public class Synchronize extends RegionTool {
+public class Synchronize extends OneByOneTool {
 
     private JubFrame modeljubler;
     private Subtitles target, model;
@@ -65,27 +65,35 @@ public class Synchronize extends RegionTool {
         copytime = vis.InTimeS.isSelected();
         copytext = vis.InTextS.isSelected();
         offset = ((Integer) vis.OffsetS.getValue()).intValue();
-
-        if (offset < 0) { // We have to invert the selected subtitles!
-            ArrayList<SubEntry> inv_affected = new ArrayList<SubEntry>();
-            for (int i = affected_list.size() - 1; i >= 0; i--)
-                inv_affected.add(affected_list.get(i));
-            affected_list = inv_affected;
-        }
     }
 
-    public void affect(int which) {
-        SubEntry to = affected_list.get(which);
-        int modid = target.indexOf(to) + offset;
+    @Override
+    public boolean affect(List<SubEntry> list) {
+        if (offset < 0) {
+            // We have to invert the selected subtitles!
+            SubEntry front, back;
+            int i, j;
+            for (i = 0, j = list.size() - 1; i < (list.size() / 2); i++, j--) {
+                front = list.get(i);
+                back = list.get(j);
+                list.set(i, back);
+                list.set(j, front);
+            }
+        }
+        return super.affect(list);
+    }
+
+    public void affect(SubEntry sub) {
+        int modid = target.indexOf(sub) + offset;
         if (modid < 0 || modid >= model.size())
             return;
         SubEntry from = model.elementAt(modid);
         if (copytime) {
-            to.setStartTime(from.getStartTime());
-            to.setFinishTime(from.getFinishTime());
+            sub.setStartTime(from.getStartTime());
+            sub.setFinishTime(from.getFinishTime());
         }
         if (copytext)
-            to.setText(from.getText());
+            sub.setText(from.getText());
     }
 
     @Override

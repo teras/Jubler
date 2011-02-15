@@ -4,10 +4,12 @@
  */
 package com.panayotis.jubler.tools;
 
+import java.util.List;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.tools.translate.AvailTranslators;
 import com.panayotis.jubler.tools.translate.Translator;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.subs.SubEntry;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -16,7 +18,7 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author teras
  */
-public class Translate extends RegionTool {
+public class Translate extends TimeBaseTool {
 
     private static AvailTranslators translators;
     private Translator trans;
@@ -35,17 +37,13 @@ public class Translate extends RegionTool {
     }
 
     @Override
-    protected void affect(int index) {
-    }
-
-    @Override
-    protected boolean finalizing() {
+    protected boolean affect(List<SubEntry> list) {
         if (trans == null) {
             DEBUG.debug("No active translators found!");
             return true;
         }
         TranslateGUI vis = (TranslateGUI) getVisuals();
-        return trans.translate(affected_list, vis.FromLang.getSelectedItem().toString(), vis.ToLang.getSelectedItem().toString());
+        return trans.translate(list, vis.FromLang.getSelectedItem().toString(), vis.ToLang.getSelectedItem().toString());
     }
 
     void setTranslator(int selectedIndex) {

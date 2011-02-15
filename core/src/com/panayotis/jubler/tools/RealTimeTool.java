@@ -30,7 +30,7 @@ import com.panayotis.jubler.time.gui.JTimeFullSelection;
  *
  * @author teras
  */
-public abstract class RealTimeTool extends RegionTool {
+public abstract class RealTimeTool extends OneByOneTool {
 
     boolean should_maximize_values = false;
 

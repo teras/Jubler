@@ -23,7 +23,7 @@ import javax.swing.KeyStroke;
  */
 public class ToolsManager {
 
-    private static final EnumMap<Location, ArrayList<GenericTool>> tools = new EnumMap<Location, ArrayList<GenericTool>>(Location.class);
+    private static final EnumMap<Location, ArrayList<Tool>> tools = new EnumMap<Location, ArrayList<Tool>>(Location.class);
     private static RealTimeTool recoder, shifter;
 
     static {
@@ -33,10 +33,10 @@ public class ToolsManager {
     private ToolsManager() {
     }
 
-    public static void add(GenericTool tool) {
-        ArrayList<GenericTool> list = tools.get(tool.menu.location);
+    public static void add(Tool tool) {
+        ArrayList<Tool> list = tools.get(tool.menu.location);
         if (list == null) {
-            list = new ArrayList<GenericTool>();
+            list = new ArrayList<Tool>();
             tools.put(tool.menu.location, list);
         }
         list.add(tool);
@@ -48,23 +48,23 @@ public class ToolsManager {
         current.ToolsM.removeAll();
         try {
             /* Populate tools menu */
-            for (GenericTool tool : tools.get(Location.FILETOOL))
+            for (Tool tool : tools.get(Location.FILETOOL))
                 addMenu(current, current.ToolsM, tool);
             current.ToolsM.add(new JSeparator());
-            for (GenericTool tool : tools.get(Location.TIMETOOL))
+            for (Tool tool : tools.get(Location.TIMETOOL))
                 addMenu(current, current.ToolsM, tool);
             current.ToolsM.add(new JSeparator());
-            for (GenericTool tool : tools.get(Location.CONTENTTOOL))
+            for (Tool tool : tools.get(Location.CONTENTTOOL))
                 addMenu(current, current.ToolsM, tool);
             current.ToolsM.add(new JSeparator());
             setFileToolsStatus(current, false);
 
             /* Populate edit menu */
-            for (GenericTool tool : tools.get(Location.DELETE))
+            for (Tool tool : tools.get(Location.DELETE))
                 addMenu(current, current.DeleteEM, tool);
-            for (GenericTool tool : tools.get(Location.MARK))
+            for (Tool tool : tools.get(Location.MARK))
                 addMenu(current, current.MarkEM, tool);
-            for (GenericTool tool : tools.get(Location.STYLE))
+            for (Tool tool : tools.get(Location.STYLE))
                 addMenu(current, current.StyleEM, tool);
         } catch (NullPointerException ex) {
         }
@@ -73,7 +73,7 @@ public class ToolsManager {
             current.ToolsM.add(comp);
     }
 
-    private static void addMenu(final JubFrame current, final JMenu ToolsM, final GenericTool tool) {
+    private static void addMenu(final JubFrame current, final JMenu ToolsM, final Tool tool) {
         JMenuItem item = new JMenuItem(tool.menu.text, tool.menu.key);
         if (tool.menu.key != 0)
             item.setAccelerator(KeyStroke.getKeyStroke(tool.menu.key, tool.menu.mask));

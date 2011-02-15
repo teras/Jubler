@@ -14,7 +14,7 @@ import javax.swing.JComponent;
  *
  * @author teras
  */
-public class Reparent extends GenericTool {
+public class Reparent extends Tool {
 
     private ArrayList<JubFrame> jublerlist;
 

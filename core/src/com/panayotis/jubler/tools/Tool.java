@@ -12,12 +12,12 @@ import javax.swing.JComponent;
  *
  * @author teras
  */
-public abstract class GenericTool implements PluginItem {
+public abstract class Tool implements PluginItem {
 
     public final ToolMenu menu;
     private JComponent visuals;
 
-    public GenericTool(ToolMenu toolmenu) {
+    public Tool(ToolMenu toolmenu) {
         this.menu = toolmenu;
     }
 

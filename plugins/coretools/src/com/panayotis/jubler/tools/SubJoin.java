@@ -19,7 +19,7 @@ import javax.swing.JComponent;
  *
  * @author teras
  */
-public class SubJoin extends GenericTool {
+public class SubJoin extends Tool {
 
     private ArrayList<JubFrame> privlist = new ArrayList<JubFrame>();
 
