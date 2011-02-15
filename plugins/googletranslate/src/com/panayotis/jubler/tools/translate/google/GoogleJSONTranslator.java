@@ -35,6 +35,7 @@ import java.io.UnsupportedEncodingException;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,7 +45,7 @@ import org.json.JSONObject;
  */
 public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin, PluginItem {
 
-    private static final ArrayList<Language> lang;
+    private static final List<Language> lang;
 
     static {
         lang = new ArrayList<Language>();
@@ -97,7 +98,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
     }
 
     @Override
-    protected ArrayList<Language> getLanguages() {
+    protected List<Language> getLanguages() {
         return lang;
     }
 
@@ -127,7 +128,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
     }
 
     @Override
-    protected String getConvertedSubtitleText(ArrayList<SubEntry> subs) throws UnsupportedEncodingException {
+    protected String getConvertedSubtitleText(List<SubEntry> subs) throws UnsupportedEncodingException {
         StringBuilder str = new StringBuilder();
         for (SubEntry entry : subs)
             str.append("&q=").append(HTMLTextUtils.encode(entry.getText()));
@@ -135,7 +136,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
     }
 
     @Override
-    protected String parseResults(ArrayList<SubEntry> subs, BufferedReader in) throws IOException {
+    protected String parseResults(List<SubEntry> subs, BufferedReader in) throws IOException {
         StringBuilder data = new StringBuilder();
         String line = null;
         while ((line = in.readLine()) != null)
@@ -173,10 +174,12 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
         return new PluginItem[]{this};
     }
 
+    @Override
     public String getPluginName() {
         return _("Google translate");
     }
 
+    @Override
     public boolean canDisablePlugin() {
         return true;
     }

@@ -499,23 +499,23 @@
                     <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setCommandButtonStyle(ShowStyleB, &quot;only&quot;);"/>
                   </AuxValues>
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="LockToolB">
+                <Component class="javax.swing.JToggleButton" name="ToolsLockB">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="Theme.loadIcon(&quot;opentool.png&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;When locked, tools will be run with default parameters on the selected subtitles&quot;)" type="code"/>
+                      <Connection code="_(&quot;Tools lock. When tools are locked, will be run with default parameters on the selected subtitles&quot;)" type="code"/>
                     </Property>
                     <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="Theme.loadIcon(&quot;lockedtool.png&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LockToolBActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ToolsLockBActionPerformed"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setCommandButtonStyle(LockToolB, &quot;only&quot;);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setCommandButtonStyle(ToolsLockB, &quot;only&quot;);"/>
                     <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
                   </AuxValues>
                 </Component>

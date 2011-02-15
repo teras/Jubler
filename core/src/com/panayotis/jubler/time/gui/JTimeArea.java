@@ -27,6 +27,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 
 /**
@@ -93,7 +94,7 @@ public abstract class JTimeArea extends JPanel {
         return max;
     }
 
-    public void updateSubsMark(ArrayList<SubEntry> affected) {
+    public void updateSubsMark(List<SubEntry> affected) {
         if (!ChSubColorB.isEnabled())
             return;
         int new_mark = ChSubColorC.getSelectedIndex();

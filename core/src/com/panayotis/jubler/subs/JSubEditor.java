@@ -242,7 +242,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         MetricsB.setEnabled(enabled);
         TrashB.setEnabled(enabled);
         ShowStyleB.setEnabled(enabled);
-        LockToolB.setEnabled(enabled);
+        ToolsLockB.setEnabled(enabled);
 
         Lock1.setEnabled(enabled);
         Lock2.setEnabled(enabled);
@@ -379,7 +379,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel2 = new javax.swing.JPanel();
         TrashB = new javax.swing.JButton();
         ShowStyleB = new javax.swing.JToggleButton();
-        LockToolB = new javax.swing.JToggleButton();
+        ToolsLockB = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         InfoP = new javax.swing.JPanel();
         TotalL = new javax.swing.JLabel();
@@ -604,16 +604,16 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel2.add(ShowStyleB);
 
-        LockToolB.setIcon(Theme.loadIcon("opentool.png"));
-        LockToolB.setToolTipText(_("When locked, tools will be run with default parameters on the selected subtitles"));
-        LockToolB.setSelectedIcon(Theme.loadIcon("lockedtool.png"));
-        SystemDependent.setCommandButtonStyle(LockToolB, "only");
-        LockToolB.addActionListener(new java.awt.event.ActionListener() {
+        ToolsLockB.setIcon(Theme.loadIcon("opentool.png"));
+        ToolsLockB.setToolTipText(_("Tools lock. When tools are locked, will be run with default parameters on the selected subtitles"));
+        ToolsLockB.setSelectedIcon(Theme.loadIcon("lockedtool.png"));
+        SystemDependent.setCommandButtonStyle(ToolsLockB, "only");
+        ToolsLockB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LockToolBActionPerformed(evt);
+                ToolsLockBActionPerformed(evt);
             }
         });
-        jPanel2.add(LockToolB);
+        jPanel2.add(ToolsLockB);
 
         jPanel7.add(jPanel2, java.awt.BorderLayout.EAST);
 
@@ -766,9 +766,9 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         lockTimeSpinners(true);
     }//GEN-LAST:event_Lock1ActionPerformed
 
-    private void LockToolBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LockToolBActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LockToolBActionPerformed
+    private void ToolsLockBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockBActionPerformed
+        parent.ToolsLockM.setSelected(ToolsLockB.isSelected());
+    }//GEN-LAST:event_ToolsLockBActionPerformed
 
     public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
@@ -824,7 +824,6 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JToggleButton Lock1;
     private javax.swing.JToggleButton Lock2;
     private javax.swing.JToggleButton Lock3;
-    public javax.swing.JToggleButton LockToolB;
     public javax.swing.JLabel LongestL;
     private javax.swing.JToggleButton MetricsB;
     public javax.swing.JLabel NewlineL;
@@ -838,6 +837,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private javax.swing.JToggleButton TimeB;
     private javax.swing.ButtonGroup TimeLock;
     private javax.swing.JPanel TimeP;
+    public javax.swing.JToggleButton ToolsLockB;
     public javax.swing.JLabel TotalL;
     private javax.swing.JButton TrashB;
     public javax.swing.JLabel Unsaved;

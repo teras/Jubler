@@ -35,6 +35,8 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.plugins.Theme;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -45,14 +47,14 @@ public class JSpellChecker extends JDialog {
     int count_changes;
     private JFrame jparent;
     private SpellChecker checker;
-    private ArrayList<SubEntry> textlist;
+    private List<SubEntry> textlist;
     private int pos_in_list;
-    private ArrayList<String> ignored;
-    private HashMap<String, String> replaced;
-    private ArrayList<SpellError> errors;
+    private List<String> ignored;
+    private Map<String, String> replaced;
+    private List<SpellError> errors;
 
     /** Creates new form JSpellChecker */
-    public JSpellChecker(JFrame parent, SpellChecker checker, ArrayList<SubEntry> list) {
+    public JSpellChecker(JFrame parent, SpellChecker checker, List<SubEntry> list) {
         super(parent, true);
 
         while (true)

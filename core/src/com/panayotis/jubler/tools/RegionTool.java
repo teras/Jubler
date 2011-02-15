@@ -31,7 +31,8 @@ import com.panayotis.jubler.time.gui.JTimeFullSelection;
 import com.panayotis.jubler.time.gui.JTimeRegion;
 import com.panayotis.jubler.undo.UndoEntry;
 import java.awt.BorderLayout;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.swing.JComponent;
 
 /**
@@ -42,7 +43,7 @@ public abstract class RegionTool extends GenericTool {
 
     protected Subtitles subs;
     protected int[] selected;
-    protected ArrayList<SubEntry> affected_list;
+    protected List<SubEntry> affected_list;
     protected JubFrame jparent;
     private JTimeArea timepos;
     //
@@ -54,21 +55,39 @@ public abstract class RegionTool extends GenericTool {
         this.freeform = freeform;
     }
 
-    /* Update the values, display the dialog and execute this tool */
+    /* Update the values */
+    @Override
+    public void updateData(JubFrame jub) {
+        subs = jub.getSubtitles();
+        selected = jub.getSelectedRows();
+        getTimeArea().updateData(subs, selected);
+        jparent = jub;
+    }
+
+    /* Display the dialog and execute this tool */
     @Override
     public boolean execute(JubFrame jub) {
-        if (!JIDialog.action(jparent, getVisuals(), getToolTitle()))
-            return false;
+        // Display dialog if tool is unlocked
+        if (!jub.isToolLocked())
+            if (!JIDialog.action(jparent, getVisuals(), getToolTitle()))
+                return false;
 
+        // Keep undo list
         jparent.getUndoList().addUndo(new UndoEntry(subs, getToolTitle()));
+        // Remember selected subtitles
         SubEntry[] selectedsubs = jparent.getSelectedSubs();
 
-        affected_list = getTimeArea().getAffectedSubs();
+        // Find affected list
+        if (jub.isToolLocked())
+            affected_list = Arrays.asList(selectedsubs);
+        else {
+            storeSelections();
+            affected_list = getTimeArea().getAffectedSubs();
+            getTimeArea().updateSubsMark(affected_list);
+        }
         if (affected_list.isEmpty())
             return false;
-        getTimeArea().updateSubsMark(affected_list);
 
-        storeSelections();
         for (int i = 0; i < affected_list.size(); i++)
             affect(i);
         if (!finalizing())
@@ -76,14 +95,6 @@ public abstract class RegionTool extends GenericTool {
 
         jparent.tableHasChanged(selectedsubs);
         return true;
-    }
-
-    @Override
-    public void updateData(JubFrame jub) {
-        subs = jub.getSubtitles();
-        selected = jub.getSelectedRows();
-        getTimeArea().updateData(subs, selected);
-        jparent = jub;
     }
 
     protected JTimeArea getTimeArea() {
