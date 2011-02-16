@@ -55,7 +55,7 @@ import javax.swing.text.StyleConstants;
  *
  * @author  teras
  */
-public class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener {
+public final class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener {
 
     public final static ImageIcon Lock[];
 
@@ -77,6 +77,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private boolean is_attached = false;
 
     /** Creates new form JSubEditor */
+    @SuppressWarnings("LeakingThisInConstructor")
     public JSubEditor(JubFrame parent) {
         initComponents();
 
