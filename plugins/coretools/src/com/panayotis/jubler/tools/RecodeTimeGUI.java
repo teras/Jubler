@@ -25,6 +25,7 @@ package com.panayotis.jubler.tools;
 import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.BorderLayout;
 import com.panayotis.jubler.options.gui.JRateChooser;
+import com.panayotis.jubler.os.SystemDependent;
 
 /**
  *
@@ -82,9 +83,11 @@ public class RecodeTimeGUI extends ToolGUI {
 
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(15, 0, 0, 0), javax.swing.BorderFactory.createTitledBorder(_("Use the following factor"))));
+        jPanel1.setBorder(SystemDependent.getBorder(_("Use the following factor")));
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         Factor.add(AutoB);
@@ -100,24 +103,29 @@ public class RecodeTimeGUI extends ToolGUI {
 
         jPanel1.add(jPanel4);
 
+        jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(1, 2));
 
+        jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         ArrowL.setText(" -> ");
         ArrowL.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jPanel2.add(ArrowL, java.awt.BorderLayout.EAST);
 
+        FromP.setOpaque(false);
         FromP.setLayout(new java.awt.BorderLayout());
         jPanel2.add(FromP, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel2);
 
+        ToP.setOpaque(false);
         ToP.setLayout(new java.awt.BorderLayout());
         jPanel3.add(ToP);
 
         jPanel1.add(jPanel3);
 
+        jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         Factor.add(CustomB);
@@ -132,6 +140,7 @@ public class RecodeTimeGUI extends ToolGUI {
 
         jPanel1.add(jPanel5);
 
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
         RecodeL.setText(_("Recoding factor"));
@@ -145,6 +154,7 @@ public class RecodeTimeGUI extends ToolGUI {
 
         jPanel1.add(jPanel6);
 
+        jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.GridLayout(1, 2));
 
         CentralL.setText(_("Central time"));

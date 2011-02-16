@@ -114,9 +114,11 @@ public abstract class JTimeArea extends JPanel {
         ChSubColorB = new javax.swing.JCheckBox();
         ChSubColorC = new javax.swing.JComboBox();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         SubCP.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        SubCP.setOpaque(false);
         SubCP.setLayout(new java.awt.BorderLayout(12, 0));
 
         ChSubColorB.setText(_("Change affected subtitles' color"));

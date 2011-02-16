@@ -110,6 +110,7 @@ public class JTimeSelector extends JPanel {
         });
         PredefM.add(EdgeM);
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
         add(InfoL, java.awt.BorderLayout.PAGE_START);
 

@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.os.SystemDependent;
 import java.util.ArrayList;
 import com.panayotis.jubler.tools.replace.JReplaceList;
 import com.panayotis.jubler.tools.replace.ReplaceModel;
@@ -97,9 +98,11 @@ public class JRegExpReplaceGUI extends ToolGUI {
         TextList = new javax.swing.JList();
         EditB = new javax.swing.JButton();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Regular expressions to be executed")));
+        jPanel1.setBorder(SystemDependent.getBorder(_("Regular expressions to be executed")));
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(259, 80));

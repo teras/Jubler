@@ -180,12 +180,8 @@
       <SubComponents>
         <Container class="javax.swing.JPanel" name="MinTimeP">
           <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="&lt;User Code&gt;">
-                  <Connection PropertyName="titleX" code="_(&quot;Minimum subtitle duration&quot;)" type="code"/>
-                </TitledBorder>
-              </Border>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="SystemDependent.getBorder(_(&quot;Minimum subtitle duration&quot;))" type="code"/>
             </Property>
           </Properties>
 
@@ -193,12 +189,8 @@
         </Container>
         <Container class="javax.swing.JPanel" name="MaxTimeP">
           <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                <TitledBorder title="&lt;User Code&gt;">
-                  <Connection PropertyName="titleX" code="_(&quot;Maximum subtitle duration&quot;)" type="code"/>
-                </TitledBorder>
-              </Border>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="SystemDependent.getBorder(_(&quot;Maximum subtitle duration&quot;))" type="code"/>
             </Property>
           </Properties>
 

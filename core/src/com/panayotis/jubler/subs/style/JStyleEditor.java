@@ -290,10 +290,12 @@ public class JStyleEditor extends javax.swing.JDialog {
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         DirtyIndicator.setBackground(java.awt.Color.green);
         DirtyIndicator.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 2, 1, 2));
+        DirtyIndicator.setOpaque(false);
         DirtyIndicator.setLayout(new java.awt.BorderLayout());
 
         StyleName.setToolTipText(_("The name of this style. Remember to hit [RETURN] to store the name"));
@@ -303,9 +305,11 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel2.add(DirtyIndicator, java.awt.BorderLayout.CENTER);
 
+        jPanel16.setOpaque(false);
         jPanel16.setLayout(new java.awt.BorderLayout());
 
         jPanel15.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        jPanel15.setOpaque(false);
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
         Clone.setText(_("Clone"));
@@ -329,9 +333,11 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(jPanel2);
 
-        FontP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Font")));
+        FontP.setBorder(SystemDependent.getBorder(_("Font")));
+        FontP.setOpaque(false);
         FontP.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         FontSize.setToolTipText(_("Font size"));
@@ -346,6 +352,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         FontP.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
         Bold.setIcon(Theme.loadIcon("bold.png"));
@@ -376,7 +383,8 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(FontP);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Colors")));
+        jPanel4.setBorder(SystemDependent.getBorder(_("Colors")));
+        jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 4, 0));
 
         Primary.setText(TriColorButton.labels[0]);
@@ -406,6 +414,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         getContentPane().add(jPanel4);
 
         jPanel13.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+        jPanel13.setOpaque(false);
         jPanel13.setLayout(new java.awt.BorderLayout());
 
         TestText.setEditable(false);
@@ -415,16 +424,20 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(jPanel13);
 
+        Advanced.setOpaque(false);
         Advanced.setLayout(new javax.swing.BoxLayout(Advanced, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel9.setOpaque(false);
         jPanel9.setLayout(new java.awt.GridLayout(1, 2));
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Border")));
+        jPanel5.setBorder(SystemDependent.getBorder(_("Border")));
+        jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.GridLayout(3, 1));
 
         BorderStyle.setToolTipText(_("Border style"));
         jPanel5.add(BorderStyle);
 
+        jPanel10.setOpaque(false);
         jPanel10.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -436,6 +449,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel5.add(jPanel10);
 
+        jPanel11.setOpaque(false);
         jPanel11.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -449,7 +463,8 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel9.add(jPanel5);
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Margins transformations")));
+        jPanel6.setBorder(SystemDependent.getBorder(_("Margins transformations")));
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(3, 2, 2, 0));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -477,9 +492,11 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         Advanced.add(jPanel9);
 
+        jPanel12.setOpaque(false);
         jPanel12.setLayout(new java.awt.GridLayout(1, 2));
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Font transformations")));
+        jPanel7.setBorder(SystemDependent.getBorder(_("Font transformations")));
+        jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.GridLayout(4, 2, 2, 0));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -512,7 +529,8 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel12.add(jPanel7);
 
-        JDirPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Alignment")));
+        JDirPanel.setBorder(SystemDependent.getBorder(_("Alignment")));
+        JDirPanel.setOpaque(false);
         JDirPanel.setLayout(new java.awt.BorderLayout());
         jPanel12.add(JDirPanel);
 
@@ -520,6 +538,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(Advanced);
 
+        jPanel14.setOpaque(false);
         jPanel14.setLayout(new java.awt.BorderLayout());
 
         AdvancedSelect.setText(_("Advanced options"));
@@ -532,6 +551,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel14.add(AdvancedSelect, java.awt.BorderLayout.CENTER);
 
         jPanel18.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        jPanel18.setOpaque(false);
         jPanel18.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         OKB.setText(_("OK"));

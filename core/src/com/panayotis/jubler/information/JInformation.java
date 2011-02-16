@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -152,9 +153,11 @@ public class JInformation extends JDialog {
         });
 
         InfoP.setName("info"); // NOI18N
+        InfoP.setOpaque(false);
         InfoP.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Comments")));
+        jPanel2.setBorder(SystemDependent.getBorder(_("Comments")));
+        jPanel2.setOpaque(false);
         jPanel2.setPreferredSize(new java.awt.Dimension(350, 150));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -165,9 +168,11 @@ public class JInformation extends JDialog {
 
         InfoP.add(jPanel2, java.awt.BorderLayout.CENTER);
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 10));
+        jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.GridLayout(0, 1));
 
         TitleL.setText(_("Title"));
@@ -181,6 +186,7 @@ public class JInformation extends JDialog {
 
         jPanel1.add(jPanel4, java.awt.BorderLayout.WEST);
 
+        jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(0, 1));
 
         TitleT.setToolTipText(_("Title for this subtitle file"));
@@ -199,11 +205,14 @@ public class JInformation extends JDialog {
         PTabs.addTab(_("Information"), InfoP);
 
         MediaP.setName("media"); // NOI18N
+        MediaP.setOpaque(false);
         MediaP.setLayout(new java.awt.BorderLayout());
 
+        VSelectorP.setOpaque(false);
         VSelectorP.setLayout(new java.awt.BorderLayout());
 
         SubFileInfoP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 8, 0));
+        SubFileInfoP.setOpaque(false);
         SubFileInfoP.setLayout(new java.awt.BorderLayout());
 
         FilePathL.setText(_("Subtitle File"));
@@ -220,10 +229,13 @@ public class JInformation extends JDialog {
         PTabs.addTab(_("Media"), MediaP);
 
         StatsP.setName("stats"); // NOI18N
+        StatsP.setOpaque(false);
         StatsP.setLayout(new java.awt.BorderLayout());
 
+        jPanel9.setOpaque(false);
         jPanel9.setLayout(new java.awt.BorderLayout());
 
+        jPanel8.setOpaque(false);
         jPanel8.setLayout(new java.awt.GridLayout(0, 2, 0, 4));
 
         NumberL.setText(_("Number of subtitles"));
@@ -253,6 +265,7 @@ public class JInformation extends JDialog {
         jPanel9.add(jPanel8, java.awt.BorderLayout.NORTH);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 1, 0, 1));
+        jPanel10.setOpaque(false);
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         MaxInfUserB.setSelected(true);
@@ -265,8 +278,10 @@ public class JInformation extends JDialog {
         });
         jPanel10.add(MaxInfUserB, java.awt.BorderLayout.NORTH);
 
+        jPanel11.setOpaque(false);
         jPanel11.setLayout(new java.awt.BorderLayout());
 
+        jPanel13.setOpaque(false);
         jPanel13.setLayout(new java.awt.BorderLayout());
 
         MaxColL.setText(_("Color to use"));
@@ -280,6 +295,7 @@ public class JInformation extends JDialog {
 
         jPanel10.add(jPanel11, java.awt.BorderLayout.CENTER);
 
+        jPanel12.setOpaque(false);
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         MaxCharsS.setMajorTickSpacing(10);
@@ -292,8 +308,10 @@ public class JInformation extends JDialog {
         MaxCharsS.setValue(40);
         jPanel12.add(MaxCharsS, java.awt.BorderLayout.SOUTH);
 
+        jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.BorderLayout());
 
+        jPanel14.setOpaque(false);
         jPanel14.setLayout(new java.awt.BorderLayout());
         jPanel14.add(CPType, java.awt.BorderLayout.CENTER);
 
@@ -314,9 +332,11 @@ public class JInformation extends JDialog {
 
         getContentPane().add(PTabs, java.awt.BorderLayout.CENTER);
 
+        jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 6, 16));
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
         OKB.setText(_("OK"));
