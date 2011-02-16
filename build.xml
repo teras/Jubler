@@ -112,32 +112,7 @@
 
 
 	<!-- Mac OS X installer -->
-	<target name="macosx" depends="-nodistbased,-release,font">
-		<copy file="resources/libs/ffmpeg/dist/darwin/libffdecode.jnilib" todir="dist/lib"/>
-
-		<jarbundler
-			dir="dist"
-			jars="dist/Jubler.jar"
-			mainclass="Jubler"
-			name="Jubler"
-			aboutmenuname="Jubler"
-			antialiasedgraphics="true"
-			antialiasedtext="true"
-			bundleid="com.panayotis.jubler"
-			infostring="Jubler ${version}, Multiplatform Subtitle Editor"
-			jvmversion="1.5+"
-			screenmenu="true"
-			version="${version}"
-			icon="resources/installers/macosx/jubler.icns"
-		>
-		<documenttype
-			name="Subtitle Document"
-			extensions="srt sub ass ssa stl son txt xml"
-			role="Editor"
-			iconfile="resources/installers/macosx/subtitle.icns"
-		/>
-		</jarbundler>
-
+	<target name="macosx" depends="prepare-macosx">
 		<delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
 		<delete file="/tmp/Jubler-template.dmg" quiet="true"/>
 		<exec executable="hdiutil" failonerror="false">
@@ -174,6 +149,33 @@
 			<arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o Jubler-${version}.dmg"/>
 		</exec>
 		<delete file="/tmp/Jubler-template.dmg"/>
+
+	</target>
+	<target name="prepare-macosx" depends="-nodistbased,-release,font">
+		<copy file="resources/libs/ffmpeg/dist/darwin/libffdecode.jnilib" todir="dist/lib"/>
+		<jarbundler
+			dir="dist"
+			jars="dist/Jubler.jar"
+			mainclass="Jubler"
+			name="Jubler"
+			aboutmenuname="Jubler"
+			antialiasedgraphics="true"
+			antialiasedtext="true"
+			bundleid="com.panayotis.jubler"
+			infostring="Jubler ${version}, Multiplatform Subtitle Editor"
+			jvmversion="1.5+"
+			screenmenu="true"
+			version="${version}"
+			icon="resources/installers/macosx/jubler.icns"
+		>
+		<documenttype
+			name="Subtitle Document"
+			extensions="srt sub ass ssa stl son txt xml"
+			role="Editor"
+			iconfile="resources/installers/macosx/subtitle.icns"
+		/>
+		</jarbundler>
+
 	</target>
 
 

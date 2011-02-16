@@ -89,13 +89,10 @@
     </Container>
     <Container class="javax.swing.JPanel" name="AlphaP">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="&lt;User Code&gt;">
-              <Connection PropertyName="titleX" code="_(&quot;Alpha Channel&quot;)" type="code"/>
-            </TitledBorder>
-          </Border>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="SystemDependent.getBorder(_(&quot;Alpha Channel&quot;))" type="code"/>
         </Property>
+        <Property name="opaque" type="boolean" value="false"/>
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

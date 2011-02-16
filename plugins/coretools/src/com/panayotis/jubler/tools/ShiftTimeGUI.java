@@ -22,14 +22,11 @@
  */
 package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.time.Time;
+import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.os.SystemDependent;
+
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
-
-
-import static com.panayotis.jubler.i18n.I18N._;
-import com.panayotis.jubler.media.console.TimeSync;
 
 /**
  *
@@ -39,7 +36,6 @@ public class ShiftTimeGUI extends ToolGUI {
 
     JTimeSpinner dt;
 
-
     @Override
     public void initialize() {
         dt = new JTimeSpinner();
@@ -48,7 +44,6 @@ public class ShiftTimeGUI extends ToolGUI {
         dt.setToolTipText(_("The amount of time in order to shift the subtitles"));
     }
 
-   
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -60,9 +55,11 @@ public class ShiftTimeGUI extends ToolGUI {
         PNewTime = new javax.swing.JPanel();
         CSign = new javax.swing.JComboBox();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        PNewTime.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Shift Subtitles")));
+        PNewTime.setBorder(SystemDependent.getBorder(_("Shift Subtitles")));
+        PNewTime.setOpaque(false);
         PNewTime.setLayout(new java.awt.BorderLayout());
 
         CSign.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " + ", " - " }));

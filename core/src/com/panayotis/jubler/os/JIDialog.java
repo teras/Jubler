@@ -49,7 +49,7 @@ public class JIDialog extends JOptionPane {
     }
 
     public static boolean action(Component parent, Object message, String title) {
-        return showMessage(parent, message, title, INFORMATION_MESSAGE, null, ok_cancel_opts);
+        return showMessage(parent, message, title, PLAIN_MESSAGE, null, ok_cancel_opts);
     }
 
     public static boolean question(Component parent, Object message, String title) {

@@ -39,6 +39,9 @@ import java.util.StringTokenizer;
 import javax.swing.AbstractButton;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -330,5 +333,15 @@ public class SystemDependent {
         if (IS_MACOSX)
             return home + "Library/Application Support/Jubler";
         return home + ".jubler";
+    }
+
+    public static Border getBorder(String title) {
+        Border border = UIManager.getBorder("TitledBorder.aquaVariant");
+        if (border == null)
+            border = new EtchedBorder();
+        if (title == null)
+            return border;
+        else
+            return new TitledBorder(border, title);
     }
 }

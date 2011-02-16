@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.os.SystemDependent;
 import javax.swing.JPanel;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
@@ -62,7 +63,8 @@ public class SubJoinGUI extends JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Use the following subtitles")));
+        jPanel1.setBorder(SystemDependent.getBorder(_("Use the following subtitles")));
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
         SubWindow.setToolTipText(_("Subtitles file to use"));
@@ -81,7 +83,8 @@ public class SubJoinGUI extends JPanel {
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        TShift.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Leave gap")));
+        TShift.setBorder(SystemDependent.getBorder(_("Leave gap")));
+        TShift.setOpaque(false);
         TShift.setLayout(new java.awt.BorderLayout());
         add(TShift, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents

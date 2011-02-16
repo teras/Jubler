@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.os.SystemDependent;
 import java.awt.BorderLayout;
 import com.panayotis.jubler.time.gui.JDuration;
 import java.text.DecimalFormat;
@@ -129,11 +130,11 @@ public class FixerGUI extends ToolGUI {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
         jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
-        MinTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Minimum subtitle duration")));
+        MinTimeP.setBorder(SystemDependent.getBorder(_("Minimum subtitle duration")));
         MinTimeP.setLayout(new java.awt.BorderLayout());
         jPanel4.add(MinTimeP);
 
-        MaxTimeP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Maximum subtitle duration")));
+        MaxTimeP.setBorder(SystemDependent.getBorder(_("Maximum subtitle duration")));
         MaxTimeP.setLayout(new java.awt.BorderLayout());
         jPanel4.add(MaxTimeP);
 

@@ -74,6 +74,7 @@ public class JDuration extends javax.swing.JPanel {
         CPSecT = new javax.swing.JRadioButton();
         CPSBox = new JFormattedTextField( getFormatter() );
 
+        setOpaque(false);
         setLayout(new java.awt.GridLayout(0, 1));
 
         TimeType.add(IgnoreBox);
@@ -97,6 +98,7 @@ public class JDuration extends javax.swing.JPanel {
         });
         add(AbsoluteT);
 
+        AbsBox.setColumns(10);
         AbsBox.setText("4000");
         AbsBox.setToolTipText(_("Time in milliseconds"));
         AbsBox.setEnabled(false);
@@ -112,6 +114,7 @@ public class JDuration extends javax.swing.JPanel {
         });
         add(CPSecT);
 
+        CPSBox.setColumns(10);
         CPSBox.setText("50");
         CPSBox.setToolTipText(_("Duration in milliseconds"));
         CPSBox.setEnabled(false);
