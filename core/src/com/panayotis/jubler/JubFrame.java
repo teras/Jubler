@@ -358,8 +358,6 @@ public class JubFrame extends JFrame {
         CopyEM = new javax.swing.JMenuItem();
         PasteEM = new javax.swing.JMenuItem();
         PasteSpecialEM = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        ToolsLockM = new javax.swing.JCheckBoxMenuItem();
         jSeparator9 = new javax.swing.JSeparator();
         DeleteEM = new javax.swing.JMenu();
         EmptyLinesDEM = new javax.swing.JMenuItem();
@@ -393,6 +391,8 @@ public class JubFrame extends JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         UndoEM = new javax.swing.JMenuItem();
         RedoEM = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
+        ToolsLockM = new javax.swing.JCheckBoxMenuItem();
         ToolsM = new javax.swing.JMenu();
         TestTM = new javax.swing.JMenu();
         BeginningTTM = new javax.swing.JMenuItem();
@@ -751,13 +751,6 @@ public class JubFrame extends JFrame {
         PasteSpecialEM.setName("EPS"); // NOI18N
         PasteSpecialEM.addActionListener(formListener);
         EditM.add(PasteSpecialEM);
-        EditM.add(jSeparator5);
-
-        ToolsLockM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        ToolsLockM.setText(_("Tools lock"));
-        ToolsLockM.setName("TLO"); // NOI18N
-        ToolsLockM.addActionListener(formListener);
-        EditM.add(ToolsLockM);
         EditM.add(jSeparator9);
 
         DeleteEM.setText(_("Delete"));
@@ -910,6 +903,13 @@ public class JubFrame extends JFrame {
         RedoEM.setName("ERE"); // NOI18N
         RedoEM.addActionListener(formListener);
         EditM.add(RedoEM);
+        EditM.add(jSeparator5);
+
+        ToolsLockM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        ToolsLockM.setText(_("Tools lock"));
+        ToolsLockM.setName("TLO"); // NOI18N
+        ToolsLockM.addActionListener(formListener);
+        EditM.add(ToolsLockM);
 
         JublerMenuBar.add(EditM);
 
