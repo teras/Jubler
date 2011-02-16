@@ -379,6 +379,8 @@ public class JubFrame extends JFrame {
         BottomGEM = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JSeparator();
         byTimeGEM = new javax.swing.JMenuItem();
+        SelectEM = new javax.swing.JMenu();
+        AllSEM = new javax.swing.JMenuItem();
         jSeparator10 = new javax.swing.JSeparator();
         MarkEM = new javax.swing.JMenu();
         NoneMEM = new javax.swing.JMenuItem();
@@ -804,14 +806,14 @@ public class JubFrame extends JFrame {
 
         GoEM.setText(_("Go to..."));
 
-        PreviousGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_UP, java.awt.event.InputEvent.CTRL_MASK));
+        PreviousGEM.setAccelerator(SystemDependent.getUpDownKeystroke(false));
         PreviousGEM.setText(_("Previous entry"));
         PreviousGEM.setActionCommand("p");
         PreviousGEM.setName("EGP"); // NOI18N
         PreviousGEM.addActionListener(formListener);
         GoEM.add(PreviousGEM);
 
-        NextGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DOWN, java.awt.event.InputEvent.CTRL_MASK));
+        NextGEM.setAccelerator(SystemDependent.getUpDownKeystroke(true));
         NextGEM.setText(_("Next entry"));
         NextGEM.setActionCommand("n");
         NextGEM.setName("EGN"); // NOI18N
@@ -853,6 +855,15 @@ public class JubFrame extends JFrame {
         GoEM.add(byTimeGEM);
 
         EditM.add(GoEM);
+
+        SelectEM.setText(_("Select"));
+
+        AllSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        AllSEM.setText(_("All"));
+        AllSEM.setName("ESA"); // NOI18N
+        SelectEM.add(AllSEM);
+
+        EditM.add(SelectEM);
         EditM.add(jSeparator10);
 
         MarkEM.setText(_("Mark"));
@@ -1641,6 +1652,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
+    private javax.swing.JMenuItem AllSEM;
     public javax.swing.JCheckBoxMenuItem AudioPreviewC;
     private javax.swing.JPanel BasicPanel;
     private javax.swing.JMenuItem BeforeIEM;
@@ -1711,6 +1723,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JMenuItem SaveAsFM;
     private javax.swing.JMenuItem SaveFM;
     private javax.swing.JButton SaveTB;
+    private javax.swing.JMenu SelectEM;
     private javax.swing.JCheckBoxMenuItem ShowCPMP;
     private javax.swing.JMenu ShowColP;
     private javax.swing.JCheckBoxMenuItem ShowEndP;
