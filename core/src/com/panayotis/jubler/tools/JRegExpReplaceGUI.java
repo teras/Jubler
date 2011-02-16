@@ -22,7 +22,9 @@
  */
 package com.panayotis.jubler.tools;
 
+import java.util.regex.Matcher;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.subs.SubEntry;
 import java.util.ArrayList;
 import com.panayotis.jubler.tools.replace.JReplaceList;
 import com.panayotis.jubler.tools.replace.ReplaceModel;
@@ -71,18 +73,13 @@ public class JRegExpReplaceGUI extends ToolGUI {
             }
     }
 
-    protected void affect(int index) {
-        throw new RuntimeException();
-//        SubEntry sub = affected_list.get(index);
-//        String res;
-//        Matcher m;
-//
-//        res = sub.getText();
-//        for (int i = 0; i < patterns.size(); i++) {
-//            m = patterns.get(i).matcher(res);
-//            res = m.replaceAll(texts.get(i));
-//        }
-//        sub.setText(res);
+    protected void affect(SubEntry sub) {
+        String res = sub.getText();
+        for (int i = 0; i < patterns.size(); i++) {
+            Matcher m = patterns.get(i).matcher(res);
+            res = m.replaceAll(texts.get(i));
+        }
+        sub.setText(res);
     }
 
     /** This method is called from within the constructor to
