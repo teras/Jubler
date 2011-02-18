@@ -23,6 +23,7 @@ import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+import javax.swing.JComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -45,14 +46,14 @@ public class ShiftTime extends RealTimeTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new ShiftTimeGUI();
     }
 
     @Override
     public boolean setValues(TimeSync first, TimeSync second) {
         super.setValues(first, second);
-        ShiftTimeGUI vis = (ShiftTimeGUI) getVisuals();
+        ShiftTimeGUI vis = (ShiftTimeGUI) getToolVisuals();
         double time = first.timediff;
         if (Math.abs(time) < 0.001)
             return false;
@@ -68,7 +69,7 @@ public class ShiftTime extends RealTimeTool {
 
     @Override
     public void storeSelections() {
-        ShiftTimeGUI vis = (ShiftTimeGUI) getVisuals();
+        ShiftTimeGUI vis = (ShiftTimeGUI) getToolVisuals();
         shift = ((Time) (vis.dt.getModel().getValue())).toSeconds();
         if (vis.CSign.getSelectedIndex() == 1)
             shift = -shift;

@@ -30,6 +30,7 @@ import com.panayotis.jubler.plugins.PluginItem;
  */
 public class CoreTools implements Plugin {
 
+    @Override
     public PluginItem[] getPluginItems() {
         return new PluginItem[]{
                     new SubSplit(),
@@ -50,10 +51,12 @@ public class CoreTools implements Plugin {
                 };
     }
 
+    @Override
     public String getPluginName() {
         return _("Basic tools");
     }
 
+    @Override
     public boolean canDisablePlugin() {
         return false;
     }

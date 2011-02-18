@@ -21,6 +21,7 @@ package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
+import javax.swing.JComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -29,20 +30,20 @@ import static com.panayotis.jubler.i18n.I18N._;
  */
 public class Marker extends OneByOneTool {
 
-    int mark;
+    private int mark;
 
     public Marker() {
         super(true, new ToolMenu(_("By Selection"), "EMS", Location.MARK, 0, 0));
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new MarkerGUI();
     }
 
     @Override
     protected void storeSelections() {
-        mark = ((MarkerGUI) getVisuals()).ColSel.getSelectedIndex();
+        mark = ((MarkerGUI) getToolVisuals()).ColSel.getSelectedIndex();
     }
 
     @Override

@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.tools;
 
+import javax.swing.JPanel;
 import java.util.regex.Matcher;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubEntry;
@@ -37,7 +38,7 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author  teras
  */
-public class JRegExpReplaceGUI extends ToolGUI {
+public class JRegExpReplaceGUI extends JPanel {
 
     private ArrayList<Pattern> patterns;
     private ArrayList<String> texts;
@@ -47,10 +48,6 @@ public class JRegExpReplaceGUI extends ToolGUI {
      * Creates new form JRegExpReplace
      */
     public JRegExpReplaceGUI() {
-    }
-
-    @Override
-    public void initialize() {
         initComponents();
         rlist = new JReplaceList();
         TextList.setListData(rlist.getModel().getReplaceList());
@@ -90,24 +87,20 @@ public class JRegExpReplaceGUI extends ToolGUI {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         TextList = new javax.swing.JList();
         EditB = new javax.swing.JButton();
 
+        setBorder(SystemDependent.getBorder(_("Regular expressions to be executed")));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setBorder(SystemDependent.getBorder(_("Regular expressions to be executed")));
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(259, 80));
 
         TextList.setToolTipText(_("List of replacements to be done"));
         jScrollPane1.setViewportView(TextList);
 
-        jPanel1.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         EditB.setText(_("Edit"));
         EditB.setActionCommand("Edit");
@@ -116,9 +109,7 @@ public class JRegExpReplaceGUI extends ToolGUI {
                 EditBActionPerformed(evt);
             }
         });
-        jPanel1.add(EditB, java.awt.BorderLayout.EAST);
-
-        add(jPanel1, java.awt.BorderLayout.SOUTH);
+        add(EditB, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
 
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
@@ -146,7 +137,6 @@ public class JRegExpReplaceGUI extends ToolGUI {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EditB;
     private javax.swing.JList TextList;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

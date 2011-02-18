@@ -34,6 +34,7 @@ import java.awt.BorderLayout;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  *
@@ -45,10 +46,10 @@ public abstract class TimeBaseTool extends Tool {
     protected int[] selected;
     protected JubFrame jparent;
     private JTimeArea timepos;
+    private JComponent toolvisuals;
     //
     private final boolean freeform;
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public TimeBaseTool(boolean freeform, ToolMenu toolmenu) {
         super(toolmenu);
         this.freeform = freeform;
@@ -67,9 +68,8 @@ public abstract class TimeBaseTool extends Tool {
     @Override
     public boolean execute(JubFrame jub) {
         // Display dialog if tool is unlocked
-        if (!jub.isToolLocked())
-            if (!JIDialog.action(jparent, getVisuals(), getToolTitle()))
-                return false;
+        if ((!jub.isToolLocked()) && (!JIDialog.action(jparent, getVisuals(), getToolTitle())))
+            return false;
 
         // Keep undo list
         jparent.getUndoList().addUndo(new UndoEntry(subtitles, getToolTitle()));
@@ -80,13 +80,12 @@ public abstract class TimeBaseTool extends Tool {
         List<SubEntry> list;
         if (jub.isToolLocked())
             list = Arrays.asList(selectedsubs);
-        else {
+        else
             list = getTimeArea().getAffectedSubs();
-            getTimeArea().updateSubsMark(list);
-            storeSelections();
-        }
         if (list.isEmpty())
             return false;
+        getTimeArea().updateSubsMark(list);
+        storeSelections();
 
         /* Perform tool */
         if (!affect(list))
@@ -107,14 +106,20 @@ public abstract class TimeBaseTool extends Tool {
 
     @Override
     protected final JComponent constructVisuals() {
-        ToolGUI vis = constructToolVisuals();
-        vis.initialize();
-        vis.add(getTimeArea(), BorderLayout.CENTER);
-        return vis;
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(getToolVisuals(), BorderLayout.SOUTH);
+        panel.add(getTimeArea(), BorderLayout.CENTER);
+        return panel;
     }
 
-    protected ToolGUI constructToolVisuals() {
-        return new ToolGUI();
+    protected JComponent constructToolVisuals() {
+        return new JPanel();
+    }
+
+    protected JComponent getToolVisuals() {
+        if (toolvisuals == null)
+            toolvisuals = constructToolVisuals();
+        return toolvisuals;
     }
 
     protected void storeSelections() {

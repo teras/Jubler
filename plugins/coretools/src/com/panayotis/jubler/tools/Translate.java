@@ -27,6 +27,7 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import javax.swing.JComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -53,7 +54,7 @@ public class Translate extends TimeBaseTool {
             DEBUG.debug("No active translators found!");
             return true;
         }
-        TranslateGUI vis = (TranslateGUI) getVisuals();
+        TranslateGUI vis = (TranslateGUI) getToolVisuals();
         return trans.translate(list, vis.FromLang.getSelectedItem().toString(), vis.ToLang.getSelectedItem().toString());
     }
 
@@ -74,7 +75,7 @@ public class Translate extends TimeBaseTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new TranslateGUI(this);
     }
 }

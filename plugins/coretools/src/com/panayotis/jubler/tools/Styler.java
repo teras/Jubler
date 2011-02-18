@@ -25,6 +25,7 @@ import com.panayotis.jubler.subs.SubEntry;
 
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.tools.ToolMenu.Location;
+import javax.swing.JComponent;
 
 /**
  *
@@ -41,7 +42,7 @@ public class Styler extends OneByOneTool {
     @Override
     public void updateData(JubFrame jub) {
         super.updateData(jub);
-        StylerGUI vis = (StylerGUI) getVisuals();
+        StylerGUI vis = (StylerGUI) getToolVisuals();
 
         int selvalue = vis.StyleSel.getSelectedIndex();
         vis.StyleSel.removeAllItems();
@@ -60,7 +61,7 @@ public class Styler extends OneByOneTool {
 
     @Override
     protected void storeSelections() {
-        style = (SubStyle) ((StylerGUI) getVisuals()).StyleSel.getSelectedItem();
+        style = (SubStyle) ((StylerGUI) getToolVisuals()).StyleSel.getSelectedItem();
     }
 
     @Override
@@ -69,7 +70,7 @@ public class Styler extends OneByOneTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new StylerGUI();
     }
 }

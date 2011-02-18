@@ -22,15 +22,16 @@
  */
 package com.panayotis.jubler.tools;
 
+import javax.swing.JPanel;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
  *
  * @author  teras
  */
-public class StylerGUI extends ToolGUI {
+public class StylerGUI extends JPanel {
 
-    public void initialize() {
+    public StylerGUI() {
         initComponents();
     }
 
@@ -42,26 +43,20 @@ public class StylerGUI extends ToolGUI {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        JPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         StyleSel = new javax.swing.JComboBox();
 
         setToolTipText("Select the color to use in order to mark the area");
         setLayout(new java.awt.BorderLayout());
 
-        JPanel2.setLayout(new java.awt.BorderLayout());
-
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel1.setText(_("Style to use")+"  ");
-        JPanel2.add(jLabel1, java.awt.BorderLayout.WEST);
+        add(jLabel1, java.awt.BorderLayout.WEST);
 
         StyleSel.setToolTipText(_("Select the desired style from the drop down list"));
-        JPanel2.add(StyleSel, java.awt.BorderLayout.CENTER);
-
-        add(JPanel2, java.awt.BorderLayout.SOUTH);
+        add(StyleSel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel JPanel2;
     javax.swing.JComboBox StyleSel;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

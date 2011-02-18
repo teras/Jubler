@@ -24,6 +24,7 @@ import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+import javax.swing.JComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -41,6 +42,7 @@ public class Synchronize extends OneByOneTool {
         super(true, new ToolMenu(_("Synchronize"), "TSY", Location.FILETOOL, 0, 0));
     }
 
+    @Override
     public String getToolTitle() {
         return _("Synchronize");
     }
@@ -48,7 +50,7 @@ public class Synchronize extends OneByOneTool {
     @Override
     public void updateData(JubFrame current) {
         super.updateData(current);
-        SynchronizeGUI vis = (SynchronizeGUI) getVisuals();
+        SynchronizeGUI vis = (SynchronizeGUI) getToolVisuals();
 
         target = current.getSubtitles();
         JubFrame cjubler, oldjubler;
@@ -73,8 +75,9 @@ public class Synchronize extends OneByOneTool {
         vis.JubSelector.setSelectedIndex(old_id);
     }
 
+    @Override
     public void storeSelections() {
-        SynchronizeGUI vis = (SynchronizeGUI) getVisuals();
+        SynchronizeGUI vis = (SynchronizeGUI) getToolVisuals();
         modeljubler = JubFrame.windows.get(vis.JubSelector.getSelectedIndex());
         model = modeljubler.getSubtitles();
         copytime = vis.InTimeS.isSelected();
@@ -98,6 +101,7 @@ public class Synchronize extends OneByOneTool {
         return super.affect(list);
     }
 
+    @Override
     public void affect(SubEntry sub) {
         int modid = target.indexOf(sub) + offset;
         if (modid < 0 || modid >= model.size())
@@ -112,7 +116,7 @@ public class Synchronize extends OneByOneTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new SynchronizeGUI();
     }
 }

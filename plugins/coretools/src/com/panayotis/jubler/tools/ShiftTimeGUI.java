@@ -24,23 +24,25 @@ package com.panayotis.jubler.tools;
 
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.time.Time;
 
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
+import javax.swing.JPanel;
 
 /**
  *
  * @author  teras
  */
-public class ShiftTimeGUI extends ToolGUI {
+public class ShiftTimeGUI extends JPanel {
 
     JTimeSpinner dt;
 
-    @Override
-    public void initialize() {
+    public ShiftTimeGUI() {
         dt = new JTimeSpinner();
+        dt.setTimeValue(new Time(1));
         initComponents();
-        PNewTime.add(dt, BorderLayout.CENTER);
+        add(dt, BorderLayout.CENTER);
         dt.setToolTipText(_("The amount of time in order to shift the subtitles"));
     }
 
@@ -52,24 +54,17 @@ public class ShiftTimeGUI extends ToolGUI {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        PNewTime = new javax.swing.JPanel();
         CSign = new javax.swing.JComboBox();
 
+        setBorder(SystemDependent.getBorder(_("Shift Subtitles")));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        PNewTime.setBorder(SystemDependent.getBorder(_("Shift Subtitles")));
-        PNewTime.setOpaque(false);
-        PNewTime.setLayout(new java.awt.BorderLayout());
-
         CSign.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " + ", " - " }));
         CSign.setToolTipText(_("Either increase or decrease the time"));
-        PNewTime.add(CSign, java.awt.BorderLayout.WEST);
-
-        add(PNewTime, java.awt.BorderLayout.SOUTH);
+        add(CSign, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JComboBox CSign;
-    private javax.swing.JPanel PNewTime;
     // End of variables declaration//GEN-END:variables
 }

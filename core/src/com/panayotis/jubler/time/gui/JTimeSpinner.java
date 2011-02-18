@@ -53,6 +53,7 @@ public class JTimeSpinner extends JSpinner {
                 c = (JButton) getComponent(i);
                 c.addMouseListener(new MouseAdapter() {
 
+                    @Override
                     public void mousePressed(MouseEvent e) {
                         if ((e.getModifiers() & MouseEvent.ALT_MASK) > 0)
                             model.setSpeed(0.1);
@@ -67,6 +68,7 @@ public class JTimeSpinner extends JSpinner {
         /* Get mousewheel event, and modify speed if the alt key is pressed */
         addMouseWheelListener(new MouseWheelListener() {
 
+            @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getModifiers() == InputEvent.ALT_MASK)
                     model.setSpeed(0.1);

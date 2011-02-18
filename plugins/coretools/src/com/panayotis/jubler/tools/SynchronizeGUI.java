@@ -22,16 +22,16 @@
  */
 package com.panayotis.jubler.tools;
 
+import javax.swing.JPanel;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
  *
  * @author  teras
  */
-public class SynchronizeGUI extends ToolGUI {
+public class SynchronizeGUI extends JPanel {
 
-    @Override
-    public void initialize() {
+    public SynchronizeGUI() {
         initComponents();
     }
 
@@ -43,7 +43,6 @@ public class SynchronizeGUI extends ToolGUI {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         JubSelector = new javax.swing.JComboBox();
         jPanel2 = new javax.swing.JPanel();
@@ -52,15 +51,13 @@ public class SynchronizeGUI extends ToolGUI {
         InTimeS = new javax.swing.JCheckBox();
         InTextS = new javax.swing.JCheckBox();
 
-        setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setLayout(new java.awt.GridLayout(0, 1));
+        setLayout(new java.awt.GridLayout(0, 1));
 
         jLabel1.setText(_("Synchronize data from the following subtitles"));
-        jPanel1.add(jLabel1);
+        add(jLabel1);
 
         JubSelector.setToolTipText(_("The subtitles file to use as a model"));
-        jPanel1.add(JubSelector);
+        add(JubSelector);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -71,22 +68,20 @@ public class SynchronizeGUI extends ToolGUI {
         OffsetS.setToolTipText(_("Relative offset of the model subtitles. It is based on index, not time."));
         jPanel2.add(OffsetS, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel2);
+        add(jPanel2);
 
         InTimeS.setSelected(true);
         InTimeS.setText(_("Import timestamp"));
         InTimeS.setToolTipText(_("Use the timestamp of the subtitles as the time model for current subtitles"));
         InTimeS.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 0, 0));
         InTimeS.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jPanel1.add(InTimeS);
+        add(InTimeS);
 
         InTextS.setText(_("Import text"));
         InTextS.setToolTipText(_("Copy the text of the other subtitles into this file"));
         InTextS.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         InTextS.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        jPanel1.add(InTextS);
-
-        add(jPanel1, java.awt.BorderLayout.SOUTH);
+        add(InTextS);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JCheckBox InTextS;
@@ -95,7 +90,6 @@ public class SynchronizeGUI extends ToolGUI {
     javax.swing.JSpinner OffsetS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }
