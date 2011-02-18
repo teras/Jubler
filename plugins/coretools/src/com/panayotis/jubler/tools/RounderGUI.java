@@ -22,16 +22,16 @@
  */
 package com.panayotis.jubler.tools;
 
+import javax.swing.JPanel;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
  *
  * @author  teras
  */
-public class RounderGUI extends ToolGUI {
+public class RounderGUI extends JPanel {
 
-    @Override
-    public void initialize() {
+    public RounderGUI() {
         initComponents();
     }
 
@@ -43,17 +43,14 @@ public class RounderGUI extends ToolGUI {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         PrecS = new javax.swing.JSlider();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 1));
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        jPanel1.setLayout(new java.awt.BorderLayout());
-
         jLabel1.setText(_("Number of decimals")+"      ");
-        jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
+        add(jLabel1, java.awt.BorderLayout.WEST);
 
         PrecS.setMajorTickSpacing(1);
         PrecS.setMaximum(2);
@@ -61,13 +58,10 @@ public class RounderGUI extends ToolGUI {
         PrecS.setPaintTicks(true);
         PrecS.setSnapToTicks(true);
         PrecS.setToolTipText(_("Decimal digits"));
-        jPanel1.add(PrecS, java.awt.BorderLayout.CENTER);
-
-        add(jPanel1, java.awt.BorderLayout.SOUTH);
+        add(PrecS, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JSlider PrecS;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

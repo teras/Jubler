@@ -26,17 +26,17 @@ import static com.panayotis.jubler.i18n.I18N._;
 import java.awt.BorderLayout;
 import com.panayotis.jubler.options.gui.JRateChooser;
 import com.panayotis.jubler.os.SystemDependent;
+import javax.swing.JPanel;
 
 /**
  *
  * @author  teras
  */
-public class RecodeTimeGUI extends ToolGUI {
+public class RecodeTimeGUI extends JPanel {
 
     JRateChooser FromR, ToR;
 
-    @Override
-    public void initialize() {
+    public RecodeTimeGUI() {
         initComponents();
         FromR = new JRateChooser();
         FromP.add(FromR, BorderLayout.CENTER);
@@ -64,7 +64,6 @@ public class RecodeTimeGUI extends ToolGUI {
     private void initComponents() {
 
         Factor = new javax.swing.ButtonGroup();
-        jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         AutoB = new javax.swing.JRadioButton();
         jPanel3 = new javax.swing.JPanel();
@@ -81,11 +80,7 @@ public class RecodeTimeGUI extends ToolGUI {
         CentralL = new javax.swing.JLabel();
         CustomC = new javax.swing.JTextField();
 
-        setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setBorder(SystemDependent.getBorder(_("Use the following factor")));
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
@@ -101,7 +96,7 @@ public class RecodeTimeGUI extends ToolGUI {
         });
         jPanel4.add(AutoB, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel4);
+        add(jPanel4);
 
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(1, 2));
@@ -123,7 +118,7 @@ public class RecodeTimeGUI extends ToolGUI {
         ToP.setLayout(new java.awt.BorderLayout());
         jPanel3.add(ToP);
 
-        jPanel1.add(jPanel3);
+        add(jPanel3);
 
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.BorderLayout());
@@ -138,7 +133,7 @@ public class RecodeTimeGUI extends ToolGUI {
         });
         jPanel5.add(CustomB, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel5);
+        add(jPanel5);
 
         jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
@@ -152,7 +147,7 @@ public class RecodeTimeGUI extends ToolGUI {
         CustomF.setEnabled(false);
         jPanel6.add(CustomF);
 
-        jPanel1.add(jPanel6);
+        add(jPanel6);
 
         jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.GridLayout(1, 2));
@@ -166,9 +161,7 @@ public class RecodeTimeGUI extends ToolGUI {
         CustomC.setEnabled(false);
         jPanel7.add(CustomC);
 
-        jPanel1.add(jPanel7);
-
-        add(jPanel1, java.awt.BorderLayout.SOUTH);
+        add(jPanel7);
     }// </editor-fold>//GEN-END:initComponents
     private void AutoBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutoBActionPerformed
         toggleRecodeMode(true);
@@ -188,7 +181,6 @@ public class RecodeTimeGUI extends ToolGUI {
     private javax.swing.JPanel FromP;
     private javax.swing.JLabel RecodeL;
     private javax.swing.JPanel ToP;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

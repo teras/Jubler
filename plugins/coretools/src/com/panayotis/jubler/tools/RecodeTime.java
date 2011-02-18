@@ -23,6 +23,7 @@ import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
+import javax.swing.JComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -54,7 +55,7 @@ public class RecodeTime extends RealTimeTool {
     @Override
     public boolean setValues(TimeSync first, TimeSync second) {
         super.setValues(first, second);
-        RecodeTimeGUI vis = (RecodeTimeGUI) getVisuals();
+        RecodeTimeGUI vis = (RecodeTimeGUI) getToolVisuals();
 
         if (first.smallerThan(second)) {
             t1 = first;
@@ -93,7 +94,7 @@ public class RecodeTime extends RealTimeTool {
     public void updateData(JubFrame j) {
         super.updateData(j);
         /* Set other values */
-        RecodeTimeGUI vis = (RecodeTimeGUI) getVisuals();
+        RecodeTimeGUI vis = (RecodeTimeGUI) getToolVisuals();
         vis.FromR.setDataFiles(j.getMediaFile(), j.getSubtitles());
         vis.ToR.setDataFiles(j.getMediaFile(), j.getSubtitles());
     }
@@ -102,7 +103,7 @@ public class RecodeTime extends RealTimeTool {
     public void storeSelections() {
         center = 0;
         factor = 1;
-        RecodeTimeGUI vis = (RecodeTimeGUI) getVisuals();
+        RecodeTimeGUI vis = (RecodeTimeGUI) getToolVisuals();
         try {
             if (vis.AutoB.isSelected())
                 factor = vis.FromR.getFPSValue() / vis.ToR.getFPSValue();
@@ -120,7 +121,7 @@ public class RecodeTime extends RealTimeTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new RecodeTimeGUI();
     }
 }

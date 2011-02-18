@@ -24,6 +24,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeRegion;
+import javax.swing.JComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -42,16 +43,18 @@ public class Fixer extends OneByOneTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new FixerGUI();
     }
 
+    @Override
     protected String getToolTitle() {
         return _("Fix time inconsistencies");
     }
 
+    @Override
     protected void storeSelections() {
-        FixerGUI vis = (FixerGUI) getVisuals();
+        FixerGUI vis = (FixerGUI) getToolVisuals();
 
         /* Sort subtitles first */
         if (vis.SortB.isSelected())
@@ -82,7 +85,7 @@ public class Fixer extends OneByOneTool {
     public boolean execute(JubFrame jub) {
         boolean res = super.execute(jub);
         if (res)
-            if (((FixerGUI) getVisuals()).SortB.isSelected()) {
+            if (((FixerGUI) getToolVisuals()).SortB.isSelected()) {
                 subtitles.sort(((JTimeRegion) getTimeArea()).getStartTime(), ((JTimeRegion) getTimeArea()).getFinishTime());
                 return true;
             }

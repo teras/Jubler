@@ -22,6 +22,7 @@ package com.panayotis.jubler.tools;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+import javax.swing.JComponent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 /**
@@ -43,7 +44,7 @@ public class Rounder extends OneByOneTool {
 
     @Override
     protected void storeSelections() {
-        switch (((RounderGUI) getVisuals()).PrecS.getValue()) {
+        switch (((RounderGUI) getToolVisuals()).PrecS.getValue()) {
             case 0:
                 precise = 1;
                 break;
@@ -65,7 +66,7 @@ public class Rounder extends OneByOneTool {
     }
 
     @Override
-    protected ToolGUI constructToolVisuals() {
+    protected JComponent constructToolVisuals() {
         return new RounderGUI();
     }
 

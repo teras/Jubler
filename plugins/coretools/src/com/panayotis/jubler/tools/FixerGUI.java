@@ -27,6 +27,7 @@ import java.awt.BorderLayout;
 import com.panayotis.jubler.time.gui.JDuration;
 import java.text.DecimalFormat;
 import javax.swing.JFormattedTextField;
+import javax.swing.JPanel;
 
 import static com.panayotis.jubler.i18n.I18N._;
 
@@ -34,12 +35,11 @@ import static com.panayotis.jubler.i18n.I18N._;
  *
  * @author  teras
  */
-public class FixerGUI extends ToolGUI {
+public class FixerGUI extends JPanel {
 
     JDuration mintime, maxtime;
 
-    @Override
-    public void initialize() {
+    public FixerGUI() {
         initComponents();
         mintime = new JDuration();
         MinTimeP.add(mintime, BorderLayout.CENTER);
@@ -138,7 +138,7 @@ public class FixerGUI extends ToolGUI {
         MaxTimeP.setLayout(new java.awt.BorderLayout());
         jPanel4.add(MaxTimeP);
 
-        add(jPanel4, java.awt.BorderLayout.SOUTH);
+        add(jPanel4, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void GapBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GapBActionPerformed

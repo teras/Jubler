@@ -25,21 +25,18 @@ package com.panayotis.jubler.tools;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPanel;
 
 /**
  *
  * @author  teras
  */
-public class TranslateGUI extends ToolGUI {
+public class TranslateGUI extends JPanel {
 
     private final Translate tool;
 
     public TranslateGUI(Translate tool) {
         this.tool = tool;
-    }
-
-    @Override
-    public void initialize() {
         initComponents();
         String[] names = tool.getTranslators().getNamesList();
         if (names != null) {
@@ -61,7 +58,6 @@ public class TranslateGUI extends ToolGUI {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         TransMachine = new javax.swing.JComboBox();
@@ -76,10 +72,8 @@ public class TranslateGUI extends ToolGUI {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
         setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
-        jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -94,7 +88,7 @@ public class TranslateGUI extends ToolGUI {
         });
         jPanel2.add(TransMachine, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel2, java.awt.BorderLayout.NORTH);
+        add(jPanel2, java.awt.BorderLayout.NORTH);
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 2));
 
@@ -118,7 +112,7 @@ public class TranslateGUI extends ToolGUI {
 
         jPanel3.add(jPanel5);
 
-        jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
+        add(jPanel3, java.awt.BorderLayout.CENTER);
 
         jPanel6.setLayout(new java.awt.BorderLayout());
 
@@ -137,9 +131,7 @@ public class TranslateGUI extends ToolGUI {
 
         jPanel6.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.add(jPanel6, java.awt.BorderLayout.PAGE_END);
-
-        add(jPanel1, java.awt.BorderLayout.SOUTH);
+        add(jPanel6, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
 private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransMachineActionPerformed
@@ -152,7 +144,6 @@ private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

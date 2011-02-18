@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
  *
  * @author teras
  */
+@SuppressWarnings("StaticNonFinalUsedInInitialization")
 public class I18N {
 
     private static ResourceBundle b;
