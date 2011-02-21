@@ -7,9 +7,9 @@ General notes
 -------------
 
 This release features a lot of improvements that are relevant for HTML5 video.
-The H.264 and Theora decoders are now significantly faster, the vorbis decoder
+The H.264 and Theora decoders are now significantly faster, the Vorbis decoder
 has seen important updates and this release supports Google's newly released
-libvpx library for the VP8 codec and WEBM container.
+libvpx library for the VP8 codec and WebM container.
 
 Other important changes are additions of decoders including, but not limited to,
 Intel Indeo 5, WMA Pro, WMA Voice and HE-AAC.
@@ -93,4 +93,31 @@ Notable license related changes
 
 - remaining GPL parts in AC-3 decoder converted to LGPL
 - libswscale can now be compiled in LGPL mode
-- libvpx is considered (L)GPL incompatible
+
+
+
+* 0.6.1
+
+General notes
+-------------
+
+This point release includes some updates to make the 0.6 release series usable
+for users that need to retain the existing behavior as closely as possible.
+The changes follow below:
+
+Bugfixes
+--------
+
+- fix autodetection of E-AC-3 substream samples
+- performance fix for seekable HTTP
+- add missing VP80 fourcc code for the VP8 codec
+- small documentation fixes
+- fix several potentially exploitable issues in the FLIC decoder
+  (addresses CVE-2010-3429)
+
+
+HE-AAC v2 backport
+------------------
+
+This release includes a backport of the AAC decoder from trunk, which
+enables proper playback of HE-AAC v2 media.
