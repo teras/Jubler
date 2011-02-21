@@ -79,7 +79,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
         DEBUG(env, this, "decodeAudio", "Could not open file '%s'.", input_filename);
         ret = JNI_FALSE;
     }
-    outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
+    outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
     if(outbuf==NULL) {
         DEBUG(env, this, "decodeAudio", "Could not allocate memory for outbuf.");
         ret = JNI_FALSE;
@@ -309,7 +309,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
 	}
 
     if(codec_is_open >= 0) avcodec_close(ccx);
-    if(outbuf != NULL)     free(outbuf);
+    if(outbuf != NULL)     av_free(outbuf);
     if(fcx != NULL)        av_close_input_file(fcx);
     
     return ret;
@@ -377,7 +377,7 @@ void audio_enc_out(JNIEnv * env, jobject this, AVFormatContext *ofcx, AVStream *
 		}
 
 		if (outbuf != NULL)
-			free(outbuf);
+			av_free(outbuf);
 
 		av_free_packet(&pkt);
 	}
