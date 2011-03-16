@@ -1,0 +1,71 @@
+#!/bin/bash
+
+mreplace () {
+
+FROM=$1
+TO=$2
+shift 2
+
+FILE=/tmp/mr.${RANDOM}.ex
+
+cat >$FILE <<EOF
+:%s/$FROM/$TO/g
+:w
+:q
+EOF
+
+IFS="
+"
+for ARG in $*; do
+	for FNAME in `find $ARG -type f` ; do
+		# Now search inside files
+		FOUND=`cat "$FNAME" | grep $FROM`
+		if [ -n "$FOUND" ] ; then
+			echo Updating $FNAME
+			ex <$FILE "$FNAME"
+		fi
+	done
+done
+
+rm $FILE
+
+}
+
+
+# MAIN PROGRAM STARTS HERE #
+
+NAME=$1
+if [ -z $"NAME" ] ; then
+	echo -n "Please give the name of the new project: "
+	read NAME
+fi
+if [ -z "$NAME" ] ; then
+	echo Not a valid name
+	exit 1
+fi
+NAMELOWER=`echo $NAME|tr [A-Z] [a-z]`
+
+pushd `dirname $0` >/dev/null
+BINDIR=`pwd`
+cd ../../../plugins
+BASEDIR=`pwd`
+popd >/dev/null
+
+pushd $BASEDIR >/dev/null
+mkdir "$NAMELOWER" 
+if [ $? -ne 0 ] ; then
+	echo Plugin directory $NAMELOWER exists.
+	popd >/dev/null
+	exit 2
+fi
+
+cd "$NAMELOWER"
+tar zxf "$BINDIR"/plugin_skeleton.tar.gz
+if [ $? -ne 0 ] ; then 
+	rmdir ../"$NAMELOWER"
+	popd >/dev/null
+	exit 3
+fi
+mreplace 'PLUGINLOWER' "$NAMELOWER" *
+mreplace 'PLUGIN' "$NAME" *
+popd >/dev/null
