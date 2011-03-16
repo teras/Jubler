@@ -190,7 +190,7 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
             pack_duration = av_rescale_q(pkt.duration, fcx->streams[video_index]->time_base, AV_TIME_BASE_Q);
             comp_pts += pkt.duration;
             // Decode this packet
-            len = avcodec_decode_video(ccx, frame, &got_picture, pkt.data, pkt.size);
+            len = avcodec_decode_video2(ccx, frame, &got_picture, &pkt);
             if (len < 0) {
                 DEBUG(env, this, "decodeFrame", "Error while decoding.");
                 retflag = FALSE;
@@ -237,11 +237,11 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
 			*width = *height = -1;
 	 	} else {
 			sws_scale(swsContext,
-				((AVPicture *)frame)->data,
-				((AVPicture *)frame)->linesize,
+				frame->data,
+				frame->linesize,
 				0, ccx->height,
-				((AVPicture *)pict)->data,
-				((AVPicture *)pict)->linesize); 
+				pict->data,
+				pict->linesize); 
 		}
     }
     
