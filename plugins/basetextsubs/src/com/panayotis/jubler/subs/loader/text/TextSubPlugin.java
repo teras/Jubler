@@ -42,7 +42,8 @@ public class TextSubPlugin implements Plugin {
                     new Quicktime(),
                     new Spruce(),
                     new TextScript(),
-                    new W3CTimedText()
+                    new W3CTimedText(),
+                    new DFXP()
                 };
     }
 
