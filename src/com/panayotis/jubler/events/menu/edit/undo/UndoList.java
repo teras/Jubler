@@ -45,6 +45,19 @@ public class UndoList extends Stack<UndoEntry> {
         jub = j;
         redo = new UndoList(null);
     }
+    /**
+     * Clear undo list to fix the memory problem, especially
+     * when dealing with image subtitles.
+     */
+    public void clearUndo() {
+        redo.clear();
+        this.clear();
+        setSaveMark();
+        jub.fn.setDoText(null, false);
+        jub.fn.setDoText(null, true);
+        jub.fn.resetUndoMark();
+    }
+    
 
     public void addUndo(UndoEntry undo) {
         if (undo == null) {

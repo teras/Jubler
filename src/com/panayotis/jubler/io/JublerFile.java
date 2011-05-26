@@ -168,6 +168,7 @@ public class JublerFile {
             /* Saving succesfull */
             undo.setSaveMark();
             setFile(f, false);
+            undo.clearUndo();            
         } else {
             JIDialog.error(jb, result, _("Error while saving file"));
         }
