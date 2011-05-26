@@ -25,6 +25,7 @@ package com.panayotis.jubler.subs;
 import com.panayotis.jubler.os.DEBUG;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -38,12 +39,12 @@ import javax.swing.table.TableCellRenderer;
 public class SubRenderer extends JLabel implements TableCellRenderer {
 
     public static final int DEFAULT_ROW_HEIGHT = 16;
-    private int table_row_height,  image_row_height;
+    private int table_row_height, image_row_height;
 
     public SubRenderer() {
         super();
         setOpaque(true);
-    //setFont(new java.awt.Font("Monofont", 0, 11));
+        //setFont(new java.awt.Font("Monofont", 0, 11));
     }
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
@@ -56,12 +57,19 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
                 setForeground(table.getSelectionForeground());
             } else {
                 entry = ((Subtitles) table.getModel()).elementAt(row);
-                setBackground(SubEntry.MarkColors[entry.getMark()]);
-                setForeground(Color.BLACK);
-            /*
-            setBackground(table.getBackground());
-            setForeground(table.getForeground());
-             */
+                int marker = entry.getMark();
+                int max_index = SubEntry.MarkColors.length - 1;
+                try {
+                    int entry_mark_index = Math.max(0, Math.min(marker, max_index));
+                    setBackground(SubEntry.MarkColors[entry_mark_index]);
+                    setForeground(Color.BLACK);
+                } catch (Exception ex) {
+                    DEBUG.logger.log(Level.WARNING, ex.toString());
+                }
+                /*
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+                 */
             }
 
             this.table_row_height = table.getRowHeight();
@@ -79,7 +87,7 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
                 boolean is_taller = (table_row_height < image_row_height);
                 if (is_taller) {
                     table.setRowHeight(image_row_height);
-                //table.repaint();
+                    //table.repaint();
                 }//end if
             } else {
                 boolean is_string = (value instanceof String);
