@@ -27,6 +27,7 @@
  */
 package com.panayotis.jubler;
 
+import com.panayotis.jubler.events.menu.toobar.RegisterCurrentRowAction;
 import com.panayotis.jubler.events.menu.tool.VideoPreviewAction;
 import com.panayotis.jubler.events.menu.edit.StyleBySelectionAction;
 import com.panayotis.jubler.events.menu.edit.StepwiseAction;
@@ -256,6 +257,7 @@ public class JActionMap extends HashMap<Object, Object> {
         put(jb.getRecodeTM(), new RecodeTimeAction(jb));
         put(jb.getRedoEM(), redoEdit);
         put(jb.getRedoTB(), redoEdit);
+        put(jb.getRegisterCurrentRowTB(), new RegisterCurrentRowAction(jb));
         put(jb.getRemoveBottomTopLineDuplication(), new RemoveBottomTopLineDuplication(jb));
         put(jb.getRemoveTimeDuplication(), new RemoveTimeDuplication(jb));
         put(jb.getRemoveTopLineDuplication(), new RemoveTopLineDuplication(jb));

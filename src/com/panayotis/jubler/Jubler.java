@@ -193,7 +193,6 @@ public class Jubler extends JFrame {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         SubsPop = new javax.swing.JPopupMenu();
         CutP = new javax.swing.JMenuItem();
@@ -260,6 +259,7 @@ public class Jubler extends JFrame {
         DropDownActionList = new javax.swing.JComboBox();
         DropDownActionNumberOfLine = new javax.swing.JComboBox();
         DoItTB = new javax.swing.JButton();
+        RegisterCurrentRowTB = new javax.swing.JButton();
         jSeparator18 = new javax.swing.JToolBar.Separator();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
@@ -599,34 +599,21 @@ public class Jubler extends JFrame {
         MoveTextTP.setMaximumSize(new java.awt.Dimension(350, 31));
         MoveTextTP.setMinimumSize(new java.awt.Dimension(80, 31));
         MoveTextTP.setPreferredSize(new java.awt.Dimension(300, 31));
-        MoveTextTP.setLayout(new java.awt.GridBagLayout());
+        MoveTextTP.setLayout(new javax.swing.BoxLayout(MoveTextTP, javax.swing.BoxLayout.LINE_AXIS));
 
         DropDownActionList.setModel(fnComboboxModel);
         DropDownActionList.setToolTipText(_("Quick operations"));
         DropDownActionList.setEnabled(false);
         DropDownActionList.setMaximumSize(new java.awt.Dimension(100, 22));
         DropDownActionList.setPreferredSize(new java.awt.Dimension(150, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        MoveTextTP.add(DropDownActionList, gridBagConstraints);
+        MoveTextTP.add(DropDownActionList);
 
         DropDownActionNumberOfLine.setModel(new IntegerComboBoxModel(new int[]{1,2,3,5,7,10,15,30,50,100}));
         DropDownActionNumberOfLine.setToolTipText(_("Number of lines"));
         DropDownActionNumberOfLine.setEnabled(false);
         DropDownActionNumberOfLine.setMaximumSize(new java.awt.Dimension(50, 22));
         DropDownActionNumberOfLine.setPreferredSize(new java.awt.Dimension(50, 22));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        MoveTextTP.add(DropDownActionNumberOfLine, gridBagConstraints);
+        MoveTextTP.add(DropDownActionNumberOfLine);
 
         DoItTB.setText(_("Do it"));
         DoItTB.setToolTipText(_("Perform drop-down operation. Right click to memorise current row."));
@@ -634,14 +621,18 @@ public class Jubler extends JFrame {
         DoItTB.setMaximumSize(new java.awt.Dimension(60, 32));
         DoItTB.setMinimumSize(new java.awt.Dimension(40, 32));
         DoItTB.setPreferredSize(new java.awt.Dimension(57, 32));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 0);
-        MoveTextTP.add(DoItTB, gridBagConstraints);
+        MoveTextTP.add(DoItTB);
+
+        RegisterCurrentRowTB.setText(_("Row"));
+        RegisterCurrentRowTB.setToolTipText(_("Register currently selected row"));
+        RegisterCurrentRowTB.setEnabled(false);
+        RegisterCurrentRowTB.setFocusable(false);
+        RegisterCurrentRowTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        RegisterCurrentRowTB.setMaximumSize(new java.awt.Dimension(60, 32));
+        RegisterCurrentRowTB.setMinimumSize(new java.awt.Dimension(40, 32));
+        RegisterCurrentRowTB.setPreferredSize(new java.awt.Dimension(57, 32));
+        RegisterCurrentRowTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        MoveTextTP.add(RegisterCurrentRowTB);
 
         JublerTools.add(MoveTextTP);
         JublerTools.add(jSeparator18);
@@ -1183,6 +1174,7 @@ public class Jubler extends JFrame {
     private javax.swing.JMenu RecordTM;
     private javax.swing.JMenuItem RedoEM;
     private javax.swing.JButton RedoTB;
+    private javax.swing.JButton RegisterCurrentRowTB;
     private javax.swing.JMenuItem RemoveBottomTopLineDuplication;
     private javax.swing.JMenuItem RemoveTimeDuplication;
     private javax.swing.JMenuItem RemoveTopLineDuplication;
@@ -2378,5 +2370,20 @@ public class Jubler extends JFrame {
     public void setTranslateDirectTM(javax.swing.JMenuItem TranslateDirectTM) {
         this.TranslateDirectTM = TranslateDirectTM;
     }
+    
+    /**
+     * @return the RegisterCurrentRowTB
+     */
+    public javax.swing.JButton getRegisterCurrentRowTB() {
+        return RegisterCurrentRowTB;
+    }
+
+    /**
+     * @param RegisterCurrentRowTB the RegisterCurrentRowTB to set
+     */
+    public void setRegisterCurrentRowTB(javax.swing.JButton RegisterCurrentRowTB) {
+        this.RegisterCurrentRowTB = RegisterCurrentRowTB;
+    }
+    
 }//end public class Jubler extends JFrame
 

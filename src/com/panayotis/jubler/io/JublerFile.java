@@ -69,6 +69,7 @@ public class JublerFile {
     private javax.swing.JMenuItem RevertFM;
     private javax.swing.JMenuItem SaveAsFM;
     private javax.swing.JMenuItem SaveFM;
+    private javax.swing.JButton RegisterCurrentRowTB;
 
     private SubFormat selectedFormatHandler = null;
     public JublerFile(Jubler parent) {
@@ -82,6 +83,7 @@ public class JublerFile {
         CopyTB = jb.getCopyTB();
         CutTB = jb.getCutTB();
         DoItTB = jb.getDoItTB();
+        RegisterCurrentRowTB = jb.getRegisterCurrentRowTB();
         DropDownActionList = jb.getDropDownActionList();
         DropDownActionNumberOfLine = jb.getDropDownActionNumberOfLine();
         EditM = jb.getEditM();
@@ -134,6 +136,7 @@ public class JublerFile {
         DropDownActionList.setEnabled(true);
         AppendFromFileFM.setEnabled(true);
         ImportComponentFM.setEnabled(true);
+        RegisterCurrentRowTB.setEnabled(true);
 
         Subtitles subs = jb.getSubtitles();
         subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
