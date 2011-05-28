@@ -639,13 +639,9 @@ public class JublerFunction {
             /* Show actually selected subtitles */
             SubTable.clearSelection();
             for (int i = 0; i < which.length; i++) {
-                if (which[i] >= subs.size()) {
-                    which[i] = subs.size() - 1;   // Make sure we don't go past the end of subtitles
-
-                }
-                if (which[i] >= 0) {
-                    SubTable.changeSelection(which[i], -1, true, false);
-                }
+                int index = which[i];
+                index = Math.max(0, Math.min(index, subs.size()-1));
+                SubTable.getSelectionModel().addSelectionInterval(index, index);
             }
         }
         jb.setIgnoreTableSelections(false);
