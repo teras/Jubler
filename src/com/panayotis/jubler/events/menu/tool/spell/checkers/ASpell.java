@@ -62,7 +62,7 @@ public class ASpell extends SpellChecker {
     
     public void start() throws ExtProgramException {
         try {
-            boolean forceutf8 = SystemDependent.forceASpellEncoding();
+            boolean forceutf8 = true;//SystemDependent.forceASpellEncoding();
             
             ArrayList<String> cmd = new ArrayList<String>();
             cmd.add(opts.getExecFileName());
@@ -77,6 +77,8 @@ public class ASpell extends SpellChecker {
                 cmd.add(lang.lang);
             }
             cmd.add("pipe");
+            
+            cmd.add("sug-mode=bad-spellers");
             
             String[] c = cmd.toArray(new String[1]);
             proc = Runtime.getRuntime().exec(c);
