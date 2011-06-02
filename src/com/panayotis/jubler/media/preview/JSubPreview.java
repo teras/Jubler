@@ -28,7 +28,6 @@ import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.options.AutoSaveOptions;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -64,11 +63,11 @@ public class JSubPreview extends javax.swing.JPanel {
     private Jubler parent;
     private boolean ignore_slider_changes = false;
     private boolean ignore_zoomfactor_changes = false;
-    private boolean select_to_end = false;
-    
+    private boolean selectToEnd = false;
     /* Here we store the start/end/videoduration values of the window*/
     private ViewWindow view;
     private MediaFile last_media_file = null;
+    private int current_zoom_factor = 30;
 
     /** Creates new form JSubPreview */
     public JSubPreview(Jubler parent) {
@@ -94,9 +93,9 @@ public class JSubPreview extends javax.swing.JPanel {
         Orientation.setSelected(!orientation);
         /*
         SelectFromCurrentToEnd.setPressedIcon(
-                new javax.swing.ImageIcon(getClass().getResource("/icons/sizes_invert.png"))
-                );
-                */
+        new javax.swing.ImageIcon(getClass().getResource("/icons/sizes_invert.png"))
+        );
+         */
     }
 
     public void windowHasChanged(int[] subid) {
@@ -106,14 +105,15 @@ public class JSubPreview extends javax.swing.JPanel {
         slider.setValue((int) (view.getStart() * 10));
 
         if (!ignore_zoomfactor_changes) {
-            int pos = (int) Math.round(ZoomS.getMaximum() * Math.log(view.getDuration()) / Math.log(view.getVideoDuration()));
-            ZoomS.setValue(pos);
+            current_zoom_factor = (int) Math.round(ZoomS.getMaximum() * Math.log(view.getDuration()) / Math.log(view.getVideoDuration()));
+            ZoomS.setValue(current_zoom_factor);
         }
 
         timeline.windowHasChanged(subid);
         wave.setTime(view.getStart(), view.getStart() + view.getDuration());
-        if (subid != null && subid.length > 0)
+        if (subid != null && subid.length > 0) {
             frame.setSubEntry(parent.getSubtitles().elementAt(subid[0]));
+        }
         timecaption.repaint();
 
         ignore_slider_changes = false;
@@ -130,8 +130,9 @@ public class JSubPreview extends javax.swing.JPanel {
         double videoduration = 0;
         for (int i = 0; i < subs.size(); i++) {
             endtime = subs.elementAt(i).getFinishTime().toSeconds();
-            if (videoduration < endtime)
+            if (videoduration < endtime) {
                 videoduration = endtime;
+            }
         }
         view.setVideoDuration(videoduration + 10);
 
@@ -143,11 +144,13 @@ public class JSubPreview extends javax.swing.JPanel {
             for (int i = 0; i < subid.length; i++) {
                 entry = subs.elementAt(subid[i]);
                 val = entry.getStartTime().toSeconds();
-                if (min > val)
+                if (min > val) {
                     min = val;
+                }
                 val = entry.getFinishTime().toSeconds();
-                if (max < val)
+                if (max < val) {
                     max = val;
+                }
             }
         }
         /* Although we have a minimum duration in ViewWindow, this is too small.
@@ -165,8 +168,9 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     public void updateMediaFile(MediaFile mfile) {
-        if (mfile.equals(last_media_file))
+        if (mfile.equals(last_media_file)) {
             return;
+        }
         last_media_file = mfile;
 
         wave.updateMediaFile(mfile);
@@ -274,9 +278,12 @@ public class JSubPreview extends javax.swing.JPanel {
         InfoPanel = new javax.swing.JPanel();
         TimePosL = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
         ZoomS = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        SelectFromCurrentToEnd = new javax.swing.JCheckBox();
         ToolPanel = new javax.swing.JPanel();
         Orientation = new javax.swing.JToggleButton();
         jPanel4 = new javax.swing.JPanel();
@@ -293,7 +300,6 @@ public class JSubPreview extends javax.swing.JPanel {
         Resize = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
         NewSub = new javax.swing.JButton();
-        SelectFromCurrentToEnd = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -331,7 +337,9 @@ public class JSubPreview extends javax.swing.JPanel {
         TimePosL.setPreferredSize(new java.awt.Dimension(50, 16));
         InfoPanel.add(TimePosL, java.awt.BorderLayout.CENTER);
 
-        jPanel6.setLayout(new java.awt.BorderLayout());
+        jPanel6.setLayout(new javax.swing.BoxLayout(jPanel6, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel5.setLayout(new java.awt.BorderLayout());
 
         ZoomS.setSnapToTicks(true);
         ZoomS.setToolTipText(_("Subtitle zoom factor"));
@@ -343,16 +351,29 @@ public class JSubPreview extends javax.swing.JPanel {
                 ZoomSStateChanged(evt);
             }
         });
-        jPanel6.add(ZoomS, java.awt.BorderLayout.CENTER);
+        jPanel5.add(ZoomS, java.awt.BorderLayout.CENTER);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomout.png"))); // NOI18N
         jLabel1.setToolTipText(_("Zoom out"));
-        jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
+        jPanel5.add(jLabel1, java.awt.BorderLayout.WEST);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/zoomin.png"))); // NOI18N
         jLabel2.setToolTipText(_("Zoom in"));
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
-        jPanel6.add(jLabel2, java.awt.BorderLayout.EAST);
+        jPanel5.add(jLabel2, java.awt.BorderLayout.EAST);
+
+        jPanel6.add(jPanel5);
+
+        SelectFromCurrentToEnd.setText(_("To End"));
+        SelectFromCurrentToEnd.setToolTipText(_("Perform from current to end"));
+        SelectFromCurrentToEnd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SelectFromCurrentToEndActionPerformed(evt);
+            }
+        });
+        jPanel7.add(SelectFromCurrentToEnd);
+
+        jPanel6.add(jPanel7);
 
         InfoPanel.add(jPanel6, java.awt.BorderLayout.EAST);
 
@@ -507,16 +528,6 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         jPanel3.add(NewSub);
 
-        SelectFromCurrentToEnd.setToolTipText(_("Select from current row to end"));
-        SelectFromCurrentToEnd.setMaximumSize(new java.awt.Dimension(26, 26));
-        SelectFromCurrentToEnd.setMinimumSize(new java.awt.Dimension(26, 26));
-        SelectFromCurrentToEnd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SelectFromCurrentToEndActionPerformed(evt);
-            }
-        });
-        jPanel3.add(SelectFromCurrentToEnd);
-
         ToolPanel.add(jPanel3);
 
         add(ToolPanel, java.awt.BorderLayout.WEST);
@@ -527,13 +538,14 @@ public class JSubPreview extends javax.swing.JPanel {
     }//GEN-LAST:event_NewSubActionPerformed
 
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
-        if (ignore_slider_changes)
+        if (ignore_slider_changes) {
             return;
+        }
         ignore_zoomfactor_changes = true;
-
+        current_zoom_factor = ZoomS.getValue();
         double center = timeline.getCenterOfSelection();
         /* minimum diration is 2 seconds */
-        double half_duration = Math.pow(view.getVideoDuration() / 2d, ((double) ZoomS.getValue()) / ZoomS.getMaximum());
+        double half_duration = Math.pow(view.getVideoDuration() / 2d, ((double) current_zoom_factor) / ZoomS.getMaximum());
         view.setWindow(center - half_duration, center + half_duration, false);
         windowHasChanged(null);
 
@@ -561,9 +573,11 @@ public class JSubPreview extends javax.swing.JPanel {
     }//GEN-LAST:event_cursorSelector
 
     private void sliderAdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_sliderAdjustmentValueChanged
-        if (ignore_slider_changes || evt.getValueIsAdjusting())
+        if (ignore_slider_changes || evt.getValueIsAdjusting()) {
             return;
-        view.setWindow(evt.getValue() / 10d, evt.getValue() / 10d + view.getDuration(), false);
+        }
+        int evt_val = evt.getValue();
+        view.setWindow(evt_val / 10d, evt_val / 10d + view.getDuration(), false);
         windowHasChanged(null);
     }//GEN-LAST:event_sliderAdjustmentValueChanged
 
@@ -576,10 +590,28 @@ public class JSubPreview extends javax.swing.JPanel {
 }//GEN-LAST:event_MaxWaveActionPerformed
 
     private void SelectFromCurrentToEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectFromCurrentToEndActionPerformed
-        this.select_to_end = SelectFromCurrentToEnd.isSelected();
-        selectTableToEnd(this.select_to_end);
+        this.selectToEnd = this.SelectFromCurrentToEnd.isSelected();
+        try {
+            if (!selectToEnd) {
+                selectCurrent();
+            } else {
+                timeline.selectFromCurrentToEnd();
+            }//end if (!selectToEnd)
+        } catch (Exception ex) {
+        }//end try/catch
     }//GEN-LAST:event_SelectFromCurrentToEndActionPerformed
 
+    public void selectCurrent() {
+        this.timeline.getSellist().clear();
+        JTable tbl = parent.getSubTable();
+        int current_row = tbl.getSelectedRow();
+        tbl.getSelectionModel().clearSelection();
+        tbl.getSelectionModel().addSelectionInterval(current_row, current_row);
+        int[] subid = tbl.getSelectedRows();
+        this.subsHaveChanged(subid);
+        int zoom_percent = (int) (ZoomS.getMaximum() * 0.30d);
+        this.ZoomS.setValue(zoom_percent);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
     public javax.swing.JButton AudioPlay;
@@ -609,30 +641,25 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables
 
     /**
-     * @return the select_to_end
+     * @return the selectToEnd
      */
     public boolean isSelectToEnd() {
-        return select_to_end;
+        return selectToEnd;
     }
 
     /**
-     * @param select_to_end the select_to_end to set
+     * @param selectToEnd the selectToEnd to set
      */
-    public void setSelectToEnd(boolean select_to_end) {
-        SelectFromCurrentToEnd.setSelected(select_to_end);
+    public void setSelectToEnd(boolean selectToEnd) {
+        this.selectToEnd = selectToEnd;
+        this.SelectFromCurrentToEnd.setSelected(selectToEnd);
     }
 
-    private void selectTableToEnd(boolean is_to_end){
-        JTable tbl = this.parent.getSubTable();
-        int current_row = tbl.getSelectedRow();
-        Subtitles subs = parent.getSubtitles();
-        int end_row = (is_to_end ? subs.getRowCount()-1 : current_row);
-
-        tbl.getSelectionModel().setSelectionInterval(current_row, end_row);
-    }//end private void selectTableToEnd()
 }

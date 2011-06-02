@@ -41,6 +41,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import javax.swing.JSlider;
+import javax.swing.JTable;
 
 /**
  *
@@ -112,7 +113,6 @@ public class JSubTimeline extends JPanel {
     
     private JWavePreview wave;
     private JSubPreview preview;
-    
     
     /** Creates a new instance of JSubTimeline */
     public JSubTimeline(Jubler parent, ViewWindow view, JSubPreview preview) {
@@ -361,7 +361,7 @@ public class JSubTimeline extends JPanel {
                 sellist.add(last_selected_subinfo);
             }
         }
-        
+
         /* Find the actual selected subtitles for the main subtitle window */
         int sel[] = new int[sellist.size()];
         for (int i = 0 ; i < sel.length ; i++)  sel[i] = sellist.get(i).pos;
@@ -418,7 +418,7 @@ public class JSubTimeline extends JPanel {
     
     /** Use this functiopn when a change has been performed in the selected subtitles.
      *  No changes to the displayed subtitles will be performed */
-    private void selectionHasChanged(int[] subid) {
+    public void selectionHasChanged(int[] subid) {
         if (ignore_new_selection_list) return;
         /* Keep old selections, if we don't provide new */
         if (subid==null) {
@@ -446,6 +446,23 @@ public class JSubTimeline extends JPanel {
             if ( (where = findInList(vislist, subid[i])) >= 0 ) {
                 vislist.remove(where);
             }
+        }
+    }
+    
+    public void selectFromCurrentToEnd(){
+        JTable tbl = parent.getSubTable();
+        int current_row = tbl.getSelectedRow();
+        Subtitles subs = parent.getSubtitles();
+        int len = subs.size();
+        try{
+            int required_size = len - current_row;
+            int[] subid = new int[required_size];
+            int j=0;
+            for(int i=current_row; i < len; i++){
+               subid[j++] = i;
+            }//end for(int i=current_row; i < len; i++)
+            selectionHasChanged(subid);
+        }catch(Exception ex){            
         }
     }
     public double getSelectionStart() {
@@ -605,16 +622,62 @@ public class JSubTimeline extends JPanel {
             g.fillRect((int)(inf.start*width), 0, (int)((inf.end-inf.start)*width), height);
         }
     }
+
+    /**
+     * @return the sellist
+     */
+    public ArrayList<SubInfo> getSellist() {
+        return sellist;
+    }
+
+    /**
+     * @param sellist the sellist to set
+     */
+    public void setSellist(ArrayList<SubInfo> sellist) {
+        this.sellist = sellist;
+    }
+
+    /**
+     * @return the vislist
+     */
+    public ArrayList<SubInfo> getVislist() {
+        return vislist;
+    }
+
+    /**
+     * @param vislist the vislist to set
+     */
+    public void setVislist(ArrayList<SubInfo> vislist) {
+        this.vislist = vislist;
+    }
+
+    /**
+     * @return the overlaps
+     */
+    public ArrayList<SubInfo> getOverlaps() {
+        return overlaps;
+    }
+
+    /**
+     * @param overlaps the overlaps to set
+     */
+    public void setOverlaps(ArrayList<SubInfo> overlaps) {
+        this.overlaps = overlaps;
+    }
+
     
+    /**
+     * Class holding information about the position of the
+     * subtitle on the time-line
+     */
     class SubInfo {
-        int pos;
-        double start, end;
+        int pos; //the index of the subtitle
+        double start, end; //start and end position
         public SubInfo(int p, double s, double e) {
             pos = p;
             start = s;
             end = e;
-        }
-    }
-    
+        }//end public SubInfo(int p, double s, double e)
+    }//end class SubInfo    
 }
 
