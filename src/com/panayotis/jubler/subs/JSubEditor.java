@@ -371,7 +371,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
             subTextEditor.setBackground(Color.WHITE);
             subTextEditor.setCaretColor(Color.BLACK);
             set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
-            set.addAttribute(StyleConstants.FontFamily, "Arial");
+            set.addAttribute(StyleConstants.FontFamily, "Times New Roman");
             set.addAttribute(StyleConstants.FontSize, 24);
             set.addAttribute(StyleConstants.Foreground, Color.BLACK);
             subTextEditor.getStyledDocument().setParagraphAttributes(0, subTextEditor.getText().length(), set, true);

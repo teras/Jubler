@@ -119,7 +119,7 @@ public class SubViewer extends AbstractTextSubFormat {
         header.append(attr.getSource());
         header.append("\n[FILEPATH]\n[DELAY]0\n[COMMENT]");
         header.append(attr.getComments().replace('\n', '|'));
-        header.append("\n[END INFORMATION]\n[SUBTITLE]\n[COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial\n");
+        header.append("\n[END INFORMATION]\n[SUBTITLE]\n[COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Times New Roman\n");
     }
     
     protected String initLoader(String input) {

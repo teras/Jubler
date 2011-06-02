@@ -651,16 +651,6 @@ public class JublerFunction {
         return ret;
     }
 
-    public void resetPreview() {
-        JSubPreview jsrv = jb.getPreview();
-        boolean is_preview_shown = jsrv.isShowing();
-        boolean is_preview_select_to_end = jsrv.isSelectToEnd();
-        boolean is_switching_preview_select_to_end = (is_preview_shown && is_preview_select_to_end);
-        if (is_switching_preview_select_to_end) {
-            jsrv.setSelectToEnd(false);
-        }//end if (is_right_mouse_button)
-    }//end public void resetPreview()
-
     /* Use jb method in order to display the data of a subtitle
      * down to the subtitle display area. It is used e.g. when the
      * user clicks on a table row */
@@ -685,11 +675,6 @@ public class JublerFunction {
         if (preview.isShowing()) {
             int[] subids = SubTable.getSelectedRows();
             preview.subsHaveChanged(subids);
-
-            boolean is_turning_off_select_to_end = (preview.isSelectToEnd() && subids.length < 2);
-            if (is_turning_off_select_to_end) {
-                preview.setSelectToEnd(false);
-            }//end if (is_turning_off_select_to_end)
         }//end if (preview.isShowing())
 
         Jubler connect_to_other = jb.getConnectToOther();

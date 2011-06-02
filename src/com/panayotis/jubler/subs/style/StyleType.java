@@ -38,7 +38,7 @@ import java.util.logging.Level;
  * @author teras
  */
 public enum StyleType {
-    FONTNAME(FORMAT_STRING, "Arial"),
+    FONTNAME(FORMAT_STRING, "Times New Roman"),
     FONTSIZE(FORMAT_INTEGRAL, Integer.valueOf(24)),
     BOLD(FORMAT_FLAG, Boolean.valueOf(false)),
     ITALIC(FORMAT_FLAG, Boolean.valueOf(false)),

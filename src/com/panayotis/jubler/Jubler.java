@@ -470,6 +470,7 @@ public class Jubler extends JFrame {
 
         SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 
+        SubTable.setFont(new java.awt.Font("Times New Roman", 0, 11)); // NOI18N
         SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setComponentPopupMenu(SubsPop);
         SubTable.setDefaultRenderer(Object.class, TableRenderer);

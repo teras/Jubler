@@ -44,7 +44,7 @@ public class SubRenderer extends JLabel implements TableCellRenderer {
     public SubRenderer() {
         super();
         setOpaque(true);
-        //setFont(new java.awt.Font("Monofont", 0, 11));
+        setFont(new java.awt.Font("Times New Roman", 1, 14));
     }
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
