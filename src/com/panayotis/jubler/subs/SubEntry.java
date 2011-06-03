@@ -1022,7 +1022,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * is being replaced by a space before the next line is appended on.
      * @return true if the routine carried out without errors, false otherwise.
      */
-    public boolean removeLineBreak(int line_number) {
+    public boolean removeLineBreak(int line_number) {        
         try {
             Vector<String> text_list = getTextList();
             int len = text_list.size();
@@ -1030,11 +1030,16 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             for (int i = 0; i < len; i++) {
                 String text_line = text_list.elementAt(i);
                 b.append(text_line);
+                boolean is_ending_with_hyphen = text_line.endsWith("-");
+                if (is_ending_with_hyphen){
+                    boolean is_ending_with_more_hyphens = text_line.endsWith("--");
+                    is_ending_with_hyphen = !is_ending_with_more_hyphens;
+                }//end 
 
                 boolean is_required_line = (i == line_number);
                 boolean is_last_line = (i == len - 1);
                 if (is_required_line) {
-                    if (!is_last_line) {
+                    if (! (is_last_line || is_ending_with_hyphen)) {
                         b.append(char_sp);
                     }//end if (! is_text_empty)
                 } else {
