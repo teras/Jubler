@@ -54,7 +54,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     public static final int SMALL_MILLI = 50;
     private static final AbstractStyleover[] styleover_template;
 
-
     static {
 
         /* this is a template of the handler of the AbstractStyleover Event
@@ -97,7 +96,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         new Color(255, 90, 0), //orange
         new Color(204, 255, 153) //light green - #CCFF99
     };
-    protected Time start,  finish,  duration;
+    protected Time start, finish, duration;
     protected String subtext;
     private String toolTipText = null;
     private int mark;
@@ -538,10 +537,11 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     private String collectWord(String[] list, int from_idx, int to_idx) {
         StringBuffer b = new StringBuffer();
         for (int i = from_idx; i < to_idx; i++) {
-            b.append(list[i]);
-
+            
+            String word = list[i];
+            b.append(word);
             boolean is_last_word = (i == to_idx - 1);
-            if (!is_last_word) {
+            if (!(is_last_word || isHyphenatedWord(word))) {
                 b.append(char_sp);
             }//end if (! is_last_word)
         }//end for
@@ -999,7 +999,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 b.append(word);
 
                 boolean is_last_line = (i == len - 1);
-                if (!is_last_line) {
+                if (!(is_last_line || isHyphenatedWord(word))){
                     b.append(char_sp);
                 }//end if (! is_last_line)
             }//end for(int i=0; i < list.length; i++)
@@ -1022,7 +1022,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * is being replaced by a space before the next line is appended on.
      * @return true if the routine carried out without errors, false otherwise.
      */
-    public boolean removeLineBreak(int line_number) {        
+    public boolean removeLineBreak(int line_number) {
         try {
             Vector<String> text_list = getTextList();
             int len = text_list.size();
@@ -1030,16 +1030,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             for (int i = 0; i < len; i++) {
                 String text_line = text_list.elementAt(i);
                 b.append(text_line);
-                boolean is_ending_with_hyphen = text_line.endsWith("-");
-                if (is_ending_with_hyphen){
-                    boolean is_ending_with_more_hyphens = text_line.endsWith("--");
-                    is_ending_with_hyphen = !is_ending_with_more_hyphens;
-                }//end 
-
                 boolean is_required_line = (i == line_number);
                 boolean is_last_line = (i == len - 1);
                 if (is_required_line) {
-                    if (! (is_last_line || is_ending_with_hyphen)) {
+                    if (!(is_last_line || isHyphenatedWord(text_line))) {
                         b.append(char_sp);
                     }//end if (! is_text_empty)
                 } else {
@@ -1055,6 +1049,15 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             return false;
         }
     }//end public boolean removeLineBreak(int line_number)
+
+    private boolean isHyphenatedWord(String word) {
+        boolean is_ending_with_hyphen = word.endsWith("-");
+        if (is_ending_with_hyphen) {
+            boolean is_ending_with_more_hyphens = word.endsWith("--");
+            is_ending_with_hyphen = !is_ending_with_more_hyphens;
+        }//end         
+        return is_ending_with_hyphen;
+    }//end private boolean isHyphenatedWord(String word)
 
     public boolean copyText(SubEntry source) {
         try {
@@ -1206,23 +1209,23 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         /* debugging code
         boolean is_low_to_high = false;
         boolean is_high_to_low = false;
-
+        
         int old_mark = this.mark;
         int new_mark = mark;
-
+        
         boolean is_changed = (old_mark != new_mark);
         if (is_changed){
         is_low_to_high = (old_mark < new_mark);
         is_high_to_low = (old_mark > new_mark);
         }*/
         this.mark = mark;
-    /* debugging code
-    if (is_changed && is_high_to_low){
-    System.out.println("Mark is changed from high to low");
-    }
-    if (is_changed && is_low_to_high){
-    System.out.println("Mark is changed from low to high");
-    }*/
+        /* debugging code
+        if (is_changed && is_high_to_low){
+        System.out.println("Mark is changed from high to low");
+        }
+        if (is_changed && is_low_to_high){
+        System.out.println("Mark is changed from low to high");
+        }*/
     }
 
     /**
