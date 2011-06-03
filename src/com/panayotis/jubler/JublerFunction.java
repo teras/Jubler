@@ -622,18 +622,25 @@ public class JublerFunction {
     public int setSelectedSub(int[] which, boolean update_visuals) {
         jb.setIgnoreTableSelections(true);
         SubTable.clearSelection();
-        int ret = -1;
+        int ret = -1;        
 
         Subtitles subs = jb.getSubtitles();
+        int num_rec = subs.size();
+        
         /* Set selected subtitles and make sure that they are visible */
-        if (which != null && which.length > 0 && subs.size() > 0) {
+        if (which != null && which.length > 0 && num_rec > 0) {
             ret = which[0];
 
+            /* First force subtitles to show *first* subtitle selection entry 
+             * move it off the top if possible.
+             */
+            int showmore = ret - 5;
+            showmore = Math.max(0, Math.min(showmore, num_rec-1));
+            SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+            
             /* First force subtitles to show *first* subtitle selection entry */
-            int showmore = ret + 5;
-            if (showmore >= subs.size()) {
-                showmore = subs.size() - 1;
-            }
+            showmore = ret + 5;
+            showmore = Math.max(0, Math.min(showmore, num_rec-1));
             SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
 
             /* Show actually selected subtitles */
