@@ -47,6 +47,8 @@ import com.panayotis.jubler.events.menu.edit.undo.UndoEntry;
 import com.panayotis.jubler.events.menu.edit.undo.UndoList;
 import com.panayotis.jubler.os.DEBUG;
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -60,8 +62,10 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
@@ -270,7 +274,7 @@ public class JublerFunction {
         SubTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         SubTable.setDropMode(DropMode.INSERT_ROWS);
         SubTable.setDragEnabled(true);
-    //SubTable.setDropTarget(new DropTarget(SubTable, r));
+        //SubTable.setDropTarget(new DropTarget(SubTable, r));
     }
 
     public void addNewSubtitle(boolean is_after) {
@@ -619,35 +623,54 @@ public class JublerFunction {
         return setSelectedSub(sel, update_visuals);
     }
 
+    public void bringSelectedRowIntoView(int current_row) {
+        int showmore = 0, num_rec = 0;
+        JScrollPane SubsScrollPane = jb.getSubsScrollPane();
+        JViewport view_port = SubsScrollPane.getViewport();
+        Rectangle view_rect = view_port.getViewRect();
+        try {
+            Subtitles subs = jb.getSubtitles();
+            num_rec = subs.size();
+
+            int top_row = SubTable.rowAtPoint(new Point(0, view_rect.y));
+            int bottom_row = SubTable.rowAtPoint(new Point(0, view_rect.y + view_rect.height - 1));
+            boolean is_current_row_visible = (current_row >= top_row && current_row <= bottom_row);
+            if (!is_current_row_visible) {
+                boolean is_off_top = (current_row < top_row);
+                if (is_off_top) {
+                    showmore = current_row - 5;
+                    showmore = Math.max(0, Math.min(showmore, num_rec - 1));
+                    SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                } else {
+                    boolean is_off_bottom = (current_row > bottom_row);
+                    if (is_off_bottom) {
+                        showmore = current_row + 5;
+                        showmore = Math.max(0, Math.min(showmore, num_rec - 1));
+                        SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                    }//end if (is_off_bottom)
+                }//end if (is_off_top)
+            }//end if (! is_current_row_visible)
+        } catch (Exception ex) {
+        }
+    }//end public void bringSelectedRowIntoView()
+
     public int setSelectedSub(int[] which, boolean update_visuals) {
         jb.setIgnoreTableSelections(true);
         SubTable.clearSelection();
-        int ret = -1;        
+        int ret = -1;
 
         Subtitles subs = jb.getSubtitles();
         int num_rec = subs.size();
-        
+
         /* Set selected subtitles and make sure that they are visible */
         if (which != null && which.length > 0 && num_rec > 0) {
             ret = which[0];
-
-            /* First force subtitles to show *first* subtitle selection entry 
-             * move it off the top if possible.
-             */
-            int showmore = ret - 5;
-            showmore = Math.max(0, Math.min(showmore, num_rec-1));
-            SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
-            
-            /* First force subtitles to show *first* subtitle selection entry */
-            showmore = ret + 5;
-            showmore = Math.max(0, Math.min(showmore, num_rec-1));
-            SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
-
+            bringSelectedRowIntoView(ret);
             /* Show actually selected subtitles */
             SubTable.clearSelection();
             for (int i = 0; i < which.length; i++) {
                 int index = which[i];
-                index = Math.max(0, Math.min(index, subs.size()-1));
+                index = Math.max(0, Math.min(index, subs.size() - 1));
                 SubTable.getSelectionModel().addSelectionInterval(index, index);
             }
         }
