@@ -634,17 +634,19 @@ public class JublerFunction {
 
             int top_row = SubTable.rowAtPoint(new Point(0, view_rect.y));
             int bottom_row = SubTable.rowAtPoint(new Point(0, view_rect.y + view_rect.height - 1));
+            int visible_rows = bottom_row - top_row;
+            int mid_value = Math.max(0, Math.min(5, visible_rows / 2));
             boolean is_current_row_visible = (current_row >= top_row && current_row <= bottom_row);
             if (!is_current_row_visible) {
                 boolean is_off_top = (current_row < top_row);
                 if (is_off_top) {
-                    showmore = current_row - 5;
+                    showmore = current_row - mid_value;
                     showmore = Math.max(0, Math.min(showmore, num_rec - 1));
                     SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
                 } else {
                     boolean is_off_bottom = (current_row > bottom_row);
                     if (is_off_bottom) {
-                        showmore = current_row + 5;
+                        showmore = current_row + mid_value;
                         showmore = Math.max(0, Math.min(showmore, num_rec - 1));
                         SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
                     }//end if (is_off_bottom)
