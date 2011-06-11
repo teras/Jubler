@@ -68,7 +68,7 @@ import java.util.logging.Level;
  *      the text-line.</li>
  *  <li>{@link PostParseActionEvent} : This event is generated after
  *      all text-lines of the input textual data has been parsed. 
- *      This event only occurs if there subtitle records in the 
+ *      This event only occurs if there are subtitle records in the 
  *      list. This means that if the processing through the textual content
  *      did not produce any subtitle record, this event will not happen.</li>
  * </ol>
@@ -181,7 +181,7 @@ public abstract class AbstractBinarySubFormat extends SubFormat implements Commo
         if (!is_sub_type) {
             return null;    // Not valid - test pattern does not match
         }
-        DEBUG.logger.log(Level.INFO, "Recognize file: " + getExtendedName());
+        //DEBUG.logger.log(Level.INFO, "Recognize file: " + getExtendedName());
 
         this.inputData = input;
         this.subtitleFile = f;
