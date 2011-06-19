@@ -108,6 +108,7 @@ public class FileCommunicator {
                     || (outfile.exists() && (!SystemDependent.canWrite(outfile))))
                 return _("File {0} is unwritable", outfile.getPath());
             sfile.getFormat().updateFormat(sfile);   // This is required to update FPS & encoding of the current format
+            sfile.getFormat().setJubler(subs.getJubler());
             if (sfile.getFormat().produce(subs, tempout, media)) {  // produce & check if should rename file
                 outfile.delete();
                 if (!tempout.renameTo(outfile))
