@@ -60,6 +60,8 @@ import com.panayotis.jubler.undo.UndoList;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -80,6 +82,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton.ToggleButtonModel;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -161,10 +164,10 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     public JubFrame() {
         //a new instance always first got the focus, so set the currentWindow
         //to this reference immediately
-        currentWindow = this; 
+        currentWindow = this;
         //add focus listener to manage the currentWindow
-        addWindowFocusListener(this); 
-        
+        addWindowFocusListener(this);
+
         PluginManager.manager.callPluginListeners(this, "BEGIN");
 
         subs = null;
@@ -173,7 +176,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         undo = new UndoList(this);
 
-        initComponents();        
+        initComponents();
         ToolsManager.register(this);
 
         setIconImage(FrameIcon);
@@ -200,7 +203,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         StaticJubler.putWindowPosition(this);
 
         PluginManager.manager.callPluginListeners(this, "END");
-        
+
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})
@@ -2266,31 +2269,65 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         return setSelectedSub(sel, update_visuals);
     }
 
+    /**
+     * HDT: 20/06/2011 <hoangduytran1960@googlemail.com>
+     * Properly managed to bring the selected row into view by checking to
+     * see if the row currently selected is within views or not, if not,
+     * 1. is it above the current view
+     * 2. is it below the current view
+     * Adding a maximum 5 rows ahead in each situation to allow spaces for
+     * the selected row to be clearly viewed.
+     * @param current_row the currently selected row which might not be in view.
+     */
+    public void bringSelectedRowIntoView(int current_row) {
+        int showmore = 0, num_rec = 0;
+        JViewport view_port = SubsScrollPane.getViewport();
+        Rectangle view_rect = view_port.getViewRect();
+        try {
+            num_rec = subs.size();
+
+            int top_row = SubTable.rowAtPoint(new Point(0, view_rect.y));
+            int bottom_row = SubTable.rowAtPoint(new Point(0, view_rect.y + view_rect.height - 1));
+            int visible_rows = bottom_row - top_row;
+            int mid_value = Math.max(0, Math.min(5, visible_rows / 2));
+            boolean is_current_row_visible = (current_row >= top_row && current_row <= bottom_row);
+            if (!is_current_row_visible) {
+                boolean is_off_top = (current_row < top_row);
+                if (is_off_top) {
+                    showmore = current_row - mid_value;
+                    showmore = Math.max(0, Math.min(showmore, num_rec - 1));
+                    SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                } else {
+                    boolean is_off_bottom = (current_row > bottom_row);
+                    if (is_off_bottom) {
+                        showmore = current_row + mid_value;
+                        showmore = Math.max(0, Math.min(showmore, num_rec - 1));
+                        SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                    }//end if (is_off_bottom)
+                }//end if (is_off_top)
+            }//end if (! is_current_row_visible)
+        } catch (Exception ex) {
+        }
+    }//end public void bringSelectedRowIntoView()
+
     public int setSelectedSub(int[] which, boolean update_visuals) {
         ignore_table_selections = true;
         SubTable.clearSelection();
         int ret = -1;
+        int num_rec = subs.size();
 
         /* Set selected subtitles and make sure that they are visible */
-        if (which != null && which.length > 0 && subs.size() > 0) {
+        if (which != null && which.length > 0 && num_rec > 0) {
             ret = which[0];
-
-            /* First force subtitles to show *first* subtitle selection entry */
-            int showmore = ret + 5;
-            if (showmore >= subs.size()) {
-                showmore = subs.size() - 1;
-            }
-            SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
-
+            //HDT: added here to properly adjust the selected row into view
+            bringSelectedRowIntoView(ret);
             /* Show actually selected subtitles */
             SubTable.clearSelection();
             for (int i = 0; i < which.length; i++) {
-                if (which[i] >= subs.size()) {
-                    which[i] = subs.size() - 1;   // Make sure we don't go past the end of subtitles
-                }
-                if (which[i] >= 0) {
-                    SubTable.changeSelection(which[i], -1, true, false);
-                }
+                int index = which[i];
+                index = Math.max(0, Math.min(index, subs.size() - 1));
+                //HDT: this is a much quicker method. It sped up rendering.
+                SubTable.getSelectionModel().addSelectionInterval(index, index);
             }
         }
         ignore_table_selections = false;
@@ -2382,28 +2419,30 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         tableHasChanged(selected);
     }
 
-    public void changeTableRowHeightForTextTypeSubs(){        
+    public void changeTableRowHeightForTextTypeSubs() {
         int table_current_row_height = SubTable.getRowHeight();
         boolean is_text_type = true;
-        try{
+        try {
             is_text_type = subs.isTextType();
-        }catch(Exception ex){}
-        
+        } catch (Exception ex) {
+        }
+
         boolean is_current_row_height_too_high = (table_current_row_height > TABLE_DEFAULT_HEIGHT);
         boolean is_adjust_row_height = (is_text_type && is_current_row_height_too_high);
         /*
         String msg = "table_current_row_height:" + table_current_row_height + "\n" + 
-                "is_text_type:" + is_text_type + "\n" + 
-                "is_current_row_height_too_high:" + is_current_row_height_too_high +  "\n" + 
-                "is_adjust_row_height:" + is_adjust_row_height + "\n";
+        "is_text_type:" + is_text_type + "\n" + 
+        "is_current_row_height_too_high:" + is_current_row_height_too_high +  "\n" + 
+        "is_adjust_row_height:" + is_adjust_row_height + "\n";
         DEBUG.logger.log(Level.OFF, msg);
          * 
          */
-        if (is_adjust_row_height){
+        if (is_adjust_row_height) {
             SubTable.setRowHeight(TABLE_DEFAULT_HEIGHT);
             SubTable.repaint();
         }//end if (this.subs.isTextType())
     }//end public void changeTableRowHeightForTextTypeSubs()
+
     /**
      * When an instance of JubFrame got the graphical focus,
      * set the currentWindow reference to this instance, to
