@@ -2177,9 +2177,9 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         subeditor.setUnsaved(isUnsaved());
         SubFile sf = subs.getSubFile();
         File f = sf.getSaveFile();
-        SubFormat fmt = sf.getFormat();
-        String format_name = (fmt == null) ? "" : fmt.getName();
         if (f != null) {
+            SubFormat fmt = sf.getFormat();
+            String format_name = (fmt == null) ? "" : fmt.getName();
             String title = format_name + " - " + f.getPath();
             if (isUnsaved()) {
                 title = "*" + title;
