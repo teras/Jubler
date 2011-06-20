@@ -2179,7 +2179,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         File f = sf.getSaveFile();
         if (f != null) {
             SubFormat fmt = sf.getFormat();
-            String format_name = (fmt == null) ? "" : fmt.getName();
+            String format_name = (fmt == null) ? _("Unknown format") : fmt.getName();
             String title = format_name + " - " + f.getPath();
             if (isUnsaved()) {
                 title = "*" + title;
