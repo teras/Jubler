@@ -30,14 +30,13 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.logging.Level;
 
 /**
  *
  * @author teras
  */
-public abstract class SubFormat implements PluginItem, Comparator<SubFormat> {
+public abstract class SubFormat implements PluginItem {
 
     protected float FPS;
     protected String ENCODING;
@@ -115,34 +114,6 @@ public abstract class SubFormat implements PluginItem, Comparator<SubFormat> {
     public void setFormatOrder(int formatOrder) {
         this.formatOrder = formatOrder;
     }
-
-    public int compare(SubFormat o1, SubFormat o2) {
-        int comp = -1;
-        try {
-            boolean is_same = (o1 == o2);
-            if (is_same) {
-                comp = 0;
-            } else {
-                int o1_order = o1.getFormatOrder();
-                int o2_order = o2.getFormatOrder();
-                comp = o1_order - o2_order;
-            }//end if (is_same)/else
-        } catch (Exception ex) {
-        }
-        return comp;
-    }//end public int compare(SubFormat o1, SubFormat o2) 
-
-    public boolean equals(Object obj) {
-        boolean is_same = false;
-        try {
-            is_same = (this == obj);
-            if (!is_same) {
-                is_same = (compare(this, (SubFormat) obj) == 0);
-            }//end if (! is_same)
-        } catch (Exception ex) {
-        }
-        return is_same;
-    }//end public boolean equals(Object obj)
 
     public SubFormat newInstance() {
         SubFormat new_one = null;
