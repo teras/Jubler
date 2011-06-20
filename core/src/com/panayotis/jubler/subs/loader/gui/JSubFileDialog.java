@@ -25,14 +25,22 @@ package com.panayotis.jubler.subs.loader.gui;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.plugins.Availabilities;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.loader.SubFileFilter;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.io.File;
+import java.util.Vector;
+import java.util.logging.Level;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -47,15 +55,21 @@ public class JSubFileDialog extends javax.swing.JDialog {
     public JSubFileDialog() {
         super((Frame) null, true);
         initComponents();
-        chooser.addChoosableFileFilter(new SubFileFilter());
+        addFilters(Availabilities.formats);
+        chooser.setAcceptAllFileFilterUsed(false);
+        //chooser.addChoosableFileFilter(new SubFileFilter());
         chooser.setSelectedFile(new File(FileCommunicator.getDefaultDirPath(), "."));
         jload = new JLoadOptions();
         jsave = new JSaveOptions();
     }
 
     private SubFile showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
-        SubFile sfile;
-        jopt.updateVisuals(subs, mfile);
+        SubFile sfile = null;
+        try {
+            chooser.setFileFilter(findFileFiler(subs.getSubFile().getFormat()));
+            jopt.updateVisuals(subs, mfile);
+        } catch (Exception ex) {
+        }
         getContentPane().removeAll();
         getContentPane().add(chooser, BorderLayout.CENTER);
         getContentPane().add(jopt, BorderLayout.NORTH);
@@ -63,19 +77,32 @@ public class JSubFileDialog extends javax.swing.JDialog {
         setLocationRelativeTo(parent);
         setVisible(true);
 
-        if (!isAccepted)
+        if (!isAccepted) {
             return null;
-
-        if (subs == null) // Load
-            sfile = new SubFile(chooser.getSelectedFile(), SubFile.EXTENSION_GIVEN);
-        else {   // Save
-            sfile = new SubFile(subs.getSubFile());
-            sfile.setFile(chooser.getSelectedFile());
         }
-        jopt.applyOptions(sfile);
-        if (subs != null) // Only in Save
-            sfile.updateFileByType();
-        FileCommunicator.setDefaultDir(chooser.getCurrentDirectory());
+
+        try {
+            File selected_file = chooser.getSelectedFile();
+            JFileFilter flt = (JFileFilter) chooser.getFileFilter();
+            SubFormat format_handler = flt.getFormatHandler().newInstance();            
+
+            if (subs == null) // Load
+            {
+                sfile = new SubFile(selected_file, SubFile.EXTENSION_GIVEN);
+            } else {   // Save
+                sfile = new SubFile(subs.getSubFile());
+                sfile.setFile(selected_file);
+            }
+            sfile.setFormat(format_handler);
+            jopt.applyOptions(sfile);
+            if (subs != null) // Only in Save
+            {
+                sfile.updateFileByType();
+            }
+            FileCommunicator.setDefaultDir(chooser.getCurrentDirectory());
+        } catch (Exception ex) {
+            sfile = new SubFile();
+        }
         return sfile;
     }
 
@@ -117,4 +144,115 @@ public class JSubFileDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser chooser;
     // End of variables declaration//GEN-END:variables
+
+    private JFileFilter makeFilter(SubFormat format) {
+        String desc = format.getDescription();
+        String ext = format.getExtension();
+        JFileFilter filter = new JFileFilter(ext, desc, format);
+        return filter;
+    }
+
+    public boolean setFilters(FileFilter[] list) {
+        boolean ok = false;
+        try {
+            for (int i = 0; i < list.length; i++) {
+                FileFilter fl = list[i];
+                boolean is_first_item = (i == 0);
+                if (is_first_item) {
+                    chooser.setFileFilter(fl);
+                } else {
+                    chooser.addChoosableFileFilter(fl);
+                }//end if
+            }//end for(int i=0; i < list.length; i++)
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());
+        }
+        return ok;
+    }//public setFilters(FileFilter[] list)
+
+    public boolean setFilters(Vector<FileFilter> list) {
+        boolean ok = false;
+        try {
+            int len = list.size();
+            FileFilter[] array = list.toArray(new FileFilter[len]);
+            ok = this.setFilters(array);
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());
+        }
+        return ok;
+    }//end public boolean setFilters(FileFilter[] list)
+
+    public boolean setFilters(SubFormat[] format_list) {
+        boolean ok = false;
+        Vector<FileFilter> vector = new Vector<FileFilter>();
+        try {
+            for (int i = 0; i < format_list.length; i++) {
+                SubFormat format = format_list[i];
+                JFileFilter filter = makeFilter(format);
+                vector.add(filter);
+            }//end for(SubFormat format: format_list)
+            ok = this.setFilters(vector);
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());
+        }
+        return ok;
+    }//end public boolean setFilter()
+
+    public boolean setFilter(SubFormat format) {
+        boolean ok = false;
+        try {
+            JFileFilter filter = makeFilter(format);
+            chooser.setFileFilter(filter);
+            ok = true;
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());
+        }
+        return ok;
+    }//end public boolean setFilter(SubFormat format)
+
+    public boolean addFilters(SubFormat[] format_list) {
+        boolean ok = false;
+        try {
+            for (int i = 0; i < format_list.length; i++) {
+                SubFormat format = format_list[i];
+                JFileFilter filter = makeFilter(format);
+                chooser.addChoosableFileFilter(filter);
+            }//end for(SubFormat format: format_list)
+            ok = true;
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());
+        }
+        return ok;
+    }//end public boolean addFilters(SubFormat[] format)
+
+    public boolean addFilters(AvailSubFormats format_list) {
+        boolean ok = false;
+        try {
+            int size = format_list.size();
+            SubFormat[] array = format_list.getFormats().toArray(new SubFormat[size]);
+            ok = addFilters(array);
+        } catch (Exception ex) {
+        }
+        return ok;
+    }//end public boolean addFilters(ArrayList<SubFormat> format_list)
+    
+    public JFileFilter findFileFiler(SubFormat format){
+        JFileFilter found_filter = null;
+        try{
+            FileFilter[] filter_list = chooser.getChoosableFileFilters();
+            for (FileFilter flt : filter_list){
+                found_filter = (JFileFilter) flt;
+                SubFormat fmt = found_filter.getFormatHandler();
+                boolean is_found = (
+                        (format == fmt) || 
+                        (format.getDescription() + format.getExtension()).equals(
+                        (fmt.getDescription() + fmt.getExtension()))
+                        );
+                if (is_found){
+                    break;
+                }//end if (is_found)
+            }//end for (FileFilter flt : filter_list)
+        }catch(Exception ex){}
+        return found_filter;
+    }//end public JFileFilter findFileFiler(SubFormat format)
 }
