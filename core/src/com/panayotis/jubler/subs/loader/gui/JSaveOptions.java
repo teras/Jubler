@@ -44,8 +44,6 @@ public class JSaveOptions extends JFileOptions {
         super();
         CFPS = new JRateChooser();
         initComponents();
-        for (int i = 0; i < Availabilities.formats.size(); i++)
-            CFormat.addItem(Availabilities.formats.get(i).getDescription());
         ControlsP.add(CFPS, BorderLayout.CENTER);
     }
 
@@ -55,24 +53,21 @@ public class JSaveOptions extends JFileOptions {
 
         CFPS.setDataFiles(mfile, subs);
         CFPS.setFPS(subs.getSubFile().getFPS());
-        CFormat.setSelectedItem(subs.getSubFile().getFormat().getDescription());
         setListItem(CEnc, subs.getSubFile().getEncoding());
-
-        updateVisualFPS();  // Set if FPS controls are visible - should be called AFTER CFormat initialization
+        
+        updateVisualFPS(subs.getSubFile().getFormat().getDescription());  // Set if FPS controls are visible - should be called AFTER CFormat initialization
     }
 
     protected void applyOptions(SubFile sfile) {
         super.applyOptions(sfile);
         sfile.setFPS(CFPS.getFPSValue());
         sfile.setEncoding(CEnc.getSelectedItem().toString());
-        sfile.setFormat(CFormat.getSelectedItem().toString());
     }
 
 
     /* Execute this method whenever the output format is changed (or this panel is displayed */
-    private void updateVisualFPS() {
-        String format_name = CFormat.getSelectedItem().toString();
-        boolean supports_fps = Availabilities.formats.findFromDescription(format_name).supportsFPS();
+    private void updateVisualFPS(String format_desc) {
+        boolean supports_fps = Availabilities.formats.findFromDescription(format_desc).supportsFPS();
         FPSPanelL.setVisible(supports_fps);
         CFPS.setVisible(supports_fps);
     }
@@ -90,11 +85,9 @@ public class JSaveOptions extends JFileOptions {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        CFormatL = new javax.swing.JLabel();
         CEncL = new javax.swing.JLabel();
         FPSPanelL = new javax.swing.JLabel();
         ControlsP = new javax.swing.JPanel();
-        CFormat = new javax.swing.JComboBox();
         CEncP = new javax.swing.JPanel();
         CEnc = new javax.swing.JComboBox(AvailEncodings);
 
@@ -102,10 +95,6 @@ public class JSaveOptions extends JFileOptions {
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 3));
-
-        CFormatL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CFormatL.setText(_("Format"));
-        jPanel1.add(CFormatL);
 
         CEncL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         CEncL.setText(_("Encoding"));
@@ -119,14 +108,6 @@ public class JSaveOptions extends JFileOptions {
 
         ControlsP.setLayout(new java.awt.GridLayout(1, 3));
 
-        CFormat.setToolTipText(_("Subtitle format of the output file (SRT is prefered)"));
-        CFormat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CFormatActionPerformed(evt);
-            }
-        });
-        ControlsP.add(CFormat);
-
         CEncP.setLayout(new java.awt.BorderLayout());
         CEncP.add(CEnc, java.awt.BorderLayout.CENTER);
 
@@ -135,15 +116,10 @@ public class JSaveOptions extends JFileOptions {
         add(ControlsP, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void CFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CFormatActionPerformed
-        updateVisualFPS();
-    }//GEN-LAST:event_CFormatActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox CEnc;
     private javax.swing.JLabel CEncL;
     private javax.swing.JPanel CEncP;
-    private javax.swing.JComboBox CFormat;
-    private javax.swing.JLabel CFormatL;
     private javax.swing.JPanel ControlsP;
     private javax.swing.JLabel FPSPanelL;
     private javax.swing.JPanel jPanel1;
