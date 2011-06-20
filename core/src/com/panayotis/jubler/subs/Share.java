@@ -240,18 +240,6 @@ public class Share implements CommonDef {
         return getFileExtension(f, true);
     }
 
-    public static File patchFileExtensionIfNotThere(File f, String extension) {
-        File new_file = f;
-        try{
-            String file_extension = getFileExtension(f, false);
-            boolean has_extension = (file_extension != null);
-            if (! has_extension){
-                new_file = patchFileExtension(f, extension);
-            }//end if
-        }catch(Exception ex){
-        }
-        return new_file;
-    }
     public static File patchFileExtension(File f, String extension) {
         String new_file_name = null;
         try {
