@@ -35,7 +35,6 @@ import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.plugins.Theme;
@@ -47,6 +46,7 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.gui.JSubFileDialog;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
@@ -64,8 +64,6 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -73,7 +71,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -103,6 +100,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
      * instances situation.
      */
     public static JubFrame currentWindow = null;
+    public static int TABLE_DEFAULT_HEIGHT = 16;
     public static JublerList windows;
     private static ArrayList<SubEntry> copybuffer;
     public static JPreferences prefs;
@@ -175,7 +173,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         undo = new UndoList(this);
 
-        initComponents();
+        initComponents();        
         ToolsManager.register(this);
 
         setIconImage(FrameIcon);
@@ -202,6 +200,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         StaticJubler.putWindowPosition(this);
 
         PluginManager.manager.callPluginListeners(this, "END");
+        
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})
@@ -1635,6 +1634,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
     private void SaveAsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsFMActionPerformed
         saveFile(fdialog.getSaveFile(this, subs, mfile));
+        changeTableRowHeightForTextTypeSubs();
     }//GEN-LAST:event_SaveAsFMActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -2159,6 +2159,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         updateStyleMenu();
         /* Set the new selected row to the original row */
         setSelectedSub(last_selected, true);
+        changeTableRowHeightForTextTypeSubs();
     }
 
     public void rowHasChanged(int row, boolean update_display) {
@@ -2174,8 +2175,12 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     public void showInfo() {
         subeditor.TotalL.setText(Integer.toString(subs.size()));
         subeditor.setUnsaved(isUnsaved());
-        if (subs.getSubFile().getStrippedFile() != null) {
-            String title = subs.getSubFile().getSaveFile().getPath();
+        SubFile sf = subs.getSubFile();
+        File f = sf.getSaveFile();
+        SubFormat fmt = sf.getFormat();
+        String format_name = (fmt == null) ? "" : fmt.getName();
+        if (f != null) {
+            String title = format_name + " - " + f.getPath();
             if (isUnsaved()) {
                 title = "*" + title;
                 getRootPane().putClientProperty("windowModified", Boolean.TRUE);
@@ -2377,6 +2382,28 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         tableHasChanged(selected);
     }
 
+    public void changeTableRowHeightForTextTypeSubs(){        
+        int table_current_row_height = SubTable.getRowHeight();
+        boolean is_text_type = true;
+        try{
+            is_text_type = subs.isTextType();
+        }catch(Exception ex){}
+        
+        boolean is_current_row_height_too_high = (table_current_row_height > TABLE_DEFAULT_HEIGHT);
+        boolean is_adjust_row_height = (is_text_type && is_current_row_height_too_high);
+        /*
+        String msg = "table_current_row_height:" + table_current_row_height + "\n" + 
+                "is_text_type:" + is_text_type + "\n" + 
+                "is_current_row_height_too_high:" + is_current_row_height_too_high +  "\n" + 
+                "is_adjust_row_height:" + is_adjust_row_height + "\n";
+        DEBUG.logger.log(Level.OFF, msg);
+         * 
+         */
+        if (is_adjust_row_height){
+            SubTable.setRowHeight(TABLE_DEFAULT_HEIGHT);
+            SubTable.repaint();
+        }//end if (this.subs.isTextType())
+    }//end public void changeTableRowHeightForTextTypeSubs()
     /**
      * When an instance of JubFrame got the graphical focus,
      * set the currentWindow reference to this instance, to
