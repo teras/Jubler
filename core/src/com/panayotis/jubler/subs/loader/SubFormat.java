@@ -22,21 +22,31 @@
  */
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.logging.Level;
 
 /**
  *
  * @author teras
  */
-public abstract class SubFormat implements PluginItem {
+public abstract class SubFormat implements PluginItem, Comparator<SubFormat> {
 
     protected float FPS;
     protected String ENCODING;
+    private JubFrame jubler = null;
+    private ClassLoader classLoader = null;
+    private int formatOrder = 100;
+
+    public void init() {
+    }
 
     public abstract String getExtension();
 
@@ -76,5 +86,92 @@ public abstract class SubFormat implements PluginItem {
             AvailSubFormats l = (AvailSubFormats) caller;
             l.add(this);
         }
+    }
+
+    /**
+     * @return the classLoader
+     */
+    public ClassLoader getClassLoader() {
+        return classLoader;
+    }
+
+    /**
+     * @param classLoader the classLoader to set
+     */
+    public void setClassLoader(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
+
+    /**
+     * @return the formatOrder
+     */
+    public int getFormatOrder() {
+        return formatOrder;
+    }
+
+    /**
+     * @param formatOrder the formatOrder to set
+     */
+    public void setFormatOrder(int formatOrder) {
+        this.formatOrder = formatOrder;
+    }
+
+    public int compare(SubFormat o1, SubFormat o2) {
+        int comp = -1;
+        try {
+            boolean is_same = (o1 == o2);
+            if (is_same) {
+                comp = 0;
+            } else {
+                int o1_order = o1.getFormatOrder();
+                int o2_order = o2.getFormatOrder();
+                comp = o1_order - o2_order;
+            }//end if (is_same)/else
+        } catch (Exception ex) {
+        }
+        return comp;
+    }//end public int compare(SubFormat o1, SubFormat o2) 
+
+    public boolean equals(Object obj) {
+        boolean is_same = false;
+        try {
+            is_same = (this == obj);
+            if (!is_same) {
+                is_same = (compare(this, (SubFormat) obj) == 0);
+            }//end if (! is_same)
+        } catch (Exception ex) {
+        }
+        return is_same;
+    }//end public boolean equals(Object obj)
+
+    public SubFormat newInstance() {
+        SubFormat new_one = null;
+        try {
+            new_one = (SubFormat) Class.forName(getClass().getName(), true, classLoader).newInstance();
+            new_one.setClassLoader(classLoader);
+        } catch (Exception ex) {
+            try {
+                ClassLoader cl = ClassLoader.getSystemClassLoader();
+                new_one = (SubFormat) Class.forName(getClass().getName(), true, cl).newInstance();
+                new_one.setClassLoader(cl);
+            } catch (Exception e) {
+                DEBUG.logger.log(Level.SEVERE, e.toString());
+            }//end try/catch
+        }//end try/catch
+        return new_one;
+    }//end public SubFormat newInstance()
+
+    /**
+     * @return the jubler
+     */
+    public JubFrame getJubler() {
+        return jubler;
+    }
+
+    /**
+     * @param jubler the jubler to set
+     */
+    public void setJubler(JubFrame jubler) {
+        this.jubler = jubler;
     }
 }
