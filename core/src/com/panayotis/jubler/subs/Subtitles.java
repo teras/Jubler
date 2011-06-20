@@ -29,6 +29,7 @@ import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
+import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.util.Collections;
 import javax.swing.table.AbstractTableModel;
@@ -155,10 +156,12 @@ public class Subtitles extends AbstractTableModel {
     public void populate(SubFile sfile, String data) {
         Subtitles load;
         load = this.loadByFileExtension(sfile, data);
-        if (load == null)
+        if (load == null) {
             load = this.loadBySelectedHandler(sfile, data);
-        if (load == null)
+        }
+        if (load == null) {
             load = this.loadByPattern(sfile, data);
+        }
         if (load != null) {
             appendSubs(load, true);
             attribs = new SubAttribs(load.attribs);
@@ -468,6 +471,26 @@ public class Subtitles extends AbstractTableModel {
             return false;
         }
     }
+
+    /**
+     * Checks to see if all entries are of text-based type, that is 
+     * none of the instance of SubEntry are of ImageTypeSubtitle.
+     * @return true if all are of text-based, false if a single instance is
+     * of different type, ie. ImageTypeSubtitle.
+     */
+    public boolean isTextType() {
+        boolean is_text_type = false;
+        try {
+            for (SubEntry entry : sublist) {
+                is_text_type = !(entry instanceof ImageTypeSubtitle);
+                if (!is_text_type) {
+                    break;
+                }
+            }//end for(SubEntry entry : sublist)
+        } catch (Exception ex) {
+        }
+        return is_text_type;
+    }//end public boolean isTextType()
 
     public boolean isRequiredToConvert(Class new_class) {
         boolean is_required = false;
