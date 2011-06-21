@@ -35,6 +35,7 @@ import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.plugins.Theme;
@@ -73,6 +74,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -177,6 +179,21 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         undo = new UndoList(this);
 
         initComponents();
+        PreviewTB.setToolTipText(_("Right mouse click to bring selected row into view"));
+        PreviewTB.addMouseListener(new MouseAdapter() {
+
+            public void mouseReleased(MouseEvent e) {
+                int mouse_button = e.getButton();
+                boolean is_right_mouse = mouse_button == MouseEvent.BUTTON3;
+                //DEBUG.logger.log(Level.OFF, "is_right_mouse:" + is_right_mouse);
+                if (is_right_mouse) {
+                    int row = SubTable.getSelectedRow();
+                    if (row >= 0) {
+                        bringSelectedRowIntoView(row);
+                    }//end if (row >= 0) 
+                }//end if (is_right_mouse)
+            }
+        });
         ToolsManager.register(this);
 
         setIconImage(FrameIcon);
@@ -2285,7 +2302,6 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         Rectangle view_rect = view_port.getViewRect();
         try {
             num_rec = subs.size();
-
             int top_row = SubTable.rowAtPoint(new Point(0, view_rect.y));
             int bottom_row = SubTable.rowAtPoint(new Point(0, view_rect.y + view_rect.height - 1));
             int visible_rows = bottom_row - top_row;
@@ -2296,13 +2312,15 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 if (is_off_top) {
                     showmore = current_row - mid_value;
                     showmore = Math.max(0, Math.min(showmore, num_rec - 1));
-                    SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                    SubTable.scrollRectToVisible(SubTable.getCellRect(showmore, -1, true));
+                    //SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
                 } else {
                     boolean is_off_bottom = (current_row > bottom_row);
                     if (is_off_bottom) {
                         showmore = current_row + mid_value;
                         showmore = Math.max(0, Math.min(showmore, num_rec - 1));
-                        SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                        SubTable.scrollRectToVisible(SubTable.getCellRect(showmore, -1, true));
+                        //SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
                     }//end if (is_off_bottom)
                 }//end if (is_off_top)
             }//end if (! is_current_row_visible)
@@ -2326,8 +2344,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             for (int i = 0; i < which.length; i++) {
                 int index = which[i];
                 index = Math.max(0, Math.min(index, subs.size() - 1));
-                //HDT: this is a much quicker method. It sped up rendering.
-                SubTable.getSelectionModel().addSelectionInterval(index, index);
+                SubTable.changeSelection(index, -1, true, false);;
             }
         }
         ignore_table_selections = false;
