@@ -71,7 +71,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         Lock[0] = new javax.swing.ImageIcon(JSubEditor.class.getResource("/icons/lock.png"));
         Lock[1] = new javax.swing.ImageIcon(JSubEditor.class.getResource("/icons/unlock.png"));
     }
-    private JTimeSpinner SubStart,  SubFinish,  SubDur;
+    private JTimeSpinner SubStart, SubFinish, SubDur;
     private JOverStyles overstyle;
     private boolean ignore_sub_changes = false;
     private boolean ignore_style_list_changes = false;
@@ -793,36 +793,39 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
                 new ActionEvent(this,
                 ActionEvent.ACTION_PERFORMED,
                 "Text Balancing"));
-        
+
     }//GEN-LAST:event_TextBalancingSliderStateChanged
 
     private void VisualiseTextLayoutBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VisualiseTextLayoutBActionPerformed
         SubImage simg = new SubImage(entry);
         BufferedImage img = simg.getImage();
         ImageIcon ico = new ImageIcon(img);
-        
+
         JLabel lbl = new JLabel();
         lbl.setOpaque(false);
         lbl.setHorizontalAlignment(SwingConstants.CENTER);
         lbl.setIcon(ico);
         lbl.setBorder(new EtchedBorder());
         JOptionPane.showMessageDialog(parent, lbl, _("Subtitle text with styles"), JOptionPane.PLAIN_MESSAGE);
-        
+
 }//GEN-LAST:event_VisualiseTextLayoutBActionPerformed
 
     private void VisualiseTextLayoutBMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_VisualiseTextLayoutBMouseReleased
-        try{
+        try {
             int button_released = evt.getButton();
             boolean is_right_button = (java.awt.event.MouseEvent.BUTTON3 == button_released);
-            if (is_right_button){
+            if (is_right_button) {
                 moveTableViewToSelectedEntry();
             }//end if (is_right_button)
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }//GEN-LAST:event_VisualiseTextLayoutBMouseReleased
 
-    private void moveTableViewToSelectedEntry(){
+    private void moveTableViewToSelectedEntry() {
         int selected_row = parent.getSelectedRowIdx();
-        parent.fn.setSelectedSub(selected_row, true);
+        if (selected_row >= 0) {
+            parent.fn.bringSelectedRowIntoView(selected_row);
+        }
     }
 
     public void changeStyle(StyleType type, Object value) {
@@ -857,7 +860,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     }
 
     public void changedUpdate(DocumentEvent e) {
-    // We don't care for these events - we have our own!
+        // We don't care for these events - we have our own!
     }
 
     public String getSelectedText() {
