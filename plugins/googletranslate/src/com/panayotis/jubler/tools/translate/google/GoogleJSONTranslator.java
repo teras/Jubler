@@ -183,4 +183,12 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
     public boolean canDisablePlugin() {
         return true;
     }
+    
+    public ClassLoader getClassLoader() {
+        return null;
+    }
+
+    public void setClassLoader(ClassLoader loader) {
+    }    
+    
 }
