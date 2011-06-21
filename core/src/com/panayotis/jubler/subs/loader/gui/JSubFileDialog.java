@@ -59,11 +59,19 @@ public class JSubFileDialog extends javax.swing.JDialog {
         chooser.setAcceptAllFileFilterUsed(false);
         //chooser.addChoosableFileFilter(new SubFileFilter());
         try {
-            String default_dir = FileCommunicator.getDefaultDirPath();            
-            File default_dir_file = new File(default_dir, "Untitled");
+            String default_dir = FileCommunicator.getDefaultDirPath();
+            File default_dir_file = new File(default_dir);
+            boolean is_valid = (
+                    default_dir_file.isDirectory() && 
+                    default_dir_file.canRead());
+            default_dir_file = (is_valid)
+                    ? new File(default_dir, "Untitled")
+                    : new File("Untitled");
+
+            //DEBUG.logger.log(Level.INFO, "default_file:" + default_dir_file);
             chooser.setSelectedFile(default_dir_file);
         } catch (Exception ex) {
-            DEBUG.logger.log(Level.WARNING, ex.toString());            
+            DEBUG.logger.log(Level.WARNING, ex.toString());
         }
         jload = new JLoadOptions();
         jsave = new JSaveOptions();
