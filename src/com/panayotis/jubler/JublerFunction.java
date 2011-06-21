@@ -642,13 +642,13 @@ public class JublerFunction {
                 if (is_off_top) {
                     showmore = current_row - mid_value;
                     showmore = Math.max(0, Math.min(showmore, num_rec - 1));
-                    SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                    SubTable.scrollRectToVisible(SubTable.getCellRect(showmore, -1, true));
                 } else {
                     boolean is_off_bottom = (current_row > bottom_row);
                     if (is_off_bottom) {
                         showmore = current_row + mid_value;
                         showmore = Math.max(0, Math.min(showmore, num_rec - 1));
-                        SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                        SubTable.scrollRectToVisible(SubTable.getCellRect(showmore, -1, true));
                     }//end if (is_off_bottom)
                 }//end if (is_off_top)
             }//end if (! is_current_row_visible)
