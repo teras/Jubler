@@ -99,4 +99,12 @@ public class VLC extends AbstractPlayer implements Plugin, PluginItem {
     public boolean canDisablePlugin() {
         return true;
     }
+    
+    public ClassLoader getClassLoader() {
+        return null;
+    }
+
+    public void setClassLoader(ClassLoader loader) {
+    }    
+    
 }
