@@ -58,7 +58,13 @@ public class JSubFileDialog extends javax.swing.JDialog {
         addFilters(Availabilities.formats);
         chooser.setAcceptAllFileFilterUsed(false);
         //chooser.addChoosableFileFilter(new SubFileFilter());
-        chooser.setSelectedFile(new File(FileCommunicator.getDefaultDirPath(), "."));
+        try {
+            String default_dir = FileCommunicator.getDefaultDirPath();            
+            File default_dir_file = new File(default_dir, "Untitled");
+            chooser.setSelectedFile(default_dir_file);
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.WARNING, ex.toString());            
+        }
         jload = new JLoadOptions();
         jsave = new JSaveOptions();
     }
@@ -84,7 +90,7 @@ public class JSubFileDialog extends javax.swing.JDialog {
         try {
             File selected_file = chooser.getSelectedFile();
             JFileFilter flt = (JFileFilter) chooser.getFileFilter();
-            SubFormat format_handler = flt.getFormatHandler().newInstance();            
+            SubFormat format_handler = flt.getFormatHandler().newInstance();
 
             if (subs == null) // Load
             {
@@ -235,24 +241,23 @@ public class JSubFileDialog extends javax.swing.JDialog {
         }
         return ok;
     }//end public boolean addFilters(ArrayList<SubFormat> format_list)
-    
-    public JFileFilter findFileFiler(SubFormat format){
+
+    public JFileFilter findFileFiler(SubFormat format) {
         JFileFilter found_filter = null;
-        try{
+        try {
             FileFilter[] filter_list = chooser.getChoosableFileFilters();
-            for (FileFilter flt : filter_list){
+            for (FileFilter flt : filter_list) {
                 found_filter = (JFileFilter) flt;
                 SubFormat fmt = found_filter.getFormatHandler();
-                boolean is_found = (
-                        (format == fmt) || 
-                        (format.getDescription() + format.getExtension()).equals(
-                        (fmt.getDescription() + fmt.getExtension()))
-                        );
-                if (is_found){
+                boolean is_found = ((format == fmt)
+                        || (format.getDescription() + format.getExtension()).equals(
+                        (fmt.getDescription() + fmt.getExtension())));
+                if (is_found) {
                     break;
                 }//end if (is_found)
             }//end for (FileFilter flt : filter_list)
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
         return found_filter;
     }//end public JFileFilter findFileFiler(SubFormat format)
 }
