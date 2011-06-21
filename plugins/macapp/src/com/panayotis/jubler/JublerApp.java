@@ -127,4 +127,12 @@ public class JublerApp extends Application implements Plugin, PluginItem {
     public boolean canDisablePlugin() {
         return true;
     }
+    
+    public ClassLoader getClassLoader() {
+        return null;
+    }
+
+    public void setClassLoader(ClassLoader loader) {
+    }    
+    
 }
