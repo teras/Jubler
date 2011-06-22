@@ -81,11 +81,9 @@ public class SubRenderer extends DefaultTableCellRenderer {
                  */
             }
 
-            table_row_height = table.getRowHeight();
-            setText(null);
             setIcon(null);
-            setToolTipText(null);
             setText("");
+            setToolTipText(null);
             boolean is_image_type = (value instanceof ImageIcon);
             if (is_image_type) {
                 setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -101,11 +99,10 @@ public class SubRenderer extends DefaultTableCellRenderer {
             } else {
                 boolean is_string = (value instanceof String);
                 if (is_string) {
-                    setIcon(null);
                     String s_value = (String) value;
                     setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
                     setText(s_value);
-                }//end if
+                }//end if (is_string)
             }//end if
         } catch (Exception ex) {
             DEBUG.logger.log(Level.SEVERE, ex.toString());
