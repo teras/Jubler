@@ -225,6 +225,8 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                     if (has_image) {
                         ImageIcon img = new ImageIcon(img_type.getImage());
                         return img;
+                    }else{
+                        return null;
                     }//end if (has_image)
                 } else {
                     boolean has_text = (subtext != null);
