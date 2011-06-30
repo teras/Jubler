@@ -25,9 +25,11 @@ package com.panayotis.jubler.subs.loader;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  *
@@ -43,6 +45,16 @@ public abstract class SubFormat {
 
     public abstract String getName();
 
+    public SubFormat newInstance() {
+        SubFormat new_one = this;
+        try {
+            new_one = (SubFormat) Class.forName(getClass().getName()).newInstance();
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.SEVERE, ex.toString());
+        }//end try/catch
+        return new_one;
+    }//end public SubFormat newInstance()
+    
     public final boolean produce(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) throws IOException {
         if (prefs == null) {
             FPS = 25f;
