@@ -64,7 +64,6 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     SonSubEntry blank_record = null;
 
     public SUPCompressedImage() {
-
     }
 
     /**
@@ -105,8 +104,8 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
         String ext = Share.getFileExtension(f);
         boolean contain_signature = input.startsWith("SP");
         boolean is_sup_file =
-                (!Share.isEmpty(ext)) &&
-                (ext.toLowerCase().equals(".sup"));
+                (!Share.isEmpty(ext))
+                && (ext.toLowerCase().equals(".sup"));
         boolean longer_than_10 = (input.length() > 10);
         return (is_sup_file && contain_signature && longer_than_10);
     }
@@ -245,7 +244,7 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
 
         return subtitleList;
     }
-
+    
     /**
      * This routine will creates a new instance of {@link SUPWriter} and
      * pass to it the {@link Subtitles} list input, then start the writer
@@ -261,11 +260,14 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
      */
     public boolean produce(Subtitles given_subs, File outfile, MediaFile media) throws IOException {
 
-        File sup_file = FileCommunicator.stripFileFromExtension(outfile);
-        SUPWriter proc = new SUPWriter(this.jubler, this.FPS, this.ENCODING, sup_file);
-        proc.setSubList(given_subs);
-        proc.start();
-
+        try {
+            File sup_file = FileCommunicator.stripFileFromExtension(outfile);
+            SUPWriter proc = new SUPWriter(this.jubler, this.FPS, this.ENCODING, sup_file);
+            proc.setSubList(given_subs);
+            proc.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return false;
     }
 }//end public class SUPCompressedImage extends AbstractBinarySubFormat
