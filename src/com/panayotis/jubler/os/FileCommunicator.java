@@ -144,6 +144,7 @@ public class FileCommunicator {
             } else {
                 saveformat = prefs.getSaveFormat();
             }
+            saveformat = saveformat.newInstance();
             
             if (saveformat.produce(subs, tempout, prefs, media)) {  // produce & check if should rename file
                 outfile.delete();
