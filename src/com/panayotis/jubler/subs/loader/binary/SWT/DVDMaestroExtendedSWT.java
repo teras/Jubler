@@ -106,7 +106,7 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
 
     /**
      * Text processor
-     */    
+     */
     private SubtitlePatternProcessor swt_text;
     /**
      * Global reference for a detail record.
@@ -156,7 +156,7 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
      * pat_swt_header}.
      * @param input The textual data-line.
      * @return true if the data-line is a header signature line, false otherwise.
-     */    
+     */
     @Override
     protected boolean isHeaderLine(String input) {
         Matcher m = pat_swt_header.matcher(input);
@@ -173,7 +173,7 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
      * must now be created to hold the next block of data.
      * @param input The text line input.
      * @return true if the text-line is empty, false otherwise.
-     */    
+     */
     @Override
     protected boolean isEmptyTextLine(String input) {
         boolean is_empty = Share.isEmpty(input);
@@ -192,12 +192,12 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
      * for the next run.
      */
     @Override
-    public void init(){
+    public void init() {
         super.init();
         swtSubEntry = null;
         swtHeader = null;
     }
-    
+
     /**
      * Calls the super-class to setup the processor list, but must replace
      * the name of the target classes, so {@link SWTHeader} and 
@@ -326,9 +326,14 @@ public class DVDMaestroExtendedSWT extends DVDMaestro implements ParsedDataLineE
      */
     @Override
     public Subtitles convert(Subtitles current_subs) {
-        Subtitles convert_subs = new Subtitles(current_subs);
-        convert_subs.setJubler(jubler);
-        convert_subs.convert(SWTSubEntry.class);
-        return convert_subs;
+        Class target_class = SWTSubEntry.class;
+        try {
+            boolean required = current_subs.isRequiredToConvert(target_class);
+            if (required) {
+                current_subs.convert(target_class);
+            }//end if (required)
+        } catch (Exception ex) {
+        }
+        return current_subs;
     }
 }
