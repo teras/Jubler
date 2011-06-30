@@ -30,9 +30,12 @@ package com.panayotis.jubler.io;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
-import com.panayotis.jubler.subs.loader.SubFileFilter;
 import com.panayotis.jubler.subs.loader.SubFormat;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.Vector;
 import java.util.logging.Level;
 import javax.swing.JFileChooser;
@@ -42,9 +45,10 @@ import javax.swing.filechooser.FileFilter;
  *
  * @author hoang_tran <hoangduytran1960@googlemail.com>
  */
-public class JublerFileChooser extends JFileChooser {
+public class JublerFileChooser extends JFileChooser implements PropertyChangeListener {
 
     private Jubler jb = null;
+    private File selected_file = null;
 
     public JublerFileChooser(Jubler parent) {
         jb = parent;
@@ -54,9 +58,11 @@ public class JublerFileChooser extends JFileChooser {
     public void init() {
         /* Set JFileChooser properties */
         setMultiSelectionEnabled(false);
-        setFileFilter(new SubFileFilter());
-        addFilters(AvailSubFormats.Formats );
+        //setFileFilter(new SubFileFilter());
+        setAcceptAllFileFilterUsed(false);
+        addFilters(AvailSubFormats.Formats);
         FileCommunicator.getDefaultDialogPath(this);
+        addPropertyChangeListener(this);
     }//end public void init()
 
     private SimpleFileFilter makeFilter(SubFormat format) {
@@ -138,5 +144,88 @@ public class JublerFileChooser extends JFileChooser {
         }
         return ok;
     }//end public boolean addFilters(SubFormat[] format)
+
+    public SimpleFileFilter findFilter(String format_name) {
+        SimpleFileFilter found_flt = null;
+        SubFormat found_format = null;
+        boolean is_found = false;
+        String found_name;
+        FileFilter[] list = getChoosableFileFilters();
+        try {
+            for (FileFilter flt : list) {
+                found_flt = (SimpleFileFilter) flt;
+                found_format = found_flt.getFormatHandler();
+                found_name = found_format.getName();
+                is_found = format_name.equals(found_name);
+                if (is_found) {
+                    break;
+                }//end if (is_found)
+            }//end for (SimpleFileFilter flt : this)
+        } catch (Exception ex) {
+        }
+        return found_flt;
+
+    }//end public SimpleFileFilter findFilter(SubFormat format) 
+
+    public SimpleFileFilter findFilter(SubFormat format) {
+        SimpleFileFilter found_flt = null;
+        SubFormat found_format = null;
+        boolean is_found = false;
+        String format_name, found_name;
+        FileFilter[] list = getChoosableFileFilters();
+        try {
+            for (FileFilter flt : list) {
+                found_flt = (SimpleFileFilter) flt;
+                found_format = found_flt.getFormatHandler();
+                is_found = (found_format == format);
+                if (!is_found) {
+                    format_name = format.getName();
+                    found_name = found_format.getName();
+                    is_found = format_name.equals(found_name);
+                }//if (! is_found)
+                if (is_found) {
+                    break;
+                }//end if (is_found)
+            }//end for (SimpleFileFilter flt : this)
+        } catch (Exception ex) {
+        }
+        return found_flt;
+    }//end public SimpleFileFilter findFilter(SubFormat format)
+
+    /**
+     * This routine will try automatically change the file's extension when
+     * an user chooses a new file-type. Check to see if the current file's 
+     * extension matches with the extension of the selected format-handler
+     * or not. If not, change the extension of the selected file to the 
+     * extension of the format-handler.
+     * @param evt Property change event
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        try {
+            String prop_name = evt.getPropertyName();
+            boolean is_file_type_change = prop_name.equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY);
+            //DEBUG.logger.log(Level.OFF, "is_file_type_change:" + is_file_type_change);
+            if (is_file_type_change && (selected_file != null)) {
+                SimpleFileFilter flt = (SimpleFileFilter) getFileFilter();
+                SubFormat fmt = flt.getFormatHandler();
+                String fmt_ext = fmt.getExtension();
+                String file_ext = Share.getFileExtension(selected_file, false);
+                boolean is_diff = (fmt_ext.compareToIgnoreCase(file_ext) != 0);
+                if (is_diff) {
+                    selected_file = Share.patchFileExtension(selected_file, fmt_ext);
+                    setSelectedFile(selected_file);
+                    //DEBUG.logger.log(Level.OFF, "set selected_file:" + selected_file.toString());
+                }//end if (is_diff)
+            } else {
+                File changed_file = getSelectedFile();
+                boolean is_remember = !((changed_file == null) || changed_file.equals(selected_file));
+                if (is_remember) {
+                    selected_file = changed_file;
+                    //DEBUG.logger.log(Level.OFF, "changed selected_file:" + selected_file.toString());
+                }//end if (is_remember)
+            }//end if
+        } catch (Exception ex) {
+        }
+    }//end public void propertyChange(PropertyChangeEvent evt)    
 }//end public class JublerFileChooser
 
