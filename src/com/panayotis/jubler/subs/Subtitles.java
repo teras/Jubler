@@ -129,7 +129,7 @@ public class Subtitles extends AbstractTableModel {
          * for easier debugging and see which format handler was selected
          * during the recognition of pattern and subsequently chosen
          * as the loader for the data.
-         */        
+         */
         while (load == null && formats.hasMoreElements()) {
             format_handler = formats.nextElement();
             format_handler.setJubler(work);
@@ -478,13 +478,14 @@ public class Subtitles extends AbstractTableModel {
         return COLNAME[visibleToReal(index)];
     }
 
-    public SubEntry getRecordAtRow(int row){
-        try{
+    public SubEntry getRecordAtRow(int row) {
+        try {
             return (SubEntry) sublist.elementAt(row);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return null;
         }
     }
+
     public Object getValueAt(int row, int col) {
         Object value;
         int column;
@@ -530,6 +531,22 @@ public class Subtitles extends AbstractTableModel {
         }//end for (int i = 0; i < visiblecols.length; i++)
     }//end public void recalculateTableSize(JTable t)
 
+    public boolean isRequiredToConvert(Class new_class) {
+        boolean is_required = false;
+        try {
+            for (SubEntry entry : sublist) {
+                String current_class_name = entry.getClass().getName();
+                String new_class_name = new_class.getName();
+                is_required = (current_class_name.compareTo(new_class_name) != 0);
+                if (is_required) {
+                    break;
+                }//end if (is_required)
+            }//end for(SubEntry entry : sublist)
+        } catch (Exception ex) {
+        }
+        return is_required;
+    }//end public boolean isRequiredToConvert()
+
     /**
      * This routine will convert the current subtitle-entries to a target class
      * using the implementation of 'copyRecord' method in {@link SubEntry} and
@@ -541,9 +558,9 @@ public class Subtitles extends AbstractTableModel {
      * create a new default header for a new record. This reference must
      * be kept locally and pass to all sub-sequent records, avoiding the waste
      * of memory.
-     * @param target_class The target class to convert the current subtitle 
+     * @param target_class The target class to convert the current subtitle
      * entries to.
-     * @return true if convertion was carried out without erros, or no 
+     * @return true if convertion was carried out without erros, or no
      * conversions are required, false otherwise.
      */
     public boolean convert(Class target_class) {
@@ -555,8 +572,6 @@ public class Subtitles extends AbstractTableModel {
         Object header = null;
         try {
             SubEntry src_entry = null;
-            boolean is_saved_for_undo = false;
-            String action_name = _("Convert records");
             for (int i = 0; i < size(); i++) {
                 target_hdr_sub = null;
                 //get the current entry
