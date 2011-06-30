@@ -66,7 +66,8 @@ public abstract class AbstractPlayer extends VideoPlayer {
     private void initSubFile(Subtitles subs, MediaFile mfile) {
         try {
             File subtemp = File.createTempFile("jubler_", "."+JPreferences.DefaultSubFormat.getExtension());
-            FileCommunicator.save(subs, subtemp, null, mfile);
+            Subtitles new_subs = new Subtitles(subs);
+            FileCommunicator.save(new_subs, subtemp, null, mfile);
             subpath = subtemp.getPath();
             return;
         } catch (IOException e) {}
