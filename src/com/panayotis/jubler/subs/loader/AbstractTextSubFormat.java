@@ -120,6 +120,12 @@ public abstract class AbstractTextSubFormat extends SubFormat {
     
     public boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException {
         StringBuffer res = new StringBuffer();
+        Class target_class = SubEntry.class;
+        boolean is_convert = subs.isRequiredToConvert(target_class);
+        if (is_convert){
+            subs.convert(target_class);
+        }//end if (is_convert)
+        
         initSaver(subs, media, res);
         for ( int i = 0 ; i < subs.size() ; i++ ) {
             appendSubEntry(subs.elementAt(i), res);
