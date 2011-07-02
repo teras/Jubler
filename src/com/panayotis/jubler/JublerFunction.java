@@ -39,13 +39,16 @@ import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.Subtitles;
-import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.events.menu.edit.undo.UndoEntry;
 import com.panayotis.jubler.events.menu.edit.undo.UndoList;
+import com.panayotis.jubler.io.JublerFileChooser;
+import com.panayotis.jubler.io.SimpleFileFilter;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.subs.SubFile;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -75,6 +78,7 @@ import javax.swing.ListSelectionModel;
  */
 public class JublerFunction {
 
+    public static int TABLE_DEFAULT_HEIGHT = 16;
     private javax.swing.JButton CopyTB;
     private javax.swing.JButton CutTB;
     private javax.swing.JButton DoItTB;
@@ -586,7 +590,13 @@ public class JublerFunction {
         Subtitles subs = jb.getSubtitles();
         Info.setText(_("Number of subtitles : {0}    {1}", subs.size(), (jb.isUnsaved() ? "-" + _("Unsaved") + "-" : "")));
         if (subs.getCurrentFile() != null) {
-            String title = subs.getCurrentFileName();
+            SubFile sf = subs.getSubfile();
+            SubFormat fmt = sf.getFormat();
+            File f = sf.getCurrentFile();
+            String path = f.getPath();
+            String fmt_name = fmt.getName();
+
+            String title = fmt_name + " : " + path;
             if (jb.isUnsaved()) {
                 title = "*" + title;
                 jb.getRootPane().putClientProperty("windowModified", Boolean.TRUE);
@@ -791,19 +801,30 @@ public class JublerFunction {
     public Subtitles loadSubtitleFile() {
         String data;
         Subtitles newsubs = null;
+        SimpleFileFilter flt = null;
+        SubFormat fmt = null;
+        SubFile sf = null;
+        File f = null;
         try {
-            JFileChooser filedialog = jb.getFiledialog();
+            JublerFileChooser fd = jb.getFiledialog();
 
-            filedialog.setDialogTitle(_("Load Subtitles"));
-            if (filedialog.showOpenDialog(jb) != JFileChooser.APPROVE_OPTION) {
+            fd.setDialogTitle(_("Load Subtitles"));
+            if (fd.showOpenDialog(jb) != JFileChooser.APPROVE_OPTION) {
                 return null;
             }
-            FileCommunicator.setDefaultDialogPath(filedialog);
-            File f = filedialog.getSelectedFile();
+            FileCommunicator.setDefaultDialogPath(fd);
+            f = fd.getSelectedFile();
+            try {
+                flt = (SimpleFileFilter) fd.getFileFilter();
+                fmt = flt.getFormatHandler().newInstance();
+            } catch (Exception ex) {
+                fmt = SubFile.getBasicFormat();
+            }
+            sf = new SubFile(f, fmt);
 
             /* Initialize Subtitles */
             newsubs = new Subtitles();
-            newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
+            newsubs.setCurrentFile(f); // getFPS requires it
 
             /* Check if jb is an auto-load subtitle file */
             data = FileCommunicator.load(f, Jubler.prefs);
@@ -813,7 +834,7 @@ public class JublerFunction {
             }
 
             /* Convert file into subtitle data */
-            SubFormat format_handler = newsubs.populate(jb, f, data, Jubler.prefs.getLoadFPS());
+            newsubs.populate(jb, sf, data, Jubler.prefs.getLoadFPS());
             if (newsubs.size() == 0) {
                 JIDialog.error(jb, _("File not recognized!"), _("Error while loading file"));
                 return null;
@@ -846,5 +867,30 @@ public class JublerFunction {
             DropDownActionNumberOfLine.getEditor().setItem(Integer.valueOf(numberOfLine));
         }
     }//public void gotoLine()
+
+    public void changeTableRowHeightForTextTypeSubs() {
+        Subtitles subs = jb.getSubtitles();
+        int table_current_row_height = SubTable.getRowHeight();
+        boolean is_text_type = true;
+        try {
+            is_text_type = subs.isTextType();
+        } catch (Exception ex) {
+        }
+
+        boolean is_current_row_height_too_high = (table_current_row_height > TABLE_DEFAULT_HEIGHT);
+        boolean is_adjust_row_height = (is_text_type && is_current_row_height_too_high);
+        /*
+        String msg = "table_current_row_height:" + table_current_row_height + "\n" + 
+        "is_text_type:" + is_text_type + "\n" + 
+        "is_current_row_height_too_high:" + is_current_row_height_too_high +  "\n" + 
+        "is_adjust_row_height:" + is_adjust_row_height + "\n";
+        DEBUG.logger.log(Level.OFF, msg);
+         * 
+         */
+        if (is_adjust_row_height) {
+            SubTable.setRowHeight(TABLE_DEFAULT_HEIGHT);
+            SubTable.repaint();
+        }//end if (this.subs.isTextType())
+    }//end public void changeTableRowHeightForTextTypeSubs()    
 }//end public class JublerFunction
 
