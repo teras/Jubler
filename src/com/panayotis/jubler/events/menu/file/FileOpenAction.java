@@ -25,13 +25,16 @@
  * Contributor(s):
  * 
  */
-
 package com.panayotis.jubler.events.menu.file;
 
+import java.io.File;
+import com.panayotis.jubler.subs.loader.SubFormat;
+import com.panayotis.jubler.io.JublerFileChooser;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.MenuAction;
 import com.panayotis.jubler.io.SimpleFileFilter;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.subs.SubFile;
 import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
 import static com.panayotis.jubler.i18n.I18N._;
@@ -52,19 +55,30 @@ public class FileOpenAction extends MenuAction {
      */
     public void actionPerformed(ActionEvent evt) {
         Jubler jb = jublerParent;
-        JFileChooser filedialog = jb.getFiledialog();
-        filedialog.setDialogTitle(_("Load Subtitles"));
-        if (filedialog.showOpenDialog(jb) != JFileChooser.APPROVE_OPTION) {
+        JublerFileChooser fd = jb.getFiledialog();
+        SubFormat fmt = SubFile.getBasicFormat();
+        String def_fmt_name = fmt.getName();
+        SimpleFileFilter flt = fd.findFilter(def_fmt_name);
+        fd.setFileFilter(flt);
+        
+        File f = new File(_("Untitled"));
+        fd.setSelectedFile(f);
+        
+        fd.setDialogTitle(_("Load Subtitles"));
+        if (fd.showOpenDialog(jb) != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        FileCommunicator.setDefaultDialogPath(filedialog);
-
+        FileCommunicator.setDefaultDialogPath(fd);
+        
         try {
-            SimpleFileFilter filter = (SimpleFileFilter) filedialog.getFileFilter();
-            Jubler.prefs.getJload().setSelectedFormat(filter.getFormatHandler());
+            flt = (SimpleFileFilter) fd.getFileFilter();
+            fmt = flt.getFormatHandler().newInstance();
+            f = fd.getSelectedFile();
         } catch (Exception ex) {
-        }
-        jb.getFileManager().loadFileFromHere(filedialog.getSelectedFile(), false);
-
+            fmt = SubFile.getBasicFormat();
+        }        
+        Jubler.prefs.getJload().setSelectedFormat(fmt);
+        SubFile sf = new SubFile(f, fmt);        
+        jb.getFileManager().loadFileFromHere(sf, false);
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class FileOpenAction extends MenuAction
