@@ -36,6 +36,7 @@ import java.io.IOException;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -67,7 +68,9 @@ public abstract class AbstractPlayer extends VideoPlayer {
         try {
             File subtemp = File.createTempFile("jubler_", "."+JPreferences.DefaultSubFormat.getExtension());
             Subtitles new_subs = new Subtitles(subs);
-            FileCommunicator.save(new_subs, subtemp, null, mfile);
+            SubFile sf = new SubFile(subtemp, JPreferences.DefaultSubFormat);
+            new_subs.setSubfile(sf);
+            FileCommunicator.save(new_subs, null, mfile);
             subpath = subtemp.getPath();
             return;
         } catch (IOException e) {}
