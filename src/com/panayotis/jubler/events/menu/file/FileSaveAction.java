@@ -31,8 +31,10 @@ package com.panayotis.jubler.events.menu.file;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.MenuAction;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  *
@@ -54,8 +56,8 @@ public class FileSaveAction extends MenuAction {
         MediaFile mfile = jb.getMediaFile();
         
         Jubler.prefs.showSaveDialog(jb, mfile, subs); //Show the "save options" dialog, if desired
-
-        jb.getFileManager().saveFile(subs.getCurrentFile());
+        SubFile sf = subs.getSubfile();        
+        jb.getFileManager().saveFile(sf);
 
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class FileSaveAction extends MenuAction
