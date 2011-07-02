@@ -8,6 +8,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.options.JPreferences;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -71,7 +72,9 @@ public class AutoSaver {
                                 subs.getCurrentFileName() + "." +
                                 JPreferences.DefaultSubFormat.getExtension());
                         Subtitles new_subs = new Subtitles(subs);
-                        FileCommunicator.save(new_subs, outfile, null, null);
+                        SubFile sf = new SubFile(subs.getSubfile());
+                        sf.setCurrentFile(outfile);
+                        FileCommunicator.save(new_subs, null, null);
                     }
                 }
 
