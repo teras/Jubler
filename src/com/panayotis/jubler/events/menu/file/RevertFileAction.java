@@ -25,7 +25,6 @@
  * Contributor(s):
  * 
  */
-
 package com.panayotis.jubler.events.menu.file;
 
 import com.panayotis.jubler.Jubler;
@@ -57,6 +56,10 @@ public class RevertFileAction extends MenuAction {
         File last_f = sf.getLastOpenedFile();
         sf.setCurrentFile(last_f);
         sf.setLastOpenedFile(cur_f);
-        jb.getFileManager().loadFileFromHere(sf, true);
+        try {
+            jb.getFileManager().loadFileFromHere(sf, true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class RevertFileAction extends MenuAction
