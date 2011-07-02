@@ -27,6 +27,9 @@
  */
 package com.panayotis.jubler.events.menu.file;
 
+import com.panayotis.jubler.io.JublerFileChooser;
+import com.panayotis.jubler.subs.SubFile;
+import java.io.File;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.MenuAction;
 import com.panayotis.jubler.io.SimpleFileFilter;
@@ -58,25 +61,35 @@ public class FileSaveAsAction extends MenuAction {
         Subtitles subs = jb.getSubtitles();
         MediaFile mfile = jb.getMediaFile();
 
-        JFileChooser filedialog = jb.getFiledialog();
-
+        JublerFileChooser fd = jb.getFiledialog();
+        SubFormat handler = null;
+        File cur_f, last_f;
         try {
-            filedialog.setDialogTitle(_("Save Subtitles"));
-            filedialog.setSelectedFile(subs.getCurrentFile());
-            if (filedialog.showSaveDialog(jb) != JFileChooser.APPROVE_OPTION) {
+            cur_f = subs.getCurrentFile();
+            last_f = subs.getLastOpenedFile();
+            
+            fd.setDialogTitle(_("Save Subtitles"));            
+            fd.setSelectedFile(cur_f);
+            if (fd.showSaveDialog(jb) != JFileChooser.APPROVE_OPTION) {
                 return;
             }
-            FileCommunicator.setDefaultDialogPath(filedialog);
-            SubFormat handler = Jubler.prefs.getSaveFormat();
-            try {
-                SimpleFileFilter selected_filter = (SimpleFileFilter) filedialog.getFileFilter();
-                handler = selected_filter.getFormatHandler();
-            } catch (Exception ex) {}
+            FileCommunicator.setDefaultDialogPath(fd);
             
+            try {
+                SimpleFileFilter flt = (SimpleFileFilter) fd.getFileFilter();
+                handler = flt.getFormatHandler().newInstance();
+            } catch (Exception ex) {
+                handler = Jubler.prefs.getSaveFormat().newInstance();
+            }            
             Jubler.prefs.getJsave().setSelectedFormat(handler);
             Jubler.prefs.showSaveDialog(jb, mfile, subs); //Show the "save options" dialog, if desired
 
-            jb.getFileManager().saveFile(filedialog.getSelectedFile());
+            last_f = cur_f;
+            cur_f = fd.getSelectedFile();
+            
+            SubFile sf = new SubFile(cur_f, last_f, handler);
+            jb.getFileManager().saveFile(sf);
+            jb.fn.changeTableRowHeightForTextTypeSubs();
         } catch (Exception ex) {
             DEBUG.debug(ex.toString());
         }
