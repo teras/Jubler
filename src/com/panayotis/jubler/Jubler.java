@@ -1805,7 +1805,7 @@ public class Jubler extends JFrame {
     /**
      * @return the filedialog
      */
-    public JFileChooser getFiledialog() {
+    public JublerFileChooser getFiledialog() {
         return filedialog;
     }
 
