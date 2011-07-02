@@ -27,6 +27,7 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.subs.SubFile;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -81,7 +82,8 @@ public class Main {
                             }
 
                             if (f.exists() && f.isFile() && f.canRead()) {
-                                Jubler.windows.elementAt(0).getFileManager().loadFile(f, false);
+                                SubFile sf = new SubFile(f);
+                                Jubler.windows.elementAt(0).getFileManager().loadFile(sf, false);
                             }
 
                             if (autosave_counter == autosaves) {
