@@ -40,6 +40,7 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
 import java.util.ArrayList;
@@ -127,22 +128,27 @@ public class FileCommunicator {
     }
     
     
-    public static String save(Subtitles subs, File outfile, JPreferences prefs, MediaFile media) {
+    public static String save(Subtitles subs, JPreferences prefs, MediaFile media) {
         File tempout = null;
         String result = null;
-        
-        try {
-            SubFormat saveformat;
+        File outfile = null;
+        SubFormat saveformat = null;
+        SubFile sf = null;
+        try {            
+            sf = subs.getSubfile();
+            outfile = sf.getCurrentFile();
+            
             tempout = new File(outfile.getPath()+".temp");
             if ( !SystemDependent.canWrite(tempout.getParentFile()) ||
                     (outfile.exists() && (!SystemDependent.canWrite(outfile)) ) ) {
                 return _("File {0} is unwritable", outfile.getPath());
             }
             
-            if ( prefs == null ) {
-                saveformat = JPreferences.DefaultSubFormat;   
-            } else {
-                saveformat = prefs.getSaveFormat();
+            try{
+                saveformat = sf.getFormat();
+                saveformat.getName(); // test for null
+            }catch(Exception ex){
+                saveformat = JPreferences.DefaultSubFormat;
             }
             saveformat = saveformat.newInstance();
             
