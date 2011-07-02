@@ -30,8 +30,10 @@ package com.panayotis.jubler.events.menu.file;
 
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.MenuAction;
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.ActionEvent;
+import java.io.File;
 
 /**
  *
@@ -50,6 +52,11 @@ public class RevertFileAction extends MenuAction {
     public void actionPerformed(ActionEvent evt) {
         Jubler jb = jublerParent;
         Subtitles subs = jb.getSubtitles();
-        jb.getFileManager().loadFileFromHere(subs.getLastOpenedFile(), true);
+        SubFile sf = new SubFile(subs.getSubfile());
+        File cur_f = sf.getCurrentFile();
+        File last_f = sf.getLastOpenedFile();
+        sf.setCurrentFile(last_f);
+        sf.setLastOpenedFile(cur_f);
+        jb.getFileManager().loadFileFromHere(sf, true);
     }//end public void actionPerformed(ActionEvent evt)
 }//end public class RevertFileAction extends MenuAction
