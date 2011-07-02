@@ -29,6 +29,7 @@ import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
+import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.util.Collections;
 import java.util.Vector;
@@ -75,6 +76,14 @@ public class Subtitles extends AbstractTableModel {
         this.jubler = jubler;
     }
 
+    public Subtitles(Jubler jubler, SubFile sf) {
+        sublist = new Vector<SubEntry>();
+        styles = new SubStyleList();
+        attribs = new SubAttribs();
+        subfile = sf;
+        this.jubler = jubler;
+    }
+    
     public Subtitles(Subtitles old) {
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
@@ -104,48 +113,83 @@ public class Subtitles extends AbstractTableModel {
         }//end if (sublist != null)
     }
 
+  private Subtitles loadByFileExtension(Jubler work, SubFile sf, String data, float FPS) {
+        Subtitles load = null;
+        SubFormat format = null;
+        try {
+            File file = sf.getCurrentFile();
+            String ext = Share.getFileExtension(file, false);
+            format = AvailSubFormats.findFromExtension(ext).newInstance();
+            format.setJubler(work);
+            load = format.parse(data, FPS, file);
+            if (load != null) {
+                sf.setFormat(format);
+                sf.setCurrentFileToFormatExtension();
+                load.setSubfile(sf);
+            }//end if (load != null)
+        } catch (Exception ex) {
+        }
+        return load;
+    }//end private Subtitles loadByFileExtension()
+
+    private Subtitles loadBySelectedHandler(Jubler work, SubFile sf, String data, float FPS) {
+        Subtitles load = null;
+        SubFormat format = null;
+        try {
+            File file = sf.getCurrentFile();
+            format = sf.getFormat();
+            format.setJubler(work);
+            load = format.parse(data, FPS, file);
+            if (load != null) {
+                sf.setFormat(format);
+                sf.setCurrentFileToFormatExtension();
+                load.setSubfile(sf);
+            }//end if (load != null)
+        } catch (Exception ex) {
+        }
+        return load;
+    }//end private Subtitles loadByFileExtension()
+
+    private Subtitles loadByPattern(Jubler work, SubFile sf, String data, float FPS) {
+        Subtitles load = null;
+        SubFormat format = null;
+        AvailSubFormats formatlist = new AvailSubFormats();
+        try {
+            File file = sf.getCurrentFile();
+            while (load == null && formatlist.hasMoreElements()) {
+                format = formatlist.nextElement().newInstance();
+                format.setJubler(work);
+                load = format.parse(data, FPS, file);
+                if (load != null && load.size() < 1) {
+                    load = null;
+                }//end if (load != null && load.size() < 1)
+            }//end while (load == null && formatlist.hasMoreElements())
+            if (load != null) {
+                sf.setFormat(format);
+                sf.setCurrentFileToFormatExtension();
+                load.setSubfile(sf);
+            }//end if (format != null)
+        } catch (Exception ex) {
+        }
+        return load;
+    }//end private Subtitles loadByFileExtension()
+
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
-    public SubFormat populate(Jubler work, File f, String data, float FPS) {
+    public void populate(Jubler work, SubFile sf, String data, float FPS) {
         Subtitles load;
-        AvailSubFormats formats;
-
-        this.jubler = work;
-        if (data == null) {
-            return null;
+        load = this.loadByFileExtension(work, sf, data, FPS);
+        if (load == null) {
+            load = this.loadBySelectedHandler(work, sf, data, FPS);
         }
-        load = null;
-        SubFormat format_handler = null;
-        try {
-            format_handler = work.prefs.getJload().getSelectedFormat().newInstance();
-            if (format_handler != null) {
-                format_handler.setJubler(work);
-                format_handler.init();
-                load = format_handler.parse(data, FPS, f);
-            }//end if
-        } catch (Exception ex) {
+        if (load == null) {
+            load = this.loadByPattern(work, sf, data, FPS);
         }
-
-        formats = new AvailSubFormats();
-        /**
-         * Leave the format_handler outside the loop here
-         * for easier debugging and see which format handler was selected
-         * during the recognition of pattern and subsequently chosen
-         * as the loader for the data.
-         */
-        while (load == null && formats.hasMoreElements()) {
-            format_handler = formats.nextElement().newInstance();
-            format_handler.setJubler(work);
-            format_handler.init();
-            load = format_handler.parse(data, FPS, f);
-            if (load != null && load.size() < 1) {
-                load = null;
-            }
+        if (load != null) {
+            appendSubs(load, true);
+            attribs = new SubAttribs(load.attribs);
         }
-        appendSubs(load, true);
-        attribs = new SubAttribs(load.attribs);
-        return (load == null ? null : format_handler);
     }
 
     public void sort(double mintime, double maxtime) {
@@ -535,6 +579,26 @@ public class Subtitles extends AbstractTableModel {
         }//end for (int i = 0; i < visiblecols.length; i++)
     }//end public void recalculateTableSize(JTable t)
 
+    /**
+     * Checks to see if all entries are of text-based type, that is 
+     * none of the instance of SubEntry are of ImageTypeSubtitle.
+     * @return true if all are of text-based, false if a single instance is
+     * of different type, ie. ImageTypeSubtitle.
+     */
+    public boolean isTextType() {
+        boolean is_text_type = false;
+        try {
+            for (SubEntry entry : sublist) {
+                is_text_type = !(entry instanceof ImageTypeSubtitle);
+                if (!is_text_type) {
+                    break;
+                }
+            }//end for(SubEntry entry : sublist)
+        } catch (Exception ex) {
+        }
+        return is_text_type;
+    }//end public boolean isTextType()
+    
     public boolean isRequiredToConvert(Class new_class) {
         boolean is_required = false;
         try {
@@ -710,6 +774,31 @@ public class Subtitles extends AbstractTableModel {
      */
     public void setJubler(Jubler jubler) {
         this.jubler = jubler;
+    }
+
+    /**
+     * @return the subfile
+     */
+    public SubFile getSubfile() {
+        return subfile;
+    }
+
+    /**
+     * @param subfile the subfile to set
+     */
+    public void setSubfile(SubFile subfile) {
+        this.subfile = subfile;
+        matchFileExtensionWithFormatHandler();
+    }
+    
+    private void matchFileExtensionWithFormatHandler(){
+        try{
+            SubFormat fmt = this.subfile.getFormat();
+            String ext = fmt.getExtension();
+            File f = this.subfile.getCurrentFile();            
+            File new_file = Share.patchFileExtension(f, ext);
+            this.subfile.setCurrentFile(new_file);
+        }catch(Exception ex){}        
     }
 }//end public class Subtitles extends AbstractTableModel
 
