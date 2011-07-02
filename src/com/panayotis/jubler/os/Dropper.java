@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.os;
 
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -267,7 +268,8 @@ public class Dropper extends TransferHandler {
                 }
                 for (File f : files) {
                     if (f.isFile()) {
-                        parent.getFileManager().loadFile(f, false);
+                        SubFile sf = new SubFile(f);
+                        parent.getFileManager().loadFile(sf, false);
                     }//end if (f.isFile())
                 }//end for (File f : files)
                 break;
