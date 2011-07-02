@@ -27,6 +27,7 @@
  */
 package com.panayotis.jubler.io;
 
+import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.Jubler;
 import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.events.menu.edit.undo.UndoEntry;
@@ -36,6 +37,7 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.JSubEditor;
+import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.io.File;
@@ -71,7 +73,6 @@ public class JublerFile {
     private javax.swing.JMenuItem SaveFM;
     private javax.swing.JButton RegisterCurrentRowTB;
 
-    private SubFormat selectedFormatHandler = null;
     public JublerFile(Jubler parent) {
         jb = parent;
         init();
@@ -139,7 +140,7 @@ public class JublerFile {
         RegisterCurrentRowTB.setEnabled(true);
 
         Subtitles subs = jb.getSubtitles();
-        subs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f));
+        subs.setCurrentFile(f);
         updateRecentFile(f);
         jb.fn.showInfo();
         if (reset_selection) {
@@ -148,28 +149,21 @@ public class JublerFile {
     }
 
     public void updateRecentFile(File recent) {
-        Subtitles subs = jb.getSubtitles();
-
-        if (subs != null) {
-            subs.setLastOpenedFile(recent);
-        }
         FileCommunicator.updateRecentsList(recent);
         FileCommunicator.updateRecentsMenu();
     }
 
-    public void saveFile(File f) {
+    public void saveFile(SubFile sf) {
         UndoList undo = jb.getUndoList();
         Subtitles subs = jb.getSubtitles();
-
-        String ext = "." + Jubler.prefs.getSaveFormat().getExtension();
-        f = FileCommunicator.stripFileFromVideoExtension(f);
-        f = new File(f.getPath() + ext);
-
-
-        String result = FileCommunicator.save(subs, f, Jubler.prefs, jb.getMediaFile());
+        
+        sf.setCurrentFileToFormatExtension();        
+        subs.setSubfile(sf);
+        String result = FileCommunicator.save(subs, Jubler.prefs, jb.getMediaFile());
         if (result == null) {
             /* Saving succesfull */
             undo.setSaveMark();
+            File f = sf.getCurrentFile();
             setFile(f, false);
             undo.clearUndo();            
         } else {
@@ -177,20 +171,20 @@ public class JublerFile {
         }
     }
 
-    public void loadFileFromHere(File f, boolean force_into_same_window) {
+    public void loadFileFromHere(SubFile sf, boolean force_into_same_window) {
         StaticJubler.setWindowPosition(jb, false);    // Use jb window as a base for open dialogs
 
-        loadFile(f, force_into_same_window);
+        loadFile(sf, force_into_same_window);
     }
 
-    public void loadFile(File f, boolean force_into_same_window) {
+    public void loadFile(SubFile sf, boolean force_into_same_window) {
         String data;
         Subtitles newsubs;
         Jubler work;
         boolean is_autoload;
 
         Subtitles subs = jb.getSubtitles();
-
+        
         /* Find where to display jb subtitle file */
         if (subs == null || force_into_same_window) {
             work = jb;
@@ -199,8 +193,8 @@ public class JublerFile {
         }
 
         /* Initialize Subtitles */
-        newsubs = new Subtitles(jb);
-        newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
+        File f = sf.getCurrentFile();
+        newsubs = new Subtitles(jb, sf);
 
         /* Check if jb is an auto-load subtitle file */
         is_autoload = f.getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
@@ -222,7 +216,7 @@ public class JublerFile {
         }
 
         /* Convert file into subtitle data */
-        newsubs.populate(work, f, data, is_autoload ? 25 : Jubler.prefs.getLoadFPS());
+        newsubs.populate(work, sf, data, is_autoload ? 25 : Jubler.prefs.getLoadFPS());
         if (newsubs.size() == 0) {
             JIDialog.error(jb, _("File not recognized!"), _("Error while loading file"));
             return;
@@ -240,6 +234,7 @@ public class JublerFile {
             work_undo.setSaveMark();
         }
         work.fn.setSubs(newsubs);
+        f = sf.getCurrentFile(); //current file might changed
         work.getFileManager().setFile(f, true);
         work.getSaveFM().setEnabled(true);
     }
@@ -258,19 +253,20 @@ public class JublerFile {
         String data;
         Subtitles newsubs = null;
         try {
-            JFileChooser filedialog = jb.getFiledialog();
+            JFileChooser fd = jb.getFiledialog();
 
-            filedialog.setDialogTitle(_("Load Subtitles"));
-            if (filedialog.showOpenDialog(jb) != JFileChooser.APPROVE_OPTION) {
+            fd.setDialogTitle(_("Load Subtitles"));
+            if (fd.showOpenDialog(jb) != JFileChooser.APPROVE_OPTION) {
                 return null;
             }
-            FileCommunicator.setDefaultDialogPath(filedialog);
-            File f = filedialog.getSelectedFile();
-
+            FileCommunicator.setDefaultDialogPath(fd);
+            File f = fd.getSelectedFile();
+            SimpleFileFilter flt = (SimpleFileFilter)fd.getFileFilter();
+            SubFormat fmt = flt.getFormatHandler();
+            SubFile sf = new SubFile(f, fmt);
             /* Initialize Subtitles */
-            newsubs = new Subtitles();
-            newsubs.setCurrentFile(FileCommunicator.stripFileFromVideoExtension(f)); // getFPS requires it
-
+            newsubs = new Subtitles(jb, sf);
+            
             /* Check if jb is an auto-load subtitle file */
             data = FileCommunicator.load(f, Jubler.prefs);
             if (data == null) {
@@ -279,7 +275,7 @@ public class JublerFile {
             }
 
             /* Convert file into subtitle data */
-            selectedFormatHandler = newsubs.populate(jb, f, data, Jubler.prefs.getLoadFPS());
+            newsubs.populate(jb, sf, data, Jubler.prefs.getLoadFPS());
             if (newsubs.size() == 0) {
                 JIDialog.error(jb, _("File not recognized!"), _("Error while loading file"));
                 return null;
@@ -299,23 +295,9 @@ public class JublerFile {
             initNewFile(subs.getCurrentFile().getPath() + _("_clone"));
             /* The user wants to clone current file */
         } else {
-            loadFileFromHere(new File(filename), false);
+            SubFile sf = new SubFile(new File(filename), SubFile.getBasicFormat());
+            loadFileFromHere(sf, false);
         }
-    }
-
-    /**
-     * @return the selectedFormatHandler
-     */
-    public SubFormat getSelectedFormatHandler() {
-        return selectedFormatHandler;
-    }
-
-    /**
-     * @param selectedFormatHandler the selectedFormatHandler to set
-     */
-    public void setSelectedFormatHandler(SubFormat selectedFormatHandler) {
-        this.selectedFormatHandler = selectedFormatHandler;
-    }
-    
+    }    
 }//end public class JublerFile
 
