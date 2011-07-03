@@ -27,6 +27,7 @@
  */
 package com.panayotis.jubler;
 
+import com.panayotis.jubler.os.TreeWalker;
 import com.panayotis.jubler.events.menu.toobar.RegisterCurrentRowAction;
 import com.panayotis.jubler.events.menu.tool.VideoPreviewAction;
 import com.panayotis.jubler.events.menu.edit.StyleBySelectionAction;
@@ -346,7 +347,16 @@ public class JActionMap extends HashMap<Object, Object> {
         ocrAction.setLanguage("eng");
         String working_dir = FileCommunicator.getCurrentPath();
         File tesseract_path = new File(working_dir, "tesseract");
-        String tesseract_path_as_string = tesseract_path.getAbsolutePath();
+        String tesseract_path_as_string = tesseract_path.getAbsolutePath();        
+        File f = TreeWalker.searchExecutable(
+                "tesseract", 
+                null, 
+                "imagename outputbase",
+                "tesseract");
+                //"C:\\Program Files\\Tesseract-OCR\\tesseract.exe");
+        if (f != null){
+            tesseract_path_as_string = f.getParent();
+        }
         ocrAction.setTessPath(tesseract_path_as_string + FILE_SEP);
 
         moveRecord =
