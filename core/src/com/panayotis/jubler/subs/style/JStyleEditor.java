@@ -3,20 +3,20 @@
  *
  * Created on 2 Σεπτέμβριος 2005, 12:23 μμ
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -30,6 +30,7 @@ import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import java.awt.BorderLayout;
@@ -289,10 +290,12 @@ public class JStyleEditor extends javax.swing.JDialog {
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         DirtyIndicator.setBackground(java.awt.Color.green);
         DirtyIndicator.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 2, 1, 2));
+        DirtyIndicator.setOpaque(false);
         DirtyIndicator.setLayout(new java.awt.BorderLayout());
 
         StyleName.setToolTipText(_("The name of this style. Remember to hit [RETURN] to store the name"));
@@ -302,9 +305,11 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel2.add(DirtyIndicator, java.awt.BorderLayout.CENTER);
 
+        jPanel16.setOpaque(false);
         jPanel16.setLayout(new java.awt.BorderLayout());
 
         jPanel15.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        jPanel15.setOpaque(false);
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
         Clone.setText(_("Clone"));
@@ -319,7 +324,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel16.add(jPanel15, java.awt.BorderLayout.CENTER);
 
-        Save.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
+        Save.setIcon(Theme.loadIcon("save.png"));
         Save.setToolTipText(_("Save default style"));
         Save.addActionListener(formListener);
         jPanel16.add(Save, java.awt.BorderLayout.EAST);
@@ -328,9 +333,11 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(jPanel2);
 
-        FontP.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Font")));
+        FontP.setBorder(SystemDependent.getBorder(_("Font")));
+        FontP.setOpaque(false);
         FontP.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         FontSize.setToolTipText(_("Font size"));
@@ -345,27 +352,28 @@ public class JStyleEditor extends javax.swing.JDialog {
         FontP.add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
-        Bold.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/bold.png"))); // NOI18N
+        Bold.setIcon(Theme.loadIcon("bold.png"));
         Bold.setToolTipText(_("Bold"));
         SystemDependent.setCommandButtonStyle(Bold, "first");
         Bold.addActionListener(formListener);
         jPanel3.add(Bold);
 
-        Italic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/italics.png"))); // NOI18N
+        Italic.setIcon(Theme.loadIcon("italics.png"));
         Italic.setToolTipText(_("Italic"));
         SystemDependent.setCommandButtonStyle(Italic, "middle");
         Italic.addActionListener(formListener);
         jPanel3.add(Italic);
 
-        Underline.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/underline.png"))); // NOI18N
+        Underline.setIcon(Theme.loadIcon("underline.png"));
         Underline.setToolTipText(_("Underline"));
         SystemDependent.setCommandButtonStyle(Underline, "middle");
         Underline.addActionListener(formListener);
         jPanel3.add(Underline);
 
-        Strike.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/strike.png"))); // NOI18N
+        Strike.setIcon(Theme.loadIcon("strike.png"));
         Strike.setToolTipText(_("Strikethrough"));
         SystemDependent.setCommandButtonStyle(Strike, "last");
         Strike.addActionListener(formListener);
@@ -375,7 +383,8 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(FontP);
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Colors")));
+        jPanel4.setBorder(SystemDependent.getBorder(_("Colors")));
+        jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 4, 0));
 
         Primary.setText(TriColorButton.labels[0]);
@@ -405,6 +414,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         getContentPane().add(jPanel4);
 
         jPanel13.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED), javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+        jPanel13.setOpaque(false);
         jPanel13.setLayout(new java.awt.BorderLayout());
 
         TestText.setEditable(false);
@@ -414,16 +424,20 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(jPanel13);
 
+        Advanced.setOpaque(false);
         Advanced.setLayout(new javax.swing.BoxLayout(Advanced, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel9.setOpaque(false);
         jPanel9.setLayout(new java.awt.GridLayout(1, 2));
 
-        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Border")));
+        jPanel5.setBorder(SystemDependent.getBorder(_("Border")));
+        jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.GridLayout(3, 1));
 
         BorderStyle.setToolTipText(_("Border style"));
         jPanel5.add(BorderStyle);
 
+        jPanel10.setOpaque(false);
         jPanel10.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -435,6 +449,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel5.add(jPanel10);
 
+        jPanel11.setOpaque(false);
         jPanel11.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -448,7 +463,8 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel9.add(jPanel5);
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Margins transformations")));
+        jPanel6.setBorder(SystemDependent.getBorder(_("Margins transformations")));
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(3, 2, 2, 0));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -476,9 +492,11 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         Advanced.add(jPanel9);
 
+        jPanel12.setOpaque(false);
         jPanel12.setLayout(new java.awt.GridLayout(1, 2));
 
-        jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Font transformations")));
+        jPanel7.setBorder(SystemDependent.getBorder(_("Font transformations")));
+        jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.GridLayout(4, 2, 2, 0));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -511,7 +529,8 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel12.add(jPanel7);
 
-        JDirPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(_("Alignment")));
+        JDirPanel.setBorder(SystemDependent.getBorder(_("Alignment")));
+        JDirPanel.setOpaque(false);
         JDirPanel.setLayout(new java.awt.BorderLayout());
         jPanel12.add(JDirPanel);
 
@@ -519,18 +538,20 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(Advanced);
 
+        jPanel14.setOpaque(false);
         jPanel14.setLayout(new java.awt.BorderLayout());
 
         AdvancedSelect.setText(_("Advanced options"));
         AdvancedSelect.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        AdvancedSelect.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tabclosed.png"))); // NOI18N
+        AdvancedSelect.setIcon(Theme.loadIcon("tabclosed.png"));
         AdvancedSelect.setIconTextGap(10);
-        AdvancedSelect.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tabpressedup.png"))); // NOI18N
-        AdvancedSelect.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/tabopenup.png"))); // NOI18N
+        AdvancedSelect.setPressedIcon(Theme.loadIcon("tabpressedup.png"));
+        AdvancedSelect.setSelectedIcon(Theme.loadIcon("tabopenup.png"));
         AdvancedSelect.addActionListener(formListener);
         jPanel14.add(AdvancedSelect, java.awt.BorderLayout.CENTER);
 
         jPanel18.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
+        jPanel18.setOpaque(false);
         jPanel18.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
         OKB.setText(_("OK"));

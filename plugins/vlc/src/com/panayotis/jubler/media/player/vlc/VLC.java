@@ -19,15 +19,19 @@
  */
 package com.panayotis.jubler.media.player.vlc;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
+import java.util.ArrayList;
 
 /**
  *
  * @author teras
  */
-public class VLC extends AbstractPlayer implements Plugin {
+public class VLC extends AbstractPlayer implements Plugin, PluginItem {
 
     public VLC() {
         super(family);
@@ -83,5 +87,25 @@ public class VLC extends AbstractPlayer implements Plugin {
 
     public String getName() {
         return "VLC";
+    }
+
+    public PluginItem[] getPluginItems() {
+        return new PluginItem[]{this};
+    }
+
+    public String getPluginName() {
+        return _("VLC media player");
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
+    }
+
+    @Override
+    public ArrayList<String> getSearchNames() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("vlc");
+        list.add("vlc.exe");
+        return list;
     }
 }

@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.os;
 
+import com.panayotis.jubler.JubFrame;
 import java.io.File;
 import java.util.StringTokenizer;
 
@@ -31,6 +32,9 @@ import java.util.StringTokenizer;
  */
 public class SystemFileFinder {
 
+    private static boolean isJarBased;
+    public static final String AppPath = guessMainPath("Jubler", JubFrame.class.getName());
+
     private static File findFile(String name) {
         String classpath = System.getProperty("java.class.path");
         StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
@@ -39,14 +43,14 @@ public class SystemFileFinder {
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
             if (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")) {
-                int seppos = path.lastIndexOf(FileCommunicator.FS);
+                int seppos = path.lastIndexOf(File.separator);
                 if (seppos >= 0)
                     path = path.substring(0, seppos);
                 else
                     path = ".";
             }
-            if (!path.endsWith(FileCommunicator.FS))
-                path = path + FileCommunicator.FS;
+            if (!path.endsWith(File.separator))
+                path = path + File.separator;
             File filetest = new File(path + name);
             if (filetest.exists())
                 return filetest;
@@ -55,7 +59,7 @@ public class SystemFileFinder {
     }
 
     public static boolean loadLibrary(String name) {
-        File libfile = findFile("lib" + FileCommunicator.FS + System.mapLibraryName(name));
+        File libfile = findFile("lib" + File.separator + System.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());
@@ -66,15 +70,29 @@ public class SystemFileFinder {
         return false;
     }
 
-    public static String getJublerAppPath() {
-        File f = findFile("Jubler.jar");
-        if (f == null)
-            f = findFile("Jubler.exe");
-        if (f == null)
-            f = findFile("com");
+    public static String guessMainPath(String basename, String baseclass) {
+        String path;
+        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), File.pathSeparator);
+        while (tok.hasMoreTokens()) {
+            path = tok.nextToken();
+            File file = new File(path);
+            if (!file.isAbsolute()) {
+                path = System.getProperty("user.dir") + File.separator + path;
+                file = new File(path);
+            }
+            if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
+                isJarBased = true;
+                return file.getParentFile().getAbsolutePath();
+            }
+            if (new File(path + File.separator + baseclass.replace('.', File.separatorChar) + ".class").exists()) {
+                isJarBased = false;
+                return file.getAbsolutePath();
+            }
+        }
+        return null;
+    }
 
-        if (f != null)
-            return f.getParent();
-        return "";
+    public static boolean isJarBased() {
+        return isJarBased;
     }
 }

@@ -22,12 +22,6 @@
  */
 package com.panayotis.jubler.subs.style.event;
 
-import com.panayotis.jubler.subs.style.SubStyle.Direction;
-import java.util.ArrayList;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-
 /**
  *
  * @author teras

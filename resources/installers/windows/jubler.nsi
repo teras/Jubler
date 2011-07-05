@@ -69,6 +69,10 @@ Section "Jubler editor" SecJubler
   File dist\lib\*.*
   File resources\installers\windows\subtitle.ico
 
+  ; Create themes
+  SetOutPath $INSTDIR\themes
+  File dist\themes\*.jar
+
   ; Create i18n files
   SetOutPath $INSTDIR\i18n
   File dist\i18n\*.jar

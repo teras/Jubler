@@ -28,8 +28,9 @@ import java.util.ArrayList;
  */
 public class AvailTranslators extends ArrayList<Translator> {
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public AvailTranslators() {
-        PluginManager.manager.callPostInitListeners(this);
+        PluginManager.manager.callPluginListeners(this);
     }
 
     public String[] getNamesList() {

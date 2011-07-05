@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.subs.style.gui.tri;
 
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
 import com.panayotis.jubler.subs.style.StyleType;
 import java.awt.event.ActionEvent;
@@ -41,7 +42,7 @@ public class TriToggleButton extends JToggleButton implements TriObject {
 
     /** Creates a new instance of JTriButton */
     public TriToggleButton(String iconname) {
-        on = new ImageIcon(getClass().getResource(iconname));
+        on = Theme.loadIcon(iconname);
         off = DarkIconFilter.getDisabledIcon(on);
         setState(0);
 

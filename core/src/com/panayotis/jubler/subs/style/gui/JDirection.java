@@ -24,6 +24,7 @@ package com.panayotis.jubler.subs.style.gui;
 
 import com.panayotis.jubler.os.SystemDependent;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.plugins.Theme;
 
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import java.awt.Component;
@@ -214,7 +215,7 @@ public class JDirection extends javax.swing.JPanel {
         setLayout(new java.awt.GridLayout(3, 3));
 
         AlignGroup.add(TopLeft);
-        TopLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/upleft.png"))); // NOI18N
+        TopLeft.setIcon(Theme.loadIcon("upleft.png"));
         TopLeft.setToolTipText(_("Top left"));
         SystemDependent.setDirectionButtonStyle(TopLeft);
         TopLeft.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +231,7 @@ public class JDirection extends javax.swing.JPanel {
         add(TopLeft);
 
         AlignGroup.add(Top);
-        Top.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/up.png"))); // NOI18N
+        Top.setIcon(Theme.loadIcon("up.png"));
         Top.setToolTipText(_("Top"));
         SystemDependent.setDirectionButtonStyle(Top);
         Top.addActionListener(new java.awt.event.ActionListener() {
@@ -246,7 +247,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Top);
 
         AlignGroup.add(TopRight);
-        TopRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/upright.png"))); // NOI18N
+        TopRight.setIcon(Theme.loadIcon("upright.png"));
         TopRight.setToolTipText(_("Top right"));
         SystemDependent.setDirectionButtonStyle(TopRight);
         TopRight.addActionListener(new java.awt.event.ActionListener() {
@@ -262,7 +263,7 @@ public class JDirection extends javax.swing.JPanel {
         add(TopRight);
 
         AlignGroup.add(Left);
-        Left.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/left.png"))); // NOI18N
+        Left.setIcon(Theme.loadIcon("left.png"));
         Left.setToolTipText(_("Left"));
         SystemDependent.setDirectionButtonStyle(Left);
         Left.addActionListener(new java.awt.event.ActionListener() {
@@ -278,7 +279,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Left);
 
         AlignGroup.add(Center);
-        Center.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/center.png"))); // NOI18N
+        Center.setIcon(Theme.loadIcon("center.png"));
         Center.setToolTipText(_("Center"));
         SystemDependent.setDirectionButtonStyle(Center);
         Center.addActionListener(new java.awt.event.ActionListener() {
@@ -294,7 +295,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Center);
 
         AlignGroup.add(Right);
-        Right.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/right.png"))); // NOI18N
+        Right.setIcon(Theme.loadIcon("right.png"));
         Right.setToolTipText(_("Right"));
         SystemDependent.setDirectionButtonStyle(Right);
         Right.addActionListener(new java.awt.event.ActionListener() {
@@ -310,7 +311,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Right);
 
         AlignGroup.add(BottomLeft);
-        BottomLeft.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/downleft.png"))); // NOI18N
+        BottomLeft.setIcon(Theme.loadIcon("downleft.png"));
         BottomLeft.setToolTipText(_("Bottom left"));
         SystemDependent.setDirectionButtonStyle(BottomLeft);
         BottomLeft.addActionListener(new java.awt.event.ActionListener() {
@@ -327,7 +328,7 @@ public class JDirection extends javax.swing.JPanel {
 
         SystemDependent.setDirectionButtonStyle(Bottom);
         AlignGroup.add(Bottom);
-        Bottom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/down.png"))); // NOI18N
+        Bottom.setIcon(Theme.loadIcon("down.png"));
         Bottom.setToolTipText(_("Bottom"));
         Bottom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -343,7 +344,7 @@ public class JDirection extends javax.swing.JPanel {
 
         SystemDependent.setDirectionButtonStyle(BottomRight);
         AlignGroup.add(BottomRight);
-        BottomRight.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/downright.png"))); // NOI18N
+        BottomRight.setIcon(Theme.loadIcon("downright.png"));
         BottomRight.setToolTipText(_("Bottom right"));
         BottomRight.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

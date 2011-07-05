@@ -26,6 +26,7 @@ import com.panayotis.jubler.os.SystemDependent;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.externals.wizard.JWizard;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
@@ -38,15 +39,17 @@ public class JExtBasicOptions extends JPanel {
     protected String family;
     protected String[] testparameters;
     protected String test_signature;
+    private ArrayList<String> searchname;
 
     /** Creates new form MPlay */
-    public JExtBasicOptions(String family, String name, String[] testparameters, String test_signature) {
+    public JExtBasicOptions(String family, String name, ArrayList<String> searchname, String[] testparameters, String test_signature) {
         super();
 
         this.family = family;
         this.name = name;
         this.testparameters = testparameters;
         this.test_signature = test_signature;
+        this.searchname = searchname;
 
         initComponents();
     }
@@ -122,7 +125,7 @@ public class JExtBasicOptions extends JPanel {
 
     /* Use this method when we want to search for the executable path */
     private boolean searchForExecutable() {
-        JWizard wiz = new JWizard(name, testparameters, test_signature, FilenameT.getText());
+        JWizard wiz = new JWizard(name, searchname, testparameters, test_signature, FilenameT.getText());
         wiz.setVisible(true);
         String fname = wiz.getExecFilename();
         if (fname != null) {

@@ -22,9 +22,12 @@
  */
 package com.panayotis.jubler.tools.spell.checkers;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
 import java.io.BufferedReader;
@@ -42,7 +45,7 @@ import java.util.ArrayList;
  *
  * @author teras
  */
-public class ASpell extends SpellChecker implements Plugin {
+public class ASpell extends SpellChecker implements Plugin, PluginItem {
 
     BufferedWriter send;
     BufferedReader get;
@@ -161,19 +164,31 @@ public class ASpell extends SpellChecker implements Plugin {
         return opts;
     }
 
-    public String getName() {
+    public final String getName() {
         return "ASpell";
     }
 
-    public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
+    public Class[] getPluginAffections() {
+        return new Class[]{AvailExternals.class};
     }
 
-    public void postInit(Object o) {
-        if (o instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) o;
+    public void execPlugin(Object caller, Object param) {
+        if (caller instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals) caller;
             if (l.getType().equals(family))
                 l.add(this);
         }
+    }
+
+    public PluginItem[] getPluginItems() {
+        return new PluginItem[]{this};
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
+    }
+
+    public String getPluginName() {
+        return _("ASpell checker");
     }
 }

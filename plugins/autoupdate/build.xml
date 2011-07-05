@@ -71,8 +71,5 @@
     nbproject/build-impl.xml file. 
 
     -->
-	<target name="-post-jar">
-		<copy file="../../../jupidator/dist/jupidator.jar" todir="../../dist/lib"/>
-	</target>
 
 </project>

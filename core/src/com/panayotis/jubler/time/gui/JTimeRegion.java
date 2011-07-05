@@ -27,8 +27,6 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 
-import static com.panayotis.jubler.i18n.I18N._;
-
 /**
  *
  * @author  teras
@@ -110,8 +108,10 @@ public class JTimeRegion extends JTimeArea {
         ToGroup = new javax.swing.ButtonGroup();
         TimesP = new javax.swing.JPanel();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
+        TimesP.setOpaque(false);
         TimesP.setLayout(new java.awt.GridLayout(1, 2));
         add(TimesP, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

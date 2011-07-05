@@ -37,6 +37,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -69,7 +70,7 @@ public abstract class WebTranslator implements Translator, ActionListener {
         this.blocksize = blocksize;
     }
 
-    public boolean translate(final ArrayList<SubEntry> subs, final String from_language, final String to_language) {
+    public boolean translate(final List<SubEntry> subs, final String from_language, final String to_language) {
         errorstream = "";
         proc.setValues(subs.size(), _("Translating to {0}", to_language));
         transt = new Thread() {
@@ -105,16 +106,16 @@ public abstract class WebTranslator implements Translator, ActionListener {
 
     protected abstract boolean isProtocolPOST();
 
-    protected abstract String getConvertedSubtitleText(ArrayList<SubEntry> subs) throws UnsupportedEncodingException;
+    protected abstract String getConvertedSubtitleText(List<SubEntry> subs) throws UnsupportedEncodingException;
 
-    protected abstract String parseResults(ArrayList<SubEntry> subs, BufferedReader in) throws IOException;
+    protected abstract String parseResults(List<SubEntry> subs, BufferedReader in) throws IOException;
 
-    private String translatePart(ArrayList<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
+    private String translatePart(List<SubEntry> subs, int fromsub, int tosub, String from_language, String to_language) {
         BufferedReader in = null;
         OutputStreamWriter out = null;
         String error = null;
         try {
-            ArrayList<SubEntry> group = getSubtitlesGroup(subs, fromsub, tosub);
+            List<SubEntry> group = getSubtitlesGroup(subs, fromsub, tosub);
             String txt = getConvertedSubtitleText(group);
 
             URL req = new URL(getTranslationURL(from_language, to_language) + (isProtocolPOST() ? "" : "&" + txt));
@@ -151,8 +152,8 @@ public abstract class WebTranslator implements Translator, ActionListener {
         return error;
     }
 
-    private ArrayList<SubEntry> getSubtitlesGroup(ArrayList<SubEntry> subs, int from, int to) {
-        ArrayList<SubEntry> part = new ArrayList<SubEntry>();
+    private List<SubEntry> getSubtitlesGroup(List<SubEntry> subs, int from, int to) {
+        List<SubEntry> part = new ArrayList<SubEntry>();
         for (int i = from; i < to; i++)
             part.add(subs.get(i));
         return part;

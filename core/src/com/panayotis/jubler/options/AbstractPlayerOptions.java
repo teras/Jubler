@@ -37,7 +37,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
 
     /** Creates new form AbstractPlayerOptions */
     public AbstractPlayerOptions(String family, AbstractPlayer player) {
-        super(family, player.getName(), player.getTestParameters(), player.getTestSignature());
+        super(family, player.getName(), player.getSearchNames(), player.getTestParameters(), player.getTestSignature());
         args_default = player.getDefaultArguments();
 
         initComponents();

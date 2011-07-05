@@ -46,21 +46,19 @@ import javax.swing.table.AbstractTableModel;
 public class ShortcutsModel extends AbstractTableModel {
 
     private final static String colnames[] = {_("Command"), _("Key")};
-    private final static int default_modifier;
-
-    static {
-        default_modifier = SystemDependent.getDefaultKeyModifier();
-    }
-    ArrayList<Shortcut> list, deflist, undo;
-    Shortcut buffer = new Shortcut(null, null);
+    private final static int DEFAULT_MOD = SystemDependent.getDefaultKeyModifier();
+    private final static int DISABLED_MOD = ~(KeyEvent.CTRL_MASK | KeyEvent.CTRL_DOWN_MASK);
+    //
+    private ArrayList<MenuItem> current, original, undo;
+    private int buffer_mod = 0;
     int current_id = -1;
 
     /** Creates a new instance of ShortcutsModel */
     public ShortcutsModel(JMenuBar bar) {
-        deflist = new ArrayList<Shortcut>();
+        original = new ArrayList<MenuItem>();
         for (int i = 0; i < bar.getMenuCount(); i++) {
             if (i > 0)
-                deflist.add(null);
+                original.add(null);  // Add "---" between menus
             addMenuList("", bar.getMenu(i));
         }
         String err = isValidCodes();
@@ -77,9 +75,10 @@ public class ShortcutsModel extends AbstractTableModel {
                 addMenuList(prefix + item.getText() + " ", item);
             } else if (c instanceof JMenuItem) {
                 JMenuItem item = (JMenuItem) c;
-                Shortcut sh = new Shortcut(prefix + item.getText(), item.getName());
-                sh.setAccelerator(item.getAccelerator());
-                deflist.add(sh);
+                if (item.getName() == null)
+                    DEBUG.debug("Menu item \"" + prefix + item.getText() + "\" does not provide a valid name");
+                else
+                    original.add(new MenuItem(prefix + item.getText(), item.getName(), item.getAccelerator()));
             }
         }
     }
@@ -97,286 +96,153 @@ public class ShortcutsModel extends AbstractTableModel {
                 applyItemsShortcuts((JMenu) c);
             else if (c instanceof JMenuItem) {
                 JMenuItem item = (JMenuItem) c;
-                int pos = findShortcut(item.getName());
-                if (pos >= 0)
-                    list.get(pos).applyShortcut(item);
+                if (item.getName() != null)
+                    current.get(current.indexOf(new MenuItem(null, item.getName(), (MenuItem.Shortcut) null))).applyShortcut(item);
             }
         }
-    }
-
-    private int findShortcut(String name) {
-        Shortcut sh;
-        for (int i = 0; i < list.size(); i++) {
-            sh = list.get(i);
-            if (sh != null && sh.name != null && sh.name.equals(name))
-                return i;
-        }
-        return -1;
     }
 
     public Object getValueAt(int row, int col) {
-        String res = "";
-        try {
-            Shortcut entry = list.get(row);
-            if (col == 0)
-                if (entry == null)
-                    res = " --- ";
-                else
-                    res = entry.text;
-            if (col == 1 && entry != null && entry.key_id != KeyEvent.CHAR_UNDEFINED) {
-                res += SystemDependent.getKeyMods(entry.mods);
-                res += KeyEvent.getKeyText(entry.key_id);
-            }
-        } catch (IndexOutOfBoundsException e) {
-            for (int i = 0; i < list.size(); i++)
-                DEBUG.debug(list.get(i) + " - " + deflist.get(i));
-            return "??";
-        }
-        return res;
+        MenuItem entry = current.get(row);
+        if (col == 0)
+            return entry == null ? "---" : entry.menuname;
+        else
+            return entry == null ? "" : entry.key.toString();
     }
 
     public int getRowCount() {
-        return deflist.size();
+        return original.size();
     }
 
     public int getColumnCount() {
         return colnames.length;
     }
 
+    @Override
     public boolean isCellEditable(int row, int col) {
         return false;
     }
 
+    @Override
     public String getColumnName(int index) {
         return colnames[index];
     }
 
-    private int getModID(int id) {
+    private int getModifierKey(int id) {
         switch (id) {
             case KeyEvent.VK_META:
-                return 0;
+                return KeyEvent.META_MASK;
             case KeyEvent.VK_ALT:
-                return 1;
+                return KeyEvent.ALT_MASK;
             case KeyEvent.VK_CONTROL:
-                return 2;
+                return KeyEvent.CTRL_MASK;
             case KeyEvent.VK_SHIFT:
-                return 3;
+                return KeyEvent.SHIFT_MASK;
         }
+        return -1;
+    }
+
+    private boolean isValidKey(int id) {
         switch (id) {
             /* Here grab all modifiers which are not interested in */
             case KeyEvent.VK_CAPS_LOCK:
             case KeyEvent.VK_ALT_GRAPH:
-                return -1;
+                return false;
         }
-        return -2;
+        return true;
     }
 
     public void setSelection(int which) {
-        buffer.cleanValues();
         current_id = which;
     }
 
     public void keyPressed(int keyid) {
-        int modid = getModID(keyid);
-        if (modid >= 0) {
-            buffer.mods[modid] = true;
-            return;
-        }
-        if (modid == -1)
-            return; // Still invalid key
-
-        buffer.key_id = keyid;
-        Shortcut sh = list.get(current_id);
-        if (sh != null) {
-            sh.setValues(buffer);
+        int modifier = getModifierKey(keyid);
+        if (modifier > 0)
+            buffer_mod |= modifier;
+        else if (isValidKey(keyid)) {
+            MenuItem old = current.get(current_id);
+            current.set(current_id, new MenuItem(old.menuname, old.tag, new MenuItem.Shortcut(keyid, buffer_mod)));
             fireTableRowsUpdated(current_id, current_id);
         }
     }
 
     public void keyReleased(int keyid) {
-        int modid = getModID(keyid);
-        if (modid >= 0) {
-            buffer.mods[modid] = false;
-            return;
-        }
+        int modid = getModifierKey(keyid);
+        if (modid > 0)
+            buffer_mod &= ~modid;
     }
 
     public void removeShortcut() {
         if (current_id >= 0) {
-            list.get(current_id).cleanValues();
+            MenuItem old = current.get(current_id);
+            current.set(current_id, new MenuItem(old.menuname, old.tag, new MenuItem.Shortcut()));
             fireTableRowsUpdated(current_id, current_id);
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void resetAllShortcuts() {
-        list = cloneList(deflist, false);
+        current = (ArrayList<MenuItem>) original.clone();
         fireTableDataChanged();
     }
 
+    @SuppressWarnings("unchecked")
     public void saveState() {
-        undo = cloneList(list, false);
+        undo = (ArrayList<MenuItem>) current.clone();
     }
 
     public void restoreState() {
-        list = undo;
+        current = undo;
         undo = null;
         fireTableDataChanged();
     }
 
     public void savePreferences() {
         StringBuilder keys = new StringBuilder();
-        for (Shortcut s : list)
-            if (s != null && s.key_id != KeyEvent.CHAR_UNDEFINED)
-                keys.append(',').append(s.toString());
-        Options.setOption("Shortcut.keys", keys.substring(1));
+        for (int i = 0; i < current.size(); i++) {
+            MenuItem cur = current.get(i);
+            MenuItem orig = original.get(i);
+            if (cur != null && (!cur.key.equals(orig.key)))
+                keys.append(",").append(cur.toString());
+        }
+        Options.setOption("Shortcut.keys", keys.length() == 0 ? "" : keys.substring(1));
         StaticJubler.updateAllMenus();
     }
 
+    @SuppressWarnings("unchecked")
     public void loadPreferences() {
+        current = (ArrayList<MenuItem>) original.clone();
         String keys = Options.getOption("Shortcut.keys", "");
-        if (keys.equals("")) {
-            list = cloneList(deflist, false);
+        if (keys.equals(""))
             return;
-        }
-
-        list = cloneList(deflist, true);
-        Matcher m = Pattern.compile("(\\w\\w\\w)=(\\w\\w\\w\\w)(\\d+)").matcher(keys);
-
-        while (m.find()) {
-            int which = findShortcut(m.group(1));
-            if (which >= 0)
-                list.get(which).setValues(m.group(2), m.group(3));
-        }
+        Matcher m = Pattern.compile("(\\w\\w\\w)=\\((\\d+),(\\d+)\\)").matcher(keys);
+        while (m.find())
+            try {
+                MenuItem other = new MenuItem(null, m.group(1), new MenuItem.Shortcut(Integer.parseInt(m.group(2)), Integer.parseInt(m.group(3))));
+                int which = current.indexOf(other);
+                if (which >= 0) {
+                    MenuItem old = current.get(which);
+                    other = other.getRenamed(old.menuname);
+                    current.set(which, other);
+                }
+            } catch (Exception ex) {
+            }
     }
 
     private String isValidCodes() {
         HashSet<String> set = new HashSet<String>();
-        for (Shortcut s : deflist)
+        for (MenuItem s : original)
             if (s != null) {
-                if (s.name == null)
-                    return s.text;
-                if (set.contains(s.name))
-                    return s.name;
-                if (s.name.length() != 3)
-                    return s.name;
-                set.add(s.name);
+                if (s.tag == null)
+                    return s.menuname;
+                if (set.contains(s.tag))
+                    return s.tag;
+                if (s.tag.length() < 3)
+                    return "Tag too big: " + s.tag;
+                set.add(s.tag);
             }
         return null;
-    }
-
-    private ArrayList<Shortcut> cloneList(ArrayList<Shortcut> oldlist, boolean only_names) {
-        ArrayList<Shortcut> newlist = new ArrayList<Shortcut>(oldlist.size());
-        Shortcut sh;
-        for (int i = 0; i < oldlist.size(); i++) {
-            sh = oldlist.get(i);
-            if (sh != null)
-                if (only_names)
-                    newlist.add(new Shortcut(sh.text, sh.name));
-                else
-                    newlist.add(new Shortcut(sh));
-            else
-                newlist.add(null);
-        }
-        return newlist;
-    }
-
-    private class Shortcut {
-
-        private boolean[] mods;
-        private int key_id;
-        private String text = null;
-        private String name = null;
-
-        public Shortcut(String text, String name) {
-            mods = new boolean[SystemDependent.countKeyMods()];
-            cleanValues();
-            this.text = text;
-            this.name = name;
-        }
-
-        public Shortcut(Shortcut s) {
-            mods = new boolean[SystemDependent.countKeyMods()];
-            for (int i = 0; i < mods.length; i++)
-                mods[i] = s.mods[i];
-            key_id = s.key_id;
-            text = s.text;
-            name = s.name;
-        }
-
-        public void cleanValues() {
-            for (int i = 0; i < mods.length; i++)
-                mods[i] = false;
-            key_id = KeyEvent.CHAR_UNDEFINED;
-        }
-
-        public void setAccelerator(KeyStroke key) {
-            if (key == null)
-                return;
-            key_id = key.getKeyCode();
-            if (key.getModifiers() != 0)
-                mods[default_modifier] = true;
-        }
-
-        /* We only check for the actual key sequence, not it's tag */
-        public boolean matchKeystroke(Shortcut s) {
-            if (s == null)
-                return false;
-            if (s.key_id == KeyEvent.CHAR_UNDEFINED)
-                return false;
-            if (s.key_id != key_id)
-                return false;
-            for (int i = 0; i < mods.length; i++)
-                if (s.mods[i] != mods[i])
-                    return false;
-            return true;
-        }
-
-        public void applyShortcut(JMenuItem item) {
-            if (key_id == KeyEvent.CHAR_UNDEFINED) {
-                item.setAccelerator(null);
-                return;
-            }
-
-            int mask = 0;
-            if (mods[0])
-                mask |= KeyEvent.META_DOWN_MASK;
-            if (mods[1])
-                mask |= KeyEvent.ALT_DOWN_MASK;
-            if (mods[2])
-                mask |= KeyEvent.CTRL_DOWN_MASK;
-            if (mods[3])
-                mask |= KeyEvent.SHIFT_DOWN_MASK;
-            item.setAccelerator(KeyStroke.getKeyStroke(key_id, mask));
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder ret = new StringBuilder();
-            ret.append(name).append('=');
-            for (int i = 0; i < mods.length; i++)
-                ret.append(getFlag(i));
-            ret.append(key_id);
-            return ret.toString();
-        }
-
-        private char getFlag(int i) {
-            if (mods[i])
-                return 'T';
-            return 'F';
-        }
-
-        public void setValues(Shortcut cut) {
-            for (int i = 0; i < mods.length; i++) {
-                mods[i] = cut.mods[i];
-                key_id = cut.key_id;
-            }
-        }
-
-        public void setValues(String mod, String kid) {
-            for (int i = 0; i < mods.length; i++)
-                mods[i] = (mod.charAt(i) == 'T');
-            key_id = Integer.parseInt(kid);
-        }
     }
 
     /* Just to remind that in non-latin languages the format is:
@@ -400,6 +266,108 @@ public class ShortcutsModel extends AbstractTableModel {
                 item.setText(text);
                 item.setMnemonic(mnemonic);
                 item.setDisplayedMnemonicIndex(carret);
+            }
+        }
+    }
+
+    private static class MenuItem {
+
+        private final String menuname;
+        private final String tag;
+        private final Shortcut key;
+
+        private MenuItem() {
+            this(null, null, new Shortcut());
+        }
+
+        private MenuItem(String menuname, String tag, KeyStroke keystroke) {
+            this(menuname, tag, keystroke == null ? new Shortcut() : new Shortcut(keystroke));
+        }
+
+        private MenuItem(String menuname, String tag, Shortcut key) {
+            this.menuname = menuname;
+            if (tag == null)
+                throw new NullPointerException("Null tag for menu " + menuname);
+            this.tag = tag;
+            this.key = key == null ? new Shortcut() : key;
+        }
+
+        /* We use a simple equals method, so that it would be easier to search inside a list */
+        @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof MenuItem)
+                return ((MenuItem) obj).tag.equals(tag);
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return tag.hashCode();
+        }
+
+        @Override
+        protected MenuItem clone() {
+            return new MenuItem(this.menuname, this.tag, this.key);
+        }
+
+        public void applyShortcut(JMenuItem item) {
+            item.setAccelerator(KeyStroke.getKeyStroke(key.key, key.modifier));
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder ret = new StringBuilder();
+            ret.append(tag).append("=(").append(key.key).append(",").append(key.modifier).append(")");
+            return ret.toString();
+        }
+
+        private MenuItem getRenamed(String menuname) {
+            return new MenuItem(menuname, tag, key);
+        }
+
+        private static class Shortcut {
+
+            private final int key;
+            private final int modifier;
+
+            private Shortcut() {
+                this(0, 0);
+            }
+
+            private Shortcut(KeyStroke acc) {
+                this(acc.getKeyCode(), getSysAccelerator(acc.getModifiers()));
+            }
+
+            private Shortcut(int key, int modifier) {
+                this.key = key;
+                this.modifier = modifier;
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (obj instanceof Shortcut) {
+                    Shortcut s = (Shortcut) obj;
+                    return key == s.key && modifier == s.modifier;
+                }
+                return false;
+            }
+
+            @Override
+            public int hashCode() {
+                return modifier * 1024 + key;
+            }
+
+            @Override
+            public String toString() {
+                return key == 0 ? "" : SystemDependent.getKeyMods(modifier) + KeyEvent.getKeyText(key);
+            }
+
+            private static int getSysAccelerator(int newmod) {
+                if ((newmod & KeyEvent.CTRL_MASK) != 0) {
+                    newmod &= DISABLED_MOD;
+                    newmod |= DEFAULT_MOD;
+                }
+                return newmod;
             }
         }
     }

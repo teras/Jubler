@@ -26,13 +26,15 @@
  */
 package com.panayotis.jubler.tools.spell.checkers;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
-
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
@@ -41,13 +43,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class ZemberekSpellChecker extends SpellChecker implements Plugin {
+public class ZemberekSpellChecker extends SpellChecker implements Plugin, PluginItem {
 
     private Method kelimeDenetle, oner;
     private Object zemberek;
-
-    public ZemberekSpellChecker() {
-    }
 
     public ArrayList<SpellError> checkSpelling(String text) {
         HashMap<String, Integer> lastPositions = new HashMap<String, Integer>();
@@ -117,15 +116,27 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin {
         return "Zemberek";
     }
 
-    public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.externals.AvailExternals"};
+    public Class[] getPluginAffections() {
+        return new Class[]{AvailExternals.class};
     }
 
-    public void postInit(Object o) {
-        if (o instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) o;
+    public void execPlugin(Object caller, Object param) {
+        if (caller instanceof AvailExternals) {
+            AvailExternals l = (AvailExternals) caller;
             if (l.getType().equals(family))
                 l.add(this);
         }
+    }
+
+    public PluginItem[] getPluginItems() {
+        return new PluginItem[]{this};
+    }
+
+    public String getPluginName() {
+        return _("Zemberek spell checker");
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
     }
 }

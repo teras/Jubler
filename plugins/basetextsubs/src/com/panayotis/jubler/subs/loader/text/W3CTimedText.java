@@ -22,7 +22,6 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
@@ -31,6 +30,7 @@ import java.util.regex.Pattern;
 import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 
 /**
  *
@@ -53,7 +53,7 @@ public class W3CTimedText extends AbstractTextSubFormat {
     protected SubEntry getSubEntry(Matcher m) {
         Time start = new Time(m.group(2), m.group(3), m.group(4), m.group(5));
         Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
-        SubEntry entry = new SubEntry(start, finish, m.group(10).replace("<br />", "\n"));
+        SubEntry entry = new SubEntry(start, finish, m.group(10).replace("&amp;", "&").replace("<br />", "\n"));
         return entry;
     }
 
@@ -79,7 +79,7 @@ public class W3CTimedText extends AbstractTextSubFormat {
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
         str.append("      <p begin=\"").append(sub.getStartTime().getSeconds().replace(',', '.')).append("\" end=\"").append(sub.getFinishTime().getSeconds().replace(',', '.')).append("\">");
-        str.append(sub.getText().replace("\n", "<br />"));
+        str.append(sub.getText().replace("&", "&amp;").replace("\n", "<br />"));
         str.append("</p>\n");
     }
 

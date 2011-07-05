@@ -25,7 +25,9 @@ package com.panayotis.jubler.plugins;
  */
 public interface Plugin {
 
-    public String[] getAffectionList();
+    public PluginItem[] getPluginItems();
 
-    public void postInit(Object o);
+    public String getPluginName();
+
+    public boolean canDisablePlugin();
 }

@@ -27,6 +27,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 
 /**
@@ -93,7 +94,7 @@ public abstract class JTimeArea extends JPanel {
         return max;
     }
 
-    public void updateSubsMark(ArrayList<SubEntry> affected) {
+    public void updateSubsMark(List<SubEntry> affected) {
         if (!ChSubColorB.isEnabled())
             return;
         int new_mark = ChSubColorC.getSelectedIndex();
@@ -113,9 +114,11 @@ public abstract class JTimeArea extends JPanel {
         ChSubColorB = new javax.swing.JCheckBox();
         ChSubColorC = new javax.swing.JComboBox();
 
+        setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         SubCP.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 0, 0, 0));
+        SubCP.setOpaque(false);
         SubCP.setLayout(new java.awt.BorderLayout(12, 0));
 
         ChSubColorB.setText(_("Change affected subtitles' color"));

@@ -23,6 +23,7 @@
 package com.panayotis.jubler.time.gui;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.BorderLayout;
@@ -152,11 +153,13 @@ public class JTimeFullSelection extends JTimeArea {
         byRange = new javax.swing.JRadioButton();
         TimePanel = new javax.swing.JPanel();
 
-        setBorder(javax.swing.BorderFactory.createTitledBorder(_("Select subtitles to work on")));
+        setBorder(SystemDependent.getBorder(_("Select subtitles to work on")));
         setLayout(new java.awt.BorderLayout());
 
+        SelectionPanel.setOpaque(false);
         SelectionPanel.setLayout(new javax.swing.BoxLayout(SelectionPanel, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         Type.add(bySelection);
@@ -172,6 +175,7 @@ public class JTimeFullSelection extends JTimeArea {
 
         SelectionPanel.add(jPanel1);
 
+        jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
         Type.add(byColor);
@@ -191,6 +195,7 @@ public class JTimeFullSelection extends JTimeArea {
 
         SelectionPanel.add(jPanel6);
 
+        StylePanel.setOpaque(false);
         StylePanel.setLayout(new java.awt.GridLayout(1, 0));
 
         Type.add(byStyle);
@@ -209,6 +214,7 @@ public class JTimeFullSelection extends JTimeArea {
 
         SelectionPanel.add(StylePanel);
 
+        jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         Type.add(byRange);
@@ -226,6 +232,7 @@ public class JTimeFullSelection extends JTimeArea {
         add(SelectionPanel, java.awt.BorderLayout.NORTH);
 
         TimePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 16, 0, 0));
+        TimePanel.setOpaque(false);
         TimePanel.setLayout(new java.awt.BorderLayout());
         add(TimePanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents

@@ -3,20 +3,20 @@
  *
  * Created on 7 Ιούλιος 2005, 2:55 πμ
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -27,7 +27,6 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.ExceptionHandler;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.plugins.DynamicClassLoader;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
@@ -62,9 +61,6 @@ public class Jubler {
 
         SystemDependent.setLookAndFeel();
 
-        DynamicClassLoader.guessMainPath("Jubler", "com.panayotis.jubler.Jubler");
-
-
         /* Load all startup files in a separate process */
         LoaderThread loader = new LoaderThread();
 
@@ -84,7 +80,7 @@ public class Jubler {
         splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
 
-        PluginManager.manager.callPostInitListeners(null, StaticJubler.POSTLOADER);
+        PluginManager.manager.callPluginListeners(StaticJubler.class);
     }
 }
 
@@ -92,6 +88,7 @@ class MainSplash extends JWindow {
 
     private Image logo;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public MainSplash(String filename) {
         super();
         logo = Toolkit.getDefaultToolkit().createImage(Jubler.class.getResource(filename));
@@ -109,7 +106,7 @@ class MainSplash extends JWindow {
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((d.width - width) / 2, (d.height - height) / 2);
 
-        addMouseListener(new MouseAdapter() {
+        addMouseListener(new MouseAdapter()    {
 
             @Override
             public void mouseClicked(MouseEvent evt) {

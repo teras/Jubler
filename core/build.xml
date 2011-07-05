@@ -72,6 +72,10 @@
 
     -->
 
+	<target name="-post-compile">
+		<ant dir="../resources/themes" target="create" inheritAll="false"/>
+	</target>
+
 	<target name="-post-jar">
 		<delete file="${dist.dir}/README.txt"/>
 	</target>

@@ -34,7 +34,7 @@
 #include "utilities.h"
 
 jboolean decodeAudio(JNIEnv* env, jobject this, const char *input_filename, const char *output_filename, jlong seek_time_start, jlong seek_time_stop);
-AVStream *add_audio_stream(JNIEnv* env, jobject this, AVFormatContext *oc, int codec_id, int sample_rate, int channels);
+AVStream *add_audio_stream(JNIEnv* env, jobject this, AVFormatContext *oc, enum CodecID codec_id, AVCodecContext *ccx);
 void audio_enc_out(JNIEnv * env, jobject this, AVFormatContext *ofcx, AVStream *audio_st, const short *samples, int buf_size);
 
 
@@ -79,7 +79,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
         DEBUG(env, this, "decodeAudio", "Could not open file '%s'.", input_filename);
         ret = JNI_FALSE;
     }
-    outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
+    outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
     if(outbuf==NULL) {
         DEBUG(env, this, "decodeAudio", "Could not allocate memory for outbuf.");
         ret = JNI_FALSE;
@@ -91,7 +91,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
         /* Find the first supported codec in the audio streams */
         for(i=0; i<fcx->nb_streams; i++){
             ccx=fcx->streams[i]->codec;
-            if(ccx->codec_type==CODEC_TYPE_AUDIO) {
+            if(ccx->codec_type==AVMEDIA_TYPE_AUDIO) {
                 /* Found an audio stream, check if codec is supported */
                 codec = avcodec_find_decoder(ccx->codec_id);
                 if(codec){
@@ -158,10 +158,10 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                     }
                     
                     /* use wav as the output format of the file */
-                    fmt = guess_format(NULL, output_filename, NULL);
+                    fmt = av_guess_format(NULL, output_filename, NULL);
                     if (!fmt) {
 								DEBUG(env, this, "decodeAudio", "Could not deduce output format from file extension: using WAV.");
-                        fmt = guess_format("wav", NULL, NULL);
+                        fmt = av_guess_format("wav", NULL, NULL);
                     }
                     if (!fmt) {
                         DEBUG(env, this, "decodeAudio", "Could not find suitable output format.");
@@ -179,7 +179,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                                 ccx->channels = 2;
                                 ccx->request_channels = 2;
                             }
-                            audio_st = add_audio_stream(env, this, ofcx, fmt->audio_codec, ccx->sample_rate, ccx->channels);
+                            audio_st = add_audio_stream(env, this, ofcx, fmt->audio_codec, ccx);
                         }
                         
                         /* set the output parameters (must be done even if no parameters) */
@@ -243,7 +243,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                     ccx->request_channels = 2;
                 }
                 got_audio = AVCODEC_MAX_AUDIO_FRAME_SIZE;
-                len = avcodec_decode_audio2(ccx, (short *)outbuf, &got_audio, packptr, packsize);
+                len = avcodec_decode_audio3(ccx, (short *)outbuf, &got_audio, &pkt);
                 
                 if (len < 0) {
                     DEBUG(env, this, "decodeAudio", "Error while decoding.");
@@ -309,14 +309,14 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
 	}
 
     if(codec_is_open >= 0) avcodec_close(ccx);
-    if(outbuf != NULL)     free(outbuf);
+    if(outbuf != NULL)     av_free(outbuf);
     if(fcx != NULL)        av_close_input_file(fcx);
     
     return ret;
 }
 
 
-AVStream *add_audio_stream(JNIEnv * env, jobject this, AVFormatContext *oc, int codec_id, int sample_rate, int channels) {
+AVStream *add_audio_stream(JNIEnv * env, jobject this, AVFormatContext *oc, enum CodecID codec_id, AVCodecContext *ccx) {
     AVCodecContext *c;
     AVStream *st;
     jboolean retflag = JNI_TRUE;
@@ -330,12 +330,17 @@ AVStream *add_audio_stream(JNIEnv * env, jobject this, AVFormatContext *oc, int 
     if (retflag != JNI_FALSE) {
         c = st->codec;
         c->codec_id = codec_id;
-        c->codec_type = CODEC_TYPE_AUDIO;
+        c->codec_type = AVMEDIA_TYPE_AUDIO;
         
         /* put sample parameters */
         //c->bit_rate = 64000;
-        c->sample_rate = sample_rate;
-        c->channels = channels;
+        c->sample_rate = ccx->sample_rate;
+        c->channels = ccx->channels;
+        c->sample_fmt = ccx->sample_fmt;
+
+        // some formats want stream headers to be separate
+        if(oc->oformat->flags & AVFMT_GLOBALHEADER)
+            c->flags |= CODEC_FLAG_GLOBAL_HEADER;
     }
     
     if(retflag != JNI_FALSE)
@@ -351,7 +356,7 @@ void audio_enc_out(JNIEnv * env, jobject this, AVFormatContext *ofcx, AVStream *
 
 	av_init_packet(&pkt);
 	
-	outbuf = malloc(buf_size);
+	outbuf = av_malloc(buf_size);
 	if(outbuf==NULL) {
 		DEBUG(env, this, "audio_enc_out", "Cannot allocate memory for output encoded buffer.");
 		ret = JNI_FALSE;
@@ -364,7 +369,7 @@ void audio_enc_out(JNIEnv * env, jobject this, AVFormatContext *ofcx, AVStream *
 		pkt.data = outbuf;
 		if(audio_st->codec->coded_frame && audio_st->codec->coded_frame->pts != AV_NOPTS_VALUE)
 			pkt.pts = av_rescale_q(audio_st->codec->coded_frame->pts, audio_st->codec->time_base, audio_st->time_base);
-		pkt.flags |= PKT_FLAG_KEY;
+		pkt.flags |= AV_PKT_FLAG_KEY;
 							
 		/* write the compressed frame in the media file */
 		if (av_write_frame(ofcx, &pkt) != 0) {
@@ -372,7 +377,7 @@ void audio_enc_out(JNIEnv * env, jobject this, AVFormatContext *ofcx, AVStream *
 		}
 
 		if (outbuf != NULL)
-			free(outbuf);
+			av_free(outbuf);
 
 		av_free_packet(&pkt);
 	}

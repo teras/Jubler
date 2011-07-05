@@ -24,7 +24,6 @@ package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.plugins.PluginManager;
 import java.util.ArrayList;
-import java.util.ArrayList;
 
 /**
  *
@@ -40,7 +39,7 @@ public class AvailExternals extends ArrayList<ExtProgram> {
         this.type = type;
         this.localtype = localtype;
         this.iconname = iconname;
-        PluginManager.manager.callPostInitListeners(this);
+        PluginManager.manager.callPluginListeners(this);
     }
 
     public String nameAt(int i) {

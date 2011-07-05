@@ -331,7 +331,7 @@ is divided into following sections:
             -->
     <target depends="init" name="deps-jar" unless="no.deps">
         <ant antfile="${project.JublerCore}/build.xml" inheritall="false" target="jar"/>
-        <ant antfile="${project.jupidator}/build.xml" inheritall="false" target="jar"/>
+        <ant antfile="${project.jupidator}/build.xml" inheritall="false" target="smalljar"/>
     </target>
     <target depends="init,-check-automatic-build,-clean-after-automatic-build" name="-verify-automatic-build"/>
     <target depends="init" name="-check-automatic-build">

@@ -28,6 +28,8 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.tools.externals.ExtPath;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -38,7 +40,11 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javax.swing.AbstractButton;
 import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -49,18 +55,12 @@ public class SystemDependent {
     protected final static boolean IS_LINUX;
     protected final static boolean IS_WINDOWS;
     protected final static boolean IS_MACOSX;
-    protected final static String PROG_EXT;
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
         IS_LINUX = OS.indexOf("linux") >= 0;
         IS_WINDOWS = OS.indexOf("windows") >= 0;
         IS_MACOSX = OS.indexOf("mac") >= 0;
-
-        if (IS_WINDOWS)
-            PROG_EXT = ".exe";
-        else
-            PROG_EXT = "";
     }
 
     public static int getSliderLOffset() {
@@ -127,42 +127,25 @@ public class SystemDependent {
         return 4;
     }
 
-    public static String getKeyMods(boolean[] mods) {
-        if (IS_MACOSX) {
-            StringBuilder res = new StringBuilder();
-            if (mods[0])
-                res.append("\u2318");
-            if (mods[1])
-                res.append("\u2325");
-            if (mods[2])
-                res.append("\u2303");
-            if (mods[3])
-                res.append("\u21e7");
-            if (res.length() > 0)
-                res.append(' ');
-            return res.toString();
-        }
-
+    public static String getKeyMods(int keymods) {
         StringBuilder res = new StringBuilder();
-        if (mods[0])
-            res.append("+Meta");
-        if (mods[1])
-            res.append("+Alt");
-        if (mods[2])
-            res.append("+Ctrl");
-        if (mods[3])
-            res.append("+Shift");
-        if (res.length() > 0) {
-            res.append('+');
-            return res.substring(1);
-        }
-        return "";
+        if ((keymods & KeyEvent.META_MASK) != 0)
+            res.append(IS_MACOSX ? "\u2318" : "+Meta");
+        if ((keymods & KeyEvent.ALT_MASK) != 0)
+            res.append(IS_MACOSX ? "\u2325" : "+Alt");
+        if ((keymods & KeyEvent.CTRL_MASK) != 0)
+            res.append(IS_MACOSX ? "\u2303" : "+Ctrl");
+        if ((keymods & KeyEvent.SHIFT_MASK) != 0)
+            res.append(IS_MACOSX ? "\u21e7" : "+Shift");
+        if (res.length() > 0)
+            res.append(' ');
+        return res.toString();
     }
 
     public static int getDefaultKeyModifier() {
         if (IS_MACOSX)
-            return 0;
-        return 2;
+            return KeyEvent.META_MASK;
+        return KeyEvent.CTRL_MASK;
     }
 
     public static int getBundleOrFileID() {
@@ -182,7 +165,7 @@ public class SystemDependent {
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
             else { //assume Unix or Linux
                 String[] browsers = {
-                    "firefox", "konqueror", "opera", "epiphany", "mozilla", "netscape"};
+                    "xdg-open", "firefox", "konqueror", "opera", "epiphany", "mozilla", "netscape"};
                 String browser = null;
                 for (int count = 0; count < browsers.length && browser == null; count++)
                     if (Runtime.getRuntime().exec(
@@ -239,7 +222,7 @@ public class SystemDependent {
             proc = Runtime.getRuntime().exec(cmd);
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             while ((line = in.readLine()) != null)
-                if (line.endsWith(FileCommunicator.FS + name))
+                if (line.endsWith(File.separator + name))
                     res.add(new ExtPath(line, ExtPath.FILE_ONLY));
         } catch (Exception ex) {
         }
@@ -302,7 +285,7 @@ public class SystemDependent {
     }
 
     public static String getConfigPath() {
-        String home = System.getProperty("user.home") + FileCommunicator.FS;
+        String home = System.getProperty("user.home") + File.separator;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\config.txt";
@@ -312,7 +295,7 @@ public class SystemDependent {
     }
 
     public static String getLogPath() {
-        String home = System.getProperty("user.home") + FileCommunicator.FS;
+        String home = System.getProperty("user.home") + File.separator;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\log.txt";
@@ -323,12 +306,31 @@ public class SystemDependent {
 
     /** This function always return the directory seperator at the end of the filename */
     public static String getAppSupportDirPath() {
-        String home = System.getProperty("user.home") + FileCommunicator.FS;
+        String home = System.getProperty("user.home") + File.separator;
 
         if (IS_WINDOWS)
-            return System.getenv("APPDATA") + "\\Jubler\\";
+            return System.getenv("APPDATA") + "\\Jubler";
         if (IS_MACOSX)
-            return home + "Library/Application Support/Jubler/";
-        return home + ".jubler/";
+            return home + "Library/Application Support/Jubler";
+        return home + ".jubler";
+    }
+
+    public static Border getBorder(String title) {
+        Border border = UIManager.getBorder("TitledBorder.aquaVariant");
+        if (border == null)
+            border = new EtchedBorder();
+        if (title == null)
+            return border;
+        else
+            return new TitledBorder(border, title);
+    }
+
+    public static KeyStroke getUpDownKeystroke(boolean down) {
+        if (IS_MACOSX)
+            return KeyStroke.getKeyStroke(down ? KeyEvent.VK_DOWN : KeyEvent.VK_UP,
+                    InputEvent.CTRL_MASK | InputEvent.ALT_MASK);
+        else
+            return KeyStroke.getKeyStroke(down ? KeyEvent.VK_DOWN : KeyEvent.VK_UP,
+                    InputEvent.CTRL_MASK);
     }
 }

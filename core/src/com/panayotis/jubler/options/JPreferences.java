@@ -3,20 +3,20 @@
  *
  * Created on June 1, 2007, 1:57 PM
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -53,8 +53,8 @@ public class JPreferences extends javax.swing.JDialog {
         super(jub);
 
         Tabs = new JOptionTabs(this);
-        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, _("Player"), "/icons/player_pref.png")));
-        Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, _("Speller"), "/icons/spellcheck_pref.png")));
+        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, _("Player"), "player_pref.png")));
+        Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, _("Speller"), "spellcheck_pref.png")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Options.loadSystemPreferences(this);
 
