@@ -43,14 +43,14 @@ public class SystemFileFinder {
         while (tok.hasMoreTokens()) {
             path = tok.nextToken();
             if (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")) {
-                int seppos = path.lastIndexOf(FileCommunicator.FS);
+                int seppos = path.lastIndexOf(File.separator);
                 if (seppos >= 0)
                     path = path.substring(0, seppos);
                 else
                     path = ".";
             }
-            if (!path.endsWith(FileCommunicator.FS))
-                path = path + FileCommunicator.FS;
+            if (!path.endsWith(File.separator))
+                path = path + File.separator;
             File filetest = new File(path + name);
             if (filetest.exists())
                 return filetest;
@@ -59,7 +59,7 @@ public class SystemFileFinder {
     }
 
     public static boolean loadLibrary(String name) {
-        File libfile = findFile("lib" + FileCommunicator.FS + System.mapLibraryName(name));
+        File libfile = findFile("lib" + File.separator + System.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());

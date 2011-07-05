@@ -55,18 +55,12 @@ public class SystemDependent {
     protected final static boolean IS_LINUX;
     protected final static boolean IS_WINDOWS;
     protected final static boolean IS_MACOSX;
-    protected final static String PROG_EXT;
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
         IS_LINUX = OS.indexOf("linux") >= 0;
         IS_WINDOWS = OS.indexOf("windows") >= 0;
         IS_MACOSX = OS.indexOf("mac") >= 0;
-
-        if (IS_WINDOWS)
-            PROG_EXT = ".exe";
-        else
-            PROG_EXT = "";
     }
 
     public static int getSliderLOffset() {
@@ -228,7 +222,7 @@ public class SystemDependent {
             proc = Runtime.getRuntime().exec(cmd);
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             while ((line = in.readLine()) != null)
-                if (line.endsWith(FileCommunicator.FS + name))
+                if (line.endsWith(File.separator + name))
                     res.add(new ExtPath(line, ExtPath.FILE_ONLY));
         } catch (Exception ex) {
         }
@@ -291,7 +285,7 @@ public class SystemDependent {
     }
 
     public static String getConfigPath() {
-        String home = System.getProperty("user.home") + FileCommunicator.FS;
+        String home = System.getProperty("user.home") + File.separator;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\config.txt";
@@ -301,7 +295,7 @@ public class SystemDependent {
     }
 
     public static String getLogPath() {
-        String home = System.getProperty("user.home") + FileCommunicator.FS;
+        String home = System.getProperty("user.home") + File.separator;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\log.txt";
@@ -312,7 +306,7 @@ public class SystemDependent {
 
     /** This function always return the directory seperator at the end of the filename */
     public static String getAppSupportDirPath() {
-        String home = System.getProperty("user.home") + FileCommunicator.FS;
+        String home = System.getProperty("user.home") + File.separator;
 
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler";

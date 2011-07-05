@@ -25,6 +25,7 @@ import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
+import java.util.ArrayList;
 
 /**
  *
@@ -98,5 +99,13 @@ public class VLC extends AbstractPlayer implements Plugin, PluginItem {
 
     public boolean canDisablePlugin() {
         return true;
+    }
+
+    @Override
+    public ArrayList<String> getSearchNames() {
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("vlc");
+        list.add("vlc.exe");
+        return list;
     }
 }

@@ -206,7 +206,7 @@ public class ShortcutsModel extends AbstractTableModel {
             if (cur != null && (!cur.key.equals(orig.key)))
                 keys.append(",").append(cur.toString());
         }
-        Options.setOption("Shortcut.keys", keys.substring(1));
+        Options.setOption("Shortcut.keys", keys.length() == 0 ? "" : keys.substring(1));
         StaticJubler.updateAllMenus();
     }
 

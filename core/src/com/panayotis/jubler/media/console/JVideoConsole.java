@@ -648,7 +648,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel15.add(Sync1B);
 
         Sync2B.setText("2");
-        Sync2B.setToolTipText(_("Mark first synchronization position of the subtitles."));
+        Sync2B.setToolTipText(_("Mark second synchronization position of the subtitles."));
         Sync2B.setActionCommand("b2");
         Sync2B.setBorderPainted(false);
         Sync2B.setContentAreaFilled(false);

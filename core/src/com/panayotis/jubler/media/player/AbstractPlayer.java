@@ -37,6 +37,7 @@ import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.tools.externals.AvailExternals;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
@@ -171,4 +172,6 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
                 l.add(this);
         }
     }
+
+    public abstract ArrayList<String> getSearchNames();
 }

@@ -31,6 +31,7 @@ import com.panayotis.jubler.plugins.Theme;
 import java.awt.CardLayout;
 import java.awt.Frame;
 import java.io.File;
+import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 
@@ -47,15 +48,17 @@ public class JWizard extends JDialog {
     private String test_signature;
     private String deflt;
     private JFileChooser fdialog;
+    private ArrayList<String> searchnames;
 
     /** Creates new form JWizard */
-    public JWizard(String name, String[] testparameters, String test_signature, String deflt) {
+    public JWizard(String name, ArrayList<String> searchnames, String[] testparameters, String test_signature, String deflt) {
         super((Frame) null, true);
 
         this.name = name;
         this.deflt = deflt;
         this.testparameters = testparameters;
         this.test_signature = test_signature;
+        this.searchnames = searchnames;
 
         fdialog = new JFileChooser();
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -258,7 +261,7 @@ public class JWizard extends JDialog {
 
             @Override
             public void run() {
-                File f = TreeWalker.searchExecutable(name, testparameters, test_signature, deflt);
+                File f = TreeWalker.searchExecutable(searchnames, testparameters, test_signature, deflt);
 
                 ContinueB.setEnabled(true);
                 AutoProgress.setVisible(false);
@@ -310,7 +313,7 @@ public class JWizard extends JDialog {
         BrowseStatusL.setVisible(false);
         if (fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
             return;
-        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), name.toLowerCase(), testparameters, test_signature, SystemDependent.getBundleOrFileID());
+        File newexe = TreeWalker.searchExecutable(fdialog.getSelectedFile(), searchnames, testparameters, test_signature, SystemDependent.getBundleOrFileID());
         if (newexe != null) {
             FilenameT.setText(newexe.getPath());
             ContinueB.setEnabled(true);
