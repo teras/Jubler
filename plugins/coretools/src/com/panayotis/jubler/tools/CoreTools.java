@@ -60,4 +60,12 @@ public class CoreTools implements Plugin {
     public boolean canDisablePlugin() {
         return false;
     }
+    
+    public ClassLoader getClassLoader() {
+        return null;
+    }
+
+    public void setClassLoader(ClassLoader loader) {
+    }    
+    
 }

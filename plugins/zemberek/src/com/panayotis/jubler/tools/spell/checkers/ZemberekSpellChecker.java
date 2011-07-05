@@ -139,4 +139,12 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
     public boolean canDisablePlugin() {
         return true;
     }
+    
+    public ClassLoader getClassLoader() {
+        return null;
+    }
+
+    public void setClassLoader(ClassLoader loader) {
+    }    
+    
 }

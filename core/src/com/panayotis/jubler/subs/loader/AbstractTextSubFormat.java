@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
+import com.panayotis.jubler.subs.SubEntry;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -99,6 +100,10 @@ public abstract class AbstractTextSubFormat extends SubFormat {
 
     public boolean produce(Subtitles subs, File outfile, MediaFile media) throws IOException {
         StringBuilder res = new StringBuilder();
+        boolean is_convert = subs.isRequiredToConvert(SubEntry.class);
+        if (is_convert){
+            subs.convert(SubEntry.class, getClassLoader());
+        }//end if (is_convert)
         initSaver(subs, media, res);
         for (int i = 0; i < subs.size(); i++)
             appendSubEntry(subs.elementAt(i), res);
@@ -109,6 +114,7 @@ public abstract class AbstractTextSubFormat extends SubFormat {
             while (res.charAt(res.length() - 1) == '\n' && res.charAt(res.length() - 2) == '\n')
                 res.setLength(res.length() - 1);
 
+        
         // encoder = Charset.forName(jub.prefs.getSaveEncoding()).newEncoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT);
         CharsetEncoder encoder = Charset.forName(ENCODING).newEncoder();
 

@@ -20,18 +20,22 @@
 package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.os.DEBUG;
 
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
+import com.panayotis.jubler.subs.loader.SubFormat;
+import java.util.logging.Level;
 
 /**
  *
- * @author teras
+ * @author teras & Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class TextSubPlugin implements Plugin {
 
+    private PluginItem[] plugin_list = null;
     public PluginItem[] getPluginItems() {
-        return new PluginItem[]{
+        plugin_list = new PluginItem[]{
                     new AdvancedSubStation(),
                     new SubRip(),
                     new SubStationAlpha(),
@@ -45,8 +49,26 @@ public class TextSubPlugin implements Plugin {
                     new W3CTimedText(),
                     new DFXP()
                 };
+        setClassLoaderForSubFormat();
+        return plugin_list;
     }
 
+    private ClassLoader loader = null;
+
+    private void setClassLoaderForSubFormat(){
+         try {
+            for (PluginItem plugin_item : plugin_list) {
+                SubFormat fmt = (SubFormat) plugin_item;
+                fmt.setClassLoader(this.loader);
+                if (this.loader == null){
+                    DEBUG.logger.log(Level.SEVERE, _("Loader is NULL."));
+                }
+            }//end for(PluginItem format : plugin_list)
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.SEVERE, ex.toString() + _(": Unable to set class loader"));
+        }
+    }
+    
     public String getPluginName() {
         return _("Text subtitles");
     }
@@ -54,4 +76,12 @@ public class TextSubPlugin implements Plugin {
     public boolean canDisablePlugin() {
         return false;
     }
+
+    public ClassLoader getClassLoader() {
+        return this.loader;
+    }
+
+    public void setClassLoader(ClassLoader loader) {
+        this.loader = loader;
+    }    
 }

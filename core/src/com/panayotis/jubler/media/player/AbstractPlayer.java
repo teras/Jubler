@@ -68,7 +68,8 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
     private void initSubFile(Subtitles subs, MediaFile mfile) {
         try {
             SubFile sfile = new SubFile(File.createTempFile("jubler_", ""));
-            FileCommunicator.save(subs, sfile, mfile);
+            Subtitles cloned_subs = new Subtitles(subs);            
+            FileCommunicator.save(cloned_subs, sfile, mfile);
             subpath = sfile.getSaveFile().getPath();
             return;
         } catch (IOException ex) {

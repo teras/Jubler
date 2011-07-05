@@ -35,6 +35,7 @@ import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.plugins.Theme;
@@ -46,6 +47,7 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import com.panayotis.jubler.subs.loader.gui.JSubFileDialog;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
@@ -59,6 +61,8 @@ import com.panayotis.jubler.undo.UndoList;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -66,8 +70,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -77,6 +84,7 @@ import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToggleButton.ToggleButtonModel;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ChangeEvent;
@@ -87,8 +95,17 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author  teras
  */
-public class JubFrame extends JFrame {
+public class JubFrame extends JFrame implements WindowFocusListener {
 
+    /**
+     * currentWindow holds the reference to the currently active instance
+     * of JubFrame, ie. the one that has the focus. This is to allow instances
+     * of class in the application which would like to access functions or 
+     * properties of the current instance so to invoke it correctly in a multi-
+     * instances situation.
+     */
+    public static JubFrame currentWindow = null;
+    public static int TABLE_DEFAULT_HEIGHT = 16;
     public static JublerList windows;
     private static ArrayList<SubEntry> copybuffer;
     public static JPreferences prefs;
@@ -147,6 +164,12 @@ public class JubFrame extends JFrame {
     /** Creates new form */
     @SuppressWarnings({"LeakingThisInConstructor", "OverridableMethodCallInConstructor"})
     public JubFrame() {
+        //a new instance always first got the focus, so set the currentWindow
+        //to this reference immediately
+        currentWindow = this;
+        //add focus listener to manage the currentWindow
+        addWindowFocusListener(this);
+
         PluginManager.manager.callPluginListeners(this, "BEGIN");
 
         subs = null;
@@ -156,6 +179,21 @@ public class JubFrame extends JFrame {
         undo = new UndoList(this);
 
         initComponents();
+        PreviewTB.setToolTipText(_("Right mouse click to bring selected row into view"));
+        PreviewTB.addMouseListener(new MouseAdapter() {
+
+            public void mouseReleased(MouseEvent e) {
+                int mouse_button = e.getButton();
+                boolean is_right_mouse = mouse_button == MouseEvent.BUTTON3;
+                //DEBUG.logger.log(Level.OFF, "is_right_mouse:" + is_right_mouse);
+                if (is_right_mouse) {
+                    int row = SubTable.getSelectedRow();
+                    if (row >= 0) {
+                        bringSelectedRowIntoView(row);
+                    }//end if (row >= 0) 
+                }//end if (is_right_mouse)
+            }
+        });
         ToolsManager.register(this);
 
         setIconImage(FrameIcon);
@@ -172,8 +210,9 @@ public class JubFrame extends JFrame {
 
         /* If this is the first JubFrame instance, initialize preferences */
         /* We have to do this AFTER we process the menu items (since some would be missing */
-        if (prefs == null)
+        if (prefs == null) {
             prefs = new JPreferences(this);
+        }
 
         StaticJubler.updateMenus(this);
         ShortcutsModel.updateMenuNames(JublerMenuBar);
@@ -181,6 +220,7 @@ public class JubFrame extends JFrame {
         StaticJubler.putWindowPosition(this);
 
         PluginManager.manager.callPluginListeners(this, "END");
+
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})
@@ -203,18 +243,20 @@ public class JubFrame extends JFrame {
     }
 
     public void keepUndo(SubEntry newsub) {
-        if (newsub == last_changed_sub)
+        if (newsub == last_changed_sub) {
             return;
+        }
         undo.addUndo(new UndoEntry(subs, _("Change subtitle")));
         /* The next command sould be last in order to be synchronized with resetUndoMark */
         last_changed_sub = newsub;
     }
 
     public void setPreviewOrientation(boolean horizontal) {
-        if (horizontal)
+        if (horizontal) {
             SubSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-        else
+        } else {
             SubSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        }
     }
 
     public void resetPreviewPanels() {
@@ -222,12 +264,14 @@ public class JubFrame extends JFrame {
     }
 
     public void subTextChanged() {
-        if (subeditor.shouldIgnoreSubChanges())
+        if (subeditor.shouldIgnoreSubChanges()) {
             return;
+        }
 
         int row = SubTable.getSelectedRow();
-        if (row < 0)
+        if (row < 0) {
             return;
+        }
         SubEntry entry = subs.elementAt(row);
         keepUndo(entry);
         String subtext = subeditor.getSubText();
@@ -242,10 +286,11 @@ public class JubFrame extends JFrame {
         subeditor.CharsL.setText(String.valueOf(m.length));
         subeditor.NewlineL.setText(String.valueOf(m.lines));
         subeditor.LongestL.setText(String.valueOf(m.maxlength));
-        if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength))
+        if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength)) {
             subeditor.LongestL.setForeground(Color.RED);
-        else
+        } else {
             subeditor.LongestL.setForeground(SystemColor.controlText);
+        }
     }
 
     public int addSubEntry(SubEntry entry) {
@@ -275,8 +320,9 @@ public class JubFrame extends JFrame {
             jub.showInfo();
             StaticJubler.updateRecents();
             /* The user wants to clone current file */
-        } else
+        } else {
             loadFileFromHere(sfile, false);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -1254,8 +1300,9 @@ public class JubFrame extends JFrame {
     }//GEN-LAST:event_FAQHMActionPerformed
 
     private void QuitFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitFMActionPerformed
-        if (StaticJubler.requestQuit(this))
+        if (StaticJubler.requestQuit(this)) {
             System.exit(0);
+        }
     }//GEN-LAST:event_QuitFMActionPerformed
 
     private void SortTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortTBActionPerformed
@@ -1269,8 +1316,9 @@ public class JubFrame extends JFrame {
         JTimeSingleSelection go = new JTimeSingleSelection(new Time(3600d), _("Go to the specified time"));
         go.setToolTip(_("Into which time moment do you want to go to"));
 
-        if (JIDialog.action(this, go, _("Go to subtitle")))
+        if (JIDialog.action(this, go, _("Go to subtitle"))) {
             setSelectedSub(subs.findSubEntry(go.getTime().toSeconds(), true), true);
+        }
     }//GEN-LAST:event_byTimeGEMActionPerformed
 
     private void goToSubtitle(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_goToSubtitle
@@ -1295,10 +1343,12 @@ public class JubFrame extends JFrame {
                 row = subs.size() - 1;
                 break;
         }
-        if (row < 0)
+        if (row < 0) {
             row = 0;
-        if (row >= subs.size())
+        }
+        if (row >= subs.size()) {
             row = subs.size() - 1;
+        }
         setSelectedSub(row, true);
     }//GEN-LAST:event_goToSubtitle
 
@@ -1314,8 +1364,9 @@ public class JubFrame extends JFrame {
         curjubler.setVisible(true);
 
         Subtitles s = new Subtitles(subs);
-        for (int i = 0; i < s.size(); i++)
+        for (int i = 0; i < s.size(); i++) {
             s.elementAt(i).setText("");
+        }
         curjubler.setSubs(s);
         curjubler.subs.getSubFile().appendToFilename(_("_child"));
         curjubler.setUnsaved(true);
@@ -1334,8 +1385,9 @@ public class JubFrame extends JFrame {
         subs.setAttribs(info.getAttribs());
         tableHasChanged(getSelectedSubs());
 
-        if (!subs.getAttribs().equals(oldattr))
+        if (!subs.getAttribs().equals(oldattr)) {
             undo.addUndo(entry);
+        }
     }//GEN-LAST:event_InfoFMActionPerformed
 
     private void StepwiseREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepwiseREMActionPerformed
@@ -1353,26 +1405,31 @@ public class JubFrame extends JFrame {
         int row = -1;
         if (is_after) {
             int[] allrows = SubTable.getSelectedRows();
-            if (allrows.length > 0)
+            if (allrows.length > 0) {
                 row = allrows[allrows.length - 1];
-            if (row == -1)
+            }
+            if (row == -1) {
                 row = subs.size() - 1;
+            }
         } else {
             row = SubTable.getSelectedRow();
-            if (row != -1)
+            if (row != -1) {
                 row--;
+            }
         }
 
-        if (row == -1)
+        if (row == -1) {
             prevtime = 0;
-        else
+        } else {
             prevtime = subs.elementAt(row).getFinishTime().toSeconds();
+        }
 
         row++;
-        if (row == subs.size())
+        if (row == subs.size()) {
             nexttime = ((subs.size() > 0) ? subs.elementAt(subs.size() - 1).getFinishTime().toSeconds() : 0) + 2 * gap + curdur;
-        else
+        } else {
             nexttime = subs.elementAt(row).getStartTime().toSeconds();
+        }
 
         /* The following subrutine is a cut down version of the time fixing algorithm in JFixer
          * Probably we should join the two algorithms together... */
@@ -1395,18 +1452,20 @@ public class JubFrame extends JFrame {
     }//GEN-LAST:event_insertSubEntry
 
     private void PasteSpecialEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteSpecialEMActionPerformed
-        if (copybuffer.isEmpty())
+        if (copybuffer.isEmpty()) {
             return;
+        }
 
         JPasterGUI paster;
         SubEntry entry;
         int row;
 
         row = SubTable.getSelectedRow();
-        if (row < 0)
+        if (row < 0) {
             paster = new JPasterGUI(new Time(0d));
-        else
+        } else {
             paster = new JPasterGUI(subs.elementAt(row).getStartTime());
+        }
 
         if (JIDialog.action(this, paster, _("Paste special options"))) {
             int newmark = paster.getMark();
@@ -1420,16 +1479,18 @@ public class JubFrame extends JFrame {
             /* Find smallest time first */
             for (int i = 0; i < copybuffer.size(); i++) {
                 ctime = copybuffer.get(i).getStartTime().toSeconds();
-                if (smallest > ctime)
+                if (smallest > ctime) {
                     smallest = ctime;
+                }
             }
 
             /* Create new pastable subentries and put them in the data field */
             double dt = timeoffset - smallest;
             for (int i = 0; i < copybuffer.size(); i++) {
                 entry = new SubEntry(copybuffer.get(i));
-                if (newmark >= 0)
+                if (newmark >= 0) {
                     entry.setMark(newmark);
+                }
                 entry.getStartTime().addTime(dt);
                 entry.getFinishTime().addTime(dt);
                 subs.addSorted(entry);
@@ -1440,8 +1501,9 @@ public class JubFrame extends JFrame {
     }//GEN-LAST:event_PasteSpecialEMActionPerformed
 
     private void PasteEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteEMActionPerformed
-        if (copybuffer.isEmpty())
+        if (copybuffer.isEmpty()) {
             return;
+        }
         undo.addUndo(new UndoEntry(subs, _("Paste subtitles")));
         SubEntry[] sel = new SubEntry[copybuffer.size()];
         for (int i = 0; i < copybuffer.size(); i++) {
@@ -1455,8 +1517,9 @@ public class JubFrame extends JFrame {
         int[] selected = SubTable.getSelectedRows();
 
         copybuffer.clear();
-        for (int i = selected.length - 1; i >= 0; i--)
+        for (int i = selected.length - 1; i >= 0; i--) {
             copybuffer.add(new SubEntry(subs.elementAt(selected[i])));
+        }
     }//GEN-LAST:event_CopyEMActionPerformed
 
     private void CutEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutEMActionPerformed
@@ -1473,10 +1536,11 @@ public class JubFrame extends JFrame {
 
     private void FileNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileNFMActionPerformed
         JubFrame curjubler;
-        if (subs == null)
+        if (subs == null) {
             curjubler = this;
-        else
+        } else {
             curjubler = new JubFrame();
+        }
         curjubler.setVisible(true);
 
         curjubler.setUnsaved(true);
@@ -1514,8 +1578,9 @@ public class JubFrame extends JFrame {
     private void DeletePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeletePActionPerformed
         undo.addUndo(new UndoEntry(subs, _("Delete subtitles")));
         int sel[] = SubTable.getSelectedRows();
-        for (int i = sel.length - 1; i >= 0; i--)
+        for (int i = sel.length - 1; i >= 0; i--) {
             subs.remove(sel[i]);
+        }
         tableHasChanged(null);
     }//GEN-LAST:event_DeletePActionPerformed
 
@@ -1537,20 +1602,23 @@ public class JubFrame extends JFrame {
             older = subs.elementAt(i).getText();
             newer = older.trim();
             if (!newer.equals(older) || newer.equals("")) {
-                if (u == null)
+                if (u == null) {
                     u = new UndoEntry(subs, _("Remove empty lines"));
+                }
 
-                if (newer.equals(""))
+                if (newer.equals("")) {
                     subs.remove(i);
-                else
+                } else {
                     subs.elementAt(i).setText(newer);
+                }
             }
         }
         if (u != null) {
             undo.addUndo(u);
             tableHasChanged(null);
-        } else
+        } else {
             JIDialog.info(this, _("No lines affected"), _("Remove empty lines"));
+        }
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed
 
     private void CyanMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CyanMEMActionPerformed
@@ -1581,16 +1649,18 @@ public class JubFrame extends JFrame {
         Time t;
 
         int row = SubTable.getSelectedRow();
-        if (row < 0)
+        if (row < 0) {
             t = new Time(0d);
-        else
+        } else {
             t = subs.elementAt(row).getStartTime();
+        }
 
         testVideo(t);
     }//GEN-LAST:event_CurrentTTMActionPerformed
 
     private void SaveAsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsFMActionPerformed
         saveFile(fdialog.getSaveFile(this, subs, mfile));
+        changeTableRowHeightForTextTypeSubs();
     }//GEN-LAST:event_SaveAsFMActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -1612,8 +1682,9 @@ public class JubFrame extends JFrame {
     private void OpenFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFMActionPerformed
         MediaFile mf = new MediaFile();
         JubFrame newj = loadFileFromHere(fdialog.getLoadFile(this, mf), false);
-        if (newj != null)
+        if (newj != null) {
             newj.mfile = mf;
+        }
     }//GEN-LAST:event_OpenFMActionPerformed
 
 private void EnablePreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnablePreviewCActionPerformed
@@ -1641,10 +1712,11 @@ private void PlayAudioCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 }//GEN-LAST:event_PlayAudioCActionPerformed
 
 private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveTBActionPerformed
-    if (SaveFM.isEnabled())
+    if (SaveFM.isEnabled()) {
         SaveFMActionPerformed(evt);
-    else
+    } else {
         SaveAsFMActionPerformed(evt);
+    }
 }//GEN-LAST:event_SaveTBActionPerformed
 
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
@@ -1654,7 +1726,6 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockMActionPerformed
     subeditor.ToolsLockB.setSelected(ToolsLockM.isSelected());
 }//GEN-LAST:event_ToolsLockMActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1805,16 +1876,18 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private void setMark(int[] rows, int mark) {
         undo.addUndo(new UndoEntry(subs, _("Mark subtitles as {0}", SubEntry.MarkNames[mark])));
         SubEntry[] selected = getSelectedSubs();
-        for (int i = 0; i < rows.length; i++)
+        for (int i = 0; i < rows.length; i++) {
             subs.elementAt(rows[i]).setMark(mark);
+        }
         tableHasChanged(selected);
     }
 
 
     /* This sfile is already new - wew can do whatever we want with it */
     private void saveFile(SubFile sfile) {
-        if (sfile == null)
+        if (sfile == null) {
             return;
+        }
         String result = FileCommunicator.save(subs, sfile, mfile);
         if (result == null) {
             /* Saving succesfull */
@@ -1823,13 +1896,15 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             subs.setSubFile(sfile);
             showInfo();
             StaticJubler.updateRecents();
-        } else
+        } else {
             JIDialog.error(this, result, _("Error while saving file"));
+        }
     }
 
     private JubFrame loadFileFromHere(SubFile file, boolean force_into_same_window) {
-        if (file == null)
+        if (file == null) {
             return null;
+        }
         StaticJubler.setWindowPosition(this, false);    // Use this window as a base for open dialogs
         return loadFile(file, force_into_same_window);
     }
@@ -1841,10 +1916,11 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         boolean is_autoload;
 
         /* Find where to display this subtitle file */
-        if (subs == null || force_into_same_window)
+        if (subs == null || force_into_same_window) {
             work = this;
-        else
+        } else {
             work = new JubFrame();
+        }
 
         /* Check if this is an auto-load subtitle file */
         is_autoload = sfile.getSaveFile().getName().startsWith(AutoSaver.AUTOSAVEPREFIX);
@@ -1872,13 +1948,15 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             return null;
         }
 
-        if (work.subs != null)
+        if (work.subs != null) {
             work.undo.addUndo(new UndoEntry(work.subs, _("Reload subtitles")));
+        }
 
-        if (is_autoload)
+        if (is_autoload) {
             work.undo.invalidateSaveMark();
-        else
+        } else {
             work.undo.setSaveMark();
+        }
         work.setSubs(newsubs);
         work.enableWindowControls(true);
         work.showInfo();
@@ -1889,8 +1967,9 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     private void testVideo(Time t) {
-        if (!mfile.validateMediaFile(subs, false, this))
+        if (!mfile.validateMediaFile(subs, false, this)) {
             return;
+        }
         JVideoConsole console = JVideoConsole.initialize(this, prefs.getVideoPlayer());
         if (console == null) {
             JIDialog.info(this, _("No valid players where registered!"), _("Error while initializing video player"));
@@ -1905,10 +1984,12 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     private void updateConsoles(double t) {
-        if (disable_consoles_update)
+        if (disable_consoles_update) {
             return;
-        for (int i = 0; i < connected_consoles.size(); i++)
+        }
+        for (int i = 0; i < connected_consoles.size(); i++) {
             connected_consoles.get(i).setTime(t);
+        }
     }
 
 
@@ -1940,8 +2021,9 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
 
-        if (reset_selection)
+        if (reset_selection) {
             setSelectedSub(0, true);
+        }
     }
 
     public void enablePreview(boolean status) {
@@ -1989,32 +2071,40 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     public void closeWindow(boolean unsave_check, boolean keep_application_alive) {
-        if (isUnsaved() && unsave_check)
-            if (!JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation")))
+        if (isUnsaved() && unsave_check) {
+            if (!JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation"))) {
                 return;
+            }
+        }
 
         /* Close all running consoles */
-        for (JVideoConsole c : connected_consoles)
+        for (JVideoConsole c : connected_consoles) {
             c.requestQuit();
+        }
 
         /* Clean up previewers */
         preview.setEnabled(false);
 
         windows.remove(this);
-        for (JubFrame w : windows)
-            if (w.jparent == this)
+        for (JubFrame w : windows) {
+            if (w.jparent == this) {
                 w.jparent = null;
-        if (windows.size() == 1)
+            }
+        }
+        if (windows.size() == 1) {
             ToolsManager.setFileToolsStatus(windows.get(0), false);
+        }
         StaticJubler.updateRecents();
 
-        if (windows.size() == 0)
+        if (windows.size() == 0) {
             if (keep_application_alive && subs != null) {
                 StaticJubler.setWindowPosition(this, true);
                 StaticJubler.jumpWindowPosition(false);
                 new JubFrame().setVisible(true);
-            } else if (StaticJubler.requestQuit(this))
+            } else if (StaticJubler.requestQuit(this)) {
                 System.exit(0);
+            }
+        }
 
         dispose();
     }
@@ -2024,9 +2114,11 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         super.setVisible(status);
         if (status && (!windows.contains(this))) {
             windows.add(this);
-            if (windows.size() > 1)
-                for (int i = 0; i < windows.size(); i++)
+            if (windows.size() > 1) {
+                for (int i = 0; i < windows.size(); i++) {
                     ToolsManager.setFileToolsStatus(windows.get(i), true);
+                }
+            }
         }
         StaticJubler.updateRecents();
     }
@@ -2056,26 +2148,30 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     public SubEntry[] getSelectedSubs() {
         int[] sels = SubTable.getSelectedRows();
         SubEntry[] selects = new SubEntry[sels.length];
-        for (int i = 0; i < selects.length; i++)
+        for (int i = 0; i < selects.length; i++) {
             selects[i] = subs.elementAt(sels[i]);
+        }
         return selects;
     }
 
     public void tableHasChanged(SubEntry[] oldselections) {
         /* Try to reset the last selected row, after an update to the table has been performed
          * if no other information has been provided */
-        if (oldselections == null || oldselections.length == 0)
-            if (subs.isEmpty())
+        if (oldselections == null || oldselections.length == 0) {
+            if (subs.isEmpty()) {
                 oldselections = new SubEntry[0];
-            else {
+            } else {
                 oldselections = new SubEntry[1];
                 int selected = SubTable.getSelectedRow();
-                if (selected >= subs.size())
+                if (selected >= subs.size()) {
                     selected = subs.size() - 1;
-                if (selected < 0)
+                }
+                if (selected < 0) {
                     selected = 0;
+                }
                 oldselections[0] = subs.elementAt(selected);
             }
+        }
 
         int[] last_selected = new int[oldselections.length];
         int which;
@@ -2090,30 +2186,39 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         updateStyleMenu();
         /* Set the new selected row to the original row */
         setSelectedSub(last_selected, true);
+        changeTableRowHeightForTextTypeSubs();
     }
 
     public void rowHasChanged(int row, boolean update_display) {
-        if (row < 0)
+        if (row < 0) {
             return;
+        }
         subs.fireTableRowsUpdated(row, row);
-        if (update_display)
+        if (update_display) {
             displaySubData();
+        }
     }
 
     public void showInfo() {
         subeditor.TotalL.setText(Integer.toString(subs.size()));
         subeditor.setUnsaved(isUnsaved());
-        if (subs.getSubFile().getStrippedFile() != null) {
-            String title = subs.getSubFile().getStrippedFile().getName();
+        SubFile sf = subs.getSubFile();
+        File f = sf.getSaveFile();
+        if (f != null) {
+            SubFormat fmt = sf.getFormat();
+            String format_name = (fmt == null) ? _("Unknown format") : fmt.getName();
+            String title = format_name + " - " + f.getPath();
             if (isUnsaved()) {
                 title = "*" + title;
                 getRootPane().putClientProperty("windowModified", Boolean.TRUE);
-            } else
+            } else {
                 getRootPane().putClientProperty("windowModified", Boolean.FALSE);
+            }
             setTitle(title + " - Jubler");
             getRootPane().putClientProperty("Window.documentFile", subs.getSubFile().getSaveFile());
-        } else
+        } else {
             setTitle("Jubler");
+        }
     }
 
     public void setUnsaved(boolean status) {
@@ -2154,8 +2259,9 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     public SubEntry getSelectedRow() {
         int row = getSelectedRowIdx();
-        if (row < 0)
+        if (row < 0) {
             return null;
+        }
 
         SubEntry affected = subs.elementAt(row);
         return affected;
@@ -2187,33 +2293,71 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         return setSelectedSub(sel, update_visuals);
     }
 
+    /**
+     * HDT: 20/06/2011 <hoangduytran1960@googlemail.com>
+     * Properly managed to bring the selected row into view by checking to
+     * see if the row currently selected is within views or not, if not,
+     * 1. is it above the current view
+     * 2. is it below the current view
+     * Adding a maximum 5 rows ahead in each situation to allow spaces for
+     * the selected row to be clearly viewed.
+     * @param current_row the currently selected row which might not be in view.
+     */
+    public void bringSelectedRowIntoView(int current_row) {
+        int showmore = 0, num_rec = 0;
+        JViewport view_port = SubsScrollPane.getViewport();
+        Rectangle view_rect = view_port.getViewRect();
+        try {
+            num_rec = subs.size();
+            int top_row = SubTable.rowAtPoint(new Point(0, view_rect.y));
+            int bottom_row = SubTable.rowAtPoint(new Point(0, view_rect.y + view_rect.height - 1));
+            int visible_rows = bottom_row - top_row;
+            int mid_value = Math.max(0, Math.min(5, visible_rows / 2));
+            boolean is_current_row_visible = (current_row >= top_row && current_row <= bottom_row);
+            if (!is_current_row_visible) {
+                boolean is_off_top = (current_row < top_row);
+                if (is_off_top) {
+                    showmore = current_row - mid_value;
+                    showmore = Math.max(0, Math.min(showmore, num_rec - 1));
+                    SubTable.scrollRectToVisible(SubTable.getCellRect(showmore, -1, true));
+                    //SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                } else {
+                    boolean is_off_bottom = (current_row > bottom_row);
+                    if (is_off_bottom) {
+                        showmore = current_row + mid_value;
+                        showmore = Math.max(0, Math.min(showmore, num_rec - 1));
+                        SubTable.scrollRectToVisible(SubTable.getCellRect(showmore, -1, true));
+                        //SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
+                    }//end if (is_off_bottom)
+                }//end if (is_off_top)
+            }//end if (! is_current_row_visible)
+        } catch (Exception ex) {
+        }
+    }//end public void bringSelectedRowIntoView()
+
     public int setSelectedSub(int[] which, boolean update_visuals) {
         ignore_table_selections = true;
         SubTable.clearSelection();
         int ret = -1;
+        int num_rec = subs.size();
 
         /* Set selected subtitles and make sure that they are visible */
-        if (which != null && which.length > 0 && subs.size() > 0) {
+        if (which != null && which.length > 0 && num_rec > 0) {
             ret = which[0];
-
-            /* First force subtitles to show *first* subtitle selection entry */
-            int showmore = ret + 5;
-            if (showmore >= subs.size())
-                showmore = subs.size() - 1;
-            SubTable.changeSelection(showmore, -1, false, false);   // Show 5 advancing subtitles
-
+            //HDT: added here to properly adjust the selected row into view
+            bringSelectedRowIntoView(ret);
             /* Show actually selected subtitles */
             SubTable.clearSelection();
             for (int i = 0; i < which.length; i++) {
-                if (which[i] >= subs.size())
-                    which[i] = subs.size() - 1;   // Make sure we don't go past the end of subtitles
-                if (which[i] >= 0)
-                    SubTable.changeSelection(which[i], -1, true, false);
+                int index = which[i];
+                index = Math.max(0, Math.min(index, subs.size() - 1));
+                SubTable.changeSelection(index, -1, true, false);;
             }
         }
         ignore_table_selections = false;
-        if (update_visuals)
+        if (update_visuals) {
             displaySubData();
+        }
         return ret;
     }
 
@@ -2221,18 +2365,21 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      * down to the subtitle display area. It is used e.g. when the
      * user clicks on a table row */
     private void displaySubData() {
-        if (ignore_table_selections)
+        if (ignore_table_selections) {
             return;
+        }
         int subrow = SubTable.getSelectedRow();
-        if (subrow < 0)
+        if (subrow < 0) {
             return;
+        }
 
         subeditor.ignoreSubChanges(true);
         SubEntry sel = subs.elementAt(subrow);
         subeditor.setData(sel);
 
-        if (preview.isVisible())
+        if (preview.isVisible()) {
             preview.subsHaveChanged(SubTable.getSelectedRows());
+        }
 
 
         if (jparent != null) {
@@ -2259,10 +2406,12 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         constructStyleMenu(StyleEM, listener, true);
 
         int i = 0;
-        while (!(list[i] instanceof JSeparator))
+        while (!(list[i] instanceof JSeparator)) {
             i++;
-        for (; i < list.length; i++)
+        }
+        for (; i < list.length; i++) {
             StyleEM.add(list[i]);
+        }
     }
 
     private void constructStyleMenu(JMenu menu, ActionListener listener, boolean add_shortkey) {
@@ -2275,8 +2424,9 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         SubStyleList list = subs.getStyleList();
         for (int i = 0; i < list.size(); i++) {
             JMenuItem item = new JMenuItem(list.getNameAt(i));
-            if (i <= 9 && add_shortkey)
+            if (i <= 9 && add_shortkey) {
                 item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0 + i, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | java.awt.event.InputEvent.ALT_MASK));
+            }
             menu.add(item);
             item.addActionListener(listener);
         }
@@ -2287,8 +2437,53 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         int[] rows = SubTable.getSelectedRows();
         SubStyle style = subs.getStyleList().getStyleByName(stylename);
         SubEntry[] selected = getSelectedSubs();
-        for (int i = 0; i < rows.length; i++)
+        for (int i = 0; i < rows.length; i++) {
             subs.elementAt(rows[i]).setStyle(style);
+        }
         tableHasChanged(selected);
+    }
+
+    public void changeTableRowHeightForTextTypeSubs() {
+        int table_current_row_height = SubTable.getRowHeight();
+        boolean is_text_type = true;
+        try {
+            is_text_type = subs.isTextType();
+        } catch (Exception ex) {
+        }
+
+        boolean is_current_row_height_too_high = (table_current_row_height > TABLE_DEFAULT_HEIGHT);
+        boolean is_adjust_row_height = (is_text_type && is_current_row_height_too_high);
+        /*
+        String msg = "table_current_row_height:" + table_current_row_height + "\n" + 
+        "is_text_type:" + is_text_type + "\n" + 
+        "is_current_row_height_too_high:" + is_current_row_height_too_high +  "\n" + 
+        "is_adjust_row_height:" + is_adjust_row_height + "\n";
+        DEBUG.logger.log(Level.OFF, msg);
+         * 
+         */
+        if (is_adjust_row_height) {
+            SubTable.setRowHeight(TABLE_DEFAULT_HEIGHT);
+            SubTable.repaint();
+        }//end if (this.subs.isTextType())
+    }//end public void changeTableRowHeightForTextTypeSubs()
+
+    /**
+     * When an instance of JubFrame got the graphical focus,
+     * set the currentWindow reference to this instance, to
+     * allow classes wanting to find the currently active instance
+     * and execute codes or using its properties.
+     * @param e The window event
+     */
+    public void windowGainedFocus(WindowEvent e) {
+        currentWindow = this;
+        //DEBUG.logger.log(Level.OFF, e.paramString());
+    }
+
+    /**
+     * Currently doing nothing when an instance of JubFrame
+     * lost its focus.
+     * @param e The window event
+     */
+    public void windowLostFocus(WindowEvent e) {
     }
 }

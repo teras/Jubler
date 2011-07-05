@@ -35,14 +35,6 @@
         <Property name="rows" type="int" value="1"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="CFormatL">
-          <Properties>
-            <Property name="horizontalAlignment" type="int" value="0"/>
-            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Format&quot;)" type="code"/>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="CEncL">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
@@ -73,16 +65,6 @@
         <Property name="rows" type="int" value="1"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JComboBox" name="CFormat">
-          <Properties>
-            <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Subtitle format of the output file (SRT is prefered)&quot;)" type="code"/>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CFormatActionPerformed"/>
-          </Events>
-        </Component>
         <Container class="javax.swing.JPanel" name="CEncP">
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
