@@ -24,7 +24,6 @@ package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubFile;
 import java.io.File;
@@ -57,7 +56,7 @@ public class Options {
     private static String updateConfigFile() {
         /* Make sure that we have put config files in their new "home" */
         File newconfig = new File(SystemDependent.getConfigPath());
-        File oldconfig = new File(System.getProperty("user.home") + FileCommunicator.FS + ".jublerrc");
+        File oldconfig = new File(System.getProperty("user.home") + File.separator + ".jublerrc");
         newconfig.getParentFile().mkdirs();
 
         if (oldconfig.exists())

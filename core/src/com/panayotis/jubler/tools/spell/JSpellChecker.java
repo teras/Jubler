@@ -32,8 +32,11 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.plugins.Theme;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -44,14 +47,14 @@ public class JSpellChecker extends JDialog {
     int count_changes;
     private JFrame jparent;
     private SpellChecker checker;
-    private ArrayList<SubEntry> textlist;
+    private List<SubEntry> textlist;
     private int pos_in_list;
-    private ArrayList<String> ignored;
-    private HashMap<String, String> replaced;
-    private ArrayList<SpellError> errors;
+    private List<String> ignored;
+    private Map<String, String> replaced;
+    private List<SpellError> errors;
 
     /** Creates new form JSpellChecker */
-    public JSpellChecker(JFrame parent, SpellChecker checker, ArrayList<SubEntry> list) {
+    public JSpellChecker(JFrame parent, SpellChecker checker, List<SubEntry> list) {
         super(parent, true);
 
         while (true)
@@ -213,7 +216,7 @@ public class JSpellChecker extends JDialog {
 
         IconPanel.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/spellcheck.png"))); // NOI18N
+        jLabel1.setIcon(Theme.loadIcon("spellcheck.png"));
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
         IconPanel.add(jLabel1, java.awt.BorderLayout.NORTH);
 

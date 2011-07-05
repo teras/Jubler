@@ -3,20 +3,20 @@
  *
  * Created on 27 Ιούνιος 2005, 1:56 πμ
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -42,8 +42,11 @@ import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.options.Options;
 import java.awt.Color;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.tools.JToolRealTime;
+import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.tools.RealTimeTool;
+import com.panayotis.jubler.tools.ToolsManager;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -645,7 +648,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel15.add(Sync1B);
 
         Sync2B.setText("2");
-        Sync2B.setToolTipText(_("Mark first synchronization position of the subtitles."));
+        Sync2B.setToolTipText(_("Mark second synchronization position of the subtitles."));
         Sync2B.setActionCommand("b2");
         Sync2B.setBorderPainted(false);
         Sync2B.setContentAreaFilled(false);
@@ -916,17 +919,22 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         /* We are able to sync - automatically do the syncing !!! */
         if (sync1 != null && sync2 != null) {
-            JToolRealTime tool;
+            RealTimeTool tool;
 
             if (sync1.isEqualDiff(sync2))
-                tool = parent.getShifter();
+                tool = ToolsManager.getShifter();
             else
-                tool = parent.getRecoder();
+                tool = ToolsManager.getRecoder();
+            if (tool == null) {
+                DEBUG.beep();
+                return;
+            }
 
             if (tool.setValues(sync1, sync2)) {
                 /* Parameters are OK */
                 timer.stop();
                 checkValid(view.setActive(false, null));
+                tool.updateData(parent);
                 if (tool.execute(parent)) {             // execute tool
                     /* Execution successful */
                     destroySyncMark(true);
@@ -1018,11 +1026,11 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
     private void initImageIcons() {
         AudioIcons = new ImageIcon[2];
-        AudioIcons[0] = new ImageIcon(getClass().getResource("/icons/audio.png"));
-        AudioIcons[1] = new ImageIcon(getClass().getResource("/icons/audiomute.png"));
+        AudioIcons[0] = Theme.loadIcon("audio.png");
+        AudioIcons[1] = Theme.loadIcon("audiomute.png");
 
         PenIcons = new ImageIcon[8];
-        PenIcons[0] = new ImageIcon(JVideoConsole.class.getResource("/icons/pen.png"));
+        PenIcons[0] = Theme.loadIcon("pen.png");
         PenIcons[1] = IconFactory.getColoredIcon(PenIcons[0], Color.PINK);
         PenIcons[2] = IconFactory.getColoredIcon(PenIcons[0], Color.YELLOW);
         PenIcons[3] = IconFactory.getColoredIcon(PenIcons[0], Color.CYAN);
@@ -1038,16 +1046,16 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         Pens[3] = CyanB;
 
         SubRecIcons = new ImageIcon[4];
-        SubRecIcons[SUBREC_BEGIN] = new ImageIcon(JVideoConsole.class.getResource("/icons/markrec.png"));
-        SubRecIcons[SUBREC_TYPING] = new ImageIcon(JVideoConsole.class.getResource("/icons/mark.png"));
+        SubRecIcons[SUBREC_BEGIN] = Theme.loadIcon("markrec.png");
+        SubRecIcons[SUBREC_TYPING] = Theme.loadIcon("mark.png");
         SubRecIcons[SUBREC_FINALIZE] = SubRecIcons[SUBREC_TYPING];
         SubRecIcons[SUBREC_ABORT] = SubRecIcons[SUBREC_TYPING];
 
         SyncIcons = new ImageIcon[4];
-        SyncIcons[0] = new ImageIcon(JVideoConsole.class.getResource("/icons/sync1b.png"));
-        SyncIcons[1] = new ImageIcon(JVideoConsole.class.getResource("/icons/sync1c.png"));
-        SyncIcons[2] = new ImageIcon(JVideoConsole.class.getResource("/icons/sync2b.png"));
-        SyncIcons[3] = new ImageIcon(JVideoConsole.class.getResource("/icons/sync2c.png"));
+        SyncIcons[0] = Theme.loadIcon("sync1b.png");
+        SyncIcons[1] = Theme.loadIcon("sync1c.png");
+        SyncIcons[2] = Theme.loadIcon("sync2b.png");
+        SyncIcons[3] = Theme.loadIcon("sync2c.png");
     }
 
     private void setButtonIcon(JButton button, ImageIcon icon) {
@@ -1058,7 +1066,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
 
     private void setButtonIcon(JButton button, String name) {
-        setButtonIcon(button, new ImageIcon(getClass().getResource("/icons/" + name + ".png")));
+        setButtonIcon(button, Theme.loadIcon(name + ".png"));
     }
 
     private void setPauseIcon() {

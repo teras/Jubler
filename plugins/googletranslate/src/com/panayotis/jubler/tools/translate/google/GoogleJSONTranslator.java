@@ -21,6 +21,7 @@ package com.panayotis.jubler.tools.translate.google;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.translate.AvailTranslators;
 import com.panayotis.jubler.tools.translate.HTMLTextUtils;
@@ -34,6 +35,7 @@ import java.io.UnsupportedEncodingException;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,9 +43,9 @@ import org.json.JSONObject;
  *
  * @author teras
  */
-public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin {
+public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin, PluginItem {
 
-    private static final ArrayList<Language> lang;
+    private static final List<Language> lang;
 
     static {
         lang = new ArrayList<Language>();
@@ -95,22 +97,27 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
         setSubtitleBlock(100);
     }
 
-    protected ArrayList<Language> getLanguages() {
+    @Override
+    protected List<Language> getLanguages() {
         return lang;
     }
 
+    @Override
     public String getDefinition() {
         return _("Google translate") + " (API)";
     }
 
+    @Override
     public String getDefaultSourceLanguage() {
         return _("English");
     }
 
+    @Override
     public String getDefaultDestinationLanguage() {
         return _("French");
     }
 
+    @Override
     protected String getTranslationURL(String from_language, String to_language) throws MalformedURLException {
         return "http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&langpair=" + findLanguage(from_language) + "%7C" + findLanguage(to_language);
     }
@@ -121,7 +128,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
     }
 
     @Override
-    protected String getConvertedSubtitleText(ArrayList<SubEntry> subs) throws UnsupportedEncodingException {
+    protected String getConvertedSubtitleText(List<SubEntry> subs) throws UnsupportedEncodingException {
         StringBuilder str = new StringBuilder();
         for (SubEntry entry : subs)
             str.append("&q=").append(HTMLTextUtils.encode(entry.getText()));
@@ -129,7 +136,7 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
     }
 
     @Override
-    protected String parseResults(ArrayList<SubEntry> subs, BufferedReader in) throws IOException {
+    protected String parseResults(List<SubEntry> subs, BufferedReader in) throws IOException {
         StringBuilder data = new StringBuilder();
         String line = null;
         while ((line = in.readLine()) != null)
@@ -151,12 +158,29 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin 
         }
     }
 
-    public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.tools.translate.AvailTranslators"};
+    @Override
+    public Class[] getPluginAffections() {
+        return new Class[]{AvailTranslators.class};
     }
 
-    public void postInit(Object o) {
-        if (o instanceof AvailTranslators)
-            ((AvailTranslators) o).add(this);
+    @Override
+    public void execPlugin(Object caller, Object params) {
+        if (caller instanceof AvailTranslators)
+            ((AvailTranslators) caller).add(this);
+    }
+
+    @Override
+    public PluginItem[] getPluginItems() {
+        return new PluginItem[]{this};
+    }
+
+    @Override
+    public String getPluginName() {
+        return _("Google translate");
+    }
+
+    @Override
+    public boolean canDisablePlugin() {
+        return true;
     }
 }

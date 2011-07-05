@@ -62,6 +62,7 @@ public class PlainText extends AbstractTextSubFormat {
         return "PlainText";
     }
 
+    @Override
     public String getExtendedName() {
         return _("Plain text");
     }
@@ -70,6 +71,7 @@ public class PlainText extends AbstractTextSubFormat {
         str.append(sub.getText()).append('\n');
     }
 
+    @Override
     protected String initLoader(String input) {
         current_time = 0;
         return super.initLoader(input);

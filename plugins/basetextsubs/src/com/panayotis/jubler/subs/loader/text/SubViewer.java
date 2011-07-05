@@ -22,16 +22,15 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 
 /**
  *

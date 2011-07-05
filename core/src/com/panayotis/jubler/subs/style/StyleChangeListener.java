@@ -22,8 +22,6 @@
  */
 package com.panayotis.jubler.subs.style;
 
-import com.panayotis.jubler.subs.SubEntry;
-
 /**
  *
  * @author teras

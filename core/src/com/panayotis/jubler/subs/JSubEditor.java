@@ -3,20 +3,20 @@
  *
  * Created on 1 Σεπτέμβριος 2005, 2:44 πμ
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.JOverStyles;
 import com.panayotis.jubler.subs.style.JStyleEditor;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
@@ -54,14 +55,14 @@ import javax.swing.text.StyleConstants;
  *
  * @author  teras
  */
-public class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener {
+public final class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener {
 
     public final static ImageIcon Lock[];
 
     static {
         Lock = new ImageIcon[2];
-        Lock[0] = new javax.swing.ImageIcon(JSubEditor.class.getResource("/icons/lock.png"));
-        Lock[1] = new javax.swing.ImageIcon(JSubEditor.class.getResource("/icons/unlock.png"));
+        Lock[0] = Theme.loadIcon("lock.png");
+        Lock[1] = Theme.loadIcon("unlock.png");
     }
     private JTimeSpinner SubStart, SubFinish, SubDur;
     private JOverStyles overstyle;
@@ -76,6 +77,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
     private boolean is_attached = false;
 
     /** Creates new form JSubEditor */
+    @SuppressWarnings("LeakingThisInConstructor")
     public JSubEditor(JubFrame parent) {
         initComponents();
 
@@ -241,6 +243,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         MetricsB.setEnabled(enabled);
         TrashB.setEnabled(enabled);
         ShowStyleB.setEnabled(enabled);
+        ToolsLockB.setEnabled(enabled);
 
         Lock1.setEnabled(enabled);
         Lock2.setEnabled(enabled);
@@ -254,8 +257,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         L1.setEnabled(enabled);
         L2.setEnabled(enabled);
         L3.setEnabled(enabled);
-        Info.setEnabled(enabled);
-        Stats.setEnabled(enabled);
+        TotalL.setEnabled(enabled);
+        CharsL.setEnabled(enabled);
+        NewlineL.setEnabled(enabled);
+        LongestL.setEnabled(enabled);
 
         /* Fix the attributes of the sub text area */
         if (entry == null || (!enabled)) {
@@ -375,9 +380,13 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel2 = new javax.swing.JPanel();
         TrashB = new javax.swing.JButton();
         ShowStyleB = new javax.swing.JToggleButton();
+        ToolsLockB = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
-        Info = new javax.swing.JLabel();
-        Stats = new javax.swing.JLabel();
+        InfoP = new javax.swing.JPanel();
+        TotalL = new javax.swing.JLabel();
+        NewlineL = new javax.swing.JLabel();
+        CharsL = new javax.swing.JLabel();
+        LongestL = new javax.swing.JLabel();
         Unsaved = new javax.swing.JLabel();
 
         setOpaque(false);
@@ -408,7 +417,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         PSStart.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock1);
-        Lock1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lock.png"))); // NOI18N
+        Lock1.setIcon(Theme.loadIcon("lock.png"));
         Lock1.setToolTipText(_("Lock the start time of the subtitle"));
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
@@ -425,7 +434,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         PSFinish.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock2);
-        Lock2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lock.png"))); // NOI18N
+        Lock2.setIcon(Theme.loadIcon("lock.png"));
         Lock2.setToolTipText(_("Lock the stop time of the subtitle"));
         Lock2.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock2, "only");
@@ -442,7 +451,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         PSDur.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock3);
-        Lock3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lock.png"))); // NOI18N
+        Lock3.setIcon(Theme.loadIcon("lock.png"));
         Lock3.setSelected(true);
         Lock3.setToolTipText(_("Lock the duration of the subtitle"));
         Lock3.setMargin(new java.awt.Insets(1, 1, 1, 1));
@@ -490,7 +499,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel6.add(StyleListC, java.awt.BorderLayout.CENTER);
 
-        EditB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edittheme.png"))); // NOI18N
+        EditB.setIcon(Theme.loadIcon("edittheme.png"));
         EditB.setToolTipText(_("Edit current style"));
         SystemDependent.setCommandButtonStyle(EditB, "only");
         EditB.addActionListener(new java.awt.event.ActionListener() {
@@ -505,11 +514,11 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.BorderLayout());
 
-        DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
+        DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 8));
         DetachP.setOpaque(false);
         DetachP.setLayout(new javax.swing.BoxLayout(DetachP, javax.swing.BoxLayout.LINE_AXIS));
 
-        DetachB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/detach.png"))); // NOI18N
+        DetachB.setIcon(Theme.loadIcon("detach.png"));
         DetachB.setToolTipText(_("Detach subtitle editor panel"));
         DetachB.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         SystemDependent.setCommandButtonStyle(DetachB, "only");
@@ -523,9 +532,9 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel7.add(DetachP, java.awt.BorderLayout.WEST);
 
         jPanel1.setOpaque(false);
-        jPanel1.setLayout(new java.awt.GridLayout(1, 0));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        TimeB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/time.png"))); // NOI18N
+        TimeB.setIcon(Theme.loadIcon("time.png"));
         TimeB.setSelected(true);
         TimeB.setToolTipText(_("Display/hide subtitle timings"));
         SystemDependent.setCommandButtonStyle(TimeB, "first");
@@ -536,7 +545,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel1.add(TimeB);
 
-        FontB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/font.png"))); // NOI18N
+        FontB.setIcon(Theme.loadIcon("font.png"));
         FontB.setToolTipText(_("Display/hide font attributes"));
         FontB.setActionCommand("font");
         SystemDependent.setCommandButtonStyle(FontB, "middle");
@@ -547,7 +556,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel1.add(FontB);
 
-        ColorB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/color.png"))); // NOI18N
+        ColorB.setIcon(Theme.loadIcon("color.png"));
         ColorB.setToolTipText(_("Display/hide color attributes"));
         ColorB.setActionCommand("color");
         SystemDependent.setCommandButtonStyle(ColorB, "last");
@@ -558,7 +567,7 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel1.add(ColorB);
 
-        MetricsB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/sizes.png"))); // NOI18N
+        MetricsB.setIcon(Theme.loadIcon("sizes.png"));
         MetricsB.setToolTipText(_("Display/hide metric attributes"));
         MetricsB.setActionCommand("metrics");
         MetricsB.addActionListener(new java.awt.event.ActionListener() {
@@ -570,11 +579,11 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
 
         jPanel7.add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 12, 0, 0));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         jPanel2.setOpaque(false);
-        jPanel2.setLayout(new java.awt.GridLayout(0, 2, 2, 0));
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
-        TrashB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/trash.png"))); // NOI18N
+        TrashB.setIcon(Theme.loadIcon("trash.png"));
         TrashB.setToolTipText(_("Delete styles of this subtitle"));
         SystemDependent.setCommandButtonStyle(TrashB, "only");
         TrashB.addActionListener(new java.awt.event.ActionListener() {
@@ -584,10 +593,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel2.add(TrashB);
 
-        ShowStyleB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/hidestyle.png"))); // NOI18N
+        ShowStyleB.setIcon(Theme.loadIcon("hidestyle.png"));
         ShowStyleB.setSelected(true);
         ShowStyleB.setToolTipText(_("Display/hide styles for this subtitle"));
-        ShowStyleB.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/showstyle.png"))); // NOI18N
+        ShowStyleB.setSelectedIcon(Theme.loadIcon("showstyle.png"));
         SystemDependent.setCommandButtonStyle(ShowStyleB, "only");
         ShowStyleB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -596,6 +605,17 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         });
         jPanel2.add(ShowStyleB);
 
+        ToolsLockB.setIcon(Theme.loadIcon("opentool.png"));
+        ToolsLockB.setToolTipText(_("Tools lock. When tools are locked, will be run with default parameters on the selected subtitles"));
+        ToolsLockB.setSelectedIcon(Theme.loadIcon("lockedtool.png"));
+        SystemDependent.setCommandButtonStyle(ToolsLockB, "only");
+        ToolsLockB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ToolsLockBActionPerformed(evt);
+            }
+        });
+        jPanel2.add(ToolsLockB);
+
         jPanel7.add(jPanel2, java.awt.BorderLayout.EAST);
 
         StyleP.add(jPanel7, java.awt.BorderLayout.WEST);
@@ -603,19 +623,38 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         jPanel8.setOpaque(false);
         jPanel8.setLayout(new java.awt.BorderLayout(8, 0));
 
-        Info.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/lines.png"))); // NOI18N
-        Info.setToolTipText(_("Total subtitles"));
-        Info.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        jPanel8.add(Info, java.awt.BorderLayout.WEST);
+        InfoP.setLayout(new javax.swing.BoxLayout(InfoP, javax.swing.BoxLayout.X_AXIS));
 
-        Stats.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        Stats.setText("-");
-        Stats.setToolTipText(_("T: total number of characters\nL: number of lines\nC: characters of the longest line"));
-        jPanel8.add(Stats, java.awt.BorderLayout.CENTER);
+        TotalL.setIcon(Theme.loadIcon("lines.png"));
+        TotalL.setToolTipText(_("Total subtitles"));
+        TotalL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        TotalL.setIconTextGap(0);
+        InfoP.add(TotalL);
 
-        Unsaved.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
+        NewlineL.setIcon(Theme.loadIcon("newline.png"));
+        NewlineL.setToolTipText(_("Number of lines per subtitle"));
+        NewlineL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 6));
+        NewlineL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        NewlineL.setIconTextGap(0);
+        InfoP.add(NewlineL);
+
+        CharsL.setIcon(Theme.loadIcon("key.png"));
+        CharsL.setToolTipText(_("Total number of characters per subtitle"));
+        CharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 6));
+        CharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        CharsL.setIconTextGap(0);
+        InfoP.add(CharsL);
+
+        LongestL.setIcon(Theme.loadIcon("longest.png"));
+        LongestL.setToolTipText(_("Longest line of subtitle"));
+        LongestL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        LongestL.setIconTextGap(0);
+        InfoP.add(LongestL);
+
+        jPanel8.add(InfoP, java.awt.BorderLayout.WEST);
+
+        Unsaved.setIcon(Theme.loadIcon("save.png"));
         Unsaved.setEnabled(false);
-        Unsaved.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jPanel8.add(Unsaved, java.awt.BorderLayout.EAST);
 
         StyleP.add(jPanel8, java.awt.BorderLayout.CENTER);
@@ -728,6 +767,10 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         lockTimeSpinners(true);
     }//GEN-LAST:event_Lock1ActionPerformed
 
+    private void ToolsLockBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockBActionPerformed
+        parent.ToolsLockM.setSelected(ToolsLockB.isSelected());
+    }//GEN-LAST:event_ToolsLockBActionPerformed
+
     public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
         entry.setOverStyle(type, value, SubText.getSelectionStart(), SubText.getSelectionEnd());
@@ -769,30 +812,34 @@ public class JSubEditor extends JPanel implements StyleChangeListener, DocumentL
         }
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JLabel CharsL;
     private javax.swing.JToggleButton ColorB;
     public javax.swing.JButton DetachB;
     private javax.swing.JPanel DetachP;
     private javax.swing.JButton EditB;
     private javax.swing.JToggleButton FontB;
-    public javax.swing.JLabel Info;
+    public javax.swing.JPanel InfoP;
     private javax.swing.JLabel L1;
     private javax.swing.JLabel L2;
     private javax.swing.JLabel L3;
     private javax.swing.JToggleButton Lock1;
     private javax.swing.JToggleButton Lock2;
     private javax.swing.JToggleButton Lock3;
+    public javax.swing.JLabel LongestL;
     private javax.swing.JToggleButton MetricsB;
+    public javax.swing.JLabel NewlineL;
     private javax.swing.JPanel PSDur;
     private javax.swing.JPanel PSFinish;
     private javax.swing.JPanel PSStart;
     private javax.swing.JToggleButton ShowStyleB;
-    public javax.swing.JLabel Stats;
     private javax.swing.JComboBox StyleListC;
     public javax.swing.JPanel StyleP;
     private javax.swing.JTextPane SubText;
     private javax.swing.JToggleButton TimeB;
     private javax.swing.ButtonGroup TimeLock;
     private javax.swing.JPanel TimeP;
+    public javax.swing.JToggleButton ToolsLockB;
+    public javax.swing.JLabel TotalL;
     private javax.swing.JButton TrashB;
     public javax.swing.JLabel Unsaved;
     private javax.swing.JPanel jPanel1;

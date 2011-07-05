@@ -91,7 +91,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
             DEBUG(env, this, "makeCache", "Could not open cache file '%s'.", cache_c);
             ret = JNI_FALSE;
         }
-        outbuf = malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
+        outbuf = av_malloc(AVCODEC_MAX_AUDIO_FRAME_SIZE);
         if(outbuf==NULL) {
             DEBUG(env, this, "makeCache", "Could not allocate memory for outbuf.");
             ret = JNI_FALSE;
@@ -104,7 +104,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
             /* Find the first supported codec in the audio streams */
             for(i=0; i<fcx->nb_streams; i++){
                 ccx=fcx->streams[i]->codec;
-                if(ccx->codec_type==CODEC_TYPE_AUDIO) {
+                if(ccx->codec_type==AVMEDIA_TYPE_AUDIO) {
                     /* Found an audio stream, check if codec is supported */
                     codec = avcodec_find_decoder(ccx->codec_id);
                     if(codec){
@@ -175,7 +175,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
                     pack_pts = av_rescale_q(pkt.pts, fcx->streams[audio_index]->time_base, AV_TIME_BASE_Q);
                     // Decode the paket
                     got_audio = AVCODEC_MAX_AUDIO_FRAME_SIZE;
-                    len = avcodec_decode_audio2(ccx, (short *)outbuf, &got_audio, pkt.data, pkt.size);
+                    len = avcodec_decode_audio3(ccx, (short *)outbuf, &got_audio, &pkt);
                     
                     if (len < 0) {
                         DEBUG(env, this, "makeCache", "Error while decoding.");
@@ -254,7 +254,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
     if(minsample != NULL)  free(minsample);
     if(cachefile != NULL)  fclose(cachefile);
     if(codec_is_open >= 0) avcodec_close(ccx);
-    if(outbuf != NULL)     free(outbuf);
+    if(outbuf != NULL)     av_free(outbuf);
     if(fcx != NULL)        av_close_input_file(fcx);
     
     return ret;

@@ -25,6 +25,7 @@ package com.panayotis.jubler.media.preview;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import java.awt.Color;
@@ -34,7 +35,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.awt.font.TextLayout;
 import java.awt.image.ImageObserver;
 import javax.swing.JPanel;
@@ -64,7 +64,7 @@ public class JFramePreview extends JPanel {
     public JFramePreview(JSubPreview callback) {
         this.callback = callback;
 
-        demoimg = Toolkit.getDefaultToolkit().createImage(JFramePreview.class.getResource("/icons/demoframe.jpg"));
+        demoimg = Theme.loadImage("demoframe.jpg");
 
         MediaTracker tracker = new MediaTracker(this);
         tracker.addImage(demoimg, 0);

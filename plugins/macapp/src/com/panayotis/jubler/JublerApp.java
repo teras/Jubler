@@ -19,8 +19,11 @@
  */
 package com.panayotis.jubler;
 
+import static com.panayotis.jubler.i18n.I18N._;
+
 import com.apple.eawt.Application;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
 import java.awt.Component;
 import java.awt.Point;
@@ -35,7 +38,7 @@ import javax.swing.SwingUtilities;
  *
  * @author teras
  */
-public class JublerApp extends Application implements Plugin {
+public class JublerApp extends Application implements Plugin, PluginItem {
 
     private boolean ignore_click = false;
 
@@ -44,25 +47,29 @@ public class JublerApp extends Application implements Plugin {
         addApplicationListener(new ApplicationHandler());
     }
 
-    public String[] getAffectionList() {
-        return new String[]{"com.panayotis.jubler.JubFrame"};
+    @Override
+    public Class[] getPluginAffections() {
+        return new Class[]{JubFrame.class};
     }
 
-    public void postInit(Object o) {
-        if (o instanceof JubFrame) {
-            JubFrame jubler = (JubFrame) o;
-            if (jubler.AboutHM == null)
-                jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
-            else {
-                jubler.AboutHM.getParent().remove(jubler.AboutHM);
-                jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
-                jubler.QuitFM.getParent().remove(jubler.QuitFM);
-                setComponentDraggable(jubler, jubler.JublerTools);
-                setComponentDraggable(jubler, jubler.subeditor.StyleP);
-                setComponentDraggable(jubler, jubler.subeditor.Unsaved);
-                setComponentDraggable(jubler, jubler.subeditor.Stats);
-                setComponentDraggable(jubler, jubler.subeditor.Info);
-            }
+    @Override
+    public void execPlugin(Object caller, Object param) {
+        if (!(caller instanceof JubFrame))
+            return;
+        JubFrame jubler = (JubFrame) caller;
+        if (param.equals("BEGIN"))
+            jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
+        else {
+            jubler.AboutHM.getParent().remove(jubler.AboutHM);
+            jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
+            jubler.QuitFM.getParent().remove(jubler.QuitFM);
+            setComponentDraggable(jubler, jubler.JublerTools);
+            setComponentDraggable(jubler, jubler.subeditor.StyleP);
+            setComponentDraggable(jubler, jubler.subeditor.Unsaved);
+            setComponentDraggable(jubler, jubler.subeditor.TotalL);
+            setComponentDraggable(jubler, jubler.subeditor.CharsL);
+            setComponentDraggable(jubler, jubler.subeditor.NewlineL);
+            setComponentDraggable(jubler, jubler.subeditor.LongestL);
         }
     }
 
@@ -77,6 +84,7 @@ public class JublerApp extends Application implements Plugin {
 
         comp.addMouseListener(new MouseAdapter() {
 
+            @Override
             public void mousePressed(MouseEvent e) {
                 Component c = e.getComponent();
                 while (c.getParent() != null) {
@@ -96,6 +104,7 @@ public class JublerApp extends Application implements Plugin {
 
         comp.addMouseMotionListener(new MouseMotionAdapter() {
 
+            @Override
             public void mouseDragged(MouseEvent e) {
                 if (ignore_click)
                     return;
@@ -104,5 +113,18 @@ public class JublerApp extends Application implements Plugin {
                 wind.setLocation(newpos.x - oldpos.x, newpos.y - oldpos.y);
             }
         });
+    }
+
+    @Override
+    public PluginItem[] getPluginItems() {
+        return new PluginItem[]{this};
+    }
+
+    public String getPluginName() {
+        return _("OS X application support");
+    }
+
+    public boolean canDisablePlugin() {
+        return true;
     }
 }

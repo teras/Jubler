@@ -39,13 +39,20 @@ import java.util.ArrayList;
 
 @SuppressWarnings("UseOfObsoleteCollectionType")
 public class ASpellOptions extends JExtBasicOptions {
+    
+    private static final ArrayList<String> progname;
+    static {
+        progname = new ArrayList<String>();
+        progname.add("aspell");
+        progname.add("aspell.exe");
+    }
 
     private java.util.Vector<ASpellDict> dictionaries;
     private static final String default_language = "en";
 
     /** Creates new form ASpellOptions */
     public ASpellOptions(String family, String name) {
-        super(family, name, new String[]{"-?"}, null);
+        super(family, name, progname, new String[]{"-?"}, null);
         initComponents();
 
         dictionaries = new java.util.Vector<ASpellDict>();

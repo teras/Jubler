@@ -34,19 +34,19 @@ import java.util.ArrayList;
  */
 public class TreeWalker {
 
-    public static File searchExecutable(String application, String[] parameters, String test_signature, String deflt) {
+    public static File searchExecutable(ArrayList<String> application, String[] parameters, String test_signature, String deflt) {
         ArrayList<ExtPath> paths = new ArrayList<ExtPath>();
         paths.add(new ExtPath(deflt, ExtPath.FILE_ONLY));
-        SystemDependent.appendSpotlightApplication(application, paths);
+        SystemDependent.appendSpotlightApplication(application.get(0), paths);
         SystemDependent.appendPathApplication(paths);
-        SystemDependent.appendLocateApplication(application, paths);
+        SystemDependent.appendLocateApplication(application.get(0), paths);
 
         for (ExtPath path : paths) {
             DEBUG.debug("Wizard is looking inside " + path.getPath());
             File f = new File(path.getPath());
             if (path.searchForFile() && (!f.isFile()))
                 continue;   // If we want a file and this is not, ignore this entry
-            File res = searchExecutable(f, application.toLowerCase(), parameters, test_signature, path.getRecStatus());
+            File res = searchExecutable(f, application, parameters, test_signature, path.getRecStatus());
             if (res != null)
                 return res;
         }
@@ -54,18 +54,17 @@ public class TreeWalker {
     }
 
     /* filename is already in lower case... */
-    public static File searchExecutable(File root, String program, String[] parameters, String test_signature, int recursive) {
+    public static File searchExecutable(File root, ArrayList<String> program, String[] parameters, String test_signature, int recursive) {
         if (!root.exists())
             return null;
         if (root.isFile()) {
             if (!root.canRead())
                 return null;
-            if (!root.getName().toLowerCase().equals(program + SystemDependent.PROG_EXT))
-                return null;
-            if (!execIsValid(root, parameters, test_signature))
-                return null;
-            /* All checks OK - valid executable! */
-            return root;
+            for (String progname : program)
+                if (root.getName().toLowerCase().equals(progname) && execIsValid(root, parameters, test_signature))
+                    return root;
+            /* No valid executable found */
+            return null;
         } else {
             if (recursive <= ExtPath.FILE_ONLY)
                 return null;   // No more recursive should be done

@@ -3,20 +3,20 @@
  *
  * Created on 9 Φεβρουάριος 2006, 9:56 μμ
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -52,7 +52,6 @@ public class StaticJubler {
 
     private static final int SCREEN_DELTAX = 24;
     private static final int SCREEN_DELTAY = 24;
-    public static final String POSTLOADER = "com.panayotis.jubler.StaticJubler";
     /* */
     private static Stack<SubFile> recent_files;
     private static int screen_x, screen_y, screen_width, screen_height, screen_state;
@@ -120,7 +119,7 @@ public class StaticJubler {
     }
 
     public static void showAbout() {
-        JIDialog.about(JubFrame.windows.get(0), new JAbout(), _("About Jubler"), "/icons/jubler-logo.png");
+        JIDialog.about(JubFrame.windows.get(0), new JAbout(), _("About Jubler"), "jubler-logo.png");
     }
 
     public static boolean requestQuit(JubFrame request) {
@@ -211,7 +210,7 @@ public class StaticJubler {
         final boolean isclone_f = isclone;
         final String text_f = text;
         final JubFrame jub_f = jub;
-        item.addActionListener(new ActionListener() {
+        item.addActionListener(new ActionListener()  {
 
             public void actionPerformed(ActionEvent e) {
                 if (isclone_f)

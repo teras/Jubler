@@ -452,18 +452,10 @@
                   <Connection code="_(&quot;Delete&quot;)" type="code"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="bySelectionDEM">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;By Selection&quot;)" type="code"/>
-                    </Property>
-                    <Property name="name" type="java.lang.String" value="EDS" noResource="true"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionDEMActionPerformed"/>
-                  </Events>
-                </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="EmptyLinesDEM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -474,6 +466,8 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="EmptyLinesDEMActionPerformed"/>
                   </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -562,8 +556,8 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="PreviousGEM">
                   <Properties>
-                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="Ctrl+UP"/>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="SystemDependent.getUpDownKeystroke(false)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Previous entry&quot;)" type="code"/>
@@ -577,8 +571,8 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="NextGEM">
                   <Properties>
-                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                      <KeyStroke key="Ctrl+DOWN"/>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="SystemDependent.getUpDownKeystroke(true)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="_(&quot;Next entry&quot;)" type="code"/>
@@ -665,6 +659,26 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
+            <Menu class="javax.swing.JMenu" name="SelectEM">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="_(&quot;Select&quot;)" type="code"/>
+                </Property>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="AllSEM">
+                  <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+A"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="_(&quot;All&quot;)" type="code"/>
+                    </Property>
+                    <Property name="name" type="java.lang.String" value="ESA" noResource="true"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JSeparator" name="jSeparator10">
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="MarkEM">
@@ -673,6 +687,9 @@
                   <Connection code="_(&quot;Mark&quot;)" type="code"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="NoneMEM">
                   <Properties>
@@ -720,17 +737,6 @@
                 </MenuItem>
                 <MenuItem class="javax.swing.JSeparator" name="MarkSep">
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="bySelectionMEM">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;By Selection&quot;)" type="code"/>
-                    </Property>
-                    <Property name="name" type="java.lang.String" value="EMS" noResource="true"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionMEMActionPerformed"/>
-                  </Events>
-                </MenuItem>
               </SubComponents>
             </Menu>
             <Menu class="javax.swing.JMenu" name="StyleEM">
@@ -739,19 +745,11 @@
                   <Connection code="_(&quot;Style&quot;)" type="code"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
               <SubComponents>
                 <MenuItem class="javax.swing.JSeparator" name="StyleSepSEM">
-                </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="bySelectionSEM">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;By Selection&quot;)" type="code"/>
-                    </Property>
-                    <Property name="name" type="java.lang.String" value="ESS" noResource="true"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bySelectionSEMActionPerformed"/>
-                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -787,6 +785,25 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RedoEMActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ToolsLockM">
+              <Properties>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+L"/>
+                </Property>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="_(&quot;Tools lock&quot;)" type="code"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="TLO" noResource="true"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ToolsLockMActionPerformed"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="ToolsM">
@@ -796,128 +813,10 @@
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+          </AuxValues>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="SplitTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Split file&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TSP" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SplitTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="JoinTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Join files&quot;)" type="code"/>
-                </Property>
-                <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="TJO" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JoinTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="ReparentTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Reparent&quot;)" type="code"/>
-                </Property>
-                <Property name="enabled" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="TPA" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ReparentTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="SynchronizeTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Synchronize&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TSY" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SynchronizeTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JSeparator" name="jSeparator8">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="ShiftTimeTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Shift time&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TSH" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ShiftTimeTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="RecodeTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Recode&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TCO" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RecodeTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="FixTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Time fix&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TFI" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="FixTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="RoundTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Round times&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TRO" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RoundTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JSeparator" name="jSeparator5">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="SpellTM">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+E"/>
-                </Property>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Spell check&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TLL" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SpellTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="TranslateTM">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Translate&quot;)" type="code"/>
-                </Property>
-                <Property name="name" type="java.lang.String" value="TTM" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TranslateTMActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JSeparator" name="jSeparator3">
-            </MenuItem>
             <Menu class="javax.swing.JMenu" name="TestTM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -1222,8 +1121,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="NewTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/new.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;new.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;New&quot;)" type="code"/>
@@ -1238,8 +1137,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="LoadTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/load.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;load.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Load&quot;)" type="code"/>
@@ -1254,8 +1153,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="SaveTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/save.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;save.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Save&quot;)" type="code"/>
@@ -1284,8 +1183,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="InfoTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/info.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;info.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Project Information&quot;)" type="code"/>
@@ -1314,8 +1213,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="CutTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/cut.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;cut.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Cut&quot;)" type="code"/>
@@ -1331,8 +1230,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="CopyTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/copy.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;copy.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Copy&quot;)" type="code"/>
@@ -1348,8 +1247,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="PasteTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/paste.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;paste.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Paste&quot;)" type="code"/>
@@ -1371,8 +1270,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="UndoTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/undo.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;undo.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Undo&quot;)" type="code"/>
@@ -1388,8 +1287,8 @@
             </Component>
             <Component class="javax.swing.JButton" name="RedoTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/redo.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;redo.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Redo&quot;)" type="code"/>
@@ -1418,8 +1317,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="SortTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/sort.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;sort.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Sort subtitles&quot;)" type="code"/>
@@ -1441,8 +1340,8 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="TestTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/test.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;test.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Test subtitles from current position&quot;)" type="code"/>
@@ -1458,15 +1357,15 @@
             </Component>
             <Component class="javax.swing.JButton" name="PreviewTB">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/previewc.png"/>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;previewc.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="_(&quot;Enable preview&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
-                <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/icons/preview.png"/>
+                <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Theme.loadIcon(&quot;preview.png&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>

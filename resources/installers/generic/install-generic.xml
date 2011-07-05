@@ -51,6 +51,7 @@
             <file src="dist/Jubler.jar" targetdir="$INSTALL_PATH"/>
             <file src="dist/i18n" targetdir="$INSTALL_PATH"/>
             <file src="dist/lib" targetdir="$INSTALL_PATH"/>
+            <file src="dist/themes" targetdir="$INSTALL_PATH"/>
             <file src="dist/help" targetdir="$INSTALL_PATH"/>
         </pack>
     </packs>

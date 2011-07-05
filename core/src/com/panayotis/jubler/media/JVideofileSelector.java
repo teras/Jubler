@@ -117,13 +117,16 @@ public class JVideofileSelector extends javax.swing.JPanel {
         CacheBrowse = new javax.swing.JButton();
         CFileL = new javax.swing.JLabel();
 
+        setOpaque(false);
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         VFileL.setText(_("Use the following video file"));
         jPanel2.add(VFileL, java.awt.BorderLayout.NORTH);
 
+        jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         VFName.setColumns(40);
@@ -146,6 +149,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         add(jPanel2);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 0, 0, 0));
+        jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
 
         AFName.setColumns(40);
@@ -176,6 +180,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         add(jPanel4);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
+        jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         CFName.setColumns(40);

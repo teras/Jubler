@@ -24,9 +24,9 @@ package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.os.SystemDependent;
 import static com.panayotis.jubler.i18n.I18N._;
+import com.panayotis.jubler.plugins.Theme;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
@@ -66,30 +66,37 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
         smodel.applyMenuShortcuts(bar);
     }
 
+    @Override
     public void loadPreferences() {
         smodel.loadPreferences();
     }
 
+    @Override
     public void savePreferences() {
         smodel.savePreferences();
     }
 
+    @Override
     public JPanel getTabPanel() {
         return this;
     }
 
+    @Override
     public String getTabName() {
         return _("Shortcuts");
     }
 
+    @Override
     public String getTabTooltip() {
         return _("Set the menu keyboard shortcuts");
     }
 
+    @Override
     public Icon getTabIcon() {
-        return new ImageIcon(getClass().getResource("/icons/shortcut_pref.png"));
+        return Theme.loadIcon("shortcut_pref.png");
     }
 
+    @Override
     public void changeProgram() {
     }
 

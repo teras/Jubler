@@ -3,20 +3,20 @@
  *
  * Created on 7 Σεπτέμβριος 2005, 1:04 μμ
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -63,19 +63,19 @@ public class JOverStyles extends javax.swing.JPanel {
         FontAttP.add((JComponent) (visuals[1] = new TriComboBox(SubStyle.FontSizes)), BorderLayout.EAST);
         ((TriComboBox) visuals[1]).setToolTipText(_("Font size"));
 
-        TextAttP.add((JComponent) (visuals[2] = new TriToggleButton("/icons/bold.png")));
+        TextAttP.add((JComponent) (visuals[2] = new TriToggleButton("bold.png")));
         ((AbstractButton) visuals[2]).setToolTipText(_("Bold"));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[2], "first");
 
-        TextAttP.add((JComponent) (visuals[3] = new TriToggleButton("/icons/italics.png")));
+        TextAttP.add((JComponent) (visuals[3] = new TriToggleButton("italics.png")));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[3], "middle");
         ((AbstractButton) visuals[3]).setToolTipText(_("Italic"));
 
-        TextAttP.add((JComponent) (visuals[4] = new TriToggleButton("/icons/underline.png")));
+        TextAttP.add((JComponent) (visuals[4] = new TriToggleButton("underline.png")));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[4], "middle");
         ((AbstractButton) visuals[4]).setToolTipText(_("Underline"));
 
-        TextAttP.add((JComponent) (visuals[5] = new TriToggleButton("/icons/strike.png")));
+        TextAttP.add((JComponent) (visuals[5] = new TriToggleButton("strike.png")));
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[5], "last");
         ((AbstractButton) visuals[5]).setToolTipText(_("Strikethrough"));
 

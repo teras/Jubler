@@ -3,20 +3,20 @@
  *
  * Created on November 30, 2006, 1:12 PM
  *
- * This file is part of JubFrame.
+ * This file is part of Jubler.
  *
- * JubFrame is free software; you can redistribute it and/or modify
+ * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * JubFrame is distributed in the hope that it will be useful,
+ * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with JubFrame; if not, write to the Free Software
+ * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N._;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JPanel;
@@ -86,7 +87,7 @@ public class JRateChooser extends JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        FromFPSB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/videofile.png"))); // NOI18N
+        FromFPSB.setIcon(Theme.loadIcon("videofile.png"));
         FromFPSB.setToolTipText(_("Get FPS from the video file"));
         SystemDependent.setCommandButtonStyle(FromFPSB, "only");
         FromFPSB.addActionListener(new java.awt.event.ActionListener() {
