@@ -22,18 +22,28 @@
  */
 package com.panayotis.jubler.subs;
 
+import com.panayotis.jubler.os.DEBUG;
 import java.awt.Color;
 import java.awt.Component;
+import java.util.logging.Level;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  *
- * @author teras
+ * @author teras & Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class SubRenderer extends DefaultTableCellRenderer {
 
-    private static final Color[] MarkColors = {Color.WHITE, new Color(255, 200, 220), new Color(255, 255, 170), new Color(200, 255, 255)};
+    private static final Color[] MarkColors = {
+        Color.WHITE,
+        new Color(255, 200, 220), //pink - edit
+        new Color(255, 255, 200), //yellow
+        new Color(200, 255, 255), //cyan
+        new Color(255, 90, 0), //orange
+        new Color(204, 255, 153) //light green - #CCFF99
+    };
     private static final Color[] MarkColorsDark = new Color[MarkColors.length];
     private static final float percent = 0.92f;
 
@@ -47,16 +57,56 @@ public class SubRenderer extends DefaultTableCellRenderer {
 
     public Component getTableCellRendererComponent(JTable table, Object value, boolean selected, boolean focused, int row, int column) {
         SubEntry entry;
+        int table_row_height, image_row_height;
 
-        setEnabled(table == null || table.isEnabled()); // Always do that
+        try {
+            setEnabled(table == null || table.isEnabled()); // Always do that
+            if (selected) {
+                setBackground(table.getSelectionBackground());
+                setForeground(table.getSelectionForeground());
+            } else {
+                entry = ((Subtitles) table.getModel()).elementAt(row);
+                int marker = entry.getMark();
+                int max_index = MarkColors.length - 1;
+                try {
+                    int entry_mark_index = Math.max(0, Math.min(marker, max_index));
+                    setBackground(MarkColors[entry_mark_index]);
+                    setForeground(Color.BLACK);
+                } catch (Exception ex) {
+                    DEBUG.logger.log(Level.WARNING, ex.toString());
+                }
+                /*
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+                 */
+            }
 
-        entry = ((Subtitles) table.getModel()).elementAt(row);
-        if (row % 2 == 0)
-            setBackground(MarkColors[entry.getMark()]);
-        else
-            setBackground(MarkColorsDark[entry.getMark()]);
-        setForeground(Color.BLACK);
-        super.getTableCellRendererComponent(table, value, selected, focused, row, column);
+            setIcon(null);
+            setText("");
+            setToolTipText(null);
+            boolean is_image_type = (value instanceof ImageIcon);
+            if (is_image_type) {
+                setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                ImageIcon img = (ImageIcon) value;
+                setIcon(img);
+                table_row_height = table.getRowHeight();
+                image_row_height = img.getIconHeight();
+                boolean is_taller = (table_row_height < image_row_height);
+                if (is_taller) {
+                    table.setRowHeight(image_row_height);
+                    //table.repaint();
+                }//end if
+            } else {
+                boolean is_string = (value instanceof String);
+                if (is_string) {
+                    String s_value = (String) value;
+                    setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+                    setText(s_value);
+                }//end if (is_string)
+            }//end if
+        } catch (Exception ex) {
+            DEBUG.logger.log(Level.SEVERE, ex.toString());
+        }
         return this;
     }
 }

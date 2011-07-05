@@ -67,7 +67,9 @@ public class AutoSaver {
                             + String.format("%04x", rnd.nextInt() & 0xffff)
                             + "."
                             + subs.getSubFile().getStrippedFile().getName();
-                    FileCommunicator.save(subs, new SubFile(new File(dir, fname)), null);
+                    SubFile new_sub_file = new SubFile(new File(dir, fname));
+                    Subtitles cloned_subs = new Subtitles(subs);
+                    FileCommunicator.save(cloned_subs, new_sub_file, null);
                 }
 
             /* cleanup old files */

@@ -80,6 +80,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     @SuppressWarnings("LeakingThisInConstructor")
     public JSubEditor(JubFrame parent) {
         initComponents();
+        progressOff();
 
         SubStart = new JTimeSpinner();
         SubFinish = new JTimeSpinner();
@@ -118,16 +119,18 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             styles = parent.getSubtitles().getStyleList();
             refreshStyles();
         }
-        if (!isEnabled())
+        if (!isEnabled()) {
             setEnabled(true);
+        }
         showStyle();
     }
 
     private void refreshStyles() {
         ignore_style_list_changes = true;
         StyleListC.removeAllItems();
-        for (SubStyle t : styles)
+        for (SubStyle t : styles) {
             StyleListC.addItem(t);
+        }
         ignore_style_list_changes = false;
     }
 
@@ -142,40 +145,50 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public void spinnerChanged(JTimeSpinner which) {
         double tstart, tfinish, tdur;
         boolean old_ignore_spinner_changes;
-        if (ignore_sub_changes)
+        if (ignore_sub_changes) {
             return;
+        }
 
         int row = parent.getSelectedRowIdx();
-        if (row < 0)
+        if (row < 0) {
             return;
+        }
         parent.keepUndo(entry);
 
 
         tstart = SubStart.getTimeValue().toSeconds();
         tfinish = SubFinish.getTimeValue().toSeconds();
         tdur = SubDur.getTimeValue().toSeconds();
-        if (Lock1.isSelected())
+        if (Lock1.isSelected()) {
             if (which == SubFinish) {
-                if (tfinish < tstart)
+                if (tfinish < tstart) {
                     tfinish = tstart;
-                tdur = tfinish - tstart;
-            } else
-                tfinish = tstart + tdur;
-        if (Lock2.isSelected())
-            if (which == SubStart) {
-                if (tstart > tfinish)
-                    tstart = tfinish;
+                }
                 tdur = tfinish - tstart;
             } else {
-                if (tdur > tfinish)
+                tfinish = tstart + tdur;
+            }
+        }
+        if (Lock2.isSelected()) {
+            if (which == SubStart) {
+                if (tstart > tfinish) {
+                    tstart = tfinish;
+                }
+                tdur = tfinish - tstart;
+            } else {
+                if (tdur > tfinish) {
                     tdur = tfinish;
+                }
                 tstart = tfinish - tdur;
             }
-        if (Lock3.isSelected())
-            if (which == SubStart)
+        }
+        if (Lock3.isSelected()) {
+            if (which == SubStart) {
                 tfinish = tstart + tdur;
-            else
+            } else {
                 tstart = tfinish - tdur;
+            }
+        }
         ignore_sub_changes = true;
         SubStart.setTimeValue(new Time(tstart));
         SubFinish.setTimeValue(new Time(tfinish));
@@ -221,12 +234,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         SubStart.setEnabled(enabled);
         SubFinish.setEnabled(enabled);
         SubDur.setEnabled(enabled);
-        if (Lock1.isSelected())
+        if (Lock1.isSelected()) {
             SubStart.setEnabled(false);
-        if (Lock2.isSelected())
+        }
+        if (Lock2.isSelected()) {
             SubFinish.setEnabled(false);
-        if (Lock3.isSelected())
+        }
+        if (Lock3.isSelected()) {
             SubDur.setEnabled(false);
+        }
         setLockIcon(Lock1);
         setLockIcon(Lock2);
         setLockIcon(Lock3);
@@ -268,32 +284,36 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             SubText.setForeground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
         } else {
             SubStyle style = entry.getStyle();
-            if (style == null)
+            if (style == null) {
                 style = styles.get(0);
+            }
             showStyle();
         }
     }
 
     private void setStyleListEnabled(boolean enabled) {
-        if (styles != null && styles.size() > 1)
+        if (styles != null && styles.size() > 1) {
             StyleListC.setEnabled(enabled);
-        else
+        } else {
             StyleListC.setEnabled(false);
+        }
     }
 
     private void setLockIcon(JToggleButton b) {
-        if (b.isSelected())
+        if (b.isSelected()) {
             b.setIcon(Lock[0]);
-        else
+        } else {
             b.setIcon(Lock[1]);
+        }
     }
 
     public void setUnsaved(boolean status) {
         Unsaved.setEnabled(status);
-        if (status)
+        if (status) {
             Unsaved.setToolTipText(_("Subtitles need to be saved"));
-        else
+        } else {
             Unsaved.setToolTipText(null);
+        }
     }
 
     public void setAttached(boolean attached) {
@@ -319,9 +339,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleListC.setSelectedIndex(styles.getStyleIndex(entry));
         SimpleAttributeSet set = new SimpleAttributeSet();
         SubText.getStyledDocument().setCharacterAttributes(0, SubText.getText().length(), set, true);
-        if (ShowStyleB.isSelected())
+        if (ShowStyleB.isSelected()) {
             entry.applyAttributesToDocument(SubText);
-        else {
+        } else {
             SubText.setBackground(Color.WHITE);
             SubText.setCaretColor(Color.BLACK);
             set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
@@ -387,6 +407,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         NewlineL = new javax.swing.JLabel();
         CharsL = new javax.swing.JLabel();
         LongestL = new javax.swing.JLabel();
+        ProgressPanel = new javax.swing.JPanel();
+        progressLabel = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
         Unsaved = new javax.swing.JLabel();
 
         setOpaque(false);
@@ -651,6 +674,21 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         LongestL.setIconTextGap(0);
         InfoP.add(LongestL);
 
+        ProgressPanel.setPreferredSize(new java.awt.Dimension(300, 21));
+        ProgressPanel.setLayout(new java.awt.BorderLayout());
+
+        progressLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        progressLabel.setText(_("Progress:"));
+        progressLabel.setPreferredSize(new java.awt.Dimension(100, 14));
+        ProgressPanel.add(progressLabel, java.awt.BorderLayout.LINE_START);
+
+        progressBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        progressBar.setPreferredSize(new java.awt.Dimension(200, 21));
+        progressBar.setStringPainted(true);
+        ProgressPanel.add(progressBar, java.awt.BorderLayout.LINE_END);
+
+        InfoP.add(ProgressPanel);
+
         jPanel8.add(InfoP, java.awt.BorderLayout.WEST);
 
         Unsaved.setIcon(Theme.loadIcon("save.png"));
@@ -674,8 +712,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             start = end;
             end = swap;
         }
-        if (entry == null || overstyle == null)
+        if (entry == null || overstyle == null) {
             return;
+        }
         overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), start, end, entry.getText());
     }//GEN-LAST:event_SubTextCaretUpdate
 
@@ -703,12 +742,14 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_TrashBActionPerformed
 
     private void StyleListCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StyleListCActionPerformed
-        if (ignore_style_list_changes)
+        if (ignore_style_list_changes) {
             return;
+        }
         int row = parent.getSelectedRowIdx();
         int res = StyleListC.getSelectedIndex();
-        if (res < 0)
+        if (res < 0) {
             return;
+        }
         parent.keepUndo(entry);
         entry.setStyle(styles.get(res));
         showStyle();
@@ -782,8 +823,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
      * The style update SHOULD be done asynchronusly
      */
     public void insertUpdate(DocumentEvent e) {
-        if (ignore_sub_changes)
+        if (ignore_sub_changes) {
             return;
+        }
         parent.subTextChanged();
         entry.insertText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
@@ -793,8 +835,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
      * The style update SHOULD be done asynchronusly
      */
     public void removeUpdate(DocumentEvent e) {
-        if (ignore_sub_changes)
+        if (ignore_sub_changes) {
             return;
+        }
         parent.subTextChanged();
         entry.removeText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
@@ -831,6 +874,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel PSDur;
     private javax.swing.JPanel PSFinish;
     private javax.swing.JPanel PSStart;
+    private javax.swing.JPanel ProgressPanel;
     private javax.swing.JToggleButton ShowStyleB;
     private javax.swing.JComboBox StyleListC;
     public javax.swing.JPanel StyleP;
@@ -851,5 +895,49 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JProgressBar progressBar;
+    private javax.swing.JLabel progressLabel;
     // End of variables declaration//GEN-END:variables
+
+    /**
+     * @return the progressBar
+     */
+    public javax.swing.JProgressBar getProgressBar() {
+        return progressBar;
+    }
+    /**
+     * @return the progressLabel
+     */
+    public javax.swing.JLabel getProgressLabel() {
+        return progressLabel;
+    }
+
+    public void progressOn() {
+        this.progressBar.setVisible(true);
+        this.progressLabel.setVisible(true);
+    }
+
+    public void progressOff() {
+        this.progressBar.setVisible(false);
+        this.progressLabel.setVisible(false);
+    }
+
+    public void progressMinValue(int value) {
+        this.progressBar.setMinimum(value);
+    }
+
+    public void progressMaxValue(int value) {
+        this.progressBar.setMaximum(value);
+    }
+
+    public void progressValue(int value) {
+        this.progressBar.setValue(value);
+    }
+
+    public void progressTitle(String txt) {
+        this.progressLabel.setText(txt + ":");
+    }
+    public void progressTooltip(String txt) {
+        this.progressBar.setToolTipText(txt);
+    }
 }

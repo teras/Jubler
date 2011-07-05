@@ -191,4 +191,12 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
     public String getPluginName() {
         return _("ASpell checker");
     }
+    
+    public ClassLoader getClassLoader() {
+        return null;
+    }
+
+    public void setClassLoader(ClassLoader loader) {
+    }    
+    
 }

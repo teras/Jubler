@@ -22,16 +22,61 @@
  */
 package com.panayotis.jubler.time;
 
+import com.panayotis.jubler.subs.CommonDef;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+
 /**
  *
  * @author teras
  */
-public class Time implements Comparable<Time> {
+public class Time implements Comparable<Time>, Cloneable, CommonDef {
 
-    protected int msecs = -1;
     public static final int MAX_TIME = 3600 * 24;   // in seconds
     public static final int MAX_MILLI_TIME = MAX_TIME * 1000;   // in seconds
 
+    public static float PAL_VIDEOFRAMERATE = 3600.0f;
+    public static float NTSC_VIDEOFRAMERATE = 3003.0f;
+    public static DateFormat time_format_1 = new SimpleDateFormat("HH:mm:ss.SSS");
+    public static DateFormat time_format_2 = new SimpleDateFormat("HH:mm:ss:SSS");
+    public static DateFormat time_format_3 = new SimpleDateFormat("dd.MM.yy  HH:mm");
+    public static DateFormat time_format_4 = new SimpleDateFormat("HH:mm:ss");
+    protected int msecs = -1;
+
+    /**
+     * This is to generate end-time, using starting frame-count and 
+     * the duration in the 10th.
+     * @param frames The starting time in frame-count.
+     * @param frame_rate The frame-rate.
+     * @param duration The duration 
+     */
+    public Time(long frames, float frame_rate, int duration) {
+        this(frames, frame_rate);
+        this.msecs += (duration * 10);
+    }
+    /**
+     * This is to generate the start-time from a frame-count, that is
+     * says 25 frames/second, 1500 frames/minute and 90,000 frames/hour.
+     * By dividing the frames to 90, the value is suitable for
+     * Date, which uses milliseconds, however the millisecond part needs
+     * to convert by (mill * 90 / frame_rate) to get the time-equipvalent.
+     * @param frames The frame count.
+     * @param frame_rate The frame-rate, ie. 36000
+     */
+    public Time(long frames, float frame_rate) {
+        frames /= 90;
+        long remain = (frames % 90);
+        String time_s = formatTime(frames, frame_rate, true);        
+        try {
+            Date dt = time_format_2.parse(time_s);
+            this.msecs = (int)dt.getTime();       
+            //this.msecs += remain;
+        } catch (Exception ex) {
+        }
+    }
+    
     /* Time in seconds */
     public Time(double time) {
         setTime(time);
@@ -72,6 +117,20 @@ public class Time implements Comparable<Time> {
         setTime((toSeconds() - beg) * fac + beg);
     }
 
+    public void setTimeLiteral(String h, String m, String s, String f) {
+        short hour, min, sec, milli;
+        int flength;
+        try {
+            hour = Short.parseShort(h);
+            min = Short.parseShort(m);
+            sec = Short.parseShort(s);
+            milli = Short.parseShort(f);
+            setTime(hour, min, sec, milli);
+        } catch (NumberFormatException e) {
+            invalidate();
+        }
+    }
+        
     private void setTime(String h, String m, String s, String f, float fps) {
         short hour, min, sec, milli, fram;
         try {
@@ -232,4 +291,100 @@ public class Time implements Comparable<Time> {
     public double differenceInSecs(Time other) {
         return (msecs - other.msecs) / 1000d;
     }
+    
+    /**
+     * @return the msecs
+     */
+    public int getMilli() {
+        return msecs;
+    }
+
+    /**
+     * @param msecs the msecs to set
+     */
+    public void setMilli(int msecs) {
+        this.msecs = msecs;
+    }
+
+    /**
+     * Converts the time that includes the frame-count in the time-value by
+     * extracts the millisecond part and convert it appropriately to 
+     * time unit. The time input must have been divided by 90, 
+     * (ie. taken from 90,000 frames per hour), before passing to this
+     * routine.
+     * @param time_value The time includes the frame-count.
+     * @param frame_rate The frame-rate for TV system used.
+     * @param is_to_time true if it is converted to time, false back to frames.
+     * @return The string representing time format, suitable to be parsed
+     * by a DateFormat instance.
+     */
+    private String formatTime(long time_value, float frame_rate, boolean is_to_time) {
+        time_format_2.setTimeZone(TimeZone.getTimeZone("GMT+0:00"));
+        String time_str = time_format_2.format(new Date(time_value));
+
+        int time_len = time_str.length();
+        int sub_time_len = time_len - 3;
+
+        String time_sub_str = time_str.substring(0, sub_time_len);
+
+        int n1 = Integer.parseInt(time_str.substring(time_str.length() - 3));
+
+        int milli_part = 0;
+        if (is_to_time) {
+            milli_part = (int)(n1 * 90f / frame_rate);
+        } else {
+            milli_part = (int)(n1 * frame_rate / 90f);
+        }
+
+        return (time_sub_str + milli_part);
+    }
+
+    /**
+     * This routine return the number of frames/second, given that the the
+     * internal milliseconds used to store this value. This takes the
+     * default 90,000 frames per hour, and since it was stored in the
+     * milliseconds, the value stored will be multiplied by 90.
+     * @param frame_rates The frame-rate, ie. PAL=36000, NTSC=3003
+     * @return The frame-count per second equivalent of the millisecond stored.
+     */
+    public int getFrameCount(float frame_rates){
+        int frame_count = 0;
+        try{
+            String time_s = this.formatTime(msecs, frame_rates, false);
+            Date dt = time_format_2.parse(time_s);
+            frame_count = (int)(dt.getTime() * 90L);            
+        }catch(Exception ex){}
+        return frame_count;
+    }
+    /**
+     * Inserting zeros into the back of the value input, based on the 
+     * total length required. If the length of the original is equal or longer
+     * than the total length required, the original is returned.
+     * @param str The value that need patching with zeros at the back.
+     * @param len the total length of the result string. 
+     * @return The string patched with zeros if needed, and the length of it
+     * must have a minimum required length.
+     */
+    private String adaptString(String str, int len) {
+        StringBuffer strbuf = new StringBuffer(str.trim());
+
+        while (strbuf.length() < len) {
+            strbuf.insert(0, "0");
+        }
+
+        return strbuf.toString();
+    }
+
+    /**
+     * Inserting zeros into the back of the value input, based on the 
+     * total length required. If the length of the original is equal or longer
+     * than the total length required, the original is returned.
+     * @param str The value that need patching with zeros at the back.
+     * @param len the total length of the result string. 
+     * @return The string patched with zeros if needed, and the length of it
+     * must have a minimum required length.
+     */
+    private String adaptString(int str, int len) {
+        return adaptString(String.valueOf(str), len);
+    }    
 }
