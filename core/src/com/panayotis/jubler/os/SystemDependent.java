@@ -99,12 +99,12 @@ public class SystemDependent {
     }
 
     public static void setDirectionButtonStyle(AbstractButton button) {
-        setButtonStyle(button, "only", "segmentedCapsule");
+        setButtonStyle(button, "only", "segmentedTextured");
     }
 
     public static void setToolBarButtonStyle(AbstractButton button, String pos) {
         button.setFocusable(false);
-        setButtonStyle(button, pos, "segmentedCapsule");
+        setButtonStyle(button, pos, "segmentedTextured");
     }
 
     public static void setColorButtonStyle(AbstractButton button, String pos) {

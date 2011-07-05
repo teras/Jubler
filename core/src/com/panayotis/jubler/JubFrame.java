@@ -358,6 +358,7 @@ public class JubFrame extends JFrame {
         NewTB = new javax.swing.JButton();
         LoadTB = new javax.swing.JButton();
         SaveTB = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         InfoTB = new javax.swing.JButton();
         EditTP = new javax.swing.JPanel();
         CutTB = new javax.swing.JButton();
@@ -601,18 +602,23 @@ public class JubFrame extends JFrame {
         SaveTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
         SaveTB.setToolTipText(_("Save"));
         SaveTB.setEnabled(false);
-        SystemDependent.setToolBarButtonStyle(SaveTB, "middle");
+        SystemDependent.setToolBarButtonStyle(SaveTB, "last");
         SaveTB.addActionListener(formListener);
         FileTP.add(SaveTB);
+
+        JublerTools.add(FileTP);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
         InfoTB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/info.png"))); // NOI18N
         InfoTB.setToolTipText(_("Project Information"));
         InfoTB.setEnabled(false);
-        SystemDependent.setToolBarButtonStyle(InfoTB, "last");
+        SystemDependent.setToolBarButtonStyle(InfoTB, "only");
         InfoTB.addActionListener(formListener);
-        FileTP.add(InfoTB);
+        jPanel1.add(InfoTB);
 
-        JublerTools.add(FileTP);
+        JublerTools.add(jPanel1);
 
         EditTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
@@ -2039,6 +2045,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
     private javax.swing.JMenuItem bySelectionMEM;
     private javax.swing.JMenuItem bySelectionSEM;
     private javax.swing.JMenuItem byTimeGEM;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
