@@ -1,0 +1,32 @@
+.\" A sample man page. 
+.\" Contact admin@yourcompany.com to correct errors or omissions. 
+.TH jubler 1 "25 February 2007" "1.0" "Jubler man page"
+.SH NAME
+.B jubler
+\- a subtitle editor in Java
+.SH SYNOPSIS
+.\" Syntax goes here. 
+.B jubler [subtitle_file]
+.SH DESCRIPTION
+Jubler is a tool to edit text-based subtitles. It can be used an authoring
+software for new subtitles or as a tool to convert, transform, correct and
+refine existing subtitles.
+.P
+The most popular subtitle formats can be used. Preview of the subtitles in
+realtime or in design time, spell checking, translation mode and styles
+editing are some of the main features.
+.SH OPTIONS
+.B subtitle_file
+The subtitle to open. Should be in the following formats: *.sub, *.srt, *.ass, *.ssa
+.SH BUGS
+.IP \(bu 2 
+Application takes some time to display the initial splash screen, since every time it tries to locate a valid java runtime environment.
+.IP \(bu 2 
+Sometimes ffmpeg library crashes. Since this library is called directly from java environment, it will die the application without any further notice.
+Although usually this has to do with bugs in ffdecode, please contact the author of Jubler directly. In rare situations these problems could be solved.
+.SH AUTHOR
+.nf
+Panayotis Katsaloulis (panayotis@panayotis.com)
+.fi
+.SH HISTORY
+2007 Initial man page
