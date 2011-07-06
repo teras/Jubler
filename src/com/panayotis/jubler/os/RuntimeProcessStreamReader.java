@@ -65,6 +65,7 @@ public class RuntimeProcessStreamReader implements Runnable {
             StringBuilder sb = new StringBuilder();
             while ((line = br.readLine()) != null) {
                 sb.append(line);
+                sb.append("\n");
                 //DEBUG.logger.log(Level.OFF, "Line of " + name + ": " + line);
             }//end while ((line = br.readLine()) != null)
             line = sb.toString();
