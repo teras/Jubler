@@ -22,6 +22,7 @@
  */
 package com.panayotis.jubler.os;
 
+import com.panayotis.jubler.subs.Share;
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.tools.externals.ExtPath;
@@ -101,10 +102,8 @@ public class TreeWalker {
     }
 
     public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
-        boolean valid = false, sig_valid = false, test_valid = false;
-        BufferedReader infopipe_in = null, infopipe_err = null;
+        boolean valid = false;
         Process proc = null;
-        String line_in = null, line_err = null, line = null;
         String[] cmd = new String[parameters.length + 1];
         cmd[0] = exec.getAbsolutePath();
         if (parameters.length > 0) {
@@ -122,41 +121,24 @@ public class TreeWalker {
             proc = Runtime.getRuntime().exec(cmd);
             InputStream inp = proc.getInputStream();
             InputStream erp = proc.getErrorStream();
-            //OutputStream out = proc.getOutputStream();
-            
-            infopipe_in = new BufferedReader(new InputStreamReader(inp));
-            infopipe_err = new BufferedReader(new InputStreamReader(erp));
-            line_in = infopipe_in.readLine();
-            line_err = infopipe_err.readLine();
-            //DEBUG.logger.log(Level.OFF, "pipe-in:" + line_in);
-            //DEBUG.logger.log(Level.OFF,  "pipe-err:" + line_err);
-            line = (line_in != null ? line_in : line_err);
-            while (line != null) {
-                boolean must_find_app_signature = !((app_signature == null) || sig_valid);
-                if (must_find_app_signature) {
-                    sig_valid = line.toLowerCase().contains(app_signature);
-                }
 
-                boolean must_find_test_signature = !((test_signature == null) || test_valid);
-                if (must_find_test_signature) {
-                    test_valid = (!test_valid) && line.toLowerCase().contains(test_signature);
-                }else{
-                    test_valid = true;
-                }
-                line = (line_in != null ? infopipe_in.readLine() : infopipe_err.readLine()); 
-            }//end while ((line = infopipe.readLine()) != null)
-             
-            valid = (sig_valid && test_valid);
+            RuntimeProcessStreamReader ins = new RuntimeProcessStreamReader("stdin", inp);
+            RuntimeProcessStreamReader ers = new RuntimeProcessStreamReader("stderr", erp);
+            ins.start();
+            ers.start();
+            proc.waitFor();
+            boolean found_ins = (!Share.isEmpty(test_signature)) && 
+                                ins.containsIgnoreCase(test_signature);
+            found_ins |= (!Share.isEmpty(app_signature)) && 
+                                ins.containsIgnoreCase(app_signature);
+            
+            boolean found_ers = (!Share.isEmpty(test_signature)) && 
+                                ers.containsIgnoreCase(test_signature);
+            found_ers |= (!Share.isEmpty(app_signature)) && 
+                                ers.containsIgnoreCase(app_signature);             
+            valid = (found_ins || found_ers);
         } catch (Exception ex) {
         } finally {
-            try {
-                infopipe_err.close();
-            } catch (Exception e) {
-            }
-            try {
-                infopipe_in.close();
-            } catch (Exception e) {
-            }
             try {
                 proc.destroy();
             } catch (Exception e) {
