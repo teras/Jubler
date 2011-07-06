@@ -39,6 +39,7 @@ import com.panayotis.jubler.subs.loader.text.SubViewer;
 import com.panayotis.jubler.subs.loader.text.SubViewer2;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGenc;
 import com.panayotis.jubler.subs.loader.text.W3CTimedText;
+import java.util.ArrayList;
 
 /**
  *
@@ -114,4 +115,31 @@ public class AvailSubFormats {
         return -1;
     }
 
+/**
+     * Find a single instance of handler that handle the given extension.
+     * Since the same file extension can be used by multiple formats,
+     * the routine will return null when more than one instances are found.
+     * @param ext The subtitle file's extension given.
+     * @return unique file handler for the given extension, null if not found
+     * or there are more than one handler which can handle the same file 
+     * extension.
+     */
+    public static SubFormat findFromExtension(String ext) {
+        boolean is_found = false;
+        String found_extension = null;
+        SubFormat format = null;
+        ArrayList<SubFormat> found_list = new ArrayList<SubFormat>();
+        for (SubFormat found_format : Formats) {
+            found_extension = found_format.getExtension();
+            is_found = found_extension.equalsIgnoreCase(ext);
+            if (is_found) {
+                found_list.add(found_format);
+            }//end if
+        }//end for (SubFormat found_format : Formats)
+        is_found = (found_list.size() == 1);
+        if (is_found) {
+            format = found_list.get(0);
+        }//end if (is_found)
+        return format;
+    }//end public SubFormat findFromExtension(String ext)     
 }
