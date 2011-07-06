@@ -102,7 +102,7 @@ public class TreeWalker {
     }
 
     public static boolean execIsValid(File exec, String[] parameters, String app_signature, String test_signature) {
-        boolean valid = false;
+        boolean valid = false, found_ers = false, found_ins = false;
         Process proc = null;
         String[] cmd = new String[parameters.length + 1];
         cmd[0] = exec.getAbsolutePath();
@@ -127,15 +127,16 @@ public class TreeWalker {
             ins.start();
             ers.start();
             proc.waitFor();
-            boolean found_ins = (!Share.isEmpty(test_signature)) && 
-                                ins.containsIgnoreCase(test_signature);
-            found_ins |= (!Share.isEmpty(app_signature)) && 
-                                ins.containsIgnoreCase(app_signature);
-            
-            boolean found_ers = (!Share.isEmpty(test_signature)) && 
-                                ers.containsIgnoreCase(test_signature);
-            found_ers |= (!Share.isEmpty(app_signature)) && 
-                                ers.containsIgnoreCase(app_signature);             
+            found_ins = (!Share.isEmpty(test_signature))
+                    && ins.containsIgnoreCase(test_signature);
+            found_ins |= (!Share.isEmpty(app_signature))
+                    && ins.containsIgnoreCase(app_signature);
+            if (!found_ins) {
+                found_ers = (!Share.isEmpty(test_signature))
+                        && ers.containsIgnoreCase(test_signature);
+                found_ers |= (!Share.isEmpty(app_signature))
+                        && ers.containsIgnoreCase(app_signature);
+            }//end if (! found_ins)
             valid = (found_ins || found_ers);
         } catch (Exception ex) {
         } finally {
