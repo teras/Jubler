@@ -56,14 +56,16 @@ public class RuntimeProcessStreamReader implements Runnable {
     }
 
     public void run() {
+        InputStreamReader isr = null;
+        BufferedReader br = null;
         try {
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader br = new BufferedReader(isr);
+            isr = new InputStreamReader(is);
+            br = new BufferedReader(isr);
 
             StringBuilder sb = new StringBuilder();
             while ((line = br.readLine()) != null) {
                 sb.append(line);
-                DEBUG.logger.log(Level.OFF, "Line of " + name + ": " + line);
+                //DEBUG.logger.log(Level.OFF, "Line of " + name + ": " + line);
             }//end while ((line = br.readLine()) != null)
             line = sb.toString();
         } catch (Exception ex) {
@@ -72,7 +74,11 @@ public class RuntimeProcessStreamReader implements Runnable {
         }finally{
             try{
                 is.close();
-            }catch(Exception ex){}
+                isr.close();
+                br.close();
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
         }//end while/catch
     }//end public void run()
 
