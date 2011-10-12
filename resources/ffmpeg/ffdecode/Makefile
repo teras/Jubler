@@ -19,10 +19,7 @@ JAVA_HOME=${shell /bin/sh ../../system/findjava.sh -j}
 CPATH=${shell pwd}
 
 # Path of the local ffmpeg source structure (already inside the source version of Jubler)
-FFMPEG=${CPATH}/../ffmpeg-0.6.1
-
-# Path of local FAAD2 library
-FAAD=${CPATH}/../ffmpeg-libs/faad2
+FFMPEG=${CPATH}/../ffmpeg-0.7.6
 
 # Use this path for static libraries
 LIBRARIES=${CPATH}/../libraries
@@ -34,7 +31,7 @@ JUBLER=${CPATH}/../../..
 FFDECODE=resources/ffmpeg/ffdecode
 
 # Where javah lives
-JAVAH=${JAVA_HOME}/bin/javah
+JAVAH=javah
 
 # Where Windows include files for JNI can be found
 WININCLOC=${JUBLER}/../../Tools/jvm/include
@@ -59,14 +56,14 @@ ifeq (${STATIC},no)
 else
 	LIBRARYREQ=${LIBRARIES}/libavformat${LIBSUF}.a
 	RANLIBREQ=ranlib
-	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lfaad${LIBSUF} -lswscale${LIBSUF} -lm ${XLIBS}
+	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lswscale${LIBSUF} -lm ${XLIBS}
 	INCS=-I${FFMPEG} -I${LIBRARIES}/include/${LIBSUF}
 endif
 
 ifeq (${MAKESYS},win32)
 	JINCLUDE=-I${WININCLOC} -I${WININCLOC}/win32
 else
-	JINCLUDE=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM}
+	JINCLUDE=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -I/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers -/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers
 endif
 
 ifeq (${MAKESYS},win32)
@@ -77,6 +74,16 @@ ifeq (${MAKESYS},win32)
 	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -shared
 	LIBNAME=${PROJ}.dll
 	XFCONFIG=--cross-prefix=${CCPREF} --enable-memalign-hack --target-os=mingw32
+	GCCOPTS=-D_JNI_IMPLEMENTATION_
+	STRIP=${CCPREF}strip -s
+endif
+ifeq (${MAKESYS},win64)
+	XLIBS=
+	CCPREF=x86_64-w64-mingw32-
+	ARCH=x86_64
+	LD=${CC} -D_JNI_IMPLEMENTATION_ -Wl,--kill-at -shared
+	LIBNAME=${PROJ}.dll
+	XFCONFIG=--cross-prefix=${CCPREF} --enable-memalign-hack --target-os=mingw32 --disable-dxva2 --arch=${ARCH}
 	GCCOPTS=-D_JNI_IMPLEMENTATION_
 	STRIP=${CCPREF}strip -s
 endif
@@ -131,7 +138,7 @@ ifeq (${MAKESYS},linux_x86_64)
 	STRIP=${CCPREF}strip -s
 endif
 
-FCONFIG=--disable-debug --enable-gpl --enable-nonfree --enable-pthreads --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-ffprobe --disable-encoders --enable-encoder=pcm_s16le --enable-encoder=pcm_s16be --disable-muxers --enable-muxer=wav --disable-devices --disable-doc --disable-network --disable-libdc1394 --disable-postproc --enable-libfaad --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG}
+FCONFIG=--disable-debug --enable-gpl --enable-nonfree --enable-pthreads --disable-ffmpeg --disable-ffserver --disable-ffplay --disable-ffprobe --disable-encoders --enable-encoder=pcm_s16le --enable-encoder=pcm_s16be --disable-muxers --enable-muxer=wav --disable-devices --disable-doc --disable-network --disable-libdc1394 --disable-postproc --extra-cflags="-I${FAAD}/include ${GCCOPTS}"  --extra-ldflags="-L${LIBRARIES} ${GCCOPTS}" ${XFCONFIG}
 
 CCPREF_NOS=${shell echo ${CCPREF} | sed -e 's/-$$//g' }
 DCONFIG=--with-mp4v2 --host=${CCPREF_NOS}
@@ -182,7 +189,10 @@ win32:javacheck distclean
 	${MAKE} -e library MAKESYS=win32
 	rm -rf ${JUBLER}/src/lib
 
-
+win64:javacheck distclean
+	${MAKE} -e library MAKESYS=win64
+	rm -rf ${JUBLER}/src/lib
+	
 darwin:javacheck
 	${MAKE} distclean
 	${MAKE} -e LIB MAKESYS=darwin_i386
@@ -237,15 +247,8 @@ native:
 
 
 
-${LIBRARIES}/libfaad${LIBSUF}.a:
-	cd ${FAAD} && CFLAGS="${GCCOPTS}" LDFLAGS="${GCCOPTS}" ./configure ${DCONFIG} && mv frontend/Makefile frontend/Makefile.orig && echo >frontend/Makefile "all:" && ${MAKE} -j3
+${LIBRARYREQ}:
 	mkdir -p ${LIBRARIES}
-	cp ${FAAD}/libfaad/.libs/libfaad.a ${LIBRARIES}/libfaad${LIBSUF}.a
-	cd ${FAAD} && mv frontend/Makefile.orig frontend/Makefile && ${MAKE} distclean
-
-${LIBRARYREQ}: ${LIBRARIES}/libfaad${LIBSUF}.a
-	mkdir -p ${LIBRARIES}
-	cd ${LIBRARIES} ; rm -f libfaad.a && ln -s libfaad${LIBSUF}.a libfaad.a
 	cd ${FFMPEG} && ./${FFCONF} ${FCONFIG} && ${MAKE} -j3
 	cp ${FFMPEG}/libavformat/libavformat.a ${LIBRARIES}/libavformat${LIBSUF}.a
 	cp ${FFMPEG}/libavcodec/libavcodec.a ${LIBRARIES}/libavcodec${LIBSUF}.a
@@ -255,11 +258,9 @@ ${LIBRARYREQ}: ${LIBRARIES}/libfaad${LIBSUF}.a
 	cp ${FFMPEG}/libavutil/avconfig.h ${LIBRARIES}/include/${LIBSUF}/libavutil
 	cd ${FFMPEG} && ${MAKE} distclean
 	rm -f ${FFMPEG}/libswscale/libswscale-uninstalled.pc ${FFMPEG}/libswscale/libswscale.pc
-	rm -f ${LIBRARIES}/libfaad.a
 
 
 ranlib:
-	${RANLIB} ${LIBRARIES}/libfaad${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavformat${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavcodec${LIBSUF}.a
 	${RANLIB} ${LIBRARIES}/libavutil${LIBSUF}.a
