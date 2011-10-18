@@ -60,10 +60,15 @@ else
 	INCS=-I${FFMPEG} -I${LIBRARIES}/include/${LIBSUF}
 endif
 
+
 ifeq (${MAKESYS},win32)
 	JINCLUDE=-I${WININCLOC} -I${WININCLOC}/win32
 else
-	JINCLUDE=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -I/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers -/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers
+ifeq (${MAKESYS},win64)
+	JINCLUDE=-I${WININCLOC} -I${WININCLOC}/win32
+else
+	JINCLUDE=-I${JAVA_HOME}/include -I${JAVA_HOME}/include/${SYSTEM} -I/Developer/SDKs/MacOSX10.6.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers -I/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Headers
+endif
 endif
 
 ifeq (${MAKESYS},win32)
