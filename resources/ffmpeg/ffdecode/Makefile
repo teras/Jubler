@@ -56,7 +56,7 @@ ifeq (${STATIC},no)
 else
 	LIBRARYREQ=${LIBRARIES}/libavformat${LIBSUF}.a
 	RANLIBREQ=ranlib
-	LIBS=-L${LIBRARIES} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lswscale${LIBSUF} -lm ${XLIBS}
+	LIBS=-L${LIBRARIES} -lswscale${LIBSUF} -lavformat${LIBSUF} -lavcodec${LIBSUF} -lavutil${LIBSUF} -lm ${XLIBS}
 	INCS=-I${FFMPEG} -I${LIBRARIES}/include/${LIBSUF}
 endif
 
