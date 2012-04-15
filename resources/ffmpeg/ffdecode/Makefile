@@ -19,7 +19,7 @@ JAVA_HOME=${shell /bin/sh ../../system/findjava.sh -j}
 CPATH=${shell pwd}
 
 # Path of the local ffmpeg source structure (already inside the source version of Jubler)
-FFMPEG=${CPATH}/../ffmpeg-0.7.6
+FFMPEG=${CPATH}/../ffmpeg-0.7.12
 
 # Use this path for static libraries
 LIBRARIES=${CPATH}/../libraries
