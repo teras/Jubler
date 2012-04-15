@@ -74,7 +74,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
     av_register_all();
     
     /* Open the input/output files */
-    err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
+    err = avformat_open_input(&fcx, input_filename, NULL, NULL);
     if(err<0){
         DEBUG(env, this, "decodeAudio", "Could not open file '%s'.", input_filename);
         ret = JNI_FALSE;
@@ -106,7 +106,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
          * audio and video stream we have to seek by the video
          */
         for(i=0; i<fcx->nb_streams; i++) {
-            if(fcx->streams[i]->codec->codec_type==CODEC_TYPE_VIDEO) {
+            if(fcx->streams[i]->codec->codec_type==AVMEDIA_TYPE_VIDEO) {
                 /* Found a video stream, check if codec is supported */
                 vcodec = avcodec_find_decoder(fcx->streams[i]->codec->codec_id);
                 if(vcodec) {
@@ -160,7 +160,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                     /* use wav as the output format of the file */
                     fmt = av_guess_format(NULL, output_filename, NULL);
                     if (!fmt) {
-								DEBUG(env, this, "decodeAudio", "Could not deduce output format from file extension: using WAV.");
+                        DEBUG(env, this, "decodeAudio", "Could not deduce output format from file extension: using WAV.");
                         fmt = av_guess_format("wav", NULL, NULL);
                     }
                     if (!fmt) {
@@ -182,32 +182,28 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
                             audio_st = add_audio_stream(env, this, ofcx, fmt->audio_codec, ccx);
                         }
                         
-                        /* set the output parameters (must be done even if no parameters) */
-                        if (av_set_parameters(ofcx, NULL) < 0) {
-                            DEBUG(env, this, "decodeAudio", "Invalid output format parameters.");
+                        codec_enc = avcodec_find_encoder(audio_st->codec->codec_id);
+                        if (!codec_enc) {
+                            DEBUG(env, this, "decodeAudio", "Encoder codec not found.");
                             ret = JNI_FALSE;
                         }
                         else {
-                            codec_enc = avcodec_find_encoder(audio_st->codec->codec_id);
-                            if (!codec_enc) {
-                                DEBUG(env, this, "decodeAudio", "Encoder codec not found.");
+                            if ((codec_enc_is_open = avcodec_open(audio_st->codec, codec_enc)) < 0) {
+                                DEBUG(env, this, "decodeAudio", "Could not open encoder codec.");
                                 ret = JNI_FALSE;
                             }
                             else {
-                                if ((codec_enc_is_open = avcodec_open(audio_st->codec, codec_enc)) < 0) {
-                                    DEBUG(env, this, "decodeAudio", "Could not open encoder codec.");
-                                    ret = JNI_FALSE;
-                                }
-                                else {
-                                     if (!(fmt->flags & AVFMT_NOFILE)) {
-                                         if (url_fopen(&ofcx->pb, output_filename, URL_WRONLY) < 0) {
-                                             DEBUG(env, this, "decodeAudio", "Could not open file '%s'", output_filename);
-                                             ret = JNI_FALSE;
-                                         }
-                                         else {
-                                             av_write_header(ofcx);
-                                         }
-                                     }
+                                if (!(fmt->flags & AVFMT_NOFILE)) {
+                                    if (avio_open(&ofcx->pb, output_filename, AVIO_WRONLY) < 0) {
+                                        DEBUG(env, this, "decodeAudio", "Could not open file '%s'", output_filename);
+                                        ret = JNI_FALSE;
+                                    }
+                                    else {
+                                        if (avformat_write_header(ofcx, NULL) < 0) {
+                                            DEBUG(env, this, "decodeAudio", "Error writing output header");
+                                            ret = JNI_FALSE;
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -301,7 +297,7 @@ jboolean decodeAudio(JNIEnv * env, jobject this, const char *input_filename, con
 
     	/* close the output file */
     	if (!(fmt->flags & AVFMT_NOFILE) && ofcx->pb != NULL) {
-        	url_fclose(ofcx->pb);
+        	avio_close(ofcx->pb);
     	}
 		
     	/* free the stream */
