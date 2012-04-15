@@ -82,7 +82,7 @@ void get_information(JNIEnv * env, jobject this, jfloat* dim, const char* video_
     av_register_all();
     
     // Open the input file.
-    err = av_open_input_file(&fcx, video_c, NULL, 0, NULL);
+    err = avformat_open_input(&fcx, video_c, NULL, NULL);
     if(err<0) {
         DEBUG(env, this, "get_information", "Could not open file '%s'.", video_c);
         ret = JNI_FALSE;
@@ -99,7 +99,7 @@ void get_information(JNIEnv * env, jobject this, jfloat* dim, const char* video_
         // Give us information about the resolution and exit
         for(i=0;i<fcx->nb_streams;i++) {
             AVStream *st = fcx->streams[i];
-            if(st->codec->codec_type == CODEC_TYPE_VIDEO) {
+            if(st->codec->codec_type == AVMEDIA_TYPE_VIDEO) {
                 dim[0] = st->codec->width;
                 dim[1] = st->codec->height;
                 

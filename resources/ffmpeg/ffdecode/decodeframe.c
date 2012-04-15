@@ -122,7 +122,7 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
     AVFrame *frame=avcodec_alloc_frame();
     
     /* Open the input file */
-    err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
+    err = avformat_open_input(&fcx, input_filename, NULL, NULL);
     if(err<0){
         DEBUG(env, this, "decodeFrame", "Could not open file '%s'.", input_filename);
         retflag = FALSE;
@@ -139,7 +139,7 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
         // Find the first supported codec in the video streams.
         for(i=0; i<fcx->nb_streams; i++){
             ccx=fcx->streams[i]->codec;
-            if(ccx->codec_type==CODEC_TYPE_VIDEO) {
+            if(ccx->codec_type==AVMEDIA_TYPE_VIDEO) {
                 // Found a video stream, check if codec is supported
                 codec = avcodec_find_decoder(ccx->codec_id);
                 if (codec) {
@@ -237,7 +237,7 @@ AVPicture* decodeFrame(JNIEnv * env, jobject this, const char *input_filename, j
 			*width = *height = -1;
 	 	} else {
 			sws_scale(swsContext,
-				frame->data,
+				(const uint8_t* const*)frame->data,
 				frame->linesize,
 				0, ccx->height,
 				pict->data,
@@ -265,7 +265,7 @@ int file_info(JNIEnv * env, jobject this, char * input_filename) { int err=0;
     av_register_all();
     
     // Open the input file.
-    err = av_open_input_file(&fcx, input_filename, NULL, 0, NULL);
+    err = avformat_open_input(&fcx, input_filename, NULL, NULL);
     if(err<0){
         DEBUG(env, this, "file_info", "Could not open file '%s'.", input_filename);
         return 1;
@@ -275,7 +275,7 @@ int file_info(JNIEnv * env, jobject this, char * input_filename) { int err=0;
     err = av_find_stream_info(fcx);
     
     // Give us information about the file and exit
-    dump_format(fcx, 0, input_filename, FALSE);
+    av_dump_format(fcx, 0, input_filename, FALSE);
     
     av_close_input_file(fcx);
     return 0;

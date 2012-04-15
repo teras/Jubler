@@ -81,7 +81,7 @@ JNIEXPORT jboolean JNICALL Java_com_panayotis_jubler_media_preview_decoders_Nati
         ret = JNI_TRUE;
         
         // Open the input file.
-        err = av_open_input_file(&fcx, audio_c, NULL, 0, NULL);
+        err = avformat_open_input(&fcx, audio_c, NULL, NULL);
         cachefile = fopen(cache_c, "wb");
         if(err<0){
             DEBUG(env, this, "makeCache", "Could not open audio file '%s'.", audio_c);
