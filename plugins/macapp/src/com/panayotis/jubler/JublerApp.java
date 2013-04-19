@@ -133,6 +133,5 @@ public class JublerApp extends Application implements Plugin, PluginItem {
     }
 
     public void setClassLoader(ClassLoader loader) {
-    }    
-    
+    }       
 }

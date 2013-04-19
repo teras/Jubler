@@ -21,7 +21,7 @@
 
 	<taskdef name="launch4j"
 		onerror="report"
-		classpath="/opt/local/share/launch4j/launch4j.jar:/opt/local/share/launch4j/lib/xstream.jar" 
+		classpath="/opt/local/share/launch4j/launch4j.jar:/opt/local/share/launch4j/lib/xstream.jar:/opt/multi/launch4j/launch4j.jar:/opt/multi/launch4j/lib/xstream.jar" 
 		classname="net.sf.launch4j.ant.Launch4jTask"/>
 
 	<target name="jupidator">
@@ -47,7 +47,8 @@
 	<target name="changelog" depends="jupidator">
 		<delete file="ChangeLog.html"/>
 		<echo message="" file="ChangeLog.html"/>
-		<java fork="true" classname="com.panayotis.jupidator.helpers.ChangeLogCreator" classpath="dist/lib/jupidator.jar">
+		<java fork="true" classname="com.panayotis.jupidator.helpers.Launcher" classpath="dist/lib/jupidator.jar">
+			<arg value="--create"/>
 			<arg value="http://www.jubler.org/files/updates/update.xml"/>
 			<arg value="ChangeLog.html"/>
 		</java>
@@ -190,7 +191,7 @@
 
 
 	<!-- Windows Installer -->
-	<target name="win32exe" depends="-nodistbased,core">
+	<target name="winexe" depends="-nodistbased,core">
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -216,17 +217,21 @@
 			</config>
 		</launch4j>
 	</target>
-	<target name="win32" depends="-release,win32exe">
-		<copy file="resources/libs/ffmpeg/dist/win32/ffdecode.dll" todir="dist/lib"/>
+	<target name="-win32lib"> <property name="win.bits" value="32"/> </target>
+	<target name="-win64lib"> <property name="win.bits" value="64"/> </target>
+	<target name="-windist" depends="winexe">
+		<copy file="resources/libs/ffmpeg/win_${win.bits}/ffdecode.dll" todir="dist/lib"/>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="makensis" failonerror="true">
-			<arg line="-NOCD -DVERSION=${version} resources/installers/windows/jubler.nsi"/>
+			<arg line="-NOCD -DVERSION=${version} -DWINBITS=${win.bits} resources/installers/windows/jubler.nsi"/>
 		</exec>
 		<delete file="dist/Jubler.exe"/>
 		<delete file="dist/README.txt"/>
 		<delete file="dist/LICENCE.txt"/>
 	</target>
+	<target name="win32" depends="-release,-win32lib,-windist"/>
+	<target name="win64" depends="-release,-win64lib,-windist"/>
 
 
 
