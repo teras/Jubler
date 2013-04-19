@@ -108,4 +108,11 @@ public class VLC extends AbstractPlayer implements Plugin, PluginItem {
         list.add("vlc.exe");
         return list;
     }
+
+    public ClassLoader getClassLoader() {
+        return null;
+    }
+
+    public void setClassLoader(ClassLoader cl) {
+    }
 }

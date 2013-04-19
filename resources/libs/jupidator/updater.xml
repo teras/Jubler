@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<updatelist application="Jubler" baseurl="http://www.jubler.org/files/jupidator" icon="icons/jubler.png">
+<updatelist application="Jubler" baseurl="http://www.jubler.org/files/updates" icon="icons/jubler.png" jupidator="600">
+
+	<mirror constructor="${URL}${FILEBASE}-${FILEPATH}${FILEEXT}${FILECOMPR}" url="http://jubler.googlecode.com/files/Jubler-"/>
 
     <architect tag="any" os="" arch="">
         <launcher exec="${JAVABIN}">
@@ -8,11 +10,15 @@
         </launcher>
     </architect>
 
-    <architect tag="macosx" os="Mac" arch="i386">
+    <architect tag="macosx" os="mac" arch="i386">
         <launcher exec="${APPHOME}/../../MacOS/JavaApplicationStub"/>
     </architect>
 
-    <architect tag="macosx" os="Mac" arch="ppc">
+    <architect tag="macosx" os="mac" arch="ppc">
+        <launcher exec="${APPHOME}/../../MacOS/JavaApplicationStub"/>
+    </architect>
+
+    <architect tag="macosx" os="mac" arch="x86">
         <launcher exec="${APPHOME}/../../MacOS/JavaApplicationStub"/>
     </architect>
 
@@ -34,11 +40,166 @@
         <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
-	<version release="800" version="4.1.1">
+    <architect tag="win64" os="Windows" arch="amd64">
+        <launcher exec="${APPHOME}\Jubler.exe"/>
+    </architect>
+
+	<version release="1140" version="4.6.2">
 		<description>
-			Fixed error not updating recents menu.
+			Fixed cosmetic issues with Mac OS X Lion.
 		</description>
+		<arch name="macosx">
+			<file name="Info.plist" sourcedir="4.6.2" destdir="${APPHOME}/../../" size="601" compress="gz"/>
+			<file name="Jubler.jar" sourcedir="4.6.2" destdir="${APPHOME}" size="675281" compress="gz"/>
+		</arch>
 	</version>
+
+	<version release="1106" version="4.6.1">
+		<description>
+			Fixed ffdecode library for 64 bit Mac OS X. Dutch translation.
+		</description>
+		<arch name="win32">
+			<file name="Jubler.exe" sourcedir="4.6.1" destdir="${APPHOME}" size="720681" compress="gz"/>
+		</arch>
+		<arch name="macosx">	
+			<file name="Info.plist" sourcedir="4.6.1" destdir="${APPHOME}/../../" size="601" compress="gz"/>
+			<file name="Jubler.jar" sourcedir="4.6.1" destdir="${APPHOME}" size="675217" compress="gz"/>
+			<file name="libffdecode.jnilib" sourcedir="4.6.1" destdir="${APPHOME}/lib" size="4902215" compress="gz"/>
+		</arch>
+		<arch name="any">
+			<file name="Jubler.jar" sourcedir="4.6.1" destdir="${APPHOME}" size="675217" compress="gz"/>
+		</arch>
+		<arch name="all">
+			<file name="nl.jar" sourcedir="4.6.1" destdir="${APPHOME}/i18n" size="29264" compress="gz"/>
+		</arch>
+	</version>
+
+	<version release="1083" version="4.6">
+		<description>
+			Plugin system introduced. Updates to GoogleTranslate, MPlayer. Many bug fixes ans minor improvements.
+		</description>
+		<arch name="win32">
+			<file name="Jubler.exe" sourcedir="4.6" destdir="${APPHOME}" size="720582" compress="gz"/>
+		</arch>
+		<arch name="macosx">
+			<file name="Info.plist" sourcedir="4.6" destdir="${APPHOME}/../../" size="599" compress="gz"/>
+			<file name="Jubler.jar" sourcedir="4.6" destdir="${APPHOME}" size="675200" compress="gz"/>
+			<file name="macapp.jar" sourcedir="4.6" destdir="${APPHOME}/lib/" size="4565"/>
+		</arch>
+		<arch name="any">
+			<file name="Jubler.jar" sourcedir="4.6" destdir="${APPHOME}" size="675200" compress="gz"/>
+		</arch>
+		<arch name="all">
+			<file name="aspell.jar" sourcedir="4.6" destdir="${APPHOME}/lib/" size="6578"/>
+			<file name="autoupdate.jar" sourcedir="4.6" destdir="${APPHOME}/lib/" size="1940"/>
+			<file name="basetextsubs.jar" sourcedir="4.6" destdir="${APPHOME}/lib/" size="20847"/>
+			<file name="googletranslate.jar" sourcedir="4.6" destdir="${APPHOME}/lib/" size="18881"/>
+			<file name="mplayer.jar" sourcedir="4.6" destdir="${APPHOME}/lib/" size="8032"/>
+			<file name="zemberek.jar" sourcedir="4.6" destdir="${APPHOME}/lib/" size="3193"/>
+			<file name="cs.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="28377"/>
+			<file name="de.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="27379"/>
+			<file name="el.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="33120"/>
+			<file name="es.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="29243"/>
+			<file name="fr.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="30089"/>
+			<file name="it.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="30813"/>
+			<file name="pt.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="29012"/>
+			<file name="sr.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="20194"/>
+			<file name="tr.jar" sourcedir="4.6" destdir="${APPHOME}/i18n/" size="27872"/>
+			<file name="jubler-faq.html" sourcedir="4.6" destdir="${APPHOME}/help/" size="5402" compress="gz"/>
+		</arch>
+	</version>
+
+	<version release="775" version="4.1.3">
+        <description>
+			Fixed Save not wroking. Fixed Recents menu, when display non-existent entries.
+        </description>
+		<arch name="win32">
+            <file name="Jubler.exe" sourcedir="4.1.3" destdir="${APPHOME}" size="750826" compress="gz"/>
+		</arch>
+		<arch name="any">
+            <file name="Jubler.jar" sourcedir="4.1.3" destdir="${APPHOME}" size="706856" compress="gz"/>
+		</arch>
+	</version>
+
+	<version release="684" version="4.1.2">
+        <description>
+			Fixed a bug in x64 version of Windows. Fixed a bug in trimmed 64-bit Leopard.
+        </description>
+		<arch name="win32">
+            <file name="Jubler.exe" sourcedir="4.1.2" destdir="${APPHOME}" size="750138" compress="gz"/>
+		</arch>
+		<arch name="macosx">
+            <file name="Jubler.jar" sourcedir="4.1.2" destdir="${APPHOME}" size="706775" compress="gz"/>
+            <file name="JavaApplicationStub" sourcedir="4.1.2" destdir="${APPHOME}/../../MacOS" size="8714" compress="gz"/>
+            <chmod file="${APPHOME}/../../MacOS/JavaApplicationStub" attr="a+x" />
+		</arch>
+	</version>
+
+    <version release="681" version="4.1.1">
+        <description>
+			Updated auto-update library. Fixed bug not updating Recents menu. Fixed bug agressively truncating save file name. Modular translation files.
+        </description>
+		<arch name="macosx">
+            <file name="Jubler.jar" sourcedir="4.1.1" destdir="${APPHOME}" size="706794" compress="gz"/>
+            <file name="jupidator.jar" sourcedir="4.1.1" destdir="${APPHOME}/lib" size="121077"/>
+            <file name="cs.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="28706"/>
+            <file name="de.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29094"/>
+            <file name="el.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="31983"/>
+            <file name="es.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29504"/>
+            <file name="fr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="21845"/>
+            <file name="pt.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29361"/>
+            <file name="sr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="20822"/>
+            <file name="tr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29658"/>
+		</arch>
+		<arch name="win32">
+            <file name="Jubler.exe" sourcedir="4.1.1" destdir="${APPHOME}" size="750790" compress="gz"/>
+            <file name="jupidator.jar" sourcedir="4.1.1" destdir="${APPHOME}/lib" size="121077"/>
+            <file name="cs.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="28706"/>
+            <file name="de.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29094"/>
+            <file name="el.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="31983"/>
+            <file name="es.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29504"/>
+            <file name="fr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="21845"/>
+            <file name="pt.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29361"/>
+            <file name="sr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="20822"/>
+            <file name="tr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29658"/>
+		</arch>
+		<arch name="linux_amd64">
+            <file name="Jubler.jar" sourcedir="4.1.1" destdir="${APPHOME}" size="706794" compress="gz"/>
+            <file name="jupidator.jar" sourcedir="4.1.1" destdir="${APPHOME}/lib" size="121077"/>
+            <file name="cs.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="28706"/>
+            <file name="de.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29094"/>
+            <file name="el.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="31983"/>
+            <file name="es.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29504"/>
+            <file name="fr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="21845"/>
+            <file name="pt.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29361"/>
+            <file name="sr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="20822"/>
+            <file name="tr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29658"/>
+		</arch>
+		<arch name="linux_i386">
+            <file name="Jubler.jar" sourcedir="4.1.1" destdir="${APPHOME}" size="706794" compress="gz"/>
+            <file name="jupidator.jar" sourcedir="4.1.1" destdir="${APPHOME}/lib" size="121077"/>
+            <file name="cs.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="28706"/>
+            <file name="de.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29094"/>
+            <file name="el.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="31983"/>
+            <file name="es.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29504"/>
+            <file name="fr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="21845"/>
+            <file name="pt.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29361"/>
+            <file name="sr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="20822"/>
+            <file name="tr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29658"/>
+		</arch>
+		<arch name="any">
+            <file name="Jubler.jar" sourcedir="4.1.1" destdir="${APPHOME}" size="706794" compress="gz"/>
+            <file name="jupidator.jar" sourcedir="4.1.1" destdir="${APPHOME}/lib" size="121077"/>
+            <file name="cs.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="28706"/>
+            <file name="de.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29094"/>
+            <file name="el.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="31983"/>
+            <file name="es.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29504"/>
+            <file name="fr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="21845"/>
+            <file name="pt.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29361"/>
+            <file name="sr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="20822"/>
+            <file name="tr.jar" sourcedir="4.1.1" destdir="${APPHOME}/i18n" size="29658"/>
+		</arch>
+    </version>
 
     <version release="669" version="4.1">
         <description>

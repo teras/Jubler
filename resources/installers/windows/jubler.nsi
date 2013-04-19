@@ -3,14 +3,24 @@
 
 !include "MUI.nsh"
 
+function .onInit
+	${if} ${WINBITS} == 64
+		SetRegView 64
+		StrCpy $InstDir "$PROGRAMFILES64\Jubler"
+	${else}
+		StrCpy $InstDir "$PROGRAMFILES\Jubler"
+	${endif}
+functionEnd
+
+
 ; The name of the installer
 Name "Jubler subtitle editor"
 
 ; The file to write
-OutFile "Jubler-${VERSION}.exe"
+OutFile "Jubler-${VERSION}_${WINBITS}.exe"
 
 ; The default installation directory
-InstallDir "$PROGRAMFILES\Jubler"
+InstallDir ""
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
@@ -58,46 +68,46 @@ Section "Jubler editor" SecJubler
   SectionIn RO
   
   ; Set output path to the installation directory.
-  SetOutPath $INSTDIR
+  SetOutPath $InstDir
   File dist\Jubler.exe
   File ChangeLog.html
   File dist\LICENCE.txt
   File dist\README.txt
    
   ; Create library
-  SetOutPath $INSTDIR\lib
+  SetOutPath $InstDir\lib
   File dist\lib\*.*
   File resources\installers\windows\subtitle.ico
 
   ; Create themes
-  SetOutPath $INSTDIR\themes
+  SetOutPath $InstDir\themes
   File dist\themes\*.jar
 
   ; Create i18n files
-  SetOutPath $INSTDIR\i18n
+  SetOutPath $InstDir\i18n
   File dist\i18n\*.jar
 
   ; Create help directory
-  SetOutPath $INSTDIR\help
+  SetOutPath $InstDir\help
   File dist\help\*.*
 
   ; Write the installation path into the registry
-  WriteRegStr HKLM "Software\Jubler" "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM "Software\Jubler" "Install_Dir" "$InstDir"
   
   ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayName" "Jubler subtitle editor"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "UninstallString" '"$InstDir\uninstall.exe"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "NoRepair" 1
   WriteUninstaller "uninstall.exe"
   
   ; Associate subtitle files
-  !insertmacro APP_ASSOCIATE "ass" "jubler.subfile.ass" "ASS Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
-  !insertmacro APP_ASSOCIATE "ssa" "jubler.subfile.ssa" "SSA Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
-  !insertmacro APP_ASSOCIATE "sub" "jubler.subfile.sub" "SUB Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
-  !insertmacro APP_ASSOCIATE "srt" "jubler.subfile.srt" "SRT Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
-  !insertmacro APP_ASSOCIATE "stl" "jubler.subfile.stl" "STL Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
-  !insertmacro APP_ASSOCIATE "son" "jubler.subfile.son" "SON Subtitle file" "$INSTDIR\lib\subtitle.ico,0" "Open with Jubler" "$INSTDIR\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "ass" "jubler.subfile.ass" "ASS Subtitle file" "$InstDir\lib\subtitle.ico,0" "Open with Jubler" "$InstDir\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "ssa" "jubler.subfile.ssa" "SSA Subtitle file" "$InstDir\lib\subtitle.ico,0" "Open with Jubler" "$InstDir\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "sub" "jubler.subfile.sub" "SUB Subtitle file" "$InstDir\lib\subtitle.ico,0" "Open with Jubler" "$InstDir\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "srt" "jubler.subfile.srt" "SRT Subtitle file" "$InstDir\lib\subtitle.ico,0" "Open with Jubler" "$InstDir\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "stl" "jubler.subfile.stl" "STL Subtitle file" "$InstDir\lib\subtitle.ico,0" "Open with Jubler" "$InstDir\Jubler.exe $\"%1$\""
+  !insertmacro APP_ASSOCIATE "son" "jubler.subfile.son" "SON Subtitle file" "$InstDir\lib\subtitle.ico,0" "Open with Jubler" "$InstDir\Jubler.exe $\"%1$\""
 ;  !insertmacro UPDATEFILEASSOC
 
 SectionEnd
@@ -107,33 +117,33 @@ SectionEnd
 ;--------------------------------
 Section "Start Menu Shortcuts" SecStartMenu
   CreateDirectory "$SMPROGRAMS\Jubler"
-  CreateShortCut "$SMPROGRAMS\Jubler\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\Jubler\Jubler subtitle editor.lnk" "$INSTDIR\Jubler.exe" "" "$INSTDIR\Jubler.exe" 0
+  CreateShortCut "$SMPROGRAMS\Jubler\Uninstall.lnk" "$InstDir\uninstall.exe" "" "$InstDir\uninstall.exe" 0
+  CreateShortCut "$SMPROGRAMS\Jubler\Jubler subtitle editor.lnk" "$InstDir\Jubler.exe" "" "$InstDir\Jubler.exe" 0
 SectionEnd
 
 
 ; Create Desktop shortcuts
 ;--------------------------------
 Section "Desktop Icon" SecDesktop
-  CreateShortCut "$DESKTOP\Jubler subtitle editor.lnk" "$INSTDIR\Jubler.exe" "" "$INSTDIR\Jubler.exe" 0
+  CreateShortCut "$DESKTOP\Jubler subtitle editor.lnk" "$InstDir\Jubler.exe" "" "$InstDir\Jubler.exe" 0
 SectionEnd
 
 
 
 ; JRE Installation
 ;--------------------------------
-!define JRE_VERSION "1.6"
-!define JRE_URL "http://javadl.sun.com/webapps/download/AutoDL?BundleId=45824"
+!define JRE_VERSION "1.7"
+!define JRE_URL http://jubler.googlecode.com/files/java_${WINBITS}_7u21.exe
 Section "Java Runtime Environment" SecJRE
 
   ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
   StrCmp $2 ${JRE_VERSION} done	; We have already the correct version of JRE
 
-  StrCpy $2 "$TEMP\Java Runtime Environment 6.exe"
+  StrCpy $2 "$TEMP\Java Runtime Environment 7.exe"
   nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
   Pop $R0 ;Get the return value
   StrCmp $R0 "success" done
-    MessageBox MB_OK|MB_ICONEXCLAMATION "Download failed ($R0).$\nRemember to manually download Java 6 before launching Jubler."
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Download failed ($R0).$\nRemember to manually download Java 7 before launching Jubler."
     Quit
   done:
   HideWindow
@@ -174,7 +184,7 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Jubler"
 
   ; Remove files and uninstaller
-  RMDir /R "$INSTDIR"
+  RMDir /R "$InstDir"
 
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\Jubler\*.*"
