@@ -1257,19 +1257,19 @@ msgstr  "Afficher/Masquer la prévisualisation de la forme d'onde audio"
 
 #: core/src/com/panayotis/jubler/media/preview/JSubPreview.java:420
 msgid   "Automatically perform operation depending on the mouse position"
-msgstr  "Exécuter automatiquement l'opération selon la position de la souris"
+msgstr  "Choisir automatiquement l'opération à effectuer"
 
 #: core/src/com/panayotis/jubler/media/preview/JSubPreview.java:433
 msgid   "Select subtitles only"
-msgstr  "Ne sélectionner que les sous-titres"
+msgstr  "Sélectionner les sous-titres uniquement"
 
 #: core/src/com/panayotis/jubler/media/preview/JSubPreview.java:446
 msgid   "Move subtitles only"
-msgstr  "Ne déplacer que les sous-titres"
+msgstr  "Déplacer les sous-titres uniquement"
 
 #: core/src/com/panayotis/jubler/media/preview/JSubPreview.java:459
 msgid   "Resize subtitles only"
-msgstr  "Ne redimensionner que les sous-titres"
+msgstr  "Redimensionner les sous-titres uniquement"
 
 #: core/src/com/panayotis/jubler/media/preview/JSubPreview.java:484
 msgid   "New subtitle after current one"
