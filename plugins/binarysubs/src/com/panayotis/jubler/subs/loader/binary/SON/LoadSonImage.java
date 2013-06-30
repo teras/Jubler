@@ -44,28 +44,28 @@ import java.io.File;
 import java.util.logging.Level;
 import javax.swing.ImageIcon;
 
-
 /**
  * This class is used to load SON subtitle images. There will be a progress bar
  * shown to indicate what images is being loaded.
  *
  * The list of subtitle records - {@link SonSubEntry} - is used to load the
- * images using its file-name that was parsed from the reading of the
- * textual content of the subtitle file.
+ * images using its file-name that was parsed from the reading of the textual
+ * content of the subtitle file.
  *
- * There is an option to allow manual searching for missing images. Each
- * image, when loading, is attached to a list of default paths. The list of
- * default paths includes
+ * There is an option to allow manual searching for missing images. Each image,
+ * when loading, is attached to a list of default paths. The list of default
+ * paths includes
  * <ul>
  * <li>Image directory held in the "Directory" element of the header.</li>
  * <li>The directory where the subtitle file resides.</li>
- * <li>The working directory of the executable, such as the jubler's directory</li>
+ * <li>The working directory of the executable, such as the jubler's
+ * directory</li>
  * <li>The user's home directory, such as $HOME</li>
  * </ul>
  *
  * When an image is not found within the default set of directories, users are
  * prompted to search for a directory where the missing image might be found.
- * User  can choose to:
+ * User can choose to:
  * <ul>
  * <li>Ignore the current missing image.</li>
  * <li>Ignore the current missing image and set the program to not prompt again
@@ -73,9 +73,9 @@ import javax.swing.ImageIcon;
  * <li>Browse directories where images can be found. User can select a file
  * within the directory or just select a directory.</li>
  * </ul>
- * If a directory is chosen, it is added to the top of the default path list
- * and the searching is repeated. Since the new entry is added to the top of
- * the list, the last one added will be searched first.
+ * If a directory is chosen, it is added to the top of the default path list and
+ * the searching is repeated. Since the new entry is added to the top of the
+ * list, the last one added will be searched first.
  *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
@@ -92,6 +92,7 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
     /**
      * Reference of the image directory that was parsed, ie. from the key
      * "Directory".
+     *
      * @see DVDMaestro
      * @see com.panayotis.jubler.subs.loader.processor.SON.SONImageDirectory
      */
@@ -102,11 +103,10 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
      */
     String subtitle_file_dir = null;
     /**
-     * Flag to indicate if images are loaded into memory after their files
-     * are located or not. Loading of images often causing a huge demand on
-     * memory availability and can cause the program's crashes due to the
-     * shortage of heap-space. This flag allows the control of this demand
-     * as necessarily.
+     * Flag to indicate if images are loaded into memory after their files are
+     * located or not. Loading of images often causing a huge demand on memory
+     * availability and can cause the program's crashes due to the shortage of
+     * heap-space. This flag allows the control of this demand as necessarily.
      */
     private boolean loadImages = true;
     /**
@@ -115,11 +115,13 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
     private SUPCompressImageProcessor simp = null;
 
     /**
-     * Parameterised constructor. Required that references of
-     * these components must be satisfied.
-     * @param sub_list Reference of the list of subtitle events that has been parsed.
-     * @param image_dir Reference of the image directory that was parsed, ie. from the key
-     * "Directory".
+     * Parameterised constructor. Required that references of these components
+     * must be satisfied.
+     *
+     * @param sub_list Reference of the list of subtitle events that has been
+     * parsed.
+     * @param image_dir Reference of the image directory that was parsed, ie.
+     * from the key "Directory".
      * @param input_file Reference of the input subtitle file.
      */
     public LoadSonImage(JubFrame jb, Subtitles sub_list, String image_dir, File input_file) {
@@ -132,9 +134,8 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
     }
 
     private void updateUserColorTable(BufferedImage img) {
-        if (this.simp == null) {
-            simp = new SUPCompressImageProcessor();
-        }//end if
+        if (this.simp == null)
+            simp = new SUPCompressImageProcessor();//end if
         try {
             int[] image_pixels =
                     img.getRGB(0, 0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
@@ -146,48 +147,47 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
     /**
      * Run method performs in two stages.
      * <ol>
-     *  <li>Locate the image files. The names of images have already
-     *      been parsed and isolated from the loading of the textual
-     *      content of the subtitle file. This process will run through
-     *      the list of subtitle events and search for the actual image
-     *      files. This task makes use of {@link ImageFileListManager}
-     *      by giving it the sutitle-list, the image directory, and
-     *      the path of the subtitle file. These directories will be searched
-     *      first. If an image is not found in the search paths given above,
-     *      a manual intervention is required. This will allow user to add
-     *      their own directories on top of the current list, allowing the
-     *      search routine to locate the missing image. There are options
-     *      which allow user to temporary by-pass the missing image, or
-     *      completely abandon the task altogether.</li>
-     *  <li>If the flag {@link #isLoadImages} was set to true, then the
-     *      routine to load images will commence. There will be a
-     *      visual progress bar to indicate the completion percentages and
-     *      the name of the file being loaded. The routine will try to locate
-     *      the image, using its file-path that has been located above. If the
-     *      image is read and loaded successfully, it will be trimmed down to
-     *      the visual subtitle area (ie. black background) and all transparent
-     *      colour (the blue surrounding) are removed, making the image looks
-     *      as it was visible during the play-back of the original video.
-     *      The image is turned into an ImageIcon for display.<br><br>
-     *      If the image was not found, due to the abandoning or skipping action
-     *      from the user in previous stage of the task, no image will be
-     *      visible.<br><br>
-     *      If the flag {@link #isLoadImages isLoadImages} was set to false,
-     *      the routine return immediately to the caller, and no image will
-     *      be visible.</li>
+     * <li>Locate the image files. The names of images have already been parsed
+     * and isolated from the loading of the textual content of the subtitle
+     * file. This process will run through the list of subtitle events and
+     * search for the actual image files. This task makes use of
+     * {@link ImageFileListManager} by giving it the sutitle-list, the image
+     * directory, and the path of the subtitle file. These directories will be
+     * searched first. If an image is not found in the search paths given above,
+     * a manual intervention is required. This will allow user to add their own
+     * directories on top of the current list, allowing the search routine to
+     * locate the missing image. There are options which allow user to temporary
+     * by-pass the missing image, or completely abandon the task
+     * altogether.</li>
+     * <li>If the flag {@link #isLoadImages} was set to true, then the routine
+     * to load images will commence. There will be a visual progress bar to
+     * indicate the completion percentages and the name of the file being
+     * loaded. The routine will try to locate the image, using its file-path
+     * that has been located above. If the image is read and loaded
+     * successfully, it will be trimmed down to the visual subtitle area (ie.
+     * black background) and all transparent colour (the blue surrounding) are
+     * removed, making the image looks as it was visible during the play-back of
+     * the original video. The image is turned into an ImageIcon for
+     * display.<br><br>
+     * If the image was not found, due to the abandoning or skipping action from
+     * the user in previous stage of the task, no image will be visible.<br><br>
+     * If the flag {@link #isLoadImages isLoadImages} was set to false, the
+     * routine return immediately to the caller, and no image will be
+     * visible.</li>
      * </ol>
      * <p>
      * When loading of the images in progress, there are several events the
      * caller can listen to:
      * <ol>
-     *  <li>{@link com.panayotis.jubler.subs.events.SubtitleUpdaterPreProcessingEvent}
-     *  This event happens before the loading loop commencement.</li>
-     *  <li>{@link com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEvent}
-     *  This event only happens when an image has been loaded successfully.</li>
-     *  <li>{@link com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent}
-     *  This event happens after the loop finished.</li>
+     * <li>{@link com.panayotis.jubler.subs.events.SubtitleUpdaterPreProcessingEvent}
+     * This event happens before the loading loop commencement.</li>
+     * <li>{@link com.panayotis.jubler.subs.events.SubtitleRecordUpdatedEvent}
+     * This event only happens when an image has been loaded successfully.</li>
+     * <li>{@link com.panayotis.jubler.subs.events.SubtitleUpdaterPostProcessingEvent}
+     * This event happens after the loop finished.</li>
      * </ol>
      * </p>
+     *
      * @see ImageFileListManager
      * @see JImage#readImage
      * @see SubtitleUpdaterThread
@@ -202,9 +202,8 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
             file_list_man.addSearchPath(subtitle_file_dir);
             file_list_man.setImageFilePath(input_file.getParentFile());
             file_list_man.loadFileList();
-            if (!loadImages) {
-                return;
-            }//end if (!loadImages)
+            if (!loadImages)
+                return;//end if (!loadImages)
 
             //2. Using the located files, load the images.
             //If 'loadImages' is set to true, that is.
@@ -245,9 +244,8 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
                 }//end if (has_image)
                 ed.progressValue(i);
             }//end  for(int j=0; (!is_found) && (j < path_list.size()); j++)
-            if (header != null) {
-                header.color_table = (simp == null ? null : simp.getUserColorTable());
-            }//end if (header != null)
+            if (header != null)
+                header.color_table = (simp == null ? null : simp.getUserColorTable());//end if (header != null)
             //DEBUG.debug(_("Found number of images: \"{0}\"", String.valueOf(count)));
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
@@ -259,8 +257,9 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
 
     /**
      * Checks to see if loading images is required.
-     * @return true if loading of images is required, false no images will
-     * be loaded, even though the image'files location is active.
+     *
+     * @return true if loading of images is required, false no images will be
+     * loaded, even though the image'files location is active.
      */
     public boolean isLoadImages() {
         return loadImages;
@@ -268,6 +267,7 @@ public class LoadSonImage extends SubtitleUpdaterThread implements CommonDef {
 
     /**
      * Sets the flag to indicate that loading of images is required.
+     *
      * @param loadImages true if loading of images is required, false otherwise.
      */
     public void setLoadImages(boolean loadImages) {

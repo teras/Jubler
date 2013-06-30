@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.preview;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -60,7 +61,9 @@ public class JFramePreview extends JPanel {
     private double last_time = -1;
     private float resize = 1f;
 
-    /** Creates a new instance of JVideoPreview */
+    /**
+     * Creates a new instance of JVideoPreview
+     */
     public JFramePreview(JSubPreview callback) {
         this.callback = callback;
 

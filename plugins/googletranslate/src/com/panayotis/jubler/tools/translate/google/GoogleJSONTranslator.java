@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.translate.google;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -183,12 +184,11 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
     public boolean canDisablePlugin() {
         return true;
     }
-    
+
     public ClassLoader getClassLoader() {
         return null;
     }
 
     public void setClassLoader(ClassLoader loader) {
-    }    
-    
+    }
 }

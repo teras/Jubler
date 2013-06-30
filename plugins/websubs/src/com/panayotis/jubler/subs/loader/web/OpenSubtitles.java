@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.web;
 
 import java.io.BufferedReader;
@@ -34,7 +35,9 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class OpenSubtitles {
 
-    /** Creates a new instance of OpenSubtitles */
+    /**
+     * Creates a new instance of OpenSubtitles
+     */
     public OpenSubtitles() {
     }
 

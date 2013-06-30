@@ -18,10 +18,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs;
 
 /**
  * Common pattern definitions.
+ *
  * @author Hoang Duy Tran
  */
 public interface CommonDef {
@@ -115,19 +117,21 @@ public interface CommonDef {
      */
     public static final String punctuation = "(\\p{Punct}+)";
     /**
-     * "[" + white_sp +  "|" + punctuation + "]";
+     * "[" + white_sp + "|" + punctuation + "]";
      */
-    public static final String word_boundary = "[" + white_sp +  "|" + punctuation + "]";
+    public static final String word_boundary = "[" + white_sp + "|" + punctuation + "]";
     /**
      * "(.*?)"
      */
     public static final String anything = "(.*?)";
     /**
-     * digits + ":" + digits + ":" + digits + <font color=red>":"</font> + digits
+     * digits + ":" + digits + ":" + digits + <font color=red>":"</font> +
+     * digits
      */
     public static final String son_time = digits + ":" + digits + ":" + digits + ":" + digits;
     /**
-     * digits + ":" + digits + ":" + digits + <font color=red>","</font> + digits
+     * digits + ":" + digits + ":" + digits + <font color=red>","</font> +
+     * digits
      */
     public static final String srt_time = digits + ":" + digits + ":" + digits + "," + digits;
     /**

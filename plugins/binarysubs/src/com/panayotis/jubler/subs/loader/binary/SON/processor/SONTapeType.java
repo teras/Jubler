@@ -37,6 +37,7 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
  * <pre>
  * Tape_Type	NON_DROP
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONTapeType extends SubtitlePatternProcessor implements CommonDef {
@@ -45,13 +46,13 @@ public class SONTapeType extends SubtitlePatternProcessor implements CommonDef {
     int index = 2;
     private SonHeader sonHeader = null;
 
-    public SONTapeType() {        
+    public SONTapeType() {
         super(pattern);
         setMatchIndexList(index);
     }
 
     public void parsePattern(String[] matched_data, Object record) {
-        if (record instanceof SonHeader){
+        if (record instanceof SonHeader) {
             sonHeader = (SonHeader) record;
             sonHeader.tape_type = matched_data[0];
         }//end if

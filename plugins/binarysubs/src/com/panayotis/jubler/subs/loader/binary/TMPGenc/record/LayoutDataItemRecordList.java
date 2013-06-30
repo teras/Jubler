@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -27,6 +28,7 @@ import java.util.logging.Level;
 
 /**
  * This class holds a collection of {@link LayoutDataItemRecord}(s).
+ *
  * @author Hoang Duy Tran
  */
 public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> implements TMPGencPatternDef {
@@ -34,6 +36,7 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
     /**
      * Returns the collection of strings stored internally as a continuous
      * string of text, separating each line with a new line character.
+     *
      * @return the continuous string of text that contains every single data
      * lines that was stored internally.
      */
@@ -49,9 +52,10 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
 
     /**
      * Returns the collection of strings stored internally as a continuous
-     * string of text, separating each line with a new line character.
-     * That is platform independent.
-     * This version is used internally for reporting and comparing purposes only.
+     * string of text, separating each line with a new line character. That is
+     * platform independent. This version is used internally for reporting and
+     * comparing purposes only.
+     *
      * @return the continuous string of text that contains every single data
      * lines that was stored internally.
      */
@@ -63,8 +67,9 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
     /**
      * Returns the collection of strings stored internally as a continuous
      * string of text, separating each line with a new line character that is
-     * platform dependent.
-     * This version is used externally, such as when writing the data to a file.
+     * platform dependent. This version is used externally, such as when writing
+     * the data to a file.
+     *
      * @return the continuous string of text that contains every single data
      * lines that was stored internally.
      */
@@ -74,6 +79,7 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
 
     /**
      * provides an exact copy of the record
+     *
      * @return the copy of the record
      */
     @Override
@@ -88,12 +94,12 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
     }//end clone
 
     /**
-     * Generate this default block
-     * [LayoutData]
-     * "Picture bottom layout",4,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0
-     * "Picture top layout",4,Tahoma,0.1,17588159451135,0,0,0,0,1,0,0,1,0.0050,0
-     * "Picture left layout",4,Tahoma,0.1,17588159451135,0,0,0,0,0,1,1,1,0.0050,0
-     * "Picture right layout",4,Tahoma,0.1,17588159451135,0,0,0,0,2,1,1,1,0.0050,0
+     * Generate this default block [LayoutData] "Picture bottom
+     * layout",4,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0 "Picture
+     * top layout",4,Tahoma,0.1,17588159451135,0,0,0,0,1,0,0,1,0.0050,0 "Picture
+     * left layout",4,Tahoma,0.1,17588159451135,0,0,0,0,0,1,1,1,0.0050,0
+     * "Picture right
+     * layout",4,Tahoma,0.1,17588159451135,0,0,0,0,2,1,1,1,0.0050,0
      */
     public void defaultRecord() {
         try {
@@ -112,8 +118,8 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
                     tahoma_font,
                     0.07f,
                     default_font_color,
-                    b0,b0,b0,b0,
-                    b1,b2,b0,b1,
+                    b0, b0, b0, b0,
+                    b1, b2, b0, b1,
                     0.0035f, 0);
 
             list[1] = new LayoutDataItemRecord(
@@ -122,8 +128,8 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
                     tahoma_font,
                     0.7f,
                     default_font_color,
-                    b0,b0,b0,b0,
-                    b1,b0,b0,b1,
+                    b0, b0, b0, b0,
+                    b1, b0, b0, b1,
                     0.0050f, 0);
 
             list[2] = new LayoutDataItemRecord(
@@ -132,8 +138,8 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
                     tahoma_font,
                     0.7f,
                     default_font_color,
-                    b0,b0,b0,b0,
-                    b0,b1,b1,b1,
+                    b0, b0, b0, b0,
+                    b0, b1, b1, b1,
                     0.0050f, 0);
 
             list[3] = new LayoutDataItemRecord(
@@ -142,13 +148,12 @@ public class LayoutDataItemRecordList extends Vector<LayoutDataItemRecord> imple
                     tahoma_font,
                     0.7f,
                     default_font_color,
-                    b0,b0,b0,b0,
-                    b2,b1,b1,b1,
+                    b0, b0, b0, b0,
+                    b2, b1, b1, b1,
                     0.0050f, 0);
 
-            for (int i = 0; i < list.length; i++) {
-                this.add(list[i]);
-            }//end for(int i=0; i<list.length; i++)
+            for (int i = 0; i < list.length; i++)
+                this.add(list[i]);//end for(int i=0; i<list.length; i++)
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         }//try/catch(Exception ex)

@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -33,22 +34,22 @@ public class CoreTools implements Plugin {
     @Override
     public PluginItem[] getPluginItems() {
         return new PluginItem[]{
-                    new SubSplit(),
-                    new SubJoin(),
-                    new Reparent(),
-                    new Synchronize(),
-                    new ShiftTime(),
-                    new RecodeTime(),
-                    new Fixer(),
-                    new Rounder(),
-                    new Speller(),
-                    new Translate(),
-                    new JoinEntries(),
-                    new SplitEntries(),
-                    new DelSelection(),
-                    new Marker(),
-                    new Styler()
-                };
+            new SubSplit(),
+            new SubJoin(),
+            new Reparent(),
+            new Synchronize(),
+            new ShiftTime(),
+            new RecodeTime(),
+            new Fixer(),
+            new Rounder(),
+            new Speller(),
+            new Translate(),
+            new JoinEntries(),
+            new SplitEntries(),
+            new DelSelection(),
+            new Marker(),
+            new Styler()
+        };
     }
 
     @Override
@@ -60,12 +61,11 @@ public class CoreTools implements Plugin {
     public boolean canDisablePlugin() {
         return false;
     }
-    
+
     public ClassLoader getClassLoader() {
         return null;
     }
 
     public void setClassLoader(ClassLoader loader) {
-    }    
-    
+    }
 }

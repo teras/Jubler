@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.time.Time;
@@ -39,7 +40,9 @@ import javax.swing.JSpinner;
  */
 public class JTimeSpinner extends JSpinner {
 
-    /** Creates a new instance of JTimeSpinner */
+    /**
+     * Creates a new instance of JTimeSpinner
+     */
     public JTimeSpinner() {
         super();
 
@@ -52,7 +55,6 @@ public class JTimeSpinner extends JSpinner {
             if (getComponent(i) instanceof JButton) {
                 c = (JButton) getComponent(i);
                 c.addMouseListener(new MouseAdapter() {
-
                     @Override
                     public void mousePressed(MouseEvent e) {
                         if ((e.getModifiers() & MouseEvent.ALT_MASK) > 0)
@@ -67,7 +69,6 @@ public class JTimeSpinner extends JSpinner {
 
         /* Get mousewheel event, and modify speed if the alt key is pressed */
         addMouseWheelListener(new MouseWheelListener() {
-
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getModifiers() == InputEvent.ALT_MASK)

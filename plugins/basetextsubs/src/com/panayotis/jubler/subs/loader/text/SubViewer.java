@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.SubEntry;
@@ -41,7 +42,9 @@ public class SubViewer extends AbstractTextSubFormat {
     private static final Pattern pat, testpat;
     private static final Pattern title, author, source, comments;
 
-    /** Creates a new instance of SubFormat */
+    /**
+     * Creates a new instance of SubFormat
+     */
     static {
         pat = Pattern.compile(
                 "(?s)(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d),(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d)"

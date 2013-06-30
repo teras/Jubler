@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SON.record;
 
 import com.panayotis.jubler.subs.CommonDef;
@@ -34,14 +35,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
- * This class store the three data items from a SON's format file. Example
- * of such data is shown below:
+ * This class store the three data items from a SON's format file. Example of
+ * such data is shown below:
  * <blockquote><pre>
  * Color		(0 1 2 3)
  * Contrast	(0 15 15 15)
  * Display_Area	(000 488 720 524)
  * </pre></blockquote>
- * 
+ *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class SonSubtitleImageAttribute implements SubtitleImageAttribute, Cloneable, CommonDef {
@@ -50,79 +51,82 @@ public class SonSubtitleImageAttribute implements SubtitleImageAttribute, Clonea
     public short[] contrast = null;
     public short[] display_area = null;
 
-    public Object[] getColor(){
+    public Object[] getColor() {
         ArrayList<String> list = new ArrayList<String>();
-        try{
+        try {
             this.colour = new short[]{0, 1, 2, 3};
-            for(int i=0; i < this.colour.length; i++){
-                    String val_s = "" + colour[i];
-                    list.add(val_s);
+            for (int i = 0; i < this.colour.length; i++) {
+                String val_s = "" + colour[i];
+                list.add(val_s);
             }//end for(int i=0; i < this.colour.length; i++)
-        }catch(Exception ex){            
+        } catch (Exception ex) {
         }
         return list.toArray();
     }//end public Object[] getColor()
 
-    public Object[] getContrast(){
+    public Object[] getContrast() {
         ArrayList<String> list = new ArrayList<String>();
-        try{
+        try {
             this.colour = new short[]{0, 1, 2, 3};
-            for(int i=0; i < this.contrast.length; i++){
-                    String val_s = "" + contrast[i];
-                    list.add(val_s);
+            for (int i = 0; i < this.contrast.length; i++) {
+                String val_s = "" + contrast[i];
+                list.add(val_s);
             }//end for(int i=0; i < this.contrast.length; i++)
-        }catch(Exception ex){            
+        } catch (Exception ex) {
         }
         return list.toArray();
     }//end public Object[] getColor()
 
-    public Object[] getDisplayArea(){
+    public Object[] getDisplayArea() {
         ArrayList<String> list = new ArrayList<String>();
-        try{
+        try {
             this.colour = new short[]{0, 1, 2, 3};
-            for(int i=0; i < this.display_area.length; i++){
-                    String val_s = "" + display_area[i];
-                    list.add(val_s);
+            for (int i = 0; i < this.display_area.length; i++) {
+                String val_s = "" + display_area[i];
+                list.add(val_s);
             }//end for(int i=0; i < this.contrast.length; i++)
-        }catch(Exception ex){            
+        } catch (Exception ex) {
         }
         return list.toArray();
     }//end public Object[] getColor()
-    
-    public void setColour(Object[] list){
-        try{
+
+    public void setColour(Object[] list) {
+        try {
             this.colour = new short[]{0, 1, 2, 3};
-            for(int i=0; i < list.length; i++){
-                if (i < colour.length){
+            for (int i = 0; i < list.length; i++)
+                if (i < colour.length) {
                     String color_s = list[i].toString();
                     colour[i] = Short.parseShort(color_s);
-                }//end if
-            }//end for(int i=0; i < colour_list.length; i++)
-        }catch(Exception ex){}
+                }//end if//end for(int i=0; i < colour_list.length; i++)
+        } catch (Exception ex) {
+        }
     }//end public void setColour(Object[] colour_list)
-    public void setContrast(Object[] list){
-        try{
+
+    public void setContrast(Object[] list) {
+        try {
             this.contrast = new short[]{0, 15, 15, 15};
-            for(int i=0; i < list.length; i++){
-                if (i < contrast.length){
+            for (int i = 0; i < list.length; i++)
+                if (i < contrast.length) {
                     String contrast_s = list[i].toString();
                     short new_val = Short.parseShort(contrast_s);
                     contrast[i] = new_val;
-                }//end if
-            }//end for(int i=0; i < colour_list.length; i++)
-        }catch(Exception ex){}
+                }//end if//end for(int i=0; i < colour_list.length; i++)
+        } catch (Exception ex) {
+        }
     }//end public void setColour(Object[] colour_list)
-    public void setDisplayArea(Object[] list){
-        try{
+
+    public void setDisplayArea(Object[] list) {
+        try {
             this.display_area = new short[]{0, 380, 720, 416};
-            for(int i=0; i < list.length; i++){
-                if (i < display_area.length){
+            for (int i = 0; i < list.length; i++)
+                if (i < display_area.length) {
                     String val_s = list[i].toString();
                     display_area[i] = Short.parseShort(val_s);
-                }//end if
-            }//end for(int i=0; i < colour_list.length; i++)
-        }catch(Exception ex){}
+                }//end if//end for(int i=0; i < colour_list.length; i++)
+        } catch (Exception ex) {
+        }
     }//end public void setColour(Object[] colour_list)
+
     /**
      * Default data. The record is set with the following settings:
      * <blockquote><pre>
@@ -140,22 +144,24 @@ public class SonSubtitleImageAttribute implements SubtitleImageAttribute, Clonea
     public void makeDefaulRecord(BufferedImage img) {
         centreImage(img.getWidth(), img.getHeight());
     }
-    
-    public void centreImage(BufferedImage img){
+
+    public void centreImage(BufferedImage img) {
         centreImage(img.getWidth(), img.getHeight());
     }
-    private void centreImage(int w, int h){
+
+    private void centreImage(int w, int h) {
         int fix_y = 470;
         int x1 = (720 - w) / 2;
         int y1 = fix_y - h;
-        
+
         x1 = Math.max(0, Math.min(x1, 720));
         y1 = Math.max(0, Math.min(y1, 576));
-        
+
         int x2 = x1 + w;
-        int y2 = fix_y; 
-        display_area = new short[]{(short)x1, (short)y1, (short)x2, (short)y2};
+        int y2 = fix_y;
+        display_area = new short[]{(short) x1, (short) y1, (short) x2, (short) y2};
     }//end private void centreImage(int w, int h)
+
     /**
      * Produce the string presentation of this. Example of such data:
      * <blockquote><pre>
@@ -163,6 +169,7 @@ public class SonSubtitleImageAttribute implements SubtitleImageAttribute, Clonea
      * Contrast	(0 15 15 15)
      * Display_Area	(000 488 720 524)
      * </pre></blockquote>
+     *
      * @return The string presentation.
      */
     public String toString() {
@@ -170,23 +177,22 @@ public class SonSubtitleImageAttribute implements SubtitleImageAttribute, Clonea
         String txt = null;
         try {
             txt = SonSubEntry.shortArrayToString(colour, "Color");
-            if (txt != null) {
+            if (txt != null)
                 b.append(txt);
-            }
             txt = SonSubEntry.shortArrayToString(contrast, "Contrast");
-            if (txt != null) {
+            if (txt != null)
                 b.append(txt);
-            }
             txt = SonSubEntry.shortArrayToString(display_area, "Display_Area");
-            if (txt != null) {
+            if (txt != null)
                 b.append(txt);
-            }
         } catch (Exception ex) {
         }
         return b.toString();
     }//end public String toString()
+
     /**
      * Clone the data
+     *
      * @return The clone version of the record.
      */
     public Object clone() {
@@ -200,8 +206,10 @@ public class SonSubtitleImageAttribute implements SubtitleImageAttribute, Clonea
         }
         return n;
     }//end public Object clone()
+
     /**
      * Copy the record's content.
+     *
      * @param o The old record.
      */
     public void copyRecord(SonSubtitleImageAttribute o) {

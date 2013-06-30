@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style.event;
 
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
@@ -57,9 +58,8 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
             if (entry.prev != null)
                 if (entry.prev.position > pos)
                     remove(i);
-                else
-                    if (entry.next != null && entry.next.position > pos)
-                        entry.next = null;
+                else if (entry.next != null && entry.next.position > pos)
+                    entry.next = null;
         }
         if (size() == 0)
             return null;
@@ -81,8 +81,10 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
         styletype = type;
     }
 
-    /** Find the event index which is just to the left of the current postion
-     *  Note that the "NEXT" object is more importand than the PREV object */
+    /**
+     * Find the event index which is just to the left of the current postion
+     * Note that the "NEXT" object is more importand than the PREV object
+     */
     private StyleoverEvent findPrevEvent(int position, Object basic) {
         StyleoverEvent ret = new StyleoverEvent(basic, 0);
         for (AbstractStyleover.Entry entry : this) {
@@ -123,11 +125,14 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
         return entry.prev;
     }
 
-    /** Search to the left for the next event. If it has the same value then set
-     *  start to the found item event start and return.
-     *  If it does not have the same value then search to the left for the real beggining
-     *  of the event (same, if character based, beginning of paragraph if paragraph based)
-     *  if the style should change up to the beginning of the paragraph, it will dump intermediate events */
+    /**
+     * Search to the left for the next event. If it has the same value then set
+     * start to the found item event start and return. If it does not have the
+     * same value then search to the left for the real beggining of the event
+     * (same, if character based, beginning of paragraph if paragraph based) if
+     * the style should change up to the beginning of the paragraph, it will
+     * dump intermediate events
+     */
     private StyleoverEvent makeStartEvent(Object newvalue, int start, Object basic, String txt) {
         //  if (start==txt.length()) return null;
 
@@ -138,11 +143,14 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
         return new StyleoverEvent(newvalue, (prev_edge > prev_style.position) ? prev_edge : prev_style.position);
     }
 
-    /** Create a new style based of the current one at this position. If the previous style is
-     * actually the startevent, then there is no end event (return null)
+    /**
+     * Create a new style based of the current one at this position. If the
+     * previous style is actually the startevent, then there is no end event
+     * (return null)
      *
-     *  Or else again search to the right for the real end (same rules as findStart apply).
-     *  if the style should change up to the end of the paragraph, it will dump intermediate events
+     * Or else again search to the right for the real end (same rules as
+     * findStart apply). if the style should change up to the end of the
+     * paragraph, it will dump intermediate events
      */
     private StyleoverEvent makeEndEvent(Object newvalue, int start, int end, Object basic, String txt) {
         //  if (end==txt.length()) return null;
@@ -215,8 +223,10 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
         return entry;
     }
 
-    /** Clear all events in (start, end). Leave border items at it's place -
-     *  they will be needed later on */
+    /**
+     * Clear all events in (start, end). Leave border items at it's place - they
+     * will be needed later on
+     */
     private void deleteEvents(int start, int end) {
         int pos;
         AbstractStyleover.Entry entry;

@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.spell;
 
 /**
@@ -33,7 +34,9 @@ public class SpellError {
     public String original;
     public java.util.Vector<String> alternatives;
 
-    /** Creates a new instance of SpellMistake */
+    /**
+     * Creates a new instance of SpellMistake
+     */
     public SpellError(int position, String original, java.util.Vector<String> alts) {
         this.position = position;
         this.original = original;

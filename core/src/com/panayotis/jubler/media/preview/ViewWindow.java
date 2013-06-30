@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.preview;
 
 /**
@@ -33,7 +34,9 @@ public class ViewWindow {
     private double videoduration = -1;
     public static final double MINIMUM_DURATION = 2;
 
-    /** Creates a new instance of ViewWindow */
+    /**
+     * Creates a new instance of ViewWindow
+     */
     public ViewWindow() {
     }
 

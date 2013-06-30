@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader;
 
 /**
@@ -32,5 +33,4 @@ package com.panayotis.jubler.subs.loader;
  * @author Hoang Tran
  */
 public interface SubtitleImageAttribute {
-    
 }

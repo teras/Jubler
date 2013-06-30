@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.os.SystemDependent;
@@ -38,7 +39,9 @@ public class JSubSimpleGraph extends JComponent {
     private Subtitles subs;
     private int length;
 
-    /** Creates a new instance of JSubDiagram */
+    /**
+     * Creates a new instance of JSubDiagram
+     */
     public JSubSimpleGraph(Subtitles subs) {
         super();
         this.subs = subs;

@@ -106,8 +106,7 @@ class MainSplash extends JWindow {
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((d.width - width) / 2, (d.height - height) / 2);
 
-        addMouseListener(new MouseAdapter()    {
-
+        addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent evt) {
                 setVisible(false);

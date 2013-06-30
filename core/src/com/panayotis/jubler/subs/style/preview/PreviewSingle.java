@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style.preview;
 
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
@@ -33,7 +34,7 @@ import java.text.AttributedString;
 public class PreviewSingle extends PreviewElement {
 
     /**
-     * Creates a new instance of PreviewSingle 
+     * Creates a new instance of PreviewSingle
      */
     public PreviewSingle(Object deflt, AbstractStyleover over) {
         super(deflt, over);

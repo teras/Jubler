@@ -28,7 +28,6 @@
 
 /**
  * This package contains classes that process subtitle-file's components for
- * TMPGenc DVD Authoring's subtitle format files. 
+ * TMPGenc DVD Authoring's subtitle format files.
  */
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.processor;
-

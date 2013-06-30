@@ -39,6 +39,7 @@ import com.panayotis.jubler.time.Time;
  * <pre>
  * 0001		00:00:11:01	00:00:15:08	Edwardians In Colour _st00001p1.bmp
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONSubtitleEvent extends SubtitlePatternProcessor implements CommonDef {
@@ -52,16 +53,16 @@ public class SONSubtitleEvent extends SubtitlePatternProcessor implements Common
         setMatchIndexList(index);
     }
 
-    public void parsePattern(String[] matched_data, Object record) {        
+    public void parsePattern(String[] matched_data, Object record) {
         if (record instanceof SonSubEntry) {
             setSonSubEntry((SonSubEntry) record);
             sonSubEntry.event_id = Share.parseShort(matched_data[0]);
 
             Time start, finish;
-            
+
             start = new Time(0);
             start.setTimeLiteral(matched_data[1], matched_data[2], matched_data[3], matched_data[4]);
-            
+
             finish = new Time(0);
             finish.setTimeLiteral(matched_data[5], matched_data[6], matched_data[7], matched_data[8]);
 

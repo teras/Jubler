@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary;
 
 import com.panayotis.jubler.subs.loader.binary.SUP.SUPCompressedImage;
@@ -59,19 +60,19 @@ public class BinarySubPlugin implements Plugin {
         return plugin_list;
     }//end public PluginItem[] getPluginItems()
 
-    private void setClassLoaderForSubFormat(){
-         try {
+    private void setClassLoaderForSubFormat() {
+        try {
             for (PluginItem plugin_item : plugin_list) {
                 SubFormat fmt = (SubFormat) plugin_item;
                 fmt.setClassLoader(this.loader);
-                if (this.loader == null){
+                if (this.loader == null)
                     DEBUG.logger.log(Level.SEVERE, _("Loader is NULL."));
-                }
             }//end for(PluginItem format : plugin_list)
         } catch (Exception ex) {
             DEBUG.logger.log(Level.SEVERE, ex.toString() + _(": Unable to set class loader"));
         }
     }
+
     public String getPluginName() {
         return _("Binary subtitles");
     }

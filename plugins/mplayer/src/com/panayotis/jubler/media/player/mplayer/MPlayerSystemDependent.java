@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.player.mplayer;
 
 import com.panayotis.jubler.options.Options;
@@ -61,9 +62,9 @@ public class MPlayerSystemDependent extends SystemDependent {
                 font = " -font %j/lib/freesans.ttf";
         }
 
-        return "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 " +
-                "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y " +
-                "%(-audiofile %a%) -ass" + font + " %v";
+        return "%p -noautosub -noquiet -nofs -slave -idle -ontop -utf8 "
+                + "-embeddedfonts -volstep 10 -sub %s -ss %t -geometry +%x+%y "
+                + "%(-audiofile %a%) -ass" + font + " %v";
     }
 
     public static String[] getMPlayerEnvironment(MPlayer player) {

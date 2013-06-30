@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.color;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -39,6 +40,7 @@ import javax.swing.JPanel;
 
 /**
  * color quantization of an image.
+ *
  * @version 0.90 19 Sep 2000
  * @author <a href="http://www.gurge.com/amd/">Adam Doppelt</a>
  */
@@ -48,7 +50,7 @@ public class ReduceColorDepth {
     private int colorDepth = 1;
     private BufferedImage newImage = null;
     private int[] coloredPixel = null;
-    private int width = 0,  height = 0;
+    private int width = 0, height = 0;
 
     public ReduceColorDepth() {
     }
@@ -67,40 +69,37 @@ public class ReduceColorDepth {
             PixelGrabber grabber = new PixelGrabber(srcImage, 0, 0, w, h, pix, 0, w);
             grabber.grabPixels();
             int pixels[][] = new int[w][h];
-            for (int x = w; x-- > 0;) {
-                for (int y = h; y-- > 0;) {
+            for (int x = w; x-- > 0;)
+                for (int y = h; y-- > 0;)
                     pixels[x][y] = pix[y * w + x];
-                }
-            }
             return pixels;
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
             return null;
         }
     }//end private int[][] getData()
+
     /**
      * Set the image from an indexed color array.
      */
     private void updatePixels(int palette[], int pixels[][]) {
-        
+
         int w = width = pixels.length;
         int h = height = pixels[0].length;
         int size = width * height;
         coloredPixel = new int[size];
 
         // convert to RGB
-        for (int x = w; x-- > 0;) {
-            for (int y = h; y-- > 0;) {
+        for (int x = w; x-- > 0;)
+            for (int y = h; y-- > 0;)
                 coloredPixel[y * w + x] = palette[pixels[x][y]];
-            }
-        }
     }
 
     public BufferedImage getReducedImage() {
         try {
             newImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             newImage.setRGB(0, 0, width, height, coloredPixel, 0, width);
-            
+
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         }
@@ -118,6 +117,7 @@ public class ReduceColorDepth {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         }
     }//end public BufferedImage getReducedImage()
+
     public BufferedImage getSrcImage() {
         return srcImage;
     }

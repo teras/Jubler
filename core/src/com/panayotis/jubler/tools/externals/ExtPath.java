@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.externals;
 
 /**
@@ -33,7 +34,9 @@ public class ExtPath {
     public static final int FILE_ONLY = 0;
     public static final int BUNDLE_ONLY = 50;
 
-    /** Creates a new instance of ExtPath */
+    /**
+     * Creates a new instance of ExtPath
+     */
     public ExtPath(String path, int rec) {
         this.path = path;
         recursive = rec;

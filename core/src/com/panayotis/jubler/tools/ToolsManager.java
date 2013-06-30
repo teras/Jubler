@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
@@ -94,8 +95,7 @@ public class ToolsManager {
             item.setAccelerator(KeyStroke.getKeyStroke(tool.menu.key, tool.menu.mask));
         item.setName(tool.menu.name);
         ToolsM.add(item);
-        item.addActionListener(new ActionListener()     {
-
+        item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 tool.updateData(current);
                 tool.execute(current);

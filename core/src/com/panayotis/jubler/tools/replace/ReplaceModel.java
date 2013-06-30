@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.replace;
 
 import java.util.ArrayList;
@@ -42,7 +43,9 @@ public class ReplaceModel extends AbstractTableModel {
         {"<.*>", ""}
     };
 
-    /** Creates a new instance of ReplaceModel */
+    /**
+     * Creates a new instance of ReplaceModel
+     */
     public ReplaceModel() {
         replacelist = new ArrayList<ReplaceEntry>();
         loadOptions();

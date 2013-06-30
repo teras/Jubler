@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SON.record;
 
 import com.panayotis.jubler.subs.CommonDef;
@@ -29,7 +30,8 @@ import java.text.NumberFormat;
  * This class is used to hold the data of a single palette entry, such as:
  * <pre>
  * # 00 : RGB(255,255, 0)
- *</pre>
+ * </pre>
+ *
  * @author Hai Dang Quang
  */
 public class SonPaletteEntry implements CommonDef, Cloneable {

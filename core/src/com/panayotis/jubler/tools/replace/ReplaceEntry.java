@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.replace;
 
 import java.util.Collection;
@@ -40,7 +41,9 @@ public class ReplaceEntry {
         this(false, "", "");
     }
 
-    /** Creates a new instance of ReplaceEntry */
+    /**
+     * Creates a new instance of ReplaceEntry
+     */
     public ReplaceEntry(boolean usable, String fromS, String toS) {
         this.fromS = fromS;
         this.toS = toS;

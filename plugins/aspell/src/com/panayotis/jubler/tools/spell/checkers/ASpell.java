@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.spell.checkers;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -191,12 +192,11 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
     public String getPluginName() {
         return _("ASpell checker");
     }
-    
+
     public ClassLoader getClassLoader() {
         return null;
     }
 
     public void setClassLoader(ClassLoader loader) {
-    }    
-    
+    }
 }

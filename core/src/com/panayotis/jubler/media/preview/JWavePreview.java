@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
@@ -59,14 +60,15 @@ public class JWavePreview extends JPanel implements DecoderListener {
     /* Whether the waveform in these panels will be maximized or not */
     private boolean is_maximized = false;
 
-    /** Creates a new instance of JWavePreview */
+    /**
+     * Creates a new instance of JWavePreview
+     */
     public JWavePreview(JSubTimeline tline) {
         timeline = tline;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         loader = new JAudioLoader();
 
         addMouseMotionListener(new MouseMotionAdapter() {
-
             public void mouseDragged(MouseEvent e) {
                 timeline.mouseStillDragging(e);
             }
@@ -76,7 +78,6 @@ public class JWavePreview extends JPanel implements DecoderListener {
             }
         });
         addMouseListener(new MouseAdapter() {
-
             public void mousePressed(MouseEvent e) {
                 timeline.mouseStartsDragging(e);
             }
@@ -87,7 +88,6 @@ public class JWavePreview extends JPanel implements DecoderListener {
         });
 
         addMouseWheelListener(new MouseWheelListener() {
-
             public void mouseWheelMoved(MouseWheelEvent e) {
                 timeline.mouseWheelUpdates(e);
             }

@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -76,8 +77,8 @@ public class SubRenderer extends DefaultTableCellRenderer {
                     DEBUG.logger.log(Level.WARNING, ex.toString());
                 }
                 /*
-                setBackground(table.getBackground());
-                setForeground(table.getForeground());
+                 setBackground(table.getBackground());
+                 setForeground(table.getForeground());
                  */
             }
 
@@ -92,10 +93,8 @@ public class SubRenderer extends DefaultTableCellRenderer {
                 table_row_height = table.getRowHeight();
                 image_row_height = img.getIconHeight();
                 boolean is_taller = (table_row_height < image_row_height);
-                if (is_taller) {
-                    table.setRowHeight(image_row_height);
-                    //table.repaint();
-                }//end if
+                if (is_taller)
+                    table.setRowHeight(image_row_height); //table.repaint();//end if
             } else {
                 boolean is_string = (value instanceof String);
                 if (is_string) {

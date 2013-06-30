@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style;
 
 import static com.panayotis.jubler.subs.loader.format.StyledFormat.*;
@@ -140,7 +141,7 @@ public enum StyleType {
         return res;
     }
     /* ************************************************************
-    /* NOTE
+     /* NOTE
      * Other methods which statically define values are:
      *
      * SubStyle FontSizes

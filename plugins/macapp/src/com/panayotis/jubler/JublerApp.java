@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -83,7 +84,6 @@ public class JublerApp extends Application implements Plugin, PluginItem {
         final Point newpos = new Point();
 
         comp.addMouseListener(new MouseAdapter() {
-
             @Override
             public void mousePressed(MouseEvent e) {
                 Component c = e.getComponent();
@@ -103,7 +103,6 @@ public class JublerApp extends Application implements Plugin, PluginItem {
         });
 
         comp.addMouseMotionListener(new MouseMotionAdapter() {
-
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (ignore_click)
@@ -127,11 +126,11 @@ public class JublerApp extends Application implements Plugin, PluginItem {
     public boolean canDisablePlugin() {
         return true;
     }
-    
+
     public ClassLoader getClassLoader() {
         return null;
     }
 
     public void setClassLoader(ClassLoader loader) {
-    }       
+    }
 }

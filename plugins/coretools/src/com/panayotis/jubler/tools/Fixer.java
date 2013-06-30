@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.tools.ToolMenu.Location;
@@ -205,7 +206,7 @@ public class Fixer extends OneByOneTool {
                     double newbegin = lowerlimit;    /* Calculate new beginnig */
                     if (prev != null)
                         newbegin += (gap * factor);     /* Add the gap only if it's between subtitles (to fix an error with the first subtitle)
-                    /* Fianlly, set net times */
+                     /* Fianlly, set net times */
                     sub.getStartTime().setTime(newbegin);
                     sub.getFinishTime().setTime(newbegin + newdur);
                 }

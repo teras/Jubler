@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.undo;
 
 import com.panayotis.jubler.subs.Subtitles;
@@ -33,7 +34,9 @@ public class UndoEntry {
     String name;
     Subtitles subs;
 
-    /** Creates a new instance of UndoEntry */
+    /**
+     * Creates a new instance of UndoEntry
+     */
     public UndoEntry(Subtitles subs, String name) {
         this.name = name;
         this.subs = new Subtitles(subs);

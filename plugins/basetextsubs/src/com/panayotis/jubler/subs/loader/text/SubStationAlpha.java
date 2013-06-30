@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.subs.style.StyleType.*;
@@ -51,7 +52,9 @@ public class SubStationAlpha extends StyledTextSubFormat {
     private static final ArrayList<StyledFormat> styles_dict;
     protected static final HashMap<String, Direction> ssa_directions;
 
-    /** Creates a new instance of SubFormat */
+    /**
+     * Creates a new instance of SubFormat
+     */
     static {
         pat = Pattern.compile(
                 /* We ignore the Marked option */

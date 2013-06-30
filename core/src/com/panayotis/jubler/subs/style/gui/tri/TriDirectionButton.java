@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style.gui.tri;
 
 import com.panayotis.jubler.JubFrame;
@@ -41,7 +42,9 @@ public class TriDirectionButton extends JButton implements TriObject, DirectionL
     private Direction dir;
     private ImageIcon disabled;
 
-    /** Creates a new instance of TriDirButton */
+    /**
+     * Creates a new instance of TriDirButton
+     */
     public TriDirectionButton(JubFrame parent) {
 
         direction = new JDirectionDialog(parent);
@@ -51,7 +54,6 @@ public class TriDirectionButton extends JButton implements TriObject, DirectionL
         disabled = DarkIconFilter.getDisabledIcon((ImageIcon) direction.getIcon(Direction.CENTER));
 
         addActionListener(new java.awt.event.ActionListener() {
-
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 if (ignore_element_changes)
                     return;

@@ -37,20 +37,22 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
  * <pre>
  * Directory	C:\java\test_data\edwardian
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONImageDirectory extends SubtitlePatternProcessor implements CommonDef {
+
     private static String pattern = "Directory" + sp + printable;
     int index = 2;
     private SonHeader sonHeader = null;
 
-    public SONImageDirectory() {        
+    public SONImageDirectory() {
         super(pattern);
         setMatchIndexList(index);
     }
 
     public void parsePattern(String[] matched_data, Object record) {
-        if (record instanceof SonHeader){
+        if (record instanceof SonHeader) {
             sonHeader = (SonHeader) record;
             sonHeader.image_directory = matched_data[0];
         }//end if                

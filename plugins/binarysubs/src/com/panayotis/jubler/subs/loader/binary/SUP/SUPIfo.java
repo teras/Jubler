@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SUP;
 
 import com.panayotis.jubler.subs.Share;
@@ -39,7 +40,8 @@ import java.util.ArrayList;
 import java.util.zip.InflaterInputStream;
 
 /**
- * Most of this file is taken from the ProjectX. 
+ * Most of this file is taken from the ProjectX.
+ *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class SUPIfo {
@@ -48,19 +50,18 @@ public class SUPIfo {
     }
 
     public static int YUVtoRGB(int Y, int Cr, int Cb, int T) {
-        if (Y == 0) {
+        if (Y == 0)
             return 0;
-        }
 
         int R = (int) ((float) Y + 1.402f * (Cr - 128));
         int G = (int) ((float) Y - 0.34414 * (Cb - 128) - 0.71414 * (Cr - 128));
         int B = (int) ((float) Y + 1.722 * (Cb - 128));
-        
+
         R = Math.max(0, Math.min(B, 0xff));
         G = Math.max(0, Math.min(G, 0xff));
         B = Math.max(0, Math.min(B, 0xff));
         T = 0xFF - Math.max(0, Math.min(T, 0xff));
-        
+
         return (T << 24 | R << 16 | G << 8 | B);
     }
 
@@ -79,9 +80,8 @@ public class SUPIfo {
         Cr = Cr < 0 ? 0 : (Cr > 0xFF ? 0xFF : Cr);
         Cb = Cb < 0 ? 0 : (Cb > 0xFF ? 0xFF : Cb);
 
-        if (Y == 0) {
+        if (Y == 0)
             return 0x108080;
-        }
 
         return (Y << 16 | Cr << 8 | Cb);
     }
@@ -110,7 +110,7 @@ public class SUPIfo {
         ArrayList<String> table = getPGCColors(ifo);
         return table;
     }
-    
+
     public static long createIfo(String file, Object color_table[]) throws IOException {
         file += ".IFO";
 
@@ -133,12 +133,12 @@ public class SUPIfo {
         BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(outfile), 65535);
 
         //palettize number * 4byte BGR0 indices (e.g.256 or 16)
-        for (int a = 0,  color; a < palette; a++) {
+        for (int a = 0, color; a < palette; a++) {
             if (a < color_table.length) {
                 color = 0xFFFFFF & Integer.parseInt(color_table[a].toString());
 
                 for (int b = 0; b < 3; b++) {
-                    int shift_by =  (b << 3);
+                    int shift_by = (b << 3);
                     int color_component = color >> shift_by;
                     byte component_val = (byte) (0xFF & color_component);
                     base_color_index[b] = component_val;
@@ -160,9 +160,10 @@ public class SUPIfo {
     /**
      * The colors in the table is full 4 bytes, with leading transparency.
      * TT,RR,GG,BB
+     *
      * @param spf The full byte array of SPF file's content.
-     * @return The integer table contains the original color-table that was
-     * used for the subtitle.
+     * @return The integer table contains the original color-table that was used
+     * for the subtitle.
      * @throws java.io.IOException
      */
     private static int[] getSPFColors(byte spf[]) throws IOException {
@@ -171,16 +172,16 @@ public class SUPIfo {
         int[] color_table = new int[table_size];
         int argb = 0x00000000;
         for (int a = 0; a < table_size; a++) {
-            
+
             int index = (a << 2);
 
             B = 0xff & spf[index];
             G = 0xff & spf[index + 1];
             R = 0xff & spf[index + 2];
-            
+
             T = 0xff & spf[index + 3];
             T = 0xFF - Math.max(0, Math.min(T, 0xff));
-        
+
             //argb = (T << 24 | R << 16 | G << 8 | B);
             argb = (R << 16 | G << 8 | B);
             color_table[a] = (int) argb;
@@ -192,23 +193,24 @@ public class SUPIfo {
     /**
      * The colors in the table is full 4 bytes, with leading transparency.
      * TT,RR,GG,BB
+     *
      * @param ifo The full byte array of IFO file's content.
-     * @return The integer table contains the original color-table that was
-     * used for the subtitle.
+     * @return The integer table contains the original color-table that was used
+     * for the subtitle.
      * @throws java.io.IOException
      */
     private static ArrayList<String> getPGCColors(byte ifo[]) throws IOException {
         //VTS_PGC_1 starts at 0x1010, color_index 0 starts at offs 0xA5 (0x10B5)
         ArrayList<String> color_table = new ArrayList<String>();
-        
-        for (int a = 0,  color; a < 16; a++) {
-            
+
+        for (int a = 0, color; a < 16; a++) {
+
             int ifo_table_index = 0x10B5 + (a << 2);
             int Y = (0xff & ifo[ifo_table_index]);
             int Cr = (0xff & ifo[ifo_table_index + 1]);
             int Cb = (0xff & ifo[ifo_table_index + 2]);
             int T = (0xff & ifo[ifo_table_index + 3]);
-            
+
             //this conversion does not always returns the 
             //original color, the one that came from the original image,
             //but it's near enough.
@@ -219,16 +221,16 @@ public class SUPIfo {
         }//end private static byte[] setPGCColors(byte ifo[], Object color_table[]) throws IOException
         return color_table;
     }//end private static byte[] setPGCColors(byte ifo[], Object color_table[]) throws IOException 
-    
+
     private static byte[] setPGCColors(byte ifo[], Object color_table[]) throws IOException {
         //VTS_PGC_1 starts at 0x1010, color_index 0 starts at offs 0xA5 (0x10B5)
-        for (int a = 0,  color; a < 16 && a < color_table.length; a++) {
+        for (int a = 0, color; a < 16 && a < color_table.length; a++) {
             String rgb_color_str = color_table[a].toString();
             int rgb_color_int = Integer.parseInt(rgb_color_str);
             int argb = 0xFFFFFF & rgb_color_int;
             color = RGBtoYUV(argb);
 
-            for (int b = 0,  val; b < 3; b++) {
+            for (int b = 0, val; b < 3; b++) {
                 int ifo_table_index = 0x10B5 + (a << 2) + b;
                 //ifo[ifo_table_index] = (byte) (0xFF & color >> (16 - (b * 8)));
 
@@ -240,6 +242,7 @@ public class SUPIfo {
         }//end private static byte[] setPGCColors(byte ifo[], Object color_table[]) throws IOException
         return ifo;
     }//end private static byte[] setPGCColors(byte ifo[], Object color_table[]) throws IOException 
+
     private static byte[] getDefaultIfo() throws IOException {
         byte compressed_ifo[] = {
             120, -100, -19, -103, 61, 72, 28, 65, 28, -59, -33, -100, -69, 123, -98, 119, -71, -81, -100, 31, 39, -63, 52, 41,
@@ -267,9 +270,8 @@ public class SUPIfo {
         ByteArrayOutputStream uncompressed_ifo = new ByteArrayOutputStream();
 
         int x = 0;
-        while ((x = inflater.read()) != -1) {
+        while ((x = inflater.read()) != -1)
             uncompressed_ifo.write(x);
-        }
 
         uncompressed_ifo.flush();
 

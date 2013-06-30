@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -53,7 +54,9 @@ public class VideoFile extends File {
     private float length = INVALID;
     private float fps = INVALID;
 
-    /** Creates a new instance of VideoFile */
+    /**
+     * Creates a new instance of VideoFile
+     */
     public VideoFile(String vfile, DecoderInterface decoder) {
         super(vfile);
         getVideoProperties(decoder);

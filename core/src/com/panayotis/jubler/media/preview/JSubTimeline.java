@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.JubFrame;
@@ -94,7 +95,9 @@ public class JSubTimeline extends JPanel {
     private JWavePreview wave;
     private JSubPreview preview;
 
-    /** Creates a new instance of JSubTimeline */
+    /**
+     * Creates a new instance of JSubTimeline
+     */
     public JSubTimeline(JubFrame parent, ViewWindow view, JSubPreview preview) {
         this.parent = parent;
         vislist = new ArrayList<SubInfo>();
@@ -104,7 +107,6 @@ public class JSubTimeline extends JPanel {
         this.preview = preview;
 
         addMouseMotionListener(new MouseMotionAdapter() {
-
             public void mouseDragged(MouseEvent e) {
                 mouseStillDragging(e);
             }
@@ -114,7 +116,6 @@ public class JSubTimeline extends JPanel {
             }
         });
         addMouseListener(new MouseAdapter() {
-
             public void mousePressed(MouseEvent e) {
                 mouseStartsDragging(e);
             }
@@ -124,7 +125,6 @@ public class JSubTimeline extends JPanel {
             }
         });
         addMouseWheelListener(new MouseWheelListener() {
-
             public void mouseWheelMoved(MouseWheelEvent e) {
                 mouseWheelUpdates(e);
             }
@@ -204,8 +204,10 @@ public class JSubTimeline extends JPanel {
         return saction | SELECTED_GROUP;
     }
 
-    /** Check if a subinfo is inside this list AND it's position is relative to the mouse
-     *  cursor (so we need to take action like moving or resizing */
+    /**
+     * Check if a subinfo is inside this list AND it's position is relative to
+     * the mouse cursor (so we need to take action like moving or resizing
+     */
     private int checkAListForAction(ArrayList<SubInfo> sourcelist) {
         SubInfo inf;
         int i;
@@ -345,10 +347,12 @@ public class JSubTimeline extends JPanel {
         if (selection_mode == NONE)
             return;
 
-        /** Use this method to clear the selection list - if necessary.
-         *  These actions are performed ONLY when a selection has been performed and NOT
-         *  when a dragging has been done (eg. resize/move).
-         *  We can check this if last_selected_subinfo is null */
+        /**
+         * Use this method to clear the selection list - if necessary. These
+         * actions are performed ONLY when a selection has been performed and
+         * NOT when a dragging has been done (eg. resize/move). We can check
+         * this if last_selected_subinfo is null
+         */
         if (last_selected_subinfo != null)
             if (keep_selection_list_on_mouseup) {
                 if (last_subinfo_was_selected)
@@ -413,8 +417,10 @@ public class JSubTimeline extends JPanel {
         return new Dimension(400, 40);
     }
 
-    /** Use this functiopn when a change has been performed in the selected subtitles.
-     *  No changes to the displayed subtitles will be performed */
+    /**
+     * Use this functiopn when a change has been performed in the selected
+     * subtitles. No changes to the displayed subtitles will be performed
+     */
     private void selectionHasChanged(int[] subid) {
         if (ignore_new_selection_list)
             return;
@@ -461,8 +467,10 @@ public class JSubTimeline extends JPanel {
         return view.getStart() + view.getDuration() * sel;
     }
 
-    /** Use this methid to inform that the visible window has been changed AND/OR the
-     *  selection has been changed */
+    /**
+     * Use this methid to inform that the visible window has been changed AND/OR
+     * the selection has been changed
+     */
     public void windowHasChanged(int[] subid) {
         vislist.clear();
 

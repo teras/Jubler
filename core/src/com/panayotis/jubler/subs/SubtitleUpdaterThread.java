@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
@@ -39,9 +40,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * This class is base class for all subtitle updating events that are
- * threaded. It holds the list and routines to fire events before and after
- * the processing are done, and after a subtitle-record has been updated.
+ * This class is base class for all subtitle updating events that are threaded.
+ * It holds the list and routines to fire events before and after the processing
+ * are done, and after a subtitle-record has been updated.
+ *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class SubtitleUpdaterThread extends Thread {
@@ -49,7 +51,6 @@ public class SubtitleUpdaterThread extends Thread {
     protected float FPS;
     protected String ENCODING;
     private JubFrame jubler;
-    
     private Subtitles subList = null;
     private SubEntry entry = null;
     private int row = -1;
@@ -57,17 +58,16 @@ public class SubtitleUpdaterThread extends Thread {
     private ArrayList<SubtitleUpdaterPreProcessingEventListener> updaterPreProcessingEventList = new ArrayList<SubtitleUpdaterPreProcessingEventListener>();
     private ArrayList<SubtitleUpdaterPostProcessingEventListener> updaterPostProcessingEventList = new ArrayList<SubtitleUpdaterPostProcessingEventListener>();
 
-    public SubtitleUpdaterThread(){
-        
+    public SubtitleUpdaterThread() {
     }
 
-    public SubtitleUpdaterThread(JubFrame jubler, float fps, String encoding){
+    public SubtitleUpdaterThread(JubFrame jubler, float fps, String encoding) {
         this.jubler = jubler;
         this.FPS = fps;
         this.ENCODING = encoding;
         init();
     }
-    
+
     public void init() {
     }
 
@@ -95,8 +95,8 @@ public class SubtitleUpdaterThread extends Thread {
                 "Subtitle Updater Pre-Processing Event");
         event.setSubList(subList);
         int len = this.updaterPreProcessingEventList.size();
-        for (int i = len - 1; i >=
-                0; i--) {
+        for (int i = len - 1; i
+                >= 0; i--) {
             SubtitleUpdaterPreProcessingEventListener e = this.updaterPreProcessingEventList.get(i);
             e.preProcessing(event);
         }//end for
@@ -125,8 +125,8 @@ public class SubtitleUpdaterThread extends Thread {
                 ActionEvent.ACTION_PERFORMED,
                 "Subtitle Updated");
         int len = this.recordUpdatedEventList.size();
-        for (int i = len - 1; i >=
-                0; i--) {
+        for (int i = len - 1; i
+                >= 0; i--) {
             SubtitleRecordUpdatedEventListener e = this.recordUpdatedEventList.get(i);
             event.setRow(row);
             event.setSubEntry(entry);
@@ -159,8 +159,8 @@ public class SubtitleUpdaterThread extends Thread {
                 "Subtitle Updater Post-Processing Event");
         event.setSubList(subList);
         int len = this.updaterPostProcessingEventList.size();
-        for (int i = len - 1; i >=
-                0; i--) {
+        for (int i = len - 1; i
+                >= 0; i--) {
             SubtitleUpdaterPostProcessingEventListener e = this.updaterPostProcessingEventList.get(i);
             e.postProcessing(event);
         }//end for

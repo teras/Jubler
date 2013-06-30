@@ -33,15 +33,16 @@ import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubtitleImageAttribute;
+
 /**
  * This class is used to process the colour component of DVDMaestro format file.
  * It process the colour data entry in the following format:
  * <pre>
  * Color	(0 1 6 7)
- * </pre>
- * A short array is created for the values parsed, and is stored in either
- * the {@link SonSubEntry#son_attribute} or {@link SonHeader#son_attribute}, 
- * depending on the object currently active.
+ * </pre> A short array is created for the values parsed, and is stored in
+ * either the {@link SonSubEntry#son_attribute} or
+ * {@link SonHeader#son_attribute}, depending on the object currently active.
+ *
  * @see SonSubEntry
  * @see SonHeader
  * @see SubtitleImageAttribute
@@ -49,11 +50,12 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubtitleImageAttrib
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONColor extends SubtitlePatternProcessor implements CommonDef {
-    
+
     /**
-     * The pattern for data  <pre>Color	(0 1 6 7)</pre>
+     * The pattern for data
+     * <pre>Color	(0 1 6 7)</pre>
      */
-    private static String pattern = "Color" + sp + "\\(" + sp_digits + sp + digits + sp + digits + sp + digits + sp_maybe + "\\)";   
+    private static String pattern = "Color" + sp + "\\(" + sp_digits + sp + digits + sp + digits + sp + digits + sp_maybe + "\\)";
     /**
      * The index where matched groups of data will be found.
      */
@@ -68,8 +70,8 @@ public class SONColor extends SubtitlePatternProcessor implements CommonDef {
     private SonSubEntry sonSubEntry = null;
 
     /**
-     * Default construction, set the pattern and the list of matching 
-     * indices where data groups should be found.
+     * Default construction, set the pattern and the list of matching indices
+     * where data groups should be found.
      */
     public SONColor() {
         super(pattern);
@@ -77,12 +79,13 @@ public class SONColor extends SubtitlePatternProcessor implements CommonDef {
     }
 
     /**
-     * For the matched group of data, a short array is created and all
-     * digits representing selection of colours 
-     * @param matched_data The array of matched data, 
-     * result of the parsing the pattern.
-     * @param record The record currently active, it should be either
-     * an instance of either {@link SonHeader} or {@link SonSubEntry}.
+     * For the matched group of data, a short array is created and all digits
+     * representing selection of colours
+     *
+     * @param matched_data The array of matched data, result of the parsing the
+     * pattern.
+     * @param record The record currently active, it should be either an
+     * instance of either {@link SonHeader} or {@link SonSubEntry}.
      */
     public void parsePattern(String[] matched_data, Object record) {
         SonSubtitleImageAttribute at = null;
@@ -102,6 +105,7 @@ public class SONColor extends SubtitlePatternProcessor implements CommonDef {
 
     /**
      * Gets the reference to the header record.
+     *
      * @return Reference to the header record, null if the reference has not
      * been set.
      */
@@ -111,6 +115,7 @@ public class SONColor extends SubtitlePatternProcessor implements CommonDef {
 
     /**
      * Sets the reference to the header record.
+     *
      * @param sonHeader Reference of the header record.
      */
     public void setSonHeader(SonHeader sonHeader) {
@@ -119,6 +124,7 @@ public class SONColor extends SubtitlePatternProcessor implements CommonDef {
 
     /**
      * Gets the reference of the subtitle-event record.
+     *
      * @return Reference of the subtitle-event record.
      */
     public SonSubEntry getSonSubEntry() {

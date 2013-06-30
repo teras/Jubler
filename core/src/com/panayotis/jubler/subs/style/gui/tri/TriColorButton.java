@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style.gui.tri;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -56,7 +57,6 @@ public class TriColorButton extends JButton implements TriObject {
         colordialog = new JAlphaColorDialog(parent);
 
         addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent evt) {
                 if (ignore_element_changes)
                     return;

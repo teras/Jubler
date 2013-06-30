@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.player;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -68,7 +69,7 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
     private void initSubFile(Subtitles subs, MediaFile mfile) {
         try {
             SubFile sfile = new SubFile(File.createTempFile("jubler_", ""));
-            Subtitles cloned_subs = new Subtitles(subs);            
+            Subtitles cloned_subs = new Subtitles(subs);
             FileCommunicator.save(cloned_subs, sfile, mfile);
             subpath = sfile.getSaveFile().getPath();
             return;

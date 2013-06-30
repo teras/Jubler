@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SUP;
 
 import com.panayotis.jubler.JubFrame;
@@ -66,11 +67,12 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     SonSubEntry blank_record = null;
 
     public SUPCompressedImage() {
-        setFormatOrder(1);        
+        setFormatOrder(1);
     }
 
     /**
      * Gets the reference to the string of 'son' extension.
+     *
      * @return String contains the word 'son'
      */
     public String getExtension() {
@@ -78,7 +80,8 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     }
 
     /**
-     * Gets the SON's description 
+     * Gets the SON's description
+     *
      * @return String with the content as "DVDmaestro";
      */
     public String getName() {
@@ -87,6 +90,7 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
 
     /**
      * Gets the extended name of the format
+     *
      * @return The string "DVD Maestro (PNGs)"
      */
     @Override
@@ -95,26 +99,28 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     }
 
     /**
-     * Checks to see if the data-input contains the pattern signature
-     * that belongs to this parser. This check uses the 
+     * Checks to see if the data-input contains the pattern signature that
+     * belongs to this parser. This check uses the
      * {@link #isHeaderLine isHeaderLine} to validate the data-input.
+     *
      * @param input The textual content of the subtitle file being loaded.
      * @param f The file being loaded.
-     * @return true if the textual content contains the signature data 
-     * pattern for this subtitle file loader, false otherwise.
+     * @return true if the textual content contains the signature data pattern
+     * for this subtitle file loader, false otherwise.
      */
     public boolean isSubType(String input, File f) {
         String ext = Share.getFileExtension(f);
         boolean contain_signature = input.startsWith("SP");
         boolean is_sup_file =
-                (!Share.isEmpty(ext)) &&
-                (ext.toLowerCase().equals(".sup"));
+                (!Share.isEmpty(ext))
+                && (ext.toLowerCase().equals(".sup"));
         boolean longer_than_10 = (input.length() > 10);
         return (is_sup_file && contain_signature && longer_than_10);
     }
 
     /**
      * Cheks to see if the loader supports Frame Per Second
+     *
      * @return true if it is supported, false otherwise.
      */
     public boolean supportsFPS() {
@@ -124,74 +130,68 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     /**
      * Parsing the input records. This routine performs several tasks as below:
      * <ol>
-     *  <li>Checks to see if the input data contains an initial
-     * "SP" and that the file has an extension "sup" or not. This is a very
-     * simple and sketchy method to determine if the file is the SUP type file.
-     * If the conditions above is not satisfied, the routine will stop, and
-     * return 'null' without any further actions.</li>
-     * <li>It will create an instance of {@link SUPReader} and run this
-     * as a new thread, due to the lengthy nature of the computations involved. 
-     * The problem is when the thread starts, the routine needs to return 
-     * something to say that it has been performed sucessfully to the caller,  
-     * albeit the actual results when the thread runs, as the template for
-     * parsing mechanism defines that this routine must run in the same thread 
-     * as the caller. To overcome this, a blank-record of type 
-     * {@link SonSubEntry} is created and inserted into the returning
-     * {@link Subtitles} list.</li>
+     * <li>Checks to see if the input data contains an initial "SP" and that the
+     * file has an extension "sup" or not. This is a very simple and sketchy
+     * method to determine if the file is the SUP type file. If the conditions
+     * above is not satisfied, the routine will stop, and return 'null' without
+     * any further actions.</li>
+     * <li>It will create an instance of {@link SUPReader} and run this as a new
+     * thread, due to the lengthy nature of the computations involved. The
+     * problem is when the thread starts, the routine needs to return something
+     * to say that it has been performed sucessfully to the caller, albeit the
+     * actual results when the thread runs, as the template for parsing
+     * mechanism defines that this routine must run in the same thread as the
+     * caller. To overcome this, a blank-record of type {@link SonSubEntry} is
+     * created and inserted into the returning {@link Subtitles} list.</li>
      * <li>When the {@link SUPReader} thread runs, it generates several events
      * and two of which interests this routine:
-     *      <div>
-     *              <ul>
-     *              <li>{@link SubtitleRecordUpdatedEvent} : When this event
-     *                  happened, this routine will call upon the Jubler to
-     *                  add the newly created record, 
-     *                  remove the blank-record from its list, plus update
-     *                  the progress-bar. When the blank-record is removed,
-     *                  its reference is also reset to null.
-     *              </li><br>
-     *              <li>{@link SubtitleUpdaterPostProcessingEvent}: When this
-     *                  event happened, this routine will turn off the
-     *                  the progress-bar. Check to see also if the blank-record
-     *                  has been removed (ie. null or not) and call upon the 
-     *                  Jubler to remove the blank-record from its list if it
-     *                  hasn't been removed by the previous event (ie. such
-     *                  as in the failures of the routine and the event never
-     *                  fired).
-     *              </li>
-     *              </ul>
-     *      </div>
-     * Based on the tasks that need to performs, as laid out above, two 
-     * listener instances are created: 
+     * <div>
      * <ul>
-     *  <li>{@link SubtitleRecordUpdatedEventListener}: This listener
-     *          handles the task of {@link SubtitleRecordUpdatedEvent}
-     *          as described above.</li><br>
-     *  <li>{@link SubtitleUpdaterPostProcessingEventListener}: This listener
-     *          handles the task of {@link SubtitleUpdaterPostProcessingEvent}
-     *          as described above.</li>
+     * <li>{@link SubtitleRecordUpdatedEvent} : When this event happened, this
+     * routine will call upon the Jubler to add the newly created record, remove
+     * the blank-record from its list, plus update the progress-bar. When the
+     * blank-record is removed, its reference is also reset to null.
+     * </li><br>
+     * <li>{@link SubtitleUpdaterPostProcessingEvent}: When this event happened,
+     * this routine will turn off the the progress-bar. Check to see also if the
+     * blank-record has been removed (ie. null or not) and call upon the Jubler
+     * to remove the blank-record from its list if it hasn't been removed by the
+     * previous event (ie. such as in the failures of the routine and the event
+     * never fired).
+     * </li>
+     * </ul>
+     * </div>
+     * Based on the tasks that need to performs, as laid out above, two listener
+     * instances are created:
+     * <ul>
+     * <li>{@link SubtitleRecordUpdatedEventListener}: This listener handles the
+     * task of {@link SubtitleRecordUpdatedEvent} as described above.</li><br>
+     * <li>{@link SubtitleUpdaterPostProcessingEventListener}: This listener
+     * handles the task of {@link SubtitleUpdaterPostProcessingEvent} as
+     * described above.</li>
      * </ul>
      * </li>
-     * <li>Work out the number of images that is held in the input file.
-     *      This involves open-up the input file in binary read mode and
-     *      check for the sequence of '0x53 0x50' of 'SP'.</li>
-     * <li>Creates an instance of {@link ProgressBar} and set the maximum
-     *      value using the record-count from the above task.</li>
-     * <li>Turns on the progress bar and start the {@link SUPReader}
-     *      thread, before return the {@link Subtitles} list with the
-     *      blank-record back to the caller.</li>
+     * <li>Work out the number of images that is held in the input file. This
+     * involves open-up the input file in binary read mode and check for the
+     * sequence of '0x53 0x50' of 'SP'.</li>
+     * <li>Creates an instance of {@link ProgressBar} and set the maximum value
+     * using the record-count from the above task.</li>
+     * <li>Turns on the progress bar and start the {@link SUPReader} thread,
+     * before return the {@link Subtitles} list with the blank-record back to
+     * the caller.</li>
      * </ol>
+     *
      * @param input The textual content of the compressed SUP binary file.
      * @param FPS The frame rates that determine of the system is PAL or NTSC
      * @param f The reference to the SUP compressed binary file.
      * @return The reference of a newly created {@link Subtitles} list with the
-     *          blank-record.
+     * blank-record.
      */
     public Subtitles parse(String input, float FPS, File f) {
         DataInputStream in = null;
         boolean is_sub_type = isSubType(input, f);
-        if (!is_sub_type) {
-            return null;    // Not valid - test pattern does not match
-        }
+        if (!is_sub_type)
+            return null; // Not valid - test pattern does not match
 
         ed = getJubler().subeditor;
         subtitleList = new Subtitles();
@@ -201,7 +201,6 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
         proc.setSubList(subtitleList);
 
         SubtitleRecordUpdatedEventListener rul = new SubtitleRecordUpdatedEventListener() {
-
             public void recordUpdated(SubtitleRecordUpdatedEvent e) {
                 JubFrame jub = getJubler();
                 Subtitles subs = jub.getSubtitles();
@@ -223,11 +222,9 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
         proc.addSubtitleRecordUpdatedEventListener(rul);
 
         SubtitleUpdaterPostProcessingEventListener pud = new SubtitleUpdaterPostProcessingEventListener() {
-
             public void postProcessing(SubtitleUpdaterPostProcessingEvent e) {
-                if (ed != null) {
+                if (ed != null)
                     ed.progressOff();
-                }
 
                 if (blank_record != null) {
                     JubFrame jub = getJubler();
@@ -251,14 +248,15 @@ public class SUPCompressedImage extends AbstractBinarySubFormat {
     }
 
     /**
-     * This routine will creates a new instance of {@link SUPWriter} and
-     * pass to it the {@link Subtitles} list input, then start the writer
-     * in a new thread due to the potentially high computational demands and 
-     * lengthy work.
+     * This routine will creates a new instance of {@link SUPWriter} and pass to
+     * it the {@link Subtitles} list input, then start the writer in a new
+     * thread due to the potentially high computational demands and lengthy
+     * work.
+     *
      * @param given_subs The list of subtitle events.
      * @param outfile The output file with 'tmp' extension.
-     * @param media The media file in reference to this subtitle file, null
-     * if none is available.
+     * @param media The media file in reference to this subtitle file, null if
+     * none is available.
      * @return false to tell the caller not to rename the temp file that it
      * passed to this routine.
      * @throws java.io.IOException When references to components caused errors.

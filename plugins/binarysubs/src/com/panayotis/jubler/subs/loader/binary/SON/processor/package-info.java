@@ -28,7 +28,6 @@
 
 /**
  * This package contains classes that process subtitle-file's components for
- * DVDMaestro's SON format files. 
+ * DVDMaestro's SON format files.
  */
 package com.panayotis.jubler.subs.loader.binary.SON.processor;
-

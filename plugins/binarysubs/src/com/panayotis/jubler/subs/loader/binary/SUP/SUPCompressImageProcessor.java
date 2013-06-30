@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SUP;
 
 import com.panayotis.jubler.JubFrame;
@@ -40,7 +41,7 @@ import java.util.ArrayList;
  * The SUP file contains a sequence of subitle packets, each packet has the
  * following structure.
  * <pre>
- * 
+ *
  * +----------------------------------------------------------------------+
  * |                                                                      |
  * |              +-------------------size-------------------------+      |
@@ -56,10 +57,9 @@ import java.util.ArrayList;
  * |                         a subtitle packet                            |
  * +----------------------------------------------------------------------+
  * <h4>Header section</h4>
- * </pre>
- * The header is a block of 14 bytes, lead with two hex-values 0x53, 0x50 ("SP")
- * then 4 bytes of the subtitle start-time, and ending with 4 bytes of packet 
- * size and the offset to the control section. The rest of the header 
+ * </pre> The header is a block of 14 bytes, lead with two hex-values 0x53, 0x50
+ * ("SP") then 4 bytes of the subtitle start-time, and ending with 4 bytes of
+ * packet size and the offset to the control section. The rest of the header
  * should be all '00'. The image of the header can be seen as follow:
  * <i><font color='blue'>
  * (Note: the last 4 bytes of this image over-lapped the 4 bytes above (10-14))
@@ -75,65 +75,57 @@ import java.util.ArrayList;
  * +----------------------------------------------------------------------+
  * |                      SUP file's header                               |
  * +----------------------------------------------------------------------+
- * </pre>
- * The 4 bytes start-time, laid out in the order [3][2][1][0], where 0 is 
+ * </pre> The 4 bytes start-time, laid out in the order [3][2][1][0], where 0 is
  * the least significant byte, and 3 is the most significant byte.
- * 
+ *
  * The start-time must be converted as follow:
  * <pre>
  *              total-millis = start-time / 90
- * </pre>
- * Before it is put towards a 'milliseconds' based time construct. This
- * reference is the frame-count from the starting of the programme, and 
- * since there are 25 frames per second, 1500 frames per minute, and 
- * 90,000 frames per hour, plus the fact that millisecond is a 1000th of 
- * a second, the frame-count will only need to be divided by 90. However the
- * milliseconds remains is not correctly converted, therefore the time must
- * be formatted using the SimpleDateFormat to "HH:mm:ss:SSS", then "SSS" must
- * be converted as:
+ * </pre> Before it is put towards a 'milliseconds' based time construct. This
+ * reference is the frame-count from the starting of the programme, and since
+ * there are 25 frames per second, 1500 frames per minute, and 90,000 frames per
+ * hour, plus the fact that millisecond is a 1000th of a second, the frame-count
+ * will only need to be divided by 90. However the milliseconds remains is not
+ * correctly converted, therefore the time must be formatted using the
+ * SimpleDateFormat to "HH:mm:ss:SSS", then "SSS" must be converted as:
  * <pre>
  *              ending-millis = SSS * 90 / 3600
- * </pre>
- * then reattached the ending-millis "SSS" (String) with the front-part 
+ * </pre> then reattached the ending-millis "SSS" (String) with the front-part
  * "HH:mm:ss:", in a string concatenation to form the final time string:
  * <pre>
  *              "HH:mm:ss:SSS"
- * </pre>
- * The 'size' value is the 2 bytes packet-size - 10th and 11th bytes - and 
- * is laid out in the following order:
+ * </pre> The 'size' value is the 2 bytes packet-size - 10th and 11th bytes -
+ * and is laid out in the following order:
  * <pre>
  *              [10][11] - example: [0x0C]|[0x92] = 0x0C92 = 3218
- * </pre>
- * The value excludes the bytes for 'size' and 'ctrl' section, thus if the 14
- * bytes of heaader has been read, the actual packet size readable is: 
+ * </pre> The value excludes the bytes for 'size' and 'ctrl' section, thus if
+ * the 14 bytes of heaader has been read, the actual packet size readable is:
  * <pre>
- *              packet-size - 4 
- * </pre>
- * The value in the 'ctrl' section - byte 12th and 13th - is laid out in the
- * same way, but because it includes the 2 bytes of itself, the actual value
- * to get to the control-section after the 14 bytes of header has been read
- * must be:
+ *              packet-size - 4
+ * </pre> The value in the 'ctrl' section - byte 12th and 13th - is laid out in
+ * the same way, but because it includes the 2 bytes of itself, the actual value
+ * to get to the control-section after the 14 bytes of header has been read must
+ * be:
  * <pre>
- *              ctrl - 2 
+ *              ctrl - 2
  * </pre>
- * 
- * The data packet, or image data of the subtitle-picture, is variable 
- * run-length encoded, that is the encode scheme is not byte aligned, but 
- * each encoded group includes two values: 
+ *
+ * The data packet, or image data of the subtitle-picture, is variable
+ * run-length encoded, that is the encode scheme is not byte aligned, but each
+ * encoded group includes two values:
  * <ol>
- *      <li>The run-length value.</li>
- *      <li>The color index that the run-length represents. 
- *          Maximum value is 4 (ie. 2 bits) </li>
+ * <li>The run-length value.</li>
+ * <li>The color index that the run-length represents. Maximum value is 4 (ie. 2
+ * bits) </li>
  * </ol>
- * 
+ *
  * <h4>Run-length encoding values for the bitmap</h4>
  * Each encoded value 'X' is formed using the follwing formular:
  * <pre>
  *      X = length &lt&lt 2 | color-index //(0-3)
- * </pre>
- * The size of 'X' encoded value spans from 4 bits to 16 bits (2 bytes) 
+ * </pre> The size of 'X' encoded value spans from 4 bits to 16 bits (2 bytes)
  * (ie. 4, 8, 12, 16). See the {@link BitmapRLE} for details.
- * 
+ *
  * <h4>Control section:</h4>
  * Here's the structure of the control packet :
  * <pre>
@@ -147,9 +139,8 @@ import java.util.ArrayList;
  * +--------------------------------------------------+
  * |                 the control packet               |
  * +--------------------------------------------------+
- * </pre>
- * A control packet consists of several control sequences.
- * Here is the structure of a control sequence :
+ * </pre> A control packet consists of several control sequences. Here is the
+ * structure of a control sequence :
  * <pre>
  * +----------------------------------------------------------+
  * |                                                          |
@@ -160,69 +151,68 @@ import java.util.ArrayList;
  * +----------------------------------------------------------+
  * |                  a control sequence                      |
  * +----------------------------------------------------------+
- * </pre>
- * The data in a control sequence after the offset consists of one byte long 
- * commands followed by arguments depending on the command. The last byte is 
- * always 0xff (-1), which is actually a command without arguments telling us
+ * </pre> The data in a control sequence after the offset consists of one byte
+ * long commands followed by arguments depending on the command. The last byte
+ * is always 0xff (-1), which is actually a command without arguments telling us
  * that we have reached the end of the control sequence.<br><br>
- * 
+ *
  * Control packet decoding example:
  * <pre>
  * 048B 032310 04FFF0 050002CF1E820B 0600040237 01 FF00BE048B02FF FF
  * </pre>
- * 
+ *
  * The decoding of the control sequence is :
  * <pre>
  * (048B) (03 2310) (04 FFF0) (05 0002CF1E820B) (06 00040237) (01)...(FF)
  * </pre>
- * 
+ *
  * Here are some control sequences:
- * 
+ *
  * <div>
  * <blockquote>
- * 
- *      <h5>0x00 ( force displaying ) :</h5>
- *      this command takes no argument and is used to tell the decoder it has 
- *      to display the subtitle.
- *  
- *      <h5>0x01 ( start date ) :</h5>
- *      this command does not need an argument, since there is already a date 
- *      information in the control sequence. It tells the decoder the delay 
- *      before it has to display the subtitle ( the decoder already knows the 
- *      PES packet date from its PTS, the delay is in 100th of a second ).
- * 
- *      <h5>0x02 ( stop date ) :</h5>
- *      see the explanations for the start date. This command tells the decoder 
- *      when to stop displaying the subtitle.
- * 
- *      <h5>0x03**** ( palette ) :</h5>
- *      this command has four one nibble-long arguments, giving the palette 
- *      information. Subtitles are encoded in 4 colours, but the palette is 
- *      16 colours-wide. (ie. 0x2310 => 0, 1, 3, 2)
- * 
- *      <h5>0x04**** ( alpha channel ) :</h5>
- *      this command has four one nibble-long arguments, giving the alpha 
- *      channel information for each colour. (ie. 0xFFF0 => 0, 15,15,15)
- * 
- *      <h5>0x05************ ( coordinates ) :</h5>
- *      this command has four three nibble-long arguments, giving the 
- *      coordinates of the subtitle on the screen : x1, x2, y1, y2. x1 is 
- *      the first column, x2 is the last column, y1 is the first line, y2 is 
- *      the last line. Thus the subtitle's size is (x1-x2+1) x (y1-y2+1).
- * 
- *      <h5>0x06******** ( RLE offsets ) :</h5>
- *      this command has 2 two-bytes-long arguments, respectively the offset of
- *      the first graphic line, and the offset of the second one in the RLE 
- *      data ( the graphics are interlaced, so the second two nibbles tells
- *      where the next interlaced data would be (ie. y=0 or y=1)).
- * 
- *      <h5>0xff ( end command ) :</h5>
- *      this command has no argument and tells the decoder it reached 
- *      the end of the command sequence.
- *      
- *      </blockquote>
+ *
+ * <h5>0x00 ( force displaying ) :</h5>
+ * this command takes no argument and is used to tell the decoder it has to
+ * display the subtitle.
+ *
+ * <h5>0x01 ( start date ) :</h5>
+ * this command does not need an argument, since there is already a date
+ * information in the control sequence. It tells the decoder the delay before it
+ * has to display the subtitle ( the decoder already knows the PES packet date
+ * from its PTS, the delay is in 100th of a second ).
+ *
+ * <h5>0x02 ( stop date ) :</h5>
+ * see the explanations for the start date. This command tells the decoder when
+ * to stop displaying the subtitle.
+ *
+ * <h5>0x03**** ( palette ) :</h5>
+ * this command has four one nibble-long arguments, giving the palette
+ * information. Subtitles are encoded in 4 colours, but the palette is 16
+ * colours-wide. (ie. 0x2310 => 0, 1, 3, 2)
+ *
+ * <h5>0x04**** ( alpha channel ) :</h5>
+ * this command has four one nibble-long arguments, giving the alpha channel
+ * information for each colour. (ie. 0xFFF0 => 0, 15,15,15)
+ *
+ * <h5>0x05************ ( coordinates ) :</h5>
+ * this command has four three nibble-long arguments, giving the coordinates of
+ * the subtitle on the screen : x1, x2, y1, y2. x1 is the first column, x2 is
+ * the last column, y1 is the first line, y2 is the last line. Thus the
+ * subtitle's size is (x1-x2+1) x (y1-y2+1).
+ *
+ * <h5>0x06******** ( RLE offsets ) :</h5>
+ * this command has 2 two-bytes-long arguments, respectively the offset of the
+ * first graphic line, and the offset of the second one in the RLE data ( the
+ * graphics are interlaced, so the second two nibbles tells where the next
+ * interlaced data would be (ie. y=0 or y=1)).
+ *
+ * <h5>0xff ( end command ) :</h5>
+ * this command has no argument and tells the decoder it reached the end of the
+ * command sequence.
+ *
+ * </blockquote>
  * </div>
- * 
+ *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
@@ -272,7 +262,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
         1, 0x50, // time for next sequ,
         0, 0, //next contr sequ.
         2, // stop displ.
-        (byte) 0xFF     // end of sequ: timedur in pts/1100, size s.a. , add 0xFF if size is not WORD aligned
+        (byte) 0xFF // end of sequ: timedur in pts/1100, size s.a. , add 0xFF if size is not WORD aligned
     };
     protected boolean is_text = false;
 
@@ -313,9 +303,8 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     }
 
     private void createColorTableIfNeeded() {
-        if (color_table == null) {
+        if (color_table == null)
             color_table = new ArrayList<String>();
-        }
     }
 
     public void makeDefaultColourTable() {
@@ -326,12 +315,12 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
             color_table.add(color_s);
         }//end for(int color: default_sup_colors)
     }//end private void makeDefaultColourTable()
+
     private boolean addColor(int color) {
         String color_s = "" + color;
         boolean is_there = (color_table.contains(color_s));
-        if (is_there) {
-            return false;
-        }//end if (is_there)
+        if (is_there)
+            return false;//end if (is_there)
 
         color_table.add(color_s);
         this.color_table_hex.add(Integer.toHexString(color));
@@ -350,7 +339,7 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
     public boolean updateUserColourTable(Color[] colors) {
         try {
             createColorTableIfNeeded();
-            for (int i = 0,  color = 0; i < colors.length; i++) {
+            for (int i = 0, color = 0; i < colors.length; i++) {
                 color = colors[i].getRGB();
                 addColor(color);
             }//end for(int color: default_sup_colors)
@@ -359,10 +348,11 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
             return false;
         }
     }//end private void updateUserColourTable()
+
     public boolean updateUserColourTable(int[] color_list) {
         try {
             createColorTableIfNeeded();
-            for (int i = 0,  color = 0; i < color_list.length; i++) {
+            for (int i = 0, color = 0; i < color_list.length; i++) {
                 color = color_list[i];
                 addColor(color);
             }//end for(int color: default_sup_colors)
@@ -371,8 +361,10 @@ public class SUPCompressImageProcessor extends SubtitleUpdaterThread {
             return false;
         }
     }//end private void updateUserColourTable()
+
     public void run() {
     }//end public void run()
+
     public ArrayList<String> getUserColorTable() {
         return color_table;
     }

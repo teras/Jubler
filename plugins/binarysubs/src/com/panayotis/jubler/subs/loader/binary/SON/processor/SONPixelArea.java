@@ -38,6 +38,7 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
  * <pre>
  * Pixel_Area	(0 575)
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONPixelArea extends SubtitlePatternProcessor implements CommonDef {

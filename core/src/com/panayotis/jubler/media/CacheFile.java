@@ -30,10 +30,11 @@ import java.io.File;
  * @author teras
  */
 public class CacheFile extends File {
-    
-    /** Creates a new instance of CacheFile */
+
+    /**
+     * Creates a new instance of CacheFile
+     */
     public CacheFile(String cfile) {
         super(cfile);
     }
-    
 }

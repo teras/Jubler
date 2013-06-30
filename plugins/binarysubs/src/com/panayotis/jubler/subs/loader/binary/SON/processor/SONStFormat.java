@@ -24,6 +24,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SON.processor;
 
 import com.panayotis.jubler.subs.CommonDef;
@@ -36,20 +37,22 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
  * <pre>
  * st_format	2
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONStFormat extends SubtitlePatternProcessor implements CommonDef {
+
     private static String pattern = "st_format" + sp + digits;
     int index = 2;
     private SonHeader sonHeader = null;
 
-    public SONStFormat() {        
+    public SONStFormat() {
         super(pattern);
         setMatchIndexList(index);
     }
 
     public void parsePattern(String[] matched_data, Object record) {
-        if (record instanceof SonHeader){
+        if (record instanceof SonHeader) {
             sonHeader = (SonHeader) record;
             sonHeader.st_format = Share.parseShort(matched_data[0]);
         }//end if                

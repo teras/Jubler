@@ -28,7 +28,6 @@
 
 /**
  * This package contains classes that process subtitle-file's components for
- * DVDMaestro extended SWT (SON With Text) format files. 
+ * DVDMaestro extended SWT (SON With Text) format files.
  */
 package com.panayotis.jubler.subs.loader.binary.SWT.processor;
-

@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.options.Options;
@@ -41,7 +42,9 @@ public class SubStyleList extends ArrayList<SubStyle> implements NameList {
         default_style.setValues(Options.getOption("Styles.Default", ""));
     }
 
-    /** Creates a new instance of SubStyleList */
+    /**
+     * Creates a new instance of SubStyleList
+     */
     public SubStyleList() {
         add(new SubStyle(default_style));
         get(0).setDefault(true);

@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.plugins;
 
 /**
@@ -30,7 +31,8 @@ public interface Plugin {
     public String getPluginName();
 
     public boolean canDisablePlugin();
-    
+
     public ClassLoader getClassLoader();
+
     public void setClassLoader(ClassLoader cl);
 }
