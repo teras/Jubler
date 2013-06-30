@@ -1,3 +1,4 @@
+
 package com.panayotis.jubler.autoupdate;
 
 /*
@@ -19,7 +20,6 @@ package com.panayotis.jubler.autoupdate;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 import static com.panayotis.jubler.i18n.I18N._;
 
 import com.panayotis.jubler.StaticJubler;
@@ -81,12 +81,11 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
     public boolean canDisablePlugin() {
         return false;
     }
-    
-        public ClassLoader getClassLoader() {
+
+    public ClassLoader getClassLoader() {
         return null;
     }
 
     public void setClassLoader(ClassLoader loader) {
-    }    
-
+    }
 }

@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.os;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -304,7 +305,10 @@ public class SystemDependent {
         return home + ".jubler/output.log";
     }
 
-    /** This function always return the directory seperator at the end of the filename */
+    /**
+     * This function always return the directory seperator at the end of the
+     * filename
+     */
     public static String getAppSupportDirPath() {
         String home = System.getProperty("user.home") + File.separator;
 
