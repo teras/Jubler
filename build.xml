@@ -77,6 +77,8 @@
 		<delete file="dist/lib/binarysubs.jar"/>
 		<delete file="dist/lib/vlc.jar"/>
 		<delete file="dist/lib/websubs.jar"/>
+		<delete file="dist/README.TXT"/>
+		<delete file="dist/README.txt"/>
 	</target>
 
 
@@ -85,8 +87,15 @@
 	</target>
 
 
+	<!-- Send update file to server -->
+	<target name="update-sent">
+		<exec executable="scp">
+			<arg line="resources/libs/jupidator/update.xml www.jubler.org:~/www/jubler.org/files/updates/"/>
+		</exec>
+	</target>
+
 	<!-- Create distribution related files & versioning information -->
-	<target name="version-update">
+	<target name="update-version">
 		<echo message="NOTE: If this task fails, 'hg' executable should be existing in current $PATH."/>
 		<exec executable="hg" outputproperty="releaseid" failonerror="true"> <arg line="tip --template {rev}"/> </exec>
 		<input message="Please give human-readable version" addproperty="versionid"/>
@@ -226,9 +235,6 @@
 		<exec executable="makensis" failonerror="true">
 			<arg line="-NOCD -DVERSION=${version} -DWINBITS=${win.bits} resources/installers/windows/jubler.nsi"/>
 		</exec>
-		<delete file="dist/Jubler.exe"/>
-		<delete file="dist/README.txt"/>
-		<delete file="dist/LICENCE.txt"/>
 	</target>
 	<target name="win32" depends="-release,-win32lib,-windist"/>
 	<target name="win64" depends="-release,-win64lib,-windist"/>
