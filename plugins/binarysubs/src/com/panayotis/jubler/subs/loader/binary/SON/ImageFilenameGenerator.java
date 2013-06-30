@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SON;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
@@ -40,6 +41,7 @@ import java.text.NumberFormat;
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class ImageFilenameGenerator {
+
     private static final int MAX_DIGITS = 5;
     private Subtitles subList = null;
     private String prefix = null;
@@ -60,29 +62,30 @@ public class ImageFilenameGenerator {
             prefix = this.f.getName();
             dir = this.f.getParentFile();
         }//if (f != null)
-        if (sub_fix != null) {
+        if (sub_fix != null)
             this.subFix = sub_fix;
-        }
     }//public ImageFilenameGenerator(Subtitles subList, File f)
-    
+
     public File newFile(int i, String sub_fix) {
         String number = fmt.format(i);
         String file_name = prefix + "_" + number + "." + sub_fix;
         File new_file = new File(dir, file_name);
-        return new_file;        
+        return new_file;
     }
+
     public File newFile(int i) {
         return newFile(i, this.subFix);
     }//end private File newFile(int i)
-    
+
     public File usingOldFile(File f, String sub_fix) {
         File this_file =
                 FileCommunicator.stripFileFromExtension(f);
         String file_name = this_file.getName() + "." + sub_fix;
         File path = this_file.getParentFile();
         File new_file = new File(path, file_name);
-        return new_file;        
+        return new_file;
     }
+
     public File usingOldFile(File f) {
         return usingOldFile(f, subFix);
     }
@@ -97,30 +100,28 @@ public class ImageFilenameGenerator {
             fmt.setGroupingUsed(false);
             for (int i = 0; i < size; i++) {
                 ImageTypeSubtitle entry = Share.getImageSubtitleEntry(subList.elementAt(i));
-                if (entry == null) {
+                if (entry == null)
                     throw new IncompatibleRecordTypeException(entry.getClass(), ImageTypeSubtitle.class);
-                }
 
-                if (is_force){
-                    new_file = this.newFile(i+1);
-                }else{
+                if (is_force)
+                    new_file = this.newFile(i + 1);
+                else {
                     boolean has_file = (entry.getImageFile() != null);
-                    if (has_file){
+                    if (has_file)
                         new_file = usingOldFile(entry.getImageFile());
-                    }else{
-                        new_file = this.newFile(i+1);
-                    }//if (has_file)
+                    else
+                        new_file = this.newFile(i + 1);//if (has_file)
                 }//end if (!has_file) /else                 
                 entry.setImageFile(new_file);
             }//end for(int i=1; i <= size; i++)
             return true;
         } catch (Exception ex) {
             return false;
-        }        
+        }
     }
+
     public boolean generate() {
         return generate(false);
     }//public void generate()
-    
 }//public class ImageFilenameGenerator
 

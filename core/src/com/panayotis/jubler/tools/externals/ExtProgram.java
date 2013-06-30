@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
@@ -30,7 +31,9 @@ import com.panayotis.jubler.options.JExtBasicOptions;
  */
 public abstract class ExtProgram {
 
-    /** Get a JPanel having the GUI controls for the external program options */
+    /**
+     * Get a JPanel having the GUI controls for the external program options
+     */
     public abstract JExtBasicOptions getOptionsPanel();
 
     /* Get the name of this external program, useful e.g. to save options or for labels */

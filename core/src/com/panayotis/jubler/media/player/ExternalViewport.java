@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.player;
 
 import com.panayotis.jubler.media.MediaFile;
@@ -49,7 +50,9 @@ public abstract class ExternalViewport implements Viewport {
     protected boolean quit_is_fatal = true;
     private final static int SEEK_OFFSET = -3;
 
-    /** Creates a new instance of MPlayer */
+    /**
+     * Creates a new instance of MPlayer
+     */
     public ExternalViewport(AbstractPlayer player) {
         this.player = player;
     }

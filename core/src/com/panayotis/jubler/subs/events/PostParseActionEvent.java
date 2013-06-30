@@ -27,29 +27,27 @@ import java.io.File;
 
 /**
  * This event is generated after the parsing of all data lines have been
- * performed.
- * There are several parameters that should be filed by routines that generate
- * this event, such as in the
- * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#firePostParseActionEvent 
- * firePostParseActionEvent} method within the 
+ * performed. There are several parameters that should be filed by routines that
+ * generate this event, such as in the  {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#firePostParseActionEvent 
+ * firePostParseActionEvent} method within the
  * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat}.
- * 
+ *
  * <ol>
- *      <li>The reference to the subitle-file processed.</li>
- *      <li>The reference to the parsed list of subtitle events.</li>
- *      <li>The frame rate per second of the media being loaded. This
- *          is passed over from the preferences dialog, when the file is being
- *          loaded.</li>
+ * <li>The reference to the subitle-file processed.</li>
+ * <li>The reference to the parsed list of subtitle events.</li>
+ * <li>The frame rate per second of the media being loaded. This is passed over
+ * from the preferences dialog, when the file is being loaded.</li>
  * </ol>
  * At the moment, this is being used in the parsing model using
- * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat},
- * in particular the 
+ * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat}, in
+ * particular the
  * {@link com.panayotis.jubler.subs.loader.AbstractBinarySubFormat#parse parse}
  * method. But it can be used in other context where it fits the purpose.
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class PostParseActionEvent extends ActionEvent {
-    
+
     /**
      * The subtitle file being parsed.
      */
@@ -59,23 +57,27 @@ public class PostParseActionEvent extends ActionEvent {
      */
     private Subtitles subtitleList = null;
     /**
-     * The frame rate per second, by default it is 25fps, the rate of 
-     * digital media, not as 24fps in the film media.
+     * The frame rate per second, by default it is 25fps, the rate of digital
+     * media, not as 24fps in the film media.
      */
     private float FPS = 25f;
-    
+
     /**
-     * Constructs an <code>PostParseActionEvent</code> object.
+     * Constructs an
+     * <code>PostParseActionEvent</code> object.
      * <p>
-     * Note that passing in an invalid <code>id</code> results in
-     * unspecified behavior. This method throws an
-     * <code>IllegalArgumentException</code> if <code>source</code>
-     * is <code>null</code>.
-     * A <code>null</code> <code>command</code> string is legal,
-     * but not recommended.
+     * Note that passing in an invalid
+     * <code>id</code> results in unspecified behavior. This method throws an
+     * <code>IllegalArgumentException</code> if
+     * <code>source</code> is
+     * <code>null</code>. A
+     * <code>null</code>
+     * <code>command</code> string is legal, but not recommended.
+     *
      * @param source the object that originated the event
      * @param id an integer that identifies the event
-     * @param command a string that may specify a command (possibly one of several) associated with the event
+     * @param command a string that may specify a command (possibly one of
+     * several) associated with the event
      */
     public PostParseActionEvent(Object source, int id, String command) {
         super(source, id, command);
@@ -83,6 +85,7 @@ public class PostParseActionEvent extends ActionEvent {
 
     /**
      * Gets the reference to the loaded subtitle list.
+     *
      * @return The reference to the loaded subtitle list, null if the reference
      * has not been set.
      */
@@ -92,6 +95,7 @@ public class PostParseActionEvent extends ActionEvent {
 
     /**
      * Sets the reference to the loaded subtitle list.
+     *
      * @param subtitleList The reference to the loaded subtitle list.
      */
     public void setSubtitleList(Subtitles subtitleList) {
@@ -100,6 +104,7 @@ public class PostParseActionEvent extends ActionEvent {
 
     /**
      * Gets the reference to the subitle file being loaded.
+     *
      * @return The reference to the subitle file being loaded, null if the
      * reference has not been set.
      */
@@ -109,6 +114,7 @@ public class PostParseActionEvent extends ActionEvent {
 
     /**
      * Sets the reference of the subitle file being loaded.
+     *
      * @param subtitleFile The reference to the subitle file being loaded
      */
     public void setSubtitleFile(File subtitleFile) {
@@ -118,6 +124,7 @@ public class PostParseActionEvent extends ActionEvent {
     /**
      * Gets the frame rate per second being used, such as 25fps for PAL, and
      * 30fps for NTSC.
+     *
      * @return The frame rate per second being used, 25fps is the default value.
      */
     public float getFPS() {
@@ -127,10 +134,10 @@ public class PostParseActionEvent extends ActionEvent {
     /**
      * Sets the frame rate per second being used, such as 25fps for PAL, and
      * 30fps for NTSC.
+     *
      * @param FPS The frame rate per second being used.
      */
     public void setFPS(float FPS) {
         this.FPS = FPS;
     }
-
 }

@@ -36,43 +36,46 @@ import java.io.IOException;
  * @author teras
  */
 public class ScanTitle extends AbstractBinarySubFormat {
-    
-    /** Creates a new instance of ScanTitle */
+
+    /**
+     * Creates a new instance of ScanTitle
+     */
     public ScanTitle() {
     }
-    
+
     public String getExtension() {
         return "890";
     }
-    
+
     public String getName() {
         return "ScanTitle";
     }
-    
-    public boolean isSubType(String input, File f){
+
+    public boolean isSubType(String input, File f) {
         return true;
     }
+
     public void parseBinary(float FPS, BufferedReader in) {
         // Add code to load subtitles from input buffer
         // Example:
         int subframestart;
         int subframeend;
         String subtext;
-        
+
         //while (have more entries  , in.read())
-            subframestart = 10; //
-            subframeend = 20;
-            subtext = "test";
-            
-            subtitle_list.add(new SubEntry(subframestart/FPS, subframeend/FPS, subtext));
+        subframestart = 10; //
+        subframeend = 20;
+        subtext = "test";
+
+        subtitle_list.add(new SubEntry(subframestart / FPS, subframeend / FPS, subtext));
         //}
     }
 
-    public boolean supportsFPS() { return true; }
+    public boolean supportsFPS() {
+        return true;
+    }
 
     public boolean produce(Subtitles subs, File out, MediaFile media) throws IOException {
         return true;
     }
-    
-    
 }

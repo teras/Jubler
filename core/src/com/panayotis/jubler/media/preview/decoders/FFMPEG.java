@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.preview.decoders;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -52,7 +53,9 @@ public final class FFMPEG extends NativeDecoder {
         library_is_present = SystemFileFinder.loadLibrary("ffdecode");
     }
 
-    /** Creates a new instance of FFMPEG */
+    /**
+     * Creates a new instance of FFMPEG
+     */
     public FFMPEG() {
     }
 
@@ -94,7 +97,6 @@ public final class FFMPEG extends NativeDecoder {
             AudioInputStream stream = AudioSystem.getAudioInputStream(wavfile);
             final Clip clip = AudioSystem.getClip();
             clip.addLineListener(new LineListener() {
-
                 public void update(LineEvent event) {
                     if (event.getType().equals(LineEvent.Type.STOP)) {
                         wavfile.delete();

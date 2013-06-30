@@ -1,3 +1,4 @@
+
 package com.panayotis.jubler.media.player.mplayer;
 
 /*
@@ -31,7 +32,9 @@ import com.panayotis.jubler.media.player.VideoPlayer;
  */
 public class MPlayerViewport extends TerminalViewport {
 
-    /** Creates a new instance of MPlayer */
+    /**
+     * Creates a new instance of MPlayer
+     */
     public MPlayerViewport(MPlayer player) {
         super(player, new MPlayerTerminal());
     }

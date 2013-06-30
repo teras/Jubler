@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SON.record;
 
 import com.panayotis.jubler.subs.Share;
@@ -29,10 +30,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
 
-
 /**
- * This class is used to hold the header record of a SON subtitle format.
- * The example for this block of data in the subtitle file is shown here:
+ * This class is used to hold the header record of a SON subtitle format. The
+ * example for this block of data in the subtitle file is shown here:
  * <pre>
  * st_format	2
  * Display_Start	non_forced
@@ -51,15 +51,16 @@ import java.util.Vector;
  * # 01 : RGB(131,127, 0)
  * # 02 : RGB( 8, 0, 0)
  * #
- *</pre>
+ * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SonHeader implements SONPatternDef, Cloneable {
 
     /**
-     * this is to flag that the record is a default header generated and
-     * further modification might be required. This is useful when conversion
-     * from other record types are performed.
+     * this is to flag that the record is a default header generated and further
+     * modification might be required. This is useful when conversion from other
+     * record types are performed.
      */
     private boolean defaultHeader = false;
     public float FPS = 25f;
@@ -75,7 +76,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
     public int max_row_height = -1;
     public JMaestroOptions moptions = null;
     public ArrayList<String> color_table = null;
-    
+
     public Object getHeader() {
         return this;
     }
@@ -86,9 +87,8 @@ public class SonHeader implements SONPatternDef, Cloneable {
 
     public void updateRowHeight(int height) {
         boolean is_taller = (max_row_height < height);
-        if (is_taller) {
-            max_row_height = height;
-        }//end if
+        if (is_taller)
+            max_row_height = height;//end if
 
     }
 
@@ -108,7 +108,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
         b.append(UNIX_NL);
 
         b.append("TV_Type").append("\t");
-        if (is_new) {
+        if (is_new)
             try {
                 tv_type = moptions.getVideoFormat();
             } catch (Exception ex) {
@@ -117,24 +117,21 @@ public class SonHeader implements SONPatternDef, Cloneable {
                 else
                     tv_type = "NTSC";
             }
-        }
         b.append(tv_type);
         b.append(UNIX_NL);
 
         b.append("Tape_Type").append("\t");
-        if (tv_type.equals("PAL")){
+        if (tv_type.equals("PAL"))
             b.append(is_new ? "NON_DROP" : tape_type);
-        }else{
+        else
             b.append(is_new ? "DROP" : tape_type);
-        }
         b.append(UNIX_NL);
 
         b.append("Pixel_Area").append("\t").append("(");
-        if (is_new) {
+        if (is_new)
             b.append("0 477");
-        } else {
+        else
             b.append(pixel_area[0]).append(" ").append(pixel_area[1]);
-        }
         b.append(")").append(UNIX_NL);
 
         b.append("Directory").append("\t");
@@ -150,7 +147,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
                 w = 720;
                 h = 576;
             }
-            
+
             son_attribute.display_area = new short[]{0, 0, w, h};
             son_attribute.colour = new short[]{0, 1, 0, 0};
             son_attribute.contrast = new short[]{15, 15, 15, 0};
@@ -237,7 +234,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             new_header.subtitle_file = subtitle_file;
             new_header.max_row_height = max_row_height;
             new_header.moptions = moptions;
-            new_header.color_table = (color_table == null ? null : (ArrayList<String>)color_table.clone());
+            new_header.color_table = (color_table == null ? null : (ArrayList<String>) color_table.clone());
         } catch (Exception ex) {
         }
         return new_header;
@@ -259,7 +256,7 @@ public class SonHeader implements SONPatternDef, Cloneable {
             this.subtitle_file = o.subtitle_file;
             this.max_row_height = o.max_row_height;
             this.moptions = o.moptions;
-            this.color_table = (o.color_table == null ? null : (ArrayList<String>)o.color_table.clone());
+            this.color_table = (o.color_table == null ? null : (ArrayList<String>) o.color_table.clone());
         } catch (Exception ex) {
         }
     }
@@ -297,10 +294,8 @@ public class SonHeader implements SONPatternDef, Cloneable {
     }
 
     public SonSubtitleImageAttribute getCreateSonAttribute() {
-        if (this.son_attribute == null) {
+        if (this.son_attribute == null)
             this.son_attribute = new SonSubtitleImageAttribute();
-        }
         return this.son_attribute;
     }
-    
 }

@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.i18n;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -43,9 +44,9 @@ public class I18N {
         String ll = ls + "_" + System.getProperty("user.country");
 
         cl.addPaths(new String[]{
-                    "../../../dist/i18n/" + ls + ".jar", "i18n/" + ls + ".jar",
-                    "../../../dist/i18n/" + ll + ".jar", "i18n/" + ll + ".jar"
-                });
+            "../../../dist/i18n/" + ls + ".jar", "i18n/" + ls + ".jar",
+            "../../../dist/i18n/" + ll + ".jar", "i18n/" + ll + ".jar"
+        });
 
         b = loadClass(PATH + ll);
         if (b == null) {

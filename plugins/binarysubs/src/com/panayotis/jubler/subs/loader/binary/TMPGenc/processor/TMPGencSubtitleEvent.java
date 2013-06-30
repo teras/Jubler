@@ -36,45 +36,45 @@ import com.panayotis.jubler.time.Time;
 import java.util.logging.Level;
 
 /**
- * Pattern to recognize the TMPGenc's subtitle detail line
- * Typical example:
+ * Pattern to recognize the TMPGenc's subtitle detail line Typical example:
  * <blockquote><pre>
  * 15,1,"00:02:29,001","00:02:32,014",0,"""If lost, please return\nto Charles Christopher Schine."""
  * </pre></blockquote>
  * <ol>
  * <li> Subtitle event's ID, starting from 1
- * <li> Entry's visibility flag: 1=visible, 0=invisible.
- * When 0 is set, the subtitle event is not visisible upon playback of DVD.
+ * <li> Entry's visibility flag: 1=visible, 0=invisible. When 0 is set, the
+ * subtitle event is not visisible upon playback of DVD.
  * <li> Start-time: The format is similar to SRT
  * <li> Finish-time: The format is similar to SRT
  * <li> Layout index: Index to the layout entry in the [LayoutData] section.
- * <li> Subtitle-text: Surrounded by double-quotes, and two double-quotes refers to one instance
- * of the double-quote in the text. New-line is replaced by the group "\\n" and thus
- * the whole subtitle text resides in a single-line, so parsing and replacing must use '\\\\n'.
+ * <li> Subtitle-text: Surrounded by double-quotes, and two double-quotes refers
+ * to one instance of the double-quote in the text. New-line is replaced by the
+ * group "\\n" and thus the whole subtitle text resides in a single-line, so
+ * parsing and replacing must use '\\\\n'.
  * </ol>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TMPGencPatternDef {
 
     private static final String pattern =
             digits + //id
-            single_comma +
-            digits + //visibility
-            single_comma +
-            TMPG_TIME + //start-time
-            single_comma +
-            TMPG_TIME + //finish-time
-            single_comma +
-            digits + //layout-index
+            single_comma
+            + digits + //visibility
+            single_comma
+            + TMPG_TIME + //start-time
+            single_comma
+            + TMPG_TIME + //finish-time
+            single_comma
+            + digits + //layout-index
             single_comma;
-
     int index[] = new int[]{1, 3, 5, 6, 7, 8, 10, 11, 12, 13, 15};
-    
+
     public TMPGencSubtitleEvent() {
         super(pattern);
         setMatchIndexList(index);
         setTargetObjectClassName(TMPGencSubtitleRecord.class.getName());
-        
+
     }
 
     public void parsePattern(String[] matched_data, Object record) {
@@ -97,17 +97,15 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
             r.setLayoutIndex(layout_idx);
 
             String txt = getSubTextManually();
-            
+
             //remove the leading double-quote (")
-            if (txt.startsWith(char_double_quote)) {
+            if (txt.startsWith(char_double_quote))
                 txt = txt.substring(1);
-            }
 
             //remove the trailing double-quote (")
             int len = txt.length();
-            if (txt.endsWith(char_double_quote)) {
+            if (txt.endsWith(char_double_quote))
                 txt = txt.substring(0, len - 1);
-            }
             //correcting single-line of text with patched double-quotes and new-lines
             String r_txt = txt.replaceAll(char_two_double_quotes, char_double_quote);
             txt = r_txt.replaceAll(pat_nl, UNIX_NL);
@@ -120,26 +118,25 @@ public class TMPGencSubtitleEvent extends SubtitlePatternProcessor implements TM
 
     /**
      * This is to cope with last line of the subtitle file where sub-text exists
-     * but without the surrounding double-quotes, leading to error in the parsing
-     * of the pattern.
-     * 1203,1,"01:37:50,000","01:37:52,002",0,#Aaaaah!
+     * but without the surrounding double-quotes, leading to error in the
+     * parsing of the pattern. 1203,1,"01:37:50,000","01:37:52,002",0,#Aaaaah!
+     *
      * @return subttile-text filtered or empty string if no text exists.
      */
     private String getSubTextManually() {
         String result_txt = null;
         String txt = getTextLine();
         String split_pattern =
-                char_double_quote +
-                char_comma +
-                digits +
-                char_comma;
+                char_double_quote
+                + char_comma
+                + digits
+                + char_comma;
         String[] list = txt.split(split_pattern);
         boolean valid = (list.length == 2);
-        if (valid) {
+        if (valid)
             result_txt = list[1];
-        } else {
-            result_txt = "";
-        }//end if (valid)
+        else
+            result_txt = "";//end if (valid)
         return result_txt;
     }
 }

@@ -30,4 +30,3 @@
  * This class holds exceptions for the application.
  */
 package com.panayotis.jubler.exceptions;
-

@@ -37,6 +37,7 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
  * <pre>
  * Display_Start	non_forced
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONDisplayStart extends SubtitlePatternProcessor implements CommonDef {
@@ -45,13 +46,13 @@ public class SONDisplayStart extends SubtitlePatternProcessor implements CommonD
     int index = 2;
     private SonHeader sonHeader = null;
 
-    public SONDisplayStart() {        
+    public SONDisplayStart() {
         super(pattern);
         setMatchIndexList(index);
     }
 
     public void parsePattern(String[] matched_data, Object record) {
-        if (record instanceof SonHeader){
+        if (record instanceof SonHeader) {
             sonHeader = (SonHeader) record;
             sonHeader.display_start = matched_data[0];
         }//end if

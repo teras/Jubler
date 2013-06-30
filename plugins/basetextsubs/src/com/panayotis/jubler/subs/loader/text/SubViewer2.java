@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.text;
 
 import java.util.regex.Pattern;
@@ -34,7 +35,9 @@ public class SubViewer2 extends SubViewer {
 
     private static final Pattern testpat;
 
-    /** Creates a new instance of SubFormat */
+    /**
+     * Creates a new instance of SubFormat
+     */
     static {
         testpat = Pattern.compile("(?i)(?s)\\[INFORMATION\\].*?"
                 + "(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d),(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d)"

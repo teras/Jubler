@@ -33,9 +33,9 @@ import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.loader.binary.SWT.record.SWTSubEntry;
 
-
 /**
  * This class is used to parse the subtitle text within the SWT subtilte file.
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SWTSubtitleText extends SubtitlePatternProcessor implements SWTPatternDef {
@@ -60,9 +60,8 @@ public class SWTSubtitleText extends SubtitlePatternProcessor implements SWTPatt
                 b.append(UNIX_NL);
                 b.append(new_text);
                 getSwtSubEntry().setText(b.toString());
-            } else {
-                getSwtSubEntry().setText(new_text);
-            }//end if            
+            } else
+                getSwtSubEntry().setText(new_text);//end if            
         }//end if (record instanceof SonSubEntry)
 
     }//end if

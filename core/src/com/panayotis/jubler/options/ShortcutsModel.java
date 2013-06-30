@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -53,7 +54,9 @@ public class ShortcutsModel extends AbstractTableModel {
     private int buffer_mod = 0;
     int current_id = -1;
 
-    /** Creates a new instance of ShortcutsModel */
+    /**
+     * Creates a new instance of ShortcutsModel
+     */
     public ShortcutsModel(JMenuBar bar) {
         original = new ArrayList<MenuItem>();
         for (int i = 0; i < bar.getMenuCount(); i++) {

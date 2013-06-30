@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.tools.translate;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -63,7 +64,9 @@ public abstract class WebTranslator implements Translator, ActionListener {
     }
 
     /**
-     * Set maximum number of subtitles per connection will send to the translator
+     * Set maximum number of subtitles per connection will send to the
+     * translator
+     *
      * @param blocksize
      */
     public void setSubtitleBlock(int blocksize) {
@@ -74,7 +77,6 @@ public abstract class WebTranslator implements Translator, ActionListener {
         errorstream = "";
         proc.setValues(subs.size(), _("Translating to {0}", to_language));
         transt = new Thread() {
-
             @Override
             public void run() {
                 for (int i = 0; i < subs.size(); i += blocksize) {

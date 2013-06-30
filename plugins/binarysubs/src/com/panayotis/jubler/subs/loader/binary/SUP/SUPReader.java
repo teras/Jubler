@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SUP;
 
 import com.panayotis.jubler.JubFrame;
@@ -40,23 +41,23 @@ import java.util.logging.Level;
 
 /**
  * See {@link SUPCompressImageProcessor} for descriptions.
+ *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class SUPReader extends SUPCompressImageProcessor {
 
-    public SUPReader(){
+    public SUPReader() {
     }
-    
+
     public SUPReader(JubFrame jubler, float fps, String encoding, File f) {
         super(jubler, fps, encoding);
         processFile = f;
     }
-    
+
     private boolean getImageData(FileInputStream in) throws Exception {
         int read_byte = in.read(RLEheader);
-        if (read_byte != RLEheader.length) {
+        if (read_byte != RLEheader.length)
             return false;
-        }
 
         int packet_size = (0x00ff & RLEheader[10]) << 8 | (0x00ff & RLEheader[11]);
         int section_pos = (0x00ff & RLEheader[12]) << 8 | (0x00ff & RLEheader[13]);
@@ -65,9 +66,8 @@ public class SUPReader extends SUPCompressImageProcessor {
 
         byte[] packet_data = new byte[packet_size];
         read_byte = in.read(packet_data);
-        if (read_byte != packet_data.length) {
+        if (read_byte != packet_data.length)
             return false;
-        }
 
         compressedImageData = new byte[section_pos];
         System.arraycopy(packet_data, 0, compressedImageData, 0, section_pos);
@@ -76,6 +76,7 @@ public class SUPReader extends SUPCompressImageProcessor {
         decodingData();
         return true;
     }//end private boolean getImageData(FileInputStream in) throws Exception 
+
     private boolean getImageData() {
         FileInputStream in = null;
         boolean ok = false;
@@ -110,33 +111,33 @@ public class SUPReader extends SUPCompressImageProcessor {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         } finally {
             try {
-                if (in != null) {
+                if (in != null)
                     in.close();
-                }
             } catch (Exception ex) {
             }
         }
         return ok;
     }//end private boolean getImageData()
+
     private void decodingData() throws Exception {
         // color index 3,2 + 1,0
-        int color_index_value = (0x00ff & sections[3]) << 8 |
-                (0x00ff & sections[4]);
+        int color_index_value = (0x00ff & sections[3]) << 8
+                | (0x00ff & sections[4]);
         // alpha index 3,2 + 1,0
-        int alpha_index_value = (0x00ff & sections[6]) << 8 |
-                (0x00ff & sections[7]);
+        int alpha_index_value = (0x00ff & sections[6]) << 8
+                | (0x00ff & sections[7]);
 
         colorIndexList = this.intToArray(color_index_value);
         alphaIndexList = this.intToArray(alpha_index_value);
 
         //extract timming information
-        int start_frame_count = (0x00ff & RLEheader[2]) |
-                ((0x00ff & RLEheader[3]) << 8) |
-                ((0x00ff & RLEheader[4]) << 16) |
-                ((0x00ff & RLEheader[5]) << 24);
+        int start_frame_count = (0x00ff & RLEheader[2])
+                | ((0x00ff & RLEheader[3]) << 8)
+                | ((0x00ff & RLEheader[4]) << 16)
+                | ((0x00ff & RLEheader[5]) << 24);
 
-        int duration = ((0x00ff & sections[22]) << 8) |
-                (0x00ff & sections[23]);
+        int duration = ((0x00ff & sections[22]) << 8)
+                | (0x00ff & sections[23]);
 
         //extract picture positions and hence its width and height
         //6 bytes split into 4 integers. 
@@ -147,20 +148,20 @@ public class SUPReader extends SUPCompressImageProcessor {
         //     min_x    |     min_y     |     max_x     |     max_y
 
         int min_x =
-                (0x00ff & sections[9]) << 4 |
-                (0x00f0 & sections[10] >>> 4);
+                (0x00ff & sections[9]) << 4
+                | (0x00f0 & sections[10] >>> 4);
 
         int max_x =
-                (0x000f & sections[10]) << 8 |
-                (0x00ff & sections[11]);
+                (0x000f & sections[10]) << 8
+                | (0x00ff & sections[11]);
 
         int min_y =
-                (0x00ff & sections[12]) << 4 |
-                (0x00f0 & sections[13]) >>> 4;
+                (0x00ff & sections[12]) << 4
+                | (0x00f0 & sections[13]) >>> 4;
 
         int max_y =
-                (0x000f & sections[13]) << 8 |
-                (0x00ff & sections[14]);
+                (0x000f & sections[13]) << 8
+                | (0x00ff & sections[14]);
 
         max_x += 1;
         max_y += 1;
@@ -198,6 +199,7 @@ public class SUPReader extends SUPCompressImageProcessor {
                 brle.getPgcColorIndexList().toArray(),
                 brle.getPgcAlphaIndexList().toArray());
     }//private decodingData()    
+
     private ArrayList<String> intToArray(int mixed_value) {
         ArrayList<String> array = new ArrayList<String>();
         for (int a = 0; a < 4; a++) {
@@ -206,6 +208,7 @@ public class SUPReader extends SUPCompressImageProcessor {
         }//end for(int a = 0; i < 4; i++)
         return array;
     }//end private int[] intToArray(int value)
+
     private void createSubtitleRecord(
             int start_frame_count, int duration,
             int w, int h,
@@ -215,12 +218,12 @@ public class SUPReader extends SUPCompressImageProcessor {
             Object[] alphas) {
 
         float vfr = (FPS == 25f ? Time.PAL_VIDEOFRAMERATE : Time.NTSC_VIDEOFRAMERATE);
-        
+
         Time starting_time = new Time(start_frame_count, (long) vfr);
         Time finished_time = new Time(starting_time.getMilli() + (duration * 10));
         //String starting_time_s = starting_time.toString();
         //String finished_time_s = finished_time.toString();
-        
+
         BufferedImage img = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
         img.setRGB(0, 0, w, h, img_data, 0, w);
 
@@ -247,13 +250,14 @@ public class SUPReader extends SUPCompressImageProcessor {
         this.setRow(row);
         fireSubtitleRecordUpdatedEvent();
 
-    //the debugging code
-    //JLabel lbl = new JLabel(new ImageIcon(img));
-    //lbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-    //lbl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-    //JOptionPane.showMessageDialog(null, lbl);
-    //System.out.println("Showed the image!");        
+        //the debugging code
+        //JLabel lbl = new JLabel(new ImageIcon(img));
+        //lbl.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        //lbl.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        //JOptionPane.showMessageDialog(null, lbl);
+        //System.out.println("Showed the image!");        
     }//end private void createSubtitleRecord()
+
     public int getNumberOfImages() {
         FileInputStream in = null;
         int count = 0;
@@ -266,21 +270,20 @@ public class SUPReader extends SUPCompressImageProcessor {
                 byte b1 = data[i];
                 byte b2 = data[i + 1];
                 boolean ok = (b1 == 0x53 && b2 == 0x50);
-                if (ok) {
-                    count += 1;
-                }//end if
+                if (ok)
+                    count += 1;//end if
             }//end for            
         } catch (Exception ex) {
         } finally {
             try {
-                if (in != null) {
+                if (in != null)
                     in.close();
-                }
             } catch (Exception ex) {
             }//end try/catch/close in            
             return count;
         }//end try/catch/finally process stream        
     }//public int getNumberOfImages()
+
     public void processImageData() {
         FileInputStream in = null;
         boolean ok = true;
@@ -288,32 +291,33 @@ public class SUPReader extends SUPCompressImageProcessor {
         fireSubtitleUpdaterPreProcessingEvent();
         try {
             in = new FileInputStream(processFile);
-            while (ok) {
-                ok = getImageData(in);
-            }//end while
+            while (ok)
+                ok = getImageData(in);//end while
 
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         } finally {
             try {
-                if (in != null) {
+                if (in != null)
                     in.close();
-                }
             } catch (Exception ex) {
             }//end try/catch/close in
         }//end try/catch/finally process stream
         fireSubtitleUpdaterPostProcessingEvent();
     }//end public void processImageData() 
-    private void updateHexColorTable(){
-        try{
+
+    private void updateHexColorTable() {
+        try {
             color_table_hex.clear();
-            for(String color_s: color_table){
+            for (String color_s : color_table) {
                 int color = Integer.parseInt(color_s);
                 String hex_color = Integer.toHexString(color);
                 color_table_hex.add(hex_color);
             }//end for
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }
+
     private boolean getUserColourTable() {
         try {
             String file_name = processFile.getAbsolutePath();
@@ -324,17 +328,18 @@ public class SUPReader extends SUPCompressImageProcessor {
             return false;
         }
     }//end private boolean getUserColourTable()    
+
     public void readSupFile() {
         boolean ok = getUserColourTable();
-        if (!ok) {
-            makeDefaultColourTable();
-        }//end if (! ok)
+        if (!ok)
+            makeDefaultColourTable();//end if (! ok)
         this.setRow(0);
         fireSubtitleUpdaterPreProcessingEvent();
         getImageData();
         fireSubtitleUpdaterPostProcessingEvent();
-    //processImageData();
+        //processImageData();
     }//end public void readSupFile()
+
     public void run() {
         SonSubEntry.reset();
         this.readSupFile();

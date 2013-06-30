@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.gui;
 
 import com.panayotis.jubler.subs.loader.SubFormat;
@@ -40,16 +41,15 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter implements j
     String ext = null;
     private SubFormat formatHandler = null;
 
-    public JFileFilter(String ext, String desc, SubFormat formatHandler){
+    public JFileFilter(String ext, String desc, SubFormat formatHandler) {
         this.desc = desc;
         this.ext = ext;
         this.formatHandler = formatHandler;
     }
-    
+
     public boolean accept(File pathname) {
-        if (pathname.isDirectory()) {
+        if (pathname.isDirectory())
             return true;
-        }
         String fname = pathname.getName().toLowerCase();
         boolean found = fname.endsWith(ext.toLowerCase());
         return found;

@@ -32,11 +32,13 @@ import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.SubtitlePatternProcessor;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonSubEntry;
+
 /**
  * Process data entry in the following format:
  * <pre>
  * Contrast	(0 15 15 15)
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONContrast extends SubtitlePatternProcessor implements CommonDef {

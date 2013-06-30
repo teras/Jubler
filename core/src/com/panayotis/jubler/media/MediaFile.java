@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -50,10 +51,14 @@ public class MediaFile {
 
     /* Decoder framework to display frames, audio clips etc. */
     private DecoderInterface decoder;
-    /** File chooser dialog for video */
+    /**
+     * File chooser dialog for video
+     */
     public JVideofileSelector videoselector;
 
-    /** Creates a new instance of MediaFile */
+    /**
+     * Creates a new instance of MediaFile
+     */
     public MediaFile() {
         this(null, null, null);
     }

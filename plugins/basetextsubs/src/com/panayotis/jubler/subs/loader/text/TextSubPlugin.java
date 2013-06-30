@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -34,41 +35,40 @@ import java.util.logging.Level;
 public class TextSubPlugin implements Plugin {
 
     private PluginItem[] plugin_list = null;
+
     public PluginItem[] getPluginItems() {
         plugin_list = new PluginItem[]{
-                    new AdvancedSubStation(),
-                    new SubRip(),
-                    new SubStationAlpha(),
-                    new SubViewer2(),
-                    new SubViewer(),
-                    new MPL2(),
-                    new MicroDVD(),
-                    new Quicktime(),
-                    new Spruce(),
-                    new TextScript(),
-                    new W3CTimedText(),
-                    new DFXP()
-                };
+            new AdvancedSubStation(),
+            new SubRip(),
+            new SubStationAlpha(),
+            new SubViewer2(),
+            new SubViewer(),
+            new MPL2(),
+            new MicroDVD(),
+            new Quicktime(),
+            new Spruce(),
+            new TextScript(),
+            new W3CTimedText(),
+            new DFXP()
+        };
         setClassLoaderForSubFormat();
         return plugin_list;
     }
-
     private ClassLoader loader = null;
 
-    private void setClassLoaderForSubFormat(){
-         try {
+    private void setClassLoaderForSubFormat() {
+        try {
             for (PluginItem plugin_item : plugin_list) {
                 SubFormat fmt = (SubFormat) plugin_item;
                 fmt.setClassLoader(this.loader);
-                if (this.loader == null){
+                if (this.loader == null)
                     DEBUG.logger.log(Level.SEVERE, _("Loader is NULL."));
-                }
             }//end for(PluginItem format : plugin_list)
         } catch (Exception ex) {
             DEBUG.logger.log(Level.SEVERE, ex.toString() + _(": Unable to set class loader"));
         }
     }
-    
+
     public String getPluginName() {
         return _("Text subtitles");
     }
@@ -83,5 +83,5 @@ public class TextSubPlugin implements Plugin {
 
     public void setClassLoader(ClassLoader loader) {
         this.loader = loader;
-    }    
+    }
 }

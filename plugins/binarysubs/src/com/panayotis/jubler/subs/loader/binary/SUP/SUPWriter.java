@@ -25,6 +25,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SUP;
 
 import com.panayotis.jubler.JubFrame;
@@ -47,12 +48,14 @@ import java.io.FileOutputStream;
 
 /**
  * See {@link SUPCompressImageProcessor} for descriptions.
+ *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class SUPWriter extends SUPCompressImageProcessor {
 
     /**
      * Parameterised constructor
+     *
      * @param jubler The main application's GUI screen
      * @param fps The number of frame per seconds chosen, ie. PAL uses 25fps
      * @param encoding The encoding scheme (ie. UTF-8)
@@ -64,18 +67,18 @@ public class SUPWriter extends SUPCompressImageProcessor {
     }
 
     /**
-     * Checks to see if the entry is a image-type subtitle or not.
-     * If it is, checks to see if it actually has an image. If not, generate
-     * a new-blank image, to avoid the rest of the subtitle file being discarded
-     * by the process. The entry is then casted to the 
-     * {@link ImageTypeSubtitle} and return to the caller. <br><br>
+     * Checks to see if the entry is a image-type subtitle or not. If it is,
+     * checks to see if it actually has an image. If not, generate a new-blank
+     * image, to avoid the rest of the subtitle file being discarded by the
+     * process. The entry is then casted to the {@link ImageTypeSubtitle} and
+     * return to the caller. <br><br>
      * When an entry is NOT a {@link ImageTypeSubtitle} entry, an instance of
-     * SON subtitle entry is created and the subtitle text is converted to
-     * an image. When no text is found, a blank string is used.
-     * The subtitle image will have a blue background, and the
-     * text image is over-laid in the centre. The default header is held
-     * locally for next entries. 
-     * @param entry The subtitle entry to be converted to an 
+     * SON subtitle entry is created and the subtitle text is converted to an
+     * image. When no text is found, a blank string is used. The subtitle image
+     * will have a blue background, and the text image is over-laid in the
+     * centre. The default header is held locally for next entries.
+     *
+     * @param entry The subtitle entry to be converted to an
      * {@link ImageTypeSubtitle}.
      * @return the reference to an instance of {@link ImageTypeSubtitle}.
      */
@@ -94,9 +97,8 @@ public class SUPWriter extends SUPCompressImageProcessor {
                 BufferedImage text_img = son_entry.makeSubtitleTextImage();
                 son_entry.getCreateSonAttribute().centreImage(text_img);
                 img = JImage.makeSubBackgroundImage(text_img);
-            } else {
+            } else
                 img = JImage.getDefaultBlankImage();
-            }
             son_entry.setImage(img);
             son_header = son_entry.getHeader();
             son_header.FPS = this.FPS;
@@ -115,15 +117,16 @@ public class SUPWriter extends SUPCompressImageProcessor {
 
     /**
      * This function will convert the image from the input instance of
-     * {@link ImageTypeSubtitle} to an image with maximum of 4-colors.
-     * This is due to the SUP requirements for RLE compression that the 
-     * image will only have a maximum of 4 colors. Conversion is carried
-     * out here to avoid color-cutoff that would happen in compression
-     * stage, which would produce wrong color indices, resulting to a very
-     * bad image when it is decoded. The pixel data of image is extracted
-     * and held locally so that it can be passed to the compressor later-on.
-     * The local user-color table is updated with the new 4 colors found,
-     * either from the image or the color-palette list from the color-reducer.
+     * {@link ImageTypeSubtitle} to an image with maximum of 4-colors. This is
+     * due to the SUP requirements for RLE compression that the image will only
+     * have a maximum of 4 colors. Conversion is carried out here to avoid
+     * color-cutoff that would happen in compression stage, which would produce
+     * wrong color indices, resulting to a very bad image when it is decoded.
+     * The pixel data of image is extracted and held locally so that it can be
+     * passed to the compressor later-on. The local user-color table is updated
+     * with the new 4 colors found, either from the image or the color-palette
+     * list from the color-reducer.
+     *
      * @param img_entry The subtitle entry which contains image to be
      * compressed.
      */
@@ -146,12 +149,13 @@ public class SUPWriter extends SUPCompressImageProcessor {
     }//end private Rectangle getSubtitleImageData(ImageTypeSubtitle img_entry)
 
     /**
-     * Creates an instance of {@link BitmapRLE} and pass it the local
-     * image data, its width and height, and the color-table, before invokes
-     * its compress method to carry out the RLE image-compression.
-     * The compressed data is retrieved and set locally. 
-     * @return True if the compression was carried out without problems,
-     * false otherwise.
+     * Creates an instance of {@link BitmapRLE} and pass it the local image
+     * data, its width and height, and the color-table, before invokes its
+     * compress method to carry out the RLE image-compression. The compressed
+     * data is retrieved and set locally.
+     *
+     * @return True if the compression was carried out without problems, false
+     * otherwise.
      */
     private boolean compressImageData() {
         boolean ok = false;
@@ -164,15 +168,15 @@ public class SUPWriter extends SUPCompressImageProcessor {
         if (ok) {
             brle.makeTranparencyList();
             compressedImageData = brle.getCompressedData();
-        } else {
-            compressedImageData = null;
-        }//end if (!ok)
+        } else
+            compressedImageData = null;//end if (!ok)
         return ok;
     }//end private boolean compressImageData(Rectangle rec)
 
     /**
-     * Sets the screen positions of the image on the screen in the 
+     * Sets the screen positions of the image on the screen in the
      * control-section of the packet so that it can be written to the file.
+     *
      * @param minX Top left x co-ordinate.
      * @param minY Top left y co-ordinate.
      * @param maxX Bottom right x co-ordinate.
@@ -230,22 +234,21 @@ public class SUPWriter extends SUPCompressImageProcessor {
 
             int pgc_color_value, pgc_alpha_value;
             int max_tbl_size = Math.min(pgc_alpha_links.length, pgc_color_links.length);
-            for (int a = 0; a < 4; a++) {
+            for (int a = 0; a < 4; a++)
                 if (a < max_tbl_size) {
                     pgc_color_value = 0xF & Integer.parseInt(pgc_color_links[a].toString());
                     pgc_alpha_value = 0xF & Integer.parseInt(pgc_alpha_links[pgc_color_value].toString()) >>> 28;
                     pgc_colors = (pgc_colors & ~(0xF << (a * 4))) | pgc_color_value << (a * 4);
                     pgc_alphas = (pgc_alphas & ~(0xF << (a * 4))) | pgc_alpha_value << (a * 4);
                 }
-            }
         } catch (Exception ex) {
         }
         return (pgc_alphas << 16 | pgc_colors);
     }//end public int setPGClinks(BitmapRLE rle)
 
     /**
-     * Runs through the subtitle list, compress the image and write it 
-     * to a file.
+     * Runs through the subtitle list, compress the image and write it to a
+     * file.
      */
     public void writeSupFile() {
         FileOutputStream of = null;
@@ -263,15 +266,13 @@ public class SUPWriter extends SUPCompressImageProcessor {
                 //1. extract the subtitle entry's image data
                 entry = sub_list.elementAt(i);
                 img_entry = this.getImageTypeEntry(entry);
-                if (Share.isEmpty(img_entry)) {
-                    break;
-                }//end if (Share.isEmpty(img_entry))
+                if (Share.isEmpty(img_entry))
+                    break;//end if (Share.isEmpty(img_entry))
 
                 getSubtitleImageData(img_entry);
                 ok = compressImageData();
-                if (!ok) {
-                    break;
-                }//end if (!ok)
+                if (!ok)
+                    break;//end if (!ok)
 
                 out.write(compressedImageData);
                 //3. update the SUP data
@@ -286,11 +287,9 @@ public class SUPWriter extends SUPCompressImageProcessor {
                     if (Share.isEmpty(attrib)) {
                         attrib = new SonSubtitleImageAttribute();
                         attrib.centreImage(img_entry.getImage());
-                    } else {
-                        if (Share.isEmpty(attrib.display_area)) {
-                            attrib.centreImage(img_entry.getImage());
-                        }//end if
-                    }//end if (! Share.isEmpty(attrib))
+                    } else
+                        if (Share.isEmpty(attrib.display_area))
+                            attrib.centreImage(img_entry.getImage());//end if//end if (! Share.isEmpty(attrib))
                     x1 = attrib.display_area[0];
                     y1 = attrib.display_area[1];
                     x2 = attrib.display_area[2];
@@ -304,9 +303,8 @@ public class SUPWriter extends SUPCompressImageProcessor {
 
                 out.write(sections);  //write control_block
 
-                if ((out.size() & 1) == 1) {
+                if ((out.size() & 1) == 1)
                     out.write((byte) 255);
-                }
 
                 out.flush();
 
@@ -337,15 +335,13 @@ public class SUPWriter extends SUPCompressImageProcessor {
                 picture_packet[4] = (byte) (0xff & in_frm_cnt >>> 16);
                 picture_packet[5] = (byte) (0xff & in_frm_cnt >>> 24);
 
-                for (int a = 0; a < 4; a++) {
+                for (int a = 0; a < 4; a++)
                     picture_packet[a + 2] = (byte) (0xFF & in_frm_cnt >>> (a * 8));
-                }
 
                 picture_packet[onscreen_time_pos] = (byte) (0xFF & play_duration >>> 8);
                 picture_packet[onscreen_time_pos + 1] = (byte) (0xFF & play_duration);
-                if (of == null) {
+                if (of == null)
                     of = new FileOutputStream(this.processFile);
-                }
                 of.write(picture_packet);
 
                 setEntry(entry);
@@ -360,9 +356,8 @@ public class SUPWriter extends SUPCompressImageProcessor {
         } catch (Exception ex) {
         } finally {
             try {
-                if (out != null) {
+                if (out != null)
                     out.close();
-                }
                 if (of != null) {
                     of.flush();
                     of.close();

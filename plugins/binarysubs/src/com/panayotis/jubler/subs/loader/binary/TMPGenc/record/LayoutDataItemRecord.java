@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -45,24 +46,24 @@ import java.util.logging.Level;
  * red: (255,0,0 = #FF0000) TMP: 17587891077120 => 0x0FFF 0000 0000
  * yellow: (255,255,0 = #FFFF00) TMP: 17588159447040 => 0x0FFF 0FFF 0000
  * Font style: 	Normal	Bold	Italic	Underscore	StrikeThrough
- * <num1>      	0	1	0	0		0
- * <num2>		0	0	1	0		0
- * <num3>		0	0	0	1		0
- * <num4>		0	0	0	0		1
- * Horizontal Alignment: left = 0, center = 1, right = 2 # ie. (2),2,0,1,0.0035,0
- * Vertical Alignment: top = 0, mid = 1, bottom = 2 	       (2),0,1,0.0035,0
- * Text Rotation: Write Vertical = 1  2,(1),1,0.0035,0
- * Border: No = 0, Yes = 1 	ie. (1),0.0035,0
- * Border size: 5 = 0.035, 7 = 0.049 (formular: x * 7 / 100)#
- * Border colour: black = 0, gray = 5841244652880 = 0x0550. 0550. 0550  = #55 55 55 = (RGB: 85,85,85)
+ * <num1> 0	1	0	0	0
+ * <num2>	0	0	1	0	0
+ * <num3>	0	0	0	1	0
+ * <num4>	0	0	0	0	1 Horizontal Alignment: left = 0, center = 1, right = 2 # ie.
+ * (2),2,0,1,0.0035,0 Vertical Alignment: top = 0, mid = 1, bottom = 2
+ * (2),0,1,0.0035,0 Text Rotation: Write Vertical = 1 2,(1),1,0.0035,0 Border:
+ * No = 0, Yes = 1 ie. (1),0.0035,0 Border size: 5 = 0.035, 7 = 0.049 (formular:
+ * x * 7 / 100)# Border colour: black = 0, gray = 5841244652880 = 0x0550. 0550.
+ * 0550 = #55 55 55 = (RGB: 85,85,85)
  * </pre>
+ *
  * @author Hoang Duy Tran
  */
 public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Cloneable {
 
     /**
-     * The internal number format instance. This is used to format numerical values
-     * when it is required to convert values into string format.
+     * The internal number format instance. This is used to format numerical
+     * values when it is required to convert values into string format.
      */
     public static NumberFormat fmt = NumberFormat.getInstance();
     /**
@@ -70,9 +71,9 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      */
     private String name = null;
     /**
-     * the displaying area of the subtitle text on the screen.
-     * See the definition of values that this variable may have at any one time
-     * at the top of this file.
+     * the displaying area of the subtitle text on the screen. See the
+     * definition of values that this variable may have at any one time at the
+     * top of this file.
      */
     private byte displayArea = 0;
     /**
@@ -86,8 +87,8 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     private float forntSize = 0.0F; //percent
     /**
      * This the combination of R. G. B. values. It is a very large value and
-     * currently I have no idea how this value is formed by the TMPGenc software.
-     * There are supposedly to be 16 different colors.
+     * currently I have no idea how this value is formed by the TMPGenc
+     * software. There are supposedly to be 16 different colors.
      */
     private double fontColour = 0;
     /**
@@ -169,6 +170,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * gets the name of the layout
+     *
      * @return the name of the layout
      */
     public String getName() {
@@ -177,6 +179,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * sets the name of the layout
+     *
      * @param name the name of the layout to set
      */
     public void setName(String name) {
@@ -185,6 +188,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * gets the display area
+     *
      * @return the display area
      */
     public byte getDisplayArea() {
@@ -193,6 +197,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * sets the display area
+     *
      * @param displayArea the value for display area to set
      */
     public void setDisplayArea(byte displayArea) {
@@ -201,6 +206,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * gets the name of the font
+     *
      * @return the name of the font being used
      */
     public String getFontName() {
@@ -209,6 +215,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * sets the name of the font being used
+     *
      * @param fontName the name of the font being used
      */
     public void setFontName(String fontName) {
@@ -216,8 +223,9 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     }
 
     /**
-     * Gets the size of the font being used.
-     * This value is a fractional number indicating percentage.
+     * Gets the size of the font being used. This value is a fractional number
+     * indicating percentage.
+     *
      * @return the size of the font being used
      */
     public float getForntSize() {
@@ -225,8 +233,9 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     }
 
     /**
-     * Sets the font size being used.
-     * This value is a fractional number indicating percentage.
+     * Sets the font size being used. This value is a fractional number
+     * indicating percentage.
+     *
      * @param forntSize the value for the font size being used
      */
     public void setForntSize(float forntSize) {
@@ -239,6 +248,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * <li>A value of 0 indicates that the bold style is NOT being used.
      * <li>A value of 1 indicates that bold style is being used.
      * </ul>
+     *
      * @return the value for the bold style indicator
      */
     public byte getStyleBold() {
@@ -247,6 +257,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * Sets the bold style.
+     *
      * @param styleBold Value indicating the bold style.
      */
     public void setStyleBold(byte styleBold) {
@@ -259,6 +270,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * <li>A value of 0 indicates that the italic style is NOT being used.
      * <li>A value of 1 indicates that italic style is being used.
      * </ul>
+     *
      * @return the value for the italic style indicator
      */
     public byte getStyleItalic() {
@@ -271,6 +283,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * <li>A value of 0 indicates that the italic style is NOT being used.
      * <li>A value of 1 indicates that italic style is being used.
      * </ul>
+     *
      * @param styleItalic the value for the italic style indicator
      */
     public void setStyleItalic(byte styleItalic) {
@@ -283,6 +296,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * <li>A value of 0 indicates that the under score is NOT being used.
      * <li>A value of 1 indicates that under score is being used.
      * </ul>
+     *
      * @return the value for the under score indicator
      */
     public byte getStyleUnderScore() {
@@ -295,6 +309,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * <li>A value of 0 indicates that the under score is NOT being used.
      * <li>A value of 1 indicates that under score is being used.
      * </ul>
+     *
      * @param styleUnderScore the value for the under score indicator
      */
     public void setStyleUnderScore(byte styleUnderScore) {
@@ -307,6 +322,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * <li>A value of 0 indicates that the strike through is NOT being used.
      * <li>A value of 1 indicates that strike through is being used.
      * </ul>
+     *
      * @return the value for the strike through indicator
      */
     public byte getStyleStrikeThrough() {
@@ -319,6 +335,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * <li>A value of 0 indicates that the strike through is NOT being used.
      * <li>A value of 1 indicates that strike through is being used.
      * </ul>
+     *
      * @param styleStrikeThrough the value for the strike through
      */
     public void setStyleStrikeThrough(byte styleStrikeThrough) {
@@ -329,9 +346,12 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * Gets the horizontal alignment.
      * <ul>
      * <li>A value of 0 indicates that the subtitle text is aligned to the left.
-     * <li>A value of 1 indicates that the subtitle text is aligned to the center.
-     * <li>A value of 2 indicates that the subtitle text is aligned to the right.
+     * <li>A value of 1 indicates that the subtitle text is aligned to the
+     * center.
+     * <li>A value of 2 indicates that the subtitle text is aligned to the
+     * right.
      * </ul>
+     *
      * @return the value for the horizontal alignment
      */
     public byte getAlignmentHorizontal() {
@@ -342,9 +362,12 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * Sets the horizontal alignment.
      * <ul>
      * <li>A value of 0 indicates that the subtitle text is aligned to the left.
-     * <li>A value of 1 indicates that the subtitle text is aligned to the center.
-     * <li>A value of 2 indicates that the subtitle text is aligned to the right.
+     * <li>A value of 1 indicates that the subtitle text is aligned to the
+     * center.
+     * <li>A value of 2 indicates that the subtitle text is aligned to the
+     * right.
      * </ul>
+     *
      * @param alignmentHorizontal the value for the horizontal alignment
      */
     public void setAlignmentHorizontal(byte alignmentHorizontal) {
@@ -355,9 +378,12 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * Gets the vertical alignment.
      * <ul>
      * <li>A value of 0 indicates that the subtitle text is aligned to the top.
-     * <li>A value of 1 indicates that the subtitle text is aligned to the middle.
-     * <li>A value of 2 indicates that the subtitle text is aligned to the bottom.
+     * <li>A value of 1 indicates that the subtitle text is aligned to the
+     * middle.
+     * <li>A value of 2 indicates that the subtitle text is aligned to the
+     * bottom.
      * </ul>
+     *
      * @return the value for the vertical alignment
      */
     public byte getAlignmentVertical() {
@@ -368,9 +394,12 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
      * sets the vertical alignment.
      * <ul>
      * <li>A value of 0 indicates that the subtitle text is aligned to the top.
-     * <li>A value of 1 indicates that the subtitle text is aligned to the middle.
-     * <li>A value of 2 indicates that the subtitle text is aligned to the bottom.
+     * <li>A value of 1 indicates that the subtitle text is aligned to the
+     * middle.
+     * <li>A value of 2 indicates that the subtitle text is aligned to the
+     * bottom.
      * </ul>
+     *
      * @param alignmentVertical the value for the vertical alignment
      */
     public void setAlignmentVertical(byte alignmentVertical) {
@@ -380,6 +409,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     /**
      * Gets the value for the text rotation. A non zero value indicates that the
      * text rotation is being used.
+     *
      * @return the value for the text rotation
      */
     public byte getTextRotation() {
@@ -389,6 +419,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     /**
      * Sets the text rotation. A non zero value indicates that the text rotation
      * is being used.
+     *
      * @param textRotation the value for the text rotation
      */
     public void setTextRotation(byte textRotation) {
@@ -396,10 +427,12 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     }
 
     /**
-     * Checks to see if the text border is being used on not
-     * a zero value indicates that the text border is not being used,
-     * a non zero value indicates that the text border is actually being used.
-     * @return the value to indicate whether the text border is being used or not.
+     * Checks to see if the text border is being used on not a zero value
+     * indicates that the text border is not being used, a non zero value
+     * indicates that the text border is actually being used.
+     *
+     * @return the value to indicate whether the text border is being used or
+     * not.
      */
     public byte getTextBorder() {
         return textBorder;
@@ -407,6 +440,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * Set the flag to to indicate whether the tex border is being used or not
+     *
      * @param textBorder the value to set to
      */
     public void setTextBorder(byte textBorder) {
@@ -415,6 +449,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * gets the size of the border
+     *
      * @return the size of the border
      */
     public float getBorderSize() {
@@ -423,6 +458,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * Set the border size
+     *
      * @param borderSize the size of the border
      */
     public void setBorderSize(float borderSize) {
@@ -430,8 +466,8 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
     }
 
     /**
-     * Gets the color of the border
-     * formular: x * 7 / 100
+     * Gets the color of the border formular: x * 7 / 100
+     *
      * @return the color of the border
      */
     public long getBorderColour() {
@@ -440,6 +476,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * sets the colour for the border
+     *
      * @param borderColour the color to set
      */
     public void setBorderColour(long borderColour) {
@@ -448,6 +485,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * provides a string representation of internal data
+     *
      * @return string representation of the internal data
      */
     @Override
@@ -498,6 +536,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * provides an exact copy of the record
+     *
      * @return the copy of the record
      */
     @Override
@@ -528,6 +567,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * gets the font color
+     *
      * @return the font color
      */
     public double getFontColour() {
@@ -536,6 +576,7 @@ public class LayoutDataItemRecord implements TMPGencPatternDef, java.lang.Clonea
 
     /**
      * Sets the font color
+     *
      * @param fontColour the value for the font color
      */
     public void setFontColour(double fontColour) {

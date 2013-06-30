@@ -38,6 +38,7 @@ import javax.swing.JFileChooser;
 
 /**
  * Commonly shared methods
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class Share implements CommonDef {
@@ -46,6 +47,7 @@ public class Share implements CommonDef {
 
     /**
      * Testing the string for null condition.
+     *
      * @param s String to be tested
      * @return true if s is null, false if not.
      */
@@ -55,6 +57,7 @@ public class Share implements CommonDef {
 
     /**
      * Testing an object for null condition
+     *
      * @param o Object to be tested.
      * @return true if the object is null, false if not.
      */
@@ -64,6 +67,7 @@ public class Share implements CommonDef {
 
     /**
      * Testing an object for null condition
+     *
      * @param o Object to be tested.
      * @return true if the object is null, false otherwise.
      */
@@ -73,6 +77,7 @@ public class Share implements CommonDef {
 
     /**
      * Testing an array of objects for null condition
+     *
      * @param obj Object to be tested.
      * @return true if the object is null or it's length is 0, false otherwise.
      */
@@ -82,6 +87,7 @@ public class Share implements CommonDef {
 
     /**
      * Testing an string for null condition
+     *
      * @param s String to be tested.
      * @return true if the string is null or it's length is 0, false otherwise.
      */
@@ -91,9 +97,11 @@ public class Share implements CommonDef {
 
     /**
      * Testing two strings for null condition
+     *
      * @param s1 String to be tested.
      * @param s2 String to be tested.
-     * @return true if the any of strings is null or it's length is 0, false otherwise.
+     * @return true if the any of strings is null or it's length is 0, false
+     * otherwise.
      */
     public static boolean isEmpty(String s1, String s2) {
         return isEmpty(s1) || isEmpty(s1);
@@ -101,10 +109,12 @@ public class Share implements CommonDef {
 
     /**
      * Testing three strings for null condition
+     *
      * @param s1 String to be tested.
      * @param s2 String to be tested.
      * @param s3 String to be tested.
-     * @return true if the any of strings is null or it's length is 0, false otherwise.
+     * @return true if the any of strings is null or it's length is 0, false
+     * otherwise.
      */
     public static boolean isEmpty(String s1, String s2, String s3) {
         return isEmpty(s1) || isEmpty(s1) || isEmpty(s3);
@@ -112,6 +122,7 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if an array of integers is empty.
+     *
      * @param l List of integers to test
      * @return true of list is null or length is 0, false otherwise.
      */
@@ -121,6 +132,7 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if an array of floats is empty.
+     *
      * @param l List of floats to test
      * @return true of list is null or length is 0, false otherwise.
      */
@@ -130,6 +142,7 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if an array of doubles is empty.
+     *
      * @param l List of doubles to test
      * @return true of list is null or length is 0, false otherwise.
      */
@@ -139,6 +152,7 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if an array of bytes is empty.
+     *
      * @param l List of bytes to test
      * @return true of list is null or length is 0, false otherwise.
      */
@@ -148,6 +162,7 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if an array of shorts is empty.
+     *
      * @param l List of shorts to test
      * @return true of list is null or length is 0, false otherwise.
      */
@@ -157,6 +172,7 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if an array of strings is empty.
+     *
      * @param l List of strings to test
      * @return true of list is null or length is 0, false otherwise.
      */
@@ -166,6 +182,7 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if a collections is empty.
+     *
      * @param l collections to test
      * @return true of the collection is null or size is 0, false otherwise.
      */
@@ -175,13 +192,13 @@ public class Share implements CommonDef {
 
     /**
      * Test to see if a string has a trailing dot (.) character.
+     *
      * @param s The string to be examined.
      * @return true if the string has a trailing dot character, false otherwise.
      */
     public static boolean hasTrailingDot(String s) {
-        if (isEmpty(s)) {
+        if (isEmpty(s))
             return false;
-        }
 
         int dot_index = s.lastIndexOf('.');
         boolean is_found = (dot_index >= 0);
@@ -191,14 +208,16 @@ public class Share implements CommonDef {
     //public static int endIndexOf()
     /**
      * Extract the file extension part from a file.
+     *
      * @param f {@link File} to be extracted.
-     * @param with_dot if true than result of extraction will include a leading dot, false otherwise.
-     * @return A string represent the file's extension, if there is one. Null otherwise.
+     * @param with_dot if true than result of extraction will include a leading
+     * dot, false otherwise.
+     * @return A string represent the file's extension, if there is one. Null
+     * otherwise.
      */
     public static String getFileExtension(File f, boolean with_dot) {
-        if (f == null) {
+        if (f == null)
             return null;
-        }
 
         String file_name = f.getName();
         int dot_position = file_name.lastIndexOf('.');
@@ -206,13 +225,13 @@ public class Share implements CommonDef {
         if (has_dot) {
             int from_index = dot_position + (with_dot ? 0 : 1);
             return file_name.substring(from_index);
-        } else {
+        } else
             return null;
-        }
     }
 
     /**
      * Get the file-name out of the original file, but remove the extension.
+     *
      * @param f The file where the name is extracted from.
      * @return The file-name without the extension if it has any, null if there
      * are errors.
@@ -224,17 +243,19 @@ public class Share implements CommonDef {
             if (dot_pos >= 0) {
                 String name_without_ext = file_name.substring(0, dot_pos);
                 return name_without_ext;
-            } else {
+            } else
                 return file_name;
-            }
         } catch (Exception ex) {
             return null;
         }
     }//end private String getFileNameWithoutExtension(File name)
+
     /**
      * Get file's extension with a dot '.' leading.
+     *
      * @param f {@link File} to be extracted.
-     * @return A string represent the file's extension with a leading dot character(.), if there is one. Null otherwise.
+     * @return A string represent the file's extension with a leading dot
+     * character(.), if there is one. Null otherwise.
      */
     public static String getFileExtension(File f) {
         return getFileExtension(f, true);
@@ -257,11 +278,10 @@ public class Share implements CommonDef {
             } else if (!extension_has_dot && file_name_has_dot) {
                 new_file_name = file_name.substring(0, file_name_dot_pos);
                 new_file_name = new_file_name.concat(char_dot).concat(extension);
-            } else if (extension_has_dot && !file_name_has_dot) {
+            } else if (extension_has_dot && !file_name_has_dot)
                 new_file_name = file_name.concat(extension);
-            } else if (!extension_has_dot && !file_name_has_dot) {
+            else if (!extension_has_dot && !file_name_has_dot)
                 new_file_name = file_name.concat(char_dot).concat(extension);
-            }
             return new File(path, new_file_name);
         } catch (Exception ex) {
             return f;
@@ -286,14 +306,14 @@ public class Share implements CommonDef {
             int option = jfc.showDialog(parent, _("Accept"));
             if (option == JFileChooser.APPROVE_OPTION) {
                 accepted_dir = jfc.getSelectedFile();
-                if (accepted_dir.isFile()) {
-                    accepted_dir = accepted_dir.getParentFile();
-                }//end if
+                if (accepted_dir.isFile())
+                    accepted_dir = accepted_dir.getParentFile();//end if
             }//end if
         } catch (Exception ex) {
         }
         return accepted_dir;
     }//end public static File browseDir(String file_name, File start_directory)
+
     public static File[] browseDir(File start_directory) {
         File f = null;
         File[] accepted_dir = null;
@@ -311,15 +331,17 @@ public class Share implements CommonDef {
         }
         return accepted_dir;
     }//end public static File browseDir(String file_name, File start_directory)
+
     public static int fileCount(File start_directory) throws Exception {
         return start_directory.list().length;
     }
 
     /**
      * Count the number of word, space separated, in a string of text.
+     *
      * @param text_line The text line to be counted.
-     * @return The number of words contains in the text line, 0 if no words
-     * are found or an error occurred.
+     * @return The number of words contains in the text line, 0 if no words are
+     * found or an error occurred.
      */
     public static int wordCount(String text_line) {
         try {
@@ -330,8 +352,10 @@ public class Share implements CommonDef {
             return 0;
         }
     }//end public static int wordCount(String text_line)
+
     /**
      * Checks to see if a string of text only contains a single word or not.
+     *
      * @param txt The string of text to be examined.
      * @return True if the text contains only a single word, false otherwise.
      */
@@ -340,6 +364,7 @@ public class Share implements CommonDef {
         boolean is_one_word = (count == 1);
         return is_one_word;
     }//end public static boolean isOneWord(String txt)
+
     public static String shortArrayToString(short[] a, String title) {
         StringBuffer b = new StringBuffer();
         if (a != null && a.length > 3) {
@@ -347,15 +372,13 @@ public class Share implements CommonDef {
             b.append(a[0] + " " + a[1] + " " + a[2] + " " + a[3]);
             b.append(")").append(UNIX_NL);
             return b.toString();
-        } else {
+        } else
             return null;
-        }
     }
 
     public static short[] copyShortArray(short[] orig) {
-        if (orig == null) {
+        if (orig == null)
             return null;
-        }
 
         int len = orig.length;
         short[] new_array = new short[len];
@@ -364,9 +387,8 @@ public class Share implements CommonDef {
     }
 
     public static int[] copyIntArray(int[] orig) {
-        if (orig == null) {
+        if (orig == null)
             return null;
-        }
 
         int len = orig.length;
         int[] new_array = new int[len];
@@ -377,16 +399,14 @@ public class Share implements CommonDef {
     public static boolean changeDir(Subtitles subs, int from, File new_dir) {
         File new_file = null;
         boolean ok = !(Share.isEmpty(subs) || Share.isEmpty(new_dir));
-        if (!ok) {
+        if (!ok)
             return false;
-        }
         try {
             int size = subs.size();
             for (int i = from; i < size; i++) {
                 ImageTypeSubtitle entry = getImageSubtitleEntry(subs.elementAt(i));
-                if (entry == null) {
+                if (entry == null)
                     throw new IncompatibleRecordTypeException();
-                }
 
                 File ff = entry.getImageFile();
                 boolean has_file = (ff != null);
@@ -401,14 +421,13 @@ public class Share implements CommonDef {
             return false;
         }
     }//public void changeDir(int from)
+
     public static ImageTypeSubtitle getImageSubtitleEntry(SubEntry entry) {
-        if (entry instanceof ImageTypeSubtitle) {
+        if (entry instanceof ImageTypeSubtitle)
             return (ImageTypeSubtitle) entry;
-        } else {
+        else
             return null;
-        }
     }//end private ImageTypeSubtitle getImageSubtitleEntry(SubEntry entry)
-    
 
     public static short parseShort(String data) {
         return parseShort(data, (short) 0);
@@ -435,17 +454,17 @@ public class Share implements CommonDef {
         }
         return value;
     }//end public static int parseInt(String data, int default_value)    
-    
-    public static boolean isSameClass(Class c1, Class c2){
-        try{
+
+    public static boolean isSameClass(Class c1, Class c2) {
+        try {
             String name1 = c1.getName();
             String name2 = c2.getName();
             int compare = name1.compareTo(name2);
             boolean is_same = (compare == 0);
             return is_same;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             return false;
         }
-    }    
+    }
 }//end Share
 

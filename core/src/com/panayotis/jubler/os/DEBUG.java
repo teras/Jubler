@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.os;
 
 import java.io.File;
@@ -31,14 +32,14 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author  teras
+ * @author teras
  */
 public class DEBUG {
 
     private static FileWriter log;
     private static String NL = System.getProperty("line.separator");
     public static Logger logger = Logger.getLogger("Jubler"); //HDT
-    
+
     static {
         try {
             File logfile = new File(SystemDependent.getLogPath());

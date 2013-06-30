@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
+
 package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -39,59 +40,54 @@ import java.util.logging.Level;
 /**
  *
  * This class is used to hold the list of {@link SubtitlePatternProcessor}s,
- * each will be in charge of a recognising and parsing a data line. 
- * There are a group of action events to be fired:
- * 
+ * each will be in charge of a recognising and parsing a data line. There are a
+ * group of action events to be fired:
+ *
  * <ul>
- * <li>{@link PreParsingDataLineActionEvent}</li> 
- * Occurs before the data line is parsed.
- * It is possible to set flag to ignore the data line using 
- * {@link #setIgnoreData setIgnoreData}
- * <li>{@link SubtitleRecordCreatedEvent}</li> 
- * Occurs before the data line is parsed and when either 
- * {@link #isCreateNewObject isCreateNewObject}
- * flag is set or the reference to the target object of the 
- * {@link SubtitlePatternProcessor} 
- * is "null". 
- * Initialisation to the created object or changing the state of the 
- * {@link SubtitlePatternProcessor} are possible using this event. Record 
- * creation is possible using the name of the target class, therefore the
- * {@link SubtitlePatternProcessor#getTargetObjectClassName 
- * getTargetObjectClassName} is used. 
- * As this uses the <code>Class.forname(String).newInstance()</code>, 
- * the default constructor of the target class is called 
- * and no parameterised constructors are recognised.
- * <li>{@link ParsedDataLineEvent}</li> 
+ * <li>{@link PreParsingDataLineActionEvent}</li>
+ * Occurs before the data line is parsed. It is possible to set flag to ignore
+ * the data line using {@link #setIgnoreData setIgnoreData}
+ * <li>{@link SubtitleRecordCreatedEvent}</li>
+ * Occurs before the data line is parsed and when either
+ * {@link #isCreateNewObject isCreateNewObject} flag is set or the reference to
+ * the target object of the {@link SubtitlePatternProcessor} is "null".
+ * Initialisation to the created object or changing the state of the
+ * {@link SubtitlePatternProcessor} are possible using this event. Record
+ * creation is possible using the name of the target class, therefore the  {@link SubtitlePatternProcessor#getTargetObjectClassName 
+ * getTargetObjectClassName} is used. As this uses the
+ * <code>Class.forname(String).newInstance()</code>, the default constructor of
+ * the target class is called and no parameterised constructors are recognised.
+ * <li>{@link ParsedDataLineEvent}</li>
  * Occurs after the data line has been parsed by a
- * {@link SubtitlePatternProcessor}. 
- * Resetting of the {@link #isCreateNewObject isCreateNewObject} 
- * flag is possible within this event to commence the creation of 
- * a new record on the next parsing turn.
+ * {@link SubtitlePatternProcessor}. Resetting of the
+ * {@link #isCreateNewObject isCreateNewObject} flag is possible within this
+ * event to commence the creation of a new record on the next parsing turn.
  * </ul>
- * 
- * The {@link #parse parse} routine also removes the 
- * {@link SubtitlePatternProcessor}
- * from the list after it has completed parsing the data line and 
- * it's set to be {@link SubtitlePatternProcessor#isRemovable isRemovable}. 
- * This is to avoid the unnecessary testing of pattern in the next
- * run, when the pattern is known to be occurred only once. 
- * 
- * Voluntary removal of processors is possible within processing events, 
- * for instance after a certain point of processing occured. Instance of 
- * {@link SubtitlePatternProcessor} must have access to the 
+ *
+ * The {@link #parse parse} routine also removes the
+ * {@link SubtitlePatternProcessor} from the list after it has completed parsing
+ * the data line and it's set to be
+ * {@link SubtitlePatternProcessor#isRemovable isRemovable}. This is to avoid
+ * the unnecessary testing of pattern in the next run, when the pattern is known
+ * to be occurred only once.
+ *
+ * Voluntary removal of processors is possible within processing events, for
+ * instance after a certain point of processing occured. Instance of
+ * {@link SubtitlePatternProcessor} must have access to the
  * {@link SubtitleProcessorList} in order to do this.
- * 
- * The {@link #parse parse} routine terminates after an instance of 
- * {@link SubtitlePatternProcessor} processed its data. 
+ *
+ * The {@link #parse parse} routine terminates after an instance of
+ * {@link SubtitlePatternProcessor} processed its data.
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
 
     /**
-     * A copy of processors and their orders are kept in this list. This
-     * list is used to restore the list of processors when the parsing of
-     * a data file is completed, ready for the next data file. It is doing
-     * so to avoid the removed processors will be missed in the next task.
+     * A copy of processors and their orders are kept in this list. This list is
+     * used to restore the list of processors when the parsing of a data file is
+     * completed, ready for the next data file. It is doing so to avoid the
+     * removed processors will be missed in the next task.
      */
     private ArrayList<SubtitlePatternProcessor> patternProcessorListCopy =
             new ArrayList<SubtitlePatternProcessor>();
@@ -110,16 +106,15 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
     private ArrayList<SubtitlePatternProcessor> removeList = new ArrayList<SubtitlePatternProcessor>();
     private boolean found = false;
     private ClassLoader classLoader = null;
-    
+
     public SubtitleProcessorList() {
         super();
     }
 
     public SubtitleProcessorList(SubtitlePatternProcessor[] processor_list) {
         boolean valid = (processor_list != null && processor_list.length > 0);
-        for (int i = 0; valid && i < processor_list.length; i++) {
-            this.add(processor_list[i]);
-        }//end for(int i=0; valid && i < processor_list.length; i++)
+        for (int i = 0; valid && i < processor_list.length; i++)
+            this.add(processor_list[i]);//end for(int i=0; valid && i < processor_list.length; i++)
     }
 
     public SubtitleProcessorList(SubtitlePatternProcessor processor, String input_data, float FPS, File input_file) {
@@ -373,9 +368,8 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
 
                 String[] matched_data = ps.matchPattern();
                 found = (matched_data != null);
-                if (!isFound()) {
+                if (!isFound())
                     continue;
-                }
 
                 // found a processor that can process the data line.
                 boolean is_create_new = (ps.getTargetObject() == null || this.isCreateNewObject());
@@ -387,7 +381,7 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
                         DEBUG.logger.log(Level.SEVERE, msg);
                         throw new Exception(msg);
                     }//if (is_empty)
-                    ClassLoader cl = this.getClassLoader(); 
+                    ClassLoader cl = this.getClassLoader();
                     Object new_object = Class.forName(class_name, true, cl).newInstance();
                     ps.setTargetObject(new_object);
                     setCreateNewObject(false);
@@ -399,9 +393,8 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
                 ps.parsePattern(matched_data, target_obj);
                 fireSubtitleDataParsedEvent();
                 boolean is_remove = ps.isRemovable();
-                if (is_remove) {
-                    removeList.add(ps);
-                }//end if (is_remove)
+                if (is_remove)
+                    removeList.add(ps);//end if (is_remove)
                 break;
             }//end for (int i = 0; i < this.getPatternList().size(); i++) 
         } catch (Exception e) {
@@ -415,32 +408,32 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
         }
 
     }//end public Object parse()
-    
+
     /**
      * Add a instance of {@link SubtitlePatternProcessor} to the removable list,
      * but only doing so if the instance exists in the processor list.
+     *
      * @param ps The processor to add to removable list.
      */
     public void remove(SubtitlePatternProcessor ps) {
         boolean is_remove = (this.contains(ps));
-        if (is_remove) {
-            this.removeList.add(ps);
-        }//if (is_remove)
+        if (is_remove)
+            this.removeList.add(ps);//if (is_remove)
     }//end public void remove(SubtitlePatternProcessor ps) {
 
     /**
      * Add a instance of {@link SubtitlePatternProcessor} to the removable list
-     * under the condition provided, but only doing so if the instance exists
-     * in the processor list.
+     * under the condition provided, but only doing so if the instance exists in
+     * the processor list.
+     *
      * @param ps The processor to add to removable list.
-     * @param condition true if the processesor is to be added to the
-     * removable list, false otherwise.
+     * @param condition true if the processesor is to be added to the removable
+     * list, false otherwise.
      */
     public void remove(SubtitlePatternProcessor ps, boolean condition) {
         boolean is_remove = (condition && this.contains(ps));
-        if (is_remove) {
-            this.removeList.add(ps);
-        }//if (is_remove)
+        if (is_remove)
+            this.removeList.add(ps);//if (is_remove)
     }//end public void remove(SubtitlePatternProcessor ps, boolean condition) 
 
     public String getTextLine() {

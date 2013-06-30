@@ -24,19 +24,21 @@ package com.panayotis.jubler.subs.loader.binary.SWT.record;
 
 import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
 import com.panayotis.jubler.subs.loader.binary.SWT.SWTPatternDef;
+
 /**
  * Similar to SonHeader class.
+ *
  * @see SonHeader
  * @author Hoang Duy Tran <hoang_tran>
  */
-public class SWTHeader extends SonHeader implements SWTPatternDef{
+public class SWTHeader extends SonHeader implements SWTPatternDef {
 
-    public void copyRecord(SonHeader o){
+    public void copyRecord(SonHeader o) {
         super.copyRecord(o);
     }
-    
+
     @Override
-    public StringBuffer addDetailHeader(StringBuffer b){
+    public StringBuffer addDetailHeader(StringBuffer b) {
         b.append(UNIX_NL);
         b.append(SWTPatternDef.swtSubtitleEventHeaderLine).append(UNIX_NL);
         return b;

@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
+
 package com.panayotis.jubler.subs.loader.binary.SON.record;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
@@ -38,15 +39,15 @@ import java.util.logging.Level;
 import javax.swing.ImageIcon;
 
 /**
- * This class is ued to hold the following parsed information found
- * within the SON subtitle file. This is the subtitle event which shows
- * the event-id, start time, finish time, and the subtitle-image file which
- * holds the subtitle text in a bit-map image. The image should be OCR(ed)
- * to get back the actual editable text. An example of such entry is shown
- * here:
+ * This class is ued to hold the following parsed information found within the
+ * SON subtitle file. This is the subtitle event which shows the event-id, start
+ * time, finish time, and the subtitle-image file which holds the subtitle text
+ * in a bit-map image. The image should be OCR(ed) to get back the actual
+ * editable text. An example of such entry is shown here:
  * <pre>
  *  0001		00:00:11:01	00:00:15:08	Edwardians In Colour _st00001p1.bmp
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, HeaderedTypeSubtitle, CommonDef {
@@ -66,9 +67,8 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     }
 
     public void setMaxImageHeight(int value) {
-        if (value > maxImageHeight) {
+        if (value > maxImageHeight)
             maxImageHeight = value;
-        }
     }
 
     public BufferedImage getImage() {
@@ -91,9 +91,8 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             b.append(a[0] + " " + a[1] + " " + a[2] + " " + a[3]);
             b.append(")").append(UNIX_NL);
             return b.toString();
-        } else {
+        } else
             return null;
-        }
     }
 
     public String toString() {
@@ -175,9 +174,8 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
             max_digits = o_son.max_digits;
             event_id = o_son.event_id;
 
-            if (o_son.son_attribute != null) {
+            if (o_son.son_attribute != null)
                 this.son_attribute = (SonSubtitleImageAttribute) o_son.son_attribute.clone();
-            }
             imageFile = o_son.imageFile;
             image = o_son.image;
         } catch (Exception ex) {
@@ -226,9 +224,8 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     }//end public boolean copyImage(SubEntry source)
 
     public SonSubtitleImageAttribute getCreateSonAttribute() {
-        if (this.son_attribute == null) {
+        if (this.son_attribute == null)
             this.son_attribute = new SonSubtitleImageAttribute();
-        }
         return this.son_attribute;
     }
 
@@ -253,25 +250,21 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     public BufferedImage makeTransparentImage(BufferedImage img) {
         try {
             SonSubtitleImageAttribute global_list = header.getCreateSonAttribute();
-            if (color_list == null) {
+            if (color_list == null)
                 color_list = global_list.getColor();
-            }
-            if (trans_list == null) {
+            if (trans_list == null)
                 trans_list = global_list.getContrast();
-            }
 
             SonSubtitleImageAttribute local_list = getImageAttribute();
             boolean is_using_local_color =
                     !(local_list == null || local_list.colour == null);
-            if (is_using_local_color) {
-                color_list = local_list.getColor();
-            }//end if
+            if (is_using_local_color)
+                color_list = local_list.getColor();//end if
 
             boolean is_using_local_trans =
                     !(local_list == null || local_list.contrast == null);
-            if (is_using_local_trans) {
-                trans_list = local_list.getContrast();
-            }//end if
+            if (is_using_local_trans)
+                trans_list = local_list.getContrast();//end if
 
             Object[] color_tbl = header.color_table.toArray();
 
@@ -289,18 +282,16 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
     }
 
     public String getHeaderAsString() {
-        if (header == null) {
+        if (header == null)
             return "";
-        } else {
+        else
             return header.getHeaderAsString();
-        }
     }
 
     public void setHeader(Object header) {
         boolean ok = (header != null && (header instanceof SonHeader));
-        if (ok) {
+        if (ok)
             this.header = (SonHeader) header;
-        }
     }//public void setHeader(Object header)
 
     public Object getDefaultHeader() {
@@ -321,9 +312,8 @@ public class SonSubEntry extends SubEntry implements ImageTypeSubtitle, Headered
                         ico = new ImageIcon(tran_image);
                     }//end if
                     return ico;
-                } else {
-                    return super.getData(row, col);
-                }//end if (has_image)
+                } else
+                    return super.getData(row, col);//end if (has_image)
             default:
                 return super.getData(row, col);
         }//end switch/case

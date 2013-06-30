@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style.gui.tri;
 
 import com.panayotis.jubler.subs.style.StyleChangeListener;
@@ -32,7 +33,9 @@ import javax.swing.JPanel;
  */
 public class TriDummy extends JPanel implements TriObject {
 
-    /** Creates a new instance of TriDummy */
+    /**
+     * Creates a new instance of TriDummy
+     */
     public TriDummy() {
     }
     private StyleType styletype;

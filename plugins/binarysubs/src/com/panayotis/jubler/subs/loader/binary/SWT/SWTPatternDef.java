@@ -33,16 +33,19 @@ import com.panayotis.jubler.subs.CommonDef;
 /**
  * Common definitions of patterns for processing of SWT (Son With Text) subtitle
  * files. This format is derived from the SON format by Hoang Duy Tran.
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public interface SWTPatternDef extends CommonDef {
 
     /**
-     * "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME" + "\t" + "SUBTITLE_TEXT"
+     * "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME" + "\t" +
+     * "SUBTITLE_TEXT"
      */
     public static String swtSubtitleEventHeaderLine = "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME" + "\t" + "SUBTITLE_TEXT";
     /**
-     * "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME" + sp + "SUBTITLE_TEXT"
+     * "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME" + sp +
+     * "SUBTITLE_TEXT"
      */
     public static String p_swt_subtitle_event_header = "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME" + sp + "SUBTITLE_TEXT";
     /**

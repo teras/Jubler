@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -30,6 +31,7 @@ import java.util.logging.Level;
  * This class is used to hold the following data line
  * <pre><b>1,1,"00:00:13,023","00:00:18,009",0,"This film contains\nvery strong language"</b></pre>
  * which is a part of the subtitle events in a TMPGenc subtitle format file.
+ *
  * @author Hoang Duy Tran
  */
 public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef, HeaderedTypeSubtitle {
@@ -38,19 +40,20 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     private int id = -1;
     /**
      * The index to the
-     * {@link dvdsubtitlemanager.Records.TMPGenc.LayoutDataRecord}
-     * This value is used in the TMPGenc DVD Authoring software to identify
-     * the layout chosen for the subtitle event.
+     * {@link dvdsubtitlemanager.Records.TMPGenc.LayoutDataRecord} This value is
+     * used in the TMPGenc DVD Authoring software to identify the layout chosen
+     * for the subtitle event.
      */
     private int layoutIndex;
     /**
-     * This is guessed to be the enabled, but is not 100% sure, but the value
-     * is used in the TMPGenc DVD Authoring software.
+     * This is guessed to be the enabled, but is not 100% sure, but the value is
+     * used in the TMPGenc DVD Authoring software.
      */
     private int enabled = 1;
 
     /**
      * gets the layout index
+     *
      * @return the value of the layout index
      */
     public int getLayoutIndex() {
@@ -59,6 +62,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
 
     /**
      * sets the layout index
+     *
      * @param layoutIndex the new value for layout index
      */
     public void setLayoutIndex(int layoutIndex) {
@@ -67,6 +71,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
 
     /**
      * Gets the value to indicate if the subtitle is enabled or not
+     *
      * @return The value of the enability
      */
     public int getEnabled() {
@@ -74,8 +79,9 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * Sets the enability of the susbtitle event. That is whether
-     * the subtitle event will be displayed on playback or not.
+     * Sets the enability of the susbtitle event. That is whether the subtitle
+     * event will be displayed on playback or not.
+     *
      * @param enabled 0 to enable the on playback, 1 to not display.
      */
     public void setEnabled(int enabled) {
@@ -87,18 +93,16 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }//end public TMPGencHeaderRecord getHeader()
 
     public String getHeaderAsString() {
-        if (header == null) {
+        if (header == null)
             return "";
-        } else {
+        else
             return header.toStringForWrite();
-        }
     }//end public String getHeaderAsString()
 
     public void setHeader(Object header) {
         boolean ok = (header != null && (header instanceof TMPGencHeaderRecord));
-        if (ok) {
+        if (ok)
             this.header = (TMPGencHeaderRecord) header;
-        }
     }//public void setHeader(Object header)
 
     public Object getDefaultHeader() {
@@ -106,10 +110,12 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
         new_header.makeDefaultHeader();
         return new_header;
     }//end public Object getDefaultHeader()
+
     /**
      * Converts the record to a string representation. If the version for
      * writing out to files is required than the new line character will be made
      * platform dependent.
+     *
      * @param separator
      * @return the string representation of the record
      */
@@ -152,9 +158,9 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * Converts the record to a string representation.
-     * This version is platform independent and is used internally
-     * for comparisons.
+     * Converts the record to a string representation. This version is platform
+     * independent and is used internally for comparisons.
+     *
      * @return the string representation of the record
      */
     @Override
@@ -163,9 +169,9 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * Converts the record to a string representation
-     * This version is platform dependent and is used externally
-     * for writing to files.
+     * Converts the record to a string representation This version is platform
+     * dependent and is used externally for writing to files.
+     *
      * @return the string representation of the record
      */
     public String toStringForWrite() {
@@ -180,7 +186,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
     }
 
     /**
-     * 
+     *
      * @param headerRecord
      */
     public void setHeaderRecord(TMPGencHeaderRecord headerRecord) {
@@ -203,6 +209,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
 
     /**
      * Clone the record to a new instance.
+     *
      * @return the instance of cloned version
      */
     @Override
@@ -219,7 +226,6 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
         return n;
     }//end clone
 
-
     @Override
     public void copyRecord(SubEntry o) {
         try {
@@ -234,7 +240,7 @@ public class TMPGencSubtitleRecord extends SubEntry implements TMPGencPatternDef
                 }
                 header = new_header;
             }//end if
-            
+
             TMPGencSubtitleRecord o_tmpgec = (TMPGencSubtitleRecord) o;
             id = o_tmpgec.id;
             layoutIndex = o_tmpgec.layoutIndex;

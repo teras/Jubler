@@ -26,7 +26,6 @@
  * Contributor(s):
  * 
  */
-
 package com.panayotis.jubler.subs.loader.binary.SON;
 
 import com.panayotis.jubler.subs.CommonDef;
@@ -34,23 +33,25 @@ import com.panayotis.jubler.subs.CommonDef;
 /**
  * This interface holds the most commonly used patter definitions for SON
  * subtitle format.
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
-public interface SONPatternDef extends CommonDef{
-        /**
-         * "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME"
-         */
-        public static String sonSubtitleEventHeaderLine = "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME";
-        /**
-         * "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME"
-         */
-        public static String p_son_subtitle_event_header = "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME";
-        /**
-         * "#"
-         */
-        public static String p_son_comment = "#";
-        /**
-         * p_son_comment + sp + "Palette entries:"
-         */
-        public static String p_son_palette_entries_header = p_son_comment + sp + "Palette entries:";    
+public interface SONPatternDef extends CommonDef {
+
+    /**
+     * "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME"
+     */
+    public static String sonSubtitleEventHeaderLine = "SP_NUMBER" + "\t" + "START" + "\t" + "END" + "\t" + "FILE_NAME";
+    /**
+     * "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME"
+     */
+    public static String p_son_subtitle_event_header = "(?i)SP_NUMBER" + sp + "START" + sp + "END" + sp + "FILE_NAME";
+    /**
+     * "#"
+     */
+    public static String p_son_comment = "#";
+    /**
+     * p_son_comment + sp + "Palette entries:"
+     */
+    public static String p_son_palette_entries_header = p_son_comment + sp + "Palette entries:";
 }

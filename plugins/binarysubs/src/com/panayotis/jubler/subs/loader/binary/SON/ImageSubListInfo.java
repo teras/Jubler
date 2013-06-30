@@ -25,6 +25,7 @@
  * Contributor(s):
  *
  */
+
 package com.panayotis.jubler.subs.loader.binary.SON;
 
 import com.panayotis.jubler.subs.Share;
@@ -35,13 +36,14 @@ import java.io.File;
 
 /**
  * This class is responsible for checking the content and the status of each
- * subtitle entry in a subtitle list and gathers some basic statistics on
- * them, checking to see if they have subtitle texts only, have images only,
- * have both, or some have and some don't. If entries have images, do they
- * have a file attached to it or not. Having a file means that the file entry
- * must not null and that the file exists and it is not a directory. This
- * will help routines making decision how to treat entries when operations
- * are applied on them.
+ * subtitle entry in a subtitle list and gathers some basic statistics on them,
+ * checking to see if they have subtitle texts only, have images only, have
+ * both, or some have and some don't. If entries have images, do they have a
+ * file attached to it or not. Having a file means that the file entry must not
+ * null and that the file exists and it is not a directory. This will help
+ * routines making decision how to treat entries when operations are applied on
+ * them.
+ *
  * @author hoang_tran <hoangduytran1960@googlemail.com>
  */
 public class ImageSubListInfo {
@@ -57,7 +59,6 @@ public class ImageSubListInfo {
     public int getTestFlag() {
         return testFlag;
     }
-
     public static int UNDEFINED = 0;
     public static int HAS_TEXT = 1;
     public static int HAS_NO_TEXT = 2;
@@ -67,7 +68,6 @@ public class ImageSubListInfo {
     public static int IMAGE_HAS_NO_FILE = 32;
     public static int IMAGE_FILE_EXISTS = 64;
     public static int IMAGE_FILE_NOT_EXISTS = 128;
-
     private Subtitles subList = null;
     private int testFlag = UNDEFINED;
 
@@ -78,81 +78,80 @@ public class ImageSubListInfo {
         this.subList = subs;
     }
 
-    public boolean hasText(){
+    public boolean hasText() {
         boolean yes = (testFlag & HAS_TEXT) > 0;
         return yes;
     }
 
-    public boolean hasNoText(){
+    public boolean hasNoText() {
         boolean yes = (testFlag & HAS_NO_TEXT) > 0;
         return yes;
     }
 
-    public boolean hasImage(){
+    public boolean hasImage() {
         boolean yes = (testFlag & HAS_IMAGE) > 0;
         return yes;
     }
 
-    public boolean hasNoImage(){
+    public boolean hasNoImage() {
         boolean yes = (testFlag & HAS_NO_IMAGE) > 0;
         return yes;
     }
 
-    public boolean imageHasFile(){
+    public boolean imageHasFile() {
         boolean yes = (testFlag & IMAGE_HAS_FILE) > 0;
         return yes;
     }
 
-    public boolean imageHasNoFile(){
+    public boolean imageHasNoFile() {
         boolean yes = (testFlag & IMAGE_HAS_NO_FILE) > 0;
         return yes;
     }
 
-    public boolean imageFileExists(){
+    public boolean imageFileExists() {
         boolean yes = (testFlag & IMAGE_FILE_EXISTS) > 0;
         return yes;
     }
 
-    public boolean imageFileNotExists(){
+    public boolean imageFileNotExists() {
         boolean yes = (testFlag & IMAGE_FILE_NOT_EXISTS) > 0;
         return yes;
     }
 
-    public boolean hasTextOnly(){
-        boolean yes = this.hasText() &&
-                (!this.hasNoText()) && // all text presents, no mix
+    public boolean hasTextOnly() {
+        boolean yes = this.hasText()
+                && (!this.hasNoText()) && // all text presents, no mix
                 (!this.hasImage());
         return yes;
     }
 
-    public boolean hasTextAndImage(){
-        boolean yes = this.hasText() &&
-                (! this.hasNoText()) && //all has text, no mix
-                this.hasImage() &&
-                (! this.hasNoImage()); //all has image, no mix
+    public boolean hasTextAndImage() {
+        boolean yes = this.hasText()
+                && (!this.hasNoText()) && //all has text, no mix
+                this.hasImage()
+                && (!this.hasNoImage()); //all has image, no mix
         return yes;
     }
 
-    public boolean hasTextOnlyButMix(){
-        boolean yes = this.hasText() &&
-                this.hasNoText() &&
-                (! this.hasImage());
+    public boolean hasTextOnlyButMix() {
+        boolean yes = this.hasText()
+                && this.hasNoText()
+                && (!this.hasImage());
         return yes;
     }
 
-    public boolean hasImageOnlyButMix(){
-        boolean yes = this.hasImage() && 
-                this.hasNoImage() &&
-                this.hasNoText() &&
-                (! this.hasText());
+    public boolean hasImageOnlyButMix() {
+        boolean yes = this.hasImage()
+                && this.hasNoImage()
+                && this.hasNoText()
+                && (!this.hasText());
         return yes;
     }
 
     public boolean checkInfo() {
         boolean valid = !Share.isEmpty(subList);
-        if (!valid) {
+        if (!valid)
             return false;
-        }
 
         boolean has_text = false,
                 is_image = false,
@@ -173,29 +172,25 @@ public class ImageSubListInfo {
                 image_file_exists = has_file && f.exists() && (!f.isDirectory()) && f.canRead();
             }//end if (is_image)
 
-            if (has_text) {
+            if (has_text)
                 testFlag |= HAS_TEXT;
-            }else{
+            else
                 testFlag |= HAS_NO_TEXT;
-            }
 
-            if (has_image) {
+            if (has_image)
                 testFlag |= HAS_IMAGE;
-            }else{
+            else
                 testFlag |= HAS_NO_IMAGE;
-            }
 
-            if (has_file) {
+            if (has_file)
                 testFlag |= IMAGE_HAS_FILE;
-            }else{
+            else
                 testFlag |= IMAGE_HAS_NO_FILE;
-            }
 
-            if (image_file_exists){
+            if (image_file_exists)
                 testFlag |= IMAGE_FILE_EXISTS;
-            }else{
+            else
                 testFlag |= IMAGE_FILE_NOT_EXISTS;
-            }
         }//end for(int i=0; i < subList.size(); i++)
         return true;
     }//end public boolean check()

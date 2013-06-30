@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.console;
 
 /**
@@ -31,7 +32,9 @@ public class TimeSync {
     public double timepos;
     public double timediff;
 
-    /** Creates a new instance of TimeSync */
+    /**
+     * Creates a new instance of TimeSync
+     */
     public TimeSync(double pos, double diff) {
         timepos = pos;
         timediff = diff;

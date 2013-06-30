@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.player;
 
 import com.panayotis.jubler.tools.externals.ExtProgram;
@@ -48,31 +49,50 @@ public abstract class VideoPlayer extends ExtProgram {
     /* */
     public static final String family = "Player";
 
-    /** Whether this player supports the pause command */
+    /**
+     * Whether this player supports the pause command
+     */
     public abstract boolean supportPause();
 
-    /** Whether this player supports the subtitle displace command */
+    /**
+     * Whether this player supports the subtitle displace command
+     */
     public abstract boolean supportSubDisplace();
 
-    /** Whether this player is able to skip specific time command */
+    /**
+     * Whether this player is able to skip specific time command
+     */
     public abstract boolean supportSkip();
 
-    /** Whether this player supports to set the current time to a selected value command */
+    /**
+     * Whether this player supports to set the current time to a selected value
+     * command
+     */
     public abstract boolean supportSeek();
 
-    /** Whether this player supports change of speed command */
+    /**
+     * Whether this player supports change of speed command
+     */
     public abstract boolean supportSpeed();
 
-    /** Whether this player supports change of audio volume command */
+    /**
+     * Whether this player supports change of audio volume command
+     */
     public abstract boolean supportAudio();
 
-    /** Whether this player supports change of subtitles command */
+    /**
+     * Whether this player supports change of subtitles command
+     */
     public abstract boolean supportChangeSubs();
 
-    /** Get a new viewport for this player */
+    /**
+     * Get a new viewport for this player
+     */
     public abstract Viewport getViewport();
 
-    /** Use this method to center the video player on the screen, if desired */
+    /**
+     * Use this method to center the video player on the screen, if desired
+     */
     public abstract void setCentralLocation(int x, int y);
 
     /* Player is exiting, clean up */

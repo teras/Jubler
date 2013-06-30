@@ -31,9 +31,10 @@ package com.panayotis.jubler.subs.loader.binary.TMPGenc.record;
 import com.panayotis.jubler.subs.loader.binary.TMPGenc.TMPGencPatternDef;
 
 /**
- * This class hold references to two lists of items, considering to be
- * the header of the TMPGenc subtitle data file. They are items from
- * [LayoutData] section, and [LayoutDataEx] section.
+ * This class hold references to two lists of items, considering to be the
+ * header of the TMPGenc subtitle data file. They are items from [LayoutData]
+ * section, and [LayoutDataEx] section.
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class TMPGencHeaderRecord implements TMPGencPatternDef {
@@ -42,10 +43,9 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
     public LayoutDataExRecordList layoutExList = null;
 
     /**
-     * Produce the header data block with header for each section,
-     * including the header for the '[ItemData]' block.
-     * Typical output produces somthing like:
-     * 
+     * Produce the header data block with header for each section, including the
+     * header for the '[ItemData]' block. Typical output produces somthing like:
+     *
      * <blockquote><pre>
      * [LayoutData]
      * "Picture bottom layout",4,Tahoma,0.07,17588159451135,0,0,0,0,1,2,0,1,0.0035,0
@@ -61,7 +61,7 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
      *
      * [ItemData]
      * </pre></blockquote>
-     * 
+     *
      * @param separator A platform chosen separator.
      * @return A string representation of internal data.
      */
@@ -90,9 +90,10 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
 
     /**
      * Returns the collection of strings stored internally as a continuous
-     * string of text, separating each line with a new line character,
-     * that is platform independent.
-     * This version is used internally for reporting and comparing purposes only.
+     * string of text, separating each line with a new line character, that is
+     * platform independent. This version is used internally for reporting and
+     * comparing purposes only.
+     *
      * @return the continuous string of text that contains every single data
      * lines that was stored internally.
      */
@@ -102,9 +103,10 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
 
     /**
      * Returns the collection of strings stored internally as a continuous
-     * string of text, separating each line with a new line character,
-     * that is platform dependent.
-     * This version is used internally for reporting and comparing purposes only.
+     * string of text, separating each line with a new line character, that is
+     * platform dependent. This version is used internally for reporting and
+     * comparing purposes only.
+     *
      * @return the continuous string of text that contains every single data
      * lines that was stored internally.
      */
@@ -119,11 +121,12 @@ public class TMPGencHeaderRecord implements TMPGencPatternDef {
         this.layoutExList = new LayoutDataExRecordList();
         layoutExList.defaultRecord();
     }//public void makeDefaultHeader()
-    
-    public void copyRecord(TMPGencHeaderRecord o){
-        try{
+
+    public void copyRecord(TMPGencHeaderRecord o) {
+        try {
             this.layoutExList = (LayoutDataExRecordList) o.layoutExList.clone();
             this.layoutList = (LayoutDataItemRecordList) o.layoutList.clone();
-        }catch(Exception ex){}
+        } catch (Exception ex) {
+        }
     }//end public void copyRecord(TMPGencHeaderRecord o)
 }

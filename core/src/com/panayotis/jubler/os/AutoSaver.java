@@ -17,6 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.JubFrame;
@@ -39,8 +40,7 @@ public class AutoSaver {
     private final static Random rnd;
     private final static File dir, olds;
     private static Timer timer;
-    private static final TimerTask task = new TimerTask()  {
-
+    private static final TimerTask task = new TimerTask() {
         public void run() {
             /* Create autosave path */
             dir.mkdirs();

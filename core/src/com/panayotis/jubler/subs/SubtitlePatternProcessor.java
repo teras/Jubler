@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  * 
  */
+
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -28,53 +29,44 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This is a template for pattern processor. It's incharge of pattern
- * matching, using the pre-defined pattern (the workPattern), and returns
- * the matched groups of data. 
- * The orginal list of group - from the Pattern.matcher() -
- * is returned if the {@link #matchIndexList}  
- * is null, otherwise indexes from the
- * list are used to obtain the parsed data, 
- * resulting in a zero-based ordered 
- * list of the matching results, so instead of having to access to
- * individual data item using the index from the original group list, 
- * programmers can use zero as the first item, one for second item and so on.
+ * This is a template for pattern processor. It's incharge of pattern matching,
+ * using the pre-defined pattern (the workPattern), and returns the matched
+ * groups of data. The orginal list of group - from the Pattern.matcher() - is
+ * returned if the {@link #matchIndexList} is null, otherwise indexes from the
+ * list are used to obtain the parsed data, resulting in a zero-based ordered
+ * list of the matching results, so instead of having to access to individual
+ * data item using the index from the original group list, programmers can use
+ * zero as the first item, one for second item and so on.
  * <br>
  * example:
  * <blockquote><pre class="Java" name="code">
- * private String pattern = digits + sp + son_time + sp + son_time + sp + printable;
- * int index[] = new int[]{1, 3, 4, 5, 6, 8, 9, 10, 11, 13};
- * public SONSubtitleEvent() {
- *      super(pattern);
- *      setMatchIndexList(index);
- * }
- * 
- * public void parsePattern(String[] matched_data, Object record) {        
- *      if (record instanceof SonSubEntry) {
- *          setSonSubEntry((SonSubEntry) record);
- *          sonSubEntry.event_id = DVDMaestro.parseShort(matched_data[0]);
- * 
- *          Time start, finish;
- *          start = new Time(matched_data[1], matched_data[2], matched_data[3], matched_data[4]);
- *          finish = new Time(matched_data[5], matched_data[6], matched_data[7], matched_data[8]);
- * 
- *          sonSubEntry.setStartTime(start);
- *          sonSubEntry.setFinishTime(finish);
- *          sonSubEntry.image_filename = matched_data[9];
- *      }//end if
- * }
+ * private String pattern = digits + sp + son_time + sp + son_time + sp +
+ * printable; int index[] = new int[]{1, 3, 4, 5, 6, 8, 9, 10, 11, 13}; public
+ * SONSubtitleEvent() { super(pattern); setMatchIndexList(index); }
+ *
+ * public void parsePattern(String[] matched_data, Object record) { if (record
+ * instanceof SonSubEntry) { setSonSubEntry((SonSubEntry) record);
+ * sonSubEntry.event_id = DVDMaestro.parseShort(matched_data[0]);
+ *
+ * Time start, finish; start = new Time(matched_data[1], matched_data[2],
+ * matched_data[3], matched_data[4]); finish = new Time(matched_data[5],
+ * matched_data[6], matched_data[7], matched_data[8]);
+ *
+ * sonSubEntry.setStartTime(start); sonSubEntry.setFinishTime(finish);
+ * sonSubEntry.image_filename = matched_data[9]; }//end if }
  * </pre></blockquote>
- * 
- * To work out the indexes, either count the patterns, or do not set index
- * at all, leaving it to null. The pattern matched result will return in the 
- * array <code>matched_data</code>.
+ *
+ * To work out the indexes, either count the patterns, or do not set index at
+ * all, leaving it to null. The pattern matched result will return in the array
+ * <code>matched_data</code>.
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public abstract class SubtitlePatternProcessor {
 
     private SubtitlePatternDefinition pattern = null;
     private String[] found_list = null;
-    private int[] matchIndexList = null;    
+    private int[] matchIndexList = null;
     private String inputData = null;
     private String textLine = null;
     private Object targetObject = null;
@@ -86,18 +78,20 @@ public abstract class SubtitlePatternProcessor {
     /**
      * Default constructor, without any parameters
      */
-    public SubtitlePatternProcessor(){}
-    
+    public SubtitlePatternProcessor() {
+    }
+
     /**
      * Parameterised constructor
-     * @param pattern The regular expression string to be compiled by the 
+     *
+     * @param pattern The regular expression string to be compiled by the
      * Pattern.compile() method.
-     * @param index The index at which the result list of matched groups is to 
+     * @param index The index at which the result list of matched groups is to
      * be accessed when the data is found.
-     * @param targetObjectName The fully qualified name of the class object that the parsing
-     * routine will use to create in order to pass to the implementation
-     * of parse() method. The creation of the object is controlled by 
-     * a flag.
+     * @param targetObjectName The fully qualified name of the class object that
+     * the parsing routine will use to create in order to pass to the
+     * implementation of parse() method. The creation of the object is
+     * controlled by a flag.
      * @see com.panayotis.jubler.subs.SubtitleProcessorList
      */
     public SubtitlePatternProcessor(String pattern, int index, String targetObjectName) {
@@ -106,18 +100,19 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * Parameterised constructor
-     * @param pattern The regular expression string to be compiled by the 
+     *
+     * @param pattern The regular expression string to be compiled by the
      * Pattern.compile() method.
-     * @param index The index at which the result list of matched groups is 
+     * @param index The index at which the result list of matched groups is
      * accessed when the data is found.
-     * @param targetObjectName The fully qualified name of the class object that the parsing
-     * routine will use to create in order to pass to the implementation
-     * of parse() method. The creation of the object is controlled by 
-     * a flag.
-     * @param removable Flag to indicate if the processor is to be removed from 
+     * @param targetObjectName The fully qualified name of the class object that
+     * the parsing routine will use to create in order to pass to the
+     * implementation of parse() method. The creation of the object is
+     * controlled by a flag.
+     * @param removable Flag to indicate if the processor is to be removed from
      * the list of processors once the data is recognised and parsed. This is
      * used for data patterns that are ocurred once only within the subtitle
-     * file. 
+     * file.
      */
     public SubtitlePatternProcessor(String pattern, int index, String targetObjectName, boolean removable) {
         this(pattern, new int[]{index}, null, removable);
@@ -126,31 +121,33 @@ public abstract class SubtitlePatternProcessor {
 
     /**
      * Parameterised constructor
-     * @param pattern The regular expression string to be compiled by the 
+     *
+     * @param pattern The regular expression string to be compiled by the
      * Pattern.compile() method.
-     * @param index_list The list of indexes at which the result list of 
-     * matched groups is accessed when the data is found.
-     * @param targetObjectName The fully qualified name of the class object that the parsing
-     * routine will use to create in order to pass to the implementation
-     * of parse() method. The creation of the object is controlled by 
-     * a flag.
+     * @param index_list The list of indexes at which the result list of matched
+     * groups is accessed when the data is found.
+     * @param targetObjectName The fully qualified name of the class object that
+     * the parsing routine will use to create in order to pass to the
+     * implementation of parse() method. The creation of the object is
+     * controlled by a flag.
      */
     public SubtitlePatternProcessor(String pattern, int[] index_list, String targetObjectName) {
         this(pattern, index_list);
         this.setTargetObjectClassName(targetObjectName);
     }
-    
+
     /**
      * Parameterised constructor
-     * @param pattern The regular expression string to be compiled by the 
+     *
+     * @param pattern The regular expression string to be compiled by the
      * Pattern.compile() method.
-     * @param index_list The list of indexes at which the result list of 
-     * matched groups is accessed when the data is found.
-     * @param target_object 
-     * @param removable Flag to indicate if the processor is to be removed from 
+     * @param index_list The list of indexes at which the result list of matched
+     * groups is accessed when the data is found.
+     * @param target_object
+     * @param removable Flag to indicate if the processor is to be removed from
      * the list of processors once the data is recognised and parsed. This is
      * used for data patterns that are ocurred once only within the subtitle
-     * file. 
+     * file.
      */
     public SubtitlePatternProcessor(String pattern, int[] index_list, Object target_object, boolean removable) {
         this(pattern, index_list);
@@ -159,7 +156,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param pattern
      * @param index_list
      * @param removable
@@ -168,18 +165,19 @@ public abstract class SubtitlePatternProcessor {
         this(pattern, index_list);
         this.setRemovable(removable);
     }
-    
+
     /**
-     * Creates the pattern definition from the pattern string and set
-     * the working, testing pattern to be the same as
+     * Creates the pattern definition from the pattern string and set the
+     * working, testing pattern to be the same as
+     *
      * @param pattern
      */
-    public SubtitlePatternProcessor(String pattern){
+    public SubtitlePatternProcessor(String pattern) {
         this.pattern = new SubtitlePatternDefinition(pattern, true);
     }
-    
+
     /**
-     * 
+     *
      * @param pattern
      * @param index
      */
@@ -187,9 +185,9 @@ public abstract class SubtitlePatternProcessor {
         this(pattern);
         this.matchIndexList = new int[]{index};
     }
-    
+
     /**
-     * 
+     *
      * @param pattern
      * @param index_list
      */
@@ -197,9 +195,9 @@ public abstract class SubtitlePatternProcessor {
         this(pattern);
         this.matchIndexList = index_list;
     }
-    
+
     /**
-     * 
+     *
      * @return The array of matched groups
      */
     public String[] matchPattern() {
@@ -207,11 +205,10 @@ public abstract class SubtitlePatternProcessor {
             boolean has_data = (this.getTextLine() != null);
             if (has_data) {
                 boolean has_index_list = (this.getMatchIndexList() != null);
-                if (has_index_list) {
+                if (has_index_list)
                     return this.matchPattern(getTextLine(), getMatchIndexList());
-                } else {
-                    return this.matchPattern(getTextLine());
-                }//end if if (has_index_list)
+                else
+                    return this.matchPattern(getTextLine());//end if if (has_index_list)
             }//end if (has_data)
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
@@ -220,7 +217,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param input
      * @param matching_index_list
      * @return The matched group of data, null if no match is found.
@@ -251,14 +248,14 @@ public abstract class SubtitlePatternProcessor {
     }//end public String[] matchPattern(String input, int[] matching_index_list)
 
     /**
-     * This routine matching the working pattern that was defined
-     * against the input text line and return the array of matched
-     * groups of data within the input. The group of matched data
-     * is obtained by the  
+     * This routine matching the working pattern that was defined against the
+     * input text line and return the array of matched groups of data within the
+     * input. The group of matched data is obtained by the
+     *
      * @param input
      * @return The array of matched group, null if no match was found.
      */
-    public String[] matchPattern(String input) { 
+    public String[] matchPattern(String input) {
         setFoundList(null);
         try {
             Pattern pat = getPattern().getWorkPattern();
@@ -267,9 +264,8 @@ public abstract class SubtitlePatternProcessor {
             if (is_found) {
                 int group_count = m.groupCount() + 1;
                 setFoundList(new String[group_count]);
-                for (int k = 0; k < group_count; k++) {
-                    getFoundList()[k] = m.group(k);
-                }//end for            
+                for (int k = 0; k < group_count; k++)
+                    getFoundList()[k] = m.group(k);//end for            
             }//end String[] found_list
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
@@ -278,7 +274,7 @@ public abstract class SubtitlePatternProcessor {
     }//end public String[] matchPattern(String input)
 
     /**
-     * 
+     *
      * @return The reference to pattern definition.
      */
     public SubtitlePatternDefinition getPattern() {
@@ -286,7 +282,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param pattern
      */
     public void setPattern(SubtitlePatternDefinition pattern) {
@@ -294,39 +290,40 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
-     * @return The array of matching indices, null if the reference has not
-     * been set.
+     *
+     * @return The array of matching indices, null if the reference has not been
+     * set.
      */
     public int[] getMatchIndexList() {
         return matchIndexList;
     }
 
     /**
-     * 
+     *
      * @param matchIndexList
      */
     public void setMatchIndexList(int matchIndexList) {
         this.matchIndexList = new int[]{matchIndexList};
     }
+
     /**
-     * 
+     *
      */
     public void setMatchIndexList(int[] matchIndexList) {
         this.matchIndexList = matchIndexList;
     }
 
     /**
-     * 
-     * @return The textual input data of the file, null if the reference has
-     * not been set.
+     *
+     * @return The textual input data of the file, null if the reference has not
+     * been set.
      */
     public String getInputData() {
         return inputData;
     }
 
     /**
-     * 
+     *
      * @param inputData
      */
     public void setInputData(String inputData) {
@@ -334,7 +331,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @return The frame rate per second, 25fps is the default setting.
      */
     public float getFPS() {
@@ -342,7 +339,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param FPS
      */
     public void setFPS(float FPS) {
@@ -350,7 +347,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @return The reference of the input file.
      */
     public File getInputFile() {
@@ -358,7 +355,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param inputFile
      */
     public void setInputFile(File inputFile) {
@@ -366,14 +363,14 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param matched_data
      * @param old_object
      */
     public abstract void parsePattern(String[] matched_data, Object old_object);
 
     /**
-     * 
+     *
      * @return The reference to the target object, null if the object has not
      * been created.
      */
@@ -382,19 +379,19 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param targetObject
      */
     public void setTargetObject(Object targetObject) {
         this.targetObject = targetObject;
-        if (this.targetObject != null){
+        if (this.targetObject != null) {
             String cl_name = targetObject.getClass().getName();
             setTargetObjectClassName(cl_name);
         }//end 
     }
 
     /**
-     * 
+     *
      * @return true if the processor is removable, false otherwise.
      */
     public boolean isRemovable() {
@@ -402,7 +399,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param removable
      */
     public void setRemovable(boolean removable) {
@@ -410,7 +407,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @return The class-name of the target object.
      */
     public String getTargetObjectClassName() {
@@ -418,7 +415,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param targetObjectClassName
      */
     public void setTargetObjectClassName(String targetObjectClassName) {
@@ -426,7 +423,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @return The text line currently being processed.
      */
     public String getTextLine() {
@@ -434,7 +431,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param textLine
      */
     public void setTextLine(String textLine) {
@@ -442,7 +439,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @return The reference to the found
      */
     public String[] getFoundList() {
@@ -450,7 +447,7 @@ public abstract class SubtitlePatternProcessor {
     }
 
     /**
-     * 
+     *
      * @param found_list
      */
     public void setFoundList(String[] found_list) {

@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.media.preview.decoders;
 
 import com.panayotis.jubler.os.JIDialog;
@@ -68,7 +69,6 @@ public abstract class NativeDecoder implements DecoderInterface {
 
         setInterruptStatus(false);
         cacher = new Thread() {
-
             public void run() {
                 /* This is the subrutine which produces tha cached data, in separated thread */
                 feedback.startCacheCreation();

@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style.gui.tri;
 
 import static com.panayotis.jubler.i18n.I18N._;
@@ -36,14 +37,15 @@ import javax.swing.JComboBox;
  */
 public class TriComboBox extends JComboBox implements TriObject {
 
-    /** Creates a new instance of TriComboBox */
+    /**
+     * Creates a new instance of TriComboBox
+     */
     public TriComboBox(Object[] values) {
         super();
         for (Object data : values)
             addItem(data);
         addItem(_("Unspecified"));
         addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent evt) {
                 if (ignore_element_changes)
                     return;

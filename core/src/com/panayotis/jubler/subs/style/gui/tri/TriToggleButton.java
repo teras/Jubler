@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style.gui.tri;
 
 import com.panayotis.jubler.plugins.Theme;
@@ -40,14 +41,15 @@ public class TriToggleButton extends JToggleButton implements TriObject {
     private ImageIcon on, off;
     private int state = 0;
 
-    /** Creates a new instance of JTriButton */
+    /**
+     * Creates a new instance of JTriButton
+     */
     public TriToggleButton(String iconname) {
         on = Theme.loadIcon(iconname);
         off = DarkIconFilter.getDisabledIcon(on);
         setState(0);
 
         addActionListener(new ActionListener() {
-
             public void actionPerformed(ActionEvent evt) {
                 if (ignore_element_changes)
                     return;

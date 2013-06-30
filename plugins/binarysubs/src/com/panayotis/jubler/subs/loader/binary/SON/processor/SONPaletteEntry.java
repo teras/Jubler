@@ -38,6 +38,7 @@ import com.panayotis.jubler.subs.loader.binary.SON.record.SonHeader;
  * <pre>
  * # 00 : RGB(255,255, 0)
  * </pre>
+ *
  * @author Hoang Duy Tran <hoang_tran>
  */
 public class SONPaletteEntry extends SubtitlePatternProcessor implements CommonDef {

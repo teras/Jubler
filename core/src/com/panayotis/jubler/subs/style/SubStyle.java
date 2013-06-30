@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -82,7 +83,9 @@ public class SubStyle implements Comparable {
         setValues(old);
     }
 
-    /** Creates a new instance of SubStyle */
+    /**
+     * Creates a new instance of SubStyle
+     */
     public SubStyle(String name) {
         this.Name = name;
 

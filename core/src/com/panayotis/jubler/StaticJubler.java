@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler;
 
 import com.panayotis.jubler.os.JIDialog;
@@ -210,8 +211,7 @@ public class StaticJubler {
         final boolean isclone_f = isclone;
         final String text_f = text;
         final JubFrame jub_f = jub;
-        item.addActionListener(new ActionListener()  {
-
+        item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (isclone_f)
                     jub_f.recentMenuCallback(null);

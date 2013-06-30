@@ -20,6 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
+
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.os.JIDialog;
@@ -53,7 +54,7 @@ import javax.swing.text.StyleConstants;
 
 /**
  *
- * @author  teras
+ * @author teras
  */
 public final class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener {
 
@@ -76,7 +77,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     /* Remember where this is attached to */
     private boolean is_attached = false;
 
-    /** Creates new form JSubEditor */
+    /**
+     * Creates new form JSubEditor
+     */
     @SuppressWarnings("LeakingThisInConstructor")
     public JSubEditor(JubFrame parent) {
         initComponents();
@@ -119,18 +122,16 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             styles = parent.getSubtitles().getStyleList();
             refreshStyles();
         }
-        if (!isEnabled()) {
+        if (!isEnabled())
             setEnabled(true);
-        }
         showStyle();
     }
 
     private void refreshStyles() {
         ignore_style_list_changes = true;
         StyleListC.removeAllItems();
-        for (SubStyle t : styles) {
+        for (SubStyle t : styles)
             StyleListC.addItem(t);
-        }
         ignore_style_list_changes = false;
     }
 
@@ -145,50 +146,40 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public void spinnerChanged(JTimeSpinner which) {
         double tstart, tfinish, tdur;
         boolean old_ignore_spinner_changes;
-        if (ignore_sub_changes) {
+        if (ignore_sub_changes)
             return;
-        }
 
         int row = parent.getSelectedRowIdx();
-        if (row < 0) {
+        if (row < 0)
             return;
-        }
         parent.keepUndo(entry);
 
 
         tstart = SubStart.getTimeValue().toSeconds();
         tfinish = SubFinish.getTimeValue().toSeconds();
         tdur = SubDur.getTimeValue().toSeconds();
-        if (Lock1.isSelected()) {
+        if (Lock1.isSelected())
             if (which == SubFinish) {
-                if (tfinish < tstart) {
+                if (tfinish < tstart)
                     tfinish = tstart;
-                }
                 tdur = tfinish - tstart;
-            } else {
+            } else
                 tfinish = tstart + tdur;
-            }
-        }
-        if (Lock2.isSelected()) {
+        if (Lock2.isSelected())
             if (which == SubStart) {
-                if (tstart > tfinish) {
+                if (tstart > tfinish)
                     tstart = tfinish;
-                }
                 tdur = tfinish - tstart;
             } else {
-                if (tdur > tfinish) {
+                if (tdur > tfinish)
                     tdur = tfinish;
-                }
                 tstart = tfinish - tdur;
             }
-        }
-        if (Lock3.isSelected()) {
-            if (which == SubStart) {
+        if (Lock3.isSelected())
+            if (which == SubStart)
                 tfinish = tstart + tdur;
-            } else {
+            else
                 tstart = tfinish - tdur;
-            }
-        }
         ignore_sub_changes = true;
         SubStart.setTimeValue(new Time(tstart));
         SubFinish.setTimeValue(new Time(tfinish));
@@ -204,21 +195,18 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         PSStart.add(SubStart, BorderLayout.CENTER);
         SubStart.addChangeListener(new ChangeListener() {
-
             public void stateChanged(ChangeEvent e) {
                 spinnerChanged(SubStart);
             }
         });
         PSFinish.add(SubFinish, BorderLayout.CENTER);
         SubFinish.addChangeListener(new ChangeListener() {
-
             public void stateChanged(ChangeEvent e) {
                 spinnerChanged(SubFinish);
             }
         });
         PSDur.add(SubDur, BorderLayout.CENTER);
         SubDur.addChangeListener(new ChangeListener() {
-
             public void stateChanged(ChangeEvent e) {
                 spinnerChanged(SubDur);
             }
@@ -234,15 +222,12 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         SubStart.setEnabled(enabled);
         SubFinish.setEnabled(enabled);
         SubDur.setEnabled(enabled);
-        if (Lock1.isSelected()) {
+        if (Lock1.isSelected())
             SubStart.setEnabled(false);
-        }
-        if (Lock2.isSelected()) {
+        if (Lock2.isSelected())
             SubFinish.setEnabled(false);
-        }
-        if (Lock3.isSelected()) {
+        if (Lock3.isSelected())
             SubDur.setEnabled(false);
-        }
         setLockIcon(Lock1);
         setLockIcon(Lock2);
         setLockIcon(Lock3);
@@ -284,36 +269,32 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             SubText.setForeground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
         } else {
             SubStyle style = entry.getStyle();
-            if (style == null) {
+            if (style == null)
                 style = styles.get(0);
-            }
             showStyle();
         }
     }
 
     private void setStyleListEnabled(boolean enabled) {
-        if (styles != null && styles.size() > 1) {
+        if (styles != null && styles.size() > 1)
             StyleListC.setEnabled(enabled);
-        } else {
+        else
             StyleListC.setEnabled(false);
-        }
     }
 
     private void setLockIcon(JToggleButton b) {
-        if (b.isSelected()) {
+        if (b.isSelected())
             b.setIcon(Lock[0]);
-        } else {
+        else
             b.setIcon(Lock[1]);
-        }
     }
 
     public void setUnsaved(boolean status) {
         Unsaved.setEnabled(status);
-        if (status) {
+        if (status)
             Unsaved.setToolTipText(_("Subtitles need to be saved"));
-        } else {
+        else
             Unsaved.setToolTipText(null);
-        }
     }
 
     public void setAttached(boolean attached) {
@@ -339,9 +320,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleListC.setSelectedIndex(styles.getStyleIndex(entry));
         SimpleAttributeSet set = new SimpleAttributeSet();
         SubText.getStyledDocument().setCharacterAttributes(0, SubText.getText().length(), set, true);
-        if (ShowStyleB.isSelected()) {
+        if (ShowStyleB.isSelected())
             entry.applyAttributesToDocument(SubText);
-        } else {
+        else {
             SubText.setBackground(Color.WHITE);
             SubText.setCaretColor(Color.BLACK);
             set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
@@ -361,10 +342,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         return ignore_sub_changes;
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -712,9 +693,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             start = end;
             end = swap;
         }
-        if (entry == null || overstyle == null) {
+        if (entry == null || overstyle == null)
             return;
-        }
         overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), start, end, entry.getText());
     }//GEN-LAST:event_SubTextCaretUpdate
 
@@ -742,14 +722,12 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_TrashBActionPerformed
 
     private void StyleListCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StyleListCActionPerformed
-        if (ignore_style_list_changes) {
+        if (ignore_style_list_changes)
             return;
-        }
         int row = parent.getSelectedRowIdx();
         int res = StyleListC.getSelectedIndex();
-        if (res < 0) {
+        if (res < 0)
             return;
-        }
         parent.keepUndo(entry);
         entry.setStyle(styles.get(res));
         showStyle();
@@ -823,9 +801,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
      * The style update SHOULD be done asynchronusly
      */
     public void insertUpdate(DocumentEvent e) {
-        if (ignore_sub_changes) {
+        if (ignore_sub_changes)
             return;
-        }
         parent.subTextChanged();
         entry.insertText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
@@ -835,9 +812,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
      * The style update SHOULD be done asynchronusly
      */
     public void removeUpdate(DocumentEvent e) {
-        if (ignore_sub_changes) {
+        if (ignore_sub_changes)
             return;
-        }
         parent.subTextChanged();
         entry.removeText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
@@ -847,7 +823,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         // We don't care for these events - we have our own!
     }
     Thread stylethread = new Thread() {
-
         @Override
         public void run() {
             showStyle();
@@ -905,6 +880,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public javax.swing.JProgressBar getProgressBar() {
         return progressBar;
     }
+
     /**
      * @return the progressLabel
      */
@@ -937,6 +913,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public void progressTitle(String txt) {
         this.progressLabel.setText(txt + ":");
     }
+
     public void progressTooltip(String txt) {
         this.progressBar.setToolTipText(txt);
     }

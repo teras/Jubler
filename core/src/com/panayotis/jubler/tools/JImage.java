@@ -20,6 +20,7 @@
  * Contributor(s):
  * 
  */
+
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -50,13 +51,14 @@ import javax.swing.JOptionPane;
 
 /**
  * This class deals with images.
+ *
  * @author Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class JImage implements CommonDef {
 
     /**
-     * The colour that is used for DVB-T subtitle's transparency.
-     * (0x00000060) or RGB(0, 0, 96).
+     * The colour that is used for DVB-T subtitle's transparency. (0x00000060)
+     * or RGB(0, 0, 96).
      */
     public static int DVBT_SUB_TRANSPARENCY = 0x60;
     /**
@@ -65,14 +67,14 @@ public class JImage implements CommonDef {
     public static int DEFAULT_SCREEN_WIDTH = 720;
 
     /**
-     * Display an option panel which allows, among other options,
-     * browsing for directories where new directory can be created. Other options
-     * include the ability to select to use current dir, the ability to set the
-     * flag not to remind the creation of a new directory again in the future.
-     * Setting the "Do not remind again!" will deny the ability to prompt for
-     * the option to create a directory. Option "Use current" will only
-     * stops the prompt for the current set of images until the maximum
-     * number of images is reached.
+     * Display an option panel which allows, among other options, browsing for
+     * directories where new directory can be created. Other options include the
+     * ability to select to use current dir, the ability to set the flag not to
+     * remind the creation of a new directory again in the future. Setting the
+     * "Do not remind again!" will deny the ability to prompt for the option to
+     * create a directory. Option "Use current" will only stops the prompt for
+     * the current set of images until the maximum number of images is reached.
+     *
      * @param default_directory The default directory at which the file-chooser
      * dialog will change to when it starts.
      * @return The new directory created and selected
@@ -114,12 +116,14 @@ public class JImage implements CommonDef {
         }//end selected_option
         return null;
     }//public static File[] createImageDirectory(File default_directory)
+
     /**
-     * Initiates the {@link #createImageDirectory} - singular - to obtain
-     * a directory selection using a file dialog, defaulted at an initial
+     * Initiates the {@link #createImageDirectory} - singular - to obtain a
+     * directory selection using a file dialog, defaulted at an initial
      * directory. Once the selection has been made, the list of selected
      * directories, plus the default directory, are grouped into a single
      * non-duplicated list and returned to the calling routine.
+     *
      * @param default_directory The default directory to start-up the file
      * dialog with.
      * @return A non-duplicated list of directories which has been selected,
@@ -130,20 +134,22 @@ public class JImage implements CommonDef {
         File[] selectedDirectories = createImageDirectory(default_directory);
         boolean has_new_directories =
                 (selectedDirectories != null) && (selectedDirectories.length > 0);
-        if (has_new_directories) {
+        if (has_new_directories)
             for (int i = 0; i < selectedDirectories.length; i++) {
                 File selected_dir = selectedDirectories[i];
                 dirList.add(selected_dir);
-            }//end for
-        }//end if
+            }//end for//end if
         return dirList;
     }//end public static Vector<File> createImageDirectory(File default_directory)
+
     /**
      * Write an image to a pre-defined file.
+     *
      * @param img The image to write.
      * @param file The file to write the image to.
      * @param extension The image format, recognised by the file's extension.
-     * @return true if the operation carried out without errors, false otherwise.
+     * @return true if the operation carried out without errors, false
+     * otherwise.
      */
     public static boolean writeImage(BufferedImage img, File file, String extension) {
         try {
@@ -157,6 +163,7 @@ public class JImage implements CommonDef {
 
     /**
      * Write an image to a pre-defined file.
+     *
      * @param ico The image to write
      * @param file The file to write to
      * @param extension The extension, indicating the type ie. png, jpg, bmp
@@ -175,6 +182,7 @@ public class JImage implements CommonDef {
 
     /**
      * Writes an image to a file.
+     *
      * @param img The image to write
      * @param dir The directory to write to
      * @param filename The image's filename
@@ -191,14 +199,17 @@ public class JImage implements CommonDef {
             return false;
         }
     }//end public static void writeImage(BufferedImage img, String file_name)
+
     /**
      * Using the ImageIO to read an image from a file into the internal buffer,
-     * And then create a image icon which is stored in the image record and update the
-     * internal image dimension if this image is larger than the previous one.
-     * The image, after loaded, is cropped and transformed to a transparent 
-     * image where the DVBT transparency colours are excluded.
+     * And then create a image icon which is stored in the image record and
+     * update the internal image dimension if this image is larger than the
+     * previous one. The image, after loaded, is cropped and transformed to a
+     * transparent image where the DVBT transparency colours are excluded.
+     *
      * @param f the image file being read
-     * @return the image record if reading was successfully carried out, Null if reading's failed.
+     * @return the image record if reading was successfully carried out, Null if
+     * reading's failed.
      */
     public static BufferedImage readImage(File f) {
         BufferedImage loaded_image;
@@ -209,6 +220,7 @@ public class JImage implements CommonDef {
             return null;
         }
     }//public static ImageIcon readImage(File f)
+
     public static BufferedImage makeTransparentImage(BufferedImage img,
             Object[] color_index_list,
             Object[] transparency_index_list,
@@ -231,6 +243,7 @@ public class JImage implements CommonDef {
             return img;
         }
     }//end public static BufferedImage makeTransparentImage(BufferedImage img...
+
     public static BufferedImage makeTransparentImage(BufferedImage img, int color) {
         BufferedImage sub_img, tran_image = null;
         try {
@@ -242,8 +255,8 @@ public class JImage implements CommonDef {
             tran_image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             /**
              * Whilst running the loop to find boundary, also update the
-             * transparent image with desired pixel, ignoring the colour
-             * that are transparent.
+             * transparent image with desired pixel, ignoring the colour that
+             * are transparent.
              */
             Rectangle sr = getSubImageDimension(
                     img,
@@ -261,15 +274,16 @@ public class JImage implements CommonDef {
 
             return sub_img;
         } catch (Exception ex) {
-            if (tran_image != null) {
+            if (tran_image != null)
                 return tran_image;
-            } else {
+            else
                 return img;
-            }
         }
     }//end public static BufferedImage makeTransparentImage(BufferedImage img, int color) 
+
     /**
      * Cut the image and produce the transparent image of the original
+     *
      * @param img The image to cut
      * @param color The color to make transparent
      * @return The sub-image
@@ -285,8 +299,8 @@ public class JImage implements CommonDef {
             tran_image = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
             /**
              * Whilst running the loop to find boundary, also update the
-             * transparent image with desired pixel, ignoring the colour
-             * that are transparent.
+             * transparent image with desired pixel, ignoring the colour that
+             * are transparent.
              */
             Rectangle sr = getSubImageDimension(
                     img,
@@ -308,8 +322,10 @@ public class JImage implements CommonDef {
             return tran_image;
         }
     }//public static BufferedImage cutImage(BufferedImage img, int color)
+
     /**
      * Creates a default blank image 720x32 with blue background default.
+     *
      * @return A blank image of dimension 720x32 with blue background color.
      */
     public static BufferedImage getDefaultBlankImage() {
@@ -322,14 +338,17 @@ public class JImage implements CommonDef {
         g.dispose();
         return image;
     }//end public static BufferedImage cutImage(BufferedImage img)
+
     /**
      * Cut the image and produce the transparent image of the original
+     *
      * @param img The image to cut
      * @return The sub-image
      */
     public static BufferedImage cutImage(BufferedImage img) {
         return cutImage(img, DVBT_SUB_TRANSPARENCY);
     }//end public static BufferedImage cutImage(BufferedImage img)
+
     public static File bwConversionToBMPTempFile(BufferedImage source) {
         String img_ext = "bmp";
         try {
@@ -341,6 +360,7 @@ public class JImage implements CommonDef {
             return null;
         }
     }//end public static File bwConversionToTempFile(ImageIcon source) 
+
     public static BufferedImage bwConversion(ImageIcon source) {
         BufferedImage new_image = null;
         int w, h;
@@ -354,6 +374,7 @@ public class JImage implements CommonDef {
             return null;
         }
     }//public static BufferedImage bwConversion(BufferedImage source)
+
     public static BufferedImage icoToBufferedImage(ImageIcon source) {
         BufferedImage new_image = null;
         int w, h;
@@ -367,12 +388,14 @@ public class JImage implements CommonDef {
             return null;
         }
     }//end public static BufferedImage icoToBufferedImage(ImageIcon source) 
+
     /**
-     * Creates a new buffered image using TYPE_BYTE_GRAY meaning converts
-     * the current image to gray scale.
+     * Creates a new buffered image using TYPE_BYTE_GRAY meaning converts the
+     * current image to gray scale.
+     *
      * @param source The source image
-     * @return The newly converted b/w image if no errors occured, source
-     * image if some errors occured.
+     * @return The newly converted b/w image if no errors occured, source image
+     * if some errors occured.
      */
     public static BufferedImage bwConversion(BufferedImage source) {
         BufferedImage new_image = null;
@@ -387,42 +410,44 @@ public class JImage implements CommonDef {
             return source;
         }
     }//public static BufferedImage bwConversion(BufferedImage source)
+
     /**
-     * This routine gets the sub-image boundary using the specified colour
-     * that will be treated as transparent within an existing image. It 
-     * assumes a transparent image 'dest' exists and write the pixels that
-     * are not transparent to that image whilst searching for the boundary.
-     * This routine cuts down an additional expensive loop running through
-     * the source image to find the matching colour, as previously implemented
-     * using separated routines, one to find the boundary, another to make
-     * the transparent image. This routine combine the 2 functions together
-     * in one solution. In order to use this routine, a preparation for 
-     * transparent image must be done in advance, something like:
+     * This routine gets the sub-image boundary using the specified colour that
+     * will be treated as transparent within an existing image. It assumes a
+     * transparent image 'dest' exists and write the pixels that are not
+     * transparent to that image whilst searching for the boundary. This routine
+     * cuts down an additional expensive loop running through the source image
+     * to find the matching colour, as previously implemented using separated
+     * routines, one to find the boundary, another to make the transparent
+     * image. This routine combine the 2 functions together in one solution. In
+     * order to use this routine, a preparation for transparent image must be
+     * done in advance, something like:
      * <pre>
      * int w = source_img.getWidth();
      * int h = source_img.getHeight();
-     * 
-     * BufferedImage tran_image = 
+     *
+     * BufferedImage tran_image =
      *      new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-     * 
+     *
      * Rectangle rec = getSubImageDimension(
      *      source_img, some_color, tran_image );
-     * 
+     *
      * BufferedImage sub_img = tran_image.getSubimage(
      *      sr.x,
      *      sr.y,
      *      sr.width,
      *      sr.height);
-     * </pre>
-     * The final 'sub_imag' is the cropped image and contain transparency, where
-     * all instances of 'some_color' are removed (transparent).
+     * </pre> The final 'sub_imag' is the cropped image and contain
+     * transparency, where all instances of 'some_color' are removed
+     * (transparent).
+     *
      * @param source The non-transparent image that will be used to find the
      * sub-image boundary.
      * @param find_colour The colour that will be treated as transparent.
      * @param dest The transparent image, whose size is the same as the source
      * image, and whose content is blank.
-     * @return The dimension of sub-image where it will be cropped to, plus
-     * the destination image being filled with content that are NOT transparent.
+     * @return The dimension of sub-image where it will be cropped to, plus the
+     * destination image being filled with content that are NOT transparent.
      */
     public static Rectangle getSubImageDimension(
             BufferedImage source,
@@ -448,19 +473,18 @@ public class JImage implements CommonDef {
 
 
             /**
-             * search top-left down to bottom-right and find the excluding 
+             * search top-left down to bottom-right and find the excluding
              * colour. The smaller value is held.
              */
             int[] image_data = source.getRGB(0, 0, img_w, img_h, null, 0, img_w);
             int[] dest_image_data = new int[img_w * img_h];
-            for (int i = 0,  x = 0,  y = 0; i < image_data.length; i++) {
+            for (int i = 0, x = 0, y = 0; i < image_data.length; i++) {
                 boolean is_reset_xy = (i > 0) && (i % img_w == 0);
                 if (is_reset_xy) {
                     x = 0;
                     y += 1;
-                } else {
+                } else
                     x++;
-                }
                 int img_rgb = image_data[i];
 
                 //force checking the RGB components only, excludes the Transparency bits.
@@ -468,19 +492,15 @@ public class JImage implements CommonDef {
                 boolean is_same = (find_colour & mask) == (img_rgb & mask);
                 if (!is_same) {
                     dest_image_data[i] = img_rgb;
-                    if (x < lx) {
+                    if (x < lx)
                         lx = x;
-                    }
-                    if (y < ly) {
+                    if (y < ly)
                         ly = y;
-                    }
 
-                    if (x > rx) {
+                    if (x > rx)
                         rx = x;
-                    }
-                    if (y > ry) {
+                    if (y > ry)
                         ry = y;
-                    }
                 }//end if
             }//end for(int i=0; i < image_data.length; i++)
             dest.setRGB(0, 0, img_w, img_h, dest_image_data, 0, img_w);
@@ -494,13 +514,15 @@ public class JImage implements CommonDef {
         }
         return rec;
     }//end public static Rectangle getSubImageDimension
+
     /**
      * Turns a buffered image into an image with transparency bit set for the
      * chosen colour, making the image transparent to the background or
      * highlighting colours.
+     *
      * @param source The source image to be made transparent.
      * @param find_colour The colour that will be made transparent.
-     * @return The image with transparency, null if there are errors during 
+     * @return The image with transparency, null if there are errors during
      * processing.
      */
     public static BufferedImage getTransparentImage(BufferedImage source, Color find_colour) {
@@ -522,23 +544,24 @@ public class JImage implements CommonDef {
                 //force checking the RGB components only, excludes the Transparency bits.
                 int mask = 0x00ffffff;
                 boolean is_same = (f_rgb & mask) == (img_rgb & mask);
-                if (!is_same) {
-                    dest_image_data[i] = img_rgb;
-                }//end if
+                if (!is_same)
+                    dest_image_data[i] = img_rgb;//end if
             }//end for(int i=0; i < image_data.length; i++)
             tran_image.setRGB(0, 0, w, h, dest_image_data, 0, w);
         } catch (Exception ex) {
         }
         return tran_image;
     }//end public static BufferedImage getTransparentImage(BufferedImage source, Color find_colour)
+
     /**
-     * Gets the dimension of a sub-image within an existing one by excluding
-     * a selected colour. The rectangle return contains the dimension of the
-     * sub-image where the first instance of a different colour to the
-     * input colour is found. This function find the boundary to be cropped.
+     * Gets the dimension of a sub-image within an existing one by excluding a
+     * selected colour. The rectangle return contains the dimension of the
+     * sub-image where the first instance of a different colour to the input
+     * colour is found. This function find the boundary to be cropped.
+     *
      * @param img The existing image to be cropped.
      * @param find_colour The colour where cropping will be included.
-     * @return The rectangle contains the dimension where cropping can be 
+     * @return The rectangle contains the dimension where cropping can be
      * performed.
      */
     public static Rectangle getSubImageDimension(BufferedImage img, Color find_colour) {
@@ -561,37 +584,32 @@ public class JImage implements CommonDef {
             ry = 0;
 
             /**
-             * search top-left down to bottom-right and find the excluding 
+             * search top-left down to bottom-right and find the excluding
              * colour. The smaller value is held.
              */
             int[] image_data = img.getRGB(0, 0, img_w, img_h, null, 0, img_w);
             int f_rgb = find_colour.getRGB();
-            for (int i = 0,  x = 0,  y = 0; i < image_data.length; i++) {
+            for (int i = 0, x = 0, y = 0; i < image_data.length; i++) {
                 boolean is_reset_xy = (i > 0) && (i % img_w == 0);
                 if (is_reset_xy) {
                     x = 0;
                     y += 1;
-                } else {
+                } else
                     x++;
-                }
 
                 int img_rgb = image_data[i];
                 int mask = 0x00ffffff;
                 boolean is_same = (f_rgb & mask) == (img_rgb & mask);
                 if (!is_same) {
-                    if (x < lx) {
+                    if (x < lx)
                         lx = x;
-                    }
-                    if (y < ly) {
+                    if (y < ly)
                         ly = y;
-                    }
 
-                    if (x > rx) {
+                    if (x > rx)
                         rx = x;
-                    }
-                    if (y > ry) {
+                    if (y > ry)
                         ry = y;
-                    }
                 }//end if
             }//end for(int i=0; i < image_data.length; i++)
 
@@ -605,17 +623,18 @@ public class JImage implements CommonDef {
         }
         return rec;
     }//end public Rectangle getSubImageDimension(BufferedImage img, Color col)
+
     /**
-     * Note the copyright of this code is: Rafael Santos - 
-     * Author of: Java Image Processing Cookbook
+     * Note the copyright of this code is: Rafael Santos - Author of: Java Image
+     * Processing Cookbook
      * http://www.lac.inpe.br/~rafael.santos/JIPCookbook/6040-howto-compressimages.jsp
-     * 
-     * The routine compress a BufferedImage by forming a JPEG writer and 
-     * write the original image to the buffer of the compressed writer which
-     * will compress the image as it writes the image out. The compressed
-     * image is then read back again into another instance of BufferedImage
-     * and return it for use. The returned image is the compressed image of
-     * the original.
+     *
+     * The routine compress a BufferedImage by forming a JPEG writer and write
+     * the original image to the buffer of the compressed writer which will
+     * compress the image as it writes the image out. The compressed image is
+     * then read back again into another instance of BufferedImage and return it
+     * for use. The returned image is the compressed image of the original.
+     *
      * @param image The image to be compressed.
      * @param quality The factor to compress. 1.0f being the highest quality,
      * 0.1f being the worst.
@@ -629,9 +648,8 @@ public class JImage implements CommonDef {
 
         // Get a ImageWriter for jpeg format.
         Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
-        if (!writers.hasNext()) {
+        if (!writers.hasNext())
             throw new IllegalStateException(_("No writers found"));
-        }
         ImageWriter writer = (ImageWriter) writers.next();
         // Create the ImageWriteParam to compress the image.
         ImageWriteParam param = writer.getDefaultWriteParam();
@@ -650,11 +668,12 @@ public class JImage implements CommonDef {
         //int compressed_size = out.getData().getDataBuffer().getSize();
         //System.out.println("Compressed size:" + compressed_size);
         return out;
-    // Uncomment code below to save the compressed files.
-    //    File file = new File("compressed."+quality+".jpeg");
-    //    FileImageOutputStream output = new FileImageOutputStream(file);
-    //    writer.setOutput(output); writer.write(null, new IIOImage(image, null,null), param);
+        // Uncomment code below to save the compressed files.
+        //    File file = new File("compressed."+quality+".jpeg");
+        //    FileImageOutputStream output = new FileImageOutputStream(file);
+        //    writer.setOutput(output); writer.write(null, new IIOImage(image, null,null), param);
     }//end public static BufferedImage compressImage(BufferedImage image, float quality) throws IOException
+
     public static BufferedImage captureComponentGraphic(Component comp) {
         BufferedImage img = null;
         try {
@@ -668,11 +687,11 @@ public class JImage implements CommonDef {
     }//end 
 
     /**
-     * This routine creates a blank image, by default 720x32, filled with the 
-     * default {@link JImage#DVBT_SUB_TRANSPARENCY transparency color}. 
-     * If the input image is not empty, the input image will be 
-     * centered on the default image, and the height of the return 
-     * image is taken from the input image.
+     * This routine creates a blank image, by default 720x32, filled with the
+     * default {@link JImage#DVBT_SUB_TRANSPARENCY transparency color}. If the
+     * input image is not empty, the input image will be centered on the default
+     * image, and the height of the return image is taken from the input image.
+     *
      * @param center_image The input image that will be overlaid in the center
      * of the background image.
      * @return The background image, with input image centered if any, or null
@@ -699,9 +718,8 @@ public class JImage implements CommonDef {
         } catch (Exception ex) {
             return null;
         } finally {
-            if (g != null) {
+            if (g != null)
                 g.dispose();
-            }
         }
     }//end public static BufferedImage makeSubBackgroundImage(BufferedImage current_image)
 }//end public class JImage
