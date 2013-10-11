@@ -24,7 +24,7 @@
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.os.JIDialog;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.SystemDependent;
@@ -212,9 +212,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             }
         });
 
-        SubStart.setToolTipText(_("Start time of the subtitle"));
-        SubFinish.setToolTipText(_("Stop time of the subtitle"));
-        SubDur.setToolTipText(_("Duration of the subtitle"));
+        SubStart.setToolTipText(__("Start time of the subtitle"));
+        SubFinish.setToolTipText(__("Stop time of the subtitle"));
+        SubDur.setToolTipText(__("Duration of the subtitle"));
     }
 
     /* Lock/unlock time spinners */
@@ -292,7 +292,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public void setUnsaved(boolean status) {
         Unsaved.setEnabled(status);
         if (status)
-            Unsaved.setToolTipText(_("Subtitles need to be saved"));
+            Unsaved.setToolTipText(__("Subtitles need to be saved"));
         else
             Unsaved.setToolTipText(null);
     }
@@ -713,8 +713,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_panelsetVisible
 
     private void TrashBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TrashBActionPerformed
-        if (JIDialog.question(parent, _("Are you sure you want to delete the override styles of this subtitle?"), _("Delete current subtitle style"))) {
-            UndoEntry undo = new UndoEntry(parent.getSubtitles(), _("Cleanup style"));
+        if (JIDialog.question(parent, __("Are you sure you want to delete the override styles of this subtitle?"), __("Delete current subtitle style"))) {
+            UndoEntry undo = new UndoEntry(parent.getSubtitles(), __("Cleanup style"));
             entry.resetOverStyle();
             showStyle();
             parent.getUndoList().addUndo(undo);
@@ -737,7 +737,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
         SubStyle cstyle = styles.get(styles.getStyleIndex(entry));
         SubStyle backup = new SubStyle(cstyle);
-        UndoEntry undo = new UndoEntry(parent.getSubtitles(), _("Edit style"));
+        UndoEntry undo = new UndoEntry(parent.getSubtitles(), __("Edit style"));
 
         sedit.setVisible(cstyle);
         /* pause here */

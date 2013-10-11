@@ -20,7 +20,7 @@
 
 package com.panayotis.jubler.tools;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -54,7 +54,7 @@ public class CoreTools implements Plugin {
 
     @Override
     public String getPluginName() {
-        return _("Basic tools");
+        return __("Basic tools");
     }
 
     @Override

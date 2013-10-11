@@ -27,7 +27,7 @@ import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.os.JIDialog;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
@@ -88,7 +88,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         styleover_template[UNKNOWN.ordinal()] = new StyleoverCharacter(null);
     }
     /* Markings */
-    public static final String[] MarkNames = {_("None"), _("Pink"), _("Yellow"), _("Cyan"), _("Orange"), _("Light Green")};
+    public static final String[] MarkNames = {__("None"), __("Pink"), __("Yellow"), __("Cyan"), __("Orange"), __("Light Green")};
     protected Time start, finish, duration;
     private String subtext;
     private int mark;
@@ -247,7 +247,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     }
 
     void setData(int col, Object data) {
-        JIDialog.error(null, "BUG IN PROGRAM: SET DATA WAS SELECTED\nPlease contact author", _("Error!"));
+        JIDialog.error(null, "BUG IN PROGRAM: SET DATA WAS SELECTED\nPlease contact author", __("Error!"));
         if (col == 3)
             subtext = data.toString();
     }

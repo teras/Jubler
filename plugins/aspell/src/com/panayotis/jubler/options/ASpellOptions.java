@@ -28,7 +28,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 
 /**
@@ -81,7 +81,7 @@ public class ASpellOptions extends JExtBasicOptions {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText(_("Language to use"));
+        jLabel1.setText(__("Language to use"));
         jPanel1.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         jScrollPane1.setViewportView(LangList);

@@ -28,7 +28,7 @@ import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
@@ -68,7 +68,7 @@ public class W3CTimedText extends AbstractTextSubFormat {
 
     @Override
     public String getExtendedName() {
-        return _("W3C Timed Text");
+        return __("W3C Timed Text");
     }
 
     @Override

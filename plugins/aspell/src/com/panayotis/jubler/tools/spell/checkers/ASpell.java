@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools.spell.checkers;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
@@ -190,7 +190,7 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
     }
 
     public String getPluginName() {
-        return _("ASpell checker");
+        return __("ASpell checker");
     }
 
     public ClassLoader getClassLoader() {

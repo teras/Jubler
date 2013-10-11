@@ -33,7 +33,7 @@ import com.panayotis.jubler.tools.replace.ReplaceModel;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -57,7 +57,7 @@ public class JRegExpReplaceGUI extends JPanel {
     }
 
     protected String getToolTitle() {
-        return _("Regular Expression replace");
+        return __("Regular Expression replace");
     }
 
     protected void storeSelections() {
@@ -115,8 +115,8 @@ public class JRegExpReplaceGUI extends JPanel {
 
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
         int ret;
-        Object[] options = {_("Use"), _("Cancel"), _("Reset")};
-        ret = JOptionPane.showOptionDialog(this, rlist, _("Edit regular expression replace list"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        Object[] options = {__("Use"), __("Cancel"), __("Reset")};
+        ret = JOptionPane.showOptionDialog(this, rlist, __("Edit regular expression replace list"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
         switch (ret) {
             case 0:
                 //do

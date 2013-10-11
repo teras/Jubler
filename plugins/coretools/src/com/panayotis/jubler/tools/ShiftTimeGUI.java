@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
 
@@ -44,7 +44,7 @@ public class ShiftTimeGUI extends JPanel {
         dt.setTimeValue(new Time(1));
         initComponents();
         add(dt, BorderLayout.CENTER);
-        dt.setToolTipText(_("The amount of time in order to shift the subtitles"));
+        dt.setToolTipText(__("The amount of time in order to shift the subtitles"));
     }
 
     /**

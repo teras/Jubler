@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.subs.Subtitles;
 
 import com.panayotis.jubler.time.Time;
@@ -45,8 +45,8 @@ public class SubSplitGUI extends JPanel {
      */
     public SubSplitGUI() {
         initComponents();
-        split = new JTimeSingleSelection(_("Splitting time"));
-        split.setToolTip(_("Use the following time (inclusive) in order to create the new splitted subtitles"));
+        split = new JTimeSingleSelection(__("Splitting time"));
+        split.setToolTip(__("Use the following time (inclusive) in order to create the new splitted subtitles"));
         TimeContainer.add(split, BorderLayout.CENTER);
     }
 

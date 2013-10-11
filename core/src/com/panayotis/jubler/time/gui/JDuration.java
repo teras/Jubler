@@ -27,7 +27,7 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import javax.swing.JFormattedTextField;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *

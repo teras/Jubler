@@ -24,7 +24,7 @@
 package com.panayotis.jubler;
 
 import com.panayotis.jubler.os.JIDialog;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.options.Options;
@@ -120,7 +120,7 @@ public class StaticJubler {
     }
 
     public static void showAbout() {
-        JIDialog.about(JubFrame.windows.get(0), new JAbout(), _("About Jubler"), "jubler-logo.png");
+        JIDialog.about(JubFrame.windows.get(0), new JAbout(), __("About Jubler"), "jubler-logo.png");
     }
 
     public static boolean requestQuit(JubFrame request) {
@@ -130,7 +130,7 @@ public class StaticJubler {
             if (j.isUnsaved())
                 unsaved.add(j.getSubtitles().getSubFile().getStrippedFile().getName());
         if (unsaved.size() > 0)
-            if (!JIDialog.question(null, new JUnsaved(unsaved), _("Quit Jubler")))
+            if (!JIDialog.question(null, new JUnsaved(unsaved), __("Quit Jubler")))
                 return false;
 
         JublerServer.stopServer();
@@ -189,11 +189,11 @@ public class StaticJubler {
             /* Add clone entry */
             recent_menu.removeAll();
             if (j.getSubtitles() != null) {
-                recent_menu.add(addNewMenu(_("Clone current"), true, true, j, -1));
+                recent_menu.add(addNewMenu(__("Clone current"), true, true, j, -1));
                 recent_menu.add(new JSeparator());
             }
             if (menulist.size() == 0)
-                recent_menu.add(addNewMenu(_("-Not any recent items-"), false, false, j, -1));
+                recent_menu.add(addNewMenu(__("-Not any recent items-"), false, false, j, -1));
             else {
                 int counter = 1;
                 for (int i = menulist.size() - 1; i >= 0; i--)

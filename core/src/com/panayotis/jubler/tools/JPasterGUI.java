@@ -28,7 +28,7 @@ import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *

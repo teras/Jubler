@@ -26,7 +26,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeRegion;
 import javax.swing.JComponent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -40,7 +40,7 @@ public class Fixer extends OneByOneTool {
     private double push_time;
 
     public Fixer() {
-        super(false, new ToolMenu(_("Time fix"), "TFI", Location.TIMETOOL, 0, 0));
+        super(false, new ToolMenu(__("Time fix"), "TFI", Location.TIMETOOL, 0, 0));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Fixer extends OneByOneTool {
 
     @Override
     protected String getToolTitle() {
-        return _("Fix time inconsistencies");
+        return __("Fix time inconsistencies");
     }
 
     @Override

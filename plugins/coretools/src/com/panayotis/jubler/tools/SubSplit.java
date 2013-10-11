@@ -26,7 +26,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.undo.UndoEntry;
 import javax.swing.JComponent;
@@ -38,7 +38,7 @@ import javax.swing.JComponent;
 public class SubSplit extends Tool {
 
     public SubSplit() {
-        super(new ToolMenu(_("Split file"), "TSP", Location.FILETOOL, 0, 0));
+        super(new ToolMenu(__("Split file"), "TSP", Location.FILETOOL, 0, 0));
     }
 
     @Override
@@ -59,12 +59,12 @@ public class SubSplit extends Tool {
     @Override
     public boolean execute(JubFrame current) {
         SubSplitGUI vis = (SubSplitGUI) getVisuals();
-        if (JIDialog.action(current, vis, _("Split subtitles in two"))) {
+        if (JIDialog.action(current, vis, __("Split subtitles in two"))) {
             Subtitles subs1, subs2;
             SubEntry csub;
             double stime;
 
-            current.getUndoList().addUndo(new UndoEntry(current.getSubtitles(), _("Split subtitles")));
+            current.getUndoList().addUndo(new UndoEntry(current.getSubtitles(), __("Split subtitles")));
 
             stime = vis.getTime().toSeconds();
             subs1 = new Subtitles(new SubFile(current.getSubtitles().getSubFile()));

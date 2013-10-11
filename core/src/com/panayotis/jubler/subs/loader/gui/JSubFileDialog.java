@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.loader.gui;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.DEBUG;
@@ -117,14 +117,14 @@ public class JSubFileDialog extends javax.swing.JDialog {
     }
 
     public SubFile getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
-        setTitle(_("Save Subtitles"));
+        setTitle(__("Save Subtitles"));
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
         chooser.setSelectedFile(subs.getSubFile().getStrippedFile());
         return showDialog(parent, subs, mfile, jsave);
     }
 
     public SubFile getLoadFile(Frame parent, MediaFile mfile) {
-        setTitle(_("Load Subtitles"));
+        setTitle(__("Load Subtitles"));
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
         return showDialog(parent, null, mfile, jload);
     }

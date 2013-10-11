@@ -24,7 +24,7 @@
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.os.SystemDependent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.tools.externals.wizard.JWizard;
 import java.util.ArrayList;

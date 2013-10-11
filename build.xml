@@ -9,10 +9,10 @@
 		</classpath>
 	</taskdef>
 	
-	<taskdef name="jarbundler"
-		onerror="report"
-		classpath="/opt/local/share/java/jarbundler.jar"
-		classname="net.sourceforge.jarbundler.JarBundler" />
+    <taskdef name="appbundler"
+        onerror="report"
+        classpath="resources/installers/macosx/appbundler-1.0ea.jar"
+        classname="com.oracle.appbundler.AppBundlerTask"/>
 
    <taskdef name="izpack"
 		onerror="report"
@@ -139,18 +139,19 @@
 			<fileset dir="dist/Jubler.app"/>
 		</copy>
 		<chmod file="/Volumes/Jubler-template/Jubler.app/Contents/MacOS/JavaApplicationStub" perm="a+x"/>
-		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/i18n">
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Java/i18n">
 			<fileset dir="dist/i18n"/>
 		</copy>
-		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/lib">
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Java/lib">
 			<fileset dir="dist/lib"/>
 		</copy>
-		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/themes">
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Java/themes">
 			<fileset dir="dist/themes"/>
 		</copy>
-		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Resources/Java/help">
+		<copy todir="/Volumes/Jubler-template/Jubler.app/Contents/Java/help">
 			<fileset dir="dist/help"/>
 		</copy>
+        <chmod file="/Volumes/Jubler-template/Jubler.app/Contents/MacOS/Jubler" perm="a+x"/>
 
 		<exec executable="hdiutil" failonerror="true">
 			<arg line="detach -force /Volumes/Jubler-template"/>
@@ -162,30 +163,28 @@
 
 	</target>
 	<target name="prepare-macosx" depends="-nodistbased,-release,font">
-		<copy file="resources/libs/ffmpeg/dist/darwin/libffdecode.jnilib" todir="dist/lib"/>
-		<jarbundler
-			dir="dist"
-			jars="dist/Jubler.jar"
-			mainclass="Jubler"
+		<copy file="resources/libs/ffmpeg/darwin/libffdecode.jnilib" todir="dist/lib"/>
+        <appbundler
+            outputdirectory="dist"
 			name="Jubler"
-			aboutmenuname="Jubler"
-			antialiasedgraphics="true"
-			antialiasedtext="true"
-			bundleid="com.panayotis.jubler"
-			infostring="Jubler ${version}, Multiplatform Subtitle Editor"
-			jvmversion="1.5+"
-			screenmenu="true"
-			version="${version}"
+			displayName="Jubler"
+            executableName="Jubler"
+			identifier="com.panayotis.jubler"
 			icon="resources/installers/macosx/jubler.icns"
-		>
-		<documenttype
-			name="Subtitle Document"
-			extensions="srt sub ass ssa stl son txt xml"
-			role="Editor"
-			iconfile="resources/installers/macosx/subtitle.icns"
-		/>
-		</jarbundler>
-
+            shortversion="${version}"
+            copyright="© Panayotis Katsaloulis"
+            applicationCategory="public.app-category.video"
+			mainclassname="Jubler"
+        >
+            <classpath dir="dist">
+                <include name="*.jar"/>
+            </classpath>
+            <bundledocument extensions="srt sub ass ssa stl son txt xml"
+                icon="resources/installers/macosx/subtitle.icns"
+                name="Subtitle Document"
+                role="Editor"
+            />
+        </appbundler>
 	</target>
 
 
@@ -442,7 +441,7 @@
 
 	<target name="clean">
 		<for param="plugins">
-			<path> <dirset dir="plugins" includes="*"/> </path>
+			<path> <dirset dir="plugins" includes="*"/> <dirset dir="disabled_plugins" includes="*"/> </path>
 			<sequential> <ant antfile="@{plugins}/build.xml" inheritall="false" target="clean"/> </sequential>
 		</for>
 		<ant dir="core" target="clean"/>

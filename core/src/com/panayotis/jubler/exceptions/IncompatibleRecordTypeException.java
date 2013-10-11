@@ -28,7 +28,7 @@
 
 package com.panayotis.jubler.exceptions;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  * This class is used to raise exception condition when differences between two
@@ -44,7 +44,7 @@ public class IncompatibleRecordTypeException extends Exception {
      * The default message "Incompatible type detected". This message is used
      * with the default constructor.
      */
-    public static final String DEFAULT_MSG = _("Incompatible type detected.");
+    public static final String DEFAULT_MSG = __("Incompatible type detected.");
 
     /**
      * Constructs a new exception with
@@ -77,6 +77,6 @@ public class IncompatibleRecordTypeException extends Exception {
      * @param target The target of differences.
      */
     public IncompatibleRecordTypeException(Class source, Class target) {
-        super(source.getName() + "\n" + _("and") + "\n" + target.getName());
+        super(source.getName() + "\n" + __("and") + "\n" + target.getName());
     }
 }//end public class IncompatibleRecordType extends Exception

@@ -6,4 +6,5 @@ syntax: regexp
 ^resources/ffmpeg/libraries
 ^build/
 ^dist/
+^_support/
 nbproject/private/

@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.information;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
@@ -53,16 +53,16 @@ public class JAbout extends javax.swing.JPanel {
         "As\u0131m Sinan Y\u00FCksel " + parseMail("gmail.com", "yuksel.asim.sinan")
     };
     private final static String[] langs = {
-        _("Czech"),
-        _("Dutch"),
-        _("French"),
-        _("German"),
-        _("Greek"),
-        _("Italian"),
-        _("Portuguese (Brazilian)"),
-        _("Serbian"),
-        _("Spanish"),
-        _("Turkish")
+        __("Czech"),
+        __("Dutch"),
+        __("French"),
+        __("German"),
+        __("Greek"),
+        __("Italian"),
+        __("Portuguese (Brazilian)"),
+        __("Serbian"),
+        __("Spanish"),
+        __("Turkish")
     };
     private final static String version;
     private final static String release;
@@ -97,12 +97,12 @@ public class JAbout extends javax.swing.JPanel {
         LicenceT.setSelectionEnd(0);
 
         String abouttext =
-                "\n" + _("Subtitle Editor for Java") + "\n\n"
-                + _("Version") + " " + getCurrentVersion() + "\n\n"
+                "\n" + __("Subtitle Editor for Java") + "\n\n"
+                + __("Version") + " " + getCurrentVersion() + "\n\n"
                 + "\u00a9 2005-2009 Panayotis Katsaloulis" + "\n"
                 + "\u03a0\u03b1\u03bd\u03b1\u03b3\u03b9\u03ce\u03c4\u03b7\u03c2 \u039a\u03b1\u03c4\u03c3\u03b1\u03bb\u03bf\u03cd\u03bb\u03b7\u03c2" + "\n\n"
                 + "http://www.jubler.org" + "\n\n"
-                + _("Contact address") + ": " + parseMail("panayotis.com", "panayotis");
+                + __("Contact address") + ": " + parseMail("panayotis.com", "panayotis");
 
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
@@ -111,28 +111,28 @@ public class JAbout extends javax.swing.JPanel {
 
 
         StringBuilder thanks = new StringBuilder();
-        thanks.append(_("Special thanks")).append(":\n").append(_("{0} plugin", "ffmpeg"));
+        thanks.append(__("Special thanks")).append(":\n").append(__("{0} plugin", "ffmpeg"));
         thanks.append(": Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n\n");
-        thanks.append(_("Jubler mascot"));
+        thanks.append(__("Jubler mascot"));
         thanks.append(": Dimitris Karakatsanis ").append(parseMail("ath.forthnet.gr", "dimkaras")).append("\n");
-        thanks.append(_("{0} plugin", "zemberek"));
+        thanks.append(__("{0} plugin", "zemberek"));
         thanks.append(": Serkan Kaba ").append(parseMail("yahoo.com", "serkan_kaba")).append("\n");
-        thanks.append(_("{0} plugin", "W3C TT"));
+        thanks.append(__("{0} plugin", "W3C TT"));
         thanks.append(": Albert DeSantis ").append(parseMail("gmail.com", "netgensuperstar")).append("\n");
 
         thanks.append("\n");
-        thanks.append(_("Translators"));
+        thanks.append(__("Translators"));
         thanks.append(":\n");
         for (int i = 0; i < transl.length; i++)
             thanks.append(langs[i]).append(" : ").append(transl[i]).append('\n');
 
         thanks.append("\n");
-        thanks.append(_("Packagers")).append("\n");
+        thanks.append(__("Packagers")).append("\n");
         thanks.append("Fedora: Marcin Zaj\u0105czkowski ").append(parseMail("wp.pl", "mszpak")).append("\n");
         thanks.append("Gentoo: Serkan Kaba ").append(parseMail("gentoo.org", "serkan")).append("\n");
         thanks.append("Slackware: Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n");
 
-        thanks.append("\n").append(_("Icon theme")).append(":\n").append(icon_theme);
+        thanks.append("\n").append(__("Icon theme")).append(":\n").append(icon_theme);
 
         ThanksT.setText(thanks.toString());
         ThanksT.setSelectionStart(0);
@@ -176,7 +176,7 @@ public class JAbout extends javax.swing.JPanel {
         InfoT.setEditable(false);
         InfoT.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         InfoT.setOpaque(false);
-        jTabbedPane1.addTab(_("About"), InfoT);
+        jTabbedPane1.addTab(__("About"), InfoT);
 
         jScrollPane2.setPreferredSize(new java.awt.Dimension(450, 300));
 
@@ -185,19 +185,19 @@ public class JAbout extends javax.swing.JPanel {
         ThanksT.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jScrollPane2.setViewportView(ThanksT);
 
-        jTabbedPane1.addTab(_("Thanks"), jScrollPane2);
+        jTabbedPane1.addTab(__("Thanks"), jScrollPane2);
 
         jPanel2.setEnabled(false);
         jPanel2.setPreferredSize(new java.awt.Dimension(450, 300));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         LicenceT.setEditable(false);
-        LicenceT.setFont(new java.awt.Font("Dialog", 0, 11));
+        LicenceT.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jScrollPane1.setViewportView(LicenceT);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab(_("Licence"), jPanel2);
+        jTabbedPane1.addTab(__("Licence"), jPanel2);
 
         add(jTabbedPane1, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents

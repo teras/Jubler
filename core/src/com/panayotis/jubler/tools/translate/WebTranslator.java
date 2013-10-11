@@ -20,7 +20,7 @@
 
 package com.panayotis.jubler.tools.translate;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
@@ -75,7 +75,7 @@ public abstract class WebTranslator implements Translator, ActionListener {
 
     public boolean translate(final List<SubEntry> subs, final String from_language, final String to_language) {
         errorstream = "";
-        proc.setValues(subs.size(), _("Translating to {0}", to_language));
+        proc.setValues(subs.size(), __("Translating to {0}", to_language));
         transt = new Thread() {
             @Override
             public void run() {
@@ -87,7 +87,7 @@ public abstract class WebTranslator implements Translator, ActionListener {
                     }
                     errorstream = translatePart(subs, i, Math.min(subs.size(), i + blocksize), from_language, to_language);
                     if (errorstream != null) {
-                        JIDialog.error(null, _("Translating failed with error:") + '\n' + errorstream, _("Error while translating subtitles"));
+                        JIDialog.error(null, __("Translating failed with error:") + '\n' + errorstream, __("Error while translating subtitles"));
                         DEBUG.debug(errorstream);
                         break;
                     }

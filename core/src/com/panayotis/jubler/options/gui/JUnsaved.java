@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.options.gui;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import javax.swing.JList;
 

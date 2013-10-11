@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.os.DEBUG;
@@ -90,7 +90,7 @@ public final class FFMPEG extends NativeDecoder {
             wav = wavfile;
             if (!createClip(afile.getPath(), wavfile.getPath(), (long) from, (long) to)) {
                 /* Something went wrong */
-                cleanUp(_("Could not create audio clip"), wav);
+                cleanUp(__("Could not create audio clip"), wav);
                 return;
             }
 
@@ -109,11 +109,11 @@ public final class FFMPEG extends NativeDecoder {
             clip.start();
 
         } catch (IOException e) {
-            cleanUp(_("Open file error"), wav);
+            cleanUp(__("Open file error"), wav);
         } catch (UnsupportedAudioFileException e) {
-            cleanUp(_("Unsupported audio"), wav);
+            cleanUp(__("Unsupported audio"), wav);
         } catch (LineUnavailableException e) {
-            cleanUp(_("Line unavailable"), wav);
+            cleanUp(__("Line unavailable"), wav);
         } catch (Exception e) {
             DEBUG.debug(e);
             cleanUp(null, wav);

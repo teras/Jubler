@@ -27,7 +27,7 @@ import com.panayotis.jubler.subs.Subtitles;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.StringTokenizer;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -36,12 +36,12 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class SplitEntries extends OneByOneTool {
 
     public SplitEntries() {
-        super(true, new ToolMenu(_("Split entries"), "TSE", Location.CONTENTTOOL, KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Split entries"), "TSE", Location.CONTENTTOOL, KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
     }
 
     @Override
     protected String getToolTitle() {
-        return _("Split Entries");
+        return __("Split Entries");
     }
 
     @Override

@@ -26,7 +26,7 @@ package com.panayotis.jubler.subs.loader.gui;
 import com.panayotis.jubler.options.gui.JRateChooser;
 import java.awt.BorderLayout;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;

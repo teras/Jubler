@@ -26,7 +26,7 @@ package com.panayotis.jubler.tools;
 import com.panayotis.jubler.subs.SubEntry;
 import javax.swing.JPanel;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -55,10 +55,10 @@ public class MarkerGUI extends JPanel {
         setLayout(new java.awt.BorderLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(_("Color to use")+"  ");
+        jLabel1.setText(__("Color to use")+"  ");
         add(jLabel1, java.awt.BorderLayout.WEST);
 
-        ColSel.setToolTipText(_("Select the mark color from the drop down list"));
+        ColSel.setToolTipText(__("Select the mark color from the drop down list"));
         add(ColSel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

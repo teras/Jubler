@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.style.gui.tri;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
@@ -43,11 +43,11 @@ public class TriColorButton extends JButton implements TriObject {
 
     private JAlphaIcon icon;
     private JAlphaColorDialog colordialog;
-    public final static String[] labels = {_("Primary"), _("Secondary"), _("Outline"), _("Shadow")};
-    public final static String[] tooltips = {_("Set the primary color of the style"),
-        _("Set the secondary color of the style"),
-        _("Set the outline color of the style"),
-        _("Set the shadow (or the background) color of the style")
+    public final static String[] labels = {__("Primary"), __("Secondary"), __("Outline"), __("Shadow")};
+    public final static String[] tooltips = {__("Set the primary color of the style"),
+        __("Set the secondary color of the style"),
+        __("Set the outline color of the style"),
+        __("Set the shadow (or the background) color of the style")
     };
 
     public TriColorButton(AlphaColor c, JubFrame parent) {

@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.information.HelpBrowser;
@@ -184,7 +184,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         undo = new UndoList(this);
 
         initComponents();
-        PreviewTB.setToolTipText(_("Right mouse click to bring selected row into view"));
+        PreviewTB.setToolTipText(__("Right mouse click to bring selected row into view"));
         PreviewTB.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 int mouse_button = e.getButton();
@@ -247,7 +247,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     public void keepUndo(SubEntry newsub) {
         if (newsub == last_changed_sub)
             return;
-        undo.addUndo(new UndoEntry(subs, _("Change subtitle")));
+        undo.addUndo(new UndoEntry(subs, __("Change subtitle")));
         /* The next command sould be last in order to be synchronized with resetUndoMark */
         last_changed_sub = newsub;
     }
@@ -293,7 +293,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     public int addSubEntry(SubEntry entry) {
         int where;
 
-        undo.addUndo(new UndoEntry(subs, _("Insert subtitle")));
+        undo.addUndo(new UndoEntry(subs, __("Insert subtitle")));
         SubEntry[] selected = getSelectedSubs();
         where = subs.addSorted(entry);
         tableHasChanged(selected);
@@ -455,74 +455,74 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         FormListener formListener = new FormListener();
 
-        CutP.setText(_("Cut"));
+        CutP.setText(__("Cut"));
         CutP.addActionListener(formListener);
         SubsPop.add(CutP);
 
-        CopyP.setText(_("Copy"));
+        CopyP.setText(__("Copy"));
         CopyP.addActionListener(formListener);
         SubsPop.add(CopyP);
 
-        PasteP.setText(_("Paste"));
+        PasteP.setText(__("Paste"));
         PasteP.addActionListener(formListener);
         SubsPop.add(PasteP);
 
-        DeleteP.setText(_("Delete"));
+        DeleteP.setText(__("Delete"));
         DeleteP.addActionListener(formListener);
         SubsPop.add(DeleteP);
 
-        MarkP.setText(_("Mark"));
+        MarkP.setText(__("Mark"));
 
-        NoneMP.setText(_("None"));
+        NoneMP.setText(__("None"));
         NoneMP.addActionListener(formListener);
         MarkP.add(NoneMP);
 
-        PinkMP.setText(_("Pink"));
+        PinkMP.setText(__("Pink"));
         PinkMP.addActionListener(formListener);
         MarkP.add(PinkMP);
 
-        YellowMP.setText(_("Yellow"));
+        YellowMP.setText(__("Yellow"));
         YellowMP.addActionListener(formListener);
         MarkP.add(YellowMP);
 
-        CyanMP.setText(_("Cyan"));
+        CyanMP.setText(__("Cyan"));
         CyanMP.addActionListener(formListener);
         MarkP.add(CyanMP);
 
         SubsPop.add(MarkP);
 
-        StyleP.setText(_("Style"));
+        StyleP.setText(__("Style"));
         SubsPop.add(StyleP);
         SubsPop.add(jSeparator1);
 
-        ShowColP.setText(_("Show columns"));
+        ShowColP.setText(__("Show columns"));
 
-        ShowNumberP.setText(_("Index"));
+        ShowNumberP.setText(__("Index"));
         ShowNumberP.setActionCommand("0");
         ShowNumberP.addActionListener(formListener);
         ShowColP.add(ShowNumberP);
 
-        ShowStartP.setText(_("Start"));
+        ShowStartP.setText(__("Start"));
         ShowStartP.setActionCommand("1");
         ShowStartP.addActionListener(formListener);
         ShowColP.add(ShowStartP);
 
-        ShowEndP.setText(_("End"));
+        ShowEndP.setText(__("End"));
         ShowEndP.setActionCommand("2");
         ShowEndP.addActionListener(formListener);
         ShowColP.add(ShowEndP);
 
-        ShowLayerP.setText(_("Layer"));
+        ShowLayerP.setText(__("Layer"));
         ShowLayerP.setActionCommand("3");
         ShowLayerP.addActionListener(formListener);
         ShowColP.add(ShowLayerP);
 
-        ShowStyleP.setText(_("Style"));
+        ShowStyleP.setText(__("Style"));
         ShowStyleP.setActionCommand("4");
         ShowStyleP.addActionListener(formListener);
         ShowColP.add(ShowStyleP);
 
-        ShowCPMP.setText(_("Characters per minute"));
+        ShowCPMP.setText(__("Characters per minute"));
         ShowCPMP.setActionCommand("5");
         ShowCPMP.addActionListener(formListener);
         ShowColP.add(ShowCPMP);
@@ -530,7 +530,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SubsPop.add(ShowColP);
         SubsPop.add(jSeparator11);
 
-        PlayVideoP.setText(_("Test video"));
+        PlayVideoP.setText(__("Test video"));
         PlayVideoP.addActionListener(formListener);
         SubsPop.add(PlayVideoP);
 
@@ -584,19 +584,19 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         FileTP.setLayout(new javax.swing.BoxLayout(FileTP, javax.swing.BoxLayout.LINE_AXIS));
 
         NewTB.setIcon(Theme.loadIcon("new.png"));
-        NewTB.setToolTipText(_("New"));
+        NewTB.setToolTipText(__("New"));
         SystemDependent.setToolBarButtonStyle(NewTB, "first");
         NewTB.addActionListener(formListener);
         FileTP.add(NewTB);
 
         LoadTB.setIcon(Theme.loadIcon("load.png"));
-        LoadTB.setToolTipText(_("Load"));
+        LoadTB.setToolTipText(__("Load"));
         SystemDependent.setToolBarButtonStyle(LoadTB, "middle");
         LoadTB.addActionListener(formListener);
         FileTP.add(LoadTB);
 
         SaveTB.setIcon(Theme.loadIcon("save.png"));
-        SaveTB.setToolTipText(_("Save"));
+        SaveTB.setToolTipText(__("Save"));
         SaveTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(SaveTB, "last");
         SaveTB.addActionListener(formListener);
@@ -608,7 +608,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
         InfoTB.setIcon(Theme.loadIcon("info.png"));
-        InfoTB.setToolTipText(_("Project Information"));
+        InfoTB.setToolTipText(__("Project Information"));
         InfoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(InfoTB, "only");
         InfoTB.addActionListener(formListener);
@@ -620,21 +620,21 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
 
         CutTB.setIcon(Theme.loadIcon("cut.png"));
-        CutTB.setToolTipText(_("Cut"));
+        CutTB.setToolTipText(__("Cut"));
         CutTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(CutTB, "first");
         CutTB.addActionListener(formListener);
         EditTP.add(CutTB);
 
         CopyTB.setIcon(Theme.loadIcon("copy.png"));
-        CopyTB.setToolTipText(_("Copy"));
+        CopyTB.setToolTipText(__("Copy"));
         CopyTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(CopyTB, "middle");
         CopyTB.addActionListener(formListener);
         EditTP.add(CopyTB);
 
         PasteTB.setIcon(Theme.loadIcon("paste.png"));
-        PasteTB.setToolTipText(_("Paste"));
+        PasteTB.setToolTipText(__("Paste"));
         PasteTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(PasteTB, "last");
         PasteTB.addActionListener(formListener);
@@ -645,14 +645,14 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         UndoTP.setLayout(new javax.swing.BoxLayout(UndoTP, javax.swing.BoxLayout.LINE_AXIS));
 
         UndoTB.setIcon(Theme.loadIcon("undo.png"));
-        UndoTB.setToolTipText(_("Undo"));
+        UndoTB.setToolTipText(__("Undo"));
         UndoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(UndoTB, "first");
         UndoTB.addActionListener(formListener);
         UndoTP.add(UndoTB);
 
         RedoTB.setIcon(Theme.loadIcon("redo.png"));
-        RedoTB.setToolTipText(_("Redo"));
+        RedoTB.setToolTipText(__("Redo"));
         RedoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(RedoTB, "last");
         RedoTB.addActionListener(formListener);
@@ -664,7 +664,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SortTP.setLayout(new javax.swing.BoxLayout(SortTP, javax.swing.BoxLayout.LINE_AXIS));
 
         SortTB.setIcon(Theme.loadIcon("sort.png"));
-        SortTB.setToolTipText(_("Sort subtitles"));
+        SortTB.setToolTipText(__("Sort subtitles"));
         SortTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(SortTB, "only");
         SortTB.addActionListener(formListener);
@@ -675,7 +675,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         TestTP.setLayout(new javax.swing.BoxLayout(TestTP, javax.swing.BoxLayout.LINE_AXIS));
 
         TestTB.setIcon(Theme.loadIcon("test.png"));
-        TestTB.setToolTipText(_("Test subtitles from current position"));
+        TestTB.setToolTipText(__("Test subtitles from current position"));
         TestTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(TestTB, "first");
         TestTB.addActionListener(formListener);
@@ -684,7 +684,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         PreviewTB.setModel(new ToggleButtonModel());
         SystemDependent.setToolBarButtonStyle(PreviewTB, "last");
         PreviewTB.setIcon(Theme.loadIcon("previewc.png"));
-        PreviewTB.setToolTipText(_("Enable preview"));
+        PreviewTB.setToolTipText(__("Enable preview"));
         PreviewTB.setEnabled(false);
         PreviewTB.setSelectedIcon(Theme.loadIcon("preview.png"));
         PreviewTB.addActionListener(formListener);
@@ -694,17 +694,17 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         getContentPane().add(JublerTools, java.awt.BorderLayout.NORTH);
 
-        FileM.setText(_("&File"));
+        FileM.setText(__("&File"));
 
-        NewFM.setText(_("New..."));
+        NewFM.setText(__("New..."));
 
         FileNFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        FileNFM.setText(_("File"));
+        FileNFM.setText(__("File"));
         FileNFM.setName("FNF"); // NOI18N
         FileNFM.addActionListener(formListener);
         NewFM.add(FileNFM);
 
-        ChildNFM.setText(_("Child"));
+        ChildNFM.setText(__("Child"));
         ChildNFM.setEnabled(false);
         ChildNFM.setName("FNC"); // NOI18N
         ChildNFM.addActionListener(formListener);
@@ -713,97 +713,97 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         FileM.add(NewFM);
 
         OpenFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        OpenFM.setText(_("Open"));
+        OpenFM.setText(__("Open"));
         OpenFM.setName("FOP"); // NOI18N
         OpenFM.addActionListener(formListener);
         FileM.add(OpenFM);
 
-        WebFM.setText(_("Web"));
+        WebFM.setText(__("Web"));
 
-        RetrieveWFM.setText(_("Retrieve"));
+        RetrieveWFM.setText(__("Retrieve"));
         RetrieveWFM.setName("RFW"); // NOI18N
         RetrieveWFM.addActionListener(formListener);
         WebFM.add(RetrieveWFM);
 
         FileM.add(WebFM);
 
-        RevertFM.setText(_("Revert"));
+        RevertFM.setText(__("Revert"));
         RevertFM.setEnabled(false);
         RevertFM.setName("FRE"); // NOI18N
         RevertFM.addActionListener(formListener);
         FileM.add(RevertFM);
 
-        RecentsFM.setText(_("Recent files"));
+        RecentsFM.setText(__("Recent files"));
         FileM.add(RecentsFM);
 
         SaveFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        SaveFM.setText(_("Save"));
+        SaveFM.setText(__("Save"));
         SaveFM.setEnabled(false);
         SaveFM.setName("FSV"); // NOI18N
         SaveFM.addActionListener(formListener);
         FileM.add(SaveFM);
 
-        SaveAsFM.setText(_("Save as ..."));
+        SaveAsFM.setText(__("Save as ..."));
         SaveAsFM.setEnabled(false);
         SaveAsFM.setName("FSA"); // NOI18N
         SaveAsFM.addActionListener(formListener);
         FileM.add(SaveAsFM);
 
         CloseFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
-        CloseFM.setText(_("Close"));
+        CloseFM.setText(__("Close"));
         CloseFM.setName("FCL"); // NOI18N
         CloseFM.addActionListener(formListener);
         FileM.add(CloseFM);
         FileM.add(jSeparator7);
 
         InfoFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
-        InfoFM.setText(_("Information"));
+        InfoFM.setText(__("Information"));
         InfoFM.setEnabled(false);
         InfoFM.setName("FIN"); // NOI18N
         InfoFM.addActionListener(formListener);
         FileM.add(InfoFM);
 
         PrefsFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.CTRL_MASK));
-        PrefsFM.setText(_("Preferences"));
+        PrefsFM.setText(__("Preferences"));
         PrefsFM.setName("FPR"); // NOI18N
         PrefsFM.addActionListener(formListener);
         FileM.add(PrefsFM);
 
         QuitFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-        QuitFM.setText(_("Quit"));
+        QuitFM.setText(__("Quit"));
         QuitFM.setName("FQU"); // NOI18N
         QuitFM.addActionListener(formListener);
         FileM.add(QuitFM);
 
         JublerMenuBar.add(FileM);
 
-        EditM.setText(_("&Edit"));
+        EditM.setText(__("&Edit"));
         EditM.setEnabled(false);
 
-        CutEM.setText(_("Cut subtitles"));
+        CutEM.setText(__("Cut subtitles"));
         CutEM.setName("ECU"); // NOI18N
         CutEM.addActionListener(formListener);
         EditM.add(CutEM);
 
-        CopyEM.setText(_("Copy subtitles"));
+        CopyEM.setText(__("Copy subtitles"));
         CopyEM.setName("ECO"); // NOI18N
         CopyEM.addActionListener(formListener);
         EditM.add(CopyEM);
 
-        PasteEM.setText(_("Paste subtitles"));
+        PasteEM.setText(__("Paste subtitles"));
         PasteEM.setName("EPA"); // NOI18N
         PasteEM.addActionListener(formListener);
         EditM.add(PasteEM);
 
-        PasteSpecialEM.setText(_("Paste special"));
+        PasteSpecialEM.setText(__("Paste special"));
         PasteSpecialEM.setName("EPS"); // NOI18N
         PasteSpecialEM.addActionListener(formListener);
         EditM.add(PasteSpecialEM);
         EditM.add(jSeparator9);
 
-        DeleteEM.setText(_("Delete"));
+        DeleteEM.setText(__("Delete"));
 
-        EmptyLinesDEM.setText(_("Empty Lines"));
+        EmptyLinesDEM.setText(__("Empty Lines"));
         EmptyLinesDEM.setName("EDE"); // NOI18N
         EmptyLinesDEM.addActionListener(formListener);
         DeleteEM.add(EmptyLinesDEM);
@@ -811,33 +811,33 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         EditM.add(DeleteEM);
 
-        ReplaceEM.setText(_("Replace"));
+        ReplaceEM.setText(__("Replace"));
 
         StepwiseREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
-        StepwiseREM.setText(_("Find & replace"));
+        StepwiseREM.setText(__("Find & replace"));
         StepwiseREM.setName("ERS"); // NOI18N
         StepwiseREM.addActionListener(formListener);
         ReplaceEM.add(StepwiseREM);
 
         RegExpREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
-        RegExpREM.setText(_("Regular Expression"));
+        RegExpREM.setText(__("Regular Expression"));
         RegExpREM.setName("ERG"); // NOI18N
         RegExpREM.addActionListener(formListener);
         ReplaceEM.add(RegExpREM);
 
         EditM.add(ReplaceEM);
 
-        InsertEM.setText(_("Insert"));
+        InsertEM.setText(__("Insert"));
 
         BeforeIEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.CTRL_MASK));
-        BeforeIEM.setText(_("Before"));
+        BeforeIEM.setText(__("Before"));
         BeforeIEM.setActionCommand("b");
         BeforeIEM.setName("EIB"); // NOI18N
         BeforeIEM.addActionListener(formListener);
         InsertEM.add(BeforeIEM);
 
         AfterIEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
-        AfterIEM.setText(_("After"));
+        AfterIEM.setText(__("After"));
         AfterIEM.setActionCommand("a");
         AfterIEM.setName("EIA"); // NOI18N
         AfterIEM.addActionListener(formListener);
@@ -845,86 +845,86 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         EditM.add(InsertEM);
 
-        GoEM.setText(_("Go to..."));
+        GoEM.setText(__("Go to..."));
 
         PreviousGEM.setAccelerator(SystemDependent.getUpDownKeystroke(false));
-        PreviousGEM.setText(_("Previous entry"));
+        PreviousGEM.setText(__("Previous entry"));
         PreviousGEM.setActionCommand("p");
         PreviousGEM.setName("EGP"); // NOI18N
         PreviousGEM.addActionListener(formListener);
         GoEM.add(PreviousGEM);
 
         NextGEM.setAccelerator(SystemDependent.getUpDownKeystroke(true));
-        NextGEM.setText(_("Next entry"));
+        NextGEM.setText(__("Next entry"));
         NextGEM.setActionCommand("n");
         NextGEM.setName("EGN"); // NOI18N
         NextGEM.addActionListener(formListener);
         GoEM.add(NextGEM);
 
         PreviousPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_UP, java.awt.event.InputEvent.CTRL_MASK));
-        PreviousPageGEM.setText(_("Previous page"));
+        PreviousPageGEM.setText(__("Previous page"));
         PreviousPageGEM.setActionCommand("u");
         PreviousPageGEM.setName("EGU"); // NOI18N
         PreviousPageGEM.addActionListener(formListener);
         GoEM.add(PreviousPageGEM);
 
         NextPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_DOWN, java.awt.event.InputEvent.CTRL_MASK));
-        NextPageGEM.setText(_("Next page"));
+        NextPageGEM.setText(__("Next page"));
         NextPageGEM.setActionCommand("d");
         NextPageGEM.setName("EGD"); // NOI18N
         NextPageGEM.addActionListener(formListener);
         GoEM.add(NextPageGEM);
 
         TopGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_OPEN_BRACKET, java.awt.event.InputEvent.CTRL_MASK));
-        TopGEM.setText(_("First entry"));
+        TopGEM.setText(__("First entry"));
         TopGEM.setActionCommand("t");
         TopGEM.setName("EGT"); // NOI18N
         TopGEM.addActionListener(formListener);
         GoEM.add(TopGEM);
 
         BottomGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_CLOSE_BRACKET, java.awt.event.InputEvent.CTRL_MASK));
-        BottomGEM.setText(_("Last entry"));
+        BottomGEM.setText(__("Last entry"));
         BottomGEM.setActionCommand("b");
         BottomGEM.setName("EGB"); // NOI18N
         BottomGEM.addActionListener(formListener);
         GoEM.add(BottomGEM);
         GoEM.add(jSeparator2);
 
-        byTimeGEM.setText(_("Selection by time"));
+        byTimeGEM.setText(__("Selection by time"));
         byTimeGEM.setName("EGM"); // NOI18N
         byTimeGEM.addActionListener(formListener);
         GoEM.add(byTimeGEM);
 
         EditM.add(GoEM);
 
-        SelectEM.setText(_("Select"));
+        SelectEM.setText(__("Select"));
 
         AllSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        AllSEM.setText(_("All"));
+        AllSEM.setText(__("All"));
         AllSEM.setName("ESA"); // NOI18N
         SelectEM.add(AllSEM);
 
         EditM.add(SelectEM);
         EditM.add(jSeparator10);
 
-        MarkEM.setText(_("Mark"));
+        MarkEM.setText(__("Mark"));
 
-        NoneMEM.setText(_("None"));
+        NoneMEM.setText(__("None"));
         NoneMEM.setName("EMN"); // NOI18N
         NoneMEM.addActionListener(formListener);
         MarkEM.add(NoneMEM);
 
-        PinkMEM.setText(_("Pink"));
+        PinkMEM.setText(__("Pink"));
         PinkMEM.setName("EMP"); // NOI18N
         PinkMEM.addActionListener(formListener);
         MarkEM.add(PinkMEM);
 
-        YellowMEM.setText(_("Yellow"));
+        YellowMEM.setText(__("Yellow"));
         YellowMEM.setName("EMY"); // NOI18N
         YellowMEM.addActionListener(formListener);
         MarkEM.add(YellowMEM);
 
-        CyanMEM.setText(_("Cyan"));
+        CyanMEM.setText(__("Cyan"));
         CyanMEM.setName("EMC"); // NOI18N
         CyanMEM.addActionListener(formListener);
         MarkEM.add(CyanMEM);
@@ -932,21 +932,21 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         EditM.add(MarkEM);
 
-        StyleEM.setText(_("Style"));
+        StyleEM.setText(__("Style"));
         StyleEM.add(StyleSepSEM);
 
         EditM.add(StyleEM);
         EditM.add(jSeparator4);
 
         UndoEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        UndoEM.setText(_("Undo"));
+        UndoEM.setText(__("Undo"));
         UndoEM.setEnabled(false);
         UndoEM.setName("EUN"); // NOI18N
         UndoEM.addActionListener(formListener);
         EditM.add(UndoEM);
 
         RedoEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
-        RedoEM.setText(_("Redo"));
+        RedoEM.setText(__("Redo"));
         RedoEM.setEnabled(false);
         RedoEM.setName("ERE"); // NOI18N
         RedoEM.addActionListener(formListener);
@@ -954,65 +954,65 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(jSeparator5);
 
         ToolsLockM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
-        ToolsLockM.setText(_("Tools lock"));
+        ToolsLockM.setText(__("Tools lock"));
         ToolsLockM.setName("TLO"); // NOI18N
         ToolsLockM.addActionListener(formListener);
         EditM.add(ToolsLockM);
 
         JublerMenuBar.add(EditM);
 
-        ToolsM.setText(_("&Tools"));
+        ToolsM.setText(__("&Tools"));
         ToolsM.setEnabled(false);
 
-        TestTM.setText(_("Test video"));
+        TestTM.setText(__("Test video"));
 
         BeginningTTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
-        BeginningTTM.setText(_("From the beginning"));
+        BeginningTTM.setText(__("From the beginning"));
         BeginningTTM.setName("TTB"); // NOI18N
         BeginningTTM.addActionListener(formListener);
         TestTM.add(BeginningTTM);
 
         CurrentTTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
-        CurrentTTM.setText(_("From current position"));
+        CurrentTTM.setText(__("From current position"));
         CurrentTTM.setName("TTC"); // NOI18N
         CurrentTTM.addActionListener(formListener);
         TestTM.add(CurrentTTM);
 
         ToolsM.add(TestTM);
 
-        PreviewP.setText(_("Preview"));
+        PreviewP.setText(__("Preview"));
 
         EnablePreviewC.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
-        EnablePreviewC.setText(_("Enable preview"));
+        EnablePreviewC.setText(__("Enable preview"));
         EnablePreviewC.setName("TPE"); // NOI18N
         EnablePreviewC.addActionListener(formListener);
         PreviewP.add(EnablePreviewC);
         PreviewP.add(jSeparator6);
 
         VideoPreviewC.setSelected(true);
-        VideoPreviewC.setText(_("Video frame"));
+        VideoPreviewC.setText(__("Video frame"));
         VideoPreviewC.setName("TPV"); // NOI18N
         VideoPreviewC.addActionListener(formListener);
         PreviewP.add(VideoPreviewC);
 
-        HalfSizeC.setText(_("Half size image"));
+        HalfSizeC.setText(__("Half size image"));
         HalfSizeC.setName("TPH"); // NOI18N
         HalfSizeC.addActionListener(formListener);
         PreviewP.add(HalfSizeC);
         PreviewP.add(jSeparator12);
 
         AudioPreviewC.setSelected(true);
-        AudioPreviewC.setText(_("Audio waveform"));
+        AudioPreviewC.setText(__("Audio waveform"));
         AudioPreviewC.setName("TAP"); // NOI18N
         AudioPreviewC.addActionListener(formListener);
         PreviewP.add(AudioPreviewC);
 
-        MaxWaveC.setText(_("Maximize waveform visualization"));
+        MaxWaveC.setText(__("Maximize waveform visualization"));
         MaxWaveC.setName("TPM"); // NOI18N
         MaxWaveC.addActionListener(formListener);
         PreviewP.add(MaxWaveC);
 
-        PlayAudioC.setText(_("Play current subtitle"));
+        PlayAudioC.setText(__("Play current subtitle"));
         PlayAudioC.setName("TPP"); // NOI18N
         PlayAudioC.addActionListener(formListener);
         PreviewP.add(PlayAudioC);
@@ -1021,15 +1021,15 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         JublerMenuBar.add(ToolsM);
 
-        HelpM.setText(_("&Help"));
+        HelpM.setText(__("&Help"));
 
-        FAQHM.setText(_("FAQ"));
+        FAQHM.setText(__("FAQ"));
         FAQHM.setName("HFQ"); // NOI18N
         FAQHM.addActionListener(formListener);
         HelpM.add(FAQHM);
 
         AboutHM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SLASH, java.awt.event.InputEvent.CTRL_MASK));
-        AboutHM.setText(_("About"));
+        AboutHM.setText(__("About"));
         AboutHM.setName("HAB"); // NOI18N
         AboutHM.addActionListener(formListener);
         HelpM.add(AboutHM);
@@ -1301,17 +1301,17 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     }//GEN-LAST:event_QuitFMActionPerformed
 
     private void SortTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortTBActionPerformed
-        undo.addUndo(new UndoEntry(subs, _("Sort")));
+        undo.addUndo(new UndoEntry(subs, __("Sort")));
         SubEntry[] selected = getSelectedSubs();
         subs.sort(0, Double.MAX_VALUE);
         tableHasChanged(selected);
     }//GEN-LAST:event_SortTBActionPerformed
 
     private void byTimeGEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byTimeGEMActionPerformed
-        JTimeSingleSelection go = new JTimeSingleSelection(new Time(3600d), _("Go to the specified time"));
-        go.setToolTip(_("Into which time moment do you want to go to"));
+        JTimeSingleSelection go = new JTimeSingleSelection(new Time(3600d), __("Go to the specified time"));
+        go.setToolTip(__("Into which time moment do you want to go to"));
 
-        if (JIDialog.action(this, go, _("Go to subtitle")))
+        if (JIDialog.action(this, go, __("Go to subtitle")))
             setSelectedSub(subs.findSubEntry(go.getTime().toSeconds(), true), true);
     }//GEN-LAST:event_byTimeGEMActionPerformed
 
@@ -1359,7 +1359,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         for (int i = 0; i < s.size(); i++)
             s.elementAt(i).setText("");
         curjubler.setSubs(s);
-        curjubler.subs.getSubFile().appendToFilename(_("_child"));
+        curjubler.subs.getSubFile().appendToFilename(__("_child"));
         curjubler.setUnsaved(true);
         curjubler.showInfo();
         curjubler.jparent = this;
@@ -1370,7 +1370,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private void InfoFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InfoFMActionPerformed
         JInformation info = new JInformation(this);
         SubAttribs oldattr = subs.getAttribs();
-        UndoEntry entry = new UndoEntry(subs, _("Change information"));
+        UndoEntry entry = new UndoEntry(subs, __("Change information"));
 
         info.setVisible(true);
         subs.setAttribs(info.getAttribs());
@@ -1450,13 +1450,13 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         else
             paster = new JPasterGUI(subs.elementAt(row).getStartTime());
 
-        if (JIDialog.action(this, paster, _("Paste special options"))) {
+        if (JIDialog.action(this, paster, __("Paste special options"))) {
             int newmark = paster.getMark();
             double timeoffset = paster.getStartTime().toSeconds();
             double smallest = Time.MAX_TIME;
             double ctime;
 
-            undo.addUndo(new UndoEntry(subs, _("Paste special")));
+            undo.addUndo(new UndoEntry(subs, __("Paste special")));
             SubEntry[] selected = getSelectedSubs();
 
             /* Find smallest time first */
@@ -1484,7 +1484,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private void PasteEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasteEMActionPerformed
         if (copybuffer.isEmpty())
             return;
-        undo.addUndo(new UndoEntry(subs, _("Paste subtitles")));
+        undo.addUndo(new UndoEntry(subs, __("Paste subtitles")));
         SubEntry[] sel = new SubEntry[copybuffer.size()];
         for (int i = 0; i < copybuffer.size(); i++) {
             sel[i] = new SubEntry(copybuffer.get(i));
@@ -1503,7 +1503,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
     private void CutEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CutEMActionPerformed
         copybuffer.clear();
-        undo.addUndo(new UndoEntry(subs, _("Cut subtitles")));
+        undo.addUndo(new UndoEntry(subs, __("Cut subtitles")));
         SubEntry[] selected = getSelectedSubs();
 
         for (int i = 0; i < selected.length; i++) {
@@ -1554,7 +1554,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     }//GEN-LAST:event_NoneMPActionPerformed
 
     private void DeletePActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeletePActionPerformed
-        undo.addUndo(new UndoEntry(subs, _("Delete subtitles")));
+        undo.addUndo(new UndoEntry(subs, __("Delete subtitles")));
         int sel[] = SubTable.getSelectedRows();
         for (int i = sel.length - 1; i >= 0; i--)
             subs.remove(sel[i]);
@@ -1580,7 +1580,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             newer = older.trim();
             if (!newer.equals(older) || newer.equals("")) {
                 if (u == null)
-                    u = new UndoEntry(subs, _("Remove empty lines"));
+                    u = new UndoEntry(subs, __("Remove empty lines"));
 
                 if (newer.equals(""))
                     subs.remove(i);
@@ -1592,7 +1592,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             undo.addUndo(u);
             tableHasChanged(null);
         } else
-            JIDialog.info(this, _("No lines affected"), _("Remove empty lines"));
+            JIDialog.info(this, __("No lines affected"), __("Remove empty lines"));
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed
 
     private void CyanMEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CyanMEMActionPerformed
@@ -1826,11 +1826,11 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         if (isUndo) {
             domenu = UndoEM;
             dobutton = UndoTB;
-            doname = _("Undo");
+            doname = __("Undo");
         } else {
             domenu = RedoEM;
             dobutton = RedoTB;
-            doname = _("Redo");
+            doname = __("Redo");
         }
 
         if (text == null) {
@@ -1845,7 +1845,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     private void setMark(int[] rows, int mark) {
-        undo.addUndo(new UndoEntry(subs, _("Mark subtitles as {0}", SubEntry.MarkNames[mark])));
+        undo.addUndo(new UndoEntry(subs, __("Mark subtitles as {0}", SubEntry.MarkNames[mark])));
         SubEntry[] selected = getSelectedSubs();
         for (int i = 0; i < rows.length; i++)
             subs.elementAt(rows[i]).setMark(mark);
@@ -1866,7 +1866,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             showInfo();
             StaticJubler.updateRecents();
         } else
-            JIDialog.error(this, result, _("Error while saving file"));
+            JIDialog.error(this, result, __("Error while saving file"));
     }
 
     private JubFrame loadFileFromHere(SubFile file, boolean force_into_same_window) {
@@ -1896,7 +1896,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
         data = FileCommunicator.load(sfile);  // Read data and set current encoding
         if (data == null) {
-            JIDialog.error(this, _("Could not load file. Possibly an encoding error."), _("Error while loading file"));
+            JIDialog.error(this, __("Could not load file. Possibly an encoding error."), __("Error while loading file"));
             return null;
         }
         /* Strip autosave prefix from filename */
@@ -1910,12 +1910,12 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         /* Convert file into subtitle data */
         newsubs.populate(newsubs.getSubFile(), data);
         if (newsubs.isEmpty()) {
-            JIDialog.error(this, _("File not recognized!"), _("Error while loading file"));
+            JIDialog.error(this, __("File not recognized!"), __("Error while loading file"));
             return null;
         }
 
         if (work.subs != null)
-            work.undo.addUndo(new UndoEntry(work.subs, _("Reload subtitles")));
+            work.undo.addUndo(new UndoEntry(work.subs, __("Reload subtitles")));
 
         if (is_autoload)
             work.undo.invalidateSaveMark();
@@ -1935,7 +1935,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             return;
         JVideoConsole console = JVideoConsole.initialize(this, prefs.getVideoPlayer());
         if (console == null) {
-            JIDialog.info(this, _("No valid players where registered!"), _("Error while initializing video player"));
+            JIDialog.info(this, __("No valid players where registered!"), __("Error while initializing video player"));
             return;
         }
         connected_consoles.add(console);
@@ -1994,7 +1994,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         AudioPreviewC.setEnabled(status);
         MaxWaveC.setEnabled(status);
         PlayAudioC.setEnabled(status);
-        PreviewTB.setToolTipText(PreviewTB.isSelected() ? _("Disable Preview") : _("Enable Preview"));
+        PreviewTB.setToolTipText(PreviewTB.isSelected() ? __("Disable Preview") : __("Enable Preview"));
 
         if (status) {
             mfile.validateMediaFile(subs, false, this);
@@ -2032,7 +2032,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
     public void closeWindow(boolean unsave_check, boolean keep_application_alive) {
         if (isUnsaved() && unsave_check)
-            if (!JIDialog.question(this, _("Subtitles are not saved.\nDo you really want to close this window?"), _("Quit confirmation")))
+            if (!JIDialog.question(this, __("Subtitles are not saved.\nDo you really want to close this window?"), __("Quit confirmation")))
                 return;
 
         /* Close all running consoles */
@@ -2150,7 +2150,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         File f = sf.getSaveFile();
         if (f != null) {
             SubFormat fmt = sf.getFormat();
-            String format_name = (fmt == null) ? _("Unknown format") : fmt.getName();
+            String format_name = (fmt == null) ? __("Unknown format") : fmt.getName();
             String title = format_name + " - " + f.getPath();
             if (isUnsaved()) {
                 title = "*" + title;
@@ -2366,7 +2366,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     private void changeSubtitleStyle(String stylename) {
-        undo.addUndo(new UndoEntry(subs, _("Change style into {0}", stylename)));
+        undo.addUndo(new UndoEntry(subs, __("Change style into {0}", stylename)));
         int[] rows = SubTable.getSelectedRows();
         SubStyle style = subs.getStyleList().getStyleByName(stylename);
         SubEntry[] selected = getSelectedSubs();

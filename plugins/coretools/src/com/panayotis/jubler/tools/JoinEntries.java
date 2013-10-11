@@ -25,7 +25,7 @@ import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.subs.SubEntry;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -34,12 +34,12 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class JoinEntries extends TimeBaseTool {
 
     public JoinEntries() {
-        super(true, new ToolMenu(_("Join entries"), "TJE", Location.CONTENTTOOL, KeyEvent.VK_EQUALS, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Join entries"), "TJE", Location.CONTENTTOOL, KeyEvent.VK_EQUALS, InputEvent.CTRL_MASK));
     }
 
     @Override
     protected String getToolTitle() {
-        return _("Join Entries");
+        return __("Join Entries");
     }
 
     @Override

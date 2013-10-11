@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.style.gui.tri;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.subs.style.StyleChangeListener;
 import com.panayotis.jubler.subs.style.StyleType;
@@ -44,13 +44,13 @@ public class TriComboBox extends JComboBox implements TriObject {
         super();
         for (Object data : values)
             addItem(data);
-        addItem(_("Unspecified"));
+        addItem(__("Unspecified"));
         addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 if (ignore_element_changes)
                     return;
                 Object val = getSelectedItem();
-                if (val.equals(_("Unspecified")))
+                if (val.equals(__("Unspecified")))
                     return;
                 if (listener != null)
                     listener.changeStyle(styletype, getSelectedItem());
@@ -62,7 +62,7 @@ public class TriComboBox extends JComboBox implements TriObject {
     public void setData(Object data) {
         ignore_element_changes = true;
         if (data == null)
-            setSelectedItem(_("Unspecified"));
+            setSelectedItem(__("Unspecified"));
         else
             setSelectedItem(data);
         ignore_element_changes = false;

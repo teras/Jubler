@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.SystemDependent;

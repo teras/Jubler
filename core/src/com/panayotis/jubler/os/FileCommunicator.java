@@ -24,7 +24,7 @@
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -106,21 +106,21 @@ public class FileCommunicator {
             tempout = new File(outfile.getPath() + ".temp");
             if (!SystemDependent.canWrite(tempout.getParentFile())
                     || (outfile.exists() && (!SystemDependent.canWrite(outfile))))
-                return _("File {0} is unwritable", outfile.getPath());
+                return __("File {0} is unwritable", outfile.getPath());
             sfile.getFormat().updateFormat(sfile);   // This is required to update FPS & encoding of the current format
             sfile.getFormat().setJubler(JubFrame.currentWindow);
             if (sfile.getFormat().produce(subs, tempout, media)) {  // produce & check if should rename file
                 outfile.delete();
                 if (!tempout.renameTo(outfile))
-                    result = _("Error while updating file {0}", outfile.getPath());
+                    result = __("Error while updating file {0}", outfile.getPath());
             }
 
         } catch (UnsupportedEncodingException e) {
-            result = _("Encoding error. Use proper encoding (e.g. UTF-8).");
+            result = __("Encoding error. Use proper encoding (e.g. UTF-8).");
         } catch (UnmappableCharacterException e) {
-            result = _("Encoding error. Use proper encoding (e.g. UTF-8).");
+            result = __("Encoding error. Use proper encoding (e.g. UTF-8).");
         } catch (IOException e) {
-            result = _("Error while saving file {0}", outfile) + " : \n" + e.getClass().getName() + "\n" + e.getMessage();
+            result = __("Error while saving file {0}", outfile) + " : \n" + e.getClass().getName() + "\n" + e.getMessage();
         }
         if (tempout != null && tempout.exists())
             tempout.delete();
@@ -189,7 +189,7 @@ public class FileCommunicator {
     public static void setDefaultDir(File default_file) {
         String path = default_file.getPath() + File.separator;
         if (!default_file.isDirectory())
-            throw new IllegalArgumentException(_("File {0} is not a directory", default_file.getPath()));
+            throw new IllegalArgumentException(__("File {0} is not a directory", default_file.getPath()));
         Options.setOption("System.LastDirPath", path);
         Options.saveOptions();
     }

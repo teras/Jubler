@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.FileCommunicator;
@@ -227,7 +227,7 @@ public class SubFile {
 
     public void setStrippedFile(File f) {
         if (f == null)
-            f = new File(FileCommunicator.getDefaultDirPath() + _("Untitled"));
+            f = new File(FileCommunicator.getDefaultDirPath() + __("Untitled"));
         savefile_noext = f;
         savefile = new File(savefile_noext.getPath() + "." + getFormat().getExtension());
     }

@@ -15,7 +15,7 @@ import java.awt.Color;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.SubEntry;
 
@@ -76,7 +76,7 @@ public class JReplace extends javax.swing.JDialog {
             if (row == subs.size()) {
                 row = 0;
                 ContextT.setText("");
-                if (!JIDialog.action(this, _("End of subtitles reached.\nStart from the beginnning."), _("End of subtitles")))
+                if (!JIDialog.action(this, __("End of subtitles reached.\nStart from the beginnning."), __("End of subtitles")))
                     break;
             }
         }
@@ -222,7 +222,7 @@ public class JReplace extends javax.swing.JDialog {
          * Then we "forget" this pointer in order to prevent a double
          * insertion of a undo action */
         if (undo != null) {
-            undo.addUndo(new UndoEntry(subs, _("Replace")));
+            undo.addUndo(new UndoEntry(subs, __("Replace")));
             undo = null;
         }
 

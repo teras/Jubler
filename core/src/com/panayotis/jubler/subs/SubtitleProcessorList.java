@@ -21,7 +21,7 @@
 
 package com.panayotis.jubler.subs;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEvent;
 import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEventListener;
@@ -377,7 +377,7 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
                     String class_name = ps.getTargetObjectClassName();
                     boolean is_empty = Share.isEmpty(class_name);
                     if (is_empty) {
-                        String msg = _("Cannot create new record. Processor: [") + ps.getClass().getName() + _("]. Reason: target object class name is empty.");
+                        String msg = __("Cannot create new record. Processor: [") + ps.getClass().getName() + __("]. Reason: target object class name is empty.");
                         DEBUG.logger.log(Level.SEVERE, msg);
                         throw new Exception(msg);
                     }//if (is_empty)

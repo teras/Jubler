@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.media.preview;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.plugins.Theme;
@@ -49,7 +49,7 @@ public class JFramePreview extends JPanel {
     public static final int REEL_OFFSET = 12;
     /* Background color of the movie clip */
     private static final Color background = new Color(10, 10, 10);
-    private static final String inactive_decoder_message = _("FFDecode library not active. Using demo image.");
+    private static final String inactive_decoder_message = __("FFDecode library not active. Using demo image.");
     private final Image demoimg;
     /* Maximum amount of time tolerance while requesting a new image */
     public final static double DT = 0.002d;

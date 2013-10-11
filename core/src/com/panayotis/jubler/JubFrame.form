@@ -11,7 +11,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="CutP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Cut&quot;)" type="code"/>
+              <Connection code="__(&quot;Cut&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -21,7 +21,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="CopyP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Copy&quot;)" type="code"/>
+              <Connection code="__(&quot;Copy&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -31,7 +31,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="PasteP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Paste&quot;)" type="code"/>
+              <Connection code="__(&quot;Paste&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -41,7 +41,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="DeleteP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -51,14 +51,14 @@
         <Menu class="javax.swing.JMenu" name="MarkP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Mark&quot;)" type="code"/>
+              <Connection code="__(&quot;Mark&quot;)" type="code"/>
             </Property>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="NoneMP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;None&quot;)" type="code"/>
+                  <Connection code="__(&quot;None&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -68,7 +68,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="PinkMP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Pink&quot;)" type="code"/>
+                  <Connection code="__(&quot;Pink&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -78,7 +78,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="YellowMP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Yellow&quot;)" type="code"/>
+                  <Connection code="__(&quot;Yellow&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -88,7 +88,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="CyanMP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Cyan&quot;)" type="code"/>
+                  <Connection code="__(&quot;Cyan&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -100,7 +100,7 @@
         <Menu class="javax.swing.JMenu" name="StyleP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Style&quot;)" type="code"/>
+              <Connection code="__(&quot;Style&quot;)" type="code"/>
             </Property>
           </Properties>
         </Menu>
@@ -109,14 +109,14 @@
         <Menu class="javax.swing.JMenu" name="ShowColP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Show columns&quot;)" type="code"/>
+              <Connection code="__(&quot;Show columns&quot;)" type="code"/>
             </Property>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowNumberP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Index&quot;)" type="code"/>
+                  <Connection code="__(&quot;Index&quot;)" type="code"/>
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="0"/>
               </Properties>
@@ -127,7 +127,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowStartP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Start&quot;)" type="code"/>
+                  <Connection code="__(&quot;Start&quot;)" type="code"/>
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="1"/>
               </Properties>
@@ -138,7 +138,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowEndP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;End&quot;)" type="code"/>
+                  <Connection code="__(&quot;End&quot;)" type="code"/>
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="2"/>
               </Properties>
@@ -149,7 +149,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowLayerP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Layer&quot;)" type="code"/>
+                  <Connection code="__(&quot;Layer&quot;)" type="code"/>
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="3"/>
               </Properties>
@@ -160,7 +160,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowStyleP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Style&quot;)" type="code"/>
+                  <Connection code="__(&quot;Style&quot;)" type="code"/>
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="4"/>
               </Properties>
@@ -171,7 +171,7 @@
             <MenuItem class="javax.swing.JCheckBoxMenuItem" name="ShowCPMP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Characters per minute&quot;)" type="code"/>
+                  <Connection code="__(&quot;Characters per minute&quot;)" type="code"/>
                 </Property>
                 <Property name="actionCommand" type="java.lang.String" value="5"/>
               </Properties>
@@ -186,7 +186,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="PlayVideoP">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Test video&quot;)" type="code"/>
+              <Connection code="__(&quot;Test video&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -203,14 +203,14 @@
         <Menu class="javax.swing.JMenu" name="FileM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;&amp;File&quot;)" type="code"/>
+              <Connection code="__(&quot;&amp;File&quot;)" type="code"/>
             </Property>
           </Properties>
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="NewFM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;New...&quot;)" type="code"/>
+                  <Connection code="__(&quot;New...&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
@@ -220,7 +220,7 @@
                       <KeyStroke key="Ctrl+N"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;File&quot;)" type="code"/>
+                      <Connection code="__(&quot;File&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="FNF" noResource="true"/>
                   </Properties>
@@ -231,7 +231,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="ChildNFM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Child&quot;)" type="code"/>
+                      <Connection code="__(&quot;Child&quot;)" type="code"/>
                     </Property>
                     <Property name="enabled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="FNC" noResource="true"/>
@@ -248,7 +248,7 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Open&quot;)" type="code"/>
+                  <Connection code="__(&quot;Open&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="FOP" noResource="true"/>
               </Properties>
@@ -259,14 +259,14 @@
             <Menu class="javax.swing.JMenu" name="WebFM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Web&quot;)" type="code"/>
+                  <Connection code="__(&quot;Web&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="RetrieveWFM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Retrieve&quot;)" type="code"/>
+                      <Connection code="__(&quot;Retrieve&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="RFW" noResource="true"/>
                   </Properties>
@@ -279,7 +279,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="RevertFM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Revert&quot;)" type="code"/>
+                  <Connection code="__(&quot;Revert&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FRE" noResource="true"/>
@@ -291,7 +291,7 @@
             <Menu class="javax.swing.JMenu" name="RecentsFM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Recent files&quot;)" type="code"/>
+                  <Connection code="__(&quot;Recent files&quot;)" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -304,7 +304,7 @@
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Save&quot;)" type="code"/>
+                  <Connection code="__(&quot;Save&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FSV" noResource="true"/>
@@ -316,7 +316,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="SaveAsFM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Save as ...&quot;)" type="code"/>
+                  <Connection code="__(&quot;Save as ...&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FSA" noResource="true"/>
@@ -331,7 +331,7 @@
                   <KeyStroke key="Ctrl+W"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Close&quot;)" type="code"/>
+                  <Connection code="__(&quot;Close&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="FCL" noResource="true"/>
               </Properties>
@@ -347,7 +347,7 @@
                   <KeyStroke key="Ctrl+I"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Information&quot;)" type="code"/>
+                  <Connection code="__(&quot;Information&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="FIN" noResource="true"/>
@@ -362,7 +362,7 @@
                   <KeyStroke key="Ctrl+COMMA"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Preferences&quot;)" type="code"/>
+                  <Connection code="__(&quot;Preferences&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="FPR" noResource="true"/>
               </Properties>
@@ -379,7 +379,7 @@
                   <KeyStroke key="Ctrl+Q"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Quit&quot;)" type="code"/>
+                  <Connection code="__(&quot;Quit&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="FQU" noResource="true"/>
               </Properties>
@@ -395,7 +395,7 @@
         <Menu class="javax.swing.JMenu" name="EditM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;&amp;Edit&quot;)" type="code"/>
+              <Connection code="__(&quot;&amp;Edit&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -403,7 +403,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="CutEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Cut subtitles&quot;)" type="code"/>
+                  <Connection code="__(&quot;Cut subtitles&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="ECU" noResource="true"/>
               </Properties>
@@ -414,7 +414,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="CopyEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Copy subtitles&quot;)" type="code"/>
+                  <Connection code="__(&quot;Copy subtitles&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="ECO" noResource="true"/>
               </Properties>
@@ -425,7 +425,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="PasteEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Paste subtitles&quot;)" type="code"/>
+                  <Connection code="__(&quot;Paste subtitles&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="EPA" noResource="true"/>
               </Properties>
@@ -436,7 +436,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="PasteSpecialEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Paste special&quot;)" type="code"/>
+                  <Connection code="__(&quot;Paste special&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="EPS" noResource="true"/>
               </Properties>
@@ -449,7 +449,7 @@
             <Menu class="javax.swing.JMenu" name="DeleteEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Delete&quot;)" type="code"/>
+                  <Connection code="__(&quot;Delete&quot;)" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -459,7 +459,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="EmptyLinesDEM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Empty Lines&quot;)" type="code"/>
+                      <Connection code="__(&quot;Empty Lines&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="EDE" noResource="true"/>
                   </Properties>
@@ -474,7 +474,7 @@
             <Menu class="javax.swing.JMenu" name="ReplaceEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Replace&quot;)" type="code"/>
+                  <Connection code="__(&quot;Replace&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
@@ -484,7 +484,7 @@
                       <KeyStroke key="Ctrl+F"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Find &amp; replace&quot;)" type="code"/>
+                      <Connection code="__(&quot;Find &amp; replace&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="ERS" noResource="true"/>
                   </Properties>
@@ -498,7 +498,7 @@
                       <KeyStroke key="Ctrl+R"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Regular Expression&quot;)" type="code"/>
+                      <Connection code="__(&quot;Regular Expression&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="ERG" noResource="true"/>
                   </Properties>
@@ -511,7 +511,7 @@
             <Menu class="javax.swing.JMenu" name="InsertEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Insert&quot;)" type="code"/>
+                  <Connection code="__(&quot;Insert&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
@@ -521,7 +521,7 @@
                       <KeyStroke key="Ctrl+BACK_SPACE"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Before&quot;)" type="code"/>
+                      <Connection code="__(&quot;Before&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="b"/>
                     <Property name="name" type="java.lang.String" value="EIB" noResource="true"/>
@@ -536,7 +536,7 @@
                       <KeyStroke key="Ctrl+ENTER"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;After&quot;)" type="code"/>
+                      <Connection code="__(&quot;After&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="a"/>
                     <Property name="name" type="java.lang.String" value="EIA" noResource="true"/>
@@ -550,7 +550,7 @@
             <Menu class="javax.swing.JMenu" name="GoEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Go to...&quot;)" type="code"/>
+                  <Connection code="__(&quot;Go to...&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
@@ -560,7 +560,7 @@
                       <Connection code="SystemDependent.getUpDownKeystroke(false)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Previous entry&quot;)" type="code"/>
+                      <Connection code="__(&quot;Previous entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="p"/>
                     <Property name="name" type="java.lang.String" value="EGP" noResource="true"/>
@@ -575,7 +575,7 @@
                       <Connection code="SystemDependent.getUpDownKeystroke(true)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Next entry&quot;)" type="code"/>
+                      <Connection code="__(&quot;Next entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="n"/>
                     <Property name="name" type="java.lang.String" value="EGN" noResource="true"/>
@@ -590,7 +590,7 @@
                       <KeyStroke key="Ctrl+PAGE_UP"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Previous page&quot;)" type="code"/>
+                      <Connection code="__(&quot;Previous page&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="u"/>
                     <Property name="name" type="java.lang.String" value="EGU" noResource="true"/>
@@ -605,7 +605,7 @@
                       <KeyStroke key="Ctrl+PAGE_DOWN"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Next page&quot;)" type="code"/>
+                      <Connection code="__(&quot;Next page&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="d"/>
                     <Property name="name" type="java.lang.String" value="EGD" noResource="true"/>
@@ -620,7 +620,7 @@
                       <KeyStroke key="Ctrl+OPEN_BRACKET"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;First entry&quot;)" type="code"/>
+                      <Connection code="__(&quot;First entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="t"/>
                     <Property name="name" type="java.lang.String" value="EGT" noResource="true"/>
@@ -635,7 +635,7 @@
                       <KeyStroke key="Ctrl+CLOSE_BRACKET"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Last entry&quot;)" type="code"/>
+                      <Connection code="__(&quot;Last entry&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="b"/>
                     <Property name="name" type="java.lang.String" value="EGB" noResource="true"/>
@@ -649,7 +649,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="byTimeGEM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Selection by time&quot;)" type="code"/>
+                      <Connection code="__(&quot;Selection by time&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="EGM" noResource="true"/>
                   </Properties>
@@ -662,7 +662,7 @@
             <Menu class="javax.swing.JMenu" name="SelectEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Select&quot;)" type="code"/>
+                  <Connection code="__(&quot;Select&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
@@ -672,7 +672,7 @@
                       <KeyStroke key="Shift+Ctrl+A"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;All&quot;)" type="code"/>
+                      <Connection code="__(&quot;All&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="ESA" noResource="true"/>
                   </Properties>
@@ -684,7 +684,7 @@
             <Menu class="javax.swing.JMenu" name="MarkEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Mark&quot;)" type="code"/>
+                  <Connection code="__(&quot;Mark&quot;)" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -694,7 +694,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="NoneMEM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;None&quot;)" type="code"/>
+                      <Connection code="__(&quot;None&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMN" noResource="true"/>
                   </Properties>
@@ -705,7 +705,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="PinkMEM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Pink&quot;)" type="code"/>
+                      <Connection code="__(&quot;Pink&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMP" noResource="true"/>
                   </Properties>
@@ -716,7 +716,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="YellowMEM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Yellow&quot;)" type="code"/>
+                      <Connection code="__(&quot;Yellow&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMY" noResource="true"/>
                   </Properties>
@@ -727,7 +727,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="CyanMEM">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Cyan&quot;)" type="code"/>
+                      <Connection code="__(&quot;Cyan&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="EMC" noResource="true"/>
                   </Properties>
@@ -742,7 +742,7 @@
             <Menu class="javax.swing.JMenu" name="StyleEM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Style&quot;)" type="code"/>
+                  <Connection code="__(&quot;Style&quot;)" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -761,7 +761,7 @@
                   <KeyStroke key="Ctrl+Z"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Undo&quot;)" type="code"/>
+                  <Connection code="__(&quot;Undo&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="EUN" noResource="true"/>
@@ -776,7 +776,7 @@
                   <KeyStroke key="Ctrl+Y"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Redo&quot;)" type="code"/>
+                  <Connection code="__(&quot;Redo&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="ERE" noResource="true"/>
@@ -793,7 +793,7 @@
                   <KeyStroke key="Ctrl+L"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Tools lock&quot;)" type="code"/>
+                  <Connection code="__(&quot;Tools lock&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="TLO" noResource="true"/>
               </Properties>
@@ -809,7 +809,7 @@
         <Menu class="javax.swing.JMenu" name="ToolsM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;&amp;Tools&quot;)" type="code"/>
+              <Connection code="__(&quot;&amp;Tools&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -820,7 +820,7 @@
             <Menu class="javax.swing.JMenu" name="TestTM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Test video&quot;)" type="code"/>
+                  <Connection code="__(&quot;Test video&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
@@ -830,7 +830,7 @@
                       <KeyStroke key="F8"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;From the beginning&quot;)" type="code"/>
+                      <Connection code="__(&quot;From the beginning&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TTB" noResource="true"/>
                   </Properties>
@@ -844,7 +844,7 @@
                       <KeyStroke key="F9"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;From current position&quot;)" type="code"/>
+                      <Connection code="__(&quot;From current position&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TTC" noResource="true"/>
                   </Properties>
@@ -857,7 +857,7 @@
             <Menu class="javax.swing.JMenu" name="PreviewP">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Preview&quot;)" type="code"/>
+                  <Connection code="__(&quot;Preview&quot;)" type="code"/>
                 </Property>
               </Properties>
               <SubComponents>
@@ -867,7 +867,7 @@
                       <KeyStroke key="F7"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Enable preview&quot;)" type="code"/>
+                      <Connection code="__(&quot;Enable preview&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPE" noResource="true"/>
                   </Properties>
@@ -881,7 +881,7 @@
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Video frame&quot;)" type="code"/>
+                      <Connection code="__(&quot;Video frame&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPV" noResource="true"/>
                   </Properties>
@@ -895,7 +895,7 @@
                 <MenuItem class="javax.swing.JCheckBoxMenuItem" name="HalfSizeC">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Half size image&quot;)" type="code"/>
+                      <Connection code="__(&quot;Half size image&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPH" noResource="true"/>
                   </Properties>
@@ -912,7 +912,7 @@
                   <Properties>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Audio waveform&quot;)" type="code"/>
+                      <Connection code="__(&quot;Audio waveform&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TAP" noResource="true"/>
                   </Properties>
@@ -926,7 +926,7 @@
                 <MenuItem class="javax.swing.JCheckBoxMenuItem" name="MaxWaveC">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Maximize waveform visualization&quot;)" type="code"/>
+                      <Connection code="__(&quot;Maximize waveform visualization&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPM" noResource="true"/>
                   </Properties>
@@ -940,7 +940,7 @@
                 <MenuItem class="javax.swing.JMenuItem" name="PlayAudioC">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Play current subtitle&quot;)" type="code"/>
+                      <Connection code="__(&quot;Play current subtitle&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="TPP" noResource="true"/>
                   </Properties>
@@ -955,14 +955,14 @@
         <Menu class="javax.swing.JMenu" name="HelpM">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;&amp;Help&quot;)" type="code"/>
+              <Connection code="__(&quot;&amp;Help&quot;)" type="code"/>
             </Property>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="FAQHM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;FAQ&quot;)" type="code"/>
+                  <Connection code="__(&quot;FAQ&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="HFQ" noResource="true"/>
               </Properties>
@@ -976,7 +976,7 @@
                   <KeyStroke key="Ctrl+SLASH"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;About&quot;)" type="code"/>
+                  <Connection code="__(&quot;About&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="HAB" noResource="true"/>
               </Properties>
@@ -1125,7 +1125,7 @@
                   <Connection code="Theme.loadIcon(&quot;new.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;New&quot;)" type="code"/>
+                  <Connection code="__(&quot;New&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -1141,7 +1141,7 @@
                   <Connection code="Theme.loadIcon(&quot;load.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Load&quot;)" type="code"/>
+                  <Connection code="__(&quot;Load&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -1157,7 +1157,7 @@
                   <Connection code="Theme.loadIcon(&quot;save.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Save&quot;)" type="code"/>
+                  <Connection code="__(&quot;Save&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1187,7 +1187,7 @@
                   <Connection code="Theme.loadIcon(&quot;info.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Project Information&quot;)" type="code"/>
+                  <Connection code="__(&quot;Project Information&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1217,7 +1217,7 @@
                   <Connection code="Theme.loadIcon(&quot;cut.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Cut&quot;)" type="code"/>
+                  <Connection code="__(&quot;Cut&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1234,7 +1234,7 @@
                   <Connection code="Theme.loadIcon(&quot;copy.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Copy&quot;)" type="code"/>
+                  <Connection code="__(&quot;Copy&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1251,7 +1251,7 @@
                   <Connection code="Theme.loadIcon(&quot;paste.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Paste&quot;)" type="code"/>
+                  <Connection code="__(&quot;Paste&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1274,7 +1274,7 @@
                   <Connection code="Theme.loadIcon(&quot;undo.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Undo&quot;)" type="code"/>
+                  <Connection code="__(&quot;Undo&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1291,7 +1291,7 @@
                   <Connection code="Theme.loadIcon(&quot;redo.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Redo&quot;)" type="code"/>
+                  <Connection code="__(&quot;Redo&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1321,7 +1321,7 @@
                   <Connection code="Theme.loadIcon(&quot;sort.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Sort subtitles&quot;)" type="code"/>
+                  <Connection code="__(&quot;Sort subtitles&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1344,7 +1344,7 @@
                   <Connection code="Theme.loadIcon(&quot;test.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Test subtitles from current position&quot;)" type="code"/>
+                  <Connection code="__(&quot;Test subtitles from current position&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -1361,7 +1361,7 @@
                   <Connection code="Theme.loadIcon(&quot;previewc.png&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Enable preview&quot;)" type="code"/>
+                  <Connection code="__(&quot;Enable preview&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">

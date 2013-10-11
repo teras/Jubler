@@ -28,7 +28,7 @@ import com.panayotis.jubler.time.Time;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -65,7 +65,7 @@ public class PlainText extends AbstractTextSubFormat {
 
     @Override
     public String getExtendedName() {
-        return _("Plain text");
+        return __("Plain text");
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {

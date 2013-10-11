@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import com.panayotis.jubler.options.Options;
 import javax.swing.table.AbstractTableModel;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -83,11 +83,11 @@ public class ReplaceModel extends AbstractTableModel {
     public String getColumnName(int index) {
         switch (index) {
             case 0:
-                return _("Use");
+                return __("Use");
             case 1:
-                return _("Original value");
+                return __("Original value");
         }
-        return _("New value");
+        return __("New value");
     }
 
     @Override

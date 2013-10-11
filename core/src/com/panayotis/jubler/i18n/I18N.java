@@ -57,6 +57,7 @@ public class I18N {
             DEBUG.debug("Using language " + ll);
     }
 
+    @SuppressWarnings("UseSpecificCatch")
     private static ResourceBundle loadClass(String classname) {
         try {
             return (ResourceBundle) cl.loadClass(classname).newInstance();
@@ -70,7 +71,7 @@ public class I18N {
         return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
 
-    public static String _(String msg, Object... args) {
+    public static String __(String msg, Object... args) {
         String format = GettextResource.gettext(b, msg);
         return MessageFormat.format(format.replaceAll("'", "''"), args);
     }

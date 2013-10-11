@@ -21,7 +21,7 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.subs.SubEntry;
 
 import com.panayotis.jubler.subs.style.SubStyle;
@@ -37,7 +37,7 @@ public class Styler extends OneByOneTool {
     private SubStyle style;
 
     public Styler() {
-        super(true, new ToolMenu(_("By selection"), "ESS", Location.STYLE, 0, 0));
+        super(true, new ToolMenu(__("By selection"), "ESS", Location.STYLE, 0, 0));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Styler extends OneByOneTool {
 
     @Override
     protected String getToolTitle() {
-        return _("Set region style");
+        return __("Set region style");
     }
 
     @Override

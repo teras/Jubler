@@ -30,7 +30,7 @@ package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import java.awt.Component;
 import java.io.File;
 import java.util.Collection;
@@ -297,13 +297,13 @@ public class Share implements CommonDef {
             File search_file = new File(start_directory, file_name);
             search_file_extension = Share.getFileExtension(search_file);
 
-            SimpleFileFilter filter = new SimpleFileFilter(_("Images"), search_file_extension);
+            SimpleFileFilter filter = new SimpleFileFilter(__("Images"), search_file_extension);
             jfc = new JFileChooser();
             jfc.addChoosableFileFilter(filter);
             jfc.setCurrentDirectory(start_directory);
             jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             jfc.setSelectedFile(search_file);
-            int option = jfc.showDialog(parent, _("Accept"));
+            int option = jfc.showDialog(parent, __("Accept"));
             if (option == JFileChooser.APPROVE_OPTION) {
                 accepted_dir = jfc.getSelectedFile();
                 if (accepted_dir.isFile())
@@ -322,7 +322,7 @@ public class Share implements CommonDef {
             jfc.setCurrentDirectory(start_directory);
             jfc.setMultiSelectionEnabled(true);
             jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            int option = jfc.showDialog(parent, _("Accept"));
+            int option = jfc.showDialog(parent, __("Accept"));
             if (option == JFileChooser.APPROVE_OPTION) {
                 accepted_dir = jfc.getSelectedFiles();
                 f = jfc.getSelectedFile();

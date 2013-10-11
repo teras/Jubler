@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.information;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
@@ -45,7 +45,7 @@ public class JInformation extends JDialog {
 
     private Subtitles subs;
     private MediaFile media;
-    private static final String[] CTTypesData = {_("per line"), _("per second")};
+    private static final String[] CTTypesData = {__("per line"), __("per second")};
 
     /**
      * Creates new form JProperties

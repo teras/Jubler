@@ -24,7 +24,7 @@ import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import javax.swing.JComponent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -35,12 +35,12 @@ public class Rounder extends OneByOneTool {
     private int precise;
 
     public Rounder() {
-        super(true, new ToolMenu(_("Round time"), "TRO", Location.TIMETOOL, 0, 0));
+        super(true, new ToolMenu(__("Round time"), "TRO", Location.TIMETOOL, 0, 0));
     }
 
     @Override
     protected String getToolTitle() {
-        return _("Round timing");
+        return __("Round timing");
     }
 
     @Override

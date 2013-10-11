@@ -24,7 +24,7 @@
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.os.SystemDependent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.plugins.Theme;
 
 import javax.swing.Icon;
@@ -85,12 +85,12 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
 
     @Override
     public String getTabName() {
-        return _("Shortcuts");
+        return __("Shortcuts");
     }
 
     @Override
     public String getTabTooltip() {
-        return _("Set the menu keyboard shortcuts");
+        return __("Set the menu keyboard shortcuts");
     }
 
     @Override

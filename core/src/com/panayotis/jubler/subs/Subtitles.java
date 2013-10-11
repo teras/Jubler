@@ -24,7 +24,7 @@
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.options.AutoSaveOptions;
@@ -48,7 +48,7 @@ public class Subtitles extends AbstractTableModel {
 
     private static final String COLUMNID = "#FELCS";
     private static final String DEFAULTCOLUMNID = "FE";
-    private static final String COLNAME[] = {_("#"), _("Start"), _("End"), _("Layer"), _("Style"), _("Cpm"), _("Subtitle")};
+    private static final String COLNAME[] = {__("#"), __("Start"), __("End"), __("Layer"), __("Style"), __("Cpm"), __("Subtitle")};
     private static final String DEFAULTCOLWIDTH = "50,100,100,50,50,50,530";
     private boolean[] visiblecols = AutoSaveOptions.getVisibleColumns(COLUMNID, DEFAULTCOLUMNID);
     private int prefcolwidth[] = AutoSaveOptions.getColumnWidth(COLUMNID.length(), DEFAULTCOLWIDTH);
@@ -512,7 +512,7 @@ public class Subtitles extends AbstractTableModel {
         try {
             SubEntry src_entry = null;
             boolean is_saved_for_undo = false;
-            String action_name = _("Convert records");
+            String action_name = __("Convert records");
             for (int i = 0; i < size(); i++) {
                 target_hdr_sub = null;
                 //get the current entry

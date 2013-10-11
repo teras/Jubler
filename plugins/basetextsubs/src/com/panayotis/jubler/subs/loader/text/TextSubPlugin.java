@@ -20,7 +20,7 @@
 
 package com.panayotis.jubler.subs.loader.text;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 
 import com.panayotis.jubler.plugins.Plugin;
@@ -62,15 +62,15 @@ public class TextSubPlugin implements Plugin {
                 SubFormat fmt = (SubFormat) plugin_item;
                 fmt.setClassLoader(this.loader);
                 if (this.loader == null)
-                    DEBUG.logger.log(Level.SEVERE, _("Loader is NULL."));
+                    DEBUG.logger.log(Level.SEVERE, __("Loader is NULL."));
             }//end for(PluginItem format : plugin_list)
         } catch (Exception ex) {
-            DEBUG.logger.log(Level.SEVERE, ex.toString() + _(": Unable to set class loader"));
+            DEBUG.logger.log(Level.SEVERE, ex.toString() + __(": Unable to set class loader"));
         }
     }
 
     public String getPluginName() {
-        return _("Text subtitles");
+        return __("Text subtitles");
     }
 
     public boolean canDisablePlugin() {

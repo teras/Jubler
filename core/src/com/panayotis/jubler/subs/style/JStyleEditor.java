@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.style;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -81,8 +81,8 @@ public class JStyleEditor extends javax.swing.JDialog {
         Outline.setIcon(OutlineI = new JAlphaIcon(new AlphaColor(Color.WHITE, 180)));
         Shadow.setIcon(ShadowI = new JAlphaIcon(new AlphaColor(Color.WHITE, 180)));
 
-        BorderStyle.addItem(_("Outline"));
-        BorderStyle.addItem(_("Opaque box"));
+        BorderStyle.addItem(__("Outline"));
+        BorderStyle.addItem(__("Opaque box"));
 
         for (String name : SubStyle.FontNames)
             FontName.addItem(name);
@@ -140,10 +140,10 @@ public class JStyleEditor extends javax.swing.JDialog {
 
     private void setOptionsVisible(boolean isVisible) {
         if (isVisible) {
-            AdvancedSelect.setToolTipText(_("Hide the advanced options for this style"));
+            AdvancedSelect.setToolTipText(__("Hide the advanced options for this style"));
             Advanced.setVisible(true);
         } else {
-            AdvancedSelect.setToolTipText(_("Display the advanced options for this style"));
+            AdvancedSelect.setToolTipText(__("Display the advanced options for this style"));
             Advanced.setVisible(false);
         }
     }
@@ -679,7 +679,7 @@ public class JStyleEditor extends javax.swing.JDialog {
     }//GEN-LAST:event_SaveActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed
-        if (!JIDialog.question(this, _("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), _("Delete style")))
+        if (!JIDialog.question(this, __("Are you sure you want to delete this style?\nAll subtitles having this style will fall back to default"), __("Delete style")))
             return;
         delete_button_selected = true;  // Delete will be handled by JSubEditor, not here (like Cancel)
         setVisible(null);
@@ -801,7 +801,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
     private String setTestText() {
         /* Make following code idiot proof */
-        String full = _("Welcome to the (Jubler) world!");
+        String full = __("Welcome to the (Jubler) world!");
         if (full.equals(""))
             full = "()";
         int tagTextFinish;
