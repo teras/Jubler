@@ -52,10 +52,10 @@ public class ReparentGUI extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        JubSelector.setToolTipText(_("The new parent subtitles file"));
+        JubSelector.setToolTipText(__("The new parent subtitles file"));
         add(JubSelector, java.awt.BorderLayout.CENTER);
 
-        jLabel1.setText(_("Provide the desired parent for this subtitles file"));
+        jLabel1.setText(__("Provide the desired parent for this subtitles file"));
         add(jLabel1, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

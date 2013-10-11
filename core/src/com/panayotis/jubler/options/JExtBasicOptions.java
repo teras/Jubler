@@ -75,16 +75,16 @@ public class JExtBasicOptions extends JPanel {
         BrowserP.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 8, 0));
         BrowserP.setLayout(new java.awt.BorderLayout());
 
-        FilenameT.setColumns(20);
         FilenameT.setEditable(false);
-        FilenameT.setToolTipText(_("The absolute path of the player. Use the Browse button to change it"));
+        FilenameT.setColumns(20);
+        FilenameT.setToolTipText(__("The absolute path of the player. Use the Browse button to change it"));
         BrowserP.add(FilenameT, java.awt.BorderLayout.CENTER);
 
-        FileL.setText(_("{0} path", name));
+        FileL.setText(__("{0} path", name));
         BrowserP.add(FileL, java.awt.BorderLayout.NORTH);
 
-        WizardB.setText(_("Wizard"));
-        WizardB.setToolTipText(_("Start the Wizard, to locate the executable path name"));
+        WizardB.setText(__("Wizard"));
+        WizardB.setToolTipText(__("Start the Wizard, to locate the executable path name"));
         SystemDependent.setCommandButtonStyle(WizardB, "only");
         WizardB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

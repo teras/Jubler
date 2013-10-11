@@ -145,7 +145,7 @@ public class JInformation extends JDialog {
         OKB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(_("Project Properties"));
+        setTitle(__("Project Properties"));
         setResizable(false);
 
         PTabs.addChangeListener(new javax.swing.event.ChangeListener() {
@@ -158,12 +158,12 @@ public class JInformation extends JDialog {
         InfoP.setOpaque(false);
         InfoP.setLayout(new java.awt.BorderLayout());
 
-        jPanel2.setBorder(SystemDependent.getBorder(_("Comments")));
+        jPanel2.setBorder(SystemDependent.getBorder(__("Comments")));
         jPanel2.setOpaque(false);
         jPanel2.setPreferredSize(new java.awt.Dimension(350, 150));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        CommentsT.setToolTipText(_("Comments about these subtitles"));
+        CommentsT.setToolTipText(__("Comments about these subtitles"));
         jScrollPane1.setViewportView(CommentsT);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -177,13 +177,13 @@ public class JInformation extends JDialog {
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.GridLayout(0, 1));
 
-        TitleL.setText(_("Title"));
+        TitleL.setText(__("Title"));
         jPanel4.add(TitleL);
 
-        AuthorL.setText(_("Author"));
+        AuthorL.setText(__("Author"));
         jPanel4.add(AuthorL);
 
-        SourceL.setText(_("Source"));
+        SourceL.setText(__("Source"));
         jPanel4.add(SourceL);
 
         jPanel1.add(jPanel4, java.awt.BorderLayout.WEST);
@@ -191,20 +191,20 @@ public class JInformation extends JDialog {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(0, 1));
 
-        TitleT.setToolTipText(_("Title for this subtitle file"));
+        TitleT.setToolTipText(__("Title for this subtitle file"));
         jPanel3.add(TitleT);
 
-        AuthorT.setToolTipText(_("Author of this subtitle file"));
+        AuthorT.setToolTipText(__("Author of this subtitle file"));
         jPanel3.add(AuthorT);
 
-        SourceT.setToolTipText(_("Original source of this subtitle file"));
+        SourceT.setToolTipText(__("Original source of this subtitle file"));
         jPanel3.add(SourceT);
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
         InfoP.add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        PTabs.addTab(_("Information"), InfoP);
+        PTabs.addTab(__("Information"), InfoP);
 
         MediaP.setName("media"); // NOI18N
         MediaP.setOpaque(false);
@@ -217,18 +217,18 @@ public class JInformation extends JDialog {
         SubFileInfoP.setOpaque(false);
         SubFileInfoP.setLayout(new java.awt.BorderLayout());
 
-        FilePathL.setText(_("Subtitle File"));
+        FilePathL.setText(__("Subtitle File"));
         SubFileInfoP.add(FilePathL, java.awt.BorderLayout.WEST);
 
         FilePathT.setEditable(false);
-        FilePathT.setToolTipText(_("The file of this subtitle"));
+        FilePathT.setToolTipText(__("The file of this subtitle"));
         SubFileInfoP.add(FilePathT, java.awt.BorderLayout.SOUTH);
 
         VSelectorP.add(SubFileInfoP, java.awt.BorderLayout.NORTH);
 
         MediaP.add(VSelectorP, java.awt.BorderLayout.NORTH);
 
-        PTabs.addTab(_("Media"), MediaP);
+        PTabs.addTab(__("Media"), MediaP);
 
         StatsP.setName("stats"); // NOI18N
         StatsP.setOpaque(false);
@@ -240,27 +240,27 @@ public class JInformation extends JDialog {
         jPanel8.setOpaque(false);
         jPanel8.setLayout(new java.awt.GridLayout(0, 2, 0, 4));
 
-        NumberL.setText(_("Number of subtitles"));
+        NumberL.setText(__("Number of subtitles"));
         jPanel8.add(NumberL);
         jPanel8.add(NumberT);
 
-        TotalSubSizeL.setText(_("Total subtitle characters"));
+        TotalSubSizeL.setText(__("Total subtitle characters"));
         jPanel8.add(TotalSubSizeL);
         jPanel8.add(TotalSubSizeT);
 
-        TotalLinesL.setText(_("Total subtitle lines"));
+        TotalLinesL.setText(__("Total subtitle lines"));
         jPanel8.add(TotalLinesL);
         jPanel8.add(TotalLinesT);
 
-        MaxSubSizeL.setText(_("Maximum subtitle length"));
+        MaxSubSizeL.setText(__("Maximum subtitle length"));
         jPanel8.add(MaxSubSizeL);
         jPanel8.add(MaxSubSizeT);
 
-        MaxLinesL.setText(_("Maximum subtitle lines"));
+        MaxLinesL.setText(__("Maximum subtitle lines"));
         jPanel8.add(MaxLinesL);
         jPanel8.add(MaxLinesT);
 
-        MaxLengthL.setText(_("Maximum subtitle characters per line"));
+        MaxLengthL.setText(__("Maximum subtitle characters per line"));
         jPanel8.add(MaxLengthL);
         jPanel8.add(MaxLengthT);
 
@@ -271,8 +271,7 @@ public class JInformation extends JDialog {
         jPanel10.setLayout(new java.awt.BorderLayout());
 
         MaxInfUserB.setSelected(true);
-        MaxInfUserB.setText(_("Inform user on exceeding subtitle length"));
-        MaxInfUserB.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        MaxInfUserB.setText(__("Inform user on exceeding subtitle length"));
         MaxInfUserB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MaxInfUserBActionPerformed(evt);
@@ -286,7 +285,7 @@ public class JInformation extends JDialog {
         jPanel13.setOpaque(false);
         jPanel13.setLayout(new java.awt.BorderLayout());
 
-        MaxColL.setText(_("Color to use"));
+        MaxColL.setText(__("Color to use"));
         MaxColL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
         jPanel13.add(MaxColL, java.awt.BorderLayout.WEST);
 
@@ -306,7 +305,7 @@ public class JInformation extends JDialog {
         MaxCharsS.setPaintLabels(true);
         MaxCharsS.setPaintTicks(true);
         MaxCharsS.setSnapToTicks(true);
-        MaxCharsS.setToolTipText(_("The maximum number of characters per line which are permitted"));
+        MaxCharsS.setToolTipText(__("The maximum number of characters per line which are permitted"));
         MaxCharsS.setValue(40);
         jPanel12.add(MaxCharsS, java.awt.BorderLayout.SOUTH);
 
@@ -317,7 +316,7 @@ public class JInformation extends JDialog {
         jPanel14.setLayout(new java.awt.BorderLayout());
         jPanel14.add(CPType, java.awt.BorderLayout.CENTER);
 
-        MaxCharsL.setText(_("Maximum number of characters:"));
+        MaxCharsL.setText(__("Maximum number of characters:"));
         jPanel14.add(MaxCharsL, java.awt.BorderLayout.WEST);
 
         jPanel7.add(jPanel14, java.awt.BorderLayout.WEST);
@@ -330,7 +329,7 @@ public class JInformation extends JDialog {
 
         StatsP.add(jPanel9, java.awt.BorderLayout.NORTH);
 
-        PTabs.addTab(_("Statistics"), StatsP);
+        PTabs.addTab(__("Statistics"), StatsP);
 
         getContentPane().add(PTabs, java.awt.BorderLayout.CENTER);
 
@@ -341,7 +340,7 @@ public class JInformation extends JDialog {
         jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
-        OKB.setText(_("OK"));
+        OKB.setText(__("OK"));
         OKB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OKBActionPerformed(evt);

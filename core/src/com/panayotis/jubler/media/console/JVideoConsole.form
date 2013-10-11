@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
@@ -14,6 +14,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -128,7 +129,7 @@
                     <Property name="paintTicks" type="boolean" value="true"/>
                     <Property name="snapToTicks" type="boolean" value="true"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Change playback speed&quot;)" type="code"/>
+                      <Connection code="__(&quot;Change playback speed&quot;)" type="code"/>
                     </Property>
                     <Property name="value" type="int" value="3"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -151,7 +152,7 @@
                     <Property name="paintTicks" type="boolean" value="true"/>
                     <Property name="snapToTicks" type="boolean" value="true"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Change audio volume&quot;)" type="code"/>
+                      <Connection code="__(&quot;Change audio volume&quot;)" type="code"/>
                     </Property>
                     <Property name="value" type="int" value="5"/>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -183,7 +184,7 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="m"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Add new subtitle on the fly&quot;)" type="code"/>
+                      <Connection code="__(&quot;Add new subtitle on the fly&quot;)" type="code"/>
                     </Property>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -196,13 +197,10 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="s"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Reset playback speed to default value&quot;)" type="code"/>
+                      <Connection code="__(&quot;Reset playback speed to default value&quot;)" type="code"/>
                     </Property>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
-                    <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                      <Insets value="[0, 0, 0, 0]"/>
-                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ResetSpeedBActionPerformed"/>
@@ -248,7 +246,7 @@
                 <Property name="minorTickSpacing" type="int" value="60"/>
                 <Property name="paintTicks" type="boolean" value="true"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Playback position&quot;)" type="code"/>
+                  <Connection code="__(&quot;Playback position&quot;)" type="code"/>
                 </Property>
                 <Property name="value" type="int" value="0"/>
               </Properties>
@@ -287,7 +285,7 @@
                       <Font name="Monospaced" size="12" style="0"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Current playback time&quot;)" type="code"/>
+                      <Connection code="__(&quot;Current playback time&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -299,7 +297,7 @@
                     <Property name="horizontalAlignment" type="int" value="11"/>
                     <Property name="text" type="java.lang.String" value=" "/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Subtitles time difference&quot;)" type="code"/>
+                      <Connection code="__(&quot;Subtitles time difference&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -349,7 +347,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="p"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Play/Pause video playback&quot;)" type="code"/>
+                          <Connection code="__(&quot;Play/Pause video playback&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -362,7 +360,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="l"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Load new subtitles into player&quot;)" type="code"/>
+                          <Connection code="__(&quot;Load new subtitles into player&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -375,7 +373,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="q"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Quit Player&quot;)" type="code"/>
+                          <Connection code="__(&quot;Quit Player&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -410,7 +408,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="bb"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Go backwards by 30 seconds&quot;)" type="code"/>
+                          <Connection code="__(&quot;Go backwards by 30 seconds&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -423,7 +421,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="b"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Go backwards by 10 secons&quot;)" type="code"/>
+                          <Connection code="__(&quot;Go backwards by 10 secons&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -436,7 +434,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="f"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Go forwards by 10 seconds&quot;)" type="code"/>
+                          <Connection code="__(&quot;Go forwards by 10 seconds&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -449,7 +447,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="ff"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Go forwards by 30 seconds&quot;)" type="code"/>
+                          <Connection code="__(&quot;Go forwards by 30 seconds&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>
@@ -490,7 +488,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="1"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Mark first synchronization position of the subtitles.&quot;)" type="code"/>
+                          <Connection code="__(&quot;Mark first synchronization position of the subtitles.&quot;)" type="code"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" value="b1"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
@@ -504,7 +502,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="2"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Mark second synchronization position of the subtitles.&quot;)" type="code"/>
+                          <Connection code="__(&quot;Mark second synchronization position of the subtitles.&quot;)" type="code"/>
                         </Property>
                         <Property name="actionCommand" type="java.lang.String" value="b2"/>
                         <Property name="borderPainted" type="boolean" value="false"/>
@@ -520,13 +518,10 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="g"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Select subtitle from the main window, to synchronize subtitles with current time.&quot;)" type="code"/>
+                      <Connection code="__(&quot;Select subtitle from the main window, to synchronize subtitles with current time.&quot;)" type="code"/>
                     </Property>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
-                    <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                      <Insets value="[0, 0, 0, 0]"/>
-                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="GrabSubActionPerformed"/>
@@ -550,7 +545,7 @@
                       <Properties>
                         <Property name="snapToTicks" type="boolean" value="true"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Change subtitle delay on the fly&quot;)" type="code"/>
+                          <Connection code="__(&quot;Change subtitle delay on the fly&quot;)" type="code"/>
                         </Property>
                       </Properties>
                       <Events>
@@ -593,7 +588,7 @@
               <Font name="Dialog" size="12" style="1"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Subtitle text&quot;)" type="code"/>
+              <Connection code="__(&quot;Subtitle text&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>

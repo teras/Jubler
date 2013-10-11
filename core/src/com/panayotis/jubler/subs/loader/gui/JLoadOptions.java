@@ -103,7 +103,7 @@ public class JLoadOptions extends JFileOptions {
 
         FPSPanel.setLayout(new java.awt.BorderLayout());
 
-        FPSL.setText(_("Frames per second (if required)"));
+        FPSL.setText(__("Frames per second (if required)"));
         FPSL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 4));
         FPSPanel.add(FPSL, java.awt.BorderLayout.WEST);
 
@@ -114,7 +114,7 @@ public class JLoadOptions extends JFileOptions {
         OptsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
         OptsP.setLayout(new java.awt.BorderLayout());
 
-        CEncL.setText(_("Encodings"));
+        CEncL.setText(__("Encodings"));
         CEncL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 4));
         OptsP.add(CEncL, java.awt.BorderLayout.WEST);
 

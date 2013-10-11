@@ -287,7 +287,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         FormListener formListener = new FormListener();
 
-        setTitle(_("Style Editor"));
+        setTitle(__("Style Editor"));
         setResizable(false);
         addWindowListener(formListener);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.Y_AXIS));
@@ -301,7 +301,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         DirtyIndicator.setOpaque(false);
         DirtyIndicator.setLayout(new java.awt.BorderLayout());
 
-        StyleName.setToolTipText(_("The name of this style. Remember to hit [RETURN] to store the name"));
+        StyleName.setToolTipText(__("The name of this style. Remember to hit [RETURN] to store the name"));
         StyleName.addActionListener(formListener);
         StyleName.addKeyListener(formListener);
         DirtyIndicator.add(StyleName, java.awt.BorderLayout.CENTER);
@@ -315,20 +315,20 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel15.setOpaque(false);
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
-        Clone.setText(_("Clone"));
-        Clone.setToolTipText(_("Create a new style based on the current one"));
+        Clone.setText(__("Clone"));
+        Clone.setToolTipText(__("Create a new style based on the current one"));
         Clone.addActionListener(formListener);
         jPanel15.add(Clone);
 
-        Delete.setText(_("Delete"));
-        Delete.setToolTipText(_("Delete the current style"));
+        Delete.setText(__("Delete"));
+        Delete.setToolTipText(__("Delete the current style"));
         Delete.addActionListener(formListener);
         jPanel15.add(Delete);
 
         jPanel16.add(jPanel15, java.awt.BorderLayout.CENTER);
 
         Save.setIcon(Theme.loadIcon("save.png"));
-        Save.setToolTipText(_("Save default style"));
+        Save.setToolTipText(__("Save default style"));
         Save.addActionListener(formListener);
         jPanel16.add(Save, java.awt.BorderLayout.EAST);
 
@@ -336,19 +336,19 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(jPanel2);
 
-        FontP.setBorder(SystemDependent.getBorder(_("Font")));
+        FontP.setBorder(SystemDependent.getBorder(__("Font")));
         FontP.setOpaque(false);
         FontP.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        FontSize.setToolTipText(_("Font size"));
+        FontSize.setToolTipText(__("Font size"));
         FontSize.setPreferredSize(new java.awt.Dimension(60, 24));
         FontSize.addActionListener(formListener);
         jPanel1.add(FontSize, java.awt.BorderLayout.EAST);
 
-        FontName.setToolTipText(_("Font name"));
+        FontName.setToolTipText(__("Font name"));
         FontName.addActionListener(formListener);
         jPanel1.add(FontName, java.awt.BorderLayout.CENTER);
 
@@ -359,25 +359,25 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
         Bold.setIcon(Theme.loadIcon("bold.png"));
-        Bold.setToolTipText(_("Bold"));
+        Bold.setToolTipText(__("Bold"));
         SystemDependent.setCommandButtonStyle(Bold, "first");
         Bold.addActionListener(formListener);
         jPanel3.add(Bold);
 
         Italic.setIcon(Theme.loadIcon("italics.png"));
-        Italic.setToolTipText(_("Italic"));
+        Italic.setToolTipText(__("Italic"));
         SystemDependent.setCommandButtonStyle(Italic, "middle");
         Italic.addActionListener(formListener);
         jPanel3.add(Italic);
 
         Underline.setIcon(Theme.loadIcon("underline.png"));
-        Underline.setToolTipText(_("Underline"));
+        Underline.setToolTipText(__("Underline"));
         SystemDependent.setCommandButtonStyle(Underline, "middle");
         Underline.addActionListener(formListener);
         jPanel3.add(Underline);
 
         Strike.setIcon(Theme.loadIcon("strike.png"));
-        Strike.setToolTipText(_("Strikethrough"));
+        Strike.setToolTipText(__("Strikethrough"));
         SystemDependent.setCommandButtonStyle(Strike, "last");
         Strike.addActionListener(formListener);
         jPanel3.add(Strike);
@@ -386,7 +386,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         getContentPane().add(FontP);
 
-        jPanel4.setBorder(SystemDependent.getBorder(_("Colors")));
+        jPanel4.setBorder(SystemDependent.getBorder(__("Colors")));
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.GridLayout(1, 0, 4, 0));
 
@@ -422,7 +422,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         TestText.setEditable(false);
         TestText.setText(setTestText());
-        TestText.setToolTipText(_("Demo subtitles text"));
+        TestText.setToolTipText(__("Demo subtitles text"));
         jPanel13.add(TestText, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel13);
@@ -433,21 +433,21 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel9.setOpaque(false);
         jPanel9.setLayout(new java.awt.GridLayout(1, 2));
 
-        jPanel5.setBorder(SystemDependent.getBorder(_("Border")));
+        jPanel5.setBorder(SystemDependent.getBorder(__("Border")));
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.GridLayout(3, 1));
 
-        BorderStyle.setToolTipText(_("Border style"));
+        BorderStyle.setToolTipText(__("Border style"));
         jPanel5.add(BorderStyle);
 
         jPanel10.setOpaque(false);
         jPanel10.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(_("Size"));
+        jLabel1.setText(__("Size"));
         jPanel10.add(jLabel1);
 
-        BorderSize.setToolTipText(_("Border size"));
+        BorderSize.setToolTipText(__("Border size"));
         jPanel10.add(BorderSize);
 
         jPanel5.add(jPanel10);
@@ -456,39 +456,39 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel11.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setText(_("Shadow"));
+        jLabel2.setText(__("Shadow"));
         jPanel11.add(jLabel2);
 
-        ShadowSize.setToolTipText(_("Shadow size"));
+        ShadowSize.setToolTipText(__("Shadow size"));
         jPanel11.add(ShadowSize);
 
         jPanel5.add(jPanel11);
 
         jPanel9.add(jPanel5);
 
-        jPanel6.setBorder(SystemDependent.getBorder(_("Margins transformations")));
+        jPanel6.setBorder(SystemDependent.getBorder(__("Margins transformations")));
         jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(3, 2, 2, 0));
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setText(_("Left"));
+        jLabel3.setText(__("Left"));
         jPanel6.add(jLabel3);
 
-        LeftMargin.setToolTipText(_("Left margin"));
+        LeftMargin.setToolTipText(__("Left margin"));
         jPanel6.add(LeftMargin);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setText(_("Right"));
+        jLabel4.setText(__("Right"));
         jPanel6.add(jLabel4);
 
-        RightMargin.setToolTipText(_("Right margin"));
+        RightMargin.setToolTipText(__("Right margin"));
         jPanel6.add(RightMargin);
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setText(_("Vertical"));
+        jLabel5.setText(__("Vertical"));
         jPanel6.add(jLabel5);
 
-        Vertical.setToolTipText(_("Vertical margin"));
+        Vertical.setToolTipText(__("Vertical margin"));
         jPanel6.add(Vertical);
 
         jPanel9.add(jPanel6);
@@ -498,41 +498,41 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel12.setOpaque(false);
         jPanel12.setLayout(new java.awt.GridLayout(1, 2));
 
-        jPanel7.setBorder(SystemDependent.getBorder(_("Font transformations")));
+        jPanel7.setBorder(SystemDependent.getBorder(__("Font transformations")));
         jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.GridLayout(4, 2, 2, 0));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("  "+_("Angle"));
+        jLabel6.setText("  "+__("Angle"));
         jPanel7.add(jLabel6);
 
-        Angle.setToolTipText(_("Font angle"));
+        Angle.setToolTipText(__("Font angle"));
         jPanel7.add(Angle);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("  "+_("Spacing"));
+        jLabel7.setText("  "+__("Spacing"));
         jPanel7.add(jLabel7);
 
-        Spacing.setToolTipText(_("Spacing in font"));
+        Spacing.setToolTipText(__("Spacing in font"));
         jPanel7.add(Spacing);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("  "+_("X Scale"));
+        jLabel8.setText("  "+__("X Scale"));
         jPanel7.add(jLabel8);
 
-        XScale.setToolTipText(_("Scaling % on X axis"));
+        XScale.setToolTipText(__("Scaling % on X axis"));
         jPanel7.add(XScale);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("  "+_("Y Scale"));
+        jLabel9.setText("  "+__("Y Scale"));
         jPanel7.add(jLabel9);
 
-        YScale.setToolTipText(_("Scaling % on Y axis"));
+        YScale.setToolTipText(__("Scaling % on Y axis"));
         jPanel7.add(YScale);
 
         jPanel12.add(jPanel7);
 
-        JDirPanel.setBorder(SystemDependent.getBorder(_("Alignment")));
+        JDirPanel.setBorder(SystemDependent.getBorder(__("Alignment")));
         JDirPanel.setOpaque(false);
         JDirPanel.setLayout(new java.awt.BorderLayout());
         jPanel12.add(JDirPanel);
@@ -544,7 +544,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel14.setOpaque(false);
         jPanel14.setLayout(new java.awt.BorderLayout());
 
-        AdvancedSelect.setText(_("Advanced options"));
+        AdvancedSelect.setText(__("Advanced options"));
         AdvancedSelect.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         AdvancedSelect.setIcon(Theme.loadIcon("tabclosed.png"));
         AdvancedSelect.setIconTextGap(10);
@@ -557,11 +557,11 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel18.setOpaque(false);
         jPanel18.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
-        OKB.setText(_("OK"));
+        OKB.setText(__("OK"));
         OKB.addActionListener(formListener);
         jPanel18.add(OKB);
 
-        CancelB.setText(_("Cancel"));
+        CancelB.setText(__("Cancel"));
         CancelB.addActionListener(formListener);
         jPanel18.add(CancelB);
 

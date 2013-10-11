@@ -108,7 +108,7 @@ public class JWizard extends JDialog {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle(_("External plugin Wizard"));
+        setTitle(__("External plugin Wizard"));
         setModal(true);
         setResizable(false);
 
@@ -119,9 +119,9 @@ public class JWizard extends JDialog {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        WelcomeTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14));
+        WelcomeTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         WelcomeTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        WelcomeTitle.setText(_("{0} executable was not found.", name));
+        WelcomeTitle.setText(__("{0} executable was not found.", name));
         WelcomeTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
         WelcomeTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jPanel2.add(WelcomeTitle, java.awt.BorderLayout.NORTH);
@@ -129,29 +129,27 @@ public class JWizard extends JDialog {
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 2, 0, 0));
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
-        AutoSelL.setText(_("How should this issue been resolved?"));
+        AutoSelL.setText(__("How should this issue been resolved?"));
         AutoSelL.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 2, 0, 0));
         jPanel1.add(AutoSelL);
 
         AutoSel.add(AutoB);
         AutoB.setSelected(true);
-        AutoB.setText(_("Automatically search for the executable"));
-        AutoB.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        AutoB.setText(__("Automatically search for the executable"));
         jPanel1.add(AutoB);
 
         AutoSel.add(ManualB);
-        ManualB.setText(_("Manually browse for the executable"));
-        ManualB.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        ManualB.setText(__("Manually browse for the executable"));
         jPanel1.add(ManualB);
 
         jPanel2.add(jPanel1, java.awt.BorderLayout.SOUTH);
 
+        WelcomeText.setEditable(false);
         WelcomeText.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         WelcomeText.setColumns(20);
-        WelcomeText.setEditable(false);
-        WelcomeText.setFont(new java.awt.Font("Lucida Grande", 0, 14));
+        WelcomeText.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
         WelcomeText.setRows(3);
-        WelcomeText.setText(_("Jubler needs {0} executable\nto continue with the requested action.", name));
+        WelcomeText.setText(__("Jubler needs {0} executable\nto continue with the requested action.", name));
         jPanel2.add(WelcomeText, java.awt.BorderLayout.CENTER);
 
         WelcomeP.add(jPanel2, java.awt.BorderLayout.NORTH);
@@ -162,14 +160,14 @@ public class JWizard extends JDialog {
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        AutoTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14));
+        AutoTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         AutoTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        AutoTitle.setText(_("Automatic location of {0} executable", name));
+        AutoTitle.setText(__("Automatic location of {0} executable", name));
         AutoTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
         AutoTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jPanel3.add(AutoTitle, java.awt.BorderLayout.NORTH);
 
-        AutoL.setText(_("Trying to locate {0} executable...", name));
+        AutoL.setText(__("Trying to locate {0} executable...", name));
         AutoL.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 12, 0));
         jPanel3.add(AutoL, java.awt.BorderLayout.CENTER);
 
@@ -184,20 +182,20 @@ public class JWizard extends JDialog {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        BrowseTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14));
+        BrowseTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         BrowseTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        BrowseTitle.setText(_("Manual selection of {0} executable.", name));
+        BrowseTitle.setText(__("Manual selection of {0} executable.", name));
         BrowseTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
         BrowseTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         jPanel4.add(BrowseTitle, java.awt.BorderLayout.NORTH);
 
-        FilenameT.setColumns(20);
         FilenameT.setEditable(false);
-        FilenameT.setToolTipText(_("The absolute path of the player. Use the Browse button to change it"));
+        FilenameT.setColumns(20);
+        FilenameT.setToolTipText(__("The absolute path of the player. Use the Browse button to change it"));
         jPanel4.add(FilenameT, java.awt.BorderLayout.CENTER);
 
-        BrowseB.setText(_("Browse"));
-        BrowseB.setToolTipText(_("Open a file dialog to select the filename of the player"));
+        BrowseB.setText(__("Browse"));
+        BrowseB.setToolTipText(__("Open a file dialog to select the filename of the player"));
         BrowseB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BrowseBActionPerformed(evt);
@@ -206,7 +204,7 @@ public class JWizard extends JDialog {
         jPanel4.add(BrowseB, java.awt.BorderLayout.EAST);
 
         BrowseStatusL.setForeground(java.awt.Color.red);
-        BrowseStatusL.setText(_("The selected file is not valid"));
+        BrowseStatusL.setText(__("The selected file is not valid"));
         BrowseStatusL.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 4, 0, 0));
         BrowseStatusL.setVisible(false);
         jPanel4.add(BrowseStatusL, java.awt.BorderLayout.SOUTH);
@@ -217,9 +215,9 @@ public class JWizard extends JDialog {
 
         FinishP.setLayout(new java.awt.BorderLayout());
 
-        FInishTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14));
+        FInishTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
         FInishTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FInishTitle.setText(_("{0} executable has been resolved", name));
+        FInishTitle.setText(__("{0} executable has been resolved", name));
         FInishTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
         FInishTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         FinishP.add(FInishTitle, java.awt.BorderLayout.NORTH);
@@ -233,7 +231,7 @@ public class JWizard extends JDialog {
 
         ButtonsP.setLayout(new java.awt.GridLayout(1, 2, 5, 0));
 
-        CancelB.setText(_("Cancel"));
+        CancelB.setText(__("Cancel"));
         CancelB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelBActionPerformed(evt);
@@ -241,7 +239,7 @@ public class JWizard extends JDialog {
         });
         ButtonsP.add(CancelB);
 
-        ContinueB.setText(_("Continue"));
+        ContinueB.setText(__("Continue"));
         ContinueB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ContinueBActionPerformed(evt);

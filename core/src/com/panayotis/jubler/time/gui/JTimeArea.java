@@ -124,7 +124,7 @@ public abstract class JTimeArea extends JPanel {
         SubCP.setOpaque(false);
         SubCP.setLayout(new java.awt.BorderLayout(12, 0));
 
-        ChSubColorB.setText(_("Change affected subtitles' color"));
+        ChSubColorB.setText(__("Change affected subtitles' color"));
         ChSubColorB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ChSubColorBActionPerformed(evt);

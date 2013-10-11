@@ -77,12 +77,12 @@ public class JPasterGUI extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridLayout(0, 1));
 
-        jLabel1.setText(_("Where to start pasting subtitles"));
+        jLabel1.setText(__("Where to start pasting subtitles"));
         add(jLabel1);
         add(SpinP);
 
-        ChColor.setText(_("Change Color"));
-        ChColor.setToolTipText(_("Enable this option if you want to change the default color of the pasted subtitles"));
+        ChColor.setText(__("Change Color"));
+        ChColor.setToolTipText(__("Enable this option if you want to change the default color of the pasted subtitles"));
         ChColor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ChColorActionPerformed(evt);
@@ -90,7 +90,7 @@ public class JPasterGUI extends javax.swing.JPanel {
         });
         add(ChColor);
 
-        ColSel.setToolTipText(_("The color to use for the pasted subtitles"));
+        ColSel.setToolTipText(__("The color to use for the pasted subtitles"));
         ColSel.setEnabled(false);
         add(ColSel);
     }// </editor-fold>//GEN-END:initComponents

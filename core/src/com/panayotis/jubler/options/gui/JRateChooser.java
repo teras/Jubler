@@ -91,7 +91,7 @@ public class JRateChooser extends JPanel {
         setLayout(new java.awt.BorderLayout());
 
         FromFPSB.setIcon(Theme.loadIcon("videofile.png"));
-        FromFPSB.setToolTipText(_("Get FPS from the video file"));
+        FromFPSB.setToolTipText(__("Get FPS from the video file"));
         SystemDependent.setCommandButtonStyle(FromFPSB, "only");
         FromFPSB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,7 +103,7 @@ public class JRateChooser extends JPanel {
         FPSChooser.setEditable(true);
         FPSChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15", "20", "23.976", "24", "25", "29.97", "30" }));
         FPSChooser.setSelectedItem("25");
-        FPSChooser.setToolTipText(_("Frames per second"));
+        FPSChooser.setToolTipText(__("Frames per second"));
         FPSChooser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FPSChooserActionPerformed(evt);

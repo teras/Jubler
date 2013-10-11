@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -22,7 +22,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Style to use&quot;)+&quot;  &quot;" type="code"/>
+          <Connection code="__(&quot;Style to use&quot;)+&quot;  &quot;" type="code"/>
         </Property>
       </Properties>
       <Constraints>
@@ -34,7 +34,7 @@
     <Component class="javax.swing.JComboBox" name="StyleSel">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Select the desired style from the drop down list&quot;)" type="code"/>
+          <Connection code="__(&quot;Select the desired style from the drop down list&quot;)" type="code"/>
         </Property>
       </Properties>
       <AuxValues>

@@ -84,7 +84,7 @@ public class SubSplitGUI extends JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 0, 0, 0));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText(_("Split at given subtitle line (in percent)"));
+        jLabel1.setText(__("Split at given subtitle line (in percent)"));
         jPanel2.add(jLabel1, java.awt.BorderLayout.NORTH);
 
         SplitS.setMajorTickSpacing(10);
@@ -92,7 +92,7 @@ public class SubSplitGUI extends JPanel {
         SplitS.setPaintLabels(true);
         SplitS.setPaintTicks(true);
         SplitS.setPaintTrack(false);
-        SplitS.setToolTipText(_("Percentage of subtitles to divide"));
+        SplitS.setToolTipText(__("Percentage of subtitles to divide"));
         SplitS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 SplitSStateChanged(evt);

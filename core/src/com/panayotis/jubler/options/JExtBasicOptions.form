@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -36,10 +36,10 @@
       <SubComponents>
         <Component class="javax.swing.JTextField" name="FilenameT">
           <Properties>
-            <Property name="columns" type="int" value="20"/>
             <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;The absolute path of the player. Use the Browse button to change it&quot;)" type="code"/>
+              <Connection code="__(&quot;The absolute path of the player. Use the Browse button to change it&quot;)" type="code"/>
             </Property>
           </Properties>
           <Constraints>
@@ -51,7 +51,7 @@
         <Component class="javax.swing.JLabel" name="FileL">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;{0} path&quot;, name)" type="code"/>
+              <Connection code="__(&quot;{0} path&quot;, name)" type="code"/>
             </Property>
           </Properties>
           <Constraints>
@@ -63,10 +63,10 @@
         <Component class="javax.swing.JButton" name="WizardB">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Wizard&quot;)" type="code"/>
+              <Connection code="__(&quot;Wizard&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Start the Wizard, to locate the executable path name&quot;)" type="code"/>
+              <Connection code="__(&quot;Start the Wizard, to locate the executable path name&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>

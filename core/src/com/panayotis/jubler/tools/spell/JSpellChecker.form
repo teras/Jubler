@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
@@ -8,6 +8,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <Events>
     <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
@@ -76,6 +77,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextPane" name="Sentence">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ee" green="ee" id="Button.background" palette="3" red="ee" type="palette"/>
                 </Property>
@@ -84,9 +86,8 @@
                     <EtchetBorder/>
                   </Border>
                 </Property>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;The context of the misspelled word&quot;)" type="code"/>
+                  <Connection code="__(&quot;The context of the misspelled word&quot;)" type="code"/>
                 </Property>
                 <Property name="autoscrolls" type="boolean" value="false"/>
                 <Property name="focusable" type="boolean" value="false"/>
@@ -121,14 +122,14 @@
                     <Component class="javax.swing.JLabel" name="jLabel4">
                       <Properties>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Current word&quot;) + &quot; &quot;" type="code"/>
+                          <Connection code="__(&quot;Current word&quot;) + &quot; &quot;" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel5">
                       <Properties>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Replace with&quot;) + &quot; &quot;" type="code"/>
+                          <Connection code="__(&quot;Replace with&quot;) + &quot; &quot;" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -153,7 +154,7 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value=" "/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;The misspelled word we need to change&quot;)" type="code"/>
+                          <Connection code="__(&quot;The misspelled word we need to change&quot;)" type="code"/>
                         </Property>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -169,7 +170,7 @@
                     <Component class="javax.swing.JTextField" name="Replace">
                       <Properties>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;The word to change the misspelled word into&quot;)" type="code"/>
+                          <Connection code="__(&quot;The word to change the misspelled word into&quot;)" type="code"/>
                         </Property>
                         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[20, 19]"/>
@@ -210,10 +211,10 @@
                 <Component class="javax.swing.JButton" name="IgnoreB">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Ignore&quot;)" type="code"/>
+                      <Connection code="__(&quot;Ignore&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Ignore this word&quot;)" type="code"/>
+                      <Connection code="__(&quot;Ignore this word&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -223,10 +224,10 @@
                 <Component class="javax.swing.JButton" name="AIgnoreB">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Always ignore&quot;)" type="code"/>
+                      <Connection code="__(&quot;Always ignore&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Ignore all instances of this word&quot;)" type="code"/>
+                      <Connection code="__(&quot;Ignore all instances of this word&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -252,10 +253,10 @@
                 <Component class="javax.swing.JButton" name="ReplaceB">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Replace&quot;)" type="code"/>
+                      <Connection code="__(&quot;Replace&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Replace this word&quot;)" type="code"/>
+                      <Connection code="__(&quot;Replace this word&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -265,10 +266,10 @@
                 <Component class="javax.swing.JButton" name="AReplaceB">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Always replace&quot;)" type="code"/>
+                      <Connection code="__(&quot;Always replace&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Replace all instances of this word&quot;)" type="code"/>
+                      <Connection code="__(&quot;Replace all instances of this word&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -284,10 +285,10 @@
                 <Component class="javax.swing.JButton" name="InsertB">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Insert current&quot;)" type="code"/>
+                      <Connection code="__(&quot;Insert current&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Insert this current word in spellers dictionary&quot;)" type="code"/>
+                      <Connection code="__(&quot;Insert this current word in spellers dictionary&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -321,10 +322,10 @@
                     <Component class="javax.swing.JButton" name="StopB">
                       <Properties>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Stop&quot;)" type="code"/>
+                          <Connection code="__(&quot;Stop&quot;)" type="code"/>
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Finish spell checking&quot;)" type="code"/>
+                          <Connection code="__(&quot;Finish spell checking&quot;)" type="code"/>
                         </Property>
                       </Properties>
                       <Events>
@@ -380,7 +381,7 @@
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Suggestions&quot;)" type="code"/>
+                      <Connection code="__(&quot;Suggestions&quot;)" type="code"/>
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.BevelBorderInfo">
@@ -407,7 +408,7 @@
                       <Properties>
                         <Property name="selectionMode" type="int" value="0"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="_(&quot;Suggested words to change the given word to&quot;)" type="code"/>
+                          <Connection code="__(&quot;Suggested words to change the given word to&quot;)" type="code"/>
                         </Property>
                       </Properties>
                       <Events>

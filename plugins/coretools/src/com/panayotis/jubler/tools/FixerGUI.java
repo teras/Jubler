@@ -100,11 +100,11 @@ public class FixerGUI extends JPanel {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         PushModelB.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
-            _("Evenly distribute subtitles"),
-            _("Equally divide overriding duration"),
-            _("Shift subtitles")
+            __("Evenly distribute subtitles"),
+            __("Equally divide overriding duration"),
+            __("Shift subtitles")
         }));
-        PushModelB.setToolTipText(_("Model how to solve overriding subtitles"));
+        PushModelB.setToolTipText(__("Model how to solve overriding subtitles"));
         jPanel2.add(PushModelB, java.awt.BorderLayout.PAGE_END);
 
         jPanel3.add(jPanel2);
@@ -131,11 +131,11 @@ public class FixerGUI extends JPanel {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 0));
         jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
-        MinTimeP.setBorder(SystemDependent.getBorder(_("Minimum subtitle duration")));
+        MinTimeP.setBorder(SystemDependent.getBorder(__("Minimum subtitle duration")));
         MinTimeP.setLayout(new java.awt.BorderLayout());
         jPanel4.add(MinTimeP);
 
-        MaxTimeP.setBorder(SystemDependent.getBorder(_("Maximum subtitle duration")));
+        MaxTimeP.setBorder(SystemDependent.getBorder(__("Maximum subtitle duration")));
         MaxTimeP.setLayout(new java.awt.BorderLayout());
         jPanel4.add(MaxTimeP);
 

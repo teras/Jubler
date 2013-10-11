@@ -118,7 +118,7 @@ public class JTimeSelector extends JPanel {
         add(InfoL, java.awt.BorderLayout.PAGE_START);
 
         EdgeB.setIcon(Theme.loadIcon("gear.png"));
-        EdgeB.setToolTipText(_("Use predifined time positions"));
+        EdgeB.setToolTipText(__("Use predifined time positions"));
         SystemDependent.setCommandButtonStyle(EdgeB, "only");
         EdgeB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {

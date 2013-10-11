@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -21,7 +21,7 @@
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Where to start pasting subtitles&quot;)" type="code"/>
+          <Connection code="__(&quot;Where to start pasting subtitles&quot;)" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -32,10 +32,10 @@
     <Component class="javax.swing.JCheckBox" name="ChColor">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Change Color&quot;)" type="code"/>
+          <Connection code="__(&quot;Change Color&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;Enable this option if you want to change the default color of the pasted subtitles&quot;)" type="code"/>
+          <Connection code="__(&quot;Enable this option if you want to change the default color of the pasted subtitles&quot;)" type="code"/>
         </Property>
       </Properties>
       <Events>
@@ -45,7 +45,7 @@
     <Component class="javax.swing.JComboBox" name="ColSel">
       <Properties>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="_(&quot;The color to use for the pasted subtitles&quot;)" type="code"/>
+          <Connection code="__(&quot;The color to use for the pasted subtitles&quot;)" type="code"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>

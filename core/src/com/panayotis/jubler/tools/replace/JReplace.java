@@ -143,34 +143,34 @@ public class JReplace extends javax.swing.JDialog {
         jPanel3.setLayout(new java.awt.GridLayout(3, 1));
         jPanel3.add(jLabel4);
 
-        jLabel2.setText(_("Find"));
+        jLabel2.setText(__("Find"));
         jPanel3.add(jLabel2);
 
-        jLabel3.setText(_("Replace with") + "  ");
+        jLabel3.setText(__("Replace with") + "  ");
         jPanel3.add(jLabel3);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.WEST);
 
         jPanel4.setLayout(new java.awt.GridLayout(3, 1));
 
+        ContextT.setEditable(false);
         ContextT.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         ContextT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        ContextT.setEditable(false);
-        ContextT.setToolTipText(_("The context of the found text"));
+        ContextT.setToolTipText(__("The context of the found text"));
         jPanel4.add(ContextT);
 
         FindT.setColumns(20);
-        FindT.setToolTipText(_("What to search for"));
+        FindT.setToolTipText(__("What to search for"));
         jPanel4.add(FindT);
 
-        ReplaceT.setToolTipText(_("Replace found text with this"));
+        ReplaceT.setToolTipText(__("Replace found text with this"));
         jPanel4.add(ReplaceT);
 
         jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.CENTER);
 
-        IgnoreC.setText(_("Ignore case"));
+        IgnoreC.setText(__("Ignore case"));
         IgnoreC.setToolTipText("Ignore the case of the found text");
         jPanel1.add(IgnoreC, java.awt.BorderLayout.SOUTH);
 
@@ -181,8 +181,8 @@ public class JReplace extends javax.swing.JDialog {
 
         jPanel6.setLayout(new java.awt.GridLayout(0, 1));
 
-        FindB.setText(_("Find"));
-        FindB.setToolTipText(_("Find the next occurence of the searched text"));
+        FindB.setText(__("Find"));
+        FindB.setToolTipText(__("Find the next occurence of the searched text"));
         FindB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FindBActionPerformed(evt);
@@ -190,8 +190,8 @@ public class JReplace extends javax.swing.JDialog {
         });
         jPanel6.add(FindB);
 
-        ReplaceB.setText(_("Replace"));
-        ReplaceB.setToolTipText(_("Replace the found text and find the next occurence of the searched text"));
+        ReplaceB.setText(__("Replace"));
+        ReplaceB.setToolTipText(__("Replace the found text and find the next occurence of the searched text"));
         ReplaceB.setEnabled(false);
         ReplaceB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,8 +201,8 @@ public class JReplace extends javax.swing.JDialog {
         jPanel6.add(ReplaceB);
         jPanel6.add(jSeparator1);
 
-        CloseB.setText(_("Close"));
-        CloseB.setToolTipText(_("Close this dialog box"));
+        CloseB.setText(__("Close"));
+        CloseB.setToolTipText(__("Close this dialog box"));
         CloseB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CloseBActionPerformed(evt);

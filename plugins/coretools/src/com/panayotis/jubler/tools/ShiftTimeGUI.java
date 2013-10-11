@@ -57,12 +57,12 @@ public class ShiftTimeGUI extends JPanel {
 
         CSign = new javax.swing.JComboBox();
 
-        setBorder(SystemDependent.getBorder(_("Shift Subtitles")));
+        setBorder(SystemDependent.getBorder(__("Shift Subtitles")));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         CSign.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " + ", " - " }));
-        CSign.setToolTipText(_("Either increase or decrease the time"));
+        CSign.setToolTipText(__("Either increase or decrease the time"));
         add(CSign, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

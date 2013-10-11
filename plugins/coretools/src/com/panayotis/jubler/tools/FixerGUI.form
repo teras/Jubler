@@ -94,10 +94,10 @@
             <Component class="javax.swing.JComboBox" name="PushModelB">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &#xa;    _(&quot;Evenly distribute subtitles&quot;),&#xa;    _(&quot;Equally divide overriding duration&quot;),&#xa;    _(&quot;Shift subtitles&quot;)&#xa;})" type="code"/>
+                  <Connection code="new javax.swing.DefaultComboBoxModel(new String[] { &#xa;    __(&quot;Evenly distribute subtitles&quot;),&#xa;    __(&quot;Equally divide overriding duration&quot;),&#xa;    __(&quot;Shift subtitles&quot;)&#xa;})" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Model how to solve overriding subtitles&quot;)" type="code"/>
+                  <Connection code="__(&quot;Model how to solve overriding subtitles&quot;)" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -181,7 +181,7 @@
         <Container class="javax.swing.JPanel" name="MinTimeP">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="SystemDependent.getBorder(_(&quot;Minimum subtitle duration&quot;))" type="code"/>
+              <Connection code="SystemDependent.getBorder(__(&quot;Minimum subtitle duration&quot;))" type="code"/>
             </Property>
           </Properties>
 
@@ -190,7 +190,7 @@
         <Container class="javax.swing.JPanel" name="MaxTimeP">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="SystemDependent.getBorder(_(&quot;Maximum subtitle duration&quot;))" type="code"/>
+              <Connection code="SystemDependent.getBorder(__(&quot;Maximum subtitle duration&quot;))" type="code"/>
             </Property>
           </Properties>
 

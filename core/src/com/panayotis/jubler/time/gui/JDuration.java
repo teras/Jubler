@@ -82,8 +82,8 @@ public class JDuration extends javax.swing.JPanel {
 
         TimeType.add(IgnoreBox);
         IgnoreBox.setSelected(true);
-        IgnoreBox.setText(_("Ignore"));
-        IgnoreBox.setToolTipText(_("Do not use this"));
+        IgnoreBox.setText(__("Ignore"));
+        IgnoreBox.setToolTipText(__("Do not use this"));
         IgnoreBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IgnoreBoxActionPerformed(evt);
@@ -92,8 +92,8 @@ public class JDuration extends javax.swing.JPanel {
         add(IgnoreBox);
 
         TimeType.add(AbsoluteT);
-        AbsoluteT.setText(_("Absolute time  (in milliseconds)"));
-        AbsoluteT.setToolTipText(_("Define the duration time in absolute milliseconds"));
+        AbsoluteT.setText(__("Absolute time  (in milliseconds)"));
+        AbsoluteT.setToolTipText(__("Define the duration time in absolute milliseconds"));
         AbsoluteT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AbsoluteTActionPerformed(evt);
@@ -103,13 +103,13 @@ public class JDuration extends javax.swing.JPanel {
 
         AbsBox.setColumns(10);
         AbsBox.setText("4000");
-        AbsBox.setToolTipText(_("Time in milliseconds"));
+        AbsBox.setToolTipText(__("Time in milliseconds"));
         AbsBox.setEnabled(false);
         add(AbsBox);
 
         TimeType.add(CPSecT);
-        CPSecT.setText(_("Characters per second  (in milliseconds)"));
-        CPSecT.setToolTipText(_("Define the duration per character in milliseconds"));
+        CPSecT.setText(__("Characters per second  (in milliseconds)"));
+        CPSecT.setToolTipText(__("Define the duration per character in milliseconds"));
         CPSecT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CPSecTActionPerformed(evt);
@@ -119,7 +119,7 @@ public class JDuration extends javax.swing.JPanel {
 
         CPSBox.setColumns(10);
         CPSBox.setText("50");
-        CPSBox.setToolTipText(_("Duration in milliseconds"));
+        CPSBox.setToolTipText(__("Duration in milliseconds"));
         CPSBox.setEnabled(false);
         add(CPSBox);
     }// </editor-fold>//GEN-END:initComponents

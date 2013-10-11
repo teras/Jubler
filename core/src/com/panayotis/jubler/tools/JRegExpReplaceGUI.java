@@ -92,18 +92,18 @@ public class JRegExpReplaceGUI extends JPanel {
         TextList = new javax.swing.JList();
         EditB = new javax.swing.JButton();
 
-        setBorder(SystemDependent.getBorder(_("Regular expressions to be executed")));
+        setBorder(SystemDependent.getBorder(__("Regular expressions to be executed")));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(259, 80));
 
-        TextList.setToolTipText(_("List of replacements to be done"));
+        TextList.setToolTipText(__("List of replacements to be done"));
         jScrollPane1.setViewportView(TextList);
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        EditB.setText(_("Edit"));
+        EditB.setText(__("Edit"));
         EditB.setActionCommand("Edit");
         EditB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
