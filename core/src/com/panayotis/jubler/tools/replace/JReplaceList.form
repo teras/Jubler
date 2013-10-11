@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -47,10 +47,10 @@
         <Component class="javax.swing.JButton" name="MarkAll">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Select All&quot;)" type="code"/>
+              <Connection code="__(&quot;Select All&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Use all above replacing scenarios&quot;)" type="code"/>
+              <Connection code="__(&quot;Use all above replacing scenarios&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -60,10 +60,10 @@
         <Component class="javax.swing.JButton" name="ClearAll">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Clear All&quot;)" type="code"/>
+              <Connection code="__(&quot;Clear All&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Use none of the above replacing scenarios&quot;)" type="code"/>
+              <Connection code="__(&quot;Use none of the above replacing scenarios&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -73,10 +73,10 @@
         <Component class="javax.swing.JButton" name="Inverse">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Inverse&quot;)" type="code"/>
+              <Connection code="__(&quot;Inverse&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Inverse the selection of the scenarios above&quot;)" type="code"/>
+              <Connection code="__(&quot;Inverse the selection of the scenarios above&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -88,10 +88,10 @@
         <Component class="javax.swing.JButton" name="DeleteMarked">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete the selected scenario&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete the selected scenario&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -101,10 +101,10 @@
         <Component class="javax.swing.JButton" name="ResetValues">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete the selected scenario&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete the selected scenario&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -114,10 +114,10 @@
         <Component class="javax.swing.JButton" name="LoadValues">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete the selected scenario&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete the selected scenario&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -127,10 +127,10 @@
         <Component class="javax.swing.JButton" name="SaveValues">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Delete the selected scenario&quot;)" type="code"/>
+              <Connection code="__(&quot;Delete the selected scenario&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>

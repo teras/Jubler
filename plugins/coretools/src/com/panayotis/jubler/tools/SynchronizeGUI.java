@@ -54,34 +54,32 @@ public class SynchronizeGUI extends JPanel {
 
         setLayout(new java.awt.GridLayout(0, 1));
 
-        jLabel1.setText(_("Synchronize data from the following subtitles"));
+        jLabel1.setText(__("Synchronize data from the following subtitles"));
         add(jLabel1);
 
-        JubSelector.setToolTipText(_("The subtitles file to use as a model"));
+        JubSelector.setToolTipText(__("The subtitles file to use as a model"));
         add(JubSelector);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(_("Model subtitles offset"));
+        jLabel2.setText(__("Model subtitles offset"));
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 8));
         jPanel2.add(jLabel2, java.awt.BorderLayout.WEST);
 
-        OffsetS.setToolTipText(_("Relative offset of the model subtitles. It is based on index, not time."));
+        OffsetS.setToolTipText(__("Relative offset of the model subtitles. It is based on index, not time."));
         jPanel2.add(OffsetS, java.awt.BorderLayout.CENTER);
 
         add(jPanel2);
 
         InTimeS.setSelected(true);
-        InTimeS.setText(_("Import timestamp"));
-        InTimeS.setToolTipText(_("Use the timestamp of the subtitles as the time model for current subtitles"));
+        InTimeS.setText(__("Import timestamp"));
+        InTimeS.setToolTipText(__("Use the timestamp of the subtitles as the time model for current subtitles"));
         InTimeS.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 0, 0, 0));
-        InTimeS.setMargin(new java.awt.Insets(0, 0, 0, 0));
         add(InTimeS);
 
-        InTextS.setText(_("Import text"));
-        InTextS.setToolTipText(_("Copy the text of the other subtitles into this file"));
+        InTextS.setText(__("Import text"));
+        InTextS.setToolTipText(__("Copy the text of the other subtitles into this file"));
         InTextS.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        InTextS.setMargin(new java.awt.Insets(0, 0, 0, 0));
         add(InTextS);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

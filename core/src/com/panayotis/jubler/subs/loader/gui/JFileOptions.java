@@ -208,7 +208,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
         MacHebrew = new javax.swing.JMenuItem();
         Presets = new javax.swing.JButton();
 
-        Unicode.setText(_("Unicode"));
+        Unicode.setText(__("Unicode"));
 
         UTF_8.setText("UTF-8");
         UTF_8.addActionListener(this);
@@ -225,9 +225,9 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
         PreEnc.add(Unicode);
         PreEnc.add(uSep);
 
-        EuropeW.setText(_("West European"));
+        EuropeW.setText(__("West European"));
 
-        Western.setText(_("Western"));
+        Western.setText(__("Western"));
 
         ISO_8859_1.setText("ISO-8859-1");
         ISO_8859_1.addActionListener(this);
@@ -251,7 +251,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeW.add(Western);
 
-        Celtic.setText(_("Celtic"));
+        Celtic.setText(__("Celtic"));
 
         ISO_8859_14.setText("ISO-8859-14");
         ISO_8859_14.addActionListener(this);
@@ -259,7 +259,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeW.add(Celtic);
 
-        Greek.setText(_("Greek"));
+        Greek.setText(__("Greek"));
 
         ISO_8859_7.setText("ISO-8859-7");
         ISO_8859_7.addActionListener(this);
@@ -275,7 +275,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeW.add(Greek);
 
-        Icelandic.setText(_("Icelandic"));
+        Icelandic.setText(__("Icelandic"));
 
         MacIcelandic.setText("MacIcelandic");
         MacIcelandic.addActionListener(this);
@@ -283,7 +283,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeW.add(Icelandic);
 
-        Nordic.setText(_("Nordic"));
+        Nordic.setText(__("Nordic"));
 
         ISO_8859_10.setText("ISO-8859-10");
         ISO_8859_10.addActionListener(this);
@@ -291,7 +291,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeW.add(Nordic);
 
-        EuropeS.setText(_("South European"));
+        EuropeS.setText(__("South European"));
 
         ISO_8859_3.setText("ISO-8859-3");
         ISO_8859_3.addActionListener(this);
@@ -301,9 +301,9 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         PreEnc.add(EuropeW);
 
-        EuropeE.setText(_("East European"));
+        EuropeE.setText(__("East European"));
 
-        Baltic.setText(_("Baltic"));
+        Baltic.setText(__("Baltic"));
 
         ISO_8859_4.setText("ISO-8859-4");
         ISO_8859_4.addActionListener(this);
@@ -319,7 +319,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeE.add(Baltic);
 
-        Central_European.setText(_("Central European"));
+        Central_European.setText(__("Central European"));
 
         ISO_8859_2.setText("ISO-8859-2");
         ISO_8859_2.addActionListener(this);
@@ -339,7 +339,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeE.add(Central_European);
 
-        Croatian.setText(_("Croatian"));
+        Croatian.setText(__("Croatian"));
 
         MacCroatian.setText("MacCroatian");
         MacCroatian.addActionListener(this);
@@ -347,7 +347,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeE.add(Croatian);
 
-        Cyrillic.setText(_("Cyrillic"));
+        Cyrillic.setText(__("Cyrillic"));
 
         ISO_8859_5.setText("ISO-8859-5");
         ISO_8859_5.addActionListener(this);
@@ -379,7 +379,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         EuropeE.add(Cyrillic);
 
-        Romanian.setText(_("Romanian"));
+        Romanian.setText(__("Romanian"));
 
         ISO_8859_16.setText("ISO-8859-16");
         ISO_8859_16.addActionListener(this);
@@ -393,9 +393,9 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         PreEnc.add(EuropeE);
 
-        AsiaE.setText(_("East Asian"));
+        AsiaE.setText(__("East Asian"));
 
-        ChineseS.setText(_("Chinese Simplified"));
+        ChineseS.setText(__("Chinese Simplified"));
 
         ISO_2022_CN.setText("ISO-2022-CN");
         ISO_2022_CN.addActionListener(this);
@@ -419,7 +419,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaE.add(ChineseS);
 
-        ChineseT.setText(_("Chinese Traditional"));
+        ChineseT.setText(__("Chinese Traditional"));
 
         Big5.setText("Big5");
         Big5.addActionListener(this);
@@ -435,7 +435,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaE.add(ChineseT);
 
-        Japanese.setText(_("Japanese"));
+        Japanese.setText(__("Japanese"));
 
         ISO_2022_JP.setText("ISO-2022-JP");
         ISO_2022_JP.addActionListener(this);
@@ -451,7 +451,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaE.add(Japanese);
 
-        Korean.setText(_("Korean"));
+        Korean.setText(__("Korean"));
 
         ISO_2022_KR.setText("ISO-2022-KR");
         ISO_2022_KR.addActionListener(this);
@@ -473,9 +473,9 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         PreEnc.add(AsiaE);
 
-        AsiaS.setText(_("SE and SW Asian"));
+        AsiaS.setText(__("SE and SW Asian"));
 
-        Armenian.setText(_("Armenian"));
+        Armenian.setText(__("Armenian"));
 
         ARMSCII_8.setText("ARMSCII-8");
         ARMSCII_8.addActionListener(this);
@@ -483,7 +483,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaS.add(Armenian);
 
-        Georgian.setText(_("Georgian"));
+        Georgian.setText(__("Georgian"));
 
         GEOSTD_8.setText("GEOSTD-8");
         GEOSTD_8.addActionListener(this);
@@ -491,7 +491,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaS.add(Georgian);
 
-        Thai.setText(_("Thai"));
+        Thai.setText(__("Thai"));
 
         ISO_8859_11.setText("ISO-8859-11");
         ISO_8859_11.addActionListener(this);
@@ -507,7 +507,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaS.add(Thai);
 
-        Turkish.setText(_("Turkish"));
+        Turkish.setText(__("Turkish"));
 
         ISO_8859_9.setText("ISO-8859-9");
         ISO_8859_9.addActionListener(this);
@@ -527,7 +527,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaS.add(Turkish);
 
-        Vietnamese.setText(_("Vietnamese"));
+        Vietnamese.setText(__("Vietnamese"));
 
         windows_1258.setText("windows-1258");
         windows_1258.addActionListener(this);
@@ -547,7 +547,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaS.add(Vietnamese);
 
-        Hindi.setText(_("Hindi"));
+        Hindi.setText(__("Hindi"));
 
         MacDevanagari.setText("MacDevanagari");
         MacDevanagari.addActionListener(this);
@@ -555,7 +555,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaS.add(Hindi);
 
-        Gujarati.setText(_("Gujarati"));
+        Gujarati.setText(__("Gujarati"));
 
         MacGujarati.setText("MacGujarati");
         MacGujarati.addActionListener(this);
@@ -563,7 +563,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         AsiaS.add(Gujarati);
 
-        Gurmukhi.setText(_("Gurmukhi"));
+        Gurmukhi.setText(__("Gurmukhi"));
 
         MacGurmukhi.setText("MacGurmukhi");
         MacGurmukhi.addActionListener(this);
@@ -573,9 +573,9 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         PreEnc.add(AsiaS);
 
-        MiddleE.setText(_("Middle Eastern"));
+        MiddleE.setText(__("Middle Eastern"));
 
-        Arabic.setText(_("Arabic"));
+        Arabic.setText(__("Arabic"));
 
         ISO_8859_6.setText("ISO-8859-6");
         ISO_8859_6.addActionListener(this);
@@ -595,7 +595,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         MiddleE.add(Arabic);
 
-        Farsi.setText(_("Farsi"));
+        Farsi.setText(__("Farsi"));
 
         MacFarsi.setText("MacFarsi");
         MacFarsi.addActionListener(this);
@@ -603,7 +603,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         MiddleE.add(Farsi);
 
-        Hebrew.setText(_("Hebrew"));
+        Hebrew.setText(__("Hebrew"));
 
         ISO_8859_8.setText("ISO-8859-8");
         ISO_8859_8.addActionListener(this);
@@ -626,7 +626,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
         PreEnc.add(MiddleE);
 
         Presets.setIcon(Theme.loadIcon("encs.png"));
-        Presets.setToolTipText(_("Use predefined encodings"));
+        Presets.setToolTipText(__("Use predefined encodings"));
         SystemDependent.setCommandButtonStyle(Presets, "only");
         Presets.addMouseListener(this);
     }

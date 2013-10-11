@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.5" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -39,7 +39,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Encoding&quot;)" type="code"/>
+              <Connection code="__(&quot;Encoding&quot;)" type="code"/>
             </Property>
           </Properties>
         </Component>
@@ -47,7 +47,7 @@
           <Properties>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;FPS&quot;)" type="code"/>
+              <Connection code="__(&quot;FPS&quot;)" type="code"/>
             </Property>
           </Properties>
         </Component>

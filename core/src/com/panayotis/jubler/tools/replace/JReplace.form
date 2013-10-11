@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
@@ -7,6 +7,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -92,14 +93,14 @@
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Find&quot;)" type="code"/>
+                      <Connection code="__(&quot;Find&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel3">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Replace with&quot;) + &quot;  &quot;" type="code"/>
+                      <Connection code="__(&quot;Replace with&quot;) + &quot;  &quot;" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -119,6 +120,7 @@
               <SubComponents>
                 <Component class="javax.swing.JTextPane" name="ContextT">
                   <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ee" green="ee" id="Button.background" palette="3" red="ee" type="palette"/>
                     </Property>
@@ -127,9 +129,8 @@
                         <EtchetBorder/>
                       </Border>
                     </Property>
-                    <Property name="editable" type="boolean" value="false"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;The context of the found text&quot;)" type="code"/>
+                      <Connection code="__(&quot;The context of the found text&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -137,14 +138,14 @@
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;What to search for&quot;)" type="code"/>
+                      <Connection code="__(&quot;What to search for&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JTextField" name="ReplaceT">
                   <Properties>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Replace found text with this&quot;)" type="code"/>
+                      <Connection code="__(&quot;Replace found text with this&quot;)" type="code"/>
                     </Property>
                   </Properties>
                 </Component>
@@ -155,7 +156,7 @@
         <Component class="javax.swing.JCheckBox" name="IgnoreC">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Ignore case&quot;)" type="code"/>
+              <Connection code="__(&quot;Ignore case&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Ignore the case of the found text"/>
           </Properties>
@@ -198,10 +199,10 @@
             <Component class="javax.swing.JButton" name="FindB">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Find&quot;)" type="code"/>
+                  <Connection code="__(&quot;Find&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Find the next occurence of the searched text&quot;)" type="code"/>
+                  <Connection code="__(&quot;Find the next occurence of the searched text&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -211,10 +212,10 @@
             <Component class="javax.swing.JButton" name="ReplaceB">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Replace&quot;)" type="code"/>
+                  <Connection code="__(&quot;Replace&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Replace the found text and find the next occurence of the searched text&quot;)" type="code"/>
+                  <Connection code="__(&quot;Replace the found text and find the next occurence of the searched text&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
               </Properties>
@@ -227,10 +228,10 @@
             <Component class="javax.swing.JButton" name="CloseB">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Close&quot;)" type="code"/>
+                  <Connection code="__(&quot;Close&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Close this dialog box&quot;)" type="code"/>
+                  <Connection code="__(&quot;Close this dialog box&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>

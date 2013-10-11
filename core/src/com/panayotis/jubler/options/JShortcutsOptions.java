@@ -137,7 +137,7 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        ClearSB.setText(_("Clear current shortcut"));
+        ClearSB.setText(__("Clear current shortcut"));
         SystemDependent.setCommandButtonStyle(ClearSB, "only");
         ClearSB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,7 +148,7 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.EAST);
 
-        ResetSB.setText(_("Reset all to defaults"));
+        ResetSB.setText(__("Reset all to defaults"));
         SystemDependent.setCommandButtonStyle(ResetSB, "only");
         ResetSB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -430,7 +430,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         SpeedS.setOrientation(javax.swing.JSlider.VERTICAL);
         SpeedS.setPaintTicks(true);
         SpeedS.setSnapToTicks(true);
-        SpeedS.setToolTipText(_("Change playback speed"));
+        SpeedS.setToolTipText(__("Change playback speed"));
         SpeedS.setValue(3);
         SpeedS.setMinimumSize(new java.awt.Dimension(30, 36));
         SpeedS.setPreferredSize(new java.awt.Dimension(30, 40));
@@ -447,7 +447,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         AudioS.setOrientation(javax.swing.JSlider.VERTICAL);
         AudioS.setPaintTicks(true);
         AudioS.setSnapToTicks(true);
-        AudioS.setToolTipText(_("Change audio volume"));
+        AudioS.setToolTipText(__("Change audio volume"));
         AudioS.setValue(5);
         AudioS.setMinimumSize(new java.awt.Dimension(30, 36));
         AudioS.setPreferredSize(new java.awt.Dimension(30, 40));
@@ -463,7 +463,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel1.setLayout(new java.awt.GridLayout(1, 0));
 
         MarkB.setText("m");
-        MarkB.setToolTipText(_("Add new subtitle on the fly"));
+        MarkB.setToolTipText(__("Add new subtitle on the fly"));
         MarkB.setBorderPainted(false);
         MarkB.setContentAreaFilled(false);
         MarkB.addActionListener(new java.awt.event.ActionListener() {
@@ -474,10 +474,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel1.add(MarkB);
 
         ResetSpeedB.setText("s");
-        ResetSpeedB.setToolTipText(_("Reset playback speed to default value"));
+        ResetSpeedB.setToolTipText(__("Reset playback speed to default value"));
         ResetSpeedB.setBorderPainted(false);
         ResetSpeedB.setContentAreaFilled(false);
-        ResetSpeedB.setMargin(new java.awt.Insets(0, 0, 0, 0));
         ResetSpeedB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ResetSpeedBActionPerformed(evt);
@@ -508,7 +507,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         TimeS.setMajorTickSpacing(3600);
         TimeS.setMinorTickSpacing(60);
         TimeS.setPaintTicks(true);
-        TimeS.setToolTipText(_("Playback position"));
+        TimeS.setToolTipText(__("Playback position"));
         TimeS.setValue(0);
         TimeS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -525,14 +524,14 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel9.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         jPanel9.setLayout(new java.awt.GridLayout(1, 2));
 
-        TimeL.setFont(new java.awt.Font("Monospaced", 0, 12));
-        TimeL.setToolTipText(_("Current playback time"));
+        TimeL.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        TimeL.setToolTipText(__("Current playback time"));
         jPanel9.add(TimeL);
 
-        dtL.setFont(new java.awt.Font("Monospaced", 0, 12));
+        dtL.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         dtL.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         dtL.setText(" ");
-        dtL.setToolTipText(_("Subtitles time difference"));
+        dtL.setToolTipText(__("Subtitles time difference"));
         jPanel9.add(dtL);
 
         SliderP.add(jPanel9, java.awt.BorderLayout.NORTH);
@@ -547,7 +546,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel3.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
         PauseB.setText("p");
-        PauseB.setToolTipText(_("Play/Pause video playback"));
+        PauseB.setToolTipText(__("Play/Pause video playback"));
         PauseB.setBorderPainted(false);
         PauseB.setContentAreaFilled(false);
         PauseB.addActionListener(new java.awt.event.ActionListener() {
@@ -558,7 +557,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel3.add(PauseB);
 
         LoadSubsB.setText("l");
-        LoadSubsB.setToolTipText(_("Load new subtitles into player"));
+        LoadSubsB.setToolTipText(__("Load new subtitles into player"));
         LoadSubsB.setBorderPainted(false);
         LoadSubsB.setContentAreaFilled(false);
         LoadSubsB.addActionListener(new java.awt.event.ActionListener() {
@@ -569,7 +568,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel3.add(LoadSubsB);
 
         QuitB.setText("q");
-        QuitB.setToolTipText(_("Quit Player"));
+        QuitB.setToolTipText(__("Quit Player"));
         QuitB.setBorderPainted(false);
         QuitB.setContentAreaFilled(false);
         QuitB.addActionListener(new java.awt.event.ActionListener() {
@@ -585,7 +584,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         NavPanel.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
         BBMovieB.setText("bb");
-        BBMovieB.setToolTipText(_("Go backwards by 30 seconds"));
+        BBMovieB.setToolTipText(__("Go backwards by 30 seconds"));
         BBMovieB.setBorderPainted(false);
         BBMovieB.setContentAreaFilled(false);
         BBMovieB.addActionListener(new java.awt.event.ActionListener() {
@@ -596,7 +595,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         NavPanel.add(BBMovieB);
 
         BMovieB.setText("b");
-        BMovieB.setToolTipText(_("Go backwards by 10 secons"));
+        BMovieB.setToolTipText(__("Go backwards by 10 secons"));
         BMovieB.setBorderPainted(false);
         BMovieB.setContentAreaFilled(false);
         BMovieB.addActionListener(new java.awt.event.ActionListener() {
@@ -607,7 +606,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         NavPanel.add(BMovieB);
 
         FMovieB.setText("f");
-        FMovieB.setToolTipText(_("Go forwards by 10 seconds"));
+        FMovieB.setToolTipText(__("Go forwards by 10 seconds"));
         FMovieB.setBorderPainted(false);
         FMovieB.setContentAreaFilled(false);
         FMovieB.addActionListener(new java.awt.event.ActionListener() {
@@ -618,7 +617,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         NavPanel.add(FMovieB);
 
         FFMovieB.setText("ff");
-        FFMovieB.setToolTipText(_("Go forwards by 30 seconds"));
+        FFMovieB.setToolTipText(__("Go forwards by 30 seconds"));
         FFMovieB.setBorderPainted(false);
         FFMovieB.setContentAreaFilled(false);
         FFMovieB.addActionListener(new java.awt.event.ActionListener() {
@@ -638,7 +637,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel15.setLayout(new java.awt.GridLayout(1, 0));
 
         Sync1B.setText("1");
-        Sync1B.setToolTipText(_("Mark first synchronization position of the subtitles."));
+        Sync1B.setToolTipText(__("Mark first synchronization position of the subtitles."));
         Sync1B.setActionCommand("b1");
         Sync1B.setBorderPainted(false);
         Sync1B.setContentAreaFilled(false);
@@ -650,7 +649,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel15.add(Sync1B);
 
         Sync2B.setText("2");
-        Sync2B.setToolTipText(_("Mark second synchronization position of the subtitles."));
+        Sync2B.setToolTipText(__("Mark second synchronization position of the subtitles."));
         Sync2B.setActionCommand("b2");
         Sync2B.setBorderPainted(false);
         Sync2B.setContentAreaFilled(false);
@@ -664,10 +663,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel14.add(jPanel15, java.awt.BorderLayout.EAST);
 
         GrabSub.setText("g");
-        GrabSub.setToolTipText(_("Select subtitle from the main window, to synchronize subtitles with current time."));
+        GrabSub.setToolTipText(__("Select subtitle from the main window, to synchronize subtitles with current time."));
         GrabSub.setBorderPainted(false);
         GrabSub.setContentAreaFilled(false);
-        GrabSub.setMargin(new java.awt.Insets(0, 0, 0, 0));
         GrabSub.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GrabSubActionPerformed(evt);
@@ -678,7 +676,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel12.setLayout(new java.awt.BorderLayout());
 
         SubMover.setSnapToTicks(true);
-        SubMover.setToolTipText(_("Change subtitle delay on the fly"));
+        SubMover.setToolTipText(__("Change subtitle delay on the fly"));
         SubMover.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 SubMoverStateChanged(evt);
@@ -686,7 +684,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel12.add(SubMover, java.awt.BorderLayout.CENTER);
 
-        SmoverL.setFont(new java.awt.Font("Dialog", 0, 12));
+        SmoverL.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         SmoverL.setText(" ");
         SmoverL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         jPanel12.add(SmoverL, java.awt.BorderLayout.NORTH);
@@ -698,8 +696,8 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         MainPanel.add(jPanel11, java.awt.BorderLayout.CENTER);
 
         SubShow.setEditable(false);
-        SubShow.setFont(new java.awt.Font("Dialog", 1, 12));
-        SubShow.setToolTipText(_("Subtitle text"));
+        SubShow.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        SubShow.setToolTipText(__("Subtitle text"));
         SubShow.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 SubShowKeyReleased(evt);

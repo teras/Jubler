@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.6" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -34,7 +34,7 @@
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Translator&quot;)" type="code"/>
+              <Connection code="__(&quot;Translator&quot;)" type="code"/>
             </Property>
           </Properties>
           <Constraints>
@@ -46,7 +46,7 @@
         <Component class="javax.swing.JComboBox" name="TransMachine">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Selection of translation machine&quot;)" type="code"/>
+              <Connection code="__(&quot;Selection of translation machine&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -79,7 +79,7 @@
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;From&quot;)" type="code"/>
+                  <Connection code="__(&quot;From&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -91,7 +91,7 @@
             <Component class="javax.swing.JComboBox" name="FromLang">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Original language&quot;)" type="code"/>
+                  <Connection code="__(&quot;Original language&quot;)" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -112,7 +112,7 @@
             <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;To&quot;)" type="code"/>
+                  <Connection code="__(&quot;To&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -124,7 +124,7 @@
             <Component class="javax.swing.JComboBox" name="ToLang">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Target language&quot;)" type="code"/>
+                  <Connection code="__(&quot;Target language&quot;)" type="code"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -170,11 +170,11 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextArea1">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ee" green="ee" id="Label.background" palette="3" red="ee" type="palette"/>
                 </Property>
                 <Property name="columns" type="int" value="20"/>
-                <Property name="editable" type="boolean" value="false"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
                   <FontInfo relative="true">
                     <Font component="jTextArea1" italic="true" property="font" relativeSize="true" size="0"/>
@@ -183,7 +183,7 @@
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Computer Translated subtitles should be only for personal use, and not for distribution.&quot;)" type="code"/>
+                  <Connection code="__(&quot;Computer Translated subtitles should be only for personal use, and not for distribution.&quot;)" type="code"/>
                 </Property>
                 <Property name="wrapStyleWord" type="boolean" value="true"/>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

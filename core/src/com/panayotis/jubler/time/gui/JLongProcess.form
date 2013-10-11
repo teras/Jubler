@@ -1,15 +1,16 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="0"/>
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-      <Connection code="_(&quot;Save progress&quot;)" type="code"/>
+      <Connection code="__(&quot;Save progress&quot;)" type="code"/>
     </Property>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -52,7 +53,7 @@
         <Component class="javax.swing.JProgressBar" name="ProgBar">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Save progress&quot;)" type="code"/>
+              <Connection code="__(&quot;Save progress&quot;)" type="code"/>
             </Property>
           </Properties>
           <Constraints>
@@ -82,7 +83,7 @@
                 <Component class="javax.swing.JButton" name="CancelB">
                   <Properties>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="_(&quot;Cancel&quot;)" type="code"/>
+                      <Connection code="__(&quot;Cancel&quot;)" type="code"/>
                     </Property>
                   </Properties>
                   <Events>

@@ -66,27 +66,27 @@ public class SubJoinGUI extends JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setBorder(SystemDependent.getBorder(_("Use the following subtitles")));
+        jPanel1.setBorder(SystemDependent.getBorder(__("Use the following subtitles")));
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.GridLayout(0, 1));
 
-        SubWindow.setToolTipText(_("Subtitles file to use"));
+        SubWindow.setToolTipText(__("Subtitles file to use"));
         jPanel1.add(SubWindow);
 
         Position.add(RPrepend);
-        RPrepend.setText(_("Prepend subtitles"));
-        RPrepend.setToolTipText(_("Put subtitles in the beginning of the current subtitles"));
+        RPrepend.setText(__("Prepend subtitles"));
+        RPrepend.setToolTipText(__("Put subtitles in the beginning of the current subtitles"));
         jPanel1.add(RPrepend);
 
         Position.add(RAppend);
         RAppend.setSelected(true);
-        RAppend.setText(_("Append Subtitles"));
-        RAppend.setToolTipText(_("Put subtitles at the end of the current subtitles"));
+        RAppend.setText(__("Append Subtitles"));
+        RAppend.setToolTipText(__("Put subtitles at the end of the current subtitles"));
         jPanel1.add(RAppend);
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        TShift.setBorder(SystemDependent.getBorder(_("Leave gap")));
+        TShift.setBorder(SystemDependent.getBorder(__("Leave gap")));
         TShift.setOpaque(false);
         TShift.setLayout(new java.awt.BorderLayout());
         add(TShift, java.awt.BorderLayout.SOUTH);

@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
@@ -11,6 +11,7 @@
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
@@ -35,10 +36,10 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Automatically compute based on FPS&quot;)" type="code"/>
+              <Connection code="__(&quot;Automatically compute based on FPS&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Use the following FPS in order to automatically compute the desired recoding&quot;)" type="code"/>
+              <Connection code="__(&quot;Use the following FPS in order to automatically compute the desired recoding&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -119,10 +120,10 @@
               <ComponentRef name="Factor"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Custom&quot;)" type="code"/>
+              <Connection code="__(&quot;Custom&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Use a custom factor in order to perform the recoding&quot;)" type="code"/>
+              <Connection code="__(&quot;Use a custom factor in order to perform the recoding&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -152,7 +153,7 @@
         <Component class="javax.swing.JLabel" name="RecodeL">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Recoding factor&quot;)" type="code"/>
+              <Connection code="__(&quot;Recoding factor&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -161,7 +162,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="1.0"/>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;The value of the custom factor which will do the recoding&quot;)" type="code"/>
+              <Connection code="__(&quot;The value of the custom factor which will do the recoding&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -184,7 +185,7 @@
         <Component class="javax.swing.JLabel" name="CentralL">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Central time&quot;)" type="code"/>
+              <Connection code="__(&quot;Central time&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
@@ -193,7 +194,7 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="0.0"/>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file.&quot;)" type="code"/>
+              <Connection code="__(&quot;The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file.&quot;)" type="code"/>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>

@@ -37,7 +37,7 @@
         <Component class="javax.swing.JComboBox" name="PList">
           <Properties>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Select a video player in order to use it&quot;)" type="code"/>
+              <Connection code="__(&quot;Select a video player in order to use it&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>

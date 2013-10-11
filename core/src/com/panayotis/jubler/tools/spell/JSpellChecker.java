@@ -228,10 +228,10 @@ public class JSpellChecker extends JDialog {
 
         WordPanel.setLayout(new java.awt.BorderLayout());
 
+        Sentence.setEditable(false);
         Sentence.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
         Sentence.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        Sentence.setEditable(false);
-        Sentence.setToolTipText(_("The context of the misspelled word"));
+        Sentence.setToolTipText(__("The context of the misspelled word"));
         Sentence.setAutoscrolls(false);
         Sentence.setFocusable(false);
         WordPanel.add(Sentence, java.awt.BorderLayout.NORTH);
@@ -240,10 +240,10 @@ public class JSpellChecker extends JDialog {
 
         jPanel9.setLayout(new java.awt.GridLayout(2, 0));
 
-        jLabel4.setText(_("Current word") + " ");
+        jLabel4.setText(__("Current word") + " ");
         jPanel9.add(jLabel4);
 
-        jLabel5.setText(_("Replace with") + " ");
+        jLabel5.setText(__("Replace with") + " ");
         jPanel9.add(jLabel5);
 
         jPanel7.add(jPanel9, java.awt.BorderLayout.WEST);
@@ -252,7 +252,7 @@ public class JSpellChecker extends JDialog {
 
         Unknown.setBackground(java.awt.Color.white);
         Unknown.setText(" ");
-        Unknown.setToolTipText(_("The misspelled word we need to change"));
+        Unknown.setToolTipText(__("The misspelled word we need to change"));
         Unknown.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         Unknown.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Unknown.addActionListener(new java.awt.event.ActionListener() {
@@ -262,7 +262,7 @@ public class JSpellChecker extends JDialog {
         });
         jPanel10.add(Unknown);
 
-        Replace.setToolTipText(_("The word to change the misspelled word into"));
+        Replace.setToolTipText(__("The word to change the misspelled word into"));
         Replace.setPreferredSize(new java.awt.Dimension(20, 19));
         jPanel10.add(Replace);
 
@@ -277,8 +277,8 @@ public class JSpellChecker extends JDialog {
 
         jPanel3.setLayout(new java.awt.GridLayout(2, 1));
 
-        IgnoreB.setText(_("Ignore"));
-        IgnoreB.setToolTipText(_("Ignore this word"));
+        IgnoreB.setText(__("Ignore"));
+        IgnoreB.setToolTipText(__("Ignore this word"));
         IgnoreB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 IgnoreBActionPerformed(evt);
@@ -286,8 +286,8 @@ public class JSpellChecker extends JDialog {
         });
         jPanel3.add(IgnoreB);
 
-        AIgnoreB.setText(_("Always ignore"));
-        AIgnoreB.setToolTipText(_("Ignore all instances of this word"));
+        AIgnoreB.setText(__("Always ignore"));
+        AIgnoreB.setToolTipText(__("Ignore all instances of this word"));
         AIgnoreB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AIgnoreBActionPerformed(evt);
@@ -300,8 +300,8 @@ public class JSpellChecker extends JDialog {
         jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
         jPanel4.setLayout(new java.awt.GridLayout(2, 1));
 
-        ReplaceB.setText(_("Replace"));
-        ReplaceB.setToolTipText(_("Replace this word"));
+        ReplaceB.setText(__("Replace"));
+        ReplaceB.setToolTipText(__("Replace this word"));
         ReplaceB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ReplaceBActionPerformed(evt);
@@ -309,8 +309,8 @@ public class JSpellChecker extends JDialog {
         });
         jPanel4.add(ReplaceB);
 
-        AReplaceB.setText(_("Always replace"));
-        AReplaceB.setToolTipText(_("Replace all instances of this word"));
+        AReplaceB.setText(__("Always replace"));
+        AReplaceB.setToolTipText(__("Replace all instances of this word"));
         AReplaceB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AReplaceBActionPerformed(evt);
@@ -322,8 +322,8 @@ public class JSpellChecker extends JDialog {
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
-        InsertB.setText(_("Insert current"));
-        InsertB.setToolTipText(_("Insert this current word in spellers dictionary"));
+        InsertB.setText(__("Insert current"));
+        InsertB.setToolTipText(__("Insert this current word in spellers dictionary"));
         InsertB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InsertBActionPerformed(evt);
@@ -336,8 +336,8 @@ public class JSpellChecker extends JDialog {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        StopB.setText(_("Stop"));
-        StopB.setToolTipText(_("Finish spell checking"));
+        StopB.setText(__("Stop"));
+        StopB.setToolTipText(__("Finish spell checking"));
         StopB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StopBActionPerformed(evt);
@@ -359,12 +359,12 @@ public class JSpellChecker extends JDialog {
         jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 2, 0));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(_("Suggestions"));
+        jLabel2.setText(__("Suggestions"));
         jLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel6.add(jLabel2, java.awt.BorderLayout.NORTH);
 
         SugList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        SugList.setToolTipText(_("Suggested words to change the given word to"));
+        SugList.setToolTipText(__("Suggested words to change the given word to"));
         SugList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 SugListValueChanged(evt);

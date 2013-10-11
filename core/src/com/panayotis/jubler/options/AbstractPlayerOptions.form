@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -47,7 +47,7 @@
             <Component class="javax.swing.JLabel" name="Help1L">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Advanced argument list:&quot;)" type="code"/>
+                  <Connection code="__(&quot;Advanced argument list:&quot;)" type="code"/>
                 </Property>
               </Properties>
             </Component>
@@ -81,10 +81,10 @@
         <Component class="javax.swing.JButton" name="deflt">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Defaults&quot;)" type="code"/>
+              <Connection code="__(&quot;Defaults&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="_(&quot;Use default player parameters&quot;)" type="code"/>
+              <Connection code="__(&quot;Use default player parameters&quot;)" type="code"/>
             </Property>
           </Properties>
           <Events>

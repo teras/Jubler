@@ -93,7 +93,7 @@ public class JAlphaColorDialog extends JDialog implements ActionListener, Change
         AlphaP = new javax.swing.JPanel();
         AlphaS = new javax.swing.JSlider();
 
-        setTitle(_("Color Chooser"));
+        setTitle(__("Color Chooser"));
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -101,15 +101,15 @@ public class JAlphaColorDialog extends JDialog implements ActionListener, Change
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
-        OKB.setText(_("OK"));
+        OKB.setText(__("OK"));
         OKB.addActionListener(this);
         jPanel2.add(OKB);
 
-        CancelB.setText(_("Cancel"));
+        CancelB.setText(__("Cancel"));
         CancelB.addActionListener(this);
         jPanel2.add(CancelB);
 
-        ResetB.setText(_("Reset"));
+        ResetB.setText(__("Reset"));
         ResetB.addActionListener(this);
         jPanel2.add(ResetB);
 
@@ -117,7 +117,7 @@ public class JAlphaColorDialog extends JDialog implements ActionListener, Change
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
 
-        AlphaP.setBorder(SystemDependent.getBorder(_("Alpha Channel")));
+        AlphaP.setBorder(SystemDependent.getBorder(__("Alpha Channel")));
         AlphaP.setOpaque(false);
         AlphaP.setLayout(new java.awt.BorderLayout());
 

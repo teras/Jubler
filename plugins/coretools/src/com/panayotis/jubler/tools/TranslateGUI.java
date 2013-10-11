@@ -78,10 +78,10 @@ public class TranslateGUI extends JPanel {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText(_("Translator"));
+        jLabel1.setText(__("Translator"));
         jPanel2.add(jLabel1, java.awt.BorderLayout.WEST);
 
-        TransMachine.setToolTipText(_("Selection of translation machine"));
+        TransMachine.setToolTipText(__("Selection of translation machine"));
         TransMachine.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TransMachineActionPerformed(evt);
@@ -95,20 +95,20 @@ public class TranslateGUI extends JPanel {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(_("From"));
+        jLabel2.setText(__("From"));
         jPanel4.add(jLabel2, java.awt.BorderLayout.CENTER);
 
-        FromLang.setToolTipText(_("Original language"));
+        FromLang.setToolTipText(__("Original language"));
         jPanel4.add(FromLang, java.awt.BorderLayout.PAGE_END);
 
         jPanel3.add(jPanel4);
 
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setText(_("To"));
+        jLabel3.setText(__("To"));
         jPanel5.add(jLabel3, java.awt.BorderLayout.CENTER);
 
-        ToLang.setToolTipText(_("Target language"));
+        ToLang.setToolTipText(__("Target language"));
         jPanel5.add(ToLang, java.awt.BorderLayout.PAGE_END);
 
         jPanel3.add(jPanel5);
@@ -119,13 +119,13 @@ public class TranslateGUI extends JPanel {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
+        jTextArea1.setEditable(false);
         jTextArea1.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         jTextArea1.setColumns(20);
-        jTextArea1.setEditable(false);
         jTextArea1.setFont(jTextArea1.getFont().deriveFont((jTextArea1.getFont().getStyle() | java.awt.Font.ITALIC)));
         jTextArea1.setLineWrap(true);
         jTextArea1.setRows(2);
-        jTextArea1.setText(_("Computer Translated subtitles should be only for personal use, and not for distribution."));
+        jTextArea1.setText(__("Computer Translated subtitles should be only for personal use, and not for distribution."));
         jTextArea1.setWrapStyleWord(true);
         jTextArea1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         jScrollPane1.setViewportView(jTextArea1);

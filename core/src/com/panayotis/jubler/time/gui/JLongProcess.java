@@ -72,19 +72,19 @@ public class JLongProcess extends javax.swing.JDialog {
         CancelB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle(_("Save progress"));
+        setTitle(__("Save progress"));
         setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 20, 20, 20));
         jPanel1.setLayout(new java.awt.BorderLayout());
         jPanel1.add(InfoL, java.awt.BorderLayout.NORTH);
 
-        ProgBar.setToolTipText(_("Save progress"));
+        ProgBar.setToolTipText(__("Save progress"));
         jPanel1.add(ProgBar, java.awt.BorderLayout.CENTER);
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        CancelB.setText(_("Cancel"));
+        CancelB.setText(__("Cancel"));
         CancelB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CancelBActionPerformed(evt);

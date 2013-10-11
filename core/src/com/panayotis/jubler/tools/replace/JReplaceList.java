@@ -75,8 +75,8 @@ public class JReplaceList extends javax.swing.JPanel {
 
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
 
-        MarkAll.setText(_("Select All"));
-        MarkAll.setToolTipText(_("Use all above replacing scenarios"));
+        MarkAll.setText(__("Select All"));
+        MarkAll.setToolTipText(__("Use all above replacing scenarios"));
         MarkAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 MarkAllActionPerformed(evt);
@@ -84,8 +84,8 @@ public class JReplaceList extends javax.swing.JPanel {
         });
         jPanel1.add(MarkAll);
 
-        ClearAll.setText(_("Clear All"));
-        ClearAll.setToolTipText(_("Use none of the above replacing scenarios"));
+        ClearAll.setText(__("Clear All"));
+        ClearAll.setToolTipText(__("Use none of the above replacing scenarios"));
         ClearAll.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClearAllActionPerformed(evt);
@@ -93,8 +93,8 @@ public class JReplaceList extends javax.swing.JPanel {
         });
         jPanel1.add(ClearAll);
 
-        Inverse.setText(_("Inverse"));
-        Inverse.setToolTipText(_("Inverse the selection of the scenarios above"));
+        Inverse.setText(__("Inverse"));
+        Inverse.setToolTipText(__("Inverse the selection of the scenarios above"));
         Inverse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InverseActionPerformed(evt);
@@ -103,8 +103,8 @@ public class JReplaceList extends javax.swing.JPanel {
         jPanel1.add(Inverse);
         jPanel1.add(jSeparator1);
 
-        DeleteMarked.setText(_("Delete"));
-        DeleteMarked.setToolTipText(_("Delete the selected scenario"));
+        DeleteMarked.setText(__("Delete"));
+        DeleteMarked.setToolTipText(__("Delete the selected scenario"));
         DeleteMarked.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeleteMarkedActionPerformed(evt);
@@ -112,8 +112,8 @@ public class JReplaceList extends javax.swing.JPanel {
         });
         jPanel1.add(DeleteMarked);
 
-        ResetValues.setText(_("Delete"));
-        ResetValues.setToolTipText(_("Delete the selected scenario"));
+        ResetValues.setText(__("Delete"));
+        ResetValues.setToolTipText(__("Delete the selected scenario"));
         ResetValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ResetValuesActionPerformed(evt);
@@ -121,8 +121,8 @@ public class JReplaceList extends javax.swing.JPanel {
         });
         jPanel1.add(ResetValues);
 
-        LoadValues.setText(_("Delete"));
-        LoadValues.setToolTipText(_("Delete the selected scenario"));
+        LoadValues.setText(__("Delete"));
+        LoadValues.setToolTipText(__("Delete the selected scenario"));
         LoadValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LoadValuesActionPerformed(evt);
@@ -130,8 +130,8 @@ public class JReplaceList extends javax.swing.JPanel {
         });
         jPanel1.add(LoadValues);
 
-        SaveValues.setText(_("Delete"));
-        SaveValues.setToolTipText(_("Delete the selected scenario"));
+        SaveValues.setText(__("Delete"));
+        SaveValues.setToolTipText(__("Delete the selected scenario"));
         SaveValues.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SaveValuesActionPerformed(evt);

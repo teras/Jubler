@@ -88,7 +88,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
 
         HelpP.setLayout(new java.awt.GridLayout(0, 1));
 
-        Help1L.setText(_("Advanced argument list:"));
+        Help1L.setText(__("Advanced argument list:"));
         HelpP.add(Help1L);
 
         Help2L.setText("    %p=player %v=video_file %s=subtiles_file %i=random_port");
@@ -105,8 +105,8 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
         args.setColumns(40);
         ArgsP.add(args, java.awt.BorderLayout.CENTER);
 
-        deflt.setText(_("Defaults"));
-        deflt.setToolTipText(_("Use default player parameters"));
+        deflt.setText(__("Defaults"));
+        deflt.setToolTipText(__("Use default player parameters"));
         SystemDependent.setCommandButtonStyle(deflt, "only");
         deflt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

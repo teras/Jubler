@@ -50,7 +50,7 @@ public class RounderGUI extends JPanel {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 0, 1));
         setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText(_("Number of decimals")+"      ");
+        jLabel1.setText(__("Number of decimals")+"      ");
         add(jLabel1, java.awt.BorderLayout.WEST);
 
         PrecS.setMajorTickSpacing(1);
@@ -58,7 +58,7 @@ public class RounderGUI extends JPanel {
         PrecS.setPaintLabels(true);
         PrecS.setPaintTicks(true);
         PrecS.setSnapToTicks(true);
-        PrecS.setToolTipText(_("Decimal digits"));
+        PrecS.setToolTipText(__("Decimal digits"));
         add(PrecS, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

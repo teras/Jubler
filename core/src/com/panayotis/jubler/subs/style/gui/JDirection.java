@@ -219,7 +219,7 @@ public class JDirection extends javax.swing.JPanel {
 
         AlignGroup.add(TopLeft);
         TopLeft.setIcon(Theme.loadIcon("upleft.png"));
-        TopLeft.setToolTipText(_("Top left"));
+        TopLeft.setToolTipText(__("Top left"));
         SystemDependent.setDirectionButtonStyle(TopLeft);
         TopLeft.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,7 +235,7 @@ public class JDirection extends javax.swing.JPanel {
 
         AlignGroup.add(Top);
         Top.setIcon(Theme.loadIcon("up.png"));
-        Top.setToolTipText(_("Top"));
+        Top.setToolTipText(__("Top"));
         SystemDependent.setDirectionButtonStyle(Top);
         Top.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -251,7 +251,7 @@ public class JDirection extends javax.swing.JPanel {
 
         AlignGroup.add(TopRight);
         TopRight.setIcon(Theme.loadIcon("upright.png"));
-        TopRight.setToolTipText(_("Top right"));
+        TopRight.setToolTipText(__("Top right"));
         SystemDependent.setDirectionButtonStyle(TopRight);
         TopRight.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -267,7 +267,7 @@ public class JDirection extends javax.swing.JPanel {
 
         AlignGroup.add(Left);
         Left.setIcon(Theme.loadIcon("left.png"));
-        Left.setToolTipText(_("Left"));
+        Left.setToolTipText(__("Left"));
         SystemDependent.setDirectionButtonStyle(Left);
         Left.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -283,7 +283,7 @@ public class JDirection extends javax.swing.JPanel {
 
         AlignGroup.add(Center);
         Center.setIcon(Theme.loadIcon("center.png"));
-        Center.setToolTipText(_("Center"));
+        Center.setToolTipText(__("Center"));
         SystemDependent.setDirectionButtonStyle(Center);
         Center.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -299,7 +299,7 @@ public class JDirection extends javax.swing.JPanel {
 
         AlignGroup.add(Right);
         Right.setIcon(Theme.loadIcon("right.png"));
-        Right.setToolTipText(_("Right"));
+        Right.setToolTipText(__("Right"));
         SystemDependent.setDirectionButtonStyle(Right);
         Right.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -315,7 +315,7 @@ public class JDirection extends javax.swing.JPanel {
 
         AlignGroup.add(BottomLeft);
         BottomLeft.setIcon(Theme.loadIcon("downleft.png"));
-        BottomLeft.setToolTipText(_("Bottom left"));
+        BottomLeft.setToolTipText(__("Bottom left"));
         SystemDependent.setDirectionButtonStyle(BottomLeft);
         BottomLeft.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,7 +332,7 @@ public class JDirection extends javax.swing.JPanel {
         SystemDependent.setDirectionButtonStyle(Bottom);
         AlignGroup.add(Bottom);
         Bottom.setIcon(Theme.loadIcon("down.png"));
-        Bottom.setToolTipText(_("Bottom"));
+        Bottom.setToolTipText(__("Bottom"));
         Bottom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 optionClicked(evt);
@@ -348,7 +348,7 @@ public class JDirection extends javax.swing.JPanel {
         SystemDependent.setDirectionButtonStyle(BottomRight);
         AlignGroup.add(BottomRight);
         BottomRight.setIcon(Theme.loadIcon("downright.png"));
-        BottomRight.setToolTipText(_("Bottom right"));
+        BottomRight.setToolTipText(__("Bottom right"));
         BottomRight.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 optionClicked(evt);

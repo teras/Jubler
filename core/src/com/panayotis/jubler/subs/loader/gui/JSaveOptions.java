@@ -100,11 +100,11 @@ public class JSaveOptions extends JFileOptions {
         jPanel1.setLayout(new java.awt.GridLayout(1, 3));
 
         CEncL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CEncL.setText(_("Encoding"));
+        CEncL.setText(__("Encoding"));
         jPanel1.add(CEncL);
 
         FPSPanelL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        FPSPanelL.setText(_("FPS"));
+        FPSPanelL.setText(__("FPS"));
         jPanel1.add(FPSPanelL);
 
         add(jPanel1, java.awt.BorderLayout.NORTH);

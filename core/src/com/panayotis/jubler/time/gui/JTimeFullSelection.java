@@ -156,7 +156,7 @@ public class JTimeFullSelection extends JTimeArea {
         byRange = new javax.swing.JRadioButton();
         TimePanel = new javax.swing.JPanel();
 
-        setBorder(SystemDependent.getBorder(_("Select subtitles to work on")));
+        setBorder(SystemDependent.getBorder(__("Select subtitles to work on")));
         setLayout(new java.awt.BorderLayout());
 
         SelectionPanel.setOpaque(false);
@@ -167,8 +167,8 @@ public class JTimeFullSelection extends JTimeArea {
 
         Type.add(bySelection);
         bySelection.setSelected(true);
-        bySelection.setText(_("By user selection"));
-        bySelection.setToolTipText(_("Select subtitles depending on user selection"));
+        bySelection.setText(__("By user selection"));
+        bySelection.setToolTipText(__("Select subtitles depending on user selection"));
         bySelection.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bySelectionActionPerformed(evt);
@@ -182,8 +182,8 @@ public class JTimeFullSelection extends JTimeArea {
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
         Type.add(byColor);
-        byColor.setText(_("By color marking"));
-        byColor.setToolTipText(_("Select subtitles depending on their color"));
+        byColor.setText(__("By color marking"));
+        byColor.setToolTipText(__("Select subtitles depending on their color"));
         byColor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 byColorActionPerformed(evt);
@@ -192,7 +192,7 @@ public class JTimeFullSelection extends JTimeArea {
         jPanel6.add(byColor);
 
         ColorSel.setModel(new javax.swing.DefaultComboBoxModel(SubEntry.MarkNames));
-        ColorSel.setToolTipText(_("The subtitle color to use for selection"));
+        ColorSel.setToolTipText(__("The subtitle color to use for selection"));
         ColorSel.setEnabled(false);
         jPanel6.add(ColorSel);
 
@@ -202,8 +202,8 @@ public class JTimeFullSelection extends JTimeArea {
         StylePanel.setLayout(new java.awt.GridLayout(1, 0));
 
         Type.add(byStyle);
-        byStyle.setText(_("By theme"));
-        byStyle.setToolTipText(_("Select subtitles depending on their theme"));
+        byStyle.setText(__("By theme"));
+        byStyle.setToolTipText(__("Select subtitles depending on their theme"));
         byStyle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 byStyleActionPerformed(evt);
@@ -211,7 +211,7 @@ public class JTimeFullSelection extends JTimeArea {
         });
         StylePanel.add(byStyle);
 
-        StyleSel.setToolTipText(_("The theme to use for selection"));
+        StyleSel.setToolTipText(__("The theme to use for selection"));
         StyleSel.setEnabled(false);
         StylePanel.add(StyleSel);
 
@@ -221,8 +221,8 @@ public class JTimeFullSelection extends JTimeArea {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         Type.add(byRange);
-        byRange.setText(_("By time range"));
-        byRange.setToolTipText(_("Select subtitles depending on a specified region"));
+        byRange.setText(__("By time range"));
+        byRange.setToolTipText(__("Select subtitles depending on a specified region"));
         byRange.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 byRangeActionPerformed(evt);

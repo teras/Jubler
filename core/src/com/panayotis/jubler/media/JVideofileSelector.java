@@ -126,19 +126,19 @@ public class JVideofileSelector extends javax.swing.JPanel {
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        VFileL.setText(_("Use the following video file"));
+        VFileL.setText(__("Use the following video file"));
         jPanel2.add(VFileL, java.awt.BorderLayout.NORTH);
 
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        VFName.setColumns(40);
         VFName.setEditable(false);
-        VFName.setToolTipText(_("Filename of the video file. Use the \"Browse\" button to change it."));
+        VFName.setColumns(40);
+        VFName.setToolTipText(__("Filename of the video file. Use the \"Browse\" button to change it."));
         jPanel1.add(VFName, java.awt.BorderLayout.CENTER);
 
-        VideoBrowse.setText(_("Browse"));
-        VideoBrowse.setToolTipText(_("Change the video filename"));
+        VideoBrowse.setText(__("Browse"));
+        VideoBrowse.setToolTipText(__("Change the video filename"));
         SystemDependent.setCommandButtonStyle(VideoBrowse, "only");
         VideoBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,13 +155,13 @@ public class JVideofileSelector extends javax.swing.JPanel {
         jPanel4.setOpaque(false);
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        AFName.setColumns(40);
         AFName.setEditable(false);
-        AFName.setToolTipText(_("Filename of the external audio file. Use the \"Browse\" button to change it."));
+        AFName.setColumns(40);
+        AFName.setToolTipText(__("Filename of the external audio file. Use the \"Browse\" button to change it."));
         jPanel4.add(AFName, java.awt.BorderLayout.CENTER);
 
-        AudioBrowse.setText(_("Browse"));
-        AudioBrowse.setToolTipText(_("Change the external audio filename"));
+        AudioBrowse.setText(__("Browse"));
+        AudioBrowse.setToolTipText(__("Change the external audio filename"));
         AudioBrowse.setEnabled(false);
         SystemDependent.setCommandButtonStyle(AudioBrowse, "only");
         AudioBrowse.addActionListener(new java.awt.event.ActionListener() {
@@ -171,8 +171,8 @@ public class JVideofileSelector extends javax.swing.JPanel {
         });
         jPanel4.add(AudioBrowse, java.awt.BorderLayout.EAST);
 
-        ExternalAudioB.setText(_("Use a different audio stream"));
-        ExternalAudioB.setToolTipText(_("Use an audio stream outside from this video file.\n(E.g. a WAV file or a previously cached audio stream)"));
+        ExternalAudioB.setText(__("Use a different audio stream"));
+        ExternalAudioB.setToolTipText(__("Use an audio stream outside from this video file.\n(E.g. a WAV file or a previously cached audio stream)"));
         ExternalAudioB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ExternalAudioBActionPerformed(evt);
@@ -186,13 +186,13 @@ public class JVideofileSelector extends javax.swing.JPanel {
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        CFName.setColumns(40);
         CFName.setEditable(false);
-        CFName.setToolTipText(_("Filename of the previous audio cache. Use the \"Browse\" button to change it."));
+        CFName.setColumns(40);
+        CFName.setToolTipText(__("Filename of the previous audio cache. Use the \"Browse\" button to change it."));
         jPanel5.add(CFName, java.awt.BorderLayout.CENTER);
 
-        CacheBrowse.setText(_("Browse"));
-        CacheBrowse.setToolTipText(_("Change the audio cache filename"));
+        CacheBrowse.setText(__("Browse"));
+        CacheBrowse.setToolTipText(__("Change the audio cache filename"));
         SystemDependent.setCommandButtonStyle(CacheBrowse, "only");
         CacheBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,7 +201,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         });
         jPanel5.add(CacheBrowse, java.awt.BorderLayout.EAST);
 
-        CFileL.setText(_("Filename of the cached audio stream"));
+        CFileL.setText(__("Filename of the cached audio stream"));
         jPanel5.add(CFileL, java.awt.BorderLayout.NORTH);
 
         add(jPanel5);

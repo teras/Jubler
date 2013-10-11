@@ -51,10 +51,10 @@ public class StylerGUI extends JPanel {
         setLayout(new java.awt.BorderLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel1.setText(_("Style to use")+"  ");
+        jLabel1.setText(__("Style to use")+"  ");
         add(jLabel1, java.awt.BorderLayout.WEST);
 
-        StyleSel.setToolTipText(_("Select the desired style from the drop down list"));
+        StyleSel.setToolTipText(__("Select the desired style from the drop down list"));
         add(StyleSel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -88,8 +88,8 @@ public class RecodeTimeGUI extends JPanel {
 
         Factor.add(AutoB);
         AutoB.setSelected(true);
-        AutoB.setText(_("Automatically compute based on FPS"));
-        AutoB.setToolTipText(_("Use the following FPS in order to automatically compute the desired recoding"));
+        AutoB.setText(__("Automatically compute based on FPS"));
+        AutoB.setToolTipText(__("Use the following FPS in order to automatically compute the desired recoding"));
         AutoB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AutoBActionPerformed(evt);
@@ -125,8 +125,8 @@ public class RecodeTimeGUI extends JPanel {
         jPanel5.setLayout(new java.awt.BorderLayout());
 
         Factor.add(CustomB);
-        CustomB.setText(_("Custom"));
-        CustomB.setToolTipText(_("Use a custom factor in order to perform the recoding"));
+        CustomB.setText(__("Custom"));
+        CustomB.setToolTipText(__("Use a custom factor in order to perform the recoding"));
         CustomB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CustomBActionPerformed(evt);
@@ -139,12 +139,12 @@ public class RecodeTimeGUI extends JPanel {
         jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.GridLayout(1, 2));
 
-        RecodeL.setText(_("Recoding factor"));
+        RecodeL.setText(__("Recoding factor"));
         RecodeL.setEnabled(false);
         jPanel6.add(RecodeL);
 
         CustomF.setText("1.0");
-        CustomF.setToolTipText(_("The value of the custom factor which will do the recoding"));
+        CustomF.setToolTipText(__("The value of the custom factor which will do the recoding"));
         CustomF.setEnabled(false);
         jPanel6.add(CustomF);
 
@@ -153,12 +153,12 @@ public class RecodeTimeGUI extends JPanel {
         jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.GridLayout(1, 2));
 
-        CentralL.setText(_("Central time"));
+        CentralL.setText(__("Central time"));
         CentralL.setEnabled(false);
         jPanel7.add(CentralL);
 
         CustomC.setText("0.0");
-        CustomC.setToolTipText(_("The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."));
+        CustomC.setToolTipText(__("The central time point which the recoding occurs. Usually left to 0 to apply evenly to the whole file."));
         CustomC.setEnabled(false);
         jPanel7.add(CustomC);
 
