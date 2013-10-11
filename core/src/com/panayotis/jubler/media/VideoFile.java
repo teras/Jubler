@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.media;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.media.filters.MediaFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
@@ -148,7 +148,7 @@ public class VideoFile extends File {
 
         File subfile;
         if (subs == null || subs.getSubFile().getStrippedFile() == null)
-            subfile = new File(FileCommunicator.getDefaultDirPath() + _("Untitled"));
+            subfile = new File(FileCommunicator.getDefaultDirPath() + __("Untitled"));
         else
             subfile = subs.getSubFile().getStrippedFile();
 

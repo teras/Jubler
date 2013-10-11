@@ -24,7 +24,7 @@
 package com.panayotis.jubler.media.preview.decoders;
 
 import com.panayotis.jubler.os.DEBUG;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,9 +47,9 @@ public class AudioPreview {
 
     public AudioPreview(float[] data) {
         if (data == null)
-            throw new NullPointerException(_("Trying to initialize audio preview with null data"));
+            throw new NullPointerException(__("Trying to initialize audio preview with null data"));
         if ((data.length % (length * 2)) != 0)
-            throw new ArrayIndexOutOfBoundsException(_("Trying to intialize audio preview with wrong size {0}", data.length));
+            throw new ArrayIndexOutOfBoundsException(__("Trying to intialize audio preview with wrong size {0}", data.length));
         byte channels = (byte) (data.length / (length * 2));
         cache = new float[channels][length][2];
         int pointer = 0;

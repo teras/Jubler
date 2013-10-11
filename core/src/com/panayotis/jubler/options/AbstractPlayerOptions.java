@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.options;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.BorderLayout;

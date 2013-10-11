@@ -32,7 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.plugins.Theme;
 import java.io.IOException;
 import java.util.HashMap;
@@ -488,9 +488,9 @@ public class JSpellChecker extends JDialog {
             return; /* we have already hidden this dialog */
         setVisible(false);
         dispose();
-        String msg = _("Number of affected words: {0}", count_changes);
+        String msg = __("Number of affected words: {0}", count_changes);
         if (count_changes == 0)
-            msg = _("No changes have been done");
-        JIDialog.info(jparent, msg, _("Speller changes"));
+            msg = __("No changes have been done");
+        JIDialog.info(jparent, msg, __("Speller changes"));
     }
 }

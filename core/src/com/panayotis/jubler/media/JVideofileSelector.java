@@ -30,7 +30,7 @@ import com.panayotis.jubler.os.SystemDependent;
 import java.io.File;
 import javax.swing.JFileChooser;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *

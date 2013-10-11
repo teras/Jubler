@@ -30,7 +30,7 @@ import java.text.DecimalFormat;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -78,7 +78,7 @@ public class FixerGUI extends JPanel {
         jPanel6.setLayout(new java.awt.BorderLayout());
 
         SortB.setSelected(true);
-        SortB.setText(_("Sort first  (strongly recommended)"));
+        SortB.setText(__("Sort first  (strongly recommended)"));
         jPanel6.add(SortB, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel6);
@@ -86,7 +86,7 @@ public class FixerGUI extends JPanel {
         jPanel7.setLayout(new java.awt.BorderLayout());
 
         FixT.setSelected(true);
-        FixT.setText(_("Prevent overlapping"));
+        FixT.setText(__("Prevent overlapping"));
         FixT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FixTActionPerformed(evt);
@@ -112,7 +112,7 @@ public class FixerGUI extends JPanel {
         jPanel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
         jPanel5.setLayout(new java.awt.BorderLayout());
 
-        GapB.setText(_("Leave gap between subtitles (in milliseconds)") + "  ");
+        GapB.setText(__("Leave gap between subtitles (in milliseconds)") + "  ");
         GapB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GapBActionPerformed(evt);

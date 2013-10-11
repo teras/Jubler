@@ -21,7 +21,7 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.JIDialog;
 import java.util.ArrayList;
 import javax.swing.JComponent;
@@ -35,7 +35,7 @@ public class Reparent extends Tool {
     private ArrayList<JubFrame> jublerlist;
 
     public Reparent() {
-        super(new ToolMenu(_("Reparent"), "TPA", ToolMenu.Location.FILETOOL, 0, 0));
+        super(new ToolMenu(__("Reparent"), "TPA", ToolMenu.Location.FILETOOL, 0, 0));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Reparent extends Tool {
         jublerlist = new ArrayList<JubFrame>();
         int selection = 0;
         vis.JubSelector.removeAllItems();
-        vis.JubSelector.addItem(_("-No parent available-"));
+        vis.JubSelector.addItem(__("-No parent available-"));
         for (JubFrame entry : JubFrame.windows)
             if (entry != current) {
                 jublerlist.add(entry);
@@ -58,7 +58,7 @@ public class Reparent extends Tool {
     @Override
     public boolean execute(JubFrame current) {
         ReparentGUI vis = (ReparentGUI) getVisuals();
-        if (JIDialog.action(current, vis, _("Reparent subtitles file"))) {
+        if (JIDialog.action(current, vis, __("Reparent subtitles file"))) {
             JubFrame newp = getDesiredParent();
             if (newp == null) {
                 /* the user cancelled the parenting */
@@ -70,7 +70,7 @@ public class Reparent extends Tool {
                 while ((pointer = pointer.jparent) != null)
                     if (pointer == current) {
                         /*  A circle was found */
-                        JIDialog.error(current, _("Cyclic dependency while setting new parent.\nParenting will be cancelled"), _("Reparent error"));
+                        JIDialog.error(current, __("Cyclic dependency while setting new parent.\nParenting will be cancelled"), __("Reparent error"));
                         return false;
                     }
                 /* No cyclic dependency was found */

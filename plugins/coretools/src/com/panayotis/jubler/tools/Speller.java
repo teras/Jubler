@@ -27,7 +27,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.spell.JSpellChecker;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -36,12 +36,12 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class Speller extends TimeBaseTool {
 
     public Speller() {
-        super(true, new ToolMenu(_("Spell check"), "TLL", Location.CONTENTTOOL, KeyEvent.VK_T, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Spell check"), "TLL", Location.CONTENTTOOL, KeyEvent.VK_T, InputEvent.CTRL_MASK));
     }
 
     @Override
     protected String getToolTitle() {
-        return _("Spell check");
+        return __("Spell check");
     }
 
     /* All work has been done in JSpellChecker */

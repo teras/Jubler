@@ -29,7 +29,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.JComponent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -41,12 +41,12 @@ public class Translate extends TimeBaseTool {
     private Translator trans;
 
     public Translate() {
-        super(true, new ToolMenu(_("Translate"), "TTM", Location.CONTENTTOOL, KeyEvent.VK_E, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Translate"), "TTM", Location.CONTENTTOOL, KeyEvent.VK_E, InputEvent.CTRL_MASK));
     }
 
     @Override
     protected String getToolTitle() {
-        return _("Translate text");
+        return __("Translate text");
     }
 
     @Override

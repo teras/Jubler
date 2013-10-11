@@ -24,7 +24,7 @@
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.tools.externals.AvailExternals;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.plugins.Theme;
 import java.awt.CardLayout;
 import javax.swing.Icon;
@@ -55,7 +55,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
             JExtBasicOptions opts = list.programAt(i).getOptionsPanel();
             ParamsP.add((opts == null ? new JPanel() : opts), Integer.toString(i));
         }
-        SelectorL.setText(_("Select a {0} from the following list", _(list.getType()).toLowerCase()));
+        SelectorL.setText(__("Select a {0} from the following list", __(list.getType()).toLowerCase()));
         if (PList.getModel().getSize() > 0)
             PList.setSelectedIndex(selected);
     }
@@ -144,7 +144,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     }
 
     public String getTabTooltip() {
-        return _("{0} options", list.getType());
+        return __("{0} options", list.getType());
     }
 
     public Icon getTabIcon() {

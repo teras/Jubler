@@ -26,7 +26,7 @@ package com.panayotis.jubler.tools;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.CommonDef;
 import com.panayotis.jubler.subs.NonDuplicatedVector;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.subs.Share;
 import java.awt.Color;
 import java.awt.Component;
@@ -81,22 +81,22 @@ public class JImage implements CommonDef {
      */
     public static File[] createImageDirectory(File default_directory) {
         Object[] options = {
-            _("Create/Select new"),
-            _("Use current")
+            __("Create/Select new"),
+            __("Use current")
         };
 
         StringBuffer b = new StringBuffer();
-        b.append(_("Current directory is " + UNIX_NL + "\"{0}\"",
+        b.append(__("Current directory is " + UNIX_NL + "\"{0}\"",
                 default_directory.getAbsoluteFile())).append(UNIX_NL);
-        b.append(_("Large number of files in one directory could")).append(UNIX_NL);
-        b.append(_("deteriorate the system's performance.")).append(UNIX_NL);
-        b.append(_("Would you like to create new directories")).append(UNIX_NL);
-        b.append(_("and select them for storing images?")).append(UNIX_NL);
-        b.append(_("Note:"));
-        b.append(_("(Images are divided equally over the group")).append(UNIX_NL);
-        b.append(_("of selected directories.)"));
+        b.append(__("Large number of files in one directory could")).append(UNIX_NL);
+        b.append(__("deteriorate the system's performance.")).append(UNIX_NL);
+        b.append(__("Would you like to create new directories")).append(UNIX_NL);
+        b.append(__("and select them for storing images?")).append(UNIX_NL);
+        b.append(__("Note:"));
+        b.append(__("(Images are divided equally over the group")).append(UNIX_NL);
+        b.append(__("of selected directories.)"));
         String msg = b.toString();
-        String title = _("Creating directories for images");
+        String title = __("Creating directories for images");
 
         int selected_option = JOptionPane.showOptionDialog(null,
                 msg,
@@ -649,7 +649,7 @@ public class JImage implements CommonDef {
         // Get a ImageWriter for jpeg format.
         Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
         if (!writers.hasNext())
-            throw new IllegalStateException(_("No writers found"));
+            throw new IllegalStateException(__("No writers found"));
         ImageWriter writer = (ImageWriter) writers.next();
         // Create the ImageWriteParam to compress the image.
         ImageWriteParam param = writer.getDefaultWriteParam();

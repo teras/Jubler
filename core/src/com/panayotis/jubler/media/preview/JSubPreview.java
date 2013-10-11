@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.media.preview;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
@@ -153,7 +153,7 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     public void updateSelectedTime() {
-        TimePosL.setText(new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString() + " [" + _("Selected subtitles") + "]");
+        TimePosL.setText(new Time(timeline.getSelectionStart()).toString() + " -> " + new Time(timeline.getSelectionEnd()).toString() + " [" + __("Selected subtitles") + "]");
     }
 
     public void updateMediaFile(MediaFile mfile) {

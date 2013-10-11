@@ -23,7 +23,7 @@ package com.panayotis.jubler.time.gui;
 
 import java.awt.Frame;
 import java.awt.event.ActionListener;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *

@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.os;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 
 import com.panayotis.jubler.tools.externals.ExtPath;
@@ -173,12 +173,12 @@ public class SystemDependent {
                             new String[]{"which", browsers[count]}).waitFor() == 0)
                         browser = browsers[count];
                 if (browser == null)
-                    throw new Exception(_("Could not find web browser"));
+                    throw new Exception(__("Could not find web browser"));
                 else
                     Runtime.getRuntime().exec(new String[]{browser, url});
             }
         } catch (Exception e) {
-            JIDialog.warning(null, "Exception " + e.getClass().getName() + " while loading URL " + url, _("Error while opening URL"));
+            JIDialog.warning(null, "Exception " + e.getClass().getName() + " while loading URL " + url, __("Error while opening URL"));
         }
     }
 

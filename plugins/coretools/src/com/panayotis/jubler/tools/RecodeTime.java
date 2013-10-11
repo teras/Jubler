@@ -25,7 +25,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
 import javax.swing.JComponent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -39,7 +39,7 @@ public class RecodeTime extends RealTimeTool {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public RecodeTime() {
-        super(true, new ToolMenu(_("Recode"), "TCO", Location.TIMETOOL, 0, 0));
+        super(true, new ToolMenu(__("Recode"), "TCO", Location.TIMETOOL, 0, 0));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class RecodeTime extends RealTimeTool {
 
     @Override
     protected String getToolTitle() {
-        return _("Recode time");
+        return __("Recode time");
     }
 
     @Override

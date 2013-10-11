@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.media;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
@@ -89,7 +89,7 @@ public class MediaFile {
         /* Now let the user select which files are the proper media files */
         boolean isok;
         do {
-            if (!JIDialog.action(frame, videoselector, _("Select video"))) {
+            if (!JIDialog.action(frame, videoselector, __("Select video"))) {
                 vfile = old_v;
                 afile = old_a;
                 cfile = old_c;
@@ -97,7 +97,7 @@ public class MediaFile {
             }
             isok = isValid(vfile);
             if (!isok)
-                JIDialog.warning(null, _("This file does not exist.\nPlease provide a valid file name."), _("Error in videofile selection"));
+                JIDialog.warning(null, __("This file does not exist.\nPlease provide a valid file name."), __("Error in videofile selection"));
         } while (!isok);
 
         return true;

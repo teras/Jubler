@@ -25,7 +25,7 @@ package com.panayotis.jubler.media.filters;
 
 import java.io.File;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -50,6 +50,6 @@ public class VideoFileFilter extends MediaFileFilter {
     }
 
     public String getDescription() {
-        return _("All Video files");
+        return __("All Video files");
     }
 }

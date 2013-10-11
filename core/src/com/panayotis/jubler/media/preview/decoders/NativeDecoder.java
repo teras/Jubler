@@ -24,7 +24,7 @@
 package com.panayotis.jubler.media.preview.decoders;
 
 import com.panayotis.jubler.os.JIDialog;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.os.DEBUG;
@@ -51,7 +51,7 @@ public abstract class NativeDecoder implements DecoderInterface {
             return false;
         }
         if (cacher != null) {
-            JIDialog.error(null, _("Still creating cache. Use the Cancel button to abort."), _("Caching still in progress"));
+            JIDialog.error(null, __("Still creating cache. Use the Cancel button to abort."), __("Caching still in progress"));
             return false;
         }
         if (afile == null) {
@@ -77,7 +77,7 @@ public abstract class NativeDecoder implements DecoderInterface {
                 setInterruptStatus(false);
 
                 if (!status)
-                    JIDialog.error(null, _("Error while loading file {0}", af.getPath()), "Error while creating cache");
+                    JIDialog.error(null, __("Error while loading file {0}", af.getPath()), "Error while creating cache");
                 feedback.stopCacheCreation();
             }
         };

@@ -25,7 +25,7 @@ package com.panayotis.jubler.media.filters;
 
 import java.io.File;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 
 /**
@@ -68,7 +68,7 @@ public class AudioFileFilter extends MediaFileFilter {
     }
 
     public String getDescription() {
-        return _("All Audio files");
+        return __("All Audio files");
     }
 
     public void setCheckForValidCache(File cachesource) {

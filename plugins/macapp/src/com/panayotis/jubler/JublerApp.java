@@ -20,7 +20,7 @@
 
 package com.panayotis.jubler;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.apple.eawt.Application;
 import com.panayotis.jubler.plugins.Plugin;
@@ -120,7 +120,7 @@ public class JublerApp extends Application implements Plugin, PluginItem {
     }
 
     public String getPluginName() {
-        return _("OS X application support");
+        return __("OS X application support");
     }
 
     public boolean canDisablePlugin() {

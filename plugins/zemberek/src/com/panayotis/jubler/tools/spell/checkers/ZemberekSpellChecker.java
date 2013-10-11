@@ -27,7 +27,7 @@
 
 package com.panayotis.jubler.tools.spell.checkers;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -134,7 +134,7 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
     }
 
     public String getPluginName() {
-        return _("Zemberek spell checker");
+        return __("Zemberek spell checker");
     }
 
     public boolean canDisablePlugin() {

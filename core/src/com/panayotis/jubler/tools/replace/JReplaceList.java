@@ -25,7 +25,7 @@ package com.panayotis.jubler.tools.replace;
 
 import javax.swing.ListSelectionModel;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *

@@ -37,7 +37,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.options.Options;
@@ -61,8 +61,8 @@ import javax.swing.JDialog;
  */
 public class JVideoConsole extends JDialog implements PlayerFeedback {
 
-    private static final String GenericTitle = _("Video Console");
-    private static final String InitialTitle = _("Please wait ... launching player");
+    private static final String GenericTitle = __("Video Console");
+    private static final String InitialTitle = __("Please wait ... launching player");
     private boolean initial_launch = true;
     /* */
     private Viewport view;
@@ -138,7 +138,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         diagram = new JSubSimpleGraph(parent.getSubtitles());
         SliderP.add(diagram, BorderLayout.SOUTH);
-        diagram.setToolTipText(_("Map of subtitles"));
+        diagram.setToolTipText(__("Map of subtitles"));
         pack();
 
         timer = new Timer(300, new ActionListener() {
@@ -180,7 +180,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                 break;
             } catch (ExtProgramException ex) {
                 if (!(ex.getCause() instanceof IOException)) {
-                    JIDialog.error(this, _("Abnormal player exit") + "\n" + ex.getCause(), _("Movie Player Error"));
+                    JIDialog.error(this, __("Abnormal player exit") + "\n" + ex.getCause(), __("Movie Player Error"));
                     stop();
                     return;
                 } else if (!player.getOptionsPanel().requestExecutable()) {

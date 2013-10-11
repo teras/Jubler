@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools.externals.wizard;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.SystemDependent;
@@ -268,7 +268,7 @@ public class JWizard extends JDialog {
                 ContinueB.setEnabled(true);
                 AutoProgress.setVisible(false);
                 if (f == null) {
-                    AutoL.setText(_("Unable to find executable"));
+                    AutoL.setText(__("Unable to find executable"));
                     CancelB.setEnabled(true);
                 } else {
                     FilenameT.setText(f.getPath());
@@ -299,11 +299,11 @@ public class JWizard extends JDialog {
                 }
                 cardid++;
                 CancelB.setEnabled(false);
-                ContinueB.setText(_("Finish"));
+                ContinueB.setText(__("Finish"));
                 break;
             case 3:
                 CancelB.setEnabled(false);
-                ContinueB.setText(_("Finish"));
+                ContinueB.setText(__("Finish"));
                 break;
             case 4:
                 setVisible(false);

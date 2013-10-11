@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.information;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.SystemFileFinder;
@@ -102,8 +102,8 @@ public class HelpBrowser extends javax.swing.JDialog {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        BackB.setText(_("Back"));
-        BackB.setToolTipText(_("Go to previous page"));
+        BackB.setText(__("Back"));
+        BackB.setToolTipText(__("Go to previous page"));
         BackB.setEnabled(false);
         BackB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

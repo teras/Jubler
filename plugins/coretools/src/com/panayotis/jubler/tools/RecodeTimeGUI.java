@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.tools;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import java.awt.BorderLayout;
 import com.panayotis.jubler.options.gui.JRateChooser;
 import com.panayotis.jubler.os.SystemDependent;

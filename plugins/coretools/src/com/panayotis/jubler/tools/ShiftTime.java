@@ -25,7 +25,7 @@ import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import javax.swing.JComponent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -37,7 +37,7 @@ public class ShiftTime extends RealTimeTool {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public ShiftTime() {
-        super(true, new ToolMenu(_("Shift time"), "TSH", Location.TIMETOOL, 0, 0));
+        super(true, new ToolMenu(__("Shift time"), "TSH", Location.TIMETOOL, 0, 0));
     }
 
     @Override
@@ -84,6 +84,6 @@ public class ShiftTime extends RealTimeTool {
 
     @Override
     protected String getToolTitle() {
-        return _("Shift time by absolute value");
+        return __("Shift time by absolute value");
     }
 }

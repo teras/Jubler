@@ -26,7 +26,7 @@ package com.panayotis.jubler.subs.loader;
 import com.panayotis.jubler.plugins.Availabilities;
 import java.io.File;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -45,6 +45,6 @@ public class SubFileFilter extends javax.swing.filechooser.FileFilter implements
     }
 
     public String getDescription() {
-        return _("Subtitle files");
+        return __("Subtitle files");
     }
 }

@@ -26,7 +26,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import javax.swing.JComponent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -40,12 +40,12 @@ public class Synchronize extends OneByOneTool {
     private int offset;
 
     public Synchronize() {
-        super(true, new ToolMenu(_("Synchronize"), "TSY", Location.FILETOOL, 0, 0));
+        super(true, new ToolMenu(__("Synchronize"), "TSY", Location.FILETOOL, 0, 0));
     }
 
     @Override
     public String getToolTitle() {
-        return _("Synchronize");
+        return __("Synchronize");
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Synchronize extends OneByOneTool {
             cjubler = JubFrame.windows.get(i);
             label = cjubler.getSubtitles().getSubFile().getStrippedFile().getName();
             if (cjubler == current) {
-                label += "  " + _("-current-");
+                label += "  " + __("-current-");
                 cid = i;
             }
             vis.JubSelector.addItem(label);

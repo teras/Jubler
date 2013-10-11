@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import java.awt.BorderLayout;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 //  Join files 
 /**
@@ -46,7 +46,7 @@ public class SubJoinGUI extends JPanel {
         joinpos = new JTimeSpinner();
         initComponents();
         TShift.add(joinpos, BorderLayout.CENTER);
-        joinpos.setToolTipText(_("Use the selected amount of time as space between the two subtitles"));
+        joinpos.setToolTipText(__("Use the selected amount of time as space between the two subtitles"));
     }
 
     /**

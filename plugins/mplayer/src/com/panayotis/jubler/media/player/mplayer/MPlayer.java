@@ -23,7 +23,7 @@ package com.panayotis.jubler.media.player.mplayer;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
@@ -103,7 +103,7 @@ public class MPlayer extends AbstractPlayer implements Plugin {
     }
 
     public String getPluginName() {
-        return _("MPlayer media player");
+        return __("MPlayer media player");
     }
 
     public boolean canDisablePlugin() {

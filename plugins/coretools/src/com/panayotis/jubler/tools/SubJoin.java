@@ -20,7 +20,7 @@
 
 package com.panayotis.jubler.tools;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.JIDialog;
@@ -70,12 +70,12 @@ public class SubJoin extends Tool {
     @Override
     public boolean execute(JubFrame current) {
         SubJoinGUI vis = (SubJoinGUI) getVisuals();
-        if (JIDialog.action(current, vis, _("Join two subtitles"))) {
+        if (JIDialog.action(current, vis, __("Join two subtitles"))) {
             Subtitles newsubs;
             JubFrame other;
             double dt;
 
-            current.getUndoList().addUndo(new UndoEntry(current.getSubtitles(), _("Join subtitles")));
+            current.getUndoList().addUndo(new UndoEntry(current.getSubtitles(), __("Join subtitles")));
 
             newsubs = new Subtitles(current.getSubtitles().getSubFile());
             other = getOtherSubs();

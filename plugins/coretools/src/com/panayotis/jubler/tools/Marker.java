@@ -23,7 +23,7 @@ package com.panayotis.jubler.tools;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import javax.swing.JComponent;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -34,7 +34,7 @@ public class Marker extends OneByOneTool {
     private int mark;
 
     public Marker() {
-        super(true, new ToolMenu(_("By Selection"), "EMS", Location.MARK, 0, 0));
+        super(true, new ToolMenu(__("By Selection"), "EMS", Location.MARK, 0, 0));
     }
 
     @Override
@@ -54,6 +54,6 @@ public class Marker extends OneByOneTool {
 
     @Override
     protected String getToolTitle() {
-        return _("Mark region");
+        return __("Mark region");
     }
 }

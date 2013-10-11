@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.loader.gui;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.media.MediaFile;

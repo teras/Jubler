@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.options;
 
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.StaticJubler;
@@ -46,7 +46,7 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ShortcutsModel extends AbstractTableModel {
 
-    private final static String colnames[] = {_("Command"), _("Key")};
+    private final static String colnames[] = {__("Command"), __("Key")};
     private final static int DEFAULT_MOD = SystemDependent.getDefaultKeyModifier();
     private final static int DISABLED_MOD = ~(KeyEvent.CTRL_MASK | KeyEvent.CTRL_DOWN_MASK);
     //

@@ -23,7 +23,7 @@ package com.panayotis.jubler.tools;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -32,12 +32,12 @@ import static com.panayotis.jubler.i18n.I18N._;
 public class DelSelection extends OneByOneTool {
 
     public DelSelection() {
-        super(true, new ToolMenu(_("By selection"), "EDS", Location.DELETE, 0, 0));
+        super(true, new ToolMenu(__("By selection"), "EDS", Location.DELETE, 0, 0));
     }
 
     @Override
     protected String getToolTitle() {
-        return _("Delete selection");
+        return __("Delete selection");
     }
 
     @Override

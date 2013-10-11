@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <AuxValues>
@@ -36,7 +36,7 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;About&quot;)" type="code"/>
+                  <Connection code="__(&quot;About&quot;)" type="code"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -52,7 +52,7 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Thanks&quot;)" type="code"/>
+                  <Connection code="__(&quot;Thanks&quot;)" type="code"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
@@ -84,7 +84,7 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="&lt;User Code&gt;">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="_(&quot;Licence&quot;)" type="code"/>
+                  <Connection code="__(&quot;Licence&quot;)" type="code"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>

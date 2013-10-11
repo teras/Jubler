@@ -8,7 +8,7 @@ package com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
-import static com.panayotis.jubler.i18n.I18N._;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.plugins.Theme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
@@ -39,13 +39,13 @@ public class JTimeSelector extends JPanel {
 
         is_start_position = start_position;
         if (start_position) {
-            InfoL.setText(_("Begin"));
-            SelectM.setText(_("Set time to start of selected subtitles"));
-            EdgeM.setText(_("Set time to minimum"));
+            InfoL.setText(__("Begin"));
+            SelectM.setText(__("Set time to start of selected subtitles"));
+            EdgeM.setText(__("Set time to minimum"));
         } else {
-            InfoL.setText(_("Finish"));
-            SelectM.setText(_("Set time to end of selected subtitles"));
-            EdgeM.setText(_("Set time to maximum"));
+            InfoL.setText(__("Finish"));
+            SelectM.setText(__("Set time to end of selected subtitles"));
+            EdgeM.setText(__("Set time to maximum"));
         }
     }
 
