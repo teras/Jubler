@@ -67,6 +67,7 @@ public class JLoadOptions extends JFileOptions {
         CFPS.setFPS(SubFile.getDefaultFPS());
     }
 
+    @Override
     protected void applyOptions(SubFile sfile) {
         for (int i = 0; i < CEnc.length; i++)
             SubFile.setDefaultEncoding(i, CEnc[i].getSelectedItem().toString());
