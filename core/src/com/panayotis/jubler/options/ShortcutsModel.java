@@ -314,7 +314,10 @@ public class ShortcutsModel extends AbstractTableModel {
         }
 
         public void applyShortcut(JMenuItem item) {
-            item.setAccelerator(KeyStroke.getKeyStroke(key.key, key.modifier));
+            if (key.key == 0)
+                item.setAccelerator(null);
+            else
+                item.setAccelerator(KeyStroke.getKeyStroke(key.key, key.modifier));
         }
 
         @Override
