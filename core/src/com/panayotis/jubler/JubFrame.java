@@ -1390,7 +1390,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         double curdur, gap, avail, requested, center, start;
 
         curdur = 2;
-        gap = 0.05;
+        gap = 0.0;
 
         int row = -1;
         if (is_after) {
