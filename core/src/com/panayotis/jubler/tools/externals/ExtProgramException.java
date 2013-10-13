@@ -35,4 +35,8 @@ public class ExtProgramException extends Exception {
     public ExtProgramException(Throwable cause) {
         super(cause);
     }
+
+    public ExtProgramException(String message) {
+        super(message);
+    }
 }

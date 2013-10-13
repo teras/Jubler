@@ -109,7 +109,7 @@ public class JExtBasicOptions extends JPanel {
     // End of variables declaration//GEN-END:variables
 
     protected void loadPreferences() {
-        FilenameT.setText(Options.getOption(family + "." + name + ".Path", name.toLowerCase()));
+        FilenameT.setText(Options.getOption(family + "." + name + ".Path", ""));
     }
 
     protected void savePreferences() {

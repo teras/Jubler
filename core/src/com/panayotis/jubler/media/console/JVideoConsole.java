@@ -180,7 +180,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                 break;
             } catch (ExtProgramException ex) {
                 if (!(ex.getCause() instanceof IOException)) {
-                    JIDialog.error(this, __("Abnormal player exit") + "\n" + ex.getCause(), __("Movie Player Error"));
+                    JIDialog.error(this, __("Abnormal player exit") + "\n" + ex.getMessage(), __("Movie Player Error"));
                     stop();
                     return;
                 } else if (!player.getOptionsPanel().requestExecutable()) {
