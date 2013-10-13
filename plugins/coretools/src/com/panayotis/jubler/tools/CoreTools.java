@@ -35,7 +35,7 @@ public class CoreTools implements Plugin {
     public PluginItem[] getPluginItems() {
         return new PluginItem[]{
             new SubSplit(),
-            new SubJoin(),
+                new SubJoin(),
             new Reparent(),
             new Synchronize(),
             new ShiftTime(),

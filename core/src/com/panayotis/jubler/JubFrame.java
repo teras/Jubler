@@ -36,7 +36,6 @@ import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.plugins.Theme;
@@ -75,7 +74,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -778,30 +776,34 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         JublerMenuBar.add(FileM);
 
         EditM.setText(__("&Edit"));
-        EditM.setEnabled(false);
 
         CutEM.setText(__("Cut subtitles"));
+        CutEM.setEnabled(false);
         CutEM.setName("ECU"); // NOI18N
         CutEM.addActionListener(formListener);
         EditM.add(CutEM);
 
         CopyEM.setText(__("Copy subtitles"));
+        CopyEM.setEnabled(false);
         CopyEM.setName("ECO"); // NOI18N
         CopyEM.addActionListener(formListener);
         EditM.add(CopyEM);
 
         PasteEM.setText(__("Paste subtitles"));
+        PasteEM.setEnabled(false);
         PasteEM.setName("EPA"); // NOI18N
         PasteEM.addActionListener(formListener);
         EditM.add(PasteEM);
 
         PasteSpecialEM.setText(__("Paste special"));
+        PasteSpecialEM.setEnabled(false);
         PasteSpecialEM.setName("EPS"); // NOI18N
         PasteSpecialEM.addActionListener(formListener);
         EditM.add(PasteSpecialEM);
         EditM.add(jSeparator9);
 
         DeleteEM.setText(__("Delete"));
+        DeleteEM.setEnabled(false);
 
         EmptyLinesDEM.setText(__("Empty Lines"));
         EmptyLinesDEM.setName("EDE"); // NOI18N
@@ -812,6 +814,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(DeleteEM);
 
         ReplaceEM.setText(__("Replace"));
+        ReplaceEM.setEnabled(false);
 
         StepwiseREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         StepwiseREM.setText(__("Find & replace"));
@@ -828,6 +831,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(ReplaceEM);
 
         InsertEM.setText(__("Insert"));
+        InsertEM.setEnabled(false);
 
         BeforeIEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.CTRL_MASK));
         BeforeIEM.setText(__("Before"));
@@ -846,6 +850,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(InsertEM);
 
         GoEM.setText(__("Go to..."));
+        GoEM.setEnabled(false);
 
         PreviousGEM.setAccelerator(SystemDependent.getUpDownKeystroke(false));
         PreviousGEM.setText(__("Previous entry"));
@@ -898,6 +903,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(GoEM);
 
         SelectEM.setText(__("Select"));
+        SelectEM.setEnabled(false);
 
         AllSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         AllSEM.setText(__("All"));
@@ -908,6 +914,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(jSeparator10);
 
         MarkEM.setText(__("Mark"));
+        MarkEM.setEnabled(false);
 
         NoneMEM.setText(__("None"));
         NoneMEM.setName("EMN"); // NOI18N
@@ -933,6 +940,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(MarkEM);
 
         StyleEM.setText(__("Style"));
+        StyleEM.setEnabled(false);
         StyleEM.add(StyleSepSEM);
 
         EditM.add(StyleEM);
@@ -955,6 +963,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         ToolsLockM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         ToolsLockM.setText(__("Tools lock"));
+        ToolsLockM.setEnabled(false);
         ToolsLockM.setName("TLO"); // NOI18N
         ToolsLockM.addActionListener(formListener);
         EditM.add(ToolsLockM);
@@ -962,9 +971,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         JublerMenuBar.add(EditM);
 
         ToolsM.setText(__("&Tools"));
-        ToolsM.setEnabled(false);
 
         TestTM.setText(__("Test video"));
+        TestTM.setEnabled(false);
 
         BeginningTTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
         BeginningTTM.setText(__("From the beginning"));
@@ -981,6 +990,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         ToolsM.add(TestTM);
 
         PreviewP.setText(__("Preview"));
+        PreviewP.setEnabled(false);
 
         EnablePreviewC.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F7, 0));
         EnablePreviewC.setText(__("Enable preview"));
@@ -1853,7 +1863,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
 
-    /* This sfile is already new - wew can do whatever we want with it */
+    /* This sfile is already new - we can do whatever we want with it */
     private void saveFile(SubFile sfile) {
         if (sfile == null)
             return;
@@ -1964,14 +1974,22 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     }
 
     /* Set the filename of this project and enanble the buttons */
-    public void enableWindowControls(boolean reset_selection) {
+    public void enableWindowControls(boolean asNewWindow) {
         RevertFM.setEnabled(true);
         ChildNFM.setEnabled(true);
         SaveFM.setEnabled(true);
         SaveAsFM.setEnabled(true);
         InfoFM.setEnabled(true);
-        EditM.setEnabled(true);
-        ToolsM.setEnabled(true);
+        for (Component c : EditM.getMenuComponents())
+            c.setEnabled(true);
+        for (Component c : ToolsM.getMenuComponents())
+            c.setEnabled(true);
+        updateStyleMenu();
+        ToolsManager.setFileToolsStatus(windows.get(0), windows.size() > 1);
+        if (asNewWindow) {
+            UndoEM.setEnabled(false);
+            RedoEM.setEnabled(false);
+        }
 
         SaveTB.setEnabled(true);
         InfoTB.setEnabled(true);
@@ -1982,7 +2000,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
 
-        if (reset_selection)
+        if (asNewWindow)
             setSelectedSub(0, true);
     }
 
