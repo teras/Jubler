@@ -72,7 +72,7 @@ public class SubFile {
         basic_format = f;
     }
 
-    public final static String getBasicEncoding(int i) {
+    public static String getBasicEncoding(int i) {
         return basic_encodings[i];
     }
 

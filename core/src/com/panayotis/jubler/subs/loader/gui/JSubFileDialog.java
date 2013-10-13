@@ -29,11 +29,9 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.Availabilities;
-import com.panayotis.jubler.subs.Share;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
-import com.panayotis.jubler.subs.loader.SubFileFilter;
 import com.panayotis.jubler.subs.loader.SubFormat;
 import java.awt.BorderLayout;
 import java.awt.Frame;
@@ -63,27 +61,19 @@ public class JSubFileDialog extends javax.swing.JDialog {
     }
 
     private SubFile showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
-        SubFile sfile = null;
-        try {
+        if (subs != null)
             chooser.setFileFilter(findFileFiler(subs.getSubFile().getFormat()));
-            jopt.updateVisuals(subs, mfile);
-        } catch (Exception ex) {
-            //chooser.addChoosableFileFilter(new SubFileFilter());
-            try {
-                String default_dir = FileCommunicator.getDefaultDirPath();
-                File default_dir_file = new File(default_dir);
-                boolean is_valid = (default_dir_file.isDirectory()
-                        && default_dir_file.canRead());
-                default_dir_file = (is_valid)
-                        ? new File(default_dir, "Untitled")
-                        : new File("Untitled");
+        jopt.updateVisuals(subs, mfile);
+        String default_dir = FileCommunicator.getDefaultDirPath();
+        File default_dir_file = new File(default_dir);
+        boolean is_valid = (default_dir_file.isDirectory()
+                && default_dir_file.canRead());
+        default_dir_file = (is_valid)
+                ? new File(default_dir, "Untitled")
+                : new File("Untitled");
 
-                //DEBUG.logger.log(Level.INFO, "default_file:" + default_dir_file);
-                chooser.setSelectedFile(default_dir_file);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        //DEBUG.logger.log(Level.INFO, "default_file:" + default_dir_file);
+        chooser.setSelectedFile(default_dir_file);
         getContentPane().removeAll();
         getContentPane().add(chooser, BorderLayout.CENTER);
         getContentPane().add(jopt, BorderLayout.NORTH);
@@ -94,10 +84,9 @@ public class JSubFileDialog extends javax.swing.JDialog {
         if (!isAccepted)
             return null;
 
+        SubFile sfile;
         try {
             File selected_file = chooser.getSelectedFile();
-            JFileFilter flt = (JFileFilter) chooser.getFileFilter();
-            SubFormat format_handler = flt.getFormatHandler().newInstance();
 
             if (subs == null) // Load
                 sfile = new SubFile(selected_file, SubFile.EXTENSION_GIVEN);
@@ -105,7 +94,12 @@ public class JSubFileDialog extends javax.swing.JDialog {
                 sfile = new SubFile(subs.getSubFile());
                 sfile.setFile(selected_file);
             }
-            sfile.setFormat(format_handler);
+
+            JFileFilter flt = (JFileFilter) chooser.getFileFilter();
+            if (flt != null) {
+                SubFormat format_handler = flt.getFormatHandler().newInstance();
+                sfile.setFormat(format_handler);
+            }
             jopt.applyOptions(sfile);
             if (subs != null) // Only in Save
                 sfile.updateFileByType();
