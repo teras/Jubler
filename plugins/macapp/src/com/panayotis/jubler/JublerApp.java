@@ -20,9 +20,11 @@
 
 package com.panayotis.jubler;
 
+import com.panayotis.jubler.appenh.Enhancer;
 import static com.panayotis.jubler.i18n.I18N.__;
 
-import com.apple.eawt.Application;
+import com.panayotis.jubler.appenh.EnhancerManager;
+import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
@@ -32,6 +34,7 @@ import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.File;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
@@ -39,13 +42,37 @@ import javax.swing.SwingUtilities;
  *
  * @author teras
  */
-public class JublerApp extends Application implements Plugin, PluginItem {
+public class JublerApp implements Plugin, PluginItem {
 
     private boolean ignore_click = false;
 
     public JublerApp() {
-        setEnabledPreferencesMenu(true);
-        addApplicationListener(new ApplicationHandler());
+        EnhancerManager.getDefault().registerAbout(new Runnable() {
+
+            public void run() {
+                StaticJubler.showAbout();
+            }
+        });
+        EnhancerManager.getDefault().registerPreferences(new Runnable() {
+
+            public void run() {
+                if (JubFrame.prefs != null)
+                    JubFrame.prefs.showPreferencesDialog();
+            }
+        });
+        EnhancerManager.getDefault().registerQuit(new Runnable() {
+
+            public void run() {
+                if (StaticJubler.requestQuit(null))
+                    System.exit(0);
+            }
+        });
+        EnhancerManager.getDefault().registerFileOpen(new Enhancer.FileOpenRunnable() {
+
+            public void openFile(File file) {
+                LoaderThread.getLoader().addSubtitle(file.getAbsolutePath());
+            }
+        });
     }
 
     @Override
