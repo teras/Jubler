@@ -67,7 +67,7 @@ public class SystemFileFinder {
     }
 
     private static boolean loadLibraryImpl(String name) {
-        File libfile = findFile(SystemDependent.mapLibraryName(name));
+        File libfile = findFile("lib" + File.separator + SystemDependent.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());
