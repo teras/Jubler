@@ -37,9 +37,14 @@ import java.io.File;
  */
 public class JFileFilter extends javax.swing.filechooser.FileFilter implements java.io.FileFilter {
 
-    String desc = null;
-    String ext = null;
+    final String desc;
+    final String ext;
     private SubFormat formatHandler = null;
+
+    public JFileFilter() {
+        desc = "All files";
+        ext = "*";
+    }
 
     public JFileFilter(String ext, String desc, SubFormat formatHandler) {
         this.desc = desc;
@@ -50,9 +55,9 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter implements j
     public boolean accept(File pathname) {
         if (pathname.isDirectory())
             return true;
-        String fname = pathname.getName().toLowerCase();
-        boolean found = fname.endsWith(ext.toLowerCase());
-        return found;
+        if (ext.equals("*"))
+            return true;
+        return pathname.getName().toLowerCase().endsWith(ext.toLowerCase());
     }
 
     public String getDescription() {

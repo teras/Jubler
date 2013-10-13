@@ -216,6 +216,7 @@ public class JSubFileDialog extends javax.swing.JDialog {
     public boolean addFilters(SubFormat[] format_list) {
         boolean ok = false;
         try {
+            chooser.addChoosableFileFilter(new JFileFilter());
             for (int i = 0; i < format_list.length; i++) {
                 SubFormat format = format_list[i];
                 JFileFilter filter = makeFilter(format);
