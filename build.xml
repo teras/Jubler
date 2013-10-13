@@ -251,10 +251,7 @@
 
 
 	<!-- Generic Linux installer -->
-	<target name="linux32" depends="-set32arch,-generic-linux"/>
-	<target name="linux64" depends="-set64arch,-generic-linux"/>
-
-	<target name="-generic-linux" depends="-nodistbased,-release,-linuxffdecode">
+	<target name="linux" depends="-nodistbased,-release,-linuxffdecodes">
 		<mkdir dir="self"/>
 		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes">
 			<filterset><filter token="VERSION" value="${version}"/></filterset>
@@ -265,13 +262,13 @@
 		<copy file="resources/installers/linux/dist/generic/install.sh" todir="self"/>
 		<chmod file="self/install.sh" perm="a+x"/>
 		<exec executable="makeself" failonerror="true">
-			<arg line="--bzip2 self Jubler-${version}-linux_${given.arch}.sh 'Jubler installer' ./install.sh"/>
+			<arg line="--bzip2 self Jubler-${version}-linux.sh 'Jubler installer' ./install.sh"/>
 		</exec>
 		<delete dir="self"/>
 	</target>
 
 	 <!-- Debian Linux installer -->
-	<target name="debian" depends="-setautoarch,-distbased,-release,-linuxffdecode,-linuxinstall">
+	<target name="debian" depends="-setautoarch,-distbased,-release,-linuxffdecodes,-linuxinstall">
 		<mkdir dir="${destdir}/DEBIAN"/>
 		<exec dir="${destdir}" executable="find" failonerror="true" output="${destdir}/DEBIAN/md5sums">
 			<arg line="usr -type f -exec md5sum {} ;"/>
@@ -292,7 +289,7 @@
 	</target>
 
 	<!-- Slackware Linux installer -->
-	<target name="slackware" depends="-setautoarch,-distbased,-release,-linuxffdecode,-linuxinstall">
+	<target name="slackware" depends="-setautoarch,-distbased,-release,-linuxffdecodes,-linuxinstall">
 		<copy todir="${destdir}">
 			<fileset dir="resources/installers/linux/dist/slackware"/>
 		</copy>
@@ -367,10 +364,10 @@
 		<exec executable="make" failonerror="true" dir="resources/ffmpeg/ffdecode"/>
 	</target>
 			
-
-	<target name="-linuxffdecode">
-		<copy file="resources/libs/ffmpeg/dist/linuxs-${given.arch}/libffdecode.so" todir="dist/lib"/>
-	</target>
+    <target name="-linuxffdecodes">
+        <copy file="resources/libs/ffmpeg/linuxs/libffdecode_32.so" todir="dist/lib"/>
+        <copy file="resources/libs/ffmpeg/linuxs/libffdecode_64.so" todir="dist/lib"/>
+    </target>
 
 	<!-- Linux with dynamic ffdecode library -->
 	<target name="-linuxffdecodedyn">
