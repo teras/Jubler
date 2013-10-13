@@ -49,6 +49,11 @@ public class MPlayer extends AbstractPlayer implements Plugin {
         return "MPlayer";
     }
 
+    @Override
+    public String getDescriptiveName() {
+        return MPlayerSystemDependent.getMPlayerName();
+    }
+
     public String getDefaultArguments() {
         return MPlayerSystemDependent.getDefaultMPlayerArgs();
     }
@@ -113,6 +118,7 @@ public class MPlayer extends AbstractPlayer implements Plugin {
     @Override
     public ArrayList<String> getSearchNames() {
         ArrayList<String> names = new ArrayList<String>();
+        names.add("MPlayer OSX Extended");
         names.add("mplayer");
         names.add("mplayer-mt");
         names.add("mplayer.exe");

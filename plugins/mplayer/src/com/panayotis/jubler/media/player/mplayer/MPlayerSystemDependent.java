@@ -87,4 +87,10 @@ public class MPlayerSystemDependent extends SystemDependent {
         env.add("FONTCONFIG_PATH=/usr/X11/lib/X11/fontconfig/");
         return env.toArray(new String[]{});
     }
+
+    static String getMPlayerName() {
+        if (IS_MACOSX)
+            return "MPlayer OS Extended";
+        return "MPlayer";
+    }
 }

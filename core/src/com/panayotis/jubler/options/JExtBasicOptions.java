@@ -37,6 +37,7 @@ import javax.swing.JPanel;
 public class JExtBasicOptions extends JPanel {
 
     protected String name;
+    protected String descriptiveName;
     protected String family;
     protected String[] testparameters;
     protected String test_signature;
@@ -45,11 +46,12 @@ public class JExtBasicOptions extends JPanel {
     /**
      * Creates new form MPlay
      */
-    public JExtBasicOptions(String family, String name, ArrayList<String> searchname, String[] testparameters, String test_signature) {
+    public JExtBasicOptions(String family, String name, String descriptiveName, ArrayList<String> searchname, String[] testparameters, String test_signature) {
         super();
 
         this.family = family;
         this.name = name;
+        this.descriptiveName = descriptiveName;
         this.testparameters = testparameters;
         this.test_signature = test_signature;
         this.searchname = searchname;
@@ -80,7 +82,7 @@ public class JExtBasicOptions extends JPanel {
         FilenameT.setToolTipText(__("The absolute path of the player. Use the Browse button to change it"));
         BrowserP.add(FilenameT, java.awt.BorderLayout.CENTER);
 
-        FileL.setText(__("{0} path", name));
+        FileL.setText(__("{0} path", descriptiveName));
         BrowserP.add(FileL, java.awt.BorderLayout.NORTH);
 
         WizardB.setText(__("Wizard"));

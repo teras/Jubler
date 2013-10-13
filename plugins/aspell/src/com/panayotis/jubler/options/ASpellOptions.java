@@ -55,7 +55,7 @@ public class ASpellOptions extends JExtBasicOptions {
      * Creates new form ASpellOptions
      */
     public ASpellOptions(String family, String name) {
-        super(family, name, progname, new String[]{"-?"}, null);
+        super(family, name, name, progname, new String[]{"-?"}, null);
         initComponents();
 
         dictionaries = new java.util.Vector<ASpellDict>();
