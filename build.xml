@@ -217,7 +217,8 @@
 	<target name="-win32lib"> <property name="win.bits" value="32"/> </target>
 	<target name="-win64lib"> <property name="win.bits" value="64"/> </target>
 	<target name="-windist" depends="winexe">
-		<copy file="resources/libs/ffmpeg/win_${win.bits}/ffdecode.dll" todir="dist/lib"/>
+		<copy file="resources/libs/ffmpeg/win/ffdecode_32.dll" todir="dist/lib"/>
+		<copy file="resources/libs/ffmpeg/win/ffdecode_64.dll" todir="dist/lib"/>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="sed" input="LICENCE" output="dist/LICENCE.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
 		<exec executable="makensis" failonerror="true">
