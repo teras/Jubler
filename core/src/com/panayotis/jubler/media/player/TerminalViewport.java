@@ -72,6 +72,9 @@ public abstract class TerminalViewport extends ExternalViewport {
         try {
             player.cleanUp();   // Make sure player is in it's initial position (i.e. no subtitle files hanging around)
 
+            if (!player.isValid())
+                throw new ExtProgramException("Unable to initialize player '" + player.getDescriptiveName() + "'\nPlease make sure '" + player.getDescriptiveName() + "' path is properly defined under 'Preferences'.");
+
             PlayerArguments args = player.getCommandArguments(mfile, sub, when);
             position = 0;
             isPaused = false;

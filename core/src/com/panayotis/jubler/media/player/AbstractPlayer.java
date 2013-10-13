@@ -176,4 +176,9 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
     }
 
     public abstract ArrayList<String> getSearchNames();
+
+    public boolean isValid() {
+        String path = opts.getExecFileName();
+        return path != null && !path.isEmpty() && new File(path).isFile();
+    }
 }
