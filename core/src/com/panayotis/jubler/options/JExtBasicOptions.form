@@ -51,7 +51,7 @@
         <Component class="javax.swing.JLabel" name="FileL">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="__(&quot;{0} path&quot;, name)" type="code"/>
+              <Connection code="__(&quot;{0} path&quot;, descriptiveName)" type="code"/>
             </Property>
           </Properties>
           <Constraints>

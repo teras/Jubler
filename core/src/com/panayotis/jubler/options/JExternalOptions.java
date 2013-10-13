@@ -49,7 +49,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         int selected = 0;
 
         for (int i = 0; i < list.size(); i++) {
-            PList.addItem(list.nameAt(i));
+            PList.addItem(list.nameDescriptiveAt(i));
             if (list.nameAt(i).toLowerCase().equals(def))
                 selected = i;
             JExtBasicOptions opts = list.programAt(i).getOptionsPanel();

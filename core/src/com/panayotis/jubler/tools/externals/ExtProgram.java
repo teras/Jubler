@@ -38,4 +38,8 @@ public abstract class ExtProgram {
 
     /* Get the name of this external program, useful e.g. to save options or for labels */
     public abstract String getName();
+
+    public String getDescriptiveName() {
+        return getName();
+    }
 }

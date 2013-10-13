@@ -51,6 +51,14 @@ public class AvailExternals extends ArrayList<ExtProgram> {
             return null;
     }
 
+    public String nameDescriptiveAt(int i) {
+        ExtProgram ext = programAt(i);
+        if (ext != null)
+            return ext.getDescriptiveName();
+        else
+            return null;
+    }
+
     public ExtProgram programAt(int i) {
         if (size() < 1)
             return null;
