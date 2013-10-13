@@ -93,6 +93,7 @@ public class ToolsManager {
         JMenuItem item = new JMenuItem(tool.menu.text, tool.menu.key);
         if (tool.menu.key != 0)
             item.setAccelerator(KeyStroke.getKeyStroke(tool.menu.key, tool.menu.mask));
+        item.setEnabled(false);
         item.setName(tool.menu.name);
         ToolsM.add(item);
         item.addActionListener(new ActionListener() {
@@ -118,6 +119,7 @@ public class ToolsManager {
                     Reparent = (JMenuItem) item;
             } else
                 break;
+        System.out.println("XXXXXX " + status);
         if (Join != null)
             Join.setEnabled(status);
         if (Reparent != null)
