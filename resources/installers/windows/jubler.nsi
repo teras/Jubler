@@ -78,6 +78,7 @@ Section "Jubler editor" SecJubler
   SetOutPath $InstDir\lib
   File dist\lib\*.*
   File resources\installers\windows\subtitle.ico
+  File resources\installers\windows\frame.ico
 
   ; Create themes
   SetOutPath $InstDir\themes
@@ -97,6 +98,10 @@ Section "Jubler editor" SecJubler
   ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayName" "Jubler subtitle editor"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "UninstallString" '"$InstDir\uninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayIcon" '"$InstDir\lib\frame.ico"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "Publisher" "www.jubler.org"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayVersion" "${VERSION}"
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "EstimatedSize" "10800"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "NoRepair" 1
   WriteUninstaller "uninstall.exe"
