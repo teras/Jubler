@@ -60,13 +60,19 @@ public class SystemFileFinder {
     }
 
     public static boolean loadLibrary(String name) {
-        File libfile = findFile("lib" + File.separator + System.mapLibraryName(name));
+        if (loadLibraryImpl(name) || loadLibraryImpl(name + "_32") || loadLibraryImpl(name + "_64"))
+            return true;
+        DEBUG.debug("Unable to locate library " + name);
+        return false;
+    }
+
+    private static boolean loadLibraryImpl(String name) {
+        File libfile = findFile(SystemDependent.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());
                 return true;
             } catch (UnsatisfiedLinkError e) {
-                DEBUG.debug(e);
             }
         return false;
     }

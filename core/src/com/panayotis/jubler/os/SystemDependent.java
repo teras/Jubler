@@ -25,7 +25,6 @@ package com.panayotis.jubler.os;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
-
 import com.panayotis.jubler.tools.externals.ExtPath;
 import java.awt.Color;
 import java.awt.Component;
@@ -336,5 +335,14 @@ public class SystemDependent {
         else
             return KeyStroke.getKeyStroke(down ? KeyEvent.VK_DOWN : KeyEvent.VK_UP,
                     InputEvent.CTRL_MASK);
+    }
+
+    static String mapLibraryName(String name) {
+        if (IS_MACOSX)
+            return "lib" + name + ".jnilib";
+        else if (IS_WINDOWS)
+            return name + ".dll";
+        else
+            return "lib" + name + ".so";
     }
 }
