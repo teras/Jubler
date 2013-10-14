@@ -121,6 +121,20 @@
 	</target>
 
 
+    <!-- target to copy generic files to an application -->
+    <target name="-app-prepare" depends="-nodistbased,-release,font">
+        <macrodef name="appcopy">
+            <attribute name="libs"/>
+            <attribute name="dest"/>
+            <sequential>
+                <exec executable="cp">
+                    <arg line="-R dist/help dist/i18n dist/lib dist/themes @{libs} @{dest}"/>
+                </exec>
+            </sequential>
+        </macrodef>
+    </target>
+
+
 	<!-- Mac OS X installer -->
 	<target name="macosx" depends="app-mac">
 		<delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
@@ -145,11 +159,20 @@
 		<exec executable="hdiutil" failonerror="true">
 			<arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o Jubler-${version}.dmg"/>
 		</exec>
+        <exec executable="make" dir="resources/installers/macosx/resource_creator"/>
+        <exec executable="hdiutil" failonerror="true">
+            <arg line="unflatten Jubler-${version}.dmg"/>
+        </exec>
+        <exec executable="Rez" failonerror="true">
+            <arg line="-a resources/installers/macosx/license_dmg -o Jubler-${version}.dmg"/>
+        </exec>
+        <exec executable="hdiutil" failonerror="true">
+            <arg line="flatten Jubler-${version}.dmg"/>
+        </exec>
 		<delete file="/tmp/Jubler-template.dmg"/>
 
 	</target>
-	<target name="app-mac" depends="-nodistbased,-release,font">
-		<copy file="resources/libs/ffmpeg/darwin/libffdecode.jnilib" todir="dist/lib"/>
+	<target name="app-mac" depends="-app-prepare">
         <appbundler
             outputdirectory="dist"
 			name="Jubler"
@@ -171,9 +194,7 @@
                 role="Editor"
             />
         </appbundler>
-        <exec executable="cp">
-            <arg line="-R dist/help dist/i18n dist/lib dist/themes dist/Jubler.app/Contents/Java"/>
-        </exec>       
+        <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Java" />
 	</target>
 
 
@@ -188,7 +209,7 @@
 
 
 	<!-- Windows Installer -->
-	<target name="winexe" depends="-nodistbased,core">
+	<target name="app-windows" depends="-nodistbased,core">
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -216,7 +237,7 @@
 	</target>
 	<target name="-win32lib"> <property name="win.bits" value="32"/> </target>
 	<target name="-win64lib"> <property name="win.bits" value="64"/> </target>
-	<target name="-windist" depends="winexe">
+	<target name="-windist" depends="app-windows">
 		<copy file="resources/libs/ffmpeg/win/ffdecode_32.dll" todir="dist/lib"/>
 		<copy file="resources/libs/ffmpeg/win/ffdecode_64.dll" todir="dist/lib"/>
 		<exec executable="sed" input="README" output="dist/README.txt" failonerror="true"><arg line="-e 's/$/\r/'"/></exec>
