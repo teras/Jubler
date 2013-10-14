@@ -28,6 +28,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
@@ -42,6 +43,8 @@ import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import java.util.ArrayList;
 
+import static com.panayotis.jubler.tools.spell.checkers.ASpell.ASpellSystemDependent.forceutf8;
+
 /**
  *
  * @author teras
@@ -52,17 +55,10 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
     BufferedReader get;
     ASpellOptions opts;
     Process proc;
+
     /**
      * Creates a new instance of ASpell
      */
-    private final static boolean forceutf8;
-    /* Force ASpell to use UTF-8 encoding - broken on Windows */
-
-    static {
-        boolean IS_WINDOWS = System.getProperty("os.name").toLowerCase().indexOf("windows") >= 0;
-        forceutf8 = !IS_WINDOWS;
-    }
-
     public ASpell() {
         opts = new ASpellOptions(family, getName());
     }
@@ -198,5 +194,13 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
     }
 
     public void setClassLoader(ClassLoader loader) {
+    }
+
+    static class ASpellSystemDependent extends SystemDependent {
+
+        /**
+         * Force ASpell to use UTF-8 encoding - broken on Windows
+         */
+        static final boolean forceutf8 = !IS_WINDOWS;
     }
 }

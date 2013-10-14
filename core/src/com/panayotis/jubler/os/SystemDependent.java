@@ -58,9 +58,9 @@ public class SystemDependent {
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
-        IS_LINUX = OS.indexOf("linux") >= 0;
-        IS_WINDOWS = OS.indexOf("windows") >= 0;
-        IS_MACOSX = OS.indexOf("mac") >= 0;
+        IS_LINUX = OS.contains("linux");
+        IS_WINDOWS = OS.contains("windows");
+        IS_MACOSX = OS.contains("mac") && OS.contains("os") && OS.contains("x");
     }
 
     public static int getSliderLOffset() {
