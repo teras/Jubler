@@ -48,27 +48,23 @@ public class JublerApp implements Plugin, PluginItem {
 
     public JublerApp() {
         EnhancerManager.getDefault().registerAbout(new Runnable() {
-
             public void run() {
                 StaticJubler.showAbout();
             }
         });
         EnhancerManager.getDefault().registerPreferences(new Runnable() {
-
             public void run() {
                 if (JubFrame.prefs != null)
                     JubFrame.prefs.showPreferencesDialog();
             }
         });
         EnhancerManager.getDefault().registerQuit(new Runnable() {
-
             public void run() {
                 if (StaticJubler.requestQuit(null))
                     System.exit(0);
             }
         });
         EnhancerManager.getDefault().registerFileOpen(new Enhancer.FileOpenRunnable() {
-
             public void openFile(File file) {
                 LoaderThread.getLoader().addSubtitle(file.getAbsolutePath());
             }
@@ -82,7 +78,7 @@ public class JublerApp implements Plugin, PluginItem {
 
     @Override
     public void execPlugin(Object caller, Object param) {
-        if (!(caller instanceof JubFrame))
+        if (!(caller instanceof JubFrame) || !EnhancerManager.getDefault().providesSystemMenus())
             return;
         JubFrame jubler = (JubFrame) caller;
         if (param.equals("BEGIN"))
@@ -101,7 +97,7 @@ public class JublerApp implements Plugin, PluginItem {
         }
     }
 
-    public final void setComponentDraggable(Window window, Component component) {
+    private void setComponentDraggable(Window window, Component component) {
         if (component instanceof JToolBar)
             ((JToolBar) component).setFloatable(false);
 
@@ -147,7 +143,7 @@ public class JublerApp implements Plugin, PluginItem {
     }
 
     public String getPluginName() {
-        return __("OS X application support");
+        return __("Multi-platform application support");
     }
 
     public boolean canDisablePlugin() {
