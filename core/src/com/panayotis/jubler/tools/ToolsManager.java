@@ -119,7 +119,6 @@ public class ToolsManager {
                     Reparent = (JMenuItem) item;
             } else
                 break;
-        System.out.println("XXXXXX " + status);
         if (Join != null)
             Join.setEnabled(status);
         if (Reparent != null)
