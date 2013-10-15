@@ -9,10 +9,6 @@
 		</classpath>
 	</taskdef>
 	
-    <taskdef name="appbundler"
-        onerror="report"
-        classpath="resources/installers/macosx/appbundler-1.0ea.jar"
-        classname="com.oracle.appbundler.AppBundlerTask"/>
 
    <taskdef name="izpack"
 		onerror="report"
@@ -128,7 +124,10 @@
             <attribute name="dest"/>
             <sequential>
                 <exec executable="cp">
-                    <arg line="-R dist/help dist/i18n dist/lib dist/themes @{libs} @{dest}"/>
+                    <arg line="-R dist/help dist/i18n dist/lib dist/themes @{dest}"/>
+                </exec>
+                <exec executable="cp">
+                    <arg line="-R @{libs} @{dest}/lib"/>
                 </exec>
             </sequential>
         </macrodef>
@@ -136,23 +135,23 @@
 
 
 	<!-- Mac OS X installer -->
-	<target name="macosx" depends="app-mac">
+    <target name="macosx-new" depends="app-mac-new,-macosx"/>
+    <target name="macosx-old" depends="app-mac-old,-macosx"/>
+
+	<target name="-macosx">
 		<delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
 		<delete file="/tmp/Jubler-template.dmg" quiet="true"/>
 		<exec executable="hdiutil" failonerror="false">
 			<arg line="detach /Volumes/Jubler-template"/>
 		</exec>
-
 		<bunzip2 src="resources/installers/macosx/Jubler-template.dmg.bz2" dest="/tmp/Jubler-template.dmg"/>
 		<exec executable="hdiutil" failonerror="true">
 			<arg line="attach -noautoopen -mountpoint /Volumes/Jubler-template /tmp/Jubler-template.dmg"/>
 		</exec>
-
 		<delete dir="/Volumes/Jubler-template/Jubler.app" includeemptydirs="yes"/>
         <exec executable="cp">
             <arg line="-R dist/Jubler.app /Volumes/Jubler-template/Jubler.app"/>
         </exec>
-
 		<exec executable="hdiutil" failonerror="true">
 			<arg line="detach -force /Volumes/Jubler-template"/>
 		</exec>
@@ -170,9 +169,43 @@
             <arg line="flatten Jubler-${version}.dmg"/>
         </exec>
 		<delete file="/tmp/Jubler-template.dmg"/>
-
 	</target>
-	<target name="app-mac" depends="-app-prepare">
+
+    <target name="app-mac-old" depends="-app-prepare">
+         <taskdef name="jarbundler"
+            onerror="fail"
+            classpath="/opt/local/share/java/jarbundler.jar"
+            classname="net.sourceforge.jarbundler.JarBundler" />
+        <jarbundler
+            dir="dist"
+            jars="dist/Jubler.jar"
+            mainclass="Jubler"
+            name="Jubler"
+            aboutmenuname="Jubler"
+            antialiasedgraphics="true"
+            antialiasedtext="true"
+            bundleid="com.panayotis.jubler"
+            infostring="Jubler ${version}, Multiplatform Subtitle Editor"
+            jvmversion="1.5+"
+            screenmenu="true"
+            version="${version}"
+            icon="resources/installers/macosx/jubler.icns"
+        >
+        <documenttype
+            name="Subtitle Document"
+            extensions="srt sub ass ssa stl son txt xml"
+            role="Editor"
+            iconfile="resources/installers/macosx/subtitle.icns"
+        />
+        </jarbundler>
+        <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Resources/Java" />
+    </target>
+
+	<target name="app-mac-new" depends="-app-prepare">
+        <taskdef name="appbundler"
+            onerror="fail"
+            classpath="resources/installers/macosx/appbundler-1.0ea.jar"
+            classname="com.oracle.appbundler.AppBundlerTask"/>
         <appbundler
             outputdirectory="dist"
 			name="Jubler"
@@ -183,20 +216,21 @@
             shortversion="${version}"
             copyright="© Panayotis Katsaloulis"
             applicationCategory="public.app-category.video"
-			mainclassname="Jubler"
-        >
+			mainclassname="Jubler" >
             <classpath dir="dist">
                 <include name="Jubler.jar"/>
             </classpath>
             <bundledocument extensions="srt sub ass ssa stl son txt xml"
                 icon="resources/installers/macosx/subtitle.icns"
                 name="Subtitle Document"
-                role="Editor"
-            />
+                role="Editor" />
         </appbundler>
         <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Java" />
+        <exec executable="lipo" failonerror="true">
+            <arg line="-remove ppc dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib -output dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib2"/>
+        </exec>
+        <move file="dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib2" tofile="dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib"/>
 	</target>
-
 
 	<!-- Generic installer -->
 	<target name="generic" depends="-nodistbased,-release,font">
