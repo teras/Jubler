@@ -44,6 +44,18 @@
         <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
+    <version release="1289" version="5.0.1">
+        <description>
+            Fix Preferences/About menu issue with Windows and Linux. Support older JRE and PPC under Mac OS X.
+        </description>
+    </version>
+
+    <version release="1275" version="5.0">
+        <description>
+            Updates to 32/64 bit support depending on the operating system. Various bug fixes.
+        </description>
+    </version>
+
 	<version release="1266" version="4.6.3">
 		<description>
 			Update Windows port to support 64-bit architectures.
