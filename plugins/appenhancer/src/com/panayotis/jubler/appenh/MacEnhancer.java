@@ -86,10 +86,11 @@ public class MacEnhancer implements Enhancer {
                 appClass.getMethod("setQuitHandler", handler).invoke(appInstance, Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{handler}, new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        if (method.getName().equals("handleQuitRequestWith"))
+                        if (method.getName().equals("handleQuitRequestWith")) {
                             callback.run();
-                        if (args != null && args.length > 1 && args[1].getClass().getName().equals("com.apple.eawt.QuitResponse"))
-                            args[1].getClass().getMethod("cancelQuit", (Class[]) null).invoke(args[1], (Object[]) null);
+                            if (args != null && args.length > 1)
+                                args[1].getClass().getMethod("cancelQuit", (Class[]) null).invoke(args[1], (Object[]) null);
+                        }
                         return null;
                     }
                 }));
@@ -105,11 +106,14 @@ public class MacEnhancer implements Enhancer {
                 appClass.getMethod("setOpenFileHandler", handler).invoke(appInstance, Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{handler}, new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        if (method.getName().equals("openFiles") && args != null && args.length > 0 && args[0].getClass().getName().equals("com.apple.eawt.AppEvent.OpenFilesEvent")) {
+                        if (method.getName().equals("openFiles") && args != null && args.length > 0) {
                             Method m = args[0].getClass().getMethod("getFiles", (Class[]) null);
                             List<File> list = (List<File>) m.invoke(args[0], (Object[]) null);
                             for (File f : list)
-                                callback.openFile(f);
+                                try {
+                                    callback.openFile(f);
+                                } catch (Exception ex) {
+                                }
                         }
                         return null;
                     }
