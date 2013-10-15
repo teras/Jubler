@@ -198,6 +198,9 @@
             iconfile="resources/installers/macosx/subtitle.icns"
         />
         </jarbundler>
+        <delete file="dist/Jubler.app/Contents/MacOS/JavaApplicationStub"/>
+        <bunzip2 src="resources/installers/macosx/JavaApplicationStub.bz2" dest="dist/Jubler.app/Contents/MacOS/JavaApplicationStub"/>
+        <chmod file="dist/Jubler.app/Contents/MacOS/JavaApplicationStub" perm="a+x"/>
         <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Resources/Java" />
     </target>
 
