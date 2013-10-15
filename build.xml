@@ -223,10 +223,10 @@
             <classpath dir="dist">
                 <include name="Jubler.jar"/>
             </classpath>
-            <bundledocument extensions="srt sub ass ssa stl son txt xml"
+            <bundledocument extensions="srt,sub,ass,ssa,stl,son,txt,xml"
                 icon="resources/installers/macosx/subtitle.icns"
                 name="Subtitle Document"
-                role="Editor" />
+                role="editor" />
         </appbundler>
         <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Java" />
         <exec executable="lipo" failonerror="true">
