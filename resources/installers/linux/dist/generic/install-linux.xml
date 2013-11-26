@@ -13,7 +13,7 @@
             <author name="Panayotis Katsaloulis" email="panayotis@panayotis.com"/>
         </authors>
         <url>http://www.jubler.org/</url>
-  <javaversion>1.5</javaversion>
+  <javaversion>1.6</javaversion>
     </info>
     
     <guiprefs width="640" height="480" resizable="no"/>
