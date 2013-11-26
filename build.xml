@@ -9,17 +9,6 @@
 		</classpath>
 	</taskdef>
 	
-
-   <taskdef name="izpack"
-		onerror="report"
-		classpath="../../Tools/IzPack/standalone-compiler.jar"
-		classname="com.izforge.izpack.ant.IzPackTask"/>
-
-	<taskdef name="launch4j"
-		onerror="report"
-		classpath="/opt/local/share/launch4j/launch4j.jar:/opt/local/share/launch4j/lib/xstream.jar:/opt/multi/launch4j/launch4j.jar:/opt/multi/launch4j/lib/xstream.jar" 
-		classname="net.sf.launch4j.ant.Launch4jTask"/>
-
 	<target name="jupidator">
 		<ant antfile="../jupidator/build.xml" inheritall="false" target="smalljar"/>
 		<copy file="../jupidator/dist/jupidator.jar" todir="dist/lib"/>
@@ -116,6 +105,10 @@
 		<echo message="INFO:  In order to update version numbering, ant task version-update should be called manually" />
 	</target>
 
+
+    <target name="-izpack-task">
+        <taskdef name="izpack" classpath="../../Tools/IzPack/standalone-compiler.jar" classname="com.izforge.izpack.ant.IzPackTask"/>
+    </target>
 
     <!-- target to copy generic files to an application -->
     <target name="-app-prepare" depends="-nodistbased,-release,font">
@@ -224,10 +217,11 @@
                 <include name="Jubler.jar"/>
             </classpath>
             <bundledocument extensions="srt,sub,ass,ssa,stl,son,txt,xml"
-                icon="resources/installers/macosx/subtitle.icns"
+                icon="subtitle.icns"
                 name="Subtitle Document"
                 role="editor" />
         </appbundler>
+        <copy file="resources/installers/macosx/subtitle.icns" todir="dist/Jubler.app/Contents/Resources"/>
         <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Java" />
         <exec executable="lipo" failonerror="true">
             <arg line="-remove ppc dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib -output dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib2"/>
@@ -236,7 +230,7 @@
 	</target>
 
 	<!-- Generic installer -->
-	<target name="generic" depends="-nodistbased,-release,font">
+	<target name="generic" depends="-nodistbased,-release,font,-izpack-task">
 		<copy file="resources/installers/generic/install-generic.xml" tofile="/tmp/install.xml" overwrite="yes">
 			<filterset><filter token="VERSION" value="${version}"/></filterset>
 		</copy>
@@ -247,6 +241,7 @@
 
 	<!-- Windows Installer -->
 	<target name="app-windows" depends="-nodistbased,core">
+        <taskdef name="launch4j" onerror="report" classpath="/opt/local/share/launch4j/launch4j.jar:/opt/local/share/launch4j/lib/xstream.jar:/opt/multi/launch4j/launch4j.jar:/opt/multi/launch4j/lib/xstream.jar" classname="net.sf.launch4j.ant.Launch4jTask"/>
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
@@ -309,7 +304,7 @@
 
 
 	<!-- Generic Linux installer -->
-	<target name="linux" depends="-nodistbased,-release,-linuxffdecodes">
+	<target name="linux" depends="-nodistbased,-release,-linuxffdecodes,-izpack-task">
 		<mkdir dir="self"/>
 		<copy file="resources/installers/linux/dist/generic/install-linux.xml" tofile="/tmp/install.xml" overwrite="yes">
 			<filterset><filter token="VERSION" value="${version}"/></filterset>
