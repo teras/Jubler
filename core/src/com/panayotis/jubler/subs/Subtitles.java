@@ -46,15 +46,12 @@ import javax.swing.JTable;
  */
 public class Subtitles extends AbstractTableModel {
 
-    private static final String COLUMNID = "#FELCS";
-    private static final String DEFAULTCOLUMNID = "FE";
-    private static final String COLNAME[] = {__("#"), __("Start"), __("End"), __("Layer"), __("Style"), __("Cpm"), __("Subtitle")};
-    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50,50,530";
-    private boolean[] visiblecols = AutoSaveOptions.getVisibleColumns(COLUMNID, DEFAULTCOLUMNID);
-    private int prefcolwidth[] = AutoSaveOptions.getColumnWidth(COLUMNID.length(), DEFAULTCOLWIDTH);
+    private static final String COLNAME[] = {__("#"), __("Start"), __("End"), __("Duration"), __("Layer"), __("Style"), __("Cpm"), __("Subtitle")};
+    private final boolean[] visiblecols = AutoSaveOptions.getVisibleColumns();
+    private final int prefcolwidth[] = AutoSaveOptions.getColumnWidths();
     private final static int FIRST_EDITABLE_COL = COLNAME.length;
     /**
-     * Attributes of these subtiles
+     * Attributes of these subtitles
      */
     private SubAttribs attribs;
     /**
@@ -102,11 +99,10 @@ public class Subtitles extends AbstractTableModel {
 
     private Subtitles loadByFileExtension(SubFile sfile, String data) {
         Subtitles load = null;
-        SubFormat format = null;
         try {
             File file = sfile.getSaveFile();
             String ext = Share.getFileExtension(file, false);
-            format = Availabilities.formats.findFromExtension(ext).newInstance();
+            SubFormat format = Availabilities.formats.findFromExtension(ext).newInstance();
             format.setJubler(JubFrame.currentWindow);
             format.updateFormat(sfile);
             load = format.parse(data, sfile.getFPS(), file);
@@ -119,10 +115,9 @@ public class Subtitles extends AbstractTableModel {
 
     private Subtitles loadBySelectedHandler(SubFile sfile, String data) {
         Subtitles load = null;
-        SubFormat format = null;
         try {
             File file = sfile.getSaveFile();
-            format = sfile.getFormat();
+            SubFormat format = sfile.getFormat();
             format.setJubler(JubFrame.currentWindow);
             format.updateFormat(sfile);
             load = format.parse(data, sfile.getFPS(), file);
@@ -360,7 +355,7 @@ public class Subtitles extends AbstractTableModel {
     /* Methods related to JTable */
     public void setVisibleColumn(int which, boolean how) {
         visiblecols[which] = how;
-        AutoSaveOptions.setVisibleColumns(visiblecols, COLUMNID);
+        AutoSaveOptions.setVisibleColumns(visiblecols);
     }
 
     public boolean isVisibleColumn(int which) {
@@ -499,11 +494,12 @@ public class Subtitles extends AbstractTableModel {
      *
      * @param target_class The target class to convert the current subtitle
      * entries to.
+     * @param class_loader The classloader to use
      * @return true if convertion was carried out without erros, or no
      * conversions are required, false otherwise.
      */
     public boolean convert(Class target_class, ClassLoader class_loader) {
-        HeaderedTypeSubtitle target_hdr_sub = null;
+        HeaderedTypeSubtitle target_hdr_sub;
 
         /**
          * Global header object for all records.
@@ -511,8 +507,6 @@ public class Subtitles extends AbstractTableModel {
         Object header = null;
         try {
             SubEntry src_entry = null;
-            boolean is_saved_for_undo = false;
-            String action_name = __("Convert records");
             for (int i = 0; i < size(); i++) {
                 target_hdr_sub = null;
                 //get the current entry
@@ -592,14 +586,12 @@ public class Subtitles extends AbstractTableModel {
     }
 
     /**
-     * Moves one or more rows from the inclusive range
-     * <code>start</code> to
-     * <code>end</code> to the
-     * <code>to</code> position in the model. After the move, the row that was
-     * at index
-     * <code>start</code> will be at index
-     * <code>to</code>. This method will send a
-     * <code>tableChanged</code> notification message to all the listeners. <p>
+     * Moves one or more rows from the inclusive range <code>start</code> to
+     * <code>end</code> to the <code>to</code> position in the model. After the
+     * move, the row that was at index <code>start</code> will be at index
+     * <code>to</code>. This method will send a <code>tableChanged</code>
+     * notification message to all the listeners.
+     * <p>
      *
      * <pre>
      *  Examples of moves:

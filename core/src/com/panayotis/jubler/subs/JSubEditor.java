@@ -145,7 +145,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     public void spinnerChanged(JTimeSpinner which) {
         double tstart, tfinish, tdur;
-        boolean old_ignore_spinner_changes;
         if (ignore_sub_changes)
             return;
 

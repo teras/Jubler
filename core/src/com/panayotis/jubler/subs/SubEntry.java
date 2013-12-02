@@ -52,7 +52,7 @@ import javax.swing.text.StyleConstants;
  */
 public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
 
-    public static final int SMALL_MILLI = 50;
+    public static final int SMALL_MILLIS = 50;
     private static final AbstractStyleover[] styleover_template;
 
     static {
@@ -89,7 +89,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     }
     /* Markings */
     public static final String[] MarkNames = {__("None"), __("Pink"), __("Yellow"), __("Cyan"), __("Orange"), __("Light Green")};
-    protected Time start, finish, duration;
+    protected Time start, finish;
     private String subtext;
     private int mark;
     private SubStyle style;
@@ -191,21 +191,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             case 2:
                 return finish.toString();
             case 3:
-                /*
-                 * Duration of a subtitle entry sometimes could be
-                 * considered too small - by errors or any other reasons
-                 * and in such a case it should be notified to the editor.
-                 * This column supposed to be for layer,
-                 * but since this feature is rarely use
-                 * this is now use to show duration - HDT 13/05/2009
-                 */
-                this.computeDuration();
-                if (this.hasDuration()) {
-                    if (this.isDurationSmall())
-                        this.setMark(4); //Orange//end if (this.isDurationSmall())
-                    return duration.toString();
-                } else
-                    return "";
+                return getDurationTime().toString();
             case 4:
                 return "0";
             case 5:
@@ -213,6 +199,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                     return "?Default";
                 return style.toString();
             case 6:
+                return (subtext == null || subtext.length() == 0)
+                        ? "0"
+                        : String.valueOf(Math.round((subtext.length() * (60 / ((finish.getMillis() - start.getMillis()) / 1000d)))));
+            case 7:
                 boolean is_image_type = (this instanceof ImageTypeSubtitle);
                 if (is_image_type) {
                     ImageTypeSubtitle img_type = (ImageTypeSubtitle) this;
@@ -242,6 +232,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         return finish;
     }
 
+    public Time getDurationTime() {
+        return finish.difference(start);
+    }
+
     public String getText() {
         return subtext;
     }
@@ -262,7 +256,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         if (overstyle == null)
             return;
         for (int i = 0; i < overstyle.length - 1; i++) // Ignore last "unknown" event
-        
             if (overstyle[i] != null)
                 overstyle[i].cleanupEvents(style.get(i), subtext);
     }
@@ -352,16 +345,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     }
 
     /**
-     * Examining to see if the value for duration exists. The duration exists
-     * only if both start and finish time exists.
-     *
-     * @return true if the duration is not null (existed), false otherwise.
-     */
-    public boolean hasDuration() {
-        return (this.duration != null);
-    }
-
-    /**
      * Duration of a subtitle entry sometimes could be considered too small - by
      * errors or any other reasons and in such a case it should be notified to
      * the editor.
@@ -370,31 +353,8 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * 500 milliseconds, false otherwise.
      */
     public boolean isDurationSmall() {
-        boolean is_small = false;
-        if (this.hasDuration()) {
-            int dur_ms = duration.getMilli();
-            is_small = (dur_ms < SMALL_MILLI);
-        }
-        return is_small;
+        return getDurationTime().getMillis() < SMALL_MILLIS;
     }
-
-    /**
-     * Calculate the different time between two points, start and end. It
-     * demands that both start and finish time exists (not null).
-     */
-    public void computeDuration() {
-        boolean valid = !(start == null || finish == null);
-        if (valid) {
-            int start_ms = start.getMilli();
-            int end_ms = finish.getMilli();
-            int diff_ms = end_ms - start_ms;
-            if (duration == null)
-                duration = new Time(diff_ms);
-            else
-                duration.setMilli(diff_ms);//end if
-        } else
-            duration = null;//end if
-    }//public void computeDuration()
 
     /**
      * Cloning the current-record.
@@ -410,8 +370,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 new_sub.start = new Time(start);
             if (finish != null)
                 new_sub.finish = new Time(finish);
-            if (duration != null)
-                new_sub.duration = new Time(duration);
             if (subtext != null)
                 new_sub.subtext = new String(subtext);
             new_sub.setMark(getMark());
@@ -442,8 +400,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 start = new Time(o.start);
             if (o.finish != null)
                 finish = new Time(o.finish);
-            if (o.duration != null)
-                duration = new Time(o.duration);
             if (o.subtext != null)
                 subtext = new String(o.getText());
             setMark(o.getMark());
@@ -485,12 +441,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             e1 = this.getFinishTime();
             s2 = o.getStartTime();
             e2 = o.getFinishTime();
-            int new_start_time = Math.min(s1.getMilli(), s2.getMilli());
-            int new_end_time = Math.max(e1.getMilli(), e2.getMilli());
-
-            this.getStartTime().setMilli(new_start_time);
-            this.getFinishTime().setMilli(new_end_time);
-            this.computeDuration();
+            int new_start_time = Math.min(s1.getMillis(), s2.getMillis());
+            int new_end_time = Math.max(e1.getMillis(), e2.getMillis());
+            setStartTime(new Time(new_start_time / 1000d));
+            setStartTime(new Time(new_end_time / 1000d));
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         }
@@ -570,21 +524,20 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         int ts1, te1, ts2, te2;
         int dur, half_dur;
         try {
-            this.computeDuration();
-            dur = this.duration.getMilli();
+            dur = getDurationTime().getMillis();
             half_dur = dur / 2;
 
-            ts1 = this.getStartTime().getMilli();
+            ts1 = getStartTime().getMillis();
             te1 = ts1 + half_dur;
 
             ts2 = te1 + 1;
-            te2 = this.getFinishTime().getMilli();
+            te2 = getFinishTime().getMillis();
 
-            this.getStartTime().setMilli(ts1);
-            this.getFinishTime().setMilli(te1);
+            getStartTime().setTime(ts1 / 1000d);
+            getFinishTime().setTime(te1 / 1000d);
 
-            new_sub.getStartTime().setMilli(ts2);
-            new_sub.getFinishTime().setMilli(te2);
+            new_sub.getStartTime().setTime(ts2 / 1000d);
+            new_sub.getFinishTime().setTime(te2 / 1000d);
         } catch (Exception ex) {
             DEBUG.logger.log(Level.WARNING, ex.toString());
         }
@@ -830,13 +783,13 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * be compared to the this instance.
      * @return true if the starting-times are identical or their difference is
      * considered to be too small. False otherwise.
-     * @see #SMALL_MILLI
+     * @see #SMALL_MILLIS
      */
     public boolean isSameStartTime(SubEntry o) {
         try {
-            int t1 = this.getStartTime().getMilli();
-            int t2 = o.getStartTime().getMilli();
-            boolean is_dup = (t1 == t2) || (Math.abs(t2 - t1) < SMALL_MILLI);
+            int t1 = this.getStartTime().getMillis();
+            int t2 = o.getStartTime().getMillis();
+            boolean is_dup = (t1 == t2) || (Math.abs(t2 - t1) < SMALL_MILLIS);
             return is_dup;
         } catch (Exception ex) {
             return false;
@@ -851,13 +804,13 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * compared to the this instance.
      * @return true if the ending-times are identical or their difference is
      * considered to be too small. False otherwise.
-     * @see #SMALL_MILLI
+     * @see #SMALL_MILLIS
      */
     public boolean isSameEndTime(SubEntry o) {
         try {
-            int t1 = this.getFinishTime().getMilli();
-            int t2 = o.getFinishTime().getMilli();
-            boolean is_dup = is_dup = (t1 == t2) || (Math.abs(t2 - t1) < SMALL_MILLI);
+            int t1 = this.getFinishTime().getMillis();
+            int t2 = o.getFinishTime().getMillis();
+            boolean is_dup = is_dup = (t1 == t2) || (Math.abs(t2 - t1) < SMALL_MILLIS);
             return is_dup;
         } catch (Exception ex) {
             return false;
@@ -1018,9 +971,8 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 if (is_required_line) {
                     if (!(is_last_line || isHyphenatedWord(text_line)))
                         b.append(char_sp);//end if (! is_text_empty)
-                } else
-                    if (!is_last_line)
-                        b.append(UNIX_NL);//end if (! is_text_empty)//end if (is_required_line)                
+                } else if (!is_last_line)
+                    b.append(UNIX_NL);//end if (! is_text_empty)//end if (is_required_line)                
             }//end for (int i=0; i < text_list.size(); i++)
             String text = b.toString();
             setText(text);
@@ -1105,7 +1057,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             throw new IncompatibleRecordTypeException(
                     hdr_current_entry.getClass(),
                     hdr_import_entry.getClass());//end if (! is_same_type)
-
 
         Object import_header = hdr_import_entry.getHeader();
         hdr_current_entry.setHeader(import_header);
