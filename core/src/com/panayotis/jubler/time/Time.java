@@ -33,17 +33,17 @@ import java.util.TimeZone;
  *
  * @author teras
  */
-public class Time implements Comparable<Time>, Cloneable, CommonDef {
+public final class Time implements Comparable<Time>, Cloneable, CommonDef {
 
     public static final int MAX_TIME = 3600 * 24;   // in seconds
     public static final int MAX_MILLI_TIME = MAX_TIME * 1000;   // in seconds
-    public static float PAL_VIDEOFRAMERATE = 3600.0f;
-    public static float NTSC_VIDEOFRAMERATE = 3003.0f;
-    public static DateFormat time_format_1 = new SimpleDateFormat("HH:mm:ss.SSS");
-    public static DateFormat time_format_2 = new SimpleDateFormat("HH:mm:ss:SSS");
-    public static DateFormat time_format_3 = new SimpleDateFormat("dd.MM.yy  HH:mm");
-    public static DateFormat time_format_4 = new SimpleDateFormat("HH:mm:ss");
-    protected int msecs = -1;
+    public static final float PAL_VIDEOFRAMERATE = 3600.0f;
+    public static final float NTSC_VIDEOFRAMERATE = 3003.0f;
+    public static final DateFormat time_format_1 = new SimpleDateFormat("HH:mm:ss.SSS");
+    public static final DateFormat time_format_2 = new SimpleDateFormat("HH:mm:ss:SSS");
+    public static final DateFormat time_format_3 = new SimpleDateFormat("dd.MM.yy  HH:mm");
+    public static final DateFormat time_format_4 = new SimpleDateFormat("HH:mm:ss");
+    private int msecs = -1;
 
     /**
      * This is to generate end-time, using starting frame-count and the duration
@@ -122,7 +122,6 @@ public class Time implements Comparable<Time>, Cloneable, CommonDef {
 
     public void setTimeLiteral(String h, String m, String s, String f) {
         short hour, min, sec, milli;
-        int flength;
         try {
             hour = Short.parseShort(h);
             min = Short.parseShort(m);
@@ -283,11 +282,12 @@ public class Time implements Comparable<Time>, Cloneable, CommonDef {
         return msecs / 1000d;
     }
 
+    @Override
     public String toString() {
         return getSeconds();
     }
 
-    public long getMillis() {
+    public int getMillis() {
         return msecs;
     }
 
@@ -295,18 +295,8 @@ public class Time implements Comparable<Time>, Cloneable, CommonDef {
         return (msecs - other.msecs) / 1000d;
     }
 
-    /**
-     * @return the msecs
-     */
-    public int getMilli() {
-        return msecs;
-    }
-
-    /**
-     * @param msecs the msecs to set
-     */
-    public void setMilli(int msecs) {
-        this.msecs = msecs;
+    public Time difference(Time other) {
+        return new Time((msecs - other.msecs) / 1000d);
     }
 
     /**

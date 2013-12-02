@@ -343,6 +343,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         ShowNumberP = new javax.swing.JCheckBoxMenuItem();
         ShowStartP = new javax.swing.JCheckBoxMenuItem();
         ShowEndP = new javax.swing.JCheckBoxMenuItem();
+        ShowDurationP = new javax.swing.JCheckBoxMenuItem();
         ShowLayerP = new javax.swing.JCheckBoxMenuItem();
         ShowStyleP = new javax.swing.JCheckBoxMenuItem();
         ShowCPMP = new javax.swing.JCheckBoxMenuItem();
@@ -427,6 +428,14 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         YellowMEM = new javax.swing.JMenuItem();
         CyanMEM = new javax.swing.JMenuItem();
         MarkSep = new javax.swing.JSeparator();
+        ShowColP1 = new javax.swing.JMenu();
+        ShowNumberP1 = new javax.swing.JCheckBoxMenuItem();
+        ShowStartP1 = new javax.swing.JCheckBoxMenuItem();
+        ShowEndP1 = new javax.swing.JCheckBoxMenuItem();
+        ShowDurationP1 = new javax.swing.JCheckBoxMenuItem();
+        ShowLayerP1 = new javax.swing.JCheckBoxMenuItem();
+        ShowStyleP1 = new javax.swing.JCheckBoxMenuItem();
+        ShowCPMP1 = new javax.swing.JCheckBoxMenuItem();
         StyleEM = new javax.swing.JMenu();
         StyleSepSEM = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
@@ -510,18 +519,23 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         ShowEndP.addActionListener(formListener);
         ShowColP.add(ShowEndP);
 
+        ShowDurationP.setText(__("Duration"));
+        ShowDurationP.setActionCommand("3");
+        ShowDurationP.addActionListener(formListener);
+        ShowColP.add(ShowDurationP);
+
         ShowLayerP.setText(__("Layer"));
-        ShowLayerP.setActionCommand("3");
+        ShowLayerP.setActionCommand("4");
         ShowLayerP.addActionListener(formListener);
         ShowColP.add(ShowLayerP);
 
         ShowStyleP.setText(__("Style"));
-        ShowStyleP.setActionCommand("4");
+        ShowStyleP.setActionCommand("5");
         ShowStyleP.addActionListener(formListener);
         ShowColP.add(ShowStyleP);
 
         ShowCPMP.setText(__("Characters per minute"));
-        ShowCPMP.setActionCommand("5");
+        ShowCPMP.setActionCommand("6");
         ShowCPMP.addActionListener(formListener);
         ShowColP.add(ShowCPMP);
 
@@ -939,6 +953,46 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         EditM.add(MarkEM);
 
+        ShowColP1.setText(__("Show columns"));
+        ShowColP1.setEnabled(false);
+
+        ShowNumberP1.setText(__("Index"));
+        ShowNumberP1.setActionCommand("0");
+        ShowNumberP1.addActionListener(formListener);
+        ShowColP1.add(ShowNumberP1);
+
+        ShowStartP1.setText(__("Start"));
+        ShowStartP1.setActionCommand("1");
+        ShowStartP1.addActionListener(formListener);
+        ShowColP1.add(ShowStartP1);
+
+        ShowEndP1.setText(__("End"));
+        ShowEndP1.setActionCommand("2");
+        ShowEndP1.addActionListener(formListener);
+        ShowColP1.add(ShowEndP1);
+
+        ShowDurationP1.setText(__("Duration"));
+        ShowDurationP1.setActionCommand("3");
+        ShowDurationP1.addActionListener(formListener);
+        ShowColP1.add(ShowDurationP1);
+
+        ShowLayerP1.setText(__("Layer"));
+        ShowLayerP1.setActionCommand("4");
+        ShowLayerP1.addActionListener(formListener);
+        ShowColP1.add(ShowLayerP1);
+
+        ShowStyleP1.setText(__("Style"));
+        ShowStyleP1.setActionCommand("5");
+        ShowStyleP1.addActionListener(formListener);
+        ShowColP1.add(ShowStyleP1);
+
+        ShowCPMP1.setText(__("Characters per minute"));
+        ShowCPMP1.setActionCommand("6");
+        ShowCPMP1.addActionListener(formListener);
+        ShowColP1.add(ShowCPMP1);
+
+        EditM.add(ShowColP1);
+
         StyleEM.setText(__("Style"));
         StyleEM.setEnabled(false);
         StyleEM.add(StyleSepSEM);
@@ -1268,6 +1322,30 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == ShowDurationP) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowNumberP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowStartP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowEndP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowDurationP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowLayerP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowStyleP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowCPMP1) {
+                JubFrame.this.showTableColumn(evt);
             }
         }
 
@@ -1707,6 +1785,7 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockMActionPerformed
     subeditor.ToolsLockB.setSelected(ToolsLockM.isSelected());
 }//GEN-LAST:event_ToolsLockMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1783,12 +1862,21 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JButton SaveTB;
     private javax.swing.JMenu SelectEM;
     private javax.swing.JCheckBoxMenuItem ShowCPMP;
+    private javax.swing.JCheckBoxMenuItem ShowCPMP1;
     private javax.swing.JMenu ShowColP;
+    private javax.swing.JMenu ShowColP1;
+    private javax.swing.JCheckBoxMenuItem ShowDurationP;
+    private javax.swing.JCheckBoxMenuItem ShowDurationP1;
     private javax.swing.JCheckBoxMenuItem ShowEndP;
+    private javax.swing.JCheckBoxMenuItem ShowEndP1;
     private javax.swing.JCheckBoxMenuItem ShowLayerP;
+    private javax.swing.JCheckBoxMenuItem ShowLayerP1;
     private javax.swing.JCheckBoxMenuItem ShowNumberP;
+    private javax.swing.JCheckBoxMenuItem ShowNumberP1;
     private javax.swing.JCheckBoxMenuItem ShowStartP;
+    private javax.swing.JCheckBoxMenuItem ShowStartP1;
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
+    private javax.swing.JCheckBoxMenuItem ShowStyleP1;
     private javax.swing.JButton SortTB;
     private javax.swing.JPanel SortTP;
     private javax.swing.JMenuItem StepwiseREM;
@@ -2099,8 +2187,17 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         ShowNumberP.setSelected(subs.isVisibleColumn(0));
         ShowStartP.setSelected(subs.isVisibleColumn(1));
         ShowEndP.setSelected(subs.isVisibleColumn(2));
-        ShowLayerP.setSelected(subs.isVisibleColumn(3));
-        ShowStyleP.setSelected(subs.isVisibleColumn(4));
+        ShowDurationP.setSelected(subs.isVisibleColumn(3));
+        ShowLayerP.setSelected(subs.isVisibleColumn(4));
+        ShowStyleP.setSelected(subs.isVisibleColumn(5));
+        ShowCPMP.setSelected(subs.isVisibleColumn(6));
+        ShowNumberP1.setSelected(subs.isVisibleColumn(0));
+        ShowStartP1.setSelected(subs.isVisibleColumn(1));
+        ShowEndP1.setSelected(subs.isVisibleColumn(2));
+        ShowDurationP1.setSelected(subs.isVisibleColumn(3));
+        ShowLayerP1.setSelected(subs.isVisibleColumn(4));
+        ShowStyleP1.setSelected(subs.isVisibleColumn(5));
+        ShowCPMP1.setSelected(subs.isVisibleColumn(6));
     }
     private boolean column_change;
 
@@ -2335,7 +2432,6 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
         if (preview.isVisible())
             preview.subsHaveChanged(SubTable.getSelectedRows());
-
 
         if (jparent != null) {
             double newtime = (sel.getStartTime().toSeconds() + sel.getFinishTime().toSeconds()) / 2;

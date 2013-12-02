@@ -28,6 +28,11 @@ import java.util.StringTokenizer;
  */
 public class AutoSaveOptions {
 
+    private static final String COLUMNID = "#FEDLCS";
+    public static final int COLUMN_COUNT = COLUMNID.length();
+    private static final String DEFAULTCOLUMNID = "FE";
+    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50,50,530";
+
     public static void setPreviewOrientation(boolean horizontal) {
         Options.setOption("Preview.Orientation", horizontal ? "horizontal" : "vertical");
         Options.saveOptions();
@@ -37,7 +42,7 @@ public class AutoSaveOptions {
         return Options.getOption("Preview.Orientation", "horizontal").equals("horizontal");
     }
 
-    public static void setVisibleColumns(boolean[] visiblecols, String COLUMNID) {
+    public static void setVisibleColumns(boolean[] visiblecols) {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < visiblecols.length; i++)
             if (visiblecols[i])
@@ -46,7 +51,7 @@ public class AutoSaveOptions {
         Options.saveOptions();
     }
 
-    public static boolean[] getVisibleColumns(String COLUMNID, String DEFAULTCOLUMNID) {
+    public static boolean[] getVisibleColumns() {
         String savedcols = Options.getOption("System.VisibleColumns", DEFAULTCOLUMNID);
         boolean[] cols = new boolean[COLUMNID.length()];
         for (int i = 0; i < COLUMNID.length(); i++)
@@ -65,8 +70,8 @@ public class AutoSaveOptions {
         Options.saveOptions();
     }
 
-    public static int[] getColumnWidth(int length, String DEFAULTCOLWIDTH) {
-        int[] prefcolwidth = new int[length];
+    public static int[] getColumnWidths() {
+        int[] prefcolwidth = new int[COLUMNID.length()];
         String widths = Options.getOption("System.ColumnWidth", DEFAULTCOLWIDTH);
         if (widths == null || widths.equals("") || widths.length() < 1)
             widths = DEFAULTCOLWIDTH;
