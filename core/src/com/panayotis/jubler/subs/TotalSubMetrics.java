@@ -36,6 +36,7 @@ public class TotalSubMetrics extends SubMetrics {
         super();
     }
 
+    @Override
     public void updateToMaxValues(SubMetrics m) {
         super.updateToMaxValues(m);
         totallength += m.length;

@@ -32,6 +32,7 @@ public class SubMetrics {
     public int length = 0;
     public int maxlength = 0;
     public int lines = 1;
+    public int cpm = 0;
 
     public void updateToMaxValues(SubMetrics m) {
         if (length < m.length)
@@ -40,5 +41,7 @@ public class SubMetrics {
             lines = m.lines;
         if (maxlength < m.maxlength)
             maxlength = m.maxlength;
+        if (cpm < m.cpm)
+            cpm = m.cpm;
     }
 }

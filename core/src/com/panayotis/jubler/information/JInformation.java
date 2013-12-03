@@ -43,12 +43,13 @@ import javax.swing.JDialog;
  */
 public class JInformation extends JDialog {
 
-    private Subtitles subs;
-    private MediaFile media;
+    private final Subtitles subs;
+    private final MediaFile media;
     private static final String[] CTTypesData = {__("per line"), __("per second")};
 
     /**
      * Creates new form JProperties
+     * @param parent
      */
     public JInformation(JubFrame parent) {
         super(parent, true);
@@ -73,6 +74,7 @@ public class JInformation extends JDialog {
         MaxSubSizeT.setText(Integer.toString(m.length));
         MaxLinesT.setText(Integer.toString(m.lines));
         MaxLengthT.setText(Integer.toString(m.maxlength));
+        MaxCPMT.setText(Integer.toString(m.cpm));
 
         VSelectorP.add(parent.getMediaFile().videoselector, BorderLayout.CENTER);
 
@@ -128,6 +130,8 @@ public class JInformation extends JDialog {
         MaxLinesT = new javax.swing.JLabel();
         MaxLengthL = new javax.swing.JLabel();
         MaxLengthT = new javax.swing.JLabel();
+        MaxCPML = new javax.swing.JLabel();
+        MaxCPMT = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         MaxInfUserB = new javax.swing.JCheckBox();
         jPanel11 = new javax.swing.JPanel();
@@ -264,6 +268,10 @@ public class JInformation extends JDialog {
         jPanel8.add(MaxLengthL);
         jPanel8.add(MaxLengthT);
 
+        MaxCPML.setText(__("Maximum subtitle characters per minute"));
+        jPanel8.add(MaxCPML);
+        jPanel8.add(MaxCPMT);
+
         jPanel9.add(jPanel8, java.awt.BorderLayout.NORTH);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 1, 0, 1));
@@ -390,6 +398,8 @@ public class JInformation extends JDialog {
     private javax.swing.JLabel FilePathL;
     private javax.swing.JTextField FilePathT;
     private javax.swing.JPanel InfoP;
+    private javax.swing.JLabel MaxCPML;
+    private javax.swing.JLabel MaxCPMT;
     private javax.swing.JLabel MaxCharsL;
     private javax.swing.JSlider MaxCharsS;
     private javax.swing.JComboBox MaxColC;
