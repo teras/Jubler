@@ -201,7 +201,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             case 6:
                 return (subtext == null || subtext.length() == 0)
                         ? "0"
-                        : String.valueOf(Math.round((subtext.length() * (60 / ((finish.getMillis() - start.getMillis()) / 1000d)))));
+                        : String.valueOf(getCPM());
             case 7:
                 boolean is_image_type = (this instanceof ImageTypeSubtitle);
                 if (is_image_type) {
@@ -222,6 +222,14 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 }//end if (is_image_type)
         }//end switch/case
         return null;
+    }
+
+    public long getCPM() {
+        int count = 0;
+        for (int i = 0; i < subtext.length(); i++)
+            if (!Character.isWhitespace(subtext.charAt(i)))
+                count++;
+        return Math.round((count * (60 / ((finish.getMillis() - start.getMillis()) / 1000d))));
     }
 
     public Time getStartTime() {
@@ -319,14 +327,22 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         m.length = subtext.length();
 
         int curcol = 0;
-        for (int idx = 0; idx < m.length; idx++)
-            if (subtext.charAt(idx) == '\n') {
+        int characters = 0;
+        char item;
+        for (int idx = 0; idx < m.length; idx++) {
+            item = subtext.charAt(idx);
+            if (item == '\n') {
                 m.lines++;
                 if (curcol > m.maxlength)
                     m.maxlength = curcol;
                 curcol = 0;
-            } else
+            } else {
                 curcol++;
+                if (!Character.isWhitespace(item))
+                    characters++;
+            }
+        }
+        m.cpm = (int) Math.round((characters * (60 / ((finish.getMillis() - start.getMillis()) / 1000d))));
         if (curcol > m.maxlength)
             m.maxlength = curcol;
         return m;
