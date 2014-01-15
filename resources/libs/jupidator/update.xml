@@ -44,6 +44,12 @@
         <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
+    <version release="1298" version="5.0.3">
+        <description>
+            Fix subtitles will not open with double click. Fix missing character per minute display in subtitle view.
+        </description>
+    </version>
+
     <version release="1289" version="5.0.1">
         <description>
             Fix Preferences/About menu issue with Windows and Linux. Support older JRE and PPC under Mac OS X.

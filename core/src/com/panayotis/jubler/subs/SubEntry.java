@@ -201,7 +201,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             case 6:
                 return (subtext == null || subtext.length() == 0)
                         ? "0"
-                        : String.valueOf(getCPM());
+                        : String.valueOf(Math.round(subtext.length() * 60 / ((finish.getMillis() - start.getMillis()) / 1000d)));
             case 7:
                 boolean is_image_type = (this instanceof ImageTypeSubtitle);
                 if (is_image_type) {
@@ -222,14 +222,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                 }//end if (is_image_type)
         }//end switch/case
         return null;
-    }
-
-    public long getCPM() {
-        int count = 0;
-        for (int i = 0; i < subtext.length(); i++)
-            if (!Character.isWhitespace(subtext.charAt(i)))
-                count++;
-        return Math.round((count * (60 / ((finish.getMillis() - start.getMillis()) / 1000d))));
     }
 
     public Time getStartTime() {
