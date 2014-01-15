@@ -60,11 +60,6 @@ public class JReplaceList extends javax.swing.JPanel {
         MarkAll = new javax.swing.JButton();
         ClearAll = new javax.swing.JButton();
         Inverse = new javax.swing.JButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        DeleteMarked = new javax.swing.JButton();
-        ResetValues = new javax.swing.JButton();
-        LoadValues = new javax.swing.JButton();
-        SaveValues = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -101,50 +96,9 @@ public class JReplaceList extends javax.swing.JPanel {
             }
         });
         jPanel1.add(Inverse);
-        jPanel1.add(jSeparator1);
-
-        DeleteMarked.setText(__("Delete"));
-        DeleteMarked.setToolTipText(__("Delete the selected scenario"));
-        DeleteMarked.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DeleteMarkedActionPerformed(evt);
-            }
-        });
-        jPanel1.add(DeleteMarked);
-
-        ResetValues.setText(__("Delete"));
-        ResetValues.setToolTipText(__("Delete the selected scenario"));
-        ResetValues.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResetValuesActionPerformed(evt);
-            }
-        });
-        jPanel1.add(ResetValues);
-
-        LoadValues.setText(__("Delete"));
-        LoadValues.setToolTipText(__("Delete the selected scenario"));
-        LoadValues.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LoadValuesActionPerformed(evt);
-            }
-        });
-        jPanel1.add(LoadValues);
-
-        SaveValues.setText(__("Delete"));
-        SaveValues.setToolTipText(__("Delete the selected scenario"));
-        SaveValues.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SaveValuesActionPerformed(evt);
-            }
-        });
-        jPanel1.add(SaveValues);
 
         add(jPanel1, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void DeleteMarkedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteMarkedActionPerformed
-        model.remove(TTable.getSelectedRow());
-    }//GEN-LAST:event_DeleteMarkedActionPerformed
 
     private void InverseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InverseActionPerformed
         for (int i = 0; i < (model.size() - 1); i++)
@@ -164,32 +118,15 @@ public class JReplaceList extends javax.swing.JPanel {
         model.fireTableDataChanged();
     }//GEN-LAST:event_MarkAllActionPerformed
 
-    private void ResetValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetValuesActionPerformed
-        model.reset();
-    }//GEN-LAST:event_ResetValuesActionPerformed
-
-    private void LoadValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadValuesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_LoadValuesActionPerformed
-
-    private void SaveValuesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveValuesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_SaveValuesActionPerformed
-
     public ReplaceModel getModel() {
         return model;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ClearAll;
-    private javax.swing.JButton DeleteMarked;
     private javax.swing.JButton Inverse;
-    private javax.swing.JButton LoadValues;
     private javax.swing.JButton MarkAll;
-    private javax.swing.JButton ResetValues;
-    private javax.swing.JButton SaveValues;
     private javax.swing.JTable TTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }
