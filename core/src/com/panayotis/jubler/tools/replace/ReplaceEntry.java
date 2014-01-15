@@ -43,6 +43,10 @@ public class ReplaceEntry {
 
     /**
      * Creates a new instance of ReplaceEntry
+     *
+     * @param usable
+     * @param fromS
+     * @param toS
      */
     public ReplaceEntry(boolean usable, String fromS, String toS) {
         this.fromS = fromS;
@@ -64,21 +68,20 @@ public class ReplaceEntry {
         switch (which) {
             case 0:
                 usable = (java.lang.Boolean) value;
-                return;
+                break;
             case 1:
                 fromS = value.toString();
-                return;
+                break;
             case 2:
                 toS = value.toString();
-                return;
-
+                break;
         }
     }
 
     public static void setData(Collection<ReplaceEntry> c, String data) {
-        c.clear();
         if (data == null || c == null)
             return;
+        c.clear();
         Pattern p = Pattern.compile("\\{\\{(.*?)\\}\\{(.*?)\\}\\{(.*?)\\}\\}");
         Matcher m = p.matcher(data);
         while (m.find())
@@ -91,6 +94,7 @@ public class ReplaceEntry {
         return fromS + "    =>    " + toS;
     }
 
+    @Override
     public String toString() {
         return "{{" + Boolean.toString(usable) + "}{" + setSafe(fromS) + "}{" + setSafe(toS) + "}}";
     }
@@ -115,7 +119,7 @@ public class ReplaceEntry {
                         res.append('}');
                         break;
                     default:
-                        res.append("\\" + in.charAt(i));
+                        res.append("\\").append(in.charAt(i));
                 }
             } else
                 res.append(in.charAt(i));
