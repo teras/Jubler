@@ -923,6 +923,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         AllSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         AllSEM.setText(__("All"));
         AllSEM.setName("ESA"); // NOI18N
+        AllSEM.addActionListener(formListener);
         SelectEM.add(AllSEM);
 
         EditM.add(SelectEM);
@@ -1354,6 +1355,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
+            }
+            else if (evt.getSource() == AllSEM) {
+                JubFrame.this.AllSEMActionPerformed(evt);
             }
         }
 
@@ -1794,6 +1798,12 @@ private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) 
 private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockMActionPerformed
     subeditor.ToolsLockB.setSelected(ToolsLockM.isSelected());
 }//GEN-LAST:event_ToolsLockMActionPerformed
+
+    private void AllSEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AllSEMActionPerformed
+        ignore_table_selections = true;
+        SubTable.getSelectionModel().setSelectionInterval(0, SubTable.getModel().getRowCount() - 1);
+        ignore_table_selections = false;
+    }//GEN-LAST:event_AllSEMActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
