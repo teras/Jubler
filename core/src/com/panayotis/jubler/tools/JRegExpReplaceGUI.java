@@ -24,13 +24,7 @@
 package com.panayotis.jubler.tools;
 
 import javax.swing.JPanel;
-import java.util.regex.Matcher;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.subs.SubEntry;
-import java.util.ArrayList;
-import com.panayotis.jubler.tools.replace.JReplaceList;
-import com.panayotis.jubler.tools.replace.ReplaceModel;
-import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -41,43 +35,17 @@ import static com.panayotis.jubler.i18n.I18N.__;
  */
 public class JRegExpReplaceGUI extends JPanel {
 
-    private ArrayList<Pattern> patterns;
-    private ArrayList<String> texts;
-    private JReplaceList rlist;
+    private final JRegExpReplace tool;
 
     /**
      * Creates new form JRegExpReplace
+     *
+     * @param tool
      */
-    public JRegExpReplaceGUI() {
+    public JRegExpReplaceGUI(JRegExpReplace tool) {
         initComponents();
-        rlist = new JReplaceList();
-        TextList.setListData(rlist.getModel().getReplaceList());
-        patterns = new ArrayList<Pattern>();
-        texts = new ArrayList<String>();
-    }
-
-    protected String getToolTitle() {
-        return __("Regular Expression replace");
-    }
-
-    protected void storeSelections() {
-        ReplaceModel model = rlist.getModel();
-        patterns.clear();
-        texts.clear();
-        for (int i = 0; i < model.size(); i++)
-            if (model.elementAt(i).usable) {
-                patterns.add(Pattern.compile(model.elementAt(i).fromS));
-                texts.add(model.elementAt(i).toS);
-            }
-    }
-
-    protected void affect(SubEntry sub) {
-        String res = sub.getText();
-        for (int i = 0; i < patterns.size(); i++) {
-            Matcher m = patterns.get(i).matcher(res);
-            res = m.replaceAll(texts.get(i));
-        }
-        sub.setText(res);
+        this.tool = tool;
+        TextList.setListData(tool.getRlist().getModel().getReplaceList());
     }
 
     /**
@@ -116,24 +84,24 @@ public class JRegExpReplaceGUI extends JPanel {
     private void EditBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditBActionPerformed
         int ret;
         Object[] options = {__("Use"), __("Cancel"), __("Reset")};
-        ret = JOptionPane.showOptionDialog(this, rlist, __("Edit regular expression replace list"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+        ret = JOptionPane.showOptionDialog(this, tool.getRlist(), __("Edit regular expression replace list"), JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
         switch (ret) {
             case 0:
                 //do
-                rlist.getModel().saveOptions();
+                tool.getRlist().getModel().saveOptions();
                 break;
             case 1:
             case JOptionPane.CLOSED_OPTION:
                 //cancel
-                rlist.getModel().loadOptions();
+                tool.getRlist().getModel().loadOptions();
                 break;
             case 2:
                 // reset
-                rlist.getModel().reset();
-                rlist.getModel().saveOptions();
+                tool.getRlist().getModel().reset();
+                tool.getRlist().getModel().saveOptions();
                 break;
         }
-        TextList.setListData(rlist.getModel().getReplaceList());
+        TextList.setListData(tool.getRlist().getModel().getReplaceList());
     }//GEN-LAST:event_EditBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EditB;

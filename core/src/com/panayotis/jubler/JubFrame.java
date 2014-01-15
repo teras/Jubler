@@ -54,6 +54,7 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSingleSelection;
 import com.panayotis.jubler.tools.JPasterGUI;
+import com.panayotis.jubler.tools.JRegExpReplace;
 import com.panayotis.jubler.tools.ToolsManager;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
@@ -1661,8 +1662,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     }//GEN-LAST:event_RevertFMActionPerformed
 
     private void RegExpREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegExpREMActionPerformed
-        throw new RuntimeException();
-        //new JRegExpReplace().execute(this);
+        JRegExpReplace tool = new JRegExpReplace();
+        tool.updateData(this);
+        tool.execute(this);
     }//GEN-LAST:event_RegExpREMActionPerformed
 
     private void EmptyLinesDEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmptyLinesDEMActionPerformed
