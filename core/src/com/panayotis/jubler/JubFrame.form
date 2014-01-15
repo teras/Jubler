@@ -773,6 +773,7 @@
                       <Connection code="__(&quot;Index&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="0"/>
+                    <Property name="name" type="java.lang.String" value="SCI" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
@@ -784,6 +785,7 @@
                       <Connection code="__(&quot;Start&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="1"/>
+                    <Property name="name" type="java.lang.String" value="SCS" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
@@ -795,6 +797,7 @@
                       <Connection code="__(&quot;End&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="2"/>
+                    <Property name="name" type="java.lang.String" value="SCE" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
@@ -806,6 +809,7 @@
                       <Connection code="__(&quot;Duration&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="3"/>
+                    <Property name="name" type="java.lang.String" value="SCD" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
@@ -817,6 +821,7 @@
                       <Connection code="__(&quot;Layer&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="4"/>
+                    <Property name="name" type="java.lang.String" value="SCL" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
@@ -828,6 +833,7 @@
                       <Connection code="__(&quot;Style&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="5"/>
+                    <Property name="name" type="java.lang.String" value="SCY" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
@@ -839,6 +845,7 @@
                       <Connection code="__(&quot;Characters per minute&quot;)" type="code"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" value="6"/>
+                    <Property name="name" type="java.lang.String" value="SCM" noResource="true"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="showTableColumn"/>
