@@ -958,36 +958,43 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         ShowNumberP1.setText(__("Index"));
         ShowNumberP1.setActionCommand("0");
+        ShowNumberP1.setName("SCI"); // NOI18N
         ShowNumberP1.addActionListener(formListener);
         ShowColP1.add(ShowNumberP1);
 
         ShowStartP1.setText(__("Start"));
         ShowStartP1.setActionCommand("1");
+        ShowStartP1.setName("SCS"); // NOI18N
         ShowStartP1.addActionListener(formListener);
         ShowColP1.add(ShowStartP1);
 
         ShowEndP1.setText(__("End"));
         ShowEndP1.setActionCommand("2");
+        ShowEndP1.setName("SCE"); // NOI18N
         ShowEndP1.addActionListener(formListener);
         ShowColP1.add(ShowEndP1);
 
         ShowDurationP1.setText(__("Duration"));
         ShowDurationP1.setActionCommand("3");
+        ShowDurationP1.setName("SCD"); // NOI18N
         ShowDurationP1.addActionListener(formListener);
         ShowColP1.add(ShowDurationP1);
 
         ShowLayerP1.setText(__("Layer"));
         ShowLayerP1.setActionCommand("4");
+        ShowLayerP1.setName("SCL"); // NOI18N
         ShowLayerP1.addActionListener(formListener);
         ShowColP1.add(ShowLayerP1);
 
         ShowStyleP1.setText(__("Style"));
         ShowStyleP1.setActionCommand("5");
+        ShowStyleP1.setName("SCY"); // NOI18N
         ShowStyleP1.addActionListener(formListener);
         ShowColP1.add(ShowStyleP1);
 
         ShowCPMP1.setText(__("Characters per minute"));
         ShowCPMP1.setActionCommand("6");
+        ShowCPMP1.setName("SCM"); // NOI18N
         ShowCPMP1.addActionListener(formListener);
         ShowColP1.add(ShowCPMP1);
 
@@ -1179,6 +1186,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             else if (evt.getSource() == ShowEndP) {
                 JubFrame.this.showTableColumn(evt);
             }
+            else if (evt.getSource() == ShowDurationP) {
+                JubFrame.this.showTableColumn(evt);
+            }
             else if (evt.getSource() == ShowLayerP) {
                 JubFrame.this.showTableColumn(evt);
             }
@@ -1284,6 +1294,27 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             else if (evt.getSource() == CyanMEM) {
                 JubFrame.this.CyanMEMActionPerformed(evt);
             }
+            else if (evt.getSource() == ShowNumberP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowStartP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowEndP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowDurationP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowLayerP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowStyleP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
+            else if (evt.getSource() == ShowCPMP1) {
+                JubFrame.this.showTableColumn(evt);
+            }
             else if (evt.getSource() == UndoEM) {
                 JubFrame.this.UndoEMActionPerformed(evt);
             }
@@ -1322,30 +1353,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == ShowDurationP) {
-                JubFrame.this.showTableColumn(evt);
-            }
-            else if (evt.getSource() == ShowNumberP1) {
-                JubFrame.this.showTableColumn(evt);
-            }
-            else if (evt.getSource() == ShowStartP1) {
-                JubFrame.this.showTableColumn(evt);
-            }
-            else if (evt.getSource() == ShowEndP1) {
-                JubFrame.this.showTableColumn(evt);
-            }
-            else if (evt.getSource() == ShowDurationP1) {
-                JubFrame.this.showTableColumn(evt);
-            }
-            else if (evt.getSource() == ShowLayerP1) {
-                JubFrame.this.showTableColumn(evt);
-            }
-            else if (evt.getSource() == ShowStyleP1) {
-                JubFrame.this.showTableColumn(evt);
-            }
-            else if (evt.getSource() == ShowCPMP1) {
-                JubFrame.this.showTableColumn(evt);
             }
         }
 
