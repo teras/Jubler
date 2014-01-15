@@ -97,8 +97,12 @@ public class JSubFileDialog extends javax.swing.JDialog {
 
             JFileFilter flt = (JFileFilter) chooser.getFileFilter();
             if (flt != null) {
-                SubFormat format_handler = flt.getFormatHandler().newInstance();
-                sfile.setFormat(format_handler);
+                SubFormat format_handler = flt.getFormatHandler();
+                if (format_handler != null) {
+                    format_handler = format_handler.newInstance();
+                    if (format_handler != null)
+                        sfile.setFormat(format_handler);
+                }
             }
             jopt.applyOptions(sfile);
             if (subs != null) // Only in Save
@@ -249,7 +253,7 @@ public class JSubFileDialog extends javax.swing.JDialog {
                 SubFormat fmt = found_filter.getFormatHandler();
                 boolean is_found = ((format == fmt)
                         || (format.getDescription() + format.getExtension()).equals(
-                        (fmt.getDescription() + fmt.getExtension())));
+                                (fmt.getDescription() + fmt.getExtension())));
                 if (is_found)
                     break;//end if (is_found)
             }//end for (FileFilter flt : filter_list)

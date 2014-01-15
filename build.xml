@@ -241,12 +241,11 @@
 
 	<!-- Windows Installer -->
 	<target name="app-windows" depends="-nodistbased,core">
-        <taskdef name="launch4j" onerror="report" classpath="/opt/local/share/launch4j/launch4j.jar:/opt/local/share/launch4j/lib/xstream.jar:/opt/multi/launch4j/launch4j.jar:/opt/multi/launch4j/lib/xstream.jar" classname="net.sf.launch4j.ant.Launch4jTask"/>
+        <taskdef name="launch4j" onerror="report" classpath="/opt/local/share/launch4j/launch4j.jar:/opt/local/share/launch4j/lib/xstream.jar:/usr/local/opt/launch4j/libexec/launch4j.jar:/usr/local/opt/launch4j/libexec/lib/xstream.jar" classname="net.sf.launch4j.ant.Launch4jTask"/>
 		<launch4j>
 			<config outfile="dist/Jubler.exe"
 				icon="resources/installers/windows/frame.ico"
 				headerType="gui"
-				customProcName="true"
 				stayAlive="true"
 				jar="dist/Jubler.jar"
 				errTitle="Unable to find Java environmet"
