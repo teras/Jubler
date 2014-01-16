@@ -1675,7 +1675,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         UndoEntry u = null;
         String older, newer;
 
-        SubEntry[] selected = getSelectedSubs();
         for (int i = subs.size() - 1; i >= 0; i--) {
             older = subs.elementAt(i).getText();
             newer = older.trim();

@@ -128,7 +128,9 @@
 
 
 	<!-- Mac OS X installer -->
-    <target name="macosx-new" depends="app-mac-new,-macosx"/>
+    <target name="macosx-new" depends="app-mac-new,-macosx">
+        <move file="Jubler-${version}.dmg" tofile="Jubler-${version}_jdk7.dmg"/>
+    </target>
     <target name="macosx-old" depends="app-mac-old,-macosx"/>
 
 	<target name="-macosx">
