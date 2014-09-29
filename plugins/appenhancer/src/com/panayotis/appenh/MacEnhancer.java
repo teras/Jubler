@@ -1,13 +1,13 @@
 /*
  *
- * This file is part of Jubler.
+ * This file is part of ApplicationEnhancer.
  *
- * Jubler is free software; you can redistribute it and/or modify
+ * ApplicationEnhancer is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
  *
  *
- * Jubler is distributed in the hope that it will be useful,
+ * ApplicationEnhancer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -17,8 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
-package com.panayotis.jubler.appenh;
+package com.panayotis.appenh;
 
 import java.io.File;
 import java.lang.reflect.InvocationHandler;
@@ -26,6 +25,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
+@SuppressWarnings("UseSpecificCatch")
 public class MacEnhancer implements Enhancer {
 
     private static final Class appClass;
@@ -79,6 +79,7 @@ public class MacEnhancer implements Enhancer {
         }
     }
 
+    @Override
     public void registerQuit(final Runnable callback) {
         try {
             if (appInstance != null) {
@@ -99,6 +100,7 @@ public class MacEnhancer implements Enhancer {
         }
     }
 
+    @Override
     public void registerFileOpen(final FileOpenRunnable callback) {
         try {
             if (appInstance != null) {
@@ -140,7 +142,9 @@ public class MacEnhancer implements Enhancer {
     public void setDefaultLookAndFeel() {
     }
 
+    @Override
     public boolean providesSystemMenus() {
         return true;
     }
+
 }
