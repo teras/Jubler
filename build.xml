@@ -169,7 +169,7 @@
     <target name="app-mac-old" depends="-app-prepare">
          <taskdef name="jarbundler"
             onerror="fail"
-            classpath="/opt/local/share/java/jarbundler.jar"
+            classpath="resources/installers/macosx/jarbundler.jar"
             classname="net.sourceforge.jarbundler.JarBundler" />
         <jarbundler
             dir="dist"
