@@ -17,13 +17,12 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler;
 
-import com.panayotis.jubler.appenh.Enhancer;
+import com.panayotis.appenh.Enhancer;
 import static com.panayotis.jubler.i18n.I18N.__;
 
-import com.panayotis.jubler.appenh.EnhancerManager;
+import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
