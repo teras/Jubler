@@ -200,6 +200,7 @@
     </target>
 
 	<target name="app-mac-new" depends="-app-prepare">
+        <!-- https://bitbucket.org/infinitekind/appbundler -->
         <taskdef name="appbundler"
             onerror="fail"
             classpath="resources/installers/macosx/appbundler-1.0ea.jar"
@@ -230,6 +231,7 @@
         </exec>
         <move file="dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib2" tofile="dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib"/>
 	</target>
+
 
 	<!-- Generic installer -->
 	<target name="generic" depends="-nodistbased,-release,font,-izpack-task">
