@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<shortcuts>
+  <programGroup defaultName="Multimedia/Jubler" location="applications"/>
+ 
+   <shortcut
+     name="Jubler subtitle editor"
+     programGroup="yes"
+     desktop="yes"
+     applications="no"
+     startMenu="no"
+     startup="no"
+	 iconFile="$INSTALL_PATH/lib/jubler.png"
+	 target="$INSTALL_PATH/jubler"
+     type="Application"
+     encoding="UTF-8"
+     terminal="false"
+     KdeSubstUID="false">
+   </shortcut>
+
+   <shortcut
+     name="Jubler Uninstaller"
+     programGroup="yes"
+     desktop="no"
+     applications="no"
+     startMenu="no"
+     startup="no"
+     target="$JAVA_HOME/bin/java"
+     commandLine="-jar &quot;$INSTALL_PATH/Uninstaller/uninstaller.jar&quot;"
+     iconFile="trashcan_full"
+     iconIndex="0"
+     type="Application"
+     encoding="UTF-8"
+     terminal="false"
+     description="Jubler uninstaller">
+   </shortcut>
+
+</shortcuts>
