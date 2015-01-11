@@ -128,10 +128,10 @@
 
 
 	<!-- Mac OS X installer -->
-    <target name="macosx-new" depends="app-mac-new,-macosx">
-        <move file="Jubler-${version}.dmg" tofile="Jubler-${version}_jdk7.dmg"/>
+    <target name="macosx" depends="app-mac,-macosx"/>
+    <target name="macosx-old" depends="app-mac-old,-macosx">
+        <move file="Jubler-${version}.dmg" tofile="Jubler-${version}_jdk6.dmg"/>
     </target>
-    <target name="macosx-old" depends="app-mac-old,-macosx"/>
 
 	<target name="-macosx">
 		<delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
@@ -199,7 +199,7 @@
         <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Resources/Java" />
     </target>
 
-	<target name="app-mac-new" depends="-app-prepare">
+	<target name="app-mac" depends="-app-prepare">
         <taskdef name="appbundler"
             onerror="fail"
             classpath="resources/installers/macosx/appbundler-1.0ea.jar"
@@ -212,18 +212,17 @@
 			identifier="com.panayotis.jubler"
 			icon="resources/installers/macosx/jubler.icns"
             shortversion="${version}"
-            copyright="© Panayotis Katsaloulis"
+            copyright="Panayotis Katsaloulis"
             applicationCategory="public.app-category.video"
 			mainclassname="Jubler" >
             <classpath dir="dist">
                 <include name="Jubler.jar"/>
             </classpath>
             <bundledocument extensions="srt,sub,ass,ssa,stl,son,txt,xml"
-                icon="subtitle.icns"
+                icon="resources/installers/macosx/subtitle.icns"
                 name="Subtitle Document"
                 role="editor" />
         </appbundler>
-        <copy file="resources/installers/macosx/subtitle.icns" todir="dist/Jubler.app/Contents/Resources"/>
         <appcopy libs="resources/libs/ffmpeg/darwin/libffdecode.jnilib" dest="dist/Jubler.app/Contents/Java" />
         <exec executable="lipo" failonerror="true">
             <arg line="-remove ppc dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib -output dist/Jubler.app/Contents/Java/lib/libffdecode.jnilib2"/>
