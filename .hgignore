@@ -8,3 +8,4 @@ build/
 dist/
 ^_support/
 nbproject/private/
+codesign.properties
