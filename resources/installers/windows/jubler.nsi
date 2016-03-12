@@ -137,18 +137,18 @@ SectionEnd
 
 ; JRE Installation
 ;--------------------------------
-!define JRE_VERSION "1.7"
-!define JRE_URL http://jubler.googlecode.com/files/java_${WINBITS}_7u21.exe
+!define JRE_VERSION "1.8"
+!define JRE_URL https://sourceforge.net/projects/jubler/files/Helper%20Applications/jre-8u73-windows-i586-iftw.exe/download
 Section "Java Runtime Environment" SecJRE
 
   ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
   StrCmp $2 ${JRE_VERSION} done	; We have already the correct version of JRE
 
-  StrCpy $2 "$TEMP\Java Runtime Environment 7.exe"
+  StrCpy $2 "$TEMP\Java Runtime Environment.exe"
   nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
   Pop $R0 ;Get the return value
   StrCmp $R0 "success" done
-    MessageBox MB_OK|MB_ICONEXCLAMATION "Download failed ($R0).$\nRemember to manually download Java 7 before launching Jubler."
+    MessageBox MB_OK|MB_ICONEXCLAMATION "Download failed ($R0).$\nRemember to manually download Java before launching Jubler."
     Quit
   done:
   HideWindow
