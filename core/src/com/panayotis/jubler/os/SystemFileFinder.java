@@ -87,13 +87,12 @@ public class SystemFileFinder {
                 path = System.getProperty("user.dir") + File.separator + path;
                 file = new File(path);
             }
-            if (path.endsWith(basename + ".jar") || path.endsWith(basename + ".exe")) {
-                isJarBased = true;
-                return file.getParentFile().getAbsolutePath();
-            }
             if (new File(path + File.separator + baseclass.replace('.', File.separatorChar) + ".class").exists()) {
                 isJarBased = false;
                 return file.getAbsolutePath();
+            } else {
+                isJarBased = true;
+                return file.getParentFile().getAbsolutePath();                
             }
         }
         return null;
