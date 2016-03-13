@@ -185,6 +185,9 @@ LangString DESC_SecDesktop ${LANG_ENGLISH} "Add Desktop Icon."
 Section "Uninstall"
   
   ; Remove registry keys
+   ${if} ${WINBITS} == 64
+        SetRegView 64
+   ${endif}
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler"
   DeleteRegKey HKLM "Software\Jubler"
 
