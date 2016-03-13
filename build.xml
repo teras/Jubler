@@ -428,12 +428,12 @@
         <delete dir="dist"/>
         <echo message="TAR full sources"/>
         <exec executable="tar" failonerror="true">
-            <arg line="jcf ../Jubler-fullsource-${version}.tar.bz2 --exclude .hg* --exclude resources/libs/ffmpeg --exclude resources/ffmpeg/libraries --exclude resources/system/original-icons --exclude nbproject/private --transform s/^./Jubler-${version}/g ."/>
+            <arg line="jcf ../Jubler-fullsource-${version}.tar.bz2 --exclude .hg* --exclude codesign.properties --exclude resources/libs/ffmpeg --exclude resources/ffmpeg/libraries --exclude resources/system/original-icons --exclude nbproject/private --transform s/^./Jubler-${version}/g ."/>
         </exec>
         <delete file="resources/libs/jupidator/jupidator.jar"/>
         <echo message="TAR Jubler sources"/>
         <exec executable="tar" failonerror="true">
-            <arg line="jcf ../Jubler-source-${version}.tar.bz2 --exclude .hg* --exclude resources/libs/ffmpeg --exclude resources/ffmpeg/ffmpeg-0.*  --exclude resources/ffmpeg/libraries --exclude resources/ffmpeg/ffmpeg-libs --exclude resources/system/original-icons --exclude nbproject/private --transform s/^./Jubler-${version}/g ."/>
+            <arg line="jcf ../Jubler-source-${version}.tar.bz2 --exclude .hg* --exclude codesign.properties --exclude resources/libs/ffmpeg --exclude resources/ffmpeg/ffmpeg-0.*  --exclude resources/ffmpeg/libraries --exclude resources/ffmpeg/ffmpeg-libs --exclude resources/system/original-icons --exclude nbproject/private --transform s/^./Jubler-${version}/g ."/>
         </exec>
         <move file="../Jubler-fullsource-${version}.tar.bz2" todir="."/>
         <move file="../Jubler-source-${version}.tar.bz2" todir="."/>
