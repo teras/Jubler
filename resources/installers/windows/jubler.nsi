@@ -138,7 +138,7 @@ SectionEnd
 ; JRE Installation
 ;--------------------------------
 !define JRE_VERSION "1.8"
-!define JRE_URL https://sourceforge.net/projects/jubler/files/Helper%20Applications/jre-8u73-windows-i586-iftw.exe/download
+!define JRE_URL "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=116039"
 Section "Java Runtime Environment" SecJRE
 
   ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
