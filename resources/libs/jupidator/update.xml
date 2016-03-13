@@ -44,11 +44,10 @@
         <launcher exec="${APPHOME}\Jubler.exe"/>
     </architect>
 
-1322
     <version release="1322" version="5.1">
         <description>
             SubRip filter now better recognises broken subtitles. In OS X, only Oracle's JRE is supported and PPC support is dropped.
-        <description>
+        </description>
     </version>
 
     <version release="1300" version="5.0.6">
