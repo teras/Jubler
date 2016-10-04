@@ -19,10 +19,14 @@
  */
 package com.panayotis.appenh;
 
+import java.awt.Image;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 abstract class DefaultEnhancer implements Enhancer {
+
+    private Image frameImage;
 
     public boolean setNimbusLookAndFeel() {
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
@@ -73,5 +77,16 @@ abstract class DefaultEnhancer implements Enhancer {
     @Override
     public boolean providesSystemMenus() {
         return false;
+    }
+
+    @Override
+    public void setApplicationIcon(String iconResourceName) {
+        frameImage = EnhancerManager.getImage(iconResourceName);
+    }
+
+    @Override
+    public void updateFrameIcon(JFrame frame) {
+        if (frameImage != null)
+            frame.setIconImage(frameImage);
     }
 }

@@ -116,11 +116,11 @@ public class FileCommunicator {
             }
 
         } catch (UnsupportedEncodingException e) {
-            result = __("Encoding error. Use proper encoding (e.g. UTF-8).");
+            result = __("Encoding error.\nThe encoding you have selected is not supported. Please use a supported encoding (e.g. UTF-8).");
         } catch (UnmappableCharacterException e) {
-            result = __("Encoding error. Use proper encoding (e.g. UTF-8).");
+            result = __("Encoding error.\nCurrent subtitles contain a specific character which is not mappable with the selected encoding.\nPlease consider using a Unicode encoding instead (like UTF-8).");
         } catch (IOException e) {
-            result = __("Error while saving file {0}", outfile) + " : \n" + e.getClass().getName() + "\n" + e.getMessage();
+            result = __("Input/Ouput error while saving file {0}.", outfile) + " : \n" + e.getClass().getName() + "\n" + e.getMessage();
         }
         if (tempout != null && tempout.exists())
             tempout.delete();

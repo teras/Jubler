@@ -20,6 +20,7 @@
 package com.panayotis.appenh;
 
 import java.io.File;
+import javax.swing.JFrame;
 
 public interface Enhancer {
 
@@ -31,13 +32,17 @@ public interface Enhancer {
 
     public void registerAbout(Runnable callback);
 
-    public void requestAttention();
-
     public void registerQuit(Runnable callback);
 
     public void registerFileOpen(FileOpenRunnable callback);
 
+    public void requestAttention();
+
     public boolean providesSystemMenus();
+
+    public void setApplicationIcon(String iconResourceName);
+
+    public void updateFrameIcon(JFrame frame);
 
     public static interface FileOpenRunnable {
 

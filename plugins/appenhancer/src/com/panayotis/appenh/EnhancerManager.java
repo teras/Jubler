@@ -19,6 +19,12 @@
  */
 package com.panayotis.appenh;
 
+import java.awt.Image;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import javax.imageio.ImageIO;
+
 public class EnhancerManager {
 
     private final static Enhancer enhancer;
@@ -35,5 +41,17 @@ public class EnhancerManager {
 
     public static Enhancer getDefault() {
         return enhancer;
+    }
+
+    static Image getImage(String resource) {
+        try {
+            InputStream stream = EnhancerManager.class.getClassLoader().getResourceAsStream(resource);
+            if (stream == null)
+                stream = new URL(resource).openStream();
+            if (stream != null)
+                return ImageIO.read(stream);
+        } catch (IOException ex) {
+        }
+        return null;
     }
 }
