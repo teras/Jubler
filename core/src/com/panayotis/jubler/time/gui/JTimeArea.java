@@ -2,7 +2,7 @@
  * JTimeArea.java
  *
  * Created on 5 Ιούλιος 2005, 2:21 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify

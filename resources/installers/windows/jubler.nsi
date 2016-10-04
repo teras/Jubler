@@ -1,26 +1,16 @@
 ; jubler.nsi
 ;--------------------------------
 
-!include "MUI.nsh"
-
-function .onInit
-	${if} ${WINBITS} == 64
-		SetRegView 64
-		StrCpy $InstDir "$PROGRAMFILES64\Jubler"
-	${else}
-		StrCpy $InstDir "$PROGRAMFILES\Jubler"
-	${endif}
-functionEnd
-
+!include "MUI2.nsh"
 
 ; The name of the installer
 Name "Jubler subtitle editor"
 
 ; The file to write
-OutFile "Jubler-${VERSION}_${WINBITS}.exe"
+OutFile "Jubler-${VERSION}.exe"
 
 ; The default installation directory
-InstallDir ""
+InstallDir "$PROGRAMFILES64\Jubler"
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
@@ -92,15 +82,16 @@ Section "Jubler editor" SecJubler
   SetOutPath $InstDir\help
   File dist\help\*.*
 
+  SetRegView 64
   ; Write the installation path into the registry
   WriteRegStr HKLM "Software\Jubler" "Install_Dir" "$InstDir"
   
   ; Write the uninstall keys for Windows
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayName" "Jubler subtitle editor"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "UninstallString" '"$InstDir\uninstall.exe"'
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayIcon" '"$InstDir\lib\frame.ico"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "Publisher" "www.jubler.org"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayVersion" "${VERSION}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "DisplayIcon" '"$InstDir\lib\frame.ico"'
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "EstimatedSize" "10800"
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "NoModify" 1
   WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler" "NoRepair" 1
@@ -185,14 +176,13 @@ LangString DESC_SecDesktop ${LANG_ENGLISH} "Add Desktop Icon."
 Section "Uninstall"
   
   ; Remove registry keys
-   ${if} ${WINBITS} == 64
-        SetRegView 64
-   ${endif}
+  SetRegView 64
+
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Jubler"
   DeleteRegKey HKLM "Software\Jubler"
 
   ; Remove files and uninstaller
-  RMDir /R "$InstDir"
+  RMDir /R "$INSTDIR"
 
   ; Remove shortcuts, if any
   Delete "$SMPROGRAMS\Jubler\*.*"

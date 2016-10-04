@@ -33,8 +33,8 @@
         <delete file="ChangeLog.html"/>
         <echo message="" file="ChangeLog.html"/>
         <java fork="true" classname="com.panayotis.jupidator.helpers.Launcher" classpath="dist/lib/jupidator.jar">
-            <arg value="--create"/>
-            <arg value="file:///Users/teras/Works/Development/Java/Jubler/resources/libs/jupidator/update.xml"/>
+            <arg value="--changelog"/>
+            <arg value="file://${user.dir}/resources/libs/jupidator/update.xml"/>
             <arg value="ChangeLog.html"/>
         </java>
     </target>
