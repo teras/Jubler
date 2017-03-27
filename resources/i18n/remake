@@ -1,4 +1,5 @@
 #!/bin/sh
+PATH=$PATH:/usr/local/opt/gettext/bin
 
 ./maketemplate
 
