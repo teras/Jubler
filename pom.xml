@@ -7,7 +7,7 @@
     <groupId>com.panayotis.jubler</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1.cm</version>
+    <version>5.1.0.0</version>
     <name>Jubler</name>
     <modules>
         <module>modules/core</module>

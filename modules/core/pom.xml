@@ -6,8 +6,8 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>1.0.1.cm</version>
-        <relativePath>../pom.xml</relativePath>
+        <version>5.1.0.0</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>core</artifactId>
 </project>

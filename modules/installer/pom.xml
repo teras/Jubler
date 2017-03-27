@@ -6,16 +6,11 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>5.1</version>
+        <version>5.1.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
     <dependencies>
-<!--        <dependency>
-            <groupId>com.panayotis</groupId>
-            <artifactId>appenh</artifactId>
-            <version>0.1</version>
-        </dependency>-->
         <dependency>
             <groupId>com.panayotis.jubler</groupId>
             <artifactId>core</artifactId>
