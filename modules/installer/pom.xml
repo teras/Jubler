@@ -62,46 +62,122 @@
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>process-resources</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
                             <outputDirectory>target/jubler/lib</outputDirectory>
-                            <addParentPoms>true</addParentPoms>
-                            <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
                     <execution>
                         <id>copy</id>
-                        <phase>package</phase>
                         <goals>
                             <goal>copy</goal>
                         </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.panayotis.jubler</groupId>
+                                    <artifactId>coretheme</artifactId>
+                                    <version>5.1.0.0</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>target/jubler/themes</outputDirectory>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <artifactItems>
-                        <artifactItem>
-                            <groupId>com.panayotis.jubler</groupId>
-                            <artifactId>coretheme</artifactId>
-                            <version>5.1.0.0</version>
-                            <outputDirectory>target/jubler/themes</outputDirectory>
-                        </artifactItem>
-                    </artifactItems>
                     <overWriteReleases>false</overWriteReleases>
                     <overWriteSnapshots>true</overWriteSnapshots>
+                    <addParentPoms>true</addParentPoms>
                     <stripVersion>true</stripVersion>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
+    
+    <profiles>
+        <profile>
+            <id>dist-windows</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <configuration>
+                                    <target>
+                                        <echo>OK!!! ${basedir}</echo>
+                                        <copy file="../../resources/libs/ffmpeg/win/ffdecode_32.dll" todir="target/jubler/lib"/>
+                                        <copy file="../../resources/libs/ffmpeg/win/ffdecode_64.dll" todir="target/jubler/lib"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution> 
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dist-osx</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <configuration>
+                                    <target>
+                                        <copy file="../../resources/libs/ffmpeg/darwin/libffdecode.jnilib" todir="target/jubler/lib"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution> 
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dist-linux</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <configuration>
+                                    <target>
+                                        <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_32.so" todir="target/jubler/lib"/>
+                                        <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so" todir="target/jubler/lib"/>
+                                        <copy file="../../resources/installers/linux/jubler" todir="target/jubler"/>
+                                        <copy file="../../resources/installers/linux/jubler32" todir="target/jubler"/>
+                                        <chmod file="target/jubler/jubler" perm="a+x"/>
+                                        <chmod file="target/jubler/jubler32" perm="a+x"/>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution> 
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
