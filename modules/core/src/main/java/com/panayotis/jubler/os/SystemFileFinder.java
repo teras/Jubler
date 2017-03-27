@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.JubFrame;
@@ -67,7 +66,7 @@ public class SystemFileFinder {
     }
 
     private static boolean loadLibraryImpl(String name) {
-        File libfile = findFile("lib" + File.separator + SystemDependent.mapLibraryName(name));
+        File libfile = findFile(SystemDependent.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());
@@ -92,7 +91,7 @@ public class SystemFileFinder {
                 return file.getAbsolutePath();
             } else {
                 isJarBased = true;
-                return file.getParentFile().getAbsolutePath();                
+                return file.getParentFile().getAbsolutePath();
             }
         }
         return null;
