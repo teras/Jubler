@@ -19,7 +19,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.os.DynamicClassLoader;
@@ -47,9 +46,9 @@ public class PluginManager {
         /* Add plugins path */
         cl = new DynamicClassLoader();
         if (SystemFileFinder.isJarBased())
-            cl.addPaths(new String[]{"lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
+            cl.addPaths(new String[]{SystemFileFinder.AppPath, SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
         else
-            cl.addPaths(new String[]{"../../../dist/lib", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
+            cl.addPaths(new String[]{"../../../installer/target/jubler/lib/", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
         cl.setClassPath();
 
         /* Find plugins and their plugin items */

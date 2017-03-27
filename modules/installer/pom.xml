@@ -51,56 +51,6 @@
             <artifactId>zemberek</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>coretheme</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>cs</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>fr</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>de</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>el</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>es</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>it</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>nl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>pt</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>tr</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -117,12 +67,39 @@
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${dir.javaLibs}</outputDirectory>
+                            <outputDirectory>target/jubler/lib</outputDirectory>
                             <addParentPoms>true</addParentPoms>
                             <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>copy</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactItems>
+                        <artifactItem>
+                            <groupId>com.panayotis.jubler</groupId>
+                            <artifactId>coretheme</artifactId>
+                            <version>5.1.0.0</version>
+                            <outputDirectory>target/jubler/themes</outputDirectory>
+                        </artifactItem>
+                    </artifactItems>
+                    <overWriteReleases>false</overWriteReleases>
+                    <overWriteSnapshots>true</overWriteSnapshots>
+                    <stripVersion>true</stripVersion>
+                </configuration>
             </plugin>
         </plugins>
     </build>

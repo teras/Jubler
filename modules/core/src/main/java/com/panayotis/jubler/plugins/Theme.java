@@ -42,7 +42,7 @@ public class Theme {
         ZipFile request = null;
         try {
             if (SystemFileFinder.isJarBased())
-                request = new ZipFile(new File(SystemFileFinder.AppPath + File.separator + THEME_NAME + ".jar"));
+                request = new ZipFile(new File(SystemFileFinder.AppPath + File.separator + ".." + File.separator + "themes" + File.separator + THEME_NAME + ".jar"));
             else
                 request = new ZipFile(new File("../coretheme/target/" + THEME_NAME + "-" + JAbout.getCurrentLongversion() + ".jar"));
         } catch (IOException ex) {
