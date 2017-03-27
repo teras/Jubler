@@ -8,7 +8,7 @@
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
     <version>5.1.0.0</version>
-    <name>Jubler</name>
+    <name>Jubler Project</name>
     <modules>
         <module>modules/core</module>
         <module>modules/appenhancer</module>

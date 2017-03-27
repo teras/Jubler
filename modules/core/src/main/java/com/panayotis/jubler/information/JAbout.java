@@ -20,18 +20,15 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.information;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.SystemDependent;
-import java.awt.Color;
 import java.io.IOException;
 import java.util.Properties;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  *
@@ -65,17 +62,20 @@ public class JAbout extends javax.swing.JPanel {
         __("Turkish")
     };
     private final static String version;
+    private final static String longversion;
     private final static String release;
     private final static boolean distributionbased;
 
     static {
         String v = "0.0.0.0";
+        String l = v;
         String r = "-1";
         String d = "false";
         try {
             Properties current = new Properties();
             current.load(JAbout.class.getResource("/com/panayotis/jubler/information/version.prop").openStream());
             v = current.getProperty("version", v);
+            l = current.getProperty("longversion", v);
             r = current.getProperty("release", r);
             d = current.getProperty("packaged", d).toLowerCase();
         } catch (IOException ex) {
@@ -83,6 +83,7 @@ public class JAbout extends javax.swing.JPanel {
         }
         version = v;
         release = r;
+        longversion = l;
         distributionbased = "true".startsWith(d) || "yes".startsWith(d) || d.equals("1");
     }
 
@@ -96,8 +97,8 @@ public class JAbout extends javax.swing.JPanel {
         LicenceT.setSelectionStart(0);
         LicenceT.setSelectionEnd(0);
 
-        String abouttext =
-                "\n" + __("Subtitle Editor for Java") + "\n\n"
+        String abouttext
+                = "\n" + __("Subtitle Editor for Java") + "\n\n"
                 + __("Version") + " " + getCurrentVersion() + "\n\n"
                 + "\u00a9 2005-2009 Panayotis Katsaloulis" + "\n"
                 + "\u03a0\u03b1\u03bd\u03b1\u03b3\u03b9\u03ce\u03c4\u03b7\u03c2 \u039a\u03b1\u03c4\u03c3\u03b1\u03bb\u03bf\u03cd\u03bb\u03b7\u03c2" + "\n\n"
@@ -108,7 +109,6 @@ public class JAbout extends javax.swing.JPanel {
         set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
         InfoT.setText(abouttext);
         InfoT.getStyledDocument().setParagraphAttributes(0, abouttext.length(), set, false);
-
 
         StringBuilder thanks = new StringBuilder();
         thanks.append(__("Special thanks")).append(":\n").append(__("{0} plugin", "ffmpeg"));
@@ -145,6 +145,10 @@ public class JAbout extends javax.swing.JPanel {
 
     public static String getCurrentVersion() {
         return version;
+    }
+
+    public static String getCurrentLongversion() {
+        return longversion;
     }
 
     public static String getCurrentRelease() {
