@@ -4,3 +4,10 @@ dist/
 ^_support/
 nbproject/private/
 codesign.properties
+/core/nbproject/private/
+/plugins/aspell/nbproject/private/
+/plugins/autoupdate/nbproject/private/
+/plugins/basetextsubs/nbproject/private/
+/plugins/coretools/nbproject/private/
+/plugins/mplayer/nbproject/private/
+/plugins/zemberek/nbproject/private/
