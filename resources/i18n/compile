@@ -2,10 +2,7 @@
 
 DEST=../../dist/i18n
 
-MSGFMT=msgfmt
-if [ -f "/usr/local/opt/gettext/bin/msgfmt" ] ; then
-    MSGFMT=/usr/local/opt/gettext/bin/msgfmt
-fi
+PATH=$PATH:/usr/local/opt/gettext/bin
 
 rm -rf $DEST
 mkdir -p $DEST
@@ -13,7 +10,7 @@ for i in *.po ; do
 	LNG=`echo $i | sed -e 's/\.po$//g'`
 	echo Creating class for language \"$LNG\"
 	rm -rf com
-	JAVAC=javac ${MSGFMT} -d . --java2 --resource=com.panayotis.jubler.i18n.Messages_$LNG $i
+	JAVAC=javac msgfmt -d . --java2 --resource=com.panayotis.jubler.i18n.Messages_$LNG $i
 	if [ $? != 0 ] ; then exit 1; fi
 	jar cf $DEST/$LNG.jar com
 	rm -rf com

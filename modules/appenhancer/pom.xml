@@ -9,12 +9,17 @@
         <version>1.0.1.cm</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-    <artifactId>autoupdate</artifactId>
+    <artifactId>appenhancer</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.panayotis.jubler</groupId>
             <artifactId>core</artifactId>
             <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.panayotis</groupId>
+            <artifactId>appenh</artifactId>
+            <version>0.1</version>
         </dependency>
     </dependencies>
 </project>

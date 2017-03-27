@@ -10,17 +10,18 @@
     <version>1.0.1.cm</version>
     <name>Jubler</name>
     <modules>
-        <module>core</module>
-        <module>plugins/appenhancer</module>
-        <module>plugins/aspell</module>
-        <module>plugins/autoupdate</module>
-        <module>plugins/basetextsubs</module>
-        <module>plugins/coretools</module>
-        <module>plugins/mplayer</module>
-        <module>plugins/zemberek</module>
-        <module>plugins/coretheme</module>
+        <module>modules/core</module>
+        <module>modules/appenhancer</module>
+        <module>modules/aspell</module>
+        <module>modules/autoupdate</module>
+        <module>modules/basetextsubs</module>
+        <module>modules/coretools</module>
+        <module>modules/mplayer</module>
+        <module>modules/zemberek</module>
+        <module>modules/coretheme</module>
+        <module>modules/installer</module>
     </modules>
-
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
