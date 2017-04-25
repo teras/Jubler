@@ -20,8 +20,9 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
+
+import static com.panayotis.jubler.options.Options.*;
 
 /**
  *
@@ -36,9 +37,6 @@ public class SubAttribs {
     private final int maxchars;
     private final int maxcolor;
     private final boolean isMaxCPS;
-    private static final int DEFAULT_MAXCOLOR = 1;
-    private static final int DEFAULT_MAXCHARS = 40;
-    private static final boolean DEFAULT_ISMAXCPS = false;
 
     /**
      * Creates a new instance of SubAttribs

@@ -20,13 +20,13 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.information;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
@@ -36,6 +36,8 @@ import java.awt.BorderLayout;
 import javax.swing.JComboBox;
 
 import javax.swing.JDialog;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -49,6 +51,7 @@ public class JInformation extends JDialog {
 
     /**
      * Creates new form JProperties
+     *
      * @param parent
      */
     public JInformation(JubFrame parent) {
@@ -83,6 +86,12 @@ public class JInformation extends JDialog {
         MaxColC.setSelectedIndex(attr.getMaxColor() - 1);
         MaxCharsS.setValue(attr.getMaxCharacters());
         CPType.setSelectedIndex(attr.isMaxCPS() ? 1 : 0);
+
+        MaxCharsS.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                saveMaxCharsValue();
+            }
+        });
 
         pack();
         setLocationRelativeTo(null);
@@ -298,6 +307,11 @@ public class JInformation extends JDialog {
         jPanel13.add(MaxColL, java.awt.BorderLayout.WEST);
 
         MaxColC.setModel(new javax.swing.DefaultComboBoxModel(SubEntry.MarkNames));
+        MaxColC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MaxColCActionPerformed(evt);
+            }
+        });
         jPanel13.add(MaxColC, java.awt.BorderLayout.CENTER);
 
         jPanel11.add(jPanel13, java.awt.BorderLayout.WEST);
@@ -322,6 +336,12 @@ public class JInformation extends JDialog {
 
         jPanel14.setOpaque(false);
         jPanel14.setLayout(new java.awt.BorderLayout());
+
+        CPType.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CPTypeActionPerformed(evt);
+            }
+        });
         jPanel14.add(CPType, java.awt.BorderLayout.CENTER);
 
         MaxCharsL.setText(__("Maximum number of characters:"));
@@ -376,10 +396,22 @@ public class JInformation extends JDialog {
         setVisible(false);
     }//GEN-LAST:event_OKBActionPerformed
 
+    private void MaxColCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxColCActionPerformed
+        Options.saveDefaultMaxColor(MaxColC.getSelectedIndex() + 1);
+    }//GEN-LAST:event_MaxColCActionPerformed
+
+    private void CPTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CPTypeActionPerformed
+        Options.saveDefaultIsMaxCPS(CPType.getSelectedIndex() == 1);
+    }//GEN-LAST:event_CPTypeActionPerformed
+
     public SubAttribs getAttribs() {
         return new SubAttribs(TitleT.getText(), AuthorT.getText(), SourceT.getText(), CommentsT.getText(),
                 MaxInfUserB.isSelected() ? MaxCharsS.getValue() : -MaxCharsS.getValue(),
                 MaxColC.getSelectedIndex() + 1, CPType.getSelectedIndex() == 1);
+    }
+
+    private void saveMaxCharsValue() {
+        Options.saveDefaultMaxChars(MaxInfUserB.isSelected() ? MaxCharsS.getValue() : -MaxCharsS.getValue());
     }
 
     private void updateMaxCharsWidgets() {

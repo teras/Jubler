@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.options.gui.TabPage;
@@ -33,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Stack;
+import java.util.prefs.Preferences;
 
 /**
  *
@@ -44,6 +44,20 @@ public class Options {
     private final static int MAX_RECENTS = 10;
     private final static Properties opts;
     private final static String preffile;
+    private final static Preferences prefs = Preferences.userNodeForPackage(Options.class);
+
+    public static final int DEFAULT_MAXCOLOR;
+    private static final String DEFAULT_MAXCOLOR_TAG = "maxcolor";
+    public static final int DEFAULT_MAXCHARS;
+    private static final String DEFAULT_MAXCHARS_TAG = "maxchars";
+    public static final boolean DEFAULT_ISMAXCPS;
+    private static final String DEFAULT_ISMAXCPS_TAG = "ismaxcps";
+
+    static {
+        DEFAULT_MAXCOLOR = prefs.getInt(DEFAULT_MAXCOLOR_TAG, 1);
+        DEFAULT_MAXCHARS = prefs.getInt(DEFAULT_MAXCHARS_TAG, 40);
+        DEFAULT_ISMAXCPS = prefs.getBoolean(DEFAULT_ISMAXCPS_TAG, false);
+    }
 
     static {
         opts = new Properties();
@@ -137,5 +151,17 @@ public class Options {
             } catch (InstantiationException er) {
             }
         return files;
+    }
+
+    public static void saveDefaultMaxColor(int newcolor) {
+        prefs.putInt(DEFAULT_MAXCOLOR_TAG, newcolor);
+    }
+
+    public static void saveDefaultMaxChars(int newmaxchars) {
+        prefs.putInt(DEFAULT_MAXCHARS_TAG, newmaxchars);
+    }
+
+    public static void saveDefaultIsMaxCPS(boolean ismaxcps) {
+        prefs.putBoolean(DEFAULT_ISMAXCPS_TAG, ismaxcps);
     }
 }
