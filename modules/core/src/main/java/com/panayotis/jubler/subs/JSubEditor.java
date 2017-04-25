@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.os.JIDialog;
@@ -109,6 +108,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         MetricsB.setVisible(false);
 
         sedit = new JStyleEditor(parent);
+        ErrorL.setVisible(false);
         setEnabled(false);
     }
 
@@ -152,7 +152,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         if (row < 0)
             return;
         parent.keepUndo(entry);
-
 
         tstart = SubStart.getTimeValue().toSeconds();
         tfinish = SubFinish.getTimeValue().toSeconds();
@@ -387,6 +386,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         NewlineL = new javax.swing.JLabel();
         CharsL = new javax.swing.JLabel();
         LongestL = new javax.swing.JLabel();
+        ErrorL = new javax.swing.JLabel();
         ProgressPanel = new javax.swing.JPanel();
         progressLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
@@ -654,6 +654,11 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         LongestL.setIconTextGap(0);
         InfoP.add(LongestL);
 
+        ErrorL.setForeground(java.awt.Color.red);
+        ErrorL.setText(" *!* ");
+        ErrorL.setToolTipText(__("Subtitle length has issues"));
+        InfoP.add(ErrorL);
+
         ProgressPanel.setPreferredSize(new java.awt.Dimension(300, 21));
         ProgressPanel.setLayout(new java.awt.BorderLayout());
 
@@ -834,6 +839,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public javax.swing.JButton DetachB;
     private javax.swing.JPanel DetachP;
     private javax.swing.JButton EditB;
+    public javax.swing.JLabel ErrorL;
     private javax.swing.JToggleButton FontB;
     public javax.swing.JPanel InfoP;
     private javax.swing.JLabel L1;

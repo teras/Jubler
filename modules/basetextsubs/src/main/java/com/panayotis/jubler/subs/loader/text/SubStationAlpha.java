@@ -200,7 +200,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
         header.append("[Script Info]\n");
 
         SubAttribs attr = subs.getAttribs();
-        String com = attr.getComments();
+        String com = attr.comments;
         if (!com.trim().equals("")) {
             com = com.replace("\n", "\n; ");
             header.append("; ");
@@ -208,9 +208,9 @@ public class SubStationAlpha extends StyledTextSubFormat {
             header.append('\n');
         }
 
-        header.append("Title: ").append(attr.getTitle());
-        header.append("\nOriginal Script: ").append(attr.getAuthor());
-        header.append("\nUpdate Details: ").append(attr.getSource());
+        header.append("Title: ").append(attr.title);
+        header.append("\nOriginal Script: ").append(attr.author);
+        header.append("\nUpdate Details: ").append(attr.source);
         header.append("\nScriptType: v4.00").append(getExtraVersion());
         header.append("\nCollisions: Normal\n");
 

@@ -20,25 +20,33 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 /**
  *
  * @author teras
  */
-public class TotalSubMetrics extends SubMetrics {
+public class TotalSubMetrics {
 
+    public int maxlength = 0;
+    public int maxlines = 0;
+    public int maxlinelength = 0;
+    public float maxcps = 0;
+    public float mincps = 0;
     public int totallength = 0;
     public int totallines = 0;
 
-    public TotalSubMetrics() {
-        super();
-    }
-
-    @Override
     public void updateToMaxValues(SubMetrics m) {
-        super.updateToMaxValues(m);
+        if (maxlength < m.length)
+            maxlength = m.length;
+        if (maxlines < m.lines)
+            maxlines = m.lines;
+        if (maxlinelength < m.linelength)
+            maxlinelength = m.linelength;
+        if (maxcps < m.cps)
+            maxcps = m.cps;
+        if (mincps == 0 || mincps > m.cps)
+            mincps = m.cps;
         totallength += m.length;
         totallines += m.lines;
     }

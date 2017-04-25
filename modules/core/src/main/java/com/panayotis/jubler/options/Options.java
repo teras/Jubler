@@ -46,17 +46,32 @@ public class Options {
     private final static String preffile;
     private final static Preferences prefs = Preferences.userNodeForPackage(Options.class);
 
-    public static final int DEFAULT_MAXCOLOR;
-    private static final String DEFAULT_MAXCOLOR_TAG = "maxcolor";
-    public static final int DEFAULT_MAXCHARS;
-    private static final String DEFAULT_MAXCHARS_TAG = "maxchars";
-    public static final boolean DEFAULT_ISMAXCPS;
-    private static final String DEFAULT_ISMAXCPS_TAG = "ismaxcps";
+    private static int errorColor;
+    private static final String ERRORCOLOR_TAG = "errorcolor";
+    private static boolean spaceChars;
+    private static final String SPACECHARS_TAG = "spaceaschars";
+    private static int maxLines;
+    private static final String MAXLINES_TAG = "maxline";
+    private static int maxSubLength;
+    private static final String MAXSUBLENGTH_TAG = "maxsublength";
+    private static int maxLineLength;
+    private static final String MAXLINELENGTH_TAG = "maxlinelength";
+    private static int maxCPS;
+    private static final String MAXCPS_TAG = "maxcps";
+    private static int maxDuration;
+    private static final String MAXDURATION_TAG = "maxduration";
+    private static int minDuration;
+    private static final String MINDURATION_TAG = "minduration";
 
     static {
-        DEFAULT_MAXCOLOR = prefs.getInt(DEFAULT_MAXCOLOR_TAG, 1);
-        DEFAULT_MAXCHARS = prefs.getInt(DEFAULT_MAXCHARS_TAG, 40);
-        DEFAULT_ISMAXCPS = prefs.getBoolean(DEFAULT_ISMAXCPS_TAG, false);
+        errorColor = prefs.getInt(ERRORCOLOR_TAG, 1);
+        spaceChars = prefs.getBoolean(SPACECHARS_TAG, false);
+        maxLines = prefs.getInt(MAXLINES_TAG, 2);
+        maxSubLength = prefs.getInt(MAXSUBLENGTH_TAG, 84);
+        maxLineLength = prefs.getInt(MAXLINELENGTH_TAG, 42);
+        maxCPS = prefs.getInt(MAXCPS_TAG, 21);
+        maxDuration = prefs.getInt(MAXDURATION_TAG, 7);
+        minDuration = prefs.getInt(MINDURATION_TAG, 1);
     }
 
     static {
@@ -153,15 +168,68 @@ public class Options {
         return files;
     }
 
-    public static void saveDefaultMaxColor(int newcolor) {
-        prefs.putInt(DEFAULT_MAXCOLOR_TAG, newcolor);
+    public static void setErrorColor(int newcolor) {
+        prefs.putInt(ERRORCOLOR_TAG, errorColor = newcolor);
     }
 
-    public static void saveDefaultMaxChars(int newmaxchars) {
-        prefs.putInt(DEFAULT_MAXCHARS_TAG, newmaxchars);
+    public static int getErrorColor() {
+        return errorColor;
     }
 
-    public static void saveDefaultIsMaxCPS(boolean ismaxcps) {
-        prefs.putBoolean(DEFAULT_ISMAXCPS_TAG, ismaxcps);
+    public static void setSpaceChars(boolean spaceAsChars) {
+        prefs.putBoolean(SPACECHARS_TAG, spaceChars = spaceAsChars);
     }
+
+    public static boolean isSpaceChars() {
+        return spaceChars;
+    }
+
+    public static void setMaxLines(int newmaxlines) {
+        prefs.putInt(MAXLINES_TAG, maxLines = newmaxlines);
+    }
+
+    public static int getMaxLines() {
+        return maxLines;
+    }
+
+    public static void setMaxSubLength(int maxsublength) {
+        prefs.putInt(MAXSUBLENGTH_TAG, maxSubLength = maxsublength);
+    }
+
+    public static int getMaxSubLength() {
+        return maxSubLength;
+    }
+
+    public static void setMaxLineLength(int maxlinelength) {
+        prefs.putInt(MAXLINELENGTH_TAG, maxLineLength = maxlinelength);
+    }
+
+    public static int getMaxLineLength() {
+        return maxLineLength;
+    }
+
+    public static void setMaxCPS(int maxcharssecond) {
+        prefs.putInt(MAXCPS_TAG, maxCPS = maxcharssecond);
+    }
+
+    public static int getMaxCPS() {
+        return maxCPS;
+    }
+
+    public static void setMaxDuration(int maxduration) {
+        prefs.putInt(MAXDURATION_TAG, maxDuration = maxduration);
+    }
+
+    public static int getMaxDuration() {
+        return maxDuration;
+    }
+
+    public static void setMinDuration(int minduration) {
+        prefs.putInt(MAXDURATION_TAG, minDuration = minduration);
+    }
+
+    public static int getMinDuration() {
+        return minDuration;
+    }
+
 }

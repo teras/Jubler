@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
@@ -209,7 +208,8 @@ public class Subtitles extends AbstractTableModel {
                 /* If we give priority to the new styles, ONLY THEN set the data to the new values */
                 if (priority_to_new_style)
                     styles.get(0).setValues(newstyle);
-            } else /* It doesn't exits, just append it */
+            } else
+                /* It doesn't exits, just append it */
                 styles.add(newstyle);
         }
     }
@@ -336,12 +336,12 @@ public class Subtitles extends AbstractTableModel {
     public SubAttribs getAttribs() {
         return attribs;
     }
-    /* Not only update attributes, but also mark all the entries with long texts */
 
+    /* Not only update attributes, but also mark all the entries with long texts */
     public void setAttribs(SubAttribs newattr) {
         attribs = newattr;
         for (SubEntry entry : sublist)
-            entry.updateMaxCharStatus(attribs, entry.getMetrics().maxlength);
+            entry.updateQuality();
     }
 
     public SubFile getSubFile() {

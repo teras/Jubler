@@ -27,8 +27,9 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.os.JIDialog;
-import static com.panayotis.jubler.subs.CommonDef.*;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
+import static com.panayotis.jubler.subs.CommonDef.*;
+import static com.panayotis.jubler.options.Options.*;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
 import com.panayotis.jubler.subs.style.StyleType;
@@ -316,34 +317,38 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     /* Calculate statistics of this subtitle */
     public SubMetrics getMetrics() {
         SubMetrics m = new SubMetrics();
-        int curcol = 0;
-        int cursize = 0;
+        int curlinelength = 0;
         for (char item : subtext.toCharArray())
             if (item == '\n') {
                 m.lines++;
-                if (curcol > m.maxlength)
-                    m.maxlength = curcol;
-                curcol = 0;
-            } else if (!Character.isWhitespace(item)) {
-                curcol++;
-                cursize++;
+                if (isSpaceChars())
+                    m.length++;
+                if (curlinelength > m.linelength)
+                    m.linelength = curlinelength;
+                curlinelength = 0;
+            } else if (isSpaceChars() || !Character.isWhitespace(item)) {
+                m.length++;
+                curlinelength++;
             }
-        m.length = cursize;
-        m.cpm = (int) Math.round((cursize * (60 / ((finish.getMillis() - start.getMillis()) / 1000d))));
-        if (curcol > m.maxlength)
-            m.maxlength = curcol;
+        if (curlinelength > m.linelength)
+            m.linelength = curlinelength;
+
+        m.cps = m.length / ((finish.getMillis() - start.getMillis()) / 1000f);
         return m;
     }
 
-    public boolean updateMaxCharStatus(SubAttribs attr, int maxlength) {
-        if (attr.isMaxCharsEnabled()) {
-            if (attr.isMaxCPS() ? (((double) maxlength) / attr.getMaxCharacters()) > finish.differenceInSecs(start) : maxlength > attr.getMaxCharacters()) {
-                setMark(attr.getMaxColor());
-                return true;
-            }
-            if (mark == attr.getMaxColor())
-                setMark(0);
+    public boolean updateQuality() {
+        return updateQuality(getMetrics());
+    }
+
+    public boolean updateQuality(SubMetrics m) {
+        if (m.lines > getMaxLines() || m.cps > getMaxCPS() || m.length > getMaxSubLength() || m.linelength > getMaxLineLength()
+                || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration()) {
+            setMark(getErrorColor());
+            return true;
         }
+        if (mark == getErrorColor())
+            setMark(0);
         return false;
     }
 

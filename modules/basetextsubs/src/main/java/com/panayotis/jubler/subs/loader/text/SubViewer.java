@@ -108,13 +108,13 @@ public class SubViewer extends AbstractTextSubFormat {
     protected void initSaver(Subtitles subs, MediaFile media, StringBuilder header) {
         SubAttribs attr = subs.getAttribs();
         header.append("[INFORMATION]\n[TITLE]");
-        header.append(attr.getTitle());
+        header.append(attr.title);
         header.append("\n[AUTHOR]");
-        header.append(attr.getAuthor());
+        header.append(attr.author);
         header.append("\n[SOURCE]");
-        header.append(attr.getSource());
+        header.append(attr.source);
         header.append("\n[FILEPATH]\n[DELAY]0\n[COMMENT]");
-        header.append(attr.getComments().replace('\n', '|'));
+        header.append(attr.comments.replace('\n', '|'));
         header.append("\n[END INFORMATION]\n[SUBTITLE]\n[COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial\n");
     }
 

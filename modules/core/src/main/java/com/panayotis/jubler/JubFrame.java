@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -59,12 +58,10 @@ import com.panayotis.jubler.tools.ToolsManager;
 import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -124,7 +121,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     /* A list of undo features */
     private UndoList undo;
     /* The preview dialog, showing the subtitle, the waveform and some video clips */
-    /* This object is public, since it's needed by JSubEditor to attach itself into this panel */
+ /* This object is public, since it's needed by JSubEditor to attach itself into this panel */
     private JSubPreview preview;
     /* The panel which displays the editor for a subtitle */
     public JSubEditor subeditor;
@@ -156,7 +153,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         /* Could NOT initialize prefs here. Although prefs is static,
          * it needs a "late binding", *after* any JubFrame instance is
          * initialize. */
-        /* prefs = new JPreferences(); */
+ /* prefs = new JPreferences(); */
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
         FrameIcon = Theme.loadImage("frame.png");
@@ -192,7 +189,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
                 if (is_right_mouse) {
                     int row = SubTable.getSelectedRow();
                     if (row >= 0)
-                        bringSelectedRowIntoView(row);//end if (row >= 0) 
+                        bringSelectedRowIntoView(row);//end if (row >= 0)
                 }//end if (is_right_mouse)
             }
         });
@@ -211,7 +208,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         setDropHandler();
 
         /* If this is the first JubFrame instance, initialize preferences */
-        /* We have to do this AFTER we process the menu items (since some would be missing */
+ /* We have to do this AFTER we process the menu items (since some would be missing */
         if (prefs == null)
             prefs = new JPreferences(this);
 
@@ -232,7 +229,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     }
 
     /* Set the button style */
-    /* This method is called EVERY time an undo option is added.
+ /* This method is called EVERY time an undo option is added.
      * It is used in order to inform the system that a new undo command is added.
      *
      * The only useful approach up to now is to reset the last_changed_sub pointer.
@@ -280,13 +277,10 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private void updateStatsLabel(SubEntry entry) {
         /* Update information label */
         SubMetrics m = entry.getMetrics();
-        subeditor.CharsL.setText(String.valueOf(m.length));
         subeditor.NewlineL.setText(String.valueOf(m.lines));
-        subeditor.LongestL.setText(String.valueOf(m.maxlength));
-        if (entry.updateMaxCharStatus(subs.getAttribs(), m.maxlength))
-            subeditor.LongestL.setForeground(Color.RED);
-        else
-            subeditor.LongestL.setForeground(SystemColor.controlText);
+        subeditor.CharsL.setText(String.valueOf(m.length));
+        subeditor.LongestL.setText(String.valueOf(m.linelength));
+        subeditor.ErrorL.setVisible(entry.updateQuality(m));
     }
 
     public int addSubEntry(SubEntry entry) {
@@ -2518,12 +2512,12 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         boolean is_current_row_height_too_high = (table_current_row_height > TABLE_DEFAULT_HEIGHT);
         boolean is_adjust_row_height = (is_text_type && is_current_row_height_too_high);
         /*
-         String msg = "table_current_row_height:" + table_current_row_height + "\n" + 
-         "is_text_type:" + is_text_type + "\n" + 
-         "is_current_row_height_too_high:" + is_current_row_height_too_high +  "\n" + 
+         String msg = "table_current_row_height:" + table_current_row_height + "\n" +
+         "is_text_type:" + is_text_type + "\n" +
+         "is_current_row_height_too_high:" + is_current_row_height_too_high +  "\n" +
          "is_adjust_row_height:" + is_adjust_row_height + "\n";
          DEBUG.logger.log(Level.OFF, msg);
-         * 
+         *
          */
         if (is_adjust_row_height) {
             SubTable.setRowHeight(TABLE_DEFAULT_HEIGHT);
