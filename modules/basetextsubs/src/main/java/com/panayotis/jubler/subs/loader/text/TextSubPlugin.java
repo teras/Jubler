@@ -17,7 +17,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -49,7 +48,8 @@ public class TextSubPlugin implements Plugin {
             new Spruce(),
             new TextScript(),
             new W3CTimedText(),
-            new DFXP()
+            new DFXP(),
+            new PreSegmentedText()
         };
         setClassLoaderForSubFormat();
         return plugin_list;
