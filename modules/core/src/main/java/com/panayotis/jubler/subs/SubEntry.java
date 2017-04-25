@@ -20,14 +20,14 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
+import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.os.JIDialog;
-import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.subs.CommonDef.*;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
@@ -316,25 +316,20 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     /* Calculate statistics of this subtitle */
     public SubMetrics getMetrics() {
         SubMetrics m = new SubMetrics();
-        m.length = subtext.length();
-
         int curcol = 0;
-        int characters = 0;
-        char item;
-        for (int idx = 0; idx < m.length; idx++) {
-            item = subtext.charAt(idx);
+        int cursize = 0;
+        for (char item : subtext.toCharArray())
             if (item == '\n') {
                 m.lines++;
                 if (curcol > m.maxlength)
                     m.maxlength = curcol;
                 curcol = 0;
-            } else {
+            } else if (!Character.isWhitespace(item)) {
                 curcol++;
-                if (!Character.isWhitespace(item))
-                    characters++;
+                cursize++;
             }
-        }
-        m.cpm = (int) Math.round((characters * (60 / ((finish.getMillis() - start.getMillis()) / 1000d))));
+        m.length = cursize;
+        m.cpm = (int) Math.round((cursize * (60 / ((finish.getMillis() - start.getMillis()) / 1000d))));
         if (curcol > m.maxlength)
             m.maxlength = curcol;
         return m;
@@ -980,7 +975,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                     if (!(is_last_line || isHyphenatedWord(text_line)))
                         b.append(char_sp);//end if (! is_text_empty)
                 } else if (!is_last_line)
-                    b.append(UNIX_NL);//end if (! is_text_empty)//end if (is_required_line)                
+                    b.append(UNIX_NL);//end if (! is_text_empty)//end if (is_required_line)
             }//end for (int i=0; i < text_list.size(); i++)
             String text = b.toString();
             setText(text);
@@ -995,7 +990,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         if (is_ending_with_hyphen) {
             boolean is_ending_with_more_hyphens = word.endsWith("--");
             is_ending_with_hyphen = !is_ending_with_more_hyphens;
-        }//end         
+        }//end
         return is_ending_with_hyphen;
     }//end private boolean isHyphenatedWord(String word)
 
@@ -1107,7 +1102,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         HeaderedTypeSubtitle hdr_source_entry = (HeaderedTypeSubtitle) this;
         hdr_source_entry.setHeader(null);
         return true;
-    }//end public boolean copyHeader(SubEntry source)   
+    }//end public boolean copyHeader(SubEntry source)
 
     /**
      * This routine made use of {@link SubImage} to draw the text image. When
