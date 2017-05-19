@@ -53,6 +53,8 @@ public class I18N {
             b = loadClass(PATH + ls);
             if (b != null)
                 DEBUG.debug("Using language " + ls);
+            else
+                DEBUG.debug("Unable to locate language " + ls);
         } else
             DEBUG.debug("Using language " + ll);
     }

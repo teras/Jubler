@@ -23,22 +23,22 @@ SetCompressor /SOLID lzma
 
 !define MUI_BGCOLOR aabbaa
 !define MUI_ABORTWARNING
-!define MUI_ICON "resources/installers/windows/install.ico"
-!define MUI_UNICON "resources/installers/windows/install.ico"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "resources/installers/windows/logo-install.bmp"
+!define MUI_ICON "../../resources/installers/windows/install.ico"
+!define MUI_UNICON "../../resources/installers/windows/install.ico"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "../../resources/installers/windows/logo-install.bmp"
 !define MUI_COMPONENTSPAGE_SMALLDESC
 
 ; Other parameters
 LicenseForceSelection checkbox
 
 
-!include "resources/installers/windows/assoc.nsh"
+!include "../../resources/installers/windows/assoc.nsh"
 
 ;--------------------
 ; Pages
 
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "LICENCE"
+!insertmacro MUI_PAGE_LICENSE "../../LICENCE"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -59,28 +59,28 @@ Section "Jubler editor" SecJubler
   
   ; Set output path to the installation directory.
   SetOutPath $InstDir
-  File dist\Jubler.exe
-  File ChangeLog.html
-  File dist\LICENCE.txt
-  File dist\README.txt
+  File target\jubler\Jubler.exe
+  File target\jubler\ChangeLog.html
+  File target\jubler\LICENCE.txt
+  File target\jubler\README.txt
    
   ; Create library
   SetOutPath $InstDir\lib
-  File dist\lib\*.*
-  File resources\installers\windows\subtitle.ico
-  File resources\installers\windows\frame.ico
+  File target\jubler\lib\*.*
+  File ..\..\resources\installers\windows\subtitle.ico
+  File ..\..\resources\installers\windows\frame.ico
 
   ; Create themes
-  SetOutPath $InstDir\themes
-  File dist\themes\*.jar
+  SetOutPath $InstDir\lib\themes
+  File target\jubler\lib\themes\*.jar
 
   ; Create i18n files
-  SetOutPath $InstDir\i18n
-  File dist\i18n\*.jar
+  SetOutPath $InstDir\lib\i18n
+  File target\jubler\lib\i18n\*.jar
 
   ; Create help directory
-  SetOutPath $InstDir\help
-  File dist\help\*.*
+  SetOutPath $InstDir\lib\help
+  File target\jubler\lib\help\*.*
 
   SetRegView 64
   ; Write the installation path into the registry
@@ -112,6 +112,7 @@ SectionEnd
 ; Create Start menu shortcuts
 ;--------------------------------
 Section "Start Menu Shortcuts" SecStartMenu
+  SetOutPath $InstDir
   CreateDirectory "$SMPROGRAMS\Jubler"
   CreateShortCut "$SMPROGRAMS\Jubler\Uninstall.lnk" "$InstDir\uninstall.exe" "" "$InstDir\uninstall.exe" 0
   CreateShortCut "$SMPROGRAMS\Jubler\Jubler subtitle editor.lnk" "$InstDir\Jubler.exe" "" "$InstDir\Jubler.exe" 0
@@ -121,6 +122,7 @@ SectionEnd
 ; Create Desktop shortcuts
 ;--------------------------------
 Section "Desktop Icon" SecDesktop
+  SetOutPath $InstDir
   CreateShortCut "$DESKTOP\Jubler subtitle editor.lnk" "$InstDir\Jubler.exe" "" "$InstDir\Jubler.exe" 0
 SectionEnd
 

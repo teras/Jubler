@@ -10,6 +10,10 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
+    <packaging>pom</packaging>
+    <properties>
+        <long.version>5.9.9.9</long.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.panayotis.jubler</groupId>
@@ -67,6 +71,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/jubler/lib</outputDirectory>
+                            <excludeArtifactIds>jupidator-project,project</excludeArtifactIds>
                         </configuration>
                     </execution>
                     <execution>
@@ -82,7 +87,7 @@
                                     <version>5.1.0.0</version>
                                 </artifactItem>
                             </artifactItems>
-                            <outputDirectory>target/jubler/themes</outputDirectory>
+                            <outputDirectory>target/jubler/lib/themes</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
@@ -93,6 +98,31 @@
                     <stripVersion>true</stripVersion>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>copy-i18n</id>
+                        <configuration>
+                            <target>
+                                <copy todir="target/jubler/lib/i18n">
+                                    <fileset dir="../../resources/i18n/cache"/>
+                                </copy>
+                                <copy file="../../resources/help/cache/jubler-faq.html" todir="target/jubler/lib/help"/>
+                                <copy file="../../resources/help/question.png" todir="target/jubler/lib/help"/>
+                                <copy file="../../README" tofile="target/jubler/README.txt"/>
+                                <copy file="../../LICENCE" tofile="target/jubler/LICENCE.txt"/>
+                                <copy file="../../ChangeLog.html" tofile="target/jubler/ChangeLog.html"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution> 
+                </executions>
+            </plugin>
         </plugins>
     </build>
     
@@ -102,16 +132,68 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                        <artifactId>launch4j-maven-plugin</artifactId>
+                        <version>1.7.16</version>
+                        <executions>
+                            <execution>
+                                <id>windows-exe</id>
+                                <phase>process-classes</phase>
+                                <goals>
+                                    <goal>launch4j</goal>
+                                </goals>
+                                <configuration>
+                                    <icon>../../resources/installers/windows/frame.ico</icon>
+                                    <downloadUrl>http://www.oracle.com/technetwork/java/javase/downloads/index.html
+                                    </downloadUrl>
+                                    <headerType>gui</headerType>
+                                    <stayAlive>true</stayAlive>
+                                    <jar>lib/jubler.jar</jar>
+                                    <dontWrapJar>true</dontWrapJar>
+                                    <errTitle>Unable to find Java Development Kit</errTitle>
+                                    <outfile>target/jubler/Jubler.exe</outfile>
+                                    <classPath>
+                                        <mainClass>Jubler</mainClass>
+                                        <addDependencies>false</addDependencies>
+                                        <preCp>anything</preCp>
+                                    </classPath>
+                                    <jre>
+                                        <minVersion>1.6.0</minVersion>
+                                    </jre>
+                                    <versionInfo>
+                                        <fileVersion>${long.version}</fileVersion>
+                                        <txtFileVersion>${project.version}</txtFileVersion>
+                                        <fileDescription>Jubler</fileDescription>
+                                        <copyright>GNU GPL V2</copyright>
+                                        <productVersion>${long.version}</productVersion>
+                                        <txtProductVersion>${project.version}</txtProductVersion>
+                                        <productName>Jubler Subtitle Editor</productName>
+                                        <companyName>http://www.panayotis.com</companyName>
+                                        <internalName>jubler</internalName>
+                                        <originalFilename>Jubler.exe</originalFilename>
+                                    </versionInfo>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <version>1.8</version>
                         <executions>
                             <execution>
-                                <id>copy</id>
+                                <id>post-copy</id>
                                 <configuration>
                                     <target>
-                                        <echo>OK!!! ${basedir}</echo>
                                         <copy file="../../resources/libs/ffmpeg/win/ffdecode_32.dll" todir="target/jubler/lib"/>
                                         <copy file="../../resources/libs/ffmpeg/win/ffdecode_64.dll" todir="target/jubler/lib"/>
+                                        <exec executable="makensis" failonerror="true">
+                                            <arg line="-NOCD -DVERSION=${project.version} -DWINBITS=32 ../../resources/installers/windows/jubler.nsi"/>
+                                        </exec>
+                                        <move file="Jubler-${project.version}.exe" tofile="target/Jubler-${project.version}.32.exe"/>
+                                        <exec executable="makensis" failonerror="true">
+                                            <arg line="-NOCD -DVERSION=${project.version} -DWINBITS=64 ../../resources/installers/windows/jubler.nsi"/>
+                                        </exec>
+                                        <move file="Jubler-${project.version}.exe" tofile="target/Jubler-${project.version}.64.exe"/>
                                     </target>
                                 </configuration>
                                 <goals>
@@ -136,7 +218,76 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
+                                        <taskdef name="appbundler" onerror="fail" classpathref="maven.plugin.classpath" classname="com.oracle.appbundler.AppBundlerTask"/>
                                         <copy file="../../resources/libs/ffmpeg/darwin/libffdecode.jnilib" todir="target/jubler/lib"/>
+                                        <appbundler
+                                            outputdirectory="target"
+                                            name="Jubler"
+                                            displayName="Jubler"
+                                            identifier="org.crossmobile.gui"
+                                            executableName="Jubler"
+                                            icon="../../resources/installers/macosx/jubler.icns"
+                                            shortversion="${project.version}"
+                                            copyright="Panayotis Katsaloulis"
+                                            applicationCategory="public.app-category.video"
+                                            mainclassname="Jubler" >
+                                            <classpath dir="target/jubler/lib">
+                                                <include name="*"/>
+                                            </classpath>
+                                            <bundledocument extensions="srt,sub,ass,ssa,stl,son,txt,xml"
+                                                            icon="resources/installers/macosx/subtitle.icns"
+                                                            name="Subtitle Document"
+                                                            role="editor" />
+                                        </appbundler>
+                                        <move file="target/jubler/lib/help" todir="target/Jubler.app/Contents/Java"/>
+                                        <move file="target/jubler/lib/i18n" todir="target/Jubler.app/Contents/Java"/>
+                                        <move file="target/jubler/lib/themes" todir="target/Jubler.app/Contents/Java"/>
+
+                                        <copy todir="">
+                                            <fileset dir="../../resources/i18n/cache"/>
+                                        </copy>
+                                        <copy todir="target/jubler/lib/i18n">
+                                            <fileset dir="../../resources/i18n/cache"/>
+                                        </copy>
+                                        <copy todir="target/jubler/lib/i18n">
+                                            <fileset dir="../../resources/i18n/cache"/>
+                                        </copy>
+
+                                        <delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
+                                        <delete file="/tmp/Jubler-template.dmg" quiet="true"/>
+                                        <exec executable="hdiutil" failonerror="false">
+                                            <arg line="detach /Volumes/Jubler-template"/>
+                                        </exec>
+                                        <bunzip2 src="../../resources/installers/macosx/Jubler-template.dmg.bz2" dest="/tmp/Jubler-template.dmg"/>
+                                        <exec executable="hdiutil" failonerror="true">
+                                            <arg line="attach -noautoopen -mountpoint /Volumes/Jubler-template /tmp/Jubler-template.dmg"/>
+                                        </exec>
+                                        <delete dir="/Volumes/Jubler-template/Jubler.app" includeemptydirs="yes"/>
+                                        <exec executable="cp">
+                                            <arg line="-R target/Jubler.app /Volumes/Jubler-template/Jubler.app"/>
+                                        </exec>
+                                        <!-- security find-identity -v -p codesigning -->
+                                        <loadproperties srcfile="../../codesign.properties"/>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg line="--force --verify --verbose --sign ${code.sign.key} /Volumes/Jubler-template/Jubler.app"/>
+                                        </exec>
+                                        <exec executable="hdiutil" failonerror="true">
+                                            <arg line="detach -force /Volumes/Jubler-template"/>
+                                        </exec>
+                                        <exec executable="hdiutil" failonerror="true">
+                                            <arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o target/Jubler-${version}.dmg"/>
+                                        </exec>
+                                        <exec executable="make" dir="../../resources/installers/macosx/resource_creator"/>
+                                        <exec executable="hdiutil" failonerror="true">
+                                            <arg line="unflatten target/Jubler-${version}.dmg"/>
+                                        </exec>
+                                        <exec executable="Rez" failonerror="true">
+                                            <arg line="-a ../../resources/installers/macosx/license_dmg -o target/Jubler-${version}.dmg"/>
+                                        </exec>
+                                        <exec executable="hdiutil" failonerror="true">
+                                            <arg line="flatten target/Jubler-${version}.dmg"/>
+                                        </exec>
+                                        <delete file="/tmp/Jubler-template.dmg"/>
                                     </target>
                                 </configuration>
                                 <goals>
@@ -145,6 +296,13 @@
                                 <phase>package</phase>
                             </execution> 
                         </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.bitbucket.infinitekind</groupId>
+                                <artifactId>appbundler</artifactId>
+                                <version>1.0ea</version>
+                            </dependency>
+                        </dependencies>                    
                     </plugin>
                 </plugins>
             </build>
@@ -167,6 +325,9 @@
                                         <copy file="../../resources/installers/linux/jubler32" todir="target/jubler"/>
                                         <chmod file="target/jubler/jubler" perm="a+x"/>
                                         <chmod file="target/jubler/jubler32" perm="a+x"/>
+                                        <exec dir="target" executable="tar" failonerror="true">
+                                            <arg line="jcvf jubler-${project.version}.tar.bz2 jubler"/>
+                                        </exec>
                                     </target>
                                 </configuration>
                                 <goals>

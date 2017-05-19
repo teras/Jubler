@@ -31,3 +31,5 @@ codesign.properties
 /modules/basetextsubs/nbproject/
 /modules/core/target/
 /modules/installer/target/
+resources/i18n/cache
+resources/help/cache

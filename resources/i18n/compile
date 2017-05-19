@@ -1,7 +1,12 @@
 #!/bin/sh
 PATH=$PATH:/usr/local/opt/gettext/bin
 
+cd `dirname $0`
+
 source ../../modules/core/src/main/resources/com/panayotis/jubler/information/version.prop
+
+rm -rf cache
+mkdir cache
 
 for i in *.po ; do
 	LNG=`echo $i | sed -e 's/\.po$//g'`
@@ -10,5 +15,6 @@ for i in *.po ; do
 	JAVAC=javac msgfmt -d . --java2 --resource=com.panayotis.jubler.i18n.Messages_$LNG $i || exit 1
 	jar cf $LNG.jar com || exit 1
     mvn install:install-file -Dfile=$LNG.jar -DgroupId=com.panayotis.jubler -DartifactId=$LNG -Dversion=$longversion -Dpackaging=jar || exit 1
-    rm -rf com $LNG.jar
+    rm -rf com
+    mv $LNG.jar cache
 done
