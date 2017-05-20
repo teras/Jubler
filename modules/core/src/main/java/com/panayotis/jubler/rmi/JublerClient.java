@@ -47,9 +47,9 @@ public class JublerClient {
                 public Socket createSocket(String host, int port)
                         throws IOException {
                     Socket socket = new Socket();
-                    socket.setSoTimeout(3000);
+                    socket.setSoTimeout(2000);
                     socket.setSoLinger(false, 0);
-                    socket.connect(new InetSocketAddress(host, port), 3000);
+                    socket.connect(new InetSocketAddress(host, port), 2000);
                     return socket;
                 }
 
