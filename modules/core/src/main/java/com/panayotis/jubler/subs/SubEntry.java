@@ -318,6 +318,8 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     public SubMetrics getMetrics() {
         SubMetrics m = new SubMetrics();
         int curlinelength = 0;
+        int maxlinelength = Integer.MIN_VALUE;
+        int minlinelength = Integer.MAX_VALUE;
         for (char item : subtext.toCharArray())
             if (item == '\n') {
                 m.lines++;
@@ -325,6 +327,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                     m.length++;
                 if (curlinelength > m.linelength)
                     m.linelength = curlinelength;
+                if (maxlinelength < curlinelength)
+                    maxlinelength = curlinelength;
+                if (minlinelength > curlinelength)
+                    minlinelength = curlinelength;
                 curlinelength = 0;
             } else if (isSpaceChars() || !Character.isWhitespace(item)) {
                 m.length++;
@@ -332,7 +338,12 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             }
         if (curlinelength > m.linelength)
             m.linelength = curlinelength;
+        if (maxlinelength < curlinelength)
+            maxlinelength = curlinelength;
+        if (minlinelength > curlinelength)
+            minlinelength = curlinelength;
 
+        m.fillpercent = (int) (minlinelength * 100f / maxlinelength);
         long delta = finish.getMillis() - start.getMillis();
         m.cps = delta == 0 ? Float.POSITIVE_INFINITY : m.length / (delta / 1000f);
         return m;
@@ -341,7 +352,9 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     public void updateQuality() {
         SubMetrics m = getMetrics();
         if (m.lines > getMaxLines() || m.cps > getMaxCPS() || m.length > getMaxSubLength() || m.linelength > getMaxLineLength()
-                || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration())
+                || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration()
+                || m.fillpercent < getFillPercent()
+                || m.length < (m.lines - 1) * getMaxLineLength())
             setMark(getErrorColor());
         if (mark == getErrorColor())
             setMark(0);

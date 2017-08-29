@@ -38,6 +38,7 @@ import java.util.prefs.Preferences;
  *
  * @author teras
  */
+@SuppressWarnings("UseSpecificCatch")
 public class Options {
 
     public final static int CURRENT_VERSION = 2;
@@ -50,8 +51,12 @@ public class Options {
     private static final String ERRORCOLOR_TAG = "errorcolor";
     private static boolean spaceChars;
     private static final String SPACECHARS_TAG = "spaceaschars";
+    private static boolean compactSubs;
+    private static final String COMPACTSUBS_TAG = "compactsubs";
     private static int maxLines;
     private static final String MAXLINES_TAG = "maxline";
+    private static int fillPercent;
+    private static final String FILLPERCENT_TAG = "fillpercent";
     private static int maxSubLength;
     private static final String MAXSUBLENGTH_TAG = "maxsublength";
     private static int maxLineLength;
@@ -66,7 +71,9 @@ public class Options {
     static {
         errorColor = prefs.getInt(ERRORCOLOR_TAG, 1);
         spaceChars = prefs.getBoolean(SPACECHARS_TAG, false);
+        compactSubs = prefs.getBoolean(COMPACTSUBS_TAG, true);
         maxLines = prefs.getInt(MAXLINES_TAG, 2);
+        fillPercent = prefs.getInt(FILLPERCENT_TAG, 50);
         maxSubLength = prefs.getInt(MAXSUBLENGTH_TAG, 84);
         maxLineLength = prefs.getInt(MAXLINELENGTH_TAG, 42);
         maxCPS = prefs.getInt(MAXCPS_TAG, 21);
@@ -184,12 +191,32 @@ public class Options {
         return spaceChars;
     }
 
+    public static void setCompactSubs(boolean csubs) {
+        prefs.putBoolean(COMPACTSUBS_TAG, compactSubs = csubs);
+    }
+
+    public static boolean isCompactSubs() {
+        return compactSubs;
+    }
+
     public static void setMaxLines(int newmaxlines) {
         prefs.putInt(MAXLINES_TAG, maxLines = newmaxlines);
     }
 
     public static int getMaxLines() {
         return maxLines;
+    }
+
+    public static void setFillPercent(int value) {
+        if (value < 0)
+            value = 0;
+        else if (value > 100)
+            value = 100;
+        prefs.putInt(FILLPERCENT_TAG, fillPercent = value);
+    }
+
+    public static int getFillPercent() {
+        return fillPercent;
     }
 
     public static void setMaxSubLength(int maxsublength) {

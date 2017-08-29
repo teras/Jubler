@@ -297,17 +297,8 @@
                 <Container class="javax.swing.JPanel" name="jPanel11">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                      <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
-                        <CompoundBorder>
-                          <Border PropertyName="outside" info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-                            <EmptyBorder bottom="4" left="0" right="0" top="0"/>
-                          </Border>
-                          <Border PropertyName="inside" info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-                            <MatteColorBorder bottom="2" left="0" right="0" top="0">
-                              <Color PropertyName="color" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-                            </MatteColorBorder>
-                          </Border>
-                        </CompoundBorder>
+                      <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
+                        <EmptyBorder bottom="4" left="0" right="0" top="0"/>
                       </Border>
                     </Property>
                   </Properties>
@@ -351,21 +342,41 @@
                         </Constraint>
                       </Constraints>
                     </Component>
-                    <Component class="javax.swing.JCheckBox" name="spaceCharsC">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="__(&quot;Treat spaces as characters&quot;)" type="code"/>
-                        </Property>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="spaceCharsCActionPerformed"/>
-                      </Events>
+                    <Container class="javax.swing.JPanel" name="jPanel13">
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
                           <BorderConstraints direction="South"/>
                         </Constraint>
                       </Constraints>
-                    </Component>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                        <Property name="columns" type="int" value="0"/>
+                        <Property name="rows" type="int" value="1"/>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JCheckBox" name="spaceCharsC">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="__(&quot;Treat spaces as characters&quot;)" type="code"/>
+                            </Property>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="spaceCharsCActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="compactC">
+                          <Properties>
+                            <Property name="selected" type="boolean" value="true"/>
+                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="__(&quot;Prefer compact subtitles&quot;)" type="code"/>
+                            </Property>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="compactCActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="jPanel12">
@@ -385,37 +396,79 @@
                   <SubComponents>
                     <Container class="javax.swing.JPanel" name="jPanel15">
 
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                        <Property name="columns" type="int" value="0"/>
+                        <Property name="rows" type="int" value="1"/>
+                      </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JLabel" name="MaxCharsL">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="__(&quot;Maximum number of lines per subtitle&quot;)" type="code"/>
-                            </Property>
-                          </Properties>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                              <BorderConstraints direction="North"/>
-                            </Constraint>
-                          </Constraints>
-                        </Component>
-                        <Component class="javax.swing.JSlider" name="MaxLineS">
-                          <Properties>
-                            <Property name="majorTickSpacing" type="int" value="2"/>
-                            <Property name="maximum" type="int" value="7"/>
-                            <Property name="minimum" type="int" value="1"/>
-                            <Property name="minorTickSpacing" type="int" value="1"/>
-                            <Property name="paintLabels" type="boolean" value="true"/>
-                            <Property name="paintTicks" type="boolean" value="true"/>
-                            <Property name="snapToTicks" type="boolean" value="true"/>
-                            <Property name="value" type="int" value="2"/>
-                          </Properties>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                              <BorderConstraints direction="South"/>
-                            </Constraint>
-                          </Constraints>
-                        </Component>
+                        <Container class="javax.swing.JPanel" name="jPanel14">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JLabel" name="MaxCharsL">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="__(&quot;Maximum number of lines per subtitle&quot;)" type="code"/>
+                                </Property>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="North"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                            <Component class="javax.swing.JSlider" name="MaxLineS">
+                              <Properties>
+                                <Property name="majorTickSpacing" type="int" value="2"/>
+                                <Property name="maximum" type="int" value="7"/>
+                                <Property name="minimum" type="int" value="1"/>
+                                <Property name="minorTickSpacing" type="int" value="1"/>
+                                <Property name="paintLabels" type="boolean" value="true"/>
+                                <Property name="paintTicks" type="boolean" value="true"/>
+                                <Property name="snapToTicks" type="boolean" value="true"/>
+                                <Property name="value" type="int" value="2"/>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="South"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="jPanel21">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JLabel" name="FillPercentL">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="__(&quot;Line fill percentage&quot;)" type="code"/>
+                                </Property>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="North"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                            <Component class="javax.swing.JSlider" name="FillPercentS">
+                              <Properties>
+                                <Property name="majorTickSpacing" type="int" value="10"/>
+                                <Property name="minorTickSpacing" type="int" value="1"/>
+                                <Property name="paintLabels" type="boolean" value="true"/>
+                                <Property name="paintTicks" type="boolean" value="true"/>
+                                <Property name="snapToTicks" type="boolean" value="true"/>
+                                <Property name="value" type="int" value="50"/>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="South"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                          </SubComponents>
+                        </Container>
                       </SubComponents>
                     </Container>
                     <Container class="javax.swing.JPanel" name="jPanel16">
@@ -523,79 +576,83 @@
                     </Container>
                     <Container class="javax.swing.JPanel" name="jPanel18">
 
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+                        <Property name="columns" type="int" value="0"/>
+                        <Property name="rows" type="int" value="1"/>
+                      </Layout>
                       <SubComponents>
-                        <Component class="javax.swing.JLabel" name="MaxCharsL3">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code="__(&quot;Maximum duration in seconds&quot;)" type="code"/>
-                            </Property>
-                          </Properties>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                              <BorderConstraints direction="North"/>
-                            </Constraint>
-                          </Constraints>
-                        </Component>
-                        <Component class="javax.swing.JSlider" name="MaxDurS">
-                          <Properties>
-                            <Property name="majorTickSpacing" type="int" value="10"/>
-                            <Property name="maximum" type="int" value="60"/>
-                            <Property name="minorTickSpacing" type="int" value="1"/>
-                            <Property name="paintLabels" type="boolean" value="true"/>
-                            <Property name="paintTicks" type="boolean" value="true"/>
-                            <Property name="snapToTicks" type="boolean" value="true"/>
-                            <Property name="value" type="int" value="40"/>
-                          </Properties>
-                          <Constraints>
-                            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                              <BorderConstraints direction="South"/>
-                            </Constraint>
-                          </Constraints>
-                        </Component>
+                        <Container class="javax.swing.JPanel" name="jPanel20">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JLabel" name="MinCharsL">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="__(&quot;Minimum duration in seconds&quot;)" type="code"/>
+                                </Property>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="North"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                            <Component class="javax.swing.JSlider" name="MinDurS">
+                              <Properties>
+                                <Property name="majorTickSpacing" type="int" value="10"/>
+                                <Property name="maximum" type="int" value="60"/>
+                                <Property name="minorTickSpacing" type="int" value="1"/>
+                                <Property name="paintLabels" type="boolean" value="true"/>
+                                <Property name="paintTicks" type="boolean" value="true"/>
+                                <Property name="snapToTicks" type="boolean" value="true"/>
+                                <Property name="value" type="int" value="40"/>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="South"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                        <Container class="javax.swing.JPanel" name="jPanel7">
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JLabel" name="MaxCharsL3">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                                  <Connection code="__(&quot;Maximum duration in seconds&quot;)" type="code"/>
+                                </Property>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="North"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                            <Component class="javax.swing.JSlider" name="MaxDurS">
+                              <Properties>
+                                <Property name="majorTickSpacing" type="int" value="10"/>
+                                <Property name="maximum" type="int" value="60"/>
+                                <Property name="minorTickSpacing" type="int" value="1"/>
+                                <Property name="paintLabels" type="boolean" value="true"/>
+                                <Property name="paintTicks" type="boolean" value="true"/>
+                                <Property name="snapToTicks" type="boolean" value="true"/>
+                                <Property name="value" type="int" value="40"/>
+                              </Properties>
+                              <Constraints>
+                                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                                  <BorderConstraints direction="South"/>
+                                </Constraint>
+                              </Constraints>
+                            </Component>
+                          </SubComponents>
+                        </Container>
                       </SubComponents>
                     </Container>
                   </SubComponents>
                 </Container>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel20">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Center"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-              <SubComponents>
-                <Component class="javax.swing.JLabel" name="MinCharsL">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="__(&quot;Minimum duration in seconds&quot;)" type="code"/>
-                    </Property>
-                  </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="North"/>
-                    </Constraint>
-                  </Constraints>
-                </Component>
-                <Component class="javax.swing.JSlider" name="MinDurS">
-                  <Properties>
-                    <Property name="majorTickSpacing" type="int" value="10"/>
-                    <Property name="maximum" type="int" value="60"/>
-                    <Property name="minorTickSpacing" type="int" value="1"/>
-                    <Property name="paintLabels" type="boolean" value="true"/>
-                    <Property name="paintTicks" type="boolean" value="true"/>
-                    <Property name="snapToTicks" type="boolean" value="true"/>
-                    <Property name="value" type="int" value="40"/>
-                  </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="South"/>
-                    </Constraint>
-                  </Constraints>
-                </Component>
               </SubComponents>
             </Container>
           </SubComponents>

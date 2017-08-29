@@ -26,6 +26,7 @@ import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
+import static com.panayotis.jubler.options.Options.getFillPercent;
 import static com.panayotis.jubler.options.Options.getMaxCPS;
 import static com.panayotis.jubler.options.Options.getMaxDuration;
 import static com.panayotis.jubler.options.Options.getMaxLineLength;
@@ -47,6 +48,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
@@ -65,14 +67,19 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     public final static ImageIcon Lock[];
 
-    public final static ImageIcon NewlineI = Theme.loadIcon("newline.png");
-    public final static ImageIcon NewlineI_E = Theme.loadIcon("newline_e.png");
-    public final static ImageIcon LineI = Theme.loadIcon("line.png");
-    public final static ImageIcon LineI_E = Theme.loadIcon("line_e.png");
-    public final static ImageIcon SumI = Theme.loadIcon("sum.png");
-    public final static ImageIcon SumI_E = Theme.loadIcon("sum_e.png");
-    public final static ImageIcon CPSI = Theme.loadIcon("cps.png");
-    public final static ImageIcon CPSI_E = Theme.loadIcon("cps_e.png");
+    private final static ImageIcon NewlineI = Theme.loadIcon("newline.png");
+    private final static ImageIcon NewlineI_E = Theme.loadIcon("newline_e.png");
+    private final static ImageIcon LineI = Theme.loadIcon("line.png");
+    private final static ImageIcon LineI_E = Theme.loadIcon("line_e.png");
+    private final static ImageIcon SumI = Theme.loadIcon("sum.png");
+    private final static ImageIcon SumI_E = Theme.loadIcon("sum_e.png");
+    private final static ImageIcon CPSI = Theme.loadIcon("cps.png");
+    private final static ImageIcon CPSI_E = Theme.loadIcon("cps_e.png");
+    private final static ImageIcon FILLI = Theme.loadIcon("fill.png");
+    private final static ImageIcon FILLI_E = Theme.loadIcon("fill_e.png");
+
+    private final static Color INFOC = Color.BLACK;
+    private final static Color INFOC_E = new Color(253, 0, 0);
 
     static {
         Lock = new ImageIcon[2];
@@ -95,6 +102,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     /**
      * Creates new form JSubEditor
+     *
+     * @param parent
      */
     @SuppressWarnings("LeakingThisInConstructor")
     public JSubEditor(JubFrame parent) {
@@ -122,6 +131,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         MetricsB.setVisible(false);
         DurationL.setVisible(false);
+        CompactL.setVisible(false);
 
         sedit = new JStyleEditor(parent);
         setEnabled(false);
@@ -362,16 +372,19 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         SubMetrics m = entry.getMetrics();
 
         NewlineL.setText(String.valueOf(m.lines));
-        NewlineL.setIcon(m.lines > getMaxLines() ? NewlineI_E : NewlineI);
+        setStatus(NewlineL, m.lines > getMaxLines(), NewlineI_E, NewlineI);
 
         SubCharsL.setText(String.valueOf(m.length));
-        SubCharsL.setIcon(m.length > getMaxSubLength() ? SumI_E : SumI);
+        setStatus(SubCharsL, m.length > getMaxSubLength(), SumI_E, SumI);
 
         LineCharsL.setText(String.valueOf(m.linelength));
-        LineCharsL.setIcon(m.linelength > getMaxLineLength() ? LineI_E : LineI);
+        setStatus(LineCharsL, m.linelength > getMaxLineLength(), LineI_E, LineI);
 
         CPSL.setText(m.cps == Float.POSITIVE_INFINITY ? "∞" : String.valueOf(((int) (m.cps * 10)) / 10f));
-        CPSL.setIcon(m.cps > getMaxCPS() ? CPSI_E : CPSI);
+        setStatus(CPSL, m.cps > getMaxCPS(), CPSI_E, CPSI);
+
+        FillL.setText(String.valueOf(m.fillpercent) + "%");
+        setStatus(FillL, m.fillpercent < getFillPercent(), FILLI_E, FILLI);
 
         if (entry.getFinishTime().differenceInSecs(entry.getStartTime()) > getMaxDuration()) {
             DurationL.setVisible(true);
@@ -381,7 +394,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             DurationL.setToolTipText(__("Duration time is too small"));
         } else
             DurationL.setVisible(false);
+
+        CompactL.setVisible(m.length < (m.lines - 1) * getMaxLineLength());
+
         entry.updateQuality();
+    }
+
+    private static void setStatus(JLabel label, boolean error, ImageIcon iconError, ImageIcon iconOK) {
+        label.setIcon(error ? iconError : iconOK);
+        label.setForeground(error ? INFOC_E : INFOC);
     }
 
     /**
@@ -428,7 +449,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         LineCharsL = new javax.swing.JLabel();
         SubCharsL = new javax.swing.JLabel();
         CPSL = new javax.swing.JLabel();
+        FillL = new javax.swing.JLabel();
         DurationL = new javax.swing.JLabel();
+        CompactL = new javax.swing.JLabel();
         Unsaved = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         StyleListC = new javax.swing.JComboBox();
@@ -650,40 +673,53 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         TotalL.setIcon(Theme.loadIcon("lines.png"));
         TotalL.setToolTipText(__("Total subtitles"));
         TotalL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        TotalL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        TotalL.setIconTextGap(0);
+        TotalL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        TotalL.setIconTextGap(1);
         InfoP.add(TotalL);
 
         NewlineL.setToolTipText(__("Lines per subtitle"));
         NewlineL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        NewlineL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        NewlineL.setIconTextGap(0);
+        NewlineL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        NewlineL.setIconTextGap(1);
         InfoP.add(NewlineL);
 
         LineCharsL.setToolTipText(__("Longest characters per line"));
         LineCharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        LineCharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        LineCharsL.setIconTextGap(0);
+        LineCharsL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        LineCharsL.setIconTextGap(1);
         InfoP.add(LineCharsL);
 
         SubCharsL.setToolTipText(__("Characters per subtitle"));
         SubCharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        SubCharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        SubCharsL.setIconTextGap(0);
+        SubCharsL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        SubCharsL.setIconTextGap(1);
         InfoP.add(SubCharsL);
 
         CPSL.setToolTipText(__("Characters per second"));
         CPSL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        CPSL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        CPSL.setIconTextGap(0);
+        CPSL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        CPSL.setIconTextGap(1);
         InfoP.add(CPSL);
+
+        FillL.setToolTipText(__("Fill subtitle percentage"));
+        FillL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        FillL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        FillL.setIconTextGap(1);
+        InfoP.add(FillL);
 
         DurationL.setIcon(Theme.loadIcon("dur_e.png"));
         DurationL.setToolTipText(__("Duration"));
         DurationL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        DurationL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        DurationL.setIconTextGap(0);
+        DurationL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        DurationL.setIconTextGap(1);
         InfoP.add(DurationL);
+
+        CompactL.setIcon(Theme.loadIcon("compact_e.png"));
+        CompactL.setToolTipText(__("Subtitle could be compacted into fewer lines"));
+        CompactL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        CompactL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        CompactL.setIconTextGap(1);
+        InfoP.add(CompactL);
 
         jPanel8.add(InfoP, java.awt.BorderLayout.WEST);
 
@@ -871,10 +907,12 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel CPSL;
     private javax.swing.JToggleButton ColorB;
+    public javax.swing.JLabel CompactL;
     public javax.swing.JButton DetachB;
     private javax.swing.JPanel DetachP;
     public javax.swing.JLabel DurationL;
     private javax.swing.JButton EditB;
+    public javax.swing.JLabel FillL;
     private javax.swing.JToggleButton FontB;
     public javax.swing.JPanel InfoP;
     private javax.swing.JLabel L1;

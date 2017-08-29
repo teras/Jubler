@@ -54,6 +54,7 @@ public class JInformation extends JDialog {
      *
      * @param parent
      */
+    @SuppressWarnings("OverridableMethodCallInConstructor")
     public JInformation(JubFrame parent) {
         super(parent, true);
 
@@ -94,6 +95,11 @@ public class JInformation extends JDialog {
         MaxLineS.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 Options.setMaxLines(MaxLineS.getValue());
+            }
+        });
+        FillPercentS.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                Options.setFillPercent(FillPercentS.getValue());
             }
         });
         MaxLengthS.addChangeListener(new ChangeListener() {
@@ -162,11 +168,17 @@ public class JInformation extends JDialog {
         jPanel11 = new javax.swing.JPanel();
         ErrorColL = new javax.swing.JLabel();
         ErrorColC = new javax.swing.JComboBox();
+        jPanel13 = new javax.swing.JPanel();
         spaceCharsC = new javax.swing.JCheckBox();
+        compactC = new javax.swing.JCheckBox();
         jPanel12 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
         MaxCharsL = new javax.swing.JLabel();
         MaxLineS = new javax.swing.JSlider();
+        jPanel21 = new javax.swing.JPanel();
+        FillPercentL = new javax.swing.JLabel();
+        FillPercentS = new javax.swing.JSlider();
         jPanel16 = new javax.swing.JPanel();
         MaxCharsL1 = new javax.swing.JLabel();
         MaxLengthLineS = new javax.swing.JSlider();
@@ -177,11 +189,12 @@ public class JInformation extends JDialog {
         MaxCharsL2 = new javax.swing.JLabel();
         MaxCPSS = new javax.swing.JSlider();
         jPanel18 = new javax.swing.JPanel();
-        MaxCharsL3 = new javax.swing.JLabel();
-        MaxDurS = new javax.swing.JSlider();
         jPanel20 = new javax.swing.JPanel();
         MinCharsL = new javax.swing.JLabel();
         MinDurS = new javax.swing.JSlider();
+        jPanel7 = new javax.swing.JPanel();
+        MaxCharsL3 = new javax.swing.JLabel();
+        MaxDurS = new javax.swing.JSlider();
         StatsP = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -297,7 +310,7 @@ public class JInformation extends JDialog {
 
         jPanel10.setLayout(new java.awt.BorderLayout());
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0), javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, java.awt.Color.gray)));
+        jPanel11.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0));
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         ErrorColL.setText(__("Color to use"));
@@ -312,23 +325,38 @@ public class JInformation extends JDialog {
         });
         jPanel11.add(ErrorColC, java.awt.BorderLayout.CENTER);
 
+        jPanel13.setLayout(new java.awt.GridLayout());
+
         spaceCharsC.setText(__("Treat spaces as characters"));
         spaceCharsC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 spaceCharsCActionPerformed(evt);
             }
         });
-        jPanel11.add(spaceCharsC, java.awt.BorderLayout.SOUTH);
+        jPanel13.add(spaceCharsC);
+
+        compactC.setSelected(true);
+        compactC.setText(__("Prefer compact subtitles"));
+        compactC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compactCActionPerformed(evt);
+            }
+        });
+        jPanel13.add(compactC);
+
+        jPanel11.add(jPanel13, java.awt.BorderLayout.SOUTH);
 
         jPanel10.add(jPanel11, java.awt.BorderLayout.CENTER);
 
         jPanel12.setOpaque(false);
         jPanel12.setLayout(new java.awt.GridLayout(0, 1));
 
-        jPanel15.setLayout(new java.awt.BorderLayout());
+        jPanel15.setLayout(new java.awt.GridLayout());
+
+        jPanel14.setLayout(new java.awt.BorderLayout());
 
         MaxCharsL.setText(__("Maximum number of lines per subtitle"));
-        jPanel15.add(MaxCharsL, java.awt.BorderLayout.NORTH);
+        jPanel14.add(MaxCharsL, java.awt.BorderLayout.NORTH);
 
         MaxLineS.setMajorTickSpacing(2);
         MaxLineS.setMaximum(7);
@@ -338,7 +366,24 @@ public class JInformation extends JDialog {
         MaxLineS.setPaintTicks(true);
         MaxLineS.setSnapToTicks(true);
         MaxLineS.setValue(2);
-        jPanel15.add(MaxLineS, java.awt.BorderLayout.SOUTH);
+        jPanel14.add(MaxLineS, java.awt.BorderLayout.SOUTH);
+
+        jPanel15.add(jPanel14);
+
+        jPanel21.setLayout(new java.awt.BorderLayout());
+
+        FillPercentL.setText(__("Line fill percentage"));
+        jPanel21.add(FillPercentL, java.awt.BorderLayout.NORTH);
+
+        FillPercentS.setMajorTickSpacing(10);
+        FillPercentS.setMinorTickSpacing(1);
+        FillPercentS.setPaintLabels(true);
+        FillPercentS.setPaintTicks(true);
+        FillPercentS.setSnapToTicks(true);
+        FillPercentS.setValue(50);
+        jPanel21.add(FillPercentS, java.awt.BorderLayout.SOUTH);
+
+        jPanel15.add(jPanel21);
 
         jPanel12.add(jPanel15);
 
@@ -391,25 +436,7 @@ public class JInformation extends JDialog {
 
         jPanel12.add(jPanel17);
 
-        jPanel18.setLayout(new java.awt.BorderLayout());
-
-        MaxCharsL3.setText(__("Maximum duration in seconds"));
-        jPanel18.add(MaxCharsL3, java.awt.BorderLayout.NORTH);
-
-        MaxDurS.setMajorTickSpacing(10);
-        MaxDurS.setMaximum(60);
-        MaxDurS.setMinorTickSpacing(1);
-        MaxDurS.setPaintLabels(true);
-        MaxDurS.setPaintTicks(true);
-        MaxDurS.setSnapToTicks(true);
-        MaxDurS.setValue(40);
-        jPanel18.add(MaxDurS, java.awt.BorderLayout.SOUTH);
-
-        jPanel12.add(jPanel18);
-
-        jPanel10.add(jPanel12, java.awt.BorderLayout.SOUTH);
-
-        QualityP.add(jPanel10, java.awt.BorderLayout.NORTH);
+        jPanel18.setLayout(new java.awt.GridLayout());
 
         jPanel20.setLayout(new java.awt.BorderLayout());
 
@@ -425,7 +452,29 @@ public class JInformation extends JDialog {
         MinDurS.setValue(40);
         jPanel20.add(MinDurS, java.awt.BorderLayout.SOUTH);
 
-        QualityP.add(jPanel20, java.awt.BorderLayout.CENTER);
+        jPanel18.add(jPanel20);
+
+        jPanel7.setLayout(new java.awt.BorderLayout());
+
+        MaxCharsL3.setText(__("Maximum duration in seconds"));
+        jPanel7.add(MaxCharsL3, java.awt.BorderLayout.NORTH);
+
+        MaxDurS.setMajorTickSpacing(10);
+        MaxDurS.setMaximum(60);
+        MaxDurS.setMinorTickSpacing(1);
+        MaxDurS.setPaintLabels(true);
+        MaxDurS.setPaintTicks(true);
+        MaxDurS.setSnapToTicks(true);
+        MaxDurS.setValue(40);
+        jPanel7.add(MaxDurS, java.awt.BorderLayout.SOUTH);
+
+        jPanel18.add(jPanel7);
+
+        jPanel12.add(jPanel18);
+
+        jPanel10.add(jPanel12, java.awt.BorderLayout.SOUTH);
+
+        QualityP.add(jPanel10, java.awt.BorderLayout.NORTH);
 
         PTabs.addTab(__("Quality"), QualityP);
 
@@ -518,6 +567,10 @@ public class JInformation extends JDialog {
         Options.setSpaceChars(spaceCharsC.isSelected());
     }//GEN-LAST:event_spaceCharsCActionPerformed
 
+    private void compactCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compactCActionPerformed
+        Options.setCompactSubs(compactC.isSelected());
+    }//GEN-LAST:event_compactCActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel AuthorL;
     private javax.swing.JTextField AuthorT;
@@ -526,6 +579,8 @@ public class JInformation extends JDialog {
     private javax.swing.JLabel ErrorColL;
     private javax.swing.JLabel FilePathL;
     private javax.swing.JTextField FilePathT;
+    private javax.swing.JLabel FillPercentL;
+    private javax.swing.JSlider FillPercentS;
     private javax.swing.JPanel InfoP;
     private javax.swing.JLabel MaxCPSL;
     private javax.swing.JSlider MaxCPSS;
@@ -566,10 +621,13 @@ public class JInformation extends JDialog {
     private javax.swing.JLabel TotalSubSizeL;
     private javax.swing.JLabel TotalSubSizeT;
     private javax.swing.JPanel VSelectorP;
+    private javax.swing.JCheckBox compactC;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
@@ -577,10 +635,12 @@ public class JInformation extends JDialog {
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
