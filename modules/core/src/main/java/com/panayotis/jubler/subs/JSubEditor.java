@@ -26,6 +26,12 @@ import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
+import static com.panayotis.jubler.options.Options.getMaxCPS;
+import static com.panayotis.jubler.options.Options.getMaxDuration;
+import static com.panayotis.jubler.options.Options.getMaxLineLength;
+import static com.panayotis.jubler.options.Options.getMaxLines;
+import static com.panayotis.jubler.options.Options.getMaxSubLength;
+import static com.panayotis.jubler.options.Options.getMinDuration;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.JOverStyles;
@@ -59,19 +65,30 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     public final static ImageIcon Lock[];
 
+    public final static ImageIcon NewlineI = Theme.loadIcon("newline.png");
+    public final static ImageIcon NewlineI_E = Theme.loadIcon("newline_e.png");
+    public final static ImageIcon LineI = Theme.loadIcon("line.png");
+    public final static ImageIcon LineI_E = Theme.loadIcon("line_e.png");
+    public final static ImageIcon SumI = Theme.loadIcon("sum.png");
+    public final static ImageIcon SumI_E = Theme.loadIcon("sum_e.png");
+    public final static ImageIcon CPSI = Theme.loadIcon("cps.png");
+    public final static ImageIcon CPSI_E = Theme.loadIcon("cps_e.png");
+
     static {
         Lock = new ImageIcon[2];
         Lock[0] = Theme.loadIcon("lock.png");
         Lock[1] = Theme.loadIcon("unlock.png");
     }
-    private JTimeSpinner SubStart, SubFinish, SubDur;
-    private JOverStyles overstyle;
+    private final JTimeSpinner SubStart;
+    private final JTimeSpinner SubFinish;
+    private final JTimeSpinner SubDur;
+    private final JOverStyles overstyle;
     private boolean ignore_sub_changes = false;
     private boolean ignore_style_list_changes = false;
     private JubFrame parent;
-    private JSubEditorDialog dlg;
+    private final JSubEditorDialog dlg;
     private SubStyleList styles;
-    private JStyleEditor sedit;
+    private final JStyleEditor sedit;
     private SubEntry entry;
     /* Remember where this is attached to */
     private boolean is_attached = false;
@@ -82,15 +99,13 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     @SuppressWarnings("LeakingThisInConstructor")
     public JSubEditor(JubFrame parent) {
         initComponents();
-        progressOff();
-
         SubStart = new JTimeSpinner();
         SubFinish = new JTimeSpinner();
         SubDur = new JTimeSpinner();
 
         /* Make subs area center justified */
         SimpleAttributeSet set = new SimpleAttributeSet();
-        set.addAttribute(StyleConstants.ParagraphConstants.Alignment, new Integer(StyleConstants.ParagraphConstants.ALIGN_CENTER));
+        set.addAttribute(StyleConstants.ParagraphConstants.Alignment, StyleConstants.ParagraphConstants.ALIGN_CENTER);
         //set.addAttribute(StyleConstants.StrikeThrough, new Boolean(true));
 
         SubText.getStyledDocument().setParagraphAttributes(0, 1, set, false);
@@ -106,9 +121,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         add(overstyle, BorderLayout.NORTH);
 
         MetricsB.setVisible(false);
+        DurationL.setVisible(false);
 
         sedit = new JStyleEditor(parent);
-        ErrorL.setVisible(false);
         setEnabled(false);
     }
 
@@ -257,9 +272,11 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         L2.setEnabled(enabled);
         L3.setEnabled(enabled);
         TotalL.setEnabled(enabled);
-        CharsL.setEnabled(enabled);
+        SubCharsL.setEnabled(enabled);
+        CPSL.setEnabled(enabled);
+        DurationL.setEnabled(enabled);
         NewlineL.setEnabled(enabled);
-        LongestL.setEnabled(enabled);
+        LineCharsL.setEnabled(enabled);
 
         /* Fix the attributes of the sub text area */
         if (entry == null || (!enabled)) {
@@ -340,6 +357,33 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         return ignore_sub_changes;
     }
 
+    public void updateMetrics(SubEntry entry) {
+        /* Update information label */
+        SubMetrics m = entry.getMetrics();
+
+        NewlineL.setText(String.valueOf(m.lines));
+        NewlineL.setIcon(m.lines > getMaxLines() ? NewlineI_E : NewlineI);
+
+        SubCharsL.setText(String.valueOf(m.length));
+        SubCharsL.setIcon(m.length > getMaxSubLength() ? SumI_E : SumI);
+
+        LineCharsL.setText(String.valueOf(m.linelength));
+        LineCharsL.setIcon(m.linelength > getMaxLineLength() ? LineI_E : LineI);
+
+        CPSL.setText(m.cps == Float.POSITIVE_INFINITY ? "∞" : String.valueOf(((int) (m.cps * 10)) / 10f));
+        CPSL.setIcon(m.cps > getMaxCPS() ? CPSI_E : CPSI);
+
+        if (entry.getFinishTime().differenceInSecs(entry.getStartTime()) > getMaxDuration()) {
+            DurationL.setVisible(true);
+            DurationL.setToolTipText(__("Duration time is too big"));
+        } else if (entry.getFinishTime().differenceInSecs(entry.getStartTime()) < getMinDuration()) {
+            DurationL.setVisible(true);
+            DurationL.setToolTipText(__("Duration time is too small"));
+        } else
+            DurationL.setVisible(false);
+        entry.updateQuality();
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -365,9 +409,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jScrollPane1 = new javax.swing.JScrollPane();
         SubText = new javax.swing.JTextPane();
         StyleP = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        StyleListC = new javax.swing.JComboBox();
-        EditB = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         DetachP = new javax.swing.JPanel();
         DetachB = new javax.swing.JButton();
@@ -384,13 +425,14 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         InfoP = new javax.swing.JPanel();
         TotalL = new javax.swing.JLabel();
         NewlineL = new javax.swing.JLabel();
-        CharsL = new javax.swing.JLabel();
-        LongestL = new javax.swing.JLabel();
-        ErrorL = new javax.swing.JLabel();
-        ProgressPanel = new javax.swing.JPanel();
-        progressLabel = new javax.swing.JLabel();
-        progressBar = new javax.swing.JProgressBar();
+        LineCharsL = new javax.swing.JLabel();
+        SubCharsL = new javax.swing.JLabel();
+        CPSL = new javax.swing.JLabel();
+        DurationL = new javax.swing.JLabel();
         Unsaved = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        StyleListC = new javax.swing.JComboBox();
+        EditB = new javax.swing.JButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -489,30 +531,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         StyleP.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 0, 2, 0));
-        StyleP.setLayout(new java.awt.BorderLayout(12, 0));
-
-        jPanel6.setOpaque(false);
-        jPanel6.setLayout(new java.awt.BorderLayout());
-
-        StyleListC.setToolTipText(__("Style list"));
-        StyleListC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StyleListCActionPerformed(evt);
-            }
-        });
-        jPanel6.add(StyleListC, java.awt.BorderLayout.CENTER);
-
-        EditB.setIcon(Theme.loadIcon("edittheme.png"));
-        EditB.setToolTipText(__("Edit current style"));
-        SystemDependent.setCommandButtonStyle(EditB, "only");
-        EditB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EditBActionPerformed(evt);
-            }
-        });
-        jPanel6.add(EditB, java.awt.BorderLayout.EAST);
-
-        StyleP.add(jPanel6, java.awt.BorderLayout.EAST);
+        StyleP.setLayout(new java.awt.BorderLayout());
 
         jPanel7.setOpaque(false);
         jPanel7.setLayout(new java.awt.BorderLayout());
@@ -630,57 +649,73 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TotalL.setIcon(Theme.loadIcon("lines.png"));
         TotalL.setToolTipText(__("Total subtitles"));
+        TotalL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         TotalL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         TotalL.setIconTextGap(0);
         InfoP.add(TotalL);
 
-        NewlineL.setIcon(Theme.loadIcon("newline.png"));
-        NewlineL.setToolTipText(__("Number of lines per subtitle"));
-        NewlineL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 6));
+        NewlineL.setToolTipText(__("Lines per subtitle"));
+        NewlineL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         NewlineL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
         NewlineL.setIconTextGap(0);
         InfoP.add(NewlineL);
 
-        CharsL.setIcon(Theme.loadIcon("key.png"));
-        CharsL.setToolTipText(__("Total number of characters per subtitle"));
-        CharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 6));
-        CharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        CharsL.setIconTextGap(0);
-        InfoP.add(CharsL);
+        LineCharsL.setToolTipText(__("Longest characters per line"));
+        LineCharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        LineCharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        LineCharsL.setIconTextGap(0);
+        InfoP.add(LineCharsL);
 
-        LongestL.setIcon(Theme.loadIcon("longest.png"));
-        LongestL.setToolTipText(__("Longest line of subtitle"));
-        LongestL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        LongestL.setIconTextGap(0);
-        InfoP.add(LongestL);
+        SubCharsL.setToolTipText(__("Characters per subtitle"));
+        SubCharsL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        SubCharsL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        SubCharsL.setIconTextGap(0);
+        InfoP.add(SubCharsL);
 
-        ErrorL.setForeground(java.awt.Color.red);
-        ErrorL.setText(" *!* ");
-        ErrorL.setToolTipText(__("Subtitle length has issues"));
-        InfoP.add(ErrorL);
+        CPSL.setToolTipText(__("Characters per second"));
+        CPSL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        CPSL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        CPSL.setIconTextGap(0);
+        InfoP.add(CPSL);
 
-        ProgressPanel.setPreferredSize(new java.awt.Dimension(300, 21));
-        ProgressPanel.setLayout(new java.awt.BorderLayout());
-
-        progressLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        progressLabel.setText(__("Progress:"));
-        progressLabel.setPreferredSize(new java.awt.Dimension(100, 14));
-        ProgressPanel.add(progressLabel, java.awt.BorderLayout.LINE_START);
-
-        progressBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        progressBar.setPreferredSize(new java.awt.Dimension(200, 21));
-        progressBar.setStringPainted(true);
-        ProgressPanel.add(progressBar, java.awt.BorderLayout.LINE_END);
-
-        InfoP.add(ProgressPanel);
+        DurationL.setIcon(Theme.loadIcon("dur_e.png"));
+        DurationL.setToolTipText(__("Duration"));
+        DurationL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        DurationL.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        DurationL.setIconTextGap(0);
+        InfoP.add(DurationL);
 
         jPanel8.add(InfoP, java.awt.BorderLayout.WEST);
 
         Unsaved.setIcon(Theme.loadIcon("save.png"));
+        Unsaved.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 6));
         Unsaved.setEnabled(false);
         jPanel8.add(Unsaved, java.awt.BorderLayout.EAST);
 
         StyleP.add(jPanel8, java.awt.BorderLayout.CENTER);
+
+        jPanel6.setOpaque(false);
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        StyleListC.setToolTipText(__("Style list"));
+        StyleListC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StyleListCActionPerformed(evt);
+            }
+        });
+        jPanel6.add(StyleListC, java.awt.BorderLayout.CENTER);
+
+        EditB.setIcon(Theme.loadIcon("edittheme.png"));
+        EditB.setToolTipText(__("Edit current style"));
+        SystemDependent.setCommandButtonStyle(EditB, "only");
+        EditB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                EditBActionPerformed(evt);
+            }
+        });
+        jPanel6.add(EditB, java.awt.BorderLayout.EAST);
+
+        StyleP.add(jPanel6, java.awt.BorderLayout.EAST);
 
         add(StyleP, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -834,30 +869,30 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         }
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public javax.swing.JLabel CharsL;
+    public javax.swing.JLabel CPSL;
     private javax.swing.JToggleButton ColorB;
     public javax.swing.JButton DetachB;
     private javax.swing.JPanel DetachP;
+    public javax.swing.JLabel DurationL;
     private javax.swing.JButton EditB;
-    public javax.swing.JLabel ErrorL;
     private javax.swing.JToggleButton FontB;
     public javax.swing.JPanel InfoP;
     private javax.swing.JLabel L1;
     private javax.swing.JLabel L2;
     private javax.swing.JLabel L3;
+    public javax.swing.JLabel LineCharsL;
     private javax.swing.JToggleButton Lock1;
     private javax.swing.JToggleButton Lock2;
     private javax.swing.JToggleButton Lock3;
-    public javax.swing.JLabel LongestL;
     private javax.swing.JToggleButton MetricsB;
     public javax.swing.JLabel NewlineL;
     private javax.swing.JPanel PSDur;
     private javax.swing.JPanel PSFinish;
     private javax.swing.JPanel PSStart;
-    private javax.swing.JPanel ProgressPanel;
     private javax.swing.JToggleButton ShowStyleB;
     private javax.swing.JComboBox StyleListC;
     public javax.swing.JPanel StyleP;
+    public javax.swing.JLabel SubCharsL;
     private javax.swing.JTextPane SubText;
     private javax.swing.JToggleButton TimeB;
     private javax.swing.ButtonGroup TimeLock;
@@ -875,51 +910,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JProgressBar progressBar;
-    private javax.swing.JLabel progressLabel;
     // End of variables declaration//GEN-END:variables
 
-    /**
-     * @return the progressBar
-     */
-    public javax.swing.JProgressBar getProgressBar() {
-        return progressBar;
-    }
-
-    /**
-     * @return the progressLabel
-     */
-    public javax.swing.JLabel getProgressLabel() {
-        return progressLabel;
-    }
-
-    public void progressOn() {
-        this.progressBar.setVisible(true);
-        this.progressLabel.setVisible(true);
-    }
-
-    public void progressOff() {
-        this.progressBar.setVisible(false);
-        this.progressLabel.setVisible(false);
-    }
-
-    public void progressMinValue(int value) {
-        this.progressBar.setMinimum(value);
-    }
-
-    public void progressMaxValue(int value) {
-        this.progressBar.setMaximum(value);
-    }
-
-    public void progressValue(int value) {
-        this.progressBar.setValue(value);
-    }
-
-    public void progressTitle(String txt) {
-        this.progressLabel.setText(txt + ":");
-    }
-
-    public void progressTooltip(String txt) {
-        this.progressBar.setToolTipText(txt);
-    }
 }

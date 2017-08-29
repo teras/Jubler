@@ -84,7 +84,7 @@
                                 <artifactItem>
                                     <groupId>com.panayotis.jubler</groupId>
                                     <artifactId>coretheme</artifactId>
-                                    <version>5.1.0.0</version>
+                                    <version>${project.version}</version>
                                 </artifactItem>
                             </artifactItems>
                             <outputDirectory>target/jubler/lib/themes</outputDirectory>

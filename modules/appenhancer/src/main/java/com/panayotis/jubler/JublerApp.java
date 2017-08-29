@@ -90,9 +90,9 @@ public class JublerApp implements Plugin, PluginItem {
             setComponentDraggable(jubler, jubler.subeditor.StyleP);
             setComponentDraggable(jubler, jubler.subeditor.Unsaved);
             setComponentDraggable(jubler, jubler.subeditor.TotalL);
-            setComponentDraggable(jubler, jubler.subeditor.CharsL);
+            setComponentDraggable(jubler, jubler.subeditor.SubCharsL);
             setComponentDraggable(jubler, jubler.subeditor.NewlineL);
-            setComponentDraggable(jubler, jubler.subeditor.LongestL);
+            setComponentDraggable(jubler, jubler.subeditor.LineCharsL);
         }
     }
 

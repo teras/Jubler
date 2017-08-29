@@ -333,23 +333,18 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         if (curlinelength > m.linelength)
             m.linelength = curlinelength;
 
-        m.cps = m.length / ((finish.getMillis() - start.getMillis()) / 1000f);
+        long delta = finish.getMillis() - start.getMillis();
+        m.cps = delta == 0 ? Float.POSITIVE_INFINITY : m.length / (delta / 1000f);
         return m;
     }
 
-    public boolean updateQuality() {
-        return updateQuality(getMetrics());
-    }
-
-    public boolean updateQuality(SubMetrics m) {
+    public void updateQuality() {
+        SubMetrics m = getMetrics();
         if (m.lines > getMaxLines() || m.cps > getMaxCPS() || m.length > getMaxSubLength() || m.linelength > getMaxLineLength()
-                || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration()) {
+                || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration())
             setMark(getErrorColor());
-            return true;
-        }
         if (mark == getErrorColor())
             setMark(0);
-        return false;
     }
 
     /**

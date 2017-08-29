@@ -44,7 +44,7 @@ public class Theme {
             if (SystemFileFinder.isJarBased())
                 request = new ZipFile(new File(SystemFileFinder.AppPath + File.separator + "themes" + File.separator + THEME_NAME + ".jar"));
             else
-                request = new ZipFile(new File("../coretheme/target/" + THEME_NAME + "-" + JAbout.getCurrentLongversion() + ".jar"));
+                request = new ZipFile(new File("../coretheme/target/" + THEME_NAME + "-" + JAbout.getCurrentVersion() + ".jar"));
         } catch (IOException ex) {
             DEBUG.debug("Unable to open theme: " + THEME_NAME);
         }

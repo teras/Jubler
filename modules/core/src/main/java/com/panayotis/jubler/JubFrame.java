@@ -43,7 +43,6 @@ import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubFile;
-import com.panayotis.jubler.subs.SubMetrics;
 import com.panayotis.jubler.subs.SubRenderer;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
@@ -182,6 +181,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         initComponents();
         PreviewTB.setToolTipText(__("Right mouse click to bring selected row into view"));
         PreviewTB.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseReleased(MouseEvent e) {
                 int mouse_button = e.getButton();
                 boolean is_right_mouse = mouse_button == MouseEvent.BUTTON3;
@@ -270,17 +270,8 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         keepUndo(entry);
         String subtext = subeditor.getSubText();
         entry.setText(subtext);
-        updateStatsLabel(entry);
+        subeditor.updateMetrics(entry);
         rowHasChanged(row, false);
-    }
-
-    private void updateStatsLabel(SubEntry entry) {
-        /* Update information label */
-        SubMetrics m = entry.getMetrics();
-        subeditor.NewlineL.setText(String.valueOf(m.lines));
-        subeditor.CharsL.setText(String.valueOf(m.length));
-        subeditor.LongestL.setText(String.valueOf(m.linelength));
-        subeditor.ErrorL.setVisible(entry.updateQuality(m));
     }
 
     public int addSubEntry(SubEntry entry) {
@@ -2452,7 +2443,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
         updateConsoles(sel.getStartTime().toSeconds());
         subeditor.focusOnText();
-        updateStatsLabel(sel);
+        subeditor.updateMetrics(sel);
         subeditor.ignoreSubChanges(false);
     }
 
