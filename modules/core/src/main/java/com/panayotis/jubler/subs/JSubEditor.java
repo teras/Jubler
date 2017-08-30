@@ -397,7 +397,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         CompactL.setVisible(m.length < (m.lines - 1) * getMaxLineLength());
 
-        entry.updateQuality();
+        entry.updateQuality(m);
     }
 
     private static void setStatus(JLabel label, boolean error, ImageIcon iconError, ImageIcon iconOK) {

@@ -350,13 +350,16 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     }
 
     public void updateQuality() {
-        SubMetrics m = getMetrics();
+        updateQuality(getMetrics());
+    }
+
+    public void updateQuality(SubMetrics m) {
         if (m.lines > getMaxLines() || m.cps > getMaxCPS() || m.length > getMaxSubLength() || m.linelength > getMaxLineLength()
                 || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration()
                 || m.fillpercent < getFillPercent()
                 || m.length < (m.lines - 1) * getMaxLineLength())
             setMark(getErrorColor());
-        if (mark == getErrorColor())
+        else
             setMark(0);
     }
 
