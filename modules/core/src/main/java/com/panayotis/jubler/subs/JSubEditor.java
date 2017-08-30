@@ -904,7 +904,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
                 + "Android, Windows 10 and Desktop applications\n"
                 + "in Java.\n\n"
                 + "Please click OK to go to the CrossMobile site,\n"
-                + "tell us what you think and give us your feedback.",
+                + "tell us what you think and have a go!",
                 "Jubler team needs your help!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE)
                 == JOptionPane.OK_OPTION)
             try {

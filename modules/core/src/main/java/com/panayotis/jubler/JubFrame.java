@@ -2160,7 +2160,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
             ToolsManager.setFileToolsStatus(windows.get(0), false);
         StaticJubler.updateRecents();
 
-        if (windows.size() == 0)
+        if (windows.isEmpty())
             if (keep_application_alive && subs != null) {
                 StaticJubler.setWindowPosition(this, true);
                 StaticJubler.jumpWindowPosition(false);
