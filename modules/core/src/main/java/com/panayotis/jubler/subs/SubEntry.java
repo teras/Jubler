@@ -357,7 +357,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         if (m.lines > getMaxLines() || m.cps > getMaxCPS() || m.length > getMaxSubLength() || m.linelength > getMaxLineLength()
                 || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration()
                 || m.fillpercent < getFillPercent()
-                || m.length < (m.lines - 1) * getMaxLineLength())
+                || (isCompactSubs() && m.length < (m.lines - 1) * getMaxLineLength()))
             setMark(getErrorColor());
         else
             setMark(0);

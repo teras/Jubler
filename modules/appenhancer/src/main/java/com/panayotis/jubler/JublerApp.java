@@ -28,12 +28,15 @@ import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Point;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
@@ -88,20 +91,14 @@ public class JublerApp implements Plugin, PluginItem {
             jubler.QuitFM.getParent().remove(jubler.QuitFM);
             setComponentDraggable(jubler, jubler.JublerTools);
             setComponentDraggable(jubler, jubler.subeditor.StyleP);
-            setComponentDraggable(jubler, jubler.subeditor.Unsaved);
-            setComponentDraggable(jubler, jubler.subeditor.TotalL);
-            setComponentDraggable(jubler, jubler.subeditor.SubCharsL);
-            setComponentDraggable(jubler, jubler.subeditor.NewlineL);
-            setComponentDraggable(jubler, jubler.subeditor.LineCharsL);
         }
     }
 
-    private void setComponentDraggable(Window window, Component component) {
-        if (component instanceof JToolBar)
-            ((JToolBar) component).setFloatable(false);
+    private void setComponentDraggable(Window window, final Component comp) {
+        if (comp instanceof JToolBar)
+            ((JToolBar) comp).setFloatable(false);
 
         final Window wind = window;
-        final Component comp = component;
         final Point oldpos = new Point();
         final Point newpos = new Point();
 
@@ -134,6 +131,13 @@ public class JublerApp implements Plugin, PluginItem {
                 wind.setLocation(newpos.x - oldpos.x, newpos.y - oldpos.y);
             }
         });
+
+        if (comp instanceof Container) {
+            Container ct = (Container) comp;
+            for (Component child : ct.getComponents())
+                if (child instanceof JPanel || child instanceof JLabel)
+                    setComponentDraggable(window, child);
+        }
     }
 
     @Override

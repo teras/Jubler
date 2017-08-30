@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
+import com.panayotis.jubler.information.JQuality;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.os.Dropper;
@@ -352,6 +353,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SaveTB = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         InfoTB = new javax.swing.JButton();
+        QualityTB = new javax.swing.JButton();
         EditTP = new javax.swing.JPanel();
         CutTB = new javax.swing.JButton();
         CopyTB = new javax.swing.JButton();
@@ -379,6 +381,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         CloseFM = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JSeparator();
         InfoFM = new javax.swing.JMenuItem();
+        QualityFM = new javax.swing.JMenuItem();
         PrefsFM = new javax.swing.JMenuItem();
         QuitFM = new javax.swing.JMenuItem();
         EditM = new javax.swing.JMenu();
@@ -608,9 +611,16 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         InfoTB.setIcon(Theme.loadIcon("info.png"));
         InfoTB.setToolTipText(__("Project Information"));
         InfoTB.setEnabled(false);
-        SystemDependent.setToolBarButtonStyle(InfoTB, "only");
+        SystemDependent.setToolBarButtonStyle(InfoTB, "first");
         InfoTB.addActionListener(formListener);
         jPanel1.add(InfoTB);
+
+        QualityTB.setIcon(Theme.loadIcon("quality.png"));
+        QualityTB.setToolTipText(__("Quality configuration"));
+        QualityTB.setEnabled(false);
+        SystemDependent.setToolBarButtonStyle(QualityTB, "last");
+        QualityTB.addActionListener(formListener);
+        jPanel1.add(QualityTB);
 
         JublerTools.add(jPanel1);
 
@@ -760,6 +770,13 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         InfoFM.setName("FIN"); // NOI18N
         InfoFM.addActionListener(formListener);
         FileM.add(InfoFM);
+
+        QualityFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        QualityFM.setText(__("Quality"));
+        QualityFM.setEnabled(false);
+        QualityFM.setName("FQU"); // NOI18N
+        QualityFM.addActionListener(formListener);
+        FileM.add(QualityFM);
 
         PrefsFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.CTRL_MASK));
         PrefsFM.setText(__("Preferences"));
@@ -1116,6 +1133,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             else if (evt.getSource() == InfoTB) {
                 JubFrame.this.InfoFMActionPerformed(evt);
             }
+            else if (evt.getSource() == QualityTB) {
+                JubFrame.this.QualityTBInfoFMActionPerformed(evt);
+            }
             else if (evt.getSource() == CutTB) {
                 JubFrame.this.CutEMActionPerformed(evt);
             }
@@ -1215,6 +1235,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             else if (evt.getSource() == InfoFM) {
                 JubFrame.this.InfoFMActionPerformed(evt);
             }
+            else if (evt.getSource() == QualityFM) {
+                JubFrame.this.QualityTBInfoFMActionPerformed(evt);
+            }
             else if (evt.getSource() == PrefsFM) {
                 JubFrame.this.PrefsFMActionPerformed(evt);
             }
@@ -1268,6 +1291,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             }
             else if (evt.getSource() == byTimeGEM) {
                 JubFrame.this.byTimeGEMActionPerformed(evt);
+            }
+            else if (evt.getSource() == AllSEM) {
+                JubFrame.this.AllSEMActionPerformed(evt);
             }
             else if (evt.getSource() == NoneMEM) {
                 JubFrame.this.NoneMEMActionPerformed(evt);
@@ -1340,9 +1366,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             }
             else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
-            }
-            else if (evt.getSource() == AllSEM) {
-                JubFrame.this.AllSEMActionPerformed(evt);
             }
         }
 
@@ -1789,6 +1812,12 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         ignore_table_selections = false;
     }//GEN-LAST:event_AllSEMActionPerformed
 
+    private void QualityTBInfoFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QualityTBInfoFMActionPerformed
+        JQuality quality = new JQuality(this);
+        quality.setVisible(true);
+        tableHasChanged(getSelectedSubs());
+    }//GEN-LAST:event_QualityTBInfoFMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1852,6 +1881,8 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private javax.swing.JButton PreviewTB;
     private javax.swing.JMenuItem PreviousGEM;
     private javax.swing.JMenuItem PreviousPageGEM;
+    private javax.swing.JMenuItem QualityFM;
+    private javax.swing.JButton QualityTB;
     public javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RedoEM;
@@ -2071,6 +2102,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         SaveFM.setEnabled(true);
         SaveAsFM.setEnabled(true);
         InfoFM.setEnabled(true);
+        QualityFM.setEnabled(true);
         for (Component c : EditM.getMenuComponents())
             c.setEnabled(true);
         for (Component c : ToolsM.getMenuComponents())
@@ -2084,6 +2116,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
         SaveTB.setEnabled(true);
         InfoTB.setEnabled(true);
+        QualityTB.setEnabled(true);
         CutTB.setEnabled(true);
         CopyTB.setEnabled(true);
         PasteTB.setEnabled(true);

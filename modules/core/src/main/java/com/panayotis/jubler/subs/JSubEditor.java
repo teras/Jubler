@@ -26,13 +26,7 @@ import com.panayotis.jubler.os.JIDialog;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.options.Options.getFillPercent;
-import static com.panayotis.jubler.options.Options.getMaxCPS;
-import static com.panayotis.jubler.options.Options.getMaxDuration;
-import static com.panayotis.jubler.options.Options.getMaxLineLength;
-import static com.panayotis.jubler.options.Options.getMaxLines;
-import static com.panayotis.jubler.options.Options.getMaxSubLength;
-import static com.panayotis.jubler.options.Options.getMinDuration;
+import static com.panayotis.jubler.options.Options.*;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.JOverStyles;
@@ -398,7 +392,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         } else
             DurationL.setVisible(false);
 
-        CompactL.setVisible(m.length < (m.lines - 1) * getMaxLineLength());
+        CompactL.setVisible(isCompactSubs() && m.length < (m.lines - 1) * getMaxLineLength());
 
         entry.updateQuality(m);
     }
@@ -897,7 +891,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     @SuppressWarnings("UseSpecificCatch")
     private void crossinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crossinfoActionPerformed
-        if (JOptionPane.showConfirmDialog(null, "<html>Jubler team is proud to present you <b>CrossMobile</b>!\n\n"
+        if (JOptionPane.showConfirmDialog(parent, "<html>Jubler team is proud to present you <b>CrossMobile</b>!\n\n"
                 + "CrossMobile is an innovative project to create\n"
                 + "sophisticated multiplatform applications.\n"
                 + "Write the code only once and produce native iOS,\n"
