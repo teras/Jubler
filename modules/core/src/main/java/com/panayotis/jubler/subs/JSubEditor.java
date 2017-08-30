@@ -46,9 +46,12 @@ import com.panayotis.jubler.time.gui.JTimeSpinner;
 import com.panayotis.jubler.undo.UndoEntry;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Dimension;
+import java.net.URI;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
@@ -405,6 +408,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         label.setForeground(error ? INFOC_E : INFOC);
     }
 
+    public void removeHelpWanted() {
+        crossP.getParent().remove(crossP);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -456,6 +463,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel6 = new javax.swing.JPanel();
         StyleListC = new javax.swing.JComboBox();
         EditB = new javax.swing.JButton();
+        crossP = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        crossinfo = new javax.swing.JButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -754,6 +764,26 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleP.add(jPanel6, java.awt.BorderLayout.EAST);
 
         add(StyleP, java.awt.BorderLayout.SOUTH);
+
+        crossP.setBackground(new java.awt.Color(244, 227, 174));
+        crossP.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+
+        jLabel1.setForeground(java.awt.Color.black);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/crossmobile.png"))); // NOI18N
+        jLabel1.setText("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?");
+        jLabel1.setIconTextGap(6);
+        crossP.add(jLabel1);
+
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
+        crossinfo.setText("more...");
+        crossinfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crossinfoActionPerformed(evt);
+            }
+        });
+        crossP.add(crossinfo);
+
+        add(crossP, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ShowStyleBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ShowStyleBActionPerformed
@@ -865,6 +895,24 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         parent.ToolsLockM.setSelected(ToolsLockB.isSelected());
     }//GEN-LAST:event_ToolsLockBActionPerformed
 
+    @SuppressWarnings("UseSpecificCatch")
+    private void crossinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crossinfoActionPerformed
+        if (JOptionPane.showConfirmDialog(null, "<html>Jubler team is proud to present you <b>CrossMobile</b>!\n\n"
+                + "CrossMobile is an innovative project to create\n"
+                + "sophisticated multiplatform applications.\n"
+                + "Write the code only once and produce native iOS,\n"
+                + "Android, Windows 10 and Desktop applications\n"
+                + "in Java.\n\n"
+                + "Please click OK to go to the CrossMobile site,\n"
+                + "tell us what you think and give us your feedback.",
+                "Jubler team needs your help!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE)
+                == JOptionPane.OK_OPTION)
+            try {
+                Desktop.getDesktop().browse(new URI("https://crossmobile.tech/"));
+            } catch (Exception ex) {
+            }
+    }//GEN-LAST:event_crossinfoActionPerformed
+
     public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
         entry.setOverStyle(type, value, SubText.getSelectionStart(), SubText.getSelectionEnd());
@@ -939,6 +987,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public javax.swing.JLabel TotalL;
     private javax.swing.JButton TrashB;
     public javax.swing.JLabel Unsaved;
+    private javax.swing.JPanel crossP;
+    private javax.swing.JButton crossinfo;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

@@ -2093,6 +2093,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
         if (asNewWindow)
             setSelectedSub(0, true);
+        subeditor.removeHelpWanted();
     }
 
     public void enablePreview(boolean status) {
