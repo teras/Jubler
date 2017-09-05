@@ -773,8 +773,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         QualityFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
         QualityFM.setText(__("Quality"));
+        QualityFM.setAutoscrolls(true);
         QualityFM.setEnabled(false);
-        QualityFM.setName("FQU"); // NOI18N
+        QualityFM.setName("FQO"); // NOI18N
         QualityFM.addActionListener(formListener);
         FileM.add(QualityFM);
 

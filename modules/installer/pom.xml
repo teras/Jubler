@@ -298,9 +298,9 @@
                         </executions>
                         <dependencies>
                             <dependency>
-                                <groupId>org.bitbucket.infinitekind</groupId>
+                                <groupId>com.panayotis</groupId>
                                 <artifactId>appbundler</artifactId>
-                                <version>1.0ea</version>
+                                <version>1.0.1</version>
                             </dependency>
                         </dependencies>                    
                     </plugin>
