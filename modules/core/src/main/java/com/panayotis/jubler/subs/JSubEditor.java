@@ -42,7 +42,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.net.URI;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,8 +55,10 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.TextAction;
 
 /**
  *
@@ -105,6 +109,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     @SuppressWarnings("LeakingThisInConstructor")
     public JSubEditor(JubFrame parent) {
         initComponents();
+        initEditMenu();
         SubStart = new JTimeSpinner();
         SubFinish = new JTimeSpinner();
         SubDur = new JTimeSpinner();
@@ -406,6 +411,29 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.getParent().remove(crossP);
     }
 
+    private void initEditMenu() {
+        Action cut = new DefaultEditorKit.CutAction();
+        cut.putValue(Action.NAME, __("Cut subtitles"));
+        textEditPopup.add(cut);
+
+        Action copy = new DefaultEditorKit.CopyAction();
+        copy.putValue(Action.NAME, __("Copy subtitles"));
+        textEditPopup.add(copy);
+
+        Action paste = new DefaultEditorKit.PasteAction();
+        paste.putValue(Action.NAME, __("Paste subtitles"));
+        textEditPopup.add(paste);
+
+        Action selectAll = new TextAction(__("Select all subtitles")) {
+            public void actionPerformed(ActionEvent e) {
+                SubText.selectAll();
+                SubText.requestFocusInWindow();
+            }
+        };
+        textEditPopup.add(selectAll);
+        SubText.setComponentPopupMenu(textEditPopup);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -415,7 +443,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private void initComponents() {
 
         TimeLock = new javax.swing.ButtonGroup();
-        jPanel5 = new javax.swing.JPanel();
+        textEditPopup = new javax.swing.JPopupMenu();
         TimeP = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         L1 = new javax.swing.JLabel();
@@ -546,7 +574,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
         SubText.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        SubText.setToolTipText(__("Editor of the subtitle text"));
         SubText.setPreferredSize(new java.awt.Dimension(200, 30));
         SubText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
@@ -988,11 +1015,11 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu textEditPopup;
     // End of variables declaration//GEN-END:variables
 
 }
