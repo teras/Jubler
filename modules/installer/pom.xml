@@ -243,12 +243,6 @@
                                         <move file="target/jubler/lib/i18n" todir="target/Jubler.app/Contents/Java"/>
                                         <move file="target/jubler/lib/themes" todir="target/Jubler.app/Contents/Java"/>
 
-                                        <copy todir="">
-                                            <fileset dir="../../resources/i18n/cache"/>
-                                        </copy>
-                                        <copy todir="target/jubler/lib/i18n">
-                                            <fileset dir="../../resources/i18n/cache"/>
-                                        </copy>
                                         <copy todir="target/jubler/lib/i18n">
                                             <fileset dir="../../resources/i18n/cache"/>
                                         </copy>
@@ -275,17 +269,17 @@
                                             <arg line="detach -force /Volumes/Jubler-template"/>
                                         </exec>
                                         <exec executable="hdiutil" failonerror="true">
-                                            <arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o target/Jubler-${version}.dmg"/>
+                                            <arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o target/Jubler-${project.version}.dmg"/>
                                         </exec>
                                         <exec executable="make" dir="../../resources/installers/macosx/resource_creator"/>
                                         <exec executable="hdiutil" failonerror="true">
-                                            <arg line="unflatten target/Jubler-${version}.dmg"/>
+                                            <arg line="unflatten target/Jubler-${project.version}.dmg"/>
                                         </exec>
                                         <exec executable="Rez" failonerror="true">
-                                            <arg line="-a ../../resources/installers/macosx/license_dmg -o target/Jubler-${version}.dmg"/>
+                                            <arg line="-a ../../resources/installers/macosx/license_dmg -o target/Jubler-${project.version}.dmg"/>
                                         </exec>
                                         <exec executable="hdiutil" failonerror="true">
-                                            <arg line="flatten target/Jubler-${version}.dmg"/>
+                                            <arg line="flatten target/Jubler-${project.version}.dmg"/>
                                         </exec>
                                         <delete file="/tmp/Jubler-template.dmg"/>
                                     </target>
@@ -300,7 +294,7 @@
                             <dependency>
                                 <groupId>com.panayotis</groupId>
                                 <artifactId>appbundler</artifactId>
-                                <version>1.0.1</version>
+                                <version>1.0.2</version>
                             </dependency>
                         </dependencies>                    
                     </plugin>
