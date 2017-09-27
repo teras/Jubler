@@ -81,8 +81,8 @@
 
     <!-- Create distribution related files & versioning information -->
     <target name="update-version">
-        <echo message="NOTE: If this task fails, 'hg' executable should be existing in current $PATH."/>
-        <exec executable="hg" outputproperty="releaseid" failonerror="true"> <arg line="tip --template {rev}"/> </exec>
+        <echo message="NOTE: If this task fails, 'git' executable should exist in current $PATH."/>
+        <exec executable="git" outputproperty="releaseid" failonerror="true"> <arg line="rev-list --count HEAD"/> </exec>
         <input message="Please give human-readable version" addproperty="versionid"/>
         <input message="Please give numeric version" addproperty="longversionid"/>
         <echo message="version=${versionid}${line.separator}longversion=${longversionid}${line.separator}release=${releaseid}${line.separator}"/>

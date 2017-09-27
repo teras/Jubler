@@ -1,4 +1,4 @@
-version=5.1
-longversion=5.1.0.0
-release=1319
+version=5.2
+longversion=5.2.0.0
+release=1320
 packaged=@DISTRIBUTION@
