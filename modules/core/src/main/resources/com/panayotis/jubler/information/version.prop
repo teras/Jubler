@@ -1,4 +1,4 @@
-version=6.0.pre1
-longversion=5.9.9.9
-release=1300
+version=${project.version}
+longversion=${long.version}
+release=${release.version}
 packaged=false

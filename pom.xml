@@ -23,6 +23,8 @@
     </modules>
     
     <properties>
+        <long.version>5.9.9.9</long.version>
+        <release.version>1310</release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 </project>
