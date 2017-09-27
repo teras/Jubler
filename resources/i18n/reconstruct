@@ -1,7 +1,9 @@
 #!/bin/sh
 PATH=$PATH:/usr/local/opt/gettext/bin
 
-./maketemplate
+rm jubler.pot
+
+( cd ../.. ; xgettext  --from-code=utf-8 -k__ `find modules -name *.java` -i -o resources/i18n/jubler.pot )
 
 if [ "$1" != "" ] ; then
 	WHAT=$1.po
