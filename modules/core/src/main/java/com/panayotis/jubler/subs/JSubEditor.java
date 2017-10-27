@@ -408,7 +408,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }
 
     public void removeHelpWanted() {
-        crossP.getParent().remove(crossP);
+        if (crossP != null && crossP.getParent() != null) {
+            crossP.getParent().remove(crossP);
+            crossP = null;
+        }
     }
 
     private void initEditMenu() {
