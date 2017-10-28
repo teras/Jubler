@@ -60,8 +60,8 @@ public abstract class AbstractGenericTextSubFormat extends SubFormat {
             if (!isSubtitleCompatible(input))
                 return null;    // Not valid - test pattern does not match
             DEBUG.debug("Found file " + getExtendedName());
-            input = initLoader(input);
             subtitle_list = new Subtitles();
+            input = initLoader(input);
             for (SubEntry entry : loadSubtitles(input)) {
                 entry.updateQuality();
                 subtitle_list.add(entry);

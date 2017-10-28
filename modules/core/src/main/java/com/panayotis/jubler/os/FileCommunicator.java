@@ -20,7 +20,6 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.JubFrame;
@@ -179,7 +178,7 @@ public class FileCommunicator {
     }
 
     public static String getDefaultDirPath() {
-        String basic_path = System.getProperty("user.dir") + File.separator;
+        String basic_path = System.getProperty("user.home") + File.separator;
         String c_path = Options.getOption("System.LastDirPath", basic_path);
         if (!c_path.endsWith(File.separator))
             c_path += File.separator;

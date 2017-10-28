@@ -72,6 +72,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -144,7 +145,8 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     /* Help browser */
     private static HelpBrowser faqbrowse;
     /* Window frame icon */
-    public final static Image FrameIcon;
+    public final static Image FrameIconSmall;
+    public final static Image FrameIconBig;
 
     static {
         windows = new JublerList();
@@ -156,7 +158,8 @@ public class JubFrame extends JFrame implements WindowFocusListener {
  /* prefs = new JPreferences(); */
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
-        FrameIcon = Theme.loadImage("frame.png");
+        FrameIconSmall = Theme.loadImage("frame.png");
+        FrameIconBig = Theme.loadImage("jubler-logo.png");
         fdialog = new JSubFileDialog();
     }
 
@@ -196,7 +199,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         });
         ToolsManager.register(this);
 
-        setIconImage(FrameIcon);
+        setIconImages(Arrays.asList(FrameIconBig, FrameIconSmall));
         preview = new JSubPreview(this);
 
         subeditor = new JSubEditor(this);

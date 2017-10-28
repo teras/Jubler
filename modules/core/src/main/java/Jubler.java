@@ -30,23 +30,13 @@ import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import javax.swing.JWindow;
 
 /**
  *
  * @author teras
  */
 public class Jubler {
-
-    private static MainSplash splash;
 
     /**
      * @param args the command line arguments
@@ -57,8 +47,6 @@ public class Jubler {
         Thread.setDefaultUncaughtExceptionHandler(eh);
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");
-        splash = new MainSplash("/icons/splash.jpg");
-
         SystemDependent.setLookAndFeel();
 
         /* Load all startup files in a separate process */
@@ -77,49 +65,8 @@ public class Jubler {
         JublerServer.startServer();
 
         new JubFrame().setVisible(true);   // Display initial JubFrame window
-        splash.dispose();   // Hide splash screen
         loader.start();     // initialize loader
 
         PluginManager.manager.callPluginListeners(StaticJubler.class);
-    }
-}
-
-class MainSplash extends JWindow {
-
-    private Image logo;
-
-    @SuppressWarnings("LeakingThisInConstructor")
-    public MainSplash(String filename) {
-        super();
-        logo = Toolkit.getDefaultToolkit().createImage(Jubler.class.getResource(filename));
-
-        MediaTracker tracker = new MediaTracker(this);
-        tracker.addImage(logo, 0);
-        try {
-            tracker.waitForID(0);
-        } catch (InterruptedException ie) {
-        }
-
-        int width = logo.getWidth(this);
-        int height = logo.getHeight(this);
-        setSize(width, height);
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((d.width - width) / 2, (d.height - height) / 2);
-
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                setVisible(false);
-                dispose();
-            }
-        });
-
-        toFront();
-        setVisible(true);
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        g.drawImage(logo, 0, 0, this);
     }
 }
