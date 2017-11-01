@@ -1,0 +1,44 @@
+
+<svg width="961px" height="935px" viewBox="0 0 961 935" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-3.6%" y="-3.0%" width="107.2%" height="107.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="6" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="10" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.21948596 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="89.4067333%" y1="100%" x2="0%" y2="0%" id="linearGradient-2">
+            <stop stop-color="#CD3E70" offset="0%"></stop>
+            <stop stop-color="#A534C3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="81.9582672%" y1="100%" x2="56.6292938%" y2="35.6416377%" id="linearGradient-3">
+            <stop stop-color="#FFD03C" offset="0%"></stop>
+            <stop stop-color="#FFB10D" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="0%" id="linearGradient-4">
+            <stop stop-color="#963CD7" offset="0%"></stop>
+            <stop stop-color="#0482D7" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="61.8164484%" y1="58.2950062%" x2="15.6479886%" y2="72.2924123%" id="linearGradient-5">
+            <stop stop-color="#1FBE84" offset="0%"></stop>
+            <stop stop-color="#0082D5" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_512x512@2x" transform="translate(-31.000000, -51.000000)">
+            <g id="Jubler-Bird" filter="url(#filter-1)" transform="translate(51.000000, 65.000000)">
+                <path d="M921,895 L519.272176,895 L519,487 C742.596586,497.047891 920.729159,675.828912 921,895 Z" id="right-wing" fill="url(#linearGradient-2)"></path>
+                <path d="M2,404.29838 C23.9993781,177.493334 221.414222,0 461.701168,0 C704.347594,0 903.279038,181.001167 922,411 L2,404.29838 Z" id="beak" fill="url(#linearGradient-3)"></path>
+                <path d="M520,895 L0,895 L0,446.493217 C0,199.901823 206.658899,0 461.590457,0 C481.170291,0 500.465389,1.17923244 519.40399,3.46827834 L520,895 Z" id="body" fill="url(#linearGradient-4)"></path>
+                <path d="M421.999978,895 C421.720938,669.788 232.939851,487.269782 3.33536713e-09,487 L0,895 L422,895 L421.999978,895 Z" id="left-wing" fill="url(#linearGradient-5)"></path>
+                <ellipse id="eye" fill="#302B41" cx="312" cy="220.5" rx="52" ry="50.5"></ellipse>
+                <ellipse id="eye-ball" fill="#FAFAFA" cx="312.5" cy="220.5" rx="25.5" ry="24.5"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>
