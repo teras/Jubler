@@ -43,8 +43,7 @@ public class Jubler {
      */
     public static void main(String args[]) {
         /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
-        ExceptionHandler eh = new ExceptionHandler();
-        Thread.setDefaultUncaughtExceptionHandler(eh);
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
         System.setProperty("apple.laf.useScreenMenuBar", "true");
         SystemDependent.setLookAndFeel();
@@ -65,7 +64,7 @@ public class Jubler {
         JublerServer.startServer();
 
         new JubFrame().setVisible(true);   // Display initial JubFrame window
-        loader.start();     // initialize loader
+        loader.start();     // initialize loader. AFTER first frame has been loaded
 
         PluginManager.manager.callPluginListeners(StaticJubler.class);
     }
