@@ -1,6 +1,6 @@
 ^resources/ffmpeg/libraries
 build/
-dist/
+/dist/
 ^_support/
 nbproject/private/
 codesign.properties
