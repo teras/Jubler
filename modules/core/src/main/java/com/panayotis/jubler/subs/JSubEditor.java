@@ -47,7 +47,6 @@ import java.net.URI;
 import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
@@ -921,20 +920,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     @SuppressWarnings("UseSpecificCatch")
     private void crossinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crossinfoActionPerformed
-        if (JOptionPane.showConfirmDialog(parent, "<html>Jubler team is proud to present you <b>CrossMobile</b>!\n\n"
-                + "CrossMobile is an innovative project to create\n"
-                + "sophisticated multiplatform applications.\n"
-                + "Write the code only once and produce native iOS,\n"
-                + "Android, Windows 10 and Desktop applications\n"
-                + "in Java.\n\n"
-                + "Please click OK to go to the CrossMobile site,\n"
-                + "tell us what you think and have a go!",
-                "Jubler team needs your help!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE)
-                == JOptionPane.OK_OPTION)
-            try {
-                Desktop.getDesktop().browse(new URI("https://crossmobile.tech/"));
-            } catch (Exception ex) {
-            }
+        try {
+            Desktop.getDesktop().browse(new URI("https://crossmobile.tech/jubler"));
+        } catch (Exception ex) {
+        }
     }//GEN-LAST:event_crossinfoActionPerformed
 
     public void changeStyle(StyleType type, Object value) {
