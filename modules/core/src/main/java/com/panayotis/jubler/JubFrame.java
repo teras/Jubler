@@ -59,7 +59,6 @@ import com.panayotis.jubler.tools.replace.JReplace;
 import com.panayotis.jubler.undo.UndoEntry;
 import com.panayotis.jubler.undo.UndoList;
 import java.awt.Component;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -70,6 +69,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,8 +145,8 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     /* Help browser */
     private static HelpBrowser faqbrowse;
     /* Window frame icon */
-    public final static Image FrameIconSmall;
-    public final static Image FrameIconBig;
+    public final static BufferedImage FrameIconSmall;
+    public final static BufferedImage FrameIconBig;
 
     static {
         windows = new JublerList();
@@ -2573,5 +2573,9 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
      * @param e The window event
      */
     public void windowLostFocus(WindowEvent e) {
+    }
+
+    public static BufferedImage getFrameIconBig() {
+        return FrameIconBig;
     }
 }

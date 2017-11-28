@@ -99,6 +99,10 @@ public class PluginManager {
         ArrayList<PluginItem> list = plugin_list.get(clazz.getName());
         if (list != null)
             for (PluginItem item : list)
-                item.execPlugin(caller, parameter);
+                try {
+                    item.execPlugin(caller, parameter);
+                } catch (Throwable t) {
+                    DEBUG.debug(t);
+                }
     }
 }

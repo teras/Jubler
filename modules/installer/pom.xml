@@ -313,28 +313,35 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
-                                        <property name="appdir" value="target/CrossMobile.AppDir"/>
+                                        <property name="appdir" value="target/Jubler.AppDir"/>
                                         <property name="imgsrcdir" value="../../resources/installers/linux/dist/appimage"/>
-                                        <copy todir="${appdir}/bin/lib">
+                                        <copy todir="${appdir}/lib">
                                             <fileset dir="target/jubler/lib">
                                                 <include name="**"/>
                                             </fileset>
                                         </copy>
-                                        <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so" todir="${appdir}/bin/lib"/>
-                                        <copy file="../../resources/installers/linux/jubler" todir="${appdir}/bin"/>
+                                        <move file="${appdir}/lib/jubler.jar" tofile="${appdir}/lib/AppRun.jar"/>
+                                        <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so" todir="${appdir}/lib"/>
+                                        <copy file="../../resources/installers/linux/jubler" tofile="${appdir}/AppRun"/>
                                         <copy file="${imgsrcdir}/jubler128.png" tofile="${appdir}/usr/share/icons/hicolor/128x128/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler64.png" tofile="${appdir}/usr/share/icons/hicolor/64x64/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler32.png" tofile="${appdir}/usr/share/icons/hicolor/32x32/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler32.png" tofile="${appdir}/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler.desktop" tofile="${appdir}/jubler.desktop"/>
-                                        <copy file="${imgsrcdir}/AppRun64" tofile="${appdir}/AppRun"/>
-                                        <copy file="${imgsrcdir}/../../jubler" tofile="${appdir}/bin/jubler"/>
-                                        <copy file="${imgsrcdir}/jubler.wrapper" tofile="${appdir}/bin/jubler.wrapper"/>
                                         <chmod file="${appdir}/AppRun" perm="a+x"/>
-                                        <chmod file="${appdir}/bin/jubler" perm="a+x"/>
-                                        <chmod file="${appdir}/bin/jubler.wrapper" perm="a+x"/>
-                                        <exec executable="${imgsrcdir}/appimagetool" failonerror="true">
+                                        <exec executable="${imgsrcdir}/appimagetool.osx" failonerror="true" osfamily="mac">
                                             <env key="PATH" value="${imgsrcdir}:${env.PATH}"/>
+                                            <env key="ARCH" value="x86_64"/>
+                                            <arg value="--runtime-file"/>
+                                            <arg value="${imgsrcdir}/runtime64"/>
+                                            <arg value="-v"/>
+                                            <arg value="${appdir}"/>
+                                            <arg value="--sign"/>
+                                            <arg value="target/Jubler-${project.version}.appimage"/>
+                                        </exec>
+                                        <exec executable="${imgsrcdir}/appimagetool.linux" failonerror="true" os="Linux">
+                                            <env key="PATH" value="${imgsrcdir}:${env.PATH}"/>
+                                            <env key="ARCH" value="x86_64"/>
                                             <arg value="--runtime-file"/>
                                             <arg value="${imgsrcdir}/runtime64"/>
                                             <arg value="-v"/>

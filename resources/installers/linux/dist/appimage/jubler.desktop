@@ -2,6 +2,6 @@
 Type=Application
 Name=Jubler
 Icon=jubler
-Exec=jubler.wrapper %u
+Exec=jubler %u
 Categories=AudioVideo;Java;TextTools;AudioVideoEditing;
 Comment=Jubler is a tool to edit text-based subtitles
