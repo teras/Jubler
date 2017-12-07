@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>6.0.pre3</version>
+        <version>6.0.pre5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
@@ -294,7 +294,7 @@
                             <dependency>
                                 <groupId>com.panayotis</groupId>
                                 <artifactId>appbundler</artifactId>
-                                <version>1.0.2</version>
+                                <version>1.1.0</version>
                             </dependency>
                         </dependencies>                    
                     </plugin>

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>6.0.pre3</version>
+        <version>6.0.pre5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>autoupdate</artifactId>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.panayotis</groupId>
             <artifactId>jupidator</artifactId>
-            <version>0.8.9.9</version>
+            <version>0.8.9.10</version>
             <type>jar</type>
         </dependency>
     </dependencies>
