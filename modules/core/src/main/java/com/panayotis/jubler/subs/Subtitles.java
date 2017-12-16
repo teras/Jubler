@@ -340,6 +340,9 @@ public class Subtitles extends AbstractTableModel {
     /* Not only update attributes, but also mark all the entries with long texts */
     public void setAttribs(SubAttribs newattr) {
         attribs = newattr;
+    }
+
+    public void updateQuality() {
         for (SubEntry entry : sublist)
             entry.updateQuality();
     }
@@ -387,10 +390,12 @@ public class Subtitles extends AbstractTableModel {
         return false;
     }
 
+    @Override
     public int getRowCount() {
         return sublist.size();
     }
 
+    @Override
     public int getColumnCount() {
         int cols = 1; // At least one column is visible
         for (int i = 0; i < visiblecols.length; i++)
@@ -404,6 +409,7 @@ public class Subtitles extends AbstractTableModel {
         return COLNAME[visibleToReal(index)];
     }
 
+    @Override
     public Object getValueAt(int row, int col) {
         return sublist.get(row).getData(row, visibleToReal(col));
     }
@@ -498,6 +504,7 @@ public class Subtitles extends AbstractTableModel {
      * @return true if convertion was carried out without erros, or no
      * conversions are required, false otherwise.
      */
+    @SuppressWarnings("UseSpecificCatch")
     public boolean convert(Class target_class, ClassLoader class_loader) {
         HeaderedTypeSubtitle target_hdr_sub;
 
@@ -506,7 +513,7 @@ public class Subtitles extends AbstractTableModel {
          */
         Object header = null;
         try {
-            SubEntry src_entry = null;
+            SubEntry src_entry;
             for (int i = 0; i < size(); i++) {
                 target_hdr_sub = null;
                 //get the current entry

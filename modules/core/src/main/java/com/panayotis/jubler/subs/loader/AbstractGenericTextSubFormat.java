@@ -62,10 +62,8 @@ public abstract class AbstractGenericTextSubFormat extends SubFormat {
             DEBUG.debug("Found file " + getExtendedName());
             subtitle_list = new Subtitles();
             input = initLoader(input);
-            for (SubEntry entry : loadSubtitles(input)) {
-                entry.updateQuality();
+            for (SubEntry entry : loadSubtitles(input))
                 subtitle_list.add(entry);
-            }
             if (subtitle_list.isEmpty())
                 return null;
             return subtitle_list;

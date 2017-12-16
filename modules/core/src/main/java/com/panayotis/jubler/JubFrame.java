@@ -1486,6 +1486,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         info.setVisible(true);
         subs.setAttribs(info.getAttribs());
+        subs.updateQuality();
         tableHasChanged(getSelectedSubs());
 
         if (!subs.getAttribs().equals(oldattr))
@@ -1772,42 +1773,42 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     }//GEN-LAST:event_OpenFMActionPerformed
 
 private void EnablePreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EnablePreviewCActionPerformed
-    enablePreview(EnablePreviewC.isSelected());
+        enablePreview(EnablePreviewC.isSelected());
 }//GEN-LAST:event_EnablePreviewCActionPerformed
 
 private void VideoPreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoPreviewCActionPerformed
-    preview.setVideoShow(VideoPreviewC.isSelected());
+        preview.setVideoShow(VideoPreviewC.isSelected());
 }//GEN-LAST:event_VideoPreviewCActionPerformed
 
 private void HalfSizeCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HalfSizeCActionPerformed
-    preview.setVideoZoom(HalfSizeC.isSelected());
+        preview.setVideoZoom(HalfSizeC.isSelected());
 }//GEN-LAST:event_HalfSizeCActionPerformed
 
 private void AudioPreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPreviewCActionPerformed
-    preview.setAudioShow(AudioPreviewC.isSelected());
+        preview.setAudioShow(AudioPreviewC.isSelected());
 }//GEN-LAST:event_AudioPreviewCActionPerformed
 
 private void MaxWaveCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveCActionPerformed
-    preview.setMaxWave(MaxWaveC.isSelected());
+        preview.setMaxWave(MaxWaveC.isSelected());
 }//GEN-LAST:event_MaxWaveCActionPerformed
 
 private void PlayAudioCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayAudioCActionPerformed
-    preview.playbackWave();
+        preview.playbackWave();
 }//GEN-LAST:event_PlayAudioCActionPerformed
 
 private void SaveTBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveTBActionPerformed
-    if (SaveFM.isEnabled())
-        SaveFMActionPerformed(evt);
-    else
-        SaveAsFMActionPerformed(evt);
+        if (SaveFM.isEnabled())
+            SaveFMActionPerformed(evt);
+        else
+            SaveAsFMActionPerformed(evt);
 }//GEN-LAST:event_SaveTBActionPerformed
 
 private void PreviewTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PreviewTBCurrentTTMActionPerformed
-    enablePreview(PreviewTB.isSelected());
+        enablePreview(PreviewTB.isSelected());
 }//GEN-LAST:event_PreviewTBCurrentTTMActionPerformed
 
 private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockMActionPerformed
-    subeditor.ToolsLockB.setSelected(ToolsLockM.isSelected());
+        subeditor.ToolsLockB.setSelected(ToolsLockM.isSelected());
 }//GEN-LAST:event_ToolsLockMActionPerformed
 
     private void AllSEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AllSEMActionPerformed
@@ -2223,6 +2224,7 @@ private void ToolsLockMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     public void setSubs(Subtitles newsubs) {
         SubEntry[] selected = getSelectedSubs();
         subs = newsubs;
+        subs.updateQuality();
         SubTable.setModel(subs);
         tableHasChanged(selected);
         ShowNumberP.setSelected(subs.isVisibleColumn(0));

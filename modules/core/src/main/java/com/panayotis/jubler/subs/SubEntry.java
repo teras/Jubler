@@ -135,6 +135,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         this(0, 0, "");
     }
 
+    @Override
     public int compareTo(SubEntry other) {
         return start.compareTo(other.start);
     }
@@ -381,6 +382,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * @return a new deep-copied instance of the this record.
      */
     @Override
+    @SuppressWarnings("UseSpecificCatch")
     public Object clone() {
         SubEntry new_sub = null;
         try {
@@ -829,8 +831,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         try {
             int t1 = this.getFinishTime().getMillis();
             int t2 = o.getFinishTime().getMillis();
-            boolean is_dup = is_dup = (t1 == t2) || (Math.abs(t2 - t1) < SMALL_MILLIS);
-            return is_dup;
+            return (t1 == t2) || (Math.abs(t2 - t1) < SMALL_MILLIS);
         } catch (Exception ex) {
             return false;
         }
