@@ -10,11 +10,4 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>coretheme</artifactId>
-    <dependencies>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>jubler</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-    </dependencies>
 </project>

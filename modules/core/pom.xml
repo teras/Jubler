@@ -10,6 +10,15 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>jubler</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.panayotis.jubler</groupId>
+            <artifactId>coretheme</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -29,7 +38,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        
+
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

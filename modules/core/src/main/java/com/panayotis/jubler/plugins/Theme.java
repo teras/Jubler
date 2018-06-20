@@ -22,6 +22,7 @@ package com.panayotis.jubler.plugins;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemFileFinder;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,30 +31,13 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
- *
  * @author teras
  */
 public class Theme {
 
-    private static final String THEME_NAME = "coretheme";
-    private static final ZipFile theme;
-
-    static {
-        ZipFile request = null;
-        try {
-            if (SystemFileFinder.isJarBased())
-                request = new ZipFile(new File(SystemFileFinder.AppPath + File.separator + "themes" + File.separator + THEME_NAME + ".jar"));
-            else
-                request = new ZipFile(new File("../coretheme/target/" + THEME_NAME + "-" + JAbout.getCurrentVersion() + ".jar"));
-        } catch (IOException ex) {
-            DEBUG.debug("Unable to open theme: " + THEME_NAME);
-        }
-        theme = request;
-    }
-
     public static BufferedImage loadImage(String name) {
         try {
-            return ImageIO.read(theme.getInputStream(theme.getEntry(name)));
+            return ImageIO.read(Theme.class.getResourceAsStream("/" + name));
         } catch (IOException ex) {
             return null;
         }
