@@ -21,6 +21,8 @@ import com.panayotis.jubler.subs.SubEntry;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.options.Options.isNewlineChars;
+
 /**
  *
  * @author teras
@@ -41,6 +43,7 @@ public class JQuality extends javax.swing.JDialog {
         MaxDurS.setValue(getMaxDuration());
         MinDurS.setValue(getMinDuration());
         spaceCharsC.setSelected(isSpaceChars());
+        newlineCharsC.setSelected(isNewlineChars());
         compactC.setSelected(isCompactSubs());
 
         MaxLineS.addChangeListener(new ChangeListener() {
@@ -98,6 +101,7 @@ public class JQuality extends javax.swing.JDialog {
         ErrorColC = new javax.swing.JComboBox();
         jPanel13 = new javax.swing.JPanel();
         spaceCharsC = new javax.swing.JCheckBox();
+        newlineCharsC = new javax.swing.JCheckBox();
         compactC = new javax.swing.JCheckBox();
         jPanel12 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
@@ -146,15 +150,23 @@ public class JQuality extends javax.swing.JDialog {
         });
         jPanel11.add(ErrorColC, java.awt.BorderLayout.CENTER);
 
-        jPanel13.setLayout(new java.awt.GridLayout());
+        jPanel13.setLayout(new java.awt.GridLayout(0, 2));
 
-        spaceCharsC.setText(__("Treat spaces as characters"));
+        spaceCharsC.setText(__("Treat space as character"));
         spaceCharsC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 spaceCharsCActionPerformed(evt);
             }
         });
         jPanel13.add(spaceCharsC);
+
+        newlineCharsC.setText(__("Treat newline as character"));
+        newlineCharsC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                newlineCharsCActionPerformed(evt);
+            }
+        });
+        jPanel13.add(newlineCharsC);
 
         compactC.setSelected(true);
         compactC.setText(__("Prefer compact subtitles"));
@@ -328,6 +340,9 @@ public class JQuality extends javax.swing.JDialog {
         Options.setCompactSubs(compactC.isSelected());
     }//GEN-LAST:event_compactCActionPerformed
 
+    private void newlineCharsCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newlineCharsCActionPerformed
+        Options.setNewlineChars(newlineCharsC.isSelected());
+    }//GEN-LAST:event_newlineCharsCActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ErrorColC;
@@ -362,6 +377,7 @@ public class JQuality extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JCheckBox newlineCharsC;
     private javax.swing.JCheckBox spaceCharsC;
     // End of variables declaration//GEN-END:variables
 }

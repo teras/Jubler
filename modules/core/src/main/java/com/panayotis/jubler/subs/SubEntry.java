@@ -324,7 +324,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         for (char item : subtext.toCharArray())
             if (item == '\n') {
                 m.lines++;
-                if (isSpaceChars())
+                if (isNewlineChars())
                     m.length++;
                 if (curlinelength > m.linelength)
                     m.linelength = curlinelength;

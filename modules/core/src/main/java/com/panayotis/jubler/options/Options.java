@@ -51,6 +51,8 @@ public class Options {
     private static final String ERRORCOLOR_TAG = "errorcolor";
     private static boolean spaceChars;
     private static final String SPACECHARS_TAG = "spaceaschars";
+    private static boolean newlineChars;
+    private static final String NEWLINECHARS_TAG = "newlineaschars";
     private static boolean compactSubs;
     private static final String COMPACTSUBS_TAG = "compactsubs";
     private static int maxLines;
@@ -71,6 +73,7 @@ public class Options {
     static {
         errorColor = prefs.getInt(ERRORCOLOR_TAG, 1);
         spaceChars = prefs.getBoolean(SPACECHARS_TAG, false);
+        newlineChars = prefs.getBoolean(NEWLINECHARS_TAG, false);
         compactSubs = prefs.getBoolean(COMPACTSUBS_TAG, true);
         maxLines = prefs.getInt(MAXLINES_TAG, 2);
         fillPercent = prefs.getInt(FILLPERCENT_TAG, 50);
@@ -189,6 +192,14 @@ public class Options {
 
     public static boolean isSpaceChars() {
         return spaceChars;
+    }
+
+    public static void setNewlineChars(boolean newlineAsChars) {
+        prefs.putBoolean(NEWLINECHARS_TAG, newlineChars = newlineAsChars);
+    }
+
+    public static boolean isNewlineChars() {
+        return newlineChars;
     }
 
     public static void setCompactSubs(boolean csubs) {
