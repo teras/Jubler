@@ -169,6 +169,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         return SubText.getText();
     }
 
+    public int getCaretPosition() {
+        return SubText.getCaretPosition();
+    }
+
     public void spinnerChanged(JTimeSpinner which) {
         double tstart, tfinish, tdur;
         if (ignore_sub_changes)

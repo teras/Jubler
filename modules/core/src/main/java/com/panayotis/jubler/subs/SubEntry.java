@@ -476,8 +476,6 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * character.
      *
      * @param list the list of words
-     * @param r the chosen record to whether subtitled text element will be set
-     * with the joined text line.
      * @param from_idx the star index from which words are to be selected
      * @param to_idx the end index from which words are to be selected
      */
