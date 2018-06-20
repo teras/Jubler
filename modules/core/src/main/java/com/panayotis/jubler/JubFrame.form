@@ -590,6 +590,9 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="PreviousSEM">
                   <Properties>
+                    <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                      <KeyStroke key="Shift+Ctrl+PERIOD"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="__(&quot;Previous subtitle&quot;)" type="code"/>
                     </Property>

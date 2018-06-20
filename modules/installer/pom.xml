@@ -331,7 +331,6 @@
                                         <chmod file="${appdir}/AppRun" perm="a+x"/>
                                         <exec executable="${imgsrcdir}/appimagetool.osx" failonerror="true" osfamily="mac">
                                             <env key="PATH" value="${imgsrcdir}:${env.PATH}"/>
-                                            <env key="ARCH" value="x86_64"/>
                                             <arg value="--runtime-file"/>
                                             <arg value="${imgsrcdir}/runtime64"/>
                                             <arg value="-v"/>
@@ -340,10 +339,7 @@
                                             <arg value="target/Jubler-${project.version}.appimage"/>
                                         </exec>
                                         <exec executable="${imgsrcdir}/appimagetool.linux" failonerror="true" os="Linux">
-                                            <env key="PATH" value="${imgsrcdir}:${env.PATH}"/>
                                             <env key="ARCH" value="x86_64"/>
-                                            <arg value="--runtime-file"/>
-                                            <arg value="${imgsrcdir}/runtime64"/>
                                             <arg value="-v"/>
                                             <arg value="${appdir}"/>
                                             <arg value="--sign"/>

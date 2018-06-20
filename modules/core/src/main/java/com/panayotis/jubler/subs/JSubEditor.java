@@ -23,10 +23,13 @@
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.os.JIDialog;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
+
 import static com.panayotis.jubler.options.Options.*;
+
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.JOverStyles;
@@ -38,6 +41,7 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import com.panayotis.jubler.undo.UndoEntry;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
@@ -60,7 +64,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.TextAction;
 
 /**
- *
  * @author teras
  */
 public final class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener {
@@ -86,6 +89,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         Lock[0] = Theme.loadIcon("lock.png");
         Lock[1] = Theme.loadIcon("unlock.png");
     }
+
     private final JTimeSpinner SubStart;
     private final JTimeSpinner SubFinish;
     private final JTimeSpinner SubDur;
@@ -171,6 +175,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     public int getCaretPosition() {
         return SubText.getCaretPosition();
+    }
+
+    public void setCaretPosition(int position) {
+        SubText.setCaretPosition(position);
     }
 
     public void spinnerChanged(JTimeSpinner which) {
@@ -801,7 +809,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jLabel1.setIconTextGap(6);
         crossP.add(jLabel1);
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
         crossinfo.setText("more...");
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -962,6 +970,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public void changedUpdate(DocumentEvent e) {
         // We don't care for these events - we have our own!
     }
+
     Thread stylethread = new Thread() {
         @Override
         public void run() {
