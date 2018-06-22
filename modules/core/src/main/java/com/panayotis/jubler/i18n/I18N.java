@@ -25,11 +25,13 @@ package com.panayotis.jubler.i18n;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.DynamicClassLoader;
+
+import java.io.File;
+import java.net.MalformedURLException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- *
  * @author teras
  */
 @SuppressWarnings("StaticNonFinalUsedInInitialization")
@@ -42,12 +44,18 @@ public class I18N {
     static {
         String ls = System.getProperty("user.language");
         String ll = ls + "_" + System.getProperty("user.country");
-
-        cl.addPaths(new String[]{
-            "../../../dist/i18n/" + ls + ".jar", "i18n/" + ls + ".jar",
-            "../../../dist/i18n/" + ll + ".jar", "i18n/" + ll + ".jar"
-        });
-
+        for (String p : new String[]{
+                "../../../dist/i18n/" + ls + ".jar",
+                "../../../dist/i18n/" + ll + ".jar",
+                "i18n/" + ll + ".jar",
+                "i18n/" + ls + ".jar"
+        }) {
+            try {
+                cl.addURL(new File(p).toURI().toURL());
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
         b = loadClass(PATH + ll);
         if (b == null) {
             b = loadClass(PATH + ls);

@@ -23,17 +23,18 @@
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.JubFrame;
+
 import java.io.File;
+import java.net.URL;
 import java.util.StringTokenizer;
 
 /**
- *
  * @author teras
  */
 public class SystemFileFinder {
 
     private static boolean isJarBased;
-    public static final String AppPath = guessMainPath("Jubler", JubFrame.class.getName());
+    public static final String AppPath = guessMainPath(JubFrame.class);
 
     private static File findFile(String name) {
         String classpath = System.getProperty("java.class.path");
@@ -76,25 +77,10 @@ public class SystemFileFinder {
         return false;
     }
 
-    public static String guessMainPath(String basename, String baseclass) {
-        String path;
-        StringTokenizer tok = new StringTokenizer(System.getProperty("java.class.path"), File.pathSeparator);
-        while (tok.hasMoreTokens()) {
-            path = tok.nextToken();
-            File file = new File(path);
-            if (!file.isAbsolute()) {
-                path = System.getProperty("user.dir") + File.separator + path;
-                file = new File(path);
-            }
-            if (new File(path + File.separator + baseclass.replace('.', File.separatorChar) + ".class").exists()) {
-                isJarBased = false;
-                return file.getAbsolutePath();
-            } else {
-                isJarBased = true;
-                return file.getParentFile().getAbsolutePath();
-            }
-        }
-        return null;
+    public static String guessMainPath(Class<?> cls) {
+        File classpath = new File(cls.getProtectionDomain().getCodeSource().getLocation().getFile());
+        isJarBased = classpath.isFile();
+        return isJarBased ? classpath.getParent() : classpath.getPath();
     }
 
     public static boolean isJarBased() {

@@ -21,17 +21,14 @@
  */
 package com.panayotis.jubler.plugins;
 
-import com.panayotis.jubler.os.DynamicClassLoader;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.os.DynamicClassLoader;
 import com.panayotis.jubler.os.SystemFileFinder;
+
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 /**
- *
  * @author teras
  */
 public class PluginManager {
@@ -42,26 +39,15 @@ public class PluginManager {
 
     public PluginManager() {
         plugin_list = new HashMap<String, ArrayList<PluginItem>>();
-
-        /* Add plugins path */
-        cl = new DynamicClassLoader();
-        if (SystemFileFinder.isJarBased())
-            cl.addPaths(new String[]{SystemFileFinder.AppPath, SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
-        else
-            cl.addPaths(new String[]{"../../../installer/target/jubler/lib/", SystemDependent.getAppSupportDirPath() + File.separator + "lib"});
-        cl.setClassPath();
-
-        /* Find plugins and their plugin items */
-        ArrayList<String> plugins = cl.getPlugins();
+        cl = new DynamicClassLoader(new File(SystemFileFinder.AppPath));
         ArrayList<PluginItem> plugin_items = new ArrayList<PluginItem>();
-        for (String plugin : plugins)
-            try {
-                Plugin p = (Plugin) getClass(plugin);
-                p.setClassLoader(cl);
-                DEBUG.debug("Registering plugin " + p.getPluginName());
-                plugin_items.addAll(Arrays.asList(p.getPluginItems()));
-            } catch (Exception ex) {
-            }
+        int count = 0;
+        for (Plugin p : ServiceLoader.load(Plugin.class, cl)) {
+            DEBUG.debug("Registering plugin " + p.getPluginName());
+            p.setClassLoader(cl);
+            count++;
+            plugin_items.addAll(Arrays.asList(p.getPluginItems()));
+        }
 
         /* Find plugin assosiations */
         for (PluginItem item : plugin_items)
@@ -76,7 +62,7 @@ public class PluginManager {
                     current_list.add(item);
             }
 
-        DEBUG.debug(plugins.size() + " plugin" + (plugins.size() == 1 ? "" : "s") + " found");
+        DEBUG.debug(count + " plugin" + (count == 1 ? "" : "s") + " found");
         DEBUG.debug(plugin_items.size() + " plugin item" + (plugin_items.size() == 1 ? "" : "s") + " found");
         DEBUG.debug(plugin_list.size() + " listener" + (plugin_list.size() == 1 ? "" : "s") + " found");
     }

@@ -22,74 +22,36 @@
 
 package com.panayotis.jubler.os;
 
-import com.panayotis.jubler.os.SystemFileFinder;
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.jar.JarFile;
 
 /**
- *
  * @author teras
  */
 public class DynamicClassLoader extends URLClassLoader {
 
-    private final static String PLUGINTAG = "Extension-Name";
-    private final ArrayList<String> plugins = new ArrayList<String>();
-
-    public DynamicClassLoader() {
-        super(new URL[]{});
-    }
-
-    public void addPaths(String paths[]) {
-        if (paths == null)
-            return;
-
-        for (int i = 0; i < paths.length; i++) {
-            File cfile = new File(paths[i]);
-            cfile = cfile.isAbsolute() ? cfile : new File(SystemFileFinder.AppPath, paths[i]);
-            addJAR(cfile);
-            if (cfile.isDirectory()) {
-                File[] list = cfile.listFiles();
-                if (list != null)
-                    for (int j = 0; j < list.length; j++)
-                        addJAR(list[j]);
+    public DynamicClassLoader(File... allJarsInHerea) {
+        super(new URL[]{}, DynamicClassLoader.class.getClassLoader());
+        if (allJarsInHerea != null && allJarsInHerea.length != 0) {
+            for (File dir : allJarsInHerea) {
+                File[] files = dir.listFiles();
+                if (files == null || files.length == 0)
+                    return;
+                for (File f : files)
+                    if (f.isFile() && f.getName().toLowerCase().endsWith(".jar")) {
+                        try {
+                            addURL(f.toURI().toURL());
+                        } catch (MalformedURLException ignore) {
+                        }
+                    }
             }
         }
     }
 
-    public void addJAR(File path) {
-        if (path.isFile() && path.getPath().toLowerCase().endsWith(".jar"))
-            try {
-                addURL(path.toURI().toURL());
-                addPlugin(path);
-            } catch (MalformedURLException ex) {
-            }
-    }
-
-    private void addPlugin(File path) {
-        try {
-            String name = new JarFile(path).getManifest().getMainAttributes().getValue(PLUGINTAG);
-            if (name != null)
-                plugins.add(name);
-        } catch (IOException ex) {
-        }
-    }
-
-    public ArrayList<String> getPlugins() {
-        return plugins;
-    }
-
-    public void setClassPath() {
-        StringBuilder buf = new StringBuilder(System.getProperty("java.class.path"));
-        URL[] urls = getURLs();
-
-        for (int i = 0; i < urls.length; i++)
-            buf.append(File.pathSeparatorChar).append(urls[i].getFile());
-        String cp = buf.toString();
-        System.setProperty("java.class.path", cp);
+    @Override
+    public void addURL(URL url) {
+        super.addURL(url);
     }
 }
