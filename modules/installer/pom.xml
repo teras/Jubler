@@ -205,6 +205,9 @@
                                         <macrodef name="preparefor">
                                             <attribute name="arch"/>
                                             <sequential>
+                                                <delete>
+                                                    <fileset dir="target/jubler/lib" includes="*.dll"/>
+                                                </delete>
                                                 <copy file="../../resources/libs/ffmpeg/win/ffdecode_@{arch}.dll"
                                                       todir="target/jubler/lib"/>
                                                 <exec executable="makensis" failonerror="true">
@@ -233,8 +236,8 @@
                                             </sequential>
                                         </macrodef>
                                         <preparefor arch="32"/>
-                                        <delete file="target/jubler/lib/ffdecode_32.dll"/>
                                         <preparefor arch="64"/>
+                                        <delete file="Jubler-${project.version}.unsigned.exe"/>
                                     </target>
                                 </configuration>
                                 <goals>
