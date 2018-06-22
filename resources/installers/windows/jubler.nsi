@@ -7,7 +7,7 @@
 Name "Jubler subtitle editor"
 
 ; The file to write
-OutFile "Jubler-${VERSION}.exe"
+OutFile "Jubler-${VERSION}.unsigned.exe"
 
 ; The default installation directory
 InstallDir "$PROGRAMFILES64\Jubler"

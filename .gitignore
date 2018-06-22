@@ -8,3 +8,7 @@ codesign.properties
 target/
 *.iml
 .idea/
+
+
+modules/installer/code-signing.p12
+modules/installer/password.properties
