@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.panayotis</groupId>
             <artifactId>appenh</artifactId>
-            <version>0.1.3</version>
+            <version>0.1.9</version>
         </dependency>
     </dependencies>
 </project>

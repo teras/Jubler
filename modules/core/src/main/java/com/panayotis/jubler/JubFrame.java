@@ -402,9 +402,10 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         InsertEM = new javax.swing.JMenu();
         BeforeIEM = new javax.swing.JMenuItem();
         AfterIEM = new javax.swing.JMenuItem();
-        SplitWithST = new javax.swing.JMenu();
+        SplitST = new javax.swing.JMenu();
         PreviousSEM = new javax.swing.JMenuItem();
         NextSEM = new javax.swing.JMenuItem();
+        TimeSEM = new javax.swing.JMenuItem();
         GoEM = new javax.swing.JMenu();
         PreviousGEM = new javax.swing.JMenuItem();
         NextGEM = new javax.swing.JMenuItem();
@@ -873,24 +874,30 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         EditM.add(InsertEM);
 
-        SplitWithST.setText(__("Split with..."));
-        SplitWithST.setEnabled(false);
+        SplitST.setText(__("Split..."));
+        SplitST.setEnabled(false);
 
         PreviousSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        PreviousSEM.setText(__("Previous subtitle"));
+        PreviousSEM.setText(__("With previous subtitle"));
         PreviousSEM.setActionCommand("p");
         PreviousSEM.setName("ESP"); // NOI18N
         PreviousSEM.addActionListener(formListener);
-        SplitWithST.add(PreviousSEM);
+        SplitST.add(PreviousSEM);
 
         NextSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, java.awt.event.InputEvent.CTRL_MASK));
-        NextSEM.setText(__("Next subtitle"));
+        NextSEM.setText(__("With next subtitle"));
         NextSEM.setActionCommand("n");
         NextSEM.setName("ESN"); // NOI18N
         NextSEM.addActionListener(formListener);
-        SplitWithST.add(NextSEM);
+        SplitST.add(NextSEM);
 
-        EditM.add(SplitWithST);
+        TimeSEM.setText(__("In place proportionally"));
+        TimeSEM.setActionCommand("p");
+        TimeSEM.setName("ESI"); // NOI18N
+        TimeSEM.addActionListener(formListener);
+        SplitST.add(TimeSEM);
+
+        EditM.add(SplitST);
 
         GoEM.setText(__("Go to..."));
         GoEM.setEnabled(false);
@@ -1303,6 +1310,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             else if (evt.getSource() == NextSEM) {
                 JubFrame.this.splitWith(evt);
             }
+            else if (evt.getSource() == TimeSEM) {
+                JubFrame.this.TimeSEMActionPerformed(evt);
+            }
             else if (evt.getSource() == PreviousGEM) {
                 JubFrame.this.goToSubtitle(evt);
             }
@@ -1541,18 +1551,18 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             position = 0;
         if (position >= text.length())
             position = text.length();
-        String left = text.substring(0, position);
-        String right = position >= text.length() ? "" : text.substring(position, text.length());
+        String left = text.substring(0, position).trim();
+        String right = position >= text.length() ? "" : text.substring(position, text.length()).trim();
         SubEntry other = subs.elementAt(row + (as_previous ? -1 : 1));
         String shouldAddSpace = other.getText().isEmpty() ? "" : " ";
         if (as_previous) {
             entry.setText(right);
-            other.setText(other.getText().trim() + shouldAddSpace + left.trim());
+            other.setText(other.getText().trim() + shouldAddSpace + left);
             displaySubData();
             setSelectedSub(row - 1, true);
         } else {
             entry.setText(left);
-            other.setText(right.trim() + shouldAddSpace + other.getText().trim());
+            other.setText(right + shouldAddSpace + other.getText().trim());
             displaySubData();
             setSelectedSub(row + 1, true);
             subeditor.setCaretPosition(0);
@@ -1888,6 +1898,30 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         splitWith(evt.getActionCommand().startsWith("p"));
     }//GEN-LAST:event_splitWith
 
+    private void TimeSEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TimeSEMActionPerformed
+        int row = SubTable.getSelectedRow();
+        if (row < 0)
+            return;
+        SubEntry entry = subs.elementAt(row);
+        String text = entry.getText();
+        int position = subeditor.getCaretPosition();
+        if (position <= 0)
+            return;
+        if (position >= text.length())
+            return;
+
+        String left = text.substring(0, position).trim();
+        String right = text.substring(position, text.length()).trim();
+        double split = entry.getStartTime().toSeconds() + entry.getDurationTime().toSeconds()
+                * left.length() / ((double) left.length() + right.length());
+
+        addSubEntry(new SubEntry(new Time(split), entry.getFinishTime(), right));
+
+        entry.setText(left);
+        entry.setFinishTime(new Time(split));
+        setSelectedSub(row, true);
+    }//GEN-LAST:event_TimeSEMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1985,7 +2019,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JCheckBoxMenuItem ShowStyleP1;
     private javax.swing.JButton SortTB;
     private javax.swing.JPanel SortTP;
-    private javax.swing.JMenu SplitWithST;
+    private javax.swing.JMenu SplitST;
     private javax.swing.JMenuItem StepwiseREM;
     public javax.swing.JMenu StyleEM;
     private javax.swing.JMenu StyleP;
@@ -1998,6 +2032,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JButton TestTB;
     private javax.swing.JMenu TestTM;
     private javax.swing.JPanel TestTP;
+    private javax.swing.JMenuItem TimeSEM;
     public javax.swing.JCheckBoxMenuItem ToolsLockM;
     public javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
