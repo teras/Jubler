@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>6.0.pre6</version>
+        <version>6.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
@@ -399,6 +399,36 @@
                                             <arg value="${appdir}"/>
                                             <arg value="--sign"/>
                                             <arg value="target/Jubler-${project.version}.appimage"/>
+                                        </exec>
+                                    </target>
+                                </configuration>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>dist-generic</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>copy</id>
+                                <configuration>
+                                    <target>
+                                        <copy file="../../resources/installers/generic/jubler"
+                                              todir="target/jubler"/>
+                                        <chmod file="target/jubler/jubler" perm="a+x"/>
+                                        <exec executable="tar" failonerror="true" dir="target">
+                                            <arg line="jcf Jubler-${project.version}.tar.bz2 jubler"/>
                                         </exec>
                                     </target>
                                 </configuration>
