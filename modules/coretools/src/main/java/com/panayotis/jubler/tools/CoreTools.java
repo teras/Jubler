@@ -57,11 +57,6 @@ public class CoreTools implements Plugin {
         return __("Basic tools");
     }
 
-    @Override
-    public boolean canDisablePlugin() {
-        return false;
-    }
-
     public ClassLoader getClassLoader() {
         return null;
     }

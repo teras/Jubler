@@ -29,12 +29,12 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
 /**
- *
  * @author teras
  */
 public abstract class SubFormat implements PluginItem {
@@ -76,8 +76,8 @@ public abstract class SubFormat implements PluginItem {
     }
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{AvailSubFormats.class};
+    public Class getPluginAffection() {
+        return AvailSubFormats.class;
     }
 
     @Override

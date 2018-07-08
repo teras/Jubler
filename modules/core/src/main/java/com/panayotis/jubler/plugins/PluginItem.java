@@ -21,12 +21,11 @@
 package com.panayotis.jubler.plugins;
 
 /**
- *
  * @author teras
  */
-public interface PluginItem {
+public interface PluginItem<AFFECTION> {
 
-    public Class[] getPluginAffections();
+    public Class<AFFECTION> getPluginAffection();
 
-    public void execPlugin(Object caller, Object parameter);
+    public void execPlugin(AFFECTION caller, Object parameter);
 }

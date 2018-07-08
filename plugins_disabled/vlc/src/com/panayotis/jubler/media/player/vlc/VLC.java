@@ -98,10 +98,6 @@ public class VLC extends AbstractPlayer implements Plugin, PluginItem {
         return __("VLC media player");
     }
 
-    public boolean canDisablePlugin() {
-        return true;
-    }
-
     @Override
     public ArrayList<String> getSearchNames() {
         ArrayList<String> list = new ArrayList<String>();

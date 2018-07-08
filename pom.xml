@@ -18,6 +18,7 @@
         <module>modules/coretools</module>
         <module>modules/mplayer</module>
         <module>modules/zemberek</module>
+        <module>modules/embedffmpeg</module>
         <module>modules/coretheme</module>
         <module>modules/installer</module>
     </modules>

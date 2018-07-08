@@ -228,11 +228,6 @@ public class JWavePreview extends JPanel implements DecoderListener {
                 x2 = (int) (factor * (i + 1));
                 y1 = (int) (height * data[i][0]);
                 y2 = (int) (height * data[i][1]);
-                if (y1 > y2) {
-                    yswap = y1;
-                    y1 = y2;
-                    y2 = yswap;
-                }
                 g.fillRect(x1, y1, x2 - x1, y2 - y1);
             }
         }

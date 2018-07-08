@@ -33,6 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
+
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -40,11 +41,12 @@ import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class ZemberekSpellChecker extends SpellChecker implements Plugin, PluginItem {
+public class ZemberekSpellChecker extends SpellChecker implements Plugin, PluginItem<AvailExternals> {
 
     private Method kelimeDenetle, oner;
     private Object zemberek;
@@ -117,16 +119,15 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
         return "Zemberek";
     }
 
-    public Class[] getPluginAffections() {
-        return new Class[]{AvailExternals.class};
+    @Override
+    public Class<AvailExternals> getPluginAffection() {
+        return AvailExternals.class;
     }
 
-    public void execPlugin(Object caller, Object param) {
-        if (caller instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) caller;
-            if (l.getType().equals(family))
-                l.add(this);
-        }
+    @Override
+    public void execPlugin(AvailExternals caller, Object param) {
+        if (caller.getType().equals(family))
+            caller.add(this);
     }
 
     public PluginItem[] getPluginItems() {
@@ -135,10 +136,6 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
 
     public String getPluginName() {
         return __("Zemberek spell checker");
-    }
-
-    public boolean canDisablePlugin() {
-        return true;
     }
 
     public ClassLoader getClassLoader() {

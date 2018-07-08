@@ -31,9 +31,7 @@ import java.io.File;
  */
 public class AudioFile extends File {
 
-    private boolean same_as_video = false;
-
-    ;
+    private boolean same_as_video;
 
     /** Creates a new instance of AudioFile */
     public AudioFile(File af, File vfile) {

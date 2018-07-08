@@ -38,7 +38,7 @@ import com.panayotis.jupidator.UpdaterException;
  *
  * @author teras
  */
-public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
+public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem<StaticJubler> {
 
     private static final String URL = "http://www.jubler.org/files/updates/update.xml";
 
@@ -53,12 +53,12 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
     }
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{StaticJubler.class};
+    public Class<StaticJubler> getPluginAffection() {
+        return StaticJubler.class;
     }
 
     @Override
-    public void execPlugin(Object caller, Object param) {
+    public void execPlugin(StaticJubler caller, Object param) {
         try {
             ApplicationInfo info = new ApplicationInfo(SystemFileFinder.AppPath, SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
             info.setDistributionBased(JAbout.isDistributionBased());
@@ -76,10 +76,6 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
 
     public String getPluginName() {
         return __("Auto update");
-    }
-
-    public boolean canDisablePlugin() {
-        return false;
     }
 
     public ClassLoader getClassLoader() {

@@ -24,11 +24,12 @@ import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+
 import javax.swing.JComponent;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
 public class ShiftTime extends RealTimeTool {
@@ -41,7 +42,7 @@ public class ShiftTime extends RealTimeTool {
     }
 
     @Override
-    public void execPlugin(Object caller, Object param) {
+    public void execPlugin(ToolsManager caller, Object param) {
         super.execPlugin(caller, param);
         ToolsManager.setShifter(this);
     }

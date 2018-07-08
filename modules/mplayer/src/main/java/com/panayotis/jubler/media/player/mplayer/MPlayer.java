@@ -111,10 +111,6 @@ public class MPlayer extends AbstractPlayer implements Plugin {
         return __("MPlayer media player");
     }
 
-    public boolean canDisablePlugin() {
-        return true;
-    }
-
     @Override
     public ArrayList<String> getSearchNames() {
         ArrayList<String> names = new ArrayList<String>();

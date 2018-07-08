@@ -73,10 +73,6 @@ public class TextSubPlugin implements Plugin {
         return __("Text subtitles");
     }
 
-    public boolean canDisablePlugin() {
-        return false;
-    }
-
     public ClassLoader getClassLoader() {
         return this.loader;
     }

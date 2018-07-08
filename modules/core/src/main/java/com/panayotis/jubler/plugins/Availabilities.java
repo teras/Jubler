@@ -20,13 +20,15 @@
 
 package com.panayotis.jubler.plugins;
 
+import com.panayotis.jubler.media.preview.decoders.AvailDecoders;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 
 /**
- *
  * @author teras
  */
 public class Availabilities {
 
     public final static AvailSubFormats formats = new AvailSubFormats();
+
+    public final static AvailDecoders decoders = new AvailDecoders();
 }

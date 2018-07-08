@@ -23,22 +23,21 @@
 
 package com.panayotis.jubler.media;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
-import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
-import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
+import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
-import com.panayotis.jubler.media.preview.decoders.FFMPEG;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.Subtitles;
-import java.awt.Frame;
-import java.awt.Image;
+
+import java.awt.*;
 import java.io.File;
 
+import static com.panayotis.jubler.i18n.I18N.__;
+
 /**
- *
  * @author teras
  */
 public class MediaFile {
@@ -71,7 +70,7 @@ public class MediaFile {
         vfile = vf;
         afile = af;
         cfile = cf;
-        decoder = new FFMPEG();
+        decoder = Availabilities.decoders.get();
         videoselector = new JVideofileSelector();
     }
 
@@ -222,8 +221,8 @@ public class MediaFile {
     }
 
     /* Decoder actions */
-    public boolean initAudioCache(DecoderListener listener) {
-        return decoder.initAudioCache(afile, cfile, listener);
+    public boolean createAudioCache(DecoderListener listener) {
+        return decoder.createAudioCache(afile, cfile, listener);
     }
 
     public AudioPreview getAudioPreview(double from, double to) {
@@ -232,13 +231,14 @@ public class MediaFile {
 
     public void closeAudioCache() {
         if (cfile != null)
-            decoder.closeAudioCache(cfile);
+            decoder.destroyAudioCache(cfile);
     }
 
     public Image getFrame(double time, float resize) {
         if (vfile == null)
             return null;
-        return decoder.getFrame(vfile, time, resize);
+        Image origImage = decoder.getFrame(vfile, time);
+        return origImage == null ? null : origImage.getScaledInstance((int) (origImage.getWidth(null) * resize), (int) (origImage.getHeight(null) * resize), Image.SCALE_DEFAULT);
     }
 
     public void playAudioClip(double from, double to) {
@@ -246,7 +246,7 @@ public class MediaFile {
             decoder.playAudioClip(afile, from, to);
     }
 
-    public void interruptCacheCreation(boolean status) {
-        decoder.setInterruptStatus(status);
+    public void interruptCacheCreation() {
+        decoder.interruptAudioCache();
     }
 }

@@ -50,17 +50,19 @@ public class PluginManager {
         }
 
         /* Find plugin assosiations */
-        for (PluginItem item : plugin_items)
-            for (Class affectionclass : item.getPluginAffections()) {
-                String affection = affectionclass.getName();
-                ArrayList<PluginItem> current_list = plugin_list.get(affection);
-                if (current_list == null) {
-                    current_list = new ArrayList<PluginItem>();
-                    current_list.add(item);
-                    plugin_list.put(affection, current_list);
-                } else
-                    current_list.add(item);
-            }
+        for (PluginItem item : plugin_items) {
+            Class affectionClass = item.getPluginAffection();
+            if (affectionClass == null)
+                throw new NullPointerException("Unable to locate affection class from plugin " + item.getClass().getName());
+            String affection = affectionClass.getName();
+            ArrayList<PluginItem> current_list = plugin_list.get(affection);
+            if (current_list == null) {
+                current_list = new ArrayList<PluginItem>();
+                current_list.add(item);
+                plugin_list.put(affection, current_list);
+            } else
+                current_list.add(item);
+        }
 
         DEBUG.debug(count + " plugin" + (count == 1 ? "" : "s") + " found");
         DEBUG.debug(plugin_items.size() + " plugin item" + (plugin_items.size() == 1 ? "" : "s") + " found");
@@ -80,13 +82,18 @@ public class PluginManager {
         callPluginListeners(caller, null);
     }
 
+    /**
+     * populate plugin connections
+     * @param caller could be an instance or the class of the affection
+     * @param parameter a possible parameter
+     */
     public void callPluginListeners(Object caller, Object parameter) {
         Class clazz = caller instanceof Class ? (Class) caller : caller.getClass();
         ArrayList<PluginItem> list = plugin_list.get(clazz.getName());
         if (list != null)
             for (PluginItem item : list)
                 try {
-                    item.execPlugin(caller, parameter);
+                    item.execPlugin(caller instanceof Class ? null : caller, parameter);
                 } catch (Throwable t) {
                     DEBUG.debug(t);
                 }

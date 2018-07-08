@@ -55,6 +55,11 @@
             <artifactId>zemberek</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.panayotis.jubler</groupId>
+            <artifactId>embedffmpeg</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>

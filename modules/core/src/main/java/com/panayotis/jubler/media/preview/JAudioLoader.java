@@ -86,7 +86,7 @@ public class JAudioLoader extends javax.swing.JPanel {
 
     private void AssignInterruptBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AssignInterruptBActionPerformed
         if (mfile != null)
-            mfile.interruptCacheCreation(true);
+            mfile.interruptCacheCreation();
     }//GEN-LAST:event_AssignInterruptBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AssignInterruptB;

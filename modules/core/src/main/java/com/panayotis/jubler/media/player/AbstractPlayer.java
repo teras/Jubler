@@ -29,6 +29,7 @@ import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -38,14 +39,14 @@ import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.tools.externals.AvailExternals;
+
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 /**
- *
  * @author teras
  */
-public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
+public abstract class AbstractPlayer extends VideoPlayer implements PluginItem<AvailExternals> {
 
     private AbstractPlayerOptions opts;
     private String subpath;
@@ -163,11 +164,13 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
         return y;
     }
 
-    public Class[] getPluginAffections() {
-        return new Class[]{AvailExternals.class};
+    @Override
+    public Class<AvailExternals> getPluginAffection() {
+        return AvailExternals.class;
     }
 
-    public void execPlugin(Object caller, Object param) {
+    @Override
+    public void execPlugin(AvailExternals caller, Object param) {
         if (caller instanceof AvailExternals) {
             AvailExternals l = (AvailExternals) caller;
             if (l.getType().equals(family))

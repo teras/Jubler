@@ -24,6 +24,7 @@
 package com.panayotis.jubler.media.preview.decoders;
 
 import com.panayotis.jubler.os.DEBUG;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import java.io.File;
@@ -31,33 +32,20 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 /**
- *
  * @author teras
  */
 public class AudioPreview {
 
     public static final int nameoffset = 11;
-    public static final int length = 1000;
     /* channels, position, positive/negative */
     private float[][][] cache;
 
     public AudioPreview(int channels, int length) {
-        cache = new float[channels][length][2];
+        this(new float[channels][length][2]);
     }
 
-    public AudioPreview(float[] data) {
-        if (data == null)
-            throw new NullPointerException(__("Trying to initialize audio preview with null data"));
-        if ((data.length % (length * 2)) != 0)
-            throw new ArrayIndexOutOfBoundsException(__("Trying to intialize audio preview with wrong size {0}", data.length));
-        byte channels = (byte) (data.length / (length * 2));
-        cache = new float[channels][length][2];
-        int pointer = 0;
-        for (int i = 0; i < length; i++)
-            for (int j = 0; j < channels; j++) {
-                cache[j][i][0] = data[pointer++];
-                cache[j][i][1] = data[pointer++];
-            }
+    public AudioPreview(float[][][] cache) {
+        this.cache = cache;
     }
 
     public int channels() {
@@ -118,13 +106,13 @@ public class AudioPreview {
     public void normalize() {
         float max, min;
         for (int channel = 0; channel < cache.length; channel++) {
-            max = Float.MIN_VALUE;
-            min = Float.MAX_VALUE;
+            max = 0;
+            min = 1;
             for (int sample = 0; sample < cache[channel].length; sample++) {
-                if (max < cache[channel][sample][0])
-                    max = cache[channel][sample][0];
-                if (min > cache[channel][sample][1])
-                    min = cache[channel][sample][1];
+                if (min > cache[channel][sample][0])
+                    min = cache[channel][sample][0];
+                if (max < cache[channel][sample][1])
+                    max = cache[channel][sample][1];
             }
             min = 0.5f - min;
             max -= 0.5f;

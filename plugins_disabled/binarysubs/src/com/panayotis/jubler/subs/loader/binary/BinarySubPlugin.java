@@ -77,10 +77,6 @@ public class BinarySubPlugin implements Plugin {
         return __("Binary subtitles");
     }
 
-    public boolean canDisablePlugin() {
-        return false;
-    }
-
     public ClassLoader getClassLoader() {
         return this.loader;
     }

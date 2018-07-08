@@ -30,8 +30,6 @@ public interface Plugin {
 
     public String getPluginName();
 
-    public boolean canDisablePlugin();
-
     public ClassLoader getClassLoader();
 
     public void setClassLoader(ClassLoader cl);

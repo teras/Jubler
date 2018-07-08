@@ -31,13 +31,13 @@ import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- *
  * @author teras
  */
 public class VideoFile extends File {
@@ -47,12 +47,14 @@ public class VideoFile extends File {
     private final static int DEFAULT_HEIGHT = 288;
     private final static int DEFAULT_LENGTH = 60;
     private final static int DEFAULT_FPS = 25;
+    private final static int DEFAULT_CHANNELS = 0;
     private final static int INVALID = -1;
     /* Various video file properties */
     private int width = INVALID;
     private int height = INVALID;
     private float length = INVALID;
     private float fps = INVALID;
+    private int channels = INVALID;
 
     /**
      * Creates a new instance of VideoFile
@@ -66,11 +68,22 @@ public class VideoFile extends File {
         this(vf.getPath(), decoder);
     }
 
-    public void setInformation(int width, int height, float length, float fps) {
+    public void setDimensions(int width, int height) {
         this.width = width;
         this.height = height;
+    }
+
+    public void setLength(float length) {
         this.length = length;
+    }
+
+    public void setFPS(float fps) {
         this.fps = fps;
+    }
+
+
+    public void setChannels(int channels) {
+        this.channels = channels;
     }
 
     public int getWidth() {
@@ -89,12 +102,15 @@ public class VideoFile extends File {
         return fps;
     }
 
+    public int getChannels() {
+        return channels;
+    }
+
     public void getVideoProperties(DecoderInterface decoder) {
         if (decoder != null)
             decoder.retrieveInformation(this);
         if (width < 0) {
-
-            /* Use MPlayer if no decoder is valid */
+            DEBUG.debug("Could not retrieve video properties from decoder. Use MPlayer as a decoder.");
             String cmd[] = {Options.getOption("Player.MPlayer.Path", "mplayer"), "-vo", "null", "-ao", "null", "-identify", "-endpos", "0", getPath()};
             Process proc;
             try {
@@ -123,6 +139,7 @@ public class VideoFile extends File {
             width = DEFAULT_WIDTH;
             length = DEFAULT_LENGTH;
             fps = DEFAULT_FPS;
+            channels = DEFAULT_CHANNELS;
             DEBUG.debug("Could not retrieve actual video properties. Using defaults.");
         }
     }

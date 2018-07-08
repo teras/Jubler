@@ -20,6 +20,7 @@
 package com.panayotis.jubler;
 
 import com.panayotis.appenh.Enhancer;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.appenh.EnhancerManager;
@@ -27,6 +28,7 @@ import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
@@ -41,10 +43,9 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 /**
- *
  * @author teras
  */
-public class JublerApp implements Plugin, PluginItem {
+public class JublerApp implements Plugin, PluginItem<JubFrame> {
 
     private boolean ignore_click = false;
 
@@ -80,15 +81,14 @@ public class JublerApp implements Plugin, PluginItem {
     }
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{JubFrame.class};
+    public Class<JubFrame> getPluginAffection() {
+        return JubFrame.class;
     }
 
     @Override
-    public void execPlugin(Object caller, Object param) {
-        if (!(caller instanceof JubFrame) || !EnhancerManager.getDefault().providesSystemMenus())
+    public void execPlugin(JubFrame jubler, Object param) {
+        if (!EnhancerManager.getDefault().providesSystemMenus())
             return;
-        JubFrame jubler = (JubFrame) caller;
         if (param.equals("BEGIN"))
             jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
         else {
@@ -153,10 +153,6 @@ public class JublerApp implements Plugin, PluginItem {
 
     public String getPluginName() {
         return __("Multi-platform application support");
-    }
-
-    public boolean canDisablePlugin() {
-        return true;
     }
 
     public ClassLoader getClassLoader() {

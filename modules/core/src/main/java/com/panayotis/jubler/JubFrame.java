@@ -2249,7 +2249,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         if (status) {
             mfile.validateMediaFile(subs, false, this);
-            mfile.initAudioCache(preview.getDecoderListener());
+            mfile.createAudioCache(preview.getDecoderListener());
 
             preview.updateMediaFile(mfile);
             preview.setEnabled(true);

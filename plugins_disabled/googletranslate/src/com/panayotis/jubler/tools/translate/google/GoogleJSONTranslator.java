@@ -180,11 +180,6 @@ public class GoogleJSONTranslator extends SimpleWebTranslator implements Plugin,
         return __("Google translate");
     }
 
-    @Override
-    public boolean canDisablePlugin() {
-        return true;
-    }
-
     public ClassLoader getClassLoader() {
         return null;
     }
