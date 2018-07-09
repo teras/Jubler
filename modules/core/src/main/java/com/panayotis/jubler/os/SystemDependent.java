@@ -26,6 +26,7 @@ package com.panayotis.jubler.os;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.tools.externals.ExtPath;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.InputEvent;
@@ -47,7 +48,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 /**
- *
  * @author teras
  */
 public class SystemDependent {
@@ -121,6 +121,7 @@ public class SystemDependent {
         else
             return c.getBackground();
     }
+
     private final static Color background = new Color(228, 228, 228);
 
     public static int countKeyMods() {
@@ -165,7 +166,7 @@ public class SystemDependent {
                 Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
             else { //assume Unix or Linux
                 String[] browsers = {
-                    "xdg-open", "firefox", "konqueror", "opera", "epiphany", "mozilla", "netscape"};
+                        "xdg-open", "firefox", "konqueror", "opera", "epiphany", "mozilla", "netscape"};
                 String browser = null;
                 for (int count = 0; count < browsers.length && browser == null; count++)
                     if (Runtime.getRuntime().exec(
@@ -344,5 +345,14 @@ public class SystemDependent {
             return name + ".dll";
         else
             return "lib" + name + ".so";
+    }
+
+    public static String getPlatformExtPrefix() {
+        if (IS_MACOSX)
+            return "osx";
+        else if (IS_WINDOWS)
+            return "windows";
+        else
+            return "linux";
     }
 }

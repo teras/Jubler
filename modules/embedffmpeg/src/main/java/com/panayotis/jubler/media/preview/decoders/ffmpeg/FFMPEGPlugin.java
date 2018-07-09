@@ -35,10 +35,4 @@ public class FFMPEGPlugin extends SystemDependent implements Plugin, PluginItem<
     public void execPlugin(AvailDecoders decoders, Object parameter) {
         decoders.addDecoder(new FFMPEG());
     }
-
-    public static String[] playAudioCommand(String filePath) {
-        return IS_MACOSX
-                ? new String[]{"afplay", filePath}
-                : new String[]{"ffplay", "-i", filePath, "-nodisp", "-autoexit", "-hide_banner"};
-    }
 }

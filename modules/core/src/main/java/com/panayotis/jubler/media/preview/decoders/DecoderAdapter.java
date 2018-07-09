@@ -140,6 +140,8 @@ public abstract class DecoderAdapter implements DecoderInterface {
             return null;
         if (cacher != null)
             return null;  // Cache still being created
+        if (!cfile.isFile())
+            return null;
         if (from < 0)
             from = 0;
         if (to < from)

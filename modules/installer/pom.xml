@@ -269,8 +269,6 @@
                                     <target>
                                         <taskdef name="appbundler" onerror="fail" classpathref="maven.plugin.classpath"
                                                  classname="com.oracle.appbundler.AppBundlerTask"/>
-                                        <copy file="../../resources/libs/ffmpeg/darwin/libffdecode.jnilib"
-                                              todir="target/jubler/lib"/>
                                         <appbundler
                                                 outputdirectory="target"
                                                 name="Jubler"
@@ -290,10 +288,16 @@
                                                             name="Subtitle Document"
                                                             role="editor"/>
                                         </appbundler>
+                                        <copy todir="target/Jubler.app/Contents/Java/binaries">
+                                            <fileset dir="../../resources/ffmpeg/binaries/osx/"/>
+                                        </copy>
+                                        <chmod file="target/Jubler.app/Contents/Java/binaries/ffmpeg" perm="a+x"/>
+                                        <chmod file="target/Jubler.app/Contents/Java/binaries/ffplay" perm="a+x"/>
+                                        <chmod file="target/Jubler.app/Contents/Java/binaries/ffprobe" perm="a+x"/>
+                                        <chmod file="target/Jubler.app/Contents/Java/binaries/mplayer" perm="a+x"/>
                                         <move file="target/jubler/lib/help" todir="target/Jubler.app/Contents/Java"/>
                                         <move file="target/jubler/lib/i18n" todir="target/Jubler.app/Contents/Java"/>
                                         <move file="target/jubler/lib/themes" todir="target/Jubler.app/Contents/Java"/>
-
                                         <copy todir="target/jubler/lib/i18n">
                                             <fileset dir="../../resources/i18n/cache"/>
                                         </copy>

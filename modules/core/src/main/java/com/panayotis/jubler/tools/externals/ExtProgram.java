@@ -24,12 +24,23 @@
 package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
+import com.panayotis.jubler.os.SystemDependent;
+
+import java.io.File;
 
 /**
- *
  * @author teras
  */
 public abstract class ExtProgram {
+
+    private static final File EXT_PATH;
+
+    static {
+        File selfCp = new File(ExtProgram.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+        EXT_PATH = selfCp.isFile()
+                ? new File(selfCp.getParent() + File.separator + "binaries")
+                : new File(selfCp + "/../../../../resources/ffmpeg/binaries/" + SystemDependent.getPlatformExtPrefix());
+    }
 
     /**
      * Get a JPanel having the GUI controls for the external program options
@@ -41,5 +52,9 @@ public abstract class ExtProgram {
 
     public String getDescriptiveName() {
         return getName();
+    }
+
+    public static File getExtPath() {
+        return EXT_PATH;
     }
 }

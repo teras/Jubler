@@ -29,6 +29,7 @@ import com.panayotis.jubler.media.preview.decoders.DecoderAdapter;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.tools.externals.Commander;
+import com.panayotis.jubler.tools.externals.ExtProgram;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -53,12 +54,13 @@ public final class FFMPEG extends DecoderAdapter {
         File prev = null;
         try {
             prev = File.createTempFile("jubler_preview_", ".png");
-            Commander c = new Commander("ffmpeg",
+            Commander c = new Commander("./ffmpeg",
                     "-ss", format.format(time),
                     "-i", vfile.getAbsolutePath(),
                     "-vframes", "1",
                     "-y", "-hide_banner",
                     prev.getAbsolutePath());
+            c.setCurrentDir(ExtProgram.getExtPath());
             c.exec();
             c.waitFor();
             return prev.length() <= 1 || c.exitValue() != 0 ? null : ImageIO.read(prev);
@@ -71,7 +73,7 @@ public final class FFMPEG extends DecoderAdapter {
         }
     }
 
-    public void playAudioClip(AudioFile afile, double from, double to) {
+    public void playAudioClip(final AudioFile afile, double from, double to) {
         final File prev;
         try {
             prev = File.createTempFile("jubler_preview_", ".mp4");
@@ -79,24 +81,27 @@ public final class FFMPEG extends DecoderAdapter {
             DEBUG.debug(e);
             return;
         }
-        Commander c = new Commander("ffmpeg",
+        Commander c = new Commander("./ffmpeg",
                 "-i", afile.getAbsolutePath(),
                 "-ss", format.format(from),
                 "-t", format.format(to - from),
-                "-c", "copy",
+                "-vn", "-acodec", "copy",
                 "-y", "-hide_banner",
                 prev.getAbsolutePath()
         );
+        c.setCurrentDir(ExtProgram.getExtPath());
         c.setEndListener(new Commander.Consumer<Integer>() {
             @Override
             public void accept(Integer value) {
                 if (value == 0) {
-                    Commander p = new Commander(FFMPEGPlugin.playAudioCommand(prev.getAbsolutePath()));
+                    Commander p = new Commander("./ffplay",
+                            "-i", prev.getAbsolutePath(),
+                            "-nodisp", "-autoexit", "-hide_banner");
+                    p.setCurrentDir(ExtProgram.getExtPath());
                     p.setEndListener(new Commander.Consumer<Integer>() {
                         @Override
                         public void accept(Integer value) {
-                            if (prev != null)
-                                prev.delete();
+                            prev.delete();
                         }
                     });
                     p.exec();
@@ -108,11 +113,12 @@ public final class FFMPEG extends DecoderAdapter {
 
 
     public void retrieveInformation(final VideoFile vfile) {
-        Commander c = new Commander("ffprobe", "-i", vfile.getAbsolutePath(), "-hide_banner");
+        Commander c = new Commander("./ffprobe", "-i", vfile.getAbsolutePath(), "-hide_banner");
+        c.setCurrentDir(ExtProgram.getExtPath());
         c.setErrListener(new Commander.Consumer<String>() {
             @Override
             public void accept(String value) {
-                value = value.trim().toLowerCase();
+                value = value.trim().toLowerCase().replaceAll("\\[.*]", "");
                 if (value.startsWith("stream") && value.contains("video"))
                     for (String part : value.split(",")) {
                         part = part.trim();
@@ -172,10 +178,11 @@ public final class FFMPEG extends DecoderAdapter {
     @Override
     protected void makeCache(AdapterCallback listener, File afile, final OutputStream out) throws IOException {
         final AtomicInteger channels = new AtomicInteger(0);
-        Commander c = new Commander("ffprobe",
+        Commander c = new Commander("./ffprobe",
                 "-i", afile.getAbsolutePath(),
                 "-select_streams", "a:0",
                 "-show_streams", "-hide_banner");
+        c.setCurrentDir(ExtProgram.getExtPath());
         c.setOutListener(new Commander.Consumer<String>() {
             @Override
             public void accept(String value) {
@@ -189,12 +196,13 @@ public final class FFMPEG extends DecoderAdapter {
         if (channels.get() == 0)
             throw new IOException("Unable to locate any audio channels in file " + afile.getAbsolutePath());
         writeHeader(out, RESOLUTION, channels.get(), afile.getName());
-        c = new Commander("ffmpeg",
+        c = new Commander("./ffmpeg",
                 "-i", afile.getAbsolutePath(),
                 "-f", "s8",
                 "-c:a", "pcm_s8",
                 "-ar", String.valueOf(RESOLUTION),
                 "-");
+        c.setCurrentDir(ExtProgram.getExtPath());
         c.setOutListener(new Commander.BiConsumer<byte[], Integer>() {
             @Override
             public void accept(byte[] buffer, Integer length) {
