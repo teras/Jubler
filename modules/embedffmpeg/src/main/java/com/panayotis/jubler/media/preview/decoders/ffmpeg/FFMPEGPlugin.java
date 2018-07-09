@@ -1,10 +1,11 @@
 package com.panayotis.jubler.media.preview.decoders.ffmpeg;
 
 import com.panayotis.jubler.media.preview.decoders.AvailDecoders;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 
-public class FFMPEGPlugin implements Plugin, PluginItem<AvailDecoders> {
+public class FFMPEGPlugin extends SystemDependent implements Plugin, PluginItem<AvailDecoders> {
     @Override
     public PluginItem[] getPluginItems() {
         return new PluginItem[]{this};
@@ -33,5 +34,11 @@ public class FFMPEGPlugin implements Plugin, PluginItem<AvailDecoders> {
     @Override
     public void execPlugin(AvailDecoders decoders, Object parameter) {
         decoders.addDecoder(new FFMPEG());
+    }
+
+    public static String[] playAudioCommand(String filePath) {
+        return IS_MACOSX
+                ? new String[]{"afplay", filePath}
+                : new String[]{"ffplay", "-i", filePath, "-nodisp", "-autoexit", "-hide_banner"};
     }
 }

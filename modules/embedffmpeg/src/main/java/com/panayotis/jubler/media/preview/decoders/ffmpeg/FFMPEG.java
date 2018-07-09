@@ -73,33 +73,37 @@ public final class FFMPEG extends DecoderAdapter {
 
     public void playAudioClip(AudioFile afile, double from, double to) {
         final File prev;
-        File deletable = null;
         try {
-            deletable = prev = File.createTempFile("jubler_preview_", ".mp4");
-            Commander c = new Commander("ffmpeg",
-                    "-i", afile.getAbsolutePath(),
-                    "-ss", format.format(from),
-                    "-t", format.format(to - from),
-                    "-c", "copy",
-                    "-y", "-hide_banner",
-                    prev.getAbsolutePath()
-            );
-            c.setEndListener(new Commander.Consumer<Integer>() {
-                @Override
-                public void accept(Integer value) {
-                    Commander p = new Commander("ffplay",
-                            "-i", prev.getAbsolutePath(),
-                            "-nodisp", "-autoexit", "-hide_banner");
-                    p.exec();
-                }
-            });
-            c.exec();
+            prev = File.createTempFile("jubler_preview_", ".mp4");
         } catch (IOException e) {
             DEBUG.debug(e);
-        } finally {
-            if (deletable != null)
-                deletable.delete();
+            return;
         }
+        Commander c = new Commander("ffmpeg",
+                "-i", afile.getAbsolutePath(),
+                "-ss", format.format(from),
+                "-t", format.format(to - from),
+                "-c", "copy",
+                "-y", "-hide_banner",
+                prev.getAbsolutePath()
+        );
+        c.setEndListener(new Commander.Consumer<Integer>() {
+            @Override
+            public void accept(Integer value) {
+                if (value == 0) {
+                    Commander p = new Commander(FFMPEGPlugin.playAudioCommand(prev.getAbsolutePath()));
+                    p.setEndListener(new Commander.Consumer<Integer>() {
+                        @Override
+                        public void accept(Integer value) {
+                            if (prev != null)
+                                prev.delete();
+                        }
+                    });
+                    p.exec();
+                }
+            }
+        });
+        c.exec();
     }
 
 
