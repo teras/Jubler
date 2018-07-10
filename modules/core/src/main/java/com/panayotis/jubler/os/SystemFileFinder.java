@@ -25,6 +25,8 @@ package com.panayotis.jubler.os;
 import com.panayotis.jubler.JubFrame;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.StringTokenizer;
 
@@ -78,9 +80,14 @@ public class SystemFileFinder {
     }
 
     public static String guessMainPath(Class<?> cls) {
-        File classpath = new File(cls.getProtectionDomain().getCodeSource().getLocation().getFile());
-        isJarBased = classpath.isFile();
-        return isJarBased ? classpath.getParent() : classpath.getPath();
+        try {
+            File classpath = new File(cls.getProtectionDomain().getCodeSource().getLocation().toURI());
+            isJarBased = classpath.isFile();
+            return isJarBased ? classpath.getParent() : classpath.getPath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static boolean isJarBased() {
