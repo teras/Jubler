@@ -285,6 +285,8 @@
                                                             name="Subtitle Document"
                                                             role="editor"/>
                                         </appbundler>
+                                        <copy todir="target/Jubler.app/Contents/Java/lib"
+                                              file="../../resources/system/fonts/freesans.ttf"/>
                                         <move file="target/jubler/lib/help" todir="target/Jubler.app/Contents/Java"/>
                                         <move file="target/jubler/lib/i18n" todir="target/Jubler.app/Contents/Java"/>
                                         <move file="target/jubler/lib/themes" todir="target/Jubler.app/Contents/Java"/>
