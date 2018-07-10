@@ -41,7 +41,7 @@ import java.util.prefs.Preferences;
 @SuppressWarnings("UseSpecificCatch")
 public class Options {
 
-    public final static int CURRENT_VERSION = 2;
+    public final static int CURRENT_VERSION = 3;
     private final static int MAX_RECENTS = 10;
     private final static Properties opts;
     private final static String preffile;

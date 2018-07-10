@@ -295,6 +295,8 @@
                                         <chmod file="target/Jubler.app/Contents/Java/binaries/ffplay" perm="a+x"/>
                                         <chmod file="target/Jubler.app/Contents/Java/binaries/ffprobe" perm="a+x"/>
                                         <chmod file="target/Jubler.app/Contents/Java/binaries/mplayer" perm="a+x"/>
+                                        <copy todir="target/Jubler.app/Contents/Java/lib"
+                                              file="../../resources/system/fonts/freesans.ttf"/>
                                         <move file="target/jubler/lib/help" todir="target/Jubler.app/Contents/Java"/>
                                         <move file="target/jubler/lib/i18n" todir="target/Jubler.app/Contents/Java"/>
                                         <move file="target/jubler/lib/themes" todir="target/Jubler.app/Contents/Java"/>
