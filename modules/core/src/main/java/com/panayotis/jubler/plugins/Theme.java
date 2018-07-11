@@ -19,14 +19,8 @@
  */
 package com.panayotis.jubler.plugins;
 
-import com.panayotis.jubler.information.JAbout;
-import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.SystemFileFinder;
-
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.zip.ZipFile;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 

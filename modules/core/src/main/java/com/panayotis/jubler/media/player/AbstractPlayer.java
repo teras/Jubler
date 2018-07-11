@@ -23,18 +23,15 @@
 
 package com.panayotis.jubler.media.player;
 
-import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.*;
 import com.panayotis.jubler.options.AbstractPlayerOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
-import com.panayotis.jubler.os.FileCommunicator;
-import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jubler.subs.Subtitles;
 
 import java.io.File;
 import java.io.IOException;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.os.Networking;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.time.Time;
@@ -132,7 +129,7 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem<A
         replaceValues(cmds, "%t", when.getRoundSeconds());
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));
-        replaceValues(cmds, "%j", SystemFileFinder.AppPath);
+        replaceValues(cmds, "%j", SystemDependent.AppPath);
         int port = Networking.getRandomPort();
         replaceValues(cmds, "%i", Integer.toString(port));
 

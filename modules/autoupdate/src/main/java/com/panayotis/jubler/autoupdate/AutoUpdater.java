@@ -26,7 +26,6 @@ import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jupidator.ApplicationInfo;
@@ -60,7 +59,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem<Stati
     @Override
     public void execPlugin(StaticJubler caller, Object param) {
         try {
-            ApplicationInfo info = new ApplicationInfo(SystemFileFinder.AppPath, SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
+            ApplicationInfo info = new ApplicationInfo(SystemDependent.AppPath, SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
             info.setDistributionBased(JAbout.isDistributionBased());
             Updater upd = new Updater(URL, info, this);
             upd.actionDisplay();

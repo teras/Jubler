@@ -23,7 +23,7 @@ package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.DynamicClassLoader;
-import com.panayotis.jubler.os.SystemFileFinder;
+import com.panayotis.jubler.os.SystemDependent;
 
 import java.io.File;
 import java.util.*;
@@ -39,7 +39,7 @@ public class PluginManager {
 
     public PluginManager() {
         plugin_list = new HashMap<String, ArrayList<PluginItem>>();
-        cl = new DynamicClassLoader(new File(SystemFileFinder.AppPath));
+        cl = new DynamicClassLoader(new File(SystemDependent.AppPath));
         ArrayList<PluginItem> plugin_items = new ArrayList<PluginItem>();
         int count = 0;
         for (Plugin p : ServiceLoader.load(Plugin.class, cl)) {

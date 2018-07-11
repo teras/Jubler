@@ -25,6 +25,7 @@ package com.panayotis.jubler.os;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
+import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.tools.externals.ExtPath;
 
 import java.awt.Color;
@@ -37,6 +38,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javax.swing.AbstractButton;
@@ -55,6 +57,8 @@ public class SystemDependent {
     protected final static boolean IS_LINUX;
     protected final static boolean IS_WINDOWS;
     protected final static boolean IS_MACOSX;
+
+    public static final String AppPath = guessMainPath(JubFrame.class);
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
@@ -354,5 +358,15 @@ public class SystemDependent {
             return "windows";
         else
             return "linux";
+    }
+
+    private static String guessMainPath(Class<?> cls) {
+        try {
+            File classpath = new File(cls.getProtectionDomain().getCodeSource().getLocation().toURI());
+            return classpath.isFile() ? classpath.getParent() : classpath.getPath();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

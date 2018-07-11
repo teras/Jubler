@@ -23,7 +23,7 @@ package com.panayotis.jubler.media.player.mplayer;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.os.SystemFileFinder;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class MPlayerSystemDependent extends SystemDependent {
         else if (IS_WINDOWS)
             font = " -font " + System.getenv("SystemRoot") + "\\fonts\\arial.ttf";
         else {
-            File freesans = new File(SystemFileFinder.AppPath + "/lib/freesans.ttf");
+            File freesans = new File(SystemDependent.AppPath + "/lib/freesans.ttf");
             if (freesans.exists())
                 font = " -font %j/lib/freesans.ttf";
         }

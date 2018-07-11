@@ -26,7 +26,7 @@ package com.panayotis.jubler.information;
 import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.os.SystemFileFinder;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -50,7 +50,7 @@ public class HelpBrowser extends javax.swing.JDialog {
 
         history = new ArrayList<String>();
 
-        String initpage = "file:" + SystemFileFinder.AppPath + "/help/jubler-faq.html";
+        String initpage = "file:" + SystemDependent.AppPath + "/help/jubler-faq.html";
         setPage(initpage);
         history.add(initpage);
 
