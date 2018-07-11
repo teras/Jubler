@@ -131,7 +131,7 @@ SectionEnd
 ; JRE Installation
 ;--------------------------------
 !define JRE_VERSION "1.8"
-!define JRE_URL "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=116039"
+!define JRE_URL "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233169_512cd62ec5174c3487ac17c61aaa89e8"
 Section "Java Runtime Environment" SecJRE
 
   ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"

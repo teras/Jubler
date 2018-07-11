@@ -32,20 +32,24 @@ import java.net.URLClassLoader;
  */
 public class DynamicClassLoader extends URLClassLoader {
 
-    public DynamicClassLoader(File... allJarsInHerea) {
+    public DynamicClassLoader() {
         super(new URL[]{}, DynamicClassLoader.class.getClassLoader());
-        if (allJarsInHerea != null && allJarsInHerea.length != 0) {
-            for (File dir : allJarsInHerea) {
-                File[] files = dir.listFiles();
-                if (files == null || files.length == 0)
-                    return;
-                for (File f : files)
-                    if (f.isFile() && f.getName().toLowerCase().endsWith(".jar")) {
-                        try {
-                            addURL(f.toURI().toURL());
-                        } catch (MalformedURLException ignore) {
-                        }
-                    }
+    }
+
+    public DynamicClassLoader(File allJarsInHere) {
+        this();
+        if (allJarsInHere == null)
+            return;
+        File[] files = allJarsInHere.listFiles();
+        if (files == null || files.length == 0)
+            return;
+        for (File f : files) {
+            if (f.isFile() && f.getName().toLowerCase().endsWith(".jar")) {
+                try {
+                    addURL(f.toURI().toURL());
+                } catch (MalformedURLException ignore) {
+                    ignore.printStackTrace();
+                }
             }
         }
     }
