@@ -76,7 +76,9 @@ public final class FFMPEG extends DecoderAdapter {
     public void playAudioClip(final AudioFile afile, double from, double to) {
         final File prev;
         try {
-            prev = File.createTempFile("jubler_preview_", ".mp4");
+            int dot = afile.getName().lastIndexOf('.');
+            String suffix = dot < 0 ? "" : afile.getName().substring(dot);
+            prev = File.createTempFile("jubler_preview_", suffix);
         } catch (IOException e) {
             DEBUG.debug(e);
             return;
@@ -94,9 +96,7 @@ public final class FFMPEG extends DecoderAdapter {
             @Override
             public void accept(Integer value) {
                 if (value == 0) {
-                    Commander p = new Commander("./ffplay",
-                            "-i", prev.getAbsolutePath(),
-                            "-nodisp", "-autoexit", "-hide_banner");
+                    Commander p = new Commander("./mplayer", prev.getAbsolutePath());
                     p.setCurrentDir(ExtProgram.getExtPath());
                     p.setEndListener(new Commander.Consumer<Integer>() {
                         @Override
@@ -194,7 +194,7 @@ public final class FFMPEG extends DecoderAdapter {
         c.exec();
         c.waitFor();
         if (channels.get() == 0)
-            throw new IOException("Unable to locate any audio channels in file " + afile.getAbsolutePath());
+            throw new IOException("Unable to locate any audio channels");
         writeHeader(out, RESOLUTION, channels.get(), afile.getName());
         c = new Commander("./ffmpeg",
                 "-i", afile.getAbsolutePath(),

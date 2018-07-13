@@ -292,7 +292,6 @@
                                             <fileset dir="../../resources/ffmpeg/binaries/osx/"/>
                                         </copy>
                                         <chmod file="target/Jubler.app/Contents/Java/binaries/ffmpeg" perm="a+x"/>
-                                        <chmod file="target/Jubler.app/Contents/Java/binaries/ffplay" perm="a+x"/>
                                         <chmod file="target/Jubler.app/Contents/Java/binaries/ffprobe" perm="a+x"/>
                                         <chmod file="target/Jubler.app/Contents/Java/binaries/mplayer" perm="a+x"/>
                                         <copy todir="target/Jubler.app/Contents/Java/lib"

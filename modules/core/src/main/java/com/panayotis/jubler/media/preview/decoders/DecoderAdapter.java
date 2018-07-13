@@ -84,7 +84,7 @@ public abstract class DecoderAdapter implements DecoderInterface {
                     out.flush();
                     cacher = null;  // Needed early, to "tip" the system that cache creating has been finished
                 } catch (IOException e) {
-                    JIDialog.error(null, __("Error while loading file {0}", afile.getPath()), "Error while creating cache");
+                    JIDialog.error(null, __("Error while loading file {0}\n" + e.getMessage(), afile.getPath()), "Error while creating cache");
                     cfile.delete();
                 } finally {
                     if (out != null) {
