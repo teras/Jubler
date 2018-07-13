@@ -32,6 +32,7 @@ import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.os.DEBUG;
 
 import java.io.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author teras
@@ -42,9 +43,11 @@ public abstract class DecoderAdapter implements DecoderInterface {
 
     private DecoderListener listener;
     private Thread cacher;
+    private Runnable canceller;
 
     public boolean createAudioCache(final AudioFile afile, final CacheFile cfile, final DecoderListener listener) {
         this.listener = listener;
+        this.canceller = null;
 
         /* Make sanity checks */
         if (!isDecoderValid()) {
@@ -80,6 +83,11 @@ public abstract class DecoderAdapter implements DecoderInterface {
                         public void updateTo(float position) {
                             listener.updateCacheCreation(position);
                         }
+
+                        @Override
+                        public void cancelCallback(Runnable r) {
+                            canceller = r;
+                        }
                     }, afile, out);
                     out.flush();
                     cacher = null;  // Needed early, to "tip" the system that cache creating has been finished
@@ -94,6 +102,7 @@ public abstract class DecoderAdapter implements DecoderInterface {
                         }
                     }
                     cacher = null;
+                    canceller = null;
                     listener.stopCacheCreation();
                 }
             }
@@ -106,6 +115,8 @@ public abstract class DecoderAdapter implements DecoderInterface {
     public void interruptAudioCache() {
         if (cacher != null)
             cacher.interrupt();
+        if (canceller != null)
+            canceller.run();
     }
 
     protected void writeHeader(OutputStream out, int resolution, int channels, String filename) throws IOException {
@@ -198,5 +209,7 @@ public abstract class DecoderAdapter implements DecoderInterface {
 
     public interface AdapterCallback {
         void updateTo(float position);
+
+        void cancelCallback(Runnable r);
     }
 }

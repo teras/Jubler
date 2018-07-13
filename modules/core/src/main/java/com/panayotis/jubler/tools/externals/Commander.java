@@ -43,6 +43,7 @@ public class Commander {
     private boolean err_is_terminated = true;
     private Thread waitThread;
     private long pid;
+    private boolean requestKill;
 
     public Commander(List<String> command) {
         for (String candidate : command)
@@ -279,7 +280,7 @@ public class Commander {
             @Override
             public void run() {
                 doWaitFor();    // will also nullify `proc`
-                while (!(out_is_terminated && err_is_terminated) && !waitThread.isInterrupted()) {
+                while (!(out_is_terminated && err_is_terminated) && waitThread != null && !waitThread.isInterrupted()) {
                     try {
                         synchronized (this) {
                             wait(1000);
@@ -300,6 +301,7 @@ public class Commander {
 
     @SuppressWarnings("UseSpecificCatch")
     public Commander kill() {
+        requestKill = true;
         try {
             if (proc != null)
                 proc.destroy();
@@ -448,7 +450,8 @@ public class Commander {
                                 if (listenS != null)
                                     listenS.accept(line);
                     } catch (IOException ex) {
-                        ex.printStackTrace();
+                        if (!requestKill)
+                            ex.printStackTrace();
                     } finally {
                         try {
                             if (inR != null)

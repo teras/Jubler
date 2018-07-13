@@ -24,13 +24,13 @@
 package com.panayotis.jubler.time;
 
 import com.panayotis.jubler.subs.CommonDef;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
 /**
- *
  * @author teras
  */
 public final class Time implements Comparable<Time>, Cloneable, CommonDef {
@@ -49,9 +49,9 @@ public final class Time implements Comparable<Time>, Cloneable, CommonDef {
      * This is to generate end-time, using starting frame-count and the duration
      * in the 10th.
      *
-     * @param frames The starting time in frame-count.
+     * @param frames     The starting time in frame-count.
      * @param frame_rate The frame-rate.
-     * @param duration The duration
+     * @param duration   The duration
      */
     public Time(long frames, float frame_rate, int duration) {
         this(frames, frame_rate);
@@ -65,7 +65,7 @@ public final class Time implements Comparable<Time>, Cloneable, CommonDef {
      * however the millisecond part needs to convert by (mill * 90 / frame_rate)
      * to get the time-equipvalent.
      *
-     * @param frames The frame count.
+     * @param frames     The frame count.
      * @param frame_rate The frame-rate, ie. 36000
      */
     public Time(long frames, float frame_rate) {
@@ -106,6 +106,33 @@ public final class Time implements Comparable<Time>, Cloneable, CommonDef {
 
     public Time(Time time) {
         setTime(time);
+    }
+
+
+    public static Time fromFFMPEG(String ffmpegTime) {
+        String[] timeParts = ffmpegTime.split(":");
+        String h = "0", m = "0", s = "0", ms = "0";
+        switch (timeParts.length) {
+            case 1:
+                s = timeParts[0];
+                break;
+            case 2:
+                m = timeParts[0];
+                s = timeParts[1];
+                break;
+            case 3:
+                h = timeParts[0];
+                m = timeParts[1];
+                s = timeParts[2];
+        }
+        int dot = s.indexOf('.');
+        if (dot >= 0) {
+            ms = s.substring(dot + 1);
+            if (ms.isEmpty())
+                ms = "0";
+            s = s.substring(0, dot);
+        }
+        return new Time(h, m, s, ms);
     }
 
     public void addTime(double d) {

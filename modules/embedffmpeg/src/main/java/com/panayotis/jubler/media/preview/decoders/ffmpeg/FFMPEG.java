@@ -35,7 +35,9 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
 import java.text.DecimalFormat;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,29 +143,7 @@ public final class FFMPEG extends DecoderAdapter {
                     }
                 else if (value.startsWith("duration")) {
                     value = value.substring("Duration:".length()).trim().split(",")[0];
-                    String[] timeparts = value.split(":");
-                    String h = "0", m = "0", s = "0", ms = "0";
-                    switch (timeparts.length) {
-                        case 1:
-                            s = timeparts[0];
-                            break;
-                        case 2:
-                            m = timeparts[0];
-                            s = timeparts[1];
-                            break;
-                        case 3:
-                            h = timeparts[0];
-                            m = timeparts[1];
-                            s = timeparts[2];
-                    }
-                    int dot = s.indexOf('.');
-                    if (dot >= 0) {
-                        ms = s.substring(dot + 1);
-                        if (ms.isEmpty())
-                            ms = "0";
-                        s = s.substring(0, dot);
-                    }
-                    vfile.setLength((float) new Time(h, m, s, ms).toSeconds());
+                    vfile.setLength((float) Time.fromFFMPEG(value).toSeconds());
                 }
             }
         });
@@ -176,31 +156,37 @@ public final class FFMPEG extends DecoderAdapter {
     }
 
     @Override
-    protected void makeCache(AdapterCallback listener, File afile, final OutputStream out) throws IOException {
+    protected void makeCache(final AdapterCallback listener, File afile, final OutputStream out) throws IOException {
         final AtomicInteger channels = new AtomicInteger(0);
-        Commander c = new Commander("./ffprobe",
+        final AtomicReference<Double> duration = new AtomicReference<Double>(0d);
+        final AtomicBoolean reqKill = new AtomicBoolean();
+        Commander probe = new Commander("./ffprobe",
                 "-i", afile.getAbsolutePath(),
                 "-select_streams", "a:0",
                 "-show_streams", "-hide_banner");
-        c.setCurrentDir(ExtProgram.getExtPath());
-        c.setOutListener(new Commander.Consumer<String>() {
+        probe.setCurrentDir(ExtProgram.getExtPath());
+        probe.setOutListener(new Commander.Consumer<String>() {
             @Override
             public void accept(String value) {
                 value = value.trim().toLowerCase();
                 if (value.startsWith("channels="))
                     channels.set(Integer.parseInt(value.substring("channels=".length()).trim()));
+                else if (value.startsWith("duration="))
+                    duration.set(Double.parseDouble(value.substring("duration=".length()).trim()));
             }
         });
-        c.exec();
-        c.waitFor();
+        probe.exec();
+        probe.waitFor();
         if (channels.get() == 0)
             throw new IOException("Unable to locate any audio channels");
+        if (duration.get() < 0.01)
+            throw new IOException("Zero duration sound track found");
         writeHeader(out, RESOLUTION, channels.get(), afile.getName());
-        c = new Commander("./ffmpeg",
+        final Commander c = new Commander("./ffmpeg",
                 "-i", afile.getAbsolutePath(),
                 "-f", "s8",
                 "-c:a", "pcm_s8",
-                "-ar", String.valueOf(RESOLUTION),
+                "-ar", String.valueOf(RESOLUTION), "-y",
                 "-");
         c.setCurrentDir(ExtProgram.getExtPath());
         c.setOutListener(new Commander.BiConsumer<byte[], Integer>() {
@@ -209,17 +195,36 @@ public final class FFMPEG extends DecoderAdapter {
                 try {
                     out.write(buffer, 0, length);
                 } catch (IOException e) {
-                    DEBUG.debug(e);
+                    if (!reqKill.get())
+                        DEBUG.debug(e);
                 }
             }
         });
         c.setErrListener(new Commander.Consumer<String>() {
             @Override
             public void accept(String value) {
-                System.out.println(":" + value);
+                value = value.replace('=', ' ');
+                int timeOff = value.indexOf("time");
+                if (timeOff >= 0) {
+                    timeOff += 4;
+                    value = value.substring(timeOff).trim();
+                    int next = value.indexOf(' ');
+                    if (next > 0)
+                        value = value.substring(0, next);
+                    listener.updateTo((float) (Time.fromFFMPEG(value).toSeconds() / duration.get()));
+                }
+            }
+        });
+        listener.cancelCallback(new Runnable() {
+            @Override
+            public void run() {
+                reqKill.set(true);
+                c.kill();
             }
         });
         c.exec();
         c.waitFor();
+        if (reqKill.get())
+            throw new IOException("Action aborted");
     }
 }
