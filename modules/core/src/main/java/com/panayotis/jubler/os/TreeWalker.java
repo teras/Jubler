@@ -24,6 +24,8 @@
 package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.tools.externals.ExtPath;
+import com.panayotis.jubler.tools.externals.ExtProgram;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -37,6 +39,7 @@ public class TreeWalker {
 
     public static File searchExecutable(ArrayList<String> application, String[] parameters, String test_signature, String deflt) {
         ArrayList<ExtPath> paths = new ArrayList<ExtPath>();
+        paths.add(new ExtPath(ExtProgram.getExtPath().getAbsolutePath(), 1));
         paths.add(new ExtPath(deflt, ExtPath.FILE_ONLY));
         SystemDependent.appendSpotlightApplication(application.get(0), paths);
         SystemDependent.appendPathApplication(paths);

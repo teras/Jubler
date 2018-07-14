@@ -27,6 +27,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.tools.externals.ExtPath;
+import com.panayotis.jubler.tools.externals.ExtProgram;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -242,6 +243,7 @@ public class SystemDependent {
         res.add(new ExtPath("/sw/bin", 1));
         res.add(new ExtPath("/usr/local/bin", 1));
         res.add(new ExtPath("C:\\Program Files", 3));
+        res.add(new ExtPath("C:\\Program Files (x86)", 3));
         res.add(new ExtPath(System.getProperty("user.home"), 3));
     }
 

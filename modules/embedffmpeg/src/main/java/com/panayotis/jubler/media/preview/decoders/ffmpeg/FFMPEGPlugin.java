@@ -23,7 +23,6 @@ public class FFMPEGPlugin extends SystemDependent implements Plugin, PluginItem<
 
     @Override
     public void setClassLoader(ClassLoader cl) {
-
     }
 
     @Override
