@@ -152,7 +152,7 @@ public class JublerApp implements Plugin, PluginItem<JubFrame> {
     }
 
     public String getPluginName() {
-        return __("Multi-platform application support");
+        return "Multi-platform application support";
     }
 
     public ClassLoader getClassLoader() {
