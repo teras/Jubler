@@ -56,7 +56,7 @@ public class SubViewer2 extends SubViewer {
 
     @Override
     public String getExtendedName() {
-        return __("SubViewer V2");
+        return "SubViewer V2";
     }
 
     @Override

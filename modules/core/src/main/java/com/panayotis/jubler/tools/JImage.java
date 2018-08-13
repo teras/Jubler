@@ -86,15 +86,15 @@ public class JImage implements CommonDef {
         };
 
         StringBuffer b = new StringBuffer();
-        b.append(__("Current directory is " + UNIX_NL + "\"{0}\"",
+        b.append(__("Current directory is\n\"{0}\"",
                 default_directory.getAbsoluteFile())).append(UNIX_NL);
-        b.append(__("Large number of files in one directory could")).append(UNIX_NL);
-        b.append(__("deteriorate the system's performance.")).append(UNIX_NL);
-        b.append(__("Would you like to create new directories")).append(UNIX_NL);
-        b.append(__("and select them for storing images?")).append(UNIX_NL);
-        b.append(__("Note:"));
-        b.append(__("(Images are divided equally over the group")).append(UNIX_NL);
-        b.append(__("of selected directories.)"));
+        b.append(__("Large number of files in one directory could\n" +
+                "deteriorate the system's performance.\n" +
+                "Would you like to create new directories\n" +
+                "and select them for storing images?\n" +
+                "Note:\n" +
+                "Images are divided equally over the group\n" +
+                "of selected directories."));
         String msg = b.toString();
         String title = __("Creating directories for images");
 
@@ -649,7 +649,7 @@ public class JImage implements CommonDef {
         // Get a ImageWriter for jpeg format.
         Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
         if (!writers.hasNext())
-            throw new IllegalStateException(__("No writers found"));
+            throw new IllegalStateException("No writers found");
         ImageWriter writer = (ImageWriter) writers.next();
         // Create the ImageWriteParam to compress the image.
         ImageWriteParam param = writer.getDefaultWriteParam();

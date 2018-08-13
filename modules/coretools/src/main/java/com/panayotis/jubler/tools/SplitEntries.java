@@ -41,7 +41,7 @@ public class SplitEntries extends OneByOneTool {
 
     @Override
     protected String getToolTitle() {
-        return __("Split Entries");
+        return __("Split entries");
     }
 
     @Override

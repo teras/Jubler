@@ -65,7 +65,7 @@ public class PlainText extends AbstractTextSubFormat {
 
     @Override
     public String getExtendedName() {
-        return __("Plain text");
+        return "Plain text";
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {

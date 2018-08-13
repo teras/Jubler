@@ -39,7 +39,7 @@ public class JoinEntries extends TimeBaseTool {
 
     @Override
     protected String getToolTitle() {
-        return __("Join Entries");
+        return __("Join entries");
     }
 
     @Override

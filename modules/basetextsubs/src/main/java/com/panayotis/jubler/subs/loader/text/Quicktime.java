@@ -68,7 +68,7 @@ public class Quicktime extends AbstractTextSubFormat {
 
     @Override
     public String getExtendedName() {
-        return __("Quicktime Texttrack");
+        return "Quicktime Texttrack";
     }
 
     @Override

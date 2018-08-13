@@ -69,7 +69,7 @@ public class TextScript extends AbstractTextSubFormat {
 
     @Override
     public String getExtendedName() {
-        return __("Adobe Encore Text Script");
+        return "Adobe Encore Text Script";
     }
 
     @Override

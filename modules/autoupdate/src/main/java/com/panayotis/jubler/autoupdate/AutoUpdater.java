@@ -75,7 +75,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem<Stati
     }
 
     public String getPluginName() {
-        return __("Auto update");
+        return "Auto update";
     }
 
     public ClassLoader getClassLoader() {
