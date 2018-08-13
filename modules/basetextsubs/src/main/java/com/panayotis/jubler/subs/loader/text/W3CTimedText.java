@@ -68,7 +68,7 @@ public class W3CTimedText extends AbstractTextSubFormat {
 
     @Override
     public String getExtendedName() {
-        return __("W3C Timed Text");
+        return "W3C Timed Text";
     }
 
     @Override

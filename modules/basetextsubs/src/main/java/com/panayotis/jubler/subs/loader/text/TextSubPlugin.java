@@ -20,15 +20,16 @@
 package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.os.DEBUG;
 
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.loader.SubFormat;
+
 import java.util.logging.Level;
 
 /**
- *
  * @author teras & Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class TextSubPlugin implements Plugin {
@@ -37,23 +38,24 @@ public class TextSubPlugin implements Plugin {
 
     public PluginItem[] getPluginItems() {
         plugin_list = new PluginItem[]{
-            new AdvancedSubStation(),
-            new SubRip(),
-            new SubStationAlpha(),
-            new SubViewer2(),
-            new SubViewer(),
-            new MPL2(),
-            new MicroDVD(),
-            new Quicktime(),
-            new Spruce(),
-            new TextScript(),
-            new W3CTimedText(),
-            new DFXP(),
-            new PreSegmentedText()
+                new AdvancedSubStation(),
+                new SubRip(),
+                new SubStationAlpha(),
+                new SubViewer2(),
+                new SubViewer(),
+                new MPL2(),
+                new MicroDVD(),
+                new Quicktime(),
+                new Spruce(),
+                new TextScript(),
+                new W3CTimedText(),
+                new DFXP(),
+                new PreSegmentedText()
         };
         setClassLoaderForSubFormat();
         return plugin_list;
     }
+
     private ClassLoader loader = null;
 
     private void setClassLoaderForSubFormat() {
@@ -62,15 +64,15 @@ public class TextSubPlugin implements Plugin {
                 SubFormat fmt = (SubFormat) plugin_item;
                 fmt.setClassLoader(this.loader);
                 if (this.loader == null)
-                    DEBUG.logger.log(Level.SEVERE, __("Loader is NULL."));
+                    DEBUG.logger.log(Level.SEVERE, "Loader is NULL.");
             }//end for(PluginItem format : plugin_list)
         } catch (Exception ex) {
-            DEBUG.logger.log(Level.SEVERE, ex.toString() + __(": Unable to set class loader"));
+            DEBUG.logger.log(Level.SEVERE, ex.toString() + ": Unable to set class loader");
         }
     }
 
     public String getPluginName() {
-        return __("Text subtitles");
+        return "Text subtitles";
     }
 
     public boolean canDisablePlugin() {

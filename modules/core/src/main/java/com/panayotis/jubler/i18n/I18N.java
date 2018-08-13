@@ -28,6 +28,7 @@ import com.panayotis.jubler.os.DynamicClassLoader;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
@@ -43,28 +44,35 @@ public class I18N {
 
     static {
         String ls = System.getProperty("user.language");
-        String ll = ls + "_" + System.getProperty("user.country");
-        for (String p : new String[]{
-                "../../../dist/i18n/" + ls + ".jar",
-                "../../../dist/i18n/" + ll + ".jar",
-                "i18n/" + ll + ".jar",
-                "i18n/" + ls + ".jar"
-        }) {
-            try {
-                cl.addURL(new File(p).toURI().toURL());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+        if (ls.equals("en")) {
+            DEBUG.debug("Using default language");
+        } else {
+            String ll = ls + "_" + System.getProperty("user.country");
+            File base = new File(I18N.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            for (String p : new String[]{
+                    "../../../../resources/i18n/cache/" + ll + ".jar",
+                    "i18n/" + ll + ".jar",
+
+                    "../../../../resources/i18n/cache/" + ls + ".jar",
+                    "i18n/" + ls + ".jar"
+            }) {
+                try {
+                    File urlFile = new File(base.isDirectory() ? base : base.getParentFile(), p);
+                    cl.addURL(urlFile.toURI().toURL());
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             }
+            b = loadClass(PATH + ll);
+            if (b == null) {
+                b = loadClass(PATH + ls);
+                if (b != null)
+                    DEBUG.debug("Using language " + ls);
+                else
+                    DEBUG.debug("Unable to locate language " + ls);
+            } else
+                DEBUG.debug("Using language " + ll);
         }
-        b = loadClass(PATH + ll);
-        if (b == null) {
-            b = loadClass(PATH + ls);
-            if (b != null)
-                DEBUG.debug("Using language " + ls);
-            else
-                DEBUG.debug("Unable to locate language " + ls);
-        } else
-            DEBUG.debug("Using language " + ll);
     }
 
     @SuppressWarnings("UseSpecificCatch")

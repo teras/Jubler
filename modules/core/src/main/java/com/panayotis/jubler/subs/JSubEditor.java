@@ -501,6 +501,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         EditB = new javax.swing.JButton();
         crossP = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
         crossinfo = new javax.swing.JButton();
 
         setOpaque(false);
@@ -801,22 +802,27 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         add(StyleP, java.awt.BorderLayout.SOUTH);
 
         crossP.setBackground(new java.awt.Color(244, 227, 174));
-        crossP.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
+        crossP.setLayout(new java.awt.BorderLayout());
 
         jLabel1.setForeground(java.awt.Color.black);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/crossmobile.png"))); // NOI18N
-        jLabel1.setText("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?");
+        jLabel1.setText(__("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?"));
         jLabel1.setIconTextGap(6);
-        crossP.add(jLabel1);
+        crossP.add(jLabel1, java.awt.BorderLayout.CENTER);
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
-        crossinfo.setText("more...");
+        jPanel5.setOpaque(false);
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
+        crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crossinfoActionPerformed(evt);
             }
         });
-        crossP.add(crossinfo);
+        jPanel5.add(crossinfo);
+
+        crossP.add(jPanel5, java.awt.BorderLayout.EAST);
 
         add(crossP, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
@@ -1020,6 +1026,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;

@@ -134,7 +134,7 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
     }
 
     public String getPluginName() {
-        return __("Zemberek spell checker");
+        return "Zemberek spell checker";
     }
 
     public boolean canDisablePlugin() {

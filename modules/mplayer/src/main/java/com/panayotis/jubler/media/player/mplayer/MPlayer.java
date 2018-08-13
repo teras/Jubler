@@ -108,7 +108,7 @@ public class MPlayer extends AbstractPlayer implements Plugin {
     }
 
     public String getPluginName() {
-        return __("MPlayer media player");
+        return "MPlayer media player";
     }
 
     public boolean canDisablePlugin() {

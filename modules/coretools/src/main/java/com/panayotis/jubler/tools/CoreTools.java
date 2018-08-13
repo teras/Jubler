@@ -54,7 +54,7 @@ public class CoreTools implements Plugin {
 
     @Override
     public String getPluginName() {
-        return __("Basic tools");
+        return "Basic tools";
     }
 
     @Override

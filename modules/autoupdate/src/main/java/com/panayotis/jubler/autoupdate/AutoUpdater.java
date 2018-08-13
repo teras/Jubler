@@ -75,7 +75,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
     }
 
     public String getPluginName() {
-        return __("Auto update");
+        return "Auto update";
     }
 
     public boolean canDisablePlugin() {
