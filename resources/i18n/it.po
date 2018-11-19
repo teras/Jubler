@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: PACKAGE VERSION\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2018-08-13 12:25+0300\n"
+        "POT-Creation-Date: 2018-10-01 18:16+0300\n"
         "PO-Revision-Date: 2010-11-16 00:16+0100\n"
         "Last-Translator: Michele Gianella <gianella.michele@gmail.com>\n"
         "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1029,18 +1029,18 @@ msgstr  "Ridimensiona solo i sottotitoli"
 msgid   "New subtitle after current one"
 msgstr  "Crea un nuovo sottotitolo dopo quello selezionato"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Caching still in progress"
 msgstr  "Creazione cache ancora in corso"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Still creating cache. Use the Cancel button to abort."
 msgstr  "Sto creando la cache. Usa il tasto Cancel per uscire."
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:87
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:95
 #, java-format
-msgid   "Error while loading file {0}"
-msgstr  "Errore nell'apertura del file {0}"
+msgid   "Error while loading file {0}\n"
+msgstr  ""
 
 #: modules/core/src/main/java/com/panayotis/jubler/options/AbstractPlayerOptions.java:91
 msgid   "Advanced argument list:"
@@ -1197,11 +1197,11 @@ msgstr  "No"
 msgid   "Yes"
 msgstr  "Sì"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:176
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
 msgid   "Could not find web browser"
 msgstr  "Impossibile trovare browser web"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:186
 msgid   "Error while opening URL"
 msgstr  "Errore durante apertura URL"
 
@@ -2582,293 +2582,23 @@ msgid   "Computer Translated subtitles should be only for personal use, and "
 msgstr  "Ricorrere alle traduzioni automatiche solo per uso personale, e non "
         "in sede di pubblicazione."
 
-#~ msgid        "Insert"
-#~ msgstr       "Inserisci"
+#~ msgid        "Maximum subtitle characters per line"
+#~ msgstr       "Numero massimo di caratteri per riga"
 
-#~ msgid        "Trying to initialize audio preview with null data"
-#~ msgstr       "Cerco di inizializzare anteprima audio senza dati"
+#~ msgid        "Checksumming {0} with algorithm {1} failed."
+#~ msgstr       "Checksum di {0} con algoritmo {1} non riuscito."
 
-#~ msgid        "Trying to intialize audio preview with wrong size {0}"
-#~ msgstr       "Cerco di inizializzare anteprima audio con dimensioni errate "
-#~      "{0}"
+#~ msgid        "This update is required for the smooth updating of {0}"
+#~ msgstr       "Questo aggiornamento facilita l'aggiornamento di {0}"
 
-#~ msgid        "Open file error"
-#~ msgstr       "Errore apertura file"
+#~ msgid        "Application info not provided."
+#~ msgstr       "Info sull'applicazione non disponibili "
 
-#~ msgid        "Unsupported audio"
-#~ msgstr       "Audio non supportato"
-
-#~ msgid        "Line unavailable"
-#~ msgstr       "Riga non disponibile"
-
-#~ msgid        "Found tagged encoding {0}"
-#~ msgstr       "Trovata codifica etichettata come {0}"
-
-#~ msgid        "Download speed: {0}"
-#~ msgstr       "Velocità di scaricamento: {0}"
-
-#~ msgid        "Remind me later"
-#~ msgstr       "Ricorda più tardi"
-
-#~ msgid        "Swedish"
-#~ msgstr       "Svedese"
-
-#~ msgid        "New version of {0} found!"
-#~ msgstr       "Nuova versione di {0} disponibile!"
-
-#~ msgid        "Checking JAR {0} for Deployer class."
-#~ msgstr       "Cerco la classe Deployer in JAR {0}"
-
-#~ msgid        "Round times"
-#~ msgstr       "Arrotonda i tempi"
-
-#~ msgid        "Found relaxed encoding {0}"
-#~ msgstr       "Trovata codifica flessibile di {0} "
-
-#~ msgid        "Polish"
-#~ msgstr       "Polacco"
-
-#~ msgid        "Danish"
-#~ msgstr       "Danese"
-
-#~ msgid        "Indonesian"
-#~ msgstr       "Indonesiano"
-
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Il Deployer si trova in {0}"
-
-#~ msgid        "Thank you"
-#~ msgstr       "Grazie"
-
-#~ msgid        "Unable to delete downloaded file {0}"
-#~ msgstr       "Impossibile cancellare il file scaricato {0}"
-
-#~ msgid        "Thank you for using Jupidator  (http://sourceforge.net/"
-#~      "projects/jupidator/)"
-#~ msgstr       "Grazie di aver scelto Jupidator (http://sourceforge.net/"
-#~      "projects/jupidator/)"
-
-#~ msgid        "Count not create audio clip"
-#~ msgstr       "Impossibile creare clip audio"
-
-#~ msgid        "List of changes:"
-#~ msgstr       "Lista modifiche:"
-
-#~ msgid        "It is open source under the LGPL licence."
-#~ msgstr       "È open source, rilasciata con licenza LGPL."
-
-#~ msgid        "Checking JAR {0} for classes."
-#~ msgstr       "Cerco classi in JAR {0}."
-
-#~ msgid        "A new version of {0} is available!"
-#~ msgstr       "Nuova versione di {0} disponibile!"
-
-#~ msgid        "Inform user on exceeding subtitle length"
-#~ msgstr       "Avverti se il sottotitolo contiene troppi caratteri"
-
-#~ msgid        "Bulgarian"
-#~ msgstr       "Bulgaro"
-
-#~ msgid        "Do you want to see the detailed changelog? [Y/n] "
-#~ msgstr       "Vuoi vedere il log dettagliato delle modifiche? [Y/n]"
-
-#~ msgid        "Use the following factor"
-#~ msgstr       "Usa questo fattore di recoding"
-
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "File di destinazione {0} non scrivibile."
-
-#~ msgid        "File {0} will be deleted, if exists."
-#~ msgstr       "Il file {0} sarà cancellato, se esiste."
-
-#~ msgid        "Install Update"
-#~ msgstr       "Installa aggiornamento"
-
-#~ msgid        "Globally"
-#~ msgstr       "Sostituisci tutto"
-
-#~ msgid        "Deployer path {0} is not writable."
-#~ msgstr       "Percorso di Deployer, {0}, non scrivibile."
-
-#~ msgid        "Video width"
-#~ msgstr       "Larghezza finestra"
-
-#~ msgid        "Maltese"
-#~ msgstr       "Maltese"
-
-#~ msgid        "Subtitle format of the output file (SRT is prefered)"
-#~ msgstr       "Formato del file (.srt di default) "
-
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "File {0} eliminato con successo"
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Impossibile scaricare il file {0}"
-
-#~ msgid        "Slovak"
-#~ msgstr       "Slovacco"
-
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Impossibile eliminare il vecchio file scaricato, {0}  "
-
-#~ msgid        "Directory is not writable."
-#~ msgstr       "La directory non è scrivibile."
-
-#~ msgid        "Path {0} is not writable."
-#~ msgstr       "Percorso {0} non scrivibile."
-
-#~ msgid        "Jupidator for {0}"
-#~ msgstr       "Lancia Jupidator per {0}"
-
-#~ msgid        "Albanian"
-#~ msgstr       "Albanese"
-
-#~ msgid        "Portuguese"
-#~ msgstr       "Portoghese"
-
-#~ msgid        "Slovenian"
-#~ msgstr       "Sloveno"
-
-#~ msgid        "Finnish"
-#~ msgstr       "Finlandese"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Sostituisci tutto"
-
-#~ msgid        "More info can be found in: http://jupidator.sourceforge.net"
-#~ msgstr       "Per ulteriori informazioni, http://jupidator.sourceforge.net"
-
-#~ msgid        "The save process did not finish yet"
-#~ msgstr       "Salvataggio non terminato"
+#~ msgid        "Saving {0}"
+#~ msgstr       "Salvo {0}"
 
 #~ msgid        "Filipino"
 #~ msgstr       "Filippino"
-
-#~ msgid        "Found defined encoding {0}"
-#~ msgstr       "Trovata codifica definita {0} "
-
-#~ msgid        "Do you want to (S)kip this version, (R)emind later or "
-#~      "(I)nstall? [s/r/i] "
-#~ msgstr       "Vuoi (S)altare la versione, (R)icordare in seguito o "
-#~      "(I)nstallare? [s/r/i]"
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "La dimensione di {0} non corrisponde. Risulta {1}, serve "
-#~      "{2}, "
-
-#~ msgid        "Norwegian"
-#~ msgstr       "Norvegese"
-
-#~ msgid        "About Jupidator"
-#~ msgstr       "Info su Jupidator"
-
-#~ msgid        "Chinese (Simplified)"
-#~ msgstr       "Cinese (Semplificato)"
-
-#~ msgid        "Skip this version"
-#~ msgstr       "Salta questa versione"
-
-#~ msgid        "Downloading successfull"
-#~ msgstr       "Download concluso con successo! "
-
-#~ msgid        "Please wait..."
-#~ msgstr       "Attendere..."
-
-#~ msgid        "Unable to delete file {0}"
-#~ msgstr       "Impossibile cancellare il file {0}"
-
-#~ msgid        "Processing update"
-#~ msgstr       "Aggiornamento in corso"
-
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Percorso dell'applicazione non indicato."
-
-#~ msgid        "Error: {0}"
-#~ msgstr       "Errore: {0}"
-
-#~ msgid        "Error while saving file {0}"
-#~ msgstr       "Errore durante salvataggio file {0}"
-
-#~ msgid        "Ukrainian"
-#~ msgstr       "Ucraino"
-
-#~ msgid        "Maestro DVD options"
-#~ msgstr       "Opzioni DVD Maestro"
-
-#~ msgid        "Video height"
-#~ msgstr       "Altezza finestra"
-
-#~ msgid        "Unable to extract files from JAR {0}"
-#~ msgstr       "Impossibile estrarre file da JAR {0}"
-
-#~ msgid        "Version:"
-#~ msgstr       "Versione:"
-
-#~ msgid        "Google translate"
-#~ msgstr       "Google Translate"
-
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "Impossibile creare Deployer"
-
-#~ msgid        "Format"
-#~ msgstr       "Formato"
-
-#~ msgid        "Russian"
-#~ msgstr       "Russo"
-
-#~ msgid        "Checking directory {0} for classes."
-#~ msgstr       "Cerco classi nella directory {0}."
-
-#~ msgid        "Deploying files..."
-#~ msgstr       "Deploying in corso..."
-
-#~ msgid        "Release Notes"
-#~ msgstr       "Note di versione"
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Torna ai valori predefiniti"
-
-#~ msgid        "Video standard"
-#~ msgstr       "Dimensioni standard"
-
-#~ msgid        "English"
-#~ msgstr       "Inglese"
-
-#~ msgid        "Wrong answer."
-#~ msgstr       "Risposta errata."
-
-#~ msgid        "Join files"
-#~ msgstr       "Unisci file"
-
-#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
-#~ msgstr       "Errore di encoding. Usane uno adatto (p.e. UTF-8)."
-
-#~ msgid        "Catalan"
-#~ msgstr       "Catalano"
-
-#~ msgid        "Successfully downloaded updates"
-#~ msgstr       "Aggiornamenti scaricati con successo"
-
-#~ msgid        "Latvian"
-#~ msgstr       "Lettone"
-
-#~ msgid        "Estonian"
-#~ msgstr       "Estone"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "{0} in esecuzione"
-
-#~ msgid        "Unable to create directory."
-#~ msgstr       "Impossibile creare la directory."
-
-#~ msgid        "Press [RETURN] to restart the application "
-#~ msgstr       "Premere [INVIO] per riavviare l'applicazione"
-
-#~ msgid        "Delete the selected scenario"
-#~ msgstr       "Elimina la sostituzione selezionata"
-
-#~ msgid        "Restart application"
-#~ msgstr       "Riavvia applicazione"
 
 #~ msgid        "T: total number of characters\n"
 #~      "L: number of lines\n"
@@ -2877,97 +2607,370 @@ msgstr  "Ricorrere alle traduzioni automatiche solo per uso personale, e non "
 #~      "L: numero di righe \n"
 #~      "C: caratteri della linea più lunga"
 
-#~ msgid        "Application info not provided."
-#~ msgstr       "Info sull'applicazione non disponibili "
+#~ msgid        "Lithuanian"
+#~ msgstr       "Lituano"
 
-#~ msgid        "This update is required for the smooth updating of {0}"
-#~ msgstr       "Questo aggiornamento facilita l'aggiornamento di {0}"
+#~ msgid        "Editor of the subtitle text"
+#~ msgstr       "Editor del testo dei sottotitoli"
 
-#~ msgid        "Checksumming {0} with algorithm {1} failed."
-#~ msgstr       "Checksum di {0} con algoritmo {1} non riuscito."
+#~ msgid        "More info can be found in: http://jupidator.sourceforge.net"
+#~ msgstr       "Per ulteriori informazioni, http://jupidator.sourceforge.net"
 
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Il file scaricato {0} è stato cancellato"
+#~ msgid        "The save process did not finish yet"
+#~ msgstr       "Salvataggio non terminato"
 
-#~ msgid        "The maximum number of characters per line which are permitted"
-#~ msgstr       "Il massimo numero consentito di caratteri per riga"
+#~ msgid        "Global replace"
+#~ msgstr       "Sostituisci tutto"
 
-#~ msgid        "{0} version {1} is now available - you have {2}."
-#~ msgstr       "Versione {1} di {0} disponibile - l'attuale è la {2}."
+#~ msgid        "File {0} sucessfully downloaded"
+#~ msgstr       "File {0} scaricato con successo"
 
-#~ msgid        "Found strict encoding {0}"
-#~ msgstr       "Trovata codifica rigida {0}"
+#~ msgid        "Finnish"
+#~ msgstr       "Finlandese"
 
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Aggiornamento: Ignora cancellazione file {0}"
+#~ msgid        "Unable to create subtitle file {0}."
+#~ msgstr       "Impossibile creare il file {0}."
 
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Impossibile eliminare il file {0}."
+#~ msgid        "Slovenian"
+#~ msgstr       "Sloveno"
+
+#~ msgid        "Hungarian"
+#~ msgstr       "Ungherese"
+
+#~ msgid        "Join files"
+#~ msgstr       "Unisci file"
+
+#~ msgid        "W3C Timed Text"
+#~ msgstr       "W3C Timed Text"
+
+#~ msgid        "File {0} will be deleted, if exists."
+#~ msgstr       "Il file {0} sarà cancellato, se esiste."
+
+#~ msgid        "Do you want to (S)kip this version, (R)emind later or "
+#~      "(I)nstall? [s/r/i] "
+#~ msgstr       "Vuoi (S)altare la versione, (R)icordare in seguito o "
+#~      "(I)nstallare? [s/r/i]"
+
+#~ msgid        "A file exists with the same name."
+#~ msgstr       "Esiste già un file con questo nome."
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Impossibile scaricare il file {0}"
+
+#~ msgid        "Version:"
+#~ msgstr       "Versione:"
+
+#~ msgid        "Checking JAR {0} for classes."
+#~ msgstr       "Cerco classi in JAR {0}."
+
+#~ msgid        "Indonesian"
+#~ msgstr       "Indonesiano"
+
+#~ msgid        "Remind me later"
+#~ msgstr       "Ricorda più tardi"
+
+#~ msgid        "Found defined encoding {0}"
+#~ msgstr       "Trovata codifica definita {0} "
+
+#~ msgid        "SubViewer V2"
+#~ msgstr       "SubViewer V2"
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Torna ai valori predefiniti"
+
+#~ msgid        "Path {0} is not writable."
+#~ msgstr       "Percorso {0} non scrivibile."
+
+#~ msgid        "Russian"
+#~ msgstr       "Russo"
+
+#~ msgid        "Video width"
+#~ msgstr       "Larghezza finestra"
+
+#~ msgid        "Press [RETURN] to restart the application "
+#~ msgstr       "Premere [INVIO] per riavviare l'applicazione"
+
+#~ msgid        "Bulgarian"
+#~ msgstr       "Bulgaro"
+
+#~ msgid        "Ukrainian"
+#~ msgstr       "Ucraino"
+
+#~ msgid        "Thank you for using Jupidator  (http://sourceforge.net/"
+#~      "projects/jupidator/)"
+#~ msgstr       "Grazie di aver scelto Jupidator (http://sourceforge.net/"
+#~      "projects/jupidator/)"
+
+#~ msgid        "Processing update"
+#~ msgstr       "Aggiornamento in corso"
+
+#~ msgid        "Round times"
+#~ msgstr       "Arrotonda i tempi"
+
+#~ msgid        "Catalan"
+#~ msgstr       "Catalano"
+
+#~ msgid        "Line unavailable"
+#~ msgstr       "Riga non disponibile"
+
+#~ msgid        "Wrong answer."
+#~ msgstr       "Risposta errata."
+
+#~ msgid        "Property name could not be null"
+#~ msgstr       "Il campo \"Proprietà\" è vuoto"
 
 #~ msgid        "Checking Directory {0} for Deployer class."
 #~ msgstr       "Cerco la classe Deployer nella Directory {0}."
 
+#~ msgid        "Plain text"
+#~ msgstr       "Testo semplice"
+
+#~ msgid        "Quicktime Texttrack"
+#~ msgstr       "Quicktime Texttrack"
+
+#~ msgid        "Albanian"
+#~ msgstr       "Albanese"
+
+#~ msgid        "Deploying files..."
+#~ msgstr       "Deploying in corso..."
+
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "Impossibile eliminare il vecchio file scaricato, {0}  "
+
+#~ msgid        "Restart application"
+#~ msgstr       "Riavvia applicazione"
+
+#~ msgid        "Subtitle format of the output file (SRT is prefered)"
+#~ msgstr       "Formato del file (.srt di default) "
+
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "Impossibile creare Deployer"
+
+#~ msgid        "Globally"
+#~ msgstr       "Sostituisci tutto"
+
+#~ msgid        "Galician"
+#~ msgstr       "Galiziano"
+
+#~ msgid        "Use the following factor"
+#~ msgstr       "Usa questo fattore di recoding"
+
+#~ msgid        "Video height"
+#~ msgstr       "Altezza finestra"
+
+#~ msgid        "A new version of {0} is available!"
+#~ msgstr       "Nuova versione di {0} disponibile!"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "{0} in esecuzione"
+
+#~ msgid        "List of changes:"
+#~ msgstr       "Lista modifiche:"
+
+#~ msgid        "Error: {0}"
+#~ msgstr       "Errore: {0}"
+
+#~ msgid        "Thank you"
+#~ msgstr       "Grazie"
+
+#~ msgid        "Latvian"
+#~ msgstr       "Lettone"
+
+#~ msgid        "Polish"
+#~ msgstr       "Polacco"
+
+#~ msgid        "Please wait..."
+#~ msgstr       "Attendere..."
+
+#~ msgid        "New version of {0} found!"
+#~ msgstr       "Nuova versione di {0} disponibile!"
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Il file scaricato {0} è stato cancellato"
+
+#~ msgid        "Download speed: {0}"
+#~ msgstr       "Velocità di scaricamento: {0}"
+
+#~ msgid        "About Jupidator"
+#~ msgstr       "Info su Jupidator"
+
+#~ msgid        "Open file error"
+#~ msgstr       "Errore apertura file"
+
+#~ msgid        "Trying to initialize audio preview with null data"
+#~ msgstr       "Cerco di inizializzare anteprima audio senza dati"
+
+#~ msgid        "Error while loading file {0}"
+#~ msgstr       "Errore nell'apertura del file {0}"
+
 #~ msgid        "Unable to find Application path {0}."
 #~ msgstr       "Percorso {0} dell'applicazione non trovato."
+
+#~ msgid        "Downloading..."
+#~ msgstr       "Sto scaricando..."
+
+#~ msgid        "Video standard"
+#~ msgstr       "Dimensioni standard"
+
+#~ msgid        "English"
+#~ msgstr       "Inglese"
+
+#~ msgid        "Downloading {0}, {1} percent completed."
+#~ msgstr       "Sto scaricando {0}, {1} percento completato."
 
 #~ msgid        "Jupidator is a library for automatic updating of "
 #~      "applications."
 #~ msgstr       "Jupidator è una libreria per l'aggiornmento automatico delle "
 #~      "applicazioni."
 
-#~ msgid        "Unable to create subtitle file {0}."
-#~ msgstr       "Impossibile creare il file {0}."
+#~ msgid        "Adobe Encore Text Script"
+#~ msgstr       "Adobe Encore Text Script"
 
-#~ msgid        "Downloading {0}, {1} percent completed."
-#~ msgstr       "Sto scaricando {0}, {1} percento completato."
+#~ msgid        "Portuguese"
+#~ msgstr       "Portoghese"
 
-#~ msgid        "File {0} sucessfully downloaded"
-#~ msgstr       "File {0} scaricato con successo"
+#~ msgid        "Release Notes"
+#~ msgstr       "Note di versione"
 
-#~ msgid        "Editor of the subtitle text"
-#~ msgstr       "Editor del testo dei sottotitoli"
-
-#~ msgid        "Lithuanian"
-#~ msgstr       "Lituano"
-
-#~ msgid        "Chinese (Traditional)"
-#~ msgstr       "Cinese (Tradizionale)"
-
-#~ msgid        "Galician"
-#~ msgstr       "Galiziano"
-
-#~ msgid        "A file exists with the same name."
-#~ msgstr       "Esiste già un file con questo nome."
-
-#~ msgid        "Property name could not be null"
-#~ msgstr       "Il campo \"Proprietà\" è vuoto"
-
-#~ msgid        "Maximum subtitle characters per line"
-#~ msgstr       "Numero massimo di caratteri per riga"
-
-#~ msgid        "Downloading..."
-#~ msgstr       "Sto scaricando..."
+#~ msgid        "Jupidator for {0}"
+#~ msgstr       "Lancia Jupidator per {0}"
 
 #~ msgid        "Do you want to (R)emind later or (I)nstall? [r/i] "
 #~ msgstr       "Vuoi che te lo (R)icordi più tardi o (I)nstallo? [r/i]"
 
-#~ msgid        "Hungarian"
-#~ msgstr       "Ungherese"
+#~ msgid        "Directory is not writable."
+#~ msgstr       "La directory non è scrivibile."
 
-#~ msgid        "Saving {0}"
-#~ msgstr       "Salvo {0}"
+#~ msgid        "Checking directory {0} for classes."
+#~ msgstr       "Cerco classi nella directory {0}."
 
-#~ msgid        "Plain text"
-#~ msgstr       "Testo semplice"
+#~ msgid        "Slovak"
+#~ msgstr       "Slovacco"
 
-#~ msgid        "W3C Timed Text"
-#~ msgstr       "W3C Timed Text"
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Aggiornamento: Ignora cancellazione file {0}"
 
-#~ msgid        "Adobe Encore Text Script"
-#~ msgstr       "Adobe Encore Text Script"
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "File {0} eliminato con successo"
 
-#~ msgid        "SubViewer V2"
-#~ msgstr       "SubViewer V2"
+#~ msgid        "Format"
+#~ msgstr       "Formato"
 
-#~ msgid        "Quicktime Texttrack"
-#~ msgstr       "Quicktime Texttrack"
+#~ msgid        "Maltese"
+#~ msgstr       "Maltese"
+
+#~ msgid        "Delete the selected scenario"
+#~ msgstr       "Elimina la sostituzione selezionata"
+
+#~ msgid        "Deployer path {0} is not writable."
+#~ msgstr       "Percorso di Deployer, {0}, non scrivibile."
+
+#~ msgid        "Google translate"
+#~ msgstr       "Google Translate"
+
+#~ msgid        "Install Update"
+#~ msgstr       "Installa aggiornamento"
+
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "Impossibile eliminare il file {0}."
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "File di destinazione {0} non scrivibile."
+
+#~ msgid        "Unable to extract files from JAR {0}"
+#~ msgstr       "Impossibile estrarre file da JAR {0}"
+
+#~ msgid        "Do you want to see the detailed changelog? [Y/n] "
+#~ msgstr       "Vuoi vedere il log dettagliato delle modifiche? [Y/n]"
+
+#~ msgid        "Found strict encoding {0}"
+#~ msgstr       "Trovata codifica rigida {0}"
+
+#~ msgid        "Inform user on exceeding subtitle length"
+#~ msgstr       "Avverti se il sottotitolo contiene troppi caratteri"
+
+#~ msgid        "Unable to create directory."
+#~ msgstr       "Impossibile creare la directory."
+
+#~ msgid        "Maestro DVD options"
+#~ msgstr       "Opzioni DVD Maestro"
+
+#~ msgid        "{0} version {1} is now available - you have {2}."
+#~ msgstr       "Versione {1} di {0} disponibile - l'attuale è la {2}."
+
+#~ msgid        "It is open source under the LGPL licence."
+#~ msgstr       "È open source, rilasciata con licenza LGPL."
+
+#~ msgid        "Error while saving file {0}"
+#~ msgstr       "Errore durante salvataggio file {0}"
+
+#~ msgid        "Count not create audio clip"
+#~ msgstr       "Impossibile creare clip audio"
+
+#~ msgid        "Estonian"
+#~ msgstr       "Estone"
+
+#~ msgid        "Unable to delete downloaded file {0}"
+#~ msgstr       "Impossibile cancellare il file scaricato {0}"
+
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Percorso dell'applicazione non indicato."
+
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Il Deployer si trova in {0}"
+
+#~ msgid        "The maximum number of characters per line which are permitted"
+#~ msgstr       "Il massimo numero consentito di caratteri per riga"
+
+#~ msgid        "Danish"
+#~ msgstr       "Danese"
+
+#~ msgid        "Unable to delete file {0}"
+#~ msgstr       "Impossibile cancellare il file {0}"
+
+#~ msgid        "Found relaxed encoding {0}"
+#~ msgstr       "Trovata codifica flessibile di {0} "
+
+#~ msgid        "Successfully downloaded updates"
+#~ msgstr       "Aggiornamenti scaricati con successo"
+
+#~ msgid        "Checking JAR {0} for Deployer class."
+#~ msgstr       "Cerco la classe Deployer in JAR {0}"
+
+#~ msgid        "Downloading successfull"
+#~ msgstr       "Download concluso con successo! "
+
+#~ msgid        "Swedish"
+#~ msgstr       "Svedese"
+
+#~ msgid        "Chinese (Traditional)"
+#~ msgstr       "Cinese (Tradizionale)"
+
+#~ msgid        "Skip this version"
+#~ msgstr       "Salta questa versione"
+
+#~ msgid        "Chinese (Simplified)"
+#~ msgstr       "Cinese (Semplificato)"
+
+#~ msgid        "Found tagged encoding {0}"
+#~ msgstr       "Trovata codifica etichettata come {0}"
+
+#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
+#~ msgstr       "Errore di encoding. Usane uno adatto (p.e. UTF-8)."
+
+#~ msgid        "Unsupported audio"
+#~ msgstr       "Audio non supportato"
+
+#~ msgid        "Norwegian"
+#~ msgstr       "Norvegese"
+
+#~ msgid        "Trying to intialize audio preview with wrong size {0}"
+#~ msgstr       "Cerco di inizializzare anteprima audio con dimensioni errate "
+#~      "{0}"
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "La dimensione di {0} non corrisponde. Risulta {1}, serve "
+#~      "{2}, "
+
+#~ msgid        "Insert"
+#~ msgstr       "Inserisci"

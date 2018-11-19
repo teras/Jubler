@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: Jubler 3.4.0\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2018-08-13 12:25+0300\n"
+        "POT-Creation-Date: 2018-10-01 18:16+0300\n"
         "PO-Revision-Date: 2008-08-23 17:03+0200\n"
         "Last-Translator: Christian Weiske <cweiske@cweiske.de>\n"
         "Language-Team: German <cweiske@cweiske.de>\n"
@@ -1027,18 +1027,18 @@ msgstr  "Nur Untertitel vergrößern"
 msgid   "New subtitle after current one"
 msgstr  "Nach aktueller Position"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Caching still in progress"
 msgstr  "Es wird immer noch zwischengespeichert"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Still creating cache. Use the Cancel button to abort."
 msgstr  "Erstelle Cachedatei. Abbrechen klicken wenn es zu lange dauert."
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:87
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:95
 #, java-format
-msgid   "Error while loading file {0}"
-msgstr  "Fehler beim Laden der Datei {0}"
+msgid   "Error while loading file {0}\n"
+msgstr  ""
 
 #: modules/core/src/main/java/com/panayotis/jubler/options/AbstractPlayerOptions.java:91
 msgid   "Advanced argument list:"
@@ -1195,11 +1195,11 @@ msgstr  "Nein"
 msgid   "Yes"
 msgstr  "Ja"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:176
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
 msgid   "Could not find web browser"
 msgstr  "Konnte Browser nicht finden"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:186
 msgid   "Error while opening URL"
 msgstr  "Fehler beim öffnen der URL"
 
@@ -2582,43 +2582,148 @@ msgid   "Computer Translated subtitles should be only for personal use, and "
 msgstr  "Automatisch generierte Übersetzungen sollten nur für persönliche "
         "Zwecke benutzt und nicht verteilt werden"
 
-#~ msgid        "Insert"
-#~ msgstr       "Einfügen"
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Untertitel als rosa markieren"
 
-#~ msgid        "Trying to initialize audio preview with null data"
-#~ msgstr       "Versuche Audiovorschau ohne Daten zu initialisieren"
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Jubler-Audiozwischenspeicher für Audioeingabe erkannt: {0}"
 
-#~ msgid        "Trying to intialize audio preview with wrong size {0}"
-#~ msgstr       "Versuche Audiovorschau mit falscher Größe {0} zu "
-#~      "initialisieren"
+#, fuzzy
+#~ msgid        "File path"
+#~ msgstr       "Dateipfad"
+
+#~ msgid        "Quicktime Texttrack"
+#~ msgstr       "Quicktime Textspur"
+
+#~ msgid        "Push subtitles instead of rearranging"
+#~ msgstr       "Untertitel verschieben anstatt neu anordnen"
+
+#~ msgid        "SubViewer V2"
+#~ msgstr       "SubViewer V2-Format"
+
+#~ msgid        "The save process did not finish yet"
+#~ msgstr       "Das Speichern ist nocht nicht abgeschlossen"
+
+#~ msgid        "Use selected time as end of region"
+#~ msgstr       "Ausgewählte Zeit als Bereichsende verwenden"
+
+#~ msgid        "Filipino"
+#~ msgstr       "Philippinisch"
+
+#~ msgid        "Count not create audio clip"
+#~ msgstr       "Konnte Audioclip nicht erstellen"
+
+#~ msgid        "Danish"
+#~ msgstr       "Dänisch"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Untertitel als cyan markieren"
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "Fehler beim Parsen der reellen Zahl {0}"
+
+# nur Spass :)
+#~ msgid        "Debug window"
+#~ msgstr       "Käferzerstörfenster"
+
+#~ msgid        "Hungarian"
+#~ msgstr       "Ungarisch"
+
+#~ msgid        "Subtitle format of the output file (SRT is prefered)"
+#~ msgstr       "Untertitelformat (SRT bevorzugt)"
 
 #~ msgid        "Open file error"
 #~ msgstr       "Datei öffnen-Fehler"
 
-#~ msgid        "Unsupported audio"
-#~ msgstr       "Nichtunterstütztes Audio"
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Untertiteleditor an Vorschaufenster docken"
 
-#~ msgid        "Line unavailable"
-#~ msgstr       "Zeile nicht verfügbar"
+#~ msgid        "Unable to create directory."
+#~ msgstr       "Kann Verzeichnis nicht anlegen."
 
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Kann nicht gesetzte Cachedatei nicht anlegen"
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "Bereichsende ist die gegebene Zeit"
 
 #~ msgid        "Select the encoding to be searched first"
 #~ msgstr       "Wähle die Kodierung, die zuerst verwendet werden soll"
 
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Es ist wichtig, von der folgenden URL zu aktualisieren:"
+#~ msgid        "Line unavailable"
+#~ msgstr       "Zeile nicht verfügbar"
 
-#~ msgid        "Enable/disable preview"
-#~ msgstr       "Vorschau (de)aktivieren"
+#~ msgid        "Y offset"
+#~ msgstr       "Y-Verschiebung"
 
-#~ msgid        "Slovenian"
-#~ msgstr       "Slowenisch"
+#~ msgid        "From the following time"
+#~ msgstr       "Von folgender Zeit"
 
-#~ msgid        "Inform user on exceeding subtitle length"
-#~ msgstr       "Benutzer informieren, wenn maximale Zeichenzahl "
-#~      "überschritten wird"
+#~ msgid        "Do not inform me again for this version"
+#~ msgstr       "Nicht mehr über diese Version informieren"
+
+#~ msgid        "Video standard"
+#~ msgstr       "Videostandard"
+
+#~ msgid        "Version found:"
+#~ msgstr       "Gefundene Version:"
+
+#~ msgid        "Not a valid number: {0}"
+#~ msgstr       "Ungültige Zahl: {0}"
+
+#~ msgid        "To the following time"
+#~ msgstr       "Bis zur folgenden Zeit"
+
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "FEHLER: Kann Verzeichnis für automatisches Speichern\"{0}\" "
+#~      "nicht verwenden."
+
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Tastenkürzel"
+
+#~ msgid        "Unable to create subtitle file {0}."
+#~ msgstr       "Kann Untertiteldatei {0} nicht erstellen"
+
+#~ msgid        "Insert"
+#~ msgstr       "Einfügen"
+
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       "Öffnen-Einstellungen anzeigen, wenn Datei geöffnet wird"
+
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Kann Jupidator Autoupdatesystem nicht finden."
+
+#~ msgid        "Null value found while setting Style {0} - ignoring."
+#~ msgstr       "Nullwert beim Setzen des Stils {0} gefunden - wird ignoriert."
+
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Untertitelvorschau"
+
+#~ msgid        "Maximum subtitle characters per line"
+#~ msgstr       "Maximale Zahl Untertitelzeichen pro Zeile"
+
+#~ msgid        "Use the following factor"
+#~ msgstr       "Den folgenden Faktor verwenden"
+
+#~ msgid        "Russian"
+#~ msgstr       "Russisch"
+
+#~ msgid        "Globally"
+#~ msgstr       "Global"
+
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "FFDecode-Bibliothek is nicht verfügbar"
+
+#~ msgid        "Use given time as start of region"
+#~ msgstr       "Gegebene Zeit als Bereichsbeginn verwenden"
+
+#~ msgid        "Format"
+#~ msgstr       "Format"
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "Fehler beim Laden der Datei \"{0}\""
+
+# eine Datei oder irgendeine Datei?
+#, fuzzy
+#~ msgid        "Show preferences every time the user saves a subtitle file"
+#~ msgstr       "Einstellungen bei jedem Öffnen einer Datei anzeigen"
 
 #~ msgid        "Please consider upgrading from the following URL:"
 #~ msgstr       "Bitte aktualisieren Sie von der folgenden URL:"
@@ -2626,57 +2731,42 @@ msgstr  "Automatisch generierte Übersetzungen sollten nur für persönliche "
 #~ msgid        "MPlayer options"
 #~ msgstr       "MPlayer Einstellungen"
 
-#~ msgid        "Delete the selected scenario"
-#~ msgstr       "Löscht die gewählte Ersetzung"
+#~ msgid        "To current time"
+#~ msgstr       "Bis zur aktuellen Zeit"
 
-#~ msgid        "Slovak"
-#~ msgstr       "Slowakisch"
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "Fehler beim Parsen der integralen Zahl {0}"
 
-#~ msgid        "Estonian"
-#~ msgstr       "Estnisch"
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Dekoder nicht aktiv - breche Audiozwischenspeichererstellung "
+#~      "ab."
 
-# eine Datei oder irgendeine Datei?
-#~ msgid        "Show preferences every time the user loads a subtitle file"
-#~ msgstr       "Einstellungen bei jedem Öffnen einer Datei anzeigen"
+#~ msgid        "Unsupported audio"
+#~ msgstr       "Nichtunterstütztes Audio"
 
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Konnte Jubler nicht laden!"
+#~ msgid        "Polish"
+#~ msgstr       "Polnisch"
 
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Bereichsbeginn ist die gegebene Zeit"
+#~ msgid        "Round times"
+#~ msgstr       "Zeiten runden"
 
-#~ msgid        " Show save preferences while saving file"
-#~ msgstr       "Speichern-Einstellungen anzeigen, wenn Datei gespeichert wird"
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "Fehler {0} beim Laden der Stil {1}: {2}"
 
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "Fehler beim Laden der Datei \"{0}\""
+#~ msgid        "File preferences"
+#~ msgstr       "Dateieinstellungen"
 
-#~ msgid        "From the following time"
-#~ msgstr       "Von folgender Zeit"
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Cache für unbekannte Audiodatei kann nicht angelegt werden"
 
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Spielerfensterverschiebung in Pixel"
+#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
+#~ msgstr       "Kodierfehler. Bitte valide Kodierung verwenden (z.B. UTF-8)"
 
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Anzahl an Untertiteln: {0}    {1}"
+#~ msgid        "The end of the region is the end of the file"
+#~ msgstr       "Bereichsende ist Dateiende"
 
-#~ msgid        "The end of the region is the selected time"
-#~ msgstr       "Bereichsende ist die gewählte Zeit"
-
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Kodierung der gespeicherten Datei"
-
-#~ msgid        "Load subtitles options"
-#~ msgstr       "Untertiteloptionen laden"
-
-#~ msgid        "Google translate"
-#~ msgstr       "Google-Übersetzung"
-
-#~ msgid        "Media Player Error"
-#~ msgstr       "Medienspielerfehler"
-
-#~ msgid        "Format"
-#~ msgstr       "Format"
+#~ msgid        "Unsaved"
+#~ msgstr       "Geändert"
 
 #~ msgid        "Found strict encoding {0}"
 #~ msgstr       "Strikte Kodierung {0} gefunden"
@@ -2684,84 +2774,36 @@ msgstr  "Automatisch generierte Übersetzungen sollten nur für persönliche "
 #~ msgid        "Latvian"
 #~ msgstr       "Lettisch"
 
-#~ msgid        "Abnormal exit - please report the author about this "
-#~      "behaviour."
-#~ msgstr       "Abnormales Beenden - bitte den Autor über darüber "
-#~      "informieren."
-
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "FEHLER: Kann Verzeichnis für automatisches Speichern\"{0}\" "
-#~      "nicht verwenden."
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Geändert"
-
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Gegebene Zeit als Bereichsende verwenden"
-
-#~ msgid        "Displa/hide metric attributes"
-#~ msgstr       "Zeige/verstecke metrische Einstellunge"
+#~ msgid        "Editor of the subtitle text"
+#~ msgstr       "Autor der Untertiteldatei"
 
 #~ msgid        "Albanian"
 #~ msgstr       "Albanisch"
 
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Untertitelvorschau"
-
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "Fehler beim Parsen der integralen Zahl {0}"
-
-#~ msgid        "Chinese (Simplified)"
-#~ msgstr       "Chinesisch (einfach)"
-
 #~ msgid        "Directory is not writable."
 #~ msgstr       "Das Verzeichnis ist nicht beschreibbar."
-
-#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
-#~ msgstr       "Kodierfehler. Bitte valide Kodierung verwenden (z.B. UTF-8)"
 
 #~ msgid        "Second Encoding"
 #~ msgstr       "Zweite Kodierung"
 
-#~ msgid        "Join files"
-#~ msgstr       "Dateien zusammenfügen"
+#~ msgid        "Inform user on exceeding subtitle length"
+#~ msgstr       "Benutzer informieren, wenn maximale Zeichenzahl "
+#~      "überschritten wird"
 
-#~ msgid        "Editor of the subtitle text"
-#~ msgstr       "Autor der Untertiteldatei"
+#~ msgid        "W3C Timed Text"
+#~ msgstr       "W3C getimter Text"
 
-#~ msgid        "Null value found while setting Style {0} - ignoring."
-#~ msgstr       "Nullwert beim Setzen des Stils {0} gefunden - wird ignoriert."
-
-#~ msgid        "Globally"
-#~ msgstr       "Global"
-
-#~ msgid        "Could not retrieve actual video properties. Using defaults."
-#~ msgstr       "Konnte Videoeinstellungen nicht abfragen. Verwende "
-#~      "Standardwerte."
-
-#~ msgid        "Do not inform me again for this version"
-#~ msgstr       "Nicht mehr über diese Version informieren"
-
-#~ msgid        "Version found:"
-#~ msgstr       "Gefundene Version:"
-
-#~ msgid        "Testing:"
-#~ msgstr       "Testen:"
-
-#~ msgid        "Round times"
-#~ msgstr       "Zeiten runden"
+#~ msgid        "Use selected time as start of region"
+#~ msgstr       "Ausgewählte Zeit als Bereichsbeginn verwenden"
 
 #~ msgid        "Select the encoding to be searched second"
 #~ msgstr       "Wähle die Kodierung, die als zweites verwendet werden soll"
 
-#~ msgid        "Global replace"
-#~ msgstr       "Globales Ersetzen"
+#~ msgid        "A file exists with the same name."
+#~ msgstr       "Eine Datei mit dem selben Namen existiert bereits."
 
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "FFDecode-Bibliothek is nicht verfügbar"
-
-#~ msgid        "Polish"
-#~ msgstr       "Polnisch"
+#~ msgid        "End time"
+#~ msgstr       "Endzeit"
 
 #, fuzzy
 #~ msgid        "Filename of the external audio file (could be also an audio "
@@ -2769,312 +2811,273 @@ msgstr  "Automatisch generierte Übersetzungen sollten nur für persönliche "
 #~ msgstr       "Dateiname der externen Audiodatei. Benutze \"Durchsuchen\" "
 #~      "um sie zu ändern."
 
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Ausführbare Datei gefunden: {0}"
+#~ msgid        "The end of the region is the selected time"
+#~ msgstr       "Bereichsende ist die gewählte Zeit"
 
-#~ msgid        "To current time"
-#~ msgstr       "Bis zur aktuellen Zeit"
+#~ msgid        " Show save preferences while saving file"
+#~ msgstr       "Speichern-Einstellungen anzeigen, wenn Datei gespeichert wird"
 
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Übersetzung unterbrochen"
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Konnte Jubler nicht laden!"
 
-#~ msgid        "Maximum subtitle characters per line"
-#~ msgstr       "Maximale Zahl Untertitelzeichen pro Zeile"
+#~ msgid        "Use predefined encodings..."
+#~ msgstr       "Vordefinierte Codierung verwenden..."
 
-#~ msgid        "The end of the region is the end of the file"
-#~ msgstr       "Bereichsende ist Dateiende"
+#~ msgid        "Indonesian"
+#~ msgstr       "Indonesisch"
 
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Untertitel als gelb markieren"
-
-#~ msgid        "Russian"
-#~ msgstr       "Russisch"
-
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Cache für unbekannte Audiodatei kann nicht angelegt werden"
-
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Kann Jupidator Autoupdatesystem nicht finden."
-
-#~ msgid        "File preferences"
-#~ msgstr       "Dateieinstellungen"
-
-#~ msgid        "Unable to create subtitle file {0}."
-#~ msgstr       "Kann Untertiteldatei {0} nicht erstellen"
-
-#~ msgid        "Galician"
-#~ msgstr       "Gälisch"
-
-#~ msgid        "Use selected time as start of region"
-#~ msgstr       "Ausgewählte Zeit als Bereichsbeginn verwenden"
-
-#~ msgid        "Catalan"
-#~ msgstr       "Katalanisch"
-
-#~ msgid        "Unable to create directory."
-#~ msgstr       "Kann Verzeichnis nicht anlegen."
-
-#~ msgid        "Current version:"
-#~ msgstr       "Aktuelles Version: "
-
-#~ msgid        "To the following time"
-#~ msgstr       "Bis zur folgenden Zeit"
-
-#~ msgid        "Maltese"
-#~ msgstr       "Maltesisch"
-
-#~ msgid        "Go"
-#~ msgstr       "Los"
-
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Dekoder nicht aktiv - breche Audiozwischenspeichererstellung "
-#~      "ab."
-
-#~ msgid        "Save subtitles options"
-#~ msgstr       "Untertiteloptionen speichern"
-
-#~ msgid        "Invalid executable!"
-#~ msgstr       "Invalides Programm!"
-
-#~ msgid        "Found file {0}"
-#~ msgstr       "Datei {0} gefunden"
-
-#~ msgid        "Subtitles preview"
-#~ msgstr       "Untertitelvorschau"
-
-#~ msgid        "To the end"
-#~ msgstr       "Bis zum Ende"
-
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Bereichsbeginn ist die gewählte Zeit"
-
-#~ msgid        "Warning!"
-#~ msgstr       "Warnung!"
-
-#~ msgid        "Third Encoding"
-#~ msgstr       "Dritte Kodierung"
-
-#~ msgid        "Lithuanian"
-#~ msgstr       "Littauisch"
-
-#~ msgid        "From current time"
-#~ msgstr       "Von der aktuellen Zeit"
-
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Konfigurationsdatei erneuert. Alte Datei wurde nach {0} "
-#~      "verschoben"
-
-#~ msgid        "Video width"
-#~ msgstr       "Videobreite"
-
-#~ msgid        "New Jubler version found!"
-#~ msgstr       "Neue Jubler-Version gefunden!"
-
-#~ msgid        "Select the encoding to be searched last"
-#~ msgstr       "Wähle die Kodierung, die als drittes verwendet werden soll"
-
-#~ msgid        "The beginning of the region is the start of the file"
-#~ msgstr       "Bereichsbeginn ist Beginn der Datei"
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Untertitel als weiß markieren"
-
-#~ msgid        "Chinese"
-#~ msgstr       "Chinesisch"
-
-#, fuzzy
-#~ msgid        "Change media file"
-#~ msgstr       "Mediendatei ändern"
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Es ist wichtig, von der folgenden URL zu aktualisieren:"
 
 #~ msgid        "Ukrainian"
 #~ msgstr       "Ukrainisch"
 
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       "Öffnen-Einstellungen anzeigen, wenn Datei geöffnet wird"
+#~ msgid        "Adobe Encore Text Script"
+#~ msgstr       "Adone Encore Text Script"
 
-#~ msgid        "Saving {0}"
-#~ msgstr       "Speichere {0}"
+#~ msgid        "Finnish"
+#~ msgstr       "Finnisch"
 
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Tastenkürzel"
+#~ msgid        "Subtitles preview"
+#~ msgstr       "Untertitelvorschau"
 
-#~ msgid        "Found relaxed encoding {0}"
-#~ msgstr       "Laxe Kodierung {0} gefunden"
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Kodierung der gespeicherten Datei"
 
-#~ msgid        "End time"
-#~ msgstr       "Endzeit"
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Gegebene Zeit als Bereichsende verwenden"
 
-# eine Datei oder irgendeine Datei?
-#, fuzzy
-#~ msgid        "Show preferences every time the user saves a subtitle file"
-#~ msgstr       "Einstellungen bei jedem Öffnen einer Datei anzeigen"
+#~ msgid        "Maestro DVD options"
+#~ msgstr       "Maestro DVD-Einstellungen"
 
-#~ msgid        "A file exists with the same name."
-#~ msgstr       "Eine Datei mit dem selben Namen existiert bereits."
+#~ msgid        "Trying to intialize audio preview with wrong size {0}"
+#~ msgstr       "Versuche Audiovorschau mit falscher Größe {0} zu "
+#~      "initialisieren"
 
-#~ msgid        "Start time"
-#~ msgstr       "Startzeit"
+#~ msgid        "Maltese"
+#~ msgstr       "Maltesisch"
 
-#~ msgid        "Swedish"
-#~ msgstr       "Schwedisch"
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Kann nicht gesetzte Cachedatei nicht anlegen"
 
-#~ msgid        "First Encoding"
-#~ msgstr       "Erste Kodierung"
+#~ msgid        "Current version:"
+#~ msgstr       "Aktuelles Version: "
 
-#~ msgid        "Video height"
-#~ msgstr       "Videohöhe"
+#~ msgid        "Global replace"
+#~ msgstr       "Globales Ersetzen"
 
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "Bereichsende ist die gegebene Zeit"
+#~ msgid        "Catalan"
+#~ msgstr       "Katalanisch"
 
 #~ msgid        "Could not create temporary file to store the subtitles."
 #~ msgstr       "Kann temporäre Datei zum Speichern der Untertitel nicht "
 #~      "erstellen."
 
-#~ msgid        "Not a valid number: {0}"
-#~ msgstr       "Ungültige Zahl: {0}"
+#~ msgid        "Galician"
+#~ msgstr       "Gälisch"
 
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Untertiteleditor an Vorschaufenster docken"
+#~ msgid        "Estonian"
+#~ msgstr       "Estnisch"
 
-#~ msgid        "Maestro DVD options"
-#~ msgstr       "Maestro DVD-Einstellungen"
+#~ msgid        "Video height"
+#~ msgstr       "Videohöhe"
 
-#~ msgid        "By region"
-#~ msgstr       "Nach Bereich"
+#~ msgid        "Could not retrieve actual video properties. Using defaults."
+#~ msgstr       "Konnte Videoeinstellungen nicht abfragen. Verwende "
+#~      "Standardwerte."
 
-#~ msgid        "X offset"
-#~ msgstr       "X-Verschiebung"
+#~ msgid        "First Encoding"
+#~ msgstr       "Erste Kodierung"
 
-#~ msgid        "Finnish"
-#~ msgstr       "Finnisch"
+#~ msgid        "Join files"
+#~ msgstr       "Dateien zusammenfügen"
 
-#~ msgid        "The maximum number of characters per line which are permitted"
-#~ msgstr       "Die maximale Anzahl von Zeichen pro Zeile, die erlaubt sind"
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Untertitel als gelb markieren"
 
-#~ msgid        "Norwegian"
-#~ msgstr       "Norwegisch"
+#~ msgid        "Chinese (Simplified)"
+#~ msgstr       "Chinesisch (einfach)"
 
-#~ msgid        "Portuguese"
-#~ msgstr       "Portugiesisch"
+#~ msgid        "Start time"
+#~ msgstr       "Startzeit"
 
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Voreinstellungen"
+#~ msgid        "Displa/hide metric attributes"
+#~ msgstr       "Zeige/verstecke metrische Einstellunge"
 
-#~ msgid        "Error while saving file {0}"
-#~ msgstr       "Fehler beim Laden der Datei {0}"
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Übersetzung unterbrochen"
 
-#~ msgid        "Chinese (Traditional)"
-#~ msgstr       "Chinesisch (traditionell)"
+#~ msgid        "Abnormal exit - please report the author about this "
+#~      "behaviour."
+#~ msgstr       "Abnormales Beenden - bitte den Autor über darüber "
+#~      "informieren."
 
-#~ msgid        "Video standard"
-#~ msgstr       "Videostandard"
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Ausführbare Datei gefunden: {0}"
 
-#~ msgid        "Subtitle format of the output file (SRT is prefered)"
-#~ msgstr       "Untertitelformat (SRT bevorzugt)"
+#~ msgid        "Media Player Error"
+#~ msgstr       "Medienspielerfehler"
 
-#~ msgid        "Hungarian"
-#~ msgstr       "Ungarisch"
+#~ msgid        "Load subtitles options"
+#~ msgstr       "Untertiteloptionen laden"
 
-# nur Spass :)
-#~ msgid        "Debug window"
-#~ msgstr       "Käferzerstörfenster"
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Anzahl an Untertiteln: {0}    {1}"
+
+#~ msgid        "Swedish"
+#~ msgstr       "Schwedisch"
+
+#~ msgid        "Found defined encoding {0}"
+#~ msgstr       "Definierte Kodierung {0} gefunden"
+
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Spielerfensterverschiebung in Pixel"
 
 #~ msgid        "ERROR: Could not use autosave directory for old files "
 #~      "\"{0}\"."
 #~ msgstr       "FEHLER: Kann Verzeichnis für automatisches Speichernvon "
 #~      "alten Dateien \"{0}\" nicht verwenden."
 
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "Fehler {0} beim Laden der Stil {1}: {2}"
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Bereichsbeginn ist die gegebene Zeit"
 
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "Fehler beim Parsen der reellen Zahl {0}"
+# eine Datei oder irgendeine Datei?
+#~ msgid        "Show preferences every time the user loads a subtitle file"
+#~ msgstr       "Einstellungen bei jedem Öffnen einer Datei anzeigen"
+
+#~ msgid        "Slovak"
+#~ msgstr       "Slowakisch"
 
 #~ msgid        "Bulgarian"
 #~ msgstr       "Bulgarisch"
 
-#~ msgid        "Use selected time as end of region"
-#~ msgstr       "Ausgewählte Zeit als Bereichsende verwenden"
-
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Jubler-Audiozwischenspeicher für Audioeingabe erkannt: {0}"
-
-#~ msgid        "Use predefined encodings..."
-#~ msgstr       "Vordefinierte Codierung verwenden..."
-
-#~ msgid        "New version"
-#~ msgstr       "Neu Version"
-
 #~ msgid        "English"
 #~ msgstr       "Englisch"
 
-#~ msgid        "Indonesian"
-#~ msgstr       "Indonesisch"
-
-#~ msgid        "Found defined encoding {0}"
-#~ msgstr       "Definierte Kodierung {0} gefunden"
-
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Untertitel als cyan markieren"
-
-#~ msgid        "Danish"
-#~ msgstr       "Dänisch"
-
-#~ msgid        "Count not create audio clip"
-#~ msgstr       "Konnte Audioclip nicht erstellen"
-
-#~ msgid        "Filipino"
-#~ msgstr       "Philippinisch"
-
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Kann Konfigurationsdatei nicht nach {0} verschieben"
-
-#~ msgid        "Y offset"
-#~ msgstr       "Y-Verschiebung"
-
-#~ msgid        "Use the following factor"
-#~ msgstr       "Den folgenden Faktor verwenden"
-
-#~ msgid        "Use given time as start of region"
-#~ msgstr       "Gegebene Zeit als Bereichsbeginn verwenden"
-
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Konfigurationsdatei nach {0} verschoben"
-
-#~ msgid        "_clone"
-#~ msgstr       "_Klonen"
-
-#~ msgid        "Attach subtitle editor panel to main Jubler window"
-#~ msgstr       "Untertiteleditor an Hauptfenster docken"
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Untertitel als rosa markieren"
+#~ msgid        "Enable/disable preview"
+#~ msgstr       "Vorschau (de)aktivieren"
 
 #, fuzzy
-#~ msgid        "File path"
-#~ msgstr       "Dateipfad"
-
-#~ msgid        "Push subtitles instead of rearranging"
-#~ msgstr       "Untertitel verschieben anstatt neu anordnen"
-
-#~ msgid        "The save process did not finish yet"
-#~ msgstr       "Das Speichern ist nocht nicht abgeschlossen"
-
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "Assistent schaut in {0} nach"
+#~ msgid        "Change media file"
+#~ msgstr       "Mediendatei ändern"
 
 #~ msgid        "Plain text"
 #~ msgstr       "Textdatei"
 
-#~ msgid        "W3C Timed Text"
-#~ msgstr       "W3C getimter Text"
+#~ msgid        "Chinese"
+#~ msgstr       "Chinesisch"
 
-#~ msgid        "Adobe Encore Text Script"
-#~ msgstr       "Adone Encore Text Script"
+#~ msgid        "Chinese (Traditional)"
+#~ msgstr       "Chinesisch (traditionell)"
 
-#~ msgid        "SubViewer V2"
-#~ msgstr       "SubViewer V2-Format"
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Untertitel als weiß markieren"
 
-#~ msgid        "Quicktime Texttrack"
-#~ msgstr       "Quicktime Textspur"
+#~ msgid        "Testing:"
+#~ msgstr       "Testen:"
+
+#~ msgid        "The beginning of the region is the start of the file"
+#~ msgstr       "Bereichsbeginn ist Beginn der Datei"
+
+#~ msgid        "Google translate"
+#~ msgstr       "Google-Übersetzung"
+
+#~ msgid        "Error while saving file {0}"
+#~ msgstr       "Fehler beim Laden der Datei {0}"
+
+#~ msgid        "Select the encoding to be searched last"
+#~ msgstr       "Wähle die Kodierung, die als drittes verwendet werden soll"
+
+#~ msgid        "Found relaxed encoding {0}"
+#~ msgstr       "Laxe Kodierung {0} gefunden"
+
+#~ msgid        "New Jubler version found!"
+#~ msgstr       "Neue Jubler-Version gefunden!"
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Voreinstellungen"
+
+#~ msgid        "Video width"
+#~ msgstr       "Videobreite"
+
+#~ msgid        "Saving {0}"
+#~ msgstr       "Speichere {0}"
+
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Konfigurationsdatei erneuert. Alte Datei wurde nach {0} "
+#~      "verschoben"
+
+#~ msgid        "Portuguese"
+#~ msgstr       "Portugiesisch"
+
+#~ msgid        "From current time"
+#~ msgstr       "Von der aktuellen Zeit"
+
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "Assistent schaut in {0} nach"
+
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Konfigurationsdatei nach {0} verschoben"
+
+#~ msgid        "Norwegian"
+#~ msgstr       "Norwegisch"
+
+#~ msgid        "Lithuanian"
+#~ msgstr       "Littauisch"
+
+#~ msgid        "Slovenian"
+#~ msgstr       "Slowenisch"
+
+#~ msgid        "Third Encoding"
+#~ msgstr       "Dritte Kodierung"
+
+#~ msgid        "The maximum number of characters per line which are permitted"
+#~ msgstr       "Die maximale Anzahl von Zeichen pro Zeile, die erlaubt sind"
+
+#~ msgid        "Warning!"
+#~ msgstr       "Warnung!"
+
+#~ msgid        "New version"
+#~ msgstr       "Neu Version"
+
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Bereichsbeginn ist die gewählte Zeit"
+
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Kann Konfigurationsdatei nicht nach {0} verschieben"
+
+#~ msgid        "To the end"
+#~ msgstr       "Bis zum Ende"
+
+#~ msgid        "_clone"
+#~ msgstr       "_Klonen"
+
+#~ msgid        "X offset"
+#~ msgstr       "X-Verschiebung"
+
+#~ msgid        "Delete the selected scenario"
+#~ msgstr       "Löscht die gewählte Ersetzung"
+
+#~ msgid        "Found file {0}"
+#~ msgstr       "Datei {0} gefunden"
+
+#~ msgid        "By region"
+#~ msgstr       "Nach Bereich"
+
+#~ msgid        "Invalid executable!"
+#~ msgstr       "Invalides Programm!"
+
+#~ msgid        "Save subtitles options"
+#~ msgstr       "Untertiteloptionen speichern"
+
+#~ msgid        "Error while loading file {0}"
+#~ msgstr       "Fehler beim Laden der Datei {0}"
+
+#~ msgid        "Attach subtitle editor panel to main Jubler window"
+#~ msgstr       "Untertiteleditor an Hauptfenster docken"
+
+#~ msgid        "Trying to initialize audio preview with null data"
+#~ msgstr       "Versuche Audiovorschau ohne Daten zu initialisieren"
+
+#~ msgid        "Go"
+#~ msgstr       "Los"

@@ -4,7 +4,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: pt\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2018-08-13 12:25+0300\n"
+        "POT-Creation-Date: 2018-10-01 18:16+0300\n"
         "PO-Revision-Date: 2009-03-18 19:15-0300\n"
         "Last-Translator: Doutor Zero <doutor.zero@gmail.com>\n"
         "Language-Team: Brazilian Portuguese <kde-i18n-pt_BR@mail.kde.org>\n"
@@ -1031,18 +1031,18 @@ msgstr  "Somente redimensionar as legendas"
 msgid   "New subtitle after current one"
 msgstr  "Nova legenda após a atual"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Caching still in progress"
 msgstr  "O cache está em progresso"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Still creating cache. Use the Cancel button to abort."
 msgstr  "Ainda criando o cache. Use o botão Cancelar para abortar."
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:87
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:95
 #, java-format
-msgid   "Error while loading file {0}"
-msgstr  "Erro ao carregar o arquivo {0}"
+msgid   "Error while loading file {0}\n"
+msgstr  ""
 
 #: modules/core/src/main/java/com/panayotis/jubler/options/AbstractPlayerOptions.java:91
 msgid   "Advanced argument list:"
@@ -1200,11 +1200,11 @@ msgstr  "Não"
 msgid   "Yes"
 msgstr  "Sim"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:176
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
 msgid   "Could not find web browser"
 msgstr  "Não foi possível encontrar o navegador web"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:186
 msgid   "Error while opening URL"
 msgstr  "Erro ao abrir a URL"
 
@@ -2587,160 +2587,32 @@ msgid   "Computer Translated subtitles should be only for personal use, and "
 msgstr  "Legendas Traduzidas por Computador somente devem ser usadas para uso "
         "pessoal, e não devem ser compartilhadas."
 
-#~ msgid        "Insert"
-#~ msgstr       "Inserir"
+#~ msgid        "Maximum subtitle characters per line"
+#~ msgstr       "Caracteres por linha máximos da legenda"
 
-#~ msgid        "Trying to initialize audio preview with null data"
-#~ msgstr       "Tentando inicializar a pré-visualização de áudio com dados "
-#~      "vazios"
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Não foi possível criar um arquivo de cache vazio"
 
-#~ msgid        "Trying to intialize audio preview with wrong size {0}"
-#~ msgstr       "Tentando inicializar a pré-visualização de áudio com um "
-#~      "tamanho errado {0}"
+#~ msgid        "Globally"
+#~ msgstr       "Globalmente"
 
-#~ msgid        "Open file error"
-#~ msgstr       "Erro ao abrir o arquivo"
+#~ msgid        "Danish"
+#~ msgstr       "Dinamarquês"
 
-#~ msgid        "Unsupported audio"
-#~ msgstr       "Áudio não suportado"
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "Não foi possível remover o arquivo antigo baixado {0}"
 
-#~ msgid        "Line unavailable"
-#~ msgstr       "Linha não disponível"
+#~ msgid        "The save process did not finish yet"
+#~ msgstr       "O processo de salvamento ainda não terminou"
 
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Não foi possível mover o arquivo de configuração para {0}"
+#~ msgid        "Video standard"
+#~ msgstr       "Padrão do vídeo"
 
-#~ msgid        "Error while saving file {0}"
-#~ msgstr       "Erro ao salvar o arquivo {0}"
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Marcar legenda como ciano"
 
-#~ msgid        "By region"
-#~ msgstr       "Por região"
-
-#~ msgid        "Norwegian"
-#~ msgstr       "Norueguês"
-
-#~ msgid        "Subtitle format of the output file (SRT is prefered)"
-#~ msgstr       "Formato de legenda do arquivo de saída (SRT é recomendado)"
-
-#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
-#~ msgstr       "Erro de codificação. Use a codificação correta (por exemplo "
-#~      "UTF-8)."
-
-#~ msgid        "A file exists with the same name."
-#~ msgstr       "Já existe um arquivo com o mesmo nome."
-
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "Erro ao abrir o arquivo do FAQ \"{0}\""
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."
-
-#~ msgid        "Remind me later"
-#~ msgstr       "Lembrar-me depois"
-
-#~ msgid        "Estonian"
-#~ msgstr       "Estoniano "
-
-#~ msgid        "Delete the selected scenario"
-#~ msgstr       "Apagar o cenário selecionado"
-
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "Exceção {0} ao carregar o estilo {1}: {2}"
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Número de legendas : {0}    {1}"
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Marcar legenda como rosa"
-
-#~ msgid        "Maestro DVD options"
-#~ msgstr       "Opções do DVD Maestro"
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Resetar para os padrões"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Substituição global"
-
-#~ msgid        "Use the following factor"
-#~ msgstr       "Usar o seguinte fator"
-
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "O Assistente está olhando dentro de {0}"
-
-#~ msgid        "Inform user on exceeding subtitle length"
-#~ msgstr       "Informar ao usuário ao exceder o comprimento da legenda"
-
-#~ msgid        "Application info not provided."
-#~ msgstr       "Não foram fornecidas informações sobre o aplicativo."
-
-#~ msgid        "Slovenian"
-#~ msgstr       "Esloveno"
-
-#~ msgid        "Albanian"
-#~ msgstr       "Albanês"
-
-#~ msgid        "Round times"
-#~ msgstr       "Arredondar tempos"
-
-#~ msgid        "Executing {0}"
-#~ msgstr       "Executando {0}"
-
-#~ msgid        "Swedish"
-#~ msgstr       "Sueco"
-
-#~ msgid        "Install Update"
-#~ msgstr       "Instalar Atualização"
-
-#~ msgid        "Unable to delete downloaded file {0}"
-#~ msgstr       "Não foi possível apagar o arquivo baixado {0}"
-
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Arquivo de configuração movido para {0}"
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Não salvo"
-
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
-
-#~ msgid        "Null value found while setting Style {0} - ignoring."
-#~ msgstr       "Valor nulo ao definir o Estilo {0} - ignorando."
-
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Atalhos do Menu"
-
-#~ msgid        "Lithuanian"
-#~ msgstr       "Lituano"
-
-#~ msgid        "Filipino"
-#~ msgstr       "Filipino"
-
-#~ msgid        "Chinese (Simplified)"
-#~ msgstr       "Chinês (Simplificado)"
-
-#~ msgid        "Downloading..."
-#~ msgstr       "Baixando..."
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "O tamanho do arquivo {0} não coincide. Reportado {1}, "
-#~      "exigido {2}"
-
-#~ msgid        "Unable to delete file {0}"
-#~ msgstr       "Não foi possível apagar o arquivo {0}"
-
-#~ msgid        "File {0} sucessfully downloaded"
-#~ msgstr       "O arquivo {0} foi baixado com sucesso"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "O arquivo atualizado não pode ser nulo."
-
-#~ msgid        "Unable to create directory."
-#~ msgstr       "Não foi possível criar o diretório."
-
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "O decodificador não está ativo. Abortando a criação do cache "
-#~      "de áudio."
+#~ msgid        "Editor of the subtitle text"
+#~ msgstr       "Editor do texto da legenda"
 
 #~ msgid        "Mark subttile as white"
 #~ msgstr       "Marcar legenda como branca"
@@ -2748,92 +2620,197 @@ msgstr  "Legendas Traduzidas por Computador somente devem ser usadas para uso "
 #~ msgid        "Catalan"
 #~ msgstr       "Catalão"
 
-#~ msgid        "The save process did not finish yet"
-#~ msgstr       "O processo de salvamento ainda não terminou"
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "O decodificador não está ativo. Abortando a criação do cache "
+#~      "de áudio."
+
+#~ msgid        "Successfully deleted file {0}"
+#~ msgstr       "O arquivo {0} foi apagado com sucesso"
+
+#~ msgid        "Unable to create directory."
+#~ msgstr       "Não foi possível criar o diretório."
+
+#~ msgid        "Found relaxed encoding {0}"
+#~ msgstr       "Encontrada codificação relaxada {0}"
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "O arquivo atualizado não pode ser nulo."
+
+#~ msgid        "Bulgarian"
+#~ msgstr       "Búlgaro"
+
+#~ msgid        "Directory is not writable."
+#~ msgstr       "Não é possível gravar no diretório."
+
+#~ msgid        "W3C Timed Text"
+#~ msgstr       "Timed Text W3C"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Executando {0}"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "O arquivo de destino {0} não é gravável."
+
+#~ msgid        "Saving {0}"
+#~ msgstr       "Salvando {0}"
+
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Atalhos do Menu"
+
+#~ msgid        "Release Notes"
+#~ msgstr       "Notas da Versão"
+
+#~ msgid        "Use the following factor"
+#~ msgstr       "Usar o seguinte fator"
+
+#~ msgid        "Estonian"
+#~ msgstr       "Estoniano "
+
+#~ msgid        "By region"
+#~ msgstr       "Por região"
 
 #~ msgid        "Could not retrieve actual video properties. Using defaults."
 #~ msgstr       "Não foi possível recuperar as propriedades do vídeo atual. "
 #~      "Usando os padrões."
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "O arquivo de destino {0} não é gravável."
+#~ msgid        "SubViewer V2"
+#~ msgstr       "SubViewer V2"
 
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Tradução interrompida"
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Não foi possível baixar o arquivo {0}"
 
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
-
-#~ msgid        "Finnish"
-#~ msgstr       "Finlandês"
-
-#~ msgid        "A new version of {0} is available!"
-#~ msgstr       "Uma nova versão do {0} está disponível!"
-
-#~ msgid        "Slovak"
-#~ msgstr       "Eslovaco"
-
-#~ msgid        "Found strict encoding {0}"
-#~ msgstr       "Encontrada codificação expressa {0}"
-
-#~ msgid        "Deploying files..."
-#~ msgstr       "Instalando arquivos..."
-
-#~ msgid        "{0} version {1} is now available - you have {2}."
-#~ msgstr       "A versão do {0} {1} está disponível agora - você possui a "
-#~      "{2}."
-
-#~ msgid        "Join files"
-#~ msgstr       "Unir arquivos"
-
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Instalador armazenado em {0}"
-
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "O arquivo {0} não pôde ser apagado."
-
-#~ msgid        "Unable to create subtitle file {0}."
-#~ msgstr       "Não foi possível criar o arquivo de legenda {0}."
-
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "Erro ao analisar o número real {0}"
-
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Arquivo de configuração atualizado. Configuração antiga "
-#~      "movida para {0}"
-
-#~ msgid        "Google translate"
-#~ msgstr       "Tradução do Google"
-
-#~ msgid        "Deployer path {0} is not writable."
-#~ msgstr       "O caminho do Instalador {0} não é gravável."
-
-#~ msgid        "Release Notes"
-#~ msgstr       "Notas da Versão"
-
-#~ msgid        "Polish"
-#~ msgstr       "Polonês"
-
-#~ msgid        "Russian"
-#~ msgstr       "Russo"
-
-#~ msgid        "Video height"
-#~ msgstr       "Altura do vídeo"
+#~ msgid        "Downloading..."
+#~ msgstr       "Baixando..."
 
 #~ msgid        "Maltese"
 #~ msgstr       "Maltês"
 
-#~ msgid        "Indonesian"
-#~ msgstr       "Indonésio"
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Arquivo de configuração movido para {0}"
+
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Executável válido encontrado: {0}"
+
+#~ msgid        "Application info not provided."
+#~ msgstr       "Não foram fornecidas informações sobre o aplicativo."
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "Erro ao analisar o número real {0}"
+
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Marcar legenda como rosa"
+
+#~ msgid        "Join files"
+#~ msgstr       "Unir arquivos"
+
+#~ msgid        "A file exists with the same name."
+#~ msgstr       "Já existe um arquivo com o mesmo nome."
+
+#~ msgid        "Hungarian"
+#~ msgstr       "Húngaro"
+
+#~ msgid        "Line unavailable"
+#~ msgstr       "Linha não disponível"
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
+
+#~ msgid        "Chinese (Traditional)"
+#~ msgstr       "Chinês (Tradicional)"
+
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Marcar legenda como amarela"
+
+#~ msgid        "Plain text"
+#~ msgstr       "Texto puro"
+
+#~ msgid        "Quicktime Texttrack"
+#~ msgstr       "Quicktime Texttrack"
+
+#~ msgid        "Unable to delete file {0}"
+#~ msgstr       "Não foi possível apagar o arquivo {0}"
 
 #~ msgid        "Skip this version"
 #~ msgstr       "Ignorar esta versão"
 
-#~ msgid        "Testing:"
-#~ msgstr       "Testando:"
+#~ msgid        "Filipino"
+#~ msgstr       "Filipino"
 
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Não foi possível baixar o arquivo {0}"
+#~ msgid        "Application path can not be null."
+#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Verificando o caminho {0} para a classe do Instalador."
+
+#~ msgid        "Russian"
+#~ msgstr       "Russo"
+
+#~ msgid        "Install Update"
+#~ msgstr       "Instalar Atualização"
+
+#~ msgid        "Found file {0}"
+#~ msgstr       "Encontrado arquivo {0}"
+
+#~ msgid        "Albanian"
+#~ msgstr       "Albanês"
+
+#~ msgid        "Google translate"
+#~ msgstr       "Tradução do Google"
+
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "O Assistente está olhando dentro de {0}"
+
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Cache de áudio do Jubler detectado para a entrada de áudio: "
+#~      "{0}"
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Resetar para os padrões"
+
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "O arquivo {0} não pôde ser apagado."
+
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "Exceção {0} ao carregar o estilo {1}: {2}"
+
+#~ msgid        "Galician"
+#~ msgstr       "Galês"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Não foi possível encontrar o caminho do Aplicativo {0}."
+
+#~ msgid        "Deploying files..."
+#~ msgstr       "Instalando arquivos..."
+
+#~ msgid        "Subtitle format of the output file (SRT is prefered)"
+#~ msgstr       "Formato de legenda do arquivo de saída (SRT é recomendado)"
+
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Não é possível criar o cache para um arquivo de áudio "
+#~      "desconhecido"
+
+#~ msgid        "Error while saving file {0}"
+#~ msgstr       "Erro ao salvar o arquivo {0}"
+
+#~ msgid        "Finnish"
+#~ msgstr       "Finlandês"
+
+#~ msgid        "Open file error"
+#~ msgstr       "Erro ao abrir o arquivo"
+
+#~ msgid        "Trying to initialize audio preview with null data"
+#~ msgstr       "Tentando inicializar a pré-visualização de áudio com dados "
+#~      "vazios"
+
+#~ msgid        "Error while loading file {0}"
+#~ msgstr       "Erro ao carregar o arquivo {0}"
+
+#~ msgid        "English"
+#~ msgstr       "Inglês"
+
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
+#~      "\"{0}\"."
 
 #~ msgid        "File {0} will be deleted, if exists."
 #~ msgstr       "O arquivo {0} será apagado, se existir."
@@ -2841,140 +2818,166 @@ msgstr  "Legendas Traduzidas por Computador somente devem ser usadas para uso "
 #~ msgid        "Found defined encoding {0}"
 #~ msgstr       "Encontrada codificação definida {0}"
 
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "O arquivo baixado {0} foi apagado com sucesso"
+#~ msgid        "Portuguese"
+#~ msgstr       "Português"
 
-#~ msgid        "Directory is not writable."
-#~ msgstr       "Não é possível gravar no diretório."
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Não foi possível encontrar o sistema de auto-atualização "
+#~      "Jupidator."
 
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "Não foi possível criar o Instalador"
+#~ msgid        "Adobe Encore Text Script"
+#~ msgstr       "Script de Texto do Adobe Encore"
 
-#~ msgid        "Hungarian"
-#~ msgstr       "Húngaro"
+#~ msgid        "File {0} sucessfully downloaded"
+#~ msgstr       "O arquivo {0} foi baixado com sucesso"
 
-#~ msgid        "Count not create audio clip"
-#~ msgstr       "Não foi possível criar o clip de áudio"
+#~ msgid        "Testing:"
+#~ msgstr       "Testando:"
 
-#~ msgid        "Galician"
-#~ msgstr       "Galês"
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "O tamanho do arquivo {0} não coincide. Reportado {1}, "
+#~      "exigido {2}"
 
-#~ msgid        "Format"
-#~ msgstr       "Formato"
+#~ msgid        "Ukrainian"
+#~ msgstr       "Ucraniano"
 
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Cache de áudio do Jubler detectado para a entrada de áudio: "
-#~      "{0}"
+#~ msgid        "Chinese (Simplified)"
+#~ msgstr       "Chinês (Simplificado)"
 
-#~ msgid        "Latvian"
-#~ msgstr       "Letão"
+#~ msgid        "Indonesian"
+#~ msgstr       "Indonésio"
 
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Executável válido encontrado: {0}"
+#~ msgid        "Lithuanian"
+#~ msgstr       "Lituano"
+
+#~ msgid        "Restart application"
+#~ msgstr       "Reiniciar aplicativo"
+
+#~ msgid        "Null value found while setting Style {0} - ignoring."
+#~ msgstr       "Valor nulo ao definir o Estilo {0} - ignorando."
+
+#~ msgid        "Video height"
+#~ msgstr       "Altura do vídeo"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Não salvo"
 
 #~ msgid        "Error while parsing integral number {0}"
 #~ msgstr       "Erro ao analisar o número integral {0}"
 
-#~ msgid        "Application path can not be null."
-#~ msgstr       "O caminho do Aplicativo não pode ser nulo."
+#~ msgid        "Unable to delete downloaded file {0}"
+#~ msgstr       "Não foi possível apagar o arquivo baixado {0}"
 
-#~ msgid        "Video standard"
-#~ msgstr       "Padrão do vídeo"
+#~ msgid        "Polish"
+#~ msgstr       "Polonês"
 
-#~ msgid        "Danish"
-#~ msgstr       "Dinamarquês"
+#~ msgid        "Swedish"
+#~ msgstr       "Sueco"
 
-#~ msgid        "Globally"
-#~ msgstr       "Globalmente"
+#~ msgid        "New version of {0} found!"
+#~ msgstr       "Foi encontrada uma nova versão do {0}!"
 
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Não foi possível criar um arquivo de cache vazio"
+#~ msgid        "Round times"
+#~ msgstr       "Arredondar tempos"
 
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Não é possível criar o cache para um arquivo de áudio "
-#~      "desconhecido"
+#~ msgid        "Deployer path {0} is not writable."
+#~ msgstr       "O caminho do Instalador {0} não é gravável."
 
-#~ msgid        "The maximum number of characters per line which are permitted"
-#~ msgstr       "O número máximo de caracteres que são permitidos por linha"
+#~ msgid        "Slovenian"
+#~ msgstr       "Esloveno"
+
+#~ msgid        "Video width"
+#~ msgstr       "Largura do vídeo"
+
+#~ msgid        "Inform user on exceeding subtitle length"
+#~ msgstr       "Informar ao usuário ao exceder o comprimento da legenda"
+
+#~ msgid        "Latvian"
+#~ msgstr       "Letão"
+
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Arquivo de configuração atualizado. Configuração antiga "
+#~      "movida para {0}"
 
 #~ msgid        "ERROR: Could not use autosave directory for old files "
 #~      "\"{0}\"."
 #~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
 #~      "para arquivos antigos \"{0}\"."
 
-#~ msgid        "Video width"
-#~ msgstr       "Largura do vídeo"
+#~ msgid        "Global replace"
+#~ msgstr       "Substituição global"
 
-#~ msgid        "Restart application"
-#~ msgstr       "Reiniciar aplicativo"
+#~ msgid        "Unable to create subtitle file {0}."
+#~ msgstr       "Não foi possível criar o arquivo de legenda {0}."
 
-#~ msgid        "New version of {0} found!"
-#~ msgstr       "Foi encontrada uma nova versão do {0}!"
+#~ msgid        "Maestro DVD options"
+#~ msgstr       "Opções do DVD Maestro"
 
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Marcar legenda como amarela"
+#~ msgid        "Format"
+#~ msgstr       "Formato"
 
-#~ msgid        "English"
-#~ msgstr       "Inglês"
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Número de legendas : {0}    {1}"
 
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Não foi possível encontrar o sistema de auto-atualização "
-#~      "Jupidator."
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Instalador armazenado em {0}"
 
-#~ msgid        "Found relaxed encoding {0}"
-#~ msgstr       "Encontrada codificação relaxada {0}"
+#~ msgid        "Delete the selected scenario"
+#~ msgstr       "Apagar o cenário selecionado"
 
-#~ msgid        "Portuguese"
-#~ msgstr       "Português"
+#~ msgid        "The maximum number of characters per line which are permitted"
+#~ msgstr       "O número máximo de caracteres que são permitidos por linha"
 
-#~ msgid        "Successfully deleted file {0}"
-#~ msgstr       "O arquivo {0} foi apagado com sucesso"
+#~ msgid        "Remind me later"
+#~ msgstr       "Lembrar-me depois"
 
-#~ msgid        "Editor of the subtitle text"
-#~ msgstr       "Editor do texto da legenda"
+#~ msgid        "{0} version {1} is now available - you have {2}."
+#~ msgstr       "A versão do {0} {1} está disponível agora - você possui a "
+#~      "{2}."
 
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Marcar legenda como ciano"
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "Erro ao abrir o arquivo do FAQ \"{0}\""
+
+#~ msgid        "Count not create audio clip"
+#~ msgstr       "Não foi possível criar o clip de áudio"
+
+#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
+#~ msgstr       "Erro de codificação. Use a codificação correta (por exemplo "
+#~      "UTF-8)."
+
+#~ msgid        "Found strict encoding {0}"
+#~ msgstr       "Encontrada codificação expressa {0}"
+
+#~ msgid        "Norwegian"
+#~ msgstr       "Norueguês"
 
 #~ msgid        "Successfully downloaded updates"
 #~ msgstr       "Atualizações baixadas com sucesso"
 
-#~ msgid        "Found file {0}"
-#~ msgstr       "Encontrado arquivo {0}"
+#~ msgid        "Slovak"
+#~ msgstr       "Eslovaco"
 
-#~ msgid        "Saving {0}"
-#~ msgstr       "Salvando {0}"
+#~ msgid        "A new version of {0} is available!"
+#~ msgstr       "Uma nova versão do {0} está disponível!"
 
-#~ msgid        "Chinese (Traditional)"
-#~ msgstr       "Chinês (Tradicional)"
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Não foi possível mover o arquivo de configuração para {0}"
 
-#~ msgid        "Maximum subtitle characters per line"
-#~ msgstr       "Caracteres por linha máximos da legenda"
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "Não foi possível criar o Instalador"
 
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "ERRO: Não foi possível usar o diretório de auto-salvamento "
-#~      "\"{0}\"."
+#~ msgid        "Unsupported audio"
+#~ msgstr       "Áudio não suportado"
 
-#~ msgid        "Ukrainian"
-#~ msgstr       "Ucraniano"
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Cancelar atualização: ignorando o apagamento do arquivo {0}"
 
-#~ msgid        "Bulgarian"
-#~ msgstr       "Búlgaro"
+#~ msgid        "Trying to intialize audio preview with wrong size {0}"
+#~ msgstr       "Tentando inicializar a pré-visualização de áudio com um "
+#~      "tamanho errado {0}"
 
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Não foi possível remover o arquivo antigo baixado {0}"
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Tradução interrompida"
 
-#~ msgid        "Plain text"
-#~ msgstr       "Texto puro"
-
-#~ msgid        "W3C Timed Text"
-#~ msgstr       "Timed Text W3C"
-
-#~ msgid        "Adobe Encore Text Script"
-#~ msgstr       "Script de Texto do Adobe Encore"
-
-#~ msgid        "SubViewer V2"
-#~ msgstr       "SubViewer V2"
-
-#~ msgid        "Quicktime Texttrack"
-#~ msgstr       "Quicktime Texttrack"
+#~ msgid        "Insert"
+#~ msgstr       "Inserir"

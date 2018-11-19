@@ -6,7 +6,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: PACKAGE VERSION\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2018-08-13 12:25+0300\n"
+        "POT-Creation-Date: 2018-10-01 18:16+0300\n"
         "PO-Revision-Date: 2011-01-30 21:03+0100\n"
         "Last-Translator: René Maassen <bmom43@hotmail.com>\n"
         "Language-Team: Vertalingen (Dutch) <bmom43@hotmail.com>\n"
@@ -1032,18 +1032,18 @@ msgstr  "Alleen ondertitels wijzigen"
 msgid   "New subtitle after current one"
 msgstr  "Nieuwe ondertitel na huidige"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Caching still in progress"
 msgstr  "Aanmaken tijdelijk bestand nog steeds in uitvoering"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Still creating cache. Use the Cancel button to abort."
 msgstr  "Aanmaken tijdelijk bestand. Gebruik annuleren knop om af te breken."
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:87
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:95
 #, java-format
-msgid   "Error while loading file {0}"
-msgstr  "Fout bij laden bestand {0}"
+msgid   "Error while loading file {0}\n"
+msgstr  ""
 
 #: modules/core/src/main/java/com/panayotis/jubler/options/AbstractPlayerOptions.java:91
 msgid   "Advanced argument list:"
@@ -1200,11 +1200,11 @@ msgstr  "Nee"
 msgid   "Yes"
 msgstr  "Ja"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:176
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
 msgid   "Could not find web browser"
 msgstr  "Kon Internet programma niet vinden"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:186
 msgid   "Error while opening URL"
 msgstr  "Fout bij openen URL (adres)"
 
@@ -2587,308 +2587,32 @@ msgid   "Computer Translated subtitles should be only for personal use, and "
 msgstr  "Vertalingen via een computer dienen voor eigen gebruik niet voor "
         "distributie!!"
 
-#~ msgid        "Insert"
-#~ msgstr       "Invoegen"
-
-#~ msgid        "Trying to initialize audio preview with null data"
-#~ msgstr       "Poging opstarten audio voorbeeld bestand zonder data"
-
-#~ msgid        "Trying to intialize audio preview with wrong size {0}"
-#~ msgstr       "Poging opstarten audio voorbeeld bestand met verkeerde "
-#~      "grootte {0}"
-
-#~ msgid        "Open file error"
-#~ msgstr       "Bestand openen fout"
-
-#~ msgid        "Unsupported audio"
-#~ msgstr       "Niet ondersteunde audio"
-
-#~ msgid        "Line unavailable"
-#~ msgstr       "Regel niet beschikbaar"
-
-#~ msgid        "Cancel installation"
-#~ msgstr       "Annuleren installatie"
-
-#~ msgid        "Finnish"
-#~ msgstr       "Fins"
-
-#~ msgid        "Can not initialize download file {0}"
-#~ msgstr       "Kan ophaal bestand {0} niet initialiseren"
-
-#~ msgid        "The save process did not finish yet"
-#~ msgstr       "Het opslaan proces is nog niet voltooid"
-
-#~ msgid        "File {0} will be deleted, if exists."
-#~ msgstr       "Bestand {0} wordt verwijderd, indien het al bestaat."
-
-#~ msgid        "Unable to initialize restart"
-#~ msgstr       "Onmogelijk te herstarten"
-
-#~ msgid        "Google translate"
-#~ msgstr       "Google vertaling"
-
-#~ msgid        "Chinese (Simplified)"
-#~ msgstr       "Simpel Chinees"
-
-#~ msgid        "Unable to delete file {0}"
-#~ msgstr       "Niet mogelijk bestand {0} te verwijderen"
-
-#~ msgid        "Thank you"
-#~ msgstr       "Dank je wel"
-
-#~ msgid        "Delete the selected scenario"
-#~ msgstr       "Verwijder geselecteerde scenario's"
-
-#~ msgid        "Maestro DVD options"
-#~ msgstr       "Maestro DVD optie's"
-
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Kan oude opgehaalde bestand {0} niet verwijderen"
-
-#~ msgid        "per line"
-#~ msgstr       "Per regel"
-
-#~ msgid        "Round times"
-#~ msgstr       "Tijden afronden"
-
-#~ msgid        "New version of {0} found!"
-#~ msgstr       "Nieuwe versie van {0} gevonden!"
-
-#~ msgid        "Albanian"
-#~ msgstr       "Albanees"
-
-#~ msgid        "Deploying files..."
-#~ msgstr       "Bestanden opstellen..."
-
-#~ msgid        "Version:"
-#~ msgstr       "Versie:"
-
-#~ msgid        "Latvian"
-#~ msgstr       "Lets"
-
-#~ msgid        "Downloading {0}, {1} percent completed."
-#~ msgstr       "Ophalen {0}, {1} procent voltooid."
-
-#~ msgid        "The maximum number of characters per line which are permitted"
-#~ msgstr       "Maximum aantal toegestane karakters per regel"
-
-#~ msgid        "Unable to delete downloaded file {0}"
-#~ msgstr       "Onmogelijk opgehaalde bestand {0} te verwijderen"
-
-#~ msgid        "Filipino"
-#~ msgstr       "Filipijns"
-
-#~ msgid        "Danish"
-#~ msgstr       "Deens"
-
-#~ msgid        "Download speed: {0}"
-#~ msgstr       "Ophaal snelheid: {0}"
-
-#~ msgid        "Do you want to see the detailed changelog? [Y/n] "
-#~ msgstr       "Wil je een gedetailleerde veranderingslog? [Y/N] "
-
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Opstellingen opgeslagen in {0}"
-
-#~ msgid        "About Jupidator"
-#~ msgstr       "Over Jupidator"
-
-#~ msgid        "Saving {0}"
-#~ msgstr       "Opslaan {0}"
-
-#~ msgid        "translatedText"
-#~ msgstr       "vertaalde tekst"
-
-#~ msgid        "Unable to create subtitle file {0}."
-#~ msgstr       "Onmogelijk ondertitel bestand {0} aan te maken"
-
-#~ msgid        "Maltese"
-#~ msgstr       "Maltees"
-
-#~ msgid        "Catalan"
-#~ msgstr       "Catalaans"
-
-#~ msgid        "Remind me later"
-#~ msgstr       "Herinner mij later"
-
-#~ msgid        "Checking JAR {0} for Deployer class."
-#~ msgstr       "Controleren JAR {0} opstel klasse."
-
-#~ msgid        "per second"
-#~ msgstr       "per seconde"
-
-#~ msgid        "Estonian"
-#~ msgstr       "Estlands"
-
-#~ msgid        "Ukrainian"
-#~ msgstr       "Oekraïens"
-
-#~ msgid        "Russian"
-#~ msgstr       "Rissisch"
-
-#~ msgid        "Format"
-#~ msgstr       "Format"
-
-#~ msgid        "File {0} sucessfully downloaded"
-#~ msgstr       "Bestand {0} succesvol opgehaald"
-
-#~ msgid        "Install Update"
-#~ msgstr       "Installeren opwaardering"
-
-#~ msgid        "Inform user on exceeding subtitle length"
-#~ msgstr       "Informeer mij bij overschrijding ondertitel lengte"
-
-#~ msgid        "Chinese (Traditional)"
-#~ msgstr       "Traditioneel Chinees"
-
-#~ msgid        "Jupidator for {0}"
-#~ msgstr       "Jupidator voor {0}"
-
-#~ msgid        "Skip this version"
-#~ msgstr       "Sla deze versie over"
-
-#~ msgid        "Use the following factor"
-#~ msgstr       "Gebruik de volgende factor"
-
-#~ msgid        "Video width"
-#~ msgstr       "Video breedte"
-
-#~ msgid        "Checking Directory {0} for Deployer class."
-#~ msgstr       "Controleren map {0} voor opstel klasse."
-
-#~ msgid        "Do you want to (S)kip this version, (R)emind later or "
-#~      "(I)nstall? [s/r/i] "
-#~ msgstr       "Wil je deze versie over(S)laan, He(R)inner mij later of "
-#~      "(I)nstallerenl? [s/r/i] "
-
-#~ msgid        "Thank you for using Jupidator  (http://sourceforge.net/"
-#~      "projects/jupidator/)"
-#~ msgstr       "Bedankt voor het gebruik van Jupidator  (http://sourceforge."
-#~      "net/projects/jupidator/)"
-
-#~ msgid        "Polish"
-#~ msgstr       "Pools"
-
-#~ msgid        "Norwegian"
-#~ msgstr       "Noors"
-
-#~ msgid        "Lithuanian"
-#~ msgstr       "Litouws"
-
-#~ msgid        "Jupidator is a library for automatic updating of "
-#~      "applications."
-#~ msgstr       "Jupidator is een bibliotheek voor een automatische programma "
-#~      "opwaardering."
-
-#~ msgid        "Downloading..."
-#~ msgstr       "Ophalen..."
-
-#~ msgid        "Bulgarian"
-#~ msgstr       "Bulgaars"
-
-#~ msgid        "Do you want to (R)emind later or (I)nstall? [r/i] "
-#~ msgstr       "He(R)inner mij later of (I)nstallerenl? [r/i] "
-
-#~ msgid        "Unable to create directory structure under {0}"
-#~ msgstr       "Onmogelijk map structuur aan te maken bij/op {0}"
-
-#~ msgid        "It is open source under the LGPL licence."
-#~ msgstr       "Het is een 'open bron' onder de LGPL licentie."
-
-#~ msgid        "Error: {0}"
-#~ msgstr       "Fout: {0}"
-
-#~ msgid        "Portuguese"
-#~ msgstr       "Portuguees"
-
-#~ msgid        "Restart application"
-#~ msgstr       "Herstart programma"
-
-#~ msgid        "Application cancelled restart"
-#~ msgstr       "Programma annuleerde de herstart."
-
-#~ msgid        "Downloading successfull"
-#~ msgstr       "Ophalen succesvol"
-
-#~ msgid        "Checksumming {0} with algorithm {1} failed."
-#~ msgstr       "Controlesom {0} met algoritme {1} gefaald."
-
-#~ msgid        "Maximum subtitle characters per line"
-#~ msgstr       "Maximum ondertitel karakters per regel"
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "Bestandsgrootte van bestand {0} komt niet overeen. "
-#~      "Gerapporteerd {1}, vereist {2}"
-
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "Niet mogelijk opstelling aan te maken"
-
-#~ msgid        "Galician"
-#~ msgstr       "Gallisisch"
-
-#~ msgid        "{0} version {1} is now available - you have {2}."
-#~ msgstr       "{0} versie {1} is nu beschikbaar - jij hebt {2}."
-
-#~ msgid        "Property name could not be null"
-#~ msgstr       "Eigendomsnaam mag niet nul zijn"
-
-#~ msgid        "List of changes:"
-#~ msgstr       "Lijst van veranderingen:"
-
-#~ msgid        "Unable to unpack under {0}"
-#~ msgstr       "Onmogelijk uit te pakken bij/op {0}"
-
-#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
-#~ msgstr       "Decodeer fout. Gebruik juiste decoder (b.v. UTF-8)."
-
-#~ msgid        "Successfully downloaded updates"
-#~ msgstr       "Opwaarderingen succesvol opgehaald."
-
-#~ msgid        "Wrong answer."
-#~ msgstr       "Verkeerd antwoord."
-
-#~ msgid        "Deployer path {0} is not writable."
-#~ msgstr       "Opstel lokatie {0} is niet beschrijfbaar."
-
-#~ msgid        "More info can be found in: http://jupidator.sourceforge.net"
-#~ msgstr       "Meer informatie kan gevonden worden bij: http://jupidator."
-#~      "sourceforge.net"
-
-#~ msgid        "Processing update"
-#~ msgstr       "Uitvoeren opwaarderingen"
-
-#~ msgid        "Count not create audio clip"
-#~ msgstr       "Kon audio clip niet aanmaken"
-
-#~ msgid        "Video height"
-#~ msgstr       "Video hoogte"
-
-#~ msgid        "Please wait..."
-#~ msgstr       "Wacht a.u.b...."
-
-#~ msgid        "Error while saving file {0}"
-#~ msgstr       "Fout bij opslaan bestand {0}"
-
-#~ msgid        "Path {0} is not writable."
-#~ msgstr       "Lokatie {0} is niet beschrijfbaar."
-
-#~ msgid        "Unable to initialize URL {0}"
-#~ msgstr       "Onmogelijk initialiseren URL {0}"
-
-#~ msgid        "Release Notes"
-#~ msgstr       "Versie opmerkingen"
-
-#~ msgid        "A new version of {0} is available!"
-#~ msgstr       "Een nieuwere versie van {0} is beschikbaar!"
+#~ msgid        "Editor of the subtitle text"
+#~ msgstr       "Bewerker van de ondertitel tekst"
 
 #~ msgid        "Hungarian"
 #~ msgstr       "Hongaars"
 
-#~ msgid        "Video standard"
-#~ msgstr       "Video standaard"
+#~ msgid        "Application info not provided."
+#~ msgstr       "Programma info niet verstrekt."
 
-#~ msgid        "Unable to provide empty attribute for file {0}"
-#~ msgstr       "Onmogelijk een lege attribuut te verzorgen voor bestand {0}"
+#~ msgid        "A new version of {0} is available!"
+#~ msgstr       "Een nieuwere versie van {0} is beschikbaar!"
+
+#~ msgid        "Release Notes"
+#~ msgstr       "Versie opmerkingen"
+
+#~ msgid        "Unable to initialize URL {0}"
+#~ msgstr       "Onmogelijk initialiseren URL {0}"
+
+#~ msgid        "Path {0} is not writable."
+#~ msgstr       "Lokatie {0} is niet beschrijfbaar."
+
+#~ msgid        "Error while saving file {0}"
+#~ msgstr       "Fout bij opslaan bestand {0}"
+
+#~ msgid        "Subtitle format of the output file (SRT is prefered)"
+#~ msgstr       "Ondertitel uitvoer bestandsformaat (voorkeur *.srt)"
 
 #~ msgid        "T: total number of characters\n"
 #~      "L: number of lines\n"
@@ -2897,78 +2621,357 @@ msgstr  "Vertalingen via een computer dienen voor eigen gebruik niet voor "
 #~      "L: aantal regels \n"
 #~      "C: aantal karakters langste regel"
 
-#~ msgid        "Unable to create directory."
-#~ msgstr       "Onmogelijk map aan te maken."
+#~ msgid        "Unable to provide empty attribute for file {0}"
+#~ msgstr       "Onmogelijk een lege attribuut te verzorgen voor bestand {0}"
 
-#~ msgid        "Original text and translation does not match!"
-#~ msgstr       "Orginele tekst en vertaling komen niet overeen!"
+#~ msgid        "Video standard"
+#~ msgstr       "Video standaard"
+
+#~ msgid        "Slovenian"
+#~ msgstr       "Sloveens"
+
+#~ msgid        "Quicktime Texttrack"
+#~ msgstr       "Quicktime tekst spoor"
+
+#~ msgid        "Join files"
+#~ msgstr       "Bestand samenvoegen"
+
+#~ msgid        "SubViewer V2"
+#~ msgstr       "SubViewer V2"
+
+#~ msgid        "Inform user on exceeding subtitle length"
+#~ msgstr       "Informeer mij bij overschrijding ondertitel lengte"
+
+#~ msgid        "Error while loading file {0}"
+#~ msgstr       "Fout bij laden bestand {0}"
+
+#~ msgid        "List of changes:"
+#~ msgstr       "Lijst van veranderingen:"
+
+#~ msgid        "Russian"
+#~ msgstr       "Rissisch"
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Onmogelijk bestand {0} op te halen"
+
+#~ msgid        "Use the following factor"
+#~ msgstr       "Gebruik de volgende factor"
+
+#~ msgid        "Install Update"
+#~ msgstr       "Installeren opwaardering"
+
+#~ msgid        "Unable to create subtitle file {0}."
+#~ msgstr       "Onmogelijk ondertitel bestand {0} aan te maken"
+
+#~ msgid        "Filipino"
+#~ msgstr       "Filipijns"
+
+#~ msgid        "Checking JAR {0} for Deployer class."
+#~ msgstr       "Controleren JAR {0} opstel klasse."
+
+#~ msgid        "Unable to delete file {0}"
+#~ msgstr       "Niet mogelijk bestand {0} te verwijderen"
+
+#~ msgid        "Cancel installation"
+#~ msgstr       "Annuleren installatie"
+
+#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
+#~ msgstr       "Decodeer fout. Gebruik juiste decoder (b.v. UTF-8)."
+
+#~ msgid        "Estonian"
+#~ msgstr       "Estlands"
+
+#~ msgid        "Ukrainian"
+#~ msgstr       "Oekraïens"
+
+#~ msgid        "A file exists with the same name."
+#~ msgstr       "Een bestand bestaat al met die naam."
+
+#~ msgid        "Maximum subtitle characters per line"
+#~ msgstr       "Maximum ondertitel karakters per regel"
+
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Opstellingen opgeslagen in {0}"
+
+#~ msgid        "Restart application"
+#~ msgstr       "Herstart programma"
+
+#~ msgid        "Latvian"
+#~ msgstr       "Lets"
+
+#~ msgid        "Albanian"
+#~ msgstr       "Albanees"
+
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "Kan oude opgehaalde bestand {0} niet verwijderen"
+
+#~ msgid        "Jupidator is a library for automatic updating of "
+#~      "applications."
+#~ msgstr       "Jupidator is een bibliotheek voor een automatische programma "
+#~      "opwaardering."
+
+#~ msgid        "File {0} will be deleted, if exists."
+#~ msgstr       "Bestand {0} wordt verwijderd, indien het al bestaat."
+
+#~ msgid        "Wrong answer."
+#~ msgstr       "Verkeerd antwoord."
+
+#~ msgid        "Open file error"
+#~ msgstr       "Bestand openen fout"
+
+#~ msgid        "Skip this version"
+#~ msgstr       "Sla deze versie over"
+
+#~ msgid        "Jupidator for {0}"
+#~ msgstr       "Jupidator voor {0}"
+
+#~ msgid        "Format"
+#~ msgstr       "Format"
+
+#~ msgid        "Galician"
+#~ msgstr       "Gallisisch"
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "Bestandsgrootte van bestand {0} komt niet overeen. "
+#~      "Gerapporteerd {1}, vereist {2}"
+
+#~ msgid        "Remind me later"
+#~ msgstr       "Herinner mij later"
+
+#~ msgid        "Could not remove old temporary file {0}"
+#~ msgstr       "Kan oud tijdelijk bestand {0} niet verwijderen"
+
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "Niet mogelijk opstelling aan te maken"
+
+#~ msgid        "Please wait..."
+#~ msgstr       "Wacht a.u.b...."
+
+#~ msgid        "Saving {0}"
+#~ msgstr       "Opslaan {0}"
+
+#~ msgid        "Downloading successfull"
+#~ msgstr       "Ophalen succesvol"
+
+#~ msgid        "Download speed: {0}"
+#~ msgstr       "Ophaal snelheid: {0}"
+
+#~ msgid        "UpdaterAppElements not provided."
+#~ msgstr       "UpdaterAppElements niet verstrekt."
+
+#~ msgid        "The maximum number of characters per line which are permitted"
+#~ msgstr       "Maximum aantal toegestane karakters per regel"
+
+#~ msgid        "Error: {0}"
+#~ msgstr       "Fout: {0}"
+
+#~ msgid        "Deploying files..."
+#~ msgstr       "Bestanden opstellen..."
+
+#~ msgid        "Unable to create directory structure under {0}"
+#~ msgstr       "Onmogelijk map structuur aan te maken bij/op {0}"
+
+#~ msgid        "Round times"
+#~ msgstr       "Tijden afronden"
+
+#~ msgid        "Bulgarian"
+#~ msgstr       "Bulgaars"
+
+#~ msgid        "Delete the selected scenario"
+#~ msgstr       "Verwijder geselecteerde scenario's"
+
+#~ msgid        "More info can be found in: http://jupidator.sourceforge.net"
+#~ msgstr       "Meer informatie kan gevonden worden bij: http://jupidator."
+#~      "sourceforge.net"
+
+#~ msgid        "Google translate"
+#~ msgstr       "Google vertaling"
+
+#~ msgid        "Norwegian"
+#~ msgstr       "Noors"
+
+#~ msgid        "Can not initialize download file {0}"
+#~ msgstr       "Kan ophaal bestand {0} niet initialiseren"
+
+#~ msgid        "Press [RETURN] to restart the application "
+#~ msgstr       "Druk op [ENTER] om het programma te herstarten"
+
+#~ msgid        "Line unavailable"
+#~ msgstr       "Regel niet beschikbaar"
+
+#~ msgid        "Checking Directory {0} for Deployer class."
+#~ msgstr       "Controleren map {0} voor opstel klasse."
+
+#~ msgid        "Trying to initialize audio preview with null data"
+#~ msgstr       "Poging opstarten audio voorbeeld bestand zonder data"
+
+#~ msgid        "Chinese (Traditional)"
+#~ msgstr       "Traditioneel Chinees"
+
+#~ msgid        "Unable to unpack under {0}"
+#~ msgstr       "Onmogelijk uit te pakken bij/op {0}"
+
+#~ msgid        "File {0} sucessfully downloaded"
+#~ msgstr       "Bestand {0} succesvol opgehaald"
 
 #~ msgid        "Indonesian"
 #~ msgstr       "Indisch"
 
+#~ msgid        "Directory is not writable."
+#~ msgstr       "Map is niet schrijfbaar"
+
+#~ msgid        "Original text and translation does not match!"
+#~ msgstr       "Orginele tekst en vertaling komen niet overeen!"
+
+#~ msgid        "Property name could not be null"
+#~ msgstr       "Eigendomsnaam mag niet nul zijn"
+
+#~ msgid        "W3C Timed Text"
+#~ msgstr       "W3C Timed Text"
+
+#~ msgid        "Swedish"
+#~ msgstr       "Zweeds"
+
+#~ msgid        "Plain text"
+#~ msgstr       "Klare tekst"
+
+#~ msgid        "per second"
+#~ msgstr       "per seconde"
+
 #~ msgid        "WARNING! This update requires elevated privileges!"
 #~ msgstr       "WAARSCHUWING! Deze opwaardering vereist verhoogde rechten!!"
 
-#~ msgid        "Directory is not writable."
-#~ msgstr       "Map is niet schrijfbaar"
+#~ msgid        "{0} version {1} is now available - you have {2}."
+#~ msgstr       "{0} versie {1} is nu beschikbaar - jij hebt {2}."
+
+#~ msgid        "Catalan"
+#~ msgstr       "Catalaans"
+
+#~ msgid        "Maltese"
+#~ msgstr       "Maltees"
+
+#~ msgid        "Slovak"
+#~ msgstr       "Slovaaks"
+
+#~ msgid        "translatedText"
+#~ msgstr       "vertaalde tekst"
+
+#~ msgid        "Checksumming {0} with algorithm {1} failed."
+#~ msgstr       "Controlesom {0} met algoritme {1} gefaald."
+
+#~ msgid        "About Jupidator"
+#~ msgstr       "Over Jupidator"
+
+#~ msgid        "Adobe Encore Text Script"
+#~ msgstr       "Adobe Encore Text Script"
+
+#~ msgid        "Do you want to see the detailed changelog? [Y/n] "
+#~ msgstr       "Wil je een gedetailleerde veranderingslog? [Y/N] "
+
+#~ msgid        "Application cancelled restart"
+#~ msgstr       "Programma annuleerde de herstart."
+
+#~ msgid        "Danish"
+#~ msgstr       "Deens"
+
+#~ msgid        "Maximum number of characters:"
+#~ msgstr       "Maximum aantal karakters"
+
+#~ msgid        "Unable to delete downloaded file {0}"
+#~ msgstr       "Onmogelijk opgehaalde bestand {0} te verwijderen"
+
+#~ msgid        "Portuguese"
+#~ msgstr       "Portuguees"
+
+#~ msgid        "Downloading {0}, {1} percent completed."
+#~ msgstr       "Ophalen {0}, {1} procent voltooid."
+
+#~ msgid        "Unable to create directory."
+#~ msgstr       "Onmogelijk map aan te maken."
+
+#~ msgid        "Version:"
+#~ msgstr       "Versie:"
+
+#~ msgid        "Video height"
+#~ msgstr       "Video hoogte"
+
+#~ msgid        "It is open source under the LGPL licence."
+#~ msgstr       "Het is een 'open bron' onder de LGPL licentie."
+
+#~ msgid        "Count not create audio clip"
+#~ msgstr       "Kon audio clip niet aanmaken"
+
+#~ msgid        "New version of {0} found!"
+#~ msgstr       "Nieuwe versie van {0} gevonden!"
+
+#~ msgid        "Do you want to (R)emind later or (I)nstall? [r/i] "
+#~ msgstr       "He(R)inner mij later of (I)nstallerenl? [r/i] "
+
+#~ msgid        "per line"
+#~ msgstr       "Per regel"
+
+#~ msgid        "Processing update"
+#~ msgstr       "Uitvoeren opwaarderingen"
+
+#~ msgid        "Maestro DVD options"
+#~ msgstr       "Maestro DVD optie's"
+
+#~ msgid        "Downloading..."
+#~ msgstr       "Ophalen..."
+
+#~ msgid        "Thank you"
+#~ msgstr       "Dank je wel"
+
+#~ msgid        "English"
+#~ msgstr       "Engels"
+
+#~ msgid        "Chinese (Simplified)"
+#~ msgstr       "Simpel Chinees"
+
+#~ msgid        "Lithuanian"
+#~ msgstr       "Litouws"
+
+#~ msgid        "Unable to initialize restart"
+#~ msgstr       "Onmogelijk te herstarten"
+
+#~ msgid        "Deployer path {0} is not writable."
+#~ msgstr       "Opstel lokatie {0} is niet beschrijfbaar."
+
+#~ msgid        "The save process did not finish yet"
+#~ msgstr       "Het opslaan proces is nog niet voltooid"
+
+#~ msgid        "Polish"
+#~ msgstr       "Pools"
+
+#~ msgid        "Finnish"
+#~ msgstr       "Fins"
 
 #~ msgid        "This update is required for the smooth updating of {0}"
 #~ msgstr       "Deze opwaardering is vereist voor een vlekkeloze "
 #~      "opwaardering van {0}"
 
-#~ msgid        "A file exists with the same name."
-#~ msgstr       "Een bestand bestaat al met die naam."
+#~ msgid        "Thank you for using Jupidator  (http://sourceforge.net/"
+#~      "projects/jupidator/)"
+#~ msgstr       "Bedankt voor het gebruik van Jupidator  (http://sourceforge."
+#~      "net/projects/jupidator/)"
 
-#~ msgid        "English"
-#~ msgstr       "Engels"
+#~ msgid        "Do you want to (S)kip this version, (R)emind later or "
+#~      "(I)nstall? [s/r/i] "
+#~ msgstr       "Wil je deze versie over(S)laan, He(R)inner mij later of "
+#~      "(I)nstallerenl? [s/r/i] "
 
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Onmogelijk bestand {0} op te halen"
+#~ msgid        "Unsupported audio"
+#~ msgstr       "Niet ondersteunde audio"
 
-#~ msgid        "Subtitle format of the output file (SRT is prefered)"
-#~ msgstr       "Ondertitel uitvoer bestandsformaat (voorkeur *.srt)"
+#~ msgid        "Successfully downloaded updates"
+#~ msgstr       "Opwaarderingen succesvol opgehaald."
 
-#~ msgid        "Could not remove old temporary file {0}"
-#~ msgstr       "Kan oud tijdelijk bestand {0} niet verwijderen"
+#~ msgid        "Trying to intialize audio preview with wrong size {0}"
+#~ msgstr       "Poging opstarten audio voorbeeld bestand met verkeerde "
+#~      "grootte {0}"
 
-#~ msgid        "Slovenian"
-#~ msgstr       "Sloveens"
+#~ msgid        "Video width"
+#~ msgstr       "Video breedte"
 
-#~ msgid        "Press [RETURN] to restart the application "
-#~ msgstr       "Druk op [ENTER] om het programma te herstarten"
-
-#~ msgid        "Swedish"
-#~ msgstr       "Zweeds"
-
-#~ msgid        "Maximum number of characters:"
-#~ msgstr       "Maximum aantal karakters"
-
-#~ msgid        "Editor of the subtitle text"
-#~ msgstr       "Bewerker van de ondertitel tekst"
-
-#~ msgid        "Application info not provided."
-#~ msgstr       "Programma info niet verstrekt."
-
-#~ msgid        "Join files"
-#~ msgstr       "Bestand samenvoegen"
-
-#~ msgid        "Slovak"
-#~ msgstr       "Slovaaks"
-
-#~ msgid        "UpdaterAppElements not provided."
-#~ msgstr       "UpdaterAppElements niet verstrekt."
-
-#~ msgid        "Plain text"
-#~ msgstr       "Klare tekst"
-
-#~ msgid        "W3C Timed Text"
-#~ msgstr       "W3C Timed Text"
-
-#~ msgid        "Adobe Encore Text Script"
-#~ msgstr       "Adobe Encore Text Script"
-
-#~ msgid        "SubViewer V2"
-#~ msgstr       "SubViewer V2"
-
-#~ msgid        "Quicktime Texttrack"
-#~ msgstr       "Quicktime tekst spoor"
+#~ msgid        "Insert"
+#~ msgstr       "Invoegen"

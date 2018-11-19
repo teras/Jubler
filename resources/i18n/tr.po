@@ -1,7 +1,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: JublerTr v1.0\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2018-08-13 12:25+0300\n"
+        "POT-Creation-Date: 2018-10-01 18:16+0300\n"
         "PO-Revision-Date: 2009-03-22 12:08+0200\n"
         "Last-Translator: Serkan Kaba <serkan@gentoo.org>\n"
         "Language-Team: C-NoNe <yuksel.asim.sinan@gmail.com>\n"
@@ -1027,19 +1027,19 @@ msgstr  "Sadece altyazıları yeniden boyutlandır"
 msgid   "New subtitle after current one"
 msgstr  "Şuankinden sonra yeni altyazı"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Caching still in progress"
 msgstr  "Önbellekleme hala işliyor"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Still creating cache. Use the Cancel button to abort."
 msgstr  "Hala önbellek oluşturuluyor.Bitirmeden durdurmak için İptal tuşuna "
         "basın"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:87
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:95
 #, java-format
-msgid   "Error while loading file {0}"
-msgstr  "{0} dosyası yüklenirken hata oluştu"
+msgid   "Error while loading file {0}\n"
+msgstr  ""
 
 #: modules/core/src/main/java/com/panayotis/jubler/options/AbstractPlayerOptions.java:91
 msgid   "Advanced argument list:"
@@ -1196,11 +1196,11 @@ msgstr  "Hayır"
 msgid   "Yes"
 msgstr  "Evet"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:176
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
 msgid   "Could not find web browser"
 msgstr  "Web tarayıcısı bulunamadı."
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:186
 msgid   "Error while opening URL"
 msgstr  "URL açılırken hata oluştu"
 
@@ -2578,331 +2578,261 @@ msgid   "Computer Translated subtitles should be only for personal use, and "
 msgstr  "Bilgisayar ile çevrilen altyazılar sadece kişisel olarak "
         "kullanılmalı, dağıtılmamalıdır."
 
-#~ msgid        "Insert"
-#~ msgstr       "Ekle"
+#~ msgid        "Albanian"
+#~ msgstr       "Arnavutça"
 
-#~ msgid        "Trying to initialize audio preview with null data"
-#~ msgstr       "Boş veri ile ses önizlemesi başlatılmaya çalışılıyor."
+#~ msgid        "Finnish"
+#~ msgstr       "Fince"
 
-#~ msgid        "Trying to intialize audio preview with wrong size {0}"
-#~ msgstr       "Hatalı boyutla{0} ses önizlemesi başlatılmaya çalışılıyor."
+#~ msgid        "Second Encoding"
+#~ msgstr       "İkinci Kodlama"
 
-#~ msgid        "Open file error"
-#~ msgstr       "Dosya açma hatası"
+#~ msgid        "Delay subtitles by 1 second"
+#~ msgstr       "Altyazıları 1 saniye geciktir."
 
-#~ msgid        "Unsupported audio"
-#~ msgstr       "Desteklenmeyen ses"
+#~ msgid        "Y offset"
+#~ msgstr       "Y Ofseti"
 
-#~ msgid        "Line unavailable"
-#~ msgstr       "Satır mevcut değil"
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "HATA: \"{0}\" otomatik kaydetme dizini kullanılamadı."
+
+#~ msgid        "Forward subtitles by 100 milliseconds"
+#~ msgstr       "Altyazıları 100 milisaniye ileri kaydır."
+
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "{0} reel sayısı ayrıştırılırken hata oluştu"
+
+#~ msgid        "Current version:"
+#~ msgstr       "Şu anki sürüm"
+
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Kaydedilen dosyanın kodlaması"
+
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Verilen zamanı bölgenin sonu olarak kullan"
+
+#~ msgid        "Indonesian"
+#~ msgstr       "Endonezya dili"
+
+#~ msgid        "Forward subtitles by 1 second"
+#~ msgstr       "Altyazıları 1 saniye ileri kaydır."
+
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "FFDecode kütüphanesi yok!"
+
+#~ msgid        "Start time"
+#~ msgstr       "Başlangıç zamanı"
+
+#~ msgid        "Advanced SubStation format"
+#~ msgstr       "Gelişmiş SubStation formatı"
+
+#~ msgid        "Slovak"
+#~ msgstr       "Slovakça"
+
+#~ msgid        "Debug window"
+#~ msgstr       "Hata ayıklama penceresi"
+
+#~ msgid        "File preferences"
+#~ msgstr       "Doysa tercihleri"
+
+#~ msgid        "Enable/disable preview"
+#~ msgstr       "Ön izleme etkinleştir/etkisizleştir"
+
+#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
+#~ msgstr       "Kodlama hatası. Düzgün bir kodlama kullanın (Örn: UTF-8)"
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "\"{0}\" SSS dosyası açılamadı"
+
+#~ msgid        "New Jubler version found!"
+#~ msgstr       "Yeni Jubler sürümü bulundu"
+
+#~ msgid        "Maximum subtitle characters per line"
+#~ msgstr       "Satır başına düşen en fazla karakter sayısı"
+
+#~ msgid        "Use selected time as end of region"
+#~ msgstr       "Seçili zamanı bölgenin bitişiı olarak kullan"
+
+#~ msgid        "Null value found while setting Style {0} - ignoring."
+#~ msgstr       "{0} stili ayarlanırken boş değer bulundu - yoksayılıyor."
+
+#~ msgid        "MPlayer options"
+#~ msgstr       "MPlayer seçenekleri"
+
+#~ msgid        "Could not create temporary file to store the subtitles."
+#~ msgstr       "Altyazıları kaydetmek için geçici dosya oluşturulamadı"
+
+#~ msgid        "Chinese (Simplified)"
+#~ msgstr       "Çince (Basitleştirilmiş)"
+
+#~ msgid        "Delay subtitles by 100 milliseconds"
+#~ msgstr       "Altyazıları 100 milisaniye geciktir."
+
+#~ msgid        "Select the encoding to be searched first"
+#~ msgstr       "İlk aranacak kodlamayı seçin"
+
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Bölgenin başlangıcı verilen süredir"
+
+#~ msgid        "To current time"
+#~ msgstr       "Şimdi zamana"
+
+#~ msgid        "Directory is not writable."
+#~ msgstr       "Dosya yazmaya karşı korumalı"
+
+#~ msgid        "Maltese"
+#~ msgstr       "Maltaca"
+
+#~ msgid        "Editor of the subtitle text"
+#~ msgstr       "Bu altyazı dosyasının yazarı"
+
+#~ msgid        "Subtitles preview"
+#~ msgstr       "Altyazı önizleme"
+
+#~ msgid        "Subtitle format of the output file (SRT is prefered)"
+#~ msgstr       "Çıkış dosyasının altyazı formatı(SRT tercih edilir)"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Kaydedilmemiş"
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Altyazı sayısı : {0}    {1}"
+
+#~ msgid        "Chinese"
+#~ msgstr       "Çince"
+
+#~ msgid        "Use the following factor"
+#~ msgstr       "Aşağıdaki faktörü kullan"
+
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmek önemli"
+
+#~ msgid        "Found file {0}"
+#~ msgstr       "Bulunan dosya {0}"
+
+#~ msgid        "New version"
+#~ msgstr       "Yeni Sürüm"
+
+#~ msgid        "Plain text"
+#~ msgstr       "Düz metin"
+
+#~ msgid        " Show save preferences while saving file"
+#~ msgstr       "Dosyayı kaydederken kaydetme tercihlerini göster"
+
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Jubler ses önbelleği ses girişi buldu: {0}"
+
+#~ msgid        "End time"
+#~ msgstr       "Bitiş zamanı"
 
 #~ msgid        "Go"
 #~ msgstr       "Git"
 
-#~ msgid        "Use selected time as start of region"
-#~ msgstr       "Seçili zamanı bölgenin başlangıcı olarak kullan"
-
-#~ msgid        "Norwegian"
-#~ msgstr       "Norveççe"
-
-#~ msgid        "Video height"
-#~ msgstr       "Video yüksekliği"
-
-#~ msgid        "Show preferences every time the user loads a subtitle file"
-#~ msgstr       "Kullanıcının altyazı dosyasını her yükleyişinde tercihleri "
-#~      "göster"
-
 #~ msgid        "To the end"
 #~ msgstr       "Sona doğru"
-
-#~ msgid        "Galician"
-#~ msgstr       "Galiçya dili"
-
-#~ msgid        "The maximum number of characters per line which are permitted"
-#~ msgstr       "Satır başına düşen en fazla karakter sayısı"
-
-#~ msgid        "Format"
-#~ msgstr       "Format"
 
 #~ msgid        "Could not retrieve actual video properties. Using defaults."
 #~ msgstr       "Asıl video özellikleri alınamadı. Varsayılan değerler "
 #~      "kullanılıyor."
 
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Şifre çözücü aktif değil.Ses önbellek oluşturulması "
-#~      "durduruluyor."
-
-#~ msgid        "The save process did not finish yet"
-#~ msgstr       "Kaydetme işlemi henüz bitmedi"
-
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "{1}: {2} stili yüklenirken {0} hatası oluştu"
-
-#~ msgid        "X offset"
-#~ msgstr       "X Ofseti"
-
-#~ msgid        "Media Player Error"
-#~ msgstr       "Çoklu Ortam Oynatıcı Hatası"
-
-#~ msgid        "Polish"
-#~ msgstr       "Lehçe"
-
-#~ msgid        "No options for this program"
-#~ msgstr       "Bu programın seçenekleri yoktur"
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Piksel bazında oynatıcı penceresi ofseti"
 
 #~ msgid        "Select the encoding to be searched last"
 #~ msgstr       "Üçüncü aranacak kodlamayı seçin"
 
-#~ msgid        "Unable to load plugin: {0}"
-#~ msgstr       "{0} eklentisi yüklenemedi"
-
-#~ msgid        "MicroDVD format"
-#~ msgstr       "MicroDVD formatı"
-
-#~ msgid        "Open the options for this player"
-#~ msgstr       "Bu oynatıcı için seçenekleri aç"
-
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Altyazıları önizle"
-
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmek önemli"
-
-#~ msgid        "Directory is not writable."
-#~ msgstr       "Dosya yazmaya karşı korumalı"
-
-#~ msgid        "Save subtitles options"
-#~ msgstr       "Altyazı seçeneklerini kaydet"
-
-#~ msgid        "Use the following factor"
-#~ msgstr       "Aşağıdaki faktörü kullan"
-
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Menü kısayolları"
-
-#~ msgid        "Testing:"
-#~ msgstr       "Sınanıyor:"
-
-#~ msgid        "Displa/hide metric attributes"
-#~ msgstr       "Metrik özellikleri sakla/göster"
-
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Yapılandırma dosyası {0}'a taşınamıyor"
-
 #~ msgid        "The end of the region is the end of the file"
 #~ msgstr       "Bölgenin sonu dosya sonudur"
 
-#~ msgid        "File preferences"
-#~ msgstr       "Doysa tercihleri"
+#~ msgid        "The end of the region is the selected time"
+#~ msgstr       "Bölgenin sonu seçilen zamandır"
 
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Altyazıyı beyaz renkte işaretle"
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "{0} tam sayısı ayrıştırılırken hata oluştu"
 
-#~ msgid        "New Jubler version found!"
-#~ msgstr       "Yeni Jubler sürümü bulundu"
+#~ msgid        "File path"
+#~ msgstr       "Dosya yolu"
 
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Yaratılamadı, ayarlanmamış önbellek dosyası"
+#~ msgid        "Load subtitles options"
+#~ msgstr       "Altyazı özelliklerini yükle"
 
-#~ msgid        " Show save preferences while saving file"
-#~ msgstr       "Dosyayı kaydederken kaydetme tercihlerini göster"
-
-#~ msgid        "Error while saving file {0}"
-#~ msgstr       "{0} dosyasını kaydederken hata oluştu"
-
-#~ msgid        "From current time"
-#~ msgstr       "Şimdiki zaman"
-
-#~ msgid        "Push subtitles instead of rearranging"
-#~ msgstr       "Yeniden düzenlemek yerine altyazıları itele"
-
-#~ msgid        "Warning!"
-#~ msgstr       "Uyarı!"
-
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "Bölgenin sonu verilen zamandır"
-
-#~ msgid        "Maximum subtitle characters per line"
-#~ msgstr       "Satır başına düşen en fazla karakter sayısı"
+#~ msgid        "Select the encoding to be searched second"
+#~ msgstr       "İkinci aranacak kodlamayı seçin"
 
 #~ msgid        "Abnormal exit - please report the author about this "
 #~      "behaviour."
 #~ msgstr       "Anormal sonlandırma.\n"
 #~      "Lütfen bu durumu yazara bildirin."
 
-#~ msgid        "Chinese (Simplified)"
-#~ msgstr       "Çince (Basitleştirilmiş)"
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Altyazıyı pembe renkte işaretle"
 
-#~ msgid        "Version found:"
-#~ msgstr       "Bulunan sürüm:"
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Altyazıları önizle"
 
-#~ msgid        "Could not create temporary file to store the subtitles."
-#~ msgstr       "Altyazıları kaydetmek için geçici dosya oluşturulamadı"
+#~ msgid        "Ukrainian"
+#~ msgstr       "Ukraynaca"
 
-#~ msgid        "Select the encoding to be searched second"
-#~ msgstr       "İkinci aranacak kodlamayı seçin"
+#~ msgid        "Quicktime Texttrack"
+#~ msgstr       "Quicktime Texttrack"
 
-#~ msgid        "Enable/disable preview"
-#~ msgstr       "Ön izleme etkinleştir/etkisizleştir"
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Menü kısayolları"
 
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Yapılandırma dosyası {0}'a taşındı"
+#~ msgid        "Saving {0}"
+#~ msgstr       "{0} kaydediliyor"
 
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "\"{0}\" SSS dosyası açılamadı"
+#~ msgid        "MicroDVD format"
+#~ msgstr       "MicroDVD formatı"
 
-#~ msgid        "Subtitle format of the output file (SRT is prefered)"
-#~ msgstr       "Çıkış dosyasının altyazı formatı(SRT tercih edilir)"
+#~ msgid        "Not a valid number: {0}"
+#~ msgstr       "Geçerli bir sayı değil: {0}"
 
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "{0} tam sayısı ayrıştırılırken hata oluştu"
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Şifre çözücü aktif değil.Ses önbellek oluşturulması "
+#~      "durduruluyor."
 
-#~ msgid        "Unable to create subtitle file {0}."
-#~ msgstr       "Altyazı dosyası dosyası oluşturulamadı  {0}."
-
-#~ msgid        "File path"
-#~ msgstr       "Dosya yolu"
-
-#~ msgid        "New version"
-#~ msgstr       "Yeni Sürüm"
-
-#~ msgid        "Show preferences every time the user saves a subtitle file"
-#~ msgstr       "Kullanıcının altyazı dosyasını her kaydetişinde tercihleri "
-#~      "göster"
-
-#~ msgid        "MPlayer parameters have been updated."
-#~ msgstr       "MPlayer parametreleri güncellendi."
-
-#~ msgid        "Slovenian"
-#~ msgstr       "Slovence"
-
-#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
-#~ msgstr       "Kodlama hatası. Düzgün bir kodlama kullanın (Örn: UTF-8)"
-
-#~ msgid        "Swedish"
-#~ msgstr       "İsveççe"
-
-#~ msgid        "Portuguese"
-#~ msgstr       "Portekizce"
-
-#~ msgid        "Please consider upgrading from the following URL:"
-#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmeyi göz önünde bulundurun"
-
-#~ msgid        "Use predefined encodings..."
-#~ msgstr       "Öntanımlı kodlamaları kullan..."
-
-#~ msgid        "Found relaxed encoding {0}"
-#~ msgstr       "Esnek kodlama {0} bulundu"
-
-#~ msgid        "Editor of the subtitle text"
-#~ msgstr       "Bu altyazı dosyasının yazarı"
-
-#~ msgid        "Do not inform me again for this version"
-#~ msgstr       "Bu sürüm için beni tekrar bilgilendirme"
+#~ msgid        "Third Encoding"
+#~ msgstr       "Üçüncü Kodlama"
 
 #~ msgid        "Found defined encoding {0}"
 #~ msgstr       "Tanımlı kodlama {0} bulundu"
 
-#~ msgid        "_clone"
-#~ msgstr       "_kopyala"
+#~ msgid        "Portuguese"
+#~ msgstr       "Portekizce"
 
-#~ msgid        "Delete the selected scenario"
-#~ msgstr       "Seçili senaryoyu sil"
+#~ msgid        "Warning!"
+#~ msgstr       "Uyarı!"
 
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       "Dosya yüklenirken yükleme tercihlerini göster"
-
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Çevirme işlemi kesildi"
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Altyazı sayısı : {0}    {1}"
-
-#~ msgid        "Danish"
-#~ msgstr       "Danca"
-
-#~ msgid        "MPlayer options"
-#~ msgstr       "MPlayer seçenekleri"
-
-#~ msgid        "Load subtitles options"
-#~ msgstr       "Altyazı özelliklerini yükle"
-
-#~ msgid        "Invalid executable!"
-#~ msgstr       "Geçersiz dosya"
-
-#~ msgid        "Video width"
-#~ msgstr       "Video genişliği"
-
-#~ msgid        "English"
-#~ msgstr       "İngilizce"
-
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Yaratılamadı, bilinmeyen ses dosyası"
-
-#~ msgid        "Filename of the external audio file (could be also an audio "
-#~      "cache). Use the \"Browse\" button to change it."
-#~ msgstr       "Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı "
-#~      "değiştirmek için \"Göz At\" düğmesini kullan"
+#~ msgid        "Error while executing ASpell"
+#~ msgstr       "Yazdım denetiminde hata"
 
 #~ msgid        "The beginning of the region is the start of the file"
 #~ msgstr       "Bölgenin başlangıçı dosya başlangıcıdır"
 
-#~ msgid        "ERROR: Could not use autosave directory for old files "
-#~      "\"{0}\"."
-#~ msgstr       "HATA: \"{0}\" otomatik kaydetme dizini eski dosyalar için "
-#~      "kullanılamadı."
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Varsayılana dön"
-
-#~ msgid        "The end of the region is the selected time"
-#~ msgstr       "Bölgenin sonu seçilen zamandır"
-
-#~ msgid        "Error while executing MPlayer. Executable not found."
-#~ msgstr       "MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
-#~      "bulunamadı."
-
-#~ msgid        "Filipino"
-#~ msgstr       "Filipince"
-
 #~ msgid        "Join files"
 #~ msgstr       "Dosyaları birleştir"
-
-#~ msgid        "Chinese (Traditional)"
-#~ msgstr       "Çince (Geleneksel)"
-
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Altyazı düzenleme panelini önizleme penceresine ekle"
-
-#~ msgid        "Text to be replaced"
-#~ msgstr       "Değiştirilecek metin"
-
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Altyazıyı pembe renkte işaretle"
-
-#~ msgid        "Wizard is looking inside {0}"
-#~ msgstr       "Sihirbaz arıyor {0}"
-
-#~ msgid        "Maestro DVD options"
-#~ msgstr       "Maystro DVD seçenekleri"
-
-#~ msgid        "SubViewer format"
-#~ msgstr       "SubViewer formatı"
 
 #~ msgid        "Google translate"
 #~ msgstr       "Google çevirici"
 
-#~ msgid        "Options"
-#~ msgstr       "Seçenekler"
+#~ msgid        "W3C Timed Text"
+#~ msgstr       "W3C Zamanlı Metin"
 
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Jupidator otomatik güncelleme sistemi bulunamadı."
+#~ msgid        "A file exists with the same name."
+#~ msgstr       "Aynı isimle bir dosya mevcut"
 
-#~ msgid        "Round times"
-#~ msgstr       "Zamanları yuvarla"
+#~ msgid        "Globally"
+#~ msgstr       "Genel"
 
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Geçerli çalıştırılabilir dosya bulundu: {0}"
+#~ msgid        "The subtitle differences\n"
+#~      " were {0}"
+#~ msgstr       "Altyazı farklılıkları\n"
+#~      " {0}"
+
+#~ msgid        "Show preferences every time the user saves a subtitle file"
+#~ msgstr       "Kullanıcının altyazı dosyasını her kaydetişinde tercihleri "
+#~      "göster"
 
 #~ msgid        "Estonian"
 #~ msgstr       "Estçe"
@@ -2910,23 +2840,30 @@ msgstr  "Bilgisayar ile çevrilen altyazılar sadece kişisel olarak "
 #~ msgid        "First Encoding"
 #~ msgstr       "İlk Kodlama"
 
-#~ msgid        "End time"
-#~ msgstr       "Bitiş zamanı"
+#~ msgid        "From the following time"
+#~ msgstr       "Aşağıdaki zamandan"
 
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Bölgenin başlangıcı verilen süredir"
+#~ msgid        "Unsupported audio"
+#~ msgstr       "Desteklenmeyen ses"
+
+#~ msgid        "Trying to intialize audio preview with wrong size {0}"
+#~ msgstr       "Hatalı boyutla{0} ses önizlemesi başlatılmaya çalışılıyor."
 
 #~ msgid        "Options for {0}"
 #~ msgstr       "{0} için seçenekler"
 
-#~ msgid        "To current time"
-#~ msgstr       "Şimdi zamana"
+#~ msgid        "Video height"
+#~ msgstr       "Video yüksekliği"
+
+#~ msgid        "Galician"
+#~ msgstr       "Galiçya dili"
 
 #~ msgid        "Mark subttile as yellow"
 #~ msgstr       "Altyazıyı sarı renkte işaretle"
 
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Bölgenin başlangıcı seçili zamandır."
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Yapılandırma dosyası güncellendi. Eski yapılandırma dosyası "
+#~      "{0}'a taşındı"
 
 #~ msgid        "Latvian"
 #~ msgstr       "Letonca"
@@ -2934,11 +2871,8 @@ msgstr  "Bilgisayar ile çevrilen altyazılar sadece kişisel olarak "
 #~ msgid        "Use given time as start of region"
 #~ msgstr       "Verilen zamanı bölgenin başlangıcı olarak kullan"
 
-#~ msgid        "Use selected time as end of region"
-#~ msgstr       "Seçili zamanı bölgenin bitişiı olarak kullan"
-
-#~ msgid        "Catalan"
-#~ msgstr       "Katalanca"
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Yapılandırma dosyası {0}'a taşınamıyor"
 
 #~ msgid        "Found strict encoding {0}"
 #~ msgstr       "Katı kodlama {0} bulundu"
@@ -2946,182 +2880,251 @@ msgstr  "Bilgisayar ile çevrilen altyazılar sadece kişisel olarak "
 #~ msgid        "To the following time"
 #~ msgstr       "Aşağıdaki zamana"
 
-#~ msgid        "Found file {0}"
-#~ msgstr       "Bulunan dosya {0}"
-
-#~ msgid        "Subtitles preview"
-#~ msgstr       "Altyazı önizleme"
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Kaydedilmemiş"
-
-#~ msgid        "By region"
-#~ msgstr       "Bölge ile"
-
-#~ msgid        "Count not create audio clip"
-#~ msgstr       "Ses klibi oluşturulamadı"
-
-#~ msgid        "Slovak"
-#~ msgstr       "Slovakça"
-
-#~ msgid        "Advanced SubStation format"
-#~ msgstr       "Gelişmiş SubStation formatı"
-
-#~ msgid        "Start time"
-#~ msgstr       "Başlangıç zamanı"
-
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "FFDecode kütüphanesi yok!"
-
-#~ msgid        "Indonesian"
-#~ msgstr       "Endonezya dili"
-
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Verilen zamanı bölgenin sonu olarak kullan"
-
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Kaydedilen dosyanın kodlaması"
-
-#~ msgid        "Current version:"
-#~ msgstr       "Şu anki sürüm"
-
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "{0} reel sayısı ayrıştırılırken hata oluştu"
-
-#~ msgid        "The subtitle differences\n"
-#~      " were {0}"
-#~ msgstr       "Altyazı farklılıkları\n"
-#~      " {0}"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Genel değiştirme"
-
-#~ msgid        "Delay subtitles by 1 second"
-#~ msgstr       "Altyazıları 1 saniye geciktir."
-
-#~ msgid        "Second Encoding"
-#~ msgstr       "İkinci Kodlama"
-
-#~ msgid        "Finnish"
-#~ msgstr       "Fince"
-
-#~ msgid        "SubRip format"
-#~ msgstr       "Subrip formatı"
-
-#~ msgid        "Lithuanian"
-#~ msgstr       "Lithuanian"
-
-#~ msgid        "Maltese"
-#~ msgstr       "Maltaca"
-
-#~ msgid        "Change media file"
-#~ msgstr       "Video dosyasını değiştir"
-
-#~ msgid        "Debug window"
-#~ msgstr       "Hata ayıklama penceresi"
-
-#~ msgid        "Null value found while setting Style {0} - ignoring."
-#~ msgstr       "{0} stili ayarlanırken boş değer bulundu - yoksayılıyor."
-
-#~ msgid        "Select the encoding to be searched first"
-#~ msgstr       "İlk aranacak kodlamayı seçin"
-
-#~ msgid        "Bulgarian"
-#~ msgstr       "Bulgarca"
-
-#~ msgid        "Not a valid number: {0}"
-#~ msgstr       "Geçerli bir sayı değil: {0}"
-
-#~ msgid        "Ukrainian"
-#~ msgstr       "Ukraynaca"
-
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Altyazıyı camgöbeği renginde işaretle"
-
-#~ msgid        "From the following time"
-#~ msgstr       "Aşağıdaki zamandan"
-
-#~ msgid        "Delay subtitles by 100 milliseconds"
-#~ msgstr       "Altyazıları 100 milisaniye geciktir."
-
-#~ msgid        "Chinese"
-#~ msgstr       "Çince"
-
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Piksel bazında oynatıcı penceresi ofseti"
-
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Jubler yolu bulunamadı."
-
-#~ msgid        "Third Encoding"
-#~ msgstr       "Üçüncü Kodlama"
-
-#~ msgid        "Russian"
-#~ msgstr       "Rusça"
-
-#~ msgid        "Forward subtitles by 1 second"
-#~ msgstr       "Altyazıları 1 saniye ileri kaydır."
-
-#~ msgid        "SubStationAlpha format"
-#~ msgstr       "SubStationAlpha formatı"
-
-#~ msgid        "A file exists with the same name."
-#~ msgstr       "Aynı isimle bir dosya mevcut"
-
-#~ msgid        "Forward subtitles by 100 milliseconds"
-#~ msgstr       "Altyazıları 100 milisaniye ileri kaydır."
-
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "HATA: \"{0}\" otomatik kaydetme dizini kullanılamadı."
-
-#~ msgid        "Y offset"
-#~ msgstr       "Y Ofseti"
-
-#~ msgid        "Globally"
-#~ msgstr       "Genel"
-
-#~ msgid        "Hungarian"
-#~ msgstr       "Macarca"
-
-#~ msgid        "Video standard"
-#~ msgstr       "Video Standartı"
-
-#~ msgid        "Albanian"
-#~ msgstr       "Arnavutça"
-
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Jubler ses önbelleği ses girişi buldu: {0}"
-
-#~ msgid        "Saving {0}"
-#~ msgstr       "{0} kaydediliyor"
-
-#~ msgid        "Inform user on exceeding subtitle length"
-#~ msgstr       "Kullanıcıyı taşan altyazı boyutuyla ilgili bilgilendir"
-
-#~ msgid        "Unable to create directory."
-#~ msgstr       "Klasör oluşturulamadı"
-
-#~ msgid        "Error while executing ASpell"
-#~ msgstr       "Yazdım denetiminde hata"
+#~ msgid        "From current time"
+#~ msgstr       "Şimdiki zaman"
 
 #~ msgid        "Attach subtitle editor panel to main Jubler window"
 #~ msgstr       "Altyazı düzenleme panelini Jubler ana penceresine ekle"
 
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Yapılandırma dosyası güncellendi. Eski yapılandırma dosyası "
-#~      "{0}'a taşındı"
+#~ msgid        "Invalid executable!"
+#~ msgstr       "Geçersiz dosya"
 
-#~ msgid        "Plain text"
-#~ msgstr       "Düz metin"
+#~ msgid        "Unable to create subtitle file {0}."
+#~ msgstr       "Altyazı dosyası dosyası oluşturulamadı  {0}."
 
-#~ msgid        "W3C Timed Text"
-#~ msgstr       "W3C Zamanlı Metin"
+#~ msgid        "By region"
+#~ msgstr       "Bölge ile"
+
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Yapılandırma dosyası {0}'a taşındı"
+
+#~ msgid        "Danish"
+#~ msgstr       "Danca"
+
+#~ msgid        "Version found:"
+#~ msgstr       "Bulunan sürüm:"
+
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Çevirme işlemi kesildi"
+
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "Bölgenin sonu verilen zamandır"
+
+#~ msgid        "Push subtitles instead of rearranging"
+#~ msgstr       "Yeniden düzenlemek yerine altyazıları itele"
+
+#~ msgid        "MPlayer parameters have been updated."
+#~ msgstr       "MPlayer parametreleri güncellendi."
+
+#~ msgid        "Do not inform me again for this version"
+#~ msgstr       "Bu sürüm için beni tekrar bilgilendirme"
+
+#~ msgid        "Error while saving file {0}"
+#~ msgstr       "{0} dosyasını kaydederken hata oluştu"
+
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Yaratılamadı, ayarlanmamış önbellek dosyası"
+
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Altyazıyı beyaz renkte işaretle"
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Varsayılana dön"
+
+#~ msgid        "Displa/hide metric attributes"
+#~ msgstr       "Metrik özellikleri sakla/göster"
+
+#~ msgid        "Change media file"
+#~ msgstr       "Video dosyasını değiştir"
+
+#~ msgid        "Save subtitles options"
+#~ msgstr       "Altyazı seçeneklerini kaydet"
+
+#~ msgid        "ERROR: Could not use autosave directory for old files "
+#~      "\"{0}\"."
+#~ msgstr       "HATA: \"{0}\" otomatik kaydetme dizini eski dosyalar için "
+#~      "kullanılamadı."
+
+#~ msgid        "Open the options for this player"
+#~ msgstr       "Bu oynatıcı için seçenekleri aç"
+
+#~ msgid        "Unable to load plugin: {0}"
+#~ msgstr       "{0} eklentisi yüklenemedi"
+
+#~ msgid        "No options for this program"
+#~ msgstr       "Bu programın seçenekleri yoktur"
+
+#~ msgid        "Media Player Error"
+#~ msgstr       "Çoklu Ortam Oynatıcı Hatası"
+
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "{1}: {2} stili yüklenirken {0} hatası oluştu"
+
+#~ msgid        "Lithuanian"
+#~ msgstr       "Lithuanian"
+
+#~ msgid        "Format"
+#~ msgstr       "Format"
+
+#~ msgid        "Filename of the external audio file (could be also an audio "
+#~      "cache). Use the \"Browse\" button to change it."
+#~ msgstr       "Harici ses dosyası ismi(ses önbelleği de olabilir).Dosyayı "
+#~      "değiştirmek için \"Göz At\" düğmesini kullan"
+
+#~ msgid        "Show preferences every time the user loads a subtitle file"
+#~ msgstr       "Kullanıcının altyazı dosyasını her yükleyişinde tercihleri "
+#~      "göster"
+
+#~ msgid        "Norwegian"
+#~ msgstr       "Norveççe"
+
+#~ msgid        "Please consider upgrading from the following URL:"
+#~ msgstr       "Aşağıdaki URL'den sürümü yükseltmeyi göz önünde bulundurun"
+
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Yaratılamadı, bilinmeyen ses dosyası"
+
+#~ msgid        "Open file error"
+#~ msgstr       "Dosya açma hatası"
+
+#~ msgid        "Global replace"
+#~ msgstr       "Genel değiştirme"
+
+#~ msgid        "Testing:"
+#~ msgstr       "Sınanıyor:"
+
+#~ msgid        "English"
+#~ msgstr       "İngilizce"
+
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Jubler yolu bulunamadı."
+
+#~ msgid        "Bulgarian"
+#~ msgstr       "Bulgarca"
+
+#~ msgid        "Swedish"
+#~ msgstr       "İsveççe"
 
 #~ msgid        "Adobe Encore Text Script"
 #~ msgstr       "Adobe Encore Text Script"
 
+#~ msgid        "SubStationAlpha format"
+#~ msgstr       "SubStationAlpha formatı"
+
+#~ msgid        "Chinese (Traditional)"
+#~ msgstr       "Çince (Geleneksel)"
+
+#~ msgid        "SubViewer format"
+#~ msgstr       "SubViewer formatı"
+
+#~ msgid        "Text to be replaced"
+#~ msgstr       "Değiştirilecek metin"
+
+#~ msgid        "Wizard is looking inside {0}"
+#~ msgstr       "Sihirbaz arıyor {0}"
+
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Altyazı düzenleme panelini önizleme penceresine ekle"
+
+#~ msgid        "Options"
+#~ msgstr       "Seçenekler"
+
+#~ msgid        "Video standard"
+#~ msgstr       "Video Standartı"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Altyazıyı camgöbeği renginde işaretle"
+
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Jupidator otomatik güncelleme sistemi bulunamadı."
+
+#~ msgid        "Inform user on exceeding subtitle length"
+#~ msgstr       "Kullanıcıyı taşan altyazı boyutuyla ilgili bilgilendir"
+
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Geçerli çalıştırılabilir dosya bulundu: {0}"
+
+#~ msgid        "_clone"
+#~ msgstr       "_kopyala"
+
+#~ msgid        "Hungarian"
+#~ msgstr       "Macarca"
+
+#~ msgid        "Maestro DVD options"
+#~ msgstr       "Maystro DVD seçenekleri"
+
+#~ msgid        "Slovenian"
+#~ msgstr       "Slovence"
+
+#~ msgid        "Video width"
+#~ msgstr       "Video genişliği"
+
+#~ msgid        "Count not create audio clip"
+#~ msgstr       "Ses klibi oluşturulamadı"
+
+#~ msgid        "Unable to create directory."
+#~ msgstr       "Klasör oluşturulamadı"
+
+#~ msgid        "Round times"
+#~ msgstr       "Zamanları yuvarla"
+
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       "Dosya yüklenirken yükleme tercihlerini göster"
+
+#~ msgid        "Error while loading file {0}"
+#~ msgstr       "{0} dosyası yüklenirken hata oluştu"
+
+#~ msgid        "Trying to initialize audio preview with null data"
+#~ msgstr       "Boş veri ile ses önizlemesi başlatılmaya çalışılıyor."
+
+#~ msgid        "Filipino"
+#~ msgstr       "Filipince"
+
+#~ msgid        "Line unavailable"
+#~ msgstr       "Satır mevcut değil"
+
+#~ msgid        "Use selected time as start of region"
+#~ msgstr       "Seçili zamanı bölgenin başlangıcı olarak kullan"
+
+#~ msgid        "SubRip format"
+#~ msgstr       "Subrip formatı"
+
+#~ msgid        "Delete the selected scenario"
+#~ msgstr       "Seçili senaryoyu sil"
+
+#~ msgid        "Russian"
+#~ msgstr       "Rusça"
+
+#~ msgid        "Error while executing MPlayer. Executable not found."
+#~ msgstr       "MPlayer çalıştırılırken hata oluştu.Çalıştırılabilir dosya "
+#~      "bulunamadı."
+
+#~ msgid        "The maximum number of characters per line which are permitted"
+#~ msgstr       "Satır başına düşen en fazla karakter sayısı"
+
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Bölgenin başlangıcı seçili zamandır."
+
+#~ msgid        "X offset"
+#~ msgstr       "X Ofseti"
+
+#~ msgid        "The save process did not finish yet"
+#~ msgstr       "Kaydetme işlemi henüz bitmedi"
+
+#~ msgid        "Polish"
+#~ msgstr       "Lehçe"
+
+#~ msgid        "Found relaxed encoding {0}"
+#~ msgstr       "Esnek kodlama {0} bulundu"
+
+#~ msgid        "Insert"
+#~ msgstr       "Ekle"
+
 #~ msgid        "SubViewer V2"
 #~ msgstr       "SubViewer V2"
 
-#~ msgid        "Quicktime Texttrack"
-#~ msgstr       "Quicktime Texttrack"
+#~ msgid        "Catalan"
+#~ msgstr       "Katalanca"
+
+#~ msgid        "Use predefined encodings..."
+#~ msgstr       "Öntanımlı kodlamaları kullan..."

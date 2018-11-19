@@ -3,7 +3,7 @@
 msgid   ""
 msgstr  "Project-Id-Version: cs\n"
         "Report-Msgid-Bugs-To: \n"
-        "POT-Creation-Date: 2018-08-13 12:25+0300\n"
+        "POT-Creation-Date: 2018-10-01 18:16+0300\n"
         "PO-Revision-Date: 2008-12-11 20:00+0100\n"
         "Last-Translator: Παναγιώτης Κατσαλούλης <panayotis@panayotis.com>\n"
         "Language-Team:  <el@li.org>\n"
@@ -1024,18 +1024,18 @@ msgstr  "Pouze změnit velikost titulků"
 msgid   "New subtitle after current one"
 msgstr  "Nový titulek za současným"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Caching still in progress"
 msgstr  "Cachování stále probíhá"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid   "Still creating cache. Use the Cancel button to abort."
 msgstr  "Stále vytvářím cache. Pro přerušení použijte Storno"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:87
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:95
 #, java-format
-msgid   "Error while loading file {0}"
-msgstr  "Chyba při načítání souboru {0}"
+msgid   "Error while loading file {0}\n"
+msgstr  ""
 
 #: modules/core/src/main/java/com/panayotis/jubler/options/AbstractPlayerOptions.java:91
 msgid   "Advanced argument list:"
@@ -1192,11 +1192,11 @@ msgstr  "Ne"
 msgid   "Yes"
 msgstr  "Ano"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:176
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
 msgid   "Could not find web browser"
 msgstr  "Nemohu najít webový prohlížeč"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:186
 msgid   "Error while opening URL"
 msgstr  "Chyba při otevírání URL"
 
@@ -2574,153 +2574,114 @@ msgid   "Computer Translated subtitles should be only for personal use, and "
 msgstr  "Počítačem přeložené titulky jsou určeny pouze k vlastnímu užití, ne "
         "k distribuci."
 
-#~ msgid        "Insert"
-#~ msgstr       "Vložit"
+#~ msgid        "To the following time"
+#~ msgstr       "Do následujícího času"
 
-#~ msgid        "Trying to initialize audio preview with null data"
-#~ msgstr       "Zkoušíte inicializovat audio náhled s neplatnými daty"
+#~ msgid        " Show save preferences while saving file"
+#~ msgstr       " Ukázat možnosti uložení, když ukládám soubor"
 
-#~ msgid        "Trying to intialize audio preview with wrong size {0}"
-#~ msgstr       "Zkoušíte inicializovat audio náhled se špatnou velikostí {0}"
+#~ msgid        "Translation interrupted"
+#~ msgstr       "Překlad byl přerušen"
 
-#~ msgid        "Open file error"
-#~ msgstr       "Chyba při otvírání souboru"
+#~ msgid        "Quicktime Texttrack"
+#~ msgstr       "Quicktime Texttrack"
 
-#~ msgid        "Unsupported audio"
-#~ msgstr       "Nepodporované audio"
+#~ msgid        "The beginning of the region is the start of the file"
+#~ msgstr       "Začátek oblasti je začátkem souboru"
 
-#~ msgid        "Line unavailable"
-#~ msgstr       "Řádek není dostupný"
+#~ msgid        "Inform user on exceeding subtitle length"
+#~ msgstr       "Informovat uživatele o překročení délky titulku"
 
-#~ msgid        "Unable to delete downloaded file {0}"
-#~ msgstr       "Nemohu odstranit stažený soubor {0}"
+#~ msgid        "Unable to create subtitle file {0}."
+#~ msgstr       "Nemohu vytvořit titulkový soubor {0}."
 
-#~ msgid        "Player window offset in pixels"
-#~ msgstr       "Ofset okna přehrávače v pixelech (bodech)"
+#~ msgid        "Debug window"
+#~ msgstr       "Debug okno"
 
-#~ msgid        "Destination file {0} is not writable."
-#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
+#~ msgid        "Restart application"
+#~ msgstr       "Restartovat aplikaci"
 
-#~ msgid        "Use given time as end of region"
-#~ msgstr       "Použít určený čas jako konec oblasti"
+#~ msgid        "Deploying files..."
+#~ msgstr       "Rozmisťuji soubory..."
 
-#~ msgid        "A new version of {0} is available!"
-#~ msgstr       "Nová verze programu {0} je k dispozici!"
+#~ msgid        "Unable to delete file {0}"
+#~ msgstr       "Nemohu odstranit soubor {0}"
 
-#~ msgid        "Unable to create unset cache file"
-#~ msgstr       "Nemohu vytvořit nenastavený cache soubor"
+#~ msgid        "End time"
+#~ msgstr       "Konec"
 
-#~ msgid        "Executing {0}"
-#~ msgstr       "Spouštím {0}"
+#~ msgid        "Deployer stored in {0}"
+#~ msgstr       "Deployer uložen v {0}"
+
+#~ msgid        "Chinese"
+#~ msgstr       "Čínština"
+
+#~ msgid        "Jubler audio cache detected for audio input: {0}"
+#~ msgstr       "Jubler audio cache detekován pro audio vstup: {0}"
+
+#~ msgid        "Swedish"
+#~ msgstr       "Švédština"
+
+#~ msgid        "Russian"
+#~ msgstr       "Ruština"
+
+#~ msgid        "FFDecode library is not present!"
+#~ msgstr       "FFDecode knihovna není přítomná!"
+
+#~ msgid        "_clone"
+#~ msgstr       "_klonovat"
+
+#~ msgid        "Could not remove old downloaded file {0}"
+#~ msgstr       "Nemohu odstranit starý stažený soubor {0}"
+
+#~ msgid        "Select the encoding to be searched second"
+#~ msgstr       "Vyberte kódování, které má být hledáno druhotně"
+
+#~ msgid        "Plain text"
+#~ msgstr       "Čistý text"
+
+#~ msgid        "New version of {0} found!"
+#~ msgstr       "Nová verze programu {0} nalezena!"
 
 #~ msgid        "Found file {0}"
 #~ msgstr       "Nalezen soubor {0}"
 
-#~ msgid        "Maximum subtitle characters per line"
-#~ msgstr       "Největší počet znaků titulku na řádek"
+#~ msgid        "Subtitles preview"
+#~ msgstr       "Náhled titulků"
 
-#~ msgid        "Unable to create cache to unknown audio file"
-#~ msgstr       "Nemohu vytvořit cache do neznámého audio souboru"
+#~ msgid        "File path"
+#~ msgstr       "Soubor"
 
-#~ msgid        "{0} version {1} is now available - you have {2}."
-#~ msgstr       "{0} verze programu {1} je k dispozici - máte {2}."
+#~ msgid        "First Encoding"
+#~ msgstr       "První kódování"
 
-#~ msgid        "Application path can not be null."
-#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
+#~ msgid        "Delete the selected scenario"
+#~ msgstr       "Vymaže vybranou variantu"
 
-#~ msgid        " Show load preferences while loading file"
-#~ msgstr       " Ukázat možnosti načtení, když otevírám soubor"
+#~ msgid        "Encoding of the saved file"
+#~ msgstr       "Kódování ukládaného souboru"
 
-#~ msgid        "Use the following factor"
-#~ msgstr       "Použít následující faktor"
+#~ msgid        "Norwegian"
+#~ msgstr       "Norština"
 
-#~ msgid        "X offset"
-#~ msgstr       "X ofset"
+#~ msgid        "Mark subttile as white"
+#~ msgstr       "Vyznač titulek bíle"
 
-#~ msgid        "New Jubler version found!"
-#~ msgstr       "Byla nalezena nová verze Jubleru!"
+#~ msgid        "Line unavailable"
+#~ msgstr       "Řádek není dostupný"
 
-#~ msgid        "Displa/hide metric attributes"
-#~ msgstr       "Zobrazit/skrýt metrické atributy"
+#~ msgid        "Updated configuration file. Old configuration moved to {0}"
+#~ msgstr       "Konfigurační soubor byl aktualizován. Starý soubor byl "
+#~      "přesunut do {0}"
 
-#~ msgid        "Saving {0}"
-#~ msgstr       "Ukládám {0}"
-
-#~ msgid        "Updated file could not be null."
-#~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
-
-#~ msgid        "Enable/disable preview"
-#~ msgstr       "Povolit/zakázat náhled"
-
-#~ msgid        "Testing:"
-#~ msgstr       "Testuji:"
-
-#~ msgid        "Unable to create directory."
-#~ msgstr       "Nemohu vytvořit složku."
-
-#~ msgid        "It is important to upgrade from the following URL:"
-#~ msgstr       "Je důležité upgradovat z následujícího URL:"
-
-#~ msgid        "Error while saving file {0}"
-#~ msgstr       "Chyba při ukládání souboru {0}"
-
-#~ msgid        "Deployer path {0} is not writable."
-#~ msgstr       "Deployer cesta {0} není zapisovatelná."
-
-#~ msgid        "Unable to download file {0}"
-#~ msgstr       "Nemohu stáhnout soubor {0}"
-
-#~ msgid        "Null value found while setting Style {0} - ignoring."
-#~ msgstr       "Nalezena prázdná hodnota při nastavování Stylu {0} - "
-#~      "ignoruji."
-
-#~ msgid        "Do not inform me again for this version"
-#~ msgstr       "Neinformuj mě znovu o téhle verzi"
-
-#~ msgid        "Remind me later"
-#~ msgstr       "Připomenout později"
-
-#~ msgid        "Go"
-#~ msgstr       "Jdi"
-
-#~ msgid        "Attach subtitle editor panel to preview window"
-#~ msgstr       "Připojit panel s editorem titulku k oknu s náhledem"
-
-#~ msgid        "Finnish"
-#~ msgstr       "Finština"
-
-#~ msgid        "Please consider upgrading from the following URL:"
-#~ msgstr       "Prosím uvažujte o upgradu z následujícího URL:"
-
-#~ msgid        "Valid executable found: {0}"
-#~ msgstr       "Nalezen spouštěcí soubor {0}"
-
-#~ msgid        "Current version:"
-#~ msgstr       "Stávající verze:"
-
-#~ msgid        "Release Notes"
-#~ msgstr       "Poznámky k vydání"
-
-#~ msgid        "By region"
-#~ msgstr       "Podle oblasti"
-
-#~ msgid        "Use given time as start of region"
-#~ msgstr       "Použít určený čas jako začátek oblasti"
-
-#~ msgid        "Error while opening FAQ file \"{0}\""
-#~ msgstr       "Chyba při načítání FAQ souboru \"{0}\""
-
-#~ msgid        "From current time"
-#~ msgstr       "Od aktuálního času"
-
-#~ msgid        "Second Encoding"
-#~ msgstr       "Druhé kódování"
-
-#~ msgid        "File preferences"
-#~ msgstr       "Možnosti souboru"
+#~ msgid        "Use selected time as start of region"
+#~ msgstr       "Použít čas výběru jako začátek oblasti"
 
 #~ msgid        "Wizard is looking inside {0}"
 #~ msgstr       "Průvodce hledá v {0}"
+
+#~ msgid        "Unsaved"
+#~ msgstr       "Neuloženo"
 
 #~ msgid        "Subtitle format of the output file (SRT is prefered)"
 #~ msgstr       "Formát titulků ukládaného souboru (SRT je preferováno)"
@@ -2728,190 +2689,106 @@ msgstr  "Počítačem přeložené titulky jsou určeny pouze k vlastnímu užit
 #~ msgid        "Maestro DVD options"
 #~ msgstr       "Maestro DVD volby"
 
-#~ msgid        "Editor of the subtitle text"
-#~ msgstr       "Editor textu titulku"
+#~ msgid        "From the following time"
+#~ msgstr       "Od následujícího času"
+
+#~ msgid        "Select the encoding to be searched first"
+#~ msgstr       "Vyberte kódování, které má být hledáno prvně"
+
+#~ msgid        "Show preferences every time the user loads a subtitle file"
+#~ msgstr       "Ukáže možnosti vždycky, když uživatel načítá titulky"
+
+#~ msgid        "Please consider upgrading from the following URL:"
+#~ msgstr       "Prosím uvažujte o upgradu z následujícího URL:"
+
+#~ msgid        "Remind me later"
+#~ msgstr       "Připomenout později"
+
+#~ msgid        "Second Encoding"
+#~ msgstr       "Druhé kódování"
+
+#~ msgid        "File {0} sucessfully downloaded"
+#~ msgstr       "Soubor {0} úspěšně stažen."
 
 #~ msgid        "To current time"
 #~ msgstr       "Do aktuálního času"
 
-#~ msgid        "Error while parsing real number {0}"
-#~ msgstr       "Chyba při parsování reálného čísla {0}"
-
-#~ msgid        "Norwegian"
-#~ msgstr       "Norština"
-
-#~ msgid        "Google translate"
-#~ msgstr       "Google překladač"
-
-#~ msgid        "Encoding of the saved file"
-#~ msgstr       "Kódování ukládaného souboru"
-
-#~ msgid        "Unsaved"
-#~ msgstr       "Neuloženo"
-
 #~ msgid        "Invalid executable!"
 #~ msgstr       "Neplatný spustitelný soubor!"
 
-#~ msgid        "Format"
-#~ msgstr       "Formát"
-
-#~ msgid        "Mark subttile as white"
-#~ msgstr       "Vyznač titulek bíle"
-
-#~ msgid        "FFDecode library is not present!"
-#~ msgstr       "FFDecode knihovna není přítomná!"
-
-#~ msgid        "Filename of the external audio file (could be also an audio "
-#~      "cache). Use the \"Browse\" button to change it."
-#~ msgstr       "Jméno extérního audio souboru (může být také audio cache). "
-#~      "Pro změnu použijte \"Procházet\""
-
-#~ msgid        "Install Update"
-#~ msgstr       "Instalovat Aktualizaci"
-
-#~ msgid        "Successfully deleted downloaded file {0}"
-#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
-
-#~ msgid        "Exception {0} while loading style {1}: {2}"
-#~ msgstr       "Chyba {0} při načítání souboru {1}: {2}"
-
-#~ msgid        "Skip this version"
-#~ msgstr       "Přeskočit tuto verzi"
-
-#~ msgid        "Use selected time as start of region"
-#~ msgstr       "Použít čas výběru jako začátek oblasti"
-
-#~ msgid        "Could not retrieve actual video properties. Using defaults."
-#~ msgstr       "Nemohu získat aktuální vlastnosti videa. Používám výchozí."
-
-#~ msgid        "Video width"
-#~ msgstr       "Šířka videa"
-
-#~ msgid        "File {0} will be deleted, if exists."
-#~ msgstr       "Soubor {0} bude odstraněn, pokud existuje."
-
-#~ msgid        "The maximum number of characters per line which are permitted"
-#~ msgstr       "Maximální počet znaků, který má být povolen (na řádek)"
-
-#~ msgid        "From the following time"
-#~ msgstr       "Od následujícího času"
-
-#~ msgid        "Could not find Jubler path!"
-#~ msgstr       "Nemohu najít cestu k Jubleru!"
-
-#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
-#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání \"{0}\"."
-
-#~ msgid        "Select the encoding to be searched second"
-#~ msgstr       "Vyberte kódování, které má být hledáno druhotně"
-
-#~ msgid        "Use predefined encodings..."
-#~ msgstr       "Použít předdefinovaná kódování..."
-
-#~ msgid        "Subtitles preview"
-#~ msgstr       "Náhled titulků"
-
-#~ msgid        "Third Encoding"
-#~ msgstr       "Třetí kódování"
-
-#~ msgid        "Could not remove old downloaded file {0}"
-#~ msgstr       "Nemohu odstranit starý stažený soubor {0}"
-
-#~ msgid        "_clone"
-#~ msgstr       "_klonovat"
-
-#~ msgid        "Russian"
-#~ msgstr       "Ruština"
-
-#~ msgid        "File path"
-#~ msgstr       "Soubor"
-
-#~ msgid        "Mark subttile as cyan"
-#~ msgstr       "Vyznač titulek azurově"
-
-#~ msgid        "Error while parsing integral number {0}"
-#~ msgstr       "Chyba při parsování integrálního čísla {0}"
-
-#~ msgid        "Version found:"
-#~ msgstr       "Nalezená verze:"
-
-#~ msgid        "Unable to find Application path {0}."
-#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
-
-#~ msgid        "Restart application"
-#~ msgstr       "Restartovat aplikaci"
-
-#~ msgid        "Updated configuration file. Old configuration moved to {0}"
-#~ msgstr       "Konfigurační soubor byl aktualizován. Starý soubor byl "
-#~      "přesunut do {0}"
-
-#~ msgid        "Number of subtitles : {0}    {1}"
-#~ msgstr       "Počet titulků: {0}    {1}"
-
-#~ msgid        "Save subtitles options"
-#~ msgstr       "Uložit volby titulků"
-
-#~ msgid        "Menu Shortcuts"
-#~ msgstr       "Zkratky Menu"
+#~ msgid        "Trying to initialize audio preview with null data"
+#~ msgstr       "Zkoušíte inicializovat audio náhled s neplatnými daty"
 
 #~ msgid        "The end of the region is the selected time"
 #~ msgstr       "Konec oblasti je čas aktuálního výběru"
 
-#~ msgid        "Change media file"
-#~ msgstr       "Změnit mediální soubor"
+#~ msgid        "Use given time as end of region"
+#~ msgstr       "Použít určený čas jako konec oblasti"
 
-#~ msgid        "Portuguese"
-#~ msgstr       "Portugalština"
+#~ msgid        "Join files"
+#~ msgstr       "Spojit soubory"
 
-#~ msgid        "Globally"
-#~ msgstr       "Globálně"
+#~ msgid        "Application path can not be null."
+#~ msgstr       "Cesta k aplikaci nemůže být prázdná."
 
-#~ msgid        "Checking path {0} for Deployer class."
-#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
+#~ msgid        "Error while parsing integral number {0}"
+#~ msgstr       "Chyba při parsování integrálního čísla {0}"
 
-#~ msgid        "Round times"
-#~ msgstr       "Zaokrouhlit časy"
+#~ msgid        "Install Update"
+#~ msgstr       "Instalovat Aktualizaci"
 
-#~ msgid        "Mark subttile as pink"
-#~ msgstr       "Vyznač titulek růžově"
+#~ msgid        "It is important to upgrade from the following URL:"
+#~ msgstr       "Je důležité upgradovat z následujícího URL:"
 
-#~ msgid        "Video standard"
-#~ msgstr       "Video standard"
+#~ msgid        "Third Encoding"
+#~ msgstr       "Třetí kódování"
 
-#~ msgid        "Preview the subtitles"
-#~ msgstr       "Náhled titulků"
+#~ msgid        "Use predefined encodings..."
+#~ msgstr       "Použít předdefinovaná kódování..."
 
-#~ msgid        "Downloading..."
-#~ msgstr       "Stahuji..."
+#~ msgid        "Error while parsing real number {0}"
+#~ msgstr       "Chyba při parsování reálného čísla {0}"
 
-#~ msgid        "The end of the region is the given time"
-#~ msgstr       "Konec oblasti je určený čas"
+#~ msgid        "Could not find Jubler path!"
+#~ msgstr       "Nemohu najít cestu k Jubleru!"
 
-#~ msgid        "The end of the region is the end of the file"
-#~ msgstr       "Konec oblasti je koncem souboru"
+#~ msgid        "From current time"
+#~ msgstr       "Od aktuálního času"
 
-#~ msgid        "Unable to create Deployer"
-#~ msgstr       "Nemohu vytvořit Deployer"
+#~ msgid        "Release Notes"
+#~ msgstr       "Poznámky k vydání"
 
-#~ msgid        "ERROR: Could not use autosave directory for old files "
-#~      "\"{0}\"."
-#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání starých "
-#~      "souborů \"{0}\"."
+#~ msgid        "Version found:"
+#~ msgstr       "Nalezená verze:"
 
-#~ msgid        "Unable to find Jupidator auto update system."
-#~ msgstr       "Nemohu najít Jupidator - automatický aktualizační systém."
+#~ msgid        "Abnormal exit - please report the author about this "
+#~      "behaviour."
+#~ msgstr       "Abnormální ukončení - prosím podejte zprávu autorovi o tomto "
+#~      "chování."
 
-#~ msgid        "Attach subtitle editor panel to main Jubler window"
-#~ msgstr       "Připojit panel s editorem titulku k hlavnímu oknu Jubleru"
+#~ msgid        "By region"
+#~ msgstr       "Podle oblasti"
 
-#~ msgid        "Start time"
-#~ msgstr       "Začátek"
+#~ msgid        "Current version:"
+#~ msgstr       "Stávající verze:"
 
-#~ msgid        "The beginning of the region is the given time"
-#~ msgstr       "Začátek oblasti je určený čas"
+#~ msgid        "Enable/disable preview"
+#~ msgstr       "Povolit/zakázat náhled"
 
-#~ msgid        "File {0} sucessfully downloaded"
-#~ msgstr       "Soubor {0} úspěšně stažen."
+#~ msgid        "Attach subtitle editor panel to preview window"
+#~ msgstr       "Připojit panel s editorem titulku k oknu s náhledem"
+
+#~ msgid        "Danish"
+#~ msgstr       "Dánština"
+
+#~ msgid        "Video height"
+#~ msgstr       "Výška videa"
+
+#~ msgid        "English"
+#~ msgstr       "Angličtina"
+
+#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
+#~ msgstr       "Chyba při kódování. Použíte vhodné kódování (např. UTF-8)"
 
 #~ msgid        "To the end"
 #~ msgstr       "Až na konec"
@@ -2919,178 +2796,304 @@ msgstr  "Počítačem přeložené titulky jsou určeny pouze k vlastnímu užit
 #~ msgid        "Polish"
 #~ msgstr       "Polština"
 
-#~ msgid        "Video height"
-#~ msgstr       "Výška videa"
+#~ msgid        "Deployer path {0} is not writable."
+#~ msgstr       "Deployer cesta {0} není zapisovatelná."
 
-#~ msgid        "Select the encoding to be searched first"
-#~ msgstr       "Vyberte kódování, které má být hledáno prvně"
+#~ msgid        "New Jubler version found!"
+#~ msgstr       "Byla nalezena nová verze Jubleru!"
 
-#~ msgid        "Abnormal exit - please report the author about this "
-#~      "behaviour."
-#~ msgstr       "Abnormální ukončení - prosím podejte zprávu autorovi o tomto "
-#~      "chování."
-
-#~ msgid        "The beginning of the region is the selected time"
-#~ msgstr       "Začátek oblasti je čas aktuálního výběru"
-
-#~ msgid        "First Encoding"
-#~ msgstr       "První kódování"
-
-#~ msgid        "Application info not provided."
-#~ msgstr       "Informace o aplikaci není poskytnuta."
-
-#~ msgid        "Count not create audio clip"
-#~ msgstr       "Zvukový klip není vytvořen"
-
-#~ msgid        "Media Player Error"
-#~ msgstr       "Chyba Media Playeru"
-
-#~ msgid        "File {0} could not be deleted."
-#~ msgstr       "Soubor {0} nemůže být odstraněn."
-
-#~ msgid        "Configuration file moved to {0}"
-#~ msgstr       "Konfigurační soubor byl přesunut do {0}"
-
-#~ msgid        "Load subtitles options"
-#~ msgstr       "Načíst volby titulků"
-
-#~ msgid        "Join files"
-#~ msgstr       "Spojit soubory"
-
-#~ msgid        "Bulgarian"
-#~ msgstr       "Bulharština"
-
-#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
-#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
-
-#~ msgid        "Use selected time as end of region"
-#~ msgstr       "Použít čas výběru jako konec oblasti"
-
-#~ msgid        "Could not create temporary file to store the subtitles."
-#~ msgstr       "Nemohu vytvořit dočasný soubor k uchování titulků"
-
-#~ msgid        "Select the encoding to be searched last"
-#~ msgstr       "Vyberte kódování, které má být hledáno nakonec"
-
-#~ msgid        "Not a valid number: {0}"
-#~ msgstr       "Nesprávné číslo: {0}"
-
-#~ msgid        "A file exists with the same name."
-#~ msgstr       "Existuje soubor se stejným jménem."
-
-#~ msgid        "New version"
-#~ msgstr       "Nová verze"
-
-#~ msgid        "English"
-#~ msgstr       "Angličtina"
-
-#~ msgid        "The save process did not finish yet"
-#~ msgstr       "Proces ukládání ještě neskončil"
-
-#~ msgid        "Swedish"
-#~ msgstr       "Švédština"
-
-#~ msgid        "Jubler audio cache detected for audio input: {0}"
-#~ msgstr       "Jubler audio cache detekován pro audio vstup: {0}"
-
-#~ msgid        "Chinese"
-#~ msgstr       "Čínština"
-
-#~ msgid        "Deployer stored in {0}"
-#~ msgstr       "Deployer uložen v {0}"
-
-#~ msgid        "Delete the selected scenario"
-#~ msgstr       "Vymaže vybranou variantu"
-
-#~ msgid        "New version of {0} found!"
-#~ msgstr       "Nová verze programu {0} nalezena!"
-
-#~ msgid        "Reset to defaults"
-#~ msgstr       "Nastavit na výchozí"
-
-#~ msgid        "Debug window"
-#~ msgstr       "Debug okno"
-
-#~ msgid        "Translation interrupted"
-#~ msgstr       "Překlad byl přerušen"
-
-#~ msgid        " Show save preferences while saving file"
-#~ msgstr       " Ukázat možnosti uložení, když ukládám soubor"
-
-#~ msgid        "Show preferences every time the user loads a subtitle file"
-#~ msgstr       "Ukáže možnosti vždycky, když uživatel načítá titulky"
-
-#~ msgid        "Decoder not active. Aborting audio cache creation."
-#~ msgstr       "Dekodér není aktivní. Ruším vytváření audio cache."
-
-#~ msgid        "Mark subttile as yellow"
-#~ msgstr       "Vyznač titulek žlutě"
-
-#~ msgid        "Show preferences every time the user saves a subtitle file"
-#~ msgstr       "Ukáže možnosti vždycky, když uživatel ukládá titulkový soubor"
-
-#~ msgid        "Encoding error. Use proper encoding (e.g. UTF-8)."
-#~ msgstr       "Chyba při kódování. Použíte vhodné kódování (např. UTF-8)"
-
-#~ msgid        "End time"
-#~ msgstr       "Konec"
-
-#~ msgid        "Unable to delete file {0}"
-#~ msgstr       "Nemohu odstranit soubor {0}"
-
-#~ msgid        "Deploying files..."
-#~ msgstr       "Rozmisťuji soubory..."
-
-#~ msgid        "Danish"
-#~ msgstr       "Dánština"
-
-#~ msgid        "Warning!"
-#~ msgstr       "Varování!"
-
-#~ msgid        "Directory is not writable."
-#~ msgstr       "Do složky nelze zapisovat."
-
-#~ msgid        "Push subtitles instead of rearranging"
-#~ msgstr       "Stlačit titulky místo přerovnání"
-
-#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
-#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"
-
-#~ msgid        "Global replace"
-#~ msgstr       "Globální nahrazení"
-
-#~ msgid        "Unable to create subtitle file {0}."
-#~ msgstr       "Nemohu vytvořit titulkový soubor {0}."
-
-#~ msgid        "Inform user on exceeding subtitle length"
-#~ msgstr       "Informovat uživatele o překročení délky titulku"
-
-#~ msgid        "To the following time"
-#~ msgstr       "Do následujícího času"
-
-#~ msgid        "Unable to move configuration file to {0}"
-#~ msgstr       "Nemohu přesunout konfigurační soubor do {0}"
-
-#~ msgid        "The beginning of the region is the start of the file"
-#~ msgstr       "Začátek oblasti je začátkem souboru"
-
-#~ msgid        "Successfully downloaded updates"
-#~ msgstr       "Aktualizace úspěšně staženy"
+#~ msgid        "The beginning of the region is the given time"
+#~ msgstr       "Začátek oblasti je určený čas"
 
 #~ msgid        "Y offset"
 #~ msgstr       "Y ofset"
 
+#~ msgid        "Round times"
+#~ msgstr       "Zaokrouhlit časy"
+
+#~ msgid        "Checking path {0} for Deployer class."
+#~ msgstr       "Kontroluji cestu {0} pro Deployer třídu"
+
+#~ msgid        "Error while loading file {0}"
+#~ msgstr       "Chyba při načítání souboru {0}"
+
+#~ msgid        "Portuguese"
+#~ msgstr       "Portugalština"
+
+#~ msgid        "Open file error"
+#~ msgstr       "Chyba při otvírání souboru"
+
+#~ msgid        "Size of file {0} does not match. Reported {1}, required {2}"
+#~ msgstr       "Velikost souboru {0} nesouhlasí. Udávaná {1}, požadovaná {2}"
+
+#~ msgid        "Player window offset in pixels"
+#~ msgstr       "Ofset okna přehrávače v pixelech (bodech)"
+
+#~ msgid        "Save subtitles options"
+#~ msgstr       "Uložit volby titulků"
+
+#~ msgid        "Unable to create unset cache file"
+#~ msgstr       "Nemohu vytvořit nenastavený cache soubor"
+
+#~ msgid        "Push subtitles instead of rearranging"
+#~ msgstr       "Stlačit titulky místo přerovnání"
+
+#~ msgid        "Unable to create cache to unknown audio file"
+#~ msgstr       "Nemohu vytvořit cache do neznámého audio souboru"
+
+#~ msgid        "Unable to find Application path {0}."
+#~ msgstr       "Nemohu najít cestu k aplikaci {0}."
+
+#~ msgid        "Use the following factor"
+#~ msgstr       "Použít následující faktor"
+
+#~ msgid        "Configuration file moved to {0}"
+#~ msgstr       "Konfigurační soubor byl přesunut do {0}"
+
+#~ msgid        "Exception {0} while loading style {1}: {2}"
+#~ msgstr       "Chyba {0} při načítání souboru {1}: {2}"
+
+#~ msgid        "Mark subttile as yellow"
+#~ msgstr       "Vyznač titulek žlutě"
+
+#~ msgid        "File {0} could not be deleted."
+#~ msgstr       "Soubor {0} nemůže být odstraněn."
+
+#~ msgid        "Displa/hide metric attributes"
+#~ msgstr       "Zobrazit/skrýt metrické atributy"
+
+#~ msgid        "Media Player Error"
+#~ msgstr       "Chyba Media Playeru"
+
+#~ msgid        "Count not create audio clip"
+#~ msgstr       "Zvukový klip není vytvořen"
+
+#~ msgid        "Format"
+#~ msgstr       "Formát"
+
+#~ msgid        "Application info not provided."
+#~ msgstr       "Informace o aplikaci není poskytnuta."
+
+#~ msgid        "Google translate"
+#~ msgstr       "Google překladač"
+
+#~ msgid        "ERROR: Could not use autosave directory \"{0}\"."
+#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání \"{0}\"."
+
+#~ msgid        "Editor of the subtitle text"
+#~ msgstr       "Editor textu titulku"
+
+#~ msgid        "The beginning of the region is the selected time"
+#~ msgstr       "Začátek oblasti je čas aktuálního výběru"
+
+#~ msgid        "File preferences"
+#~ msgstr       "Možnosti souboru"
+
+#~ msgid        "The maximum number of characters per line which are permitted"
+#~ msgstr       "Maximální počet znaků, který má být povolen (na řádek)"
+
+#~ msgid        "Use given time as start of region"
+#~ msgstr       "Použít určený čas jako začátek oblasti"
+
+#~ msgid        "Video width"
+#~ msgstr       "Šířka videa"
+
+#~ msgid        "Valid executable found: {0}"
+#~ msgstr       "Nalezen spouštěcí soubor {0}"
+
+#~ msgid        "Finnish"
+#~ msgstr       "Finština"
+
+#~ msgid        "Go"
+#~ msgstr       "Jdi"
+
+#~ msgid        "File {0} will be deleted, if exists."
+#~ msgstr       "Soubor {0} bude odstraněn, pokud existuje."
+
+#~ msgid        "Error while opening FAQ file \"{0}\""
+#~ msgstr       "Chyba při načítání FAQ souboru \"{0}\""
+
+#~ msgid        "Do not inform me again for this version"
+#~ msgstr       "Neinformuj mě znovu o téhle verzi"
+
+#~ msgid        "Unable to download file {0}"
+#~ msgstr       "Nemohu stáhnout soubor {0}"
+
+#~ msgid        "Could not retrieve actual video properties. Using defaults."
+#~ msgstr       "Nemohu získat aktuální vlastnosti videa. Používám výchozí."
+
+#~ msgid        "Unable to create directory."
+#~ msgstr       "Nemohu vytvořit složku."
+
+#~ msgid        "Show preferences every time the user saves a subtitle file"
+#~ msgstr       "Ukáže možnosti vždycky, když uživatel ukládá titulkový soubor"
+
+#~ msgid        "Saving {0}"
+#~ msgstr       "Ukládám {0}"
+
+#~ msgid        "The save process did not finish yet"
+#~ msgstr       "Proces ukládání ještě neskončil"
+
+#~ msgid        "Start time"
+#~ msgstr       "Začátek"
+
+#~ msgid        "Unable to move configuration file to {0}"
+#~ msgstr       "Nemohu přesunout konfigurační soubor do {0}"
+
+#~ msgid        "Attach subtitle editor panel to main Jubler window"
+#~ msgstr       "Připojit panel s editorem titulku k hlavnímu oknu Jubleru"
+
+#~ msgid        "Testing:"
+#~ msgstr       "Testuji:"
+
+#~ msgid        "Unable to find Jupidator auto update system."
+#~ msgstr       "Nemohu najít Jupidator - automatický aktualizační systém."
+
 #~ msgid        "Successfully deleted file {0}"
 #~ msgstr       "Soubor úspěšně odstraněn {0}"
 
-#~ msgid        "Plain text"
-#~ msgstr       "Čistý text"
+#~ msgid        "ERROR: Could not use autosave directory for old files "
+#~      "\"{0}\"."
+#~ msgstr       "CHYBA: Nemohu použít složku pro automatické ukládání starých "
+#~      "souborů \"{0}\"."
 
-#~ msgid        "W3C Timed Text"
-#~ msgstr       "W3C Timed Text"
+#~ msgid        "Null value found while setting Style {0} - ignoring."
+#~ msgstr       "Nalezena prázdná hodnota při nastavování Stylu {0} - "
+#~      "ignoruji."
+
+#~ msgid        "Unable to create Deployer"
+#~ msgstr       "Nemohu vytvořit Deployer"
+
+#~ msgid        "New version"
+#~ msgstr       "Nová verze"
+
+#~ msgid        "The end of the region is the end of the file"
+#~ msgstr       "Konec oblasti je koncem souboru"
+
+#~ msgid        "Error while saving file {0}"
+#~ msgstr       "Chyba při ukládání souboru {0}"
+
+#~ msgid        "The end of the region is the given time"
+#~ msgstr       "Konec oblasti je určený čas"
+
+#~ msgid        "Downloading..."
+#~ msgstr       "Stahuji..."
+
+#~ msgid        "A file exists with the same name."
+#~ msgstr       "Existuje soubor se stejným jménem."
+
+#~ msgid        "Updated file could not be null."
+#~ msgstr       "Aktualizovaný soubor nemůže být prázdný."
+
+#~ msgid        "Preview the subtitles"
+#~ msgstr       "Náhled titulků"
+
+#~ msgid        "Not a valid number: {0}"
+#~ msgstr       "Nesprávné číslo: {0}"
+
+#~ msgid        "Video standard"
+#~ msgstr       "Video standard"
 
 #~ msgid        "SubViewer V2"
 #~ msgstr       "SubViewer V2"
 
-#~ msgid        "Quicktime Texttrack"
-#~ msgstr       "Quicktime Texttrack"
+#~ msgid        "Mark subttile as pink"
+#~ msgstr       "Vyznač titulek růžově"
+
+#~ msgid        "Select the encoding to be searched last"
+#~ msgstr       "Vyberte kódování, které má být hledáno nakonec"
+
+#~ msgid        "Successfully downloaded updates"
+#~ msgstr       "Aktualizace úspěšně staženy"
+
+#~ msgid        "Could not create temporary file to store the subtitles."
+#~ msgstr       "Nemohu vytvořit dočasný soubor k uchování titulků"
+
+#~ msgid        "Globally"
+#~ msgstr       "Globálně"
+
+#~ msgid        "Insert"
+#~ msgstr       "Vložit"
+
+#~ msgid        "Use selected time as end of region"
+#~ msgstr       "Použít čas výběru jako konec oblasti"
+
+#~ msgid        "Trying to intialize audio preview with wrong size {0}"
+#~ msgstr       "Zkoušíte inicializovat audio náhled se špatnou velikostí {0}"
+
+#~ msgid        "Change media file"
+#~ msgstr       "Změnit mediální soubor"
+
+#~ msgid        "Unsupported audio"
+#~ msgstr       "Nepodporované audio"
+
+#~ msgid        "Decoder not active. Aborting audio cache creation."
+#~ msgstr       "Dekodér není aktivní. Ruším vytváření audio cache."
+
+#~ msgid        "Unable to delete downloaded file {0}"
+#~ msgstr       "Nemohu odstranit stažený soubor {0}"
+
+#~ msgid        "Menu Shortcuts"
+#~ msgstr       "Zkratky Menu"
+
+#~ msgid        "Destination file {0} is not writable."
+#~ msgstr       "Cílový soubor {0} je chráněn proti zápisu."
+
+#~ msgid        "Bulgarian"
+#~ msgstr       "Bulharština"
+
+#~ msgid        "A new version of {0} is available!"
+#~ msgstr       "Nová verze programu {0} je k dispozici!"
+
+#~ msgid        "Number of subtitles : {0}    {1}"
+#~ msgstr       "Počet titulků: {0}    {1}"
+
+#~ msgid        "Executing {0}"
+#~ msgstr       "Spouštím {0}"
+
+#~ msgid        "Global replace"
+#~ msgstr       "Globální nahrazení"
+
+#~ msgid        "Maximum subtitle characters per line"
+#~ msgstr       "Největší počet znaků titulku na řádek"
+
+#~ msgid        "Directory is not writable."
+#~ msgstr       "Do složky nelze zapisovat."
+
+#~ msgid        "{0} version {1} is now available - you have {2}."
+#~ msgstr       "{0} verze programu {1} je k dispozici - máte {2}."
+
+#~ msgid        "Load subtitles options"
+#~ msgstr       "Načíst volby titulků"
+
+#~ msgid        " Show load preferences while loading file"
+#~ msgstr       " Ukázat možnosti načtení, když otevírám soubor"
+
+#~ msgid        "Reset to defaults"
+#~ msgstr       "Nastavit na výchozí"
+
+#~ msgid        "X offset"
+#~ msgstr       "X ofset"
+
+#~ msgid        "W3C Timed Text"
+#~ msgstr       "W3C Timed Text"
+
+#~ msgid        "Skip this version"
+#~ msgstr       "Přeskočit tuto verzi"
+
+#~ msgid        "Mark subttile as cyan"
+#~ msgstr       "Vyznač titulek azurově"
+
+#~ msgid        "Successfully deleted downloaded file {0}"
+#~ msgstr       "Stažený soubor úspěšně odstraněn {0}"
+
+#~ msgid        "Cancel updating: Ignoring deleting of file {0}"
+#~ msgstr       "Update zrušen: Ignoruji odstraňování souboru {0}"
+
+#~ msgid        "Filename of the external audio file (could be also an audio "
+#~      "cache). Use the \"Browse\" button to change it."
+#~ msgstr       "Jméno extérního audio souboru (může být také audio cache). "
+#~      "Pro změnu použijte \"Procházet\""
+
+#~ msgid        "Warning!"
+#~ msgstr       "Varování!"

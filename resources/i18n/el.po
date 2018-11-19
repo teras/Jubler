@@ -9,21 +9,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-13 12:25+0300\n"
-"PO-Revision-Date: 2018-08-13 12:25+0300\n"
+"POT-Creation-Date: 2018-10-01 18:16+0300\n"
+"PO-Revision-Date: 2018-11-19 22:30+0200\n"
 "Last-Translator: Panayotis Katsaloulis <panayotis@panayotis.com>\n"
 "Language-Team: Greek <en@li.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Bookmarks: -1,-1,-1,-1,-1,-1,-1,-1,-1,519\n"
 
 #: modules/aspell/src/main/java/com/panayotis/jubler/options/ASpellOptions.java:84
 msgid "Language to use"
-msgstr "Χρήση γλώσσας"
+msgstr "Γλώσσα για χρήση"
 
 #: modules/core/src/main/java/com/panayotis/jubler/JubFrame.java:186
 msgid "Right mouse click to bring selected row into view"
@@ -1046,20 +1046,20 @@ msgstr "Αλλαγή μεγέθους υποτίτλων μόνο"
 msgid "New subtitle after current one"
 msgstr "Νέος υπότιτλος μετά τη τρέχουσα θέση"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid "Caching still in progress"
 msgstr "Η κατασκευή του αρχείου συνεχίζεται"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:55
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:58
 msgid "Still creating cache. Use the Cancel button to abort."
 msgstr ""
 "Το αρχείο ήχου ακόμα κατασκευάζεται. Επιλέξτε το πλήκτρο Ακύρωση για να "
 "σταματήσετε τη διαδικασία."
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:87
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/DecoderAdapter.java:95
 #, java-format
-msgid "Error while loading file {0}"
-msgstr "Λάθος κατά την φόρτωση του αρχείου {0}"
+msgid "Error while loading file {0}\n"
+msgstr ""
 
 #: modules/core/src/main/java/com/panayotis/jubler/options/AbstractPlayerOptions.java:91
 msgid "Advanced argument list:"
@@ -1227,11 +1227,11 @@ msgstr "Όχι"
 msgid "Yes"
 msgstr "Ναι"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:176
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
 msgid "Could not find web browser"
 msgstr "Αδυναμία έναρξης φυλλομετρητή"
 
-#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:181
+#: modules/core/src/main/java/com/panayotis/jubler/os/SystemDependent.java:186
 msgid "Error while opening URL"
 msgstr "Λάθος κατά την φόρτωση της διεύθυνσης"
 
@@ -2648,3 +2648,6 @@ msgid ""
 "Computer Translated subtitles should be only for personal use, and not for "
 "distribution."
 msgstr "Οι αυτόματα μεταφρασμένοι υπότιτλοι ΔΕΝ είναι για διακίνηση."
+
+#~ msgid "Error while loading file {0}"
+#~ msgstr "Λάθος κατά την φόρτωση του αρχείου {0}"
