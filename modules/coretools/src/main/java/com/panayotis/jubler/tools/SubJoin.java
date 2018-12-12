@@ -24,6 +24,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.JIDialog;
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.tools.ToolMenu.Location;
@@ -81,12 +82,12 @@ public class SubJoin extends Tool {
             other = getOtherSubs();
             dt = getGap().toSeconds();
 
-            if (isPrepend())
-                newsubs.joinSubs(other.getSubtitles(), current.getSubtitles(), dt);
-            else
-                newsubs.joinSubs(current.getSubtitles(), other.getSubtitles(), dt);
+            SubEntry selected = isPrepend()
+                ? newsubs.joinSubs(other.getSubtitles(), current.getSubtitles(), dt)
+                    :newsubs.joinSubs(current.getSubtitles(), other.getSubtitles(), dt);
 
             current.setSubs(newsubs);
+            current.tableHasChanged(selected);
             other.closeWindow(false, true);
             return true;
         } else
