@@ -28,6 +28,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.undo.UndoEntry;
+
 import java.awt.event.MouseWheelEvent;
 import javax.swing.JPanel;
 import java.awt.Color;
@@ -43,7 +44,6 @@ import java.util.ArrayList;
 import javax.swing.JSlider;
 
 /**
- *
  * @author teras
  */
 public class JSubTimeline extends JPanel {
@@ -152,8 +152,14 @@ public class JSubTimeline extends JPanel {
         wave.setCursor(c);
     }
 
+    private boolean updateX(int newX) {
+        X_position = newX;
+        return true;
+    }
+
     public void mouseUpdateCursor(MouseEvent e) {
-        X_position = e.getX();
+        if (!updateX(e.getX()))
+            return;
         findAction();
     }
 
@@ -254,10 +260,10 @@ public class JSubTimeline extends JPanel {
             return;
         if (current_action == NONE)
             return;
+        if (!updateX(e.getX()))
+            return;
 
-        X_position = e.getX();
-
-        /* The control button is used to determine if the selection will be inversed or not */
+        /* The control button is used to determine if the selection will be inverted or not */
         keep_selection_list_on_mouseup = ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0);
 
         /* First check that we have clicked on an already selected subinfo */
@@ -322,7 +328,8 @@ public class JSubTimeline extends JPanel {
                 inf.start += dt;
                 inf.end += dt;
             }
-            X_position = e.getX();
+            if (!updateX(e.getX()))
+                return;
         } else { /* Selection mode resize */
             double factor = (e.getX() - central_point * getWidth()) / ((double) X_position - central_point * getWidth());
             double dstart = central_point * (1d - factor);
@@ -335,7 +342,7 @@ public class JSubTimeline extends JPanel {
                     inf.end = buffer;
                 }
             }
-            X_position = e.getX();
+            updateX(e.getX());
         }
         calcOverlaps();
         repaint();
@@ -384,8 +391,7 @@ public class JSubTimeline extends JPanel {
             /* If the time is negative, offset is added */
             if (offset_time < 0)
                 offset_time = -offset_time;
-            /* or else, keep it in place */
-            else
+            else /* or else, keep it in place */
                 offset_time = 0;
 
             SubEntry entry;
