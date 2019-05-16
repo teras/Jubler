@@ -176,7 +176,7 @@
                                         <preCp>anything</preCp>
                                     </classPath>
                                     <jre>
-                                        <minVersion>1.6.0</minVersion>
+                                        <path>jre</path>
                                     </jre>
                                     <versionInfo>
                                         <fileVersion>${long.version}</fileVersion>
@@ -210,6 +210,16 @@
                                                 </delete>
                                                 <copy file="../../resources/libs/ffmpeg/win/ffdecode_@{arch}.dll"
                                                       todir="target/jubler/lib"/>
+                                                <exec executable="docker" failonerror="true">
+                                                    <arg value="run"/>
+                                                    <arg value="--rm"/>
+                                                    <arg value="-v"/>
+                                                    <arg value="${project.build.directory}/jubler/jre:/target"/>
+                                                    <arg value="teras/jrecross"/>
+                                                    <arg value="sh"/>
+                                                    <arg value="-c"/>
+                                                    <arg value="echo Copying Windows JRE @{arch}; cp -Ra /bundles/windows@{arch}/jdk8u212-b03-jre/* /target"/>
+                                                </exec>
                                                 <exec executable="makensis" failonerror="true">
                                                     <arg line="-NOCD -DVERSION=${project.version} -DWINBITS=@{arch} ../../resources/installers/windows/jubler.nsi"/>
                                                 </exec>
@@ -262,38 +272,37 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
-                                        <taskdef name="appbundler" onerror="fail" classpathref="maven.plugin.classpath"
-                                                 classname="com.oracle.appbundler.AppBundlerTask"/>
+                                        <copy file="../../resources/installers/macosx/Jubler"
+                                              todir="target/Jubler.app/Contents/MacOS"/>
+                                        <copy file="../../resources/installers/macosx/PkgInfo"
+                                              todir="target/Jubler.app/Contents"/>
+                                        <copy file="../../resources/installers/macosx/Info.plist"
+                                              todir="target/Jubler.app/Contents"/>
+                                        <copy file="../../resources/installers/macosx/jubler.icns"
+                                              todir="target/Jubler.app/Contents/Resources"/>
+                                        <copy file="../../resources/installers/macosx/subtitle.icns"
+                                              todir="target/Jubler.app/Contents/Resources"/>
+                                        <copy todir="target/Jubler.app/Contents/Java">
+                                                <fileset dir="target/jubler/lib"/>
+                                        </copy>
                                         <copy file="../../resources/libs/ffmpeg/darwin/libffdecode.jnilib"
-                                              todir="target/jubler/lib"/>
-                                        <appbundler
-                                                outputdirectory="target"
-                                                name="Jubler"
-                                                displayName="Jubler"
-                                                identifier="org.crossmobile.gui"
-                                                executableName="Jubler"
-                                                icon="../../resources/installers/macosx/jubler.icns"
-                                                shortversion="${project.version}"
-                                                copyright="Panayotis Katsaloulis"
-                                                applicationCategory="public.app-category.video"
-                                                mainclassname="Jubler">
-                                            <classpath dir="target/jubler/lib">
-                                                <include name="*"/>
-                                            </classpath>
-                                            <bundledocument extensions="srt,sub,ass,ssa,stl,son,txt,xml"
-                                                            icon="resources/installers/macosx/subtitle.icns"
-                                                            name="Subtitle Document"
-                                                            role="editor"/>
-                                        </appbundler>
+                                              todir="target/Jubler.app/Contents/Java"/>
                                         <copy todir="target/Jubler.app/Contents/Java/lib"
                                               file="../../resources/system/fonts/freesans.ttf"/>
-                                        <move file="target/jubler/lib/help" todir="target/Jubler.app/Contents/Java"/>
-                                        <move file="target/jubler/lib/i18n" todir="target/Jubler.app/Contents/Java"/>
-                                        <move file="target/jubler/lib/themes" todir="target/Jubler.app/Contents/Java"/>
-
-                                        <copy todir="target/jubler/lib/i18n">
-                                            <fileset dir="../../resources/i18n/cache"/>
-                                        </copy>
+                                        <chmod file="target/Jubler.app/Contents/MacOS/Jubler" perm="a+x"/>
+                                        <replace file="target/Jubler.app/Contents/Info.plist">
+                                            <replacefilter token="@@VERSION@@" value="${project.version}"/>
+                                        </replace>
+                                        <exec executable="docker" failonerror="true">
+                                            <arg value="run"/>
+                                            <arg value="--rm"/>
+                                            <arg value="-v"/>
+                                            <arg value="${project.build.directory}/Jubler.app/Contents/jre:/target"/>
+                                            <arg value="teras/jrecross"/>
+                                            <arg value="sh"/>
+                                            <arg value="-c"/>
+                                            <arg value="echo Copying OSX JRE; cp -Ra /bundles/osx/jdk8u212-b03-jre/* /target"/>
+                                        </exec>
 
                                         <delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
                                         <delete file="/tmp/Jubler-template.dmg" quiet="true"/>
@@ -340,13 +349,6 @@
                                 <phase>package</phase>
                             </execution>
                         </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>com.panayotis</groupId>
-                                <artifactId>appbundler</artifactId>
-                                <version>1.1.0</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
@@ -371,10 +373,9 @@
                                                 <include name="**"/>
                                             </fileset>
                                         </copy>
-                                        <move file="${appdir}/lib/jubler.jar" tofile="${appdir}/lib/AppRun.jar"/>
                                         <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so"
                                               todir="${appdir}/lib"/>
-                                        <copy file="../../resources/installers/linux/jubler" tofile="${appdir}/AppRun"/>
+                                        <copy file="../../resources/installers/linux/AppRun" todir="${appdir}"/>
                                         <copy file="${imgsrcdir}/jubler128.png"
                                               tofile="${appdir}/usr/share/icons/hicolor/128x128/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler64.png"
@@ -384,23 +385,28 @@
                                         <copy file="${imgsrcdir}/jubler32.png" tofile="${appdir}/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler.desktop" tofile="${appdir}/jubler.desktop"/>
                                         <chmod file="${appdir}/AppRun" perm="a+x"/>
-                                        <exec executable="${imgsrcdir}/appimagetool.osx" failonerror="true"
-                                              osfamily="mac">
-                                            <env key="PATH" value="${imgsrcdir}:${env.PATH}"/>
-                                            <arg value="--runtime-file"/>
-                                            <arg value="${imgsrcdir}/runtime64"/>
+                                        <exec executable="docker" failonerror="true">
+                                            <arg value="run"/>
+                                            <arg value="--rm"/>
                                             <arg value="-v"/>
-                                            <arg value="${appdir}"/>
-                                            <arg value="--sign"/>
-                                            <arg value="target/Jubler-${project.version}.appimage"/>
+                                            <arg value="${project.build.directory}/Jubler.Appdir/Java:/target"/>
+                                            <arg value="teras/jrecross"/>
+                                            <arg value="sh"/>
+                                            <arg value="-c"/>
+                                            <arg value="echo Copying Linux JRE; cp -Ra /bundles/linux/jdk8u212-b03-jre/* /target"/>
                                         </exec>
-                                        <exec executable="${imgsrcdir}/appimagetool.linux" failonerror="true"
-                                              os="Linux">
-                                            <env key="ARCH" value="x86_64"/>
+                                        <exec executable="docker" failonerror="true">
+                                            <arg value="run"/>
+                                            <arg value="-t"/>
+                                            <arg value="--rm"/>
                                             <arg value="-v"/>
-                                            <arg value="${appdir}"/>
-                                            <arg value="--sign"/>
-                                            <arg value="target/Jubler-${project.version}.appimage"/>
+                                            <arg value="${project.build.directory}:/usr/src/app"/>
+                                            <arg value="-v"/>
+                                            <arg value="${user.home}/.gnupg:/root/.gnupg"/>
+                                            <arg value="teras/appimage-builder"/>
+                                            <arg value="bash"/>
+                                            <arg value="-c"/>
+                                            <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${gnupgpass}' `mktemp` ; /opt/appimage/AppRun -v Jubler.AppDir --sign Jubler-${project.version}.appimage"/>
                                         </exec>
                                     </target>
                                 </configuration>
