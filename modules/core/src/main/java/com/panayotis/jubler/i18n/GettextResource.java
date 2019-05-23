@@ -117,8 +117,7 @@ public abstract class GettextResource extends ResourceBundle {
             try {
                 handleGetObjectMethod = catalog.getClass().getMethod("handleGetObject", new Class[]{java.lang.String.class});
                 getParentMethod = catalog.getClass().getMethod("getParent", new Class[0]);
-            } catch (NoSuchMethodException e) {
-            } catch (SecurityException e) {
+            } catch (NoSuchMethodException | SecurityException ignored) {
             }
             if (handleGetObjectMethod != null
                     && Modifier.isPublic(handleGetObjectMethod.getModifiers())
@@ -129,14 +128,13 @@ public abstract class GettextResource extends ResourceBundle {
                 try {
                     lookupMethod = catalog.getClass().getMethod("lookup", new Class[]{java.lang.String.class});
                     pluralEvalMethod = catalog.getClass().getMethod("pluralEval", new Class[]{Long.TYPE});
-                } catch (NoSuchMethodException e) {
-                } catch (SecurityException e) {
+                } catch (NoSuchMethodException | SecurityException ignored) {
                 }
                 if (lookupMethod != null && pluralEvalMethod != null) {
                     // A GNU gettext created class with plural handling.
                     Object localValue = null;
                     try {
-                        localValue = lookupMethod.invoke(catalog, new Object[]{msgid});
+                        localValue = lookupMethod.invoke(catalog, msgid);
                     } catch (IllegalAccessException e) {
                         DEBUG.debug(e);
                     } catch (InvocationTargetException e) {
@@ -150,7 +148,7 @@ public abstract class GettextResource extends ResourceBundle {
                             String[] pluralforms = (String[]) localValue;
                             long i = 0;
                             try {
-                                i = ((Long) pluralEvalMethod.invoke(catalog, new Object[]{new Long(n)})).longValue();
+                                i = (Long) pluralEvalMethod.invoke(catalog, new Object[]{n});
                                 if (!(i >= 0 && i < pluralforms.length))
                                     i = 0;
                             } catch (IllegalAccessException e) {
@@ -164,7 +162,7 @@ public abstract class GettextResource extends ResourceBundle {
                     // A GNU gettext created class without plural handling.
                     Object localValue = null;
                     try {
-                        localValue = handleGetObjectMethod.invoke(catalog, new Object[]{msgid});
+                        localValue = handleGetObjectMethod.invoke(catalog, msgid);
                     } catch (IllegalAccessException e) {
                         DEBUG.debug(e);
                     } catch (InvocationTargetException e) {

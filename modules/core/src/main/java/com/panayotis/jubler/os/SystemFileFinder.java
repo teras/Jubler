@@ -25,10 +25,7 @@ package com.panayotis.jubler.os;
 import com.panayotis.jubler.JubFrame;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.StringTokenizer;
 
 /**
  * @author teras
@@ -39,26 +36,11 @@ public class SystemFileFinder {
     public static final String AppPath = guessMainPath(JubFrame.class);
 
     private static File findFile(String name) {
-        String classpath = System.getProperty("java.class.path");
-        StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
-
-        String path;
-        while (tok.hasMoreTokens()) {
-            path = tok.nextToken();
-            if (path.toLowerCase().endsWith(".jar") || path.toLowerCase().endsWith(".exe")) {
-                int seppos = path.lastIndexOf(File.separator);
-                if (seppos >= 0)
-                    path = path.substring(0, seppos);
-                else
-                    path = ".";
-            }
-            if (!path.endsWith(File.separator))
-                path = path + File.separator;
-            File filetest = new File(path + name);
-            if (filetest.exists())
-                return filetest;
-        }
-        return null;
+        File selfFile = new File(SystemFileFinder.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+        String selfName = selfFile.getName().toLowerCase();
+        isJarBased = selfName.endsWith(".jar") || selfName.endsWith(".exe");
+        File current = new File(selfFile.getParent(), name);
+        return current.exists() ? current : null;
     }
 
     public static boolean loadLibrary(String name) {
@@ -69,7 +51,7 @@ public class SystemFileFinder {
     }
 
     private static boolean loadLibraryImpl(String name) {
-        File libfile = findFile(SystemDependent.mapLibraryName(name));
+        File libfile = findFile("lib" + File.separator + SystemDependent.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());

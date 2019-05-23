@@ -74,6 +74,10 @@ Section "Jubler editor" SecJubler
   File ..\..\resources\installers\windows\subtitle.ico
   File ..\..\resources\installers\windows\frame.ico
 
+  ; Create lib dir
+  SetOutPath $InstDir\lib\lib
+  File target\jubler\lib\lib\*.*
+
   ; Create themes
   SetOutPath $InstDir\lib\themes
   File target\jubler\lib\themes\*.jar

@@ -205,11 +205,12 @@
                                         <macrodef name="preparefor">
                                             <attribute name="arch"/>
                                             <sequential>
+                                                <mkdir dir="target/jubler/lib/lib"/>
                                                 <delete>
-                                                    <fileset dir="target/jubler/lib" includes="*.dll"/>
+                                                    <fileset dir="target/jubler/lib/lib" includes="*.dll"/>
                                                 </delete>
                                                 <copy file="../../resources/libs/ffmpeg/win/ffdecode_@{arch}.dll"
-                                                      todir="target/jubler/lib"/>
+                                                      todir="target/jubler/lib/lib"/>
                                                 <exec executable="docker" failonerror="true">
                                                     <arg value="run"/>
                                                     <arg value="--rm"/>
@@ -286,7 +287,7 @@
                                                 <fileset dir="target/jubler/lib"/>
                                         </copy>
                                         <copy file="../../resources/libs/ffmpeg/darwin/libffdecode.jnilib"
-                                              todir="target/Jubler.app/Contents/Java"/>
+                                              todir="target/Jubler.app/Contents/Java/lib"/>
                                         <copy todir="target/Jubler.app/Contents/Java/lib"
                                               file="../../resources/system/fonts/freesans.ttf"/>
                                         <chmod file="target/Jubler.app/Contents/MacOS/Jubler" perm="a+x"/>
@@ -374,7 +375,7 @@
                                             </fileset>
                                         </copy>
                                         <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so"
-                                              todir="${appdir}/lib"/>
+                                              todir="${appdir}/lib/lib"/>
                                         <copy file="../../resources/installers/linux/AppRun" todir="${appdir}"/>
                                         <copy file="${imgsrcdir}/jubler128.png"
                                               tofile="${appdir}/usr/share/icons/hicolor/128x128/apps/jubler.png"/>
