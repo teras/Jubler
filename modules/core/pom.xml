@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>6.1rc1</version>
+        <version>7.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>jubler</artifactId>

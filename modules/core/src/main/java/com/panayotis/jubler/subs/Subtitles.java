@@ -23,6 +23,7 @@
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
@@ -31,16 +32,18 @@ import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
 import com.panayotis.jubler.subs.loader.SubFormat;
+
 import java.util.Collections;
 import javax.swing.table.AbstractTableModel;
+
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyleList;
+
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JTable;
 
 /**
- *
  * @author teras
  */
 public class Subtitles extends AbstractTableModel {
@@ -223,19 +226,23 @@ public class Subtitles extends AbstractTableModel {
             sublist.addAll(idx + 1, newsubs.sublist);
     }
 
-    public void joinSubs(Subtitles s1, Subtitles s2, double dt) {
+    public SubEntry joinSubs(Subtitles s1, Subtitles s2, double dt) {
         double maxtime;
         SubEntry newentry;
 
         appendSubs(s1, false);
         maxtime = s1.getMaxTime();
         maxtime += dt;
+        SubEntry selected = null;
         for (int i = 0; i < s2.size(); i++) {
             newentry = new SubEntry(s2.elementAt(i));
             newentry.getStartTime().addTime(maxtime);
             newentry.getFinishTime().addTime(maxtime);
             add(newentry);
+            if (selected == null)
+                selected = newentry;
         }
+        return selected;
     }
 
     private double getMaxTime() {
@@ -499,7 +506,7 @@ public class Subtitles extends AbstractTableModel {
      * memory.
      *
      * @param target_class The target class to convert the current subtitle
-     * entries to.
+     *                     entries to.
      * @param class_loader The classloader to use
      * @return true if convertion was carried out without erros, or no
      * conversions are required, false otherwise.
@@ -612,11 +619,10 @@ public class Subtitles extends AbstractTableModel {
      * </pre>
      *
      * @param start the starting row index to be moved
-     * @param end the ending row index to be moved
-     * @param to the destination of the rows to be moved
-     * @exception ArrayIndexOutOfBoundsException if any of the elements would be
-     * moved out of the table's range
-     *
+     * @param end   the ending row index to be moved
+     * @param to    the destination of the rows to be moved
+     * @throws ArrayIndexOutOfBoundsException if any of the elements would be
+     *                                        moved out of the table's range
      */
     public void moveRow(int start, int end, int to) {
         int shift = to - start;

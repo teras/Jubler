@@ -63,7 +63,11 @@ Section "Jubler editor" SecJubler
   File target\jubler\ChangeLog.html
   File target\jubler\LICENCE.txt
   File target\jubler\README.txt
-   
+
+  ; Set output path to the JRE
+  SetOutPath $InstDir\jre
+  File /r target\jubler\jre\*.*
+
   ; Create library
   SetOutPath $InstDir\lib
   File target\jubler\lib\*.*
@@ -128,29 +132,6 @@ SectionEnd
 
 
 
-; JRE Installation
-;--------------------------------
-!define JRE_VERSION "1.8"
-!define JRE_URL "http://javadl.oracle.com/webapps/download/AutoDL?BundleId=233169_512cd62ec5174c3487ac17c61aaa89e8"
-Section "Java Runtime Environment" SecJRE
-
-  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
-  StrCmp $2 ${JRE_VERSION} done	; We have already the correct version of JRE
-
-  StrCpy $2 "$TEMP\Java Runtime Environment.exe"
-  nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
-  Pop $R0 ;Get the return value
-  StrCmp $R0 "success" done
-    MessageBox MB_OK|MB_ICONEXCLAMATION "Download failed ($R0).$\nRemember to manually download Java before launching Jubler."
-    Quit
-  done:
-  HideWindow
-  ExecWait $2 $0
-  BringToFront
-  Delete $2
-
-SectionEnd
-
 ; Mplayer Installation
 
 
@@ -158,14 +139,12 @@ SectionEnd
 ;--------------------------------
 
 LangString DESC_SecJublerMain ${LANG_ENGLISH} "Required Jubler subtitle editor program files."
-LangString DESC_SecJRE ${LANG_ENGLISH} "Test for Java Runtime Environment and download if needed."
 LangString DESC_SecStartMenu ${LANG_ENGLISH} "Add Start Menu Icons."
 LangString DESC_SecDesktop ${LANG_ENGLISH} "Add Desktop Icon."
 
 
 !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
   !insertmacro MUI_DESCRIPTION_TEXT ${SecJubler} $(DESC_SecJublerMain)
-  !insertmacro MUI_DESCRIPTION_TEXT ${SecJRE} $(DESC_SecJRE)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecStartMenu} $(DESC_SecStartMenu)
   !insertmacro MUI_DESCRIPTION_TEXT ${SecDesktop} $(DESC_SecDesktop)
 !insertmacro MUI_FUNCTION_DESCRIPTION_END

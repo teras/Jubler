@@ -2366,7 +2366,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         return selects;
     }
 
-    public void tableHasChanged(SubEntry[] oldselections) {
+    public void tableHasChanged(SubEntry... oldselections) {
         /* Try to reset the last selected row, after an update to the table has been performed
          * if no other information has been provided */
         if (oldselections == null || oldselections.length == 0)
