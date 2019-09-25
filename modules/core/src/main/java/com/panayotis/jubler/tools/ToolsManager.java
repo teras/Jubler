@@ -21,20 +21,25 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.options.JExternalToolsOptions;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.tools.ToolMenu.Location;
+import com.panayotis.jubler.tools.externals.ExternalTool;
+
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
+import static com.panayotis.jubler.options.JExternalToolsOptions.tools;
+
 /**
- *
  * @author teras
  */
 public class ToolsManager {
@@ -87,6 +92,30 @@ public class ToolsManager {
         // Restore tools menu old entries
         for (Component comp : oldtools)
             current.ToolsM.add(comp);
+        updateExternals(current);
+    }
+
+    private static void updateExternals(final JubFrame jubler) {
+        JMenu externalsM = jubler.ExternalsM;
+        for (Component menuItem : externalsM.getMenuComponents())
+            externalsM.remove(menuItem);
+        int i = 0;
+        for (final ExternalTool tool : JExternalToolsOptions.getList()) {
+            JMenuItem menuItem = new JMenuItem(tool.getName());
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    tool.exec(jubler);
+                }
+            });
+            menuItem.setName("EXT" + (i++));
+            externalsM.add(menuItem);
+        }
+    }
+
+    public static void updateExternals() {
+        for (final JubFrame jubler : JubFrame.windows)
+            updateExternals(jubler);
     }
 
     private static void addMenu(final JubFrame current, final JMenu ToolsM, final Tool tool) {
@@ -104,7 +133,7 @@ public class ToolsManager {
         });
     }
 
-    /* 
+    /*
      * Join and Reparent are in the first block of menu, or else this code will break,
      * since it searches for the first separator item
      */

@@ -1041,7 +1041,7 @@
                 </MenuItem>
               </SubComponents>
             </Menu>
-            <Menu class="javax.swing.JMenu" name="PreviewP">
+            <Menu class="javax.swing.JMenu" name="PreviewM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Preview&quot;)" type="code"/>
@@ -1137,6 +1137,17 @@
                   </Events>
                 </MenuItem>
               </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="ExternalsM">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="__(&quot;Externals&quot;)" type="code"/>
+                </Property>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+              </AuxValues>
             </Menu>
           </SubComponents>
         </Menu>

@@ -30,23 +30,24 @@ import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.spell.SpellChecker;
+
 import java.awt.BorderLayout;
 import javax.swing.JMenuBar;
 
 /**
- *
  * @author teras
  */
 public class JPreferences extends javax.swing.JDialog {
 
-    /* GUI element to hold various preferences 
-     * it is "friendly", since it is needed in Options 
+    /* GUI element to hold various preferences
+     * it is "friendly", since it is needed in Options
      */
     JOptionTabs Tabs;
     /* Shortcuts to panels */
     private JExternalOptions jplay;
     private JExternalOptions jspell;
     private JShortcutsOptions jcut;
+    private JExternalToolsOptions jext;
     private boolean dialog_status;
 
     /**
@@ -59,6 +60,7 @@ public class JPreferences extends javax.swing.JDialog {
         Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, __("Player"), "player_pref.png")));
         Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref.png")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
+        Tabs.addTab(jext = new JExternalToolsOptions());
         Options.loadSystemPreferences(this);
 
         initComponents();
@@ -146,6 +148,7 @@ public class JPreferences extends javax.swing.JDialog {
         dialog_status = true;
         setVisible(false);
     }//GEN-LAST:event_AcceptBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcceptB;
     private javax.swing.JPanel ButtonsP;

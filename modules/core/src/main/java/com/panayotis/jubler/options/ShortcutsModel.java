@@ -28,6 +28,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.os.SystemDependent;
+
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -41,7 +42,6 @@ import javax.swing.KeyStroke;
 import javax.swing.table.AbstractTableModel;
 
 /**
- *
  * @author teras
  */
 public class ShortcutsModel extends AbstractTableModel {
@@ -99,8 +99,11 @@ public class ShortcutsModel extends AbstractTableModel {
                 applyItemsShortcuts((JMenu) c);
             else if (c instanceof JMenuItem) {
                 JMenuItem item = (JMenuItem) c;
-                if (item.getName() != null)
-                    current.get(current.indexOf(new MenuItem(null, item.getName(), (MenuItem.Shortcut) null))).applyShortcut(item);
+                if (item.getName() != null) {
+                    int index = current.indexOf(new MenuItem(null, item.getName(), (MenuItem.Shortcut) null));
+                    if (index >= 0)
+                        current.get(index).applyShortcut(item);
+                }
             }
         }
     }
