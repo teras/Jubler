@@ -4,11 +4,7 @@ build/
 ^_support/
 resources/i18n/cache
 resources/help/cache
-codesign.properties
+modules/installer/secret/*
 target/
 *.iml
 .idea/
-
-
-modules/installer/code-signing.p12
-modules/installer/password.properties

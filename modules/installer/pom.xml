@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>7.0</version>
+        <version>7.0.0-rc1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
@@ -59,24 +59,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <executions>
-                    <execution>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>read-project-properties</goal>
-                        </goals>
-                        <configuration>
-                            <files>
-                                <file>${basedir}/password.properties</file>
-                            </files>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -202,6 +184,7 @@
                                 <id>post-copy</id>
                                 <configuration>
                                     <target>
+                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <macrodef name="preparefor">
                                             <attribute name="arch"/>
                                             <sequential>
@@ -320,7 +303,7 @@
                                             <arg line="-R target/Jubler.app /Volumes/Jubler-template/Jubler.app"/>
                                         </exec>
                                         <!-- security find-identity -v -p codesigning -->
-                                        <loadproperties srcfile="../../codesign.properties"/>
+                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <exec executable="codesign" failonerror="true">
                                             <arg line="--force --verify --verbose --sign ${code.sign.key} /Volumes/Jubler-template/Jubler.app"/>
                                         </exec>
@@ -366,6 +349,7 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
+                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <property name="appdir" value="target/Jubler.AppDir"/>
                                         <property name="imgsrcdir"
                                                   value="../../resources/installers/linux/dist/appimage"/>
