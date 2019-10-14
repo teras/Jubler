@@ -131,7 +131,7 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem {
         replaceValues(cmds, "%t", when.getRoundSeconds());
         replaceValues(cmds, "%x", Integer.toString(x));
         replaceValues(cmds, "%y", Integer.toString(y));
-        replaceValues(cmds, "%j", SystemFileFinder.AppPath);
+        replaceValues(cmds, "%j", SystemFileFinder.AppPath.getAbsolutePath());
         int port = Networking.getRandomPort();
         replaceValues(cmds, "%i", Integer.toString(port));
 

@@ -60,7 +60,7 @@ public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
     @Override
     public void execPlugin(Object caller, Object param) {
         try {
-            ApplicationInfo info = new ApplicationInfo(SystemFileFinder.AppPath, SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
+            ApplicationInfo info = new ApplicationInfo(SystemFileFinder.AppPath.getAbsolutePath(), SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
             info.setDistributionBased(JAbout.isDistributionBased());
             Updater upd = new Updater(URL, info, this);
             upd.actionDisplay();

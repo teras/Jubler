@@ -24,17 +24,22 @@
 package com.panayotis.jubler.information;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.SystemFileFinder;
+
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 /**
- *
  * @author teras
  */
 public class HelpBrowser extends javax.swing.JDialog {
@@ -48,9 +53,9 @@ public class HelpBrowser extends javax.swing.JDialog {
         super((JFrame) null, false);
         initComponents();
 
-        history = new ArrayList<String>();
+        history = new ArrayList<>();
 
-        String initpage = "file:" + SystemFileFinder.AppPath + "/help/jubler-faq.html";
+        String initpage = new File(SystemFileFinder.AppPath.getAbsolutePath(), "help/jubler-faq.html").toURI().toString();
         setPage(initpage);
         history.add(initpage);
 
@@ -70,11 +75,11 @@ public class HelpBrowser extends javax.swing.JDialog {
     private void setPage(String url) {
         try {
             if (url.startsWith("http")) {
-                SystemDependent.openURL(url);
+                Desktop.getDesktop().browse(new URI(url));
                 return;
             }
             HelpPane.setPage(url);
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             DEBUG.debug("Error while opening FAQ file \"" + url + "\" : " + e.getClass().getName());
         }
     }
@@ -136,6 +141,7 @@ public class HelpBrowser extends javax.swing.JDialog {
         if (last < 2)
             BackB.setEnabled(false);
     }//GEN-LAST:event_BackBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackB;
     private javax.swing.JEditorPane HelpPane;

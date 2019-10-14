@@ -30,7 +30,10 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
+
+import static com.panayotis.jubler.os.SystemFileFinder.AppPath;
 
 /**
  * @author teras
@@ -43,12 +46,11 @@ public class I18N {
     private static final DynamicClassLoader cl = new DynamicClassLoader();
 
     static {
-        String ls = System.getProperty("user.language");
+        String ls = Locale.getDefault().getLanguage();
         if (ls.equals("en")) {
             DEBUG.debug("Using default language");
         } else {
-            String ll = ls + "_" + System.getProperty("user.country");
-            File base = new File(I18N.class.getProtectionDomain().getCodeSource().getLocation().getFile());
+            String ll = ls + "_" + Locale.getDefault().getCountry();
             for (String p : new String[]{
                     "../../../../resources/i18n/cache/" + ll + ".jar",
                     "i18n/" + ll + ".jar",
@@ -57,10 +59,9 @@ public class I18N {
                     "i18n/" + ls + ".jar"
             }) {
                 try {
-                    File urlFile = new File(base.isDirectory() ? base : base.getParentFile(), p);
-                    cl.addURL(urlFile.toURI().toURL());
+                    cl.addURL(new File(AppPath, p).toURI().toURL());
                 } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                    System.err.println(e.toString());
                 }
             }
             b = loadClass(PATH + ll);

@@ -26,8 +26,8 @@ package com.panayotis.jubler.os;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.tools.externals.ExtPath;
-import java.awt.Color;
-import java.awt.Component;
+
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
@@ -36,18 +36,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import javax.swing.AbstractButton;
-import javax.swing.JRootPane;
-import javax.swing.KeyStroke;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 /**
- *
  * @author teras
  */
 public class SystemDependent {
@@ -72,14 +70,9 @@ public class SystemDependent {
     }
 
     public static void setLookAndFeel() {
-        boolean newjava = (System.getProperty("java.version").replaceAll("\\.", "").replaceAll("_", "").compareTo("160")) >= 0;
         try {
-            if (newjava || IS_WINDOWS || IS_MACOSX) {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                System.setProperty("apple.laf.useScreenMenuBar", "true");
-            }
-        } catch (Exception e) {
-            DEBUG.debug(e);
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ignored) {
         }
     }
 
@@ -121,6 +114,7 @@ public class SystemDependent {
         else
             return c.getBackground();
     }
+
     private final static Color background = new Color(228, 228, 228);
 
     public static int countKeyMods() {
@@ -152,33 +146,6 @@ public class SystemDependent {
         if (IS_MACOSX)
             return ExtPath.BUNDLE_ONLY;
         return ExtPath.FILE_ONLY;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static void openURL(String url) {
-        try {
-            if (IS_MACOSX) {
-                Class fileMgr = Class.forName("com.apple.eio.FileManager");
-                Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[]{String.class});
-                openURL.invoke(null, new Object[]{url});
-            } else if (IS_WINDOWS)
-                Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler " + url);
-            else { //assume Unix or Linux
-                String[] browsers = {
-                    "xdg-open", "firefox", "konqueror", "opera", "epiphany", "mozilla", "netscape"};
-                String browser = null;
-                for (int count = 0; count < browsers.length && browser == null; count++)
-                    if (Runtime.getRuntime().exec(
-                            new String[]{"which", browsers[count]}).waitFor() == 0)
-                        browser = browsers[count];
-                if (browser == null)
-                    throw new Exception(__("Could not find web browser"));
-                else
-                    Runtime.getRuntime().exec(new String[]{browser, url});
-            }
-        } catch (Exception e) {
-            JIDialog.warning(null, "Exception " + e.getClass().getName() + " while loading URL " + url, __("Error while opening URL"));
-        }
     }
 
     /* This method is valid only under Mac OSX.

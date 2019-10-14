@@ -38,9 +38,9 @@ public class PluginManager {
     private HashMap<String, ArrayList<PluginItem>> plugin_list;
 
     public PluginManager() {
-        plugin_list = new HashMap<String, ArrayList<PluginItem>>();
-        cl = new DynamicClassLoader(new File(SystemFileFinder.AppPath));
-        ArrayList<PluginItem> plugin_items = new ArrayList<PluginItem>();
+        plugin_list = new HashMap<>();
+        cl = new DynamicClassLoader(SystemFileFinder.AppPath);
+        ArrayList<PluginItem> plugin_items = new ArrayList<>();
         int count = 0;
         for (Plugin p : ServiceLoader.load(Plugin.class, cl)) {
             DEBUG.debug("Registering plugin " + p.getPluginName());
@@ -49,13 +49,13 @@ public class PluginManager {
             plugin_items.addAll(Arrays.asList(p.getPluginItems()));
         }
 
-        /* Find plugin assosiations */
+        /* Find plugin associations */
         for (PluginItem item : plugin_items)
-            for (Class affectionclass : item.getPluginAffections()) {
-                String affection = affectionclass.getName();
+            for (Class affectionClass : item.getPluginAffections()) {
+                String affection = affectionClass.getName();
                 ArrayList<PluginItem> current_list = plugin_list.get(affection);
                 if (current_list == null) {
-                    current_list = new ArrayList<PluginItem>();
+                    current_list = new ArrayList<>();
                     current_list.add(item);
                     plugin_list.put(affection, current_list);
                 } else
@@ -65,15 +65,6 @@ public class PluginManager {
         DEBUG.debug(count + " plugin" + (count == 1 ? "" : "s") + " found");
         DEBUG.debug(plugin_items.size() + " plugin item" + (plugin_items.size() == 1 ? "" : "s") + " found");
         DEBUG.debug(plugin_list.size() + " listener" + (plugin_list.size() == 1 ? "" : "s") + " found");
-    }
-
-    private Object getClass(String classname) {
-        try {
-            Object res = cl.loadClass(classname).newInstance();
-            return res;
-        } catch (Throwable ex) {
-        }
-        return null;
     }
 
     public void callPluginListeners(Object caller) {

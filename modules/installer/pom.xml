@@ -134,7 +134,7 @@
                     <plugin>
                         <groupId>com.akathist.maven.plugins.launch4j</groupId>
                         <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.16</version>
+                        <version>1.7.25</version>
                         <executions>
                             <execution>
                                 <id>windows-exe</id>
@@ -144,13 +144,11 @@
                                 </goals>
                                 <configuration>
                                     <icon>../../resources/installers/windows/frame.ico</icon>
-                                    <downloadUrl>http://www.oracle.com/technetwork/java/javase/downloads/index.html
-                                    </downloadUrl>
                                     <headerType>gui</headerType>
                                     <stayAlive>true</stayAlive>
                                     <jar>lib/jubler.jar</jar>
                                     <dontWrapJar>true</dontWrapJar>
-                                    <errTitle>Unable to find Java Development Kit</errTitle>
+                                    <errTitle>Unable to launch Jubler</errTitle>
                                     <outfile>target/jubler/Jubler.exe</outfile>
                                     <classPath>
                                         <mainClass>Jubler</mainClass>
@@ -172,6 +170,11 @@
                                         <internalName>jubler</internalName>
                                         <originalFilename>Jubler.exe</originalFilename>
                                     </versionInfo>
+                                    <splash>
+                                        <file>../../resources/installers/windows/splash.bmp</file>
+                                        <waitForWindow>true</waitForWindow>
+                                        <timeout>60</timeout>
+                                    </splash>
                                 </configuration>
                             </execution>
                         </executions>
@@ -199,10 +202,10 @@
                                                     <arg value="--rm"/>
                                                     <arg value="-v"/>
                                                     <arg value="${project.build.directory}/jubler/jre:/target"/>
-                                                    <arg value="teras/jrecross"/>
+                                                    <arg value="teras/jdkcross"/>
                                                     <arg value="sh"/>
                                                     <arg value="-c"/>
-                                                    <arg value="echo Copying Windows JRE @{arch}; cp -Ra /bundles/windows@{arch}/jdk8u212-b03-jre/* /target"/>
+                                                    <arg value="echo Copying JRE with flavour windows@{arch}; cp -Ra /jre/windows@{arch}/* /target"/>
                                                 </exec>
                                                 <exec executable="makensis" failonerror="true">
                                                     <arg line="-NOCD -DVERSION=${project.version} -DWINBITS=@{arch} ../../resources/installers/windows/jubler.nsi"/>
@@ -211,7 +214,7 @@
                                                 <exec executable="osslsigncode" failonerror="true">
                                                     <arg value="sign"/>
                                                     <arg value="-pkcs12"/>
-                                                    <arg value="code-signing.p12"/>
+                                                    <arg value="secret/code-signing.p12"/>
                                                     <arg value="-pass"/>
                                                     <arg value="${p12pass}"/>
                                                     <arg value="-n"/>
@@ -256,6 +259,7 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
+                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <copy file="../../resources/installers/macosx/Jubler"
                                               todir="target/Jubler.app/Contents/MacOS"/>
                                         <copy file="../../resources/installers/macosx/PkgInfo"
@@ -282,10 +286,10 @@
                                             <arg value="--rm"/>
                                             <arg value="-v"/>
                                             <arg value="${project.build.directory}/Jubler.app/Contents/jre:/target"/>
-                                            <arg value="teras/jrecross"/>
+                                            <arg value="teras/jdkcross"/>
                                             <arg value="sh"/>
                                             <arg value="-c"/>
-                                            <arg value="echo Copying OSX JRE; cp -Ra /bundles/osx/jdk8u212-b03-jre/* /target"/>
+                                            <arg value="echo Copying JRE with flavour osx; cp -Ra /jre/osx/* /target"/>
                                         </exec>
 
                                         <delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
@@ -303,7 +307,6 @@
                                             <arg line="-R target/Jubler.app /Volumes/Jubler-template/Jubler.app"/>
                                         </exec>
                                         <!-- security find-identity -v -p codesigning -->
-                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <exec executable="codesign" failonerror="true">
                                             <arg line="--force --verify --verbose --sign ${code.sign.key} /Volumes/Jubler-template/Jubler.app"/>
                                         </exec>
@@ -358,6 +361,7 @@
                                                 <include name="**"/>
                                             </fileset>
                                         </copy>
+                                        <move file="${appdir}/lib/jubler.jar" tofile="${appdir}/lib/AppRun.jar"/>
                                         <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so"
                                               todir="${appdir}/lib/lib"/>
                                         <copy file="../../resources/installers/linux/AppRun" todir="${appdir}"/>
@@ -375,10 +379,10 @@
                                             <arg value="--rm"/>
                                             <arg value="-v"/>
                                             <arg value="${project.build.directory}/Jubler.Appdir/Java:/target"/>
-                                            <arg value="teras/jrecross"/>
+                                            <arg value="teras/jdkcross"/>
                                             <arg value="sh"/>
                                             <arg value="-c"/>
-                                            <arg value="echo Copying Linux JRE; cp -Ra /bundles/linux/jdk8u212-b03-jre/* /target"/>
+                                            <arg value="echo Copying JRE with flavour linux; cp -Ra /jre/linux/* /target"/>
                                         </exec>
                                         <exec executable="docker" failonerror="true">
                                             <arg value="run"/>

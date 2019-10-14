@@ -26,20 +26,34 @@ import com.panayotis.jubler.JubFrame;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 /**
  * @author teras
  */
 public class SystemFileFinder {
 
-    private static boolean isJarBased;
-    public static final String AppPath = guessMainPath(JubFrame.class);
+    private static final boolean isJarBased;
+    public static final File AppPath;
+
+
+    static {
+        boolean jarBased;
+        File aPath;
+        try {
+            File classpath = new File(JubFrame.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            jarBased = classpath.isFile();
+            aPath = jarBased ? classpath.getParentFile() : classpath;
+        } catch (URISyntaxException e) {
+            jarBased = false;
+            aPath = new File("");
+        }
+        isJarBased = jarBased;
+        AppPath = aPath;
+    }
 
     private static File findFile(String name) {
-        File selfFile = new File(SystemFileFinder.class.getProtectionDomain().getCodeSource().getLocation().getFile());
-        String selfName = selfFile.getName().toLowerCase();
-        isJarBased = selfName.endsWith(".jar") || selfName.endsWith(".exe");
-        File current = new File(selfFile.getParent(), name);
+        File current = new File(AppPath, name);
         return current.exists() ? current : null;
     }
 
@@ -57,22 +71,8 @@ public class SystemFileFinder {
                 System.load(libfile.getAbsolutePath());
                 return true;
             } catch (UnsatisfiedLinkError e) {
+                System.err.println(e.toString());
             }
         return false;
-    }
-
-    public static String guessMainPath(Class<?> cls) {
-        try {
-            File classpath = new File(cls.getProtectionDomain().getCodeSource().getLocation().toURI());
-            isJarBased = classpath.isFile();
-            return isJarBased ? classpath.getParent() : classpath.getPath();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static boolean isJarBased() {
-        return isJarBased;
     }
 }
