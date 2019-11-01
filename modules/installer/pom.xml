@@ -316,18 +316,6 @@
                                         <exec executable="hdiutil" failonerror="true">
                                             <arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o target/Jubler-${project.version}.dmg"/>
                                         </exec>
-                                        <exec executable="make"
-                                              dir="../../resources/installers/macosx/resource_creator"/>
-                                        <exec executable="hdiutil" failonerror="true">
-                                            <arg line="unflatten target/Jubler-${project.version}.dmg"/>
-                                        </exec>
-                                        <exec executable="Rez" failonerror="true">
-                                            <arg line="-a ../../resources/installers/macosx/license_dmg -o target/Jubler-${project.version}.dmg"/>
-                                        </exec>
-                                        <exec executable="hdiutil" failonerror="true">
-                                            <arg line="flatten target/Jubler-${project.version}.dmg"/>
-                                        </exec>
-                                        <delete file="/tmp/Jubler-template.dmg"/>
                                     </target>
                                 </configuration>
                                 <goals>
