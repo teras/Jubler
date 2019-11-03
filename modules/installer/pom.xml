@@ -195,6 +195,7 @@
                                                 <delete>
                                                     <fileset dir="target/jubler/lib/lib" includes="*.dll"/>
                                                 </delete>
+                                                <delete dir="target/jubler/jre"/>
                                                 <copy file="../../resources/libs/ffmpeg/win/ffdecode_@{arch}.dll"
                                                       todir="target/jubler/lib/lib"/>
                                                 <exec executable="docker" failonerror="true">
