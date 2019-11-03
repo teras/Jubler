@@ -8,3 +8,4 @@ modules/installer/secret/*
 target/
 *.iml
 .idea/
+resources/keys

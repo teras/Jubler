@@ -308,13 +308,22 @@
                                         </exec>
                                         <!-- security find-identity -v -p codesigning -->
                                         <exec executable="codesign" failonerror="true">
-                                            <arg line="--force --verify --verbose --sign ${code.sign.key} /Volumes/Jubler-template/Jubler.app"/>
+                                            <arg line="--deep --force --verify --verbose --sign ${code.sign.key} --options runtime /Volumes/Jubler-template/Jubler.app"/>
+                                        </exec>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg line="--verify --verbose /Volumes/Jubler-template/Jubler.app"/>
                                         </exec>
                                         <exec executable="hdiutil" failonerror="true">
                                             <arg line="detach -force /Volumes/Jubler-template"/>
                                         </exec>
                                         <exec executable="hdiutil" failonerror="true">
                                             <arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o target/Jubler-${project.version}.dmg"/>
+                                        </exec>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg line="--deep --force --verify --verbose --sign ${code.sign.key} --options runtime target/Jubler-${project.version}.dmg"/>
+                                        </exec>
+                                        <exec executable="codesign" failonerror="true">
+                                            <arg line="--verify --verbose target/Jubler-${project.version}.dmg"/>
                                         </exec>
                                     </target>
                                 </configuration>
