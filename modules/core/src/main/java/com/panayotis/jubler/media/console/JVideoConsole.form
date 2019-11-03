@@ -421,7 +421,7 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="b"/>
                         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="__(&quot;Go backwards by 10 secons&quot;)" type="code"/>
+                          <Connection code="__(&quot;Go backwards by 10 seconds&quot;)" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                         <Property name="contentAreaFilled" type="boolean" value="false"/>

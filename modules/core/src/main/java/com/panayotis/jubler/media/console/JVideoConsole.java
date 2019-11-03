@@ -595,7 +595,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         NavPanel.add(BBMovieB);
 
         BMovieB.setText("b");
-        BMovieB.setToolTipText(__("Go backwards by 10 secons"));
+        BMovieB.setToolTipText(__("Go backwards by 10 seconds"));
         BMovieB.setBorderPainted(false);
         BMovieB.setContentAreaFilled(false);
         BMovieB.addActionListener(new java.awt.event.ActionListener() {
