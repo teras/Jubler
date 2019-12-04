@@ -20,6 +20,7 @@
 package com.panayotis.jubler;
 
 import com.panayotis.appenh.Enhancer;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.appenh.EnhancerManager;
@@ -27,6 +28,7 @@ import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
+
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Point;
@@ -35,13 +37,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.File;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToolBar;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 /**
- *
  * @author teras
  */
 public class JublerApp implements Plugin, PluginItem {

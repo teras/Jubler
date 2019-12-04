@@ -113,7 +113,7 @@
                                 <copy file="../../resources/help/question.png" todir="target/jubler/lib/help"/>
                                 <copy file="../../README" tofile="target/jubler/README.txt"/>
                                 <copy file="../../LICENCE" tofile="target/jubler/LICENCE.txt"/>
-                                <copy file="../../ChangeLog.html" tofile="target/jubler/ChangeLog.html"/>
+                                <copy file="../../ChangeLog.html" todir="target/jubler"/>
                             </target>
                         </configuration>
                         <goals>
