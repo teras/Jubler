@@ -24,6 +24,7 @@
 package com.panayotis.jubler;
 
 import com.panayotis.jubler.os.JIDialog;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.information.JAbout;
@@ -33,6 +34,7 @@ import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.rmi.JublerServer;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,7 +48,6 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 
 /**
- *
  * @author teras
  */
 public class StaticJubler {
@@ -116,7 +117,10 @@ public class StaticJubler {
         screen_width = values[2];
         screen_height = values[3];
         screen_state = values[4];
-
+        if (screen_width < 400)
+            screen_width = 400;
+        if (screen_height < 300)
+            screen_height = 300;
     }
 
     public static void showAbout() {
