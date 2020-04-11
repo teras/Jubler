@@ -34,6 +34,8 @@
 	<true/>
 	<key>JVMMainClassName</key>
 	<string>Jubler</string>
+	<key>NSRequiresAquaSystemAppearance</key>
+	<true/>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

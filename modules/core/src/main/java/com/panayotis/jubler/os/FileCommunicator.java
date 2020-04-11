@@ -60,7 +60,7 @@ public class FileCommunicator {
         String res;
         String enc;
 
-        /* First chech already known data */
+        /* First check already known data */
         enc = sfile.getEncoding();
         res = load(sfile, enc, "Found defined encoding " + enc, false);
         if (res != null)
@@ -121,7 +121,7 @@ public class FileCommunicator {
         } catch (IOException e) {
             result = __("Input/Ouput error while saving file {0}.", outfile) + " : \n" + e.getClass().getName() + "\n" + e.getMessage();
         }
-        if (tempout != null && tempout.exists())
+        if (tempout.exists())
             tempout.delete();
         return result;
     }
