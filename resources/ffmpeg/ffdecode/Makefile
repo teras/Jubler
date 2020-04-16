@@ -2,7 +2,7 @@
 # Change the following variables to match your system #
 #######################################################
 
-# Variables should be automatically found!
+JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
 
 
 ##############################################################
@@ -11,9 +11,6 @@
 
 # Name of the produced library
 PROJ=ffdecode
-
-# Paths of include files
-JAVA_HOME=${shell /bin/sh ../../system/findjava.sh -j}
 
 # Current Path
 CPATH=${shell pwd}
@@ -99,7 +96,7 @@ ifeq (${MAKESYS},darwin_x86_64)
 	LD=${CC} -dynamiclib -framework JavaVM
 	LIBNAME=${PROJ}.x86_64
 	XFCONFIG=--enable-shared --arch=x86_64 --target-os=darwin
-	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.4
+	GCCOPTS=-fno-common -arch ${ARCH} -mmacosx-version-min=10.7
 	STRIP=echo No stripping on 
 endif
 ifeq (${MAKESYS},darwin_i386)
@@ -187,12 +184,16 @@ win32:javacheck distclean
 win64:javacheck distclean
 	${MAKE} -e library MAKESYS=win64
 	rm -rf ${JUBLER}/src/lib
-	
-darwin:javacheck
-	${MAKE} distclean
-	${MAKE} -e LIB MAKESYS=darwin_i386
+
+darwin_64:
 	${MAKE} distclean
 	${MAKE} -e LIB MAKESYS=darwin_x86_64
+
+darwin_32:
+	${MAKE} distclean
+	${MAKE} -e LIB MAKESYS=darwin_i386
+
+darwin:javacheck darwin_64 darwin_32
 	${MAKE} distclean
 	lipo ${PROJ}.i386 ${PROJ}.x86_64 -create -output ${MACLIBNAME}
 	TIGER=`otool -vR ${MACLIBNAME} | grep UNIX` ; if [ -n "$$TIGER" ] ; then echo "Tiger compatibility problem!" ; echo $$TIGER ; exit 1 ; fi
