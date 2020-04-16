@@ -2,7 +2,7 @@
  * TimeSpinnerModel.java
  *
  * Created on 22 Ιούνιος 2005, 11:57 μμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -26,7 +26,6 @@ package com.panayotis.jubler.time;
 import javax.swing.AbstractSpinnerModel;
 
 /**
- *
  * @author teras
  */
 public class TimeSpinnerModel extends AbstractSpinnerModel {
@@ -38,24 +37,28 @@ public class TimeSpinnerModel extends AbstractSpinnerModel {
         time = new Time(0d);
     }
 
+    @Override
     public Object getPreviousValue() {
         Time nvalue = new Time(time);
         nvalue.addTime(-speed);
         return nvalue;
     }
 
+    @Override
     public Object getNextValue() {
         Time nvalue = new Time(time);
         nvalue.addTime(speed);
         return nvalue;
     }
 
+    @Override
     public Object getValue() {
         return time;
     }
 
+    @Override
     public void setValue(Object newtime) {
-        if (newtime != null && newtime instanceof Time) {
+        if (newtime instanceof Time) {
             time.setTime((Time) newtime);
             fireStateChanged();
         }

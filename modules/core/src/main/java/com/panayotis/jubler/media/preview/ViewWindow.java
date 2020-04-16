@@ -24,7 +24,6 @@
 package com.panayotis.jubler.media.preview;
 
 /**
- *
  * @author teras
  */
 public class ViewWindow {
@@ -48,21 +47,17 @@ public class ViewWindow {
         return videoduration;
     }
 
-    public void setWindow(double start, double end, boolean lazy_resize) {
+    public void setWindow(double start, double end, boolean doNotResize) {
         /* First check if the window we want to show is larger than the current one */
         if ((end - start) > viewduration)
-            lazy_resize = false;
+            doNotResize = false;
 
-        /* Keep current duration, if we are "lazy" about it */
-        if (lazy_resize)
-            if (end > (viewstart + viewduration)) // Go past the visual end
-                start = end - viewduration;
-            else if (start < viewstart)         // GO before the visual start
-                end = start + viewduration;
-            else {                                // We are just perfect, inside!
-                start = viewstart;
-                end = viewstart + viewduration;
-            }
+        /* Keep current viewport size and center display */
+        if (doNotResize) {
+            double mid = (end + start) / 2;
+            start = mid - viewduration / 2;
+            end = mid + viewduration / 2;
+        }
 
         /* Make sure that start has positive value */
         if (start < 0) {

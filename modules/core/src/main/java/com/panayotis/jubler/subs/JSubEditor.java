@@ -22,38 +22,17 @@
  */
 package com.panayotis.jubler.subs;
 
-import com.panayotis.jubler.os.JIDialog;
-
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.JubFrame;
-
-import static com.panayotis.jubler.options.Options.*;
-
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Theme;
-import com.panayotis.jubler.subs.style.JOverStyles;
-import com.panayotis.jubler.subs.style.JStyleEditor;
-import com.panayotis.jubler.subs.style.StyleChangeListener;
-import com.panayotis.jubler.subs.style.StyleType;
-import com.panayotis.jubler.subs.style.SubStyle;
-import com.panayotis.jubler.subs.style.SubStyleList;
+import com.panayotis.jubler.subs.style.*;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.time.TimeSpinnerEditor;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
 import com.panayotis.jubler.undo.UndoEntry;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.net.URI;
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JToggleButton;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -62,11 +41,20 @@ import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.TextAction;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.net.URI;
+
+import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.options.Options.*;
+import static com.panayotis.jubler.time.gui.JTimeSpinner.*;
 
 /**
  * @author teras
  */
-public final class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener {
+public final class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener, PropertyChangeListener {
 
     public final static ImageIcon Lock[];
 
@@ -116,6 +104,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         SubStart = new JTimeSpinner();
         SubFinish = new JTimeSpinner();
         SubDur = new JTimeSpinner();
+        SubStart.addPropertyChangeListener(this);
+        SubFinish.addPropertyChangeListener(this);
+        SubDur.addPropertyChangeListener(this);
 
         /* Make subs area center justified */
         SimpleAttributeSet set = new SimpleAttributeSet();
@@ -166,7 +157,19 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }
 
     public void focusOnText() {
+        if (parent != null && parent.getFocusOwner() != null && parent.getFocusOwner().getParent() instanceof TimeSpinnerEditor)
+            return;
         SubText.requestFocusInWindow();
+    }
+
+    public void setFocusOnTimeEditor(boolean onTimeEditor) {
+        if (onTimeEditor) {
+            if (Lock1.isSelected())
+                SubFinish.requestFocus();
+            else
+                SubStart.requestFocus();
+        } else
+            SubText.requestFocusInWindow();
     }
 
     public String getSubText() {
@@ -441,11 +444,70 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         Action selectAll = new TextAction(__("Select all subtitles")) {
             public void actionPerformed(ActionEvent e) {
                 SubText.selectAll();
-                SubText.requestFocusInWindow();
+                focusOnText();
             }
         };
         textEditPopup.add(selectAll);
         SubText.setComponentPopupMenu(textEditPopup);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(JTimeSpinner.NAVIGATION_EVENT)) {
+            JTimeSpinner source = evt.getSource() instanceof JTimeSpinner ? (JTimeSpinner) evt.getSource() : null;
+            if (((Integer) PREVIOUS_LOCK).equals(evt.getNewValue())) {
+                if (Lock1.isSelected()) {
+                    Lock3.setSelected(true);
+                    if (source == SubDur)
+                        SubFinish.requestFocus();
+                    lockTimeSpinners(true);
+                } else if (Lock2.isSelected()) {
+                    Lock1.setSelected(true);
+                    if (source == SubStart)
+                        SubDur.requestFocus();
+                    lockTimeSpinners(true);
+                } else if (Lock3.isSelected()) {
+                    Lock2.setSelected(true);
+                    if (source == SubFinish)
+                        SubStart.requestFocus();
+                    lockTimeSpinners(true);
+                }
+            } else if (((Integer) NEXT_LOCK).equals(evt.getNewValue())) {
+                if (Lock1.isSelected()) {
+                    Lock2.setSelected(true);
+                    if (source == SubFinish)
+                        SubDur.requestFocus();
+                    lockTimeSpinners(true);
+                } else if (Lock2.isSelected()) {
+                    Lock3.setSelected(true);
+                    if (source == SubDur)
+                        SubStart.requestFocus();
+                    lockTimeSpinners(true);
+                } else if (Lock3.isSelected()) {
+                    Lock1.setSelected(true);
+                    if (source == SubStart)
+                        SubFinish.requestFocus();
+                    lockTimeSpinners(true);
+                }
+            } else if (((Integer) NEXT_TIME_SPINNER).equals(evt.getNewValue())) {
+                if (Lock1.isSelected()) {
+                    if (source == SubFinish)
+                        SubDur.requestFocus();
+                    else
+                        SubFinish.requestFocus();
+                } else if (Lock2.isSelected()) {
+                    if (source == SubStart)
+                        SubDur.requestFocus();
+                    else
+                        SubStart.requestFocus();
+                } else if (Lock3.isSelected()) {
+                    if (source == SubStart)
+                        SubFinish.requestFocus();
+                    else
+                        SubStart.requestFocus();
+                }
+            }
+        }
     }
 
     /**
@@ -813,7 +875,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
         crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -933,7 +995,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_Lock1ActionPerformed
 
     private void ToolsLockBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ToolsLockBActionPerformed
-        parent.ToolsLockM.setSelected(ToolsLockB.isSelected());
+        parent.ToolsLockEM.setSelected(ToolsLockB.isSelected());
     }//GEN-LAST:event_ToolsLockBActionPerformed
 
     @SuppressWarnings("UseSpecificCatch")
