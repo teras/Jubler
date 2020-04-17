@@ -7,7 +7,7 @@
     <groupId>com.panayotis.jubler</groupId>
     <artifactId>project</artifactId>
     <packaging>pom</packaging>
-    <version>7.0.0-alpha3</version>
+    <version>7.0.0</version>
     <name>Jubler Project</name>
     <modules>
         <module>modules/core</module>
@@ -24,7 +24,7 @@
     
     <properties>
         <long.version>7.0.0.0</long.version>
-        <release.version>1323</release.version> <!-- git rev-list - -count HEAD -->
+        <release.version>1324</release.version> <!-- git rev-list - -count HEAD -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
