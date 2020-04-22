@@ -386,7 +386,7 @@
                                             <arg value="teras/appimage-builder"/>
                                             <arg value="bash"/>
                                             <arg value="-c"/>
-                                            <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${gnupgpass}' `mktemp` ; /opt/appimage/AppRun -v Jubler.AppDir --sign Jubler-${project.version}.appimage"/>
+                                            <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${gnupgpass}' `mktemp` ; /opt/appimage/AppRun -v Jubler.AppDir --sign Jubler-${project.version}.x86_64.appimage"/>
                                         </exec>
                                     </target>
                                 </configuration>
