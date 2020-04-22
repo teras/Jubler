@@ -1,12 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 PATH=$PATH:/usr/local/opt/gettext/bin
 
-cd `dirname $0`
+set -x
 
+cd `dirname $0`
 pushd ../../modules/core
 mvn process-resources
+source target/classes/com/panayotis/jubler/information/version.prop
 popd
-source ../../modules/core/target/classes/com/panayotis/jubler/information/version.prop
 
 rm -rf cache
 mkdir cache

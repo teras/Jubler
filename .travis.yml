@@ -1,0 +1,10 @@
+language: java
+
+jdk:
+  - openjdk8
+
+before_install:
+- sudo apt-get update -y ; sudo apt-get install -y xmlto
+- ./resources/help/create
+- ./resources/i18n/compile
+
