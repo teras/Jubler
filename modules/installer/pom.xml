@@ -203,7 +203,7 @@
                                                     <arg value="--rm"/>
                                                     <arg value="-v"/>
                                                     <arg value="${project.build.directory}/jubler/jre:/target"/>
-                                                    <arg value="teras/jdkcross"/>
+                                                    <arg value="crossmob/jdk"/>
                                                     <arg value="sh"/>
                                                     <arg value="-c"/>
                                                     <arg value="echo Copying JRE with flavour windows@{arch}; cp -Ra /jre/windows@{arch}/* /target"/>
@@ -287,7 +287,7 @@
                                             <arg value="--rm"/>
                                             <arg value="-v"/>
                                             <arg value="${project.build.directory}/Jubler.app/Contents/jre:/target"/>
-                                            <arg value="teras/jdkcross"/>
+                                            <arg value="crossmob/jdk"/>
                                             <arg value="sh"/>
                                             <arg value="-c"/>
                                             <arg value="echo Copying JRE with flavour osx; cp -Ra /jre/osx/* /target"/>
@@ -370,7 +370,7 @@
                                             <arg value="--rm"/>
                                             <arg value="-v"/>
                                             <arg value="${project.build.directory}/Jubler.Appdir/Java:/target"/>
-                                            <arg value="teras/jdkcross"/>
+                                            <arg value="crossmob/jdk"/>
                                             <arg value="sh"/>
                                             <arg value="-c"/>
                                             <arg value="echo Copying JRE with flavour linux; cp -Ra /jre/linux/* /target"/>
