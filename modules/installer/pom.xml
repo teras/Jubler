@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>7.0.0</version>
+        <version>7.0.0-beta1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
@@ -383,7 +383,7 @@
                                             <arg value="${project.build.directory}:/usr/src/app"/>
                                             <arg value="-v"/>
                                             <arg value="${user.home}/.gnupg:/root/.gnupg"/>
-                                            <arg value="teras/appimage-builder"/>
+                                            <arg value="crossmob/appimage-builder"/>
                                             <arg value="bash"/>
                                             <arg value="-c"/>
                                             <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${gnupgpass}' `mktemp` ; /opt/appimage/AppRun -v Jubler.AppDir --sign Jubler-${project.version}.x86_64.appimage"/>
