@@ -132,54 +132,6 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.akathist.maven.plugins.launch4j</groupId>
-                        <artifactId>launch4j-maven-plugin</artifactId>
-                        <version>1.7.25</version>
-                        <executions>
-                            <execution>
-                                <id>windows-exe</id>
-                                <phase>process-classes</phase>
-                                <goals>
-                                    <goal>launch4j</goal>
-                                </goals>
-                                <configuration>
-                                    <icon>../../resources/installers/windows/frame.ico</icon>
-                                    <headerType>gui</headerType>
-                                    <stayAlive>true</stayAlive>
-                                    <jar>lib/jubler.jar</jar>
-                                    <dontWrapJar>true</dontWrapJar>
-                                    <errTitle>Unable to launch Jubler</errTitle>
-                                    <outfile>target/jubler/Jubler.exe</outfile>
-                                    <classPath>
-                                        <mainClass>Jubler</mainClass>
-                                        <addDependencies>false</addDependencies>
-                                        <preCp>anything</preCp>
-                                    </classPath>
-                                    <jre>
-                                        <path>jre</path>
-                                    </jre>
-                                    <versionInfo>
-                                        <fileVersion>${long.version}</fileVersion>
-                                        <txtFileVersion>${project.version}</txtFileVersion>
-                                        <fileDescription>Jubler</fileDescription>
-                                        <copyright>GNU GPL V2</copyright>
-                                        <productVersion>${long.version}</productVersion>
-                                        <txtProductVersion>${project.version}</txtProductVersion>
-                                        <productName>Jubler Subtitle Editor</productName>
-                                        <companyName>http://www.panayotis.com</companyName>
-                                        <internalName>jubler</internalName>
-                                        <originalFilename>Jubler.exe</originalFilename>
-                                    </versionInfo>
-                                    <splash>
-                                        <file>../../resources/installers/windows/splash.bmp</file>
-                                        <waitForWindow>true</waitForWindow>
-                                        <timeout>60</timeout>
-                                    </splash>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
                         <artifactId>maven-antrun-plugin</artifactId>
                         <version>1.8</version>
                         <executions>
@@ -192,6 +144,7 @@
                                             <attribute name="arch"/>
                                             <sequential>
                                                 <mkdir dir="target/jubler/lib/lib"/>
+                                                <move file="target/jubler.@{arch}.exe" tofile="target/jubler/Jubler.exe"/>
                                                 <delete>
                                                     <fileset dir="target/jubler/lib/lib" includes="*.dll"/>
                                                 </delete>
@@ -233,6 +186,14 @@
                                                 <move file="Jubler-${project.version}.@{arch}.exe" todir="target"/>
                                             </sequential>
                                         </macrodef>
+                                        <exec osfamily="mac" executable="../../resources/installers/windows/launchercreator.osx" failonerror="true">
+                                            <arg value="-n=Jubler"/>
+                                            <arg value="-d=Jubler subtitle editor"/>
+                                            <arg value="-c=Panayotis Katsaloulis"/>
+                                            <arg value="-v=${project.version}"/>
+                                            <arg value="-l=${long.version}" />
+                                            <arg value="-i=../../resources/installers/windows/frame.ico"/>
+                                        </exec>
                                         <preparefor arch="32"/>
                                         <preparefor arch="64"/>
                                         <delete file="Jubler-${project.version}.unsigned.exe"/>
