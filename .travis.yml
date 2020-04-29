@@ -8,3 +8,6 @@ before_install:
 - ./resources/help/create
 - ./resources/i18n/compile
 
+script:
+    set -e
+    mvn clean install
