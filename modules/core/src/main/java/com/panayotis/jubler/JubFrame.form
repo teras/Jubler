@@ -973,7 +973,7 @@
                       <KeyStroke key="Ctrl+D"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="__(&quot;Jump focus from Text area to Time editor&quot;)" type="code"/>
+                      <Connection code="__(&quot;Change focus from Text area to Time editor&quot;)" type="code"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="EFJ" noResource="true"/>
                   </Properties>

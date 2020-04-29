@@ -51,6 +51,8 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.options.Options.*;
 import static com.panayotis.jubler.time.gui.JTimeSpinner.*;
 
+import java.awt.event.KeyEvent;
+
 /**
  * @author teras
  */
@@ -71,6 +73,14 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     private final static Color INFOC = Color.BLACK;
     private final static Color INFOC_E = new Color(253, 0, 0);
+
+    private static final String TOOLTIP = __("<b>How to navigate with keyboard</b><br/>"
+            + "- Change focus from Text area to Editor with " + SystemDependent.getKeyMods(KeyEvent.META_MASK).trim() + "D (default binding)<br/>"
+            + "- Change focus from one timing to the other with the [ENTER] key<br/>"
+            + "- Change the currently selected lock with [PAGE-UP]/[PAGE-DOWN] keys<br/>"
+            + "- Add/substract timing values with [ARROW-UP]/[ARROW-DOWN] keys<br/>"
+            + "- Change the time resolution with [ARROW-LEFT]/[ARROW-RIGHT] keys<br/>"
+            + "</html>");
 
     static {
         Lock = new ImageIcon[2];
@@ -143,33 +153,38 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             styles = parent.getSubtitles().getStyleList();
             refreshStyles();
         }
-        if (!isEnabled())
+        if (!isEnabled()) {
             setEnabled(true);
+        }
         showStyle();
     }
 
     private void refreshStyles() {
         ignore_style_list_changes = true;
         StyleListC.removeAllItems();
-        for (SubStyle t : styles)
+        for (SubStyle t : styles) {
             StyleListC.addItem(t);
+        }
         ignore_style_list_changes = false;
     }
 
     public void focusOnText() {
-        if (parent != null && parent.getFocusOwner() != null && parent.getFocusOwner().getParent() instanceof TimeSpinnerEditor)
+        if (parent != null && parent.getFocusOwner() != null && parent.getFocusOwner().getParent() instanceof TimeSpinnerEditor) {
             return;
+        }
         SubText.requestFocusInWindow();
     }
 
     public void setFocusOnTimeEditor(boolean onTimeEditor) {
         if (onTimeEditor) {
-            if (Lock1.isSelected())
+            if (Lock1.isSelected()) {
                 SubFinish.requestFocus();
-            else
+            } else {
                 SubStart.requestFocus();
-        } else
+            }
+        } else {
             SubText.requestFocusInWindow();
+        }
     }
 
     public String getSubText() {
@@ -186,39 +201,49 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     public void spinnerChanged(JTimeSpinner which) {
         double tstart, tfinish, tdur;
-        if (ignore_sub_changes)
+        if (ignore_sub_changes) {
             return;
+        }
 
         int row = parent.getSelectedRowIdx();
-        if (row < 0)
+        if (row < 0) {
             return;
+        }
         parent.keepUndo(entry);
 
         tstart = SubStart.getTimeValue().toSeconds();
         tfinish = SubFinish.getTimeValue().toSeconds();
         tdur = SubDur.getTimeValue().toSeconds();
-        if (Lock1.isSelected())
+        if (Lock1.isSelected()) {
             if (which == SubFinish) {
-                if (tfinish < tstart)
+                if (tfinish < tstart) {
                     tfinish = tstart;
-                tdur = tfinish - tstart;
-            } else
-                tfinish = tstart + tdur;
-        if (Lock2.isSelected())
-            if (which == SubStart) {
-                if (tstart > tfinish)
-                    tstart = tfinish;
+                }
                 tdur = tfinish - tstart;
             } else {
-                if (tdur > tfinish)
+                tfinish = tstart + tdur;
+            }
+        }
+        if (Lock2.isSelected()) {
+            if (which == SubStart) {
+                if (tstart > tfinish) {
+                    tstart = tfinish;
+                }
+                tdur = tfinish - tstart;
+            } else {
+                if (tdur > tfinish) {
                     tdur = tfinish;
+                }
                 tstart = tfinish - tdur;
             }
-        if (Lock3.isSelected())
-            if (which == SubStart)
+        }
+        if (Lock3.isSelected()) {
+            if (which == SubStart) {
                 tfinish = tstart + tdur;
-            else
+            } else {
                 tstart = tfinish - tdur;
+            }
+        }
         ignore_sub_changes = true;
         SubStart.setTimeValue(new Time(tstart));
         SubFinish.setTimeValue(new Time(tfinish));
@@ -251,9 +276,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             }
         });
 
-        SubStart.setToolTipText(__("Start time of the subtitle"));
-        SubFinish.setToolTipText(__("Stop time of the subtitle"));
-        SubDur.setToolTipText(__("Duration of the subtitle"));
+        SubStart.setToolTipText("<html>" + __("Start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        SubFinish.setToolTipText("<html>" + __("Stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        SubDur.setToolTipText("<html>" + __("Duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
     }
 
     /* Lock/unlock time spinners */
@@ -261,12 +286,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         SubStart.setEnabled(enabled);
         SubFinish.setEnabled(enabled);
         SubDur.setEnabled(enabled);
-        if (Lock1.isSelected())
+        if (Lock1.isSelected()) {
             SubStart.setEnabled(false);
-        if (Lock2.isSelected())
+        }
+        if (Lock2.isSelected()) {
             SubFinish.setEnabled(false);
-        if (Lock3.isSelected())
+        }
+        if (Lock3.isSelected()) {
             SubDur.setEnabled(false);
+        }
         setLockIcon(Lock1);
         setLockIcon(Lock2);
         setLockIcon(Lock3);
@@ -310,32 +338,36 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             SubText.setForeground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
         } else {
             SubStyle style = entry.getStyle();
-            if (style == null)
+            if (style == null) {
                 style = styles.get(0);
+            }
             showStyle();
         }
     }
 
     private void setStyleListEnabled(boolean enabled) {
-        if (styles != null && styles.size() > 1)
+        if (styles != null && styles.size() > 1) {
             StyleListC.setEnabled(enabled);
-        else
+        } else {
             StyleListC.setEnabled(false);
+        }
     }
 
     private void setLockIcon(JToggleButton b) {
-        if (b.isSelected())
+        if (b.isSelected()) {
             b.setIcon(Lock[0]);
-        else
+        } else {
             b.setIcon(Lock[1]);
+        }
     }
 
     public void setUnsaved(boolean status) {
         Unsaved.setEnabled(status);
-        if (status)
+        if (status) {
             Unsaved.setToolTipText(__("Subtitles need to be saved"));
-        else
+        } else {
             Unsaved.setToolTipText(null);
+        }
     }
 
     public void setAttached(boolean attached) {
@@ -361,9 +393,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleListC.setSelectedIndex(styles.getStyleIndex(entry));
         SimpleAttributeSet set = new SimpleAttributeSet();
         SubText.getStyledDocument().setCharacterAttributes(0, SubText.getText().length(), set, true);
-        if (ShowStyleB.isSelected())
+        if (ShowStyleB.isSelected()) {
             entry.applyAttributesToDocument(SubText);
-        else {
+        } else {
             SubText.setBackground(Color.WHITE);
             SubText.setCaretColor(Color.BLACK);
             set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
@@ -408,8 +440,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         } else if (entry.getFinishTime().differenceInSecs(entry.getStartTime()) < getMinDuration()) {
             DurationL.setVisible(true);
             DurationL.setToolTipText(__("Duration time is too small"));
-        } else
+        } else {
             DurationL.setVisible(false);
+        }
 
         CompactL.setVisible(isCompactSubs() && m.length < (m.lines - 1) * getMaxLineLength());
 
@@ -458,53 +491,62 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             if (((Integer) PREVIOUS_LOCK).equals(evt.getNewValue())) {
                 if (Lock1.isSelected()) {
                     Lock3.setSelected(true);
-                    if (source == SubDur)
+                    if (source == SubDur) {
                         SubFinish.requestFocus();
+                    }
                     lockTimeSpinners(true);
                 } else if (Lock2.isSelected()) {
                     Lock1.setSelected(true);
-                    if (source == SubStart)
+                    if (source == SubStart) {
                         SubDur.requestFocus();
+                    }
                     lockTimeSpinners(true);
                 } else if (Lock3.isSelected()) {
                     Lock2.setSelected(true);
-                    if (source == SubFinish)
+                    if (source == SubFinish) {
                         SubStart.requestFocus();
+                    }
                     lockTimeSpinners(true);
                 }
             } else if (((Integer) NEXT_LOCK).equals(evt.getNewValue())) {
                 if (Lock1.isSelected()) {
                     Lock2.setSelected(true);
-                    if (source == SubFinish)
+                    if (source == SubFinish) {
                         SubDur.requestFocus();
+                    }
                     lockTimeSpinners(true);
                 } else if (Lock2.isSelected()) {
                     Lock3.setSelected(true);
-                    if (source == SubDur)
+                    if (source == SubDur) {
                         SubStart.requestFocus();
+                    }
                     lockTimeSpinners(true);
                 } else if (Lock3.isSelected()) {
                     Lock1.setSelected(true);
-                    if (source == SubStart)
+                    if (source == SubStart) {
                         SubFinish.requestFocus();
+                    }
                     lockTimeSpinners(true);
                 }
             } else if (((Integer) NEXT_TIME_SPINNER).equals(evt.getNewValue())) {
                 if (Lock1.isSelected()) {
-                    if (source == SubFinish)
+                    if (source == SubFinish) {
                         SubDur.requestFocus();
-                    else
+                    } else {
                         SubFinish.requestFocus();
+                    }
                 } else if (Lock2.isSelected()) {
-                    if (source == SubStart)
+                    if (source == SubStart) {
                         SubDur.requestFocus();
-                    else
+                    } else {
                         SubStart.requestFocus();
+                    }
                 } else if (Lock3.isSelected()) {
-                    if (source == SubStart)
+                    if (source == SubStart) {
                         SubFinish.requestFocus();
-                    else
+                    } else {
                         SubStart.requestFocus();
+                    }
                 }
             }
         }
@@ -577,12 +619,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel3.setLayout(new java.awt.GridLayout(3, 1));
 
         L1.setText(__("Start"));
+        L1.setToolTipText("<html>" + TOOLTIP + "</html");
         jPanel3.add(L1);
 
         L2.setText(__("End"));
+        L2.setToolTipText("<html>" + TOOLTIP + "</html");
         jPanel3.add(L2);
 
         L3.setText(__("Duration"));
+        L3.setToolTipText("<html>" + TOOLTIP + "</html");
         jPanel3.add(L3);
 
         TimeP.add(jPanel3, java.awt.BorderLayout.WEST);
@@ -595,7 +640,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock1);
         Lock1.setIcon(Theme.loadIcon("lock.png"));
-        Lock1.setToolTipText(__("Lock the start time of the subtitle"));
+        Lock1.setToolTipText(__("<html>" + "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
@@ -612,7 +657,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock2);
         Lock2.setIcon(Theme.loadIcon("lock.png"));
-        Lock2.setToolTipText(__("Lock the stop time of the subtitle"));
+        Lock2.setToolTipText(__("<html>" + "Lock the stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock2.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock2, "only");
         Lock2.addActionListener(new java.awt.event.ActionListener() {
@@ -630,7 +675,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         TimeLock.add(Lock3);
         Lock3.setIcon(Theme.loadIcon("lock.png"));
         Lock3.setSelected(true);
-        Lock3.setToolTipText(__("Lock the duration of the subtitle"));
+        Lock3.setToolTipText(__("<html>" + "Lock the duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock3.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock3, "only");
         Lock3.addActionListener(new java.awt.event.ActionListener() {
@@ -866,7 +911,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.setBackground(new java.awt.Color(244, 227, 174));
         crossP.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setForeground(java.awt.Color.black);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/crossmobile.png"))); // NOI18N
         jLabel1.setText(__("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?"));
         jLabel1.setIconTextGap(6);
@@ -901,8 +945,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             start = end;
             end = swap;
         }
-        if (entry == null || overstyle == null)
+        if (entry == null || overstyle == null) {
             return;
+        }
         overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), start, end, entry.getText());
     }//GEN-LAST:event_SubTextCaretUpdate
 
@@ -930,12 +975,14 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_TrashBActionPerformed
 
     private void StyleListCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StyleListCActionPerformed
-        if (ignore_style_list_changes)
+        if (ignore_style_list_changes) {
             return;
+        }
         int row = parent.getSelectedRowIdx();
         int res = StyleListC.getSelectedIndex();
-        if (res < 0)
+        if (res < 0) {
             return;
+        }
         parent.keepUndo(entry);
         entry.setStyle(styles.get(res));
         showStyle();
@@ -1017,8 +1064,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
      * The style update SHOULD be done asynchronusly
      */
     public void insertUpdate(DocumentEvent e) {
-        if (ignore_sub_changes)
+        if (ignore_sub_changes) {
             return;
+        }
         parent.subTextChanged();
         entry.insertText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
@@ -1028,8 +1076,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
      * The style update SHOULD be done asynchronusly
      */
     public void removeUpdate(DocumentEvent e) {
-        if (ignore_sub_changes)
+        if (ignore_sub_changes) {
             return;
+        }
         parent.subTextChanged();
         entry.removeText(e.getOffset(), e.getLength());
         SwingUtilities.invokeLater(stylethread);
