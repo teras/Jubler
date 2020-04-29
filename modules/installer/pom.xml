@@ -140,6 +140,15 @@
                                 <configuration>
                                     <target>
                                         <loadproperties srcfile="secret/codesign.properties"/>
+                                        <condition property="os.ext" value="exe">
+                                            <os family="windows" />
+                                        </condition>
+                                        <condition property="os.ext" value="osx">
+                                            <os family="mac" />
+                                        </condition>
+                                        <condition property="os.ext" value="linux">
+                                            <os family="unix" />
+                                        </condition>
                                         <macrodef name="preparefor">
                                             <attribute name="arch"/>
                                             <sequential>
@@ -186,7 +195,7 @@
                                                 <move file="Jubler-${project.version}.@{arch}.exe" todir="target"/>
                                             </sequential>
                                         </macrodef>
-                                        <exec osfamily="mac" executable="../../resources/installers/windows/launchercreator.osx" failonerror="true">
+                                        <exec executable="../../resources/installers/windows/launchercreator.${os.ext}" failonerror="true">
                                             <arg value="-n=Jubler"/>
                                             <arg value="-d=Jubler subtitle editor"/>
                                             <arg value="-c=Panayotis Katsaloulis"/>
