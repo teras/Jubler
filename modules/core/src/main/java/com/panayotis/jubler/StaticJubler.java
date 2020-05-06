@@ -117,10 +117,10 @@ public class StaticJubler {
         screen_width = values[2];
         screen_height = values[3];
         screen_state = values[4];
-        if (screen_width < 400)
-            screen_width = 400;
-        if (screen_height < 300)
-            screen_height = 300;
+        if (screen_width < 800)
+            screen_width = 800;
+        if (screen_height < 600)
+            screen_height = 600;
     }
 
     public static void showAbout() {
