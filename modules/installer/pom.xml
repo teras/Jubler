@@ -140,7 +140,7 @@
                                 <configuration>
                                     <target>
                                         <loadproperties srcfile="secret/codesign.properties"/>
-                                        <condition property="os.ext" value="exe">
+                                        <condition property="os.ext" value="32.exe">
                                             <os family="windows" />
                                         </condition>
                                         <condition property="os.ext" value="osx">
