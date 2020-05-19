@@ -139,7 +139,6 @@
                                 <id>post-copy</id>
                                 <configuration>
                                     <target>
-                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <condition property="os.ext" value="32.exe">
                                             <os family="windows" />
                                         </condition>
@@ -179,7 +178,7 @@
                                                     <arg value="-pkcs12"/>
                                                     <arg value="secret/code-signing.p12"/>
                                                     <arg value="-pass"/>
-                                                    <arg value="${p12pass}"/>
+                                                    <arg value="${env.P12_PASS}"/>
                                                     <arg value="-n"/>
                                                     <arg value="Jubler Installer"/>
                                                     <arg value="-i"/>
@@ -230,7 +229,6 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
-                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <copy file="../../resources/installers/macosx/Jubler"
                                               todir="target/Jubler.app/Contents/MacOS"/>
                                         <copy file="../../resources/installers/macosx/PkgInfo"
@@ -313,7 +311,6 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
-                                        <loadproperties srcfile="secret/codesign.properties"/>
                                         <property name="appdir" value="target/Jubler.AppDir"/>
                                         <property name="imgsrcdir"
                                                   value="../../resources/installers/linux/dist/appimage"/>
@@ -356,7 +353,7 @@
                                             <arg value="crossmob/appimage-builder"/>
                                             <arg value="bash"/>
                                             <arg value="-c"/>
-                                            <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${gnupgpass}' `mktemp` ; /opt/appimage/AppRun -v Jubler.AppDir --sign Jubler-${project.version}.x86_64.appimage"/>
+                                            <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${env.GNUPG_PASS}' `mktemp` ; /opt/appimage/AppRun -v Jubler.AppDir --sign Jubler-${project.version}.x86_64.appimage"/>
                                         </exec>
                                     </target>
                                 </configuration>
