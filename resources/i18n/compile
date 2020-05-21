@@ -13,11 +13,12 @@ rm -rf cache
 mkdir cache
 
 for i in *.po ; do
-	LNG=`echo $i | sed -e 's/\.po$//g'`
-	echo Creating class for language \"$LNG\"
-	rm -rf com
-	JAVAC=javac msgfmt -d . --java2 --resource=com.panayotis.jubler.i18n.Messages_$LNG $i || exit 1
-	jar cf $LNG.jar com || exit 1
+    LNG=`echo $i | sed -e 's/\.po$//g'`
+    echo Creating class for language \"$LNG\"
+    rm -rf com
+    export JAVAC=`which javac`
+    msgfmt -d . --java2 --resource=com.panayotis.jubler.i18n.Messages_$LNG $i || exit 1
+    jar cf $LNG.jar com || exit 1
     mvn install:install-file -Dfile=$LNG.jar -DgroupId=com.panayotis.jubler -DartifactId=$LNG -Dversion=$version -Dpackaging=jar || exit 1
     rm -rf com
     mv $LNG.jar cache
