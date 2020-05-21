@@ -7,3 +7,4 @@ modules/installer/cache/*
 target/
 *.iml
 .idea/
+modules/installer/secret/code-signing.p12
