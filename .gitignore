@@ -8,3 +8,4 @@ target/
 *.iml
 .idea/
 modules/installer/secret/code-signing.p12
+modules/installer/secret/apple-keysign.p12
