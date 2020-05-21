@@ -151,6 +151,8 @@
                                         <macrodef name="preparefor">
                                             <attribute name="arch"/>
                                             <sequential>
+                                                <mkdir dir="cache"/>
+                                                <get skipexisting="true"  dest="cache/win@{arch}-jre.tar.gz" src="https://github.com/teras/Jubler/releases/download/6.0.pre6/win@{arch}-jre.tar.gz"/>
                                                 <mkdir dir="target/jubler/lib/lib"/>
                                                 <move file="target/jubler.@{arch}.exe" tofile="target/jubler/Jubler.exe"/>
                                                 <delete>
@@ -159,15 +161,12 @@
                                                 <delete dir="target/jubler/jre"/>
                                                 <copy file="../../resources/libs/ffmpeg/win/ffdecode_@{arch}.dll"
                                                       todir="target/jubler/lib/lib"/>
-                                                <exec executable="docker" failonerror="true">
-                                                    <arg value="run"/>
-                                                    <arg value="--rm"/>
-                                                    <arg value="-v"/>
-                                                    <arg value="${project.build.directory}/jubler/jre:/target"/>
-                                                    <arg value="crossmob/jdk"/>
-                                                    <arg value="sh"/>
-                                                    <arg value="-c"/>
-                                                    <arg value="echo Copying JRE with flavour windows@{arch}; cp -Ra /jre/windows@{arch}/* /target"/>
+                                                <mkdir dir="${project.build.directory}/jubler/jre"/>
+                                                <exec executable="tar" failonerror="true">
+                                                    <arg value="xf"/>
+                                                    <arg value="cache/win@{arch}-jre.tar.gz"/>
+                                                    <arg value="-C"/>
+                                                    <arg value="${project.build.directory}/jubler/jre"/>
                                                 </exec>
                                                 <exec executable="makensis" failonerror="true">
                                                     <arg line="-NOCD -DVERSION=${project.version} -DWINBITS=@{arch} ../../resources/installers/windows/jubler.nsi"/>
@@ -229,6 +228,8 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
+                                        <mkdir dir="cache"/>
+                                        <get skipexisting="true"  dest="cache/osx-jre.tar.gz" src="https://github.com/teras/Jubler/releases/download/6.0.pre6/osx-jre.tar.gz"/>
                                         <copy file="../../resources/installers/macosx/Jubler"
                                               todir="target/Jubler.app/Contents/MacOS"/>
                                         <copy file="../../resources/installers/macosx/PkgInfo"
@@ -251,17 +252,12 @@
                                             <replacefilter token="@@VERSION@@" value="${project.version}"/>
                                         </replace>
                                         <mkdir dir="target/Jubler.app/Contents/jre"/>
-                                        <exec executable="docker" failonerror="true">
-                                            <arg value="run"/>
-                                            <arg value="--rm"/>
-                                            <arg value="-v"/>
-                                            <arg value="${project.build.directory}/Jubler.app/Contents/jre:/target"/>
-                                            <arg value="crossmob/jdk"/>
-                                            <arg value="sh"/>
-                                            <arg value="-c"/>
-                                            <arg value="echo Copying JRE with flavour osx; cp -Ra /jre/osx/* /target"/>
+                                        <exec executable="tar" failonerror="true">
+                                            <arg value="xf"/>
+                                            <arg value="cache/osx-jre.tar.gz"/>
+                                            <arg value="-C"/>
+                                            <arg value="${project.build.directory}/Jubler.app/Contents/jre"/>
                                         </exec>
-
                                         <delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
                                         <delete file="/tmp/Jubler-template.dmg" quiet="true"/>
                                         <exec executable="hdiutil" failonerror="false">
@@ -312,9 +308,12 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
+                                        <mkdir dir="cache"/>
+                                        <get skipexisting="true"  dest="cache/linux-jre.tar.gz" src="https://github.com/teras/Jubler/releases/download/6.0.pre6/linux-jre.tar.gz"/>
                                         <property name="appdir" value="target/Jubler.AppDir"/>
                                         <property name="imgsrcdir"
                                                   value="../../resources/installers/linux/dist/appimage"/>
+                                        <echo>If the following command fails, make sure to </echo>
                                         <copy todir="${appdir}/lib">
                                             <fileset dir="target/jubler/lib">
                                                 <include name="**"/>
@@ -333,15 +332,12 @@
                                         <copy file="${imgsrcdir}/jubler32.png" tofile="${appdir}/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler.desktop" tofile="${appdir}/jubler.desktop"/>
                                         <chmod file="${appdir}/AppRun" perm="a+x"/>
-                                        <exec executable="docker" failonerror="true">
-                                            <arg value="run"/>
-                                            <arg value="--rm"/>
-                                            <arg value="-v"/>
-                                            <arg value="${project.build.directory}/Jubler.Appdir/Java:/target"/>
-                                            <arg value="crossmob/jdk"/>
-                                            <arg value="sh"/>
-                                            <arg value="-c"/>
-                                            <arg value="echo Copying JRE with flavour linux; cp -Ra /jre/linux/* /target"/>
+                                        <mkdir dir="target/Jubler.Appdir/Java"/>
+                                        <exec executable="tar" failonerror="true">
+                                            <arg value="xvf"/>
+                                            <arg value="cache/linux-jre.tar.gz"/>
+                                            <arg value="-C"/>
+                                            <arg value="${project.build.directory}/Jubler.Appdir/Java"/>
                                         </exec>
                                         <exec executable="docker" failonerror="true">
                                             <arg value="run"/>

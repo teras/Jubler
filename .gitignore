@@ -5,6 +5,7 @@ build/
 resources/i18n/cache
 resources/help/cache
 modules/installer/secret/*
+modules/installer/cache/*
 target/
 *.iml
 .idea/
