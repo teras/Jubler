@@ -177,7 +177,7 @@
                                                     <arg value="-pkcs12"/>
                                                     <arg value="secret/code-signing.p12"/>
                                                     <arg value="-pass"/>
-                                                    <arg value="${env.P12_PASS}"/>
+                                                    <arg value="${env.P12_PASS_DIST}"/>
                                                     <arg value="-n"/>
                                                     <arg value="Jubler Installer"/>
                                                     <arg value="-i"/>

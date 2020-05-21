@@ -5,6 +5,7 @@ jobs:
       jdk: openjdk8
     - os: osx
       osx_image: xcode11.3
+      language: objective_c
 
 addons:
   apt:
