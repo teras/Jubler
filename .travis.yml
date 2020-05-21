@@ -4,10 +4,14 @@ jdk:
   - openjdk8
 
 before_install:
-- sudo apt-get update -y ; sudo apt-get install -y xmlto
-- ./resources/help/create
-- ./resources/i18n/compile
+ - sudo apt-get update -y ; sudo apt-get install -y xmlto
+ - ./resources/help/create
+ - ./resources/i18n/compile
 
 script:
-    set -e
-    mvn clean install
+ - set -e
+ - mkdir uplaod
+ - mvn clean install -Pdist-generic && cp modules/installer/target/Jubler-*tar.bz2 upload
+ - mvn clean install -Pdist-linux && cp modules/installer/target/Jubler-*.appimage upload
+ - mvn clean install -Pdist-osx && cp modules/installer/target/Jubler-*.appimage upload
+ - mvn clean install -Pdist-windows && cp modules/installer/target/Jubler-*.appimage upload

@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>7.0.0</version>
+        <version>7.0.1-beta</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
@@ -250,6 +250,7 @@
                                         <replace file="target/Jubler.app/Contents/Info.plist">
                                             <replacefilter token="@@VERSION@@" value="${project.version}"/>
                                         </replace>
+                                        <mkdir dir="target/Jubler.app/Contents/jre"/>
                                         <exec executable="docker" failonerror="true">
                                             <arg value="run"/>
                                             <arg value="--rm"/>
