@@ -1,7 +1,25 @@
-language: java
+jobs:
+  include:
+    - os: linux
+      language: java
+      jdk: openjdk8
+    - os: osx
+      osx_image: xcode11.3
 
-jdk:
-  - openjdk8
+addons:
+  apt:
+    packages:
+      - ant
+      - xmlto
+      - nsis
+      - osslsigncode
+  homebrew:
+    packages:
+      - xmlto
+      - docbook
+      - docbook-xsl
+    taps: homebrew/cask-versions
+    casks: adoptopenjdk8
 
 deploy:
   provider: releases
@@ -11,16 +29,16 @@ deploy:
     - upload/Jubler-*
   draft: true
 
-
 before_install:
- - sudo apt-get update -y ; sudo apt-get install -y xmlto
+ - if [ $TRAVIS_OS_NAME = osx ] ; then export XML_CATALOG_FILES="/usr/local/etc/xml/catalog" ; fi
  - ./resources/help/create
+ - javac -version
  - ./resources/i18n/compile
 
 script:
  - set -e
  - mkdir uplaod
- - mvn clean install -Pdist-generic && cp modules/installer/target/Jubler-*tar.bz2 upload
- - mvn clean install -Pdist-linux && cp modules/installer/target/Jubler-*.appimage upload
- - mvn clean install -Pdist-osx && cp modules/installer/target/Jubler-*.appimage upload
- - mvn clean install -Pdist-windows && cp modules/installer/target/Jubler-*.appimage upload
+ - if [ $TRAVIS_OS_NAME = osx   ] ; then mvn clean install -Pdist-osx     && cp modules/installer/target/Jubler-*.dmg upload      ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-generic && cp modules/installer/target/Jubler-*tar.bz2 upload   ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-linux   && cp modules/installer/target/Jubler-*.appimage upload ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-windows && cp modules/installer/target/Jubler-*.exe upload      ; fi
