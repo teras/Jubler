@@ -16,6 +16,7 @@ addons:
   homebrew:
     packages:
       - ant
+      - gettext
     taps: homebrew/cask-versions
     casks: adoptopenjdk8
 
