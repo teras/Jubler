@@ -33,8 +33,8 @@ before_install:
 
 script:
  - set -e
- - mkdir uplaod
- - if [ $TRAVIS_OS_NAME = osx   ] ; then mvn clean install -Pdist-osx     && cp modules/installer/target/Jubler-*.dmg upload      ; fi
- - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-generic && cp modules/installer/target/Jubler-*tar.bz2 upload   ; fi
- - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-linux   && cp modules/installer/target/Jubler-*.appimage upload ; fi
- - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-windows && cp modules/installer/target/Jubler-*.exe upload      ; fi
+ - mkdir upload
+ - if [ $TRAVIS_OS_NAME = osx   ] ; then mvn clean install -Pdist-osx     && cp modules/installer/target/Jubler-*.dmg upload/      ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-generic && cp modules/installer/target/Jubler-*tar.bz2 upload/   ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-linux   && cp modules/installer/target/Jubler-*.appimage upload/ ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-windows && cp modules/installer/target/Jubler-*.exe upload/      ; fi
