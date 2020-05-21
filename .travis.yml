@@ -1,11 +1,10 @@
 jobs:
   include:
-    - os: linux
-      language: java
-      jdk: openjdk8
+#    - os: linux
+#      language: java
+#      jdk: openjdk8
     - os: osx
-      osx_image: xcode11.3
-      language: objective_c
+      osx_image: xcode11.4
 
 addons:
   apt:
@@ -16,6 +15,7 @@ addons:
   homebrew:
     packages:
       - ant
+      - maven
       - gettext
     taps: homebrew/cask-versions
     casks: adoptopenjdk8
@@ -24,17 +24,21 @@ deploy:
   provider: releases
   api_key: "$GITHUB_UPLOAD_KEY"
   file_glob: true
+  deploy.skip_cleanup: true
   file:
     - upload/Jubler-*
   draft: true
 
 before_install:
+ - ls /Library/Java/JavaVirtualMachines
+ - javac -version
+ - rm -rf /Library/Java/JavaVirtualMachines/*14*
  - ./resources/i18n/compile
 
 script:
  - set -e
  - mkdir upload
- - if [ $TRAVIS_OS_NAME = osx   ] ; then mvn clean install -Pdist-osx     && cp modules/installer/target/Jubler-*.dmg upload/      ; fi
+ - if [ $TRAVIS_OS_NAME = osx   ] ; then mvn clean install -Pdist-osx     && cp modules/installer/target/Jubler-*.dmg upload/ ; notarize send ; fi
  - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-generic && cp modules/installer/target/Jubler-*tar.bz2 upload/   ; fi
  - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-linux   && cp modules/installer/target/Jubler-*.appimage upload/ ; fi
  - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-windows && cp modules/installer/target/Jubler-*.exe upload/      ; fi
