@@ -3,7 +3,6 @@ build/
 /dist/
 ^_support/
 resources/i18n/cache
-resources/help/cache
 modules/installer/cache/*
 target/
 *.iml

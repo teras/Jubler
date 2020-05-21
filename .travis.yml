@@ -11,14 +11,11 @@ addons:
   apt:
     packages:
       - ant
-      - xmlto
       - nsis
       - osslsigncode
   homebrew:
     packages:
-      - xmlto
-      - docbook
-      - docbook-xsl
+      - ant
     taps: homebrew/cask-versions
     casks: adoptopenjdk8
 
@@ -31,9 +28,6 @@ deploy:
   draft: true
 
 before_install:
- - if [ $TRAVIS_OS_NAME = osx ] ; then export XML_CATALOG_FILES="/usr/local/etc/xml/catalog" ; fi
- - ./resources/help/create
- - javac -version
  - ./resources/i18n/compile
 
 script:
