@@ -154,6 +154,7 @@
                                                 <mkdir dir="cache"/>
                                                 <get skipexisting="true"  dest="cache/win@{arch}-jre.tar.gz" src="https://github.com/teras/Jubler/releases/download/6.0.pre6/win@{arch}-jre.tar.gz"/>
                                                 <mkdir dir="target/jubler/lib/lib"/>
+                                                <delete file="target/jubler/Jubler.exe"/>
                                                 <move file="target/jubler.@{arch}.exe" tofile="target/jubler/Jubler.exe"/>
                                                 <delete>
                                                     <fileset dir="target/jubler/lib/lib" includes="*.dll"/>
