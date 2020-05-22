@@ -339,12 +339,12 @@
                                         <copy file="${imgsrcdir}/jubler32.png" tofile="${appdir}/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler.desktop" tofile="${appdir}/jubler.desktop"/>
                                         <chmod file="${appdir}/AppRun" perm="a+x"/>
-                                        <mkdir dir="target/Jubler.Appdir/Java"/>
+                                        <mkdir dir="${appdir}/Java"/>
                                         <exec executable="tar" failonerror="true">
                                             <arg value="xvf"/>
                                             <arg value="cache/linux-jre.tar.gz"/>
                                             <arg value="-C"/>
-                                            <arg value="${project.build.directory}/Jubler.Appdir/Java"/>
+                                            <arg value="${appdir}/Java"/>
                                         </exec>
                                         <exec executable="docker" failonerror="true">
                                             <arg value="run"/>

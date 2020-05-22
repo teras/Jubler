@@ -27,7 +27,9 @@ deploy:
   skip_cleanup: true
   file:
     - upload/Jubler-*
-  draft: true
+  on:
+    tags: true
+#  draft: true
 
 before_install:
  - set -e ; mkdir upload
