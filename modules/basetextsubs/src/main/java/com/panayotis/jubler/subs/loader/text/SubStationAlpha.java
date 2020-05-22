@@ -25,12 +25,15 @@ package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.subs.style.StyleType.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
+
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.format.StyledFormat;
 import com.panayotis.jubler.subs.loader.format.StyledTextSubFormat;
@@ -38,11 +41,11 @@ import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
  * @author teras
  */
 public class SubStationAlpha extends StyledTextSubFormat {
@@ -163,16 +166,19 @@ public class SubStationAlpha extends StyledTextSubFormat {
         Time finish = new Time(m.group(6), m.group(7), m.group(8), m.group(9));
         SubEntry entry = new SubEntry(start, finish, m.group(16).replace("\\N", "\n").replace("\\n", "\n"));
         entry.setStyle(subtitle_list.getStyleList().getStyleByName(m.group(10)));
+        entry.setLayer(m.group(1).trim());
+        entry.setName(m.group(11).trim());
+        entry.setMarginL(m.group(12).trim());
+        entry.setMarginR(m.group(13).trim());
+        entry.setMarginV(m.group(14).trim());
+        entry.setEffect(m.group(15).trim());
         parseSubText(entry);
-
-        // m.group(1) is still unusable
-        // m.group(11-15) are still unusable
         return entry;
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
         str.append("Dialogue: ");
-        str.append("0").append(',');    // Layer - Marked
+        str.append(sub.getLayer()).append(',');
         str.append(timeformat(sub.getStartTime()));
         str.append(',');
         str.append(timeformat(sub.getFinishTime())).append(',');
@@ -183,7 +189,9 @@ public class SubStationAlpha extends StyledTextSubFormat {
                 str.append('*');
             str.append(sub.getStyle().Name);
         }
-        str.append(",,0000,0000,0000,,");
+        str.append(",").append(sub.getName()).append(',');
+        str.append(sub.getMarginL()).append(',').append(sub.getMarginR()).append(',').append(sub.getMarginV()).append(',');
+        str.append(sub.getEffect()).append(',');
         str.append(rebuildSubText(sub).replace("\n", "\\N"));
         str.append("\n");
     }

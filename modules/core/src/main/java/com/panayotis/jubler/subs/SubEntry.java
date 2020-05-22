@@ -23,11 +23,14 @@
 package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
+
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.loader.HeaderedTypeSubtitle;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.loader.ImageTypeSubtitle;
+
 import static com.panayotis.jubler.subs.CommonDef.*;
 import static com.panayotis.jubler.options.Options.*;
 import static com.panayotis.jubler.subs.style.StyleType.*;
@@ -39,6 +42,7 @@ import com.panayotis.jubler.subs.style.event.StyleoverCharacter;
 import com.panayotis.jubler.subs.style.event.StyleoverFull;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import com.panayotis.jubler.time.Time;
+
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.Vector;
@@ -48,7 +52,6 @@ import javax.swing.JTextPane;
 import javax.swing.text.StyleConstants;
 
 /**
- *
  * @author teras
  */
 public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
@@ -88,12 +91,19 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
         styleover_template[DIRECTION.ordinal()] = new StyleoverFull(StyleConstants.Alignment);
         styleover_template[UNKNOWN.ordinal()] = new StyleoverCharacter(null);
     }
+
     /* Markings */
     public static final String[] MarkNames = {__("None"), __("Pink"), __("Yellow"), __("Cyan"), __("Orange"), __("Light Green")};
     protected Time start, finish;
     private String subtext;
     private int mark;
     private SubStyle style;
+    private String layer = "0";
+    private String name = "";
+    private String marginL = "0000";
+    private String marginR = "0000";
+    private String marginV = "0000";
+    private String effect = "";
     private String toolTipText = null;
     /**
      * The following parameter is lazily used. It is initialized only when data
@@ -154,6 +164,54 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
 
     public SubStyle getStyle() {
         return style;
+    }
+
+    public String getLayer() {
+        return layer;
+    }
+
+    public void setLayer(String layer) {
+        this.layer = layer;
+    }
+
+    public void setName(String name) {
+        this.name = name == null ? "" : name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getMarginL() {
+        return marginL;
+    }
+
+    public void setMarginL(String marginL) {
+        this.marginL = marginL;
+    }
+
+    public String getMarginR() {
+        return marginR;
+    }
+
+    public void setMarginR(String marginR) {
+        this.marginR = marginR;
+    }
+
+    public String getMarginV() {
+        return marginV;
+    }
+
+    public void setMarginV(String marginV) {
+        this.marginV = marginV;
+    }
+
+    public String getEffect() {
+        return effect;
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
     }
 
     public AbstractStyleover[] getStyleovers() {
@@ -475,9 +533,9 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * This function collect words from a list and joining them with a space
      * character.
      *
-     * @param list the list of words
+     * @param list     the list of words
      * @param from_idx the star index from which words are to be selected
-     * @param to_idx the end index from which words are to be selected
+     * @param to_idx   the end index from which words are to be selected
      */
     private String collectWord(String[] list, int from_idx, int to_idx) {
         StringBuffer b = new StringBuffer();
@@ -686,7 +744,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * Cheks to see if the text line, at the same index, on current subtitle
      * event and an other event, are identical or not.
      *
-     * @param other The other subtitle event to be compared.
+     * @param other       The other subtitle event to be compared.
      * @param line_number The index of the line at which tex are to be compared.
      * @return true if the text lines are identical in content, case sensitive,
      * false otherwise.
@@ -799,7 +857,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * are the same or not.
      *
      * @param o The other instance of subtitle event, whose starting-time will
-     * be compared to the this instance.
+     *          be compared to the this instance.
      * @return true if the starting-times are identical or their difference is
      * considered to be too small. False otherwise.
      * @see #SMALL_MILLIS
@@ -820,7 +878,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * the same or not.
      *
      * @param o The other instance of subtitle event, whose end-time will be
-     * compared to the this instance.
+     *          compared to the this instance.
      * @return true if the ending-times are identical or their difference is
      * considered to be too small. False otherwise.
      * @see #SMALL_MILLIS
@@ -839,10 +897,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * Add a string instance to the current subtitle text, using a selective
      * separator.
      *
-     * @param line The new string instance to be added to the current text. This
-     * could be a single word, or a new multi-word text-line.
+     * @param line      The new string instance to be added to the current text. This
+     *                  could be a single word, or a new multi-word text-line.
      * @param separator The chosen separator for the current text and the new
-     * instance. This could be a space for word or a new-line for a line.
+     *                  instance. This could be a space for word or a new-line for a line.
      * @return true if the new text-line has been added to cthe current text,
      * false otherwise.
      */
@@ -888,7 +946,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * seperations.
      *
      * @param text_list The vector containing the group of text lines to be
-     * added.
+     *                  added.
      * @return true if the task is carried out without errors, false otherwise.
      */
     public boolean appendText(Vector<String> text_list) {
@@ -973,7 +1031,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
      * subsequent lines are appended into the buffer.
      *
      * @param line_number The line number at which, the end of line character is
-     * being replaced by a space before the next line is appended on.
+     *                    being replaced by a space before the next line is appended on.
      * @return true if the routine carried out without errors, false otherwise.
      */
     public boolean removeLineBreak(int line_number) {

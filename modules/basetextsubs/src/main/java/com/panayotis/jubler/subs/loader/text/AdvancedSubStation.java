@@ -32,13 +32,13 @@ import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- *
  * @author teras
  */
 public class AdvancedSubStation extends SubStationAlpha {
@@ -47,7 +47,7 @@ public class AdvancedSubStation extends SubStationAlpha {
     private static final ArrayList<StyledFormat> styles_dict;
     private static final HashMap<String, Direction> ass_directions;
 
-    /**
+    /*
      * Creates a new instance of SubFormat
      */
     static {
@@ -56,7 +56,7 @@ public class AdvancedSubStation extends SubStationAlpha {
 
         styles = Pattern.compile("(?i)Style:(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)" + nl);
 
-        ass_directions = new HashMap<String, Direction>(9);
+        ass_directions = new HashMap<>(9);
         ass_directions.put("8", TOP);
         ass_directions.put("9", TOPRIGHT);
         ass_directions.put("6", RIGHT);
@@ -79,8 +79,8 @@ public class AdvancedSubStation extends SubStationAlpha {
 
         /* Use these entries to grab a priori unsupported special tags
          * We need these functions since tags are identified with a .startsWith() method;
-         * It *has* to be un-storable, in order to be stored only *once*, 
-         *   in the last wildcard entry (UNKNOWN, "", null)
+         * It *has* to be un-storable, in order to be stored only *once*,
+         * in the last wildcard entry (UNKNOWN, "", null)
          */
         styles_dict.add(new StyledFormat(UNKNOWN, "fsc", null, false));
         styles_dict.add(new StyledFormat(UNKNOWN, "fsp", null, false));
