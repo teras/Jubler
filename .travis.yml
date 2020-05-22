@@ -30,6 +30,7 @@ deploy:
     - upload/Jubler-*
   on:
     tags: true
+  name: Prerelease - use it at your own risk
 #  draft: true
 
 before_install:
