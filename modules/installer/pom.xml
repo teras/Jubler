@@ -6,14 +6,11 @@
     <parent>
         <groupId>com.panayotis.jubler</groupId>
         <artifactId>project</artifactId>
-        <version>7.0.1-beta2</version>
+        <version>7.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>installer</artifactId>
     <packaging>pom</packaging>
-    <properties>
-        <long.version>5.9.9.9</long.version>
-    </properties>
     <dependencies>
         <dependency>
             <groupId>com.panayotis.jubler</groupId>
@@ -151,26 +148,16 @@
                                         <macrodef name="preparefor">
                                             <attribute name="arch"/>
                                             <sequential>
-                                                <mkdir dir="cache"/>
-                                                <get skipexisting="true" dest="cache/win@{arch}-jre.tar.gz"
-                                                     src="https://github.com/teras/Jubler/releases/download/6.0.pre6/win@{arch}-jre.tar.gz"/>
-                                                <mkdir dir="target/jubler/lib/lib"/>
-                                                <delete file="target/jubler/Jubler.exe"/>
-                                                <move file="target/jubler.@{arch}.exe"
-                                                      tofile="target/jubler/Jubler.exe"/>
-                                                <delete>
-                                                    <fileset dir="target/jubler/lib/lib" includes="*.dll"/>
-                                                </delete>
-                                                <delete dir="target/jubler/jre"/>
+                                                <delete dir="target/jubler/lib/lib"/>
                                                 <copy file="../../resources/libs/ffmpeg/win/ffdecode_@{arch}.dll"
-                                                      todir="target/jubler/lib/lib"/>
-                                                <mkdir dir="${project.build.directory}/jubler/jre"/>
-                                                <exec executable="tar" failonerror="true">
-                                                    <arg value="xf"/>
-                                                    <arg value="cache/win@{arch}-jre.tar.gz"/>
-                                                    <arg value="-C"/>
-                                                    <arg value="${project.build.directory}/jubler/jre"/>
-                                                </exec>
+                                                      tofile="target/jubler/lib/lib/ffdecode.dll"/>
+                                                <!--                                                <mkdir dir="${project.build.directory}/jubler/jre"/>-->
+                                                <!--                                                <exec executable="tar" failonerror="true">-->
+                                                <!--                                                    <arg value="xf"/>-->
+                                                <!--                                                    <arg value="cache/win@{arch}-jre.tar.gz"/>-->
+                                                <!--                                                    <arg value="-C"/>-->
+                                                <!--                                                    <arg value="${project.build.directory}/jubler/jre"/>-->
+                                                <!--                                                </exec>-->
                                                 <exec executable="makensis" failonerror="true">
                                                     <arg line="-NOCD -DVERSION=${project.version} -DWINBITS=@{arch} ../../resources/installers/windows/jubler.nsi"/>
                                                 </exec>
@@ -196,15 +183,6 @@
                                                 <move file="Jubler-${project.version}.@{arch}.exe" todir="target"/>
                                             </sequential>
                                         </macrodef>
-                                        <exec executable="../../resources/installers/windows/launchercreator.${os.ext}"
-                                              failonerror="true">
-                                            <arg value="-n=Jubler"/>
-                                            <arg value="-d=Jubler subtitle editor"/>
-                                            <arg value="-c=Panayotis Katsaloulis"/>
-                                            <arg value="-v=${project.version}"/>
-                                            <arg value="-l=${long.version}"/>
-                                            <arg value="-i=../../resources/installers/windows/frame.ico"/>
-                                        </exec>
                                         <preparefor arch="32"/>
                                         <preparefor arch="64"/>
                                         <delete file="Jubler-${project.version}.unsigned.exe"/>
@@ -232,60 +210,39 @@
                                 <id>copy</id>
                                 <configuration>
                                     <target>
-                                        <mkdir dir="cache"/>
-                                        <get skipexisting="true" dest="cache/osx-jre.tar.gz"
-                                             src="https://github.com/teras/Jubler/releases/download/6.0.pre6/osx-jre.tar.gz"/>
-                                        <copy file="../../resources/installers/macosx/Jubler"
-                                              todir="target/Jubler.app/Contents/MacOS"/>
-                                        <copy file="../../resources/installers/macosx/PkgInfo"
-                                              todir="target/Jubler.app/Contents"/>
-                                        <copy file="../../resources/installers/macosx/Info.plist"
-                                              todir="target/Jubler.app/Contents"/>
-                                        <copy file="../../resources/installers/macosx/jubler.icns"
-                                              todir="target/Jubler.app/Contents/Resources"/>
-                                        <copy file="../../resources/installers/macosx/subtitle.icns"
-                                              todir="target/Jubler.app/Contents/Resources"/>
-                                        <copy todir="target/Jubler.app/Contents/Java">
-                                            <fileset dir="target/jubler/lib"/>
-                                        </copy>
+                                        <delete dir="target/jubler/lib/lib"/>
                                         <copy file="../../resources/libs/ffmpeg/darwin/libffdecode.jnilib"
-                                              todir="target/Jubler.app/Contents/Java/lib"/>
-                                        <copy todir="target/Jubler.app/Contents/Java/lib"
-                                              file="../../resources/system/fonts/freesans.ttf"/>
-                                        <chmod file="target/Jubler.app/Contents/MacOS/Jubler" perm="a+x"/>
-                                        <replace file="target/Jubler.app/Contents/Info.plist">
-                                            <replacefilter token="@@VERSION@@" value="${project.version}"/>
-                                        </replace>
-                                        <mkdir dir="target/Jubler.app/Contents/jre"/>
-                                        <exec executable="tar" failonerror="true">
-                                            <arg value="xf"/>
-                                            <arg value="cache/osx-jre.tar.gz"/>
-                                            <arg value="-C"/>
-                                            <arg value="${project.build.directory}/Jubler.app/Contents/jre"/>
-                                        </exec>
-                                        <delete file="/tmp/Jubler-template.dmg.bz2" quiet="true"/>
-                                        <delete file="/tmp/Jubler-template.dmg" quiet="true"/>
-                                        <exec executable="hdiutil" failonerror="false">
-                                            <arg line="detach /Volumes/Jubler-template"/>
-                                        </exec>
-                                        <bunzip2 src="../../resources/installers/macosx/Jubler-template.dmg.bz2"
-                                                 dest="/tmp/Jubler-template.dmg"/>
-                                        <exec executable="hdiutil" failonerror="true">
-                                            <arg line="attach -noautoopen -mountpoint /Volumes/Jubler-template /tmp/Jubler-template.dmg"/>
-                                        </exec>
-                                        <delete dir="/Volumes/Jubler-template/Jubler.app" includeemptydirs="yes"/>
-                                        <exec executable="cp">
-                                            <arg line="-R target/Jubler.app /Volumes/Jubler-template/Jubler.app"/>
-                                        </exec>
-                                        <exec executable="../../resources/installers/macosx/notarizing"
+                                              todir="target/jubler/lib/lib"/>
+                                        <copy file="../../resources/installers/macosx/jubler.icns"
+                                              tofile="target/resources/Jubler-volume.icns"/>
+                                        <copy file="../../resources/installers/macosx/post-image.sh"
+                                              tofile="target/resources/Jubler-post-image.sh"/>
+                                        <copy file="../../resources/installers/macosx/dmg-setup.scpt"
+                                              tofile="target/resources/Jubler-dmg-setup.scpt"/>
+                                        <exec executable="${env.JAVA_HOME}/bin/jpackage" dir="target"
                                               failonerror="true">
-                                            <arg line="sign --target /Volumes/Jubler-template/Jubler.app -x JupidatorUpdate -e ../../resources/installers/macosx/entitlements.plist"/>
-                                        </exec>
-                                        <exec executable="hdiutil" failonerror="true">
-                                            <arg line="detach -force /Volumes/Jubler-template"/>
-                                        </exec>
-                                        <exec executable="hdiutil" failonerror="true">
-                                            <arg line="convert /tmp/Jubler-template.dmg -format UDZO -imagekey zlib-level=9 -ov -o target/Jubler-${project.version}.dmg"/>
+                                            <arg line="--verbose --temp out"/>
+                                            <arg line="--type dmg --app-version ${project.version} --name Jubler"/>
+                                            <arg line="--add-modules java.datatransfer,java.desktop,java.logging,java.prefs,java.rmi,java.xml,jdk.charsets"/>
+                                            <arg line="--icon ../../../resources/installers/macosx/jubler.icns --input jubler"/>
+                                            <arg line="--java-options -Dawt.useSystemAAFontSettings=on --java-options -Dswing.aatext=true"/>
+                                            <arg line="--main-class Jubler --main-jar lib/jubler.jar "/>
+                                            <arg line="--mac-package-identifier com.panayotis.jubler --mac-package-name Jubler"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/ass.properties"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/son.properties"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/srt.properties"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/ssa.properties"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/stl.properties"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/sub.properties"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/txt.properties"/>
+                                            <arg line="--file-associations ../../../resources/installers/macosx/assoc/xml.properties"/>
+                                            <arg line="--resource-dir resources"/>
+                                            <arg value="--copyright"/>
+                                            <arg value="(C) Panayotis Katsaloulis)"/>
+                                            <arg value="--description"/>
+                                            <arg value="Jubler is a text Subtitle Editor"/>
+                                            <arg value="--vendor"/>
+                                            <arg value="Panayotis Katsaloulis"/>
                                         </exec>
                                         <exec executable="../../resources/installers/macosx/notarizing"
                                               failonerror="true">
@@ -317,7 +274,9 @@
                                     <target>
                                         <mkdir dir="cache"/>
                                         <get skipexisting="true" dest="cache/linux-jre.tar.gz"
-                                             src="https://github.com/teras/Jubler/releases/download/6.0.pre6/linux-jre.tar.gz"/>
+                                             src="https://github.com/teras/javalauncher/releases/download/repo/linux-jre.tar.gz"/>
+                                        <get skipexisting="true" dest="cache/javalauncher.linux"
+                                             src="https://github.com/teras/javalauncher/releases/download/repo/javalauncher.linux"/>
                                         <property name="appdir" value="target/Jubler.AppDir"/>
                                         <property name="imgsrcdir"
                                                   value="../../resources/installers/linux/dist/appimage"/>
@@ -329,7 +288,7 @@
                                         <move file="${appdir}/lib/jubler.jar" tofile="${appdir}/lib/AppRun.jar"/>
                                         <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so"
                                               todir="${appdir}/lib/lib"/>
-                                        <copy file="../../resources/installers/linux/AppRun" todir="${appdir}"/>
+                                        <copy file="cache/javalauncher.linux" tofile="${appdir}/AppRun"/>
                                         <copy file="${imgsrcdir}/jubler128.png"
                                               tofile="${appdir}/usr/share/icons/hicolor/128x128/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler64.png"
