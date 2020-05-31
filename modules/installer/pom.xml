@@ -308,58 +308,28 @@
                                 <id>createlinux</id>
                                 <configuration>
                                     <target>
-                                        <delete dir="target/jubler/lib/lib"/>
                                         <copy file="../../resources/system/fonts/freesans.ttf"
                                               todir="target/jubler/lib/lib"/>
                                         <copy file="../../resources/libs/ffmpeg/linuxs/libffdecode_64.so"
                                               tofile="target/jubler/lib/lib/libffdecode.so"/>
-                                        <exec executable="docker" dir="target" failonerror="true">
-                                            <arg line="run --rm -v ${project.build.directory}:/usr/src/myapp -w /usr/src/myapp crossmob/jdk /java/linux/current/bin/jpackage"/>
-                                            <arg line="--verbose --temp out"/>
-                                            <arg line="--app-version ${project.version} --name Jubler --input jubler"/>
+                                        <exec executable="docker" failonerror="true">
+                                            <arg line="run --rm -v ${project.build.directory}/jubler:/usr/src/myapp -w /usr/src/myapp crossmob/jdk /java/linux/current/bin/jlink"/>
                                             <arg line="--add-modules java.datatransfer,java.desktop,java.logging,java.prefs,java.rmi,java.xml,jdk.charsets"/>
-                                            <arg line="--java-options -Dawt.useSystemAAFontSettings=on --java-options -Dswing.aatext=true"/>
-                                            <arg line="--main-class Jubler --main-jar lib/jubler.jar "/>
-                                            <arg line="--resource-dir resources --java-options -splash:$APPDIR/splash.jpg"/>
-                                            <arg value="--copyright"/>
-                                            <arg value="(C) Panayotis Katsaloulis)"/>
-                                            <arg value="--description"/>
-                                            <arg value="Jubler is a text Subtitle Editor"/>
-                                            <arg value="--vendor"/>
-                                            <arg value="Panayotis Katsaloulis"/>
-                                            <arg line="--type app-image"/>
-                                            <arg line="--dest linux.out"/>
+                                            <arg line="--output jre --no-header-files --no-man-pages --compress=1"/>
                                         </exec>
-                                        <fail/>
-
-                                        <property name="appdir" value="target/Jubler.AppDir"/>
                                         <property name="imgsrcdir"
-                                                  value="../../resources/installers/linux/dist/appimage"/>
-                                        <copy todir="${appdir}/lib">
-                                            <fileset dir="target/jubler/lib">
-                                                <include name="**"/>
-                                            </fileset>
-                                        </copy>
-                                        <move file="${appdir}/lib/jubler.jar" tofile="${appdir}/lib/AppRun.jar"/>
-                                        <copy file="../../resources/libs/ffmpeg/linux/libffdecode_64.so"
-                                              todir="${appdir}/lib/lib"/>
-                                        <copy file="cache/javalauncher.linux" tofile="${appdir}/AppRun"/>
+                                                  value="../../resources/installers/linux"/>
+                                        <copy file="../../resources/installers/linux/AppRun" todir="target/jubler"/>
+                                        <chmod file="target/jubler/AppRun" perm="a+x"/>
+                                        <move file="target/jubler/lib/jubler.jar" tofile="target/jubler/lib/AppRun.jar"/>
                                         <copy file="${imgsrcdir}/jubler128.png"
-                                              tofile="${appdir}/usr/share/icons/hicolor/128x128/apps/jubler.png"/>
+                                              tofile="target/jubler/usr/share/icons/hicolor/128x128/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler64.png"
-                                              tofile="${appdir}/usr/share/icons/hicolor/64x64/apps/jubler.png"/>
+                                              tofile="target/jubler/usr/share/icons/hicolor/64x64/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler32.png"
-                                              tofile="${appdir}/usr/share/icons/hicolor/32x32/apps/jubler.png"/>
-                                        <copy file="${imgsrcdir}/jubler32.png" tofile="${appdir}/jubler.png"/>
-                                        <copy file="${imgsrcdir}/jubler.desktop" tofile="${appdir}/jubler.desktop"/>
-                                        <chmod file="${appdir}/AppRun" perm="a+x"/>
-                                        <mkdir dir="${appdir}/Java"/>
-                                        <exec executable="tar" failonerror="true">
-                                            <arg value="xvf"/>
-                                            <arg value="cache/linux-jre.tar.gz"/>
-                                            <arg value="-C"/>
-                                            <arg value="${appdir}/Java"/>
-                                        </exec>
+                                              tofile="target/jubler/usr/share/icons/hicolor/32x32/apps/jubler.png"/>
+                                        <copy file="${imgsrcdir}/jubler32.png" tofile="target/jubler/jubler.png"/>
+                                        <copy file="${imgsrcdir}/jubler.desktop" tofile="target/jubler/jubler.desktop"/>
                                         <exec executable="docker" failonerror="true">
                                             <arg value="run"/>
                                             <arg value="-t"/>
@@ -371,7 +341,7 @@
                                             <arg value="crossmob/appimage-builder"/>
                                             <arg value="bash"/>
                                             <arg value="-c"/>
-                                            <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${env.GNUPG_PASS}' `mktemp` ; /opt/appimage/AppRun -v Jubler.AppDir --sign Jubler-${project.version}.x86_64.appimage"/>
+                                            <arg value="gpg-agent --daemon; gpg2 --detach-sign --armor --pinentry-mode loopback --passphrase '${env.GNUPG_PASS}' `mktemp` ; /opt/appimage/AppRun -v jubler --sign Jubler-${project.version}.x86_64.appimage"/>
                                         </exec>
                                     </target>
                                 </configuration>
