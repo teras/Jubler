@@ -18,7 +18,7 @@ ArchitecturesInstallIn64BitMode=@INSTALLMODE@
 ChangesAssociations=yes
 
 [Files]
-Source:"Jubler\*"; DestDir:"{app}"; Flags: recursesubdirs
+Source:"jubler\*"; DestDir:"{app}"; Flags: recursesubdirs
 
 [Icons]
 Name: "{group}\{#AppName}"; Filename: "{app}\{#AppName}.exe"; WorkingDir: "{app}"
