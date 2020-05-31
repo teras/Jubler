@@ -2,8 +2,10 @@ jobs:
   include:
     - os: linux
       language: java
+      jdk: openjdk14
     - os: osx
-      osx_image: xcode11.4
+      osx_image: xcode11.5
+      language: java
 
 addons:
   apt:
@@ -34,7 +36,8 @@ before_install:
  - if [ $TRAVIS_OS_NAME = linux ] ; then echo $P12_CONTENT | base64 --decode > modules/installer/secret/code-signing.p12 ; fi
 
 script:
- - if [ $TRAVIS_OS_NAME = osx   ] ; then mvn clean install -Pdist-osx,notarize && cp modules/installer/target/Jubler-*.dmg upload/      ; fi
- - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-generic      && cp modules/installer/target/Jubler-*tar.bz2 upload/   ; fi
- - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-linux        && cp modules/installer/target/Jubler-*.appimage upload/ ; fi
- - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean install -Pdist-windows      && cp modules/installer/target/Jubler-*.exe upload/      ; fi
+ - java -version
+ - if [ $TRAVIS_OS_NAME = osx   ] ; then mvn clean && mvn install -Pdist-osx,notarize && cp modules/installer/target/Jubler-*.dmg upload/      ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean && mvn install -Pdist-generic      && cp modules/installer/target/Jubler-*tar.bz2 upload/   ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean && mvn install -Pdist-linux        && cp modules/installer/target/Jubler-*.appimage upload/ ; fi
+ - if [ $TRAVIS_OS_NAME = linux ] ; then mvn clean && mvn install -Pdist-windows      && cp modules/installer/target/Jubler-*.exe upload/      ; fi
