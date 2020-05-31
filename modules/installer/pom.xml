@@ -278,10 +278,15 @@
                                             <arg value="-l=${long.version}"/>
                                             <arg value="-i=../../resources/installers/windows/frame.ico"/>
                                         </exec>
+                                        <copy file="../../resources/installers/windows/install.ico" todir="target"/>
+                                        <copy file="../../resources/installers/windows/logo-install.bmp"
+                                              todir="target"/>
+                                        <copy file="../../resources/installers/windows/logo-install-small.bmp"
+                                              todir="target"/>
+                                        <copy file="../../resources/installers/windows/logo-install-small@2x.bmp"
+                                              todir="target"/>
                                         <copy file="../../resources/installers/windows/subtitle.ico"
                                               todir="target/jubler"/>
-                                        <copy file="../../resources/installers/windows/install.ico"
-                                              todir="target"/>
                                         <preparefor arch="64" mode="x64"/>
                                         <preparefor arch="32"/>
                                     </target>
@@ -321,7 +326,8 @@
                                                   value="../../resources/installers/linux"/>
                                         <copy file="../../resources/installers/linux/AppRun" todir="target/jubler"/>
                                         <chmod file="target/jubler/AppRun" perm="a+x"/>
-                                        <move file="target/jubler/lib/jubler.jar" tofile="target/jubler/lib/AppRun.jar"/>
+                                        <move file="target/jubler/lib/jubler.jar"
+                                              tofile="target/jubler/lib/AppRun.jar"/>
                                         <copy file="${imgsrcdir}/jubler128.png"
                                               tofile="target/jubler/usr/share/icons/hicolor/128x128/apps/jubler.png"/>
                                         <copy file="${imgsrcdir}/jubler64.png"

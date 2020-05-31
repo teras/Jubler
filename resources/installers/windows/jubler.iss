@@ -4,7 +4,7 @@
 
 [Setup]
 AppName={#AppName}
-DefaultDirName={pf}\{#AppName}
+DefaultDirName={commonpf}\{#AppName}
 DefaultGroupName={#AppName}
 AppVersion=@VERSION@
 SetupIconFile=install.ico
@@ -16,6 +16,8 @@ UninstallDisplayIcon={app}\{#AppName}.exe
 AllowNoIcons=yes
 ArchitecturesInstallIn64BitMode=@INSTALLMODE@
 ChangesAssociations=yes
+WizardImageFile=logo-install.bmp
+WizardSmallImageFile=logo-install-small@2x.bmp,logo-install-small.bmp
 
 [Files]
 Source:"jubler\*"; DestDir:"{app}"; Flags: recursesubdirs
