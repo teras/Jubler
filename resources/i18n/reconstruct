@@ -11,8 +11,15 @@ else
 	WHAT=`ls *.po`
 fi
 
+
+rm -rf node_modules package-lock.json
+npm install po2json
+
 for i in $WHAT ; do
 	LNG=`echo $i | sed -e 's/\.po$//g'`
 	echo Remaking po file for language \"$LNG\"
 	msgmerge --no-fuzzy-matching --update --indent --sort-by-file --backup=none $LNG.po jubler.pot 
+        ./node_modules/po2json/bin/po2json $LNG.po $LNG.json -f mf
 done
+
+rm -rf node_modules package-lock.json

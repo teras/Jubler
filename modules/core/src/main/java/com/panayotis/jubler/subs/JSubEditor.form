@@ -124,7 +124,7 @@
                       <Connection code="Theme.loadIcon(&quot;lock.png&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="__(&quot;&lt;html&gt;&quot; + &quot;Lock the start time of the subtitle&quot;) + &quot;&lt;br/&gt;&lt;br/&gt;&quot; + TOOLTIP + &quot;&lt;/html&gt;&quot;" type="code"/>
+                      <Connection code="&quot;&lt;html&gt;&quot; +__( &quot;Lock the start time of the subtitle&quot;) + &quot;&lt;br/&gt;&lt;br/&gt;&quot; + TOOLTIP + &quot;&lt;/html&gt;&quot;" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[1, 1, 1, 1]"/>
@@ -160,7 +160,7 @@
                       <Connection code="Theme.loadIcon(&quot;lock.png&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="__(&quot;&lt;html&gt;&quot; + &quot;Lock the stop time of the subtitle&quot;) + &quot;&lt;br/&gt;&lt;br/&gt;&quot; + TOOLTIP + &quot;&lt;/html&gt;&quot;" type="code"/>
+                      <Connection code="&quot;&lt;html&gt;&quot; + __(&quot;Lock the stop time of the subtitle&quot;) + &quot;&lt;br/&gt;&lt;br/&gt;&quot; + TOOLTIP + &quot;&lt;/html&gt;&quot;" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[1, 1, 1, 1]"/>
@@ -197,7 +197,7 @@
                     </Property>
                     <Property name="selected" type="boolean" value="true"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="__(&quot;&lt;html&gt;&quot; + &quot;Lock the duration of the subtitle&quot;) + &quot;&lt;br/&gt;&lt;br/&gt;&quot; + TOOLTIP + &quot;&lt;/html&gt;&quot;" type="code"/>
+                      <Connection code="&quot;&lt;html&gt;&quot; + __(&quot;Lock the duration of the subtitle&quot;) + &quot;&lt;br/&gt;&lt;br/&gt;&quot; + TOOLTIP + &quot;&lt;/html&gt;&quot;" type="code"/>
                     </Property>
                     <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                       <Insets value="[1, 1, 1, 1]"/>

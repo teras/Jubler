@@ -74,13 +74,13 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private final static Color INFOC = Color.BLACK;
     private final static Color INFOC_E = new Color(253, 0, 0);
 
-    private static final String TOOLTIP = __("<b>How to navigate with keyboard</b><br/>"
-            + "- Change focus from Text area to Editor with " + SystemDependent.getKeyMods(KeyEvent.META_MASK).trim() + "D (default binding)<br/>"
-            + "- Change focus from one timing to the other with the [ENTER] key<br/>"
-            + "- Change the currently selected lock with [PAGE-UP]/[PAGE-DOWN] keys<br/>"
-            + "- Add/substract timing values with [ARROW-UP]/[ARROW-DOWN] keys<br/>"
-            + "- Change the time resolution with [ARROW-LEFT]/[ARROW-RIGHT] keys<br/>"
-            + "</html>");
+    private static final String TOOLTIP = "<b>" + __("How to navigate with keyboard") + "</b><br/>"
+            + "- " + __("Change focus from Text area to Editor with {0}D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_MASK).trim()) + "<br/>, "
+            + "- " + __("Change focus from one timing to the other with the [ENTER] key") + "<br/>"
+            + "- " + __("Change the currently selected lock with [PAGE-UP]/[PAGE-DOWN] keys") + "<br/>"
+            + "- " + __("Add/substract timing values with [ARROW-UP]/[ARROW-DOWN] keys") + "<br/>"
+            + "- " + __("Change the time resolution with [ARROW-LEFT]/[ARROW-RIGHT] keys") + "<br/>"
+            + "</html>";
 
     static {
         Lock = new ImageIcon[2];
@@ -640,7 +640,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock1);
         Lock1.setIcon(Theme.loadIcon("lock.png"));
-        Lock1.setToolTipText(__("<html>" + "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock1.setToolTipText("<html>" +__( "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
@@ -657,7 +657,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock2);
         Lock2.setIcon(Theme.loadIcon("lock.png"));
-        Lock2.setToolTipText(__("<html>" + "Lock the stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock2.setToolTipText("<html>" + __("Lock the stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock2.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock2, "only");
         Lock2.addActionListener(new java.awt.event.ActionListener() {
@@ -675,7 +675,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         TimeLock.add(Lock3);
         Lock3.setIcon(Theme.loadIcon("lock.png"));
         Lock3.setSelected(true);
-        Lock3.setToolTipText(__("<html>" + "Lock the duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock3.setToolTipText("<html>" + __("Lock the duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock3.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock3, "only");
         Lock3.addActionListener(new java.awt.event.ActionListener() {
@@ -917,9 +917,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel5.setLayout(new java.awt.FlowLayout(0));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
         crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

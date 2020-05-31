@@ -88,7 +88,9 @@
                         <configuration>
                             <target>
                                 <copy todir="target/jubler/lib/i18n">
-                                    <fileset dir="../../resources/i18n/cache"/>
+                                    <fileset dir="../../resources/i18n">
+                                        <include name="*.json"/>
+                                    </fileset>
                                 </copy>
                                 <copy file="../../resources/help/cache/jubler-faq.html" todir="target/jubler/lib/help"/>
                                 <copy file="../../resources/help/question.png" todir="target/jubler/lib/help"/>

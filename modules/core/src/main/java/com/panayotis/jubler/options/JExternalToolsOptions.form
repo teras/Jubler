@@ -167,7 +167,9 @@
             </Component>
             <Component class="javax.swing.JTextField" name="commandT">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="&lt;html&gt;Advanced argument list:&lt;br&gt;&#xa;%x=executable&lt;br&gt;&#xa;%s=subtitle file"/>
+                <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="&quot;&lt;html&gt;&quot; + __(&quot;Advanced argument list:&quot;)+&quot;&lt;br&gt;\n&quot; +&#xa;__(&quot;%x=executable&quot;)+&quot;&lt;br&gt;\n&quot; +&#xa;__(&quot;%s=subtitle file&quot;)" type="code"/>
+                </Property>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

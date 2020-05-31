@@ -191,7 +191,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
         jPanel2.add(jScrollPane1);
 
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel3.setLayout(new java.awt.FlowLayout(0));
 
         addB.setText("+");
         addB.addActionListener(new java.awt.event.ActionListener() {
@@ -243,7 +243,9 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         jLabel1.setText(__("Command"));
         jPanel6.add(jLabel1, java.awt.BorderLayout.NORTH);
 
-        commandT.setToolTipText("<html>Advanced argument list:<br>\n%x=executable<br>\n%s=subtitle file");
+        commandT.setToolTipText("<html>" + __("Advanced argument list:")+"<br>\n" +
+            __("%x=executable")+"<br>\n" +
+            __("%s=subtitle file"));
         jPanel6.add(commandT, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel6);

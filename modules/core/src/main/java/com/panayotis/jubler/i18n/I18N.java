@@ -23,15 +23,16 @@
 
 package com.panayotis.jubler.i18n;
 
+import com.eclipsesource.json.Json;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.DynamicClassLoader;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.Map;
 
 import static com.panayotis.jubler.os.SystemFileFinder.AppPath;
 
@@ -41,57 +42,41 @@ import static com.panayotis.jubler.os.SystemFileFinder.AppPath;
 @SuppressWarnings("StaticNonFinalUsedInInitialization")
 public class I18N {
 
-    private static ResourceBundle b;
-    private static final String PATH = "com.panayotis.jubler.i18n.Messages_";
-    private static final DynamicClassLoader cl = new DynamicClassLoader();
+    private static final Map<String, String> transl = new HashMap<>();
 
     static {
+        populateLanguage();
+    }
+
+    private static void populateLanguage() {
         String ls = Locale.getDefault().getLanguage();
         if (ls.equals("en")) {
             DEBUG.debug("Using default language");
         } else {
             String ll = ls + "_" + Locale.getDefault().getCountry();
             for (String p : new String[]{
-                    "../../../../resources/i18n/cache/" + ll + ".jar",
-                    "i18n/" + ll + ".jar",
+                    "../../../../resources/i18n/" + ll + ".json",
+                    "i18n/" + ll + ".json",
 
-                    "../../../../resources/i18n/cache/" + ls + ".jar",
-                    "i18n/" + ls + ".jar"
+                    "../../../../resources/i18n/" + ls + ".json",
+                    "i18n/" + ls + ".json"
             }) {
-                try {
-                    cl.addURL(new File(AppPath, p).toURI().toURL());
-                } catch (MalformedURLException e) {
-                    System.err.println(e.toString());
+                File json = new File(AppPath, p);
+                if (json.isFile()) {
+                    try {
+                        Json.parse(new FileReader(json)).asObject().forEach(member -> transl.put(member.getName(), member.getValue().asString()));
+                        DEBUG.debug("Using language " + json.getName().substring(0, json.getName().length() - 5));
+                        return;
+                    } catch (Exception ignored) {
+                    }
                 }
             }
-            b = loadClass(PATH + ll);
-            if (b == null) {
-                b = loadClass(PATH + ls);
-                if (b != null)
-                    DEBUG.debug("Using language " + ls);
-                else
-                    DEBUG.debug("Unable to locate language " + ls);
-            } else
-                DEBUG.debug("Using language " + ll);
+            DEBUG.debug("Unable to locate language " + ls);
         }
-    }
-
-    @SuppressWarnings("UseSpecificCatch")
-    private static ResourceBundle loadClass(String classname) {
-        try {
-            return (ResourceBundle) cl.loadClass(classname).newInstance();
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    public static String ngettext(String single, String plural, long n, Object... args) {
-        String format = GettextResource.ngettext(b, single, plural, n);
-        return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
 
     public static String __(String msg, Object... args) {
-        String format = GettextResource.gettext(b, msg);
+        String format = transl.getOrDefault(msg, msg);
         return MessageFormat.format(format.replaceAll("'", "''"), args);
     }
 }
