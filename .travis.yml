@@ -2,7 +2,6 @@ jobs:
   include:
     - os: linux
       language: java
-      jdk: openjdk8
     - os: osx
       osx_image: xcode11.4
 
@@ -17,8 +16,6 @@ addons:
       - ant
       - maven
       - gettext
-    taps: homebrew/cask-versions
-    casks: adoptopenjdk8
 
 deploy:
   provider: releases
@@ -37,7 +34,6 @@ before_install:
  - set -e ; mkdir upload
  - if [ $TRAVIS_OS_NAME = osx   ] ; then echo $P12_APPLE_CONTENT | base64 --decode > apple-keysign.p12 ; security create-keychain -p $P12_APPLE_PASS build.keychain ; security default-keychain -s build.keychain ; security unlock-keychain -p $P12_APPLE_PASS build.keychain ; security import apple-keysign.p12 -k build.keychain -P $P12_APPLE_PASS -T /usr/bin/codesign ; security find-identity -v ; security set-key-partition-list -S 'apple-tool:,apple:' -s -k $P12_APPLE_PASS build.keychain ; rm apple-keysign.p12 ; fi
  - if [ $TRAVIS_OS_NAME = linux ] ; then echo $P12_CONTENT | base64 --decode > modules/installer/secret/code-signing.p12 ; fi
- - sudo rm -rf /Library/Java/JavaVirtualMachines/*14*
  - ./resources/i18n/compile
 
 script:
