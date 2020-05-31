@@ -58,6 +58,7 @@ public class MPlayerSystemDependent extends SystemDependent {
             font = " -font " + System.getenv("SystemRoot") + "\\fonts\\arial.ttf";
         else {
             File freesans = new File(SystemFileFinder.AppPath, "lib/freesans.ttf");
+            System.out.println("------ " + freesans.getPath());
             if (freesans.exists())
                 font = " -font %j/lib/freesans.ttf";
         }

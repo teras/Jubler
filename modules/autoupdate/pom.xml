@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.panayotis</groupId>
             <artifactId>jupidator</artifactId>
-            <version>0.8.9.10</version>
+            <version>0.9.0.1</version>
             <type>jar</type>
         </dependency>
     </dependencies>
