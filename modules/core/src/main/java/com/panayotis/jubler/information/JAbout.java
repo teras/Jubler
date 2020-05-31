@@ -23,7 +23,9 @@
 package com.panayotis.jubler.information;
 
 import com.panayotis.jubler.os.DEBUG;
+
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Properties;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -31,35 +33,34 @@ import javax.swing.text.StyleConstants;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
 public class JAbout extends javax.swing.JPanel {
 
     private final static String icon_theme = "Nuvola (David Vignoni - http://www.icon-king.com)";
     private final static String[] transl = {
-        "Tom\u00e1\u0161 Bambas " + parseMail("seznam.cz", "conyx"),
-        "Rene " + parseMail("hotmail.com", "bmom43"),
-        "Julien Escoffier " + parseMail("jcpdt7j.com", "jubler"),
-        "Christian Weiske " + parseMail("cweiske.de", "cweiske"),
-        "Panayotis Katsaloulis " + parseMail("panayotis.com", "panayotis"),
-        "Michele Gianella " + parseMail("gmail.com", "gianella.michele"),
-        "Doutor.Zero " + parseMail("gmail.com", "doutor.zero"),
-        "Nikola Karanovic " + parseMail("yahoo.com", "dzonithebatee"),
-        "Alfredo Quesada S\u00E1nchez " + parseMail("yahoo.com", "freddy2_es"),
-        "As\u0131m Sinan Y\u00FCksel " + parseMail("gmail.com", "yuksel.asim.sinan")
+            "Tom\u00e1\u0161 Bambas " + parseMail("seznam.cz", "conyx"),
+            "Rene " + parseMail("hotmail.com", "bmom43"),
+            "Julien Escoffier " + parseMail("jcpdt7j.com", "jubler"),
+            "Christian Weiske " + parseMail("cweiske.de", "cweiske"),
+            "Panayotis Katsaloulis " + parseMail("panayotis.com", "panayotis"),
+            "Michele Gianella " + parseMail("gmail.com", "gianella.michele"),
+            "Doutor.Zero " + parseMail("gmail.com", "doutor.zero"),
+            "Nikola Karanovic " + parseMail("yahoo.com", "dzonithebatee"),
+            "Alfredo Quesada S\u00E1nchez " + parseMail("yahoo.com", "freddy2_es"),
+            "As\u0131m Sinan Y\u00FCksel " + parseMail("gmail.com", "yuksel.asim.sinan")
     };
     private final static String[] langs = {
-        __("Czech"),
-        __("Dutch"),
-        __("French"),
-        __("German"),
-        __("Greek"),
-        __("Italian"),
-        __("Portuguese (Brazilian)"),
-        __("Serbian"),
-        __("Spanish"),
-        __("Turkish")
+            __("Czech"),
+            __("Dutch"),
+            __("French"),
+            __("German"),
+            __("Greek"),
+            __("Italian"),
+            __("Portuguese (Brazilian)"),
+            __("Serbian"),
+            __("Spanish"),
+            __("Turkish")
     };
     private final static String version;
     private final static String longversion;
@@ -96,13 +97,12 @@ public class JAbout extends javax.swing.JPanel {
         LicenceT.setText(licence);
         LicenceT.setSelectionStart(0);
         LicenceT.setSelectionEnd(0);
-
         String abouttext
                 = "\n" + __("Subtitle Editor for Java") + "\n\n"
                 + __("Version") + " " + getCurrentVersion() + "\n\n"
-                + "\u00a9 2005-2009 Panayotis Katsaloulis" + "\n"
+                + "\u00a9 2005-" + Calendar.getInstance().get(Calendar.YEAR) + " Panayotis Katsaloulis" + "\n"
                 + "\u03a0\u03b1\u03bd\u03b1\u03b3\u03b9\u03ce\u03c4\u03b7\u03c2 \u039a\u03b1\u03c4\u03c3\u03b1\u03bb\u03bf\u03cd\u03bb\u03b7\u03c2" + "\n\n"
-                + "http://www.jubler.org" + "\n\n"
+                + "https://www.jubler.org" + "\n\n"
                 + __("Contact address") + ": " + parseMail("panayotis.com", "panayotis");
 
         SimpleAttributeSet set = new SimpleAttributeSet();
@@ -205,6 +205,7 @@ public class JAbout extends javax.swing.JPanel {
 
         add(jTabbedPane1, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane InfoT;
     private javax.swing.JTextArea LicenceT;
