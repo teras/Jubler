@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+cd "`dirname \"$0\"`"
+
+mkdir -p dist
+
+mvn clean install -Pdist-osx,notarize
+cp modules/installer/target/Jubler-*.dmg dist/
+
+mvn clean install -Pdist-generic
+cp modules/installer/target/Jubler-*tar.bz2 dist/
+
+mvn clean install -Pdist-linux
+cp modules/installer/target/Jubler-*.appimage dist/
+
+mvn clean install -Pdist-windows
+cp modules/installer/target/Jubler-*.exe dist/
+
+

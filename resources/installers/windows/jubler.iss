@@ -1,6 +1,6 @@
-#define AppName "Jubler"
-#define AppDescr "Jubler Subtitle Editor"
-#define AppUrl "https://jubler.org"
+#define AppName "@APPNAME@"
+#define AppDescr "@APPDESCR@"
+#define AppUrl "@APPURL@"
 
 [Setup]
 AppName={#AppName}
@@ -15,9 +15,9 @@ DisableReadyPage=yes
 UninstallDisplayIcon={app}\{#AppName}.exe
 AllowNoIcons=yes
 ArchitecturesInstallIn64BitMode=@INSTALLMODE@
-ChangesAssociations=yes
 WizardImageFile=logo-install.bmp
 WizardSmallImageFile=logo-install-small@2x.bmp,logo-install-small.bmp
+ChangesAssociations=yes
 
 [Files]
 Source:"jubler\*"; DestDir:"{app}"; Flags: recursesubdirs

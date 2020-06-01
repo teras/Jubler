@@ -240,6 +240,9 @@
                                                     <filterset>
                                                         <filter token="VERSION" value="${project.version}"/>
                                                         <filter token="INSTALLMODE" value="@{mode}"/>
+                                                        <filter token="APPNAME" value="Jubler"/>
+                                                        <filter token="APPDESCR" value="Jubler Subtitle Editor"/>
+                                                        <filter token="APPURL" value="https://jubler.org"/>
                                                     </filterset>
                                                 </copy>
                                                 <exec executable="docker" failonerror="true">
