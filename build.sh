@@ -6,7 +6,7 @@ cd "`dirname \"$0\"`"
 
 mkdir -p dist
 
-mvn clean install -Pdist-osx,notarize
+mvn clean install -Pdist-macos,notarize
 cp modules/installer/target/Jubler-*.dmg dist/
 
 mvn clean install -Pdist-generic
