@@ -23,8 +23,6 @@
 
 package com.panayotis.jubler.os;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.tools.externals.ExtPath;
 
 import java.awt.*;
@@ -35,9 +33,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javax.swing.*;
@@ -121,19 +116,19 @@ public class SystemDependent {
         return 4;
     }
 
-    public static String getKeyMods(int keymods) {
+    public static String getKeyMods(int keymods, boolean withBraces) {
+        String openBraces = withBraces ? "[" : "";
+        String closeBraces = withBraces ? "]" : "";
         StringBuilder res = new StringBuilder();
         if ((keymods & KeyEvent.META_MASK) != 0)
-            res.append(IS_MACOSX ? "\u2318" : "+Meta");
+            res.append(openBraces).append(IS_MACOSX ? "\u2318" : "Meta").append(closeBraces).append("+");
         if ((keymods & KeyEvent.ALT_MASK) != 0)
-            res.append(IS_MACOSX ? "\u2325" : "+Alt");
+            res.append(openBraces).append(IS_MACOSX ? "\u2325" : "Alt").append(closeBraces).append("+");
         if ((keymods & KeyEvent.CTRL_MASK) != 0)
-            res.append(IS_MACOSX ? "\u2303" : "+Ctrl");
+            res.append(openBraces).append(IS_MACOSX ? "\u2303" : "Ctrl").append(closeBraces).append("+");
         if ((keymods & KeyEvent.SHIFT_MASK) != 0)
-            res.append(IS_MACOSX ? "\u21e7" : "+Shift");
-        if (res.length() > 0)
-            res.append(' ');
-        return res.toString();
+            res.append(openBraces).append(IS_MACOSX ? "\u21e7" : "Shift").append(closeBraces).append("+");
+        return res.length() > 0 ? res.substring(0, res.length() - 1) : "";
     }
 
     public static int getDefaultKeyModifier() {

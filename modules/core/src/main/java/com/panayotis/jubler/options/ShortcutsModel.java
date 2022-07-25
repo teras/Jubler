@@ -368,7 +368,10 @@ public class ShortcutsModel extends AbstractTableModel {
 
             @Override
             public String toString() {
-                return key == 0 ? "" : SystemDependent.getKeyMods(modifier) + KeyEvent.getKeyText(key);
+                if (key == 0)
+                    return "";
+                String mod = SystemDependent.getKeyMods(modifier, false);
+                return (mod.isEmpty() ? "" : mod + "+") + KeyEvent.getKeyText(key);
             }
 
             private static int getSysAccelerator(int newmod) {
