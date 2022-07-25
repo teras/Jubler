@@ -75,7 +75,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private final static Color INFOC_E = new Color(253, 0, 0);
 
     private static final String TOOLTIP = "<b>" + __("How to navigate with keyboard") + "</b><br/>"
-            + "- " + __("Change focus from Text area to Editor with {0}D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_MASK).trim()) + "<br/>, "
+            + "- " + __("Change focus from Text area to Editor with {0}+D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_MASK, true).trim()) + "<br/>"
             + "- " + __("Change focus from one timing to the other with the [ENTER] key") + "<br/>"
             + "- " + __("Change the currently selected lock with [PAGE-UP]/[PAGE-DOWN] keys") + "<br/>"
             + "- " + __("Add/substract timing values with [ARROW-UP]/[ARROW-DOWN] keys") + "<br/>"
@@ -640,7 +640,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock1);
         Lock1.setIcon(Theme.loadIcon("lock.png"));
-        Lock1.setToolTipText("<html>" +__( "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock1.setToolTipText("<html>" + __("Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
@@ -919,7 +919,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.FlowLayout(0));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
         crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1048,7 +1048,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     @SuppressWarnings("UseSpecificCatch")
     private void crossinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crossinfoActionPerformed
         try {
-            Desktop.getDesktop().browse(new URI("https://crossmobile.tech/jubler"));
+            Desktop.getDesktop().browse(new URI("https://crossmobile.org/jubler"));
         } catch (Exception ex) {
         }
     }//GEN-LAST:event_crossinfoActionPerformed
