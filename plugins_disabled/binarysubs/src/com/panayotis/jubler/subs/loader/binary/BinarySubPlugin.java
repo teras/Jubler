@@ -56,22 +56,8 @@ public class BinarySubPlugin implements Plugin {
             new SUPCompressedImage()
         };
         //DEBUG.logger.log(Level.OFF, "Create new set of plugin");
-        setClassLoaderForSubFormat();
         return plugin_list;
     }//end public PluginItem[] getPluginItems()
-
-    private void setClassLoaderForSubFormat() {
-        try {
-            for (PluginItem plugin_item : plugin_list) {
-                SubFormat fmt = (SubFormat) plugin_item;
-                fmt.setClassLoader(this.loader);
-                if (this.loader == null)
-                    DEBUG.logger.log(Level.SEVERE, __("Loader is NULL."));
-            }//end for(PluginItem format : plugin_list)
-        } catch (Exception ex) {
-            DEBUG.logger.log(Level.SEVERE, ex.toString() + __(": Unable to set class loader"));
-        }
-    }
 
     public String getPluginName() {
         return __("Binary subtitles");
@@ -79,13 +65,5 @@ public class BinarySubPlugin implements Plugin {
 
     public boolean canDisablePlugin() {
         return false;
-    }
-
-    public ClassLoader getClassLoader() {
-        return this.loader;
-    }
-
-    public void setClassLoader(ClassLoader loader) {
-        this.loader = loader;
     }
 }//end public class BinarySubPlugin implements Plugin 

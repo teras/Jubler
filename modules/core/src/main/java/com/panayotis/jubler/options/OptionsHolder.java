@@ -31,7 +31,7 @@ import com.panayotis.jubler.options.gui.TabPage;
  */
 public interface OptionsHolder extends TabPage {
 
-    public abstract void loadPreferences();
+    void loadPreferences();
 
-    public abstract void savePreferences();
+    void savePreferences();
 }

@@ -52,6 +52,11 @@
             <artifactId>zemberek</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.panayotis.jubler</groupId>
+            <artifactId>azuretranslate</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -119,9 +124,21 @@
         <generic.dist/>
         <arm32.dist/>
         <arm64.dist/>
+        <makeapp.ext>linux</makeapp.ext>
     </properties>
 
     <profiles>
+        <profile>
+            <id>build-under-macos</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <properties>
+                <makeapp.ext>osx</makeapp.ext>
+            </properties>
+        </profile>
         <profile>
             <id>notarize</id>
             <properties>
@@ -182,14 +199,14 @@
                             <execution>
                                 <id>create</id>
                                 <configuration>
-                                    <executable>resources/makeapp</executable>
+                                    <executable>modules/installer/resources/makeapp.${makeapp.ext}</executable>
                                     <arguments>
                                         <argument>create</argument>
                                         <argument>--name=Jubler</argument>
-                                        <argument>--appdir=target/jubler</argument>
+                                        <argument>--input=target/jubler/lib</argument>
                                         <argument>--output=target</argument>
                                         <argument>--res=resources</argument>
-                                        <argument>--jar=lib/jubler.jar</argument>
+                                        <argument>--jarname=jubler.jar</argument>
                                         <argument>--jvmopt=DEFAULT</argument>
                                         <argument>--jvmopt=-splash:$APPDIR/splash.jpg</argument>
                                         <argument>--version=${project.version}</argument>
@@ -208,8 +225,9 @@
                                         <argument>--notarize=${app.notarize}</argument>
                                         <argument>--p12file=secret/code-signing.p12</argument>
                                         <argument>--gpgdir=${user.home}/.gnupg</argument>
+                                        <argument>--gpgkey=${gpg.passphrase}</argument>
                                         <argument>--os=${mac.dist},${win32.dist},${win64.dist},${linux.dist},${generic.dist},${arm64.dist},${arm32.dist}</argument>
-                                        <argument>--jdk=${user.home}/.sdkman/candidates/java/14.0.1.hs-adpt</argument>
+                                        <argument>--jdk=${user.home}/.sdkman/candidates/java/17.0.4-tem</argument>
                                     </arguments>
                                 </configuration>
                                 <goals>

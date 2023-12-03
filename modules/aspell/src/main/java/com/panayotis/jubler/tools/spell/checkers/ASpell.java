@@ -189,13 +189,6 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
         return "ASpell checker";
     }
 
-    public ClassLoader getClassLoader() {
-        return null;
-    }
-
-    public void setClassLoader(ClassLoader loader) {
-    }
-
     static class ASpellSystemDependent extends SystemDependent {
 
         /**

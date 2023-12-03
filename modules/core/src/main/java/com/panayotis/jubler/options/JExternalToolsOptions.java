@@ -243,9 +243,9 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         jLabel1.setText(__("Command"));
         jPanel6.add(jLabel1, java.awt.BorderLayout.NORTH);
 
-        commandT.setToolTipText("<html>" + __("Advanced argument list:")+"<br>\n" +
-            __("%x=executable")+"<br>\n" +
-            __("%s=subtitle file"));
+        commandT.setToolTipText("<html>" + __("Advanced argument list:") + "<br>\n" +
+                __("%x=executable") + "<br>\n" +
+                __("%s=subtitle file"));
         jPanel6.add(commandT, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel6);
@@ -280,7 +280,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     private void browseBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseBActionPerformed
         chooser.showOpenDialog(this);
         File selectedFile = chooser.getSelectedFile();
-        if (selectedFile.isFile()) {
+        if (selectedFile != null && selectedFile.isFile()) {
             if (current != null) {
                 String path = selectedFile.getAbsolutePath();
                 current.setPath(path);

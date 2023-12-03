@@ -9,7 +9,7 @@
         <version>7.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-    <artifactId>jubler</artifactId>
+    <artifactId>core</artifactId>
 
     <dependencies>
         <dependency>
@@ -20,45 +20,12 @@
         <dependency>
             <groupId>com.eclipsesource.minimal-json</groupId>
             <artifactId>minimal-json</artifactId>
-            <version>0.9.5</version>
+            <version>${json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.panayotis.jubler</groupId>
+            <artifactId>jubler</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>Jubler</mainClass>
-                        </manifest>
-                        <manifestEntries>
-                            <Class-Path>coretheme.jar</Class-Path>
-                            <SplashScreen-Image>icons/splash.jpg</SplashScreen-Image>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
-            </plugin>
-        </plugins>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/version.prop</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>**/version.prop</exclude>
-                </excludes>
-            </resource>
-        </resources>
-    </build>
 </project>

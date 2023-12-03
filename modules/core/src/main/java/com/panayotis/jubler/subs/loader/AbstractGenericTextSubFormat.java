@@ -84,7 +84,7 @@ public abstract class AbstractGenericTextSubFormat extends SubFormat {
         StringBuilder res = new StringBuilder();
         boolean is_convert = subs.isRequiredToConvert(SubEntry.class);
         if (is_convert)
-            subs.convert(SubEntry.class, getClassLoader());//end if (is_convert)
+            subs.convert(SubEntry.class);//end if (is_convert)
         initSaver(subs, media, res);
         for (int i = 0; i < subs.size(); i++)
             appendSubEntry(subs.elementAt(i), res);

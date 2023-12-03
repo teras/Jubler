@@ -2,7 +2,7 @@
  * JTranslate.java
  *
  * Created on 9 Ιούλιος 2005, 11:20 πμ
- * 
+ *
  * This file is part of Jubler.
  *
  * Jubler is free software; you can redistribute it and/or modify
@@ -23,13 +23,14 @@
 
 package com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.tools.translate.Language;
+
+import javax.swing.*;
+
+import static com.panayotis.jubler.JubFrame.currentWindow;
 import static com.panayotis.jubler.i18n.I18N.__;
 
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JPanel;
-
 /**
- *
  * @author teras
  */
 public class TranslateGUI extends JPanel {
@@ -46,7 +47,7 @@ public class TranslateGUI extends JPanel {
             FromLang.setModel(new DefaultComboBoxModel(tool.getCurrentTranslator().getSourceLanguages()));
             FromLang.setSelectedItem(tool.getCurrentTranslator().getDefaultSourceLanguage());
 
-            ToLang.setModel(new DefaultComboBoxModel(tool.getCurrentTranslator().getDestinationLanguagesFor(FromLang.getSelectedItem().toString())));
+            ToLang.setModel(new DefaultComboBoxModel(tool.getCurrentTranslator().getDestinationLanguagesFor((Language) FromLang.getSelectedItem())));
             ToLang.setSelectedItem(tool.getCurrentTranslator().getDefaultDestinationLanguage());
         }
     }
@@ -62,10 +63,11 @@ public class TranslateGUI extends JPanel {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         TransMachine = new javax.swing.JComboBox();
+        configureB = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        FromLang = new javax.swing.JComboBox();
+        FromLang = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         ToLang = new javax.swing.JComboBox();
@@ -88,6 +90,14 @@ public class TranslateGUI extends JPanel {
             }
         });
         jPanel2.add(TransMachine, java.awt.BorderLayout.CENTER);
+
+        configureB.setText(__("Configure"));
+        configureB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                configureBActionPerformed(evt);
+            }
+        });
+        jPanel2.add(configureB, java.awt.BorderLayout.LINE_END);
 
         add(jPanel2, java.awt.BorderLayout.NORTH);
 
@@ -135,13 +145,19 @@ public class TranslateGUI extends JPanel {
         add(jPanel6, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
 
-private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransMachineActionPerformed
-    tool.setTranslator(TransMachine.getSelectedIndex());
-}//GEN-LAST:event_TransMachineActionPerformed
+    private void TransMachineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransMachineActionPerformed
+        tool.setTranslator(TransMachine.getSelectedIndex());
+    }//GEN-LAST:event_TransMachineActionPerformed
+
+    private void configureBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureBActionPerformed
+        tool.getCurrentTranslator().configure(currentWindow);
+    }//GEN-LAST:event_configureBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JComboBox FromLang;
+    javax.swing.JComboBox<Language> FromLang;
     javax.swing.JComboBox ToLang;
     private javax.swing.JComboBox TransMachine;
+    private javax.swing.JButton configureB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

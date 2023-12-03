@@ -18,7 +18,9 @@
         <module>modules/coretools</module>
         <module>modules/mplayer</module>
         <module>modules/zemberek</module>
+        <module>modules/azuretranslate</module>
         <module>modules/coretheme</module>
+        <module>modules/launcher</module>
         <module>modules/installer</module>
     </modules>
 
@@ -28,5 +30,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <json.version>0.9.5</json.version>
     </properties>
 </project>

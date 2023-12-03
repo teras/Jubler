@@ -22,10 +22,7 @@
 package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.DynamicClassLoader;
-import com.panayotis.jubler.os.SystemFileFinder;
 
-import java.io.File;
 import java.util.*;
 
 /**
@@ -34,18 +31,19 @@ import java.util.*;
 public class PluginManager {
 
     public final static PluginManager manager = new PluginManager();
-    private DynamicClassLoader cl;
     private HashMap<String, ArrayList<PluginItem>> plugin_list;
 
     public PluginManager() {
         plugin_list = new HashMap<>();
-        cl = new DynamicClassLoader(SystemFileFinder.AppPath);
         ArrayList<PluginItem> plugin_items = new ArrayList<>();
-        int count = 0;
-        for (Plugin p : ServiceLoader.load(Plugin.class, cl)) {
-            DEBUG.debug("Registering plugin " + p.getPluginName());
-            p.setClassLoader(cl);
-            count++;
+
+        Iterator<Plugin> sl = ServiceLoader.load(Plugin.class, getClass().getClassLoader()).iterator();
+        List<Plugin> plugins = new ArrayList<>();
+        while (sl.hasNext())
+            plugins.add(sl.next());
+        plugins.sort(Comparator.comparing(Plugin::getPluginName));
+        for (Plugin p : plugins) {
+            System.out.println("Plugin " + p.getPluginName() + " registered");
             plugin_items.addAll(Arrays.asList(p.getPluginItems()));
         }
 
@@ -62,7 +60,7 @@ public class PluginManager {
                     current_list.add(item);
             }
 
-        DEBUG.debug(count + " plugin" + (count == 1 ? "" : "s") + " found");
+        DEBUG.debug(plugins.size() + " plugin" + (plugins.size() == 1 ? "" : "s") + " found");
         DEBUG.debug(plugin_items.size() + " plugin item" + (plugin_items.size() == 1 ? "" : "s") + " found");
         DEBUG.debug(plugin_list.size() + " listener" + (plugin_list.size() == 1 ? "" : "s") + " found");
     }

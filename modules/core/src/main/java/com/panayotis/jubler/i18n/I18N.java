@@ -28,7 +28,6 @@ import com.panayotis.jubler.os.DEBUG;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -50,9 +49,7 @@ public class I18N {
 
     private static void populateLanguage() {
         String ls = Locale.getDefault().getLanguage();
-        if (ls.equals("en")) {
-            DEBUG.debug("Using default language");
-        } else {
+        if (!ls.equals("en")) {
             String ll = ls + "_" + Locale.getDefault().getCountry();
             for (String p : new String[]{
                     "../../../../resources/i18n/" + ll + ".json",

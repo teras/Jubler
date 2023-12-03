@@ -24,11 +24,11 @@ package com.panayotis.jubler.information;
 
 import com.panayotis.jubler.os.DEBUG;
 
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Properties;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -37,7 +37,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
  */
 public class JAbout extends javax.swing.JPanel {
 
-    private final static String icon_theme = "Nuvola (David Vignoni - http://www.icon-king.com)";
+    private final static String icon_theme = "https://icons8.com";
     private final static String[] transl = {
             "Tom\u00e1\u0161 Bambas " + parseMail("seznam.cz", "conyx"),
             "Rene " + parseMail("hotmail.com", "bmom43"),
@@ -120,6 +120,8 @@ public class JAbout extends javax.swing.JPanel {
         thanks.append(__("{0} plugin", "W3C TT"));
         thanks.append(": Albert DeSantis ").append(parseMail("gmail.com", "netgensuperstar")).append("\n");
 
+        thanks.append("\n").append(__("Icon theme")).append(": ").append(icon_theme).append("\n");
+
         thanks.append("\n");
         thanks.append(__("Translators"));
         thanks.append(":\n");
@@ -131,8 +133,6 @@ public class JAbout extends javax.swing.JPanel {
         thanks.append("Fedora: Marcin Zaj\u0105czkowski ").append(parseMail("wp.pl", "mszpak")).append("\n");
         thanks.append("Gentoo: Serkan Kaba ").append(parseMail("gentoo.org", "serkan")).append("\n");
         thanks.append("Slackware: Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n");
-
-        thanks.append("\n").append(__("Icon theme")).append(":\n").append(icon_theme);
 
         ThanksT.setText(thanks.toString());
         ThanksT.setSelectionStart(0);
@@ -178,15 +178,14 @@ public class JAbout extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         InfoT.setEditable(false);
-        InfoT.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        InfoT.setFont(InfoT.getFont().deriveFont(InfoT.getFont().getStyle() | java.awt.Font.BOLD, InfoT.getFont().getSize() + 2));
         InfoT.setOpaque(false);
         jTabbedPane1.addTab(__("About"), InfoT);
 
         jScrollPane2.setPreferredSize(new java.awt.Dimension(450, 300));
 
-        ThanksT.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         ThanksT.setEditable(false);
-        ThanksT.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        ThanksT.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         jScrollPane2.setViewportView(ThanksT);
 
         jTabbedPane1.addTab(__("Thanks"), jScrollPane2);
@@ -196,7 +195,7 @@ public class JAbout extends javax.swing.JPanel {
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         LicenceT.setEditable(false);
-        LicenceT.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
+        LicenceT.setFont(LicenceT.getFont().deriveFont(LicenceT.getFont().getSize() - 2f));
         jScrollPane1.setViewportView(LicenceT);
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);

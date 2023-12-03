@@ -20,61 +20,54 @@
 package com.panayotis.jubler;
 
 import com.panayotis.appenh.Enhancer;
-
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.appenh.EnhancerManager;
+import com.panayotis.jubler.options.JUiOptions;
 import com.panayotis.jubler.os.LoaderThread;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
 
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Point;
-import java.awt.Window;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.File;
-import javax.swing.*;
+import java.util.prefs.Preferences;
 
 /**
  * @author teras
  */
 public class JublerApp implements Plugin, PluginItem {
-
+    public static final String SCALING_FACTOR = "scaling.factor";
+    public static final Preferences prefs = Preferences.systemNodeForPackage(JublerApp.class);
+    static
     private boolean ignore_click = false;
+    private double scaling;
 
     public JublerApp() {
-        EnhancerManager.getDefault().registerAbout(new Runnable() {
-            public void run() {
-                StaticJubler.showAbout();
-            }
+        scaling = prefs.getDouble(SCALING_FACTOR, 0.0);
+        if (scaling != 0.0)
+            System.setProperty("flatlaf.uiScale", Double.toString(scaling));
+
+        Enhancer e = EnhancerManager.getDefault();
+        e.setSafeLookAndFeel();
+        e.blendWindowTitle(true);
+
+        e.registerAbout(StaticJubler::showAbout);
+        e.registerPreferences(() -> {
+            if (JubFrame.prefs != null)
+                JubFrame.prefs.showPreferencesDialog();
         });
-        EnhancerManager.getDefault().registerPreferences(new Runnable() {
-            public void run() {
-                if (JubFrame.prefs != null)
-                    JubFrame.prefs.showPreferencesDialog();
-            }
+        e.registerQuit(() -> {
+            if (StaticJubler.requestQuit(null))
+                System.exit(0);
         });
-        EnhancerManager.getDefault().registerQuit(new Runnable() {
-            public void run() {
-                if (StaticJubler.requestQuit(null))
-                    System.exit(0);
-            }
+        e.registerFileOpen(file -> LoaderThread.getLoader().addSubtitle(file.getAbsolutePath()));
+        SwingUtilities.invokeLater(() -> {
+            e.setApplicationIcons(JubFrame.getFrameIconBig());
+            e.registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
         });
-        EnhancerManager.getDefault().registerFileOpen(new Enhancer.FileOpenRunnable() {
-            public void openFile(File file) {
-                LoaderThread.getLoader().addSubtitle(file.getAbsolutePath());
-            }
-        });
-        new Thread(new Runnable() {
-            public void run() {
-                EnhancerManager.getDefault().setApplicationIcons(JubFrame.getFrameIconBig());
-                EnhancerManager.getDefault().registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
-            }
-        }).start();
     }
 
     @Override
@@ -84,17 +77,22 @@ public class JublerApp implements Plugin, PluginItem {
 
     @Override
     public void execPlugin(Object caller, Object param) {
-        if (!(caller instanceof JubFrame) || !EnhancerManager.getDefault().providesSystemMenus())
+        if (!(caller instanceof JubFrame))
             return;
         JubFrame jubler = (JubFrame) caller;
-        if (param.equals("BEGIN"))
-            jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
-        else {
-            jubler.AboutHM.getParent().remove(jubler.AboutHM);
-            jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
-            jubler.QuitFM.getParent().remove(jubler.QuitFM);
-            setComponentDraggable(jubler, jubler.JublerTools);
-            setComponentDraggable(jubler, jubler.subeditor.StyleP);
+        if (SystemDependent.shouldSupportScaling()) {
+            if (!param.equals("BEGIN"))
+                JubFrame.prefs.Tabs.addTab(new JUiOptions(scaling));
+        } else if (EnhancerManager.getDefault().providesSystemMenus()) {
+            if (param.equals("BEGIN"))
+                jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
+            else {
+                jubler.AboutHM.getParent().remove(jubler.AboutHM);
+                jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
+                jubler.QuitFM.getParent().remove(jubler.QuitFM);
+                setComponentDraggable(jubler, jubler.JublerTools);
+                setComponentDraggable(jubler, jubler.subeditor.StyleP);
+            }
         }
     }
 
@@ -155,12 +153,5 @@ public class JublerApp implements Plugin, PluginItem {
 
     public boolean canDisablePlugin() {
         return true;
-    }
-
-    public ClassLoader getClassLoader() {
-        return null;
-    }
-
-    public void setClassLoader(ClassLoader loader) {
     }
 }

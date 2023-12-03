@@ -21,23 +21,28 @@
 package com.panayotis.jubler.tools.translate;
 
 import com.panayotis.jubler.subs.SubEntry;
+
+import javax.swing.*;
 import java.util.List;
 
 /**
- *
  * @author teras
  */
 public interface Translator {
 
-    public abstract String[] getSourceLanguages();
+    Language[] getSourceLanguages();
 
-    public abstract String[] getDestinationLanguagesFor(String from);
+    Language[] getDestinationLanguagesFor(Language from);
 
-    public abstract String getDefaultSourceLanguage();
+    Language getDefaultSourceLanguage();
 
-    public abstract String getDefaultDestinationLanguage();
+    Language getDefaultDestinationLanguage();
 
-    public abstract String getDefinition();
+    String getDefinition();
 
-    public abstract boolean translate(List<SubEntry> subs, String from_language, String to_language);
+    boolean translate(List<SubEntry> subs, Language from_language, Language to_language);
+
+    void configure(JFrame parent);
+
+    String isReady(JFrame parent);
 }

@@ -52,23 +52,7 @@ public class TextSubPlugin implements Plugin {
                 new DFXP(),
                 new PreSegmentedText()
         };
-        setClassLoaderForSubFormat();
         return plugin_list;
-    }
-
-    private ClassLoader loader = null;
-
-    private void setClassLoaderForSubFormat() {
-        try {
-            for (PluginItem plugin_item : plugin_list) {
-                SubFormat fmt = (SubFormat) plugin_item;
-                fmt.setClassLoader(this.loader);
-                if (this.loader == null)
-                    DEBUG.logger.log(Level.SEVERE, "Loader is NULL.");
-            }//end for(PluginItem format : plugin_list)
-        } catch (Exception ex) {
-            DEBUG.logger.log(Level.SEVERE, ex.toString() + ": Unable to set class loader");
-        }
     }
 
     public String getPluginName() {
@@ -77,13 +61,5 @@ public class TextSubPlugin implements Plugin {
 
     public boolean canDisablePlugin() {
         return false;
-    }
-
-    public ClassLoader getClassLoader() {
-        return this.loader;
-    }
-
-    public void setClassLoader(ClassLoader loader) {
-        this.loader = loader;
     }
 }

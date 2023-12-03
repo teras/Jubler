@@ -23,15 +23,16 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 
-import com.panayotis.jubler.os.JIDialog;
-import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.JIDialog;
+
 import java.io.File;
 
+import static com.panayotis.jubler.i18n.I18N.__;
+
 /**
- *
  * @author teras
  */
 public abstract class NativeDecoder implements DecoderInterface {
@@ -68,19 +69,17 @@ public abstract class NativeDecoder implements DecoderInterface {
         }
 
         setInterruptStatus(false);
-        cacher = new Thread() {
-            public void run() {
-                /* This is the subrutine which produces tha cached data, in separated thread */
-                feedback.startCacheCreation();
-                boolean status = makeCache(af.getPath(), cf.getPath(), af.getName());
-                cacher = null;  // Needed early, to "tip" the system that cache creating has been finished
-                setInterruptStatus(false);
+        cacher = new Thread(() -> {
+            /* This is the subrutine which produces tha cached data, in separated thread */
+            feedback.startCacheCreation();
+            boolean status = makeCache(af.getPath(), cf.getPath(), af.getName());
+            cacher = null;  // Needed early, to "tip" the system that cache creating has been finished
+            setInterruptStatus(false);
 
-                if (!status)
-                    JIDialog.error(null, __("Error while loading file {0}", af.getPath()), "Error while creating cache");
-                feedback.stopCacheCreation();
-            }
-        };
+            if (!status)
+                JIDialog.error(null, __("Error while loading file {0}", af.getPath()), "Error while creating cache");
+            feedback.stopCacheCreation();
+        });
         cacher.start();
 
         return true;

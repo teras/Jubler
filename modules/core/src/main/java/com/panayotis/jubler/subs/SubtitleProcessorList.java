@@ -2,43 +2,38 @@
  * SubtitleProcessorList.java
  *
  * Created on 04-Dec-2008, 00:47:34
- * 
+ *
  * This file is part of Jubler.
  * Jubler is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 2.
- * 
+ *
  * Jubler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with Jubler; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  */
 
 package com.panayotis.jubler.subs;
 
-import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEvent;
-import com.panayotis.jubler.subs.events.SubtitleRecordCreatedEventListener;
-import com.panayotis.jubler.subs.events.ParsedDataLineEvent;
-import com.panayotis.jubler.subs.events.ParsedDataLineEventListener;
-import com.panayotis.jubler.subs.events.PreParsingDataLineActionEvent;
-import com.panayotis.jubler.subs.events.PreParsingDataLineActionEventListener;
+import com.panayotis.jubler.subs.events.*;
+
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.logging.Level;
 
+import static com.panayotis.jubler.i18n.I18N.__;
+
 /**
- *
  * This class is used to hold the list of {@link SubtitlePatternProcessor}s,
  * each will be in charge of a recognising and parsing a data line. There are a
  * group of action events to be fired:
@@ -53,7 +48,7 @@ import java.util.logging.Level;
  * the target object of the {@link SubtitlePatternProcessor} is "null".
  * Initialisation to the created object or changing the state of the
  * {@link SubtitlePatternProcessor} are possible using this event. Record
- * creation is possible using the name of the target class, therefore the  {@link SubtitlePatternProcessor#getTargetObjectClassName 
+ * creation is possible using the name of the target class, therefore the  {@link SubtitlePatternProcessor#getTargetObjectClassName
  * getTargetObjectClassName} is used. As this uses the
  * <code>Class.forname(String).newInstance()</code>, the default constructor of
  * the target class is called and no parameterised constructors are recognised.
@@ -63,19 +58,19 @@ import java.util.logging.Level;
  * {@link #isCreateNewObject isCreateNewObject} flag is possible within this
  * event to commence the creation of a new record on the next parsing turn.
  * </ul>
- *
+ * <p>
  * The {@link #parse parse} routine also removes the
  * {@link SubtitlePatternProcessor} from the list after it has completed parsing
  * the data line and it's set to be
  * {@link SubtitlePatternProcessor#isRemovable isRemovable}. This is to avoid
  * the unnecessary testing of pattern in the next run, when the pattern is known
  * to be occurred only once.
- *
+ * <p>
  * Voluntary removal of processors is possible within processing events, for
  * instance after a certain point of processing occured. Instance of
  * {@link SubtitlePatternProcessor} must have access to the
  * {@link SubtitleProcessorList} in order to do this.
- *
+ * <p>
  * The {@link #parse parse} routine terminates after an instance of
  * {@link SubtitlePatternProcessor} processed its data.
  *
@@ -381,8 +376,7 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
                         DEBUG.logger.log(Level.SEVERE, msg);
                         throw new Exception(msg);
                     }//if (is_empty)
-                    ClassLoader cl = this.getClassLoader();
-                    Object new_object = Class.forName(class_name, true, cl).newInstance();
+                    Object new_object = Class.forName(class_name).newInstance();
                     ps.setTargetObject(new_object);
                     setCreateNewObject(false);
                     setCreatedRecord(new_object);
@@ -426,9 +420,9 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
      * under the condition provided, but only doing so if the instance exists in
      * the processor list.
      *
-     * @param ps The processor to add to removable list.
+     * @param ps        The processor to add to removable list.
      * @param condition true if the processesor is to be added to the removable
-     * list, false otherwise.
+     *                  list, false otherwise.
      */
     public void remove(SubtitlePatternProcessor ps, boolean condition) {
         boolean is_remove = (condition && this.contains(ps));
@@ -466,20 +460,6 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
 
     public void setRemoveList(ArrayList<SubtitlePatternProcessor> removeList) {
         this.removeList = removeList;
-    }
-
-    /**
-     * @return the classLoader
-     */
-    public ClassLoader getClassLoader() {
-        return classLoader;
-    }
-
-    /**
-     * @param classLoader the classLoader to set
-     */
-    public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
     }
 }//public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor>
 

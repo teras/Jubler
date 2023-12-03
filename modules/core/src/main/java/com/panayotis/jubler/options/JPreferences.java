@@ -23,16 +23,16 @@
 
 package com.panayotis.jubler.options;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 
-import java.awt.BorderLayout;
-import javax.swing.JMenuBar;
+import javax.swing.*;
+import java.awt.*;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  * @author teras
@@ -42,7 +42,7 @@ public class JPreferences extends javax.swing.JDialog {
     /* GUI element to hold various preferences
      * it is "friendly", since it is needed in Options
      */
-    JOptionTabs Tabs;
+    public JOptionTabs Tabs;
     /* Shortcuts to panels */
     private JExternalOptions jplay;
     private JExternalOptions jspell;

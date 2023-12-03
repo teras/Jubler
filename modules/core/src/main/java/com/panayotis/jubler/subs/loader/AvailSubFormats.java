@@ -46,7 +46,6 @@ public class AvailSubFormats {
         current = 0;
         Formats = new ArrayList<SubFormat>();
         PluginManager.manager.callPluginListeners(this);
-        pl_txt.setClassLoader(ClassLoader.getSystemClassLoader());
         add(pl_txt);
     }
 

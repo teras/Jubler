@@ -2689,8 +2689,8 @@ public class JubFrame extends JFrame implements WindowFocusListener {
          *
          */
         if (is_adjust_row_height) {
-            SubTable.setRowHeight(TABLE_DEFAULT_HEIGHT);
-            SubTable.repaint();
+//            SubTable.setRowHeight(TABLE_DEFAULT_HEIGHT);
+//            SubTable.repaint();
         }//end if (this.subs.isTextType())
     }//end public void changeTableRowHeightForTextTypeSubs()
 

@@ -29,12 +29,12 @@ import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
 /**
- *
  * @author teras
  */
 public abstract class SubFormat implements PluginItem {
@@ -42,7 +42,6 @@ public abstract class SubFormat implements PluginItem {
     protected float FPS;
     protected String ENCODING;
     private JubFrame jubler = null;
-    private ClassLoader classLoader = null;
     private int formatOrder = 100;
 
     public void init() {
@@ -89,20 +88,6 @@ public abstract class SubFormat implements PluginItem {
     }
 
     /**
-     * @return the classLoader
-     */
-    public ClassLoader getClassLoader() {
-        return classLoader;
-    }
-
-    /**
-     * @param classLoader the classLoader to set
-     */
-    public void setClassLoader(ClassLoader classLoader) {
-        this.classLoader = classLoader;
-    }
-
-    /**
      * @return the formatOrder
      */
     public int getFormatOrder() {
@@ -119,16 +104,9 @@ public abstract class SubFormat implements PluginItem {
     public SubFormat newInstance() {
         SubFormat new_one = null;
         try {
-            new_one = (SubFormat) Class.forName(getClass().getName(), true, classLoader).newInstance();
-            new_one.setClassLoader(classLoader);
+            new_one = (SubFormat) Class.forName(getClass().getName()).newInstance();
         } catch (Exception ex) {
-            try {
-                ClassLoader cl = ClassLoader.getSystemClassLoader();
-                new_one = (SubFormat) Class.forName(getClass().getName(), true, cl).newInstance();
-                new_one.setClassLoader(cl);
-            } catch (Exception e) {
-                DEBUG.logger.log(Level.SEVERE, e.toString());
-            }//end try/catch
+            DEBUG.logger.log(Level.SEVERE, ex.toString());
         }//end try/catch
         return new_one;
     }//end public SubFormat newInstance()

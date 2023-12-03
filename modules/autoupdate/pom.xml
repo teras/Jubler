@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.panayotis.jubler</groupId>
-            <artifactId>jubler</artifactId>
+            <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

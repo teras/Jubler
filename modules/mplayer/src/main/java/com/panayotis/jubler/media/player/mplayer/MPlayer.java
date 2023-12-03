@@ -124,11 +124,4 @@ public class MPlayer extends AbstractPlayer implements Plugin {
         names.add("mplayer.exe");
         return names;
     }
-
-    public ClassLoader getClassLoader() {
-        return null;
-    }
-
-    public void setClassLoader(ClassLoader cl) {
-    }
 }

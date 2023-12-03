@@ -41,7 +41,7 @@ public class LoaderThread extends Thread {
     }
 
     {
-        sublist = new ArrayList<String>();
+        sublist = new ArrayList<>();
     }
 
     public static LoaderThread getLoader() {

@@ -20,19 +20,22 @@
 
 package com.panayotis.jubler.tools;
 
-import java.util.List;
-import com.panayotis.jubler.tools.ToolMenu.Location;
-import com.panayotis.jubler.tools.translate.AvailTranslators;
-import com.panayotis.jubler.tools.translate.Translator;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.tools.ToolMenu.Location;
+import com.panayotis.jubler.tools.translate.AvailTranslators;
+import com.panayotis.jubler.tools.translate.Language;
+import com.panayotis.jubler.tools.translate.Translator;
+
+import javax.swing.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.JComponent;
+import java.util.List;
+
+import static com.panayotis.jubler.JubFrame.currentWindow;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
 public class Translate extends TimeBaseTool {
@@ -53,10 +56,15 @@ public class Translate extends TimeBaseTool {
     protected boolean affect(List<SubEntry> list) {
         if (trans == null) {
             DEBUG.debug("No active translators found!");
-            return true;
+            return false;
+        }
+        String notready = trans.isReady(currentWindow);
+        if (notready != null) {
+            JOptionPane.showMessageDialog(null, notready, __("Translator not ready yet"), JOptionPane.ERROR_MESSAGE);
+            return false;
         }
         TranslateGUI vis = (TranslateGUI) getToolVisuals();
-        return trans.translate(list, vis.FromLang.getSelectedItem().toString(), vis.ToLang.getSelectedItem().toString());
+        return trans.translate(list, (Language) vis.FromLang.getSelectedItem(), (Language) vis.ToLang.getSelectedItem());
     }
 
     void setTranslator(int selectedIndex) {
