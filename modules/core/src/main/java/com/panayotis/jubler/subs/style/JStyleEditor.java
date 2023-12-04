@@ -31,7 +31,7 @@ import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import java.awt.BorderLayout;
@@ -43,6 +43,7 @@ import javax.swing.text.StyleConstants;
 import com.panayotis.jubler.subs.style.gui.JAlphaColorDialog;
 import com.panayotis.jubler.subs.style.gui.JDirection;
 import com.panayotis.jubler.subs.style.gui.tri.TriColorButton;
+import com.panayotis.jubler.theme.IconStatus;
 import java.util.Collections;
 import javax.swing.JButton;
 
@@ -546,10 +547,9 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         AdvancedSelect.setText(__("Advanced options"));
         AdvancedSelect.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        AdvancedSelect.setIcon(Theme.loadIcon("tabclosed.png"));
+        AdvancedSelect.setIcon(Theme.loadIcon("tab.png"));
         AdvancedSelect.setIconTextGap(10);
-        AdvancedSelect.setPressedIcon(Theme.loadIcon("tabpressedup.png"));
-        AdvancedSelect.setSelectedIcon(Theme.loadIcon("tabopenup.png"));
+        AdvancedSelect.setPressedIcon(Theme.loadIcon("tab.png", IconStatus.PRESSED));
         AdvancedSelect.addActionListener(formListener);
         jPanel14.add(AdvancedSelect, java.awt.BorderLayout.CENTER);
 

@@ -28,7 +28,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.TreeWalker;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import java.awt.CardLayout;
 import java.awt.Frame;
 import java.io.File;

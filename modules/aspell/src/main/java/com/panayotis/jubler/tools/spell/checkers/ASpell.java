@@ -181,10 +181,6 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
         return new PluginItem[]{this};
     }
 
-    public boolean canDisablePlugin() {
-        return true;
-    }
-
     public String getPluginName() {
         return "ASpell checker";
     }

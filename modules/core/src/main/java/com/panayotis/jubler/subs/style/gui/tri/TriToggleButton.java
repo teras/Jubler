@@ -23,7 +23,7 @@
 
 package com.panayotis.jubler.subs.style.gui.tri;
 
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.subs.style.StyleChangeListener;
 import com.panayotis.jubler.subs.style.StyleType;
 import java.awt.event.ActionEvent;

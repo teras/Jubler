@@ -5,40 +5,43 @@
  */
 package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.os.UIUtils;
+import com.panayotis.jubler.theme.Theme;
 
 import javax.swing.*;
 
-import static com.panayotis.jubler.JublerApp.SCALING_FACTOR;
-import static com.panayotis.jubler.JublerApp.prefs;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  * @author teras
  */
 public class JUiOptions extends JPanel implements OptionsHolder {
-    private double scaling;
+    private float oldScaling = Float.POSITIVE_INFINITY;
 
     /**
      * Creates new form JExternalToolsOptions
      */
-    public JUiOptions(double scaling) {
+    public JUiOptions() {
         initComponents();
-        if (scaling > 0.1)
-            scalingFactorT.setText(Double.toString(scaling));
-        this.scaling = scaling;
+        loadPreferences();
     }
 
     @Override
     public void loadPreferences() {
-        prefs.getDouble(SCALING_FACTOR, scaling);
+        float scaling = UIUtils.getScaling();
+        if (oldScaling == Float.POSITIVE_INFINITY)
+            oldScaling = scaling;
+        if (scaling > 0.1)
+            scalingFactorT.setText(Double.toString(scaling));
     }
 
     @Override
     public void savePreferences() {
         try {
-            scaling = Double.parseDouble(scalingFactorT.getText());
-            prefs.putDouble(SCALING_FACTOR, scaling);
+            float newScaling = Float.parseFloat(scalingFactorT.getText());
+            UIUtils.setScaling(newScaling);
+            if (Math.abs(newScaling - oldScaling) > 0.1)
+                JOptionPane.showMessageDialog(null, __("New scaling will be performed after you restart Jubler"));
         } catch (Exception ignored) {
         }
     }
@@ -50,7 +53,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
 
     @Override
     public String getTabName() {
-        return "UI Configuration";
+        return "UI Options";
     }
 
     @Override

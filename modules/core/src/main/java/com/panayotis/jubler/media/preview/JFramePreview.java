@@ -26,7 +26,7 @@ package com.panayotis.jubler.media.preview;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 import java.awt.Color;

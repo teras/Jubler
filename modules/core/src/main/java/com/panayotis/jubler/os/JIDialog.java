@@ -27,7 +27,7 @@ import java.awt.Component;
 import javax.swing.JOptionPane;
 
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import javax.swing.ImageIcon;
 
 /**

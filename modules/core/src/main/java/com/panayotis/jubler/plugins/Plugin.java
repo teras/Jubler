@@ -29,5 +29,7 @@ public interface Plugin {
 
     String getPluginName();
 
-    boolean canDisablePlugin();
+    default int priority() {
+        return 0;
+    }
 }

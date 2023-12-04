@@ -29,7 +29,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.options.AutoSaveOptions;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -346,7 +346,6 @@ public class JSubPreview extends javax.swing.JPanel {
 
         add(MainPanel, java.awt.BorderLayout.CENTER);
 
-        ToolBar.setFloatable(false);
         ToolBar.setOrientation(JToolBar.VERTICAL);
         ToolBar.setRollover(true);
         ToolBar.setOpaque(false);
@@ -354,7 +353,6 @@ public class JSubPreview extends javax.swing.JPanel {
         Orientation.setIcon(Theme.loadIcon("turndown.png"));
         Orientation.setToolTipText(__("Change orientation of Preview panel"));
         Orientation.setFocusable(false);
-        Orientation.setPressedIcon(Theme.loadIcon("turn.png"));
         Orientation.setSelectedIcon(Theme.loadIcon("turnright.png"));
         Orientation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

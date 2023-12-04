@@ -56,9 +56,4 @@ public class CoreTools implements Plugin {
     public String getPluginName() {
         return "Basic tools";
     }
-
-    @Override
-    public boolean canDisablePlugin() {
-        return false;
-    }
 }

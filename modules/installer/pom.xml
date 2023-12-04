@@ -57,6 +57,11 @@
             <artifactId>azuretranslate</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.panayotis.jubler</groupId>
+            <artifactId>coretheme</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -99,7 +104,7 @@
                                 </copy>
                                 <copy file="../../resources/help/cache/jubler-faq.html" todir="target/jubler/lib/help"/>
                                 <copy file="../../resources/help/question.png" todir="target/jubler/lib/help"/>
-                                <copy file="../../README" tofile="target/jubler/README.txt"/>
+                                <copy file="../../README.md" tofile="target/jubler/README.md"/>
                                 <copy file="../../LICENCE" tofile="target/jubler/LICENCE.txt"/>
                                 <copy file="../../ChangeLog.html" todir="target/jubler"/>
                                 <copy file="../core/src/main/resources/icons/splash.jpg" todir="target/jubler"/>

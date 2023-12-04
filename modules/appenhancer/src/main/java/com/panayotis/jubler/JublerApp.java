@@ -24,6 +24,7 @@ import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.options.JUiOptions;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
@@ -33,24 +34,24 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.util.prefs.Preferences;
 
 /**
  * @author teras
  */
 public class JublerApp implements Plugin, PluginItem {
-    public static final String SCALING_FACTOR = "scaling.factor";
-    public static final Preferences prefs = Preferences.systemNodeForPackage(JublerApp.class);
     static
     private boolean ignore_click = false;
-    private double scaling;
 
     public JublerApp() {
-        scaling = prefs.getDouble(SCALING_FACTOR, 0.0);
-        if (scaling != 0.0)
-            System.setProperty("flatlaf.uiScale", Double.toString(scaling));
-
         Enhancer e = EnhancerManager.getDefault();
+
+        float scaling = UIUtils.getScaling();
+        if (scaling < 0.1) {
+            scaling = e.getDPI() / 96f;
+            UIUtils.setScaling(scaling);
+        }
+        System.setProperty("flatlaf.uiScale", Double.toString(scaling));
+
         e.setSafeLookAndFeel();
         e.blendWindowTitle(true);
 
@@ -65,7 +66,7 @@ public class JublerApp implements Plugin, PluginItem {
         });
         e.registerFileOpen(file -> LoaderThread.getLoader().addSubtitle(file.getAbsolutePath()));
         SwingUtilities.invokeLater(() -> {
-            e.setApplicationIcons(JubFrame.getFrameIconBig());
+            e.setApplicationIcons(JubFrame.getFrameIcon());
             e.registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
         });
     }
@@ -82,7 +83,7 @@ public class JublerApp implements Plugin, PluginItem {
         JubFrame jubler = (JubFrame) caller;
         if (SystemDependent.shouldSupportScaling()) {
             if (!param.equals("BEGIN"))
-                JubFrame.prefs.Tabs.addTab(new JUiOptions(scaling));
+                JubFrame.prefs.Tabs.addTab(new JUiOptions());
         } else if (EnhancerManager.getDefault().providesSystemMenus()) {
             if (param.equals("BEGIN"))
                 jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
@@ -151,7 +152,8 @@ public class JublerApp implements Plugin, PluginItem {
         return "Multi-platform application support";
     }
 
-    public boolean canDisablePlugin() {
-        return true;
+    @Override
+    public int priority() {
+        return -100;
     }
 }

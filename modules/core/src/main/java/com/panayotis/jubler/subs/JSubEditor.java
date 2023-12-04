@@ -25,8 +25,9 @@ package com.panayotis.jubler.subs;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.plugins.Theme;
 import com.panayotis.jubler.subs.style.*;
+import com.panayotis.jubler.theme.IconStatus;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.TimeSpinnerEditor;
 import com.panayotis.jubler.time.gui.JTimeSpinner;
@@ -43,6 +44,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.TextAction;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URI;
@@ -50,8 +52,6 @@ import java.net.URI;
 import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.options.Options.*;
 import static com.panayotis.jubler.time.gui.JTimeSpinner.*;
-
-import java.awt.event.KeyEvent;
 
 /**
  * @author teras
@@ -61,15 +61,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public final static ImageIcon Lock[];
 
     private final static ImageIcon NewlineI = Theme.loadIcon("newline.png");
-    private final static ImageIcon NewlineI_E = Theme.loadIcon("newline_e.png");
+    private final static ImageIcon NewlineI_E = Theme.loadIcon(NewlineI, IconStatus.ERROR);
     private final static ImageIcon LineI = Theme.loadIcon("line.png");
-    private final static ImageIcon LineI_E = Theme.loadIcon("line_e.png");
+    private final static ImageIcon LineI_E = Theme.loadIcon(LineI, IconStatus.ERROR);
     private final static ImageIcon SumI = Theme.loadIcon("sum.png");
-    private final static ImageIcon SumI_E = Theme.loadIcon("sum_e.png");
+    private final static ImageIcon SumI_E = Theme.loadIcon(SumI, IconStatus.ERROR);
     private final static ImageIcon CPSI = Theme.loadIcon("cps.png");
-    private final static ImageIcon CPSI_E = Theme.loadIcon("cps_e.png");
+    private final static ImageIcon CPSI_E = Theme.loadIcon(CPSI, IconStatus.ERROR);
     private final static ImageIcon FILLI = Theme.loadIcon("fill.png");
-    private final static ImageIcon FILLI_E = Theme.loadIcon("fill_e.png");
+    private final static ImageIcon FILLI_E = Theme.loadIcon(FILLI, IconStatus.ERROR);
 
     private final static Color INFOC = Color.BLACK;
     private final static Color INFOC_E = new Color(253, 0, 0);
@@ -640,7 +640,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock1);
         Lock1.setIcon(Theme.loadIcon("lock.png"));
-        Lock1.setToolTipText("<html>" + __("Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock1.setToolTipText("<html>" +__( "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
@@ -860,14 +860,14 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         FillL.setIconTextGap(1);
         InfoP.add(FillL);
 
-        DurationL.setIcon(Theme.loadIcon("dur_e.png"));
+        DurationL.setIcon(Theme.loadIcon("dur.png", IconStatus.ERROR));
         DurationL.setToolTipText(__("Duration"));
         DurationL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         DurationL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         DurationL.setIconTextGap(1);
         InfoP.add(DurationL);
 
-        CompactL.setIcon(Theme.loadIcon("compact_e.png"));
+        CompactL.setIcon(Theme.loadIcon("compact.png", IconStatus.ERROR));
         CompactL.setToolTipText(__("Subtitle could be compacted into fewer lines"));
         CompactL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         CompactL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -917,9 +917,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.add(jLabel1, java.awt.BorderLayout.CENTER);
 
         jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.FlowLayout(0));
+        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
         crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

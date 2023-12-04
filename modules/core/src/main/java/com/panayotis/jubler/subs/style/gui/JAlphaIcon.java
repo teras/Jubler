@@ -23,13 +23,12 @@
 
 package com.panayotis.jubler.subs.style.gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import javax.swing.Icon;
+import com.panayotis.jubler.os.UIUtils;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
- *
  * @author teras
  */
 public class JAlphaIcon implements Icon {
@@ -52,23 +51,24 @@ public class JAlphaIcon implements Icon {
     }
 
     public int getIconHeight() {
-        return 14;
+        return (int) (14 * UIUtils.getScaling());
     }
 
     public int getIconWidth() {
-        return 26;
+        return (int) (26 * UIUtils.getScaling());
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        int cwidth = getIconWidth() - 2;
-        int cheight = getIconHeight() - 2;
+        int offset = (int) (2 * UIUtils.getScaling());
+
+        int cwidth = getIconWidth() - offset;
+        int cheight = getIconHeight() - offset;
 
         if (color == null) {
             g.setColor(Color.BLACK);
-            g.fillRect(x, y, cwidth + 2, cheight + 2);
+            g.fillRect(x, y, cwidth + offset, cheight + offset);
             return;
         }
-
 
         Color c1 = color.getMixed(Color.GRAY);
         Color c2 = color.getMixed(Color.DARK_GRAY);

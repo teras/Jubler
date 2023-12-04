@@ -13,11 +13,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.panayotis.jubler</groupId>
-            <artifactId>coretheme</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
             <groupId>com.eclipsesource.minimal-json</groupId>
             <artifactId>minimal-json</artifactId>
             <version>${json.version}</version>

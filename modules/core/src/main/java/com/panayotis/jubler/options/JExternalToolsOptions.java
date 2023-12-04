@@ -5,7 +5,7 @@
  */
 package com.panayotis.jubler.options;
 
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.tools.ToolsManager;
 import com.panayotis.jubler.tools.externals.ExternalTool;
 

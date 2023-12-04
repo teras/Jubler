@@ -206,7 +206,6 @@
     </Container>
     <Container class="javax.swing.JToolBar" name="ToolBar">
       <Properties>
-        <Property name="floatable" type="boolean" value="false"/>
         <Property name="orientation" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="JToolBar.VERTICAL" type="code"/>
         </Property>
@@ -230,9 +229,6 @@
               <Connection code="__(&quot;Change orientation of Preview panel&quot;)" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
-            <Property name="pressedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Theme.loadIcon(&quot;turn.png&quot;)" type="code"/>
-            </Property>
             <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="Theme.loadIcon(&quot;turnright.png&quot;)" type="code"/>
             </Property>

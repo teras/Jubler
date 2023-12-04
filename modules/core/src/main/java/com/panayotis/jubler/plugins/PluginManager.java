@@ -31,17 +31,17 @@ import java.util.*;
 public class PluginManager {
 
     public final static PluginManager manager = new PluginManager();
-    private HashMap<String, ArrayList<PluginItem>> plugin_list;
+    private Map<String, ArrayList<PluginItem>> plugin_list;
 
     public PluginManager() {
-        plugin_list = new HashMap<>();
+        plugin_list = new LinkedHashMap<>();
         ArrayList<PluginItem> plugin_items = new ArrayList<>();
 
         Iterator<Plugin> sl = ServiceLoader.load(Plugin.class, getClass().getClassLoader()).iterator();
         List<Plugin> plugins = new ArrayList<>();
         while (sl.hasNext())
             plugins.add(sl.next());
-        plugins.sort(Comparator.comparing(Plugin::getPluginName));
+        plugins.sort(Comparator.comparing(Plugin::priority));
         for (Plugin p : plugins) {
             System.out.println("Plugin " + p.getPluginName() + " registered");
             plugin_items.addAll(Arrays.asList(p.getPluginItems()));

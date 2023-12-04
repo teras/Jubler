@@ -25,7 +25,7 @@ package com.panayotis.jubler.subs.style.gui;
 
 import com.panayotis.jubler.os.SystemDependent;
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import java.awt.Component;

@@ -10,4 +10,16 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>coretheme</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-extras</artifactId>
+            <version>${flatlaf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.panayotis.jubler</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

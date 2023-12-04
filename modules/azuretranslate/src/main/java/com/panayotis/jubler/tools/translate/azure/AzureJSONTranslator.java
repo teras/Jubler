@@ -173,9 +173,4 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements Plugin, 
     public String getPluginName() {
         return __("Azure translate");
     }
-
-    @Override
-    public boolean canDisablePlugin() {
-        return true;
-    }
 }

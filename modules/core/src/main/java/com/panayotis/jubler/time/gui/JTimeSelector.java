@@ -9,7 +9,7 @@ package com.panayotis.jubler.time.gui;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 

@@ -23,7 +23,6 @@
                             <mainClass>Jubler</mainClass>
                         </manifest>
                         <manifestEntries>
-                            <Class-Path>coretheme.jar</Class-Path>
                             <SplashScreen-Image>icons/splash.jpg</SplashScreen-Image>
                         </manifestEntries>
                     </archive>

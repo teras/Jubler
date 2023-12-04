@@ -25,7 +25,7 @@ package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import java.awt.CardLayout;
 import javax.swing.Icon;
 import javax.swing.JPanel;

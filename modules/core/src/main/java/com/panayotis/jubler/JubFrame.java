@@ -24,7 +24,6 @@ package com.panayotis.jubler;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
-import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
@@ -39,7 +38,7 @@ import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.PluginManager;
-import com.panayotis.jubler.plugins.Theme;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.JublerList;
 import com.panayotis.jubler.subs.SubAttribs;
@@ -54,7 +53,6 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.TimeSpinnerEditor;
 import com.panayotis.jubler.time.gui.JTimeSingleSelection;
-import com.panayotis.jubler.time.gui.JTimeSpinner;
 import com.panayotis.jubler.tools.JPasterGUI;
 import com.panayotis.jubler.tools.JRegExpReplace;
 import com.panayotis.jubler.tools.ToolsManager;
@@ -76,7 +74,6 @@ import java.awt.event.WindowFocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -148,8 +145,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     /* Help browser */
     private static HelpBrowser faqbrowse;
     /* Window frame icon */
-    public final static BufferedImage FrameIconSmall;
-    public final static BufferedImage FrameIconBig;
+    public final static BufferedImage FrameIcon;
 
     static {
         windows = new JublerList();
@@ -161,8 +157,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         /* prefs = new JPreferences(); */
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
-        FrameIconSmall = Theme.loadImage("frame.png");
-        FrameIconBig = Theme.loadImage("jubler-logo.png");
+        FrameIcon = Theme.loadImage("logo.png");
         fdialog = new JSubFileDialog();
     }
 
@@ -202,7 +197,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         });
         ToolsManager.register(this);
 
-        setIconImages(Arrays.asList(FrameIconBig, FrameIconSmall));
+        setIconImage(FrameIcon);
         preview = new JSubPreview(this);
 
         subeditor = new JSubEditor(this);
@@ -2715,7 +2710,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     public void windowLostFocus(WindowEvent e) {
     }
 
-    public static BufferedImage getFrameIconBig() {
-        return FrameIconBig;
+    public static BufferedImage getFrameIcon() {
+        return FrameIcon;
     }
 }

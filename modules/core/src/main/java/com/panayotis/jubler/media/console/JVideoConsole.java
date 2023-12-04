@@ -23,40 +23,34 @@
 
 package com.panayotis.jubler.media.console;
 
-import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.VideoPlayer;
 import com.panayotis.jubler.media.player.Viewport;
+import com.panayotis.jubler.media.preview.JSubSimpleGraph;
+import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.JIDialog;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.time.Time;
-import java.awt.BorderLayout;
+import com.panayotis.jubler.tools.RealTimeTool;
+import com.panayotis.jubler.tools.ToolsManager;
+import com.panayotis.jubler.tools.externals.ExtProgramException;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import javax.swing.Timer;
+import java.io.IOException;
 
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.tools.externals.ExtProgramException;
-import com.panayotis.jubler.options.Options;
-import java.awt.Color;
-import com.panayotis.jubler.media.preview.JSubSimpleGraph;
-import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.plugins.Theme;
-import com.panayotis.jubler.tools.RealTimeTool;
-import com.panayotis.jubler.tools.ToolsManager;
-import java.awt.GraphicsEnvironment;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.io.IOException;
-import javax.swing.JButton;
-import javax.swing.JDialog;
+import static com.panayotis.jubler.theme.IconStatus.*;
 
 /**
- *
  * @author teras
  */
 public class JVideoConsole extends JDialog implements PlayerFeedback {
@@ -269,6 +263,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         if (penstatus >= 0)
             setPenIcon(penstatus, true);
     }
+
     /* These variables are used to define the state of the Subtitle Recorder */
     private final static int SUBREC_BEGIN = 0;
     private final static int SUBREC_TYPING = 1;
@@ -726,6 +721,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                     setSubRecStatus(SUBREC_TYPING);
             }
     }//GEN-LAST:event_SubShowKeyReleased
+
     /* Use this variable to store last subtitle difference position, while dragging the bar */
     private float last = 0;
 
@@ -852,7 +848,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         setPauseIcon();
         if ((!view.isPaused()) && (!GrabSub.isEnabled()))
             GrabSub.setEnabled(true);
-}//GEN-LAST:event_PauseBActionPerformed
+    }//GEN-LAST:event_PauseBActionPerformed
 
     private void AudioBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioBActionPerformed
         AudioS.setValue(AudioS.getValue() == 0 ? last_volume_value : 0);
@@ -973,6 +969,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private void updateTimeDisplay(double time) {
         TimeL.setText("Time: " + new Time(time).getSeconds());
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AudioB;
     private javax.swing.JSlider AudioS;
@@ -1031,13 +1028,13 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
         PenIcons = new ImageIcon[8];
         PenIcons[0] = Theme.loadIcon("pen.png");
-        PenIcons[1] = IconFactory.getColoredIcon(PenIcons[0], Color.PINK);
-        PenIcons[2] = IconFactory.getColoredIcon(PenIcons[0], Color.YELLOW);
-        PenIcons[3] = IconFactory.getColoredIcon(PenIcons[0], Color.CYAN);
-        PenIcons[4] = IconFactory.getSelectedPenIcon(PenIcons[0]);
-        PenIcons[5] = IconFactory.getSelectedPenIcon(PenIcons[1]);
-        PenIcons[6] = IconFactory.getSelectedPenIcon(PenIcons[2]);
-        PenIcons[7] = IconFactory.getSelectedPenIcon(PenIcons[3]);
+        PenIcons[1] = Theme.loadIcon(PenIcons[0], PINK);
+        PenIcons[2] = Theme.loadIcon(PenIcons[0], YELLOW);
+        PenIcons[3] = Theme.loadIcon(PenIcons[0], CYAN);
+        PenIcons[4] = Theme.loadIcon(PenIcons[0], SELECTED_PEN);
+        PenIcons[5] = Theme.loadIcon(PenIcons[1], SELECTED_PEN);
+        PenIcons[6] = Theme.loadIcon(PenIcons[2], SELECTED_PEN);
+        PenIcons[7] = Theme.loadIcon(PenIcons[3], SELECTED_PEN);
 
         Pens = new JButton[4];
         Pens[0] = WhiteB;
@@ -1052,16 +1049,16 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         SubRecIcons[SUBREC_ABORT] = SubRecIcons[SUBREC_TYPING];
 
         SyncIcons = new ImageIcon[4];
-        SyncIcons[0] = Theme.loadIcon("sync1b.png");
-        SyncIcons[1] = Theme.loadIcon("sync1c.png");
-        SyncIcons[2] = Theme.loadIcon("sync2b.png");
-        SyncIcons[3] = Theme.loadIcon("sync2c.png");
+        SyncIcons[1] = Theme.loadIcon("syncl.png");
+        SyncIcons[3] = Theme.loadIcon("syncr.png");
+        SyncIcons[0] = Theme.loadIcon(SyncIcons[1], MONOCHROME);
+        SyncIcons[2] = Theme.loadIcon(SyncIcons[3], MONOCHROME);
     }
 
     private void setButtonIcon(JButton button, ImageIcon icon) {
         button.setIcon(icon);
-        button.setPressedIcon(IconFactory.getPressedIcon(icon));
-        button.setRolloverIcon(IconFactory.getRolloverIcon(icon));
+        button.setPressedIcon(Theme.loadIcon(icon, PRESSED));
+        button.setRolloverIcon(Theme.loadIcon(icon, ROLLOVER));
         button.setText("");
     }
 

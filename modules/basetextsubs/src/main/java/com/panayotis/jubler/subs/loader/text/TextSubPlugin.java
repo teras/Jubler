@@ -58,8 +58,4 @@ public class TextSubPlugin implements Plugin {
     public String getPluginName() {
         return "Text subtitles";
     }
-
-    public boolean canDisablePlugin() {
-        return false;
-    }
 }
