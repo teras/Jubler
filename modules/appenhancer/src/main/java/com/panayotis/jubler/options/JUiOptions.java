@@ -28,7 +28,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
 
     @Override
     public void loadPreferences() {
-        float scaling = UIUtils.getScaling();
+        float scaling = UIUtils.loadScaling();
         if (oldScaling == Float.POSITIVE_INFINITY)
             oldScaling = scaling;
         if (scaling > 0.1)
@@ -39,7 +39,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
     public void savePreferences() {
         try {
             float newScaling = Float.parseFloat(scalingFactorT.getText());
-            UIUtils.setScaling(newScaling);
+            UIUtils.saveScaling(newScaling);
             if (Math.abs(newScaling - oldScaling) > 0.1)
                 JOptionPane.showMessageDialog(null, __("New scaling will be performed after you restart Jubler"));
         } catch (Exception ignored) {

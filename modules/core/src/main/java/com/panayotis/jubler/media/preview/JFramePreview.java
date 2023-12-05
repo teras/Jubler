@@ -23,30 +23,25 @@
 
 package com.panayotis.jubler.media.preview;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.theme.Theme;
+import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.MediaTracker;
+import com.panayotis.jubler.theme.Theme;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.image.ImageObserver;
-import javax.swing.JPanel;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
 public class JFramePreview extends JPanel {
 
-    public static final int REEL_OFFSET = 12;
+    public static final int REEL_OFFSET = (int) (12 * UIUtils.getScaling());
     /* Background color of the movie clip */
     private static final Color background = new Color(10, 10, 10);
     private static final String inactive_decoder_message = __("FFDecode library not active. Using demo image.");
@@ -85,7 +80,9 @@ public class JFramePreview extends JPanel {
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null) + 2 * REEL_OFFSET);
+        return new Dimension(
+                (int) (frameimg.getWidth(null) * UIUtils.getScaling()),
+                (int) (frameimg.getHeight(null) * UIUtils.getScaling()) + 2 * REEL_OFFSET);
     }
 
     public void updateMediaFile(MediaFile mfile) {
@@ -145,8 +142,8 @@ public class JFramePreview extends JPanel {
 
     public void paintComponent(Graphics g) {
         g.setColor(background);
-        int imgheight = frameimg.getHeight(null);
-        int imgwidth = frameimg.getWidth(null);
+        int imgheight = (int) (frameimg.getHeight(null) * UIUtils.getScaling());
+        int imgwidth = (int) (frameimg.getWidth(null) * UIUtils.getScaling());
 
         g.fillRect(0, 0, getWidth(), REEL_OFFSET);
         g.fillRect(0, REEL_OFFSET + imgheight, getWidth(), REEL_OFFSET);
@@ -154,17 +151,19 @@ public class JFramePreview extends JPanel {
             g.fillRect(imgwidth, 0, getWidth() - imgwidth, getHeight());
 
         g.setColor(Color.WHITE);
+        int reelDelta = (int) (2 * UIUtils.getScaling());
         for (int i = 4; i < getWidth(); i += REEL_OFFSET) {
-            g.fill3DRect(i, 2, REEL_OFFSET / 2, REEL_OFFSET - 4, false);
-            g.fill3DRect(i, 2 + REEL_OFFSET + imgheight, REEL_OFFSET / 2, REEL_OFFSET - 4, false);
+            g.fill3DRect(i, reelDelta, REEL_OFFSET / 2, REEL_OFFSET - 2 * reelDelta, false);
+            g.fill3DRect(i, reelDelta + REEL_OFFSET + imgheight, REEL_OFFSET / 2, REEL_OFFSET - 2 * reelDelta, false);
         }
-        g.drawImage(frameimg, 0, REEL_OFFSET, null); // Since we have already loaded the picture from memory, the imageobserver is of no help
+        g.drawImage(frameimg, 0, REEL_OFFSET, imgwidth, imgheight, null); // Since we have already loaded the picture from memory, the imageobserver is of no help
         if (subimg != null)
-            g.drawImage(subimg.getImage(), subimg.getXOffset(frameimg), subimg.getYOffset(frameimg) + REEL_OFFSET, (ImageObserver) null);
+            g.drawImage(subimg.getImage(), subimg.getXOffset(imgwidth), subimg.getYOffset(imgheight) + REEL_OFFSET, (ImageObserver) null);
 
         /* Draw visual representation that ffdecode library is not present */
         if (!mfile.getDecoder().isDecoderValid()) {
             Font f = Font.decode(null);
+            f = f.deriveFont(f.getSize() * UIUtils.getScaling());
             g.setFont(f);
             TextLayout layout = new TextLayout(inactive_decoder_message, f, ((Graphics2D) g).getFontRenderContext());
             g.setColor(Color.RED);

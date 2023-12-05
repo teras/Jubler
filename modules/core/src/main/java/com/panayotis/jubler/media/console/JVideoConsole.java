@@ -519,11 +519,11 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel9.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         jPanel9.setLayout(new java.awt.GridLayout(1, 2));
 
-        TimeL.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        TimeL.setFont(TimeL.getFont().deriveFont(TimeL.getFont().getSize()-1f));
         TimeL.setToolTipText(__("Current playback time"));
         jPanel9.add(TimeL);
 
-        dtL.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        dtL.setFont(dtL.getFont().deriveFont(dtL.getFont().getSize()-1f));
         dtL.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         dtL.setText(" ");
         dtL.setToolTipText(__("Subtitles time difference"));
@@ -679,7 +679,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel12.add(SubMover, java.awt.BorderLayout.CENTER);
 
-        SmoverL.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        SmoverL.setFont(SmoverL.getFont().deriveFont(SmoverL.getFont().getSize()-1f));
         SmoverL.setText(" ");
         SmoverL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         jPanel12.add(SmoverL, java.awt.BorderLayout.NORTH);
@@ -691,7 +691,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         MainPanel.add(jPanel11, java.awt.BorderLayout.CENTER);
 
         SubShow.setEditable(false);
-        SubShow.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
+        SubShow.setFont(SubShow.getFont().deriveFont(SubShow.getFont().getStyle() | java.awt.Font.BOLD, SubShow.getFont().getSize()-1));
         SubShow.setToolTipText(__("Subtitle text"));
         SubShow.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {

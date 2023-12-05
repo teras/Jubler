@@ -41,15 +41,27 @@ public class Theme {
     }
 
     public static BufferedImage loadImage(String name) {
-        return current().loadImage(name);
+        return current().loadImage(name, 1);
+    }
+
+    public static BufferedImage loadImage(String name, float resize) {
+        return current().loadImage(name, resize);
     }
 
     public static ImageIcon loadIcon(String name) {
-        return loadIcon(name, IconStatus.NORMAL);
+        return loadIcon(name, 1);
+    }
+
+    public static ImageIcon loadIcon(String name, float resize) {
+        return loadIcon(name, IconStatus.NORMAL, resize);
     }
 
     public static ImageIcon loadIcon(String name, IconStatus status) {
-        return loadIcon(current().loadIcon(name), status);
+        return loadIcon(name, status, 1);
+    }
+
+    public static ImageIcon loadIcon(String name, IconStatus status, float resize) {
+        return loadIcon(current().loadIcon(name, resize), status);
     }
 
     public static ImageIcon loadIcon(ImageIcon otherIcon, IconStatus status) {
@@ -57,8 +69,8 @@ public class Theme {
     }
 
     public interface Provider {
-        BufferedImage loadImage(String name);
+        BufferedImage loadImage(String name, float resize);
 
-        ImageIcon loadIcon(String name);
+        ImageIcon loadIcon(String name, float resize);
     }
 }

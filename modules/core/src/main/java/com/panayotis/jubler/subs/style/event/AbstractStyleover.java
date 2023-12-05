@@ -23,14 +23,15 @@
 
 package com.panayotis.jubler.subs.style.event;
 
+import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
+
 import java.util.ArrayList;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 /**
- *
  * @author teras
  */
 public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entry> {
@@ -42,6 +43,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
     protected abstract int offsetByParagraph();
 
     protected abstract boolean deleteDependingOnStyle(AbstractStyleover.Entry entry, String subtext);
+
     public final static boolean PREV = false;
     public final static boolean NEXT = true;
     private Object styletype;
@@ -147,7 +149,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
      * Create a new style based of the current one at this position. If the
      * previous style is actually the startevent, then there is no end event
      * (return null)
-     *
+     * <p>
      * Or else again search to the right for the real end (same rules as
      * findStart apply). if the style should change up to the end of the
      * paragraph, it will dump intermediate events
@@ -167,14 +169,14 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
     /* Here we add a new event (style) into the subtitle
      *
      *The main idea is that we read it from left to right. If some
-     *events are paragaph based then the paragraph event appears ONLY in the
+     *events are paragraph based then the paragraph event appears ONLY in the
      *beginning of the paragraph (i.e. first character).
      *
      *In every place one could find the following possibilities:
      *1) nothing: no special style exists for this place onward
      *2) a "left" style - there is a style which will be used onwards up to
      *    the end
-     *3) a "left" and a "right" - this usually means that when a user types a chracter in between,
+     *3) a "left" and a "right" - this usually means that when a user types a character in between,
      *   the new characters will have to "left" attribute. If though nothing will be typed, then
      *   the style is discarded and the "right" attribute is used
      */
@@ -369,10 +371,12 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
                 value = StyleConstants.ALIGN_CENTER;
 
             if (from != 0)
-                from++;    // FIx the offset by one error with the marking of the end of the paragraph
+                from++;    // Fix the offset by one error with the marking of the end of the paragraph
             set.addAttribute(type, value);
             doc.setParagraphAttributes(from, length, set, false);
         } else {
+            if (type == StyleConstants.FontSize)
+                value = (int) ((int) value * UIUtils.getScaling());
             set.addAttribute(type, value);
             doc.setCharacterAttributes(from, length, set, false);
         }

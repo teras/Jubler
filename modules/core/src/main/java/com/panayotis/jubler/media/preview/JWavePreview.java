@@ -24,25 +24,19 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
-import static com.panayotis.jubler.media.preview.JFramePreview.DT;
-
 import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
+import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.SubEntry;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+import static com.panayotis.jubler.media.preview.JFramePreview.DT;
 
 /**
- *
  * @author teras
  */
 public class JWavePreview extends JPanel implements DecoderListener {
@@ -95,11 +89,11 @@ public class JWavePreview extends JPanel implements DecoderListener {
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(10, 50);
+        return new Dimension(10, (int) (50 * UIUtils.getScaling()));
     }
 
     public Dimension getMinimumSize() {
-        return new Dimension(10, 50);
+        return new Dimension(10, (int) (50 * UIUtils.getScaling()));
     }
 
     public void startCacheCreation() {

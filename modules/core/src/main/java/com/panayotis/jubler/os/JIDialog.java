@@ -23,15 +23,14 @@
 
 package com.panayotis.jubler.os;
 
-import java.awt.Component;
-import javax.swing.JOptionPane;
+import com.panayotis.jubler.theme.Theme;
+
+import javax.swing.*;
+import java.awt.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.theme.Theme;
-import javax.swing.ImageIcon;
 
 /**
- *
  * @author teras
  */
 public class JIDialog extends JOptionPane {
@@ -41,7 +40,7 @@ public class JIDialog extends JOptionPane {
     public static final Object[] yes_no_opts = {__("Yes"), __("No")};
 
     public static void about(Component parent, Object message, String title, String iconpath) {
-        ImageIcon icon = Theme.loadIcon(iconpath);
+        ImageIcon icon = Theme.loadIcon(iconpath, 0.2f);
         showMessage(parent, message, title, PLAIN_MESSAGE, icon, ok_opts);
     }
 

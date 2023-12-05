@@ -23,6 +23,8 @@
 
 package com.panayotis.jubler.media.preview;
 
+import com.panayotis.jubler.os.UIUtils;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -44,7 +46,7 @@ public class JRuler extends JPanel {
      */
     public JRuler(ViewWindow view) {
         this.view = view;
-        height = 30;
+        height = (int) (30* UIUtils.getScaling());
     }
 
     @Override

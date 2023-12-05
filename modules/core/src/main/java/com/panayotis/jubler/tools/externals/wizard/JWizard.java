@@ -100,7 +100,7 @@ public class JWizard extends JDialog {
         BrowseB = new javax.swing.JButton();
         BrowseStatusL = new javax.swing.JLabel();
         FinishP = new javax.swing.JPanel();
-        FInishTitle = new javax.swing.JLabel();
+        FinishTitle = new javax.swing.JLabel();
         LowerP = new javax.swing.JPanel();
         ButtonsP = new javax.swing.JPanel();
         CancelB = new javax.swing.JButton();
@@ -119,7 +119,7 @@ public class JWizard extends JDialog {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        WelcomeTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        WelcomeTitle.setFont(WelcomeTitle.getFont().deriveFont(WelcomeTitle.getFont().getStyle() | java.awt.Font.BOLD, WelcomeTitle.getFont().getSize()+2));
         WelcomeTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         WelcomeTitle.setText(__("{0} executable was not found.", name));
         WelcomeTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
@@ -147,7 +147,7 @@ public class JWizard extends JDialog {
         WelcomeText.setEditable(false);
         WelcomeText.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
         WelcomeText.setColumns(20);
-        WelcomeText.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        WelcomeText.setFont(WelcomeText.getFont().deriveFont(WelcomeText.getFont().getSize()+1f));
         WelcomeText.setRows(3);
         WelcomeText.setText(__("Jubler needs {0} executable\nto continue with the requested action.", name));
         jPanel2.add(WelcomeText, java.awt.BorderLayout.CENTER);
@@ -160,7 +160,7 @@ public class JWizard extends JDialog {
 
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        AutoTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        AutoTitle.setFont(AutoTitle.getFont().deriveFont(AutoTitle.getFont().getStyle() | java.awt.Font.BOLD, AutoTitle.getFont().getSize()+2));
         AutoTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         AutoTitle.setText(__("Automatic location of {0} executable", name));
         AutoTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
@@ -182,7 +182,7 @@ public class JWizard extends JDialog {
 
         jPanel4.setLayout(new java.awt.BorderLayout());
 
-        BrowseTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
+        BrowseTitle.setFont(BrowseTitle.getFont().deriveFont(BrowseTitle.getFont().getStyle() | java.awt.Font.BOLD, BrowseTitle.getFont().getSize()+2));
         BrowseTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         BrowseTitle.setText(__("Manual selection of {0} executable.", name));
         BrowseTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
@@ -215,12 +215,12 @@ public class JWizard extends JDialog {
 
         FinishP.setLayout(new java.awt.BorderLayout());
 
-        FInishTitle.setFont(new java.awt.Font("Lucida Grande", 1, 14)); // NOI18N
-        FInishTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        FInishTitle.setText(__("{0} executable has been resolved", name));
-        FInishTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
-        FInishTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        FinishP.add(FInishTitle, java.awt.BorderLayout.NORTH);
+        FinishTitle.setFont(FinishTitle.getFont().deriveFont(FinishTitle.getFont().getStyle() | java.awt.Font.BOLD, FinishTitle.getFont().getSize()+2));
+        FinishTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        FinishTitle.setText(__("{0} executable has been resolved", name));
+        FinishTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 3, 12, 0));
+        FinishTitle.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        FinishP.add(FinishTitle, java.awt.BorderLayout.NORTH);
 
         CardsP.add(FinishP, "card4");
 
@@ -251,7 +251,7 @@ public class JWizard extends JDialog {
 
         getContentPane().add(LowerP, java.awt.BorderLayout.SOUTH);
 
-        jLabel1.setIcon(Theme.loadIcon("wizard.jpg"));
+        jLabel1.setIcon(Theme.loadIcon("wizard.png"));
         getContentPane().add(jLabel1, java.awt.BorderLayout.WEST);
 
         pack();
@@ -355,9 +355,9 @@ public class JWizard extends JDialog {
     private javax.swing.JButton CancelB;
     private javax.swing.JPanel CardsP;
     private javax.swing.JButton ContinueB;
-    private javax.swing.JLabel FInishTitle;
     private javax.swing.JTextField FilenameT;
     private javax.swing.JPanel FinishP;
+    private javax.swing.JLabel FinishTitle;
     private javax.swing.JPanel LowerP;
     private javax.swing.JRadioButton ManualB;
     private javax.swing.JPanel WelcomeP;

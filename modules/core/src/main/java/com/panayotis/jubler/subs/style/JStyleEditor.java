@@ -23,32 +23,30 @@
 
 package com.panayotis.jubler.subs.style;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-import static com.panayotis.jubler.subs.style.StyleType.*;
-
-import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.theme.Theme;
+import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
-import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 import com.panayotis.jubler.subs.style.gui.JAlphaColorDialog;
+import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import com.panayotis.jubler.subs.style.gui.JDirection;
 import com.panayotis.jubler.subs.style.gui.tri.TriColorButton;
 import com.panayotis.jubler.theme.IconStatus;
+import com.panayotis.jubler.theme.Theme;
+
+import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import java.awt.*;
 import java.util.Collections;
-import javax.swing.JButton;
+
+import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.subs.style.StyleType.*;
 
 /**
- *
  * @author teras
  */
 public class JStyleEditor extends javax.swing.JDialog {
@@ -345,7 +343,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         FontSize.setToolTipText(__("Font size"));
-        FontSize.setPreferredSize(new java.awt.Dimension(60, 24));
+        FontSize.setPreferredSize(new Dimension((int) (60 * UIUtils.getScaling()), (int) (24 * UIUtils.getScaling())));
         FontSize.addActionListener(formListener);
         jPanel1.add(FontSize, java.awt.BorderLayout.EAST);
 
@@ -504,28 +502,28 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel7.setLayout(new java.awt.GridLayout(4, 2, 2, 0));
 
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel6.setText("  "+__("Angle"));
+        jLabel6.setText("  " + __("Angle"));
         jPanel7.add(jLabel6);
 
         Angle.setToolTipText(__("Font angle"));
         jPanel7.add(Angle);
 
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel7.setText("  "+__("Spacing"));
+        jLabel7.setText("  " + __("Spacing"));
         jPanel7.add(jLabel7);
 
         Spacing.setToolTipText(__("Spacing in font"));
         jPanel7.add(Spacing);
 
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel8.setText("  "+__("X Scale"));
+        jLabel8.setText("  " + __("X Scale"));
         jPanel7.add(jLabel8);
 
         XScale.setToolTipText(__("Scaling % on X axis"));
         jPanel7.add(XScale);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel9.setText("  "+__("Y Scale"));
+        jLabel9.setText("  " + __("Y Scale"));
         jPanel7.add(jLabel9);
 
         YScale.setToolTipText(__("Scaling % on Y axis"));
@@ -575,57 +573,43 @@ public class JStyleEditor extends javax.swing.JDialog {
     // Code for dispatching events from components to event handlers.
 
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.KeyListener, java.awt.event.WindowListener {
-        FormListener() {}
+        FormListener() {
+        }
+
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == StyleName) {
                 JStyleEditor.this.StyleNameActionPerformed(evt);
-            }
-            else if (evt.getSource() == Clone) {
+            } else if (evt.getSource() == Clone) {
                 JStyleEditor.this.CloneActionPerformed(evt);
-            }
-            else if (evt.getSource() == Delete) {
+            } else if (evt.getSource() == Delete) {
                 JStyleEditor.this.DeleteActionPerformed(evt);
-            }
-            else if (evt.getSource() == Save) {
+            } else if (evt.getSource() == Save) {
                 JStyleEditor.this.SaveActionPerformed(evt);
-            }
-            else if (evt.getSource() == FontSize) {
+            } else if (evt.getSource() == FontSize) {
                 JStyleEditor.this.setText(evt);
-            }
-            else if (evt.getSource() == FontName) {
+            } else if (evt.getSource() == FontName) {
                 JStyleEditor.this.setText(evt);
-            }
-            else if (evt.getSource() == Bold) {
+            } else if (evt.getSource() == Bold) {
                 JStyleEditor.this.setText(evt);
-            }
-            else if (evt.getSource() == Italic) {
+            } else if (evt.getSource() == Italic) {
                 JStyleEditor.this.setText(evt);
-            }
-            else if (evt.getSource() == Underline) {
+            } else if (evt.getSource() == Underline) {
                 JStyleEditor.this.setText(evt);
-            }
-            else if (evt.getSource() == Strike) {
+            } else if (evt.getSource() == Strike) {
                 JStyleEditor.this.setText(evt);
-            }
-            else if (evt.getSource() == Primary) {
+            } else if (evt.getSource() == Primary) {
                 JStyleEditor.this.setColor(evt);
-            }
-            else if (evt.getSource() == Secondary) {
+            } else if (evt.getSource() == Secondary) {
                 JStyleEditor.this.setColor(evt);
-            }
-            else if (evt.getSource() == Outline) {
+            } else if (evt.getSource() == Outline) {
                 JStyleEditor.this.setColor(evt);
-            }
-            else if (evt.getSource() == Shadow) {
+            } else if (evt.getSource() == Shadow) {
                 JStyleEditor.this.setColor(evt);
-            }
-            else if (evt.getSource() == AdvancedSelect) {
+            } else if (evt.getSource() == AdvancedSelect) {
                 JStyleEditor.this.AdvancedSelectActionPerformed(evt);
-            }
-            else if (evt.getSource() == OKB) {
+            } else if (evt.getSource() == OKB) {
                 JStyleEditor.this.OKBActionPerformed(evt);
-            }
-            else if (evt.getSource() == CancelB) {
+            } else if (evt.getSource() == CancelB) {
                 JStyleEditor.this.CancelBActionPerformed(evt);
             }
         }
@@ -772,7 +756,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         set.addAttribute(StyleConstants.StrikeThrough, current.get(STRIKETHROUGH));
         set.addAttribute(StyleConstants.Foreground, current.get(PRIMARY));
         set.addAttribute(StyleConstants.FontFamily, current.get(FONTNAME));
-        set.addAttribute(StyleConstants.FontSize, current.get(FONTSIZE));
+        set.addAttribute(StyleConstants.FontSize, (int) ((int) current.get(FONTSIZE) * UIUtils.getScaling()));
         TestText.setBackground((Color) current.get(SHADOW));
         TestText.getStyledDocument().setParagraphAttributes(0, 1, set, true);
 
@@ -814,6 +798,7 @@ public class JStyleEditor extends javax.swing.JDialog {
                 + full.substring(tagTextStart + 1, tagTextFinish + 1)
                 + full.subSequence(tagTextFinish + 2, full.length());
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Advanced;
     private javax.swing.JCheckBox AdvancedSelect;

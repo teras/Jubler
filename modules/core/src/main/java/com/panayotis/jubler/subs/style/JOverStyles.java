@@ -23,27 +23,20 @@
 
 package com.panayotis.jubler.subs.style;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-import static com.panayotis.jubler.subs.style.StyleType.*;
-
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
-import com.panayotis.jubler.subs.style.gui.tri.TriToggleButton;
-import com.panayotis.jubler.subs.style.gui.tri.TriColorButton;
-import com.panayotis.jubler.subs.style.gui.tri.TriComboBox;
-import com.panayotis.jubler.subs.style.gui.tri.TriDirectionButton;
-import com.panayotis.jubler.subs.style.gui.tri.TriDummy;
-import com.panayotis.jubler.subs.style.gui.tri.TriObject;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import javax.swing.AbstractButton;
-import javax.swing.JComponent;
+import com.panayotis.jubler.subs.style.gui.tri.*;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.subs.style.StyleType.DIRECTION;
 
 /**
- *
  * @author teras
  */
 public class JOverStyles extends javax.swing.JPanel {
@@ -101,7 +94,7 @@ public class JOverStyles extends javax.swing.JPanel {
         ((AbstractButton) visuals[DIRECTION.ordinal()]).setToolTipText(__("Alignment"));
 
         for (int i = 0; i < visuals.length; i++)
-            ((TriObject) visuals[i]).setStyle(StyleType.values()[i]);
+            visuals[i].setStyle(StyleType.values()[i]);
 
         FontP.setVisible(false);
         ColorP.setVisible(false);
@@ -111,7 +104,7 @@ public class JOverStyles extends javax.swing.JPanel {
 
     public void setStyleChangeListener(StyleChangeListener listener) {
         for (int i = 0; i < visuals.length; i++)
-            ((TriObject) visuals[i]).setListener(listener);
+            visuals[i].setListener(listener);
     }
 
     public void setPanelVisible(String what, boolean isVisible) {
@@ -168,6 +161,7 @@ public class JOverStyles extends javax.swing.JPanel {
         ColorP.setLayout(new java.awt.GridLayout(1, 0, 2, 0));
         add(ColorP);
     }// </editor-fold>//GEN-END:initComponents
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ColorP;
     private javax.swing.JPanel FontAttP;

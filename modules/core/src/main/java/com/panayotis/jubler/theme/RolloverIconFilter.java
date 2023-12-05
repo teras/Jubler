@@ -27,7 +27,7 @@ package com.panayotis.jubler.theme;
  */
 class RolloverIconFilter extends ColorIconFilter {
 
-    private static float inc = 1.65f;
+    private static float inc = 1.3f;
 
     public RolloverIconFilter() {
         super(inc, inc, inc);

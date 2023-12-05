@@ -23,26 +23,23 @@
 
 package com.panayotis.jubler.media.preview;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.options.AutoSaveOptions;
-import com.panayotis.jubler.theme.Theme;
+import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.time.Time;
-import java.awt.BorderLayout;
-import java.awt.IllegalComponentStateException;
-import java.awt.Point;
-import javax.swing.DefaultButtonModel;
-import javax.swing.Icon;
-import javax.swing.JToolBar;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
 public class JSubPreview extends javax.swing.JPanel {
@@ -56,6 +53,7 @@ public class JSubPreview extends javax.swing.JPanel {
         cursors[2] = Theme.loadIcon("move.png");
         cursors[3] = Theme.loadIcon("resize.png");
     }
+
     private JSubTimeline timeline;
     private JRuler timecaption;
     private JFramePreview frame;
@@ -323,7 +321,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ZoomS.setToolTipText(__("Subtitle zoom factor"));
         ZoomS.setValue(30);
         ZoomS.setInverted(true);
-        ZoomS.setPreferredSize(new java.awt.Dimension(100, 29));
+        ZoomS.setPreferredSize(new Dimension((int) (100 * UIUtils.getScaling()), (int) (29 * UIUtils.getScaling())));
         ZoomS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 ZoomSStateChanged(evt);
@@ -524,19 +522,20 @@ public class JSubPreview extends javax.swing.JPanel {
 
     private void OrientationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrientationActionPerformed
         setOrientation(!Orientation.isSelected());
-}//GEN-LAST:event_OrientationActionPerformed
+    }//GEN-LAST:event_OrientationActionPerformed
 
     private void MaxWaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveActionPerformed
         setMaxWave(MaxWave.isSelected());
-}//GEN-LAST:event_MaxWaveActionPerformed
+    }//GEN-LAST:event_MaxWaveActionPerformed
 
     private void AudioPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPlayActionPerformed
         playbackWave();
-}//GEN-LAST:event_AudioPlayActionPerformed
+    }//GEN-LAST:event_AudioPlayActionPerformed
 
     private void NewSubActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewSubActionPerformed
         parent.addNewSubtitle(true);
-}//GEN-LAST:event_NewSubActionPerformed
+    }//GEN-LAST:event_NewSubActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
     public javax.swing.JToggleButton AudioPlay;

@@ -31,7 +31,7 @@ class SelectedPenIconFilter extends RGBImageFilter {
     private final static BufferedImage dot = Theme.loadImage("pendot.png");
 
     public int filterRGB(int x, int y, int rgb) {
-        if (x < 8 && y < 8 && dot != null) {
+        if (dot != null && x < dot.getWidth() && y < dot.getHeight()) {
             int newc = dot.getRGB(x, y);
             if ((newc & 0xff000000) != 0)
                 return dot.getRGB(x, y);

@@ -16,12 +16,12 @@ import java.io.InputStream;
 
 public class SvgThemeProvider implements Plugin, PluginItem, Theme.Provider {
 
-    public BufferedImage loadImage(String name) {
+    public BufferedImage loadImage(String name, float resize) {
         name = "/images/" + name;
         try {
             if (name.toLowerCase().endsWith(".png")) {
                 name = name.substring(0, name.length() - 4) + ".svg";
-                return FlatSVGUtils.svg2image(name, UIUtils.getScaling());
+                return FlatSVGUtils.svg2image(name, UIUtils.getScaling() * resize);
             } else {
                 InputStream resource = SvgThemeProvider.class.getResourceAsStream(name);
                 if (resource == null) {
@@ -36,9 +36,9 @@ public class SvgThemeProvider implements Plugin, PluginItem, Theme.Provider {
         }
     }
 
-    public ImageIcon loadIcon(String name) {
+    public ImageIcon loadIcon(String name, float resize) {
         try {
-            return new ImageIcon(loadImage(name));
+            return new ImageIcon(loadImage(name, resize));
         } catch (Exception e) {
             DEBUG.debug("Unable to load icon " + name);
             return null;

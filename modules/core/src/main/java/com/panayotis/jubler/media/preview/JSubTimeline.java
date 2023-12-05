@@ -24,24 +24,16 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.undo.UndoEntry;
 
-import java.awt.event.MouseWheelEvent;
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelListener;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-import javax.swing.JSlider;
 
 /**
  * @author teras
@@ -416,15 +408,15 @@ public class JSubTimeline extends JPanel {
     }
 
     public Dimension getMinimumSize() {
-        return new Dimension(50, 40);
+        return new Dimension(50, (int) (40 * UIUtils.getScaling()));
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(400, 40);
+        return new Dimension(400, (int) (40 * UIUtils.getScaling()));
     }
 
     /**
-     * Use this functiopn when a change has been performed in the selected
+     * Use this function when a change has been performed in the selected
      * subtitles. No changes to the displayed subtitles will be performed
      */
     private void selectionHasChanged(int[] subid) {

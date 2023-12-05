@@ -23,9 +23,6 @@
 
 package com.panayotis.jubler.subs.style.preview;
 
-import static com.panayotis.jubler.subs.style.StyleType.*;
-import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
-
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.SubStyle;
@@ -33,10 +30,8 @@ import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverEvent;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+
+import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
@@ -45,8 +40,10 @@ import java.text.AttributedString;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import static com.panayotis.jubler.subs.style.StyleType.*;
+import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
+
 /**
- *
  * @author teras
  */
 public class SubImage extends ArrayList<SubImage.StyledTextLine> {
@@ -63,6 +60,7 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         fontcxt = g.getFontRenderContext();
     }
+
     private BufferedImage img;
     private float width = 0, height = 0;
 
@@ -138,7 +136,7 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
         /* Draw shadow */
         BufferedImage shadow = getOutlineImage(2, firstline.outlength, true);
         for (int i = ((int) firstline.shadowlength - 1); i >= 0; i--)
-            g.drawImage(shadow, (int) (i + 1), (int) (i + 1), null);    // Should be reversed, for thick color matters
+            g.drawImage(shadow, i + 1, i + 1, null);    // Should be reversed, for thick color matters
 
         /* Draw outline */
         g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, firstline.outalpha / 255.f));
@@ -188,8 +186,7 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
         return img;
     }
 
-    public int getXOffset(Image frameimage) {
-        int otherwidth = frameimage.getWidth(null);
+    public int getXOffset(int otherWidth) {
         int just = CENTER_JUSTIFY;
         if (size() > 0)
             just = get(0).horizontal_justify;
@@ -197,14 +194,13 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
             case LEFT_JUSTIFY:
                 return 0;
             case RIGHT_JUSTIFY:
-                return otherwidth - (int) width;
+                return otherWidth - (int) width;
         }
         /* default */
-        return (otherwidth - (int) width) / 2;
+        return (otherWidth - (int) width) / 2;
     }
 
-    public int getYOffset(Image frameimage) {
-        int otherheight = frameimage.getHeight(null);
+    public int getYOffset(int otherHeight) {
         int just = CENTER_JUSTIFY;
         if (size() > 0)
             just = get(0).vertical_justify;
@@ -212,10 +208,10 @@ public class SubImage extends ArrayList<SubImage.StyledTextLine> {
             case TOP_JUSTIFY:
                 return 0;
             case BOTTOM_JUSTIFY:
-                return otherheight - (int) height;
+                return otherHeight - (int) height;
         }
         /* default */
-        return (otherheight - (int) height) / 2;
+        return (otherHeight - (int) height) / 2;
     }
 
     private void createTextLines(String txt) {
