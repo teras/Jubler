@@ -22,6 +22,7 @@
         <module>modules/coretheme</module>
         <module>modules/launcher</module>
         <module>modules/installer</module>
+        <module>modules/vlcj-jubler</module>
     </modules>
 
     <properties>

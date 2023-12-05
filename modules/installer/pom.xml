@@ -62,6 +62,11 @@
             <artifactId>coretheme</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.panayotis.jubler</groupId>
+            <artifactId>vlcj-jubler</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
