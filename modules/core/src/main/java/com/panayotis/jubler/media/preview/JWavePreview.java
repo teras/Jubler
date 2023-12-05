@@ -81,19 +81,15 @@ public class JWavePreview extends JPanel implements DecoderListener {
             }
         });
 
-        addMouseWheelListener(new MouseWheelListener() {
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                timeline.mouseWheelUpdates(e);
-            }
-        });
+        addMouseWheelListener(e -> timeline.mouseWheelUpdates(e));
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(10, (int) (50 * UIUtils.getScaling()));
+        return new Dimension(50, (int) (50 * UIUtils.getScaling()));
     }
 
     public Dimension getMinimumSize() {
-        return new Dimension(10, (int) (50 * UIUtils.getScaling()));
+        return new Dimension(10, (int) (20 * UIUtils.getScaling()));
     }
 
     public void startCacheCreation() {

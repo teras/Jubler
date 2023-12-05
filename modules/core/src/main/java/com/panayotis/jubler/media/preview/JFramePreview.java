@@ -33,7 +33,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextLayout;
-import java.awt.image.ImageObserver;
 import java.io.IOException;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -43,7 +42,6 @@ import static com.panayotis.jubler.i18n.I18N.__;
  */
 public class JFramePreview extends JPanel {
 
-    public static final int REEL_OFFSET = (int) (12 * UIUtils.getScaling());
     /* Background color of the movie clip */
     private static final Color background = new Color(10, 10, 10);
     private static final String inactive_decoder_message = __("FFDecode library not active. Using demo image.");
@@ -78,13 +76,11 @@ public class JFramePreview extends JPanel {
     }
 
     public Dimension getMinimumSize() {
-        return getPreferredSize();
+        return new Dimension((int) (60 * UIUtils.getScaling()), (int) (40 * UIUtils.getScaling()));
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(
-                (int) (frameimg.getWidth(null) * UIUtils.getScaling()),
-                (int) (frameimg.getHeight(null) * UIUtils.getScaling()) + 2 * REEL_OFFSET);
+        return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null));
     }
 
     public void updateMediaFile(MediaFile mfile) {
@@ -144,23 +140,10 @@ public class JFramePreview extends JPanel {
 
     public void paintComponent(Graphics g) {
         g.setColor(background);
-        int imgheight = (int) (frameimg.getHeight(null) * UIUtils.getScaling());
-        int imgwidth = (int) (frameimg.getWidth(null) * UIUtils.getScaling());
-
-        g.fillRect(0, 0, getWidth(), REEL_OFFSET);
-        g.fillRect(0, REEL_OFFSET + imgheight, getWidth(), REEL_OFFSET);
-        if (getWidth() > imgwidth)
-            g.fillRect(imgwidth, 0, getWidth() - imgwidth, getHeight());
-
-        g.setColor(Color.WHITE);
-        int reelDelta = (int) (2 * UIUtils.getScaling());
-        for (int i = 4; i < getWidth(); i += REEL_OFFSET) {
-            g.fill3DRect(i, reelDelta, REEL_OFFSET / 2, REEL_OFFSET - 2 * reelDelta, false);
-            g.fill3DRect(i, reelDelta + REEL_OFFSET + imgheight, REEL_OFFSET / 2, REEL_OFFSET - 2 * reelDelta, false);
-        }
-        g.drawImage(frameimg, 0, REEL_OFFSET, imgwidth, imgheight, null); // Since we have already loaded the picture from memory, the imageobserver is of no help
+        g.fillRect(0, 0, getWidth(), getHeight());
+        drawCentered(g, frameimg);
         if (subimg != null)
-            g.drawImage(subimg.getImage(), subimg.getXOffset(imgwidth), subimg.getYOffset(imgheight) + REEL_OFFSET, (ImageObserver) null);
+            g.drawImage(subimg.getImage(), subimg.getXOffset(getWidth()), subimg.getYOffset(getHeight()), null);
 
         /* Draw visual representation that ffdecode library is not present */
         if (mfile == null || !mfile.getDecoder().isDecoderValid()) {
@@ -169,9 +152,22 @@ public class JFramePreview extends JPanel {
             g.setFont(f);
             TextLayout layout = new TextLayout(inactive_decoder_message, f, ((Graphics2D) g).getFontRenderContext());
             g.setColor(Color.RED);
-            g.fillRect(2, 2 + REEL_OFFSET, (int) layout.getAdvance() + 1, (int) layout.getAscent() + (int) layout.getDescent() + 1);
+            g.fillRect(2, 2, (int) layout.getAdvance() + 1, (int) layout.getAscent() + (int) layout.getDescent() + 1);
             g.setColor(Color.WHITE);
-            g.drawString(inactive_decoder_message, 2, 2 + REEL_OFFSET + (int) layout.getAscent());
+            g.drawString(inactive_decoder_message, 2, 2 + (int) layout.getAscent());
         }
+    }
+
+    private void drawCentered(Graphics g, Image image) {
+        if (image == null)
+            return;
+        double scaleX = (double) getWidth() / image.getWidth(null);
+        double scaleY = (double) getHeight() / image.getHeight(null);
+        double scale = Math.min(scaleX, scaleY);
+        int scaledWidth = (int) (image.getWidth(null) * scale);
+        int scaledHeight = (int) (image.getHeight(null) * scale);
+        int x = (getWidth() - scaledWidth) / 2;
+        int y = (getHeight() - scaledHeight) / 2;
+        g.drawImage(image, x, y, scaledWidth, scaledHeight, null);
     }
 }

@@ -60,11 +60,6 @@ public class JRuler extends JPanel {
     }
 
     @Override
-    public Dimension getMaximumSize() {
-        return new Dimension(30000, height);
-    }
-
-    @Override
     @SuppressWarnings("empty-statement")
     public void paintComponent(Graphics g) {
         g.setColor(Color.LIGHT_GRAY);

@@ -408,7 +408,7 @@ public class JSubTimeline extends JPanel {
     }
 
     public Dimension getMinimumSize() {
-        return new Dimension(50, (int) (40 * UIUtils.getScaling()));
+        return new Dimension(20, (int) (20 * UIUtils.getScaling()));
     }
 
     public Dimension getPreferredSize() {

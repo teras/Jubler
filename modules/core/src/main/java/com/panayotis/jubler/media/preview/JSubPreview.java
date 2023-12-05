@@ -75,7 +75,6 @@ public class JSubPreview extends javax.swing.JPanel {
         timeline = new JSubTimeline(parent, view, this);
         wave = new JWavePreview(timeline);
         timeline.setWavePreview(wave);
-        frame = new JFramePreview(this);
 
         this.parent = parent;
 
@@ -192,9 +191,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
     public Point getFrameLocation() {
         try {
-            Point ret = frame.getLocationOnScreen();
-            ret.y += JFramePreview.REEL_OFFSET;
-            return ret;
+            return frame.getLocationOnScreen();
         } catch (IllegalComponentStateException e) {
         }
         return parent.getLocationOnScreen();

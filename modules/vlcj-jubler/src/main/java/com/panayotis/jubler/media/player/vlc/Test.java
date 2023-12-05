@@ -22,7 +22,6 @@ public class Test {
 
     public static void main(String[] args) {
         thisApp = new Test();
-        System.out.println(thisApp.player.audio().outputDevices());
 //        thisApp.play("/home/teras/test.avi");
 
         thisApp.play(System.getProperty("user.home") + "/Personal/Movies/Test/zzz236.mov");
