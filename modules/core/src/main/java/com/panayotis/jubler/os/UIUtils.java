@@ -5,7 +5,7 @@ import java.util.prefs.Preferences;
 
 public class UIUtils {
     private static final String SCALING_FACTOR = "scaling.factor";
-    private static final Preferences prefs = Preferences.systemNodeForPackage(UIUtils.class);
+    private static final Preferences prefs = Preferences.userNodeForPackage(UIUtils.class);
     private static float scaling;
 
     static {

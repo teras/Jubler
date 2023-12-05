@@ -50,7 +50,7 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements Plugin, 
     private static final String BASEURL_KEY = "baseurl";
     private static final String ENCRYPTED_KEY_KEY = "key";
     private static final String REGION_KEY = "region";
-    private static Preferences prefs = Preferences.systemNodeForPackage(AzureJSONTranslator.class);
+    private static Preferences prefs = Preferences.userNodeForPackage(AzureJSONTranslator.class);
 
     private String baseUrl;
     private String region;
