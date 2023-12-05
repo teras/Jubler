@@ -66,7 +66,7 @@ public class JublerApp implements Plugin, PluginItem {
         });
         e.registerFileOpen(file -> LoaderThread.getLoader().addSubtitle(file.getAbsolutePath()));
         SwingUtilities.invokeLater(() -> {
-            e.setApplicationIcons(JubFrame.getFrameIcon());
+            e.setApplicationIcons(JubFrame.getFrameIcons().toArray(new Image[0]));
             e.registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
         });
     }

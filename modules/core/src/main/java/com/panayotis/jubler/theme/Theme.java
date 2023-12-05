@@ -20,7 +20,8 @@
 package com.panayotis.jubler.theme;
 
 import javax.swing.*;
-import java.awt.image.BufferedImage;
+import java.awt.*;
+import java.util.List;
 
 /**
  * @author teras
@@ -28,7 +29,7 @@ import java.awt.image.BufferedImage;
 public class Theme {
     private static Provider provider = null;
 
-    public static void update(Provider given) {
+    public static void setProvider(Provider given) {
         if (given == null)
             throw new NullPointerException("Provider can't be null");
         Theme.provider = given;
@@ -38,14 +39,6 @@ public class Theme {
         if (provider == null)
             throw new IllegalArgumentException("Provider not set yet");
         return provider;
-    }
-
-    public static BufferedImage loadImage(String name) {
-        return current().loadImage(name, 1);
-    }
-
-    public static BufferedImage loadImage(String name, float resize) {
-        return current().loadImage(name, resize);
     }
 
     public static ImageIcon loadIcon(String name) {
@@ -68,9 +61,13 @@ public class Theme {
         return status.convert(otherIcon);
     }
 
-    public interface Provider {
-        BufferedImage loadImage(String name, float resize);
+    public static List<Image> findFrameImages(String name) {
+        return current().findFrameImages(name);
+    }
 
+    public interface Provider {
         ImageIcon loadIcon(String name, float resize);
+
+        List<Image> findFrameImages(String name);
     }
 }

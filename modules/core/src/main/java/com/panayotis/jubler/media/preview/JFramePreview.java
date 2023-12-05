@@ -24,15 +24,17 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
-import com.panayotis.jubler.theme.Theme;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.font.TextLayout;
 import java.awt.image.ImageObserver;
+import java.io.IOException;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -45,7 +47,6 @@ public class JFramePreview extends JPanel {
     /* Background color of the movie clip */
     private static final Color background = new Color(10, 10, 10);
     private static final String inactive_decoder_message = __("FFDecode library not active. Using demo image.");
-    private final Image demoimg;
     /* Maximum amount of time tolerance while requesting a new image */
     public final static double DT = 0.002d;
     private Image frameimg;
@@ -56,20 +57,21 @@ public class JFramePreview extends JPanel {
     private double last_time = -1;
     private float resize = 1f;
 
+    private static Image demoimg;
+
+    static {
+        try {
+            demoimg = ImageIO.read(JFramePreview.class.getResourceAsStream("/images/demoframe.jpg"));
+        } catch (IOException e) {
+            DEBUG.debug(e);
+        }
+    }
+
     /**
      * Creates a new instance of JVideoPreview
      */
     public JFramePreview(JSubPreview callback) {
         this.callback = callback;
-
-        demoimg = Theme.loadImage("demoframe.jpg");
-
-        MediaTracker tracker = new MediaTracker(this);
-        tracker.addImage(demoimg, 0);
-        try {
-            tracker.waitForID(0);
-        } catch (InterruptedException ie) {
-        }
         frameimg = demoimg;
         subimg = null;
         setEnabled(false);
