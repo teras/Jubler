@@ -47,7 +47,7 @@ public class JublerApp implements Plugin, PluginItem {
 
         float scaling = UIUtils.getScaling();
         if (scaling < 0.1) {
-            scaling = e.getDPI() / 96f;
+            scaling = SystemDependent.shouldSupportScaling() ? e.getDPI() / 96f : 1;
             UIUtils.setScaling(scaling);
         }
         System.setProperty("flatlaf.uiScale", Double.toString(scaling));
@@ -81,19 +81,19 @@ public class JublerApp implements Plugin, PluginItem {
         if (!(caller instanceof JubFrame))
             return;
         JubFrame jubler = (JubFrame) caller;
-        if (SystemDependent.shouldSupportScaling()) {
-            if (!param.equals("BEGIN"))
-                JubFrame.prefs.Tabs.addTab(new JUiOptions());
-        } else if (EnhancerManager.getDefault().providesSystemMenus()) {
-            if (param.equals("BEGIN"))
+        if (param.equals("BEGIN")) {
+            if (EnhancerManager.getDefault().providesSystemMenus())
                 jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
-            else {
+        } else {
+            if (SystemDependent.shouldSupportScaling())
+                JubFrame.prefs.Tabs.addTab(new JUiOptions());
+            if (EnhancerManager.getDefault().providesSystemMenus()) {
                 jubler.AboutHM.getParent().remove(jubler.AboutHM);
                 jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
                 jubler.QuitFM.getParent().remove(jubler.QuitFM);
-                setComponentDraggable(jubler, jubler.JublerTools);
-                setComponentDraggable(jubler, jubler.subeditor.StyleP);
             }
+            setComponentDraggable(jubler, jubler.JublerTools);
+            setComponentDraggable(jubler, jubler.subeditor.StyleP);
         }
     }
 

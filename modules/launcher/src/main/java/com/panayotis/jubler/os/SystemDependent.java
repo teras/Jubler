@@ -41,9 +41,9 @@ import java.util.StringTokenizer;
  */
 public class SystemDependent {
 
-    protected final static boolean IS_LINUX;
-    protected final static boolean IS_WINDOWS;
-    protected final static boolean IS_MACOSX;
+    protected static final boolean IS_LINUX;
+    protected static final boolean IS_WINDOWS;
+    protected static final boolean IS_MACOSX;
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
@@ -65,10 +65,6 @@ public class SystemDependent {
         button.putClientProperty("JButton.segmentPosition", pos);
         if (!pos.equals("only") && button.isFocusable())
             button.setFocusable(false);
-    }
-
-    public static void setConsoleButtonStyle(AbstractButton button, String pos) {
-        setButtonStyle(button, pos, "segmented");
     }
 
     public static void setCommandButtonStyle(AbstractButton button, String pos) {
@@ -100,10 +96,6 @@ public class SystemDependent {
     }
 
     private static final Color background = new Color(228, 228, 228);
-
-    public static int countKeyMods() {
-        return 4;
-    }
 
     public static boolean shouldSupportScaling() {
         return IS_LINUX;
