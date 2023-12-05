@@ -163,7 +163,7 @@ public class JFramePreview extends JPanel {
             g.drawImage(subimg.getImage(), subimg.getXOffset(imgwidth), subimg.getYOffset(imgheight) + REEL_OFFSET, (ImageObserver) null);
 
         /* Draw visual representation that ffdecode library is not present */
-        if (!mfile.getDecoder().isDecoderValid()) {
+        if (mfile == null || !mfile.getDecoder().isDecoderValid()) {
             Font f = Font.decode(null);
             f = f.deriveFont(f.getSize() * UIUtils.getScaling());
             g.setFont(f);

@@ -312,8 +312,8 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SubEditP = new javax.swing.JPanel();
         SubSplitPane = new javax.swing.JSplitPane();
         SubsScrollPane = new javax.swing.JScrollPane();
-        SubTable = new JTable() {
-            public void columnMarginChanged(ChangeEvent e) {
+        SubTable = new JTable () {
+            public void columnMarginChanged(ChangeEvent e)  {
                 super.columnMarginChanged(e);
                 setcolumnchange(true);
             }
@@ -416,9 +416,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         CurrentTTM = new javax.swing.JMenuItem();
         PreviewM = new javax.swing.JMenu();
         EnablePreviewC = new javax.swing.JCheckBoxMenuItem();
-        jSeparator6 = new javax.swing.JSeparator();
-        VideoPreviewC = new javax.swing.JCheckBoxMenuItem();
-        HalfSizeC = new javax.swing.JCheckBoxMenuItem();
         jSeparator12 = new javax.swing.JSeparator();
         AudioPreviewC = new javax.swing.JCheckBoxMenuItem();
         MaxWaveC = new javax.swing.JCheckBoxMenuItem();
@@ -535,11 +532,10 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setComponentPopupMenu(SubsPop);
         SubTable.setDefaultRenderer(Object.class, TableRenderer);
-        SubTable.getTableHeader().addMouseListener(new MouseAdapter() {
+        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
             public void mousePressed(MouseEvent e) {
                 setcolumnchange(false);
             }
-
             public void mouseReleased(MouseEvent e) {
                 if (getcolumnchange()) subs.updateColumnWidth(SubTable);
                 setcolumnchange(false);
@@ -548,7 +544,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting()) return; //Ignore extra messages
-                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
                 if (!lsm.isSelectionEmpty()) {
                     displaySubData();
                 }
@@ -686,7 +682,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         NewFM.setText(__("New..."));
 
-        FileNFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        FileNFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         FileNFM.setText(__("File"));
         FileNFM.setName("FNF"); // NOI18N
         FileNFM.addActionListener(formListener);
@@ -700,7 +696,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         FileM.add(NewFM);
 
-        OpenFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        OpenFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         OpenFM.setText(__("Open"));
         OpenFM.setName("FOP"); // NOI18N
         OpenFM.addActionListener(formListener);
@@ -724,7 +720,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         RecentsFM.setText(__("Recent files"));
         FileM.add(RecentsFM);
 
-        SaveFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
+        SaveFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         SaveFM.setText(__("Save"));
         SaveFM.setEnabled(false);
         SaveFM.setName("FSV"); // NOI18N
@@ -737,21 +733,21 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SaveAsFM.addActionListener(formListener);
         FileM.add(SaveAsFM);
 
-        CloseFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_MASK));
+        CloseFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_W, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         CloseFM.setText(__("Close"));
         CloseFM.setName("FCL"); // NOI18N
         CloseFM.addActionListener(formListener);
         FileM.add(CloseFM);
         FileM.add(jSeparator7);
 
-        InfoFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
+        InfoFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         InfoFM.setText(__("Information"));
         InfoFM.setEnabled(false);
         InfoFM.setName("FIN"); // NOI18N
         InfoFM.addActionListener(formListener);
         FileM.add(InfoFM);
 
-        QualityFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_MASK));
+        QualityFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         QualityFM.setText(__("Quality"));
         QualityFM.setAutoscrolls(true);
         QualityFM.setEnabled(false);
@@ -759,13 +755,13 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         QualityFM.addActionListener(formListener);
         FileM.add(QualityFM);
 
-        PrefsFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.CTRL_MASK));
+        PrefsFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_COMMA, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         PrefsFM.setText(__("Preferences"));
         PrefsFM.setName("FPR"); // NOI18N
         PrefsFM.addActionListener(formListener);
         FileM.add(PrefsFM);
 
-        QuitFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+        QuitFM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         QuitFM.setText(__("Quit"));
         QuitFM.setName("FQU"); // NOI18N
         QuitFM.addActionListener(formListener);
@@ -814,13 +810,13 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         ReplaceEM.setText(__("Replace..."));
         ReplaceEM.setEnabled(false);
 
-        StepwiseREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
+        StepwiseREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         StepwiseREM.setText(__("Find & replace"));
         StepwiseREM.setName("ERS"); // NOI18N
         StepwiseREM.addActionListener(formListener);
         ReplaceEM.add(StepwiseREM);
 
-        RegExpREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_MASK));
+        RegExpREM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         RegExpREM.setText(__("Regular Expression"));
         RegExpREM.setName("ERG"); // NOI18N
         RegExpREM.addActionListener(formListener);
@@ -831,14 +827,14 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         InsertEM.setText(__("Insert..."));
         InsertEM.setEnabled(false);
 
-        BeforeIEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.CTRL_MASK));
+        BeforeIEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         BeforeIEM.setText(__("Before"));
         BeforeIEM.setActionCommand("b");
         BeforeIEM.setName("EIB"); // NOI18N
         BeforeIEM.addActionListener(formListener);
         InsertEM.add(BeforeIEM);
 
-        AfterIEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_MASK));
+        AfterIEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         AfterIEM.setText(__("After"));
         AfterIEM.setActionCommand("a");
         AfterIEM.setName("EIA"); // NOI18N
@@ -850,14 +846,14 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SplitST.setText(__("Split..."));
         SplitST.setEnabled(false);
 
-        PreviousSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        PreviousSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         PreviousSEM.setText(__("With previous subtitle"));
         PreviousSEM.setActionCommand("p");
         PreviousSEM.setName("ESP"); // NOI18N
         PreviousSEM.addActionListener(formListener);
         SplitST.add(PreviousSEM);
 
-        NextSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, java.awt.event.InputEvent.CTRL_MASK));
+        NextSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PERIOD, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         NextSEM.setText(__("With next subtitle"));
         NextSEM.setActionCommand("n");
         NextSEM.setName("ESN"); // NOI18N
@@ -889,28 +885,28 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         NextGEM.addActionListener(formListener);
         GoEM.add(NextGEM);
 
-        PreviousPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_UP, java.awt.event.InputEvent.CTRL_MASK));
+        PreviousPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_UP, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         PreviousPageGEM.setText(__("Previous page"));
         PreviousPageGEM.setActionCommand("u");
         PreviousPageGEM.setName("EGU"); // NOI18N
         PreviousPageGEM.addActionListener(formListener);
         GoEM.add(PreviousPageGEM);
 
-        NextPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_DOWN, java.awt.event.InputEvent.CTRL_MASK));
+        NextPageGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_DOWN, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         NextPageGEM.setText(__("Next page"));
         NextPageGEM.setActionCommand("d");
         NextPageGEM.setName("EGD"); // NOI18N
         NextPageGEM.addActionListener(formListener);
         GoEM.add(NextPageGEM);
 
-        TopGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_OPEN_BRACKET, java.awt.event.InputEvent.CTRL_MASK));
+        TopGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_OPEN_BRACKET, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         TopGEM.setText(__("First entry"));
         TopGEM.setActionCommand("t");
         TopGEM.setName("EGT"); // NOI18N
         TopGEM.addActionListener(formListener);
         GoEM.add(TopGEM);
 
-        BottomGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_CLOSE_BRACKET, java.awt.event.InputEvent.CTRL_MASK));
+        BottomGEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_CLOSE_BRACKET, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         BottomGEM.setText(__("Last entry"));
         BottomGEM.setActionCommand("b");
         BottomGEM.setName("EGB"); // NOI18N
@@ -928,7 +924,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         SelectEM.setText(__("Select..."));
         SelectEM.setEnabled(false);
 
-        AllSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        AllSEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         AllSEM.setText(__("All"));
         AllSEM.setName("ESA"); // NOI18N
         AllSEM.addActionListener(formListener);
@@ -1017,7 +1013,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(StyleEM);
         EditM.add(jSeparator5);
 
-        ToolsLockEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
+        ToolsLockEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         ToolsLockEM.setText(__("Tools lock"));
         ToolsLockEM.setEnabled(false);
         ToolsLockEM.setName("TLO"); // NOI18N
@@ -1027,7 +1023,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         FocusEM.setText(__("Focus..."));
         FocusEM.setEnabled(false);
 
-        JumpEditTextEMJ.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_MASK));
+        JumpEditTextEMJ.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_D, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         JumpEditTextEMJ.setText(__("Change focus from Text area to Time editor"));
         JumpEditTextEMJ.setName("EFJ"); // NOI18N
         JumpEditTextEMJ.addActionListener(formListener);
@@ -1036,14 +1032,14 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EditM.add(FocusEM);
         EditM.add(jSeparator4);
 
-        UndoEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        UndoEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         UndoEM.setText(__("Undo"));
         UndoEM.setEnabled(false);
         UndoEM.setName("EUN"); // NOI18N
         UndoEM.addActionListener(formListener);
         EditM.add(UndoEM);
 
-        RedoEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        RedoEM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         RedoEM.setText(__("Redo"));
         RedoEM.setEnabled(false);
         RedoEM.setName("ERE"); // NOI18N
@@ -1079,18 +1075,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         EnablePreviewC.setName("TPE"); // NOI18N
         EnablePreviewC.addActionListener(formListener);
         PreviewM.add(EnablePreviewC);
-        PreviewM.add(jSeparator6);
-
-        VideoPreviewC.setSelected(true);
-        VideoPreviewC.setText(__("Video frame"));
-        VideoPreviewC.setName("TPV"); // NOI18N
-        VideoPreviewC.addActionListener(formListener);
-        PreviewM.add(VideoPreviewC);
-
-        HalfSizeC.setText(__("Half size image"));
-        HalfSizeC.setName("TPH"); // NOI18N
-        HalfSizeC.addActionListener(formListener);
-        PreviewM.add(HalfSizeC);
         PreviewM.add(jSeparator12);
 
         AudioPreviewC.setSelected(true);
@@ -1124,7 +1108,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         FAQHM.addActionListener(formListener);
         HelpM.add(FAQHM);
 
-        AboutHM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SLASH, java.awt.event.InputEvent.CTRL_MASK));
+        AboutHM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SLASH, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         AboutHM.setText(__("About"));
         AboutHM.setName("HAB"); // NOI18N
         AboutHM.addActionListener(formListener);
@@ -1140,181 +1124,258 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     // Code for dispatching events from components to event handlers.
 
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.WindowListener {
-        FormListener() {
-        }
-
+        FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == NewTB) {
                 JubFrame.this.FileNFMActionPerformed(evt);
-            } else if (evt.getSource() == LoadTB) {
+            }
+            else if (evt.getSource() == LoadTB) {
                 JubFrame.this.OpenFMActionPerformed(evt);
-            } else if (evt.getSource() == SaveTB) {
+            }
+            else if (evt.getSource() == SaveTB) {
                 JubFrame.this.SaveTBActionPerformed(evt);
-            } else if (evt.getSource() == InfoTB) {
+            }
+            else if (evt.getSource() == InfoTB) {
                 JubFrame.this.InfoFMActionPerformed(evt);
-            } else if (evt.getSource() == QualityTB) {
+            }
+            else if (evt.getSource() == QualityTB) {
                 JubFrame.this.QualityTBInfoFMActionPerformed(evt);
-            } else if (evt.getSource() == CutTB) {
+            }
+            else if (evt.getSource() == CutTB) {
                 JubFrame.this.CutEMActionPerformed(evt);
-            } else if (evt.getSource() == CopyTB) {
+            }
+            else if (evt.getSource() == CopyTB) {
                 JubFrame.this.CopyEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteTB) {
+            }
+            else if (evt.getSource() == PasteTB) {
                 JubFrame.this.PasteEMActionPerformed(evt);
-            } else if (evt.getSource() == UndoTB) {
+            }
+            else if (evt.getSource() == UndoTB) {
                 JubFrame.this.UndoEMActionPerformed(evt);
-            } else if (evt.getSource() == RedoTB) {
+            }
+            else if (evt.getSource() == RedoTB) {
                 JubFrame.this.RedoEMActionPerformed(evt);
-            } else if (evt.getSource() == SortTB) {
+            }
+            else if (evt.getSource() == SortTB) {
                 JubFrame.this.SortTBActionPerformed(evt);
-            } else if (evt.getSource() == TestTB) {
+            }
+            else if (evt.getSource() == TestTB) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == PreviewTB) {
+            }
+            else if (evt.getSource() == PreviewTB) {
                 JubFrame.this.PreviewTBCurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == CutP) {
+            }
+            else if (evt.getSource() == CutP) {
                 JubFrame.this.CutEMActionPerformed(evt);
-            } else if (evt.getSource() == CopyP) {
+            }
+            else if (evt.getSource() == CopyP) {
                 JubFrame.this.CopyEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteP) {
+            }
+            else if (evt.getSource() == PasteP) {
                 JubFrame.this.PasteEMActionPerformed(evt);
-            } else if (evt.getSource() == DeleteP) {
+            }
+            else if (evt.getSource() == DeleteP) {
                 JubFrame.this.DeletePActionPerformed(evt);
-            } else if (evt.getSource() == NoneMP) {
+            }
+            else if (evt.getSource() == NoneMP) {
                 JubFrame.this.NoneMPActionPerformed(evt);
-            } else if (evt.getSource() == PinkMP) {
+            }
+            else if (evt.getSource() == PinkMP) {
                 JubFrame.this.PinkMPActionPerformed(evt);
-            } else if (evt.getSource() == YellowMP) {
+            }
+            else if (evt.getSource() == YellowMP) {
                 JubFrame.this.YellowMPActionPerformed(evt);
-            } else if (evt.getSource() == CyanMP) {
+            }
+            else if (evt.getSource() == CyanMP) {
                 JubFrame.this.CyanMPActionPerformed(evt);
-            } else if (evt.getSource() == ShowNumberP) {
+            }
+            else if (evt.getSource() == ShowNumberP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStartP) {
+            }
+            else if (evt.getSource() == ShowStartP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowEndP) {
+            }
+            else if (evt.getSource() == ShowEndP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowDurationP) {
+            }
+            else if (evt.getSource() == ShowDurationP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowLayerP) {
+            }
+            else if (evt.getSource() == ShowLayerP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStyleP) {
+            }
+            else if (evt.getSource() == ShowStyleP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowCPMP) {
+            }
+            else if (evt.getSource() == ShowCPMP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == PlayVideoP) {
+            }
+            else if (evt.getSource() == PlayVideoP) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == FileNFM) {
+            }
+            else if (evt.getSource() == FileNFM) {
                 JubFrame.this.FileNFMActionPerformed(evt);
-            } else if (evt.getSource() == ChildNFM) {
+            }
+            else if (evt.getSource() == ChildNFM) {
                 JubFrame.this.ChildNFMActionPerformed(evt);
-            } else if (evt.getSource() == OpenFM) {
+            }
+            else if (evt.getSource() == OpenFM) {
                 JubFrame.this.OpenFMActionPerformed(evt);
-            } else if (evt.getSource() == RetrieveWFM) {
+            }
+            else if (evt.getSource() == RetrieveWFM) {
                 JubFrame.this.RetrieveWFMActionPerformed(evt);
-            } else if (evt.getSource() == RevertFM) {
+            }
+            else if (evt.getSource() == RevertFM) {
                 JubFrame.this.RevertFMActionPerformed(evt);
-            } else if (evt.getSource() == SaveFM) {
+            }
+            else if (evt.getSource() == SaveFM) {
                 JubFrame.this.SaveFMActionPerformed(evt);
-            } else if (evt.getSource() == SaveAsFM) {
+            }
+            else if (evt.getSource() == SaveAsFM) {
                 JubFrame.this.SaveAsFMActionPerformed(evt);
-            } else if (evt.getSource() == CloseFM) {
+            }
+            else if (evt.getSource() == CloseFM) {
                 JubFrame.this.CloseFMActionPerformed(evt);
-            } else if (evt.getSource() == InfoFM) {
+            }
+            else if (evt.getSource() == InfoFM) {
                 JubFrame.this.InfoFMActionPerformed(evt);
-            } else if (evt.getSource() == QualityFM) {
+            }
+            else if (evt.getSource() == QualityFM) {
                 JubFrame.this.QualityTBInfoFMActionPerformed(evt);
-            } else if (evt.getSource() == PrefsFM) {
+            }
+            else if (evt.getSource() == PrefsFM) {
                 JubFrame.this.PrefsFMActionPerformed(evt);
-            } else if (evt.getSource() == QuitFM) {
+            }
+            else if (evt.getSource() == QuitFM) {
                 JubFrame.this.QuitFMActionPerformed(evt);
-            } else if (evt.getSource() == CutEM) {
+            }
+            else if (evt.getSource() == CutEM) {
                 JubFrame.this.CutEMActionPerformed(evt);
-            } else if (evt.getSource() == CopyEM) {
+            }
+            else if (evt.getSource() == CopyEM) {
                 JubFrame.this.CopyEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteEM) {
+            }
+            else if (evt.getSource() == PasteEM) {
                 JubFrame.this.PasteEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteSpecialEM) {
+            }
+            else if (evt.getSource() == PasteSpecialEM) {
                 JubFrame.this.PasteSpecialEMActionPerformed(evt);
-            } else if (evt.getSource() == EmptyLinesDEM) {
+            }
+            else if (evt.getSource() == EmptyLinesDEM) {
                 JubFrame.this.EmptyLinesDEMActionPerformed(evt);
-            } else if (evt.getSource() == StepwiseREM) {
+            }
+            else if (evt.getSource() == StepwiseREM) {
                 JubFrame.this.StepwiseREMActionPerformed(evt);
-            } else if (evt.getSource() == RegExpREM) {
+            }
+            else if (evt.getSource() == RegExpREM) {
                 JubFrame.this.RegExpREMActionPerformed(evt);
-            } else if (evt.getSource() == BeforeIEM) {
+            }
+            else if (evt.getSource() == BeforeIEM) {
                 JubFrame.this.insertSubEntry(evt);
-            } else if (evt.getSource() == AfterIEM) {
+            }
+            else if (evt.getSource() == AfterIEM) {
                 JubFrame.this.insertSubEntry(evt);
-            } else if (evt.getSource() == PreviousSEM) {
+            }
+            else if (evt.getSource() == PreviousSEM) {
                 JubFrame.this.splitWith(evt);
-            } else if (evt.getSource() == NextSEM) {
+            }
+            else if (evt.getSource() == NextSEM) {
                 JubFrame.this.splitWith(evt);
-            } else if (evt.getSource() == TimeSEM) {
+            }
+            else if (evt.getSource() == TimeSEM) {
                 JubFrame.this.TimeSEMActionPerformed(evt);
-            } else if (evt.getSource() == PreviousGEM) {
+            }
+            else if (evt.getSource() == PreviousGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == NextGEM) {
+            }
+            else if (evt.getSource() == NextGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == PreviousPageGEM) {
+            }
+            else if (evt.getSource() == PreviousPageGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == NextPageGEM) {
+            }
+            else if (evt.getSource() == NextPageGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == TopGEM) {
+            }
+            else if (evt.getSource() == TopGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == BottomGEM) {
+            }
+            else if (evt.getSource() == BottomGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == byTimeGEM) {
+            }
+            else if (evt.getSource() == byTimeGEM) {
                 JubFrame.this.byTimeGEMActionPerformed(evt);
-            } else if (evt.getSource() == AllSEM) {
+            }
+            else if (evt.getSource() == AllSEM) {
                 JubFrame.this.AllSEMActionPerformed(evt);
-            } else if (evt.getSource() == NoneMEM) {
+            }
+            else if (evt.getSource() == NoneMEM) {
                 JubFrame.this.NoneMEMActionPerformed(evt);
-            } else if (evt.getSource() == PinkMEM) {
+            }
+            else if (evt.getSource() == PinkMEM) {
                 JubFrame.this.PinkMEMActionPerformed(evt);
-            } else if (evt.getSource() == YellowMEM) {
+            }
+            else if (evt.getSource() == YellowMEM) {
                 JubFrame.this.YellowMEMActionPerformed(evt);
-            } else if (evt.getSource() == CyanMEM) {
+            }
+            else if (evt.getSource() == CyanMEM) {
                 JubFrame.this.CyanMEMActionPerformed(evt);
-            } else if (evt.getSource() == ShowNumberP1) {
+            }
+            else if (evt.getSource() == ShowNumberP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStartP1) {
+            }
+            else if (evt.getSource() == ShowStartP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowEndP1) {
+            }
+            else if (evt.getSource() == ShowEndP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowDurationP1) {
+            }
+            else if (evt.getSource() == ShowDurationP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowLayerP1) {
+            }
+            else if (evt.getSource() == ShowLayerP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStyleP1) {
+            }
+            else if (evt.getSource() == ShowStyleP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowCPMP1) {
+            }
+            else if (evt.getSource() == ShowCPMP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ToolsLockEM) {
+            }
+            else if (evt.getSource() == ToolsLockEM) {
                 JubFrame.this.ToolsLockEMActionPerformed(evt);
-            } else if (evt.getSource() == JumpEditTextEMJ) {
+            }
+            else if (evt.getSource() == JumpEditTextEMJ) {
                 JubFrame.this.JumpEditTextEMJActionPerformed(evt);
-            } else if (evt.getSource() == UndoEM) {
+            }
+            else if (evt.getSource() == UndoEM) {
                 JubFrame.this.UndoEMActionPerformed(evt);
-            } else if (evt.getSource() == RedoEM) {
+            }
+            else if (evt.getSource() == RedoEM) {
                 JubFrame.this.RedoEMActionPerformed(evt);
-            } else if (evt.getSource() == BeginningTTM) {
+            }
+            else if (evt.getSource() == BeginningTTM) {
                 JubFrame.this.BeginningTTMActionPerformed(evt);
-            } else if (evt.getSource() == CurrentTTM) {
+            }
+            else if (evt.getSource() == CurrentTTM) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == EnablePreviewC) {
+            }
+            else if (evt.getSource() == EnablePreviewC) {
                 JubFrame.this.EnablePreviewCActionPerformed(evt);
-            } else if (evt.getSource() == VideoPreviewC) {
-                JubFrame.this.VideoPreviewCActionPerformed(evt);
-            } else if (evt.getSource() == HalfSizeC) {
-                JubFrame.this.HalfSizeCActionPerformed(evt);
-            } else if (evt.getSource() == AudioPreviewC) {
+            }
+            else if (evt.getSource() == AudioPreviewC) {
                 JubFrame.this.AudioPreviewCActionPerformed(evt);
-            } else if (evt.getSource() == MaxWaveC) {
+            }
+            else if (evt.getSource() == MaxWaveC) {
                 JubFrame.this.MaxWaveCActionPerformed(evt);
-            } else if (evt.getSource() == PlayAudioC) {
+            }
+            else if (evt.getSource() == PlayAudioC) {
                 JubFrame.this.PlayAudioCActionPerformed(evt);
-            } else if (evt.getSource() == FAQHM) {
+            }
+            else if (evt.getSource() == FAQHM) {
                 JubFrame.this.FAQHMActionPerformed(evt);
-            } else if (evt.getSource() == AboutHM) {
+            }
+            else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
             }
         }
@@ -1755,14 +1816,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         enablePreview(EnablePreviewC.isSelected());
     }//GEN-LAST:event_EnablePreviewCActionPerformed
 
-    private void VideoPreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoPreviewCActionPerformed
-        preview.setVideoShow(VideoPreviewC.isSelected());
-    }//GEN-LAST:event_VideoPreviewCActionPerformed
-
-    private void HalfSizeCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HalfSizeCActionPerformed
-        preview.setVideoZoom(HalfSizeC.isSelected());
-    }//GEN-LAST:event_HalfSizeCActionPerformed
-
     private void AudioPreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPreviewCActionPerformed
         preview.setAudioShow(AudioPreviewC.isSelected());
     }//GEN-LAST:event_AudioPreviewCActionPerformed
@@ -1867,7 +1920,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JPanel FileTP;
     private javax.swing.JMenu FocusEM;
     private javax.swing.JMenu GoEM;
-    public javax.swing.JCheckBoxMenuItem HalfSizeC;
     private javax.swing.JMenu HelpM;
     private javax.swing.JMenuItem InfoFM;
     private javax.swing.JButton InfoTB;
@@ -1954,7 +2006,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
     private javax.swing.JPanel UndoTP;
-    public javax.swing.JCheckBoxMenuItem VideoPreviewC;
     private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
@@ -1968,7 +2019,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator9;
     // End of variables declaration//GEN-END:variables
@@ -2155,8 +2205,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     public void enablePreview(boolean status) {
         EnablePreviewC.setSelected(status);
         PreviewTB.setSelected(status);
-        VideoPreviewC.setEnabled(status);
-        HalfSizeC.setEnabled(status);
         AudioPreviewC.setEnabled(status);
         MaxWaveC.setEnabled(status);
         PlayAudioC.setEnabled(status);

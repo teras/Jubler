@@ -56,7 +56,6 @@ public class JSubPreview extends javax.swing.JPanel {
 
     private JSubTimeline timeline;
     private JRuler timecaption;
-    private JFramePreview frame;
     private JWavePreview wave;
     private JubFrame parent;
     private boolean ignore_slider_changes = false;
@@ -104,7 +103,7 @@ public class JSubPreview extends javax.swing.JPanel {
         timeline.windowHasChanged(subid);
         wave.setTime(view.getStart(), view.getStart() + view.getDuration());
         if (subid != null && subid.length > 0)
-            frame.setSubEntry(parent.getSubtitles().elementAt(subid[0]));
+            ((JFramePreview) frame).setSubEntry(parent.getSubtitles().elementAt(subid[0]));
         timecaption.repaint();
 
         ignore_slider_changes = false;
@@ -160,17 +159,16 @@ public class JSubPreview extends javax.swing.JPanel {
         last_media_file = mfile;
 
         wave.updateMediaFile(mfile);
-        frame.updateMediaFile(mfile);
+        ((JFramePreview) frame).updateMediaFile(mfile);
     }
 
     public void setEnabled(boolean status) {
         super.setEnabled(status);
-        frame.setEnabled(status && VideoShow.isSelected());
         wave.setEnabled(status && AudioShow.isSelected());
     }
 
     public void forceRepaintFrame() {
-        frame.destroySubImage();
+        ((JFramePreview) frame).destroySubImage();
         frame.repaint();
     }
 
@@ -183,11 +181,10 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     private void setOrientation(boolean horizontal) {
-        MainPanel.remove(frame);
         if (horizontal)
-            MainPanel.add(frame, BorderLayout.WEST);
+            previewSPlitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         else
-            MainPanel.add(frame, BorderLayout.NORTH);
+            previewSPlitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
         parent.setPreviewOrientation(horizontal);
         parent.resetPreviewPanels();
         AutoSaveOptions.setPreviewOrientation(horizontal);
@@ -201,20 +198,6 @@ public class JSubPreview extends javax.swing.JPanel {
         } catch (IllegalComponentStateException e) {
         }
         return parent.getLocationOnScreen();
-    }
-
-    public void setVideoShow(boolean status) {
-        VideoShow.setSelected(status);
-        parent.VideoPreviewC.setSelected(status);
-        frame.setEnabled(status);
-        parent.resetPreviewPanels();
-    }
-
-    public void setVideoZoom(boolean status) {
-        VideoZoom.setSelected(status);
-        parent.HalfSizeC.setSelected(status);
-        frame.setResize(status ? 0.5f : 1f);
-        parent.resetPreviewPanels();
     }
 
     public void setAudioShow(boolean status) {
@@ -242,6 +225,21 @@ public class JSubPreview extends javax.swing.JPanel {
     private void initComponents() {
 
         CursorGroup = new javax.swing.ButtonGroup();
+        ToolBar = new javax.swing.JToolBar();
+        Orientation = new javax.swing.JToggleButton();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        AudioShow = new javax.swing.JToggleButton();
+        MaxWave = new javax.swing.JToggleButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        Auto = new javax.swing.JToggleButton();
+        Select = new javax.swing.JToggleButton();
+        Move = new javax.swing.JToggleButton();
+        Resize = new javax.swing.JToggleButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        AudioPlay = new javax.swing.JToggleButton();
+        NewSub = new javax.swing.JToggleButton();
+        previewSPlitPane = new javax.swing.JSplitPane();
+        frame = new JFramePreview(this);
         MainPanel = new javax.swing.JPanel();
         AudioPanel = new javax.swing.JPanel();
         BottomPanel = new javax.swing.JPanel();
@@ -254,95 +252,9 @@ public class JSubPreview extends javax.swing.JPanel {
         ZoomS = new javax.swing.JSlider();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        ToolBar = new javax.swing.JToolBar();
-        Orientation = new javax.swing.JToggleButton();
-        jSeparator3 = new javax.swing.JToolBar.Separator();
-        VideoShow = new javax.swing.JToggleButton();
-        VideoZoom = new javax.swing.JToggleButton();
-        jSeparator4 = new javax.swing.JToolBar.Separator();
-        AudioShow = new javax.swing.JToggleButton();
-        MaxWave = new javax.swing.JToggleButton();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
-        Auto = new javax.swing.JToggleButton();
-        Select = new javax.swing.JToggleButton();
-        Move = new javax.swing.JToggleButton();
-        Resize = new javax.swing.JToggleButton();
-        jSeparator2 = new javax.swing.JToolBar.Separator();
-        AudioPlay = new javax.swing.JToggleButton();
-        NewSub = new javax.swing.JToggleButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
-
-        MainPanel.setOpaque(false);
-        MainPanel.setLayout(new java.awt.BorderLayout());
-
-        AudioPanel.setOpaque(false);
-        AudioPanel.setLayout(new java.awt.BorderLayout());
-
-        BottomPanel.setOpaque(false);
-        BottomPanel.setLayout(new javax.swing.BoxLayout(BottomPanel, javax.swing.BoxLayout.Y_AXIS));
-
-        TimelineP.setOpaque(false);
-        TimelineP.setLayout(new java.awt.BorderLayout());
-        BottomPanel.add(TimelineP);
-
-        EditorPanel.setOpaque(false);
-        EditorPanel.setLayout(new java.awt.BorderLayout());
-
-        slider.setBlockIncrement(100);
-        slider.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        slider.setUnitIncrement(10);
-        slider.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
-            public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
-                sliderAdjustmentValueChanged(evt);
-            }
-        });
-        EditorPanel.add(slider, java.awt.BorderLayout.NORTH);
-
-        BottomPanel.add(EditorPanel);
-
-        AudioPanel.add(BottomPanel, java.awt.BorderLayout.SOUTH);
-
-        MainPanel.add(AudioPanel, java.awt.BorderLayout.CENTER);
-
-        InfoPanel.setOpaque(false);
-        InfoPanel.setLayout(new java.awt.BorderLayout());
-
-        TimePosL.setText(" ");
-        TimePosL.setMinimumSize(new java.awt.Dimension(50, 16));
-        TimePosL.setPreferredSize(new java.awt.Dimension(50, 16));
-        InfoPanel.add(TimePosL, java.awt.BorderLayout.CENTER);
-
-        jPanel6.setOpaque(false);
-        jPanel6.setLayout(new java.awt.BorderLayout());
-
-        ZoomS.setSnapToTicks(true);
-        ZoomS.setToolTipText(__("Subtitle zoom factor"));
-        ZoomS.setValue(30);
-        ZoomS.setInverted(true);
-        ZoomS.setPreferredSize(new Dimension((int) (100 * UIUtils.getScaling()), (int) (29 * UIUtils.getScaling())));
-        ZoomS.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                ZoomSStateChanged(evt);
-            }
-        });
-        jPanel6.add(ZoomS, java.awt.BorderLayout.CENTER);
-
-        jLabel1.setIcon(Theme.loadIcon("zoomout.png"));
-        jLabel1.setToolTipText(__("Zoom out"));
-        jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
-
-        jLabel2.setIcon(Theme.loadIcon("zoomin.png"));
-        jLabel2.setToolTipText(__("Zoom in"));
-        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
-        jPanel6.add(jLabel2, java.awt.BorderLayout.EAST);
-
-        InfoPanel.add(jPanel6, java.awt.BorderLayout.EAST);
-
-        MainPanel.add(InfoPanel, java.awt.BorderLayout.SOUTH);
-
-        add(MainPanel, java.awt.BorderLayout.CENTER);
 
         ToolBar.setOrientation(JToolBar.VERTICAL);
         ToolBar.setRollover(true);
@@ -359,30 +271,6 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         ToolBar.add(Orientation);
         ToolBar.add(jSeparator3);
-
-        VideoShow.setIcon(Theme.loadIcon("frameoff.png"));
-        VideoShow.setSelected(true);
-        VideoShow.setToolTipText(__("Enable/disable video frame preview"));
-        VideoShow.setFocusable(false);
-        VideoShow.setSelectedIcon(Theme.loadIcon("frameon.png"));
-        VideoShow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VideoShowActionPerformed(evt);
-            }
-        });
-        ToolBar.add(VideoShow);
-
-        VideoZoom.setIcon(Theme.loadIcon("framezoomin.png"));
-        VideoZoom.setToolTipText(__("Zoom frame to original value"));
-        VideoZoom.setFocusable(false);
-        VideoZoom.setSelectedIcon(Theme.loadIcon("framezoomout.png"));
-        VideoZoom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                VideoZoomFrameActionPerformed(evt);
-            }
-        });
-        ToolBar.add(VideoZoom);
-        ToolBar.add(jSeparator4);
 
         AudioShow.setIcon(Theme.loadIcon("waveoff.png"));
         AudioShow.setSelected(true);
@@ -481,6 +369,80 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(NewSub);
 
         add(ToolBar, java.awt.BorderLayout.WEST);
+
+        previewSPlitPane.setTopComponent(frame);
+
+        MainPanel.setOpaque(false);
+        MainPanel.setLayout(new java.awt.BorderLayout());
+
+        AudioPanel.setOpaque(false);
+        AudioPanel.setLayout(new java.awt.BorderLayout());
+
+        BottomPanel.setOpaque(false);
+        BottomPanel.setLayout(new javax.swing.BoxLayout(BottomPanel, javax.swing.BoxLayout.Y_AXIS));
+
+        TimelineP.setOpaque(false);
+        TimelineP.setLayout(new java.awt.BorderLayout());
+        BottomPanel.add(TimelineP);
+
+        EditorPanel.setOpaque(false);
+        EditorPanel.setLayout(new java.awt.BorderLayout());
+
+        slider.setBlockIncrement(100);
+        slider.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        slider.setUnitIncrement(10);
+        slider.addAdjustmentListener(new java.awt.event.AdjustmentListener() {
+            public void adjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {
+                sliderAdjustmentValueChanged(evt);
+            }
+        });
+        EditorPanel.add(slider, java.awt.BorderLayout.NORTH);
+
+        BottomPanel.add(EditorPanel);
+
+        AudioPanel.add(BottomPanel, java.awt.BorderLayout.SOUTH);
+
+        MainPanel.add(AudioPanel, java.awt.BorderLayout.CENTER);
+
+        InfoPanel.setOpaque(false);
+        InfoPanel.setLayout(new java.awt.BorderLayout());
+
+        TimePosL.setText(" ");
+        TimePosL.setMinimumSize(new java.awt.Dimension(50, 16));
+        TimePosL.setPreferredSize(new java.awt.Dimension(50, 16));
+        InfoPanel.add(TimePosL, java.awt.BorderLayout.CENTER);
+
+        jPanel6.setOpaque(false);
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        ZoomS.setSnapToTicks(true);
+        ZoomS.setToolTipText(__("Subtitle zoom factor"));
+        ZoomS.setValue(30);
+        ZoomS.setInverted(true);
+        ZoomS.setPreferredSize(new Dimension((int) (100 * UIUtils.getScaling()), (int) (29 * UIUtils.getScaling())));
+        ZoomS.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                ZoomSStateChanged(evt);
+            }
+        });
+        jPanel6.add(ZoomS, java.awt.BorderLayout.CENTER);
+
+        jLabel1.setIcon(Theme.loadIcon("zoomout.png"));
+        jLabel1.setToolTipText(__("Zoom out"));
+        jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
+
+        jLabel2.setIcon(Theme.loadIcon("zoomin.png"));
+        jLabel2.setToolTipText(__("Zoom in"));
+        jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
+        jPanel6.add(jLabel2, java.awt.BorderLayout.EAST);
+
+        InfoPanel.add(jPanel6, java.awt.BorderLayout.EAST);
+
+        MainPanel.add(InfoPanel, java.awt.BorderLayout.SOUTH);
+
+        previewSPlitPane.setBottomComponent(MainPanel);
+
+        add(previewSPlitPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
@@ -497,17 +459,9 @@ public class JSubPreview extends javax.swing.JPanel {
         ignore_zoomfactor_changes = false;
     }//GEN-LAST:event_ZoomSStateChanged
 
-    private void VideoZoomFrameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoZoomFrameActionPerformed
-        setVideoZoom(VideoZoom.isSelected());
-    }//GEN-LAST:event_VideoZoomFrameActionPerformed
-
     private void AudioShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioShowActionPerformed
         setAudioShow(AudioShow.isSelected());
     }//GEN-LAST:event_AudioShowActionPerformed
-
-    private void VideoShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoShowActionPerformed
-        setVideoShow(VideoShow.isSelected());
-    }//GEN-LAST:event_VideoShowActionPerformed
 
     private void cursorSelector(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cursorSelector
         timeline.setAction(evt.getActionCommand().charAt(0) - '0');
@@ -555,16 +509,15 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
     private javax.swing.JToolBar ToolBar;
-    public javax.swing.JToggleButton VideoShow;
-    public javax.swing.JToggleButton VideoZoom;
     javax.swing.JSlider ZoomS;
+    private javax.swing.JPanel frame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
-    private javax.swing.JToolBar.Separator jSeparator4;
+    private javax.swing.JSplitPane previewSPlitPane;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables
 }
