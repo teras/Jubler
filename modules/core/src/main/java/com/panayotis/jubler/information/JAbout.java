@@ -23,9 +23,12 @@
 package com.panayotis.jubler.information;
 
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.UIUtils;
 
+import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import java.awt.*;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Properties;
@@ -37,7 +40,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
  */
 public class JAbout extends javax.swing.JPanel {
 
-    private final static String icon_theme = "https://icons8.com";
+    private final static String icon_theme = "<a href=\"https://icons8.com\">https://icons8.com</a>";
     private final static String[] transl = {
             "Tom\u00e1\u0161 Bambas " + parseMail("seznam.cz", "conyx"),
             "Rene " + parseMail("hotmail.com", "bmom43"),
@@ -111,32 +114,42 @@ public class JAbout extends javax.swing.JPanel {
         InfoT.getStyledDocument().setParagraphAttributes(0, abouttext.length(), set, false);
 
         StringBuilder thanks = new StringBuilder();
-        thanks.append(__("Special thanks")).append(":\n").append(__("{0} plugin", "ffmpeg"));
-        thanks.append(": Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n\n");
+        thanks.append("<html><body>");
+        thanks.append(__("Special thanks")).append(":<br/>").append(__("{0} plugin", "ffmpeg"));
+        thanks.append(": Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("<br/>").append("<br/>");
         thanks.append(__("Jubler mascot"));
-        thanks.append(": Dimitris Karakatsanis ").append(parseMail("ath.forthnet.gr", "dimkaras")).append("\n");
+        thanks.append(": Dimitris Karakatsanis ").append(parseMail("ath.forthnet.gr", "dimkaras")).append("<br/>");
         thanks.append(__("{0} plugin", "zemberek"));
-        thanks.append(": Serkan Kaba ").append(parseMail("yahoo.com", "serkan_kaba")).append("\n");
+        thanks.append(": Serkan Kaba ").append(parseMail("yahoo.com", "serkan_kaba")).append("<br/>");
         thanks.append(__("{0} plugin", "W3C TT"));
-        thanks.append(": Albert DeSantis ").append(parseMail("gmail.com", "netgensuperstar")).append("\n");
+        thanks.append(": Albert DeSantis ").append(parseMail("gmail.com", "netgensuperstar")).append("<br/>");
 
-        thanks.append("\n").append(__("Icon theme")).append(": ").append(icon_theme).append("\n");
+        thanks.append("<br/>").append(__("Icon theme")).append(": ").append(icon_theme).append("<br/>");
 
-        thanks.append("\n");
+        thanks.append("<br/>");
         thanks.append(__("Translators"));
-        thanks.append(":\n");
+        thanks.append(":<br/>");
         for (int i = 0; i < transl.length; i++)
-            thanks.append(langs[i]).append(" : ").append(transl[i]).append('\n');
+            thanks.append(langs[i]).append(" : ").append(transl[i]).append("<br/>");
 
-        thanks.append("\n");
-        thanks.append(__("Packagers")).append("\n");
-        thanks.append("Fedora: Marcin Zaj\u0105czkowski ").append(parseMail("wp.pl", "mszpak")).append("\n");
-        thanks.append("Gentoo: Serkan Kaba ").append(parseMail("gentoo.org", "serkan")).append("\n");
-        thanks.append("Slackware: Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("\n");
+        thanks.append("<br/>");
+        thanks.append(__("Packagers")).append("<br/>");
+        thanks.append("Fedora: Marcin Zaj\u0105czkowski ").append(parseMail("wp.pl", "mszpak")).append("<br/>");
+        thanks.append("Gentoo: Serkan Kaba ").append(parseMail("gentoo.org", "serkan")).append("<br/>");
+        thanks.append("Slackware: Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("<br/>");
+        thanks.append("</body></html>");
 
         ThanksT.setText(thanks.toString());
         ThanksT.setSelectionStart(0);
         ThanksT.setSelectionEnd(0);
+        ThanksT.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                try {
+                    Desktop.getDesktop().browse(e.getURL().toURI());
+                } catch (Exception ignored) {
+                }
+            }
+        });
     }
 
     private static String parseMail(String append, String prepend) {
@@ -169,38 +182,33 @@ public class JAbout extends javax.swing.JPanel {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
         InfoT = new javax.swing.JTextPane();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        ThanksT = new javax.swing.JTextPane();
-        jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        ThanksT = new javax.swing.JEditorPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         LicenceT = new javax.swing.JTextArea();
 
         setLayout(new java.awt.BorderLayout());
 
         InfoT.setEditable(false);
-        InfoT.setFont(InfoT.getFont().deriveFont(InfoT.getFont().getStyle() | java.awt.Font.BOLD, InfoT.getFont().getSize() + 2));
+        InfoT.setFont(InfoT.getFont().deriveFont(InfoT.getFont().getStyle() | java.awt.Font.BOLD, InfoT.getFont().getSize()+2));
         InfoT.setOpaque(false);
         jTabbedPane1.addTab(__("About"), InfoT);
 
-        jScrollPane2.setPreferredSize(new java.awt.Dimension(450, 300));
+        jScrollPane3.setPreferredSize(new Dimension((int) (400* UIUtils.getScaling()), (int) (300* UIUtils.getScaling())));
 
         ThanksT.setEditable(false);
-        ThanksT.setBackground(javax.swing.UIManager.getDefaults().getColor("Label.background"));
-        jScrollPane2.setViewportView(ThanksT);
+        ThanksT.setContentType("text/html"); // NOI18N
+        jScrollPane3.setViewportView(ThanksT);
 
-        jTabbedPane1.addTab(__("Thanks"), jScrollPane2);
+        jTabbedPane1.addTab(__("Thanks"), jScrollPane3);
 
-        jPanel2.setEnabled(false);
-        jPanel2.setPreferredSize(new java.awt.Dimension(450, 300));
-        jPanel2.setLayout(new java.awt.BorderLayout());
+        jScrollPane1.setPreferredSize(new Dimension((int) (400* UIUtils.getScaling()), (int) (300* UIUtils.getScaling())));
 
         LicenceT.setEditable(false);
-        LicenceT.setFont(LicenceT.getFont().deriveFont(LicenceT.getFont().getSize() - 2f));
+        LicenceT.setFont(LicenceT.getFont().deriveFont(LicenceT.getFont().getSize()-2f));
         jScrollPane1.setViewportView(LicenceT);
 
-        jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab(__("Licence"), jPanel2);
+        jTabbedPane1.addTab(__("License"), jScrollPane1);
 
         add(jTabbedPane1, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -208,10 +216,9 @@ public class JAbout extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextPane InfoT;
     private javax.swing.JTextArea LicenceT;
-    private javax.swing.JTextPane ThanksT;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JEditorPane ThanksT;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
     private final static String licence = "\n(c) 2005-2009, Panayotis Katsaloulis\n"

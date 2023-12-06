@@ -5,6 +5,7 @@
 package com.panayotis.jubler.tools.translate.azure;
 
 import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -15,6 +16,7 @@ import static com.panayotis.jubler.os.Encryption.getDecryptedKey;
  * @author teras
  */
 public class AzureTranslateConfigJ extends javax.swing.JDialog {
+    private static final String HELP = "<html><body>" + __("In order to use Azure Translation service, you need to provide some parameters.\nFor more info see here: %1\n\nNote:\nPin is not saved and needed to be provided every time you launch Jubler.\nIt is needed to encrypt your Azure key.").replace("%1", "<a href=\"https://www.jubler.org/azure.html\">https://www.jubler.org/azure.html</a>").replace("\n", "<br/>") + "</body></html>";
 
     private boolean acceptIsSelected = false;
     private byte[] encryptedKey;
@@ -30,6 +32,14 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         this.encryptedKey = encryptedKey;
         regionTF.setText(region);
         passwordTF.setText(password);
+        Info.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                try {
+                    Desktop.getDesktop().browse(e.getURL().toURI());
+                } catch (Exception ignored) {
+                }
+            }
+        });
         setLocationRelativeTo(parent);
     }
 
@@ -95,8 +105,8 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         acceptB = new javax.swing.JButton();
         cancelB = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Info = new javax.swing.JEditorPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
@@ -161,14 +171,12 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
 
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(7);
-        jTextArea1.setText(__("In order to use Azure Translation service, you need to provide some parameters.\nFor more info see https://www.jubler.org/azure.html\n\nNote:\nPin is not saved and needed to be provided every time you launch Jubler.\nIt is needed to encrypt your Azure key."));
-        jTextArea1.setWrapStyleWord(true);
-        jScrollPane1.setViewportView(jTextArea1);
+        Info.setEditable(false);
+        Info.setContentType("text/html"); // NOI18N
+        Info.setText(HELP);
+        jScrollPane2.setViewportView(Info);
 
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -189,10 +197,11 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
     }//GEN-LAST:event_cancelBActionPerformed
 
     private void passwordTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTFKeyTyped
-        SwingUtilities.invokeLater(()-> maybeUpdateKey());
+        SwingUtilities.invokeLater(() -> maybeUpdateKey());
     }//GEN-LAST:event_passwordTFKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JEditorPane Info;
     private javax.swing.JButton acceptB;
     private javax.swing.JTextField baseUrlTF;
     private javax.swing.JButton cancelB;
@@ -206,8 +215,7 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField keyTF;
     private javax.swing.JTextField passwordTF;
     private javax.swing.JTextField regionTF;
