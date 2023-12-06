@@ -98,7 +98,7 @@ public class SystemDependent {
     private static final Color background = new Color(228, 228, 228);
 
     public static boolean shouldSupportScaling() {
-        return IS_LINUX;
+        return !IS_MACOSX;
     }
 
     public static String getKeyMods(int keymods, boolean withBraces) {

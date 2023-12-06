@@ -52,7 +52,7 @@ public class JublerApp implements Plugin, PluginItem {
         }
         System.setProperty("flatlaf.uiScale", Double.toString(scaling));
 
-        e.setSafeLookAndFeel();
+        e.setModernLookAndFeel();
         e.blendWindowTitle(true);
 
         e.registerAbout(StaticJubler::showAbout);
