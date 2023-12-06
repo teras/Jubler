@@ -51,6 +51,8 @@ public class SystemFileFinder {
 
     private static File findFile(String name) {
         File current = new File(AppPath, name);
+        if (current.exists())
+            DEBUG.debug("Library " + name + " found under " + current.getAbsolutePath());
         return current.exists() ? current : null;
     }
 
@@ -62,13 +64,15 @@ public class SystemFileFinder {
     }
 
     private static boolean loadLibraryImpl(String name) {
-        File libfile = findFile("lib" + File.separator + SystemDependent.mapLibraryName(name));
+        File libfile = isJarBased
+                ? findFile("lib" + File.separator + SystemDependent.mapLibraryName(name))
+                : findFile("../../../installer/extra/linux64/lib/" + SystemDependent.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());
                 return true;
             } catch (UnsatisfiedLinkError e) {
-                System.err.println(e.toString());
+                System.err.println(e);
             }
         return false;
     }

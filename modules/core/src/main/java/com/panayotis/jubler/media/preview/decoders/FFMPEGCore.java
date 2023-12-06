@@ -23,40 +23,30 @@
 
 package com.panayotis.jubler.media.preview.decoders;
 
-import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemFileFinder;
-import java.awt.Image;
+
+import javax.sound.sampled.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
-public final class FFMPEG extends NativeDecoder {
+public final class FFMPEGCore extends NativeDecoderCore {
 
+    private final FFMPEG nativeLib = new FFMPEG(this);
     private static boolean library_is_present = false;
 
     static {
         library_is_present = SystemFileFinder.loadLibrary("ffdecode");
-    }
-
-    /**
-     * Creates a new instance of FFMPEG
-     */
-    public FFMPEG() {
     }
 
     public Image getFrame(VideoFile vfile, double time, float resize) {
@@ -64,7 +54,7 @@ public final class FFMPEG extends NativeDecoder {
             return null;
 
         time *= 1000000;
-        byte[] data = grabFrame(vfile.getPath(), (long) time, resize);
+        byte[] data = nativeLib.grabFrame(vfile.getPath(), (long) time, resize);
         if (data == null)
             return null;
 
@@ -88,7 +78,7 @@ public final class FFMPEG extends NativeDecoder {
         try {
             final File wavfile = File.createTempFile("jublerclip_", ".wav");
             wav = wavfile;
-            if (!createClip(afile.getPath(), wavfile.getPath(), (long) from, (long) to)) {
+            if (!nativeLib.createClip(afile.getPath(), wavfile.getPath(), (long) from, (long) to)) {
                 /* Something went wrong */
                 cleanUp(__("Could not create audio clip"), wav);
                 return;
@@ -96,12 +86,10 @@ public final class FFMPEG extends NativeDecoder {
 
             AudioInputStream stream = AudioSystem.getAudioInputStream(wavfile);
             final Clip clip = AudioSystem.getClip();
-            clip.addLineListener(new LineListener() {
-                public void update(LineEvent event) {
-                    if (event.getType().equals(LineEvent.Type.STOP)) {
-                        wavfile.delete();
-                        clip.close();
-                    }
+            clip.addLineListener(event -> {
+                if (event.getType().equals(LineEvent.Type.STOP)) {
+                    wavfile.delete();
+                    clip.close();
                 }
             });
 
@@ -130,7 +118,7 @@ public final class FFMPEG extends NativeDecoder {
         if (!isDecoderValid())
             return;
 
-        float[] info = grabInformation(vfile.getPath());
+        float[] info = nativeLib.grabInformation(vfile.getPath());
         if (info == null)
             return;
         vfile.setInformation(Math.round(info[0]), Math.round(info[1]), info[2], info[3]);
@@ -139,13 +127,4 @@ public final class FFMPEG extends NativeDecoder {
     public boolean isDecoderValid() {
         return library_is_present;
     }
-
-    /* Get the image for this timestamp */
-    private native byte[] grabFrame(String video, long time, float resize);
-
-    /* Create a wav file from the specified time stamps */
-    private native boolean createClip(String audio, String wav, long from, long to);
-
-    /* Get the dimensions of a video file */
-    public native float[] grabInformation(String vfile);
 }

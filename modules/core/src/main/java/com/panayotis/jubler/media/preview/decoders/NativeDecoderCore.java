@@ -35,7 +35,8 @@ import static com.panayotis.jubler.i18n.I18N.__;
 /**
  * @author teras
  */
-public abstract class NativeDecoder implements DecoderInterface {
+public abstract class NativeDecoderCore implements DecoderInterface, NativeDecoderCallback {
+    private final NativeDecoder nativeLib = new NativeDecoder(this);
 
     private DecoderListener feedback;
     private Thread cacher;
@@ -72,7 +73,7 @@ public abstract class NativeDecoder implements DecoderInterface {
         cacher = new Thread(() -> {
             /* This is the subrutine which produces tha cached data, in separated thread */
             feedback.startCacheCreation();
-            boolean status = makeCache(af.getPath(), cf.getPath(), af.getName());
+            boolean status = nativeLib.makeCache(af.getPath(), cf.getPath(), af.getName());
             cacher = null;  // Needed early, to "tip" the system that cache creating has been finished
             setInterruptStatus(false);
 
@@ -83,22 +84,6 @@ public abstract class NativeDecoder implements DecoderInterface {
         cacher.start();
 
         return true;
-    }
-
-    /* This is a method to be called by native routines in order to check
-     * the status of the produced cache */
-    private void updateViewport(float position) {
-        feedback.updateCacheCreation(position);
-    }
-    /* This is also a callback function to use the standard DEBUG object in C */
-
-    private void debug(String debug) {
-        DEBUG.debug(debug);
-    }
-
-    /* This method is used again as a callback, to see if the user clicked on the cancel button */
-    public boolean getInterruptStatus() {
-        return isInterrupted;
     }
 
     public void setInterruptStatus(boolean interrupt) {
@@ -117,8 +102,7 @@ public abstract class NativeDecoder implements DecoderInterface {
 
         /* Now clean up memory */
         if (cfile != null && isDecoderValid())
-            forgetCache(cfile.getPath());
-
+            nativeLib.forgetCache(cfile.getPath());
     }
 
     public AudioPreview getAudioPreview(CacheFile cfile, double from, double to) {
@@ -129,15 +113,18 @@ public abstract class NativeDecoder implements DecoderInterface {
         if (cacher != null)
             return null;  // Cache still being created
 
-        float[] data = grabCache(cfile.getPath(), from, to);
+        float[] data = nativeLib.grabCache(cfile.getPath(), from, to);
         if (data == null)
             return null;
         return new AudioPreview(data);
     }
 
-    private native boolean makeCache(String afile, String cfile, String aname);
+    @Override
+    public boolean getInterruptStatus() {
+        return isInterrupted;
+    }
 
-    private native float[] grabCache(String cfile, double from, double to);
-
-    private native void forgetCache(String cfile);
+    public void updateViewport(float position) {
+        feedback.updateCacheCreation(position);
+    }
 }

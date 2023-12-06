@@ -30,7 +30,7 @@ import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
-import com.panayotis.jubler.media.preview.decoders.FFMPEG;
+import com.panayotis.jubler.media.preview.decoders.FFMPEGCore;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Frame;
@@ -71,7 +71,7 @@ public class MediaFile {
         vfile = vf;
         afile = af;
         cfile = cf;
-        decoder = new FFMPEG();
+        decoder = new FFMPEGCore();
         videoselector = new JVideofileSelector();
     }
 

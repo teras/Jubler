@@ -116,18 +116,17 @@ public class JFramePreview extends JPanel {
         Image newimg = null;
 
         /* Calculate frame image */
-        if (isEnabled()) {
-            double time = sub.getStartTime().toSeconds();
-            if (Math.abs(time - last_time) > DT || frameimg == demoimg) {
-                last_time = time;
-                if (mfile != null)
-                    newimg = mfile.getFrame(last_time, resize);
-                else
-                    newimg = null;
-            }
-            if (newimg != null)
-                frameimg = newimg;
-        } else
+        double time = sub.getStartTime().toSeconds();
+        if (Math.abs(time - last_time) > DT || frameimg == demoimg) {
+            last_time = time;
+            if (mfile != null)
+                newimg = mfile.getFrame(last_time, resize);
+            else
+                newimg = null;
+        }
+        if (newimg != null)
+            frameimg = newimg;
+        else
             frameimg = demoimg;
         super.repaint();
     }
