@@ -236,7 +236,7 @@ public class JSubPreview extends javax.swing.JPanel {
         AudioPlay = new javax.swing.JToggleButton();
         NewSub = new javax.swing.JToggleButton();
         previewSPlitPane = new javax.swing.JSplitPane();
-        frame = new JFramePreview(this);
+        frame = new JFramePreview();
         MainPanel = new javax.swing.JPanel();
         AudioPanel = new javax.swing.JPanel();
         BottomPanel = new javax.swing.JPanel();

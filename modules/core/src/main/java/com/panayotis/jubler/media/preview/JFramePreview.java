@@ -47,15 +47,14 @@ public class JFramePreview extends JPanel {
     private static final String inactive_decoder_message = __("FFDecode library not active. Using demo image.");
     /* Maximum amount of time tolerance while requesting a new image */
     public final static double DT = 0.002d;
-    private Image frameimg;
-    private SubImage subimg;
-    private JSubPreview callback;
     private MediaFile mfile;
     private SubEntry sub = null;
     private double last_time = -1;
     private float resize = 1f;
 
     private static Image demoimg;
+    private SubImage subimg;
+    private Image frameimg;
 
     static {
         try {
@@ -65,22 +64,12 @@ public class JFramePreview extends JPanel {
         }
     }
 
-    /**
-     * Creates a new instance of JVideoPreview
-     */
-    public JFramePreview(JSubPreview callback) {
-        this.callback = callback;
-        frameimg = demoimg;
-        subimg = null;
-        setEnabled(false);
-    }
-
     public Dimension getMinimumSize() {
         return new Dimension((int) (60 * UIUtils.getScaling()), (int) (40 * UIUtils.getScaling()));
     }
 
     public Dimension getPreferredSize() {
-        return new Dimension(frameimg.getWidth(null), frameimg.getHeight(null));
+        return new Dimension(demoimg.getWidth(null), demoimg.getHeight(null));
     }
 
     public void updateMediaFile(MediaFile mfile) {
@@ -102,42 +91,27 @@ public class JFramePreview extends JPanel {
         subimg = null;
     }
 
-    public void repaint() {
-        /* Check if this object should be repainted, or just silently exit */
-        if (sub == null || callback == null || (!callback.isEnabled()))
-            return;
-        // NOTE: How many times should I come here?
-        /* Calculate subtitle image */
-        //long systime = System.currentTimeMillis();
-        if (subimg == null)
-            subimg = new SubImage(sub);
-
-        /* Variables needed for frame calculation */
-        Image newimg = null;
-
-        /* Calculate frame image */
-        double time = sub.getStartTime().toSeconds();
-        if (Math.abs(time - last_time) > DT || frameimg == demoimg) {
-            last_time = time;
-            if (mfile != null)
-                newimg = mfile.getFrame(last_time, resize);
-            else
-                newimg = null;
-        }
-        if (newimg != null)
-            frameimg = newimg;
-        else
-            frameimg = demoimg;
-        super.repaint();
-    }
-
     public void setSubEntry(SubEntry entry) {
         sub = entry;
         subimg = null;
+        double time = sub.getStartTime().toSeconds();
+        if (Math.abs(entry.getStartTime().toSeconds() - last_time) > DT) {
+            last_time = time;
+            frameimg = null;
+        }
         repaint();
     }
 
     public void paintComponent(Graphics g) {
+        if (sub != null) {
+            if (subimg == null)
+                subimg = new SubImage(sub);
+            if (frameimg == null && mfile != null)
+                frameimg = mfile.getFrame(sub.getStartTime().toSeconds(), resize);
+            if (frameimg == null)
+                frameimg = demoimg;
+        }
+
         g.setColor(background);
         g.fillRect(0, 0, getWidth(), getHeight());
         drawCentered(g, frameimg);
