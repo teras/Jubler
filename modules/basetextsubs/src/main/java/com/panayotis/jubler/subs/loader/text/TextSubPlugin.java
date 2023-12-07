@@ -50,7 +50,8 @@ public class TextSubPlugin implements Plugin {
                 new TextScript(),
                 new W3CTimedText(),
                 new DFXP(),
-                new PreSegmentedText()
+                new PreSegmentedText(),
+                new YoutubeSubtitles()
         };
         return plugin_list;
     }

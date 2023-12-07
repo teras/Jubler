@@ -51,7 +51,7 @@ public class SubRip extends StyledTextSubFormat {
                 + sp + "(\\d\\d):(\\d\\d):(\\d\\d),(\\d\\d?\\d?)" + sp + "(X1:\\d.*?)??" + nl + "(.*?)" + nl + nl);
         stylepat = Pattern.compile("<(.*?)>");
 
-        sdict = new ArrayList<StyledFormat>();
+        sdict = new ArrayList<>();
         sdict.add(new StyledFormat(ITALIC, "i", true));
         sdict.add(new StyledFormat(ITALIC, "/i", false));
         sdict.add(new StyledFormat(BOLD, "b", true));
@@ -112,7 +112,7 @@ public class SubRip extends StyledTextSubFormat {
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
-        str.append(Integer.toString(counter++));
+        str.append(counter++);
         str.append("\n");
         str.append(sub.getStartTime().getSeconds());
         str.append(" --> ");
