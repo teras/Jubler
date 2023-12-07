@@ -41,8 +41,8 @@ public class ShiftTime extends RealTimeTool {
     }
 
     @Override
-    public void execPlugin(Object caller, Object param) {
-        super.execPlugin(caller, param);
+    public void execPlugin(ToolsManager caller) {
+        super.execPlugin(caller);
         ToolsManager.setShifter(this);
     }
 

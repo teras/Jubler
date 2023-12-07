@@ -23,14 +23,15 @@
 
 package com.panayotis.jubler.tools.externals;
 
+import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
+
 import java.util.ArrayList;
 
 /**
- *
  * @author teras
  */
-public class AvailExternals extends ArrayList<ExtProgram> {
+public class AvailExternals extends ArrayList<ExtProgram> implements PluginContext {
 
     private String type;
     private String localtype;

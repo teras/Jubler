@@ -20,36 +20,36 @@
 
 package com.panayotis.jubler.tools;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 /**
- *
  * @author teras
  */
 public class CoreTools implements Plugin {
 
     @Override
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{
-            new SubSplit(),
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Arrays.asList(
+                new SubSplit(),
                 new SubJoin(),
-            new Reparent(),
-            new Synchronize(),
-            new ShiftTime(),
-            new RecodeTime(),
-            new Fixer(),
-            new Rounder(),
-            new Speller(),
-            new Translate(),
-            new JoinEntries(),
-            new SplitEntries(),
-            new DelSelection(),
-            new Marker(),
-            new Styler()
-        };
+                new Reparent(),
+                new Synchronize(),
+                new ShiftTime(),
+                new RecodeTime(),
+                new Fixer(),
+                new Rounder(),
+                new Speller(),
+                new Translate(),
+                new JoinEntries(),
+                new SplitEntries(),
+                new DelSelection(),
+                new Marker(),
+                new Styler()
+        );
     }
 
     @Override

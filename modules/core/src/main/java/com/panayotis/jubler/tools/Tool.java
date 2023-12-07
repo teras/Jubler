@@ -22,13 +22,13 @@ package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.plugins.PluginItem;
-import javax.swing.JComponent;
+
+import javax.swing.*;
 
 /**
- *
  * @author teras
  */
-public abstract class Tool implements PluginItem {
+public abstract class Tool implements PluginItem<ToolsManager> {
 
     public final ToolMenu menu;
     private JComponent visuals;
@@ -50,14 +50,12 @@ public abstract class Tool implements PluginItem {
     protected abstract JComponent constructVisuals();
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{ToolsManager.class};
+    public Class<ToolsManager> getPluginAffection() {
+        return ToolsManager.class;
     }
 
     @Override
-    public void execPlugin(Object caller, Object param) {
-        if (!ToolsManager.class.equals(caller))
-            return;
+    public void execPlugin(ToolsManager caller) {
         ToolsManager.add(this);
     }
 }

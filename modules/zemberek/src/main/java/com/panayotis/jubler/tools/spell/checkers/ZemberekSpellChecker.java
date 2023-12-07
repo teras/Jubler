@@ -27,12 +27,6 @@
 
 package com.panayotis.jubler.tools.spell.checkers;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.util.ArrayList;
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -40,11 +34,13 @@ import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 import com.panayotis.jubler.tools.spell.SpellError;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 
-public class ZemberekSpellChecker extends SpellChecker implements Plugin, PluginItem {
+public class ZemberekSpellChecker extends SpellChecker implements Plugin, PluginItem<AvailExternals> {
 
     private Method kelimeDenetle, oner;
     private Object zemberek;
@@ -117,20 +113,18 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
         return "Zemberek";
     }
 
-    public Class[] getPluginAffections() {
-        return new Class[]{AvailExternals.class};
+    public Class<AvailExternals> getPluginAffection() {
+        return AvailExternals.class;
     }
 
-    public void execPlugin(Object caller, Object param) {
-        if (caller instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) caller;
-            if (l.getType().equals(family))
-                l.add(this);
-        }
+    public void execPlugin(AvailExternals l) {
+        if (l.getType().equals(family))
+            l.add(this);
     }
 
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{this};
+    @Override
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Collections.singleton(this);
     }
 
     public String getPluginName() {

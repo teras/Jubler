@@ -34,11 +34,13 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author teras
  */
-public class JublerApp implements Plugin, PluginItem {
+public class JublerApp implements Plugin, PluginItem<JubFrame> {
     static
     private boolean ignore_click = false;
 
@@ -72,29 +74,21 @@ public class JublerApp implements Plugin, PluginItem {
     }
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{JubFrame.class};
+    public Class<JubFrame> getPluginAffection() {
+        return JubFrame.class;
     }
 
     @Override
-    public void execPlugin(Object caller, Object param) {
-        if (!(caller instanceof JubFrame))
-            return;
-        JubFrame jubler = (JubFrame) caller;
-        if (param.equals("BEGIN")) {
-            if (EnhancerManager.getDefault().providesSystemMenus())
-                jubler.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
-        } else {
-            if (SystemDependent.shouldSupportScaling())
-                JubFrame.prefs.Tabs.addTab(new JUiOptions());
-            if (EnhancerManager.getDefault().providesSystemMenus()) {
-                jubler.AboutHM.getParent().remove(jubler.AboutHM);
-                jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
-                jubler.QuitFM.getParent().remove(jubler.QuitFM);
-            }
-            setComponentDraggable(jubler, jubler.JublerTools);
-            setComponentDraggable(jubler, jubler.subeditor.StyleP);
+    public void execPlugin(JubFrame jubler) {
+        if (SystemDependent.shouldSupportScaling())
+            JubFrame.prefs.Tabs.addTab(new JUiOptions());
+        if (EnhancerManager.getDefault().providesSystemMenus()) {
+            jubler.AboutHM.getParent().remove(jubler.AboutHM);
+            jubler.PrefsFM.getParent().remove(jubler.PrefsFM);
+            jubler.QuitFM.getParent().remove(jubler.QuitFM);
         }
+        setComponentDraggable(jubler, jubler.JublerTools);
+        setComponentDraggable(jubler, jubler.subeditor.StyleP);
     }
 
     private void setComponentDraggable(Window window, final Component comp) {
@@ -144,8 +138,8 @@ public class JublerApp implements Plugin, PluginItem {
     }
 
     @Override
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{this};
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Collections.singleton(this);
     }
 
     public String getPluginName() {

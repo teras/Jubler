@@ -20,15 +20,16 @@
 
 package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
-import javax.swing.JComponent;
+import com.panayotis.jubler.tools.ToolMenu.Location;
+
+import javax.swing.*;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
 public class RecodeTime extends RealTimeTool {
@@ -43,8 +44,8 @@ public class RecodeTime extends RealTimeTool {
     }
 
     @Override
-    public void execPlugin(Object caller, Object param) {
-        super.execPlugin(caller, param);
+    public void execPlugin(ToolsManager caller) {
+        super.execPlugin(caller);
         ToolsManager.setRecoder(this);
     }
 

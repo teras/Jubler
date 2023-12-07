@@ -20,61 +20,116 @@ package com.panayotis.jubler.autoupdate;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-import static com.panayotis.jubler.i18n.I18N.__;
 
-import com.panayotis.jubler.StaticJubler;
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonArray;
+import com.eclipsesource.json.JsonObject;
+import com.eclipsesource.json.JsonValue;
+import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.Launcher;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.os.SystemFileFinder;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
-import com.panayotis.jupidator.ApplicationInfo;
-import com.panayotis.jupidator.UpdatedApplication;
-import com.panayotis.jupidator.Updater;
-import com.panayotis.jupidator.UpdaterException;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.TreeSet;
 
 /**
- *
  * @author teras
  */
-public class AutoUpdater implements UpdatedApplication, Plugin, PluginItem {
+public class AutoUpdater implements Plugin, PluginItem<Launcher> {
 
-    private static final String URL = "http://www.jubler.org/files/updates/update.xml";
+    static String newVersion;
+    static String versionUrl;
 
     @Override
-    public boolean requestRestart() {
-        return StaticJubler.requestQuit(null);
+    public Class<Launcher> getPluginAffection() {
+        return Launcher.class;
     }
 
     @Override
-    public void receiveMessage(String message) {
-        DEBUG.debug(message);
+    public void execPlugin(Launcher caller) {
+        new Thread(() -> {
+            HttpURLConnection connection;
+            try {
+                URL url = new URL("https://api.github.com/repos/teras/jubler/releases");
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+            } catch (Exception e) {
+                DEBUG.debug(e);
+                return;
+            }
+            JsonValue releases;
+            try (Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                releases = Json.parse(in);
+            } catch (Exception e) {
+                DEBUG.debug(e);
+                return;
+            }
+            if (releases.isArray()) {
+                VersionUrl latest = findReleases(releases.asArray());
+                showMax(latest);
+            }
+        }).start();
     }
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{StaticJubler.class};
-    }
-
-    @Override
-    public void execPlugin(Object caller, Object param) {
-        try {
-            ApplicationInfo info = new ApplicationInfo(SystemFileFinder.AppPath.getAbsolutePath(), SystemDependent.getAppSupportDirPath(), JAbout.getCurrentRelease(), JAbout.getCurrentVersion());
-            info.setDistributionBased(JAbout.isDistributionBased());
-            Updater upd = new Updater(URL, info, this);
-            upd.actionDisplay();
-        } catch (UpdaterException ex) {
-            DEBUG.debug(ex.getMessage());
-        }
-    }
-
-    @Override
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{this};
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Arrays.asList(this, new UIUpdater());
     }
 
     public String getPluginName() {
         return "Auto update";
+    }
+
+    private VersionUrl findReleases(JsonArray releases) {
+        Collection<VersionUrl> result = new TreeSet<>();
+        releases.iterator().forEachRemaining(it -> {
+            if (!it.isObject())
+                return;
+            JsonObject release = it.asObject();
+            if (release.getBoolean("draft", true)
+                    || release.getBoolean("prerelease", true))
+                return;
+
+            String tag = release.getString("tag_name", null);
+            if (tag == null) {
+                DEBUG.debug("Release tag not found");
+                return;
+            }
+
+            String url = release.getString("html_url", null);
+            if (url == null) {
+                DEBUG.debug("Release url not found");
+                return;
+            }
+            result.add(new VersionUrl(tag, url));
+        });
+        return result.isEmpty() ? null : result.iterator().next();
+    }
+
+    private void showMax(VersionUrl latest) {
+//        VersionUrl now = new VersionUrl("5.6", "");
+        VersionUrl now = new VersionUrl(JAbout.getCurrentVersion(), "");
+        if (now.compareTo(latest) > 0)
+            SwingUtilities.invokeLater(() -> syncInvoke(latest));
+    }
+
+    private static void syncInvoke(VersionUrl latest) {
+        AutoUpdater.newVersion = latest.version;
+        AutoUpdater.versionUrl = latest.url;
+        for (Frame frame : Frame.getFrames()) {
+            if (frame instanceof JubFrame)
+                ((JubFrame) frame).newVersionFound(latest.version, latest.url);
+        }
     }
 }

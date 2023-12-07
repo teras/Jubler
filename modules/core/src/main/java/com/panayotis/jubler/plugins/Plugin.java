@@ -20,12 +20,14 @@
 
 package com.panayotis.jubler.plugins;
 
+import java.util.Collection;
+
 /**
  * @author teras
  */
 public interface Plugin {
 
-    PluginItem[] getPluginItems();
+    Collection<? extends PluginItem<?>> getPluginItems();
 
     String getPluginName();
 

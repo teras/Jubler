@@ -23,6 +23,7 @@
 
 package com.panayotis.jubler.subs.loader;
 
+import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +33,7 @@ import java.util.Comparator;
  *
  * @author teras and Hoang Duy Tran
  */
-public class AvailSubFormats {
+public class AvailSubFormats implements PluginContext {
 
     private final ArrayList<SubFormat> Formats;
     private PlainText pl_txt = new PlainText();
@@ -44,7 +45,7 @@ public class AvailSubFormats {
      */
     public AvailSubFormats() {
         current = 0;
-        Formats = new ArrayList<SubFormat>();
+        Formats = new ArrayList<>();
         PluginManager.manager.callPluginListeners(this);
         add(pl_txt);
     }

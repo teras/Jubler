@@ -20,14 +20,15 @@
 
 package com.panayotis.jubler.tools.translate;
 
+import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
+
 import java.util.ArrayList;
 
 /**
- *
  * @author teras
  */
-public class AvailTranslators extends ArrayList<Translator> {
+public class AvailTranslators extends ArrayList<Translator> implements PluginContext {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public AvailTranslators() {

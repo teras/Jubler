@@ -23,6 +23,7 @@
 package com.panayotis.jubler;
 
 import com.panayotis.jubler.information.HelpBrowser;
+import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.information.JQuality;
 import com.panayotis.jubler.media.MediaFile;
@@ -31,6 +32,7 @@ import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.ShortcutsModel;
 import com.panayotis.jubler.os.*;
+import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.subs.*;
 import com.panayotis.jubler.subs.loader.SubFormat;
@@ -56,15 +58,17 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  * @author teras
  */
-public class JubFrame extends JFrame implements WindowFocusListener {
+public class JubFrame extends JFrame implements WindowFocusListener, PluginContext {
 
     /**
      * currentWindow holds the reference to the currently active instance of
@@ -143,8 +147,6 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         //add focus listener to manage the currentWindow
         addWindowFocusListener(this);
 
-        PluginManager.manager.callPluginListeners(this, "BEGIN");
-
         subs = null;
         mfile = new MediaFile();
         connected_consoles = new ArrayList<JVideoConsole>();
@@ -152,6 +154,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         undo = new UndoList(this);
 
         initComponents();
+        NewVersionTB.setVisible(false);
         PreviewTB.setToolTipText(__("Right mouse click to bring selected row into view"));
         PreviewTB.addMouseListener(new MouseAdapter() {
             @Override
@@ -190,8 +193,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         StaticJubler.putWindowPosition(this);
 
-        PluginManager.manager.callPluginListeners(this, "END");
-
+        PluginManager.manager.callPluginListeners(this);
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})
@@ -278,6 +280,21 @@ public class JubFrame extends JFrame implements WindowFocusListener {
             loadFileFromHere(sfile, false);
     }
 
+    public void newVersionFound(String version, String url) {
+        NewVersionTB.setVisible(true);
+        NewVersionTB.addActionListener(e -> {
+            int result = JOptionPane.showConfirmDialog(this,
+                    __("A new Jubler version was found!\n\nCurrently you have").trim()
+                            + " " + JAbout.getCurrentVersion() + "\n" + __("New version is").trim() + " " + version + "\n"
+                            + "\nClick on \"OK\" if you want to visit the release page.", "_", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) try {
+                Desktop.getDesktop().browse(new URI(url));
+            } catch (Exception ex) {
+                DEBUG.debug(ex);
+            }
+        });
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -323,7 +340,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         NewTB = new javax.swing.JButton();
         LoadTB = new javax.swing.JButton();
         SaveTB = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        QualityTP = new javax.swing.JPanel();
         InfoTB = new javax.swing.JButton();
         QualityTB = new javax.swing.JButton();
         EditTP = new javax.swing.JPanel();
@@ -338,6 +355,9 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         TestTP = new javax.swing.JPanel();
         TestTB = new javax.swing.JButton();
         PreviewTB = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        InfoTP = new javax.swing.JPanel();
+        NewVersionTB = new javax.swing.JButton();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
         NewFM = new javax.swing.JMenu();
@@ -582,24 +602,24 @@ public class JubFrame extends JFrame implements WindowFocusListener {
 
         JublerTools.add(FileTP);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
+        QualityTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
+        QualityTP.setLayout(new javax.swing.BoxLayout(QualityTP, javax.swing.BoxLayout.LINE_AXIS));
 
         InfoTB.setIcon(Theme.loadIcon("info.png"));
         InfoTB.setToolTipText(__("Project Information"));
         InfoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(InfoTB, "first");
         InfoTB.addActionListener(formListener);
-        jPanel1.add(InfoTB);
+        QualityTP.add(InfoTB);
 
         QualityTB.setIcon(Theme.loadIcon("quality.png"));
         QualityTB.setToolTipText(__("Quality configuration"));
         QualityTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(QualityTB, "last");
         QualityTB.addActionListener(formListener);
-        jPanel1.add(QualityTB);
+        QualityTP.add(QualityTB);
 
-        JublerTools.add(jPanel1);
+        JublerTools.add(QualityTP);
 
         EditTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
@@ -676,6 +696,18 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         TestTP.add(PreviewTB);
 
         JublerTools.add(TestTP);
+        JublerTools.add(filler2);
+
+        InfoTP.setLayout(new javax.swing.BoxLayout(InfoTP, javax.swing.BoxLayout.LINE_AXIS));
+
+        SystemDependent.setToolBarButtonStyle(NewVersionTB, "only");
+        NewVersionTB.setIcon(Theme.loadIcon("newversion.png"));
+        NewVersionTB.setText(__("New version!"));
+        NewVersionTB.setToolTipText(__("New version is available"));
+        NewVersionTB.addActionListener(formListener);
+        InfoTP.add(NewVersionTB);
+
+        JublerTools.add(InfoTP);
 
         getContentPane().add(JublerTools, java.awt.BorderLayout.NORTH);
 
@@ -1155,6 +1187,8 @@ public class JubFrame extends JFrame implements WindowFocusListener {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
             } else if (evt.getSource() == PreviewTB) {
                 JubFrame.this.PreviewTBCurrentTTMActionPerformed(evt);
+            } else if (evt.getSource() == NewVersionTB) {
+                JubFrame.this.NewVersionTBCurrentTTMActionPerformed(evt);
             } else if (evt.getSource() == CutP) {
                 JubFrame.this.CutEMActionPerformed(evt);
             } else if (evt.getSource() == CopyP) {
@@ -1807,6 +1841,10 @@ public class JubFrame extends JFrame implements WindowFocusListener {
         subeditor.setFocusOnTimeEditor(getFocusOwner() != null && !(getFocusOwner().getParent() instanceof TimeSpinnerEditor));
     }//GEN-LAST:event_JumpEditTextEMJActionPerformed
 
+    private void NewVersionTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NewVersionTBCurrentTTMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_NewVersionTBCurrentTTMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1843,6 +1881,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JMenu HelpM;
     private javax.swing.JMenuItem InfoFM;
     private javax.swing.JButton InfoTB;
+    private javax.swing.JPanel InfoTP;
     private javax.swing.JMenu InsertEM;
     public javax.swing.JMenuBar JublerMenuBar;
     public javax.swing.JToolBar JublerTools;
@@ -1854,6 +1893,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     public javax.swing.JCheckBoxMenuItem MaxWaveC;
     private javax.swing.JMenu NewFM;
     private javax.swing.JButton NewTB;
+    private javax.swing.JButton NewVersionTB;
     private javax.swing.JMenuItem NextGEM;
     private javax.swing.JMenuItem NextPageGEM;
     private javax.swing.JMenuItem NextSEM;
@@ -1876,6 +1916,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JMenuItem PreviousSEM;
     private javax.swing.JMenuItem QualityFM;
     private javax.swing.JButton QualityTB;
+    private javax.swing.JPanel QualityTP;
     public javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RedoEM;
@@ -1930,7 +1971,7 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
     private javax.swing.JMenuItem byTimeGEM;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
@@ -2123,12 +2164,18 @@ public class JubFrame extends JFrame implements WindowFocusListener {
     }
 
     public void enablePreview(boolean status) {
-        EnablePreviewC.setSelected(status);
-        PreviewTB.setSelected(status);
-        PreviewTB.setToolTipText(PreviewTB.isSelected() ? __("Disable Preview") : __("Enable Preview"));
+        Consumer<Boolean> visualsUpdate = nv -> {
+            EnablePreviewC.setSelected(nv);
+            PreviewTB.setSelected(nv);
+            PreviewTB.setToolTipText(nv ? __("Disable Preview") : __("Enable Preview"));
+        };
 
+        if (status && !mfile.validateMediaFile(subs, false, this)) {
+            visualsUpdate.accept(false);
+            return;
+        } else
+            visualsUpdate.accept(status);
         if (status) {
-            mfile.validateMediaFile(subs, false, this);
             mfile.initAudioCache(preview.getDecoderListener());
 
             preview.updateMediaFile(mfile);

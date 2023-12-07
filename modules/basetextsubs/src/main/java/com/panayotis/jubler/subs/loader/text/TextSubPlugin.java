@@ -19,25 +19,19 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
-import com.panayotis.jubler.os.DEBUG;
-
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
-import com.panayotis.jubler.subs.loader.SubFormat;
 
-import java.util.logging.Level;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * @author teras & Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
 public class TextSubPlugin implements Plugin {
 
-    private PluginItem[] plugin_list = null;
-
-    public PluginItem[] getPluginItems() {
-        plugin_list = new PluginItem[]{
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Arrays.asList(
                 new AdvancedSubStation(),
                 new SubRip(),
                 new SubStationAlpha(),
@@ -52,8 +46,7 @@ public class TextSubPlugin implements Plugin {
                 new DFXP(),
                 new PreSegmentedText(),
                 new YoutubeSubtitles()
-        };
-        return plugin_list;
+        );
     }
 
     public String getPluginName() {

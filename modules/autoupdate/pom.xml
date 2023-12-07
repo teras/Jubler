@@ -16,11 +16,5 @@
             <artifactId>core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.panayotis</groupId>
-            <artifactId>jupidator</artifactId>
-            <version>0.9.0.2</version>
-            <type>jar</type>
-        </dependency>
     </dependencies>
 </project>

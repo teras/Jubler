@@ -2,6 +2,7 @@ package com.panayotis.jubler;
 
 import com.panayotis.jubler.os.AutoSaver;
 import com.panayotis.jubler.os.LoaderThread;
+import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.rmi.JublerClient;
 import com.panayotis.jubler.rmi.JublerServer;
@@ -10,7 +11,7 @@ import javax.swing.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
-public final class Launcher {
+public final class Launcher implements PluginContext {
     public void start(String[] args) {
 
         try {
@@ -35,7 +36,7 @@ public final class Launcher {
         /* Start RMI server, so only one instance of JubFrame will be opened at all times */
         JublerServer.startServer(getClass().getClassLoader());
 
-        PluginManager.manager.callPluginListeners(StaticJubler.class);
+        PluginManager.manager.callPluginListeners(this);
 
         SwingUtilities.invokeLater(() -> {
             new JubFrame().setVisible(true);   // Display initial JubFrame window

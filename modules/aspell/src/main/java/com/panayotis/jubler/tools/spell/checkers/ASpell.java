@@ -23,33 +23,29 @@
 
 package com.panayotis.jubler.tools.spell.checkers;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.plugins.PluginItem;
-import com.panayotis.jubler.tools.spell.SpellChecker;
-import com.panayotis.jubler.tools.spell.SpellError;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.StringTokenizer;
 import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
+import com.panayotis.jubler.tools.spell.SpellChecker;
+import com.panayotis.jubler.tools.spell.SpellError;
+
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.StringTokenizer;
 
 import static com.panayotis.jubler.tools.spell.checkers.ASpell.ASpellSystemDependent.forceutf8;
 
 /**
- *
  * @author teras
  */
-public class ASpell extends SpellChecker implements Plugin, PluginItem {
+public class ASpell extends SpellChecker implements Plugin, PluginItem<AvailExternals> {
 
     BufferedWriter send;
     BufferedReader get;
@@ -165,20 +161,17 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem {
         return "ASpell";
     }
 
-    public Class[] getPluginAffections() {
-        return new Class[]{AvailExternals.class};
+    public Class<AvailExternals> getPluginAffection() {
+        return AvailExternals.class;
     }
 
-    public void execPlugin(Object caller, Object param) {
-        if (caller instanceof AvailExternals) {
-            AvailExternals l = (AvailExternals) caller;
-            if (l.getType().equals(family))
-                l.add(this);
-        }
+    public void execPlugin(AvailExternals l) {
+        if (l.getType().equals(family))
+            l.add(this);
     }
 
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{this};
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Collections.singleton(this);
     }
 
     public String getPluginName() {

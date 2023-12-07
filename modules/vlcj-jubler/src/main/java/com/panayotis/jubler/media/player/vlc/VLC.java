@@ -20,19 +20,22 @@
 
 package com.panayotis.jubler.media.player.vlc;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
+import com.panayotis.jubler.tools.externals.AvailExternals;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- *
  * @author teras
  */
-public class VLC extends AbstractPlayer implements Plugin, PluginItem {
+public class VLC extends AbstractPlayer implements Plugin, PluginItem<AvailExternals> {
 
     public VLC() {
         super(family);
@@ -90,8 +93,8 @@ public class VLC extends AbstractPlayer implements Plugin, PluginItem {
         return "VLC";
     }
 
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{this};
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Collections.singleton(this);
     }
 
     public String getPluginName() {
@@ -108,12 +111,5 @@ public class VLC extends AbstractPlayer implements Plugin, PluginItem {
         list.add("vlc");
         list.add("vlc.exe");
         return list;
-    }
-
-    public ClassLoader getClassLoader() {
-        return null;
-    }
-
-    public void setClassLoader(ClassLoader cl) {
     }
 }

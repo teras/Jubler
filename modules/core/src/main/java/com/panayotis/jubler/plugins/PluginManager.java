@@ -30,53 +30,37 @@ import java.util.*;
  */
 public class PluginManager {
 
-    public final static PluginManager manager = new PluginManager();
-    private Map<String, ArrayList<PluginItem>> plugin_list;
+    public static final PluginManager manager = new PluginManager();
+    private final Map<Class<?>, ArrayList<PluginItem<?>>> pluginList = new LinkedHashMap<>();
 
     public PluginManager() {
-        plugin_list = new LinkedHashMap<>();
-        ArrayList<PluginItem> plugin_items = new ArrayList<>();
-
         Iterator<Plugin> sl = ServiceLoader.load(Plugin.class, getClass().getClassLoader()).iterator();
         List<Plugin> plugins = new ArrayList<>();
         while (sl.hasNext())
             plugins.add(sl.next());
         plugins.sort(Comparator.comparing(Plugin::priority));
+        int countItems = 0;
         for (Plugin p : plugins) {
-            System.out.println("Plugin " + p.getPluginName() + " registered");
-            plugin_items.addAll(Arrays.asList(p.getPluginItems()));
+            DEBUG.debug("Plugin " + p.getPluginName() + " registered");
+            for (PluginItem<?> item : p.getPluginItems()) {
+                Class<?> affection = item.getPluginAffection();
+                pluginList.computeIfAbsent(affection, it -> new ArrayList<>()).add(item);
+                countItems++;
+            }
         }
 
-        /* Find plugin associations */
-        for (PluginItem item : plugin_items)
-            for (Class affectionClass : item.getPluginAffections()) {
-                String affection = affectionClass.getName();
-                ArrayList<PluginItem> current_list = plugin_list.get(affection);
-                if (current_list == null) {
-                    current_list = new ArrayList<>();
-                    current_list.add(item);
-                    plugin_list.put(affection, current_list);
-                } else
-                    current_list.add(item);
-            }
-
         DEBUG.debug(plugins.size() + " plugin" + (plugins.size() == 1 ? "" : "s") + " found");
-        DEBUG.debug(plugin_items.size() + " plugin item" + (plugin_items.size() == 1 ? "" : "s") + " found");
-        DEBUG.debug(plugin_list.size() + " listener" + (plugin_list.size() == 1 ? "" : "s") + " found");
+        DEBUG.debug(countItems + " plugin item" + (countItems == 1 ? "" : "s") + " found");
+        DEBUG.debug(pluginList.size() + " listener" + (pluginList.size() == 1 ? "" : "s") + " found");
     }
 
-    public void callPluginListeners(Object caller) {
-        callPluginListeners(caller, null);
-    }
-
-    public void callPluginListeners(Object caller, Object parameter) {
-        Class clazz = caller instanceof Class ? (Class) caller : caller.getClass();
-        ArrayList<PluginItem> list = plugin_list.get(clazz.getName());
+    public <T extends PluginContext> void callPluginListeners(T caller) {
+        ArrayList<PluginItem<?>> list = pluginList.get(caller.getClass());
         if (list != null)
-            for (PluginItem item : list)
+            for (PluginItem<?> item : list)
                 try {
-                    item.execPlugin(caller, parameter);
-                } catch (Throwable t) {
+                    ((PluginItem<T>) item).execPlugin(caller);
+                } catch (Exception t) {
                     DEBUG.debug(t);
                 }
     }

@@ -22,45 +22,35 @@ package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.JExternalToolsOptions;
+import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.tools.externals.ExternalTool;
 
-import java.awt.Component;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumMap;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.KeyStroke;
-
-import static com.panayotis.jubler.options.JExternalToolsOptions.tools;
 
 /**
  * @author teras
  */
-public class ToolsManager {
+public class ToolsManager implements PluginContext {
 
     private static final EnumMap<Location, ArrayList<Tool>> tools = new EnumMap<Location, ArrayList<Tool>>(Location.class);
     private static RealTimeTool recoder, shifter;
 
     static {
-        PluginManager.manager.callPluginListeners(ToolsManager.class);
+        PluginManager.manager.callPluginListeners(new ToolsManager());
     }
 
     private ToolsManager() {
     }
 
     public static void add(Tool tool) {
-        ArrayList<Tool> list = tools.get(tool.menu.location);
-        if (list == null) {
-            list = new ArrayList<Tool>();
-            tools.put(tool.menu.location, list);
-        }
-        list.add(tool);
+        tools.computeIfAbsent(tool.menu.location, k -> new ArrayList<>()).add(tool);
     }
 
     public static void register(JubFrame current) {

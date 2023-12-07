@@ -2,7 +2,7 @@ package com.panayotis.jubler.theme.svg;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.extras.FlatSVGUtils;
-import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.Launcher;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -10,10 +10,11 @@ import com.panayotis.jubler.theme.Theme;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SvgThemeProvider implements Plugin, PluginItem, Theme.Provider {
+public class SvgThemeProvider implements Plugin, PluginItem<Launcher>, Theme.Provider {
 
     private String getResourceName(String name) {
         String resource = "icons/" + name;
@@ -43,8 +44,8 @@ public class SvgThemeProvider implements Plugin, PluginItem, Theme.Provider {
     }
 
     @Override
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{this};
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Collections.singleton(this);
     }
 
     @Override
@@ -58,12 +59,12 @@ public class SvgThemeProvider implements Plugin, PluginItem, Theme.Provider {
     }
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{StaticJubler.class};
+    public Class<Launcher> getPluginAffection() {
+        return Launcher.class;
     }
 
     @Override
-    public void execPlugin(Object caller, Object parameter) {
+    public void execPlugin(Launcher caller) {
         Theme.setProvider(this);
     }
 }

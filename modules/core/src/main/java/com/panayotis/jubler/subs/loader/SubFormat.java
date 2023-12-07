@@ -37,7 +37,7 @@ import java.util.logging.Level;
 /**
  * @author teras
  */
-public abstract class SubFormat implements PluginItem {
+public abstract class SubFormat implements PluginItem<AvailSubFormats> {
 
     protected float FPS;
     protected String ENCODING;
@@ -75,16 +75,13 @@ public abstract class SubFormat implements PluginItem {
     }
 
     @Override
-    public Class[] getPluginAffections() {
-        return new Class[]{AvailSubFormats.class};
+    public Class<AvailSubFormats> getPluginAffection() {
+        return AvailSubFormats.class;
     }
 
     @Override
-    public void execPlugin(Object caller, Object parameter) {
-        if (caller instanceof AvailSubFormats) {
-            AvailSubFormats l = (AvailSubFormats) caller;
-            l.add(this);
-        }
+    public void execPlugin(AvailSubFormats l) {
+        l.add(this);
     }
 
     /**

@@ -23,13 +23,14 @@ package com.panayotis.jubler.media.player.mplayer;
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  */
-import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.Plugin;
 import com.panayotis.jubler.plugins.PluginItem;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  *
@@ -103,8 +104,8 @@ public class MPlayer extends AbstractPlayer implements Plugin {
         return MPlayerSystemDependent.getMPlayerEnvironment(this);
     }
 
-    public PluginItem[] getPluginItems() {
-        return new PluginItem[]{this};
+    public Collection<? extends PluginItem<?>> getPluginItems() {
+        return Collections.singleton(this);
     }
 
     public String getPluginName() {
