@@ -25,7 +25,7 @@ import com.panayotis.jubler.options.JUiOptions;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.UIUtils;
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
 
@@ -40,7 +40,7 @@ import java.util.Collections;
 /**
  * @author teras
  */
-public class JublerApp implements Plugin, PluginItem<JubFrame> {
+public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
     static
     private boolean ignore_click = false;
 
@@ -71,11 +71,6 @@ public class JublerApp implements Plugin, PluginItem<JubFrame> {
             e.setApplicationIcons(JubFrame.getFrameIcons().toArray(new Image[0]));
             e.registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
         });
-    }
-
-    @Override
-    public Class<JubFrame> getPluginAffection() {
-        return JubFrame.class;
     }
 
     @Override
@@ -138,11 +133,11 @@ public class JublerApp implements Plugin, PluginItem<JubFrame> {
     }
 
     @Override
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Collections.singleton(this);
     }
 
-    public String getPluginName() {
+    public String getCollectionName() {
         return "Multi-platform application support";
     }
 

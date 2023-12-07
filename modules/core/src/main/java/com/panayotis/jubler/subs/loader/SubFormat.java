@@ -75,11 +75,6 @@ public abstract class SubFormat implements PluginItem<AvailSubFormats> {
     }
 
     @Override
-    public Class<AvailSubFormats> getPluginAffection() {
-        return AvailSubFormats.class;
-    }
-
-    @Override
     public void execPlugin(AvailSubFormats l) {
         l.add(this);
     }

@@ -161,11 +161,7 @@ public abstract class AbstractPlayer extends VideoPlayer implements PluginItem<A
     public int getLocationY() {
         return y;
     }
-
-    public Class<AvailExternals> getPluginAffection() {
-        return AvailExternals.class;
-    }
-
+    
     public void execPlugin(AvailExternals l) {
         if (l.getType().equals(family))
             l.add(this);

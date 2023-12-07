@@ -7,11 +7,6 @@ import javax.swing.*;
 
 public class UIUpdater implements PluginItem<JubFrame> {
     @Override
-    public Class<JubFrame> getPluginAffection() {
-        return JubFrame.class;
-    }
-
-    @Override
     public void execPlugin(JubFrame caller) {
         SwingUtilities.invokeLater(() -> syncInvoke(caller));
     }

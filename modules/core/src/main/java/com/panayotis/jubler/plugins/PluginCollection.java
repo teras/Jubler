@@ -25,11 +25,11 @@ import java.util.Collection;
 /**
  * @author teras
  */
-public interface Plugin {
+public interface PluginCollection {
 
-    Collection<? extends PluginItem<?>> getPluginItems();
+    Collection<PluginItem<?>> getPluginItems();
 
-    String getPluginName();
+    String getCollectionName();
 
     default int priority() {
         return 0;

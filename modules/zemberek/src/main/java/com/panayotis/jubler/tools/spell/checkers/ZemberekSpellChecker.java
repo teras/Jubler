@@ -28,7 +28,7 @@
 package com.panayotis.jubler.tools.spell.checkers;
 
 import com.panayotis.jubler.options.JExtBasicOptions;
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
@@ -40,7 +40,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-public class ZemberekSpellChecker extends SpellChecker implements Plugin, PluginItem<AvailExternals> {
+public class ZemberekSpellChecker extends SpellChecker implements PluginCollection, PluginItem<AvailExternals> {
 
     private Method kelimeDenetle, oner;
     private Object zemberek;
@@ -113,21 +113,17 @@ public class ZemberekSpellChecker extends SpellChecker implements Plugin, Plugin
         return "Zemberek";
     }
 
-    public Class<AvailExternals> getPluginAffection() {
-        return AvailExternals.class;
-    }
-
     public void execPlugin(AvailExternals l) {
         if (l.getType().equals(family))
             l.add(this);
     }
 
     @Override
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Collections.singleton(this);
     }
 
-    public String getPluginName() {
+    public String getCollectionName() {
         return "Zemberek spell checker";
     }
 }

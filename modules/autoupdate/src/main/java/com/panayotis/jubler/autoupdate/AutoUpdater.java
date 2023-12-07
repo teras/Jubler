@@ -29,7 +29,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.Launcher;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 
 import javax.swing.*;
@@ -46,15 +46,10 @@ import java.util.TreeSet;
 /**
  * @author teras
  */
-public class AutoUpdater implements Plugin, PluginItem<Launcher> {
+public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
 
     static String newVersion;
     static String versionUrl;
-
-    @Override
-    public Class<Launcher> getPluginAffection() {
-        return Launcher.class;
-    }
 
     @Override
     public void execPlugin(Launcher caller) {
@@ -83,11 +78,11 @@ public class AutoUpdater implements Plugin, PluginItem<Launcher> {
     }
 
     @Override
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Arrays.asList(this, new UIUpdater());
     }
 
-    public String getPluginName() {
+    public String getCollectionName() {
         return "Auto update";
     }
 

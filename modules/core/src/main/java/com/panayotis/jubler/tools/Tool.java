@@ -50,11 +50,6 @@ public abstract class Tool implements PluginItem<ToolsManager> {
     protected abstract JComponent constructVisuals();
 
     @Override
-    public Class<ToolsManager> getPluginAffection() {
-        return ToolsManager.class;
-    }
-
-    @Override
     public void execPlugin(ToolsManager caller) {
         ToolsManager.add(this);
     }

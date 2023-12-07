@@ -19,7 +19,7 @@
  */
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 
 import java.util.Arrays;
@@ -28,9 +28,9 @@ import java.util.Collection;
 /**
  * @author teras & Hoang Duy Tran <hoangduytran1960@googlemail.com>
  */
-public class TextSubPlugin implements Plugin {
+public class TextSubPlugin implements PluginCollection {
 
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Arrays.asList(
                 new AdvancedSubStation(),
                 new SubRip(),
@@ -49,7 +49,7 @@ public class TextSubPlugin implements Plugin {
         );
     }
 
-    public String getPluginName() {
+    public String getCollectionName() {
         return "Text subtitles";
     }
 }

@@ -22,6 +22,7 @@
 package com.panayotis.jubler.plugins;
 
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.GenericsUtils;
 
 import java.util.*;
 
@@ -34,22 +35,24 @@ public class PluginManager {
     private final Map<Class<?>, ArrayList<PluginItem<?>>> pluginList = new LinkedHashMap<>();
 
     public PluginManager() {
-        Iterator<Plugin> sl = ServiceLoader.load(Plugin.class, getClass().getClassLoader()).iterator();
-        List<Plugin> plugins = new ArrayList<>();
+        Iterator<PluginCollection> sl = ServiceLoader.load(PluginCollection.class, getClass().getClassLoader()).iterator();
+        List<PluginCollection> pluginCollections = new ArrayList<>();
         while (sl.hasNext())
-            plugins.add(sl.next());
-        plugins.sort(Comparator.comparing(Plugin::priority));
+            pluginCollections.add(sl.next());
+        pluginCollections.sort(Comparator.comparing(PluginCollection::priority));
         int countItems = 0;
-        for (Plugin p : plugins) {
-            DEBUG.debug("Plugin " + p.getPluginName() + " registered");
+        for (PluginCollection p : pluginCollections) {
+            DEBUG.debug("Plugin " + p.getCollectionName() + " registered");
             for (PluginItem<?> item : p.getPluginItems()) {
-                Class<?> affection = item.getPluginAffection();
-                pluginList.computeIfAbsent(affection, it -> new ArrayList<>()).add(item);
-                countItems++;
+                List<Class<?>> types = GenericsUtils.getInterfaceTypeArguments(PluginItem.class, item.getClass());
+                if (!types.isEmpty()) {
+                    pluginList.computeIfAbsent(types.get(0), it -> new ArrayList<>()).add(item);
+                    countItems++;
+                }
             }
         }
 
-        DEBUG.debug(plugins.size() + " plugin" + (plugins.size() == 1 ? "" : "s") + " found");
+        DEBUG.debug(pluginCollections.size() + " plugin" + (pluginCollections.size() == 1 ? "" : "s") + " found");
         DEBUG.debug(countItems + " plugin item" + (countItems == 1 ? "" : "s") + " found");
         DEBUG.debug(pluginList.size() + " listener" + (pluginList.size() == 1 ? "" : "s") + " found");
     }

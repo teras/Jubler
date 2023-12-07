@@ -20,7 +20,7 @@
 
 package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 
 import java.util.Arrays;
@@ -29,10 +29,10 @@ import java.util.Collection;
 /**
  * @author teras
  */
-public class CoreTools implements Plugin {
+public class CoreTools implements PluginCollection {
 
     @Override
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Arrays.asList(
                 new SubSplit(),
                 new SubJoin(),
@@ -53,7 +53,7 @@ public class CoreTools implements Plugin {
     }
 
     @Override
-    public String getPluginName() {
+    public String getCollectionName() {
         return "Basic tools";
     }
 }

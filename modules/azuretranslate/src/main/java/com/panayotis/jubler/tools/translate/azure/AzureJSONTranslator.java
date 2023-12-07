@@ -24,7 +24,7 @@ import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
 import com.panayotis.jubler.os.Encryption;
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.translate.AvailTranslators;
@@ -42,7 +42,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 /**
  * @author teras
  */
-public class AzureJSONTranslator extends SimpleWebTranslator implements Plugin, PluginItem<AvailTranslators> {
+public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCollection, PluginItem<AvailTranslators> {
 
     private static final String DEFAULT_BASE_URL = "https://api-eur.cognitive.microsofttranslator.com/translate?api-version=3.0";
     private static final String BASEURL_KEY = "baseurl";
@@ -152,23 +152,18 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements Plugin, 
     }
 
     @Override
-    public Class<AvailTranslators> getPluginAffection() {
-        return AvailTranslators.class;
-    }
-
-    @Override
     public void execPlugin(AvailTranslators caller) {
         if (caller instanceof AvailTranslators)
             ((AvailTranslators) caller).add(this);
     }
 
     @Override
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Collections.singleton(this);
     }
 
     @Override
-    public String getPluginName() {
+    public String getCollectionName() {
         return __("Azure translate");
     }
 }

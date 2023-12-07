@@ -49,7 +49,7 @@ public class DEBUG {
     }
 
     public static void debug(String debug) {
-        if (debug == null || debug.equals(""))
+        if (debug == null || debug.isEmpty())
             return;
         System.out.println(debug);
         try {

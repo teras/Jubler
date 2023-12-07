@@ -276,12 +276,12 @@ public class JQuality extends javax.swing.JDialog {
         jPanel20.add(MinCharsL, java.awt.BorderLayout.NORTH);
 
         MinDurS.setMajorTickSpacing(10);
-        MinDurS.setMaximum(60);
+        MinDurS.setMaximum(30);
         MinDurS.setMinorTickSpacing(1);
         MinDurS.setPaintLabels(true);
         MinDurS.setPaintTicks(true);
         MinDurS.setSnapToTicks(true);
-        MinDurS.setValue(40);
+        MinDurS.setValue(5);
         jPanel20.add(MinDurS, java.awt.BorderLayout.SOUTH);
 
         jPanel18.add(jPanel20);
@@ -297,7 +297,7 @@ public class JQuality extends javax.swing.JDialog {
         MaxDurS.setPaintLabels(true);
         MaxDurS.setPaintTicks(true);
         MaxDurS.setSnapToTicks(true);
-        MaxDurS.setValue(40);
+        MaxDurS.setValue(15);
         jPanel7.add(MaxDurS, java.awt.BorderLayout.SOUTH);
 
         jPanel18.add(jPanel7);

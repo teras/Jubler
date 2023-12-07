@@ -27,7 +27,7 @@ import com.panayotis.jubler.options.ASpellOptions;
 import com.panayotis.jubler.options.JExtBasicOptions;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.externals.ExtProgramException;
@@ -45,7 +45,7 @@ import static com.panayotis.jubler.tools.spell.checkers.ASpell.ASpellSystemDepen
 /**
  * @author teras
  */
-public class ASpell extends SpellChecker implements Plugin, PluginItem<AvailExternals> {
+public class ASpell extends SpellChecker implements PluginCollection, PluginItem<AvailExternals> {
 
     BufferedWriter send;
     BufferedReader get;
@@ -161,20 +161,16 @@ public class ASpell extends SpellChecker implements Plugin, PluginItem<AvailExte
         return "ASpell";
     }
 
-    public Class<AvailExternals> getPluginAffection() {
-        return AvailExternals.class;
-    }
-
     public void execPlugin(AvailExternals l) {
         if (l.getType().equals(family))
             l.add(this);
     }
 
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Collections.singleton(this);
     }
 
-    public String getPluginName() {
+    public String getCollectionName() {
         return "ASpell checker";
     }
 

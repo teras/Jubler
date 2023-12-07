@@ -365,12 +365,12 @@
                     <Component class="javax.swing.JSlider" name="MinDurS">
                       <Properties>
                         <Property name="majorTickSpacing" type="int" value="10"/>
-                        <Property name="maximum" type="int" value="60"/>
+                        <Property name="maximum" type="int" value="30"/>
                         <Property name="minorTickSpacing" type="int" value="1"/>
                         <Property name="paintLabels" type="boolean" value="true"/>
                         <Property name="paintTicks" type="boolean" value="true"/>
                         <Property name="snapToTicks" type="boolean" value="true"/>
-                        <Property name="value" type="int" value="40"/>
+                        <Property name="value" type="int" value="5"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
@@ -404,7 +404,7 @@
                         <Property name="paintLabels" type="boolean" value="true"/>
                         <Property name="paintTicks" type="boolean" value="true"/>
                         <Property name="snapToTicks" type="boolean" value="true"/>
-                        <Property name="value" type="int" value="40"/>
+                        <Property name="value" type="int" value="15"/>
                       </Properties>
                       <Constraints>
                         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

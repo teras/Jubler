@@ -22,7 +22,7 @@ package com.panayotis.jubler.media.player.vlc;
 
 import com.panayotis.jubler.media.player.AbstractPlayer;
 import com.panayotis.jubler.media.player.Viewport;
-import com.panayotis.jubler.plugins.Plugin;
+import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 
@@ -35,7 +35,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 /**
  * @author teras
  */
-public class VLC extends AbstractPlayer implements Plugin, PluginItem<AvailExternals> {
+public class VLC extends AbstractPlayer implements PluginCollection, PluginItem<AvailExternals> {
 
     public VLC() {
         super(family);
@@ -93,11 +93,11 @@ public class VLC extends AbstractPlayer implements Plugin, PluginItem<AvailExter
         return "VLC";
     }
 
-    public Collection<? extends PluginItem<?>> getPluginItems() {
+    public Collection<PluginItem<?>> getPluginItems() {
         return Collections.singleton(this);
     }
 
-    public String getPluginName() {
+    public String getCollectionName() {
         return __("VLC media player");
     }
 

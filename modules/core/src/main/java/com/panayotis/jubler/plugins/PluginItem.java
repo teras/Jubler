@@ -24,8 +24,5 @@ package com.panayotis.jubler.plugins;
  * @author teras
  */
 public interface PluginItem<T extends PluginContext> {
-
-    Class<T> getPluginAffection();
-
     void execPlugin(T caller);
 }

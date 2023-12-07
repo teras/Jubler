@@ -33,8 +33,6 @@ import java.io.StringWriter;
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     public void uncaughtException(Thread t, Throwable e) {
-        StringWriter trace = new StringWriter();
-        PrintWriter wr = new PrintWriter(trace);
         DEBUG.debug(e);
     }
 }
