@@ -8,11 +8,9 @@ import javax.swing.*;
 public class UIUpdater implements PluginItem<JubFrame> {
     @Override
     public void execPlugin(JubFrame caller) {
-        SwingUtilities.invokeLater(() -> syncInvoke(caller));
-    }
-
-    private void syncInvoke(JubFrame caller) {
-        if (AutoUpdater.newVersion != null)
-            caller.newVersionFound(AutoUpdater.newVersion, AutoUpdater.versionUrl);
+        SwingUtilities.invokeLater(() -> {
+            if (AutoUpdater.newerVersions != null)
+                caller.setNewVersionCallback(AutoUpdater::showNewVersion);
+        });
     }
 }

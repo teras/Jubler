@@ -23,12 +23,13 @@
 
 package com.panayotis.jubler.subs.style.preview;
 
-import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 
 import java.awt.font.TextAttribute;
 import java.text.AttributedCharacterIterator.Attribute;
 import java.text.AttributedString;
+
+import static com.panayotis.jubler.os.UIUtils.scale;
 
 /**
  * @author teras
@@ -47,6 +48,6 @@ public class PreviewFontsize extends PreviewElement {
     }
 
     public void addAttribute(AttributedString str, Object value, int from, int to) {
-        super.addAttribute(str, (int) value * UIUtils.getScaling(), from, to);
+        super.addAttribute(str, scale((int) value), from, to);
     }
 }

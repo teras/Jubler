@@ -29,6 +29,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.Launcher;
 import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 
@@ -39,17 +40,30 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.TreeSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author teras
  */
 public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
 
-    static String newVersion;
-    static String versionUrl;
+    static List<VersionData> newerVersions;
+
+    private final boolean skipDraft;
+    private final boolean skipPreRelease;
+
+    public AutoUpdater() {
+        this(true, true);
+    }
+
+    public AutoUpdater(boolean skipDraft, boolean skipPreRelease) {
+        this.skipDraft = skipDraft;
+        this.skipPreRelease = skipPreRelease;
+    }
 
     @Override
     public void execPlugin(Launcher caller) {
@@ -70,10 +84,8 @@ public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
                 DEBUG.debug(e);
                 return;
             }
-            if (releases.isArray()) {
-                VersionUrl latest = findReleases(releases.asArray());
-                showMax(latest);
-            }
+            if (releases.isArray())
+                showVersions(findReleases(releases.asArray()));
         }).start();
     }
 
@@ -86,45 +98,74 @@ public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
         return "Auto update";
     }
 
-    private VersionUrl findReleases(JsonArray releases) {
-        Collection<VersionUrl> result = new TreeSet<>();
+    private List<VersionData> findReleases(JsonArray releases) {
+        List<VersionData> result = new ArrayList<>();
         releases.iterator().forEachRemaining(it -> {
             if (!it.isObject())
                 return;
             JsonObject release = it.asObject();
-            if (release.getBoolean("draft", true)
-                    || release.getBoolean("prerelease", true))
+            if (skipDraft && release.getBoolean("draft", true))
                 return;
-
+            if (skipPreRelease && release.getBoolean("prerelease", true))
+                return;
             String tag = release.getString("tag_name", null);
             if (tag == null) {
                 DEBUG.debug("Release tag not found");
                 return;
             }
-
             String url = release.getString("html_url", null);
             if (url == null) {
                 DEBUG.debug("Release url not found");
                 return;
             }
-            result.add(new VersionUrl(tag, url));
+            String description = release.getString("body", null);
+            if (description == null) {
+                DEBUG.debug("Description not found");
+                return;
+            }
+
+            if (hasAsset(release))
+                result.add(new VersionData(tag, url, description));
         });
-        return result.isEmpty() ? null : result.iterator().next();
+        return result;
     }
 
-    private void showMax(VersionUrl latest) {
-//        VersionUrl now = new VersionUrl("5.6", "");
-        VersionUrl now = new VersionUrl(JAbout.getCurrentVersion(), "");
-        if (now.compareTo(latest) > 0)
-            SwingUtilities.invokeLater(() -> syncInvoke(latest));
+    private static boolean hasAsset(JsonObject release) {
+        JsonValue assets = release.get("assets");
+        if (assets == null || !assets.isArray()) {
+            DEBUG.debug("Assets not found");
+            return false;
+        }
+        String extension = SystemDependent.getAssetExtension();
+        String tag = SystemDependent.getAssetTag();
+        for (JsonValue it : assets.asArray()) {
+            if (it.isObject()) {
+                JsonObject asset = it.asObject();
+                String name = asset.getString("name", "").toLowerCase();
+                if (name.endsWith(extension) || name.contains(tag))
+                    return true;
+            }
+        }
+        return false;
     }
 
-    private static void syncInvoke(VersionUrl latest) {
-        AutoUpdater.newVersion = latest.version;
-        AutoUpdater.versionUrl = latest.url;
+    private void showVersions(List<VersionData> releases) {
+        VersionData current = new VersionData(JAbout.getCurrentVersion());
+//        VersionData current = new VersionData("5.0.0");
+        List<VersionData> newer = releases.stream().filter(it -> current.compareTo(it) > 0).collect(Collectors.toList());
+        if (!newer.isEmpty())
+            SwingUtilities.invokeLater(() -> syncInvoke(newer));
+    }
+
+    private static void syncInvoke(List<VersionData> latest) {
+        AutoUpdater.newerVersions = latest;
         for (Frame frame : Frame.getFrames()) {
             if (frame instanceof JubFrame)
-                ((JubFrame) frame).newVersionFound(latest.version, latest.url);
+                ((JubFrame) frame).setNewVersionCallback(AutoUpdater::showNewVersion);
         }
+    }
+
+    static void showNewVersion(JFrame parent) {
+        new JUpdateInfo(parent).setVisible(true);
     }
 }

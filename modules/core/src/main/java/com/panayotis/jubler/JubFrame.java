@@ -23,7 +23,6 @@
 package com.panayotis.jubler;
 
 import com.panayotis.jubler.information.HelpBrowser;
-import com.panayotis.jubler.information.JAbout;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.information.JQuality;
 import com.panayotis.jubler.media.MediaFile;
@@ -58,7 +57,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -280,19 +278,9 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             loadFileFromHere(sfile, false);
     }
 
-    public void newVersionFound(String version, String url) {
+    public void setNewVersionCallback(Consumer<JFrame> callback) {
         NewVersionTB.setVisible(true);
-        NewVersionTB.addActionListener(e -> {
-            int result = JOptionPane.showConfirmDialog(this,
-                    __("A new Jubler version was found!\n\nCurrently you have").trim()
-                            + " " + JAbout.getCurrentVersion() + "\n" + __("New version is").trim() + " " + version + "\n"
-                            + "\nClick on \"OK\" if you want to visit the release page.", "_", JOptionPane.OK_CANCEL_OPTION);
-            if (result == JOptionPane.OK_OPTION) try {
-                Desktop.getDesktop().browse(new URI(url));
-            } catch (Exception ex) {
-                DEBUG.debug(ex);
-            }
-        });
+        NewVersionTB.addActionListener(e -> callback.accept(this));
     }
 
     /**

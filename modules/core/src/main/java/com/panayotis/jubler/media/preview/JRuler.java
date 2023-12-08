@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
+import static com.panayotis.jubler.os.UIUtils.scale;
+
 /**
  *
  * @author teras
@@ -46,7 +48,7 @@ public class JRuler extends JPanel {
      */
     public JRuler(ViewWindow view) {
         this.view = view;
-        height = (int) (30* UIUtils.getScaling());
+        height = scale(30);
     }
 
     @Override

@@ -34,6 +34,7 @@ import java.util.Calendar;
 import java.util.Properties;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.os.UIUtils.scale;
 
 /**
  * @author teras
@@ -194,7 +195,7 @@ public class JAbout extends javax.swing.JPanel {
         InfoT.setOpaque(false);
         jTabbedPane1.addTab(__("About"), InfoT);
 
-        jScrollPane3.setPreferredSize(new Dimension((int) (400* UIUtils.getScaling()), (int) (300* UIUtils.getScaling())));
+        jScrollPane3.setPreferredSize(new Dimension(scale(400), scale(300)));
 
         ThanksT.setEditable(false);
         ThanksT.setContentType("text/html"); // NOI18N
@@ -202,7 +203,7 @@ public class JAbout extends javax.swing.JPanel {
 
         jTabbedPane1.addTab(__("Thanks"), jScrollPane3);
 
-        jScrollPane1.setPreferredSize(new Dimension((int) (400* UIUtils.getScaling()), (int) (300* UIUtils.getScaling())));
+        jScrollPane1.setPreferredSize(new Dimension(scale(400), scale(300)));
 
         LicenceT.setEditable(false);
         LicenceT.setFont(LicenceT.getFont().deriveFont(LicenceT.getFont().getSize()-2f));

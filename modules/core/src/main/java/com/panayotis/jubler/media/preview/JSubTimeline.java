@@ -35,6 +35,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
+import static com.panayotis.jubler.os.UIUtils.scale;
+
 /**
  * @author teras
  */
@@ -407,12 +409,14 @@ public class JSubTimeline extends JPanel {
         //ignore_new_selection_list = false;
     }
 
+    @Override
     public Dimension getMinimumSize() {
-        return new Dimension(20, (int) (20 * UIUtils.getScaling()));
+        return new Dimension(scale(20), scale(20));
     }
 
+    @Override
     public Dimension getPreferredSize() {
-        return new Dimension(400, (int) (40 * UIUtils.getScaling()));
+        return new Dimension(scale(40), scale(40));
     }
 
     /**

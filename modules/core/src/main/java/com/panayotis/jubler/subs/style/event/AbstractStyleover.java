@@ -31,6 +31,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import static com.panayotis.jubler.os.UIUtils.scale;
+
 /**
  * @author teras
  */
@@ -375,8 +377,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
             set.addAttribute(type, value);
             doc.setParagraphAttributes(from, length, set, false);
         } else {
-            if (type == StyleConstants.FontSize)
-                value = (int) ((int) value * UIUtils.getScaling());
+            if (type == StyleConstants.FontSize) value = scale((int) value);
             set.addAttribute(type, value);
             doc.setCharacterAttributes(from, length, set, false);
         }

@@ -52,6 +52,7 @@ import java.net.URI;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.options.Options.*;
+import static com.panayotis.jubler.os.UIUtils.scale;
 import static com.panayotis.jubler.time.gui.JTimeSpinner.*;
 
 /**
@@ -401,7 +402,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             SubText.setCaretColor(Color.BLACK);
             set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
             set.addAttribute(StyleConstants.FontFamily, "Arial");
-            set.addAttribute(StyleConstants.FontSize, (int) (24 * UIUtils.getScaling()));
+            set.addAttribute(StyleConstants.FontSize, scale(24));
             set.addAttribute(StyleConstants.Foreground, Color.BLACK);
             SubText.getStyledDocument().setParagraphAttributes(0, SubText.getText().length(), set, true);
         }

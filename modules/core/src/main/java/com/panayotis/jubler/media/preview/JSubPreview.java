@@ -38,6 +38,7 @@ import javax.swing.*;
 import java.awt.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.os.UIUtils.scale;
 
 /**
  * @author teras
@@ -416,7 +417,7 @@ public class JSubPreview extends javax.swing.JPanel {
         ZoomS.setToolTipText(__("Subtitle zoom factor"));
         ZoomS.setValue(30);
         ZoomS.setInverted(true);
-        ZoomS.setPreferredSize(new Dimension((int) (100 * UIUtils.getScaling()), (int) (29 * UIUtils.getScaling())));
+        ZoomS.setPreferredSize(new Dimension(scale(100), scale(29)));
         ZoomS.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 ZoomSStateChanged(evt);

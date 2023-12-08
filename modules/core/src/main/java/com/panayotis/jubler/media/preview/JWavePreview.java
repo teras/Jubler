@@ -27,14 +27,16 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
-import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.SubEntry;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
 import static com.panayotis.jubler.media.preview.JFramePreview.DT;
+import static com.panayotis.jubler.os.UIUtils.scale;
 
 /**
  * @author teras
@@ -84,12 +86,14 @@ public class JWavePreview extends JPanel implements DecoderListener {
         addMouseWheelListener(e -> timeline.mouseWheelUpdates(e));
     }
 
+    @Override
     public Dimension getPreferredSize() {
-        return new Dimension(50, (int) (50 * UIUtils.getScaling()));
+        return new Dimension(scale(50), scale(50));
     }
 
+    @Override
     public Dimension getMinimumSize() {
-        return new Dimension(10, (int) (20 * UIUtils.getScaling()));
+        return new Dimension(scale(10), scale(20));
     }
 
     public void startCacheCreation() {

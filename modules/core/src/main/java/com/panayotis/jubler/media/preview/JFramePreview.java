@@ -25,7 +25,6 @@ package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.style.preview.SubImage;
 
@@ -36,6 +35,7 @@ import java.awt.font.TextLayout;
 import java.io.IOException;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.os.UIUtils.scale;
 
 /**
  * @author teras
@@ -65,7 +65,7 @@ public class JFramePreview extends JPanel {
     }
 
     public Dimension getMinimumSize() {
-        return new Dimension((int) (60 * UIUtils.getScaling()), (int) (40 * UIUtils.getScaling()));
+        return new Dimension(scale(60), scale(40));
     }
 
     public Dimension getPreferredSize() {
@@ -108,20 +108,22 @@ public class JFramePreview extends JPanel {
                 subimg = new SubImage(sub);
             if (frameimg == null && mfile != null)
                 frameimg = mfile.getFrame(sub.getStartTime().toSeconds(), resize);
-            if (frameimg == null)
-                frameimg = demoimg;
         }
+        if (frameimg == null)
+            frameimg = demoimg;
 
         g.setColor(background);
         g.fillRect(0, 0, getWidth(), getHeight());
-        drawCentered(g, frameimg);
+        Rectangle r = drawCentered(g, frameimg);
         if (subimg != null)
-            g.drawImage(subimg.getImage(), subimg.getXOffset(getWidth()), subimg.getYOffset(getHeight()), null);
+            g.drawImage(subimg.getImage(),
+                    (getWidth() - r.width) / 2 + subimg.getXOffset(r.width),
+                    (getHeight() - r.height) / 2 + subimg.getYOffset(r.height), null);
 
         /* Draw visual representation that ffdecode library is not present */
         if (mfile == null || !mfile.getDecoder().isDecoderValid()) {
             Font f = Font.decode(null);
-            f = f.deriveFont(f.getSize() * UIUtils.getScaling());
+            f = f.deriveFont(scale((float) f.getSize()));
             g.setFont(f);
             TextLayout layout = new TextLayout(inactive_decoder_message, f, ((Graphics2D) g).getFontRenderContext());
             g.setColor(Color.RED);
@@ -131,16 +133,18 @@ public class JFramePreview extends JPanel {
         }
     }
 
-    private void drawCentered(Graphics g, Image image) {
-        if (image == null)
-            return;
+    private Rectangle drawCentered(Graphics g, Image image) {
         double scaleX = (double) getWidth() / image.getWidth(null);
         double scaleY = (double) getHeight() / image.getHeight(null);
         double scale = Math.min(scaleX, scaleY);
         int scaledWidth = (int) (image.getWidth(null) * scale);
         int scaledHeight = (int) (image.getHeight(null) * scale);
-        int x = (getWidth() - scaledWidth) / 2;
-        int y = (getHeight() - scaledHeight) / 2;
-        g.drawImage(image, x, y, scaledWidth, scaledHeight, null);
+        Rectangle r = new Rectangle(
+                (getWidth() - scaledWidth) / 2,
+                (getHeight() - scaledHeight) / 2,
+                scaledWidth,
+                scaledHeight);
+        g.drawImage(image, r.x, r.y, r.width, r.height, null);
+        return r;
     }
 }

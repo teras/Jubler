@@ -284,6 +284,24 @@ public class SystemDependent {
                     InputEvent.CTRL_MASK);
     }
 
+    public static String getAssetExtension() {
+        if (IS_MACOSX)
+            return ".dmg";
+        else if (IS_WINDOWS)
+            return ".exe";
+        else
+            return ".appimage";
+    }
+
+    public static String getAssetTag() {
+        if (IS_MACOSX)
+            return "mac";
+        else if (IS_WINDOWS)
+            return "win";
+        else
+            return "linux";
+    }
+
     static String mapLibraryName(String name) {
         if (IS_MACOSX)
             return "lib" + name + ".jnilib";

@@ -16,6 +16,14 @@ public class UIUtils {
         return scaling;
     }
 
+    public static int scale(int original) {
+        return (int) (original * scaling);
+    }
+
+    public static float scale(float original) {
+        return original * scaling;
+    }
+
     public static void setScaling(float scaling) {
         saveScaling(scaling);
         UIUtils.scaling = scaling;

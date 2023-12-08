@@ -28,6 +28,8 @@ import com.panayotis.jubler.os.UIUtils;
 import javax.swing.*;
 import java.awt.*;
 
+import static com.panayotis.jubler.os.UIUtils.scale;
+
 /**
  * @author teras
  */
@@ -51,15 +53,15 @@ public class JAlphaIcon implements Icon {
     }
 
     public int getIconHeight() {
-        return (int) (14 * UIUtils.getScaling());
+        return scale(14);
     }
 
     public int getIconWidth() {
-        return (int) (26 * UIUtils.getScaling());
+        return scale(26);
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        int offset = (int) (2 * UIUtils.getScaling());
+        int offset = scale(2);
 
         int cwidth = getIconWidth() - offset;
         int cheight = getIconHeight() - offset;
