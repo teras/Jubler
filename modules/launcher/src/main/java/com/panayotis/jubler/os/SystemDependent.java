@@ -29,7 +29,7 @@ public class SystemDependent {
         String OS = System.getProperty("os.name").toLowerCase();
         IS_LINUX = OS.contains("linux");
         IS_WINDOWS = OS.contains("windows");
-        IS_MACOSX = OS.contains("mac") && OS.contains("os") && OS.contains("x");
+        IS_MACOSX = OS.startsWith("mac");
     }
 
     public static int getSliderLOffset() {

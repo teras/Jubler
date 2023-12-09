@@ -126,6 +126,7 @@
 
     <properties>
         <app.notarize>false</app.notarize>
+        <app.nosign/>
         <mac.dist/>
         <win32.dist/>
         <win64.dist/>
@@ -145,13 +146,19 @@
                 </os>
             </activation>
             <properties>
-                <makeapp.ext>osx</makeapp.ext>
+                <makeapp.ext>mac</makeapp.ext>
             </properties>
         </profile>
         <profile>
             <id>notarize</id>
             <properties>
                 <app.notarize>true</app.notarize>
+            </properties>
+        </profile>
+        <profile>
+            <id>nosign</id>
+            <properties>
+                <app.nosign>win32,win64,macos</app.nosign>
             </properties>
         </profile>
         <profile>
@@ -236,6 +243,7 @@
                                         <argument>--gpgkey=${gpg.passphrase}</argument>
                                         <argument>--os=${mac.dist},${win32.dist},${win64.dist},${linux.dist},${generic.dist},${arm64.dist},${arm32.dist}</argument>
                                         <argument>--jdk=${user.home}/.sdkman/candidates/java/17.0.4-tem</argument>
+                                        <argument>--nosign=${app.nosign}</argument>
                                     </arguments>
                                 </configuration>
                                 <goals>
