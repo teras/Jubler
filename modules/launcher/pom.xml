@@ -22,9 +22,6 @@
                         <manifest>
                             <mainClass>Jubler</mainClass>
                         </manifest>
-                        <manifestEntries>
-                            <SplashScreen-Image>icons/splash.jpg</SplashScreen-Image>
-                        </manifestEntries>
                     </archive>
                 </configuration>
             </plugin>

@@ -606,7 +606,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleListC = new javax.swing.JComboBox();
         EditB = new javax.swing.JButton();
         crossP = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        crossmobileL = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         crossinfo = new javax.swing.JButton();
 
@@ -642,7 +642,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock1);
         Lock1.setIcon(Theme.loadIcon("lock.png"));
-        Lock1.setToolTipText("<html>" + __("Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock1.setToolTipText("<html>" +__( "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
@@ -697,7 +697,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jScrollPane1.setPreferredSize(new java.awt.Dimension(203, 70));
 
         SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
-        SubText.setFont(SubText.getFont().deriveFont(SubText.getFont().getStyle() | java.awt.Font.BOLD, SubText.getFont().getSize() + 1));
+        SubText.setFont(SubText.getFont().deriveFont(SubText.getFont().getStyle() | java.awt.Font.BOLD, SubText.getFont().getSize()+1));
         SubText.setPreferredSize(new java.awt.Dimension(200, 30));
         SubText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
@@ -913,15 +913,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.setBackground(new java.awt.Color(244, 227, 174));
         crossP.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/crossmobile.png"))); // NOI18N
-        jLabel1.setText(__("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?"));
-        jLabel1.setIconTextGap(6);
-        crossP.add(jLabel1, java.awt.BorderLayout.CENTER);
+        crossmobileL.setIcon(Theme.loadIcon("crossmobile.png"));
+        crossmobileL.setText(__("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?"));
+        crossmobileL.setIconTextGap(6);
+        crossP.add(crossmobileL, java.awt.BorderLayout.CENTER);
 
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
         crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1134,7 +1134,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     public javax.swing.JLabel Unsaved;
     private javax.swing.JPanel crossP;
     private javax.swing.JButton crossinfo;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel crossmobileL;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

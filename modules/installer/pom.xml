@@ -112,7 +112,6 @@
                                 <copy file="../../README.md" tofile="target/jubler/README.md"/>
                                 <copy file="../../LICENCE" tofile="target/jubler/LICENCE.txt"/>
                                 <copy file="../../ChangeLog.html" todir="target/jubler"/>
-                                <copy file="../core/src/main/resources/icons/splash.jpg" todir="target/jubler"/>
                             </target>
                         </configuration>
                         <goals>
@@ -218,7 +217,6 @@
                                         <argument>--res=resources</argument>
                                         <argument>--jarname=jubler.jar</argument>
                                         <argument>--jvmopt=DEFAULT</argument>
-                                        <argument>--jvmopt=-splash:$APPDIR/splash.jpg</argument>
                                         <argument>--version=${project.version}</argument>
                                         <argument>--vendor=Panayotis Katsaloulis</argument>
                                         <argument>--id=com.panayotis.jubler</argument>
