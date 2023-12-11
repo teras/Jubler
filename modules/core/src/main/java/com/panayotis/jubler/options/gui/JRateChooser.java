@@ -90,7 +90,7 @@ public class JRateChooser extends JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
-        FromFPSB.setIcon(Theme.loadIcon("videofile.png"));
+        FromFPSB.setIcon(Theme.loadIcon("videofile"));
         FromFPSB.setToolTipText(__("Get FPS from the video file"));
         SystemDependent.setCommandButtonStyle(FromFPSB, "only");
         FromFPSB.addActionListener(new java.awt.event.ActionListener() {

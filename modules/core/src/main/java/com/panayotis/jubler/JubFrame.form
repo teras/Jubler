@@ -1315,7 +1315,7 @@
             <Component class="javax.swing.JButton" name="NewTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;new.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;new&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;New&quot;)" type="code"/>
@@ -1331,7 +1331,7 @@
             <Component class="javax.swing.JButton" name="LoadTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;load.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;load&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Load&quot;)" type="code"/>
@@ -1347,7 +1347,7 @@
             <Component class="javax.swing.JButton" name="SaveTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;save.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;save&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Save&quot;)" type="code"/>
@@ -1377,7 +1377,7 @@
             <Component class="javax.swing.JButton" name="InfoTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;info.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;info&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Project Information&quot;)" type="code"/>
@@ -1394,7 +1394,7 @@
             <Component class="javax.swing.JButton" name="QualityTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;quality.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;quality&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Quality configuration&quot;)" type="code"/>
@@ -1424,7 +1424,7 @@
             <Component class="javax.swing.JButton" name="CutTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;cut.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;cut&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Cut&quot;)" type="code"/>
@@ -1441,7 +1441,7 @@
             <Component class="javax.swing.JButton" name="CopyTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;copy.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;copy&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Copy&quot;)" type="code"/>
@@ -1458,7 +1458,7 @@
             <Component class="javax.swing.JButton" name="PasteTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;paste.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;paste&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Paste&quot;)" type="code"/>
@@ -1481,7 +1481,7 @@
             <Component class="javax.swing.JButton" name="UndoTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;undo.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;undo&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Undo&quot;)" type="code"/>
@@ -1498,7 +1498,7 @@
             <Component class="javax.swing.JButton" name="RedoTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;redo.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;redo&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Redo&quot;)" type="code"/>
@@ -1528,7 +1528,7 @@
             <Component class="javax.swing.JButton" name="SortTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;sort.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;sort&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Sort subtitles&quot;)" type="code"/>
@@ -1551,7 +1551,7 @@
             <Component class="javax.swing.JButton" name="TestTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;test.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;test&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Test subtitles from current position&quot;)" type="code"/>
@@ -1568,14 +1568,14 @@
             <Component class="javax.swing.JButton" name="PreviewTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;previewc.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;previewc&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Enable preview&quot;)" type="code"/>
                 </Property>
                 <Property name="enabled" type="boolean" value="false"/>
                 <Property name="selectedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;preview.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;preview&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
@@ -1604,7 +1604,7 @@
             <Component class="javax.swing.JButton" name="NewVersionTB">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;newversion.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;newversion&quot;)" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;New version!&quot;)" type="code"/>

@@ -57,8 +57,8 @@ public class JPreferences extends javax.swing.JDialog {
         super(jub);
 
         Tabs = new JOptionTabs(this);
-        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, __("Player"), "player_pref.png")));
-        Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref.png")));
+        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, __("Player"), "player_pref")));
+        Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Tabs.addTab(jext = new JExternalToolsOptions());
         Options.loadSystemPreferences(this);

@@ -218,7 +218,7 @@ public class JSpellChecker extends JDialog {
 
         IconPanel.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setIcon(Theme.loadIcon("spellcheck.png"));
+        jLabel1.setIcon(Theme.loadIcon("spellcheck"));
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
         IconPanel.add(jLabel1, java.awt.BorderLayout.NORTH);
 

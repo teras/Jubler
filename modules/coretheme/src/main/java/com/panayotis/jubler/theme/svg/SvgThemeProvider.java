@@ -17,10 +17,7 @@ import java.util.List;
 public class SvgThemeProvider implements PluginCollection, PluginItem<Launcher>, Theme.Provider {
 
     private String getResourceName(String name) {
-        String resource = "icons/" + name;
-        if (resource.toLowerCase().endsWith(".png"))
-            resource = resource.substring(0, resource.length() - 4) + ".svg";
-        return resource;
+        return "icons/" + name + ".svg";
     }
 
     @Override

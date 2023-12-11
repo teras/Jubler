@@ -104,7 +104,7 @@ public class JUpdateInfo extends javax.swing.JDialog {
 
         logoP.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING, scale(10), scale(10)));
 
-        logoL.setIcon(Theme.loadIcon("logo.png", 0.15f));
+        logoL.setIcon(Theme.loadIcon("logo", 0.15f));
         logoP.add(logoL);
 
         getContentPane().add(logoP, java.awt.BorderLayout.WEST);

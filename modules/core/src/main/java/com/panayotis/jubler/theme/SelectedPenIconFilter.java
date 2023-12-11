@@ -32,7 +32,7 @@ class SelectedPenIconFilter extends RGBImageFilter {
     private final static BufferedImage dot;
 
     static {
-        Image iconImage = Theme.loadIcon("pendot.png").getImage();
+        Image iconImage = Theme.loadIcon("pendot").getImage();
         if (iconImage instanceof BufferedImage) {
             dot = (BufferedImage) iconImage;
         } else {

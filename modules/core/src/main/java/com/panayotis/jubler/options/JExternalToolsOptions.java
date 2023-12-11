@@ -95,7 +95,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
     @Override
     public Icon getTabIcon() {
-        return Theme.loadIcon("externals.png");
+        return Theme.loadIcon("externals");
     }
 
     @Override

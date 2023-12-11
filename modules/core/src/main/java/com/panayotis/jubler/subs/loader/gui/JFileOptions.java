@@ -625,7 +625,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
 
         PreEnc.add(MiddleE);
 
-        Presets.setIcon(Theme.loadIcon("encs.png"));
+        Presets.setIcon(Theme.loadIcon("encs"));
         Presets.setToolTipText(__("Use predefined encodings"));
         SystemDependent.setCommandButtonStyle(Presets, "only");
         Presets.addMouseListener(this);

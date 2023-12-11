@@ -62,15 +62,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     public final static ImageIcon Lock[];
 
-    private final static ImageIcon NewlineI = Theme.loadIcon("newline.png");
+    private final static ImageIcon NewlineI = Theme.loadIcon("newline");
     private final static ImageIcon NewlineI_E = Theme.loadIcon(NewlineI, IconStatus.ERROR);
-    private final static ImageIcon LineI = Theme.loadIcon("line.png");
+    private final static ImageIcon LineI = Theme.loadIcon("line");
     private final static ImageIcon LineI_E = Theme.loadIcon(LineI, IconStatus.ERROR);
-    private final static ImageIcon SumI = Theme.loadIcon("sum.png");
+    private final static ImageIcon SumI = Theme.loadIcon("sum");
     private final static ImageIcon SumI_E = Theme.loadIcon(SumI, IconStatus.ERROR);
-    private final static ImageIcon CPSI = Theme.loadIcon("cps.png");
+    private final static ImageIcon CPSI = Theme.loadIcon("cps");
     private final static ImageIcon CPSI_E = Theme.loadIcon(CPSI, IconStatus.ERROR);
-    private final static ImageIcon FILLI = Theme.loadIcon("fill.png");
+    private final static ImageIcon FILLI = Theme.loadIcon("fill");
     private final static ImageIcon FILLI_E = Theme.loadIcon(FILLI, IconStatus.ERROR);
 
     private final static Color INFOC = Color.BLACK;
@@ -86,8 +86,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     static {
         Lock = new ImageIcon[2];
-        Lock[0] = Theme.loadIcon("lock.png");
-        Lock[1] = Theme.loadIcon("unlock.png");
+        Lock[0] = Theme.loadIcon("lock");
+        Lock[1] = Theme.loadIcon("unlock");
     }
 
     private final JTimeSpinner SubStart;
@@ -641,7 +641,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         PSStart.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock1);
-        Lock1.setIcon(Theme.loadIcon("lock.png"));
+        Lock1.setIcon(Theme.loadIcon("lock"));
         Lock1.setToolTipText("<html>" +__( "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
@@ -658,7 +658,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         PSFinish.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock2);
-        Lock2.setIcon(Theme.loadIcon("lock.png"));
+        Lock2.setIcon(Theme.loadIcon("lock"));
         Lock2.setToolTipText("<html>" + __("Lock the stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock2.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock2, "only");
@@ -675,7 +675,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         PSDur.setLayout(new java.awt.BorderLayout());
 
         TimeLock.add(Lock3);
-        Lock3.setIcon(Theme.loadIcon("lock.png"));
+        Lock3.setIcon(Theme.loadIcon("lock"));
         Lock3.setSelected(true);
         Lock3.setToolTipText("<html>" + __("Lock the duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock3.setMargin(new java.awt.Insets(1, 1, 1, 1));
@@ -718,7 +718,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         DetachP.setOpaque(false);
         DetachP.setLayout(new javax.swing.BoxLayout(DetachP, javax.swing.BoxLayout.LINE_AXIS));
 
-        DetachB.setIcon(Theme.loadIcon("detach.png"));
+        DetachB.setIcon(Theme.loadIcon("detach"));
         DetachB.setToolTipText(__("Detach subtitle editor panel"));
         DetachB.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         SystemDependent.setCommandButtonStyle(DetachB, "only");
@@ -734,7 +734,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel1.setOpaque(false);
         jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
 
-        TimeB.setIcon(Theme.loadIcon("time.png"));
+        TimeB.setIcon(Theme.loadIcon("time"));
         TimeB.setSelected(true);
         TimeB.setToolTipText(__("Display/hide subtitle timings"));
         SystemDependent.setCommandButtonStyle(TimeB, "first");
@@ -745,7 +745,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         });
         jPanel1.add(TimeB);
 
-        FontB.setIcon(Theme.loadIcon("font.png"));
+        FontB.setIcon(Theme.loadIcon("font"));
         FontB.setToolTipText(__("Display/hide font attributes"));
         FontB.setActionCommand("font");
         SystemDependent.setCommandButtonStyle(FontB, "middle");
@@ -756,7 +756,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         });
         jPanel1.add(FontB);
 
-        ColorB.setIcon(Theme.loadIcon("color.png"));
+        ColorB.setIcon(Theme.loadIcon("color"));
         ColorB.setToolTipText(__("Display/hide color attributes"));
         ColorB.setActionCommand("color");
         SystemDependent.setCommandButtonStyle(ColorB, "last");
@@ -767,7 +767,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         });
         jPanel1.add(ColorB);
 
-        MetricsB.setIcon(Theme.loadIcon("sizes.png"));
+        MetricsB.setIcon(Theme.loadIcon("sizes"));
         MetricsB.setToolTipText(__("Display/hide metric attributes"));
         MetricsB.setActionCommand("metrics");
         MetricsB.addActionListener(new java.awt.event.ActionListener() {
@@ -783,7 +783,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
-        TrashB.setIcon(Theme.loadIcon("trash.png"));
+        TrashB.setIcon(Theme.loadIcon("trash"));
         TrashB.setToolTipText(__("Delete styles of this subtitle"));
         SystemDependent.setCommandButtonStyle(TrashB, "only");
         TrashB.addActionListener(new java.awt.event.ActionListener() {
@@ -793,10 +793,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         });
         jPanel2.add(TrashB);
 
-        ShowStyleB.setIcon(Theme.loadIcon("hidestyle.png"));
+        ShowStyleB.setIcon(Theme.loadIcon("hidestyle"));
         ShowStyleB.setSelected(true);
         ShowStyleB.setToolTipText(__("Display/hide styles for this subtitle"));
-        ShowStyleB.setSelectedIcon(Theme.loadIcon("showstyle.png"));
+        ShowStyleB.setSelectedIcon(Theme.loadIcon("showstyle"));
         SystemDependent.setCommandButtonStyle(ShowStyleB, "only");
         ShowStyleB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -805,9 +805,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         });
         jPanel2.add(ShowStyleB);
 
-        ToolsLockB.setIcon(Theme.loadIcon("opentool.png"));
+        ToolsLockB.setIcon(Theme.loadIcon("opentool"));
         ToolsLockB.setToolTipText(__("Tools lock. When tools are locked, will be run with default parameters on the selected subtitles"));
-        ToolsLockB.setSelectedIcon(Theme.loadIcon("lockedtool.png"));
+        ToolsLockB.setSelectedIcon(Theme.loadIcon("lockedtool"));
         SystemDependent.setCommandButtonStyle(ToolsLockB, "only");
         ToolsLockB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -825,7 +825,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         InfoP.setLayout(new javax.swing.BoxLayout(InfoP, javax.swing.BoxLayout.X_AXIS));
 
-        TotalL.setIcon(Theme.loadIcon("lines.png"));
+        TotalL.setIcon(Theme.loadIcon("lines"));
         TotalL.setToolTipText(__("Total subtitles"));
         TotalL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         TotalL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -862,14 +862,14 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         FillL.setIconTextGap(1);
         InfoP.add(FillL);
 
-        DurationL.setIcon(Theme.loadIcon("dur.png", IconStatus.ERROR));
+        DurationL.setIcon(Theme.loadIcon("dur", IconStatus.ERROR));
         DurationL.setToolTipText(__("Duration"));
         DurationL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         DurationL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         DurationL.setIconTextGap(1);
         InfoP.add(DurationL);
 
-        CompactL.setIcon(Theme.loadIcon("compact.png", IconStatus.ERROR));
+        CompactL.setIcon(Theme.loadIcon("compact", IconStatus.ERROR));
         CompactL.setToolTipText(__("Subtitle could be compacted into fewer lines"));
         CompactL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         CompactL.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
@@ -878,7 +878,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         jPanel8.add(InfoP, java.awt.BorderLayout.WEST);
 
-        Unsaved.setIcon(Theme.loadIcon("save.png"));
+        Unsaved.setIcon(Theme.loadIcon("save"));
         Unsaved.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 6));
         Unsaved.setEnabled(false);
         jPanel8.add(Unsaved, java.awt.BorderLayout.EAST);
@@ -896,7 +896,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         });
         jPanel6.add(StyleListC, java.awt.BorderLayout.CENTER);
 
-        EditB.setIcon(Theme.loadIcon("edittheme.png"));
+        EditB.setIcon(Theme.loadIcon("edittheme"));
         EditB.setToolTipText(__("Edit current style"));
         SystemDependent.setCommandButtonStyle(EditB, "only");
         EditB.addActionListener(new java.awt.event.ActionListener() {
@@ -913,7 +913,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.setBackground(new java.awt.Color(244, 227, 174));
         crossP.setLayout(new java.awt.BorderLayout());
 
-        crossmobileL.setIcon(Theme.loadIcon("crossmobile.png"));
+        crossmobileL.setIcon(Theme.loadIcon("crossmobile"));
         crossmobileL.setText(__("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?"));
         crossmobileL.setIconTextGap(6);
         crossP.add(crossmobileL, java.awt.BorderLayout.CENTER);

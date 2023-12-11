@@ -130,7 +130,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         /* prefs = new JPreferences(); */
         prefs = null;
         faqbrowse = new HelpBrowser("help/jubler-faq.html");
-        FrameIcons = Theme.findFrameImages("logo.png");
+        FrameIcons = Theme.findFrameImages("logo");
         fdialog = new JSubFileDialog();
     }
 
@@ -569,19 +569,19 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         FileTP.setLayout(new javax.swing.BoxLayout(FileTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        NewTB.setIcon(Theme.loadIcon("new.png"));
+        NewTB.setIcon(Theme.loadIcon("new"));
         NewTB.setToolTipText(__("New"));
         SystemDependent.setToolBarButtonStyle(NewTB, "first");
         NewTB.addActionListener(formListener);
         FileTP.add(NewTB);
 
-        LoadTB.setIcon(Theme.loadIcon("load.png"));
+        LoadTB.setIcon(Theme.loadIcon("load"));
         LoadTB.setToolTipText(__("Load"));
         SystemDependent.setToolBarButtonStyle(LoadTB, "middle");
         LoadTB.addActionListener(formListener);
         FileTP.add(LoadTB);
 
-        SaveTB.setIcon(Theme.loadIcon("save.png"));
+        SaveTB.setIcon(Theme.loadIcon("save"));
         SaveTB.setToolTipText(__("Save"));
         SaveTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(SaveTB, "last");
@@ -593,14 +593,14 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         QualityTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
         QualityTP.setLayout(new javax.swing.BoxLayout(QualityTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        InfoTB.setIcon(Theme.loadIcon("info.png"));
+        InfoTB.setIcon(Theme.loadIcon("info"));
         InfoTB.setToolTipText(__("Project Information"));
         InfoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(InfoTB, "first");
         InfoTB.addActionListener(formListener);
         QualityTP.add(InfoTB);
 
-        QualityTB.setIcon(Theme.loadIcon("quality.png"));
+        QualityTB.setIcon(Theme.loadIcon("quality"));
         QualityTB.setToolTipText(__("Quality configuration"));
         QualityTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(QualityTB, "last");
@@ -612,21 +612,21 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         EditTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        CutTB.setIcon(Theme.loadIcon("cut.png"));
+        CutTB.setIcon(Theme.loadIcon("cut"));
         CutTB.setToolTipText(__("Cut"));
         CutTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(CutTB, "first");
         CutTB.addActionListener(formListener);
         EditTP.add(CutTB);
 
-        CopyTB.setIcon(Theme.loadIcon("copy.png"));
+        CopyTB.setIcon(Theme.loadIcon("copy"));
         CopyTB.setToolTipText(__("Copy"));
         CopyTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(CopyTB, "middle");
         CopyTB.addActionListener(formListener);
         EditTP.add(CopyTB);
 
-        PasteTB.setIcon(Theme.loadIcon("paste.png"));
+        PasteTB.setIcon(Theme.loadIcon("paste"));
         PasteTB.setToolTipText(__("Paste"));
         PasteTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(PasteTB, "last");
@@ -637,14 +637,14 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         UndoTP.setLayout(new javax.swing.BoxLayout(UndoTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        UndoTB.setIcon(Theme.loadIcon("undo.png"));
+        UndoTB.setIcon(Theme.loadIcon("undo"));
         UndoTB.setToolTipText(__("Undo"));
         UndoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(UndoTB, "first");
         UndoTB.addActionListener(formListener);
         UndoTP.add(UndoTB);
 
-        RedoTB.setIcon(Theme.loadIcon("redo.png"));
+        RedoTB.setIcon(Theme.loadIcon("redo"));
         RedoTB.setToolTipText(__("Redo"));
         RedoTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(RedoTB, "last");
@@ -656,7 +656,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         SortTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
         SortTP.setLayout(new javax.swing.BoxLayout(SortTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        SortTB.setIcon(Theme.loadIcon("sort.png"));
+        SortTB.setIcon(Theme.loadIcon("sort"));
         SortTB.setToolTipText(__("Sort subtitles"));
         SortTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(SortTB, "only");
@@ -667,7 +667,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         TestTP.setLayout(new javax.swing.BoxLayout(TestTP, javax.swing.BoxLayout.LINE_AXIS));
 
-        TestTB.setIcon(Theme.loadIcon("test.png"));
+        TestTB.setIcon(Theme.loadIcon("test"));
         TestTB.setToolTipText(__("Test subtitles from current position"));
         TestTB.setEnabled(false);
         SystemDependent.setToolBarButtonStyle(TestTB, "first");
@@ -676,10 +676,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         PreviewTB.setModel(new ToggleButtonModel());
         SystemDependent.setToolBarButtonStyle(PreviewTB, "last");
-        PreviewTB.setIcon(Theme.loadIcon("previewc.png"));
+        PreviewTB.setIcon(Theme.loadIcon("previewc"));
         PreviewTB.setToolTipText(__("Enable preview"));
         PreviewTB.setEnabled(false);
-        PreviewTB.setSelectedIcon(Theme.loadIcon("preview.png"));
+        PreviewTB.setSelectedIcon(Theme.loadIcon("preview"));
         PreviewTB.addActionListener(formListener);
         TestTP.add(PreviewTB);
 
@@ -689,7 +689,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         InfoTP.setLayout(new javax.swing.BoxLayout(InfoTP, javax.swing.BoxLayout.LINE_AXIS));
 
         SystemDependent.setToolBarButtonStyle(NewVersionTB, "only");
-        NewVersionTB.setIcon(Theme.loadIcon("newversion.png"));
+        NewVersionTB.setIcon(Theme.loadIcon("newversion"));
         NewVersionTB.setText(__("New version!"));
         NewVersionTB.setToolTipText(__("New version is available"));
         NewVersionTB.addActionListener(formListener);

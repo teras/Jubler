@@ -144,7 +144,7 @@
             <Component class="javax.swing.JButton" name="Save">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;save.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;save&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Save default style&quot;)" type="code"/>
@@ -243,7 +243,7 @@
             <Component class="javax.swing.JToggleButton" name="Bold">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;bold.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;bold&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Bold&quot;)" type="code"/>
@@ -259,7 +259,7 @@
             <Component class="javax.swing.JToggleButton" name="Italic">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;italics.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;italics&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Italic&quot;)" type="code"/>
@@ -275,7 +275,7 @@
             <Component class="javax.swing.JToggleButton" name="Underline">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;underline.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;underline&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Underline&quot;)" type="code"/>
@@ -291,7 +291,7 @@
             <Component class="javax.swing.JToggleButton" name="Strike">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="Theme.loadIcon(&quot;strike.png&quot;)" type="code"/>
+                  <Connection code="Theme.loadIcon(&quot;strike&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                   <Connection code="__(&quot;Strikethrough&quot;)" type="code"/>
@@ -697,11 +697,11 @@
             </Property>
             <Property name="horizontalTextPosition" type="int" value="2"/>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Theme.loadIcon(&quot;tab.png&quot;)" type="code"/>
+              <Connection code="Theme.loadIcon(&quot;tab&quot;)" type="code"/>
             </Property>
             <Property name="iconTextGap" type="int" value="10"/>
             <Property name="pressedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="Theme.loadIcon(&quot;tab.png&quot;, IconStatus.PRESSED)" type="code"/>
+              <Connection code="Theme.loadIcon(&quot;tab&quot;, IconStatus.PRESSED)" type="code"/>
             </Property>
           </Properties>
           <Events>

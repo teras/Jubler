@@ -218,7 +218,7 @@ public class JDirection extends javax.swing.JPanel {
         setLayout(new java.awt.GridLayout(3, 3));
 
         AlignGroup.add(TopLeft);
-        TopLeft.setIcon(Theme.loadIcon("upleft.png"));
+        TopLeft.setIcon(Theme.loadIcon("upleft"));
         TopLeft.setToolTipText(__("Top left"));
         SystemDependent.setDirectionButtonStyle(TopLeft);
         TopLeft.addActionListener(new java.awt.event.ActionListener() {
@@ -234,7 +234,7 @@ public class JDirection extends javax.swing.JPanel {
         add(TopLeft);
 
         AlignGroup.add(Top);
-        Top.setIcon(Theme.loadIcon("up.png"));
+        Top.setIcon(Theme.loadIcon("up"));
         Top.setToolTipText(__("Top"));
         SystemDependent.setDirectionButtonStyle(Top);
         Top.addActionListener(new java.awt.event.ActionListener() {
@@ -250,7 +250,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Top);
 
         AlignGroup.add(TopRight);
-        TopRight.setIcon(Theme.loadIcon("upright.png"));
+        TopRight.setIcon(Theme.loadIcon("upright"));
         TopRight.setToolTipText(__("Top right"));
         SystemDependent.setDirectionButtonStyle(TopRight);
         TopRight.addActionListener(new java.awt.event.ActionListener() {
@@ -266,7 +266,7 @@ public class JDirection extends javax.swing.JPanel {
         add(TopRight);
 
         AlignGroup.add(Left);
-        Left.setIcon(Theme.loadIcon("left.png"));
+        Left.setIcon(Theme.loadIcon("left"));
         Left.setToolTipText(__("Left"));
         SystemDependent.setDirectionButtonStyle(Left);
         Left.addActionListener(new java.awt.event.ActionListener() {
@@ -282,7 +282,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Left);
 
         AlignGroup.add(Center);
-        Center.setIcon(Theme.loadIcon("center.png"));
+        Center.setIcon(Theme.loadIcon("center"));
         Center.setToolTipText(__("Center"));
         SystemDependent.setDirectionButtonStyle(Center);
         Center.addActionListener(new java.awt.event.ActionListener() {
@@ -298,7 +298,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Center);
 
         AlignGroup.add(Right);
-        Right.setIcon(Theme.loadIcon("right.png"));
+        Right.setIcon(Theme.loadIcon("right"));
         Right.setToolTipText(__("Right"));
         SystemDependent.setDirectionButtonStyle(Right);
         Right.addActionListener(new java.awt.event.ActionListener() {
@@ -314,7 +314,7 @@ public class JDirection extends javax.swing.JPanel {
         add(Right);
 
         AlignGroup.add(BottomLeft);
-        BottomLeft.setIcon(Theme.loadIcon("downleft.png"));
+        BottomLeft.setIcon(Theme.loadIcon("downleft"));
         BottomLeft.setToolTipText(__("Bottom left"));
         SystemDependent.setDirectionButtonStyle(BottomLeft);
         BottomLeft.addActionListener(new java.awt.event.ActionListener() {
@@ -331,7 +331,7 @@ public class JDirection extends javax.swing.JPanel {
 
         SystemDependent.setDirectionButtonStyle(Bottom);
         AlignGroup.add(Bottom);
-        Bottom.setIcon(Theme.loadIcon("down.png"));
+        Bottom.setIcon(Theme.loadIcon("down"));
         Bottom.setToolTipText(__("Bottom"));
         Bottom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -347,7 +347,7 @@ public class JDirection extends javax.swing.JPanel {
 
         SystemDependent.setDirectionButtonStyle(BottomRight);
         AlignGroup.add(BottomRight);
-        BottomRight.setIcon(Theme.loadIcon("downright.png"));
+        BottomRight.setIcon(Theme.loadIcon("downright"));
         BottomRight.setToolTipText(__("Bottom right"));
         BottomRight.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

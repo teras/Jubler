@@ -327,7 +327,7 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         jPanel16.add(jPanel15, java.awt.BorderLayout.CENTER);
 
-        Save.setIcon(Theme.loadIcon("save.png"));
+        Save.setIcon(Theme.loadIcon("save"));
         Save.setToolTipText(__("Save default style"));
         Save.addActionListener(formListener);
         jPanel16.add(Save, java.awt.BorderLayout.EAST);
@@ -358,25 +358,25 @@ public class JStyleEditor extends javax.swing.JDialog {
         jPanel3.setOpaque(false);
         jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
-        Bold.setIcon(Theme.loadIcon("bold.png"));
+        Bold.setIcon(Theme.loadIcon("bold"));
         Bold.setToolTipText(__("Bold"));
         SystemDependent.setCommandButtonStyle(Bold, "first");
         Bold.addActionListener(formListener);
         jPanel3.add(Bold);
 
-        Italic.setIcon(Theme.loadIcon("italics.png"));
+        Italic.setIcon(Theme.loadIcon("italics"));
         Italic.setToolTipText(__("Italic"));
         SystemDependent.setCommandButtonStyle(Italic, "middle");
         Italic.addActionListener(formListener);
         jPanel3.add(Italic);
 
-        Underline.setIcon(Theme.loadIcon("underline.png"));
+        Underline.setIcon(Theme.loadIcon("underline"));
         Underline.setToolTipText(__("Underline"));
         SystemDependent.setCommandButtonStyle(Underline, "middle");
         Underline.addActionListener(formListener);
         jPanel3.add(Underline);
 
-        Strike.setIcon(Theme.loadIcon("strike.png"));
+        Strike.setIcon(Theme.loadIcon("strike"));
         Strike.setToolTipText(__("Strikethrough"));
         SystemDependent.setCommandButtonStyle(Strike, "last");
         Strike.addActionListener(formListener);
@@ -546,9 +546,9 @@ public class JStyleEditor extends javax.swing.JDialog {
 
         AdvancedSelect.setText(__("Advanced options"));
         AdvancedSelect.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
-        AdvancedSelect.setIcon(Theme.loadIcon("tab.png"));
+        AdvancedSelect.setIcon(Theme.loadIcon("tab"));
         AdvancedSelect.setIconTextGap(10);
-        AdvancedSelect.setPressedIcon(Theme.loadIcon("tab.png", IconStatus.PRESSED));
+        AdvancedSelect.setPressedIcon(Theme.loadIcon("tab", IconStatus.PRESSED));
         AdvancedSelect.addActionListener(formListener);
         jPanel14.add(AdvancedSelect, java.awt.BorderLayout.CENTER);
 

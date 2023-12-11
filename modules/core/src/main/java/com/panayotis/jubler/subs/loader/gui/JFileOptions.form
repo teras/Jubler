@@ -879,7 +879,7 @@
     <Component class="javax.swing.JButton" name="Presets">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;encs.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;encs&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Use predefined encodings&quot;)" type="code"/>

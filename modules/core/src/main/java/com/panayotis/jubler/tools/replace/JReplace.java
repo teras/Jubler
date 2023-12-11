@@ -129,7 +129,7 @@ public class JReplace extends javax.swing.JDialog {
 
         IconPanel.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setIcon(Theme.loadIcon("find.png"));
+        jLabel1.setIcon(Theme.loadIcon("find"));
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
         IconPanel.add(jLabel1, java.awt.BorderLayout.NORTH);
 

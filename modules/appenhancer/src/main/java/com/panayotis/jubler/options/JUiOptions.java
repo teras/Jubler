@@ -63,7 +63,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
 
     @Override
     public Icon getTabIcon() {
-        return Theme.loadIcon("uioptions.png");
+        return Theme.loadIcon("uioptions");
     }
 
     @Override

@@ -28,7 +28,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;upleft.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;upleft&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Top left&quot;)" type="code"/>
@@ -48,7 +48,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;up.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;up&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Top&quot;)" type="code"/>
@@ -68,7 +68,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;upright.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;upright&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Top right&quot;)" type="code"/>
@@ -88,7 +88,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;left.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;left&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Left&quot;)" type="code"/>
@@ -108,7 +108,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;center.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;center&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Center&quot;)" type="code"/>
@@ -128,7 +128,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;right.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;right&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Right&quot;)" type="code"/>
@@ -148,7 +148,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;downleft.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;downleft&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Bottom left&quot;)" type="code"/>
@@ -168,7 +168,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;down.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;down&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Bottom&quot;)" type="code"/>
@@ -188,7 +188,7 @@
           <ComponentRef name="AlignGroup"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="Theme.loadIcon(&quot;downright.png&quot;)" type="code"/>
+          <Connection code="Theme.loadIcon(&quot;downright&quot;)" type="code"/>
         </Property>
         <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="__(&quot;Bottom right&quot;)" type="code"/>

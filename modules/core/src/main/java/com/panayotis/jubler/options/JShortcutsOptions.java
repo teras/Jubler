@@ -95,7 +95,7 @@ public class JShortcutsOptions extends JPanel implements OptionsHolder {
 
     @Override
     public Icon getTabIcon() {
-        return Theme.loadIcon("shortcut_pref.png");
+        return Theme.loadIcon("shortcut_pref");
     }
 
     @Override

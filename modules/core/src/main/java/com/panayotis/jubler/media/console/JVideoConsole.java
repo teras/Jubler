@@ -1023,11 +1023,11 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
 
     private void initImageIcons() {
         AudioIcons = new ImageIcon[2];
-        AudioIcons[0] = Theme.loadIcon("audio.png");
-        AudioIcons[1] = Theme.loadIcon("audiomute.png");
+        AudioIcons[0] = Theme.loadIcon("audio");
+        AudioIcons[1] = Theme.loadIcon("audiomute");
 
         PenIcons = new ImageIcon[8];
-        PenIcons[0] = Theme.loadIcon("pen.png");
+        PenIcons[0] = Theme.loadIcon("pen");
         PenIcons[1] = Theme.loadIcon(PenIcons[0], PINK);
         PenIcons[2] = Theme.loadIcon(PenIcons[0], YELLOW);
         PenIcons[3] = Theme.loadIcon(PenIcons[0], CYAN);
@@ -1043,14 +1043,14 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         Pens[3] = CyanB;
 
         SubRecIcons = new ImageIcon[4];
-        SubRecIcons[SUBREC_BEGIN] = Theme.loadIcon("markrec.png");
-        SubRecIcons[SUBREC_TYPING] = Theme.loadIcon("mark.png");
+        SubRecIcons[SUBREC_BEGIN] = Theme.loadIcon("markrec");
+        SubRecIcons[SUBREC_TYPING] = Theme.loadIcon("mark");
         SubRecIcons[SUBREC_FINALIZE] = SubRecIcons[SUBREC_TYPING];
         SubRecIcons[SUBREC_ABORT] = SubRecIcons[SUBREC_TYPING];
 
         SyncIcons = new ImageIcon[4];
-        SyncIcons[1] = Theme.loadIcon("syncl.png");
-        SyncIcons[3] = Theme.loadIcon("syncr.png");
+        SyncIcons[1] = Theme.loadIcon("syncl");
+        SyncIcons[3] = Theme.loadIcon("syncr");
         SyncIcons[0] = Theme.loadIcon(SyncIcons[1], MONOCHROME);
         SyncIcons[2] = Theme.loadIcon(SyncIcons[3], MONOCHROME);
     }
@@ -1063,7 +1063,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
 
     private void setButtonIcon(JButton button, String name) {
-        setButtonIcon(button, Theme.loadIcon(name + ".png"));
+        setButtonIcon(button, Theme.loadIcon(name + ""));
     }
 
     private void setPauseIcon() {

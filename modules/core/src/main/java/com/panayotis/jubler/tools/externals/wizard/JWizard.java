@@ -251,7 +251,7 @@ public class JWizard extends JDialog {
 
         getContentPane().add(LowerP, java.awt.BorderLayout.SOUTH);
 
-        jLabel1.setIcon(Theme.loadIcon("wizard.png"));
+        jLabel1.setIcon(Theme.loadIcon("wizard"));
         getContentPane().add(jLabel1, java.awt.BorderLayout.WEST);
 
         pack();
