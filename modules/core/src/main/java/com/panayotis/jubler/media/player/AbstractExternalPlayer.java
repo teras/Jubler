@@ -1,27 +1,10 @@
 /*
- * AbstractPlayer.java
- *
- * Created on 16 Ιούλιος 2005, 12:38 μμ
- *
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
- *
- * Jubler is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.
- *
- *
- * Jubler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
 
-package com.panayotis.jubler.media.player;
+package  com.panayotis.jubler.media.player;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.AbstractPlayerOptions;
@@ -41,9 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-/**
- * @author teras
- */
 public abstract class AbstractExternalPlayer extends ExternalVideoPlayer implements PluginItem<AvailExternals> {
 
     private AbstractPlayerOptions opts;

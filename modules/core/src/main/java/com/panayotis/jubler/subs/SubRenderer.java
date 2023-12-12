@@ -1,27 +1,10 @@
 /*
- * SubRenderer.java
- *
- * Created on 20 Δεκέμβριος 2004, 1:40 πμ
- *
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
- *
- * Jubler is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.
- *
- *
- * Jubler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
 
-package com.panayotis.jubler.subs;
+package  com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.os.DEBUG;
 import java.awt.Color;
@@ -31,10 +14,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-/**
- *
- * @author teras & Hoang Duy Tran <hoangduytran1960@googlemail.com>
- */
 public class SubRenderer extends DefaultTableCellRenderer {
 
     private static final Color[] MarkColors = {

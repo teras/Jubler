@@ -1,7 +1,7 @@
 /*
- * JReplace.java
- *
- * Created on 28 Ιούλιος 2005, 12:29 μμ
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * This file is part of Jubler.
  */
 
 package com.panayotis.jubler.tools.replace;
@@ -19,10 +19,6 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.subs.SubEntry;
 
-/**
- *
- * @author teras
- */
 public class JReplace extends javax.swing.JDialog {
 
     private JubFrame parent;

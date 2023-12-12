@@ -1,4 +1,10 @@
 
+/*
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * This file is part of Jubler.
+ */
+
 package com.panayotis.jubler.autoupdate;
 
 /*
@@ -46,9 +52,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * @author teras
- */
 public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
 
     static List<VersionData> newerVersions;

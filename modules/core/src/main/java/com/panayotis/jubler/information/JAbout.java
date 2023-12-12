@@ -1,26 +1,10 @@
 /*
- * JAbout.java
- *
- * Created on 7 Ιούλιος 2005, 3:08 πμ
- *
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
- *
- * Jubler is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.
- *
- *
- * Jubler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
-package com.panayotis.jubler.information;
+
+package  com.panayotis.jubler.information;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.UIUtils;
@@ -36,9 +20,6 @@ import java.util.Properties;
 import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
-/**
- * @author teras
- */
 public class JAbout extends javax.swing.JPanel {
 
     private final static String icon_theme = "<a href=\"https://icons8.com\">https://icons8.com</a>";

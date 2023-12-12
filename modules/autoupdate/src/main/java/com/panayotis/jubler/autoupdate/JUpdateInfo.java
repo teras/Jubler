@@ -1,7 +1,9 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * This file is part of Jubler.
  */
+
 package com.panayotis.jubler.autoupdate;
 
 import com.panayotis.jubler.information.JAbout;
@@ -16,9 +18,6 @@ import java.net.URI;
 import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
-/**
- * @author teras
- */
 public class JUpdateInfo extends javax.swing.JDialog {
     /**
      * Creates new form JUpdateInfo

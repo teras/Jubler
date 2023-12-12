@@ -1,27 +1,10 @@
 /*
- * JRuler.java
- *
- * Created on October 3, 2005, 4:55 PM
- *
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
- *
- * Jubler is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.
- *
- *
- * Jubler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
 
-package com.panayotis.jubler.media.preview;
+package  com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.os.UIUtils;
 
@@ -32,10 +15,6 @@ import javax.swing.JPanel;
 
 import static com.panayotis.jubler.os.UIUtils.scale;
 
-/**
- *
- * @author teras
- */
 public class JRuler extends JPanel {
 
     private final static double[] tick_size = {0.01, 0.02, 0.05, 0.1, 0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000};

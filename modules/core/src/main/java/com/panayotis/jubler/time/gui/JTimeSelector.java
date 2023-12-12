@@ -1,10 +1,10 @@
 /*
- * JTimeSelector.java
- *
- * Created on March 12, 2008, 3:46 PM
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * This file is part of Jubler.
  */
 
-package com.panayotis.jubler.time.gui;
+package  com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.time.Time;
@@ -13,10 +13,6 @@ import com.panayotis.jubler.theme.Theme;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 
-/**
- *
- * @author teras
- */
 public class JTimeSelector extends JPanel {
 
     private JTimeSpinner spinner;

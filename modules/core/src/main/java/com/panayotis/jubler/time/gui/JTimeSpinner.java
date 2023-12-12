@@ -1,27 +1,10 @@
 /*
- * JTimeSpinner.java
- *
- * Created on 25 Ιούνιος 2005, 12:01 πμ
- *
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
- *
- * Jubler is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.
- *
- *
- * Jubler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
 
-package com.panayotis.jubler.time.gui;
+package  com.panayotis.jubler.time.gui;
 
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.TimeSpinnerEditor;
@@ -35,9 +18,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-/**
- * @author teras
- */
 public class JTimeSpinner extends JSpinner {
     public static final String NAVIGATION_EVENT = "NAVIGATION_EVENT";
     public static final int NEXT_LOCK = 0;

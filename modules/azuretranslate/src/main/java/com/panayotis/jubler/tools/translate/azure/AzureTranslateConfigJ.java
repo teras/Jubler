@@ -1,7 +1,9 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * This file is part of Jubler.
  */
+
 package com.panayotis.jubler.tools.translate.azure;
 
 import javax.swing.*;
@@ -12,9 +14,6 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.os.Encryption.encryptKey;
 import static com.panayotis.jubler.os.Encryption.getDecryptedKey;
 
-/**
- * @author teras
- */
 public class AzureTranslateConfigJ extends javax.swing.JDialog {
     private static final String HELP = "<html><body>" + __("In order to use Azure Translation service, you need to provide some parameters.\nFor more info see here: %1\n\nNote:\nPin is not saved and needed to be provided every time you launch Jubler.\nIt is needed to encrypt your Azure key.").replace("%1", "<a href=\"https://www.jubler.org/azure.html\">https://www.jubler.org/azure.html</a>").replace("\n", "<br/>") + "</body></html>";
 

@@ -1,8 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * This file is part of Jubler.
  */
+
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.theme.Theme;
@@ -18,9 +19,6 @@ import java.util.List;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
-/**
- * @author teras
- */
 public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     private static final JFileChooser chooser = new JFileChooser();
     public static final ExternalToolList tools = new ExternalToolList();

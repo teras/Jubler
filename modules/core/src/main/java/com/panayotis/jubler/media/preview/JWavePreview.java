@@ -1,27 +1,10 @@
 /*
- * JWavePreview.java
- *
- * Created on October 3, 2005, 4:14 PM
- *
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
- *
- * Jubler is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.
- *
- *
- * Jubler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
 
-package com.panayotis.jubler.media.preview;
+package  com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
@@ -38,9 +21,6 @@ import java.awt.event.MouseMotionAdapter;
 import static com.panayotis.jubler.media.preview.JFramePreview.DT;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
-/**
- * @author teras
- */
 public class JWavePreview extends JPanel implements DecoderListener {
 
     private final static Color[] background = {new Color(0, 20, 0), new Color(0, 20, 20)};

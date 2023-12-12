@@ -1,10 +1,10 @@
 /*
- * AlphaPanel.java
- *
- * Created on 7 Σεπτέμβριος 2005, 7:24 μμ
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
+ * This file is part of Jubler.
  */
 
-package com.panayotis.jubler.subs.style.gui;
+package  com.panayotis.jubler.subs.style.gui;
 
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.Color;
@@ -12,10 +12,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.UIManager;
 
-/**
- *
- * @author teras
- */
 public class AlphaPanel extends javax.swing.JPanel {
 
     AlphaColor basecolor;

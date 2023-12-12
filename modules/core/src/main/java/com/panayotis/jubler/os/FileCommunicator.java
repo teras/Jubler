@@ -1,26 +1,10 @@
 /*
- * FileReader.java
- *
- * Created on 22 Ιούνιος 2005, 3:49 μμ
- *
+ * (c) 2005-2023 by Panayotis Katsaloulis
+ * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
- *
- * Jubler is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, version 2.
- *
- *
- * Jubler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Jubler; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
-package com.panayotis.jubler.os;
+
+package  com.panayotis.jubler.os;
 
 import com.panayotis.jubler.JubFrame;
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -41,10 +25,6 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import java.nio.charset.UnmappableCharacterException;
 
-/**
- *
- * @author teras
- */
 public class FileCommunicator {
 
     private static String load(SubFile sfile, String enc, String msg, boolean strict) {
