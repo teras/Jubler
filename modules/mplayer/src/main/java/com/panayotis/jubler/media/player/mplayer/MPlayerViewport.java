@@ -24,7 +24,7 @@ package com.panayotis.jubler.media.player.mplayer;
  *
  */
 import com.panayotis.jubler.media.player.TerminalViewport;
-import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.media.player.ExternalVideoPlayer;
 
 /**
  *
@@ -51,7 +51,7 @@ public class MPlayerViewport extends TerminalViewport {
         return new String[]{"quit"};
     }
 
-    protected String[] getSkipCommand(VideoPlayer.SkipLevel level) {
+    protected String[] getSkipCommand(ExternalVideoPlayer.SkipLevel level) {
         String command;
         switch (level) {
             case BackLong:
@@ -78,7 +78,7 @@ public class MPlayerViewport extends TerminalViewport {
         return new String[]{"sub_delay " + secs};
     }
 
-    protected String[] getSpeedCommand(VideoPlayer.SpeedLevel level) {
+    protected String[] getSpeedCommand(ExternalVideoPlayer.SpeedLevel level) {
         float speed = 1f;
         switch (level) {
             case TooSlow:
@@ -106,7 +106,7 @@ public class MPlayerViewport extends TerminalViewport {
         return new String[]{"speed_set " + speed};
     }
 
-    protected String[] getVolumeCommand(VideoPlayer.SoundLevel level) {
+    protected String[] getVolumeCommand(ExternalVideoPlayer.SoundLevel level) {
         int i;
         String[] cv = new String[10 + level.ordinal()];
         for (i = 0; i < 10; i++)

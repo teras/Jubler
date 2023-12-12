@@ -1,5 +1,7 @@
 package com.panayotis.jubler;
 
+import com.panayotis.jubler.os.DEBUG;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -14,7 +16,8 @@ public class Splash extends Frame {
     public static void launch(Runnable r) {
         try {
             instance = new Splash(r);
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            DEBUG.debug(e);
         }
     }
 
@@ -25,7 +28,6 @@ public class Splash extends Frame {
             instance = null;
         }
     }
-
 
     private transient Runnable r;
 
@@ -70,7 +72,7 @@ public class Splash extends Frame {
         }
     }
 
-    static class Bird {
+    static final class Bird {
         static void draw(Graphics2D g) {
             drawPath(g, createPath1(), new Color(171, 48, 177));
             drawPath(g, createPath2(), new Color(239, 184, 4));

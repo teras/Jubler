@@ -24,7 +24,7 @@
 package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.JubFrame;
-import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.media.player.ExternalVideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.spell.SpellChecker;
@@ -57,7 +57,7 @@ public class JPreferences extends javax.swing.JDialog {
         super(jub);
 
         Tabs = new JOptionTabs(this);
-        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(VideoPlayer.family, __("Player"), "player_pref")));
+        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(ExternalVideoPlayer.family, __("Player"), "player_pref")));
         Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Tabs.addTab(jext = new JExternalToolsOptions());
@@ -69,8 +69,8 @@ public class JPreferences extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }
 
-    public VideoPlayer getVideoPlayer() {
-        return (VideoPlayer) jplay.getObject();
+    public ExternalVideoPlayer getVideoPlayer() {
+        return (ExternalVideoPlayer) jplay.getObject();
     }
 
     public SpellChecker getSpellChecker() {

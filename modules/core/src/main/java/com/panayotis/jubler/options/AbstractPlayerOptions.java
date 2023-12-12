@@ -24,7 +24,7 @@
 package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.media.player.AbstractExternalPlayer;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.BorderLayout;
 
@@ -39,7 +39,7 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
     /**
      * Creates new form AbstractPlayerOptions
      */
-    public AbstractPlayerOptions(String family, AbstractPlayer player) {
+    public AbstractPlayerOptions(String family, AbstractExternalPlayer player) {
         super(family, player.getName(), player.getDescriptiveName(), player.getSearchNames(), player.getTestParameters(), player.getTestSignature());
         args_default = player.getDefaultArguments();
 

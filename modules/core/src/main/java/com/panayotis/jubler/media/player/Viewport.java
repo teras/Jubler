@@ -45,7 +45,7 @@ public interface Viewport {
 
     public abstract boolean seek(int secs);
 
-    public abstract boolean skip(VideoPlayer.SkipLevel level);
+    public abstract boolean skip(ExternalVideoPlayer.SkipLevel level);
 
     public abstract boolean delaySubs(float secs);  // Relative value
 
@@ -53,9 +53,9 @@ public interface Viewport {
 
     public abstract boolean setActive(boolean status, Subtitles newsubs);
 
-    public abstract boolean setSpeed(VideoPlayer.SpeedLevel level);
+    public abstract boolean setSpeed(ExternalVideoPlayer.SpeedLevel level);
 
-    public abstract boolean setVolume(VideoPlayer.SoundLevel level);
+    public abstract boolean setVolume(ExternalVideoPlayer.SoundLevel level);
 
     public abstract double getTime();
 

@@ -29,7 +29,7 @@ import com.panayotis.jubler.tools.externals.ExtProgram;
  *
  * @author teras
  */
-public abstract class VideoPlayer extends ExtProgram {
+public abstract class ExternalVideoPlayer extends ExtProgram {
 
     public enum SoundLevel {
 

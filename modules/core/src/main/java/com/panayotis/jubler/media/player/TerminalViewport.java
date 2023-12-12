@@ -42,7 +42,7 @@ public abstract class TerminalViewport extends ExternalViewport {
 
     protected abstract String[] getPostInitCommand();
 
-    public TerminalViewport(AbstractPlayer player, PlayerTerminal terminal) {
+    public TerminalViewport(AbstractExternalPlayer player, PlayerTerminal terminal) {
         super(player);
         this.terminal = terminal;
         self = this;

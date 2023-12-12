@@ -24,7 +24,7 @@ package com.panayotis.jubler.media.player.mplayer;
  *
  */
 
-import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.media.player.AbstractExternalPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -36,7 +36,7 @@ import java.util.Collections;
  *
  * @author teras
  */
-public class MPlayer extends AbstractPlayer implements PluginCollection {
+public class MPlayer extends AbstractExternalPlayer implements PluginCollection {
 
     static {
         MPlayerSystemDependent.updateParameters();

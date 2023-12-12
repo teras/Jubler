@@ -20,7 +20,7 @@
 
 package com.panayotis.jubler.media.player.vlc;
 
-import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.media.player.AbstractExternalPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -35,7 +35,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 /**
  * @author teras
  */
-public class VLC extends AbstractPlayer implements PluginCollection, PluginItem<AvailExternals> {
+public class VLC extends AbstractExternalPlayer implements PluginCollection, PluginItem<AvailExternals> {
 
     public VLC() {
         super(family);

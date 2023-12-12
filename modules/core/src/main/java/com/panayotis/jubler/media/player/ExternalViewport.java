@@ -37,7 +37,7 @@ import java.io.IOException;
 public abstract class ExternalViewport implements Viewport {
 
     protected double position;
-    protected AbstractPlayer player;
+    protected AbstractExternalPlayer player;
     protected MediaFile mfile;
     protected Subtitles sub;
     protected PlayerFeedback feedback;
@@ -53,7 +53,7 @@ public abstract class ExternalViewport implements Viewport {
     /**
      * Creates a new instance of MPlayer
      */
-    public ExternalViewport(AbstractPlayer player) {
+    public ExternalViewport(AbstractExternalPlayer player) {
         this.player = player;
     }
 
@@ -63,13 +63,13 @@ public abstract class ExternalViewport implements Viewport {
 
     protected abstract String[] getSeekCommand(int secs);
 
-    protected abstract String[] getSkipCommand(VideoPlayer.SkipLevel level);
+    protected abstract String[] getSkipCommand(ExternalVideoPlayer.SkipLevel level);
 
     protected abstract String[] getSubDelayCommand(float secs);
 
-    protected abstract String[] getSpeedCommand(VideoPlayer.SpeedLevel level);
+    protected abstract String[] getSpeedCommand(ExternalVideoPlayer.SpeedLevel level);
 
-    protected abstract String[] getVolumeCommand(VideoPlayer.SoundLevel level);
+    protected abstract String[] getVolumeCommand(ExternalVideoPlayer.SoundLevel level);
 
     protected abstract void sendData(String data) throws IOException;   // Low level command to send data to the binary
 
@@ -128,7 +128,7 @@ public abstract class ExternalViewport implements Viewport {
         return false;
     }
 
-    public boolean skip(VideoPlayer.SkipLevel level) {
+    public boolean skip(ExternalVideoPlayer.SkipLevel level) {
         isPaused = false;
         return sendCommands(getSkipCommand(level));
     }
@@ -146,12 +146,12 @@ public abstract class ExternalViewport implements Viewport {
         return sendCommands(getSubDelayCommand(secs));
     }
 
-    public boolean setSpeed(VideoPlayer.SpeedLevel level) {
+    public boolean setSpeed(ExternalVideoPlayer.SpeedLevel level) {
         isPaused = false;
         return sendCommands(getSpeedCommand(level));
     }
 
-    public boolean setVolume(VideoPlayer.SoundLevel level) {
+    public boolean setVolume(ExternalVideoPlayer.SoundLevel level) {
         isPaused = false;
         sendCommands(getVolumeCommand(level));
         return true;

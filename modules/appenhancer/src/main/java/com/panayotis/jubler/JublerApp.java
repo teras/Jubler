@@ -41,8 +41,7 @@ import java.util.Collections;
  * @author teras
  */
 public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
-    static
-    private boolean ignore_click = false;
+    private static boolean ignoreClick = false;
 
     public JublerApp() {
         Enhancer e = EnhancerManager.getDefault();
@@ -86,7 +85,7 @@ public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
         setComponentDraggable(jubler, jubler.subeditor.StyleP);
     }
 
-    private void setComponentDraggable(Window window, final Component comp) {
+    private static void setComponentDraggable(Window window, final Component comp) {
         if (comp instanceof JToolBar)
             ((JToolBar) comp).setFloatable(false);
 
@@ -100,12 +99,12 @@ public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
                 Component c = e.getComponent();
                 while (c.getParent() != null) {
                     if (c instanceof JSubEditorDialog) {
-                        ignore_click = true;
+                        ignoreClick = true;
                         return;
                     }
                     c = c.getParent();
                 }
-                ignore_click = false;
+                ignoreClick = false;
                 oldpos.setLocation(e.getPoint());
                 SwingUtilities.convertPointToScreen(oldpos, comp);
                 oldpos.x -= wind.getX();
@@ -116,7 +115,7 @@ public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
         comp.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (ignore_click)
+                if (ignoreClick)
                     return;
                 newpos.setLocation(e.getPoint());
                 SwingUtilities.convertPointToScreen(newpos, comp);

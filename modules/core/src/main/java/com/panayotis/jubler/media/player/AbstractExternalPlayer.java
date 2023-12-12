@@ -44,13 +44,13 @@ import java.util.StringTokenizer;
 /**
  * @author teras
  */
-public abstract class AbstractPlayer extends VideoPlayer implements PluginItem<AvailExternals> {
+public abstract class AbstractExternalPlayer extends ExternalVideoPlayer implements PluginItem<AvailExternals> {
 
     private AbstractPlayerOptions opts;
     private String subpath;
     private int x, y;
 
-    public AbstractPlayer(String family) {
+    public AbstractExternalPlayer(String family) {
         opts = new AbstractPlayerOptions(family, this);
     }
 

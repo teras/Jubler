@@ -20,10 +20,10 @@
 
 package com.panayotis.jubler.media.player.vlc;
 
-import com.panayotis.jubler.media.player.AbstractPlayer;
+import com.panayotis.jubler.media.player.AbstractExternalPlayer;
 import com.panayotis.jubler.media.player.PlayerArguments;
 import com.panayotis.jubler.media.player.TerminalViewport;
-import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.media.player.ExternalVideoPlayer;
 import com.panayotis.jubler.media.player.terminals.ServerTerminal;
 
 /**
@@ -40,8 +40,8 @@ public class VLCViewport extends TerminalViewport {
         PlayerArguments args = ((ServerTerminal) terminal).getArguments();
         int start = (int) args.when.toSeconds();
         String[] values = {"clear", "add \"%v\" :start-time=" + start + " :sub-file=%s", "volume 512"};
-        AbstractPlayer.replaceValues(values, "%v", args.videofile);
-        AbstractPlayer.replaceValues(values, "%s", args.subfile);
+        AbstractExternalPlayer.replaceValues(values, "%v", args.videofile);
+        AbstractExternalPlayer.replaceValues(values, "%s", args.subfile);
         return values;
     }
 
@@ -57,7 +57,7 @@ public class VLCViewport extends TerminalViewport {
         return new String[]{"seek " + secs};
     }
 
-    protected String[] getSkipCommand(VideoPlayer.SkipLevel level) {
+    protected String[] getSkipCommand(ExternalVideoPlayer.SkipLevel level) {
         String command;
         switch (level) {
             case BackLong:
@@ -87,7 +87,7 @@ public class VLCViewport extends TerminalViewport {
         return cmd;
     }
 
-    protected String[] getSpeedCommand(VideoPlayer.SpeedLevel level) {
+    protected String[] getSpeedCommand(ExternalVideoPlayer.SpeedLevel level) {
         int scale = level.ordinal() - 3;
         String[] cmd = new String[]{"normal", "", "", ""};
         for (int i = scale; i < 0; i++)
@@ -97,7 +97,7 @@ public class VLCViewport extends TerminalViewport {
         return cmd;
     }
 
-    protected String[] getVolumeCommand(VideoPlayer.SoundLevel level) {
+    protected String[] getVolumeCommand(ExternalVideoPlayer.SoundLevel level) {
         return new String[]{"volume " + level.ordinal() * 102}; // 1024/3 = 93. + 93/2
     }
 }

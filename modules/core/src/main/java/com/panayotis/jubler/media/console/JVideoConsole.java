@@ -25,7 +25,7 @@ package com.panayotis.jubler.media.console;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.player.VideoPlayer;
+import com.panayotis.jubler.media.player.ExternalVideoPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
 import com.panayotis.jubler.options.Options;
@@ -60,7 +60,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private boolean initial_launch = true;
     /* */
     private Viewport view;
-    private VideoPlayer player;
+    private ExternalVideoPlayer player;
     private Timer timer;
     private JubFrame parent;
     private JSubSimpleGraph diagram;
@@ -91,13 +91,13 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     /**
      * Creates new form JVideoConsole
      */
-    public static JVideoConsole initialize(JubFrame jubler, VideoPlayer videoPlayer) {
+    public static JVideoConsole initialize(JubFrame jubler, ExternalVideoPlayer videoPlayer) {
         if (videoPlayer == null)
             return null;
         return new JVideoConsole(jubler, videoPlayer);
     }
 
-    private JVideoConsole(JubFrame parent, VideoPlayer player) {
+    private JVideoConsole(JubFrame parent, ExternalVideoPlayer player) {
         super(parent, false);
         SystemDependent.setSmallDecoration(getRootPane());
 
@@ -794,7 +794,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         if (value > 0)
             last_volume_value = value;
         setAudioIcon(value == 0);
-        checkValid(view.setVolume(VideoPlayer.SoundLevel.values()[value]));
+        checkValid(view.setVolume(ExternalVideoPlayer.SoundLevel.values()[value]));
     }//GEN-LAST:event_AudioSStateChanged
 
     private void MarkBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MarkBActionPerformed
@@ -808,7 +808,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private void SpeedSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SpeedSStateChanged
         if (SpeedS.getValueIsAdjusting())
             return;
-        checkValid(view.setSpeed(VideoPlayer.SpeedLevel.values()[SpeedS.getValue()]));
+        checkValid(view.setSpeed(ExternalVideoPlayer.SpeedLevel.values()[SpeedS.getValue()]));
     }//GEN-LAST:event_SpeedSStateChanged
 
     private void TimeSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_TimeSStateChanged
@@ -824,19 +824,19 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }//GEN-LAST:event_TimeSMousePressed
 
     private void FFMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FFMovieBActionPerformed
-        checkValid(view.skip(VideoPlayer.SkipLevel.ForthLong));
+        checkValid(view.skip(ExternalVideoPlayer.SkipLevel.ForthLong));
     }//GEN-LAST:event_FFMovieBActionPerformed
 
     private void FMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FMovieBActionPerformed
-        checkValid(view.skip(VideoPlayer.SkipLevel.ForthShort));
+        checkValid(view.skip(ExternalVideoPlayer.SkipLevel.ForthShort));
     }//GEN-LAST:event_FMovieBActionPerformed
 
     private void BMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BMovieBActionPerformed
-        checkValid(view.skip(VideoPlayer.SkipLevel.BackSort));
+        checkValid(view.skip(ExternalVideoPlayer.SkipLevel.BackSort));
     }//GEN-LAST:event_BMovieBActionPerformed
 
     private void BBMovieBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BBMovieBActionPerformed
-        checkValid(view.skip(VideoPlayer.SkipLevel.BackLong));
+        checkValid(view.skip(ExternalVideoPlayer.SkipLevel.BackLong));
     }//GEN-LAST:event_BBMovieBActionPerformed
 
     private void QuitBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitBActionPerformed
