@@ -1,5 +1,9 @@
 ### Jubler Changelog
 
+#### 8.0.0
+
+Redesigned HiDPI UI with editable scaling. Reintroduced Auto-translate with Azure. Support Youtube subtitles.
+
 #### 7.0.3
 
 Stability fixes. Updated ASS/SSA support.
