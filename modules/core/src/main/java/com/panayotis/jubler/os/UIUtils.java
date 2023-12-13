@@ -6,12 +6,10 @@
 
 package com.panayotis.jubler.os;
 
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
+import com.panayotis.jubler.JublerPrefs;
 
 public class UIUtils {
-    private static final String SCALING_FACTOR = "scaling.factor";
-    private static final Preferences prefs = Preferences.userNodeForPackage(UIUtils.class);
+    private static final String SCALING_FACTOR = "ui.scaling.factor";
     private static float scaling;
 
     static {
@@ -36,14 +34,11 @@ public class UIUtils {
     }
 
     public static void saveScaling(float scaling) {
-        prefs.putFloat(SCALING_FACTOR, scaling);
-        try {
-            prefs.sync();
-        } catch (BackingStoreException ignored) {
-        }
+        JublerPrefs.set(SCALING_FACTOR, scaling);
+        JublerPrefs.sync();
     }
 
     public static float loadScaling() {
-        return prefs.getFloat(SCALING_FACTOR, 0);
+        return JublerPrefs.getFloat(SCALING_FACTOR, 0);
     }
 }

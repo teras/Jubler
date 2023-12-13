@@ -4,11 +4,12 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools.translate.azure;
+package com.panayotis.jubler.tools.translate.azure;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonValue;
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.os.Encryption;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
@@ -20,18 +21,15 @@ import com.panayotis.jubler.tools.translate.SimpleWebTranslator;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCollection, PluginItem<AvailTranslators> {
 
     private static final String DEFAULT_BASE_URL = "https://api-eur.cognitive.microsofttranslator.com/translate?api-version=3.0";
-    private static final String BASEURL_KEY = "baseurl";
-    private static final String ENCRYPTED_KEY_KEY = "key";
-    private static final String REGION_KEY = "region";
-    private static Preferences prefs = Preferences.userNodeForPackage(AzureJSONTranslator.class);
+    private static final String BASEURL_KEY = "azure.translation.baseurl";
+    private static final String ENCRYPTED_KEY_KEY = "azure.translation.key";
+    private static final String REGION_KEY = "azure.translation.region";
 
     private String baseUrl;
     private String region;
@@ -39,9 +37,9 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
     private static String storePassword = "";
 
     public AzureJSONTranslator() {
-        baseUrl = prefs.get(BASEURL_KEY, DEFAULT_BASE_URL);
-        region = prefs.get(REGION_KEY, "");
-        encryptedKey = Encryption.base64Decode(prefs.get(ENCRYPTED_KEY_KEY, ""));
+        baseUrl = JublerPrefs.getString(BASEURL_KEY, DEFAULT_BASE_URL);
+        region = JublerPrefs.getString(REGION_KEY, "");
+        encryptedKey = Encryption.base64Decode(JublerPrefs.getString(ENCRYPTED_KEY_KEY, ""));
     }
 
     @Override
@@ -55,20 +53,13 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
         config.setVisible(true);
         if (config.isAccepted()) {
             storePassword = config.getPassword();
-
             baseUrl = config.getBaseUrl();
-            prefs.put(BASEURL_KEY, baseUrl);
-
+            JublerPrefs.set(BASEURL_KEY, baseUrl);
             encryptedKey = config.getEncryptedKey();
-            prefs.put(ENCRYPTED_KEY_KEY, Encryption.base64Encode(encryptedKey));
-
+            JublerPrefs.set(ENCRYPTED_KEY_KEY, Encryption.base64Encode(encryptedKey));
             region = config.getRegion();
-            prefs.put(REGION_KEY, region);
-
-            try {
-                prefs.sync();
-            } catch (BackingStoreException ignored) {
-            }
+            JublerPrefs.set(REGION_KEY, region);
+            JublerPrefs.sync();
         }
     }
 

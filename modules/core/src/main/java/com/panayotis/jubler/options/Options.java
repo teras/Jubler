@@ -4,19 +4,20 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.options;
+package com.panayotis.jubler.options;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubFile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Stack;
-import java.util.prefs.Preferences;
 
 @SuppressWarnings("UseSpecificCatch")
 public class Options {
@@ -25,43 +26,41 @@ public class Options {
     private final static int MAX_RECENTS = 10;
     private final static Properties opts;
     private final static String preffile;
-    private final static Preferences prefs = Preferences.userNodeForPackage(Options.class);
-
     private static int errorColor;
-    private static final String ERRORCOLOR_TAG = "errorcolor";
+    private static final String ERRORCOLOR_TAG = "options.errorcolor";
     private static boolean spaceChars;
-    private static final String SPACECHARS_TAG = "spaceaschars";
+    private static final String SPACECHARS_TAG = "options.spaceaschars";
     private static boolean newlineChars;
-    private static final String NEWLINECHARS_TAG = "newlineaschars";
+    private static final String NEWLINECHARS_TAG = "options.newlineaschars";
     private static boolean compactSubs;
-    private static final String COMPACTSUBS_TAG = "compactsubs";
+    private static final String COMPACTSUBS_TAG = "options.compactsubs";
     private static int maxLines;
-    private static final String MAXLINES_TAG = "maxline";
+    private static final String MAXLINES_TAG = "options.maxline";
     private static int fillPercent;
-    private static final String FILLPERCENT_TAG = "fillpercent";
+    private static final String FILLPERCENT_TAG = "options.fillpercent";
     private static int maxSubLength;
-    private static final String MAXSUBLENGTH_TAG = "maxsublength";
+    private static final String MAXSUBLENGTH_TAG = "options.maxsublength";
     private static int maxLineLength;
-    private static final String MAXLINELENGTH_TAG = "maxlinelength";
+    private static final String MAXLINELENGTH_TAG = "options.maxlinelength";
     private static int maxCPS;
-    private static final String MAXCPS_TAG = "maxcps";
+    private static final String MAXCPS_TAG = "options.maxcps";
     private static int maxDuration;
-    private static final String MAXDURATION_TAG = "maxduration";
+    private static final String MAXDURATION_TAG = "options.maxduration";
     private static int minDuration;
-    private static final String MINDURATION_TAG = "minduration";
+    private static final String MINDURATION_TAG = "options.minduration";
 
     static {
-        errorColor = prefs.getInt(ERRORCOLOR_TAG, 1);
-        spaceChars = prefs.getBoolean(SPACECHARS_TAG, false);
-        newlineChars = prefs.getBoolean(NEWLINECHARS_TAG, false);
-        compactSubs = prefs.getBoolean(COMPACTSUBS_TAG, true);
-        maxLines = prefs.getInt(MAXLINES_TAG, 2);
-        fillPercent = prefs.getInt(FILLPERCENT_TAG, 50);
-        maxSubLength = prefs.getInt(MAXSUBLENGTH_TAG, 84);
-        maxLineLength = prefs.getInt(MAXLINELENGTH_TAG, 42);
-        maxCPS = prefs.getInt(MAXCPS_TAG, 21);
-        maxDuration = prefs.getInt(MAXDURATION_TAG, 7);
-        minDuration = prefs.getInt(MINDURATION_TAG, 1);
+        errorColor = JublerPrefs.getInt(ERRORCOLOR_TAG, 1);
+        spaceChars = JublerPrefs.getBoolean(SPACECHARS_TAG, false);
+        newlineChars = JublerPrefs.getBoolean(NEWLINECHARS_TAG, false);
+        compactSubs = JublerPrefs.getBoolean(COMPACTSUBS_TAG, true);
+        maxLines = JublerPrefs.getInt(MAXLINES_TAG, 2);
+        fillPercent = JublerPrefs.getInt(FILLPERCENT_TAG, 50);
+        maxSubLength = JublerPrefs.getInt(MAXSUBLENGTH_TAG, 84);
+        maxLineLength = JublerPrefs.getInt(MAXLINELENGTH_TAG, 42);
+        maxCPS = JublerPrefs.getInt(MAXCPS_TAG, 21);
+        maxDuration = JublerPrefs.getInt(MAXDURATION_TAG, 7);
+        minDuration = JublerPrefs.getInt(MINDURATION_TAG, 1);
     }
 
     static {
@@ -159,7 +158,7 @@ public class Options {
     }
 
     public static void setErrorColor(int newcolor) {
-        prefs.putInt(ERRORCOLOR_TAG, errorColor = newcolor);
+        JublerPrefs.set(ERRORCOLOR_TAG, errorColor = newcolor);
     }
 
     public static int getErrorColor() {
@@ -167,7 +166,7 @@ public class Options {
     }
 
     public static void setSpaceChars(boolean spaceAsChars) {
-        prefs.putBoolean(SPACECHARS_TAG, spaceChars = spaceAsChars);
+        JublerPrefs.set(SPACECHARS_TAG, spaceChars = spaceAsChars);
     }
 
     public static boolean isSpaceChars() {
@@ -175,7 +174,7 @@ public class Options {
     }
 
     public static void setNewlineChars(boolean newlineAsChars) {
-        prefs.putBoolean(NEWLINECHARS_TAG, newlineChars = newlineAsChars);
+        JublerPrefs.set(NEWLINECHARS_TAG, newlineChars = newlineAsChars);
     }
 
     public static boolean isNewlineChars() {
@@ -183,7 +182,7 @@ public class Options {
     }
 
     public static void setCompactSubs(boolean csubs) {
-        prefs.putBoolean(COMPACTSUBS_TAG, compactSubs = csubs);
+        JublerPrefs.set(COMPACTSUBS_TAG, compactSubs = csubs);
     }
 
     public static boolean isCompactSubs() {
@@ -191,7 +190,7 @@ public class Options {
     }
 
     public static void setMaxLines(int newmaxlines) {
-        prefs.putInt(MAXLINES_TAG, maxLines = newmaxlines);
+        JublerPrefs.set(MAXLINES_TAG, maxLines = newmaxlines);
     }
 
     public static int getMaxLines() {
@@ -203,7 +202,7 @@ public class Options {
             value = 0;
         else if (value > 100)
             value = 100;
-        prefs.putInt(FILLPERCENT_TAG, fillPercent = value);
+        JublerPrefs.set(FILLPERCENT_TAG, fillPercent = value);
     }
 
     public static int getFillPercent() {
@@ -211,7 +210,7 @@ public class Options {
     }
 
     public static void setMaxSubLength(int maxsublength) {
-        prefs.putInt(MAXSUBLENGTH_TAG, maxSubLength = maxsublength);
+        JublerPrefs.set(MAXSUBLENGTH_TAG, maxSubLength = maxsublength);
     }
 
     public static int getMaxSubLength() {
@@ -219,7 +218,7 @@ public class Options {
     }
 
     public static void setMaxLineLength(int maxlinelength) {
-        prefs.putInt(MAXLINELENGTH_TAG, maxLineLength = maxlinelength);
+        JublerPrefs.set(MAXLINELENGTH_TAG, maxLineLength = maxlinelength);
     }
 
     public static int getMaxLineLength() {
@@ -227,7 +226,7 @@ public class Options {
     }
 
     public static void setMaxCPS(int maxcharssecond) {
-        prefs.putInt(MAXCPS_TAG, maxCPS = maxcharssecond);
+        JublerPrefs.set(MAXCPS_TAG, maxCPS = maxcharssecond);
     }
 
     public static int getMaxCPS() {
@@ -235,7 +234,7 @@ public class Options {
     }
 
     public static void setMaxDuration(int maxduration) {
-        prefs.putInt(MAXDURATION_TAG, maxDuration = maxduration);
+        JublerPrefs.set(MAXDURATION_TAG, maxDuration = maxduration);
     }
 
     public static int getMaxDuration() {
@@ -243,7 +242,7 @@ public class Options {
     }
 
     public static void setMinDuration(int minduration) {
-        prefs.putInt(MAXDURATION_TAG, minDuration = minduration);
+        JublerPrefs.set(MAXDURATION_TAG, minDuration = minduration);
     }
 
     public static int getMinDuration() {
