@@ -4,10 +4,9 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.information;
+package com.panayotis.jubler.information;
 
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.UIUtils;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.text.SimpleAttributeSet;
@@ -83,30 +82,42 @@ public class JAbout extends javax.swing.JPanel {
         LicenceT.setSelectionStart(0);
         LicenceT.setSelectionEnd(0);
         String abouttext
-                = "\n" + __("Subtitle Editor for Java") + "\n\n"
-                + __("Version") + " " + getCurrentVersion() + "\n\n"
-                + "\u00a9 2005-" + Calendar.getInstance().get(Calendar.YEAR) + " Panayotis Katsaloulis" + "\n"
-                + "\u03a0\u03b1\u03bd\u03b1\u03b3\u03b9\u03ce\u03c4\u03b7\u03c2 \u039a\u03b1\u03c4\u03c3\u03b1\u03bb\u03bf\u03cd\u03bb\u03b7\u03c2" + "\n\n"
-                + "https://www.jubler.org" + "\n\n"
-                + __("Contact address") + ": " + parseMail("panayotis.com", "panayotis");
+                = "<html><body>"
+                + "<br/>" + __("Subtitle Editor for Java") + "<br/><br/>"
+                + __("Version") + " " + getCurrentVersion() + "<br/><br/>"
+                + "© 2005-" + Calendar.getInstance().get(Calendar.YEAR) + " Panayotis Katsaloulis" + "<br/>"
+                + "Παναγιώτης Κατσαλούλης" + "<br/><br/>"
+                + "<a href=\"https://jubler.org\">https://jubler.org</a>";
 
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.Alignment, StyleConstants.ALIGN_CENTER);
         InfoT.setText(abouttext);
         InfoT.getStyledDocument().setParagraphAttributes(0, abouttext.length(), set, false);
+        InfoT.addHyperlinkListener(e -> {
+            if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                try {
+                    Desktop.getDesktop().browse(e.getURL().toURI());
+                } catch (Exception ignored) {
+                }
+            }
+        });
 
         StringBuilder thanks = new StringBuilder();
         thanks.append("<html><body>");
         thanks.append(__("Special thanks")).append(":<br/>").append(__("{0} plugin", "ffmpeg"));
-        thanks.append(": Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("<br/>").append("<br/>");
-        thanks.append(__("Jubler mascot"));
+        thanks.append(": Thanos Kyritsis ").append(parseMail("linux.gr", "djart")).append("<br/>");
+
+        thanks.append("<br/>").append(__("Icon theme")).append(": ").append(icon_theme).append("<br/>");
+
+        thanks.append("<br/>").append(__("Jubler mascot"));
+        thanks.append(": Adriano Monecchi ").append(parseMail("gmail.com", "fornacciari")).append("<br/>");
+        thanks.append(__("Original Jubler mascot"));
         thanks.append(": Dimitris Karakatsanis ").append(parseMail("ath.forthnet.gr", "dimkaras")).append("<br/>");
         thanks.append(__("{0} plugin", "zemberek"));
         thanks.append(": Serkan Kaba ").append(parseMail("yahoo.com", "serkan_kaba")).append("<br/>");
         thanks.append(__("{0} plugin", "W3C TT"));
         thanks.append(": Albert DeSantis ").append(parseMail("gmail.com", "netgensuperstar")).append("<br/>");
 
-        thanks.append("<br/>").append(__("Icon theme")).append(": ").append(icon_theme).append("<br/>");
 
         thanks.append("<br/>");
         thanks.append(__("Translators"));
@@ -135,7 +146,7 @@ public class JAbout extends javax.swing.JPanel {
     }
 
     private static String parseMail(String append, String prepend) {
-        return '<' + prepend + '@' + append + '>';
+        return "&lt;" + prepend + '@' + append + "&gt;";
     }
 
     public static String getCurrentVersion() {
@@ -172,7 +183,8 @@ public class JAbout extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         InfoT.setEditable(false);
-        InfoT.setFont(InfoT.getFont().deriveFont(InfoT.getFont().getStyle() | java.awt.Font.BOLD, InfoT.getFont().getSize()+2));
+        InfoT.setContentType("text/html"); // NOI18N
+        InfoT.setFont(InfoT.getFont().deriveFont(InfoT.getFont().getStyle() | java.awt.Font.BOLD, InfoT.getFont().getSize() + 2));
         InfoT.setOpaque(false);
         jTabbedPane1.addTab(__("About"), InfoT);
 
@@ -187,7 +199,7 @@ public class JAbout extends javax.swing.JPanel {
         jScrollPane1.setPreferredSize(new Dimension(scale(400), scale(300)));
 
         LicenceT.setEditable(false);
-        LicenceT.setFont(LicenceT.getFont().deriveFont(LicenceT.getFont().getSize()-2f));
+        LicenceT.setFont(LicenceT.getFont().deriveFont(LicenceT.getFont().getSize() - 2f));
         jScrollPane1.setViewportView(LicenceT);
 
         jTabbedPane1.addTab(__("License"), jScrollPane1);
@@ -203,8 +215,7 @@ public class JAbout extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
-    private final static String licence = "\n(c) 2005-2009, Panayotis Katsaloulis\n"
-            + "\n"
+    private final static String licence = "\n"
             + "This program is distributed under the terms of the GPL v2.\n"
             + "\n"
             + "		    GNU GENERAL PUBLIC LICENSE\n"
