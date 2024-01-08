@@ -96,7 +96,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.8</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>copy-i18n</id>
@@ -124,8 +124,6 @@
     </build>
 
     <properties>
-        <app.notarize>false</app.notarize>
-        <app.nosign/>
         <mac.dist/>
         <win32.dist/>
         <win64.dist/>
@@ -146,12 +144,6 @@
             </activation>
             <properties>
                 <makeapp.ext>mac</makeapp.ext>
-            </properties>
-        </profile>
-        <profile>
-            <id>notarize</id>
-            <properties>
-                <app.notarize>true</app.notarize>
             </properties>
         </profile>
         <profile>
@@ -236,13 +228,14 @@
                                         <argument>--assoc=txt:application/txt:TXT subtitle file</argument>
                                         <argument>--assoc=xml:application/xml:XML subtitle file</argument>
                                         <argument>--extra=extra</argument>
-                                        <argument>--notarize=${app.notarize}</argument>
-                                        <argument>--p12file=secret/code-signing.p12</argument>
-                                        <argument>--gpgdir=${user.home}/.gnupg</argument>
-                                        <argument>--gpgkey=${gpg.passphrase}</argument>
+                                        <argument>--p12file=${user.home}/.ssh/apple-developer.p12</argument>
+                                        <argument>--p12pass=${user.home}/.ssh/apple-sign.password</argument>
+                                        <argument>--notary=${user.home}/.ssh/apple-notarizing.json</argument>
+                                        <argument>--wincert=${user.home}/.ssh/windows-cert.pem</argument>
+                                        <argument>--winidfile=${user.home}/.ssh/windows-id.file</argument>
+                                        <argument>--winpinfile=${user.home}/.ssh/windows-pin.file</argument>
                                         <argument>--os=${mac.dist},${win32.dist},${win64.dist},${linux.dist},${generic.dist},${arm64.dist},${arm32.dist}</argument>
                                         <argument>--jdk=${user.home}/.sdkman/candidates/java/17.0.4-tem</argument>
-                                        <argument>--nosign=${app.nosign}</argument>
                                     </arguments>
                                 </configuration>
                                 <goals>

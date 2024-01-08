@@ -27,7 +27,7 @@ display_help() {
     echo -e "  ${GREEN}--help${NC}                  Display information about this script."
     echo
     echo -e "Available build targets:"
-    echo -e "  ${GREEN}windows, linux, generic, macos, all${NC}"
+    (IFS=,; echo -e "  ${GREEN}${valid_targets[*]}${NC}")
     echo
     echo -e "Additional parameters for specific targets:"
     echo -e "  ${GREEN}notarize${NC}               Perform notarization for MacOS target."
@@ -145,7 +145,7 @@ build_action() {
     # Check if targets are provided
     if [ $# -lt 2 ]; then
         echo -e "${RED}Error:${NC} Missing targets for 'build'. Provide one or more targets."
-        echo -e "Valid build targets: ${valid_targets[@]}"
+        (IFS=,; echo -e "Valid build targets: ${valid_targets[*]}")
         exit 1
     fi
 
@@ -170,13 +170,13 @@ build_action() {
                 ;;
             "all")
                 build_windows "$@"
-                build_linux
-                build_generic
                 build_macos "$@"
+                build_generic
+                build_linux
                 ;;
             *)
                 echo -e "${RED}Error:${NC} Unknown build target: $target"
-                echo -e "Valid build targets: ${valid_targets[@]}"
+                (IFS=,; echo -e "Valid build targets: ${valid_targets[*]}")
                 exit 1
                 ;;
         esac
