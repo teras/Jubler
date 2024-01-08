@@ -1,6 +1,6 @@
 ## Jubler - a subtitle editor
 
-(C) 2005-2018 Panayotis Katsaloulis
+(C) 2005-2024 Panayotis Katsaloulis
 panayotis@panayotis.com
 
 
