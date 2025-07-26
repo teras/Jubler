@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler;
+package com.panayotis.jubler;
 
 import com.panayotis.appenh.Enhancer;
 import com.panayotis.appenh.EnhancerManager;
@@ -58,8 +58,7 @@ public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
 
     @Override
     public void execPlugin(JubFrame jubler) {
-        if (SystemDependent.shouldSupportScaling())
-            JubFrame.prefs.Tabs.addTab(new JUiOptions());
+        JubFrame.prefs.Tabs.addTab(new JUiOptions());
         if (EnhancerManager.getDefault().providesSystemMenus()) {
             jubler.AboutHM.getParent().remove(jubler.AboutHM);
             jubler.PrefsFM.getParent().remove(jubler.PrefsFM);

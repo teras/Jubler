@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs;
+package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.JIDialog;
@@ -259,9 +259,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             }
         });
 
-        SubStart.setToolTipText("<html>" + __("Start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
-        SubFinish.setToolTipText("<html>" + __("Stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
-        SubDur.setToolTipText("<html>" + __("Duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        SubStart.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + __("Start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        SubFinish.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + __("Stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        SubDur.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + __("Duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
     }
 
     /* Lock/unlock time spinners */
@@ -602,15 +602,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel3.setLayout(new java.awt.GridLayout(3, 1));
 
         L1.setText(__("Start"));
-        L1.setToolTipText("<html>" + TOOLTIP + "</html");
+        L1.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + TOOLTIP + "</html");
         jPanel3.add(L1);
 
         L2.setText(__("End"));
-        L2.setToolTipText("<html>" + TOOLTIP + "</html");
+        L2.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + TOOLTIP + "</html");
         jPanel3.add(L2);
 
         L3.setText(__("Duration"));
-        L3.setToolTipText("<html>" + TOOLTIP + "</html");
+        L3.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + TOOLTIP + "</html");
         jPanel3.add(L3);
 
         TimeP.add(jPanel3, java.awt.BorderLayout.WEST);
@@ -623,7 +623,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock1);
         Lock1.setIcon(Theme.loadIcon("lock"));
-        Lock1.setToolTipText("<html>" +__( "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock1.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + __("Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
@@ -640,7 +640,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock2);
         Lock2.setIcon(Theme.loadIcon("lock"));
-        Lock2.setToolTipText("<html>" + __("Lock the stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock2.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + __("Lock the stop time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock2.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock2, "only");
         Lock2.addActionListener(new java.awt.event.ActionListener() {
@@ -658,7 +658,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         TimeLock.add(Lock3);
         Lock3.setIcon(Theme.loadIcon("lock"));
         Lock3.setSelected(true);
-        Lock3.setToolTipText("<html>" + __("Lock the duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock3.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + __("Lock the duration of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock3.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock3, "only");
         Lock3.addActionListener(new java.awt.event.ActionListener() {
@@ -678,7 +678,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jScrollPane1.setPreferredSize(new java.awt.Dimension(203, 70));
 
         SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
-        SubText.setFont(SubText.getFont().deriveFont(SubText.getFont().getStyle() | java.awt.Font.BOLD, SubText.getFont().getSize()+1));
+        SubText.setFont(SubText.getFont().deriveFont(SubText.getFont().getStyle() | java.awt.Font.BOLD, SubText.getFont().getSize() + 1));
         SubText.setPreferredSize(new java.awt.Dimension(200, 30));
         SubText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
@@ -900,9 +900,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.add(crossmobileL, java.awt.BorderLayout.CENTER);
 
         jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel5.setLayout(new java.awt.FlowLayout(0));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
         crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
