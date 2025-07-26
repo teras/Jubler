@@ -10,10 +10,13 @@ import com.panayotis.jubler.JublerPrefs;
 
 public class UIUtils {
     private static final String SCALING_FACTOR = "ui.scaling.factor";
+    private static final String TIMESTAMP_TOOLTIPS_DISABLED = "ui.tooltips.timestamp.disabled";
     private static float scaling;
+    private static boolean timestampTooltipsDisabled;
 
     static {
         scaling = loadScaling();
+        timestampTooltipsDisabled = JublerPrefs.getBoolean(TIMESTAMP_TOOLTIPS_DISABLED, false);
     }
 
     public static float getScaling() {
@@ -40,5 +43,15 @@ public class UIUtils {
 
     public static float loadScaling() {
         return JublerPrefs.getFloat(SCALING_FACTOR, 0);
+    }
+
+    public static boolean isTimestampTooltipsDisabled() {
+        return timestampTooltipsDisabled;
+    }
+
+    public static void saveTimestampTooltipsDisabled(boolean disabled) {
+        JublerPrefs.set(TIMESTAMP_TOOLTIPS_DISABLED, disabled);
+        JublerPrefs.sync();
+        timestampTooltipsDisabled = disabled;
     }
 }
