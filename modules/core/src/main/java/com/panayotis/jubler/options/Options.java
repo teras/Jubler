@@ -34,19 +34,19 @@ public class Options {
     private static final String NEWLINECHARS_TAG = "options.newlineaschars";
     private static boolean compactSubs;
     private static final String COMPACTSUBS_TAG = "options.compactsubs";
+    private static boolean otherChars;
+    private static final String OTHERCHARS_TAG = "options.otheraschars";
     private static int maxLines;
     private static final String MAXLINES_TAG = "options.maxline";
-    private static int fillPercent;
+    private static float fillPercent;
     private static final String FILLPERCENT_TAG = "options.fillpercent";
-    private static int maxSubLength;
-    private static final String MAXSUBLENGTH_TAG = "options.maxsublength";
     private static int maxLineLength;
     private static final String MAXLINELENGTH_TAG = "options.maxlinelength";
     private static int maxCPS;
     private static final String MAXCPS_TAG = "options.maxcps";
-    private static int maxDuration;
+    private static float maxDuration;
     private static final String MAXDURATION_TAG = "options.maxduration";
-    private static int minDuration;
+    private static float minDuration;
     private static final String MINDURATION_TAG = "options.minduration";
 
     static {
@@ -54,13 +54,13 @@ public class Options {
         spaceChars = JublerPrefs.getBoolean(SPACECHARS_TAG, false);
         newlineChars = JublerPrefs.getBoolean(NEWLINECHARS_TAG, false);
         compactSubs = JublerPrefs.getBoolean(COMPACTSUBS_TAG, true);
+        otherChars = JublerPrefs.getBoolean(OTHERCHARS_TAG, true);
         maxLines = JublerPrefs.getInt(MAXLINES_TAG, 2);
-        fillPercent = JublerPrefs.getInt(FILLPERCENT_TAG, 50);
-        maxSubLength = JublerPrefs.getInt(MAXSUBLENGTH_TAG, 84);
+        fillPercent = JublerPrefs.getFloat(FILLPERCENT_TAG, 50);
         maxLineLength = JublerPrefs.getInt(MAXLINELENGTH_TAG, 42);
         maxCPS = JublerPrefs.getInt(MAXCPS_TAG, 21);
-        maxDuration = JublerPrefs.getInt(MAXDURATION_TAG, 7);
-        minDuration = JublerPrefs.getInt(MINDURATION_TAG, 1);
+        maxDuration = JublerPrefs.getFloat(MAXDURATION_TAG, 7);
+        minDuration = JublerPrefs.getFloat(MINDURATION_TAG, 1);
     }
 
     static {
@@ -189,6 +189,14 @@ public class Options {
         return compactSubs;
     }
 
+    public static void setOtherChars(boolean otherAsChars) {
+        JublerPrefs.set(OTHERCHARS_TAG, otherChars = otherAsChars);
+    }
+
+    public static boolean isOtherChars() {
+        return otherChars;
+    }
+
     public static void setMaxLines(int newmaxlines) {
         JublerPrefs.set(MAXLINES_TAG, maxLines = newmaxlines);
     }
@@ -197,7 +205,7 @@ public class Options {
         return maxLines;
     }
 
-    public static void setFillPercent(int value) {
+    public static void setFillPercent(float value) {
         if (value < 0)
             value = 0;
         else if (value > 100)
@@ -205,16 +213,8 @@ public class Options {
         JublerPrefs.set(FILLPERCENT_TAG, fillPercent = value);
     }
 
-    public static int getFillPercent() {
+    public static float getFillPercent() {
         return fillPercent;
-    }
-
-    public static void setMaxSubLength(int maxsublength) {
-        JublerPrefs.set(MAXSUBLENGTH_TAG, maxSubLength = maxsublength);
-    }
-
-    public static int getMaxSubLength() {
-        return maxSubLength;
     }
 
     public static void setMaxLineLength(int maxlinelength) {
@@ -233,19 +233,19 @@ public class Options {
         return maxCPS;
     }
 
-    public static void setMaxDuration(int maxduration) {
+    public static void setMaxDuration(float maxduration) {
         JublerPrefs.set(MAXDURATION_TAG, maxDuration = maxduration);
     }
 
-    public static int getMaxDuration() {
+    public static float getMaxDuration() {
         return maxDuration;
     }
 
-    public static void setMinDuration(int minduration) {
+    public static void setMinDuration(float minduration) {
         JublerPrefs.set(MAXDURATION_TAG, minDuration = minduration);
     }
 
-    public static int getMinDuration() {
+    public static float getMinDuration() {
         return minDuration;
     }
 
