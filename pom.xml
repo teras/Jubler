@@ -11,7 +11,6 @@
     <name>Jubler Project</name>
     <modules>
         <module>modules/core</module>
-        <module>modules/appenhancer</module>
         <module>modules/aspell</module>
         <module>modules/autoupdate</module>
         <module>modules/basetextsubs</module>
@@ -32,6 +31,5 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <json.version>0.9.5</json.version>
-        <flatlaf.version>3.2.5</flatlaf.version>
     </properties>
 </project>

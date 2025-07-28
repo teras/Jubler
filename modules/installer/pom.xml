@@ -19,11 +19,6 @@
         </dependency>
         <dependency>
             <groupId>com.panayotis.jubler</groupId>
-            <artifactId>appenhancer</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.panayotis.jubler</groupId>
             <artifactId>aspell</artifactId>
             <version>${project.version}</version>
         </dependency>

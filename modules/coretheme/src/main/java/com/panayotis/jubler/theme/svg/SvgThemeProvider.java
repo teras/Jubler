@@ -6,10 +6,8 @@
 
 package com.panayotis.jubler.theme.svg;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.formdev.flatlaf.extras.FlatSVGUtils;
+import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.Launcher;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.theme.Theme;
@@ -28,22 +26,12 @@ public class SvgThemeProvider implements PluginCollection, PluginItem<Launcher>,
 
     @Override
     public ImageIcon loadIcon(String name, float resize) {
-        try {
-            return new FlatSVGIcon(getResourceName(name), resize);
-        } catch (Exception e) {
-            DEBUG.debug("Unable to load icon " + name);
-            return null;
-        }
+        return EnhancerManager.getDefault().findSVGIcon(getResourceName(name), resize);
     }
 
     @Override
     public List<Image> findFrameImages(String name) {
-        try {
-            return FlatSVGUtils.createWindowIconImages("/" + getResourceName(name));
-        } catch (Exception e) {
-            DEBUG.debug("Unable to find frame icons named " + name);
-            return Collections.emptyList();
-        }
+        return EnhancerManager.getDefault().findFrameImages(getResourceName(name));
     }
 
     @Override
