@@ -24,8 +24,8 @@ public class JRegExpReplace extends RealTimeTool {
 
     public JRegExpReplace() {
         super(false, null);
-        patterns = new ArrayList<Pattern>();
-        texts = new ArrayList<String>();
+        patterns = new ArrayList<>();
+        texts = new ArrayList<>();
         rlist = new JReplaceList();
     }
 

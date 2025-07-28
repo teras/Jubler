@@ -231,6 +231,7 @@
                                         <argument>--winpinfile=${user.home}/.ssh/windows-pin.file</argument>
                                         <argument>--os=${mac.dist},${win32.dist},${win64.dist},${linux.dist},${generic.dist},${arm64.dist},${arm32.dist}</argument>
                                         <argument>--jdk=${user.home}/.sdkman/candidates/java/17.0.4-tem</argument>
+<!--                                        <argument>-v</argument><argument>-v</argument><argument>-v</argument>-->
                                     </arguments>
                                 </configuration>
                                 <goals>

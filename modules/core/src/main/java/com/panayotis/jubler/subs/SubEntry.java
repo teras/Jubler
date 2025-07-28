@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs;
+package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.exceptions.IncompatibleRecordTypeException;
 
@@ -373,8 +373,10 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                     minlinelength = curlinelength;
                 curlinelength = 0;
             } else if (isSpaceChars() || !Character.isWhitespace(item)) {
-                m.length++;
-                curlinelength++;
+                if (isOtherChars() || Character.isLetterOrDigit(item)) {
+                    m.length++;
+                    curlinelength++;
+                }
             }
         if (curlinelength > m.linelength)
             m.linelength = curlinelength;
@@ -394,7 +396,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
     }
 
     public void updateQuality(SubMetrics m) {
-        if (m.lines > getMaxLines() || m.cps > getMaxCPS() || m.length > getMaxSubLength() || m.linelength > getMaxLineLength()
+        if (m.lines > getMaxLines() || m.cps > getMaxCPS() || m.linelength > getMaxLineLength()
                 || finish.differenceInSecs(start) > getMaxDuration() || finish.differenceInSecs(start) < getMinDuration()
                 || m.fillpercent < getFillPercent()
                 || (isCompactSubs() && m.length < (m.lines - 1) * getMaxLineLength()))
