@@ -19,13 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class Launcher implements PluginContext {
     public void start(String[] args) {
-
-        try {
-            getClass().getClassLoader().loadClass("com.formdev.flatlaf.FlatLightLaf").getMethod("setup").invoke(null);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException |
-                 ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        JublerTheme.init();
 
         /* Load all startup files in a separate process */
         LoaderThread loader = new LoaderThread();

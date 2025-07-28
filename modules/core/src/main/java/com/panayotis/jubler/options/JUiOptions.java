@@ -6,6 +6,8 @@
 
 package com.panayotis.jubler.options;
 
+import com.panayotis.appenh.ThemeVariation;
+import com.panayotis.jubler.options.OptionsHolder;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.theme.Theme;
@@ -17,12 +19,15 @@ import static com.panayotis.jubler.i18n.I18N.__;
 public class JUiOptions extends JPanel implements OptionsHolder {
     private float oldScaling = Float.POSITIVE_INFINITY;
     private boolean oldTooltipsDisabled;
+    private ThemeVariation oldThemeVariation;
 
     /**
      * Creates new form JExternalToolsOptions
      */
     public JUiOptions() {
         initComponents();
+        for (ThemeVariation v : ThemeVariation.values())
+            themesC.addItem(v);
         if (!SystemDependent.shouldSupportScaling()) {
             layoutP.remove(scalingP);
             layoutP.remove(scalingF);
@@ -33,7 +38,11 @@ public class JUiOptions extends JPanel implements OptionsHolder {
     @Override
     public void loadPreferences() {
         oldTooltipsDisabled = UIUtils.isTimestampTooltipsDisabled();
+        oldThemeVariation = UIUtils.getThemeVariation();
+
         tooltipsC.setSelected(oldTooltipsDisabled);
+        themesC.setSelectedItem(oldThemeVariation);
+
         if (SystemDependent.shouldSupportScaling()) {
             float scaling = UIUtils.loadScaling();
             if (oldScaling == Float.POSITIVE_INFINITY)
@@ -47,7 +56,8 @@ public class JUiOptions extends JPanel implements OptionsHolder {
     public void savePreferences() {
         boolean shouldShowMessage = false;
         UIUtils.saveTimestampTooltipsDisabled(tooltipsC.isSelected());
-        if (oldTooltipsDisabled != tooltipsC.isSelected())
+        UIUtils.saveThemeVariation((ThemeVariation) themesC.getSelectedItem());
+        if (oldTooltipsDisabled != tooltipsC.isSelected() || oldThemeVariation != themesC.getSelectedItem())
             shouldShowMessage = true;
         if (SystemDependent.shouldSupportScaling()) {
             try {
@@ -103,6 +113,10 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         scalingF = new javax.swing.Box.Filler(new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16));
         jPanel6 = new javax.swing.JPanel();
         tooltipsC = new javax.swing.JCheckBox();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16));
+        jPanel7 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        themesC = new javax.swing.JComboBox<>();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -124,6 +138,15 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         jPanel6.add(tooltipsC, java.awt.BorderLayout.CENTER);
 
         layoutP.add(jPanel6);
+        layoutP.add(filler2);
+
+        jPanel7.setLayout(new java.awt.BorderLayout(8, 0));
+
+        jLabel1.setText(__("Theme variation"));
+        jPanel7.add(jLabel1, java.awt.BorderLayout.WEST);
+        jPanel7.add(themesC, java.awt.BorderLayout.CENTER);
+
+        layoutP.add(jPanel7);
 
         add(layoutP, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -131,12 +154,16 @@ public class JUiOptions extends JPanel implements OptionsHolder {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel layoutP;
     private javax.swing.Box.Filler scalingF;
     private javax.swing.JTextField scalingFactorT;
     private javax.swing.JLabel scalingL;
     private javax.swing.JPanel scalingP;
+    private javax.swing.JComboBox<ThemeVariation> themesC;
     private javax.swing.JCheckBox tooltipsC;
     // End of variables declaration//GEN-END:variables
 }

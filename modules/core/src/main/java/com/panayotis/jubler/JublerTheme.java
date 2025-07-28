@@ -24,20 +24,21 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.Collection;
 import java.util.Collections;
 
-public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
+public class JublerTheme implements PluginCollection, PluginItem<JubFrame> {
     private static boolean ignoreClick = false;
 
-    public JublerApp() {
+    public static void init() {
         Enhancer e = EnhancerManager.getDefault();
+        e.setModernLookAndFeel(UIUtils.getThemeVariation());
 
         float scaling = UIUtils.getScaling();
         if (scaling < 0.1) {
             scaling = SystemDependent.shouldSupportScaling() ? e.getDPI() / 96f : 1;
+            if (scaling < 1)
+                scaling = 1; // Do not scale below 1)
             UIUtils.setScaling(scaling);
         }
         System.setProperty("flatlaf.uiScale", Double.toString(scaling));
-
-        e.setModernLookAndFeel();
         e.blendWindowTitle(true);
 
         e.registerAbout(StaticJubler::showAbout);
@@ -51,7 +52,7 @@ public class JublerApp implements PluginCollection, PluginItem<JubFrame> {
         });
         e.registerFileOpen(file -> LoaderThread.getLoader().addSubtitle(file.getAbsolutePath()));
         SwingUtilities.invokeLater(() -> {
-            e.setApplicationIcons(JubFrame.getFrameIcons().toArray(new Image[0]));
+            e.setApplicationImages(JubFrame.getFrameIcons().toArray(new Image[0]));
             e.registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
         });
     }
