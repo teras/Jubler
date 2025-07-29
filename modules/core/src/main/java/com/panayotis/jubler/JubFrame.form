@@ -1656,9 +1656,6 @@
                   <Connection code="__(&quot;New version is available&quot;)" type="code"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NewVersionTBCurrentTTMActionPerformed"/>
-              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="SystemDependent.setToolBarButtonStyle(NewVersionTB, &quot;only&quot;);"/>
               </AuxValues>

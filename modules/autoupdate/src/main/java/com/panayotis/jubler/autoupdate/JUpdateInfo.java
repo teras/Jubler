@@ -19,6 +19,52 @@ import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
 public class JUpdateInfo extends javax.swing.JDialog {
+    private static final String COMMON_CSS = "" +
+            "body {\n" +
+            "  font-family: Arial, sans-serif;\n" +
+            "}\n" +
+            ".welcome {\n" +
+            "  font-size: 1.1em; /* Adjust the value as needed */\n" +
+            "}" +
+            ".text {\n" +
+            "  margin-top: 10px;\n" +
+            "}\n";
+
+
+    private static final String LIGHT_CSS = "" +
+            ".entry {\n" +
+            "  border: 1px solid #ccc;\n" +
+            "  border-radius: 8px;\n" +
+            "  margin: 10px;\n" +
+            "  padding: 15px;\n" +
+            "  background-color: #f5f5f5;\n" +
+            "}\n" +
+            ".version {\n" +
+            "  background-color: #3498db;\n" +
+            "  color: #ffffff;\n" +
+            "  padding: 8px;\n" +
+            "  border-radius: 5px;\n" +
+            "  font-weight: bold;\n" +
+            "}\n";
+
+    private static final String DARK_CSS = "<style>\n" +
+            ".entry {\n" +
+            "  border: 1px solid #444;\n" +
+            "  border-radius: 8px;\n" +
+            "  margin: 10px;\n" +
+            "  padding: 15px;\n" +
+            "  background-color: #2e2e2e;\n" +
+            "  color: #e0e0e0;\n" +
+            "}\n" +
+            "\n" +
+            ".version {\n" +
+            "  background-color: #2478bb;\n" +
+            "  color: #ffffff;\n" +
+            "  padding: 8px;\n" +
+            "  border-radius: 5px;\n" +
+            "  font-weight: bold;\n" +
+            "}";
+
     /**
      * Creates new form JUpdateInfo
      */
@@ -33,34 +79,14 @@ public class JUpdateInfo extends javax.swing.JDialog {
         int offset = scale(5);
         logoP.setBorder(new EmptyBorder(offset, offset, offset, offset));
 
-        StringBuilder txt = new StringBuilder("<html><head>" +
-                " <style>\n" +
-                "    body {\n" +
-                "      font-family: Arial, sans-serif;\n" +
-                "    }\n" +
-                "    .entry {\n" +
-                "      border: 1px solid #ccc;\n" +
-                "      border-radius: 8px;\n" +
-                "      margin: 10px;\n" +
-                "      padding: 15px;\n" +
-                "      background-color: #f5f5f5;\n" +
-                "    }\n" +
-                "    .version {\n" +
-                "      background-color: #3498db;\n" +
-                "      color: #ffffff;\n" +
-                "      padding: 8px;\n" +
-                "      border-radius: 5px;\n" +
-                "      font-weight: bold;\n" +
-                "    }\n" +
-                "    .text {\n" +
-                "      margin-top: 10px;\n" +
-                "    }\n" +
-                "    .welcome {\n" +
-                "      font-size: 1.1em; /* Adjust the value as needed */\n" +
-                "    }" +
-                "  </style>" +
-                "  </head>" +
-                "<body>"
+        String theme = UIUtils.getThemeVariation().isDark() ? DARK_CSS : LIGHT_CSS;
+        StringBuilder txt = new StringBuilder("<html><head>\n"
+                + "<style>\n"
+                + COMMON_CSS
+                + theme
+                + "</style>\n"
+                + "\n</head>"
+                + "<body>"
                 + "<span class=\"welcome\">" + __("A new Jubler version was found.") + "</span>"
                 + "<br/><br/>" + __("Currently you have") + " <b>" + JAbout.getCurrentVersion() + "</b>"
                 + "<br/>" + __("New version is") + " <b>" + AutoUpdater.newerVersions.get(0).version + "</b><br/><br/>"
@@ -73,6 +99,7 @@ public class JUpdateInfo extends javax.swing.JDialog {
                     "    </div>\n" +
                     "  </div>\n");
         }
+        txt.append("</body></html>");
         infoText.setText(txt.toString());
         infoText.setCaretPosition(0);
     }
