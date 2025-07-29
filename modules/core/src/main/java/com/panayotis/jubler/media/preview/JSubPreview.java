@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.media.preview;
+package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
@@ -66,7 +66,6 @@ public class JSubPreview extends javax.swing.JPanel {
 
         boolean orientation = AutoSaveOptions.getPreviewOrientation();
         setOrientation(orientation);
-        Orientation.setSelected(!orientation);
     }
 
     public void windowHasChanged(int[] subid) {
@@ -144,7 +143,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
     public void setEnabled(boolean status) {
         super.setEnabled(status);
-        wave.setEnabled(status && AudioShow.isSelected());
+        wave.setEnabled(status);
     }
 
     public void forceRepaintFrame() {
@@ -152,19 +151,25 @@ public class JSubPreview extends javax.swing.JPanel {
         frame.repaint();
     }
 
-    public void attachEditor(JSubEditor editor) {
-        EditorPanel.add(editor, BorderLayout.SOUTH);
-    }
-
     public DecoderListener getDecoderListener() {
         return wave;
     }
 
-    private void setOrientation(boolean horizontal) {
-        if (horizontal)
-            previewSPlitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-        else
-            previewSPlitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+    public void setOrientation(boolean horizontal) {
+        ToolBar.getParent().remove(ToolBar);
+        if (horizontal) {
+            previewSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+            ToolBar.setOrientation(JToolBar.VERTICAL);
+            add(ToolBar, BorderLayout.EAST);
+            parent.OrientationTB.setIcon(Theme.loadIcon("turndown"));
+            parent.OrientationTB.setActionCommand("h");
+        } else {
+            previewSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
+            ToolBar.setOrientation(SwingConstants.HORIZONTAL);
+            InfoPanel.add(ToolBar, BorderLayout.SOUTH);
+            parent.OrientationTB.setIcon(Theme.loadIcon("turnright"));
+            parent.OrientationTB.setActionCommand("v");
+        }
         parent.setPreviewOrientation(horizontal);
         parent.resetPreviewPanels();
         AutoSaveOptions.setPreviewOrientation(horizontal);
@@ -179,7 +184,6 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     public void setAudioShow(boolean status) {
-        AudioShow.setSelected(status);
         parent.AudioPreviewC.setSelected(status);
         wave.setEnabled(status);
     }
@@ -204,19 +208,15 @@ public class JSubPreview extends javax.swing.JPanel {
 
         CursorGroup = new javax.swing.ButtonGroup();
         ToolBar = new javax.swing.JToolBar();
-        Orientation = new javax.swing.JToggleButton();
-        jSeparator3 = new javax.swing.JToolBar.Separator();
-        AudioShow = new javax.swing.JToggleButton();
         MaxWave = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        Auto = new javax.swing.JToggleButton();
         Select = new javax.swing.JToggleButton();
-        Move = new javax.swing.JToggleButton();
-        Resize = new javax.swing.JToggleButton();
+        Edit = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         AudioPlay = new javax.swing.JToggleButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         NewSub = new javax.swing.JToggleButton();
-        previewSPlitPane = new javax.swing.JSplitPane();
+        previewSplitPane = new javax.swing.JSplitPane();
         frame = new JFramePreview();
         MainPanel = new javax.swing.JPanel();
         AudioPanel = new javax.swing.JPanel();
@@ -238,30 +238,6 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.setRollover(true);
         ToolBar.setOpaque(false);
 
-        Orientation.setIcon(Theme.loadIcon("turndown"));
-        Orientation.setToolTipText(__("Change orientation of Preview panel"));
-        Orientation.setFocusable(false);
-        Orientation.setSelectedIcon(Theme.loadIcon("turnright"));
-        Orientation.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OrientationActionPerformed(evt);
-            }
-        });
-        ToolBar.add(Orientation);
-        ToolBar.add(jSeparator3);
-
-        AudioShow.setIcon(Theme.loadIcon("waveoff"));
-        AudioShow.setSelected(true);
-        AudioShow.setToolTipText(__("Enable/disable waveform preview"));
-        AudioShow.setFocusable(false);
-        AudioShow.setSelectedIcon(Theme.loadIcon("waveon"));
-        AudioShow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AudioShowActionPerformed(evt);
-            }
-        });
-        ToolBar.add(AudioShow);
-
         MaxWave.setIcon(Theme.loadIcon("wavenorm"));
         MaxWave.setToolTipText(__("Maximize waveform visualization"));
         MaxWave.setFocusable(false);
@@ -274,54 +250,28 @@ public class JSubPreview extends javax.swing.JPanel {
         ToolBar.add(MaxWave);
         ToolBar.add(jSeparator1);
 
-        CursorGroup.add(Auto);
-        Auto.setIcon(Theme.loadIcon("auto"));
-        Auto.setSelected(true);
-        Auto.setToolTipText(__("Automatically perform operation depending on the mouse position"));
-        Auto.setActionCommand(String.valueOf(JSubTimeline.AUTO_ACTION));
-        Auto.setFocusable(false);
-        Auto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cursorSelector(evt);
-            }
-        });
-        ToolBar.add(Auto);
-
         CursorGroup.add(Select);
         Select.setIcon(Theme.loadIcon("pointer"));
         Select.setToolTipText(__("Select subtitles only"));
-        Select.setActionCommand(String.valueOf(JSubTimeline.SELECT_ACTION));
         Select.setFocusable(false);
         Select.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cursorSelector(evt);
+                SelectActionPerformed(evt);
             }
         });
         ToolBar.add(Select);
 
-        CursorGroup.add(Move);
-        Move.setIcon(Theme.loadIcon("move"));
-        Move.setToolTipText(__("Move subtitles only"));
-        Move.setActionCommand(String.valueOf(JSubTimeline.MOVE_ACTION));
-        Move.setFocusable(false);
-        Move.addActionListener(new java.awt.event.ActionListener() {
+        CursorGroup.add(Edit);
+        Edit.setIcon(Theme.loadIcon("move"));
+        Edit.setSelected(true);
+        Edit.setToolTipText(__("Automatically perform operation depending on the mouse position"));
+        Edit.setFocusable(false);
+        Edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cursorSelector(evt);
+                EditActionPerformed(evt);
             }
         });
-        ToolBar.add(Move);
-
-        CursorGroup.add(Resize);
-        Resize.setIcon(Theme.loadIcon("resize"));
-        Resize.setToolTipText(__("Resize subtitles only"));
-        Resize.setActionCommand(String.valueOf(JSubTimeline.RESIZE_ACTION));
-        Resize.setFocusable(false);
-        Resize.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cursorSelector(evt);
-            }
-        });
-        ToolBar.add(Resize);
+        ToolBar.add(Edit);
         ToolBar.add(jSeparator2);
 
         AudioPlay.setIcon(Theme.loadIcon("playback"));
@@ -334,6 +284,7 @@ public class JSubPreview extends javax.swing.JPanel {
             }
         });
         ToolBar.add(AudioPlay);
+        ToolBar.add(filler1);
 
         NewSub.setIcon(Theme.loadIcon("newsub"));
         NewSub.setToolTipText(__("New subtitle after current one"));
@@ -346,9 +297,9 @@ public class JSubPreview extends javax.swing.JPanel {
         });
         ToolBar.add(NewSub);
 
-        add(ToolBar, java.awt.BorderLayout.WEST);
+        add(ToolBar, java.awt.BorderLayout.EAST);
 
-        previewSPlitPane.setTopComponent(frame);
+        previewSplitPane.setTopComponent(frame);
 
         MainPanel.setOpaque(false);
         MainPanel.setLayout(new java.awt.BorderLayout());
@@ -418,9 +369,9 @@ public class JSubPreview extends javax.swing.JPanel {
 
         MainPanel.add(InfoPanel, java.awt.BorderLayout.SOUTH);
 
-        previewSPlitPane.setBottomComponent(MainPanel);
+        previewSplitPane.setBottomComponent(MainPanel);
 
-        add(previewSPlitPane, java.awt.BorderLayout.CENTER);
+        add(previewSplitPane, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void ZoomSStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_ZoomSStateChanged
@@ -437,24 +388,12 @@ public class JSubPreview extends javax.swing.JPanel {
         ignore_zoomfactor_changes = false;
     }//GEN-LAST:event_ZoomSStateChanged
 
-    private void AudioShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioShowActionPerformed
-        setAudioShow(AudioShow.isSelected());
-    }//GEN-LAST:event_AudioShowActionPerformed
-
-    private void cursorSelector(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cursorSelector
-        timeline.setAction(evt.getActionCommand().charAt(0) - '0');
-    }//GEN-LAST:event_cursorSelector
-
     private void sliderAdjustmentValueChanged(java.awt.event.AdjustmentEvent evt) {//GEN-FIRST:event_sliderAdjustmentValueChanged
         if (ignore_slider_changes || evt.getValueIsAdjusting())
             return;
         view.setWindow(evt.getValue() / 10d, evt.getValue() / 10d + view.getDuration(), false);
         windowHasChanged(null);
     }//GEN-LAST:event_sliderAdjustmentValueChanged
-
-    private void OrientationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrientationActionPerformed
-        setOrientation(!Orientation.isSelected());
-    }//GEN-LAST:event_OrientationActionPerformed
 
     private void MaxWaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveActionPerformed
         setMaxWave(MaxWave.isSelected());
@@ -468,34 +407,38 @@ public class JSubPreview extends javax.swing.JPanel {
         parent.addNewSubtitle(true);
     }//GEN-LAST:event_NewSubActionPerformed
 
+    private void SelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectActionPerformed
+        timeline.setAction(false);
+    }//GEN-LAST:event_SelectActionPerformed
+
+    private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
+        timeline.setAction(true);
+    }//GEN-LAST:event_EditActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
     public javax.swing.JToggleButton AudioPlay;
-    public javax.swing.JToggleButton AudioShow;
-    private javax.swing.JToggleButton Auto;
     private javax.swing.JPanel BottomPanel;
     private javax.swing.ButtonGroup CursorGroup;
+    private javax.swing.JToggleButton Edit;
     private javax.swing.JPanel EditorPanel;
     private javax.swing.JPanel InfoPanel;
     public javax.swing.JPanel MainPanel;
     public javax.swing.JToggleButton MaxWave;
-    private javax.swing.JToggleButton Move;
     public javax.swing.JToggleButton NewSub;
-    private javax.swing.JToggleButton Orientation;
-    private javax.swing.JToggleButton Resize;
     private javax.swing.JToggleButton Select;
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
     private javax.swing.JToolBar ToolBar;
     javax.swing.JSlider ZoomS;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel frame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
-    private javax.swing.JToolBar.Separator jSeparator3;
-    private javax.swing.JSplitPane previewSPlitPane;
+    private javax.swing.JSplitPane previewSplitPane;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables
 }

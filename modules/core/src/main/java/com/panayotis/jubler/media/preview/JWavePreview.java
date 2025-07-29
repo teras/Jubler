@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.media.preview;
+package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
@@ -29,9 +29,8 @@ public class JWavePreview extends JPanel implements DecoderListener {
     private WavePanel[] panels;
     private final JSubTimeline timeline;
     private static final AudioPreview demoaudio = new AudioPreview(1, 1000);
-    private AudioPreview audio;
     private MediaFile mfile;
-    private JAudioLoader loader;
+    private final JAudioLoader loader;
     private double start_time = -1, end_time = -1;
     /* Whether the waveform in these panels will be maximized or not */
     private boolean is_maximized = false;
@@ -46,24 +45,24 @@ public class JWavePreview extends JPanel implements DecoderListener {
 
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
-                timeline.mouseStillDragging(e);
+                timeline.mouseDragged(e);
             }
 
             public void mouseMoved(MouseEvent e) {
-                timeline.mouseUpdateCursor(e);
+                timeline.mouseMoved(e);
             }
         });
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                timeline.mouseStartsDragging(e);
+                timeline.mousePressed(e);
             }
 
             public void mouseReleased(MouseEvent e) {
-                timeline.mouseStopsDragging(e);
+                timeline.mouseReleased(e);
             }
         });
 
-        addMouseWheelListener(e -> timeline.mouseWheelUpdates(e));
+        addMouseWheelListener(timeline::mouseWheelUpdates);
     }
 
     @Override
@@ -121,6 +120,7 @@ public class JWavePreview extends JPanel implements DecoderListener {
     }
 
     private void updateWave() {
+        AudioPreview audio;
         if (isEnabled() && mfile != null)
             audio = mfile.getAudioPreview(start_time, end_time);
         else
@@ -132,9 +132,9 @@ public class JWavePreview extends JPanel implements DecoderListener {
 
         /* Remove old panels */
         if (panels != null)
-            for (int i = 0; i < panels.length; i++)
-                if (panels[i] != null)
-                    remove(panels[i]);
+            for (WavePanel panel : panels)
+                if (panel != null)
+                    remove(panel);
         /* Create new panels */
         panels = new WavePanel[audio.channels()];
         for (int i = 0; i < panels.length; i++) {
@@ -145,7 +145,7 @@ public class JWavePreview extends JPanel implements DecoderListener {
     }
 
     public void playbackWave() {
-        if (timeline.getSelectedList().size() < 1)
+        if (timeline.getSelectedList().isEmpty())
             return;
         if (mfile == null)
             return;
@@ -157,8 +157,8 @@ public class JWavePreview extends JPanel implements DecoderListener {
 
     private class WavePanel extends JPanel {
 
-        private float[][] data;
-        private Color c;
+        private final float[][] data;
+        private final Color c;
 
         public WavePanel(float[][] data, Color c) {
             this.data = data;
@@ -178,12 +178,12 @@ public class JWavePreview extends JPanel implements DecoderListener {
                 g.setColor(JSubTimeline.SelectColor);
                 for (SubInfo i : timeline.getSelectedList()) {
                     double sstart, send;
-                    if (i.start > i.end) {
-                        sstart = i.end;
-                        send = i.start;
+                    if (i.startPercent > i.endPercent) {
+                        sstart = i.endPercent;
+                        send = i.startPercent;
                     } else {
-                        sstart = i.start;
-                        send = i.end;
+                        sstart = i.startPercent;
+                        send = i.endPercent;
                     }
                     g.fill3DRect((int) (sstart * width), 0, (int) ((send - sstart) * width), height, false);
                 }

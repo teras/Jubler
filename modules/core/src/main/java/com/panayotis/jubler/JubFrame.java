@@ -53,10 +53,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
     /**
      * currentWindow holds the reference to the currently active instance of
-     * JubFrame, ie. the one that has the focus. This is to allow instances of
+     * JubFrame, i.e. the one that has the focus. This is to allow instances of
      * class in the application which would like to access functions or
-     * properties of the current instance so to invoke it correctly in a multi-
-     * instances situation.
+     * properties of the current instance so to invoke it correctly in a multi-instances
+     * situation.
      */
     public static JubFrame currentWindow = null;
     public static int TABLE_DEFAULT_HEIGHT = 16;
@@ -76,16 +76,16 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
      */
     private MediaFile mfile;
     /* A list of undo features */
-    private UndoList undo;
+    private final UndoList undo;
     /* The preview dialog, showing the subtitle, the waveform and some video clips */
     /* This object is public, since it's needed by JSubEditor to attach itself into this panel */
-    private JSubPreview preview;
+    private final JSubPreview preview;
     /* The panel which displays the editor for a subtitle */
     public JSubEditor subeditor;
     /* The following pointer points to the connected jubler window
      * (used for translating) */
     public JubFrame jparent;
-    private ArrayList<JVideoConsole> connected_consoles;
+    private final ArrayList<JVideoConsole> connected_consoles;
     /* the last changed subtitle - used for undo */
     private SubEntry last_changed_sub = null;
     /* Control variable to ensure that no feedback will be given when explicit change the
@@ -99,7 +99,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     /* Whether this file needs saving or not */
     private boolean unsaved_data = false;
     /* Help browser */
-    private static HelpBrowser faqbrowse;
+    private static final HelpBrowser faqbrowse;
     /* Window frame icon */
     public final static List<Image> FrameIcons;
 
@@ -326,6 +326,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         TestTP = new javax.swing.JPanel();
         TestTB = new javax.swing.JButton();
         PreviewTB = new javax.swing.JButton();
+        OrientationTB = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
         InfoTP = new javax.swing.JPanel();
         NewVersionTB = new javax.swing.JButton();
@@ -659,13 +660,19 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         TestTP.add(TestTB);
 
         PreviewTB.setModel(new ToggleButtonModel());
-        SystemDependent.setToolBarButtonStyle(PreviewTB, "last");
+        SystemDependent.setToolBarButtonStyle(PreviewTB, "middle");
         PreviewTB.setIcon(Theme.loadIcon("previewc"));
         PreviewTB.setToolTipText(__("Enable preview"));
         PreviewTB.setEnabled(false);
         PreviewTB.setSelectedIcon(Theme.loadIcon("preview"));
         PreviewTB.addActionListener(formListener);
         TestTP.add(PreviewTB);
+
+        SystemDependent.setToolBarButtonStyle(OrientationTB, "last");
+        OrientationTB.setToolTipText(__("Change orientation of Preview panel"));
+        OrientationTB.setEnabled(false);
+        OrientationTB.addActionListener(formListener);
+        TestTP.add(OrientationTB);
 
         JublerTools.add(TestTP);
         JublerTools.add(filler2);
@@ -1179,6 +1186,9 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             }
             else if (evt.getSource() == PreviewTB) {
                 JubFrame.this.PreviewTBCurrentTTMActionPerformed(evt);
+            }
+            else if (evt.getSource() == OrientationTB) {
+                JubFrame.this.OrientationTBCurrentTTMActionPerformed(evt);
             }
             else if (evt.getSource() == NewVersionTB) {
                 JubFrame.this.NewVersionTBCurrentTTMActionPerformed(evt);
@@ -1935,6 +1945,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         }
     }//GEN-LAST:event_DonationsHMActionPerformed
 
+    private void OrientationTBCurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrientationTBCurrentTTMActionPerformed
+        preview.setOrientation(!OrientationTB.getActionCommand().equals("h"));
+    }//GEN-LAST:event_OrientationTBCurrentTTMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
@@ -1992,6 +2006,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenuItem NoneMEM;
     private javax.swing.JMenuItem NoneMP;
     private javax.swing.JMenuItem OpenFM;
+    public javax.swing.JButton OrientationTB;
     private javax.swing.JMenuItem PasteEM;
     private javax.swing.JMenuItem PasteP;
     private javax.swing.JMenuItem PasteSpecialEM;
@@ -2260,6 +2275,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             EnablePreviewC.setSelected(nv);
             PreviewTB.setSelected(nv);
             PreviewTB.setToolTipText(nv ? __("Disable Preview") : __("Enable Preview"));
+            OrientationTB.setEnabled(nv);
         };
 
         if (status && !mfile.validateMediaFile(subs, false, this)) {

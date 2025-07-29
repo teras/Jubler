@@ -4,10 +4,9 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.media.preview;
+package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.JubFrame;
-import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
@@ -17,7 +16,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.List;
 
+import static com.panayotis.jubler.media.preview.MouseLocation.OUT;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
 public class JSubTimeline extends JPanel {
@@ -26,87 +27,174 @@ public class JSubTimeline extends JPanel {
     public static final Color SubColor = new Color(30, 240, 50);
     public static final Color SelectColor = new Color(20, 140, 255);
     public static final Color OverlapColor = new Color(230, 50, 20);
-    private static final int NONE = 0;
-    private static final int SELECT = 1;
-    private static final int MOVE = 2;
-    private static final int RESIZE = 4;
-    private static final int RIGHT = 8;
-    private static final int LEFT = 16;
-    private static final int RESIZELEFT = RESIZE | LEFT;
-    private static final int RESIZERIGHT = RESIZE | RIGHT;
-    /* DEfine which of the two groups were used */
-    private static final int SELECTED_GROUP = 32;
-    private static final int VISIBLE_GROUP = 64;
-    private static final int NOGROUP_MASK = 127 ^ (SELECTED_GROUP | VISIBLE_GROUP);
-    /* List of actions to be able to do */
-    public static final int SELECT_ACTION = SELECT;
-    public static final int MOVE_ACTION = SELECT | MOVE;
-    public static final int RESIZE_ACTION = SELECT | RESIZE;
-    public static final int AUTO_ACTION = SELECT | MOVE | RESIZE;
-    private int current_action = AUTO_ACTION;
-    private JubFrame parent;
-    private ArrayList<SubInfo> vislist;
-    private ArrayList<SubInfo> sellist;
-    private ArrayList<SubInfo> overlaps;
-    /* If this flag is true, then ignore new selections (visual feedback cutter) */
-    private boolean ignore_new_selection_list = false;
-    /* Here we store the start/end/videoduration values of the window*/
-    private ViewWindow view;
-    /* This is to determine if a resize or a move event takes place */
-    private int selection_mode;
-    /* The original X position: used to determine the move offset and the stretch centerpoint */
-    private int X_position;
-    /* Whether, during mouse up, we should keep current selection */
-    private boolean keep_selection_list_on_mouseup = true;
-    /* The actual selected sub. If we'll clear the selection after mouse up, this would be the new selected sub.
-     * We also use this pointer to check that a movement has been performed ( if this object is null */
-    private SubInfo last_selected_subinfo;
-    /* We need to know also the state of this subtitle - if it was selected before or not, in order
-     * to reverse its state if no mouse dragging has been performed */
-    private boolean last_subinfo_was_selected = false;
-    /* This variable stored the central point for a resize effect */
-    private double central_point;
+    private static final int interactionMargin = 4;
+
+    private final JubFrame parent;
     private JWavePreview wave;
-    private JSubPreview preview;
+    private final JSubPreview preview;
+    /* Here we store the start/end/videoduration values of the window*/
+    private final ViewWindow view;
+
+    private final List<SubInfo> remaininglist = new ArrayList<>();
+    private final List<SubInfo> selectedList = new ArrayList<>();
+    private final List<SubInfo> overlaps = new ArrayList<>();
+
+    // Whether the use is allowed to edit timings or only select subtitles
+    private boolean isEdit = true;
+    // The correct mouse button is pressed
+    private boolean isMouseDown = false;
+    // The data has changed and needs to update subtitles when the mouse is released
+    private boolean dataHasChanged = false;
+    // The original X position: used to determine the move offset and the stretch centerpoint
+    private int onMouseDownPixelPosition;
+    // This variable stored the central point for a resize effect
+    private double centralPoint;
 
     /**
      * Creates a new instance of JSubTimeline
      */
     public JSubTimeline(JubFrame parent, ViewWindow view, JSubPreview preview) {
         this.parent = parent;
-        vislist = new ArrayList<SubInfo>();
-        sellist = new ArrayList<SubInfo>();
-        overlaps = new ArrayList<SubInfo>();
         this.view = view;
         this.preview = preview;
 
         addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseDragged(MouseEvent e) {
-                mouseStillDragging(e);
+                JSubTimeline.this.mouseDragged(e);
             }
 
             public void mouseMoved(MouseEvent e) {
-                mouseUpdateCursor(e);
+                JSubTimeline.this.mouseMoved(e);
             }
         });
         addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
-                mouseStartsDragging(e);
+                JSubTimeline.this.mousePressed(e);
             }
 
             public void mouseReleased(MouseEvent e) {
-                mouseStopsDragging(e);
+                JSubTimeline.this.mouseReleased(e);
             }
         });
-        addMouseWheelListener(new MouseWheelListener() {
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                mouseWheelUpdates(e);
-            }
-        });
+        addMouseWheelListener(this::mouseWheelUpdates);
     }
 
-    public void setAction(int action) {
-        current_action = action;
+    public void mouseMoved(MouseEvent e) {
+        // Just update the cursor, no action is performed
+        findAnyAction(e.getX(), false);
+    }
+
+    public void mousePressed(MouseEvent e) {
+        if (e.getButton() != MouseEvent.BUTTON1) return;
+        onMouseDownPixelPosition = e.getX();
+        isMouseDown = true;
+
+        MouseResult mouse = findAnyAction(onMouseDownPixelPosition, true);
+        boolean keepSelection = ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0);
+        if (mouse.location == OUT) {
+            if (!keepSelection && !selectedList.isEmpty()) {
+                remaininglist.addAll(selectedList);
+                selectedList.clear();
+            } else
+                return; // Nothing to do, no selection and no action
+        } else {
+            if (keepSelection) {
+                if (mouse.isSelected) {
+                    if (mouse.location == MouseLocation.IN) {
+                        selectedList.remove(mouse.subInfo);
+                        remaininglist.add(mouse.subInfo);
+                    }
+                } else {
+                    selectedList.add(mouse.subInfo);
+                    remaininglist.remove(mouse.subInfo);
+                }
+            } else {
+                if (!mouse.isSelected) {
+                    remaininglist.addAll(selectedList);
+                    remaininglist.remove(mouse.subInfo);
+                    selectedList.clear();
+                    selectedList.add(mouse.subInfo);
+                }
+            }
+
+            switch (mouse.location) {
+                case LEFT:
+                    centralPoint = Double.MIN_VALUE;
+                    for (SubInfo inf : selectedList)
+                        if (centralPoint < inf.endPercent)
+                            centralPoint = inf.endPercent;
+                    break;
+                case RIGHT:
+                    centralPoint = Double.MAX_VALUE;
+                    for (SubInfo inf : selectedList)
+                        if (centralPoint > inf.startPercent)
+                            centralPoint = inf.startPercent;
+                    break;
+                default:
+                    centralPoint = Double.NaN;
+            }
+        }
+        repaint();
+        wave.repaint();
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        if (!isEdit) return;
+        if (!isMouseDown) return;
+        dataHasChanged = true;
+
+        int currentPixelPosition = e.getX();
+        if (Double.isNaN(centralPoint)) {
+            double dt = ((double) (currentPixelPosition - onMouseDownPixelPosition)) / getWidth();
+            for (SubInfo inf : selectedList)
+                inf.setDeltaPercent(dt);
+        } else {
+            double factor = (currentPixelPosition - centralPoint * getWidth()) / ((double) onMouseDownPixelPosition - centralPoint * getWidth());
+            double start = centralPoint * (1d - factor);
+            for (SubInfo inf : selectedList)
+                inf.setProportionalDelta(factor, start);
+        }
+        calcOverlaps();
+        repaint();
+        wave.repaint();
+        preview.updateSelectedTime();
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        if (e.getButton() != MouseEvent.BUTTON1) return;
+        findAnyAction(e.getX(), false);
+        onMouseDownPixelPosition = -1;
+        isMouseDown = false;
+
+        /* Find the actual selected subtitles for the main subtitle window */
+        int[] sel = new int[selectedList.size()];
+        for (int i = 0; i < sel.length; i++)
+            sel[i] = selectedList.get(i).pos;
+
+        /* Try to reposition the selected subtitles */
+        if (dataHasChanged) {  // A move has been performed, the subtitles have been changed
+            SubEntry entry;
+            SubInfo info;
+
+            /* Find subtitle offset (if someone is below zero, add an offset so that everything owuld be positive) */
+            double offset_time = getOffsetTime();
+            /* Create an undo entry */
+            parent.getUndoList().addUndo(new UndoEntry(parent.getSubtitles(), "Subtitle time changes"));
+            for (SubInfo subInfo : selectedList) {
+                info = subInfo;  /* get the information for this selected subtitle */
+
+                entry = parent.getSubtitles().elementAt(info.pos);  /* get the actual subtitle */
+                /* Set new times */
+                entry.setStartTime(new Time(view.getStart() + view.getDuration() * info.startPercent + offset_time));
+                entry.setFinishTime(new Time(view.getStart() + view.getDuration() * info.endPercent + offset_time));
+            }
+        }
+        dataHasChanged = false;
+        parent.setSelectedSub(sel, true);
+    }
+
+    public void setAction(boolean isEdit) {
+        this.isEdit = isEdit;
     }
 
     public void setWavePreview(JWavePreview wave) {
@@ -117,8 +205,8 @@ public class JSubTimeline extends JPanel {
         return parent;
     }
 
-    ArrayList<SubInfo> getSelectedList() {
-        return sellist;
+    List<SubInfo> getSelectedList() {
+        return selectedList;
     }
 
     public void setCursor(Cursor c) {
@@ -126,267 +214,62 @@ public class JSubTimeline extends JPanel {
         wave.setCursor(c);
     }
 
-    private boolean updateX(int newX) {
-        X_position = newX;
-        return true;
-    }
-
-    public void mouseUpdateCursor(MouseEvent e) {
-        if (!updateX(e.getX()))
-            return;
-        findAction();
-    }
-
     void mouseWheelUpdates(MouseWheelEvent e) {
         JSlider slider = parent.getSubPreview().ZoomS;
         slider.setValue(slider.getValue() + e.getWheelRotation());
     }
 
-    private void updateCursor(int cursortype) {
-        switch (cursortype & NOGROUP_MASK) {
-            case NONE:
-                setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                break;
-            case RESIZELEFT:
-                setCursor(Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR));
-                break;
-            case RESIZERIGHT:
-                setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
-                break;
-            case SELECT:
-                setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                break;
-        }
-    }
-
-    private int findAction() {
-        int saction, vaction;
-
-        saction = checkAListForAction(sellist);  // First check the selected list
-        if (saction == NONE) {                    // No action found
-            vaction = checkAListForAction(vislist);        // Check selected list *if* there is action there
-            updateCursor(vaction);             // Set cursor to vaction
-            return (vaction != NONE) ? vaction | VISIBLE_GROUP : NONE;
-        }
-        if ((saction & RESIZE) != 0) {            // Resize is very strong - if resize was found then here we are
-            updateCursor(saction);
-            return saction | SELECTED_GROUP;
-        }
-
-        SubInfo infback = last_selected_subinfo;// Store this variable in case visual list is not THAT important
-        vaction = checkAListForAction(vislist);  // Check visual list what action it is there
-        if ((vaction & RESIZE) != 0) {            // Take into account the visual list ONLY if the selected action is Resize (which is very strong)
-            updateCursor(vaction);
-            return vaction | VISIBLE_GROUP;
-        }
-        last_selected_subinfo = infback;        // Ignore visual action - use selected action
-        updateCursor(saction);
-        return saction | SELECTED_GROUP;
+    private MouseResult findAnyAction(int mousePosition, boolean isMouseDown) {
+        MouseResult msub = findAction(selectedList, mousePosition, true);  // First check the selected list
+        if (msub.location == OUT)
+            msub = findAction(remaininglist, mousePosition, false); // Then check the remaining list
+        msub.setCursor(this, isMouseDown, isEdit);
+        return msub;
     }
 
     /**
      * Check if a subinfo is inside this list AND it's position is relative to
      * the mouse cursor (so we need to take action like moving or resizing
      */
-    private int checkAListForAction(ArrayList<SubInfo> sourcelist) {
-        SubInfo inf;
-        int i;
-
-        /* Check if a resizing should be done */
-        if ((current_action & RESIZE) != 0)
-            for (i = 0; i < sourcelist.size(); i++) {
-                inf = sourcelist.get(i);
-                /* First check if we're on the left position of a subinfo */
-                if (checkForEdge(inf.start)) {
-                    last_selected_subinfo = inf;
-                    return RESIZELEFT;
-                }
-                /* Then check if we're on the right position of a subinfo */
-                if (checkForEdge(inf.end)) {
-                    last_selected_subinfo = inf;
-                    return RESIZERIGHT;
-                }
-            }
-        /* Check if we are allowed to select here */
-        if ((current_action & SELECT) != 0)
-            for (i = 0; i < sourcelist.size(); i++) {
-                inf = sourcelist.get(i);
-                double pos = ((double) X_position) / getWidth();
-                /* At the end check if we'return in the center of a subinfo */
-                if (pos >= inf.start && pos <= inf.end) {
-                    last_selected_subinfo = inf;
-                    return SELECT;
-                }
-            }
-        /* No - we're nowhere near. Return nothing */
-        last_selected_subinfo = null;
-        return NONE;
+    private MouseResult findAction(List<SubInfo> sourcelist, int mousePosition, boolean isSelected) {
+        for (SubInfo subInfo : sourcelist) {
+            /* Check if we're on the left position of a subinfo */
+            if (checkForEdge(mousePosition, subInfo.startPercent))
+                return new MouseResult(MouseLocation.LEFT, isSelected, subInfo);
+            /* Check if we're on the right position of a subinfo */
+            if (checkForEdge(mousePosition, subInfo.endPercent))
+                return new MouseResult(MouseLocation.RIGHT, isSelected, subInfo);
+            /* At the end check if we're in the center of a subinfo */
+            double currentPercent = (double) mousePosition / getWidth();
+            if (currentPercent >= subInfo.startPercent && currentPercent <= subInfo.endPercent)
+                return new MouseResult(MouseLocation.IN, isSelected, subInfo);
+        }
+        return new MouseResult(MouseLocation.OUT, isSelected, null);
     }
 
     /* Just a plain routine to check if the clicked position is near the edge of a subinfo */
-    private boolean checkForEdge(double edge) {
-        int pixeledge = (int) (edge * getWidth());
-        return (X_position >= (pixeledge - 1) && X_position <= (pixeledge + 1));
+    private boolean checkForEdge(int mousePosition, double subTimeEdge) {
+        int edgeInPixel = (int) (subTimeEdge * getWidth());
+        return Math.abs(edgeInPixel - mousePosition) <= interactionMargin;
     }
 
-    public void mouseStartsDragging(MouseEvent e) {
-        if (e.getButton() != MouseEvent.BUTTON1)
-            return;
-        if (current_action == NONE)
-            return;
-        if (!updateX(e.getX()))
-            return;
-
-        /* The control button is used to determine if the selection will be inverted or not */
-        keep_selection_list_on_mouseup = ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0);
-
-        /* First check that we have clicked on an already selected subinfo */
-        selection_mode = findAction();
-        /* If nothing was found, exit */
-        if (selection_mode == NONE)
-            return;
-
-        last_subinfo_was_selected = (selection_mode & SELECTED_GROUP) > 0;  // Check if last selected sub is already selected
-
-        if (!last_subinfo_was_selected) {   // Found a click on a non selected subtitle
-            ignore_new_selection_list = true;
-            if (!keep_selection_list_on_mouseup)
-                sellist.clear();
-            sellist.add(last_selected_subinfo);
-            windowHasChanged(null);
-            ignore_new_selection_list = false;
+    private double getOffsetTime() {
+        double offset_time = Double.MAX_VALUE;
+        double current;
+        /* Find minimum value first */
+        for (SubInfo subInfo : selectedList) {
+            current = subInfo.startPercent;
+            if (current < offset_time)
+                offset_time = current;
         }
-
-        selection_mode = selection_mode & NOGROUP_MASK;
-        /* If resizing is performed, find the central point */
-        if (selection_mode == RESIZERIGHT) {
-            central_point = Double.MAX_VALUE;
-            for (SubInfo inf : sellist)
-                if (central_point > inf.start)
-                    central_point = inf.start;
-        } else {
-            central_point = Double.MIN_VALUE;
-            for (SubInfo inf : sellist)
-                if (central_point < inf.end)
-                    central_point = inf.end;
-        }
-
-        calcOverlaps();
-        repaint();
-    }
-
-    public void mouseStillDragging(MouseEvent e) {
-        if (selection_mode == NONE)
-            return;
-
-        /* Here we deal this problem: when the user clicks on a subtitle we don't know yet if he
-         * only wants to select it or to move/resize it also. For this reason we always think that
-         * at the beginning he only wants to select it (selection_mode=SELECT). *IF* we come here,
-         * it means that he wants to move/resize it.
-         * So, if the selction is "select", we have to change it into something "useful" (either exit,
-         * if move is not supported, or MOVE if move is supported) */
-        if (selection_mode == SELECT) {
-            /* If the current action mode is select or resize (while the selection mode is select), then no dragging should be performed */
-            if (current_action == SELECT_ACTION || current_action == RESIZE_ACTION)
-                return;
-            selection_mode = MOVE;
-            setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-        }
-
-        /* Forget original selection object since a movement has been performed */
-        last_selected_subinfo = null;
-
-        if (selection_mode == MOVE) {
-            double dt = ((double) (e.getX() - X_position)) / getWidth();
-            for (SubInfo inf : sellist) {
-                inf.start += dt;
-                inf.end += dt;
-            }
-            if (!updateX(e.getX()))
-                return;
-        } else { /* Selection mode resize */
-            double factor = (e.getX() - central_point * getWidth()) / ((double) X_position - central_point * getWidth());
-            double dstart = central_point * (1d - factor);
-            for (SubInfo inf : sellist) {
-                inf.start = inf.start * factor + dstart;
-                inf.end = inf.end * factor + dstart;
-                if (inf.start > inf.end) {
-                    double buffer = inf.start;
-                    inf.start = inf.end;
-                    inf.end = buffer;
-                }
-            }
-            updateX(e.getX());
-        }
-        calcOverlaps();
-        repaint();
-        wave.repaint();
-        preview.updateSelectedTime();
-    }
-
-    public void mouseStopsDragging(MouseEvent e) {
-        if (selection_mode == NONE)
-            return;
-
-        /**
-         * Use this method to clear the selection list - if necessary. These
-         * actions are performed ONLY when a selection has been performed and
-         * NOT when a dragging has been done (eg. resize/move). We can check
-         * this if last_selected_subinfo is null
-         */
-        if (last_selected_subinfo != null)
-            if (keep_selection_list_on_mouseup) {
-                if (last_subinfo_was_selected)
-                    sellist.remove(last_selected_subinfo);
-            } else {
-                sellist.clear();
-                sellist.add(last_selected_subinfo);
-            }
-
-        /* Find the actual selected subtitles for the main subtitle window */
-        int sel[] = new int[sellist.size()];
-        for (int i = 0; i < sel.length; i++)
-            sel[i] = sellist.get(i).pos;
-
-        /* Try to reposition the selected subtitles */
-        if (last_selected_subinfo == null) {  // A move has been performed, the subtitles have been changed
-
-            /* Find subtitle offset (if someone is below zero, add an offset so that everything owuld be positive) */
-            double offset_time = Double.MAX_VALUE;
-            double current;
-            /* Find minimum value first */
-            for (int i = 0; i < sellist.size(); i++) {
-                current = sellist.get(i).start;
-                if (current < offset_time)
-                    offset_time = current;
-            }
-            /* Convert gui positioning into absolute time */
-            offset_time = view.getStart() + view.getDuration() * offset_time;
-            /* If the time is negative, offset is added */
-            if (offset_time < 0)
-                offset_time = -offset_time;
-            else /* or else, keep it in place */
-                offset_time = 0;
-
-            SubEntry entry;
-            SubInfo info;
-            /* Create an undo entry */
-            parent.getUndoList().addUndo(new UndoEntry(parent.getSubtitles(), "Subtitle time changes"));
-            for (int i = 0; i < sellist.size(); i++) {
-                info = sellist.get(i);  /* get the information for this selected subtitle */
-
-                entry = parent.getSubtitles().elementAt(info.pos);  /* get the actual subtitle */
-                /* Set new times */
-                entry.setStartTime(new Time(view.getStart() + view.getDuration() * info.start + offset_time));
-                entry.setFinishTime(new Time(view.getStart() + view.getDuration() * info.end + offset_time));
-            }
-        }
-
-        selection_mode = NONE;
-        /* The visual changes will come as a callback from the JubFrame event dispach of the chaneg subtitles */
-        //ignore_new_selection_list = true;
-        parent.setSelectedSub(sel, true);
-        //ignore_new_selection_list = false;
+        /* Convert gui positioning into absolute time */
+        offset_time = view.getStart() + view.getDuration() * offset_time;
+        /* If the time is negative, offset is added */
+        if (offset_time < 0)
+            offset_time = -offset_time;
+        else /* or else, keep it in place */
+            offset_time = 0;
+        return offset_time;
     }
 
     @Override
@@ -404,16 +287,15 @@ public class JSubTimeline extends JPanel {
      * subtitles. No changes to the displayed subtitles will be performed
      */
     private void selectionHasChanged(int[] subid) {
-        if (ignore_new_selection_list)
-            return;
         /* Keep old selections, if we don't provide new */
         if (subid == null) {
-            subid = new int[sellist.size()];
+            subid = new int[selectedList.size()];
             for (int i = 0; i < subid.length; i++)
-                subid[i] = sellist.get(i).pos;
+                subid[i] = selectedList.get(i).pos;
         }
+
         /* Calculate new selections */
-        sellist.clear();
+        selectedList.clear();
         SubEntry entry;
         double cstart, cend;
         Subtitles subs = parent.getSubtitles();
@@ -421,40 +303,40 @@ public class JSubTimeline extends JPanel {
         double vduration = view.getDuration();
 
         int where;
-        for (int i = 0; i < subid.length; i++) {
-            entry = subs.elementAt(subid[i]);
+        for (int j : subid) {
+            entry = subs.elementAt(j);
             cstart = entry.getStartTime().toSeconds();
             cend = entry.getFinishTime().toSeconds();
             cstart -= vstart;
             cstart /= vduration;
             cend -= vstart;
             cend /= vduration;
-            sellist.add(new SubInfo(subid[i], cstart, cend));
-            if ((where = findInList(vislist, subid[i])) >= 0)
-                vislist.remove(where);
+            selectedList.add(new SubInfo(j, cstart, cend));
+            if ((where = findInList(remaininglist, j)) >= 0)
+                remaininglist.remove(where);
         }
     }
 
     public double getSelectionStart() {
         double sel = 0;
-        if (sellist.size() > 0)
-            sel = sellist.get(0).start;
+        if (!selectedList.isEmpty())
+            sel = selectedList.get(0).startPercent;
         return view.getStart() + view.getDuration() * sel;
     }
 
     public double getSelectionEnd() {
         double sel = 0;
-        if (sellist.size() > 0)
-            sel = sellist.get(sellist.size() - 1).end;
+        if (!selectedList.isEmpty())
+            sel = selectedList.get(selectedList.size() - 1).endPercent;
         return view.getStart() + view.getDuration() * sel;
     }
 
     /**
-     * Use this methid to inform that the visible window has been changed AND/OR
+     * Use this method to inform that the visible window has been changed AND/OR
      * the selection has been changed
      */
     public void windowHasChanged(int[] subid) {
-        vislist.clear();
+        remaininglist.clear();
 
         selectionHasChanged(subid);
         /* First find all elemets that are inside this time period */
@@ -469,12 +351,12 @@ public class JSubTimeline extends JPanel {
             cstart = entry.getStartTime().toSeconds();
             cend = entry.getFinishTime().toSeconds();
 
-            if (cstart < (vstart + vduration) && cend > vstart && findInList(sellist, i) == -1) {
+            if (cstart < (vstart + vduration) && cend > vstart && findInList(selectedList, i) == -1) {
                 cstart -= vstart;
                 cstart /= vduration;
                 cend -= vstart;
                 cend /= vduration;
-                vislist.add(new SubInfo(i, cstart, cend));
+                remaininglist.add(new SubInfo(i, cstart, cend));
             }
         }
 
@@ -482,7 +364,7 @@ public class JSubTimeline extends JPanel {
         repaint();
     }
 
-    private int findInList(ArrayList<SubInfo> list, int i) {
+    private static int findInList(List<SubInfo> list, int i) {
         for (int j = 0; j < list.size(); j++)
             if (list.get(j).pos == i)
                 return j;
@@ -496,40 +378,40 @@ public class JSubTimeline extends JPanel {
         /* Find overlaps */
         SubInfo pointer;
 
-        for (int i = 0; i < vislist.size(); i++) {
-            pointer = vislist.get(i);
-            ostart = pointer.start;
-            oend = pointer.end;
+        for (int i = 0; i < remaininglist.size(); i++) {
+            pointer = remaininglist.get(i);
+            ostart = pointer.startPercent;
+            oend = pointer.endPercent;
 
             /* Check for overlaps between visible list and itselft */
-            for (int j = i + 1; j < vislist.size(); j++) {
-                pointer = vislist.get(j);
-                cstart = pointer.start;
-                cend = pointer.end;
+            for (int j = i + 1; j < remaininglist.size(); j++) {
+                pointer = remaininglist.get(j);
+                cstart = pointer.startPercent;
+                cend = pointer.endPercent;
                 if (cstart < oend && cend > ostart)
                     overlaps.add(new SubInfo(-1, Math.max(ostart, cstart), Math.min(oend, cend)));
             }
 
             /* Check for overlaps between visible list and selected list */
-            for (int j = 0; j < sellist.size(); j++) {
-                pointer = sellist.get(j);
-                cstart = pointer.start;
-                cend = pointer.end;
+            for (SubInfo subInfo : selectedList) {
+                pointer = subInfo;
+                cstart = pointer.startPercent;
+                cend = pointer.endPercent;
                 if (cstart < oend && cend > ostart)
                     overlaps.add(new SubInfo(-1, Math.max(ostart, cstart), Math.min(oend, cend)));
             }
         }
 
         /* Check for overlaps between selected list and itselft */
-        for (int i = 0; i < sellist.size(); i++) {
-            pointer = sellist.get(i);
-            ostart = pointer.start;
-            oend = pointer.end;
+        for (int i = 0; i < selectedList.size(); i++) {
+            pointer = selectedList.get(i);
+            ostart = pointer.startPercent;
+            oend = pointer.endPercent;
 
-            for (int j = i + 1; j < sellist.size(); j++) {
-                pointer = sellist.get(j);
-                cstart = pointer.start;
-                cend = pointer.end;
+            for (int j = i + 1; j < selectedList.size(); j++) {
+                pointer = selectedList.get(j);
+                cstart = pointer.startPercent;
+                cend = pointer.endPercent;
                 if (cstart < oend && cend > ostart)
                     overlaps.add(new SubInfo(-1, Math.max(ostart, cstart), Math.min(oend, cend)));
             }
@@ -537,7 +419,7 @@ public class JSubTimeline extends JPanel {
     }
 
     public double getCenterOfSelection() {
-        if (sellist.size() == 0)
+        if (selectedList.isEmpty())
             return view.getStart() + view.getDuration() / 2d;
 
         double min = Double.MAX_VALUE;
@@ -545,8 +427,8 @@ public class JSubTimeline extends JPanel {
         Subtitles subs = parent.getSubtitles();
         SubEntry entry;
         double cstart, cend;
-        for (int i = 0; i < sellist.size(); i++) {
-            entry = subs.elementAt(sellist.get(i).pos);
+        for (SubInfo subInfo : selectedList) {
+            entry = subs.elementAt(subInfo.pos);
             cstart = entry.getStartTime().toSeconds();
             cend = entry.getFinishTime().toSeconds();
             if (min > cstart)
@@ -567,43 +449,59 @@ public class JSubTimeline extends JPanel {
 
         g.setColor(SubColor);
         /* First draw unselected subs */
-        for (int i = 0; i < vislist.size(); i++) {
-            inf = vislist.get(i);
-            g.fill3DRect((int) (inf.start * width), 0, (int) ((inf.end - inf.start) * width), height, true);
+        for (SubInfo subInfo : remaininglist) {
+            inf = subInfo;
+            g.fill3DRect((int) (inf.startPercent * width), 0, (int) ((inf.endPercent - inf.startPercent) * width), height, true);
         }
 
         g.setColor(SelectColor);
         /* Then draw selected subs */
-        for (int i = 0; i < sellist.size(); i++) {
-            inf = sellist.get(i);
+        for (SubInfo subInfo : selectedList) {
+            inf = subInfo;
             double sstart, send;
-            if (inf.start > inf.end) {
-                sstart = inf.end;
-                send = inf.start;
+            if (inf.startPercent > inf.endPercent) {
+                sstart = inf.endPercent;
+                send = inf.startPercent;
             } else {
-                sstart = inf.start;
-                send = inf.end;
+                sstart = inf.startPercent;
+                send = inf.endPercent;
             }
             g.fill3DRect((int) (sstart * width), 0, (int) ((send - sstart) * width), height, false);
         }
 
         /* At the end draw overlaps */
         g.setColor(OverlapColor);
-        for (int i = 0; i < overlaps.size(); i++) {
-            inf = overlaps.get(i);
-            g.fillRect((int) (inf.start * width), 0, (int) ((inf.end - inf.start) * width), height);
+        for (SubInfo overlap : overlaps) {
+            inf = overlap;
+            g.fillRect((int) (inf.startPercent * width), 0, (int) ((inf.endPercent - inf.startPercent) * width), height);
         }
     }
 
-    class SubInfo {
+    static class SubInfo {
 
-        int pos;
-        double start, end;
+        final int pos;
+        double startPercent, endPercent;
+        private final double initialStartPercent, initialEndPercent;
 
         public SubInfo(int p, double s, double e) {
             pos = p;
-            start = s;
-            end = e;
+            startPercent = initialStartPercent = s;
+            endPercent = initialEndPercent = e;
+        }
+
+        public void setDeltaPercent(double delta) {
+            startPercent = initialStartPercent + delta;
+            endPercent = initialEndPercent + delta;
+        }
+
+        public void setProportionalDelta(double factor, double start) {
+            startPercent = initialStartPercent * factor + start;
+            endPercent = initialEndPercent * factor + start;
+            if (startPercent > endPercent) {
+                double buffer = startPercent;
+                startPercent = endPercent;
+                endPercent = buffer;
+            }
         }
     }
 }
