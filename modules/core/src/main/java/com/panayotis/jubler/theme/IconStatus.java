@@ -16,7 +16,7 @@ public enum IconStatus {
     NORMAL(null),
     PRESSED(new PressedIconFilter()),
     ROLLOVER(new RolloverIconFilter()),
-    ERROR(new TintIconFilter(Color.red)),
+    ERROR(new TintIconFilter(new Color(255, 40, 40))),
     MONOCHROME(new MonochromeFilter()),
     SELECTED_PEN(new SelectedPenIconFilter()),
     PINK(new ColorIconFilter(Color.pink)),

@@ -43,7 +43,7 @@ import static com.panayotis.jubler.time.gui.JTimeSpinner.*;
 
 public final class JSubEditor extends JPanel implements StyleChangeListener, DocumentListener, PropertyChangeListener {
 
-    public final static ImageIcon Lock[];
+    public final static ImageIcon[] Lock;
 
     private final static ImageIcon NewlineI = Theme.loadIcon("newline");
     private final static ImageIcon NewlineI_E = Theme.loadIcon(NewlineI, IconStatus.ERROR);
@@ -54,8 +54,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private final static ImageIcon FILLI = Theme.loadIcon("fill");
     private final static ImageIcon FILLI_E = Theme.loadIcon(FILLI, IconStatus.ERROR);
 
-    private final static Color INFOC = EnhancerManager.getDefault().isDarkTheme() ? Color.WHITE : Color.BLACK;
-    private final static Color INFOC_E = new Color(253, 0, 0);
+    private final static Color INFOC = UIUtils.getThemeVariation().isDark() ? Color.WHITE : Color.BLACK;
+    private final static Color INFOC_E = new Color(255, 84, 53);
 
     private static final String TOOLTIP = "<b>" + __("How to navigate with keyboard") + "</b><br/>"
             + "- " + __("Change focus from Text area to Editor with {0}+D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_MASK, true).trim()) + "<br/>"
@@ -621,7 +621,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeLock.add(Lock1);
         Lock1.setIcon(Theme.loadIcon("lock"));
-        Lock1.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" +__( "Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
+        Lock1.setToolTipText(UIUtils.isTimestampTooltipsDisabled() ? null : "<html>" + __("Lock the start time of the subtitle") + "<br/><br/>" + TOOLTIP + "</html>");
         Lock1.setMargin(new java.awt.Insets(1, 1, 1, 1));
         SystemDependent.setCommandButtonStyle(Lock1, "only");
         Lock1.addActionListener(new java.awt.event.ActionListener() {
@@ -676,7 +676,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jScrollPane1.setPreferredSize(new java.awt.Dimension(203, 70));
 
         SubText.setBackground(javax.swing.UIManager.getDefaults().getColor("TextArea.foreground"));
-        SubText.setFont(SubText.getFont().deriveFont(SubText.getFont().getStyle() | java.awt.Font.BOLD, SubText.getFont().getSize()+1));
+        SubText.setFont(SubText.getFont().deriveFont(SubText.getFont().getStyle() | java.awt.Font.BOLD, SubText.getFont().getSize() + 1));
         SubText.setPreferredSize(new java.awt.Dimension(200, 30));
         SubText.addCaretListener(new javax.swing.event.CaretListener() {
             public void caretUpdate(javax.swing.event.CaretEvent evt) {
@@ -884,7 +884,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         add(StyleP, java.awt.BorderLayout.SOUTH);
 
-        crossP.setBackground(FlatLaf.isLafDark() ? new Color(96, 79, 32) : new Color(244,227,174));
+        crossP.setBackground(FlatLaf.isLafDark() ? new Color(96, 79, 32) : new Color(244, 227, 174));
         crossP.setLayout(new java.awt.BorderLayout());
 
         crossmobileL.setIcon(Theme.loadIcon("crossmobile"));
@@ -895,7 +895,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
+        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize() - 1f));
         crossinfo.setText(__("more..."));
         crossinfo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

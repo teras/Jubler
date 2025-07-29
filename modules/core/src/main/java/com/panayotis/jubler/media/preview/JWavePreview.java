@@ -7,7 +7,6 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.subs.SubEntry;
