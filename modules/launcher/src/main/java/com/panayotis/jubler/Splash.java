@@ -15,7 +15,7 @@ import java.awt.geom.Arc2D;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
 
-public class Splash extends Frame {
+public class Splash extends JFrame {
 
     private static Splash instance;
 
