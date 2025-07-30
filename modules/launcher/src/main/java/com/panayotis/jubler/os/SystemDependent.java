@@ -77,7 +77,7 @@ public class SystemDependent {
 
     private static final Color background = new Color(228, 228, 228);
 
-    public static boolean shouldSupportScaling() {
+    public static boolean shouldSupportChangeScaling() {
         return !IS_MACOSX;
     }
 

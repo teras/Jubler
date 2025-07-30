@@ -29,16 +29,8 @@ public class JublerTheme implements PluginCollection, PluginItem<JubFrame> {
 
     public static void init() {
         Enhancer e = EnhancerManager.getDefault();
+        e.setProposedSystemScaling(UIUtils.getScaling());
         e.setModernLookAndFeel(UIUtils.getThemeVariation());
-
-        float scaling = UIUtils.getScaling();
-        if (scaling < 0.1) {
-            scaling = SystemDependent.shouldSupportScaling() ? e.getDPI() / 96f : 1;
-            if (scaling < 1)
-                scaling = 1; // Do not scale below 1)
-            UIUtils.setScaling(scaling);
-        }
-        System.setProperty("flatlaf.uiScale", Double.toString(scaling));
         e.blendWindowTitle(true);
 
         e.registerAbout(StaticJubler::showAbout);

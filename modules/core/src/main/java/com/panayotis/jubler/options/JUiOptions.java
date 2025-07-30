@@ -7,7 +7,6 @@
 package com.panayotis.jubler.options;
 
 import com.panayotis.appenh.ThemeVariation;
-import com.panayotis.jubler.options.OptionsHolder;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.theme.Theme;
@@ -28,7 +27,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         initComponents();
         for (ThemeVariation v : ThemeVariation.values())
             themesC.addItem(v);
-        if (!SystemDependent.shouldSupportScaling()) {
+        if (!SystemDependent.shouldSupportChangeScaling()) {
             layoutP.remove(scalingP);
             layoutP.remove(scalingF);
         }
@@ -43,7 +42,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         tooltipsC.setSelected(oldTooltipsDisabled);
         themesC.setSelectedItem(oldThemeVariation);
 
-        if (SystemDependent.shouldSupportScaling()) {
+        if (SystemDependent.shouldSupportChangeScaling()) {
             float scaling = UIUtils.loadScaling();
             if (oldScaling == Float.POSITIVE_INFINITY)
                 oldScaling = scaling;
@@ -59,7 +58,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         UIUtils.saveThemeVariation((ThemeVariation) themesC.getSelectedItem());
         if (oldTooltipsDisabled != tooltipsC.isSelected() || oldThemeVariation != themesC.getSelectedItem())
             shouldShowMessage = true;
-        if (SystemDependent.shouldSupportScaling()) {
+        if (SystemDependent.shouldSupportChangeScaling()) {
             try {
                 float newScaling = Float.parseFloat(scalingFactorT.getText());
                 UIUtils.saveScaling(newScaling);
