@@ -10,8 +10,6 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.DecoderListener;
 import com.panayotis.jubler.options.AutoSaveOptions;
-import com.panayotis.jubler.os.UIUtils;
-import com.panayotis.jubler.subs.JSubEditor;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.theme.Theme;
@@ -209,9 +207,11 @@ public class JSubPreview extends javax.swing.JPanel {
         CursorGroup = new javax.swing.ButtonGroup();
         ToolBar = new javax.swing.JToolBar();
         MaxWave = new javax.swing.JToggleButton();
-        jSeparator1 = new javax.swing.JToolBar.Separator();
+        jSeparator3 = new javax.swing.JToolBar.Separator();
         Select = new javax.swing.JToggleButton();
         Edit = new javax.swing.JToggleButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        Snap = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         AudioPlay = new javax.swing.JToggleButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
@@ -248,7 +248,7 @@ public class JSubPreview extends javax.swing.JPanel {
             }
         });
         ToolBar.add(MaxWave);
-        ToolBar.add(jSeparator1);
+        ToolBar.add(jSeparator3);
 
         CursorGroup.add(Select);
         Select.setIcon(Theme.loadIcon("pointer"));
@@ -272,6 +272,20 @@ public class JSubPreview extends javax.swing.JPanel {
             }
         });
         ToolBar.add(Edit);
+        ToolBar.add(jSeparator1);
+
+        Snap.setIcon(Theme.loadIcon("magnet"));
+        Snap.setSelected(true);
+        Snap.setToolTipText(__("Snap subtitles to edges"));
+        Snap.setFocusable(false);
+        Snap.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        Snap.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        Snap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SnapActionPerformed(evt);
+            }
+        });
+        ToolBar.add(Snap);
         ToolBar.add(jSeparator2);
 
         AudioPlay.setIcon(Theme.loadIcon("playback"));
@@ -408,12 +422,16 @@ public class JSubPreview extends javax.swing.JPanel {
     }//GEN-LAST:event_NewSubActionPerformed
 
     private void SelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectActionPerformed
-        timeline.setAction(false);
+        timeline.setEdit(false);
     }//GEN-LAST:event_SelectActionPerformed
 
     private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
-        timeline.setAction(true);
+        timeline.setEdit(true);
     }//GEN-LAST:event_EditActionPerformed
+
+    private void SnapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SnapActionPerformed
+        timeline.setSnap(Snap.isSelected());
+    }//GEN-LAST:event_SnapActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
@@ -427,6 +445,7 @@ public class JSubPreview extends javax.swing.JPanel {
     public javax.swing.JToggleButton MaxWave;
     public javax.swing.JToggleButton NewSub;
     private javax.swing.JToggleButton Select;
+    private javax.swing.JToggleButton Snap;
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
     private javax.swing.JToolBar ToolBar;
@@ -438,6 +457,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JSplitPane previewSplitPane;
     private javax.swing.JScrollBar slider;
     // End of variables declaration//GEN-END:variables

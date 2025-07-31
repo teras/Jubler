@@ -6,8 +6,6 @@
 
 package com.panayotis.jubler.media.preview;
 
-import com.panayotis.jubler.media.preview.JSubTimeline.SubInfo;
-
 import java.awt.*;
 
 import static java.awt.Cursor.*;
@@ -49,5 +47,26 @@ class MouseResult {
             else
                 component.setCursor(MouseLocation.IN.cursor);
         }
+    }
+}
+
+class SubInfo {
+
+    final int pos;
+    double startPercent, endPercent;
+    private final double initialStartPercent, initialEndPercent;
+
+    public SubInfo(int p, double s, double e) {
+        pos = p;
+        startPercent = initialStartPercent = s;
+        endPercent = initialEndPercent = e;
+    }
+
+    public void setDeltaStartPercent(double delta) {
+        startPercent = initialStartPercent + delta;
+    }
+
+    public void setDeltaEndPercent(double delta) {
+        endPercent = initialEndPercent + delta;
     }
 }

@@ -7,6 +7,7 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.os.ExcludingList;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
@@ -18,7 +19,8 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.panayotis.jubler.media.preview.MouseLocation.OUT;
+import static com.panayotis.jubler.media.preview.MouseLocation.*;
+import static com.panayotis.jubler.os.NumericUtils.areNumbersEqual;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
 public class JSubTimeline extends JPanel {
@@ -27,7 +29,9 @@ public class JSubTimeline extends JPanel {
     public static final Color SubColor = new Color(30, 240, 50);
     public static final Color SelectColor = new Color(20, 140, 255);
     public static final Color OverlapColor = new Color(230, 50, 20);
+
     private static final int interactionMargin = 4;
+    private static final double equalityMargin = 0.0000001;
 
     private final JubFrame parent;
     private JWavePreview wave;
@@ -41,14 +45,17 @@ public class JSubTimeline extends JPanel {
 
     // Whether the use is allowed to edit timings or only select subtitles
     private boolean isEdit = true;
+    // The current mouse action should not exceed the boundaries or an adjacent subtitle
+    private boolean isSnap = true;
     // The correct mouse button is pressed
     private boolean isMouseDown = false;
     // The data has changed and needs to update subtitles when the mouse is released
     private boolean dataHasChanged = false;
     // The original X position: used to determine the move offset and the stretch centerpoint
-    private int onMouseDownPixelPosition;
-    // This variable stored the central point for a resize effect
-    private double centralPoint;
+    private int mouseDownPixels;
+    private double leftSnap;
+    private double rightSnap;
+    private MouseResult current;
 
     /**
      * Creates a new instance of JSubTimeline
@@ -86,12 +93,12 @@ public class JSubTimeline extends JPanel {
 
     public void mousePressed(MouseEvent e) {
         if (e.getButton() != MouseEvent.BUTTON1) return;
-        onMouseDownPixelPosition = e.getX();
+        mouseDownPixels = e.getX();
         isMouseDown = true;
+        current = findAnyAction(mouseDownPixels, true);
 
-        MouseResult mouse = findAnyAction(onMouseDownPixelPosition, true);
         boolean keepSelection = ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0);
-        if (mouse.location == OUT) {
+        if (current.location == OUT) {
             if (!keepSelection && !selectedList.isEmpty()) {
                 remaininglist.addAll(selectedList);
                 selectedList.clear();
@@ -99,41 +106,65 @@ public class JSubTimeline extends JPanel {
                 return; // Nothing to do, no selection and no action
         } else {
             if (keepSelection) {
-                if (mouse.isSelected) {
-                    if (mouse.location == MouseLocation.IN) {
-                        selectedList.remove(mouse.subInfo);
-                        remaininglist.add(mouse.subInfo);
+                if (current.isSelected) {
+                    if (current.location == MouseLocation.IN) {
+                        selectedList.remove(current.subInfo);
+                        remaininglist.add(current.subInfo);
                     }
                 } else {
-                    selectedList.add(mouse.subInfo);
-                    remaininglist.remove(mouse.subInfo);
+                    selectedList.add(current.subInfo);
+                    remaininglist.remove(current.subInfo);
                 }
             } else {
-                if (!mouse.isSelected) {
+                if (!current.isSelected) {
                     remaininglist.addAll(selectedList);
-                    remaininglist.remove(mouse.subInfo);
+                    remaininglist.remove(current.subInfo);
                     selectedList.clear();
-                    selectedList.add(mouse.subInfo);
+                    selectedList.add(current.subInfo);
                 }
             }
+        }
 
-            switch (mouse.location) {
-                case LEFT:
-                    centralPoint = Double.MIN_VALUE;
-                    for (SubInfo inf : selectedList)
-                        if (centralPoint < inf.endPercent)
-                            centralPoint = inf.endPercent;
-                    break;
-                case RIGHT:
-                    centralPoint = Double.MAX_VALUE;
-                    for (SubInfo inf : selectedList)
-                        if (centralPoint > inf.startPercent)
-                            centralPoint = inf.startPercent;
-                    break;
-                default:
-                    centralPoint = Double.NaN;
+        // requires proper initialized selectedList and remainingList
+        leftSnap = 1;
+        rightSnap = 1;
+        if (isSnap) {
+            if (current.location == LEFT) {
+                rightSnap = current.subInfo.endPercent - current.subInfo.startPercent;
+                if (current.subInfo.startPercent < leftSnap)
+                    leftSnap = current.subInfo.startPercent;
+                for (SubInfo other : new ExcludingList<>(current.subInfo, selectedList, remaininglist)) {
+                    double leftDiff = current.subInfo.startPercent - other.endPercent;
+                    if (leftDiff >= 0 && leftDiff < leftSnap)
+                        leftSnap = leftDiff;
+                }
+            } else if (current.location == RIGHT) {
+                leftSnap = current.subInfo.endPercent - current.subInfo.startPercent;
+                if (1d - current.subInfo.endPercent < rightSnap)
+                    rightSnap = 1d - current.subInfo.endPercent;
+                for (SubInfo other : new ExcludingList<>(current.subInfo, selectedList, remaininglist)) {
+                    double rightDiff = other.startPercent - current.subInfo.endPercent;
+                    if (rightDiff >= 0 && rightDiff < rightSnap)
+                        rightSnap = rightDiff;
+                }
+            } else if (current.location == IN) {
+                for (SubInfo sel : selectedList) {
+                    if (sel.startPercent < leftSnap)
+                        leftSnap = sel.startPercent;
+                    if (1d - sel.endPercent < rightSnap)
+                        rightSnap = 1d - sel.endPercent;
+                    for (SubInfo other : remaininglist) {
+                        double leftDiff = sel.startPercent - other.endPercent;
+                        if (leftDiff >= 0 && leftDiff < leftSnap)
+                            leftSnap = leftDiff;
+                        double rightDiff = other.startPercent - sel.endPercent;
+                        if (rightDiff >= 0 && rightDiff < rightSnap)
+                            rightSnap = rightDiff;
+                    }
+                }
             }
         }
+
         repaint();
         wave.repaint();
     }
@@ -144,16 +175,17 @@ public class JSubTimeline extends JPanel {
         dataHasChanged = true;
 
         int currentPixelPosition = e.getX();
-        if (Double.isNaN(centralPoint)) {
-            double dt = ((double) (currentPixelPosition - onMouseDownPixelPosition)) / getWidth();
-            for (SubInfo inf : selectedList)
-                inf.setDeltaPercent(dt);
-        } else {
-            double factor = (currentPixelPosition - centralPoint * getWidth()) / ((double) onMouseDownPixelPosition - centralPoint * getWidth());
-            double start = centralPoint * (1d - factor);
-            for (SubInfo inf : selectedList)
-                inf.setProportionalDelta(factor, start);
-        }
+        double dt = ((double) (currentPixelPosition - mouseDownPixels)) / getWidth();
+        dt = dt < 0 ? Math.max(dt, -leftSnap) : Math.min(dt, rightSnap);
+        if (current.location == IN)
+            for (SubInfo inf : selectedList) {
+                inf.setDeltaStartPercent(dt);
+                inf.setDeltaEndPercent(dt);
+            }
+        else if (current.location == LEFT)
+            current.subInfo.setDeltaStartPercent(dt);
+        else if (current.location == RIGHT)
+            current.subInfo.setDeltaEndPercent(dt);
         calcOverlaps();
         repaint();
         wave.repaint();
@@ -163,7 +195,9 @@ public class JSubTimeline extends JPanel {
     public void mouseReleased(MouseEvent e) {
         if (e.getButton() != MouseEvent.BUTTON1) return;
         findAnyAction(e.getX(), false);
-        onMouseDownPixelPosition = -1;
+        mouseDownPixels = -1;
+        leftSnap = -1;
+        rightSnap = -1;
         isMouseDown = false;
 
         /* Find the actual selected subtitles for the main subtitle window */
@@ -193,8 +227,12 @@ public class JSubTimeline extends JPanel {
         parent.setSelectedSub(sel, true);
     }
 
-    public void setAction(boolean isEdit) {
+    public void setEdit(boolean isEdit) {
         this.isEdit = isEdit;
+    }
+
+    public void setSnap(boolean isSnap) {
+        this.isSnap = isSnap;
     }
 
     public void setWavePreview(JWavePreview wave) {
@@ -233,12 +271,18 @@ public class JSubTimeline extends JPanel {
      */
     private MouseResult findAction(List<SubInfo> sourcelist, int mousePosition, boolean isSelected) {
         for (SubInfo subInfo : sourcelist) {
+            /* Check if we're on the right position of a subinfo */
+            if (checkForEdge(mousePosition, subInfo.endPercent)) {
+                // One more check if this subtitle is zero sized, then, if it is not expandable on the right, expand it on the left no matter what.
+                if (areNumbersEqual(subInfo.startPercent, subInfo.endPercent, equalityMargin))
+                    for (SubInfo other : new ExcludingList<>(subInfo, selectedList, remaininglist))
+                        if (areNumbersEqual(subInfo.endPercent, other.startPercent, equalityMargin))
+                            return new MouseResult(MouseLocation.LEFT, isSelected, subInfo);
+                return new MouseResult(MouseLocation.RIGHT, isSelected, subInfo);
+            }
             /* Check if we're on the left position of a subinfo */
             if (checkForEdge(mousePosition, subInfo.startPercent))
                 return new MouseResult(MouseLocation.LEFT, isSelected, subInfo);
-            /* Check if we're on the right position of a subinfo */
-            if (checkForEdge(mousePosition, subInfo.endPercent))
-                return new MouseResult(MouseLocation.RIGHT, isSelected, subInfo);
             /* At the end check if we're in the center of a subinfo */
             double currentPercent = (double) mousePosition / getWidth();
             if (currentPercent >= subInfo.startPercent && currentPercent <= subInfo.endPercent)
@@ -474,34 +518,6 @@ public class JSubTimeline extends JPanel {
         for (SubInfo overlap : overlaps) {
             inf = overlap;
             g.fillRect((int) (inf.startPercent * width), 0, (int) ((inf.endPercent - inf.startPercent) * width), height);
-        }
-    }
-
-    static class SubInfo {
-
-        final int pos;
-        double startPercent, endPercent;
-        private final double initialStartPercent, initialEndPercent;
-
-        public SubInfo(int p, double s, double e) {
-            pos = p;
-            startPercent = initialStartPercent = s;
-            endPercent = initialEndPercent = e;
-        }
-
-        public void setDeltaPercent(double delta) {
-            startPercent = initialStartPercent + delta;
-            endPercent = initialEndPercent + delta;
-        }
-
-        public void setProportionalDelta(double factor, double start) {
-            startPercent = initialStartPercent * factor + start;
-            endPercent = initialEndPercent * factor + start;
-            if (startPercent > endPercent) {
-                double buffer = startPercent;
-                startPercent = endPercent;
-                endPercent = buffer;
-            }
         }
     }
 }
