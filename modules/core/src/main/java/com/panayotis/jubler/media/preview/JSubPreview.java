@@ -25,6 +25,10 @@ public class JSubPreview extends javax.swing.JPanel {
 
     public final static Icon[] cursors;
 
+    private static final String BASIC_KEYBOARD = __("Hold Shift to select up to the selected subtitle") + "\n" +
+            __("Hold Ctrl to select multiple subtitles");
+    private static final String SNAP_KEYBOARD = __("Hold Alt to skip snapping and freely move subtitles");
+
     static {
         cursors = new Icon[4];
         cursors[0] = Theme.loadIcon("auto");
@@ -252,7 +256,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
         CursorGroup.add(Select);
         Select.setIcon(Theme.loadIcon("pointer"));
-        Select.setToolTipText(__("Select subtitles only"));
+        Select.setToolTipText(__("Select subtitles only") + "\n" + BASIC_KEYBOARD);
         Select.setFocusable(false);
         Select.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,7 +268,7 @@ public class JSubPreview extends javax.swing.JPanel {
         CursorGroup.add(Edit);
         Edit.setIcon(Theme.loadIcon("move"));
         Edit.setSelected(true);
-        Edit.setToolTipText(__("Automatically perform operation depending on the mouse position"));
+        Edit.setToolTipText(__("Automatically perform operation depending on the mouse position") + "\n" + BASIC_KEYBOARD);
         Edit.setFocusable(false);
         Edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -276,7 +280,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
         Snap.setIcon(Theme.loadIcon("magnet"));
         Snap.setSelected(true);
-        Snap.setToolTipText(__("Snap subtitles to edges"));
+        Snap.setToolTipText(__("Snap subtitles to edges") + "\n" + SNAP_KEYBOARD);
         Snap.setFocusable(false);
         Snap.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         Snap.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
