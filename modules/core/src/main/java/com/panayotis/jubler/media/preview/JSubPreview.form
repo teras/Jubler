@@ -70,7 +70,7 @@
               <Connection code="Theme.loadIcon(&quot;pointer&quot;)" type="code"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="__(&quot;Select subtitles only&quot;)" type="code"/>
+              <Connection code="__(&quot;Select subtitles only&quot;) + &quot;\n&quot; + BASIC_KEYBOARD" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
@@ -88,7 +88,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="__(&quot;Automatically perform operation depending on the mouse position&quot;)" type="code"/>
+              <Connection code="__(&quot;Automatically perform operation depending on the mouse position&quot;) + &quot;\n&quot; + BASIC_KEYBOARD" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
           </Properties>
@@ -105,7 +105,7 @@
             </Property>
             <Property name="selected" type="boolean" value="true"/>
             <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="__(&quot;Snap subtitles to edges&quot;)" type="code"/>
+              <Connection code="__(&quot;Snap subtitles to edges&quot;) + &quot;\n&quot; + SNAP_KEYBOARD" type="code"/>
             </Property>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>

@@ -176,7 +176,9 @@ public class JSubTimeline extends JPanel {
 
         int currentPixelPosition = e.getX();
         double dt = ((double) (currentPixelPosition - mouseDownPixels)) / getWidth();
-        dt = dt < 0 ? Math.max(dt, -leftSnap) : Math.min(dt, rightSnap);
+        boolean noSnap = ((e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) != 0);
+        if (!noSnap)
+            dt = dt < 0 ? Math.max(dt, -leftSnap) : Math.min(dt, rightSnap);
         if (current.location == IN)
             for (SubInfo inf : selectedList) {
                 inf.setDeltaStartPercent(dt);
