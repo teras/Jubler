@@ -1,71 +1,91 @@
-/*
- * (c) 2005-2023 by Panayotis Katsaloulis
- * SPDX-License-Identifier: AGPL-3.0-only
- * This file is part of Jubler.
- */
-
 package com.panayotis.jubler.os;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import javax.crypto.*;
+import javax.crypto.spec.*;
+import java.security.*;
 import java.util.Base64;
 
+/**
+ * Utility class for AES-GCM encryption/decryption using a password.
+ * - Uses PBKDF2WithHmacSHA256 to derive a strong AES key from a password.
+ * - Generates a random salt (16 bytes) and IV (12 bytes) per encryption.
+ * - Prepends salt + IV to the ciphertext for storage.
+ * - Output is Base64-encoded for convenient storage or transmission.
+ */
 public class Encryption {
-    private static final String ALGORITHM = "AES";
 
-    public static byte[] encryptKey(String decryptedKey, String password) {
-        if (decryptedKey.isEmpty() || password.isEmpty()) return null;
-        try {
-            Key ssKey = new SecretKeySpec(getMD5Checksum(password).getBytes(StandardCharsets.UTF_8), ALGORITHM);
-            Cipher c = Cipher.getInstance(ALGORITHM);
-            c.init(Cipher.ENCRYPT_MODE, ssKey);
-            return c.doFinal(decryptedKey.getBytes(StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            return null;
-        }
+    /**
+     * Derives a 256-bit AES key from a password and salt using PBKDF2.
+     *
+     * @param password the user-provided password
+     * @param salt     the random salt (16 bytes recommended)
+     * @return SecretKeySpec suitable for AES
+     */
+    private static SecretKeySpec deriveKey(String password, byte[] salt) throws Exception {
+        // 65,536 iterations, 256-bit key
+        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+        SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        return new SecretKeySpec(f.generateSecret(spec).getEncoded(), "AES");
     }
 
-    public static String getDecryptedKey(byte[] encryptedKey, String password) {
-        if (encryptedKey == null || encryptedKey.length == 0 || password.isEmpty()) return "";
-        try {
-            Key ssKey = new SecretKeySpec(getMD5Checksum(password).getBytes(StandardCharsets.UTF_8), ALGORITHM);
-            Cipher c = Cipher.getInstance(ALGORITHM);
-            c.init(Cipher.DECRYPT_MODE, ssKey);
-            byte[] decr = c.doFinal(encryptedKey);
-            return new String(decr);
-        } catch (Exception e) {
-            return "";
-        }
+    /**
+     * Encrypts plaintext with AES-256-GCM using a password.
+     * <p>
+     * Output format (Base64-encoded): [16-byte salt][12-byte IV][ciphertext...]
+     *
+     * @param plaintext the text to encrypt
+     * @param password  the password to derive the key
+     * @return Base64 string containing salt + IV + ciphertext
+     */
+    public static String encrypt(String plaintext, String password) throws Exception {
+        // Generate random 16-byte salt and 12-byte IV
+        byte[] salt = new byte[16], iv = new byte[12];
+        SecureRandom r = new SecureRandom();
+        r.nextBytes(salt);
+        r.nextBytes(iv);
+
+        // Initialize AES/GCM cipher
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.ENCRYPT_MODE, deriveKey(password, salt), new GCMParameterSpec(128, iv));
+
+        // Perform encryption
+        byte[] ciphertext = cipher.doFinal(plaintext.getBytes("UTF-8"));
+
+        // Combine salt + IV + ciphertext into a single byte array
+        byte[] output = new byte[salt.length + iv.length + ciphertext.length];
+        System.arraycopy(salt, 0, output, 0, salt.length);
+        System.arraycopy(iv, 0, output, salt.length, iv.length);
+        System.arraycopy(ciphertext, 0, output, salt.length + iv.length, ciphertext.length);
+
+        // Return as Base64 for safe storage/transmission
+        return Base64.getEncoder().encodeToString(output);
     }
 
-    public static String getMD5Checksum(String input) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] hashInBytes = md.digest(input.getBytes());
+    /**
+     * Decrypts a Base64-encoded AES-256-GCM message produced by encrypt().
+     *
+     * @param base64Ciphertext the Base64 string containing [salt][IV][ciphertext]
+     * @param password         the password to derive the key
+     * @return the original plaintext string
+     */
+    public static String decrypt(String base64Ciphertext, String password) throws Exception {
+        byte[] allBytes = Base64.getDecoder().decode(base64Ciphertext);
 
-            // bytes to hex
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashInBytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
+        // Extract components
+        byte[] salt = new byte[16];
+        byte[] iv = new byte[12];
+        byte[] ciphertext = new byte[allBytes.length - salt.length - iv.length];
 
-        } catch (NoSuchAlgorithmException e) {
-            // MD5 should always be available
-            throw new RuntimeException("MD5 algorithm not available", e);
-        }
+        System.arraycopy(allBytes, 0, salt, 0, salt.length);
+        System.arraycopy(allBytes, salt.length, iv, 0, iv.length);
+        System.arraycopy(allBytes, salt.length + iv.length, ciphertext, 0, ciphertext.length);
+
+        // Initialize AES/GCM cipher for decryption
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.DECRYPT_MODE, deriveKey(password, salt), new GCMParameterSpec(128, iv));
+
+        // Decrypt and return plaintext
+        byte[] plaintextBytes = cipher.doFinal(ciphertext);
+        return new String(plaintextBytes, "UTF-8");
     }
-
-    public static String base64Encode(byte[] data) {
-        return Base64.getEncoder().encodeToString(data);
-    }
-
-    public static byte[] base64Decode(String data) {
-        return Base64.getDecoder().decode(data);
-    }
-
 }

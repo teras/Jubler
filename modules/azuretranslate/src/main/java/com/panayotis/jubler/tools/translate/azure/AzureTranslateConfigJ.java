@@ -11,26 +11,22 @@ import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
-import static com.panayotis.jubler.os.Encryption.encryptKey;
-import static com.panayotis.jubler.os.Encryption.getDecryptedKey;
 
 public class AzureTranslateConfigJ extends javax.swing.JDialog {
     private static final String HELP = "<html><body>" + __("In order to use Azure Translation service, you need to provide some parameters.\nFor more info see here: %1\n\nNote:\nPin is not saved and needed to be provided every time you launch Jubler.\nIt is needed to encrypt your Azure key.").replace("%1", "<a href=\"https://www.jubler.org/azure.html\">https://www.jubler.org/azure.html</a>").replace("\n", "<br/>") + "</body></html>";
 
     private boolean acceptIsSelected = false;
-    private byte[] encryptedKey;
+    private boolean keyWasEntered = false;
 
     /**
      * Creates new form AzureTranslateConfigJ
      */
-    public AzureTranslateConfigJ(Frame parent, String url, byte[] encryptedKey, String region, String password) {
+    public AzureTranslateConfigJ(Frame parent, String url, String region) {
         super(parent);
         initComponents();
         baseUrlTF.setText(url);
-        keyTF.setText(getDecryptedKey(encryptedKey, password));
-        this.encryptedKey = encryptedKey;
+        keyTF.setText("****************");
         regionTF.setText(region);
-        passwordTF.setText(password);
         Info.addHyperlinkListener(e -> {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
                 try {
@@ -46,16 +42,23 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         return baseUrlTF.getText().trim();
     }
 
-    public byte[] getEncryptedKey() {
-        return encryptKey(keyTF.getText().trim(), getPassword().trim());
+    public String getEncryptedKey() {
+        return keyTF.getText().trim();
     }
 
     public String getRegion() {
         return regionTF.getText().trim();
     }
 
-    public String getPassword() {
-        return passwordTF.getText().trim();
+    public String requestPassword() {
+        JPasswordField pwd = new JPasswordField();
+
+        String password = JOptionPane.showInputDialog(this, __("Enter your Azure PIN to encrypt/decrypt your key"), __("Azure PIN"), JOptionPane.PLAIN_MESSAGE);
+        if (password == null || password.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, __("PIN is required to encrypt your key"), __("Azure PIN"), JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+        return password.trim();
     }
 
     private String checkValid() {
@@ -65,18 +68,11 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
             return __("Key is too small");
         if (getRegion().length() < 2)
             return __("Region is too small");
-        if (getPassword().length() < 8)
-            return __("Password should be at least 8 characters");
         return null;
     }
 
     public boolean isAccepted() {
         return acceptIsSelected;
-    }
-
-    private void maybeUpdateKey() {
-        if (keyTF.getText().isEmpty())
-            keyTF.setText(getDecryptedKey(encryptedKey, passwordTF.getText()));
     }
 
     /**
@@ -93,14 +89,10 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         baseUrlTF = new javax.swing.JTextField();
         keyTF = new javax.swing.JTextField();
         regionTF = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        passwordTF = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         acceptB = new javax.swing.JButton();
         cancelB = new javax.swing.JButton();
@@ -110,7 +102,7 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 0, 5));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(5, 5, 8, 5));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
         jPanel3.setLayout(new java.awt.GridLayout(0, 1));
@@ -123,10 +115,6 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
 
         jLabel3.setText(__("Region"));
         jPanel3.add(jLabel3);
-        jPanel3.add(jLabel5);
-
-        jLabel4.setText(__("Security password"));
-        jPanel3.add(jLabel4);
 
         jPanel2.add(jPanel3, java.awt.BorderLayout.WEST);
 
@@ -137,14 +125,6 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         jPanel4.add(baseUrlTF);
         jPanel4.add(keyTF);
         jPanel4.add(regionTF);
-        jPanel4.add(jLabel6);
-
-        passwordTF.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                passwordTFKeyTyped(evt);
-            }
-        });
-        jPanel4.add(passwordTF);
 
         jPanel2.add(jPanel4, java.awt.BorderLayout.CENTER);
 
@@ -195,10 +175,6 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_cancelBActionPerformed
 
-    private void passwordTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTFKeyTyped
-        SwingUtilities.invokeLater(() -> maybeUpdateKey());
-    }//GEN-LAST:event_passwordTFKeyTyped
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane Info;
     private javax.swing.JButton acceptB;
@@ -207,16 +183,12 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField keyTF;
-    private javax.swing.JTextField passwordTF;
     private javax.swing.JTextField regionTF;
     // End of variables declaration//GEN-END:variables
 }
