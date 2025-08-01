@@ -4,11 +4,12 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.time.Time;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,6 +26,11 @@ public class Spruce extends AbstractTextSubFormat {
 
     protected Pattern getPattern() {
         return pat;
+    }
+
+    @Override
+    protected Pattern getTestPattern() {
+        return getPattern();
     }
 
     protected SubEntry getSubEntry(Matcher m) {
@@ -46,7 +52,6 @@ public class Spruce extends AbstractTextSubFormat {
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
-        String time = sub.getStartTime().getSeconds().replace(',', ':');
         str.append(sub.getStartTime().getSecondsFrames(FPS));
         str.append(" , ");
         str.append(sub.getFinishTime().getSecondsFrames(FPS));

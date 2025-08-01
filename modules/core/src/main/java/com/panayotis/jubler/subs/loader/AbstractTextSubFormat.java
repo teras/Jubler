@@ -4,9 +4,10 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader;
+package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.subs.SubEntry;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -19,9 +20,7 @@ public abstract class AbstractTextSubFormat extends AbstractGenericTextSubFormat
 
     protected abstract Pattern getPattern();
 
-    protected Pattern getTestPattern() {
-        return getPattern();
-    }
+    protected abstract Pattern getTestPattern();
 
     @Override
     protected boolean isSubtitleCompatible(String input) {
@@ -30,7 +29,7 @@ public abstract class AbstractTextSubFormat extends AbstractGenericTextSubFormat
 
     @Override
     protected Collection<SubEntry> loadSubtitles(String input) {
-        Collection<SubEntry> entries = new ArrayList<SubEntry>();
+        Collection<SubEntry> entries = new ArrayList<>();
         Matcher m = getPattern().matcher(input);
         while (m.find()) {
             SubEntry entry = getSubEntry(m);

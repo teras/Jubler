@@ -4,33 +4,31 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.format;
+package com.panayotis.jubler.subs.loader.format;
 
-import static com.panayotis.jubler.subs.loader.format.StyledFormat.*;
-import static com.panayotis.jubler.subs.style.StyleType.*;
-
-import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.event.StyleoverEvent;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
-import java.util.ArrayList;
-import java.util.HashMap;
+
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
+import static com.panayotis.jubler.subs.loader.format.StyledFormat.*;
+import static com.panayotis.jubler.subs.style.StyleType.*;
+
+public abstract class GenericStyledTextSubFormat extends AbstractTextSubFormat {
 
     /* Get the pattern that matches the style events */
     protected abstract Pattern getStylePattern();
 
-    /* Get the String that matches the seperator between events at the same time position */
+    /* Get the String that matches the separator between events at the same time position */
     protected abstract String getTokenizer();
 
     /* Get the String which introduces and finalizes new event */
@@ -44,12 +42,26 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
     /* The special character that an event has - sometimes the same as getTokenizer */
     protected abstract String getEventMark();
 
+    /* Some styles need a strict open/close implementation, like strict HTML tags.
+       If the subtitle requires such a strict implementation, then provide the opening
+       and closing tags for each style that supports it.
+     */
+    protected abstract Map<String, String> getStylePairs();
+
+    private final Map<String, String> inverseStylePairs;
+
     /* Get the dictionary of the supported styles */
-    protected abstract ArrayList<StyledFormat> getStylesDictionary();
+    protected abstract Collection<StyledFormat> getStylesDictionary();
 
     /* Since ASS/SSA uses OS/2 font metrics, we need to recalculate the font size with a factor */
     protected float getFontFactor() {
         return 1;
+    }
+
+    {
+        inverseStylePairs = new HashMap<>();
+        for (Map.Entry<String, String> pair : getStylePairs().entrySet())
+            inverseStylePairs.put(pair.getValue(), pair.getKey());
     }
 
     @SuppressWarnings("unchecked")
@@ -83,7 +95,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         cols.put(SHADOW, (AlphaColor) entry.getStyle().get(SHADOW));
         AlphaColor ccol;
 
-        ArrayList<StyledFormat> dict = getStylesDictionary();
+        Collection<StyledFormat> dict = getStylesDictionary();
         String tag;
         /* Go through all events */
         for (SubEv se : events) {
@@ -147,12 +159,11 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
 
     @SuppressWarnings("unchecked")
     protected String rebuildSubText(SubEntry entry) {
-        TreeSet<SubEv> events = new TreeSet<SubEv>();
+        TreeSet<SubEv> events = new TreeSet<>();
         AbstractStyleover over;
         StyleoverEvent ev;
 
         entry.cleanupEvents();
-        ArrayList<StyledFormat> dict = getStylesDictionary();
         /* Put all events in a sorted list */
         if (entry.overstyle != null)  // First assure that the overstyle list is not empty
             for (StyledFormat sf : getStylesDictionary()) { // Iterate for every supported format. Note: only supported formats are saved
@@ -198,6 +209,28 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
             }
 
         StringBuilder btxt = new StringBuilder(entry.getText());
+
+        if (!events.isEmpty() && !getStylePairs().isEmpty()) {
+            /* If there are style pairs, then we need to add the opening and closing tags */
+            Set<String> alreadyHandled = new HashSet<>();
+            for (SubEv cev : events) {
+                String tag = cev.value;
+                if (alreadyHandled.contains(tag)) break;
+                String reverse = getStylePairs().get(tag);
+                if (reverse != null) {  // found missing closing tag
+                    events.add(new SubEv(reverse, btxt.length()));
+                    alreadyHandled.add(tag);
+                    alreadyHandled.add(reverse);
+                } else {
+                    String forward = inverseStylePairs.get(tag);
+                    if (forward != null) {
+                        alreadyHandled.add(tag);
+                        alreadyHandled.add(forward);
+                    }
+                }
+            }
+        }
+
         for (SubEv cevent : events) {
             if ((!isEventCompact()) || (!btxt.substring(cevent.start).startsWith(getEventIntro())))
                 btxt.insert(cevent.start, getEventIntro() + getEventFinal());
@@ -235,6 +268,7 @@ public abstract class StyledTextSubFormat extends AbstractTextSubFormat {
         n = zeros.substring(0, length - n.length()) + n;
         return "&H" + n + (trailing_and ? "&" : "");
     }
+
     private final static String zeros = "0000000000000000";
 
     protected static String getDirectionKey(HashMap<String, Direction> dict, Direction dir) {

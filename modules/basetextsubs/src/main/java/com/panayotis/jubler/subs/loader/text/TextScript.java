@@ -4,14 +4,16 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
@@ -24,11 +26,17 @@ public class TextScript extends AbstractTextSubFormat {
     static {
         pat = Pattern.compile(
                 "(?s)(\\d+)" + sp + "(\\d\\d);(\\d\\d);(\\d\\d);(\\d\\d)" + sp
-                + "(\\d\\d);(\\d\\d);(\\d\\d);(\\d\\d)" + sp + "(.*?)" + nl + nl);
+                        + "(\\d\\d);(\\d\\d);(\\d\\d);(\\d\\d)" + sp + "(.*?)" + nl + nl);
     }
 
+    @Override
     protected Pattern getPattern() {
         return pat;
+    }
+
+    @Override
+    protected Pattern getTestPattern() {
+        return getPattern();
     }
 
     protected SubEntry getSubEntry(Matcher m) {

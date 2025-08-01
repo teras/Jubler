@@ -935,9 +935,9 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         subsdelay += value;
         String label = "Sub delay: ";
         if (subsdelay < 0)
-            label += "-" + new Time(-subsdelay).getSeconds();
+            label += "-" + new Time(-subsdelay).getSeconds(',');
         else
-            label += "+" + new Time(subsdelay).getSeconds();
+            label += "+" + new Time(subsdelay).getSeconds(',');
         dtL.setText(label);
     }
 
@@ -947,7 +947,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     }
 
     private void updateTimeDisplay(double time) {
-        TimeL.setText("Time: " + new Time(time).getSeconds());
+        TimeL.setText("Time: " + new Time(time).getSeconds(','));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
