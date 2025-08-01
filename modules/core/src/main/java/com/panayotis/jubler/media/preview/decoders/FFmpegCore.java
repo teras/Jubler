@@ -20,7 +20,7 @@ import java.io.IOException;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
-public final class FFMPEGCore extends NativeDecoderCore {
+public final class FFmpegCore extends NativeDecoderCore {
 
     private final FFMPEG nativeLib = new FFMPEG(this);
     private static boolean library_is_present = false;

@@ -42,7 +42,7 @@ public class YoutubeSubtitles extends AbstractTextSubFormat {
     }
 
     public String getName() {
-        return "Youtube Subtitles";
+        return "YouTube Subtitles";
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {

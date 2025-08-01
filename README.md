@@ -31,7 +31,7 @@ Vista) and Mac OS X (PPC and Intel).
 * Styles are supported (when saving in SubStation formats or SRT).
   These styles are either specific either per subtitle or per character.
 * Translating mode (parent & child editors) is supported
-* Graphical preview of the subtitles using the FFMPEG library.
+* Graphical preview of the subtitles using the FFmpeg library.
   Current frame, waveform preview and waveform listening is supported.
 * Graphically display of subtitles, which can be moved and resized.
 * Play the subtitles file using a video player (mplayer). While in
