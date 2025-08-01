@@ -20,7 +20,7 @@ import com.panayotis.jubler.tools.translate.RequestProperty;
 import com.panayotis.jubler.tools.translate.SimpleWebTranslator;
 
 import javax.swing.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -28,17 +28,20 @@ import static com.panayotis.jubler.i18n.I18N.__;
 public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCollection, PluginItem<AvailTranslators> {
 
     private static final String BASEURL_KEY = "azure.translation.baseurl";
+    private static final String ENCRYPTED_KEY_OLD = "azure.translation.key";
     private static final String ENCRYPTED_KEY_KEY = "azure.translation.enckey";
     private static final String REGION_KEY = "azure.translation.region";
 
     private String baseUrl;
     private String region;
-    private byte[] encryptedKey;
+    private String encryptedKey;
+    private String password;
 
     public AzureJSONTranslator() {
         baseUrl = JublerPrefs.getString(BASEURL_KEY, "");
         region = JublerPrefs.getString(REGION_KEY, "");
-        encryptedKey = new byte[0];
+        encryptedKey = JublerPrefs.getString(ENCRYPTED_KEY_KEY, "");
+        password = "";
     }
 
     @Override
@@ -48,13 +51,25 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
 
     @Override
     public void configure(JFrame parent) {
-        AzureTranslateConfigJ config = new AzureTranslateConfigJ(parent, baseUrl, region);
+        AzureTranslateConfigJ config = new AzureTranslateConfigJ(parent, baseUrl, region, !encryptedKey.isEmpty());
         config.setVisible(true);
         if (config.isAccepted()) {
+            if (password.isEmpty())
+                password = AzureTranslateConfigJ.requestPassword(parent);
+            if (password.isEmpty()) {
+                JOptionPane.showMessageDialog(parent, __("Azure PIN should be provided."), __("Azure PIN"), JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             baseUrl = config.getBaseUrl();
             JublerPrefs.set(BASEURL_KEY, baseUrl);
-//            encryptedKey = config.getEncryptedKey();
-            JublerPrefs.set(ENCRYPTED_KEY_KEY, Encryption.base64Encode(encryptedKey));
+
+            String currentEncKey = config.getEncryptedKey();
+            if (currentEncKey != null) {
+                // Key has been provided, store it encrypted
+                encryptedKey = Encryption.encrypt(config.getEncryptedKey(), password).orElse("");
+                JublerPrefs.set(ENCRYPTED_KEY_KEY, encryptedKey);
+            }
+
             region = config.getRegion();
             JublerPrefs.set(REGION_KEY, region);
             JublerPrefs.sync();
@@ -63,14 +78,17 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
 
     @Override
     public String isReady(JFrame parent) {
-        if (baseUrl.isEmpty() || encryptedKey.length == 0 || region.isEmpty())
-            configure(parent);
         if (baseUrl.isEmpty())
-            return __("Base URL shouldn't be empty.");
-//        if (encryptedKey.isEmpty())
-//            return __("Translation key not provided yet.");
+            return __("Base URL not provided yet.");
         if (region.isEmpty())
             return __("Region not provided yet.");
+        if (encryptedKey.isEmpty())
+            return __("Azure key not provided yet.");
+        if (password.isEmpty()) {
+            password = AzureTranslateConfigJ.requestPassword(parent);
+            if (password.isEmpty())
+                return __("Azure PIN should be provided.");
+        }
         return null;
     }
 
@@ -115,7 +133,7 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
     @Override
     protected Iterable<RequestProperty> getRequestProperties() {
         return Arrays.asList(
-                new RequestProperty("Ocp-Apim-Subscription-Key", Encryption.getDecryptedKey(encryptedKey, storePassword)),
+                new RequestProperty("Ocp-Apim-Subscription-Key", Encryption.decrypt(encryptedKey, password).orElse("")),
                 new RequestProperty("Ocp-Apim-Subscription-Region", region),
                 new RequestProperty("Content-Type", "application/json")
         );
@@ -123,8 +141,12 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
 
     @Override
     public void execPlugin(AvailTranslators caller) {
-        if (caller instanceof AvailTranslators)
-            ((AvailTranslators) caller).add(this);
+        if (!JublerPrefs.getString(ENCRYPTED_KEY_OLD, "").isEmpty()) {
+            JOptionPane.showMessageDialog(null, __("You are using an old Azure key format. For security reasons this key will be destroied and needs to be re-entered.\nPlease go to Azure translation configuration and enter your key again."), __("Azure key format changed"), JOptionPane.WARNING_MESSAGE);
+            JublerPrefs.set(ENCRYPTED_KEY_OLD, null);
+        }
+        if (caller != null)
+            caller.add(this);
     }
 
     @Override
