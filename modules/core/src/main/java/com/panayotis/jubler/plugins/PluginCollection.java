@@ -4,13 +4,13 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.plugins;
+package com.panayotis.jubler.plugins;
 
 import java.util.Collection;
 
 public interface PluginCollection {
 
-    Collection<PluginItem<?>> getPluginItems();
+    Collection<? extends PluginItem<?>> getPluginItems();
 
     String getCollectionName();
 

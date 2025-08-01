@@ -4,14 +4,13 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader;
+package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.panayotis.jubler.i18n.I18N.__;
 
 public class PlainText extends AbstractTextSubFormat {
 
@@ -22,8 +21,14 @@ public class PlainText extends AbstractTextSubFormat {
         pat = Pattern.compile("(.*?)" + nl);
     }
 
-    protected Pattern getPattern() {
+    @Override
+    public Pattern getPattern() {
         return pat;
+    }
+
+    @Override
+    protected Pattern getTestPattern() {
+        return getPattern();
     }
 
     protected SubEntry getSubEntry(Matcher m) {

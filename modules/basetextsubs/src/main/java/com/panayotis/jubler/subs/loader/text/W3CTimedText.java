@@ -4,14 +4,16 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
@@ -23,11 +25,16 @@ public class W3CTimedText extends AbstractTextSubFormat {
     static {
         pat = Pattern.compile(
                 "(?s)<p" + sp + "(.*?)\\\"(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d\\d)\\\"" + sp
-                + "end=\\\"(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d\\d)\\\">(.*?)</p>" + nl);
+                        + "end=\\\"(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d\\d)\\\">(.*?)</p>" + nl);
     }
 
     protected Pattern getPattern() {
         return pat;
+    }
+
+    @Override
+    protected Pattern getTestPattern() {
+        return getPattern();
     }
 
     protected SubEntry getSubEntry(Matcher m) {
@@ -58,7 +65,7 @@ public class W3CTimedText extends AbstractTextSubFormat {
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
-        str.append("      <p begin=\"").append(sub.getStartTime().getSeconds().replace(',', '.')).append("\" end=\"").append(sub.getFinishTime().getSeconds().replace(',', '.')).append("\">");
+        str.append("      <p begin=\"").append(sub.getStartTime().getSeconds('.')).append("\" end=\"").append(sub.getFinishTime().getSeconds('.')).append("\">");
         str.append(sub.getText().replace("&", "&amp;").replace("\n", "<br />"));
         str.append("</p>\n");
     }

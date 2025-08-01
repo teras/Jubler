@@ -4,17 +4,17 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
-
-import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.time.Time;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
+import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
+import com.panayotis.jubler.time.Time;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SubViewer extends AbstractTextSubFormat {
 
@@ -27,7 +27,7 @@ public class SubViewer extends AbstractTextSubFormat {
     static {
         pat = Pattern.compile(
                 "(?s)(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d),(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d)"
-                + sp + nl + "(.*?)" + nl + nl);
+                        + sp + nl + "(.*?)" + nl + nl);
 
         testpat = Pattern.compile("(?i)(?s)\\[INFORMATION\\].*?"
                 + "(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d),(\\d\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d)"
@@ -64,13 +64,13 @@ public class SubViewer extends AbstractTextSubFormat {
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
         String t;
 
-        t = sub.getStartTime().getSeconds().replace(',', '.');
+        t = sub.getStartTime().getSeconds('.');
         t = t.substring(0, t.length() - 1);
         str.append(t);
 
         str.append(',');
 
-        t = sub.getFinishTime().getSeconds().replace(',', '.');
+        t = sub.getFinishTime().getSeconds('.');
         t = t.substring(0, t.length() - 1);
         str.append(t);
 

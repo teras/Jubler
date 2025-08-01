@@ -4,11 +4,12 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.time.Time;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,15 +17,21 @@ public class MicroDVD extends AbstractTextSubFormat {
 
     private static final Pattern pat;
 
-    /**
+    /*
      * Creates a new instance of SubFormat
      */
     static {
         pat = Pattern.compile("\\{(\\d+)\\}" + sp + "\\{(\\d+)\\}(.*?)" + nl);
     }
 
+    @Override
     protected Pattern getPattern() {
         return pat;
+    }
+
+    @Override
+    protected Pattern getTestPattern() {
+        return getPattern();
     }
 
     protected SubEntry getSubEntry(Matcher m) {

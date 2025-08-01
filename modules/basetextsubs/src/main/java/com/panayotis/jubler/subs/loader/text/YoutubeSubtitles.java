@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubEntry;
@@ -21,8 +21,14 @@ public class YoutubeSubtitles extends AbstractTextSubFormat {
             "(\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d\\d),(\\d):(\\d\\d):(\\d\\d)\\.(\\d\\d\\d)"
                     + sp + nl + "(.*?)" + nl + nl);
 
+    @Override
     protected Pattern getPattern() {
         return pat;
+    }
+
+    @Override
+    protected Pattern getTestPattern() {
+        return getPattern();
     }
 
     protected SubEntry getSubEntry(Matcher m) {
@@ -40,17 +46,12 @@ public class YoutubeSubtitles extends AbstractTextSubFormat {
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
-        str.append(sub.getStartTime().getSeconds().replace(',', '.').substring(1));
+        str.append(sub.getStartTime().getSeconds('.').substring(1));
         str.append(',');
-        str.append(sub.getFinishTime().getSeconds().replace(',', '.').substring(1));
+        str.append(sub.getFinishTime().getSeconds('.').substring(1));
         str.append("\n");
         str.append(sub.getText());
         str.append("\n\n");
-    }
-
-
-    @Override
-    protected void initSaver(Subtitles subs, MediaFile media, StringBuilder header) {
     }
 
     @Override

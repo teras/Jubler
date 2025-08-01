@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import static com.panayotis.jubler.subs.style.StyleType.*;
 import static com.panayotis.jubler.subs.style.SubStyle.Direction.*;
@@ -14,28 +14,26 @@ import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.format.StyledFormat;
-import com.panayotis.jubler.subs.loader.format.StyledTextSubFormat;
+import com.panayotis.jubler.subs.loader.format.GenericStyledTextSubFormat;
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.subs.style.SubStyle.Direction;
 import com.panayotis.jubler.subs.style.SubStyleList;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-public class SubStationAlpha extends StyledTextSubFormat {
+public class SubStationAlpha extends GenericStyledTextSubFormat {
 
     private static final Pattern pat, testpat;
     private static final Pattern title, author, source, comments, styles, stylepattern;
     private static final ArrayList<StyledFormat> styles_dict;
     protected static final HashMap<String, Direction> ssa_directions;
 
-    /**
+    /*
      * Creates a new instance of SubFormat
      */
     static {
@@ -177,7 +175,7 @@ public class SubStationAlpha extends StyledTextSubFormat {
     }
 
     private String timeformat(Time t) {
-        String res = t.getSeconds().substring(1).replace(',', '.');
+        String res = t.getSeconds('.').substring(1);
         res = res.substring(0, res.length() - 1);
         return res;
     }
@@ -304,5 +302,10 @@ public class SubStationAlpha extends StyledTextSubFormat {
         long alpha = store_alpha ? ((long) invertAlpha(((AlphaColor) acolor).getAlpha())) << 24 : 0;
         int length = store_alpha ? 8 : 6;
         return produceHexNumber(alpha | rgb, false, length);
+    }
+
+    @Override
+    protected Map<String, String> getStylePairs() {
+        return Collections.emptyMap();
     }
 }

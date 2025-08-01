@@ -4,21 +4,26 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.text;
+package com.panayotis.jubler.subs.loader.text;
 
 import com.panayotis.jubler.plugins.PluginCollection;
-import com.panayotis.jubler.plugins.PluginItem;
+import com.panayotis.jubler.subs.loader.SubFormat;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 public class TextSubPlugin implements PluginCollection {
 
-    public Collection<PluginItem<?>> getPluginItems() {
-        return Arrays.asList(
+    @Override
+    public Collection<SubFormat> getPluginItems() {
+        List<SubFormat> list = Arrays.asList(
                 new AdvancedSubStation(),
                 new SubRip(),
                 new SubStationAlpha(),
+                new WebVTT(),
+                new YoutubeSubtitles(),
                 new SubViewer2(),
                 new SubViewer(),
                 new MPL2(),
@@ -28,9 +33,10 @@ public class TextSubPlugin implements PluginCollection {
                 new TextScript(),
                 new W3CTimedText(),
                 new DFXP(),
-                new PreSegmentedText(),
-                new YoutubeSubtitles()
+                new PreSegmentedText()
         );
+        list.sort(Comparator.comparing(SubFormat::getName));
+        return list;
     }
 
     public String getCollectionName() {
