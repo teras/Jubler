@@ -28,7 +28,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
-            <EmptyBorder bottom="0" left="5" right="5" top="5"/>
+            <EmptyBorder bottom="8" left="5" right="5" top="5"/>
           </Border>
         </Property>
       </Properties>
@@ -73,15 +73,6 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel5">
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel4">
-              <Properties>
-                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="__(&quot;Security password&quot;)" type="code"/>
-                </Property>
-              </Properties>
-            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="jPanel4">
@@ -111,13 +102,6 @@
             <Component class="javax.swing.JTextField" name="keyTF">
             </Component>
             <Component class="javax.swing.JTextField" name="regionTF">
-            </Component>
-            <Component class="javax.swing.JLabel" name="jLabel6">
-            </Component>
-            <Component class="javax.swing.JTextField" name="passwordTF">
-              <Events>
-                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="passwordTFKeyTyped"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

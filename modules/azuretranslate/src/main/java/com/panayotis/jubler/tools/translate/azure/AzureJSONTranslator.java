@@ -20,26 +20,25 @@ import com.panayotis.jubler.tools.translate.RequestProperty;
 import com.panayotis.jubler.tools.translate.SimpleWebTranslator;
 
 import javax.swing.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCollection, PluginItem<AvailTranslators> {
 
-    private static final String DEFAULT_BASE_URL = "https://api-eur.cognitive.microsofttranslator.com/translate?api-version=3.0";
     private static final String BASEURL_KEY = "azure.translation.baseurl";
-    private static final String ENCRYPTED_KEY_KEY = "azure.translation.key";
+    private static final String ENCRYPTED_KEY_KEY = "azure.translation.enckey";
     private static final String REGION_KEY = "azure.translation.region";
 
     private String baseUrl;
     private String region;
     private byte[] encryptedKey;
-    private static String storePassword = "";
 
     public AzureJSONTranslator() {
-        baseUrl = JublerPrefs.getString(BASEURL_KEY, DEFAULT_BASE_URL);
+        baseUrl = JublerPrefs.getString(BASEURL_KEY, "");
         region = JublerPrefs.getString(REGION_KEY, "");
-        encryptedKey = Encryption.base64Decode(JublerPrefs.getString(ENCRYPTED_KEY_KEY, ""));
+        encryptedKey = new byte[0];
     }
 
     @Override
@@ -49,13 +48,12 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
 
     @Override
     public void configure(JFrame parent) {
-        AzureTranslateConfigJ config = new AzureTranslateConfigJ(parent, baseUrl, encryptedKey, region, storePassword);
+        AzureTranslateConfigJ config = new AzureTranslateConfigJ(parent, baseUrl, region);
         config.setVisible(true);
         if (config.isAccepted()) {
-            storePassword = config.getPassword();
             baseUrl = config.getBaseUrl();
             JublerPrefs.set(BASEURL_KEY, baseUrl);
-            encryptedKey = config.getEncryptedKey();
+//            encryptedKey = config.getEncryptedKey();
             JublerPrefs.set(ENCRYPTED_KEY_KEY, Encryption.base64Encode(encryptedKey));
             region = config.getRegion();
             JublerPrefs.set(REGION_KEY, region);
@@ -65,16 +63,14 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
 
     @Override
     public String isReady(JFrame parent) {
-        if (baseUrl.isEmpty() || encryptedKey == null || encryptedKey.length == 0 || region.isEmpty() || storePassword.isEmpty())
+        if (baseUrl.isEmpty() || encryptedKey.length == 0 || region.isEmpty())
             configure(parent);
         if (baseUrl.isEmpty())
             return __("Base URL shouldn't be empty.");
-        if (encryptedKey == null || encryptedKey.length == 0)
-            return __("Translation key not provided yet.");
+//        if (encryptedKey.isEmpty())
+//            return __("Translation key not provided yet.");
         if (region.isEmpty())
             return __("Region not provided yet.");
-        if (storePassword.isEmpty())
-            return __("Password is required.");
         return null;
     }
 
