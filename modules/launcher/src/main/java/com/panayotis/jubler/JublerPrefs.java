@@ -28,7 +28,10 @@ public final class JublerPrefs {
     }
 
     public static void set(String key, String value) {
-        prefs.put(key, value);
+        if (value == null)
+            prefs.remove(key);
+        else
+            prefs.put(key, value);
     }
 
     public static int getInt(String key, int deflt) {

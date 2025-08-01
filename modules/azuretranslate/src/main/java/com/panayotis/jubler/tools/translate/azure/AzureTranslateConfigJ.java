@@ -11,21 +11,22 @@ import javax.swing.event.HyperlinkEvent;
 import java.awt.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static javax.swing.JOptionPane.*;
 
 public class AzureTranslateConfigJ extends javax.swing.JDialog {
     private static final String HELP = "<html><body>" + __("In order to use Azure Translation service, you need to provide some parameters.\nFor more info see here: %1\n\nNote:\nPin is not saved and needed to be provided every time you launch Jubler.\nIt is needed to encrypt your Azure key.").replace("%1", "<a href=\"https://www.jubler.org/azure.html\">https://www.jubler.org/azure.html</a>").replace("\n", "<br/>") + "</body></html>";
 
     private boolean acceptIsSelected = false;
-    private boolean keyWasEntered = false;
+    private boolean keyTyped = false;
 
     /**
      * Creates new form AzureTranslateConfigJ
      */
-    public AzureTranslateConfigJ(Frame parent, String url, String region) {
+    public AzureTranslateConfigJ(Frame parent, String url, String region, boolean hasEncryptedKey) {
         super(parent);
         initComponents();
         baseUrlTF.setText(url);
-        keyTF.setText("****************");
+        keyTF.setText(hasEncryptedKey ? "****************" : "");
         regionTF.setText(region);
         Info.addHyperlinkListener(e -> {
             if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
@@ -43,31 +44,26 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
     }
 
     public String getEncryptedKey() {
-        return keyTF.getText().trim();
+        return keyTyped ? keyTF.getText().trim() : null;
     }
 
     public String getRegion() {
         return regionTF.getText().trim();
     }
 
-    public String requestPassword() {
+    public static String requestPassword(JFrame parent) {
         JPasswordField pwd = new JPasswordField();
-
-        String password = JOptionPane.showInputDialog(this, __("Enter your Azure PIN to encrypt/decrypt your key"), __("Azure PIN"), JOptionPane.PLAIN_MESSAGE);
-        if (password == null || password.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, __("PIN is required to encrypt your key"), __("Azure PIN"), JOptionPane.ERROR_MESSAGE);
-            return null;
-        }
-        return password.trim();
+        int option = JOptionPane.showConfirmDialog(parent, pwd, "Enter your Azure PIN to encrypt/decrypt your key", OK_CANCEL_OPTION, PLAIN_MESSAGE);
+        return option != OK_OPTION || pwd.getPassword().length == 0 ? "" : new String(pwd.getPassword());
     }
 
     private String checkValid() {
         if (getBaseUrl().length() < 2)
-            return __("Base URL is too small");
+            return __("Invalid Base URL");
         if (keyTF.getText().trim().length() < 2)
-            return __("Key is too small");
+            return __("Invalid Key");
         if (getRegion().length() < 2)
-            return __("Region is too small");
+            return __("Invalid Region");
         return null;
     }
 
@@ -123,6 +119,21 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
 
         baseUrlTF.setColumns(40);
         jPanel4.add(baseUrlTF);
+
+        keyTF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                keyTFFocusGained(evt);
+            }
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                keyTFFocusLost(evt);
+            }
+        });
+        keyTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                keyTFKeyTyped(evt);
+            }
+        });
         jPanel4.add(keyTF);
         jPanel4.add(regionTF);
 
@@ -174,6 +185,21 @@ public class AzureTranslateConfigJ extends javax.swing.JDialog {
         acceptIsSelected = false;
         setVisible(false);
     }//GEN-LAST:event_cancelBActionPerformed
+
+    private void keyTFFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_keyTFFocusGained
+        if (!keyTyped)
+            keyTF.setText("");
+    }//GEN-LAST:event_keyTFFocusGained
+
+    private void keyTFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_keyTFFocusLost
+        if (!keyTyped) {
+            keyTF.setText("****************");
+        }
+    }//GEN-LAST:event_keyTFFocusLost
+
+    private void keyTFKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyTFKeyTyped
+        keyTyped = true;
+    }//GEN-LAST:event_keyTFKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane Info;

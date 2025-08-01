@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools.translate;
+package com.panayotis.jubler.tools.translate;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;

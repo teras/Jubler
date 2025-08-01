@@ -43,7 +43,7 @@ public class Translate extends TimeBaseTool {
         }
         String notready = trans.isReady(currentWindow);
         if (notready != null) {
-            JOptionPane.showMessageDialog(null, notready, __("Translator not ready yet"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(currentWindow, notready, __("Translator not ready yet"), JOptionPane.ERROR_MESSAGE);
             return false;
         }
         TranslateGUI vis = (TranslateGUI) getToolVisuals();
