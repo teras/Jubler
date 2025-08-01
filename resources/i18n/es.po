@@ -1059,19 +1059,19 @@ msgid   "Trying to intialize audio preview with wrong size {0}"
 msgstr  "Intentando inicializar la previsualización de audio con un tamaño "
         "incorrecto {0}"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:93
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:93
 msgid   "Could not create audio clip"
 msgstr  ""
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:112
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:112
 msgid   "Open file error"
 msgstr  "Error al abrir el fichero"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:114
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:114
 msgid   "Unsupported audio"
 msgstr  "Fichero de audio no soportado"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:116
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:116
 msgid   "Line unavailable"
 msgstr  "Linea no disponible"
 

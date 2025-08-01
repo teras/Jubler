@@ -1050,19 +1050,19 @@ msgstr  "Boş veri ile ses önizlemesi başlatılmaya çalışılıyor."
 msgid   "Trying to intialize audio preview with wrong size {0}"
 msgstr  "Hatalı boyutla{0} ses önizlemesi başlatılmaya çalışılıyor."
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:93
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:93
 msgid   "Could not create audio clip"
 msgstr  ""
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:112
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:112
 msgid   "Open file error"
 msgstr  "Dosya açma hatası"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:114
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:114
 msgid   "Unsupported audio"
 msgstr  "Desteklenmeyen ses"
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:116
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:116
 msgid   "Line unavailable"
 msgstr  "Satır mevcut değil"
 

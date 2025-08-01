@@ -2098,19 +2098,19 @@ msgstr  ""
 msgid   "Error while loading file {0}"
 msgstr  ""
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:93
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:93
 msgid   "Could not create audio clip"
 msgstr  ""
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:112
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:112
 msgid   "Open file error"
 msgstr  ""
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:114
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:114
 msgid   "Unsupported audio"
 msgstr  ""
 
-#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFMPEG.java:116
+#: modules/core/src/main/java/com/panayotis/jubler/media/preview/decoders/FFmpeg.java:116
 msgid   "Line unavailable"
 msgstr  ""
 

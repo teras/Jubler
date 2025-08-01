@@ -2,7 +2,7 @@
 
 #### 8.0.0
 
-Redesigned HiDPI UI with editable scaling. Reintroduced Auto-translate with Azure. Support Youtube subtitles.
+Redesigned HiDPI UI with editable scaling. Reintroduced Auto-translate with Azure. Support YouTube subtitles.
 
 #### 7.0.3
 
@@ -66,15 +66,15 @@ Only one instance of Jubler is now run in a system. Every file remembers loading
 
 #### 4.0
 
-Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFMPEG color model.
+Auto-update support. Jubler is able to smart update with minimum user interaction. Improved time fixed tool for overlapping subtitles. Improved FFmpeg color model.
 
 #### 3.9.6
 
-Improved Google translator parsing engine. Fixed compile issues with ffmpeg under OS X 10.4. Fixed Linux GTK L&F bug with time-spinner under Java 6.0.
+Improved Google translator parsing engine. Fixed compile issues with FFmpeg under OS X 10.4. Fixed Linux GTK L&F bug with time-spinner under Java 6.0.
 
 #### 3.9.5
 
-Autosave/recovery of changed subtitles. Automatic translate of subtitles through Google. Updated to latest FFMPEG. Small GUI improvements. Better SRT support. Minor bug fixes and enhancements.
+Autosave/recovery of changed subtitles. Automatic translate of subtitles through Google. Updated to latest FFmpeg. Small GUI improvements. Better SRT support. Minor bug fixes and enhancements.
 
 #### 3.9.0
 
@@ -82,7 +82,7 @@ Improved user interface. Preview interface integrated inside main Jubler window.
 
 #### 3.4.1
 
-MPlayer uses threads to properly handle out and error stream. Updated to latest ffmpeg library. Support of correct MIME type under Linux.
+MPlayer uses threads to properly handle out and error stream. Updated to latest FFmpeg library. Support of correct MIME type under Linux.
 
 #### 3.4.0
 
@@ -90,11 +90,11 @@ SRT supports font formatting. Subtitle statistics. Better handling of preview ba
 
 #### 3.3.0
 
-Automatic detection of MPlayer/ASpell executables. Preview window GUI updates. Alt-mousewheel / alt-click slows down rotation in JTimeSpinner boxes. Support for Spruce DVDMaestro (STL) and MPL2 subtitles (without formatting). Fixed autoload for Java 1.6 in Linux. Added missing tooltips. Fixed gettext bug with ’ character. Improved ffmpeg support. Keep application alive if “Close window” is selected. New window will not fully overlap old one. Spanish, French and Serbian translations introduced. Czech, German, Portuguese and Greek translation corrections. Various bug fixes and usability improvements.
+Automatic detection of MPlayer/ASpell executables. Preview window GUI updates. Alt-mousewheel / alt-click slows down rotation in JTimeSpinner boxes. Support for Spruce DVDMaestro (STL) and MPL2 subtitles (without formatting). Fixed autoload for Java 1.6 in Linux. Added missing tooltips. Fixed gettext bug with ’ character. Improved FFmpeg support. Keep application alive if “Close window” is selected. New window will not fully overlap old one. Spanish, French and Serbian translations introduced. Czech, German, Portuguese and Greek translation corrections. Various bug fixes and usability improvements.
 
 #### 3.2.0
 
-Doube click on icons launch Jubler (in Mac OSX, Windows and Debian systems). MPlayer fixes. Jubler installs in systems with JRE 1.6. MPlayer supports different audio stream. Video playback doesn’t change system mixers. FFMPEG time offset and WMV bug fixes. Better handling of audio caches. Updated to newer version of FFMPEG. ASpell updates supported languages when opening preferences. Major internal changes and cleanups. Initial Debian package.
+Doube click on icons launch Jubler (in Mac OSX, Windows and Debian systems). MPlayer fixes. Jubler installs in systems with JRE 1.6. MPlayer supports different audio stream. Video playback doesn’t change system mixers. FFmpeg time offset and WMV bug fixes. Better handling of audio caches. Updated to newer version of FFmpeg. ASpell updates supported languages when opening preferences. Major internal changes and cleanups. Initial Debian package.
 
 #### 3.1.0
 
@@ -102,7 +102,7 @@ Read frames per second from the movie now supported. Movie synchronization on th
 
 #### 3.0.0
 
-FFDecode bugs fixed, preview should be much more stable and accurate. Preview bug fixed, where wrong duration was reported. Tools remember last values. Column width is now saved. Now it is compatible with latest version of MPlayer. Updated to newest ffmpeg sources. Turkish translation added. Support for zemberek added. Preliminary built-in FAQ subsystem. Tweaks and code changes. New icons and splash screen. Linux installation script fixes. Supports cocoASpell under Mac OSX.
+FFDecode bugs fixed, preview should be much more stable and accurate. Preview bug fixed, where wrong duration was reported. Tools remember last values. Column width is now saved. Now it is compatible with latest version of MPlayer. Updated to newest FFmpeg sources. Turkish translation added. Support for zemberek added. Preliminary built-in FAQ subsystem. Tweaks and code changes. New icons and splash screen. Linux installation script fixes. Supports cocoASpell under Mac OSX.
 
 #### 3.0.0-rc4
 
@@ -118,11 +118,11 @@ Great speedup improvements on subtitle preview. Alpha channel values in SSA/ASS 
 
 #### 3.0.0-rc1
 
-Czech translation. Subtitle text display on frame preview (draft & full details) using Java 2D. Default display frame when no library is present, or no actual frame preview is required. When FFDecode library is missing, a notice is displayed and no more a popup dialog appers. Subtitle is movable on wave panel too (in preview). Display subtitle time when moving subtitles in preview. Revert, clone & open recent subtitles in File menu. Video preview in normal and half size. Reparent current subtitles (for translations). MPlayer now supports default font size (and font name in Linux). Only static version of ffmpeg for linux is provided. Varius bug fixes.
+Czech translation. Subtitle text display on frame preview (draft & full details) using Java 2D. Default display frame when no library is present, or no actual frame preview is required. When FFDecode library is missing, a notice is displayed and no more a popup dialog appers. Subtitle is movable on wave panel too (in preview). Display subtitle time when moving subtitles in preview. Revert, clone & open recent subtitles in File menu. Video preview in normal and half size. Reparent current subtitles (for translations). MPlayer now supports default font size (and font name in Linux). Only static version of FFmpeg for linux is provided. Varius bug fixes.
 
 #### 2.9.9
 
-Preview of subtitles added (dependance on FFMPEG library). Frame preview of the current frame, waveform preview and waveform listening is supported. Graphically display of subtitles, which can be moved and resized. Jubler no longer distributed as JAR file but using self expandable platform specific installers (due to FFMPEG). Mouse wheel over subtitle time changes its value. Various bug fixes and other enchacements.
+Preview of subtitles added (dependance on FFmpeg library). Frame preview of the current frame, waveform preview and waveform listening is supported. Graphically display of subtitles, which can be moved and resized. Jubler no longer distributed as JAR file but using self expandable platform specific installers (due to FFmpeg). Mouse wheel over subtitle time changes its value. Various bug fixes and other enchacements.
 
 #### 2.5.1
 
