@@ -4,12 +4,14 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.time.gui;
+package com.panayotis.jubler.time.gui;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JPanel;
@@ -18,12 +20,6 @@ public abstract class JTimeArea extends JPanel {
 
     protected Subtitles subs;
     protected int[] selected;
-    /* Use these variables to make new time dialogs to open with meaningful defaults */
-    protected final static int DEFAULTS_BYSELECTION = 0;
-    protected final static int DEFAULTS_BYCOLOR = 1;
-    protected final static int DEFAULTS_BYTHEME = 2;
-    protected final static int DEFAULTS_BYREGION = 3;
-    protected static int selection_model = DEFAULTS_BYSELECTION;
 
     public abstract ArrayList<SubEntry> getAffectedSubs();
 
@@ -121,6 +117,7 @@ public abstract class JTimeArea extends JPanel {
     private void ChSubColorBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChSubColorBActionPerformed
         ChSubColorC.setEnabled(ChSubColorB.isSelected());
     }//GEN-LAST:event_ChSubColorBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ChSubColorB;
     private javax.swing.JComboBox ChSubColorC;

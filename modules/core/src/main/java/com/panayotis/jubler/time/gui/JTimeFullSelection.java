@@ -4,17 +4,30 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.time.gui;
+package com.panayotis.jubler.time.gui;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.awt.BorderLayout;
 import java.util.ArrayList;
+
 import com.panayotis.jubler.subs.style.SubStyle;
 
 public class JTimeFullSelection extends JTimeArea {
+
+    /* Use these variables to make new time dialogs to open with meaningful defaults */
+    private static final int DEFAULTS_BY_SELECTION = 0;
+    private static final int DEFAULTS_BY_COLOR = 1;
+    private static final int DEFAULTS_BY_THEME = 2;
+    private static final int DEFAULTS_BY_REGION = 3;
+    private static final String TIME_SELECTION_KEY = "options.time.selection";
+
+    private static int selection_model = JublerPrefs.getInt(TIME_SELECTION_KEY, DEFAULTS_BY_SELECTION);
 
     JTimeRegion tregion;
 
@@ -58,17 +71,17 @@ public class JTimeFullSelection extends JTimeArea {
 
         // Select wanted widget
         switch (selection_model) {
-            case DEFAULTS_BYSELECTION:
-                bySelection.doClick();
-                break;
-            case DEFAULTS_BYCOLOR:
+            case DEFAULTS_BY_COLOR:
                 byColor.doClick();
                 break;
-            case DEFAULTS_BYTHEME:
+            case DEFAULTS_BY_THEME:
                 byStyle.doClick();
                 break;
-            case DEFAULTS_BYREGION:
+            case DEFAULTS_BY_REGION:
                 byRange.doClick();
+                break;
+            default:
+                bySelection.doClick();
                 break;
         }
     }
@@ -218,33 +231,35 @@ public class JTimeFullSelection extends JTimeArea {
         TimePanel.setLayout(new java.awt.BorderLayout());
         add(TimePanel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
     private void byStyleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byStyleActionPerformed
         tregion.setEnabled(false);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(true);
-        selection_model = DEFAULTS_BYTHEME;
+        JublerPrefs.set(TIME_SELECTION_KEY, selection_model = DEFAULTS_BY_THEME);
     }//GEN-LAST:event_byStyleActionPerformed
 
     private void byRangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byRangeActionPerformed
         tregion.setEnabled(true);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(false);
-        selection_model = DEFAULTS_BYREGION;
+        JublerPrefs.set(TIME_SELECTION_KEY, selection_model = DEFAULTS_BY_REGION);
     }//GEN-LAST:event_byRangeActionPerformed
 
     private void byColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_byColorActionPerformed
         tregion.setEnabled(false);
         ColorSel.setEnabled(true);
         StyleSel.setEnabled(false);
-        selection_model = DEFAULTS_BYCOLOR;
+        JublerPrefs.set(TIME_SELECTION_KEY, selection_model = DEFAULTS_BY_COLOR);
     }//GEN-LAST:event_byColorActionPerformed
 
     private void bySelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bySelectionActionPerformed
         tregion.setEnabled(false);
         ColorSel.setEnabled(false);
         StyleSel.setEnabled(false);
-        selection_model = DEFAULTS_BYSELECTION;
+        JublerPrefs.set(TIME_SELECTION_KEY, selection_model = DEFAULTS_BY_SELECTION);
     }//GEN-LAST:event_bySelectionActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox ColorSel;
     private javax.swing.JPanel SelectionPanel;

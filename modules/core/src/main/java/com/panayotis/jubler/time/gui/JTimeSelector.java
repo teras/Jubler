@@ -4,26 +4,32 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.time.gui;
+package com.panayotis.jubler.time.gui;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.time.Time;
-import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.theme.Theme;
-import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import com.panayotis.jubler.time.Time;
+
+import javax.swing.*;
+import java.awt.*;
+
+import static com.panayotis.jubler.i18n.I18N.__;
+
 
 public class JTimeSelector extends JPanel {
+    /* static variable to store the last used selection model */
+    private static final boolean REGION_EDGE = false;
+    private static final boolean REGION_SELECTION = true;
+    private static final String TIME_SELECTION_REGION_FROM_KEY = "options.time.selection.region.from";
+    private static final String TIME_SELECTION_REGION_TO_KEY = "options.time.selection.region.to";
+
+    private static boolean region_from_model = JublerPrefs.getBoolean(TIME_SELECTION_REGION_FROM_KEY, REGION_SELECTION);
+    private static boolean region_to_model = JublerPrefs.getBoolean(TIME_SELECTION_REGION_TO_KEY, REGION_SELECTION);
 
     private JTimeSpinner spinner;
     private boolean is_start_position;
     private Time selected_time;
-
-    /* static variable to store the last used selection model */
-    protected final static boolean REGION_EDGE = false;
-    protected final static boolean REGION_SELECTION = true;
-    protected static boolean region_from_model = REGION_SELECTION;
-    protected static boolean region_to_model = REGION_SELECTION;
 
     /**
      * Creates new form JTimeSelector
@@ -123,6 +129,7 @@ public class JTimeSelector extends JPanel {
         });
         add(EdgeB, java.awt.BorderLayout.EAST);
     }// </editor-fold>//GEN-END:initComponents
+
     private void EdgeBMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EdgeBMousePressed
         if (EdgeB.isEnabled())
             PredefM.show(EdgeB, EdgeB.getBorder().getBorderInsets(EdgeB).left / 2, EdgeB.getHeight() - EdgeB.getBorder().getBorderInsets(EdgeB).bottom + 1);
@@ -131,18 +138,19 @@ public class JTimeSelector extends JPanel {
     private void EdgeMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EdgeMActionPerformed
         setTimeToEdge();
         if (is_start_position)
-            region_from_model = REGION_EDGE;
+            JublerPrefs.set(TIME_SELECTION_REGION_FROM_KEY, region_from_model = REGION_EDGE);
         else
-            region_to_model = REGION_EDGE;
-}//GEN-LAST:event_EdgeMActionPerformed
+            JublerPrefs.set(TIME_SELECTION_REGION_TO_KEY, region_to_model = REGION_EDGE);
+    }//GEN-LAST:event_EdgeMActionPerformed
 
     private void SelectMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectMActionPerformed
         spinner.setTimeValue(selected_time);
         if (is_start_position)
-            region_from_model = REGION_SELECTION;
+            JublerPrefs.set(TIME_SELECTION_REGION_FROM_KEY, region_from_model = REGION_SELECTION);
         else
-            region_to_model = REGION_SELECTION;
+            JublerPrefs.set(TIME_SELECTION_REGION_TO_KEY, region_to_model = REGION_SELECTION);
     }//GEN-LAST:event_SelectMActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EdgeB;
     private javax.swing.JMenuItem EdgeM;
