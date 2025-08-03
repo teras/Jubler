@@ -305,35 +305,33 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         SubEditP = new javax.swing.JPanel();
         SubSplitPane = new javax.swing.JSplitPane();
         SubsScrollPane = new javax.swing.JScrollPane();
-        SubTable = new JTable() {
-            public void columnMarginChanged(ChangeEvent e) {
+        SubTable = new JTable () {
+            public void columnMarginChanged(ChangeEvent e)  {
                 super.columnMarginChanged(e);
                 setcolumnchange(true);
             }
         };
         JublerTools = new javax.swing.JToolBar();
-        FileTP = new javax.swing.JPanel();
         NewTB = new javax.swing.JButton();
         LoadTB = new javax.swing.JButton();
         SaveTB = new javax.swing.JButton();
-        QualityTP = new javax.swing.JPanel();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
         InfoTB = new javax.swing.JButton();
         QualityTB = new javax.swing.JButton();
-        EditTP = new javax.swing.JPanel();
+        jSeparator8 = new javax.swing.JToolBar.Separator();
         CutTB = new javax.swing.JButton();
         CopyTB = new javax.swing.JButton();
         PasteTB = new javax.swing.JButton();
-        UndoTP = new javax.swing.JPanel();
+        jSeparator13 = new javax.swing.JToolBar.Separator();
         UndoTB = new javax.swing.JButton();
         RedoTB = new javax.swing.JButton();
-        SortTP = new javax.swing.JPanel();
+        jSeparator14 = new javax.swing.JToolBar.Separator();
         SortTB = new javax.swing.JButton();
-        TestTP = new javax.swing.JPanel();
+        jSeparator15 = new javax.swing.JToolBar.Separator();
         TestTB = new javax.swing.JButton();
         PreviewTB = new javax.swing.JButton();
         OrientationTB = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-        InfoTP = new javax.swing.JPanel();
         NewVersionTB = new javax.swing.JButton();
         JublerMenuBar = new javax.swing.JMenuBar();
         FileM = new javax.swing.JMenu();
@@ -531,11 +529,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setComponentPopupMenu(SubsPop);
         SubTable.setDefaultRenderer(Object.class, TableRenderer);
-        SubTable.getTableHeader().addMouseListener(new MouseAdapter() {
+        SubTable.getTableHeader().addMouseListener(new MouseAdapter(){
             public void mousePressed(MouseEvent e) {
                 setcolumnchange(false);
             }
-
             public void mouseReleased(MouseEvent e) {
                 if (getcolumnchange()) subs.updateColumnWidth(SubTable);
                 setcolumnchange(false);
@@ -544,7 +541,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         SubTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting()) return; //Ignore extra messages
-                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                ListSelectionModel lsm = (ListSelectionModel)e.getSource();
                 if (!lsm.isSelectionEmpty()) {
                     displaySubData();
                 }
@@ -558,140 +555,159 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         getContentPane().add(BasicPanel, java.awt.BorderLayout.CENTER);
 
-        FileTP.setLayout(new javax.swing.BoxLayout(FileTP, javax.swing.BoxLayout.LINE_AXIS));
-
         NewTB.setIcon(Theme.loadIcon("new"));
         NewTB.setToolTipText(__("New"));
+        NewTB.setFocusable(false);
+        NewTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        NewTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(NewTB, "first");
         NewTB.addActionListener(formListener);
-        FileTP.add(NewTB);
+        JublerTools.add(NewTB);
 
         LoadTB.setIcon(Theme.loadIcon("load"));
         LoadTB.setToolTipText(__("Load"));
+        LoadTB.setFocusable(false);
+        LoadTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        LoadTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(LoadTB, "middle");
         LoadTB.addActionListener(formListener);
-        FileTP.add(LoadTB);
+        JublerTools.add(LoadTB);
 
         SaveTB.setIcon(Theme.loadIcon("save"));
         SaveTB.setToolTipText(__("Save"));
         SaveTB.setEnabled(false);
+        SaveTB.setFocusable(false);
+        SaveTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SaveTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(SaveTB, "last");
         SaveTB.addActionListener(formListener);
-        FileTP.add(SaveTB);
-
-        JublerTools.add(FileTP);
-
-        QualityTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 0));
-        QualityTP.setLayout(new javax.swing.BoxLayout(QualityTP, javax.swing.BoxLayout.LINE_AXIS));
+        JublerTools.add(SaveTB);
+        JublerTools.add(jSeparator6);
 
         InfoTB.setIcon(Theme.loadIcon("info"));
         InfoTB.setToolTipText(__("Project Information"));
         InfoTB.setEnabled(false);
+        InfoTB.setFocusable(false);
+        InfoTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        InfoTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(InfoTB, "first");
         InfoTB.addActionListener(formListener);
-        QualityTP.add(InfoTB);
+        JublerTools.add(InfoTB);
 
         QualityTB.setIcon(Theme.loadIcon("quality"));
         QualityTB.setToolTipText(__("Quality configuration"));
         QualityTB.setEnabled(false);
+        QualityTB.setFocusable(false);
+        QualityTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        QualityTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(QualityTB, "last");
         QualityTB.addActionListener(formListener);
-        QualityTP.add(QualityTB);
-
-        JublerTools.add(QualityTP);
-
-        EditTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
-        EditTP.setLayout(new javax.swing.BoxLayout(EditTP, javax.swing.BoxLayout.LINE_AXIS));
+        JublerTools.add(QualityTB);
+        JublerTools.add(jSeparator8);
 
         CutTB.setIcon(Theme.loadIcon("cut"));
         CutTB.setToolTipText(__("Cut"));
         CutTB.setEnabled(false);
+        CutTB.setFocusable(false);
+        CutTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        CutTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(CutTB, "first");
         CutTB.addActionListener(formListener);
-        EditTP.add(CutTB);
+        JublerTools.add(CutTB);
 
         CopyTB.setIcon(Theme.loadIcon("copy"));
         CopyTB.setToolTipText(__("Copy"));
         CopyTB.setEnabled(false);
+        CopyTB.setFocusable(false);
+        CopyTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        CopyTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(CopyTB, "middle");
         CopyTB.addActionListener(formListener);
-        EditTP.add(CopyTB);
+        JublerTools.add(CopyTB);
 
         PasteTB.setIcon(Theme.loadIcon("paste"));
         PasteTB.setToolTipText(__("Paste"));
         PasteTB.setEnabled(false);
+        PasteTB.setFocusable(false);
+        PasteTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        PasteTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(PasteTB, "last");
         PasteTB.addActionListener(formListener);
-        EditTP.add(PasteTB);
-
-        JublerTools.add(EditTP);
-
-        UndoTP.setLayout(new javax.swing.BoxLayout(UndoTP, javax.swing.BoxLayout.LINE_AXIS));
+        JublerTools.add(PasteTB);
+        JublerTools.add(jSeparator13);
 
         UndoTB.setIcon(Theme.loadIcon("undo"));
         UndoTB.setToolTipText(__("Undo"));
         UndoTB.setEnabled(false);
+        UndoTB.setFocusable(false);
+        UndoTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        UndoTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(UndoTB, "first");
         UndoTB.addActionListener(formListener);
-        UndoTP.add(UndoTB);
+        JublerTools.add(UndoTB);
 
         RedoTB.setIcon(Theme.loadIcon("redo"));
         RedoTB.setToolTipText(__("Redo"));
         RedoTB.setEnabled(false);
+        RedoTB.setFocusable(false);
+        RedoTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        RedoTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(RedoTB, "last");
         RedoTB.addActionListener(formListener);
-        UndoTP.add(RedoTB);
-
-        JublerTools.add(UndoTP);
-
-        SortTP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 8, 0, 8));
-        SortTP.setLayout(new javax.swing.BoxLayout(SortTP, javax.swing.BoxLayout.LINE_AXIS));
+        JublerTools.add(RedoTB);
+        JublerTools.add(jSeparator14);
 
         SortTB.setIcon(Theme.loadIcon("sort"));
         SortTB.setToolTipText(__("Sort subtitles"));
         SortTB.setEnabled(false);
+        SortTB.setFocusable(false);
+        SortTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        SortTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(SortTB, "only");
         SortTB.addActionListener(formListener);
-        SortTP.add(SortTB);
-
-        JublerTools.add(SortTP);
-
-        TestTP.setLayout(new javax.swing.BoxLayout(TestTP, javax.swing.BoxLayout.LINE_AXIS));
+        JublerTools.add(SortTB);
+        JublerTools.add(jSeparator15);
 
         TestTB.setIcon(Theme.loadIcon("test"));
         TestTB.setToolTipText(__("Test subtitles from current position"));
         TestTB.setEnabled(false);
+        TestTB.setFocusable(false);
+        TestTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        TestTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         SystemDependent.setToolBarButtonStyle(TestTB, "first");
         TestTB.addActionListener(formListener);
-        TestTP.add(TestTB);
+        JublerTools.add(TestTB);
 
         PreviewTB.setModel(new ToggleButtonModel());
         SystemDependent.setToolBarButtonStyle(PreviewTB, "middle");
         PreviewTB.setIcon(Theme.loadIcon("previewc"));
         PreviewTB.setToolTipText(__("Enable preview"));
         PreviewTB.setEnabled(false);
+        PreviewTB.setFocusable(false);
+        PreviewTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         PreviewTB.setSelectedIcon(Theme.loadIcon("preview"));
+        PreviewTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         PreviewTB.addActionListener(formListener);
-        TestTP.add(PreviewTB);
+        JublerTools.add(PreviewTB);
 
         SystemDependent.setToolBarButtonStyle(OrientationTB, "last");
         OrientationTB.setToolTipText(__("Change orientation of Preview panel"));
         OrientationTB.setEnabled(false);
+        OrientationTB.setFocusable(false);
+        OrientationTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        OrientationTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         OrientationTB.addActionListener(formListener);
-        TestTP.add(OrientationTB);
-
-        JublerTools.add(TestTP);
+        JublerTools.add(OrientationTB);
         JublerTools.add(filler2);
-
-        InfoTP.setLayout(new javax.swing.BoxLayout(InfoTP, javax.swing.BoxLayout.LINE_AXIS));
 
         SystemDependent.setToolBarButtonStyle(NewVersionTB, "only");
         NewVersionTB.setIcon(Theme.loadIcon("newversion"));
         NewVersionTB.setText(__("New version!"));
         NewVersionTB.setToolTipText(__("New version is available"));
-        InfoTP.add(NewVersionTB);
-
-        JublerTools.add(InfoTP);
+        NewVersionTB.setFocusable(false);
+        NewVersionTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        NewVersionTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        JublerTools.add(NewVersionTB);
 
         getContentPane().add(JublerTools, java.awt.BorderLayout.NORTH);
 
@@ -1151,183 +1167,267 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     // Code for dispatching events from components to event handlers.
 
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.WindowListener {
-        FormListener() {
-        }
-
+        FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == NewTB) {
                 JubFrame.this.FileNFMActionPerformed(evt);
-            } else if (evt.getSource() == LoadTB) {
+            }
+            else if (evt.getSource() == LoadTB) {
                 JubFrame.this.OpenFMActionPerformed(evt);
-            } else if (evt.getSource() == SaveTB) {
+            }
+            else if (evt.getSource() == SaveTB) {
                 JubFrame.this.SaveTBActionPerformed(evt);
-            } else if (evt.getSource() == InfoTB) {
+            }
+            else if (evt.getSource() == InfoTB) {
                 JubFrame.this.InfoFMActionPerformed(evt);
-            } else if (evt.getSource() == QualityTB) {
+            }
+            else if (evt.getSource() == QualityTB) {
                 JubFrame.this.QualityTBInfoFMActionPerformed(evt);
-            } else if (evt.getSource() == CutTB) {
+            }
+            else if (evt.getSource() == CutTB) {
                 JubFrame.this.CutEMActionPerformed(evt);
-            } else if (evt.getSource() == CopyTB) {
+            }
+            else if (evt.getSource() == CopyTB) {
                 JubFrame.this.CopyEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteTB) {
+            }
+            else if (evt.getSource() == PasteTB) {
                 JubFrame.this.PasteEMActionPerformed(evt);
-            } else if (evt.getSource() == UndoTB) {
+            }
+            else if (evt.getSource() == UndoTB) {
                 JubFrame.this.UndoEMActionPerformed(evt);
-            } else if (evt.getSource() == RedoTB) {
+            }
+            else if (evt.getSource() == RedoTB) {
                 JubFrame.this.RedoEMActionPerformed(evt);
-            } else if (evt.getSource() == SortTB) {
+            }
+            else if (evt.getSource() == SortTB) {
                 JubFrame.this.SortTBActionPerformed(evt);
-            } else if (evt.getSource() == TestTB) {
+            }
+            else if (evt.getSource() == TestTB) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == PreviewTB) {
+            }
+            else if (evt.getSource() == PreviewTB) {
                 JubFrame.this.PreviewTBCurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == OrientationTB) {
+            }
+            else if (evt.getSource() == OrientationTB) {
                 JubFrame.this.OrientationTBCurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == CutP) {
+            }
+            else if (evt.getSource() == CutP) {
                 JubFrame.this.CutEMActionPerformed(evt);
-            } else if (evt.getSource() == CopyP) {
+            }
+            else if (evt.getSource() == CopyP) {
                 JubFrame.this.CopyEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteP) {
+            }
+            else if (evt.getSource() == PasteP) {
                 JubFrame.this.PasteEMActionPerformed(evt);
-            } else if (evt.getSource() == DeleteP) {
+            }
+            else if (evt.getSource() == DeleteP) {
                 JubFrame.this.DeletePActionPerformed(evt);
-            } else if (evt.getSource() == NoneMP) {
+            }
+            else if (evt.getSource() == NoneMP) {
                 JubFrame.this.NoneMPActionPerformed(evt);
-            } else if (evt.getSource() == PinkMP) {
+            }
+            else if (evt.getSource() == PinkMP) {
                 JubFrame.this.PinkMPActionPerformed(evt);
-            } else if (evt.getSource() == YellowMP) {
+            }
+            else if (evt.getSource() == YellowMP) {
                 JubFrame.this.YellowMPActionPerformed(evt);
-            } else if (evt.getSource() == CyanMP) {
+            }
+            else if (evt.getSource() == CyanMP) {
                 JubFrame.this.CyanMPActionPerformed(evt);
-            } else if (evt.getSource() == ShowNumberP) {
+            }
+            else if (evt.getSource() == ShowNumberP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStartP) {
+            }
+            else if (evt.getSource() == ShowStartP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowEndP) {
+            }
+            else if (evt.getSource() == ShowEndP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowDurationP) {
+            }
+            else if (evt.getSource() == ShowDurationP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowLayerP) {
+            }
+            else if (evt.getSource() == ShowLayerP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStyleP) {
+            }
+            else if (evt.getSource() == ShowStyleP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowCPMP) {
+            }
+            else if (evt.getSource() == ShowCPMP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == PlayVideoP) {
+            }
+            else if (evt.getSource() == PlayVideoP) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == FileNFM) {
+            }
+            else if (evt.getSource() == FileNFM) {
                 JubFrame.this.FileNFMActionPerformed(evt);
-            } else if (evt.getSource() == ChildNFM) {
+            }
+            else if (evt.getSource() == ChildNFM) {
                 JubFrame.this.ChildNFMActionPerformed(evt);
-            } else if (evt.getSource() == OpenFM) {
+            }
+            else if (evt.getSource() == OpenFM) {
                 JubFrame.this.OpenFMActionPerformed(evt);
-            } else if (evt.getSource() == RetrieveWFM) {
+            }
+            else if (evt.getSource() == RetrieveWFM) {
                 JubFrame.this.RetrieveWFMActionPerformed(evt);
-            } else if (evt.getSource() == RevertFM) {
+            }
+            else if (evt.getSource() == RevertFM) {
                 JubFrame.this.RevertFMActionPerformed(evt);
-            } else if (evt.getSource() == SaveFM) {
+            }
+            else if (evt.getSource() == SaveFM) {
                 JubFrame.this.SaveFMActionPerformed(evt);
-            } else if (evt.getSource() == SaveAsFM) {
+            }
+            else if (evt.getSource() == SaveAsFM) {
                 JubFrame.this.SaveAsFMActionPerformed(evt);
-            } else if (evt.getSource() == CloseFM) {
+            }
+            else if (evt.getSource() == CloseFM) {
                 JubFrame.this.CloseFMActionPerformed(evt);
-            } else if (evt.getSource() == InfoFM) {
+            }
+            else if (evt.getSource() == InfoFM) {
                 JubFrame.this.InfoFMActionPerformed(evt);
-            } else if (evt.getSource() == QualityFM) {
+            }
+            else if (evt.getSource() == QualityFM) {
                 JubFrame.this.QualityTBInfoFMActionPerformed(evt);
-            } else if (evt.getSource() == PrefsFM) {
+            }
+            else if (evt.getSource() == PrefsFM) {
                 JubFrame.this.PrefsFMActionPerformed(evt);
-            } else if (evt.getSource() == QuitFM) {
+            }
+            else if (evt.getSource() == QuitFM) {
                 JubFrame.this.QuitFMActionPerformed(evt);
-            } else if (evt.getSource() == CutEM) {
+            }
+            else if (evt.getSource() == CutEM) {
                 JubFrame.this.CutEMActionPerformed(evt);
-            } else if (evt.getSource() == CopyEM) {
+            }
+            else if (evt.getSource() == CopyEM) {
                 JubFrame.this.CopyEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteEM) {
+            }
+            else if (evt.getSource() == PasteEM) {
                 JubFrame.this.PasteEMActionPerformed(evt);
-            } else if (evt.getSource() == PasteSpecialEM) {
+            }
+            else if (evt.getSource() == PasteSpecialEM) {
                 JubFrame.this.PasteSpecialEMActionPerformed(evt);
-            } else if (evt.getSource() == EmptyLinesDEM) {
+            }
+            else if (evt.getSource() == EmptyLinesDEM) {
                 JubFrame.this.EmptyLinesDEMActionPerformed(evt);
-            } else if (evt.getSource() == StepwiseREM) {
+            }
+            else if (evt.getSource() == StepwiseREM) {
                 JubFrame.this.StepwiseREMActionPerformed(evt);
-            } else if (evt.getSource() == RegExpREM) {
+            }
+            else if (evt.getSource() == RegExpREM) {
                 JubFrame.this.RegExpREMActionPerformed(evt);
-            } else if (evt.getSource() == BeforeIEM) {
+            }
+            else if (evt.getSource() == BeforeIEM) {
                 JubFrame.this.insertSubEntry(evt);
-            } else if (evt.getSource() == AfterIEM) {
+            }
+            else if (evt.getSource() == AfterIEM) {
                 JubFrame.this.insertSubEntry(evt);
-            } else if (evt.getSource() == PreviousSEM) {
+            }
+            else if (evt.getSource() == PreviousSEM) {
                 JubFrame.this.splitWith(evt);
-            } else if (evt.getSource() == NextSEM) {
+            }
+            else if (evt.getSource() == NextSEM) {
                 JubFrame.this.splitWith(evt);
-            } else if (evt.getSource() == TimeSEM) {
+            }
+            else if (evt.getSource() == TimeSEM) {
                 JubFrame.this.TimeSEMActionPerformed(evt);
-            } else if (evt.getSource() == PreviousGEM) {
+            }
+            else if (evt.getSource() == PreviousGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == NextGEM) {
+            }
+            else if (evt.getSource() == NextGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == PreviousPageGEM) {
+            }
+            else if (evt.getSource() == PreviousPageGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == NextPageGEM) {
+            }
+            else if (evt.getSource() == NextPageGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == TopGEM) {
+            }
+            else if (evt.getSource() == TopGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == BottomGEM) {
+            }
+            else if (evt.getSource() == BottomGEM) {
                 JubFrame.this.goToSubtitle(evt);
-            } else if (evt.getSource() == byTimeGEM) {
+            }
+            else if (evt.getSource() == byTimeGEM) {
                 JubFrame.this.byTimeGEMActionPerformed(evt);
-            } else if (evt.getSource() == AllSEM) {
+            }
+            else if (evt.getSource() == AllSEM) {
                 JubFrame.this.AllSEMActionPerformed(evt);
-            } else if (evt.getSource() == NoneMEM) {
+            }
+            else if (evt.getSource() == NoneMEM) {
                 JubFrame.this.NoneMEMActionPerformed(evt);
-            } else if (evt.getSource() == PinkMEM) {
+            }
+            else if (evt.getSource() == PinkMEM) {
                 JubFrame.this.PinkMEMActionPerformed(evt);
-            } else if (evt.getSource() == YellowMEM) {
+            }
+            else if (evt.getSource() == YellowMEM) {
                 JubFrame.this.YellowMEMActionPerformed(evt);
-            } else if (evt.getSource() == CyanMEM) {
+            }
+            else if (evt.getSource() == CyanMEM) {
                 JubFrame.this.CyanMEMActionPerformed(evt);
-            } else if (evt.getSource() == ShowNumberP1) {
+            }
+            else if (evt.getSource() == ShowNumberP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStartP1) {
+            }
+            else if (evt.getSource() == ShowStartP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowEndP1) {
+            }
+            else if (evt.getSource() == ShowEndP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowDurationP1) {
+            }
+            else if (evt.getSource() == ShowDurationP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowLayerP1) {
+            }
+            else if (evt.getSource() == ShowLayerP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowStyleP1) {
+            }
+            else if (evt.getSource() == ShowStyleP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ShowCPMP1) {
+            }
+            else if (evt.getSource() == ShowCPMP1) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == ToolsLockEM) {
+            }
+            else if (evt.getSource() == ToolsLockEM) {
                 JubFrame.this.ToolsLockEMActionPerformed(evt);
-            } else if (evt.getSource() == JumpEditTextEMJ) {
+            }
+            else if (evt.getSource() == JumpEditTextEMJ) {
                 JubFrame.this.JumpEditTextEMJActionPerformed(evt);
-            } else if (evt.getSource() == UndoEM) {
+            }
+            else if (evt.getSource() == UndoEM) {
                 JubFrame.this.UndoEMActionPerformed(evt);
-            } else if (evt.getSource() == RedoEM) {
+            }
+            else if (evt.getSource() == RedoEM) {
                 JubFrame.this.RedoEMActionPerformed(evt);
-            } else if (evt.getSource() == BeginningTTM) {
+            }
+            else if (evt.getSource() == BeginningTTM) {
                 JubFrame.this.BeginningTTMActionPerformed(evt);
-            } else if (evt.getSource() == CurrentTTM) {
+            }
+            else if (evt.getSource() == CurrentTTM) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
-            } else if (evt.getSource() == EnablePreviewC) {
+            }
+            else if (evt.getSource() == EnablePreviewC) {
                 JubFrame.this.EnablePreviewCActionPerformed(evt);
-            } else if (evt.getSource() == AudioPreviewC) {
+            }
+            else if (evt.getSource() == AudioPreviewC) {
                 JubFrame.this.AudioPreviewCActionPerformed(evt);
-            } else if (evt.getSource() == MaxWaveC) {
+            }
+            else if (evt.getSource() == MaxWaveC) {
                 JubFrame.this.MaxWaveCActionPerformed(evt);
-            } else if (evt.getSource() == PlayAudioC) {
+            }
+            else if (evt.getSource() == PlayAudioC) {
                 JubFrame.this.PlayAudioCActionPerformed(evt);
-            } else if (evt.getSource() == DonationsHM) {
+            }
+            else if (evt.getSource() == DonationsHM) {
                 JubFrame.this.DonationsHMActionPerformed(evt);
-            } else if (evt.getSource() == IssuesHM) {
+            }
+            else if (evt.getSource() == IssuesHM) {
                 JubFrame.this.IssuesHMActionPerformed(evt);
-            } else if (evt.getSource() == FAQHM) {
+            }
+            else if (evt.getSource() == FAQHM) {
                 JubFrame.this.FAQHMActionPerformed(evt);
-            } else if (evt.getSource() == AboutHM) {
+            }
+            else if (evt.getSource() == AboutHM) {
                 JubFrame.this.AboutHMActionPerformed(evt);
             }
         }
@@ -1883,20 +1983,17 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenuItem DeleteP;
     public javax.swing.JMenuItem DonationsHM;
     private javax.swing.JMenu EditM;
-    private javax.swing.JPanel EditTP;
     private javax.swing.JMenuItem EmptyLinesDEM;
     private javax.swing.JCheckBoxMenuItem EnablePreviewC;
     public javax.swing.JMenu ExternalsM;
     private javax.swing.JMenuItem FAQHM;
     private javax.swing.JMenu FileM;
     private javax.swing.JMenuItem FileNFM;
-    private javax.swing.JPanel FileTP;
     private javax.swing.JMenu FocusEM;
     private javax.swing.JMenu GoEM;
     private javax.swing.JMenu HelpM;
     private javax.swing.JMenuItem InfoFM;
     private javax.swing.JButton InfoTB;
-    private javax.swing.JPanel InfoTP;
     private javax.swing.JMenu InsertEM;
     public javax.swing.JMenuItem IssuesHM;
     public javax.swing.JMenuBar JublerMenuBar;
@@ -1933,7 +2030,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenuItem PreviousSEM;
     private javax.swing.JMenuItem QualityFM;
     private javax.swing.JButton QualityTB;
-    private javax.swing.JPanel QualityTP;
     public javax.swing.JMenuItem QuitFM;
     javax.swing.JMenu RecentsFM;
     private javax.swing.JMenuItem RedoEM;
@@ -1963,7 +2059,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
     private javax.swing.JCheckBoxMenuItem ShowStyleP1;
     private javax.swing.JButton SortTB;
-    private javax.swing.JPanel SortTP;
     private javax.swing.JMenu SplitST;
     private javax.swing.JMenuItem StepwiseREM;
     public javax.swing.JMenu StyleEM;
@@ -1976,14 +2071,12 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JScrollPane SubsScrollPane;
     private javax.swing.JButton TestTB;
     private javax.swing.JMenu TestTM;
-    private javax.swing.JPanel TestTP;
     private javax.swing.JMenuItem TimeSEM;
     public javax.swing.JCheckBoxMenuItem ToolsLockEM;
     public javax.swing.JMenu ToolsM;
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
-    private javax.swing.JPanel UndoTP;
     private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
@@ -1993,11 +2086,16 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
+    private javax.swing.JToolBar.Separator jSeparator13;
+    private javax.swing.JToolBar.Separator jSeparator14;
+    private javax.swing.JToolBar.Separator jSeparator15;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JPopupMenu.Separator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
     private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JToolBar.Separator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     // End of variables declaration//GEN-END:variables
 

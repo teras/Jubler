@@ -355,12 +355,12 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     public void setAttached(boolean attached) {
         if (attached) {
-            DetachP.setVisible(true);
+            DetachB.setIcon(Theme.loadIcon("detach"));
             parent.SubEditP.add(this, BorderLayout.CENTER);
             parent.validate();
             dlg.setVisible(false);
         } else {
-            DetachP.setVisible(false);
+            DetachB.setIcon(Theme.loadIcon("attach"));
             parent.SubEditP.remove(this);
             parent.validate();
             parent.getSubPreview().validate();
@@ -559,18 +559,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jScrollPane1 = new javax.swing.JScrollPane();
         SubText = new javax.swing.JTextPane();
         StyleP = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        DetachP = new javax.swing.JPanel();
-        DetachB = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        TimeB = new javax.swing.JToggleButton();
-        FontB = new javax.swing.JToggleButton();
-        ColorB = new javax.swing.JToggleButton();
-        MetricsB = new javax.swing.JToggleButton();
-        jPanel2 = new javax.swing.JPanel();
-        TrashB = new javax.swing.JButton();
-        ShowStyleB = new javax.swing.JToggleButton();
-        ToolsLockB = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         InfoP = new javax.swing.JPanel();
         TotalL = new javax.swing.JLabel();
@@ -581,6 +569,17 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         DurationL = new javax.swing.JLabel();
         CompactL = new javax.swing.JLabel();
         Unsaved = new javax.swing.JLabel();
+        jToolBar1 = new javax.swing.JToolBar();
+        DetachB = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JToolBar.Separator();
+        TimeB = new javax.swing.JToggleButton();
+        FontB = new javax.swing.JToggleButton();
+        ColorB = new javax.swing.JToggleButton();
+        MetricsB = new javax.swing.JToggleButton();
+        jSeparator2 = new javax.swing.JToolBar.Separator();
+        TrashB = new javax.swing.JButton();
+        ShowStyleB = new javax.swing.JToggleButton();
+        ToolsLockB = new javax.swing.JToggleButton();
         jPanel6 = new javax.swing.JPanel();
         StyleListC = new javax.swing.JComboBox();
         EditB = new javax.swing.JButton();
@@ -690,115 +689,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleP.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 0, 2, 0));
         StyleP.setLayout(new java.awt.BorderLayout());
 
-        jPanel7.setOpaque(false);
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        DetachP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 8));
-        DetachP.setOpaque(false);
-        DetachP.setLayout(new javax.swing.BoxLayout(DetachP, javax.swing.BoxLayout.LINE_AXIS));
-
-        DetachB.setIcon(Theme.loadIcon("detach"));
-        DetachB.setToolTipText(__("Detach subtitle editor panel"));
-        DetachB.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        SystemDependent.setCommandButtonStyle(DetachB, "only");
-        DetachB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DetachBActionPerformed(evt);
-            }
-        });
-        DetachP.add(DetachB);
-
-        jPanel7.add(DetachP, java.awt.BorderLayout.WEST);
-
-        jPanel1.setOpaque(false);
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.LINE_AXIS));
-
-        TimeB.setIcon(Theme.loadIcon("time"));
-        TimeB.setSelected(true);
-        TimeB.setToolTipText(__("Display/hide subtitle timings"));
-        SystemDependent.setCommandButtonStyle(TimeB, "first");
-        TimeB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TimeBActionPerformed(evt);
-            }
-        });
-        jPanel1.add(TimeB);
-
-        FontB.setIcon(Theme.loadIcon("font"));
-        FontB.setToolTipText(__("Display/hide font attributes"));
-        FontB.setActionCommand("font");
-        SystemDependent.setCommandButtonStyle(FontB, "middle");
-        FontB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                panelsetVisible(evt);
-            }
-        });
-        jPanel1.add(FontB);
-
-        ColorB.setIcon(Theme.loadIcon("color"));
-        ColorB.setToolTipText(__("Display/hide color attributes"));
-        ColorB.setActionCommand("color");
-        SystemDependent.setCommandButtonStyle(ColorB, "last");
-        ColorB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                panelsetVisible(evt);
-            }
-        });
-        jPanel1.add(ColorB);
-
-        MetricsB.setIcon(Theme.loadIcon("sizes"));
-        MetricsB.setToolTipText(__("Display/hide metric attributes"));
-        MetricsB.setActionCommand("metrics");
-        MetricsB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                panelsetVisible(evt);
-            }
-        });
-        jPanel1.add(MetricsB);
-
-        jPanel7.add(jPanel1, java.awt.BorderLayout.CENTER);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        jPanel2.setOpaque(false);
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
-
-        TrashB.setIcon(Theme.loadIcon("trash"));
-        TrashB.setToolTipText(__("Delete styles of this subtitle"));
-        SystemDependent.setCommandButtonStyle(TrashB, "only");
-        TrashB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TrashBActionPerformed(evt);
-            }
-        });
-        jPanel2.add(TrashB);
-
-        ShowStyleB.setIcon(Theme.loadIcon("hidestyle"));
-        ShowStyleB.setSelected(true);
-        ShowStyleB.setToolTipText(__("Display/hide styles for this subtitle"));
-        ShowStyleB.setSelectedIcon(Theme.loadIcon("showstyle"));
-        SystemDependent.setCommandButtonStyle(ShowStyleB, "only");
-        ShowStyleB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ShowStyleBActionPerformed(evt);
-            }
-        });
-        jPanel2.add(ShowStyleB);
-
-        ToolsLockB.setIcon(Theme.loadIcon("opentool"));
-        ToolsLockB.setToolTipText(__("Tools lock. When tools are locked, will be run with default parameters on the selected subtitles"));
-        ToolsLockB.setSelectedIcon(Theme.loadIcon("lockedtool"));
-        SystemDependent.setCommandButtonStyle(ToolsLockB, "only");
-        ToolsLockB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ToolsLockBActionPerformed(evt);
-            }
-        });
-        jPanel2.add(ToolsLockB);
-
-        jPanel7.add(jPanel2, java.awt.BorderLayout.EAST);
-
-        StyleP.add(jPanel7, java.awt.BorderLayout.WEST);
-
         jPanel8.setOpaque(false);
         jPanel8.setLayout(new java.awt.BorderLayout(8, 0));
 
@@ -856,6 +746,124 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         Unsaved.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 6));
         Unsaved.setEnabled(false);
         jPanel8.add(Unsaved, java.awt.BorderLayout.EAST);
+
+        jToolBar1.setRollover(true);
+        jToolBar1.setOpaque(false);
+
+        DetachB.setIcon(Theme.loadIcon("detach"));
+        DetachB.setToolTipText(__("Detach subtitle editor panel"));
+        DetachB.setFocusable(false);
+        DetachB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        DetachB.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        DetachB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setCommandButtonStyle(DetachB, "only");
+        DetachB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DetachBActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(DetachB);
+        jToolBar1.add(jSeparator1);
+
+        TimeB.setIcon(Theme.loadIcon("time"));
+        TimeB.setSelected(true);
+        TimeB.setToolTipText(__("Display/hide subtitle timings"));
+        TimeB.setFocusable(false);
+        TimeB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        TimeB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setCommandButtonStyle(TimeB, "first");
+        TimeB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TimeBActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(TimeB);
+
+        FontB.setIcon(Theme.loadIcon("font"));
+        FontB.setToolTipText(__("Display/hide font attributes"));
+        FontB.setActionCommand("font");
+        FontB.setFocusable(false);
+        FontB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        FontB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setCommandButtonStyle(FontB, "middle");
+        FontB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                panelsetVisible(evt);
+            }
+        });
+        jToolBar1.add(FontB);
+
+        ColorB.setIcon(Theme.loadIcon("color"));
+        ColorB.setToolTipText(__("Display/hide color attributes"));
+        ColorB.setActionCommand("color");
+        ColorB.setFocusable(false);
+        ColorB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ColorB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setCommandButtonStyle(ColorB, "last");
+        ColorB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                panelsetVisible(evt);
+            }
+        });
+        jToolBar1.add(ColorB);
+
+        MetricsB.setIcon(Theme.loadIcon("sizes"));
+        MetricsB.setToolTipText(__("Display/hide metric attributes"));
+        MetricsB.setActionCommand("metrics");
+        MetricsB.setFocusable(false);
+        MetricsB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        MetricsB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        MetricsB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                panelsetVisible(evt);
+            }
+        });
+        jToolBar1.add(MetricsB);
+        jToolBar1.add(jSeparator2);
+
+        TrashB.setIcon(Theme.loadIcon("trash"));
+        TrashB.setToolTipText(__("Delete styles of this subtitle"));
+        TrashB.setFocusable(false);
+        TrashB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        TrashB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setCommandButtonStyle(TrashB, "only");
+        TrashB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TrashBActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(TrashB);
+
+        ShowStyleB.setIcon(Theme.loadIcon("hidestyle"));
+        ShowStyleB.setSelected(true);
+        ShowStyleB.setToolTipText(__("Display/hide styles for this subtitle"));
+        ShowStyleB.setFocusable(false);
+        ShowStyleB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ShowStyleB.setSelectedIcon(Theme.loadIcon("showstyle"));
+        ShowStyleB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setCommandButtonStyle(ShowStyleB, "only");
+        ShowStyleB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ShowStyleBActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(ShowStyleB);
+
+        ToolsLockB.setIcon(Theme.loadIcon("opentool"));
+        ToolsLockB.setToolTipText(__("Tools lock. When tools are locked, will be run with default parameters on the selected subtitles"));
+        ToolsLockB.setFocusable(false);
+        ToolsLockB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ToolsLockB.setSelectedIcon(Theme.loadIcon("lockedtool"));
+        ToolsLockB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setCommandButtonStyle(ToolsLockB, "only");
+        ToolsLockB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ToolsLockBActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(ToolsLockB);
+
+        jPanel8.add(jToolBar1, java.awt.BorderLayout.WEST);
 
         StyleP.add(jPanel8, java.awt.BorderLayout.CENTER);
 
@@ -1002,7 +1010,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_EditBActionPerformed
 
     private void DetachBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetachBActionPerformed
-        setAttached(false);
+        setAttached(!is_attached);
     }//GEN-LAST:event_DetachBActionPerformed
 
     private void Lock3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Lock3ActionPerformed
@@ -1076,7 +1084,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JToggleButton ColorB;
     public javax.swing.JLabel CompactL;
     public javax.swing.JButton DetachB;
-    private javax.swing.JPanel DetachP;
     public javax.swing.JLabel DurationL;
     private javax.swing.JButton EditB;
     public javax.swing.JLabel FillL;
@@ -1108,15 +1115,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel crossP;
     private javax.swing.JButton crossinfo;
     private javax.swing.JLabel crossmobileL;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JToolBar.Separator jSeparator2;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JPopupMenu textEditPopup;
     // End of variables declaration//GEN-END:variables
 
