@@ -1763,7 +1763,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         int sel[] = SubTable.getSelectedRows();
         for (int i = sel.length - 1; i >= 0; i--)
             subs.remove(sel[i]);
-        tableHasChanged(null);
+        tableHasChanged((SubEntry[]) null);
     }//GEN-LAST:event_DeletePActionPerformed
 
     private void RevertFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RevertFMActionPerformed
@@ -1795,7 +1795,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         }
         if (u != null) {
             undo.addUndo(u);
-            tableHasChanged(null);
+            tableHasChanged((SubEntry[]) null);
         } else
             JIDialog.info(this, __("No lines affected"), __("Remove empty lines"));
     }//GEN-LAST:event_EmptyLinesDEMActionPerformed

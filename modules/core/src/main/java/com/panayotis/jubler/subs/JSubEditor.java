@@ -1006,7 +1006,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         showStyle();
         setStyleListEnabled(true);
         parent.getUndoList().addUndo(undo);
-        parent.tableHasChanged(null);
+        parent.tableHasChanged((SubEntry[]) null);
     }//GEN-LAST:event_EditBActionPerformed
 
     private void DetachBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DetachBActionPerformed

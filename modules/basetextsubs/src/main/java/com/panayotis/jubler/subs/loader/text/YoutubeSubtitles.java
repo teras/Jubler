@@ -6,9 +6,7 @@
 
 package com.panayotis.jubler.subs.loader.text;
 
-import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubEntry;
-import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AbstractTextSubFormat;
 import com.panayotis.jubler.time.Time;
 
