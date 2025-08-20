@@ -6,6 +6,8 @@ package com.panayotis.jubler;/*
 
 import com.panayotis.jubler.os.DEBUG;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -59,4 +61,21 @@ public final class JublerPrefs {
         }
     }
 
+    public static String exportPrefs(File output) {
+        try {
+            prefs.exportNode(Files.newOutputStream(output.toPath()));
+            return null;
+        } catch (Exception e) {
+            return e.toString();
+        }
+    }
+
+    public static String importPrefs(File input) {
+        try {
+            Preferences.importPreferences(Files.newInputStream(input.toPath()));
+            return null;
+        } catch (Exception e) {
+            return e.toString();
+        }
+    }
 }

@@ -4,9 +4,11 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.options;
+package com.panayotis.jubler.options;
 
+import com.panayotis.appenh.AFileChooser;
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.player.ExternalVideoPlayer;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.tools.externals.AvailExternals;
@@ -14,6 +16,7 @@ import com.panayotis.jubler.tools.spell.SpellChecker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -29,6 +32,8 @@ public class JPreferences extends javax.swing.JDialog {
     private JShortcutsOptions jcut;
     private JExternalToolsOptions jext;
     private boolean dialog_status;
+
+    private AFileChooser fileChooser;
 
     /**
      * Creates new form JPreferences
@@ -72,6 +77,17 @@ public class JPreferences extends javax.swing.JDialog {
             Options.loadSystemPreferences(this); // Make sure options are returned to their saved state
     }
 
+    private AFileChooser getFileChooser() {
+        if (fileChooser == null)
+            fileChooser = new AFileChooser()
+                    .mode(AFileChooser.FileSelectionMode.FilesOnly)
+                    .filter("xml", __("XML files"))
+                    .forceExtension(true)
+                    .saveButtonTitle(__("Export"))
+                    .loadButtonTitle(__("Import"));
+        return fileChooser;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,6 +100,9 @@ public class JPreferences extends javax.swing.JDialog {
         ButtonsP = new javax.swing.JPanel();
         CancelB = new javax.swing.JButton();
         AcceptB = new javax.swing.JButton();
+        SavePrefsP = new javax.swing.JPanel();
+        SavePrefsB = new javax.swing.JButton();
+        LoadPrefsB = new javax.swing.JButton();
 
         setTitle(__("Jubler Preferences"));
         setModal(true);
@@ -114,6 +133,27 @@ public class JPreferences extends javax.swing.JDialog {
 
         LowerP.add(ButtonsP, java.awt.BorderLayout.EAST);
 
+        SavePrefsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 16, 6, 0));
+        SavePrefsP.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
+
+        SavePrefsB.setText(__("Export"));
+        SavePrefsB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SavePrefsBActionPerformed(evt);
+            }
+        });
+        SavePrefsP.add(SavePrefsB);
+
+        LoadPrefsB.setText(__("Import"));
+        LoadPrefsB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoadPrefsBActionPerformed(evt);
+            }
+        });
+        SavePrefsP.add(LoadPrefsB);
+
+        LowerP.add(SavePrefsP, java.awt.BorderLayout.WEST);
+
         getContentPane().add(LowerP, java.awt.BorderLayout.SOUTH);
 
         pack();
@@ -129,10 +169,40 @@ public class JPreferences extends javax.swing.JDialog {
         setVisible(false);
     }//GEN-LAST:event_AcceptBActionPerformed
 
+    private void LoadPrefsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoadPrefsBActionPerformed
+        File file = getFileChooser()
+                .title(__("Import preferences"))
+                .loadSingle();
+        if (file != null) {
+            String error = JublerPrefs.importPrefs(file);
+            if (error != null)
+                JOptionPane.showMessageDialog(this, error, __("Error"), JOptionPane.ERROR_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(this, __("Preferences imported successfully.") + "\n" + __("Consider exiting Jubler and restarting it to apply the new preferences."), __("Success"), JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_LoadPrefsBActionPerformed
+
+    private void SavePrefsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SavePrefsBActionPerformed
+        File file = getFileChooser()
+                .title(__("Export preferences"))
+                .mode(AFileChooser.FileSelectionMode.FilesOnly)
+                .save();
+        if (file != null) {
+            String error = JublerPrefs.exportPrefs(file);
+            if (error != null)
+                JOptionPane.showMessageDialog(this, error, __("Error"), JOptionPane.ERROR_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(this, __("Preferences exported successfully."), __("Success"), JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_SavePrefsBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcceptB;
     private javax.swing.JPanel ButtonsP;
     private javax.swing.JButton CancelB;
+    private javax.swing.JButton LoadPrefsB;
     private javax.swing.JPanel LowerP;
+    private javax.swing.JButton SavePrefsB;
+    private javax.swing.JPanel SavePrefsP;
     // End of variables declaration//GEN-END:variables
 }
