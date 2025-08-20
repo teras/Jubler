@@ -4,9 +4,9 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools.replace;
+package com.panayotis.jubler.tools.replace;
 
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -21,7 +21,10 @@ public class JReplaceList extends javax.swing.JPanel {
         initComponents();
         model = new ReplaceModel();
         TTable.setModel(model);
-        TTable.getColumnModel().getColumn(0).setMaxWidth(30);
+        TTable.getColumnModel().getColumn(0).setMaxWidth(40);
+        TTable.getColumnModel().getColumn(1).setCellEditor(model.liveEditorFor(TTable));
+        TTable.getColumnModel().getColumn(2).setCellEditor(model.liveEditorFor(TTable));
+        TTable.getColumnModel().getColumn(3).setMaxWidth(40);
         TTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
@@ -39,6 +42,11 @@ public class JReplaceList extends javax.swing.JPanel {
         MarkAll = new javax.swing.JButton();
         ClearAll = new javax.swing.JButton();
         Inverse = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -77,6 +85,22 @@ public class JReplaceList extends javax.swing.JPanel {
         jPanel1.add(Inverse);
 
         add(jPanel1, java.awt.BorderLayout.EAST);
+
+        jPanel2.setLayout(new java.awt.GridLayout(0, 1, 0, 2));
+
+        jLabel1.setText("★: " + __("Whether this entry is used or not"));
+        jPanel2.add(jLabel1);
+
+        jLabel2.setText(__("Pattern") + ": " + __("The RegEx pattern to use"));
+        jPanel2.add(jLabel2);
+
+        jLabel3.setText(__("Replacement") + ": " + __("The replacement text"));
+        jPanel2.add(jLabel3);
+
+        jLabel4.setText("⎋: " + __("Parse texts as Java escaped codes (i.e. unescape sequences like \\n \\t etc.)"));
+        jPanel2.add(jLabel4);
+
+        add(jPanel2, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
 
     private void InverseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InverseActionPerformed
@@ -100,12 +124,18 @@ public class JReplaceList extends javax.swing.JPanel {
     public ReplaceModel getModel() {
         return model;
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton ClearAll;
     private javax.swing.JButton Inverse;
     private javax.swing.JButton MarkAll;
     private javax.swing.JTable TTable;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

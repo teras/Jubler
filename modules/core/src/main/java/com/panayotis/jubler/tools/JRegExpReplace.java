@@ -4,11 +4,12 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.replace.JReplaceList;
 import com.panayotis.jubler.tools.replace.ReplaceModel;
+
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,13 +20,13 @@ import static com.panayotis.jubler.i18n.I18N.__;
 public class JRegExpReplace extends RealTimeTool {
 
     private final ArrayList<Pattern> patterns;
-    private final ArrayList<String> texts;
+    private final ArrayList<String> replacements;
     private final JReplaceList rlist;
 
     public JRegExpReplace() {
         super(false, null);
         patterns = new ArrayList<>();
-        texts = new ArrayList<>();
+        replacements = new ArrayList<>();
         rlist = new JReplaceList();
     }
 
@@ -34,7 +35,7 @@ public class JRegExpReplace extends RealTimeTool {
         String res = sub.getText();
         for (int i = 0; i < patterns.size(); i++) {
             Matcher m = patterns.get(i).matcher(res);
-            res = m.replaceAll(texts.get(i));
+            res = m.replaceAll(replacements.get(i));
         }
         sub.setText(res);
     }
@@ -47,11 +48,11 @@ public class JRegExpReplace extends RealTimeTool {
     protected void storeSelections() {
         ReplaceModel model = rlist.getModel();
         patterns.clear();
-        texts.clear();
+        replacements.clear();
         for (int i = 0; i < model.size(); i++)
             if (model.elementAt(i).usable) {
-                patterns.add(Pattern.compile(model.elementAt(i).fromS));
-                texts.add(model.elementAt(i).toS);
+                patterns.add(Pattern.compile(model.elementAt(i).getPattern()));
+                replacements.add(model.elementAt(i).getReplacement());
             }
     }
 

@@ -4,69 +4,116 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools.replace;
+package com.panayotis.jubler.tools.replace;
 
 import java.util.ArrayList;
+
 import com.panayotis.jubler.options.Options;
+
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class ReplaceModel extends AbstractTableModel {
 
-    private ArrayList<ReplaceEntry> replacelist;
+    private final ArrayList<ReplaceEntry> replaceList;
     private final static String[][] def_replace = {
-        {"\\[.*\\]", ""},
-        {"@.*@", ""},
-        {"\\{.*\\}", ""},
-        {"<.*>", ""}
+            {"\\[.*\\]", ""},
+            {"@.*@", ""},
+            {"\\{.*\\}", ""},
+            {"<.*>", ""}
     };
 
     /**
      * Creates a new instance of ReplaceModel
      */
     public ReplaceModel() {
-        replacelist = new ArrayList<ReplaceEntry>();
+        replaceList = new ArrayList<>();
         loadOptions();
     }
 
     public Object getValueAt(int row, int column) {
-        return replacelist.get(row).getValue(column);
+        return replaceList.get(row).getValue(column);
     }
 
     public int getColumnCount() {
-        return 3;
+        return 4;
     }
 
     public int getRowCount() {
-        return replacelist.size();
+        return replaceList.size();
     }
 
     @Override
     public void setValueAt(Object value, int row, int col) {
-        if (row == (replacelist.size() - 1))
-            replacelist.add(new ReplaceEntry());
-        replacelist.get(row).setValue(col, value);
-        if (col > 0)
-            replacelist.get(row).setValue(0, true);
+        replaceList.get(row).setValue(col, value);
+        fireTableCellUpdated(row, col);
+        if (col == 1 || col == 2) {
+            replaceList.get(row).setValue(0, true);
+            fireTableCellUpdated(row, 0);
+        }
+        if (row == (replaceList.size() - 1)) {
+            replaceList.add(new ReplaceEntry());
+            fireTableRowsInserted(row, row);
+        }
     }
 
     @Override
-    public Class getColumnClass(int column) {
-        if (column == 0)
+    public Class<?> getColumnClass(int column) {
+        if (column == 0 || column == 3)
             return Boolean.class;
         return String.class;
+    }
+
+    public DefaultCellEditor liveEditorFor(JTable table) {
+        JTextField tf = new JTextField();
+        DefaultCellEditor ed = new DefaultCellEditor(tf);
+
+        tf.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            private void changed() {
+                int r = table.getEditingRow(), c = table.getEditingColumn();
+                if (r < 0 || c < 0) return;
+                int mr = table.convertRowIndexToModel(r);
+                int mc = table.convertColumnIndexToModel(c);
+
+                javax.swing.table.TableModel m = table.getModel();
+                String txt = tf.getText();
+                Object cur = m.getValueAt(mr, mc);
+                if (!java.util.Objects.equals(cur, txt)) {
+                    m.setValueAt(txt, mr, mc);   // live-update model
+                }
+            }
+
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                changed();
+            }
+
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                changed();
+            }
+
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                changed();
+            }
+        });
+        return ed;
     }
 
     @Override
     public String getColumnName(int index) {
         switch (index) {
             case 0:
-                return __("Use");
+                return "★";
             case 1:
-                return __("Original value");
+                return __("Pattern");
+            case 2:
+                return __("Replacement");
+            case 3:
+                return "⎋";
+            default:
+                throw new IllegalArgumentException("Invalid column index: " + index);
         }
-        return __("New value");
     }
 
     @Override
@@ -75,19 +122,19 @@ public class ReplaceModel extends AbstractTableModel {
     }
 
     public int size() {
-        return replacelist.size();
+        return replaceList.size();
     }
 
     public ReplaceEntry elementAt(int row) {
-        return replacelist.get(row);
+        return replaceList.get(row);
     }
 
     public void remove(int row) {
-        if (row >= (replacelist.size() - 1))
+        if (row >= (replaceList.size() - 1))
             return;
         else if (row < 0)
             return;
-        replacelist.remove(row);
+        replaceList.remove(row);
         fireTableDataChanged();
     }
 
@@ -95,8 +142,8 @@ public class ReplaceModel extends AbstractTableModel {
     public java.util.Vector<String> getReplaceList() {
         java.util.Vector<String> res = new java.util.Vector<String>();
         String dat;
-        for (int i = 0; i < replacelist.size(); i++) {
-            dat = replacelist.get(i).getTransformation();
+        for (int i = 0; i < replaceList.size(); i++) {
+            dat = replaceList.get(i).getTransformation();
             if (dat != null)
                 res.add(dat);
         }
@@ -109,23 +156,23 @@ public class ReplaceModel extends AbstractTableModel {
             reset();
             return;
         } else
-            ReplaceEntry.setData(replacelist, data);
-        replacelist.add(new ReplaceEntry());
+            ReplaceEntry.setData(replaceList, data);
+        replaceList.add(new ReplaceEntry());
     }
 
     public void saveOptions() {
         StringBuilder data = new StringBuilder();
-        for (int i = 0; i < (replacelist.size() - 1); i++)
-            data.append(replacelist.get(i));
+        for (int i = 0; i < (replaceList.size() - 1); i++)
+            data.append(replaceList.get(i));
         Options.setOption("Replace.Global", data.toString());
         Options.saveOptions();
     }
 
     public void reset() {
-        replacelist.clear();
-        for (int i = 0; i < def_replace.length; i++)
-            replacelist.add(new ReplaceEntry(false, def_replace[i][0], def_replace[i][1]));
-        replacelist.add(new ReplaceEntry());
+        replaceList.clear();
+        for (String[] strings : def_replace)
+            replaceList.add(new ReplaceEntry(false, strings[0], strings[1], false));
+        replaceList.add(new ReplaceEntry());
         fireTableDataChanged();
     }
 }

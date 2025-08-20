@@ -4,7 +4,9 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools.replace;
+package com.panayotis.jubler.tools.replace;
+
+import com.panayotis.jubler.os.Escapes;
 
 import java.util.Collection;
 import java.util.regex.Matcher;
@@ -13,34 +15,37 @@ import java.util.regex.Pattern;
 public class ReplaceEntry {
 
     public boolean usable;
-    public String fromS;
-    public String toS;
+    public boolean unescape;
+    private String pattern;
+    private String replacement;
 
     public ReplaceEntry() {
-        this(false, "", "");
+        this(false, "", "", false);
     }
 
     /**
      * Creates a new instance of ReplaceEntry
-     *
-     * @param usable
-     * @param fromS
-     * @param toS
      */
-    public ReplaceEntry(boolean usable, String fromS, String toS) {
-        this.fromS = fromS;
-        this.toS = toS;
+    public ReplaceEntry(boolean usable, String pattern, String replacement, boolean unescape) {
+        this.pattern = pattern;
+        this.replacement = replacement;
         this.usable = usable;
+        this.unescape = unescape;
     }
 
     public Object getValue(int which) {
         switch (which) {
+            case 0:
+                return usable;
             case 1:
-                return fromS;
+                return pattern;
             case 2:
-                return toS;
+                return replacement;
+            case 3:
+                return unescape;
+            default:
+                throw new IllegalArgumentException("Invalid column index: " + which);
         }
-        return usable;
     }
 
     public void setValue(int which, Object value) {
@@ -49,11 +54,16 @@ public class ReplaceEntry {
                 usable = (java.lang.Boolean) value;
                 break;
             case 1:
-                fromS = value.toString();
+                pattern = value.toString();
                 break;
             case 2:
-                toS = value.toString();
+                replacement = value.toString();
                 break;
+            case 3:
+                unescape = (java.lang.Boolean) value;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid column index: " + which);
         }
     }
 
@@ -61,21 +71,26 @@ public class ReplaceEntry {
         if (data == null || c == null)
             return;
         c.clear();
-        Pattern p = Pattern.compile("\\{\\{(.*?)\\}\\{(.*?)\\}\\{(.*?)\\}\\}");
+        Pattern p = Pattern.compile("\\{\\{([^}]*)}\\{([^}]*)}\\{([^}]*)}(?:\\{([^}]*)})?}");
         Matcher m = p.matcher(data);
         while (m.find())
-            c.add(new ReplaceEntry(Boolean.parseBoolean(m.group(1)), getSafe(m.group(2)), getSafe(m.group(3))));
+            c.add(new ReplaceEntry(
+                    Boolean.parseBoolean(m.group(1)),
+                    getSafe(m.group(2)),
+                    getSafe(m.group(3)),
+                    m.groupCount() > 3 && Boolean.parseBoolean(m.group(4))
+            ));
     }
 
     public String getTransformation() {
         if (!usable)
             return null;
-        return fromS + "    =>    " + toS;
+        return pattern + "    =>    " + replacement;
     }
 
     @Override
     public String toString() {
-        return "{{" + Boolean.toString(usable) + "}{" + setSafe(fromS) + "}{" + setSafe(toS) + "}}";
+        return "{{" + usable + "}{" + setSafe(pattern) + "}{" + setSafe(replacement) + "}{" + unescape + "}}";
     }
 
     private static String setSafe(String in) {
@@ -103,5 +118,13 @@ public class ReplaceEntry {
             } else
                 res.append(in.charAt(i));
         return res.toString();
+    }
+
+    public String getPattern() {
+        return unescape ? Escapes.unescapeJavaLenient(pattern) : pattern;
+    }
+
+    public String getReplacement() {
+        return unescape ? Escapes.unescapeJavaLenient(replacement) : replacement;
     }
 }
