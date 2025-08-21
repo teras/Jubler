@@ -8,6 +8,7 @@ package  com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.Availabilities;
@@ -41,8 +42,8 @@ public class SubFile {
 
     static {
         for (int i = 0; i < def_encodings.length; i++)
-            setDefaultEncoding(i, Options.getOption("Default.Encoding" + (i + 1), null));
-        setDefaultFPS(Options.getOption("Default.FPS", null));
+            setDefaultEncoding(i, JublerPrefs.getString("default.encoding" + (i + 1), null));
+        setDefaultFPS(JublerPrefs.getString("default.fps", null));
         SubFormat f = Availabilities.formats.findFromName("AdvancedSubStation");
         if (f == null)
             f = Availabilities.formats.findFromName("SubRip");
@@ -57,9 +58,8 @@ public class SubFile {
 
     public static void saveDefaultOptions() {
         for (int i = 0; i < def_encodings.length; i++)
-            Options.setOption("Default.Encoding" + (i + 1), getDefaultEncoding(i));
-        Options.setOption("Default.FPS", Float.toString(getDefaultFPS()));
-        Options.saveOptions();
+            JublerPrefs.set("default.encoding" + (i + 1), getDefaultEncoding(i));
+        JublerPrefs.set("default.fps", Float.toString(getDefaultFPS()));
     }
 
     public static void setDefaultEncoding(int i, String enc) {

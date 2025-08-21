@@ -72,7 +72,6 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
 
             region = config.getRegion();
             JublerPrefs.set(REGION_KEY, region);
-            JublerPrefs.sync();
         }
     }
 

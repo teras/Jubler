@@ -17,21 +17,6 @@ import java.util.Map;
 
 public class MPlayerSystemDependent extends SystemDependent {
 
-    static void updateParameters() {
-        int version = 1;
-        try {
-            version = Integer.parseInt(Options.getOption("System.Preferences.Version", "1"));
-        } catch (NumberFormatException ex) {
-        }
-        String params = Options.getOption("Player.MPlayer.Arguments", "");
-        if (version < 2 && (!params.equals(""))) {
-            Options.setOption("System.Preferences.Version", Integer.toString(Options.CURRENT_VERSION));
-            Options.setOption("Player.MPlayer.Arguments", getDefaultMPlayerArgs());
-            Options.backupPrefFile();
-            DEBUG.debug("Updated configuration file. backup has been taken of the old configuration file .");
-        }
-    }
-
     public static String getDefaultMPlayerArgs() {
         String font = "";
 

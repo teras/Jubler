@@ -16,10 +16,6 @@ import java.util.Collections;
 
 public class MPlayer extends AbstractExternalPlayer implements PluginCollection {
 
-    static {
-        MPlayerSystemDependent.updateParameters();
-    }
-
     public MPlayer() {
         super(family);
     }

@@ -7,6 +7,7 @@
 package  com.panayotis.jubler.subs.style;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
@@ -653,8 +654,7 @@ public class JStyleEditor extends javax.swing.JDialog {
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
         getOtherValues(); /* First we need to gather the values from the control buttons */
         String vals = current.getValues();
-        Options.setOption("Styles.Default", vals);
-        Options.saveOptions();
+        JublerPrefs.set("styles.default", vals);
     }//GEN-LAST:event_SaveActionPerformed
 
     private void DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteActionPerformed

@@ -4,14 +4,14 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.media.console;
+package com.panayotis.jubler.media.console;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.player.ExternalVideoPlayer;
 import com.panayotis.jubler.media.player.Viewport;
 import com.panayotis.jubler.media.preview.JSubSimpleGraph;
-import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
@@ -131,7 +131,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     /* Where to put this dialog */
     private void positionConsole() {
         Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
-        String res = Options.getOption("VideoConsole.DefaultPosition", "(" + ((bounds.width + bounds.x - getRootPane().getWidth()) / 2) + "," + bounds.y + ")");
+        String res = JublerPrefs.getString("videoconsole.defaultPosition", "(" + ((bounds.width + bounds.x - getRootPane().getWidth()) / 2) + "," + bounds.y + ")");
         int seperator = res.indexOf(',');
         int x_value = Integer.parseInt(res.substring(1, seperator));
         int y_value = Integer.parseInt(res.substring(seperator + 1, res.length() - 1));
@@ -183,8 +183,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         player.cleanUp();
 
         /* Save window position */
-        Options.setOption("VideoConsole.DefaultPosition", "(" + getX() + "," + getY() + ")");
-        Options.saveOptions();
+        JublerPrefs.set("videoconsole.defaultposition", "(" + getX() + "," + getY() + ")");
     }
 
     public synchronized void requestQuit() {
@@ -499,11 +498,11 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         jPanel9.setBorder(javax.swing.BorderFactory.createEtchedBorder(javax.swing.border.EtchedBorder.RAISED));
         jPanel9.setLayout(new java.awt.GridLayout(1, 2));
 
-        TimeL.setFont(TimeL.getFont().deriveFont(TimeL.getFont().getSize()-1f));
+        TimeL.setFont(TimeL.getFont().deriveFont(TimeL.getFont().getSize() - 1f));
         TimeL.setToolTipText(__("Current playback time"));
         jPanel9.add(TimeL);
 
-        dtL.setFont(dtL.getFont().deriveFont(dtL.getFont().getSize()-1f));
+        dtL.setFont(dtL.getFont().deriveFont(dtL.getFont().getSize() - 1f));
         dtL.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         dtL.setText(" ");
         dtL.setToolTipText(__("Subtitles time difference"));
@@ -659,7 +658,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         });
         jPanel12.add(SubMover, java.awt.BorderLayout.CENTER);
 
-        SmoverL.setFont(SmoverL.getFont().deriveFont(SmoverL.getFont().getSize()-1f));
+        SmoverL.setFont(SmoverL.getFont().deriveFont(SmoverL.getFont().getSize() - 1f));
         SmoverL.setText(" ");
         SmoverL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         jPanel12.add(SmoverL, java.awt.BorderLayout.NORTH);
@@ -671,7 +670,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
         MainPanel.add(jPanel11, java.awt.BorderLayout.CENTER);
 
         SubShow.setEditable(false);
-        SubShow.setFont(SubShow.getFont().deriveFont(SubShow.getFont().getStyle() | java.awt.Font.BOLD, SubShow.getFont().getSize()-1));
+        SubShow.setFont(SubShow.getFont().deriveFont(SubShow.getFont().getStyle() | java.awt.Font.BOLD, SubShow.getFont().getSize() - 1));
         SubShow.setToolTipText(__("Subtitle text"));
         SubShow.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {

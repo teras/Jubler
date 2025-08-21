@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.os;
+package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.tools.externals.ExtPath;
 
@@ -211,24 +211,24 @@ public class SystemDependent {
         return ret;
     }
 
-    public static String getConfigPath() {
+    public static String getObsoleteConfigPath() {
         String home = System.getProperty("user.home") + File.separator;
-
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\config.txt";
         if (IS_MACOSX)
             return home + "Library/Preferences/com.panayotis.jubler.config";
-        return home + ".jubler/config";
+        else
+            return home + ".jubler/config";
     }
 
     public static String getLogPath() {
         String home = System.getProperty("user.home") + File.separator;
-
         if (IS_WINDOWS)
             return System.getenv("APPDATA") + "\\Jubler\\log.txt";
         if (IS_MACOSX)
             return home + "Library/Logs/Jubler.log";
-        return home + ".jubler/output.log";
+        else
+            return home + ".local/share/jubler/Jubler.log";
     }
 
     /**
@@ -242,7 +242,7 @@ public class SystemDependent {
             return System.getenv("APPDATA") + "\\Jubler";
         if (IS_MACOSX)
             return home + "Library/Application Support/Jubler";
-        return home + ".jubler";
+        return home + ".local/share/jubler";
     }
 
     public static Border getBorder(String title) {

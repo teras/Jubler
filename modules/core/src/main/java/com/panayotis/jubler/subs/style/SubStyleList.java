@@ -6,6 +6,7 @@
 
 package  com.panayotis.jubler.subs.style;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.subs.SubEntry;
 
@@ -18,7 +19,7 @@ public class SubStyleList extends ArrayList<SubStyle> implements NameList {
     static {
         default_style = new SubStyle("Default");
         default_style.setDefault(true);
-        default_style.setValues(Options.getOption("Styles.Default", ""));
+        default_style.setValues(JublerPrefs.getString("styles.default", ""));
     }
 
     /**

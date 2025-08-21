@@ -19,14 +19,29 @@ public final class JublerPrefs {
 
     public static void set(String key, float value) {
         prefs.putFloat(key, value);
+        try {
+            prefs.flush();
+        } catch (BackingStoreException e) {
+            DEBUG.debug(e);
+        }
     }
 
     public static void set(String key, int value) {
         prefs.putInt(key, value);
+        try {
+            prefs.flush();
+        } catch (BackingStoreException e) {
+            DEBUG.debug(e);
+        }
     }
 
     public static void set(String key, boolean value) {
         prefs.putBoolean(key, value);
+        try {
+            prefs.flush();
+        } catch (BackingStoreException e) {
+            DEBUG.debug(e);
+        }
     }
 
     public static void set(String key, String value) {
@@ -34,6 +49,11 @@ public final class JublerPrefs {
             prefs.remove(key);
         else
             prefs.put(key, value);
+        try {
+            prefs.flush();
+        } catch (BackingStoreException e) {
+            DEBUG.debug(e);
+        }
     }
 
     public static int getInt(String key, int deflt) {
@@ -52,30 +72,36 @@ public final class JublerPrefs {
         return prefs.getFloat(key, deflt);
     }
 
-
-    public static void sync() {
-        try {
-            prefs.sync();
-        } catch (BackingStoreException e) {
-            DEBUG.debug(e);
-        }
-    }
-
     public static String exportPrefs(File output) {
         try {
             prefs.exportNode(Files.newOutputStream(output.toPath()));
             return null;
         } catch (Exception e) {
+            DEBUG.debug(e);
             return e.toString();
         }
     }
 
     public static String importPrefs(File input) {
         try {
+            prefs.clear();
             Preferences.importPreferences(Files.newInputStream(input.toPath()));
+            prefs.flush();
             return null;
         } catch (Exception e) {
+            DEBUG.debug(e);
             return e.toString();
+        }
+    }
+
+    public static void dump() {
+        try {
+            for (String key : prefs.keys()) {
+                String value = prefs.get(key, null);
+                System.out.println(key + " = " + value);
+            }
+        } catch (BackingStoreException e) {
+            e.printStackTrace();
         }
     }
 }

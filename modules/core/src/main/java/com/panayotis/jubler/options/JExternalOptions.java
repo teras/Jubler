@@ -4,18 +4,22 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.options;
+package com.panayotis.jubler.options;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.tools.externals.AvailExternals;
+
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.theme.Theme;
+
 import java.awt.CardLayout;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
 public class JExternalOptions extends JPanel implements OptionsHolder {
 
-    private AvailExternals list;
+    private final AvailExternals list;
 
     /**
      * Creates new form JExternalOptions
@@ -24,7 +28,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
         initComponents();
         this.list = list;
 
-        String def = Options.getOption("List.Default." + list.getType(), "").toLowerCase();
+        String def = JublerPrefs.getString("list.default." + list.getType().toLowerCase(), "").toLowerCase();
         int selected = 0;
 
         for (int i = 0; i < list.size(); i++) {
@@ -81,7 +85,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     private void PListActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PListActionPerformed
         int selected = PList.getSelectedIndex();
         ((CardLayout) ParamsP.getLayout()).show(ParamsP, Integer.toString(selected));
-        Options.setOption("List.Default." + list.getType(), list.nameAt(selected));
+        JublerPrefs.set("list.default." + list.getType().toLowerCase(), list.nameAt(selected));
         changeProgram();
     }//GEN-LAST:event_PListActionPerformed
 
@@ -127,6 +131,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
     public Icon getTabIcon() {
         return Theme.loadIcon(list.getIconName());
     }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ExtSelectorP;
     private javax.swing.JComboBox PList;

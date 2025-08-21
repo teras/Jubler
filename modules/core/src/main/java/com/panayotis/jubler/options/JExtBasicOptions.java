@@ -6,6 +6,7 @@
 
 package  com.panayotis.jubler.options;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.os.SystemDependent;
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -88,11 +89,11 @@ public class JExtBasicOptions extends JPanel {
     // End of variables declaration//GEN-END:variables
 
     protected void loadPreferences() {
-        FilenameT.setText(Options.getOption(family + "." + name + ".Path", ""));
+        FilenameT.setText(JublerPrefs.getString(family.toLowerCase() + "." + name.toLowerCase() + ".path", ""));
     }
 
     protected void savePreferences() {
-        Options.setOption(family + "." + name + ".Path", FilenameT.getText());
+        JublerPrefs.set(family.toLowerCase() + "." + name.toLowerCase() + ".path", FilenameT.getText());
     }
 
     public String getExecFileName() {
@@ -127,7 +128,6 @@ public class JExtBasicOptions extends JPanel {
         boolean found = searchForExecutable();
         if (found) {
             savePreferences();
-            Options.saveOptions();
         }
         return found;
     }

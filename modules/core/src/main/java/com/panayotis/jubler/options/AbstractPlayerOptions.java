@@ -7,6 +7,8 @@
 package  com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.player.AbstractExternalPlayer;
 import com.panayotis.jubler.os.SystemDependent;
 import java.awt.BorderLayout;
@@ -30,13 +32,13 @@ public class AbstractPlayerOptions extends JExtBasicOptions {
     @Override
     protected void loadPreferences() {
         super.loadPreferences();
-        args.setText(Options.getOption("Player." + name + ".Arguments", args_default));
+        args.setText(JublerPrefs.getString("player." + name.toLowerCase() + ".arguments", args_default));
     }
 
     @Override
     public void savePreferences() {
         super.savePreferences();
-        Options.setOption("Player." + name + ".Arguments", args.getText());
+        JublerPrefs.set("player." + name.toLowerCase() + ".arguments", args.getText());
     }
 
     public String getArguments() {

@@ -6,6 +6,8 @@
 
 package  com.panayotis.jubler.options;
 
+import com.panayotis.jubler.JublerPrefs;
+
 import java.util.StringTokenizer;
 
 public class AutoSaveOptions {
@@ -16,12 +18,11 @@ public class AutoSaveOptions {
     private static final String DEFAULTCOLWIDTH = "50,100,100,50,50,50,530";
 
     public static void setPreviewOrientation(boolean horizontal) {
-        Options.setOption("Preview.Orientation", horizontal ? "horizontal" : "vertical");
-        Options.saveOptions();
+        JublerPrefs.set("preview.orientation", horizontal ? "horizontal" : "vertical");
     }
 
     public static boolean getPreviewOrientation() {
-        return Options.getOption("Preview.Orientation", "horizontal").equals("horizontal");
+        return JublerPrefs.getString("preview.orientation", "horizontal").equals("horizontal");
     }
 
     public static void setVisibleColumns(boolean[] visiblecols) {
@@ -29,12 +30,11 @@ public class AutoSaveOptions {
         for (int i = 0; i < visiblecols.length; i++)
             if (visiblecols[i])
                 out.append(COLUMNID.charAt(i));
-        Options.setOption("System.VisibleColumns", out.toString());
-        Options.saveOptions();
+        JublerPrefs.set("system.visiblecolumns", out.toString());
     }
 
     public static boolean[] getVisibleColumns() {
-        String savedcols = Options.getOption("System.VisibleColumns", DEFAULTCOLUMNID);
+        String savedcols = JublerPrefs.getString("system.visiblecolumns", DEFAULTCOLUMNID);
         boolean[] cols = new boolean[COLUMNID.length()];
         for (int i = 0; i < COLUMNID.length(); i++)
             if (savedcols.indexOf(COLUMNID.charAt(i)) >= 0)
@@ -48,13 +48,12 @@ public class AutoSaveOptions {
         StringBuilder widths = new StringBuilder();
         for (int i = 0; i < prefcolwidth.length; i++)
             widths.append(prefcolwidth[i]).append(',');
-        Options.setOption("System.ColumnWidth", widths.substring(0, widths.length() - 1));
-        Options.saveOptions();
+        JublerPrefs.set("system.columnwidth", widths.substring(0, widths.length() - 1));
     }
 
     public static int[] getColumnWidths() {
         int[] prefcolwidth = new int[COLUMNID.length()];
-        String widths = Options.getOption("System.ColumnWidth", DEFAULTCOLWIDTH);
+        String widths = JublerPrefs.getString("system.columnWidth", DEFAULTCOLWIDTH);
         if (widths == null || widths.equals("") || widths.length() < 1)
             widths = DEFAULTCOLWIDTH;
 

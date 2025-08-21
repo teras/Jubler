@@ -6,6 +6,8 @@
 
 package  com.panayotis.jubler.options;
 
+import com.panayotis.jubler.JublerPrefs;
+
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -128,14 +130,14 @@ public class ASpellOptions extends JExtBasicOptions {
     @Override
     protected void savePreferences() {
         super.savePreferences();
-        Options.setOption(family + "." + name + ".Language", getLanguageName());
+        JublerPrefs.set(family.toLowerCase() + "." + name.toLowerCase() + ".language", getLanguageName());
     }
 
     @Override
     public void loadPreferences() {
         super.loadPreferences();
         updateOptionsPanel();
-        setSelectedLanguage(Options.getOption(family + "." + name + ".Language", default_language));
+        setSelectedLanguage(JublerPrefs.getString(family.toLowerCase() + "." + name.toLowerCase() + ".language", default_language));
     }
 
     public ASpellDict getLanguage() {

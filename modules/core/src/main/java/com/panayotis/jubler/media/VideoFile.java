@@ -8,6 +8,7 @@ package  com.panayotis.jubler.media;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.filters.MediaFileFilter;
 import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.options.Options;
@@ -74,7 +75,7 @@ public class VideoFile extends File {
         if (width < 0) {
 
             /* Use MPlayer if no decoder is valid */
-            String cmd[] = {Options.getOption("Player.MPlayer.Path", "mplayer"), "-vo", "null", "-ao", "null", "-identify", "-endpos", "0", getPath()};
+            String cmd[] = {JublerPrefs.getString("player.mplayer.path", "mplayer"), "-vo", "null", "-ao", "null", "-identify", "-endpos", "0", getPath()};
             Process proc;
             try {
                 proc = Runtime.getRuntime().exec(cmd);

@@ -8,14 +8,14 @@ package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.gui.TabPage;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubFile;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Stack;
 
@@ -24,8 +24,6 @@ public class Options {
 
     public final static int CURRENT_VERSION = 3;
     private final static int MAX_RECENTS = 10;
-    private final static Properties opts;
-    private final static String preffile;
     private static int errorColor;
     private static final String ERRORCOLOR_TAG = "options.errorcolor";
     private static boolean spaceChars;
@@ -48,6 +46,7 @@ public class Options {
     private static final String MAXDURATION_TAG = "options.maxduration";
     private static float minDuration;
     private static final String MINDURATION_TAG = "options.minduration";
+    private static final String SYSTEM_LASTFILE = "system.lastfile";
 
     static {
         errorColor = JublerPrefs.getInt(ERRORCOLOR_TAG, 1);
@@ -64,52 +63,40 @@ public class Options {
     }
 
     static {
-        opts = new Properties();
-        preffile = updateConfigFile();
-        try {
-            opts.loadFromXML(new FileInputStream(preffile));
-        } catch (Exception e) {
-        }
+        updateConfigFile();
+        JublerPrefs.dump();
     }
 
-    private static String updateConfigFile() {
-        /* Make sure that we have put config files in their new "home" */
-        File newconfig = new File(SystemDependent.getConfigPath());
-        File oldconfig = new File(System.getProperty("user.home") + File.separator + ".jublerrc");
-        newconfig.getParentFile().mkdirs();
-
-        if (oldconfig.exists())
-            if (!newconfig.exists()) {
-                boolean success = oldconfig.renameTo(newconfig);
-                if (!success)
-                    DEBUG.debug("Unable to move configuration file to " + newconfig.getPath());
-                else
-                    DEBUG.debug("Configuration file moved to " + newconfig.getPath());
+    private static void updateConfigFile() {
+        File oldConfigPath = new File(SystemDependent.getObsoleteConfigPath());
+        if (!oldConfigPath.isFile())
+            return;
+        try {
+            Properties opts = new Properties();
+            opts.loadFromXML(Files.newInputStream(oldConfigPath.toPath()));
+            Enumeration<?> names = opts.propertyNames();
+            while (names.hasMoreElements()) {
+                String key = names.nextElement().toString();
+                JublerPrefs.set(key.toLowerCase(), opts.getProperty(key));
             }
-        return newconfig.getPath();
-    }
+            oldConfigPath.delete();
+            JublerPrefs.set("system.preferences.version", null);
 
-    public static void backupPrefFile() {
-        File oldpref = new File(preffile + ".old");
-        if (oldpref.exists())
-            oldpref.delete();
-        new File(preffile).renameTo(oldpref);
-        saveOptions();
-    }
+            Path dir = Paths.get(System.getProperty("user.home") + File.separator + ".jubler");
+            Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
 
-    synchronized public static void setOption(String key, String value) {
-        opts.setProperty(key, value);
-    }
-
-    public static String getOption(String key, String deflt) {
-        return opts.getProperty(key, deflt);
-    }
-
-    synchronized public static void saveOptions() {
-        try {
-            opts.storeToXML(new FileOutputStream(preffile), "Jubler file");
-        } catch (IOException e) {
-            DEBUG.debug(e);
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    Files.delete(dir);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException ignore) {
         }
     }
 
@@ -121,7 +108,6 @@ public class Options {
     public static void saveSystemPreferences(JPreferences prefs) {
         for (TabPage opt : prefs.Tabs.getTabArray())
             ((OptionsHolder) opt).savePreferences();
-        saveOptions();
     }
 
     public static void saveFileList(Stack<SubFile> recents) {
@@ -135,12 +121,11 @@ public class Options {
             f = sfile.getSaveFile();
             if (f.exists() && f.isFile()) {
                 counter++;
-                setOption("System.Lastfile" + counter, sfile.getPacked());
+                JublerPrefs.set(SYSTEM_LASTFILE + counter, sfile.getPacked());
             }
         }
         while (counter < MAX_RECENTS)
-            opts.remove("System.Lastfile" + (++counter));
-        saveOptions();
+            JublerPrefs.set(SYSTEM_LASTFILE + (++counter), null);
     }
 
     public static Stack<SubFile> loadFileList() {
@@ -148,11 +133,11 @@ public class Options {
         File f;
         for (int i = MAX_RECENTS; i > 0; i--)
             try {
-                SubFile sf = new SubFile(getOption("System.Lastfile" + i, ""));
+                SubFile sf = new SubFile(JublerPrefs.getString(SYSTEM_LASTFILE + i, ""));
                 f = sf.getSaveFile();
                 if (f.exists() && f.canRead() && f.isFile())
                     files.push(sf);
-            } catch (InstantiationException er) {
+            } catch (InstantiationException ignored) {
             }
         return files;
     }

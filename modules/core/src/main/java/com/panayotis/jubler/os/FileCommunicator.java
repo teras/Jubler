@@ -18,6 +18,8 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CodingErrorAction;
+
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.plugins.Availabilities;
@@ -159,7 +161,7 @@ public class FileCommunicator {
 
     public static String getDefaultDirPath() {
         String basic_path = System.getProperty("user.home") + File.separator;
-        String c_path = Options.getOption("System.LastDirPath", basic_path);
+        String c_path = JublerPrefs.getString("system.lastdirpath", basic_path);
         if (!c_path.endsWith(File.separator))
             c_path += File.separator;
         return c_path;
@@ -169,7 +171,6 @@ public class FileCommunicator {
         String path = default_file.getPath() + File.separator;
         if (!default_file.isDirectory())
             throw new IllegalArgumentException(__("File {0} is not a directory", default_file.getPath()));
-        Options.setOption("System.LastDirPath", path);
-        Options.saveOptions();
+        JublerPrefs.set("system.lastdirpath", path);
     }
 }

@@ -47,7 +47,6 @@ public class UIUtils {
 
     public static void saveScaling(float scaling) {
         JublerPrefs.set(SCALING_FACTOR, scaling);
-        JublerPrefs.sync();
     }
 
     public static float loadScaling() {
@@ -60,7 +59,6 @@ public class UIUtils {
 
     public static void saveTimestampTooltipsDisabled(boolean disabled) {
         JublerPrefs.set(TIMESTAMP_TOOLTIPS_DISABLED, disabled);
-        JublerPrefs.sync();
         timestampTooltipsDisabled = disabled;
     }
 
@@ -70,7 +68,6 @@ public class UIUtils {
 
     public static void saveThemeVariation(ThemeVariation variation) {
         JublerPrefs.set(USE_THEME_VARIATION, variation.name());
-        JublerPrefs.sync();
         themeVariation = variation;
     }
 }

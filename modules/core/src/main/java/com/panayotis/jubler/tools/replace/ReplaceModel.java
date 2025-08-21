@@ -8,6 +8,7 @@ package com.panayotis.jubler.tools.replace;
 
 import java.util.ArrayList;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.Options;
 
 import javax.swing.*;
@@ -151,8 +152,8 @@ public class ReplaceModel extends AbstractTableModel {
     }
 
     public final void loadOptions() {
-        String data = Options.getOption("Replace.Global", "");
-        if (data == null || data.equals("")) {
+        String data = JublerPrefs.getString("replace.global", "");
+        if (data == null || data.isEmpty()) {
             reset();
             return;
         } else
@@ -164,8 +165,7 @@ public class ReplaceModel extends AbstractTableModel {
         StringBuilder data = new StringBuilder();
         for (int i = 0; i < (replaceList.size() - 1); i++)
             data.append(replaceList.get(i));
-        Options.setOption("Replace.Global", data.toString());
-        Options.saveOptions();
+        JublerPrefs.set("replace.global", data.toString());
     }
 
     public void reset() {

@@ -4,10 +4,11 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.options;
+package com.panayotis.jubler.options;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.StaticJubler;
 import com.panayotis.jubler.os.SystemDependent;
@@ -192,14 +193,14 @@ public class ShortcutsModel extends AbstractTableModel {
             if (cur != null && (!cur.key.equals(orig.key)))
                 keys.append(",").append(cur.toString());
         }
-        Options.setOption("Shortcut.keys", keys.length() == 0 ? "" : keys.substring(1));
+        JublerPrefs.set("shortcut.keys", keys.length() == 0 ? "" : keys.substring(1));
         StaticJubler.updateAllMenus();
     }
 
     @SuppressWarnings("unchecked")
     public void loadPreferences() {
         current = (ArrayList<MenuItem>) original.clone();
-        String keys = Options.getOption("Shortcut.keys", "");
+        String keys = JublerPrefs.getString("shortcut.keys", "");
         if (keys.equals(""))
             return;
         Matcher m = Pattern.compile("(\\w\\w\\w)=\\((\\d+),(\\d+)\\)").matcher(keys);

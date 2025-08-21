@@ -53,8 +53,7 @@ public class StaticJubler {
         screen_state = current_window.getExtendedState();
         if (save && screen_width > 0) {
             String vals = "((" + screen_x + "," + screen_y + "),(" + screen_width + "," + screen_height + ")," + screen_state + ")";
-            Options.setOption("System.WindowState", vals);
-            Options.saveOptions();
+            JublerPrefs.set("system.windowstate", vals);
         }
         jumpWindowPosition(true);
     }
@@ -86,7 +85,7 @@ public class StaticJubler {
         for (int i = 0; i < 5; i++)
             values[i] = -1;
 
-        String props = Options.getOption("System.WindowState", "");
+        String props = JublerPrefs.getString("system.windowstate", "");
         if (props != null && (!props.equals(""))) {
             StringTokenizer st = new StringTokenizer(props, "(),");
             while (st.hasMoreTokens() && pos < 5)

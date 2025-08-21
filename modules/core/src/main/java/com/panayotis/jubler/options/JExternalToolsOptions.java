@@ -6,6 +6,7 @@
 
 package com.panayotis.jubler.options;
 
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.tools.ToolsManager;
 import com.panayotis.jubler.tools.externals.ExternalTool;
@@ -26,11 +27,11 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
     static {
         for (int i = 1; i < Integer.MAX_VALUE; i++) {
-            String prefix = "External.tools.tool" + (i++) + ".";
-            String name = Options.getOption(prefix + "name", null);
-            String path = Options.getOption(prefix + "path", null);
-            String command = Options.getOption(prefix + "command", null);
-            boolean inplace = Boolean.parseBoolean(Options.getOption(prefix + "inplace", "false"));
+            String prefix = "external.tools.tool" + (i++) + ".";
+            String name = JublerPrefs.getString(prefix + "name", null);
+            String path = JublerPrefs.getString(prefix + "path", null);
+            String command = JublerPrefs.getString(prefix + "command", null);
+            boolean inplace = Boolean.parseBoolean(JublerPrefs.getString(prefix + "inplace", "false"));
             if (name == null || path == null || command == null)
                 break;
             tools.add(new ExternalTool(name, path, command, inplace));
@@ -66,12 +67,12 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     @Override
     public void savePreferences() {
         for (int i = 0; i < tools.getSize(); i++) {
-            String prefix = "External.tools.tool" + (i + 1) + ".";
+            String prefix = "external.tools.tool" + (i + 1) + ".";
             ExternalTool tool = tools.getElementAt(i);
-            Options.setOption(prefix + "name", tool.getName());
-            Options.setOption(prefix + "path", tool.getPath());
-            Options.setOption(prefix + "command", tool.getCommand());
-            Options.setOption("inpace", String.valueOf(tool.isInplace()));
+            JublerPrefs.set(prefix + "name", tool.getName());
+            JublerPrefs.set(prefix + "path", tool.getPath());
+            JublerPrefs.set(prefix + "command", tool.getCommand());
+            JublerPrefs.set("inplace", String.valueOf(tool.isInplace()));
         }
         ToolsManager.updateExternals();
     }
