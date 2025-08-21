@@ -36,32 +36,31 @@ public class JUiOptions extends JPanel implements OptionsHolder {
 
     @Override
     public void loadPreferences() {
-        oldTooltipsDisabled = UIUtils.isTimestampTooltipsDisabled();
-        oldThemeVariation = UIUtils.getThemeVariation();
+        oldTooltipsDisabled = Options.isTimestampTooltipsDisabled();
+        oldThemeVariation = Options.getThemeVariation();
 
         tooltipsC.setSelected(oldTooltipsDisabled);
         themesC.setSelectedItem(oldThemeVariation);
 
         if (SystemDependent.shouldSupportChangeScaling()) {
-            float scaling = UIUtils.loadScaling();
+            float scaling = Options.getScaling();
             if (oldScaling == Float.POSITIVE_INFINITY)
                 oldScaling = scaling;
-            if (scaling > 0.1)
-                scalingFactorT.setText(Double.toString(scaling));
+            scalingFactorT.setText(Double.toString(scaling));
         }
     }
 
     @Override
     public void savePreferences() {
         boolean shouldShowMessage = false;
-        UIUtils.saveTimestampTooltipsDisabled(tooltipsC.isSelected());
-        UIUtils.saveThemeVariation((ThemeVariation) themesC.getSelectedItem());
+        Options.setTimestampTooltipsDisabled(tooltipsC.isSelected());
+        Options.setThemeVariation((ThemeVariation) themesC.getSelectedItem());
         if (oldTooltipsDisabled != tooltipsC.isSelected() || oldThemeVariation != themesC.getSelectedItem())
             shouldShowMessage = true;
         if (SystemDependent.shouldSupportChangeScaling()) {
             try {
                 float newScaling = Float.parseFloat(scalingFactorT.getText());
-                UIUtils.saveScaling(newScaling);
+                Options.setScaling(newScaling);
                 if (Math.abs(newScaling - oldScaling) > 0.1)
                     shouldShowMessage = true;
             } catch (Exception ignored) {

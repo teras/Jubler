@@ -7,6 +7,7 @@
 package com.panayotis.jubler.autoupdate;
 
 import com.panayotis.jubler.information.JAbout;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.theme.Theme;
@@ -79,7 +80,7 @@ public class JUpdateInfo extends javax.swing.JDialog {
         int offset = scale(5);
         logoP.setBorder(new EmptyBorder(offset, offset, offset, offset));
 
-        String theme = UIUtils.getThemeVariation().isDark() ? DARK_CSS : LIGHT_CSS;
+        String theme = Options.getThemeVariation().isDark() ? DARK_CSS : LIGHT_CSS;
         StringBuilder txt = new StringBuilder("<html><head>\n"
                 + "<style>\n"
                 + COMMON_CSS

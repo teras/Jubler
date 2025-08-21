@@ -9,6 +9,7 @@ package com.panayotis.jubler;
 import com.panayotis.appenh.Enhancer;
 import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.options.JUiOptions;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.UIUtils;
@@ -29,8 +30,8 @@ public class JublerTheme implements PluginCollection, PluginItem<JubFrame> {
 
     public static void init() {
         Enhancer e = EnhancerManager.getDefault();
-        e.setProposedSystemScaling(UIUtils.getScaling());
-        e.setModernLookAndFeel(UIUtils.getThemeVariation());
+        e.setProposedSystemScaling(Options.getScaling());
+        e.setModernLookAndFeel(Options.getThemeVariation());
         e.blendWindowTitle(true);
 
         e.registerAbout(StaticJubler::showAbout);

@@ -6,6 +6,8 @@
 
 package com.panayotis.jubler.options;
 
+import com.panayotis.appenh.EnhancerManager;
+import com.panayotis.appenh.ThemeVariation;
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.gui.TabPage;
 import com.panayotis.jubler.os.SystemDependent;
@@ -47,6 +49,12 @@ public class Options {
     private static float minDuration;
     private static final String MINDURATION_TAG = "options.minduration";
     private static final String SYSTEM_LASTFILE = "system.lastfile";
+    private static float scaling;
+    private static final String SCALING_TAG = "ui.scaling.factor";
+    private static boolean timestampTooltipsDisabled;
+    private static final String TIMESTAMP_TOOLTIPS_DISABLED = "ui.tooltips.timestamp.disabled";
+    private static ThemeVariation themeVariation;
+    private static final String USE_THEME_VARIATION = "ui.theme.variation";
 
     static {
         errorColor = JublerPrefs.getInt(ERRORCOLOR_TAG, 1);
@@ -60,11 +68,19 @@ public class Options {
         maxCPS = JublerPrefs.getInt(MAXCPS_TAG, 21);
         maxDuration = JublerPrefs.getFloat(MAXDURATION_TAG, 7);
         minDuration = JublerPrefs.getFloat(MINDURATION_TAG, 1);
+        scaling = JublerPrefs.getFloat(SCALING_TAG, Math.max(1f, EnhancerManager.getDefault().getDPI() / 96f));
+        timestampTooltipsDisabled = JublerPrefs.getBoolean(TIMESTAMP_TOOLTIPS_DISABLED, false);
+        String theme = JublerPrefs.getString(USE_THEME_VARIATION, ThemeVariation.AUTO.name());
+        try {
+            themeVariation = ThemeVariation.valueOf(theme);
+        } catch (Exception e) {
+            themeVariation = ThemeVariation.AUTO;
+        }
     }
 
     static {
         updateConfigFile();
-        JublerPrefs.dump();
+//        JublerPrefs.dump();
     }
 
     private static void updateConfigFile() {
@@ -140,6 +156,33 @@ public class Options {
             } catch (InstantiationException ignored) {
             }
         return files;
+    }
+
+    public static float getScaling() {
+        return scaling;
+    }
+
+    public static void setScaling(float newScaling) {
+        JublerPrefs.set(SCALING_TAG, newScaling);
+        scaling = newScaling;
+    }
+
+    public static boolean isTimestampTooltipsDisabled() {
+        return timestampTooltipsDisabled;
+    }
+
+    public static void setTimestampTooltipsDisabled(boolean disabled) {
+        JublerPrefs.set(TIMESTAMP_TOOLTIPS_DISABLED, disabled);
+        timestampTooltipsDisabled = disabled;
+    }
+
+    public static ThemeVariation getThemeVariation() {
+        return themeVariation;
+    }
+
+    public static void setThemeVariation(ThemeVariation variation) {
+        JublerPrefs.set(USE_THEME_VARIATION, variation.name());
+        themeVariation = variation;
     }
 
     public static void setErrorColor(int newcolor) {
