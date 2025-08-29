@@ -25,9 +25,9 @@ public class JSubPreview extends javax.swing.JPanel {
 
     public final static Icon[] cursors;
 
-    private static final String BASIC_KEYBOARD = __("Hold Shift to select up to the selected subtitle") + "\n" +
-            __("Hold Ctrl to select multiple subtitles");
-    private static final String SNAP_KEYBOARD = __("Hold Alt to skip snapping and freely move subtitles");
+    private static final String SNAP_KEYBOARD = __("Hold Shift to select up to the selected subtitle") + "\n" +
+            __("Hold Ctrl to select multiple subtitles") + "\n" +
+            __("Hold Alt to skip snapping and freely move subtitles");
 
     static {
         cursors = new Icon[4];
@@ -182,9 +182,9 @@ public class JSubPreview extends javax.swing.JPanel {
         return parent.getLocationOnScreen();
     }
 
-    public void setAudioShow(boolean status) {
-        parent.AudioPreviewC.setSelected(status);
-        wave.setEnabled(status);
+    public void setSnapToSubtitle(boolean status) {
+        Snap.setSelected(status);
+        timeline.setSnap(status);
     }
 
     public void setMaxWave(boolean status) {
@@ -217,20 +217,18 @@ public class JSubPreview extends javax.swing.JPanel {
         InfoPanel = new javax.swing.JPanel();
         TimePosL = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         ZoomS = new javax.swing.JSlider();
         jLabel2 = new javax.swing.JLabel();
-        NewSub = new javax.swing.JToggleButton();
         ToolBar = new javax.swing.JToolBar();
         MaxWave = new javax.swing.JToggleButton();
-        jSeparator3 = new javax.swing.JToolBar.Separator();
-        Select = new javax.swing.JToggleButton();
-        Edit = new javax.swing.JToggleButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
         Snap = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         AudioPlay = new javax.swing.JToggleButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        jSeparator3 = new javax.swing.JToolBar.Separator();
+        NewSub = new javax.swing.JToggleButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -278,12 +276,9 @@ public class JSubPreview extends javax.swing.JPanel {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jPanel6.setOpaque(false);
-        jPanel6.setLayout(new java.awt.BorderLayout());
-
         jLabel1.setIcon(Theme.loadIcon("zoomout"));
         jLabel1.setToolTipText(__("Zoom out"));
-        jPanel6.add(jLabel1, java.awt.BorderLayout.WEST);
+        jPanel1.add(jLabel1, java.awt.BorderLayout.WEST);
 
         ZoomS.setSnapToTicks(true);
         ZoomS.setToolTipText(__("Subtitle zoom factor"));
@@ -295,24 +290,12 @@ public class JSubPreview extends javax.swing.JPanel {
                 ZoomSStateChanged(evt);
             }
         });
-        jPanel6.add(ZoomS, java.awt.BorderLayout.CENTER);
+        jPanel1.add(ZoomS, java.awt.BorderLayout.CENTER);
 
         jLabel2.setIcon(Theme.loadIcon("zoomin"));
         jLabel2.setToolTipText(__("Zoom in"));
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 16));
-        jPanel6.add(jLabel2, java.awt.BorderLayout.EAST);
-
-        jPanel1.add(jPanel6, java.awt.BorderLayout.CENTER);
-
-        NewSub.setIcon(Theme.loadIcon("newsub"));
-        NewSub.setToolTipText(__("New subtitle after current one"));
-        NewSub.setModel(new DefaultButtonModel());
-        NewSub.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NewSubActionPerformed(evt);
-            }
-        });
-        jPanel1.add(NewSub, java.awt.BorderLayout.EAST);
+        jPanel1.add(jLabel2, java.awt.BorderLayout.EAST);
 
         InfoPanel.add(jPanel1, java.awt.BorderLayout.EAST);
 
@@ -332,30 +315,6 @@ public class JSubPreview extends javax.swing.JPanel {
             }
         });
         ToolBar.add(MaxWave);
-        ToolBar.add(jSeparator3);
-
-        CursorGroup.add(Select);
-        Select.setIcon(Theme.loadIcon("pointer"));
-        Select.setToolTipText(__("Select subtitles only") + "\n" + BASIC_KEYBOARD);
-        Select.setFocusable(false);
-        Select.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                SelectActionPerformed(evt);
-            }
-        });
-        ToolBar.add(Select);
-
-        CursorGroup.add(Edit);
-        Edit.setIcon(Theme.loadIcon("move"));
-        Edit.setSelected(true);
-        Edit.setToolTipText(__("Automatically perform operation depending on the mouse position") + "\n" + BASIC_KEYBOARD);
-        Edit.setFocusable(false);
-        Edit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EditActionPerformed(evt);
-            }
-        });
-        ToolBar.add(Edit);
         ToolBar.add(jSeparator1);
 
         Snap.setIcon(Theme.loadIcon("magnet"));
@@ -382,6 +341,21 @@ public class JSubPreview extends javax.swing.JPanel {
             }
         });
         ToolBar.add(AudioPlay);
+        ToolBar.add(filler1);
+        ToolBar.add(jSeparator3);
+
+        NewSub.setIcon(Theme.loadIcon("newsub"));
+        NewSub.setToolTipText(__("New subtitle after current one"));
+        NewSub.setFocusable(false);
+        NewSub.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        NewSub.setModel(new DefaultButtonModel());
+        NewSub.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        NewSub.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NewSubActionPerformed(evt);
+            }
+        });
+        ToolBar.add(NewSub);
 
         MainPanel.add(ToolBar, java.awt.BorderLayout.EAST);
 
@@ -423,14 +397,6 @@ public class JSubPreview extends javax.swing.JPanel {
         parent.addNewSubtitle(true);
     }//GEN-LAST:event_NewSubActionPerformed
 
-    private void SelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SelectActionPerformed
-        timeline.setEdit(false);
-    }//GEN-LAST:event_SelectActionPerformed
-
-    private void EditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EditActionPerformed
-        timeline.setEdit(true);
-    }//GEN-LAST:event_EditActionPerformed
-
     private void SnapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SnapActionPerformed
         timeline.setSnap(Snap.isSelected());
     }//GEN-LAST:event_SnapActionPerformed
@@ -440,23 +406,21 @@ public class JSubPreview extends javax.swing.JPanel {
     public javax.swing.JToggleButton AudioPlay;
     private javax.swing.JPanel BottomPanel;
     private javax.swing.ButtonGroup CursorGroup;
-    private javax.swing.JToggleButton Edit;
     private javax.swing.JPanel EditorPanel;
     private javax.swing.JPanel InfoPanel;
     public javax.swing.JPanel MainPanel;
     public javax.swing.JToggleButton MaxWave;
     public javax.swing.JToggleButton NewSub;
-    private javax.swing.JToggleButton Select;
     private javax.swing.JToggleButton Snap;
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
     private javax.swing.JToolBar ToolBar;
     javax.swing.JSlider ZoomS;
+    private javax.swing.Box.Filler filler1;
     private javax.swing.JPanel frame;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;

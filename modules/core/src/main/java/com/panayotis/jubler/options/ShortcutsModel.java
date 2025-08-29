@@ -6,24 +6,21 @@
 
 package com.panayotis.jubler.options;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 import com.panayotis.jubler.JublerPrefs;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.SystemDependent;
 
-import java.awt.Component;
+import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-import javax.swing.table.AbstractTableModel;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 public class ShortcutsModel extends AbstractTableModel {
 
@@ -39,11 +36,11 @@ public class ShortcutsModel extends AbstractTableModel {
      * Creates a new instance of ShortcutsModel
      */
     public ShortcutsModel(JMenuBar bar) {
-        original = new ArrayList<MenuItem>();
+        original = new ArrayList<>();
         for (int i = 0; i < bar.getMenuCount(); i++) {
             if (i > 0)
                 original.add(null);  // Add "---" between menus
-            addMenuList("", bar.getMenu(i));
+            addMenuList("" + i, bar.getMenu(i));
         }
         String err = isValidCodes();
         if (err != null)
@@ -59,10 +56,11 @@ public class ShortcutsModel extends AbstractTableModel {
                 addMenuList(prefix + item.getText() + " ", item);
             } else if (c instanceof JMenuItem) {
                 JMenuItem item = (JMenuItem) c;
-                if (item.getName() == null)
+                String name = item.getName();
+                if (name == null)
                     DEBUG.debug("Menu item \"" + prefix + item.getText() + "\" does not provide a valid name");
-                else
-                    original.add(new MenuItem(prefix + item.getText(), item.getName(), item.getAccelerator()));
+                else if (!name.toLowerCase().startsWith("ignore"))
+                    original.add(new MenuItem(prefix + item.getText(), name, item.getAccelerator()));
             }
         }
     }

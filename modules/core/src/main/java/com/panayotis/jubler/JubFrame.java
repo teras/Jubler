@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static java.awt.BorderLayout.CENTER;
 
 public class JubFrame extends JFrame implements WindowFocusListener, PluginContext {
 
@@ -161,7 +162,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         SubSplitPane.add(preview, JSplitPane.TOP);
         enablePreview(false);
 
-        WebFM.setVisible(false);
         setDropHandler();
 
         /* If this is the first JubFrame instance, initialize preferences */
@@ -301,16 +301,16 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowCPMP = new javax.swing.JCheckBoxMenuItem();
         jSeparator11 = new javax.swing.JSeparator();
         PlayVideoP = new javax.swing.JMenuItem();
-        BasicPanel = new javax.swing.JPanel();
-        SubEditP = new javax.swing.JPanel();
-        SubSplitPane = new javax.swing.JSplitPane();
-        SubsScrollPane = new javax.swing.JScrollPane();
+        SubsTableScrollPane = new javax.swing.JScrollPane();
         SubTable = new JTable () {
             public void columnMarginChanged(ChangeEvent e)  {
                 super.columnMarginChanged(e);
                 setcolumnchange(true);
             }
         };
+        SubSplitPane = new javax.swing.JSplitPane();
+        BasicPanel = new javax.swing.JPanel();
+        SubEditP = new javax.swing.JPanel();
         JublerTools = new javax.swing.JToolBar();
         NewTB = new javax.swing.JButton();
         LoadTB = new javax.swing.JButton();
@@ -339,8 +339,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         FileNFM = new javax.swing.JMenuItem();
         ChildNFM = new javax.swing.JMenuItem();
         OpenFM = new javax.swing.JMenuItem();
-        WebFM = new javax.swing.JMenu();
-        RetrieveWFM = new javax.swing.JMenuItem();
         RevertFM = new javax.swing.JMenuItem();
         RecentsFM = new javax.swing.JMenu();
         SaveFM = new javax.swing.JMenuItem();
@@ -412,8 +410,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         PreviewM = new javax.swing.JMenu();
         EnablePreviewC = new javax.swing.JCheckBoxMenuItem();
         jSeparator12 = new javax.swing.JSeparator();
-        AudioPreviewC = new javax.swing.JCheckBoxMenuItem();
         MaxWaveC = new javax.swing.JCheckBoxMenuItem();
+        SnapSubtitleC = new javax.swing.JCheckBoxMenuItem();
         PlayAudioC = new javax.swing.JMenuItem();
         ExternalsM = new javax.swing.JMenu();
         HelpM = new javax.swing.JMenu();
@@ -508,23 +506,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         PlayVideoP.addActionListener(formListener);
         SubsPop.add(PlayVideoP);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Jubler");
-        setForeground(java.awt.Color.white);
-        addWindowListener(formListener);
-
-        BasicPanel.setBackground(SystemDependent.getWindowBackgroundColor(BasicPanel));
-        BasicPanel.setLayout(new java.awt.BorderLayout());
-
-        SubEditP.setBackground(new java.awt.Color(0, 255, 255));
-        SubEditP.setOpaque(false);
-        SubEditP.setLayout(new java.awt.BorderLayout());
-        BasicPanel.add(SubEditP, java.awt.BorderLayout.SOUTH);
-
-        SubSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        SubSplitPane.setOpaque(false);
-
-        SubsScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
+        SubsTableScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 
         SubTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
         SubTable.setComponentPopupMenu(SubsPop);
@@ -547,11 +529,23 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
                 }
             }
         });
-        SubsScrollPane.setViewportView(SubTable);
+        SubsTableScrollPane.setViewportView(SubTable);
 
-        SubSplitPane.setBottomComponent(SubsScrollPane);
+        SubSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        SubSplitPane.setOpaque(false);
 
-        BasicPanel.add(SubSplitPane, java.awt.BorderLayout.CENTER);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Jubler");
+        setForeground(java.awt.Color.white);
+        addWindowListener(formListener);
+
+        BasicPanel.setBackground(SystemDependent.getWindowBackgroundColor(BasicPanel));
+        BasicPanel.setLayout(new java.awt.BorderLayout());
+
+        SubEditP.setBackground(new java.awt.Color(0, 255, 255));
+        SubEditP.setOpaque(false);
+        SubEditP.setLayout(new java.awt.BorderLayout());
+        BasicPanel.add(SubEditP, java.awt.BorderLayout.SOUTH);
 
         getContentPane().add(BasicPanel, java.awt.BorderLayout.CENTER);
 
@@ -734,15 +728,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         OpenFM.setName("FOP"); // NOI18N
         OpenFM.addActionListener(formListener);
         FileM.add(OpenFM);
-
-        WebFM.setText(__("Web"));
-
-        RetrieveWFM.setText(__("Retrieve"));
-        RetrieveWFM.setName("RFW"); // NOI18N
-        RetrieveWFM.addActionListener(formListener);
-        WebFM.add(RetrieveWFM);
-
-        FileM.add(WebFM);
 
         RevertFM.setText(__("Revert"));
         RevertFM.setEnabled(false);
@@ -1110,16 +1095,16 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         PreviewM.add(EnablePreviewC);
         PreviewM.add(jSeparator12);
 
-        AudioPreviewC.setSelected(true);
-        AudioPreviewC.setText(__("Audio waveform"));
-        AudioPreviewC.setName("TAP"); // NOI18N
-        AudioPreviewC.addActionListener(formListener);
-        PreviewM.add(AudioPreviewC);
-
         MaxWaveC.setText(__("Maximize waveform visualization"));
         MaxWaveC.setName("TPM"); // NOI18N
         MaxWaveC.addActionListener(formListener);
         PreviewM.add(MaxWaveC);
+
+        SnapSubtitleC.setSelected(true);
+        SnapSubtitleC.setText(__("Snap to subtitle"));
+        SnapSubtitleC.setName("TPS"); // NOI18N
+        SnapSubtitleC.addActionListener(formListener);
+        PreviewM.add(SnapSubtitleC);
 
         PlayAudioC.setText(__("Play current subtitle"));
         PlayAudioC.setName("TPP"); // NOI18N
@@ -1137,17 +1122,17 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         HelpM.setText(__("&Help"));
 
         DonationsHM.setText(__("Donations"));
-        DonationsHM.setName("HDO"); // NOI18N
+        DonationsHM.setName("ignore"); // NOI18N
         DonationsHM.addActionListener(formListener);
         HelpM.add(DonationsHM);
 
         IssuesHM.setText(__("Issues"));
-        IssuesHM.setName("HIS"); // NOI18N
+        IssuesHM.setName("ignore"); // NOI18N
         IssuesHM.addActionListener(formListener);
         HelpM.add(IssuesHM);
 
         FAQHM.setText(__("FAQ"));
-        FAQHM.setName("HFQ"); // NOI18N
+        FAQHM.setName("ignore"); // NOI18N
         FAQHM.addActionListener(formListener);
         HelpM.add(FAQHM);
 
@@ -1267,9 +1252,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             }
             else if (evt.getSource() == OpenFM) {
                 JubFrame.this.OpenFMActionPerformed(evt);
-            }
-            else if (evt.getSource() == RetrieveWFM) {
-                JubFrame.this.RetrieveWFMActionPerformed(evt);
             }
             else if (evt.getSource() == RevertFM) {
                 JubFrame.this.RevertFMActionPerformed(evt);
@@ -1409,11 +1391,11 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             else if (evt.getSource() == EnablePreviewC) {
                 JubFrame.this.EnablePreviewCActionPerformed(evt);
             }
-            else if (evt.getSource() == AudioPreviewC) {
-                JubFrame.this.AudioPreviewCActionPerformed(evt);
-            }
             else if (evt.getSource() == MaxWaveC) {
                 JubFrame.this.MaxWaveCActionPerformed(evt);
+            }
+            else if (evt.getSource() == SnapSubtitleC) {
+                JubFrame.this.SnapSubtitleCActionPerformed(evt);
             }
             else if (evt.getSource() == PlayAudioC) {
                 JubFrame.this.PlayAudioCActionPerformed(evt);
@@ -1457,11 +1439,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         }
     }// </editor-fold>//GEN-END:initComponents
 
-    private void RetrieveWFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetrieveWFMActionPerformed
-        //    OpenSubtitles osubs = new OpenSubtitles();
-        //    osubs.printStream("The wall", "eng");
-    }//GEN-LAST:event_RetrieveWFMActionPerformed
-
     private void FAQHMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAQHMActionPerformed
         faqbrowse.setVisible(true);
     }//GEN-LAST:event_FAQHMActionPerformed
@@ -1496,10 +1473,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
                 row++;
                 break;
             case 'u':
-                row -= SubsScrollPane.getViewport().getHeight() / SubTable.getRowHeight();
+                row -= SubsTableScrollPane.getViewport().getHeight() / SubTable.getRowHeight();
                 break;
             case 'd':
-                row += SubsScrollPane.getViewport().getHeight() / SubTable.getRowHeight();
+                row += SubsTableScrollPane.getViewport().getHeight() / SubTable.getRowHeight();
                 break;
             case 't':
                 row = 0;
@@ -1868,9 +1845,9 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         enablePreview(EnablePreviewC.isSelected());
     }//GEN-LAST:event_EnablePreviewCActionPerformed
 
-    private void AudioPreviewCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioPreviewCActionPerformed
-        preview.setAudioShow(AudioPreviewC.isSelected());
-    }//GEN-LAST:event_AudioPreviewCActionPerformed
+    private void SnapSubtitleCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SnapSubtitleCActionPerformed
+        preview.setSnapToSubtitle(SnapSubtitleC.isSelected());
+    }//GEN-LAST:event_SnapSubtitleCActionPerformed
 
     private void MaxWaveCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MaxWaveCActionPerformed
         preview.setMaxWave(MaxWaveC.isSelected());
@@ -1963,7 +1940,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     public javax.swing.JMenuItem AboutHM;
     private javax.swing.JMenuItem AfterIEM;
     private javax.swing.JMenuItem AllSEM;
-    public javax.swing.JCheckBoxMenuItem AudioPreviewC;
     private javax.swing.JPanel BasicPanel;
     private javax.swing.JMenuItem BeforeIEM;
     private javax.swing.JMenuItem BeginningTTM;
@@ -2036,7 +2012,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JButton RedoTB;
     private javax.swing.JMenuItem RegExpREM;
     private javax.swing.JMenu ReplaceEM;
-    private javax.swing.JMenuItem RetrieveWFM;
     private javax.swing.JMenuItem RevertFM;
     private javax.swing.JMenuItem SaveAsFM;
     private javax.swing.JMenuItem SaveFM;
@@ -2058,6 +2033,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JCheckBoxMenuItem ShowStartP1;
     private javax.swing.JCheckBoxMenuItem ShowStyleP;
     private javax.swing.JCheckBoxMenuItem ShowStyleP1;
+    public javax.swing.JCheckBoxMenuItem SnapSubtitleC;
     private javax.swing.JButton SortTB;
     private javax.swing.JMenu SplitST;
     private javax.swing.JMenuItem StepwiseREM;
@@ -2068,7 +2044,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JSplitPane SubSplitPane;
     private javax.swing.JTable SubTable;
     private javax.swing.JPopupMenu SubsPop;
-    private javax.swing.JScrollPane SubsScrollPane;
+    private javax.swing.JScrollPane SubsTableScrollPane;
     private javax.swing.JButton TestTB;
     private javax.swing.JMenu TestTM;
     private javax.swing.JMenuItem TimeSEM;
@@ -2077,7 +2053,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenuItem TopGEM;
     private javax.swing.JMenuItem UndoEM;
     private javax.swing.JButton UndoTB;
-    private javax.swing.JMenu WebFM;
     private javax.swing.JMenuItem YellowMEM;
     private javax.swing.JMenuItem YellowMP;
     private javax.swing.JMenuItem byTimeGEM;
@@ -2283,6 +2258,9 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             EnablePreviewC.setSelected(nv);
             PreviewTB.setSelected(nv);
             PreviewTB.setToolTipText(nv ? __("Disable Preview") : __("Enable Preview"));
+            SnapSubtitleC.setEnabled(nv);
+            MaxWaveC.setEnabled(nv);
+            PlayAudioC.setEnabled(nv);
             OrientationTB.setEnabled(nv);
         };
 
@@ -2300,11 +2278,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             preview.subsHaveChanged(SubTable.getSelectedRows());
 
             /* Reposition Visual Elements */
-            BasicPanel.remove(SubSplitPane);
-            BasicPanel.remove(SubsScrollPane);
-            SubSplitPane.remove(SubsScrollPane);
-            BasicPanel.add(SubSplitPane);
-            SubSplitPane.setBottomComponent(SubsScrollPane);
+            BasicPanel.remove(SubsTableScrollPane);
+            BasicPanel.add(SubSplitPane, CENTER);
+            SubSplitPane.setBottomComponent(SubsTableScrollPane);
+            SubSplitPane.resetToPreferredSizes();
         } else {
             mfile.videoselector.setEnabled(true);
 
@@ -2316,11 +2293,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
             /* Reposition Visual Elements */
             BasicPanel.remove(SubSplitPane);
-            BasicPanel.remove(SubsScrollPane);
-            SubSplitPane.remove(SubsScrollPane);
-            BasicPanel.add(SubsScrollPane);
+            BasicPanel.add(SubsTableScrollPane, CENTER);
         }
-        SubSplitPane.resetToPreferredSizes();
         validate();
     }
 
@@ -2389,14 +2363,14 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowCPMP1.setSelected(subs.isVisibleColumn(6));
     }
 
-    private boolean column_change;
+    private boolean columnChange;
 
     private boolean getcolumnchange() {
-        return column_change;
+        return columnChange;
     }
 
     private void setcolumnchange(boolean cc) {
-        column_change = cc;
+        columnChange = cc;
     }
 
     final static SubRenderer TableRenderer = new SubRenderer();
@@ -2552,7 +2526,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
      */
     public void bringSelectedRowIntoView(int current_row) {
         int showmore = 0, num_rec = 0;
-        JViewport view_port = SubsScrollPane.getViewport();
+        JViewport view_port = SubsTableScrollPane.getViewport();
         Rectangle view_rect = view_port.getViewRect();
         try {
             num_rec = subs.size();
