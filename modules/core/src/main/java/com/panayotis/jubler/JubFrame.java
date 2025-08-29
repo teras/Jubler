@@ -1413,7 +1413,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private void showTableColumn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTableColumn
         int col = evt.getActionCommand().charAt(0) - '0';
         SubEntry[] selected = getSelectedSubs();
-        subs.setVisibleColumn(col, ((AbstractButton) evt.getSource()).isSelected());
+        Subtitles.setVisibleColumn(col, ((AbstractButton) evt.getSource()).isSelected());
         tableHasChanged(selected);
     }//GEN-LAST:event_showTableColumn
 
@@ -2265,20 +2265,20 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         subs.updateQuality();
         SubTable.setModel(subs);
         tableHasChanged(selected);
-        ShowNumberP.setSelected(subs.isVisibleColumn(0));
-        ShowStartP.setSelected(subs.isVisibleColumn(1));
-        ShowEndP.setSelected(subs.isVisibleColumn(2));
-        ShowDurationP.setSelected(subs.isVisibleColumn(3));
-        ShowLayerP.setSelected(subs.isVisibleColumn(4));
-        ShowStyleP.setSelected(subs.isVisibleColumn(5));
-        ShowCPMP.setSelected(subs.isVisibleColumn(6));
-        ShowNumberP1.setSelected(subs.isVisibleColumn(0));
-        ShowStartP1.setSelected(subs.isVisibleColumn(1));
-        ShowEndP1.setSelected(subs.isVisibleColumn(2));
-        ShowDurationP1.setSelected(subs.isVisibleColumn(3));
-        ShowLayerP1.setSelected(subs.isVisibleColumn(4));
-        ShowStyleP1.setSelected(subs.isVisibleColumn(5));
-        ShowCPMP1.setSelected(subs.isVisibleColumn(6));
+        ShowNumberP.setSelected(Subtitles.isVisibleColumn(0));
+        ShowStartP.setSelected(Subtitles.isVisibleColumn(1));
+        ShowEndP.setSelected(Subtitles.isVisibleColumn(2));
+        ShowDurationP.setSelected(Subtitles.isVisibleColumn(3));
+        ShowLayerP.setSelected(Subtitles.isVisibleColumn(4));
+        ShowStyleP.setSelected(Subtitles.isVisibleColumn(5));
+        ShowCPMP.setSelected(Subtitles.isVisibleColumn(6));
+        ShowNumberP1.setSelected(Subtitles.isVisibleColumn(0));
+        ShowStartP1.setSelected(Subtitles.isVisibleColumn(1));
+        ShowEndP1.setSelected(Subtitles.isVisibleColumn(2));
+        ShowDurationP1.setSelected(Subtitles.isVisibleColumn(3));
+        ShowLayerP1.setSelected(Subtitles.isVisibleColumn(4));
+        ShowStyleP1.setSelected(Subtitles.isVisibleColumn(5));
+        ShowCPMP1.setSelected(Subtitles.isVisibleColumn(6));
     }
 
     private boolean columnChange;

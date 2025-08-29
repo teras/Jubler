@@ -28,9 +28,11 @@ import static com.panayotis.jubler.i18n.I18N.__;
 public class Subtitles extends AbstractTableModel {
 
     private static final String[] COLNAME = {__("#"), __("Start"), __("End"), __("Duration"), __("Layer"), __("Style"), __("Cpm"), __("Subtitle")};
-    private final boolean[] visiblecols = AutoSaveOptions.getVisibleColumns();
-    private final int[] prefcolwidth = AutoSaveOptions.getColumnWidths();
-    private final static int FIRST_EDITABLE_COL = COLNAME.length;
+    private static final int FIRST_EDITABLE_COL = COLNAME.length;
+
+    private static final boolean[] visiblecols1 = AutoSaveOptions.getVisibleColumns();
+    private static final int[] prefcolwidth1 = AutoSaveOptions.getColumnWidths();
+
     /**
      * Attributes of these subtitles
      */
@@ -45,6 +47,16 @@ public class Subtitles extends AbstractTableModel {
     private final SubStyleList styles;
     /* The file representation of this subtitle */
     private SubFile subfile;
+
+    /* Methods related to JTable */
+    public static void setVisibleColumn(int which, boolean how) {
+        visiblecols1[which] = how;
+        AutoSaveOptions.setVisibleColumns(visiblecols1);
+    }
+
+    public static boolean isVisibleColumn(int which) {
+        return visiblecols1[which];
+    }
 
     public Subtitles() {
         this((SubFile) null);
@@ -63,10 +75,7 @@ public class Subtitles extends AbstractTableModel {
     public Subtitles(Subtitles old) {
         styles = new SubStyleList(old.styles);
         attribs = new SubAttribs(old.attribs);
-        System.arraycopy(old.visiblecols, 0, visiblecols, 0, visiblecols.length);
-
         subfile = new SubFile(old.subfile);
-
         sublist = new ArrayList<>();
         SubEntry newentry, oldentry;
         for (int i = 0; i < old.size(); i++) {
@@ -341,20 +350,11 @@ public class Subtitles extends AbstractTableModel {
         subfile = sfile;
     }
 
-    /* Methods related to JTable */
-    public void setVisibleColumn(int which, boolean how) {
-        visiblecols[which] = how;
-        AutoSaveOptions.setVisibleColumns(visiblecols);
-    }
-
-    public boolean isVisibleColumn(int which) {
-        return visiblecols[which];
-    }
 
     private int visibleToReal(int col) {
         int vispointer = -1;
-        for (int i = 0; i < visiblecols.length; i++) {
-            if (visiblecols[i])
+        for (int i = 0; i < visiblecols1.length; i++) {
+            if (visiblecols1[i])
                 vispointer++;
             if (vispointer == col)
                 return i;
@@ -384,7 +384,7 @@ public class Subtitles extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         int cols = 1; // At least one column is visible
-        for (boolean visiblecol : visiblecols)
+        for (boolean visiblecol : visiblecols1)
             if (visiblecol)
                 cols++;
         return cols;
@@ -403,12 +403,12 @@ public class Subtitles extends AbstractTableModel {
     public void updateColumnWidth(JTable t) {
         int ccolumn = 0;
 
-        for (int i = 0; i < visiblecols.length; i++)
-            if (visiblecols[i]) {
-                prefcolwidth[i] = t.getColumnModel().getColumn(ccolumn).getWidth();
+        for (int i = 0; i < visiblecols1.length; i++)
+            if (visiblecols1[i]) {
+                prefcolwidth1[i] = t.getColumnModel().getColumn(ccolumn).getWidth();
                 ccolumn++;
             }
-        AutoSaveOptions.setColumnWidth(prefcolwidth);
+        AutoSaveOptions.setColumnWidth(prefcolwidth1);
     }
 
     private static final int MIN_COLUMN_WIDTH = 10;
@@ -423,9 +423,9 @@ public class Subtitles extends AbstractTableModel {
 
     public void recalculateTableSize(JTable t) {
         int ccolumn = 0;
-        for (int i = 0; i < visiblecols.length; i++)
-            if (visiblecols[i])
-                updateColumnSize(t.getColumnModel().getColumn(ccolumn++), prefcolwidth[i]);
+        for (int i = 0; i < visiblecols1.length; i++)
+            if (visiblecols1[i])
+                updateColumnSize(t.getColumnModel().getColumn(ccolumn++), prefcolwidth1[i]);
     }
 
     public boolean replace(SubEntry sub, int row) {
