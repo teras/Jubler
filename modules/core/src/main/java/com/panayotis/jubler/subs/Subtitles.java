@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs;
+package com.panayotis.jubler.subs;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.AutoSaveOptions;
@@ -18,6 +18,7 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,9 +27,9 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 public class Subtitles extends AbstractTableModel {
 
-    private static final String COLNAME[] = {__("#"), __("Start"), __("End"), __("Duration"), __("Layer"), __("Style"), __("Cpm"), __("Subtitle")};
+    private static final String[] COLNAME = {__("#"), __("Start"), __("End"), __("Duration"), __("Layer"), __("Style"), __("Cpm"), __("Subtitle")};
     private final boolean[] visiblecols = AutoSaveOptions.getVisibleColumns();
-    private final int prefcolwidth[] = AutoSaveOptions.getColumnWidths();
+    private final int[] prefcolwidth = AutoSaveOptions.getColumnWidths();
     private final static int FIRST_EDITABLE_COL = COLNAME.length;
     /**
      * Attributes of these subtitles
@@ -41,7 +42,7 @@ public class Subtitles extends AbstractTableModel {
     /**
      * List of possible predefined styles
      */
-    private SubStyleList styles;
+    private final SubStyleList styles;
     /* The file representation of this subtitle */
     private SubFile subfile;
 
@@ -50,7 +51,7 @@ public class Subtitles extends AbstractTableModel {
     }
 
     public Subtitles(SubFile sfile) {
-        sublist = new ArrayList<SubEntry>();
+        sublist = new ArrayList<>();
         styles = new SubStyleList();
         attribs = new SubAttribs();
         if (sfile == null)
@@ -66,7 +67,7 @@ public class Subtitles extends AbstractTableModel {
 
         subfile = new SubFile(old.subfile);
 
-        sublist = new ArrayList<SubEntry>();
+        sublist = new ArrayList<>();
         SubEntry newentry, oldentry;
         for (int i = 0; i < old.size(); i++) {
             oldentry = old.elementAt(i);
@@ -88,7 +89,7 @@ public class Subtitles extends AbstractTableModel {
             load = format.parse(data, sfile.getFPS(), file);
             if (load != null)
                 sfile.setFormat(format);//end if (load != null)
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         return load;
     }//end private Subtitles loadByFileExtension()
@@ -101,7 +102,7 @@ public class Subtitles extends AbstractTableModel {
             format.setJubler(JubFrame.currentWindow);
             format.updateFormat(sfile);
             load = format.parse(data, sfile.getFPS(), file);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         return load;
     }//end private Subtitles loadByFileExtension()
@@ -122,7 +123,7 @@ public class Subtitles extends AbstractTableModel {
             }//end while (load == null && formatlist.hasMoreElements())
             if (format != null)
                 sfile.setFormat(format);//end if (format != null)
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         return load;
     }//end private Subtitles loadByFileExtension()
@@ -383,8 +384,8 @@ public class Subtitles extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         int cols = 1; // At least one column is visible
-        for (int i = 0; i < visiblecols.length; i++)
-            if (visiblecols[i])
+        for (boolean visiblecol : visiblecols)
+            if (visiblecol)
                 cols++;
         return cols;
     }
@@ -410,19 +411,21 @@ public class Subtitles extends AbstractTableModel {
         AutoSaveOptions.setColumnWidth(prefcolwidth);
     }
 
+    private static final int MIN_COLUMN_WIDTH = 10;
+    private static final int MAX_COLUMN_WIDTH = 400;
+
+    private void updateColumnSize(TableColumn model, int size) {
+        size = Math.max(Math.min(MAX_COLUMN_WIDTH, size), MIN_COLUMN_WIDTH);
+        model.setMinWidth(MIN_COLUMN_WIDTH);
+        model.setMaxWidth(MAX_COLUMN_WIDTH);
+        model.setPreferredWidth(size);
+    }
+
     public void recalculateTableSize(JTable t) {
         int ccolumn = 0;
-
-        int MIN_COLUMN_WIDTH = 10;
-        int MAX_COLUMN_WIDTH = 400;
-
         for (int i = 0; i < visiblecols.length; i++)
-            if (visiblecols[i]) {
-                t.getColumnModel().getColumn(ccolumn).setMinWidth(MIN_COLUMN_WIDTH);
-                t.getColumnModel().getColumn(ccolumn).setMaxWidth(MAX_COLUMN_WIDTH);
-                t.getColumnModel().getColumn(ccolumn).setPreferredWidth(prefcolwidth[i]);
-                ccolumn++;
-            }
+            if (visiblecols[i])
+                updateColumnSize(t.getColumnModel().getColumn(ccolumn++), prefcolwidth[i]);
     }
 
     public boolean replace(SubEntry sub, int row) {

@@ -4,10 +4,11 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.options;
+package com.panayotis.jubler.options;
 
 import com.panayotis.jubler.JublerPrefs;
 
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class AutoSaveOptions {
@@ -46,17 +47,14 @@ public class AutoSaveOptions {
 
     public static void setColumnWidth(int[] prefcolwidth) {
         StringBuilder widths = new StringBuilder();
-        for (int i = 0; i < prefcolwidth.length; i++)
-            widths.append(prefcolwidth[i]).append(',');
+        for (int j : prefcolwidth)
+            widths.append(j).append(',');
         JublerPrefs.set("system.columnwidth", widths.substring(0, widths.length() - 1));
     }
 
     public static int[] getColumnWidths() {
         int[] prefcolwidth = new int[COLUMNID.length()];
-        String widths = JublerPrefs.getString("system.columnWidth", DEFAULTCOLWIDTH);
-        if (widths == null || widths.equals("") || widths.length() < 1)
-            widths = DEFAULTCOLWIDTH;
-
+        String widths = JublerPrefs.getString("system.columnwidth", DEFAULTCOLWIDTH);
         StringTokenizer st = new StringTokenizer(widths, ",");
         int pos = 0;
         while (st.hasMoreTokens() && pos < prefcolwidth.length)
