@@ -8,26 +8,23 @@ package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.JubFrame;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class JExternalConsole extends javax.swing.JDialog {
+    private final Runnable onCancel;
+    private final String appName;
+    private boolean hasFinished = false;
 
     /**
      * Creates new form JExternalConsole
      */
-    public JExternalConsole(JubFrame jubler, final Runnable save) {
+    public JExternalConsole(JubFrame jubler, String appName, Runnable onCancel) {
         super(jubler, true);
+        this.onCancel = onCancel;
+        this.appName = appName;
+        setTitle(__("Launching application:") + " " + appName);
         initComponents();
-        replaceB.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                save.run();
-            }
-        });
-        replaceB.setVisible(false);
+        setLocationRelativeTo(jubler);
     }
 
     public void addOutLine(String line) {
@@ -38,10 +35,10 @@ public class JExternalConsole extends javax.swing.JDialog {
         consoleT.append(line + "\n");
     }
 
-    public void setResult(int exitValue, JubFrame jubler, String output) {
-        resultL.setText(exitValue == 0 ? __("Successfully executed command") : __("Error while executing command:") + exitValue);
-        cancelB.setText(__("Close"));
-        replaceB.setVisible(true);
+    public void setResult(int exitValue) {
+        setTitle((appName + ": ") + (exitValue == 0 ? __("Success") : __("Failure") + "(" + exitValue + ")"));
+        actionB.setText(__("Close"));
+        hasFinished = true;
     }
 
     /**
@@ -56,10 +53,7 @@ public class JExternalConsole extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         consoleT = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
-        resultL = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        replaceB = new javax.swing.JButton();
-        cancelB = new javax.swing.JButton();
+        actionB = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -69,32 +63,35 @@ public class JExternalConsole extends javax.swing.JDialog {
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel2.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(resultL, java.awt.BorderLayout.CENTER);
+        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
-
-        replaceB.setText(__("Replace subtitles"));
-        jPanel1.add(replaceB);
-
-        cancelB.setText(__("Terminate"));
-        jPanel1.add(cancelB);
-
-        jPanel2.add(jPanel1, java.awt.BorderLayout.EAST);
+        actionB.setText(__("Terminate"));
+        actionB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                actionBActionPerformed(evt);
+            }
+        });
+        jPanel2.add(actionB);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void actionBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actionBActionPerformed
+        if (hasFinished)
+            setVisible(false);
+        else {
+            actionB.setEnabled(false);
+            onCancel.run();
+        }
+    }//GEN-LAST:event_actionBActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelB;
+    private javax.swing.JButton actionB;
     private javax.swing.JTextArea consoleT;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton replaceB;
-    private javax.swing.JLabel resultL;
     // End of variables declaration//GEN-END:variables
 }

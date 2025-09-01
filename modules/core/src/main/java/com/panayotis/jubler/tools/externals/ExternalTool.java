@@ -14,8 +14,12 @@ import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -36,22 +40,20 @@ public class ExternalTool {
     private String name;
     private String path;
     private String command;
-    private boolean inplace;
     private SubFormat format;
 
     public ExternalTool() {
-        this("Tool Name", "tool", "%x --input %i --output %o", true, (SubFormat) null);
+        this("Tool Name", "tool", "%x --input %i --output %o", (SubFormat) null);
     }
 
-    public ExternalTool(String name, String path, String command, boolean inplace, String className) {
-        this(name, path, command, inplace, SubFormat.initFromClassname(className));
+    public ExternalTool(String name, String path, String command, String className) {
+        this(name, path, command, SubFormat.initFromClassname(className));
     }
 
-    public ExternalTool(String name, String path, String command, boolean inplace, SubFormat format) {
+    public ExternalTool(String name, String path, String command, SubFormat format) {
         this.name = name;
         this.path = path;
         this.command = command;
-        this.inplace = inplace;
         this.format = format == null ? DEFAULT : format;
     }
 
@@ -65,10 +67,6 @@ public class ExternalTool {
 
     public String getPath() {
         return path;
-    }
-
-    public boolean isInplace() {
-        return inplace;
     }
 
     public SubFormat getFormat() {
@@ -96,47 +94,44 @@ public class ExternalTool {
         this.format = format;
     }
 
-    public void setInplace(boolean inplace) {
-        this.inplace = inplace;
-    }
-
     public void exec(final JubFrame jubler) {
         try {
-
             // Create input/output files
             File tempDir = File.createTempFile("jubler_", "_exec").getAbsoluteFile();
-            String input = new File(tempDir, "input" + (inplace ? "output" : "") + ".srt").getAbsolutePath();
-            final String output = inplace ? input : new File(tempDir, "output.srt").getAbsolutePath();
-            SubFile new_sub_file = new SubFile(new File(input));
+            tempDir.delete();
+            tempDir.mkdirs();
+
+            SubFile inputSubfile = new SubFile(new File(tempDir, "input." + format.getExtension()), true);
+            inputSubfile.setFormat(format);
+            SubFile outputSubfile = command.contains("%o") ? new SubFile(new File(tempDir, "output." + format.getExtension()), true) : inputSubfile;
+            outputSubfile.setFormat(format);
+
             Subtitles cloned_subs = new Subtitles(jubler.getSubtitles());
-            FileCommunicator.save(cloned_subs, new_sub_file, null);
+            String result = FileCommunicator.save(cloned_subs, inputSubfile, null);
+            if (result != null) {
+                JOptionPane.showMessageDialog(jubler, result, __("Error found"), JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-            final JExternalConsole console = new JExternalConsole(jubler, new Runnable() {
-                @Override
-                public void run() {
-                    SubFile file = new SubFile(new File(output));
-                    FileCommunicator.load(file);
-                    Subtitles subtitles = new Subtitles(file);
-                    jubler.setSubs(subtitles);
-                }
-            });
-            console.setTitle(__("Launching application:") + " " + name);
-
-            ProcessBuilder builder = new ProcessBuilder(getCommandLine(tempDir, input, output));
+            String[] commandLine = getCommandLine(tempDir, inputSubfile.getSaveFile().getAbsolutePath(), outputSubfile.getSaveFile().getAbsolutePath());
+            ProcessBuilder builder = new ProcessBuilder(commandLine);
             builder.directory(tempDir);
-            final Process process = builder.start();
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        process.waitFor();
-                    } catch (InterruptedException ignored) {
-                    }
-                    console.setResult(process.exitValue(), jubler, output);
-                }
-            }.start();
+            Process process = builder.start();
+
+            JExternalConsole console = new JExternalConsole(jubler, name, process::destroy);
+            console.addOutLine(__("Executing command:"));
+            console.addOutLine(String.join(" ", commandLine));
+            console.addOutLine("----------------------------------");
+
             new ProcThread(process, false, console).start();
             new ProcThread(process, true, console).start();
+            new ExitThread(process, console).start();
+
+            console.setVisible(true);
+            if (process.exitValue() == 0) {
+                jubler.loadProcessedFile(outputSubfile, name);
+                FileCommunicator.deleteRecursive(tempDir);
+            }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(jubler, e.getClass().getName() + ":\n" + e.getMessage(), __("Error found"), JOptionPane.ERROR_MESSAGE);
         }
@@ -148,18 +143,29 @@ public class ExternalTool {
         tempDir.mkdir();
         String[] parts = command.trim().split("\\s+");
         for (int i = 0; i < parts.length; i++)
-            switch (parts[i]) {
-                case "%x":
-                    parts[i] = path;
-                    break;
-                case "%i":
-                    parts[i] = input;
-                    break;
-                case "%o":
-                    parts[i] = output;
-                    break;
-            }
+            parts[i] = parts[i].replace("%x", path).replace("%i", input).replace("%o", output);
+        System.out.println(Arrays.toString(parts));
         return parts;
+    }
+}
+
+
+class ExitThread extends Thread {
+    private final Process proc;
+    private final JExternalConsole console;
+
+    ExitThread(Process proc, JExternalConsole console) {
+        this.proc = proc;
+        this.console = console;
+    }
+
+    @Override
+    public void run() {
+        try {
+            proc.waitFor();
+        } catch (InterruptedException ignored) {
+        }
+        console.setResult(proc.exitValue());
     }
 }
 

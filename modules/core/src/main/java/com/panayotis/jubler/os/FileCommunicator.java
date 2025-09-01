@@ -4,28 +4,25 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.os;
-
-import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N.__;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.CodingErrorAction;
+package com.panayotis.jubler.os;
 
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CodingErrorAction;
 import java.nio.charset.UnmappableCharacterException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 public class FileCommunicator {
 
@@ -171,5 +168,22 @@ public class FileCommunicator {
         if (!default_file.isDirectory())
             throw new IllegalArgumentException(__("File {0} is not a directory", default_file.getPath()));
         JublerPrefs.set("system.lastdirpath", path);
+    }
+
+    public static void deleteRecursive(File dir) {
+        Path path = dir.toPath();
+        if (Files.exists(path)) {
+            try (Stream<Path> walk = Files.walk(path)) {
+                walk.sorted(Comparator.reverseOrder())
+                        .forEach(p -> {
+                            try {
+                                Files.delete(p);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+            } catch (IOException ignored) {
+            }
+        }
     }
 }

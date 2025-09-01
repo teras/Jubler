@@ -18,9 +18,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -30,12 +28,37 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     private static final ExternalToolList tools = new ExternalToolList();
     private ExternalTool current;
 
+    static {
+        loadTools();
+    }
+
+    private static void loadTools() {
+        tools.clear();
+        for (int i = 1; i < Integer.MAX_VALUE; i++) {
+            String prefix = "external.tools.tool" + i + ".";
+            String name = JublerPrefs.getString(prefix + "name", null);
+            String path = JublerPrefs.getString(prefix + "path", null);
+            String command = JublerPrefs.getString(prefix + "command", null);
+            String format = JublerPrefs.getString(prefix + "format", null);
+            if (name == null || path == null || command == null)
+                break;
+            tools.add(new ExternalTool(name, path, command, format));
+        }
+    }
+
+    private static final String COMMAND_TOOLTIP = __("Advanced argument list:") + "\n" +
+            __("  %x : executable") + "\n" +
+            __("  %i : input subtitle file") + "\n" +
+            __("  %o : output subtitle file") + "\n" +
+            "\n" +
+            __("If %o is missing, then %i will be considered as output file");
+
     /**
      * Creates new form JExternalToolsOptions
      */
     public JExternalToolsOptions() {
         initComponents();
-        commandL.setToolTipText(commandT.getToolTipText());
+
         SubFormat[] formats = Availabilities.formats.getFormats().toArray(new SubFormat[0]);
         typelistC.setModel(new DefaultComboBoxModel<>(formats));
         typelistC.setSelectedIndex(-1);
@@ -48,18 +71,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
     @Override
     public void loadPreferences() {
-        tools.clear();
-        for (int i = 1; i < Integer.MAX_VALUE; i++) {
-            String prefix = "external.tools.tool" + i + ".";
-            String name = JublerPrefs.getString(prefix + "name", null);
-            String path = JublerPrefs.getString(prefix + "path", null);
-            String command = JublerPrefs.getString(prefix + "command", null);
-            boolean inplace = JublerPrefs.getBoolean(prefix + "inplace", false);
-            String format = JublerPrefs.getString(prefix + "format", null);
-            if (name == null || path == null || command == null)
-                break;
-            tools.add(new ExternalTool(name, path, command, inplace, format));
-        }
+        loadTools();
     }
 
     @Override
@@ -70,14 +82,12 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
             JublerPrefs.set(prefix + "name", tool.getName());
             JublerPrefs.set(prefix + "path", tool.getPath());
             JublerPrefs.set(prefix + "command", tool.getCommand());
-            JublerPrefs.set(prefix + "inplace", tool.isInplace());
             JublerPrefs.set(prefix + "format", tool.getFormat().getClass().getName());
         }
         String next = "external.tools.tool" + (tools.getSize() + 1) + ".";
         JublerPrefs.set(next + "name", null);
         JublerPrefs.set(next + "path", null);
         JublerPrefs.set(next + "command", null);
-        JublerPrefs.set(next + "inplace", null);
         JublerPrefs.set(next + "format", null);
         ToolsManager.updateExternals();
     }
@@ -111,7 +121,6 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         nameT.setEnabled(active);
         browseB.setEnabled(active);
         commandT.setEnabled(active);
-        inplaceC.setEnabled(active);
         typelistC.setEnabled(active);
 
         current = null; // also to cut cycle events
@@ -120,7 +129,6 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
             pathT.setText(tool.getPath());
             commandT.setText(tool.getCommand());
             toolsL.setSelectedValue(tool, true);
-            inplaceC.setSelected(tool.isInplace());
             typelistC.setSelectedItem(tool.getFormat());
             current = tool;
         } else {
@@ -128,7 +136,6 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
             pathT.setText("");
             commandT.setText("");
             toolsL.setSelectedValue(null, true);
-            inplaceC.setSelected(false);
             typelistC.setSelectedIndex(-1);
         }
     }
@@ -189,8 +196,6 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         pathT = new javax.swing.JTextField();
         commandT = new javax.swing.JTextField();
         typelistC = new javax.swing.JComboBox<>();
-        jPanel4 = new javax.swing.JPanel();
-        inplaceC = new javax.swing.JCheckBox();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.Y_AXIS));
 
@@ -242,6 +247,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         jPanel2.add(browseL, gridBagConstraints);
 
         commandL.setText(__("Command"));
+        commandL.setToolTipText(COMMAND_TOOLTIP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -288,9 +294,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 4);
         jPanel2.add(jPanel1, gridBagConstraints);
 
-        commandT.setToolTipText("<html>" + __("Advanced argument list:") + "<br>\n" +
-                __("%x=executable") + "<br>\n" +
-                __("%s=subtitle file"));
+        commandT.setToolTipText(COMMAND_TOOLTIP);
         commandT.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -315,20 +319,6 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         jPanel2.add(typelistC, gridBagConstraints);
 
         add(jPanel2);
-
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        inplaceC.setSelected(true);
-        inplaceC.setText(__("The produced subtitle file will replace the current one (might destroy attributes)."));
-        inplaceC.setEnabled(false);
-        inplaceC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inplaceCActionPerformed(evt);
-            }
-        });
-        jPanel4.add(inplaceC, java.awt.BorderLayout.CENTER);
-
-        add(jPanel4);
     }// </editor-fold>//GEN-END:initComponents
 
     private void addBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBActionPerformed
@@ -362,11 +352,6 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
             setCurrent(tool);
     }//GEN-LAST:event_toolsLValueChanged
 
-    private void inplaceCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inplaceCActionPerformed
-        if (current != null)
-            current.setInplace(inplaceC.isSelected());
-    }//GEN-LAST:event_inplaceCActionPerformed
-
     private void typelistCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typelistCActionPerformed
         if (current != null)
             current.setFormat((SubFormat) typelistC.getSelectedItem());
@@ -379,11 +364,9 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     private javax.swing.JLabel browseL;
     private javax.swing.JLabel commandL;
     private javax.swing.JTextField commandT;
-    private javax.swing.JCheckBox inplaceC;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel nameL;
     private javax.swing.JTextField nameT;

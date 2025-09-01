@@ -2050,6 +2050,27 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         return loadFile(file, force_into_same_window);
     }
 
+    public void loadProcessedFile(SubFile sfile, String progName) {
+        Subtitles newsubs = new Subtitles(sfile);
+        String data = FileCommunicator.load(sfile);  // Read data and set current encoding
+        if (data == null) {
+            JIDialog.error(this, __("Could not load processed subtitles."), __("Error while loading file"));
+            return;
+        }
+        newsubs.populate(newsubs.getSubFile(), data);
+        if (newsubs.isEmpty()) {
+            JIDialog.error(this, __("File not recognized!"), __("Error while loading file"));
+            return;
+        }
+        // revert original subtitle file -- the processed was only a temporary file
+        newsubs.setSubFile(subs.getSubFile());
+        if (subs != null)
+            undo.addUndo(new UndoEntry(subs, __(progName)));
+        undo.invalidateSaveMark();
+        setSubs(newsubs);
+        showInfo();
+    }
+
     public JubFrame loadFile(SubFile sfile, boolean force_into_same_window) {
         String data;
         Subtitles newsubs;
