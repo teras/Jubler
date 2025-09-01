@@ -93,7 +93,6 @@ public class Subtitles extends AbstractTableModel {
             File file = sfile.getSaveFile();
             String ext = Share.getFileExtension(file, false);
             SubFormat format = Availabilities.formats.findFromExtension(ext).newInstance();
-            format.setJubler(JubFrame.currentWindow);
             format.updateFormat(sfile);
             load = format.parse(data, sfile.getFPS(), file);
             if (load != null)
@@ -108,7 +107,6 @@ public class Subtitles extends AbstractTableModel {
         try {
             File file = sfile.getSaveFile();
             SubFormat format = sfile.getFormat();
-            format.setJubler(JubFrame.currentWindow);
             format.updateFormat(sfile);
             load = format.parse(data, sfile.getFPS(), file);
         } catch (Exception ignored) {
@@ -124,7 +122,6 @@ public class Subtitles extends AbstractTableModel {
             File file = sfile.getSaveFile();
             while (load == null && formatlist.hasMoreElements()) {
                 format = formatlist.nextElement().newInstance();
-                format.setJubler(JubFrame.currentWindow);
                 format.updateFormat(sfile);
                 load = format.parse(data, sfile.getFPS(), file);
                 if (load != null && load.size() < 1)
@@ -323,7 +320,7 @@ public class Subtitles extends AbstractTableModel {
     public void revalidateStyles() {
         for (SubEntry entry : sublist) {
             SubStyle style = entry.getStyle();
-            if (style == null || styles.indexOf(style) < 0)
+            if (style == null || !styles.contains(style))
                 entry.setStyle(styles.get(0));
         }
     }

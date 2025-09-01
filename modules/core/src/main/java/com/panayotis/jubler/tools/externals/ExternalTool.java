@@ -8,29 +8,51 @@ package com.panayotis.jubler.tools.externals;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class ExternalTool {
+    private static final SubFormat DEFAULT;
+
+    static {
+        ArrayList<SubFormat> formats = Availabilities.formats.getFormats();
+        SubFormat found = formats.get(0);
+        for (SubFormat format : formats)
+            if (format.getExtension().equalsIgnoreCase("srt")) {
+                found = format;
+                break;
+            }
+        DEFAULT = found;
+    }
+
     private String name;
     private String path;
     private String command;
     private boolean inplace;
+    private SubFormat format;
 
     public ExternalTool() {
-        this("Tool Name", "tool", "%x --input %i --output %o", false);
+        this("Tool Name", "tool", "%x --input %i --output %o", true, (SubFormat) null);
     }
 
-    public ExternalTool(String name, String path, String command, boolean inplace) {
+    public ExternalTool(String name, String path, String command, boolean inplace, String className) {
+        this(name, path, command, inplace, SubFormat.initFromClassname(className));
+    }
+
+    public ExternalTool(String name, String path, String command, boolean inplace, SubFormat format) {
         this.name = name;
         this.path = path;
         this.command = command;
         this.inplace = inplace;
+        this.format = format == null ? DEFAULT : format;
     }
 
     public String getName() {
@@ -43,6 +65,14 @@ public class ExternalTool {
 
     public String getPath() {
         return path;
+    }
+
+    public boolean isInplace() {
+        return inplace;
+    }
+
+    public SubFormat getFormat() {
+        return format;
     }
 
     @Override
@@ -62,12 +92,12 @@ public class ExternalTool {
         this.path = path;
     }
 
-    public void setInplace(boolean inplace) {
-        this.inplace = inplace;
+    public void setFormat(SubFormat format) {
+        this.format = format;
     }
 
-    public boolean isInplace() {
-        return inplace;
+    public void setInplace(boolean inplace) {
+        this.inplace = inplace;
     }
 
     public void exec(final JubFrame jubler) {

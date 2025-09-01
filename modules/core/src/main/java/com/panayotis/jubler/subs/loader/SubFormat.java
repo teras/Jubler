@@ -4,24 +4,25 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader;
+package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 public abstract class SubFormat implements PluginItem<AvailSubFormats> {
 
     protected float FPS;
     protected String ENCODING;
-    private JubFrame jubler = null;
     private int formatOrder = 100;
 
     public void init() {
@@ -83,17 +84,17 @@ public abstract class SubFormat implements PluginItem<AvailSubFormats> {
         return new_one;
     }//end public SubFormat newInstance()
 
-    /**
-     * @return the jubler
-     */
-    public JubFrame getJubler() {
-        return jubler;
+    @Override
+    public String toString() {
+        return getExtendedName() + " (" + getExtension().toUpperCase() + ")";
     }
 
-    /**
-     * @param jubler the jubler to set
-     */
-    public void setJubler(JubFrame jubler) {
-        this.jubler = jubler;
+    public static SubFormat initFromClassname(String className) {
+        if (className == null)
+            return null;
+        for (SubFormat format : Availabilities.formats.getFormats())
+            if (format.getClass().getName().equals(className))
+                return format;
+        return null;
     }
 }

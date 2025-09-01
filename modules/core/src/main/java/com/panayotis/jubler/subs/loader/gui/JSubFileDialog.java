@@ -135,8 +135,7 @@ public class JSubFileDialog extends javax.swing.JDialog {
     private JFileFilter makeFilter(SubFormat format) {
         String desc = format.getDescription();
         String ext = format.getExtension();
-        JFileFilter filter = new JFileFilter(ext, desc, format);
-        return filter;
+        return new JFileFilter(ext, desc, format);
     }
 
     public boolean setFilters(FileFilter[] list) {
@@ -218,7 +217,7 @@ public class JSubFileDialog extends javax.swing.JDialog {
             int size = format_list.size();
             SubFormat[] array = format_list.getFormats().toArray(new SubFormat[size]);
             ok = addFilters(array);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
         return ok;
     }//end public boolean addFilters(ArrayList<SubFormat> format_list)
