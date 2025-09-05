@@ -1,5 +1,5 @@
 /*
- * (c) 2005-2023 by Panayotis Katsaloulis
+ * (c) 2005-2025 by Panayotis Katsaloulis
  * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
  */
@@ -585,9 +585,9 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleListC = new javax.swing.JComboBox();
         EditB = new javax.swing.JButton();
         crossP = new javax.swing.JPanel();
-        crossmobileL = new javax.swing.JLabel();
+        supportL = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
-        crossinfo = new javax.swing.JButton();
+        supportB = new javax.swing.JButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -896,22 +896,23 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         crossP.setBackground(FlatLaf.isLafDark() ? new Color(96, 79, 32) : new Color(244,227,174));
         crossP.setLayout(new java.awt.BorderLayout());
 
-        crossmobileL.setIcon(Theme.loadIcon("crossmobile"));
-        crossmobileL.setText(__("Jubler team needs your help! Are you a Jubler fan and a Mobile Developer?"));
-        crossmobileL.setIconTextGap(6);
-        crossP.add(crossmobileL, java.awt.BorderLayout.CENTER);
+        supportL.setFont(supportL.getFont().deriveFont(supportL.getFont().getSize()+2f));
+        supportL.setIcon(Theme.loadIcon("vlc"));
+        supportL.setText(__("Help Bring VLC Support to Jubler"));
+        supportL.setIconTextGap(6);
+        crossP.add(supportL, java.awt.BorderLayout.CENTER);
 
         jPanel5.setOpaque(false);
         jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        crossinfo.setFont(crossinfo.getFont().deriveFont(crossinfo.getFont().getSize()-1f));
-        crossinfo.setText(__("more..."));
-        crossinfo.addActionListener(new java.awt.event.ActionListener() {
+        supportB.setFont(supportB.getFont().deriveFont(supportB.getFont().getSize()-1f));
+        supportB.setText(__("more..."));
+        supportB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                crossinfoActionPerformed(evt);
+                supportBActionPerformed(evt);
             }
         });
-        jPanel5.add(crossinfo);
+        jPanel5.add(supportB);
 
         crossP.add(jPanel5, java.awt.BorderLayout.EAST);
 
@@ -1031,12 +1032,12 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_ToolsLockBActionPerformed
 
     @SuppressWarnings("UseSpecificCatch")
-    private void crossinfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crossinfoActionPerformed
+    private void supportBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supportBActionPerformed
         try {
-            Desktop.getDesktop().browse(new URI("https://crossmobile.org/jubler"));
+            Desktop.getDesktop().browse(new URI("https://jubler.org/supportvlc.html"));
         } catch (Exception ex) {
         }
-    }//GEN-LAST:event_crossinfoActionPerformed
+    }//GEN-LAST:event_supportBActionPerformed
 
     public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
@@ -1114,8 +1115,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JButton TrashB;
     public javax.swing.JLabel Unsaved;
     private javax.swing.JPanel crossP;
-    private javax.swing.JButton crossinfo;
-    private javax.swing.JLabel crossmobileL;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -1125,6 +1124,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JButton supportB;
+    private javax.swing.JLabel supportL;
     private javax.swing.JPopupMenu textEditPopup;
     // End of variables declaration//GEN-END:variables
 

@@ -1,5 +1,5 @@
 /*
- * (c) 2005-2023 by Panayotis Katsaloulis
+ * (c) 2005-2025 by Panayotis Katsaloulis
  * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
  */
@@ -177,7 +177,7 @@ public class JSubPreview extends javax.swing.JPanel {
     public Point getFrameLocation() {
         try {
             return frame.getLocationOnScreen();
-        } catch (IllegalComponentStateException e) {
+        } catch (IllegalComponentStateException ignored) {
         }
         return parent.getLocationOnScreen();
     }

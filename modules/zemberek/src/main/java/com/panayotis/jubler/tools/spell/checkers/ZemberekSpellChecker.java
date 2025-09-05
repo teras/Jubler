@@ -1,5 +1,5 @@
 /*
- * (c) 2005-2023 by Serkan Kaba <serkan_kaba@yahoo.com>
+ * (c) 2005-2025 by Serkan Kaba <serkan_kaba@yahoo.com>
  * SPDX-License-Identifier: AGPL-3.0-only
  * This file is part of Jubler.
  */
