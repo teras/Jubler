@@ -741,7 +741,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         CompactL.setIconTextGap(1);
         InfoP.add(CompactL);
 
-        jPanel8.add(InfoP, java.awt.BorderLayout.WEST);
+        jPanel8.add(InfoP, java.awt.BorderLayout.CENTER);
 
         Unsaved.setIcon(Theme.loadIcon("save"));
         Unsaved.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 6));
