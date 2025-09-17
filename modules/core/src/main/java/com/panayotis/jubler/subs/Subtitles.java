@@ -27,7 +27,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 public class Subtitles extends AbstractTableModel {
 
-    private static final String[] COLNAME = {__("#"), __("Start"), __("End"), __("Duration"), __("Layer"), __("Style"), __("Cpm"), __("Subtitle")};
+    private static final String[] COLNAME = {__("#"), __("Start"), __("End"), __("Duration"), __("Layer"), __("Style"), __("Cpm"), __("Cps"), __("Subtitle")};
     private static final int FIRST_EDITABLE_COL = COLNAME.length;
 
     private static final boolean[] visiblecols1 = AutoSaveOptions.getVisibleColumns();

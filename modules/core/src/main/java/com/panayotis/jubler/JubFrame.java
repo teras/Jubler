@@ -299,6 +299,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowLayerP = new javax.swing.JCheckBoxMenuItem();
         ShowStyleP = new javax.swing.JCheckBoxMenuItem();
         ShowCPMP = new javax.swing.JCheckBoxMenuItem();
+        ShowCPSP = new javax.swing.JCheckBoxMenuItem();
         jSeparator11 = new javax.swing.JSeparator();
         PlayVideoP = new javax.swing.JMenuItem();
         SubsTableScrollPane = new javax.swing.JScrollPane();
@@ -394,6 +395,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowLayerP1 = new javax.swing.JCheckBoxMenuItem();
         ShowStyleP1 = new javax.swing.JCheckBoxMenuItem();
         ShowCPMP1 = new javax.swing.JCheckBoxMenuItem();
+        ShowCPSP1 = new javax.swing.JCheckBoxMenuItem();
         StyleEM = new javax.swing.JMenu();
         StyleSepSEM = new javax.swing.JSeparator();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
@@ -498,6 +500,11 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowCPMP.setActionCommand("6");
         ShowCPMP.addActionListener(formListener);
         ShowColP.add(ShowCPMP);
+
+        ShowCPSP.setText(__("Characters per second"));
+        ShowCPSP.setActionCommand("7");
+        ShowCPSP.addActionListener(formListener);
+        ShowColP.add(ShowCPSP);
 
         SubsPop.add(ShowColP);
         SubsPop.add(jSeparator11);
@@ -1023,6 +1030,12 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowCPMP1.addActionListener(formListener);
         ShowColP1.add(ShowCPMP1);
 
+        ShowCPSP1.setText(__("Characters per second"));
+        ShowCPSP1.setActionCommand("7");
+        ShowCPSP1.setName("SCP"); // NOI18N
+        ShowCPSP1.addActionListener(formListener);
+        ShowColP1.add(ShowCPSP1);
+
         EditM.add(ShowColP1);
 
         StyleEM.setText(__("Style..."));
@@ -1215,6 +1228,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
                 JubFrame.this.showTableColumn(evt);
             } else if (evt.getSource() == ShowCPMP) {
                 JubFrame.this.showTableColumn(evt);
+            } else if (evt.getSource() == ShowCPSP) {
+                JubFrame.this.showTableColumn(evt);
             } else if (evt.getSource() == PlayVideoP) {
                 JubFrame.this.CurrentTTMActionPerformed(evt);
             } else if (evt.getSource() == FileNFM) {
@@ -1300,6 +1315,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             } else if (evt.getSource() == ShowStyleP1) {
                 JubFrame.this.showTableColumn(evt);
             } else if (evt.getSource() == ShowCPMP1) {
+                JubFrame.this.showTableColumn(evt);
+            } else if (evt.getSource() == ShowCPSP1) {
                 JubFrame.this.showTableColumn(evt);
             } else if (evt.getSource() == ToolsLockEM) {
                 JubFrame.this.ToolsLockEMActionPerformed(evt);
@@ -1412,8 +1429,46 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
     private void showTableColumn(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTableColumn
         int col = evt.getActionCommand().charAt(0) - '0';
+        boolean isSelected = ((AbstractButton) evt.getSource()).isSelected();
         SubEntry[] selected = getSelectedSubs();
-        Subtitles.setVisibleColumn(col, ((AbstractButton) evt.getSource()).isSelected());
+        Subtitles.setVisibleColumn(col, isSelected);
+
+        // Synchronize both menu items (main menu and popup menu)
+        switch (col) {
+            case 0:
+                ShowNumberP.setSelected(isSelected);
+                ShowNumberP1.setSelected(isSelected);
+                break;
+            case 1:
+                ShowStartP.setSelected(isSelected);
+                ShowStartP1.setSelected(isSelected);
+                break;
+            case 2:
+                ShowEndP.setSelected(isSelected);
+                ShowEndP1.setSelected(isSelected);
+                break;
+            case 3:
+                ShowDurationP.setSelected(isSelected);
+                ShowDurationP1.setSelected(isSelected);
+                break;
+            case 4:
+                ShowLayerP.setSelected(isSelected);
+                ShowLayerP1.setSelected(isSelected);
+                break;
+            case 5:
+                ShowStyleP.setSelected(isSelected);
+                ShowStyleP1.setSelected(isSelected);
+                break;
+            case 6:
+                ShowCPMP.setSelected(isSelected);
+                ShowCPMP1.setSelected(isSelected);
+                break;
+            case 7:
+                ShowCPSP.setSelected(isSelected);
+                ShowCPSP1.setSelected(isSelected);
+                break;
+        }
+
         tableHasChanged(selected);
     }//GEN-LAST:event_showTableColumn
 
@@ -1937,6 +1992,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenu SelectEM;
     private javax.swing.JCheckBoxMenuItem ShowCPMP;
     private javax.swing.JCheckBoxMenuItem ShowCPMP1;
+    private javax.swing.JCheckBoxMenuItem ShowCPSP;
+    private javax.swing.JCheckBoxMenuItem ShowCPSP1;
     private javax.swing.JMenu ShowColP;
     private javax.swing.JMenu ShowColP1;
     private javax.swing.JCheckBoxMenuItem ShowDurationP;
@@ -2293,6 +2350,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowLayerP.setSelected(Subtitles.isVisibleColumn(4));
         ShowStyleP.setSelected(Subtitles.isVisibleColumn(5));
         ShowCPMP.setSelected(Subtitles.isVisibleColumn(6));
+        ShowCPSP.setSelected(Subtitles.isVisibleColumn(7));
         ShowNumberP1.setSelected(Subtitles.isVisibleColumn(0));
         ShowStartP1.setSelected(Subtitles.isVisibleColumn(1));
         ShowEndP1.setSelected(Subtitles.isVisibleColumn(2));
@@ -2300,6 +2358,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowLayerP1.setSelected(Subtitles.isVisibleColumn(4));
         ShowStyleP1.setSelected(Subtitles.isVisibleColumn(5));
         ShowCPMP1.setSelected(Subtitles.isVisibleColumn(6));
+        ShowCPSP1.setSelected(Subtitles.isVisibleColumn(7));
     }
 
     private boolean columnChange;

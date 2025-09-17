@@ -240,10 +240,12 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
                     return "?Default";
                 return style.toString();
             case 6:
-                return (subtext == null || subtext.length() == 0)
-                        ? "0"
-                        : String.valueOf(Math.round(subtext.length() * 60 / ((finish.getMillis() - start.getMillis()) / 1000d)));
+                SubMetrics metrics = getMetrics();
+                return String.valueOf(Math.round(metrics.length * 60 / ((finish.getMillis() - start.getMillis()) / 1000d)));
             case 7:
+                SubMetrics cpsMetrics = getMetrics();
+                return cpsMetrics.cps == Float.POSITIVE_INFINITY ? "∞" : String.valueOf(((int) (cpsMetrics.cps * 10)) / 10f);
+            case 8:
                 boolean is_image_type = (this instanceof ImageTypeSubtitle);
                 if (is_image_type) {
                     ImageTypeSubtitle img_type = (ImageTypeSubtitle) this;
@@ -283,7 +285,7 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
 
     void setData(int col, Object data) {
         JIDialog.error(null, "BUG IN PROGRAM: SET DATA WAS SELECTED\nPlease contact author", __("Error!"));
-        if (col == 3)
+        if (col == 8)
             subtext = data.toString();
     }
 

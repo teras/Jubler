@@ -13,10 +13,10 @@ import java.util.StringTokenizer;
 
 public class AutoSaveOptions {
 
-    private static final String COLUMNID = "#FEDLCS";
+    private static final String COLUMNID = "#FEDLCPST";
     public static final int COLUMN_COUNT = COLUMNID.length();
     private static final String DEFAULTCOLUMNID = "FE";
-    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50,50,530";
+    private static final String DEFAULTCOLWIDTH = "50,100,100,50,50,50,50,50,530";
 
     public static void setPreviewOrientation(boolean horizontal) {
         JublerPrefs.set("preview.orientation", horizontal ? "horizontal" : "vertical");
