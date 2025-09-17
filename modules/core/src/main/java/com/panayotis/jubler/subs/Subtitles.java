@@ -92,11 +92,14 @@ public class Subtitles extends AbstractTableModel {
         try {
             File file = sfile.getSaveFile();
             String ext = Share.getFileExtension(file, false);
-            SubFormat format = Availabilities.formats.findFromExtension(ext).newInstance();
-            format.updateFormat(sfile);
-            load = format.parse(data, sfile.getFPS(), file);
-            if (load != null)
-                sfile.setFormat(format);//end if (load != null)
+            SubFormat foundFormat = Availabilities.formats.findFromExtension(ext);
+            if (foundFormat != null) {
+                SubFormat format = foundFormat.newInstance();
+                format.updateFormat(sfile);
+                load = format.parse(data, sfile.getFPS(), file);
+                if (load != null)
+                    sfile.setFormat(format);//end if (load != null)
+            }
         } catch (Exception ignored) {
         }
         return load;

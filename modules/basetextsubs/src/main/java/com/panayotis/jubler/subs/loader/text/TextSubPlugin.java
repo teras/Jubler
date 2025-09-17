@@ -32,7 +32,9 @@ public class TextSubPlugin implements PluginCollection {
                 new Spruce(),
                 new TextScript(),
                 new W3CTimedText(),
-                new DFXP(),
+                new DFXPSubFormat(),
+                new TTMLSubFormat(),
+                new ITTSubFormat(),
                 new PreSegmentedText()
         );
         list.sort(Comparator.comparing(SubFormat::getName));

@@ -66,29 +66,23 @@ public class AvailSubFormats implements PluginContext {
     }
 
     /**
-     * Find a single instance of handler that handle the given extension. Since
-     * the same file extension can be used by multiple formats, the routine will
-     * return null when more than one instances are found.
+     * Find a format handler that handles the given extension. When multiple formats
+     * support the same extension, the first matching format is returned, giving
+     * priority to extension-based detection over pattern matching.
      *
      * @param ext The subtitle file's extension given.
-     * @return unique file handler for the given extension, null if not found or
-     * there are more than one handler which can handle the same file extension.
+     * @return the first file handler for the given extension, null if not found.
      */
     public SubFormat findFromExtension(String ext) {
-        boolean is_found = false;
-        String found_extension = null;
-        SubFormat format = null;
-        ArrayList<SubFormat> found_list = new ArrayList<SubFormat>();
+        if (ext == null)
+            return null;
+
         for (SubFormat found_format : Formats) {
-            found_extension = found_format.getExtension();
-            is_found = found_extension.equalsIgnoreCase(ext);
-            if (is_found)
-                found_list.add(found_format);//end if
-        }//end for (SubFormat found_format : Formats)
-        is_found = (found_list.size() == 1);
-        if (is_found)
-            format = found_list.get(0);//end if (is_found)
-        return format;
+            String found_extension = found_format.getExtension();
+            if (found_extension.equalsIgnoreCase(ext))
+                return found_format;
+        }
+        return null;
     }//end public SubFormat findFromExtension(String ext) 
 
     public SubFormat get(int i) {
