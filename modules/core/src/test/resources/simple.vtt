@@ -1,52 +1,52 @@
 WEBVTT
 
-00:00:01.000 --> 00:00:04.000
+00:00:00.000 --> 00:00:03.000
 This is a simple line of text.
 
-00:00:05.000 --> 00:00:08.000
+00:00:03.000 --> 00:00:06.000
 <b>This text is bold.</b>
 
-00:00:09.000 --> 00:00:12.000
+00:00:06.000 --> 00:00:09.000
 <i>This text is italic.</i>
 
-00:00:13.000 --> 00:00:16.000
+00:00:09.000 --> 00:00:12.000
 <font color="#ff0000">This text is red.</font>
 
-00:00:41.000 --> 00:00:44.000
-<font color="#ff0000"><b>Bold red text.</b></font>
-
-00:00:44.500 --> 00:00:47.500
-<font color="#ff0000" size="28">Large red text.</font>
-
-00:00:48.000 --> 00:00:51.000
-<font color="#ff0000"><i>Italic red text.</i></font>
-
-00:00:52.000 --> 00:00:55.000
-<font color="#ff0000" size="28"><b>Bold large red text.</b></font>
-
-00:00:56.000 --> 00:00:59.000
-<font size="28"><i>Italic large text.</i></font>
-
-00:01:00.000 --> 00:01:03.000
-<font size="28"><b>Bold large text.</b></font>
-
-00:00:17.000 --> 00:00:20.000
+00:00:12.000 --> 00:00:15.000
 <b>Inline bold</b> formatting.
 
-00:00:21.000 --> 00:00:24.000
+00:00:15.000 --> 00:00:18.000
 <i>Inline italic</i> formatting.
 
-00:00:25.000 --> 00:00:28.000
+00:00:18.000 --> 00:00:21.000
 <font color="#FF0000">Red</font> and <font color="#00FF00">green</font> text.
 
-00:00:29.000 --> 00:00:32.000
+00:00:21.000 --> 00:00:24.000
 Text with<br/>line break.
 
-00:00:33.000 --> 00:00:36.000
+00:00:24.000 --> 00:00:27.000
 <font size="27">Larger text</font> here.
 
-00:00:37.000 --> 00:00:40.000
+00:00:27.000 --> 00:00:30.000
 <font color="#FF0000" size="18">Big red</font> and <font color="#0000FF" size="13">small blue</font> text.
 
-00:01:04.000 --> 00:01:07.000
+00:00:30.000 --> 00:00:33.000
+<font color="#ff0000"><b>Bold red text.</b></font>
+
+00:00:33.000 --> 00:00:36.000
+<font color="#ff0000" size="28">Large red text.</font>
+
+00:00:36.000 --> 00:00:39.000
+<font color="#ff0000"><i>Italic red text.</i></font>
+
+00:00:39.000 --> 00:00:42.000
+<font color="#ff0000" size="28"><b>Bold large red text.</b></font>
+
+00:00:42.000 --> 00:00:45.000
+<font size="28"><i>Italic large text.</i></font>
+
+00:00:45.000 --> 00:00:48.000
+<font size="28"><b>Bold large text.</b></font>
+
+00:00:48.000 --> 00:00:51.000
 Final test line.

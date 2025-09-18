@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs;
+package com.panayotis.jubler.subs;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -13,6 +13,7 @@ import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.loader.SubFormat;
+
 import java.io.File;
 
 public class SubFile {
@@ -21,9 +22,9 @@ public class SubFile {
     public static final boolean EXTENSION_GIVEN = true;
     public static final boolean EXTENSION_OMMITED = false;
     private final static String[] basic_encodings = {
-        "UTF-8",
-        "ISO-8859-1",
-        "UTF-16"
+            "UTF-8",
+            "ISO-8859-1",
+            "UTF-16"
     };
     private final static String basic_fileencoding = basic_encodings[0];
     private final static float basic_FPS = 25f;
@@ -177,18 +178,6 @@ public class SubFile {
         if (format == null)
             format = basic_format;
         this.format = format;
-    }
-
-    public void setFormat(String format) {
-        if (format == null) {
-            this.format = basic_format;
-            return;
-        }
-        this.format = Availabilities.formats.findFromDescription(format);
-        if (this.format == null)
-            this.format = Availabilities.formats.findFromName(format);
-        if (this.format == null)
-            this.format = basic_format;
     }
 
     public SubFormat getFormat() {

@@ -1,124 +1,124 @@
 1
-00:00:01,000 --> 00:00:04,000
+00:00:00,000 --> 00:00:03,000
 This is a basic subtitle line with default styling.
 
 2
-00:00:05,000 --> 00:00:08,000
+00:00:03,000 --> 00:00:06,000
 <b>This line uses the Bold style.</b>
 
 3
-00:00:09,000 --> 00:00:12,000
+00:00:06,000 --> 00:00:09,000
 <i>This line uses the Italic style.</i>
 
 4
-00:00:13,000 --> 00:00:16,000
+00:00:09,000 --> 00:00:12,000
 <font color="#ff0000">This line appears in red color.</font>
 
 5
-00:00:17,000 --> 00:00:20,000
+00:00:12,000 --> 00:00:15,000
 <font size="37">This is larger text.</font>
 
 6
-00:00:21,000 --> 00:00:24,000
+00:00:15,000 --> 00:00:18,000
 This appears at the top center.
 
 7
-00:00:25,000 --> 00:00:28,000
+00:00:18,000 --> 00:00:21,000
 This appears at bottom left.
 
 8
-00:00:29,000 --> 00:00:32,000
+00:00:21,000 --> 00:00:24,000
 This text has a shadow effect.
 
 9
-00:00:33,000 --> 00:00:36,000
+00:00:24,000 --> 00:00:27,000
 <b>Inline bold text</b> mixed with normal text.
 
 10
-00:00:37,000 --> 00:00:40,000
+00:00:27,000 --> 00:00:30,000
 <i>Inline italic text</i> and <u>underlined text</u>.
 
 11
-00:00:41,000 --> 00:00:44,000
+00:00:30,000 --> 00:00:33,000
 <font color="#0000FF">Red text</font> and <font color="#00FF00">green text</font>.
 
 12
-00:00:45,000 --> 00:00:48,000
+00:00:33,000 --> 00:00:36,000
 <font size="36">Large text</font> and <font size="15">small text</font>.
 
 13
-00:00:49,000 --> 00:00:52,000
+00:00:36,000 --> 00:00:39,000
 Text with fade in and out effect.
 
 14
-00:00:53,000 --> 00:00:56,000
+00:00:39,000 --> 00:00:42,000
 Moving text animation.
 
 15
-00:00:57,000 --> 00:01:00,000
+00:00:42,000 --> 00:00:45,000
 Text that grows in size.
 
 16
-00:01:01,000 --> 00:01:04,000
+00:00:45,000 --> 00:00:48,000
 Top-left aligned text.
 
 17
-00:01:05,000 --> 00:01:08,000
+00:00:48,000 --> 00:00:51,000
 Bottom-right aligned text.
 
 18
-00:01:09,000 --> 00:01:12,000
+00:00:51,000 --> 00:00:54,000
 <font face="Comic Sans MS">Different font family.</font>
 
 19
-00:01:13,000 --> 00:01:16,000
+00:00:54,000 --> 00:00:57,000
 Text with transparency effect.
 
 20
-00:01:17,000 --> 00:01:20,000
+00:00:57,000 --> 00:01:00,000
 Thick border and shadow.
 
 21
-00:01:21,000 --> 00:01:24,000
+00:01:00,000 --> 00:01:03,000
 Horizontally stretched text.
 
 22
-00:01:25,000 --> 00:01:28,000
+00:01:03,000 --> 00:01:06,000
 Vertically stretched text.
 
 23
-00:01:29,000 --> 00:01:32,000
+00:01:06,000 --> 00:01:09,000
 Rotated text at 45 degrees.
 
 24
-00:01:33,000 --> 00:01:36,000
+00:01:09,000 --> 00:01:12,000
 Blurred text effect.
 
 25
-00:01:37,000 --> 00:01:40,000
+00:01:12,000 --> 00:01:15,000
 This is a line
 with a line break.
 
 26
-00:01:41,000 --> 00:01:44,000
+00:01:15,000 --> 00:01:18,000
 Karaoke timing.
 
 27
-00:01:45,000 --> 00:01:48,000
+00:01:18,000 --> 00:01:21,000
 Text with colored outline.
 
 28
-00:01:49,000 --> 00:01:52,000
+00:01:21,000 --> 00:01:24,000
 Colored shadow effect.
 
 29
-00:01:53,000 --> 00:01:56,000
+00:01:24,000 --> 00:01:27,000
 Multiple <i><b><u>combined</i></b></u> formatting tags.
 
 30
-00:01:57,000 --> 00:02:00,000
+00:01:27,000 --> 00:01:30,000
 Spinning text around center.
 
 31
-00:02:05,000 --> 00:02:08,000
+00:01:33,000 --> 00:01:36,000
 Final test line with normal formatting.

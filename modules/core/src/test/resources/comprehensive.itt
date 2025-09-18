@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tt xmlns="http://www.w3.org/ns/ttml" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" ttp:dropMode="nonDrop" ttp:profile="http://www.w3.org/ns/ttml/profile/dfxp-presentation" ttp:timeBase="smpte" xml:lang="en-US">
+  <head>
+    <metadata>
+      <ttm:title>iTunes Timed Text</ttm:title>
+    </metadata>
+    <styling>
+      <style tts:color="white" tts:fontFamily="sansSerif" tts:fontSize="100%" xml:id="default"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="Default"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" tts:fontWeight="bold" xml:id="Bold"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" tts:fontStyle="italic" xml:id="Italic"/>
+      <style tts:color="#ff0000" tts:fontSize="25px" xml:id="RedText"/>
+      <style tts:color="#ffffff" tts:fontSize="37px" xml:id="LargeText"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="TopCenter"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="BottomLeft"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="WithShadow"/>
+    </styling>
+    <layout>
+      <region tts:displayAlign="after" tts:extent="80% 15%" tts:origin="10% 80%" tts:textAlign="center" xml:id="bottom"/>
+    </layout>
+  </head>
+  <body>
+    <div>
+      <p begin="00:00:00:00" end="00:00:03:00" region="bottom" style="Default">This is a basic subtitle line with default styling.</p>
+      <p begin="00:00:03:00" end="00:00:06:00" region="bottom" style="Bold">This line uses the Bold style.</p>
+      <p begin="00:00:06:00" end="00:00:09:00" region="bottom" style="Italic">This line uses the Italic style.</p>
+      <p begin="00:00:09:00" end="00:00:12:00" region="bottom" style="RedText">This line appears in red color.</p>
+      <p begin="00:00:12:00" end="00:00:15:00" region="bottom" style="LargeText">This is larger text.</p>
+      <p begin="00:00:15:00" end="00:00:18:00" region="bottom" style="TopCenter">This appears at the top center.</p>
+      <p begin="00:00:18:00" end="00:00:21:00" region="bottom" style="BottomLeft">This appears at bottom left.</p>
+      <p begin="00:00:21:00" end="00:00:24:00" region="bottom" style="WithShadow">This text has a shadow effect.</p>
+      <p begin="00:00:24:00" end="00:00:27:00" region="bottom" style="Default">
+        <span tts:fontWeight="bold">Inline bold text</span>
+         mixed with normal text.
+      </p>
+      <p begin="00:00:27:00" end="00:00:30:00" region="bottom" style="Default">
+        <span tts:fontStyle="italic">Inline italic text</span>
+         and 
+        <span tts:textDecoration="underline">underlined text</span>
+        .
+      </p>
+      <p begin="00:00:30:00" end="00:00:33:00" region="bottom" style="Default">
+        <span tts:color="#ff0000">Red text</span>
+         and 
+        <span tts:color="#00ff00">green text</span>
+        .
+      </p>
+      <p begin="00:00:33:00" end="00:00:36:00" region="bottom" style="Default">
+        <span tts:fontSize="36px">Large text</span>
+         and 
+        <span tts:fontSize="15px">small text</span>
+        .
+      </p>
+      <p begin="00:00:36:00" end="00:00:39:00" region="bottom" style="Default">
+        Text with 
+        <span>fade in and out effect.</span>
+      </p>
+      <p begin="00:00:39:00" end="00:00:42:00" region="bottom" style="Default">
+        <span>Moving text animation.</span>
+      </p>
+      <p begin="00:00:42:00" end="00:00:45:00" region="bottom" style="Default">
+        <span>Text that grows in size.</span>
+      </p>
+      <p begin="00:00:45:00" end="00:00:48:00" region="bottom" style="Default">
+        <span>Top-left aligned text.</span>
+      </p>
+      <p begin="00:00:48:00" end="00:00:51:00" region="bottom" style="Default">
+        <span>Bottom-right aligned text.</span>
+      </p>
+      <p begin="00:00:51:00" end="00:00:54:00" region="bottom" style="Default">Different font family.</p>
+      <p begin="00:00:54:00" end="00:00:57:00" region="bottom" style="Default">
+        Text with 
+        <span tts:color="#ffffff">transparency effect</span>
+        .
+      </p>
+      <p begin="00:00:57:00" end="00:01:00:00" region="bottom" style="Default">
+        <span>Thick border</span>
+        <span> and </span>
+        <span>shadow</span>
+        <span>.</span>
+      </p>
+      <p begin="00:01:00:00" end="00:01:03:00" region="bottom" style="Default">
+        <span>Horizontally stretched</span>
+        <span> text.</span>
+      </p>
+      <p begin="00:01:03:00" end="00:01:06:00" region="bottom" style="Default">
+        <span>Vertically stretched</span>
+        <span> text.</span>
+      </p>
+      <p begin="00:01:06:00" end="00:01:09:00" region="bottom" style="Default">
+        <span>Rotated text at 45 degrees</span>
+        <span>.</span>
+      </p>
+      <p begin="00:01:09:00" end="00:01:12:00" region="bottom" style="Default">
+        <span>Blurred text effect</span>
+        <span>.</span>
+      </p>
+      <p begin="00:01:12:00" end="00:01:15:00" region="bottom" style="Default">
+        This is a line
+        <br/>
+        with a line break.
+      </p>
+      <p begin="00:01:15:00" end="00:01:18:00" region="bottom" style="Default">
+        <span>Karaoke timing.</span>
+      </p>
+      <p begin="00:01:18:00" end="00:01:21:00" region="bottom" style="Default">
+        Text with 
+        <span>colored outline</span>
+        .
+      </p>
+      <p begin="00:01:21:00" end="00:01:24:00" region="bottom" style="Default">
+        <span>Colored shadow effect</span>
+        .
+      </p>
+      <p begin="00:01:24:00" end="00:01:27:00" region="bottom" style="Default">
+        Multiple 
+        <span tts:fontStyle="italic" tts:fontWeight="bold" tts:textDecoration="underline">combined</span>
+         formatting tags.
+      </p>
+      <p begin="00:01:27:00" end="00:01:30:00" region="bottom" style="Default">
+        <span>Spinning text around center.</span>
+      </p>
+      <p begin="00:01:33:00" end="00:01:36:00" region="bottom" style="Default">Final test line with normal formatting.</p>
+    </div>
+  </body>
+</tt>

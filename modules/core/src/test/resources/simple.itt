@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<tt xmlns="http://www.w3.org/ns/ttml" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" ttp:dropMode="nonDrop" ttp:profile="http://www.w3.org/ns/ttml/profile/dfxp-presentation" ttp:timeBase="smpte" xml:lang="en-US">
+  <head>
+    <metadata>
+      <ttm:title>iTunes Timed Text</ttm:title>
+    </metadata>
+    <styling>
+      <style tts:color="white" tts:fontFamily="sansSerif" tts:fontSize="100%" xml:id="default"/>
+      <style tts:color="#ffffff" tts:fontSize="22px" xml:id="Default"/>
+      <style tts:color="#ffffff" tts:fontSize="22px" tts:fontWeight="bold" xml:id="Bold"/>
+      <style tts:color="#ffffff" tts:fontSize="22px" tts:fontStyle="italic" xml:id="Italic"/>
+      <style tts:color="#ff0000" tts:fontSize="22px" xml:id="RedText"/>
+      <style tts:color="#ff0000" tts:fontSize="22px" tts:fontWeight="bold" xml:id="BoldRed"/>
+      <style tts:color="#ff0000" tts:fontSize="28px" xml:id="RedLarge"/>
+      <style tts:color="#ff0000" tts:fontSize="22px" tts:fontStyle="italic" xml:id="ItalicRed"/>
+      <style tts:color="#ff0000" tts:fontSize="28px" tts:fontWeight="bold" xml:id="BoldLargeRed"/>
+      <style tts:color="#ffffff" tts:fontSize="28px" tts:fontStyle="italic" xml:id="ItalicLarge"/>
+      <style tts:color="#ffffff" tts:fontSize="28px" tts:fontWeight="bold" xml:id="BoldLarge"/>
+    </styling>
+    <layout>
+      <region tts:displayAlign="after" tts:extent="80% 15%" tts:origin="10% 80%" tts:textAlign="center" xml:id="bottom"/>
+    </layout>
+  </head>
+  <body>
+    <div>
+      <p begin="00:00:00:00" end="00:00:03:00" region="bottom" style="Default">This is a simple line of text.</p>
+      <p begin="00:00:03:00" end="00:00:06:00" region="bottom" style="Bold">This text is bold.</p>
+      <p begin="00:00:06:00" end="00:00:09:00" region="bottom" style="Italic">This text is italic.</p>
+      <p begin="00:00:09:00" end="00:00:12:00" region="bottom" style="RedText">This text is red.</p>
+      <p begin="00:00:12:00" end="00:00:15:00" region="bottom" style="Default">
+        <span tts:fontWeight="bold">Inline bold</span>
+         formatting.
+      </p>
+      <p begin="00:00:15:00" end="00:00:18:00" region="bottom" style="Default">
+        <span tts:fontStyle="italic">Inline italic</span>
+         formatting.
+      </p>
+      <p begin="00:00:18:00" end="00:00:21:00" region="bottom" style="Default">
+        <span tts:color="#0000ff">Red</span>
+         and 
+        <span tts:color="#00ff00">green</span>
+         text.
+      </p>
+      <p begin="00:00:21:00" end="00:00:24:00" region="bottom" style="Default">
+        Text with
+        <br/>
+        line break.
+      </p>
+      <p begin="00:00:24:00" end="00:00:27:00" region="bottom" style="Default">
+        <span tts:fontSize="27px">Larger text</span>
+         here.
+      </p>
+      <p begin="00:00:27:00" end="00:00:30:00" region="bottom" style="Default">
+        <span tts:color="#0000ff" tts:fontSize="18px">Big red</span>
+         and 
+        <span tts:color="#ff0000" tts:fontSize="13px">small blue</span>
+         text.
+      </p>
+      <p begin="00:00:30:00" end="00:00:33:00" region="bottom" style="BoldRed">Bold red text.</p>
+      <p begin="00:00:33:00" end="00:00:36:00" region="bottom" style="RedLarge">Large red text.</p>
+      <p begin="00:00:36:00" end="00:00:39:00" region="bottom" style="ItalicRed">Italic red text.</p>
+      <p begin="00:00:39:00" end="00:00:42:00" region="bottom" style="BoldLargeRed">Bold large red text.</p>
+      <p begin="00:00:42:00" end="00:00:45:00" region="bottom" style="ItalicLarge">Italic large text.</p>
+      <p begin="00:00:45:00" end="00:00:48:00" region="bottom" style="BoldLarge">Bold large text.</p>
+      <p begin="00:00:48:00" end="00:00:51:00" region="bottom" style="Default">Final test line.</p>
+    </div>
+  </body>
+</tt>

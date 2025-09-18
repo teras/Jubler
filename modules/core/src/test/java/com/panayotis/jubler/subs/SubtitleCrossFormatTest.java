@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SubtitleCrossFormatTest {
 
     private static final List<String> FORMATS = Arrays.asList("ass", "srt", "ssa", "vtt", "ttml");
-    private static final int EXPECTED_SIMPLE_SUBTITLE_COUNT = 16;
+    private static final int EXPECTED_SIMPLE_SUBTITLE_COUNT = 17;
 
     @Test
     void testAllFormatsHaveCorrectSubtitleCount() throws Exception {

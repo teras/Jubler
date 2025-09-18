@@ -332,6 +332,31 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
     protected NodeList findNodesByXPath(Document doc, String xpath) {
         try {
             javax.xml.xpath.XPath xpathEngine = javax.xml.xpath.XPathFactory.newInstance().newXPath();
+
+            // Set up namespace context for TTML
+            xpathEngine.setNamespaceContext(new javax.xml.namespace.NamespaceContext() {
+                @Override
+                public String getNamespaceURI(String prefix) {
+                    if ("ttml".equals(prefix) || prefix == null || "".equals(prefix)) {
+                        return "http://www.w3.org/ns/ttml";
+                    }
+                    return javax.xml.XMLConstants.NULL_NS_URI;
+                }
+
+                @Override
+                public String getPrefix(String namespaceURI) {
+                    if ("http://www.w3.org/ns/ttml".equals(namespaceURI)) {
+                        return "ttml";
+                    }
+                    return null;
+                }
+
+                @Override
+                public java.util.Iterator<String> getPrefixes(String namespaceURI) {
+                    return java.util.Collections.singletonList(getPrefix(namespaceURI)).iterator();
+                }
+            });
+
             return (NodeList) xpathEngine.evaluate(xpath, doc, javax.xml.xpath.XPathConstants.NODESET);
         } catch (Exception e) {
             DEBUG.debug("XPath evaluation failed: " + e.getMessage());

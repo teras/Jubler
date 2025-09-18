@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<tt xmlns="http://www.w3.org/ns/ttml" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" ttp:profile="http://www.w3.org/ns/ttml/profile/dfxp-full" ttp:timeBase="media" xml:lang="en">
+<tt xmlns="http://www.w3.org/ns/ttml" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" ttp:profile="http://www.w3.org/ns/ttml/profile/dfxp-presentation" ttp:timeBase="media" xml:lang="en">
   <head>
     <metadata>
-      <ttm:title>TTML Document</ttm:title>
+      <ttm:title>DFXP Document</ttm:title>
     </metadata>
     <styling>
       <style tts:color="white" tts:fontFamily="sansSerif" tts:fontSize="100%" xml:id="default"/>
-      <style tts:color="yellow" tts:fontStyle="italic" tts:fontWeight="bold" xml:id="emphasis"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="Default"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" tts:fontWeight="bold" xml:id="Bold"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" tts:fontStyle="italic" xml:id="Italic"/>
+      <style tts:color="#ff0000" tts:fontSize="25px" xml:id="RedText"/>
+      <style tts:color="#ffffff" tts:fontSize="37px" xml:id="LargeText"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="TopCenter"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="BottomLeft"/>
+      <style tts:color="#ffffff" tts:fontSize="25px" xml:id="WithShadow"/>
     </styling>
     <layout>
-      <region tts:displayAlign="after" tts:extent="80% 15%" tts:origin="10% 80%" xml:id="bottom"/>
-      <region tts:displayAlign="before" tts:extent="80% 15%" tts:origin="10% 10%" xml:id="top"/>
+      <region tts:displayAlign="after" tts:extent="80% 15%" tts:origin="10% 80%" tts:textAlign="center" tts:writingMode="lrtb" xml:id="bottom"/>
     </layout>
   </head>
   <body>
@@ -61,9 +67,7 @@
       <p begin="00:00:48.000" end="00:00:51.000" region="bottom" style="Default">
         <span>Bottom-right aligned text.</span>
       </p>
-      <p begin="00:00:51.000" end="00:00:54.000" region="bottom" style="Default">
-        <span tts:fontFamily=" Comic Sans MS">Different font family.</span>
-      </p>
+      <p begin="00:00:51.000" end="00:00:54.000" region="bottom" style="Default">Different font family.</p>
       <p begin="00:00:54.000" end="00:00:57.000" region="bottom" style="Default">
         Text with 
         <span tts:color="#ffffff">transparency effect</span>

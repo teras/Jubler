@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<tt xmlns="http://www.w3.org/ns/ttml" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" ttp:profile="http://www.w3.org/ns/ttml/profile/dfxp-full" ttp:timeBase="media" xml:lang="en">
+<tt xmlns="http://www.w3.org/ns/ttml" xmlns:ttm="http://www.w3.org/ns/ttml#metadata" xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" ttp:profile="http://www.w3.org/ns/ttml/profile/dfxp-presentation" ttp:timeBase="media" xml:lang="en">
   <head>
     <metadata>
-      <ttm:title>TTML Document</ttm:title>
+      <ttm:title>DFXP Document</ttm:title>
     </metadata>
     <styling>
       <style tts:color="white" tts:fontFamily="sansSerif" tts:fontSize="100%" xml:id="default"/>
-      <style tts:color="yellow" tts:fontStyle="italic" tts:fontWeight="bold" xml:id="emphasis"/>
+      <style tts:color="#ffffff" tts:fontSize="22px" xml:id="Default"/>
+      <style tts:color="#ffffff" tts:fontSize="22px" tts:fontWeight="bold" xml:id="Bold"/>
+      <style tts:color="#ffffff" tts:fontSize="22px" tts:fontStyle="italic" xml:id="Italic"/>
+      <style tts:color="#ff0000" tts:fontSize="22px" xml:id="RedText"/>
+      <style tts:color="#ff0000" tts:fontSize="22px" tts:fontWeight="bold" xml:id="BoldRed"/>
+      <style tts:color="#ff0000" tts:fontSize="28px" xml:id="RedLarge"/>
+      <style tts:color="#ff0000" tts:fontSize="22px" tts:fontStyle="italic" xml:id="ItalicRed"/>
+      <style tts:color="#ff0000" tts:fontSize="28px" tts:fontWeight="bold" xml:id="BoldLargeRed"/>
+      <style tts:color="#ffffff" tts:fontSize="28px" tts:fontStyle="italic" xml:id="ItalicLarge"/>
+      <style tts:color="#ffffff" tts:fontSize="28px" tts:fontWeight="bold" xml:id="BoldLarge"/>
     </styling>
     <layout>
-      <region tts:displayAlign="after" tts:extent="80% 15%" tts:origin="10% 80%" xml:id="bottom"/>
-      <region tts:displayAlign="before" tts:extent="80% 15%" tts:origin="10% 10%" xml:id="top"/>
+      <region tts:displayAlign="after" tts:extent="80% 15%" tts:origin="10% 80%" tts:textAlign="center" tts:writingMode="lrtb" xml:id="bottom"/>
     </layout>
   </head>
   <body>

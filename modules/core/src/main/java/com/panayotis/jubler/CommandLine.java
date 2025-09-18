@@ -7,10 +7,12 @@
 package com.panayotis.jubler;
 
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 
 import java.io.File;
 
@@ -66,7 +68,20 @@ public final class CommandLine implements PluginContext {
         System.out.println();
         System.out.println("  --convert <input-file> <output-file>");
         System.out.println("      Convert subtitle file from one format to another");
-        System.out.println("      Format is determined by file extension (.srt, .ass, .ssa, .vtt, .ttml)");
+        System.out.print("      Format is determined by file extension (");
+
+        // Dynamically list all supported extensions
+        java.util.List<String> extensions = new java.util.ArrayList<>();
+        for (int i = 0; i < Availabilities.formats.size(); i++) {
+            String ext = Availabilities.formats.get(i).getExtension();
+            if (!extensions.contains(ext)) {
+                extensions.add("." + ext);
+            }
+        }
+        java.util.Collections.sort(extensions);
+        System.out.print(String.join(", ", extensions));
+        System.out.println(")");
+
         System.out.println();
         System.out.println("  --help, -h");
         System.out.println("      Show this help message");
@@ -74,6 +89,7 @@ public final class CommandLine implements PluginContext {
         System.out.println("Examples:");
         System.out.println("  jubler --convert subtitles.ass subtitles.srt");
         System.out.println("  jubler --convert movie.srt movie.vtt");
+        System.out.println("  jubler --convert captions.ass captions.itt");
     }
 
     /**
@@ -158,18 +174,14 @@ public final class CommandLine implements PluginContext {
      * Set the SubFile format based on the file extension.
      */
     private static void setFormatFromExtension(SubFile subFile, File file) {
-        String filename = file.getName().toLowerCase();
-
-        if (filename.endsWith(".srt")) {
-            subFile.setFormat("SubRip");
-        } else if (filename.endsWith(".ssa")) {
-            subFile.setFormat("SubStationAlpha");
-        } else if (filename.endsWith(".ass")) {
-            subFile.setFormat("AdvancedSubStation");
-        } else if (filename.endsWith(".vtt")) {
-            subFile.setFormat("WebVTT");
-        } else if (filename.endsWith(".ttml")) {
-            subFile.setFormat("TTML");
+        String filename = file.getName();
+        int lastDot = filename.lastIndexOf('.');
+        if (lastDot > 0 && lastDot < filename.length() - 1) {
+            String extension = filename.substring(lastDot + 1);
+            SubFormat format = Availabilities.formats.findFromExtension(extension);
+            if (format != null) {
+                subFile.setFormat(format);
+            }
         }
         // If no match, leave the format as detected during loading
     }
