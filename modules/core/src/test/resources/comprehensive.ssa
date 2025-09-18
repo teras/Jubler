@@ -1,0 +1,54 @@
+[Script Info]
+; Edited with Jubler subtitle editor
+Title: Comprehensive ASS Test File
+Original Script: teras
+Update Details: 
+ScriptType: v4.00
+Collisions: Normal
+PlayDepth: 0
+Timer: 100,0000
+
+[V4 Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, TertiaryColour, BackColour, Bold, Italic, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, AlphaLevel, Encoding
+Style: Default,Arial,33,&HFFFFFF,&H0000FF,&H000000,&H000000,0,0,1,2,0,2,30,30,30,255,0
+Style: Bold,Arial,33,&HFFFFFF,&H0000FF,&H000000,&H000000,-1,0,1,2,0,2,30,30,30,255,0
+Style: Italic,Arial,33,&HFFFFFF,&H0000FF,&H000000,&H000000,0,-1,1,2,0,2,30,30,30,255,0
+Style: RedText,Arial,33,&H0000FF,&H0000FF,&HFFFFFF,&H000000,0,0,1,2,0,2,30,30,30,255,0
+Style: LargeText,Arial,48,&HFFFFFF,&H0000FF,&H000000,&H000000,0,0,1,3,0,2,30,30,30,255,0
+Style: TopCenter,Arial,33,&HFFFFFF,&H0000FF,&H000000,&H000000,0,0,1,2,0,6,30,30,30,255,0
+Style: BottomLeft,Arial,33,&HFFFFFF,&H0000FF,&H000000,&H000000,0,0,1,2,0,1,30,30,30,255,0
+Style: WithShadow,Arial,33,&HFFFFFF,&H0000FF,&H000000,&H000000,0,0,1,2,4,2,30,30,30,255,0
+
+[Events]
+Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.00,0:00:04.00,Default,,0,0,0,,This is a basic subtitle line with default styling.
+Dialogue: 0,0:00:05.00,0:00:08.00,Bold,,0,0,0,,This line uses the Bold style.
+Dialogue: 0,0:00:09.00,0:00:12.00,Italic,,0,0,0,,This line uses the Italic style.
+Dialogue: 0,0:00:13.00,0:00:16.00,RedText,,0,0,0,,This line appears in red color.
+Dialogue: 0,0:00:17.00,0:00:20.00,LargeText,,0,0,0,,This is larger text.
+Dialogue: 0,0:00:21.00,0:00:24.00,TopCenter,,0,0,0,,This appears at the top center.
+Dialogue: 0,0:00:25.00,0:00:28.00,BottomLeft,,0,0,0,,This appears at bottom left.
+Dialogue: 0,0:00:29.00,0:00:32.00,WithShadow,,0,0,0,,This text has a shadow effect.
+Dialogue: 0,0:00:33.00,0:00:36.00,Default,,0,0,0,,{\b1}Inline bold text{\b0} mixed with normal text.
+Dialogue: 0,0:00:37.00,0:00:40.00,Default,,0,0,0,,{\i1}Inline italic text{\i0} and underlined text.
+Dialogue: 0,0:00:41.00,0:00:44.00,Default,,0,0,0,,{\c&H0000FF&\alpha&H00&}Red text{\c&H000000&\alpha&H00&} and {\c&H00FF00&\alpha&H00&}green text{\c&H000000&\alpha&H00&}.
+Dialogue: 0,0:00:45.00,0:00:48.00,Default,,0,0,0,,{\fs47}Large text{\fs0} and {\fs20}small text{\fs0}.
+Dialogue: 0,0:00:49.00,0:00:52.00,Default,,0,0,0,,Text with {\fad(500,500)}fade in and out effect.
+Dialogue: 0,0:00:53.00,0:00:56.00,Default,,0,0,0,,{\move(100,100,200,200)}Moving text animation.
+Dialogue: 0,0:00:57.00,0:01:00.00,Default,,0,0,0,,{\fs0\t(0,1000,}Text that grows in size.
+Dialogue: 0,0:01:01.00,0:01:04.00,Default,,0,0,0,,{\a5}Top-left aligned text.
+Dialogue: 0,0:01:05.00,0:01:08.00,Default,,0,0,0,,{\a3}Bottom-right aligned text.
+Dialogue: 0,0:01:09.00,0:01:12.00,Default,,0,0,0,,{\fn Comic Sans MS}Different font family.
+Dialogue: 0,0:01:13.00,0:01:16.00,Default,,0,0,0,,Text with {\c&HFFFFFF&\alpha&H80&}transparency effect{\c&HFFFFFF&\alpha&H00&}.
+Dialogue: 0,0:01:17.00,0:01:20.00,Default,,0,0,0,,{\bord5}Thick border{\bord} and {\shad3}shadow{\shad}.
+Dialogue: 0,0:01:21.00,0:01:24.00,Default,,0,0,0,,{\x150}Horizontally stretched{\x} text.
+Dialogue: 0,0:01:25.00,0:01:28.00,Default,,0,0,0,,{\y150}Vertically stretched{\y} text.
+Dialogue: 0,0:01:29.00,0:01:32.00,Default,,0,0,0,,{\frz45}Rotated text at 45 degrees{\frz}.
+Dialogue: 0,0:01:33.00,0:01:36.00,Default,,0,0,0,,{\be1}Blurred text effect{\be}.
+Dialogue: 0,0:01:37.00,0:01:40.00,Default,,0,0,0,,This is a line\Nwith a line break.
+Dialogue: 0,0:01:41.00,0:01:44.00,Default,,0,0,0,,{\k100}Ka{\k100}ra{\k100}o{\k100}ke timing.
+Dialogue: 0,0:01:45.00,0:01:48.00,Default,,0,0,0,,Text with colored outline.
+Dialogue: 0,0:01:49.00,0:01:52.00,Default,,0,0,0,,Colored shadow effect.
+Dialogue: 0,0:01:53.00,0:01:56.00,Default,,0,0,0,,Multiple {\i1\b1}combined{\i0\b0} formatting tags.
+Dialogue: 0,0:01:57.00,0:02:00.00,Default,,0,0,0,,{\org(960,540)\frz360\t(0,3000,\frz0)}Spinning text around center.
+Dialogue: 0,0:02:05.00,0:02:08.00,Default,,0,0,0,,Final test line with normal formatting.

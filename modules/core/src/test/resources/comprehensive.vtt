@@ -1,0 +1,95 @@
+WEBVTT
+
+00:00:01.000 --> 00:00:04.000
+This is a basic subtitle line with default styling.
+
+00:00:05.000 --> 00:00:08.000
+This line uses the Bold style.
+
+00:00:09.000 --> 00:00:12.000
+This line uses the Italic style.
+
+00:00:13.000 --> 00:00:16.000
+This line appears in red color.
+
+00:00:17.000 --> 00:00:20.000
+This is larger text.
+
+00:00:21.000 --> 00:00:24.000
+This appears at the top center.
+
+00:00:25.000 --> 00:00:28.000
+This appears at bottom left.
+
+00:00:29.000 --> 00:00:32.000
+This text has a shadow effect.
+
+00:00:33.000 --> 00:00:36.000
+<b>Inline bold text</b> mixed with normal text.
+
+00:00:37.000 --> 00:00:40.000
+<i>Inline italic text</i> and <u>underlined text</u>.
+
+00:00:41.000 --> 00:00:44.000
+Red text and green text.
+
+00:00:45.000 --> 00:00:48.000
+Large text and small text.
+
+00:00:49.000 --> 00:00:52.000
+Text with fade in and out effect.
+
+00:00:53.000 --> 00:00:56.000
+Moving text animation.
+
+00:00:57.000 --> 00:01:00.000
+Text that grows in size.
+
+00:01:01.000 --> 00:01:04.000
+Top-left aligned text.
+
+00:01:05.000 --> 00:01:08.000
+Bottom-right aligned text.
+
+00:01:09.000 --> 00:01:12.000
+Different font family.
+
+00:01:13.000 --> 00:01:16.000
+Text with transparency effect.
+
+00:01:17.000 --> 00:01:20.000
+Thick border and shadow.
+
+00:01:21.000 --> 00:01:24.000
+Horizontally stretched text.
+
+00:01:25.000 --> 00:01:28.000
+Vertically stretched text.
+
+00:01:29.000 --> 00:01:32.000
+Rotated text at 45 degrees.
+
+00:01:33.000 --> 00:01:36.000
+Blurred text effect.
+
+00:01:37.000 --> 00:01:40.000
+This is a line
+with a line break.
+
+00:01:41.000 --> 00:01:44.000
+Karaoke timing.
+
+00:01:45.000 --> 00:01:48.000
+Text with colored outline.
+
+00:01:49.000 --> 00:01:52.000
+Colored shadow effect.
+
+00:01:53.000 --> 00:01:56.000
+Multiple <ibu>combined</i/b/u> formatting tags.
+
+00:01:57.000 --> 00:02:00.000
+Spinning text around center.
+
+00:02:05.000 --> 00:02:08.000
+Final test line with normal formatting.

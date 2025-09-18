@@ -1,0 +1,40 @@
+1
+00:00:01,000 --> 00:00:04,000
+This is a simple line of text.
+
+2
+00:00:05,000 --> 00:00:08,000
+This text is bold.
+
+3
+00:00:09,000 --> 00:00:12,000
+This text is italic.
+
+4
+00:00:13,000 --> 00:00:16,000
+This text is red.
+
+5
+00:00:17,000 --> 00:00:20,000
+<b>Inline bold</b> formatting.
+
+6
+00:00:21,000 --> 00:00:24,000
+<i>Inline italic</i> formatting.
+
+7
+00:00:25,000 --> 00:00:28,000
+Red and green text.
+
+8
+00:00:29,000 --> 00:00:32,000
+Text with
+line break.
+
+9
+00:00:33,000 --> 00:00:36,000
+Larger text here.
+
+10
+00:00:37,000 --> 00:00:40,000
+Final test line.

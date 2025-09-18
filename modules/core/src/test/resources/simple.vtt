@@ -1,0 +1,32 @@
+WEBVTT
+
+00:00:01.000 --> 00:00:04.000
+This is a simple line of text.
+
+00:00:05.000 --> 00:00:08.000
+This text is bold.
+
+00:00:09.000 --> 00:00:12.000
+This text is italic.
+
+00:00:13.000 --> 00:00:16.000
+This text is red.
+
+00:00:17.000 --> 00:00:20.000
+<b>Inline bold</b> formatting.
+
+00:00:21.000 --> 00:00:24.000
+<i>Inline italic</i> formatting.
+
+00:00:25.000 --> 00:00:28.000
+Red and green text.
+
+00:00:29.000 --> 00:00:32.000
+Text with
+line break.
+
+00:00:33.000 --> 00:00:36.000
+Larger text here.
+
+00:00:37.000 --> 00:00:40.000
+Final test line.
