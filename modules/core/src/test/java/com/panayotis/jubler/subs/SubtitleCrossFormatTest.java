@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SubtitleCrossFormatTest {
 
     private static final List<String> FORMATS = Arrays.asList("ass", "srt", "ssa", "vtt", "ttml");
-    private static final int EXPECTED_SIMPLE_SUBTITLE_COUNT = 10;
+    private static final int EXPECTED_SIMPLE_SUBTITLE_COUNT = 16;
 
     @Test
     void testAllFormatsHaveCorrectSubtitleCount() throws Exception {
@@ -47,23 +47,23 @@ class SubtitleCrossFormatTest {
 
         // SRT: Should have numbered entries and time markers
         File srtFile = getResourceFile("simple.srt");
-        String srtContent = Files.readString(srtFile.toPath());
+        String srtContent = new String(Files.readAllBytes(srtFile.toPath()), StandardCharsets.UTF_8);
         assertTrue(srtContent.contains("-->"), "SRT should contain time separators");
         assertTrue(srtContent.trim().startsWith("1"), "SRT should start with subtitle number 1");
 
         // VTT: Should start with WEBVTT header
         File vttFile = getResourceFile("simple.vtt");
-        String vttContent = Files.readString(vttFile.toPath());
+        String vttContent = new String(Files.readAllBytes(vttFile.toPath()), StandardCharsets.UTF_8);
         assertTrue(vttContent.startsWith("WEBVTT"), "VTT should start with WEBVTT header");
 
         // ASS: Should have dialogue entries
         File assFile = getResourceFile("simple.ass");
-        String assContent = Files.readString(assFile.toPath());
+        String assContent = new String(Files.readAllBytes(assFile.toPath()), StandardCharsets.UTF_8);
         assertTrue(assContent.contains("Dialogue:"), "ASS should contain Dialogue entries");
 
         // TTML: Should be valid XML
         File ttmlFile = getResourceFile("simple.ttml");
-        String ttmlContent = Files.readString(ttmlFile.toPath());
+        String ttmlContent = new String(Files.readAllBytes(ttmlFile.toPath()), StandardCharsets.UTF_8);
         assertTrue(ttmlContent.startsWith("<?xml"), "TTML should start with XML declaration");
         assertTrue(ttmlContent.contains("ttml"), "TTML should contain ttml namespace");
     }
@@ -72,31 +72,31 @@ class SubtitleCrossFormatTest {
      * Count subtitles in a file based on its format.
      */
     private int countSubtitles(File file, String format) throws Exception {
-        String content = Files.readString(file.toPath());
+        String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
 
         switch (format.toLowerCase()) {
             case "srt":
                 // Count numbered entries (lines that are just numbers)
-                return (int) content.lines()
+                return (int) Arrays.stream(content.split("\r?\n"))
                     .filter(line -> line.trim().matches("^\\d+$"))
                     .count();
 
             case "vtt":
                 // Count time markers (lines containing -->)
-                return (int) content.lines()
+                return (int) Arrays.stream(content.split("\r?\n"))
                     .filter(line -> line.contains("-->"))
                     .count();
 
             case "ass":
             case "ssa":
                 // Count Dialogue lines
-                return (int) content.lines()
+                return (int) Arrays.stream(content.split("\r?\n"))
                     .filter(line -> line.startsWith("Dialogue:"))
                     .count();
 
             case "ttml":
                 // Count <p> elements
-                return (int) content.lines()
+                return (int) Arrays.stream(content.split("\r?\n"))
                     .filter(line -> line.trim().startsWith("<p "))
                     .count();
 

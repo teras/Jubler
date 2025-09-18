@@ -73,4 +73,5 @@ public class SubRip extends SimpleStyledTextSubFormat {
     protected boolean isEventCompact() {
         return false;
     }
+
 }

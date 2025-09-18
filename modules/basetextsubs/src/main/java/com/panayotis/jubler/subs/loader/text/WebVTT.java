@@ -80,7 +80,13 @@ public class WebVTT extends SimpleStyledTextSubFormat {
      * Enhanced SubEntry creation for WebVTT with cue settings and special tag support
      */
     protected SubEntry makeWebVTTSubEntry(Time start, Time finish, String input, String cueId, String settings) {
-        SubEntry entry = new SubEntry(start, finish, input);
+        // Convert <br/> and <br> tags to newlines for internal representation
+        String processedInput = input.replace("<br/>", "\n").replace("<br />", "\n").replace("<br>", "\n");
+
+        // Normalize whitespace: collapse multiple spaces into single spaces, but preserve intentional spacing
+        processedInput = normalizeWebVTTSpaces(processedInput);
+
+        SubEntry entry = new SubEntry(start, finish, processedInput);
         entry.setStyle(subtitle_list.getStyleList().get(0));
 
         // Process WebVTT-specific features
@@ -90,6 +96,37 @@ public class WebVTT extends SimpleStyledTextSubFormat {
         parseSubText(entry);
 
         return entry;
+    }
+
+    /**
+     * Normalize WebVTT spaces according to spec:
+     * - Multiple consecutive spaces should be collapsed to single space
+     * - Leading and trailing spaces on lines should be preserved only if meaningful
+     * - Spaces around tags should be handled carefully
+     */
+    private String normalizeWebVTTSpaces(String text) {
+        if (text == null) return null;
+
+        // Split into lines to handle each line separately
+        String[] lines = text.split("\n", -1);
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 0; i < lines.length; i++) {
+            String line = lines[i];
+
+            // Collapse multiple consecutive spaces to single space, but be careful around tags
+            line = line.replaceAll("  +", " ");
+
+            // Add the processed line
+            result.append(line);
+
+            // Add newlines back (except for the last line)
+            if (i < lines.length - 1) {
+                result.append("\n");
+            }
+        }
+
+        return result.toString();
     }
 
     /**
@@ -121,23 +158,19 @@ public class WebVTT extends SimpleStyledTextSubFormat {
 
                     switch (key.toLowerCase()) {
                         case "position":
-                            // Could be applied as positioning info (not directly supported in Jubler)
-                            DEBUG.debug("WebVTT position setting: " + value);
+                            applyPositionSetting(entry, value);
                             break;
                         case "align":
                             applyAlignSetting(entry, value);
                             break;
                         case "size":
-                            // Could be applied as size info (not directly supported in Jubler)
-                            DEBUG.debug("WebVTT size setting: " + value);
+                            applySizeSetting(entry, value);
                             break;
                         case "line":
-                            // Could be applied as line positioning (not directly supported in Jubler)
-                            DEBUG.debug("WebVTT line setting: " + value);
+                            applyLineSetting(entry, value);
                             break;
                         case "vertical":
-                            // Could be applied as text direction (not directly supported in Jubler)
-                            DEBUG.debug("WebVTT vertical setting: " + value);
+                            applyVerticalSetting(entry, value);
                             break;
                     }
                 }
@@ -171,6 +204,110 @@ public class WebVTT extends SimpleStyledTextSubFormat {
 
         // Apply as style override
         entry.getStyle().set(StyleType.DIRECTION, direction);
+    }
+
+    /**
+     * Apply WebVTT position setting to SubEntry
+     * Position specifies horizontal position as percentage (0-100%)
+     */
+    private void applyPositionSetting(SubEntry entry, String positionValue) {
+        try {
+            // Parse percentage value (e.g., "50%")
+            String numericValue = positionValue.replace("%", "").trim();
+            float position = Float.parseFloat(numericValue);
+
+            // Map position percentage to Jubler's left/right margins
+            // WebVTT position 0% = left, 50% = center, 100% = right
+            if (position <= 25) {
+                // Left positioning
+                entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.BOTTOMLEFT);
+                entry.getStyle().set(StyleType.LEFTMARGIN, 10);
+            } else if (position >= 75) {
+                // Right positioning
+                entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.BOTTOMRIGHT);
+                entry.getStyle().set(StyleType.RIGHTMARGIN, 10);
+            } else {
+                // Center positioning
+                entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.BOTTOM);
+            }
+        } catch (NumberFormatException e) {
+            DEBUG.debug("Error parsing WebVTT position: " + positionValue);
+        }
+    }
+
+    /**
+     * Apply WebVTT size setting to SubEntry
+     * Size specifies the width of the cue as percentage
+     */
+    private void applySizeSetting(SubEntry entry, String sizeValue) {
+        try {
+            // Parse percentage value (e.g., "80%")
+            String numericValue = sizeValue.replace("%", "").trim();
+            float size = Float.parseFloat(numericValue);
+
+            // Map size to margins - smaller size = larger margins
+            int margin = Math.max(0, (int)((100 - size) / 2));
+            entry.getStyle().set(StyleType.LEFTMARGIN, margin);
+            entry.getStyle().set(StyleType.RIGHTMARGIN, margin);
+        } catch (NumberFormatException e) {
+            DEBUG.debug("Error parsing WebVTT size: " + sizeValue);
+        }
+    }
+
+    /**
+     * Apply WebVTT line setting to SubEntry
+     * Line specifies vertical position (line number or percentage)
+     */
+    private void applyLineSetting(SubEntry entry, String lineValue) {
+        try {
+            if (lineValue.contains("%")) {
+                // Percentage-based positioning
+                String numericValue = lineValue.replace("%", "").trim();
+                float linePercent = Float.parseFloat(numericValue);
+
+                // Map line percentage to Jubler's vertical positioning
+                if (linePercent <= 25) {
+                    // Top positioning
+                    entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.TOP);
+                } else if (linePercent >= 75) {
+                    // Bottom positioning (default)
+                    entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.BOTTOM);
+                } else {
+                    // Middle positioning
+                    entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.CENTER);
+                }
+            } else {
+                // Line number-based positioning
+                int lineNumber = Integer.parseInt(lineValue);
+                // Map line numbers to vertical margins
+                int verticalMargin = Math.max(0, lineNumber * 5);
+                entry.getStyle().set(StyleType.VERTICAL, verticalMargin);
+            }
+        } catch (NumberFormatException e) {
+            DEBUG.debug("Error parsing WebVTT line: " + lineValue);
+        }
+    }
+
+    /**
+     * Apply WebVTT vertical setting to SubEntry
+     * Vertical specifies text orientation (rl for right-to-left, lr for left-to-right)
+     */
+    private void applyVerticalSetting(SubEntry entry, String verticalValue) {
+        switch (verticalValue.toLowerCase()) {
+            case "rl":
+                // Right-to-left text - use rotation
+                entry.getStyle().set(StyleType.ANGLE, 90.0f);
+                entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.RIGHT);
+                break;
+            case "lr":
+                // Left-to-right text - use rotation
+                entry.getStyle().set(StyleType.ANGLE, -90.0f);
+                entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.LEFT);
+                break;
+            default:
+                DEBUG.debug("Unknown WebVTT vertical value: " + verticalValue);
+                break;
+        }
     }
 
     /**
@@ -265,7 +402,10 @@ public class WebVTT extends SimpleStyledTextSubFormat {
         str.append(" --> ");
         str.append(sub.getFinishTime().getSeconds('.'));
         str.append("\n");
-        str.append(rebuildSubText(sub));
+        // Convert newlines to <br/> tags for WebVTT format
+        String text = rebuildSubText(sub);
+        text = text.replace("\n", "<br/>");
+        str.append(text);
         str.append("\n\n");
     }
 
@@ -293,6 +433,7 @@ public class WebVTT extends SimpleStyledTextSubFormat {
     protected boolean isEventCompact() {
         return true;
     }
+
 
     @Override
     protected Pattern getTestPattern() {

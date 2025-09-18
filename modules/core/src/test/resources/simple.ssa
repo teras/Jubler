@@ -14,6 +14,12 @@ Style: Default,Arial,29,&HFFFFFF,&H0000FF,&H000000,&H000000,0,0,1,2,0,2,20,20,20
 Style: Bold,Arial,29,&HFFFFFF,&H0000FF,&H000000,&H000000,-1,0,1,2,0,2,20,20,20,255,0
 Style: Italic,Arial,29,&HFFFFFF,&H0000FF,&H000000,&H000000,0,-1,1,2,0,2,20,20,20,255,0
 Style: RedText,Arial,29,&H0000FF,&H0000FF,&HFFFFFF,&H000000,0,0,1,2,0,2,20,20,20,255,0
+Style: BoldRed,Arial,29,&H0000FF,&H0000FF,&HFFFFFF,&H000000,-1,0,1,2,0,2,20,20,20,255,0
+Style: ItalicRed,Arial,29,&H0000FF,&H0000FF,&HFFFFFF,&H000000,0,-1,1,2,0,2,20,20,20,255,0
+Style: BoldLargeRed,Arial,36,&H0000FF,&H0000FF,&HFFFFFF,&H000000,-1,0,1,2,0,2,20,20,20,255,0
+Style: RedLarge,Arial,36,&H0000FF,&H0000FF,&HFFFFFF,&H000000,0,0,1,2,0,2,20,20,20,255,0
+Style: ItalicLarge,Arial,36,&HFFFFFF,&H0000FF,&H000000,&H000000,0,-1,1,2,0,2,20,20,20,255,0
+Style: BoldLarge,Arial,36,&HFFFFFF,&H0000FF,&H000000,&H000000,-1,0,1,2,0,2,20,20,20,255,0
 
 [Events]
 Format: Marked, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -21,9 +27,16 @@ Dialogue: 0,0:00:01.00,0:00:04.00,Default,,0,0,0,,This is a simple line of text.
 Dialogue: 0,0:00:05.00,0:00:08.00,Bold,,0,0,0,,This text is bold.
 Dialogue: 0,0:00:09.00,0:00:12.00,Italic,,0,0,0,,This text is italic.
 Dialogue: 0,0:00:13.00,0:00:16.00,RedText,,0,0,0,,This text is red.
+Dialogue: 0,0:00:41.00,0:00:44.00,BoldRed,,0,0,0,,Bold red text.
+Dialogue: 0,0:00:44.50,0:00:47.50,RedLarge,,0,0,0,,Large red text.
+Dialogue: 0,0:00:48.00,0:00:51.00,ItalicRed,,0,0,0,,Italic red text.
+Dialogue: 0,0:00:52.00,0:00:55.00,BoldLargeRed,,0,0,0,,Bold large red text.
+Dialogue: 0,0:00:56.00,0:00:59.00,ItalicLarge,,0,0,0,,Italic large text.
+Dialogue: 0,0:01:00.00,0:01:03.00,BoldLarge,,0,0,0,,Bold large text.
 Dialogue: 0,0:00:17.00,0:00:20.00,Default,,0,0,0,,{\b1}Inline bold{\b0} formatting.
 Dialogue: 0,0:00:21.00,0:00:24.00,Default,,0,0,0,,{\i1}Inline italic{\i0} formatting.
 Dialogue: 0,0:00:25.00,0:00:28.00,Default,,0,0,0,,{\c&HFF0000&\alpha&H00&}Red{\c&H000000&\alpha&H00&} and {\c&H00FF00&\alpha&H00&}green{\c&H000000&\alpha&H00&} text.
 Dialogue: 0,0:00:29.00,0:00:32.00,Default,,0,0,0,,Text with\Nline break.
 Dialogue: 0,0:00:33.00,0:00:36.00,Default,,0,0,0,,{\fs35}Larger text{\fs0} here.
-Dialogue: 0,0:00:37.00,0:00:40.00,Default,,0,0,0,,Final test line.
+Dialogue: 0,0:00:37.00,0:00:40.00,Default,,0,0,0,,{\fs23\c&HFF0000&\alpha&H00&}Big red{\fs0\c&H000000&\alpha&H00&} and {\fs17\c&H0000FF&\alpha&H00&}small blue{\fs0\c&H000000&\alpha&H00&} text.
+Dialogue: 0,0:01:04.00,0:01:07.00,Default,,0,0,0,,Final test line.

@@ -4,19 +4,19 @@ This is a basic subtitle line with default styling.
 
 2
 00:00:05,000 --> 00:00:08,000
-This line uses the Bold style.
+<b>This line uses the Bold style.</b>
 
 3
 00:00:09,000 --> 00:00:12,000
-This line uses the Italic style.
+<i>This line uses the Italic style.</i>
 
 4
 00:00:13,000 --> 00:00:16,000
-This line appears in red color.
+<font color="#ff0000">This line appears in red color.</font>
 
 5
 00:00:17,000 --> 00:00:20,000
-This is larger text.
+<font size="37">This is larger text.</font>
 
 6
 00:00:21,000 --> 00:00:24,000
@@ -40,11 +40,11 @@ This text has a shadow effect.
 
 11
 00:00:41,000 --> 00:00:44,000
-Red text and green text.
+<font color="#0000FF">Red text</font> and <font color="#00FF00">green text</font>.
 
 12
 00:00:45,000 --> 00:00:48,000
-Large text and small text.
+<font size="36">Large text</font> and <font size="15">small text</font>.
 
 13
 00:00:49,000 --> 00:00:52,000
@@ -68,7 +68,7 @@ Bottom-right aligned text.
 
 18
 00:01:09,000 --> 00:01:12,000
-Different font family.
+<font face="Comic Sans MS">Different font family.</font>
 
 19
 00:01:13,000 --> 00:01:16,000

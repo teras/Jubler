@@ -4,37 +4,65 @@ This is a simple line of text.
 
 2
 00:00:05,000 --> 00:00:08,000
-This text is bold.
+<b>This text is bold.</b>
 
 3
 00:00:09,000 --> 00:00:12,000
-This text is italic.
+<i>This text is italic.</i>
 
 4
 00:00:13,000 --> 00:00:16,000
-This text is red.
+<font color="#ff0000">This text is red.</font>
 
 5
+00:00:41,000 --> 00:00:44,000
+<font color="#ff0000"><b>Bold red text.</b></font>
+
+6
+00:00:44,500 --> 00:00:47,500
+<font color="#ff0000" size="28">Large red text.</font>
+
+7
+00:00:48,000 --> 00:00:51,000
+<font color="#ff0000"><i>Italic red text.</i></font>
+
+8
+00:00:52,000 --> 00:00:55,000
+<font color="#ff0000" size="28"><b>Bold large red text.</b></font>
+
+9
+00:00:56,000 --> 00:00:59,000
+<font size="28"><i>Italic large text.</i></font>
+
+10
+00:01:00,000 --> 00:01:03,000
+<font size="28"><b>Bold large text.</b></font>
+
+11
 00:00:17,000 --> 00:00:20,000
 <b>Inline bold</b> formatting.
 
-6
+12
 00:00:21,000 --> 00:00:24,000
 <i>Inline italic</i> formatting.
 
-7
+13
 00:00:25,000 --> 00:00:28,000
-Red and green text.
+<font color="#FF0000">Red</font> and <font color="#00FF00">green</font> text.
 
-8
+14
 00:00:29,000 --> 00:00:32,000
 Text with
 line break.
 
-9
+15
 00:00:33,000 --> 00:00:36,000
-Larger text here.
+<font size="27">Larger text</font> here.
 
-10
+16
 00:00:37,000 --> 00:00:40,000
+<font color="#FF0000" size="18">Big red</font> and <font color="#0000FF" size="13">small blue</font> text.
+
+17
+00:01:04,000 --> 00:01:07,000
 Final test line.

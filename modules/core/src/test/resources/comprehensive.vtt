@@ -4,16 +4,16 @@ WEBVTT
 This is a basic subtitle line with default styling.
 
 00:00:05.000 --> 00:00:08.000
-This line uses the Bold style.
+<b>This line uses the Bold style.</b>
 
 00:00:09.000 --> 00:00:12.000
-This line uses the Italic style.
+<i>This line uses the Italic style.</i>
 
 00:00:13.000 --> 00:00:16.000
-This line appears in red color.
+<font color="#ff0000">This line appears in red color.</font>
 
 00:00:17.000 --> 00:00:20.000
-This is larger text.
+<font size="37">This is larger text.</font>
 
 00:00:21.000 --> 00:00:24.000
 This appears at the top center.
@@ -31,10 +31,10 @@ This text has a shadow effect.
 <i>Inline italic text</i> and <u>underlined text</u>.
 
 00:00:41.000 --> 00:00:44.000
-Red text and green text.
+<font color="#0000FF">Red text</font> and <font color="#00FF00">green text</font>.
 
 00:00:45.000 --> 00:00:48.000
-Large text and small text.
+<font size="36">Large text</font> and <font size="15">small text</font>.
 
 00:00:49.000 --> 00:00:52.000
 Text with fade in and out effect.
@@ -52,7 +52,7 @@ Top-left aligned text.
 Bottom-right aligned text.
 
 00:01:09.000 --> 00:01:12.000
-Different font family.
+<font face="Comic Sans MS">Different font family.</font>
 
 00:01:13.000 --> 00:01:16.000
 Text with transparency effect.
@@ -73,8 +73,7 @@ Rotated text at 45 degrees.
 Blurred text effect.
 
 00:01:37.000 --> 00:01:40.000
-This is a line
-with a line break.
+This is a line<br/>with a line break.
 
 00:01:41.000 --> 00:01:44.000
 Karaoke timing.

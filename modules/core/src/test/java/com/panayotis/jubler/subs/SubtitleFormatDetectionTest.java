@@ -10,6 +10,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +42,7 @@ class SubtitleFormatDetectionTest {
 
         // Verify the file has the expected number of lines (basic structure check)
         try {
-            String content = java.nio.file.Files.readString(testFile.toPath());
+            String content = new String(Files.readAllBytes(testFile.toPath()), StandardCharsets.UTF_8);
             assertNotNull(content, "File content should not be null: " + filename);
             assertTrue(content.length() > 0, "File content should not be empty: " + filename);
 
