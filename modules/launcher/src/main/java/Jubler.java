@@ -16,8 +16,8 @@ public class Jubler {
     public static void main(String[] args) {
         /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        if (args.length > 0 && args[0].startsWith("--"))
-            initApplication("com.panayotis.jubler.CommandLine", args, false);  // Skip GUI for test mode
+        if (args.length > 0)
+            initApplication("com.panayotis.jubler.cmdline.CommandLine", args, false);  // Skip GUI for test mode
         else
             Splash.launch(() -> initApplication("com.panayotis.jubler.Launcher", args, true));
     }
