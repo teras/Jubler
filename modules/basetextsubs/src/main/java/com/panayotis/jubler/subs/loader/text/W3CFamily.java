@@ -1603,9 +1603,9 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
     // Implementation of AbstractGenericTextSubFormat methods
 
     @Override
-    protected java.util.Collection<SubEntry> loadSubtitles(String input) {
+    protected java.util.Collection<SubEntry> loadSubtitles(String input, boolean debug) {
         try {
-            Subtitles subs = parse(input, 25.0f, null);
+            Subtitles subs = parse(input, 25.0f, null, debug);
             if (subs != null) {
                 java.util.List<SubEntry> entries = new java.util.ArrayList<>();
                 for (int i = 0; i < subs.size(); i++) {

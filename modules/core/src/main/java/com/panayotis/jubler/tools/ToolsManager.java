@@ -26,7 +26,7 @@ public class ToolsManager implements PluginContext {
     private static RealTimeTool recoder, shifter;
 
     static {
-        PluginManager.manager.callPluginListeners(new ToolsManager());
+        PluginManager.getManager().callPluginListeners(new ToolsManager());
     }
 
     private ToolsManager() {

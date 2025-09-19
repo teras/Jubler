@@ -4,16 +4,18 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader;
+package com.panayotis.jubler.subs.loader;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.SubEntry;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,14 +37,15 @@ public abstract class AbstractGenericTextSubFormat extends SubFormat {
     /* Saving functions */
     protected abstract void appendSubEntry(SubEntry sub, StringBuilder str);
 
-    public Subtitles parse(String input, float FPS, File f) {
+    public Subtitles parse(String input, float FPS, File f, boolean debug) {
         try {
             if (!isSubtitleCompatible(input))
                 return null;    // Not valid - test pattern does not match
-            DEBUG.debug("Found file " + getExtendedName());
+            if (debug)
+                DEBUG.debug("Found file " + getExtendedName());
             subtitle_list = new Subtitles();
             input = initLoader(input);
-            for (SubEntry entry : loadSubtitles(input))
+            for (SubEntry entry : loadSubtitles(input, debug))
                 subtitle_list.add(entry);
             if (subtitle_list.isEmpty())
                 return null;
@@ -123,5 +126,5 @@ public abstract class AbstractGenericTextSubFormat extends SubFormat {
 
     protected abstract boolean isSubtitleCompatible(String input);
 
-    protected abstract Collection<SubEntry> loadSubtitles(String input);
+    protected abstract Collection<SubEntry> loadSubtitles(String input, boolean debug);
 }

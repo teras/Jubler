@@ -21,7 +21,7 @@ public class AvailExternals extends ArrayList<ExtProgram> implements PluginConte
         this.type = type;
         this.localtype = localtype;
         this.iconname = iconname;
-        PluginManager.manager.callPluginListeners(this);
+        PluginManager.getManager().callPluginListeners(this);
     }
 
     public String nameAt(int i) {

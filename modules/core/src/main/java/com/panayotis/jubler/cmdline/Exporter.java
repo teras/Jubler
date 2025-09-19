@@ -28,10 +28,11 @@ public class Exporter {
      * @param subtitles  the Subtitles object to save
      * @param outputFile the file to save subtitles to (format determined by extension)
      */
-    public static void saveSubtitles(Subtitles subtitles, File outputFile) {
+    public static void saveSubtitles(Subtitles subtitles, File outputFile, boolean debug) {
         initializePlugins();
         try {
-            System.out.println("Saving subtitle file: " + outputFile.getPath());
+            if (debug)
+                System.out.println("Saving subtitle file: " + outputFile.getPath());
 
             // Create SubFile for output using the same mechanism as JubFrame
             SubFile outputSubFile = new SubFile(outputFile, SubFile.EXTENSION_GIVEN);
@@ -42,7 +43,8 @@ public class Exporter {
             // Save the file
             String result = FileCommunicator.save(subtitles, outputSubFile, null);
             if (result == null) {
-                System.out.println("Successfully saved " + subtitles.size() + " subtitles to " + outputFile.getPath());
+                if (debug)
+                    System.out.println("Successfully saved " + subtitles.size() + " subtitles to " + outputFile.getPath());
             } else {
                 System.err.println("ERROR: Could not save file " + outputFile.getPath() + ": " + result);
                 System.exit(1);
@@ -60,12 +62,12 @@ public class Exporter {
      * @param subtitles      the Subtitles object to save
      * @param outputFilePath the path to save subtitles to
      */
-    public static void saveSubtitles(Subtitles subtitles, String outputFilePath) {
+    public static void saveSubtitles(Subtitles subtitles, String outputFilePath, boolean debug) {
         if (subtitles == null) {
             System.err.println("ERROR: No subtitles loaded. Use --load first");
             System.exit(1);
         }
-        saveSubtitles(subtitles, new File(outputFilePath));
+        saveSubtitles(subtitles, new File(outputFilePath), debug);
     }
 
     /**

@@ -26,29 +26,34 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 public class FileCommunicator {
 
-    private static String load(SubFile sfile, String enc, String msg, boolean strict) {
+    private static String load(SubFile sfile, String enc, String msg, boolean strict, boolean debug) {
         String res = loadFromFile(sfile.getSaveFile(), enc, strict);
         if (res != null) {
             sfile.setEncoding(enc);
-            DEBUG.debug(msg);
+            if (debug)
+                DEBUG.debug(msg);
         }
         return res;
     }
 
     public static String load(SubFile sfile) {
+        return load(sfile, true);
+    }
+
+    public static String load(SubFile sfile, boolean debug) {
         String res;
         String enc;
 
         /* First check already known data */
         enc = sfile.getEncoding();
-        res = load(sfile, enc, "Found defined encoding " + enc, false);
+        res = load(sfile, enc, "Found defined encoding " + enc, false, debug);
         if (res != null)
             return res;
 
         /* Then check if encoding is tagged on the file */
         enc = ByteOrderFactory.getEncoding(sfile.getSaveFile());
         if (enc != null) {
-            res = load(sfile, enc, "Found tagged encoding " + enc, false);
+            res = load(sfile, enc, "Found tagged encoding " + enc, false, debug);
             if (res != null)
                 return res;
         }
@@ -56,14 +61,14 @@ public class FileCommunicator {
         /* Then guess and be strict */
         for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
             enc = SubFile.getDefaultEncoding(i);
-            res = load(sfile, enc, "Found strict encoding " + enc, true);
+            res = load(sfile, enc, "Found strict encoding " + enc, true, debug);
             if (res != null)
                 return res;
         }
         /* Then be relaxed */
         for (int i = 0; i < SubFile.getDefaultEncodingSize(); i++) {
             enc = SubFile.getDefaultEncoding(i);
-            res = load(sfile, enc, "Found relaxed encoding " + enc, false);
+            res = load(sfile, enc, "Found relaxed encoding " + enc, false, debug);
             if (res != null)
                 return res;
         }

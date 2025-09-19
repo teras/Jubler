@@ -14,6 +14,10 @@ public interface PluginCollection {
 
     String getCollectionName();
 
+    default boolean isGUI() {
+        return true;
+    }
+
     default int priority() {
         return 0;
     }

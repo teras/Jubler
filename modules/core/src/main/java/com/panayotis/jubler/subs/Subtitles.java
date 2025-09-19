@@ -87,7 +87,7 @@ public class Subtitles extends AbstractTableModel {
         }
     }
 
-    private Subtitles loadByFileExtension(SubFile sfile, String data) {
+    private Subtitles loadByFileExtension(SubFile sfile, String data, boolean debug) {
         Subtitles load = null;
         try {
             File file = sfile.getSaveFile();
@@ -96,7 +96,7 @@ public class Subtitles extends AbstractTableModel {
             if (foundFormat != null) {
                 SubFormat format = foundFormat.newInstance();
                 format.updateFormat(sfile);
-                load = format.parse(data, sfile.getFPS(), file);
+                load = format.parse(data, sfile.getFPS(), file, debug);
                 if (load != null)
                     sfile.setFormat(format);//end if (load != null)
             }
@@ -105,19 +105,19 @@ public class Subtitles extends AbstractTableModel {
         return load;
     }//end private Subtitles loadByFileExtension()
 
-    private Subtitles loadBySelectedHandler(SubFile sfile, String data) {
+    private Subtitles loadBySelectedHandler(SubFile sfile, String data, boolean debug) {
         Subtitles load = null;
         try {
             File file = sfile.getSaveFile();
             SubFormat format = sfile.getFormat();
             format.updateFormat(sfile);
-            load = format.parse(data, sfile.getFPS(), file);
+            load = format.parse(data, sfile.getFPS(), file, debug);
         } catch (Exception ignored) {
         }
         return load;
     }//end private Subtitles loadByFileExtension()
 
-    private Subtitles loadByPattern(SubFile sfile, String data) {
+    private Subtitles loadByPattern(SubFile sfile, String data, boolean debug) {
         Subtitles load = null;
         SubFormat format = null;
         AvailSubFormats formatlist = new AvailSubFormats();
@@ -126,7 +126,7 @@ public class Subtitles extends AbstractTableModel {
             while (load == null && formatlist.hasMoreElements()) {
                 format = formatlist.nextElement().newInstance();
                 format.updateFormat(sfile);
-                load = format.parse(data, sfile.getFPS(), file);
+                load = format.parse(data, sfile.getFPS(), file, debug);
                 if (load != null && load.size() < 1)
                     load = null;//end if (load != null && load.size() < 1)
             }//end while (load == null && formatlist.hasMoreElements())
@@ -140,13 +140,13 @@ public class Subtitles extends AbstractTableModel {
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file
      * FPS the frames per second */
-    public void populate(SubFile sfile, String data) {
+    public void populate(SubFile sfile, String data, boolean debug) {
         Subtitles load;
-        load = this.loadByFileExtension(sfile, data);
+        load = this.loadByFileExtension(sfile, data, debug);
         if (load == null)
-            load = this.loadBySelectedHandler(sfile, data);
+            load = this.loadBySelectedHandler(sfile, data, debug);
         if (load == null)
-            load = this.loadByPattern(sfile, data);
+            load = this.loadByPattern(sfile, data, debug);
         if (load != null) {
             appendSubs(load, true);
             attribs = new SubAttribs(load.attribs);

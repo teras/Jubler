@@ -113,7 +113,7 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
     }
 
     @Override
-    protected Collection<SubEntry> loadSubtitles(String input) {
+    protected Collection<SubEntry> loadSubtitles(String input, boolean debug) {
         Collection<SubEntry> entries = new ArrayList<>();
         try {
             document = docBuilder.parse(new ByteArrayInputStream(input.getBytes("UTF-8")));

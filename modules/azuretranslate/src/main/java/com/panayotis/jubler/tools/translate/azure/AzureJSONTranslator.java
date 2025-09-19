@@ -157,4 +157,9 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
     public String getCollectionName() {
         return __("Azure translate");
     }
+
+    @Override
+    public boolean isGUI() {
+        return false;
+    }
 }

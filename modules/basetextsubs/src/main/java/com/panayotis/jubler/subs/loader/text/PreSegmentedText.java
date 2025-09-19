@@ -44,7 +44,7 @@ public class PreSegmentedText extends AbstractGenericTextSubFormat {
     }
 
     @Override
-    protected Collection<SubEntry> loadSubtitles(String input) {
+    protected Collection<SubEntry> loadSubtitles(String input, boolean debug) {
         boolean newline_found = false;
         Collection<SubEntry> entries = new ArrayList<>();
         StringBuilder line = new StringBuilder();

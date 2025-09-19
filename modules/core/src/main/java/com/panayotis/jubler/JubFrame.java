@@ -174,7 +174,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         StaticJubler.putWindowPosition(this);
 
-        PluginManager.manager.callPluginListeners(this);
+        PluginManager.getManager().callPluginListeners(this);
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})
@@ -2114,7 +2114,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             JIDialog.error(this, __("Could not load processed subtitles."), __("Error while loading file"));
             return;
         }
-        newsubs.populate(newsubs.getSubFile(), data);
+        newsubs.populate(newsubs.getSubFile(), data, true);
         if (newsubs.isEmpty()) {
             JIDialog.error(this, __("File not recognized!"), __("Error while loading file"));
             return;
@@ -2160,7 +2160,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         }
 
         /* Convert file into subtitle data */
-        newsubs.populate(newsubs.getSubFile(), data);
+        newsubs.populate(newsubs.getSubFile(), data, true);
         if (newsubs.isEmpty()) {
             JIDialog.error(this, __("File not recognized!"), __("Error while loading file"));
             return null;

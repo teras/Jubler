@@ -19,7 +19,7 @@ import java.io.File;
 public final class Launcher implements PluginContext {
     public void start(String[] args) {
         JublerTheme.init();
-        PluginManager.manager.callPluginListeners(this);
+        PluginManager.getManager().callPluginListeners(this);
 
         /* Load all startup files in a separate process */
         LoaderThread loader = new LoaderThread();

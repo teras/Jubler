@@ -6,11 +6,14 @@
 
 package com.panayotis.jubler.cmdline;
 
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 
 import java.io.File;
+
+import static com.panayotis.jubler.cmdline.CommandLine.initializePlugins;
 
 /**
  * Handles importing/loading of subtitle files from various formats.
@@ -24,29 +27,32 @@ public class Importer {
      * @param inputFile the file to load subtitles from
      * @return the loaded Subtitles object
      */
-    public static Subtitles loadSubtitles(File inputFile) {
+    public static Subtitles loadSubtitles(File inputFile, boolean debug) {
+        initializePlugins();
         try {
-            System.out.println("Loading subtitle file: " + inputFile.getPath());
+            if (debug)
+                DEBUG.debug("Loading subtitle file: " + inputFile.getPath());
 
             // Create SubFile using the same mechanism as JubFrame
             SubFile inputSubFile = new SubFile(inputFile, SubFile.EXTENSION_GIVEN);
             Subtitles subtitles = new Subtitles(inputSubFile);
 
             // Load the file content
-            String data = FileCommunicator.load(inputSubFile);
+            String data = FileCommunicator.load(inputSubFile, debug);
             if (data == null) {
                 System.err.println("ERROR: Could not load file. Possibly an encoding error.");
                 System.exit(1);
             }
 
             // Parse the subtitle data
-            subtitles.populate(subtitles.getSubFile(), data);
+            subtitles.populate(subtitles.getSubFile(), data, debug);
             if (subtitles.isEmpty()) {
                 System.err.println("ERROR: File not recognized!");
                 System.exit(1);
             }
 
-            System.out.println("Loaded " + subtitles.size() + " subtitles from " + inputFile.getPath());
+            if (debug)
+                System.out.println("Loaded " + subtitles.size() + " subtitles from " + inputFile.getPath());
             return subtitles;
 
         } catch (Exception e) {
@@ -62,7 +68,7 @@ public class Importer {
      * @param inputFilePath the path to the file to load subtitles from
      * @return the loaded Subtitles object
      */
-    public static Subtitles loadSubtitles(String inputFilePath) {
-        return loadSubtitles(new File(inputFilePath));
+    public static Subtitles loadSubtitles(String inputFilePath, boolean debug) {
+        return loadSubtitles(new File(inputFilePath), debug);
     }
 }

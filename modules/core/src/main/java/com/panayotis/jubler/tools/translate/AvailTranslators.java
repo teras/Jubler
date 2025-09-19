@@ -15,7 +15,7 @@ public class AvailTranslators extends ArrayList<Translator> implements PluginCon
 
     @SuppressWarnings("LeakingThisInConstructor")
     public AvailTranslators() {
-        PluginManager.manager.callPluginListeners(this);
+        PluginManager.getManager().callPluginListeners(this);
     }
 
     public String[] getNamesList() {

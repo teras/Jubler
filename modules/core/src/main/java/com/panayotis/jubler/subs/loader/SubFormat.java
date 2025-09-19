@@ -46,7 +46,7 @@ public abstract class SubFormat implements PluginItem<AvailSubFormats> {
     }
 
     /* convert a string into subtitles */
-    public abstract Subtitles parse(String input, float FPS, File f);
+    public abstract Subtitles parse(String input, float FPS, File f, boolean debug);
 
     public abstract boolean supportsFPS();
 

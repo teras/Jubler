@@ -25,7 +25,7 @@ public class AvailSubFormats implements PluginContext {
     public AvailSubFormats() {
         current = 0;
         Formats = new ArrayList<>();
-        PluginManager.manager.callPluginListeners(this);
+        PluginManager.getManager().callPluginListeners(this);
         add(pl_txt);
     }
 

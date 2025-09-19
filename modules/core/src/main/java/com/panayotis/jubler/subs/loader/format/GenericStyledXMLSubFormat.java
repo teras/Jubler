@@ -68,8 +68,8 @@ public abstract class GenericStyledXMLSubFormat extends AbstractXMLSubFormat {
     /* Style processing implementation */
 
     @Override
-    protected Collection<SubEntry> loadSubtitles(String input) {
-        Collection<SubEntry> entries = super.loadSubtitles(input);
+    protected Collection<SubEntry> loadSubtitles(String input, boolean debug) {
+        Collection<SubEntry> entries = super.loadSubtitles(input, debug);
 
         // After loading subtitles, parse styles
         if (document != null) {

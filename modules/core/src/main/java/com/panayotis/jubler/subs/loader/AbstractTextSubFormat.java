@@ -28,7 +28,7 @@ public abstract class AbstractTextSubFormat extends AbstractGenericTextSubFormat
     }
 
     @Override
-    protected Collection<SubEntry> loadSubtitles(String input) {
+    protected Collection<SubEntry> loadSubtitles(String input, boolean debug) {
         Collection<SubEntry> entries = new ArrayList<>();
         Matcher m = getPattern().matcher(input);
         while (m.find()) {

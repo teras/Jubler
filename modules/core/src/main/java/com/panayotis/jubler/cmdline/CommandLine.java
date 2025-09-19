@@ -20,13 +20,19 @@ import java.util.List;
 public final class CommandLine implements PluginContext {
 
     private static boolean pluginsInitialized = false;
-    private Subtitles subtitles = null;
+    private static Subtitles subtitles = null;
+    private static boolean debug = true;
+
+    private static void configDebug(String it) {
+        debug = it != null && (it.equalsIgnoreCase("true") || it.equalsIgnoreCase("1") || it.equalsIgnoreCase("yes"));
+    }
 
     public void start(String[] args) {
         List<String> remaining = new Args("jubler", "Subtitle Editor")
                 .defhelp("--help", "-h")
-                .def("--load", it -> subtitles = Importer.loadSubtitles(it), "Load subtitle file")
-                .def("--save", it -> Exporter.saveSubtitles(subtitles, it), "Save subtitle file")
+                .def("--load", it -> subtitles = Importer.loadSubtitles(it, debug), "Load subtitle file")
+                .def("--save", it -> Exporter.saveSubtitles(subtitles, it, debug), "Save subtitle file")
+                .def("--debug", CommandLine::configDebug, "Enable debugging output")
                 .alias("--save", "-s")
                 .alias("--load", "-l")
                 .parse(args);
@@ -43,8 +49,7 @@ public final class CommandLine implements PluginContext {
      */
     static void initializePlugins() {
         if (!pluginsInitialized) {
-            CommandLine commandLine = new CommandLine();
-            PluginManager.manager.callPluginListeners(commandLine);
+            PluginManager.getManager(true, debug).callPluginListeners(new CommandLine());
             pluginsInitialized = true;
         }
     }

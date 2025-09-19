@@ -18,6 +18,7 @@ import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.time.Time;
 
 import org.w3c.dom.*;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -93,7 +94,7 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
     // Core parsing implementation
 
     @Override
-    public Subtitles parse(String input, float FPS, File f) {
+    public Subtitles parse(String input, float FPS, File f, boolean debug) {
         try {
             if (!isSubtitleCompatible(input)) {
                 return null;
@@ -443,18 +444,31 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
      */
     protected Color parseNamedColor(String colorName) {
         switch (colorName) {
-            case "black": return Color.BLACK;
-            case "white": return Color.WHITE;
-            case "red": return Color.RED;
-            case "green": return Color.GREEN;
-            case "blue": return Color.BLUE;
-            case "yellow": return Color.YELLOW;
-            case "cyan": return Color.CYAN;
-            case "magenta": return Color.MAGENTA;
-            case "gray": case "grey": return Color.GRAY;
-            case "orange": return Color.ORANGE;
-            case "pink": return Color.PINK;
-            default: return null;
+            case "black":
+                return Color.BLACK;
+            case "white":
+                return Color.WHITE;
+            case "red":
+                return Color.RED;
+            case "green":
+                return Color.GREEN;
+            case "blue":
+                return Color.BLUE;
+            case "yellow":
+                return Color.YELLOW;
+            case "cyan":
+                return Color.CYAN;
+            case "magenta":
+                return Color.MAGENTA;
+            case "gray":
+            case "grey":
+                return Color.GRAY;
+            case "orange":
+                return Color.ORANGE;
+            case "pink":
+                return Color.PINK;
+            default:
+                return null;
         }
     }
 
@@ -513,10 +527,14 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
         }
 
         switch (alignStr.toLowerCase()) {
-            case "left": return SubStyle.Direction.BOTTOMLEFT;
-            case "center": return SubStyle.Direction.BOTTOM;
-            case "right": return SubStyle.Direction.BOTTOMRIGHT;
-            default: return SubStyle.Direction.BOTTOM;
+            case "left":
+                return SubStyle.Direction.BOTTOMLEFT;
+            case "center":
+                return SubStyle.Direction.BOTTOM;
+            case "right":
+                return SubStyle.Direction.BOTTOMRIGHT;
+            default:
+                return SubStyle.Direction.BOTTOM;
         }
     }
 
@@ -606,7 +624,7 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
 
             // Write to file
             java.io.BufferedWriter writer = new java.io.BufferedWriter(
-                new java.io.OutputStreamWriter(new java.io.FileOutputStream(outfile), ENCODING));
+                    new java.io.OutputStreamWriter(new java.io.FileOutputStream(outfile), ENCODING));
             writer.write(stringWriter.toString());
             writer.close();
 
@@ -622,9 +640,9 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
     protected boolean isSubtitleCompatible(String input) {
         // Basic XML validation - check for XML declaration or root element
         return input.trim().startsWith("<?xml") ||
-               input.contains("<tt") ||
-               input.contains("<dfxp") ||
-               input.contains("xmlns");
+                input.contains("<tt") ||
+                input.contains("<dfxp") ||
+                input.contains("xmlns");
     }
 
     // Placeholder implementations for methods from AbstractGenericTextSubFormat
