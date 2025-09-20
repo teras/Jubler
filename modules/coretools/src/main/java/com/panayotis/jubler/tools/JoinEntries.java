@@ -54,7 +54,16 @@ public class JoinEntries extends TimeBaseTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Join selected subtitle entries into a single entry, combining text and extending duration (format: jointext)";
+        return "Joins consecutive subtitle entries into a single entry, combining text and extending duration.\n" +
+               "This tool merges multiple subtitle entries into one by concatenating their text content with line breaks " +
+               "and adjusting the timing to span from the start of the first entry to the end of the last entry. " +
+               "Useful for combining related dialogue or reducing the number of subtitle entries for better flow.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name";
     }
 
     @Override

@@ -76,12 +76,12 @@ public class Translate extends TimeBaseTool {
 
     @Override
     public String getCommandOptionName() {
-        return "translate";
+        return null;
     }
 
     @Override
     public String getCommandLineHelp() {
-        return "Translate subtitle text using online translation services (format: translate:from_language:to_language:translator)";
+        return null;
     }
 
     @Override

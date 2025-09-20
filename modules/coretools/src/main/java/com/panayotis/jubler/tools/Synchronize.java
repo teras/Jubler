@@ -114,7 +114,19 @@ public class Synchronize extends OneByOneTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Synchronize subtitles with another subtitle file by copying timing and/or text (format: sync:model_file:copy_time:copy_text:offset)";
+        return "Synchronize subtitles with another subtitle file by copying timing and/or text.\n" +
+               "This tool aligns the current subtitle file with a reference subtitle file, " +
+               "allowing you to copy precise timing information, text content, or both from the source file.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name\n" +
+               "  sourcesub=filepath - Source subtitle file to synchronize with\n" +
+               "  offset=seconds - Offset in subtitle indices (positive or negative)\n" +
+               "  timestamp=true/false - Copy timing information from source\n" +
+               "  text=true/false - Copy text content from source";
     }
 
     @Override

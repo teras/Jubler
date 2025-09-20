@@ -69,7 +69,17 @@ public class Styler extends OneByOneTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Apply a specific style to selected subtitle entries (style:style_name)";
+        return "Apply specified style to subtitles for formatting control.\n" +
+               "This tool assigns a style definition to selected subtitle entries, controlling their visual appearance " +
+               "including font, size, color, position, and other formatting attributes. Styles are particularly " +
+               "important for advanced subtitle formats like SubStation Alpha (SSA/ASS) that support rich formatting.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name\n" +
+               "  style=style_name - Style name to apply to selected subtitles";
     }
 
     @Override

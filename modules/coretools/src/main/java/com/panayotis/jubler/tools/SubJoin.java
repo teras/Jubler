@@ -93,7 +93,13 @@ public class SubJoin extends Tool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Join multiple subtitle files (format: join:file1.srt:file2.srt:...)";
+        return "Joins subtitle files by appending one file to another with time adjustment.\n" +
+               "This tool combines two subtitle files into a single file, automatically adjusting the timing " +
+               "of the appended file so it begins after the current file ends, with an optional gap between them. " +
+               "Useful for creating multi-part subtitle files or combining episodes into a single subtitle track.\n" +
+               "Parameters:\n" +
+               "  gap=time - Gap in seconds (decimal) between the two files\n" +
+               "  append=filename - Subtitle file to append to the current file";
     }
 
     @Override

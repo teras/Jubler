@@ -215,9 +215,9 @@ public abstract class TimeBaseTool extends Tool {
 
         // Apply the tool's affect method to the filtered subtitles
         if (affect(affectedEntries)) {
-            SubStyle style = parseStyleParam(params, getSubtitles(null), CommonTags.alsomark.name());
-            if (style != null)
-                affectedEntries.forEach(entry -> entry.setStyle(style));
+            int mark = parseMarkParam(params, CommonTags.alsomark.name());
+            if (mark >= 0)
+                affectedEntries.forEach(entry -> entry.setMark(mark));
             if (debug)
                 DEBUG.debug("Tool execution completed successfully");
             return null; // Success

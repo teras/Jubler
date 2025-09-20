@@ -51,7 +51,18 @@ public class Marker extends OneByOneTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Mark selected subtitle entries with a color for visual organization (format: mark:color_index)";
+        return "Mark subtitles with specified color tags for logical grouping and batch processing.\n" +
+               "This tool applies color marks to subtitle entries as a practical way to categorize and group " +
+               "related subtitles together. Marked subtitles can then be easily selected for batch operations " +
+               "using other tools with the 'bymark' parameter. The marking system supports multiple colors " +
+               "to create different logical groups for complex subtitle processing workflows.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name\n" +
+               "  mark=color_index - Color index to mark subtitles with (0-5)";
     }
 
     @Override

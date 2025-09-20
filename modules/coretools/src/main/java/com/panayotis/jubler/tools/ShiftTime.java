@@ -82,7 +82,17 @@ public class ShiftTime extends RealTimeTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Shift subtitle timing by adding or subtracting a fixed time offset (format: shift:sign:hours:minutes:seconds:milliseconds)";
+        return "Shift subtitle timing by adding or subtracting a fixed time offset to all selected subtitles.\n" +
+               "This tool moves all subtitle entries forward or backward in time by the specified amount, " +
+               "maintaining the relative timing between subtitles. Useful for correcting synchronization issues " +
+               "when the entire subtitle track is consistently early or late compared to the video.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name\n" +
+               "  delta=seconds - Time offset in seconds (decimal, positive or negative)";
     }
 
     @Override

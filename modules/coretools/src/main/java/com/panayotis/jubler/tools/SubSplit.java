@@ -93,7 +93,14 @@ public class SubSplit extends Tool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Split subtitle file at specified time (format: split:HH:MM:SS.mmm)";
+        return "Splits subtitle files at specified time into two separate files.\n" +
+               "This tool divides a single subtitle file into two parts at a given time point, " +
+               "with the first part containing all subtitles before the split time and the second part " +
+               "containing all subtitles from the split time onward (with timing adjusted to start from zero). " +
+               "Useful for creating separate subtitle files for multi-part videos or extracting specific segments.\n" +
+               "Parameters:\n" +
+               "  at=time - Time in seconds (decimal) where to split the file\n" +
+               "  target=filename - Output filename for the second part";
     }
 
     @Override

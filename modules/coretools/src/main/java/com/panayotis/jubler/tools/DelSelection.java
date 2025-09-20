@@ -49,7 +49,16 @@ public class DelSelection extends OneByOneTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Delete selected subtitle entries from the subtitle file (format: delete)";
+        return "Deletes selected subtitles from the subtitle file based on time range, mark color, or style.\n" +
+               "This tool permanently removes subtitle entries that match the specified criteria. " +
+               "Use with caution as deleted subtitles cannot be recovered. Useful for removing unwanted content, " +
+               "cleaning up subtitle files, or extracting specific segments by deleting everything else.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name";
     }
 
     @Override

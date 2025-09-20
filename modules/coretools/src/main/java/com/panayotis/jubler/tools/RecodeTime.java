@@ -122,7 +122,20 @@ public class RecodeTime extends RealTimeTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Recode subtitle timing by applying a scaling factor and center point transformation (format: recode:factor:center)";
+        return "Recode subtitle timing by applying scaling and center point transformation to correct frame rate differences.\n" +
+               "This tool is essential when converting subtitles between different video frame rates (e.g., PAL to NTSC) " +
+               "or when fixing timing issues that occur linearly throughout the subtitle file. You can either specify " +
+               "source and target frame rates for automatic calculation, or manually define a scaling factor and center point.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name\n" +
+               "  center=seconds - Center point for scaling in seconds (decimal)\n" +
+               "  factor=number - Scaling factor (1.0 = no change, >1.0 = stretch, <1.0 = compress)\n" +
+               "  fromfps=number - Source frame rate\n" +
+               "  tofps=number - Target frame rate";
     }
 
     @Override

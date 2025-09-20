@@ -58,7 +58,17 @@ public class SplitEntries extends OneByOneTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Split subtitle entries with multiple lines into separate entries, distributing timing proportionally (format: splittext)";
+        return "Splits subtitle entries with multiple lines into separate entries, distributing timing proportionally.\n" +
+               "This tool takes subtitle entries that contain multiple lines of text (separated by line breaks) and " +
+               "creates individual subtitle entries for each line. The original timing duration is divided equally " +
+               "among the new entries, so each line gets its proportional share of the display time. " +
+               "Useful for improving readability or meeting subtitle guidelines that prefer single-line entries.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name";
     }
 
     @Override

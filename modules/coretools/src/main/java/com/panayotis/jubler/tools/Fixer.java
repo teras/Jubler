@@ -207,7 +207,22 @@ public class Fixer extends OneByOneTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Fix subtitle timing inconsistencies by adjusting duration, gaps, and overlaps (format: fix:min_duration:max_duration:gap:sort)";
+        return "Fix subtitle timing inconsistencies by adjusting duration, gaps, and overlaps to improve readability.\n" +
+               "This comprehensive tool addresses common subtitle timing problems including too-short or too-long display times, " +
+               "overlapping subtitles, and insufficient gaps between entries. It can enforce reading speed limits using " +
+               "characters-per-second constraints and automatically resolve temporal conflicts using various strategies.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name\n" +
+               "  mintime=seconds - Minimum subtitle duration in seconds (decimal)\n" +
+               "  maxtime=seconds - Maximum subtitle duration in seconds (decimal)\n" +
+               "  mincps=number - Minimum characters per second rate\n" +
+               "  maxcps=number - Maximum characters per second rate\n" +
+               "  overlap=strategy - Overlap fixing strategy (distribute, divide, shift)\n" +
+               "  gap=seconds - Minimum gap between subtitles in seconds (decimal)";
     }
 
     @Override

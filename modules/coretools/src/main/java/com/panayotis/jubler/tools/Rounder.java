@@ -72,7 +72,17 @@ public class Rounder extends OneByOneTool {
 
     @Override
     public String getCommandLineHelp() {
-        return "Round subtitle timing values to specified precision (format: round:precision_level)";
+        return "Round subtitle timing values to specified precision to reduce file size and improve compatibility.\n" +
+               "This tool rounds both start and end times of subtitle entries to a specified number of decimal places, " +
+               "eliminating unnecessary precision that may cause issues with some players or formats. " +
+               "Useful for cleaning up timing data imported from other tools or ensuring consistent precision.\n" +
+               "Parameters:\n" +
+               "  start=time - Start time in seconds (decimal)\n" +
+               "  end=time - End time in seconds (decimal)\n" +
+               "  alsomark=color - Mark affected subtitles with color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bymark=color - Select by mark color (none, pink, yellow, cyan, orange, lightgreen)\n" +
+               "  bystyle=style - Select by specific style name\n" +
+               "  decimals=number - Number of decimal places for rounding (0-3)";
     }
 
     @Override
