@@ -340,6 +340,15 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="TotalLinesT">
                     </Component>
+                    <Component class="javax.swing.JLabel" name="MinSubSizeL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Minimum subtitle length&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinSubSizeT">
+                    </Component>
                     <Component class="javax.swing.JLabel" name="MaxSubSizeL">
                       <Properties>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -358,6 +367,24 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="MaxLinesT">
                     </Component>
+                    <Component class="javax.swing.JLabel" name="MinLinesL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Minimum lines per subtitle&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinLinesT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinCharPerLineL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Minimum characters per line&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinCharPerLineT">
+                    </Component>
                     <Component class="javax.swing.JLabel" name="MaxLengthLineL">
                       <Properties>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -366,6 +393,15 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="MaxLengthLineT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinCPSL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Minimum subtitle characters per second&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinCPST">
                     </Component>
                     <Component class="javax.swing.JLabel" name="MaxCPSL">
                       <Properties>
@@ -376,14 +412,59 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="MaxCPST">
                     </Component>
-                    <Component class="javax.swing.JLabel" name="MinCPSL">
+                    <Component class="javax.swing.JLabel" name="MinCPML">
                       <Properties>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="__(&quot;Minimum subtitle characters per second&quot;)" type="code"/>
+                          <Connection code="__(&quot;Minimum characters per minute&quot;)" type="code"/>
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="MinCPST">
+                    <Component class="javax.swing.JLabel" name="MinCPMT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxCPML">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Maximum characters per minute&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxCPMT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinFillPercentL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Minimum fill percentage&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinFillPercentT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxFillPercentL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Maximum fill percentage&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxFillPercentT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinDurationL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Minimum duration&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MinDurationT">
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxDurationL">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="__(&quot;Maximum duration&quot;)" type="code"/>
+                        </Property>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="MaxDurationT">
                     </Component>
                   </SubComponents>
                 </Container>

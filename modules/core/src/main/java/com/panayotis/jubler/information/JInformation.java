@@ -48,11 +48,23 @@ public class JInformation extends JDialog {
         TotalSubMetrics m = parent.getSubtitles().getTotalMetrics();
         TotalSubSizeT.setText(Integer.toString(m.totallength));
         TotalLinesT.setText(Integer.toString(m.totallines));
+        MinSubSizeT.setText(Integer.toString(m.minlength == Integer.MAX_VALUE ? 0 : m.minlength));
         MaxSubSizeT.setText(Integer.toString(m.maxlength));
         MaxLinesT.setText(Integer.toString(m.maxlines));
         MaxLengthLineT.setText(Integer.toString(m.maxlinelength));
         MaxCPST.setText(Float.toString(m.maxcps));
         MinCPST.setText(Float.toString(m.mincps));
+
+        // Quality Control tab data
+        MinLinesT.setText(Integer.toString(m.minlines == Integer.MAX_VALUE ? 0 : m.minlines));
+        MinCharPerLineT.setText(Integer.toString(m.minlinelength == Integer.MAX_VALUE ? 0 : m.minlinelength));
+        MaxCharPerLineT.setText(Integer.toString(m.maxlinelength));
+        MinCPMT.setText(Float.toString(m.mincpm == Float.MAX_VALUE ? 0 : m.mincpm));
+        MaxCPMT.setText(Float.toString(m.maxcpm));
+        MinFillPercentT.setText(Integer.toString(m.minfillpercent == Integer.MAX_VALUE ? 0 : m.minfillpercent) + "%");
+        MaxFillPercentT.setText(Integer.toString(m.maxfillpercent) + "%");
+        MinDurationT.setText(Float.toString(m.minduration == Float.MAX_VALUE ? 0 : m.minduration) + "s");
+        MaxDurationT.setText(Float.toString(m.maxduration) + "s");
 
         VSelectorP.add(parent.getMediaFile().videoselector, BorderLayout.CENTER);
 
@@ -110,6 +122,26 @@ public class JInformation extends JDialog {
         MaxCPST = new javax.swing.JLabel();
         MinCPSL = new javax.swing.JLabel();
         MinCPST = new javax.swing.JLabel();
+        MinSubSizeL = new javax.swing.JLabel();
+        MinSubSizeT = new javax.swing.JLabel();
+        MinLinesL = new javax.swing.JLabel();
+        MinLinesT = new javax.swing.JLabel();
+        MinCharPerLineL = new javax.swing.JLabel();
+        MinCharPerLineT = new javax.swing.JLabel();
+        MaxCharPerLineL = new javax.swing.JLabel();
+        MaxCharPerLineT = new javax.swing.JLabel();
+        MinCPML = new javax.swing.JLabel();
+        MinCPMT = new javax.swing.JLabel();
+        MaxCPML = new javax.swing.JLabel();
+        MaxCPMT = new javax.swing.JLabel();
+        MinFillPercentL = new javax.swing.JLabel();
+        MinFillPercentT = new javax.swing.JLabel();
+        MaxFillPercentL = new javax.swing.JLabel();
+        MaxFillPercentT = new javax.swing.JLabel();
+        MinDurationL = new javax.swing.JLabel();
+        MinDurationT = new javax.swing.JLabel();
+        MaxDurationL = new javax.swing.JLabel();
+        MaxDurationT = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         OKB = new javax.swing.JButton();
 
@@ -221,25 +253,61 @@ public class JInformation extends JDialog {
         jPanel8.add(TotalLinesL);
         jPanel8.add(TotalLinesT);
 
+        MinSubSizeL.setText(__("Minimum subtitle length"));
+        jPanel8.add(MinSubSizeL);
+        jPanel8.add(MinSubSizeT);
+
         MaxSubSizeL.setText(__("Maximum subtitle length"));
         jPanel8.add(MaxSubSizeL);
         jPanel8.add(MaxSubSizeT);
+
+        MinLinesL.setText(__("Minimum subtitle lines"));
+        jPanel8.add(MinLinesL);
+        jPanel8.add(MinLinesT);
 
         MaxLinesL.setText(__("Maximum subtitle lines"));
         jPanel8.add(MaxLinesL);
         jPanel8.add(MaxLinesT);
 
+        MinCharPerLineL.setText(__("Minimum characters per line"));
+        jPanel8.add(MinCharPerLineL);
+        jPanel8.add(MinCharPerLineT);
+
         MaxLengthLineL.setText(__("Maximum characters per line"));
         jPanel8.add(MaxLengthLineL);
         jPanel8.add(MaxLengthLineT);
+
+        MinCPSL.setText(__("Minimum subtitle characters per second"));
+        jPanel8.add(MinCPSL);
+        jPanel8.add(MinCPST);
 
         MaxCPSL.setText(__("Maximum subtitle characters per second"));
         jPanel8.add(MaxCPSL);
         jPanel8.add(MaxCPST);
 
-        MinCPSL.setText(__("Minimum subtitle characters per second"));
-        jPanel8.add(MinCPSL);
-        jPanel8.add(MinCPST);
+        MinCPML.setText(__("Minimum characters per minute"));
+        jPanel8.add(MinCPML);
+        jPanel8.add(MinCPMT);
+
+        MaxCPML.setText(__("Maximum characters per minute"));
+        jPanel8.add(MaxCPML);
+        jPanel8.add(MaxCPMT);
+
+        MinFillPercentL.setText(__("Minimum fill percentage"));
+        jPanel8.add(MinFillPercentL);
+        jPanel8.add(MinFillPercentT);
+
+        MaxFillPercentL.setText(__("Maximum fill percentage"));
+        jPanel8.add(MaxFillPercentL);
+        jPanel8.add(MaxFillPercentT);
+
+        MinDurationL.setText(__("Minimum duration"));
+        jPanel8.add(MinDurationL);
+        jPanel8.add(MinDurationT);
+
+        MaxDurationL.setText(__("Maximum duration"));
+        jPanel8.add(MaxDurationL);
+        jPanel8.add(MaxDurationT);
 
         jPanel9.add(jPanel8, java.awt.BorderLayout.NORTH);
 
@@ -315,5 +383,25 @@ public class JInformation extends JDialog {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel MaxCharPerLineL;
+    private javax.swing.JLabel MaxCharPerLineT;
+    private javax.swing.JLabel MaxCPML;
+    private javax.swing.JLabel MaxCPMT;
+    private javax.swing.JLabel MaxDurationL;
+    private javax.swing.JLabel MaxDurationT;
+    private javax.swing.JLabel MaxFillPercentL;
+    private javax.swing.JLabel MaxFillPercentT;
+    private javax.swing.JLabel MinCharPerLineL;
+    private javax.swing.JLabel MinCharPerLineT;
+    private javax.swing.JLabel MinCPML;
+    private javax.swing.JLabel MinCPMT;
+    private javax.swing.JLabel MinDurationL;
+    private javax.swing.JLabel MinDurationT;
+    private javax.swing.JLabel MinFillPercentL;
+    private javax.swing.JLabel MinFillPercentT;
+    private javax.swing.JLabel MinLinesL;
+    private javax.swing.JLabel MinLinesT;
+    private javax.swing.JLabel MinSubSizeL;
+    private javax.swing.JLabel MinSubSizeT;
     // End of variables declaration//GEN-END:variables
 }

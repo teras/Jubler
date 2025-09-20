@@ -287,8 +287,12 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
     /* Calculate maximum character length & maximum lines */
     public TotalSubMetrics getTotalMetrics() {
         TotalSubMetrics max = new TotalSubMetrics();
-        for (int i = 0; i < size(); i++)
-            max.updateToMaxValues(elementAt(i).getMetrics());
+        for (int i = 0; i < size(); i++) {
+            SubEntry entry = elementAt(i);
+            max.updateToMaxValues(entry.getMetrics());
+            float duration = (float) entry.getDurationTime().toSeconds();
+            max.updateDuration(duration);
+        }
         return max;
     }
 
