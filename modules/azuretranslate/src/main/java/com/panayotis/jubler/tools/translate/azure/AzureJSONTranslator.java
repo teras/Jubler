@@ -159,7 +159,12 @@ public class AzureJSONTranslator extends SimpleWebTranslator implements PluginCo
     }
 
     @Override
-    public boolean isGUI() {
-        return false;
+    public String getCommandOptionName() {
+        return null; // Hide from command line tools
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Translate subtitles using Azure translation service (format: azure:from=lang:to=lang:key=apikey:region=region)";
     }
 }

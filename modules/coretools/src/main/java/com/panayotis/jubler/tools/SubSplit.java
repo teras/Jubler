@@ -4,18 +4,23 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.StaticJubler;
+import com.panayotis.jubler.cmdline.CommandLine;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.JubFrame;
+
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.undo.UndoEntry;
+
 import javax.swing.JComponent;
+import java.util.*;
 
 public class SubSplit extends Tool {
 
@@ -79,5 +84,40 @@ public class SubSplit extends Tool {
             return true;
         } else
             return false;
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "split";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Split subtitle file at specified time (format: split:HH:MM:SS.mmm)";
+    }
+
+    @Override
+    public Collection<String> gatherToolTags() {
+        return Arrays.asList("at", "target");
+    }
+
+    @Override
+    public String executeParams(Map<String, String> params, boolean debug) {
+        try {
+            double at = parseDoubleParameter(params, "at");
+            if (Double.isNaN(at))
+                return "Invalid at parameter: " + params.get("at");
+            Subtitles source = CommandLine.getSubtitles(null);
+            Subtitles target = new Subtitles();
+            List<SubEntry> selfSubs = new ArrayList<>();
+            source.forEach(it -> {
+                if (it.getStartTime().toSeconds() < at) selfSubs.add(it);
+                else target.add(it);
+            });
+            source.setSublist(selfSubs);
+            return null;
+        } catch (FilterException e) {
+            return e.getMessage();
+        }
     }
 }

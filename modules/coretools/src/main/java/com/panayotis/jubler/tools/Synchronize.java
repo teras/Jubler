@@ -4,14 +4,18 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
-import java.util.List;
+import java.util.*;
+
+import com.panayotis.jubler.cmdline.CommandLine;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+
 import javax.swing.JComponent;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class Synchronize extends OneByOneTool {
@@ -101,5 +105,39 @@ public class Synchronize extends OneByOneTool {
     @Override
     protected JComponent constructToolVisuals() {
         return new SynchronizeGUI();
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "sync";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Synchronize subtitles with another subtitle file by copying timing and/or text (format: sync:model_file:copy_time:copy_text:offset)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Arrays.asList("sourcesub", "offset", "timestamp", "text");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        String sourcesub = args.get("sourcesub");
+        if (sourcesub == null)
+            return "Missing source subtitle file";
+        model = CommandLine.getSubtitles(sourcesub);
+        if (model == null)
+            return "Unable to locate sourcesub " + sourcesub;
+        target = CommandLine.getSubtitles(null);
+        copytime = Boolean.TRUE.equals(parseBooleanParameter(args, "timestamp"));
+        copytext = Boolean.TRUE.equals(parseBooleanParameter(args, "text"));
+        offset = 0;
+        try {
+            offset = parseIntParameter(args, "offset");
+        } catch (FilterException ignored) {
+        }
+        return null;
     }
 }

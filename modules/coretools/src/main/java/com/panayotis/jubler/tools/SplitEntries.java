@@ -4,15 +4,17 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
-import java.util.ArrayList;
+import java.util.*;
+
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.util.StringTokenizer;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class SplitEntries extends OneByOneTool {
@@ -47,5 +49,25 @@ public class SplitEntries extends OneByOneTool {
         sub.setText(newsubs.elementAt(0).getText());
         newsubs.remove(0);
         subtitles.insertSubs(sub, newsubs);
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "splittext";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Split subtitle entries with multiple lines into separate entries, distributing timing proportionally (format: splittext)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        return null;
     }
 }

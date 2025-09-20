@@ -10,7 +10,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.replace.JReplaceList;
 import com.panayotis.jubler.tools.replace.ReplaceModel;
 
-import java.util.ArrayList;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JComponent;
@@ -19,8 +19,8 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 public class JRegExpReplace extends RealTimeTool {
 
-    private final ArrayList<Pattern> patterns;
-    private final ArrayList<String> replacements;
+    private final List<Pattern> patterns;
+    private final List<String> replacements;
     private final JReplaceList rlist;
 
     public JRegExpReplace() {
@@ -65,4 +65,34 @@ public class JRegExpReplace extends RealTimeTool {
         return rlist;
     }
 
+    @Override
+    public String getCommandOptionName() {
+        return "regex";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Perform regular expression-based find and replace operations on subtitle text (format: regex:pattern:replacement:flags)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Arrays.asList("pattern", "replace", "esc");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        String pattern = args.get("pattern");
+        String replacement = args.get("replace");
+        String esc = args.get("esc");
+        if (pattern == null)
+            return "Missing pattern";
+        if (replacement == null)
+            return "Missing replacement";
+        patterns.clear();
+        patterns.add(Pattern.compile(pattern));
+        replacements.clear();
+        replacements.add(replacement);
+        return null;
+    }
 }

@@ -4,12 +4,17 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
-import javax.swing.JComponent;
+import com.panayotis.jubler.tools.ToolMenu.Location;
+
+import javax.swing.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class Rounder extends OneByOneTool {
@@ -58,5 +63,35 @@ public class Rounder extends OneByOneTool {
         round *= precise;
         round = Math.round(round);
         t.setTime(round / precise);
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "round";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Round subtitle timing values to specified precision (format: round:precision_level)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Collections.singleton("decimals");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        try {
+            int decimals = parseIntParameter(args, "decimals");
+            if (decimals < 0)
+                return "Invalid decimals parameter, must be >= 0";
+            if (decimals > 3)
+                return "Invalid decimals parameter, must be <= 3";
+            precise = (int) Math.pow(10, decimals);
+            return null;
+        } catch (FilterException e) {
+            return e.getMessage();
+        }
     }
 }

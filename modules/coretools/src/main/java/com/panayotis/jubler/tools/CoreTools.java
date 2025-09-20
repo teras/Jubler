@@ -39,9 +39,4 @@ public class CoreTools implements PluginCollection {
     public String getCollectionName() {
         return "Basic tools";
     }
-
-    @Override
-    public boolean isGUI() {
-        return false;
-    }
 }

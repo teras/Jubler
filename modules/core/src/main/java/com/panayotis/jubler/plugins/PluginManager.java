@@ -34,11 +34,11 @@ public class PluginManager {
         pluginCollections.sort(Comparator.comparing(PluginCollection::priority));
         int countItems = 0;
         for (PluginCollection p : pluginCollections) {
-            if (terminalOnly && p.isGUI())
-                continue;
             if (debug)
                 DEBUG.debug("Plugin " + p.getCollectionName() + " registered");
             for (PluginItem<?> item : p.getPluginItems()) {
+                if (terminalOnly && item.getCommandOptionName() == null)
+                    continue;
                 List<Class<?>> types = GenericsUtils.getInterfaceTypeArguments(PluginItem.class, item.getClass());
                 if (!types.isEmpty()) {
                     pluginList.computeIfAbsent(types.get(0), it -> new ArrayList<>()).add(item);
@@ -62,5 +62,42 @@ public class PluginManager {
                 } catch (Exception t) {
                     DEBUG.debug(t);
                 }
+    }
+
+    /**
+     * Find a plugin by its command option name.
+     * @param commandName The command option name to search for
+     * @return The matching plugin item, or null if not found
+     */
+    public PluginItem<?> findPluginByCommandName(String commandName) {
+        if (commandName == null || commandName.isEmpty()) {
+            return null;
+        }
+
+        for (ArrayList<PluginItem<?>> list : pluginList.values()) {
+            for (PluginItem<?> item : list) {
+                if (commandName.equals(item.getCommandOptionName())) {
+                    return item;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get all available plugins with their command option names.
+     * @return List of plugins that have non-null and non-empty command option names
+     */
+    public java.util.List<PluginItem<?>> getAvailableCommandLinePlugins() {
+        java.util.List<PluginItem<?>> result = new java.util.ArrayList<>();
+        for (ArrayList<PluginItem<?>> list : pluginList.values()) {
+            for (PluginItem<?> item : list) {
+                String commandName = item.getCommandOptionName();
+                if (commandName != null && !commandName.isEmpty()) {
+                    result.add(item);
+                }
+            }
+        }
+        return result;
     }
 }

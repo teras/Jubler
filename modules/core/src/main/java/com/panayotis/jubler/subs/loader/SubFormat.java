@@ -97,4 +97,9 @@ public abstract class SubFormat implements PluginItem<AvailSubFormats> {
                 return format;
         return null;
     }
+
+    @Override
+    public String getCommandOptionName() {
+        return "";
+    }
 }

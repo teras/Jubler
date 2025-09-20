@@ -44,9 +44,4 @@ public class TextSubPlugin implements PluginCollection {
     public String getCollectionName() {
         return "Text subtitles";
     }
-
-    @Override
-    public boolean isGUI() {
-        return false;
-    }
 }

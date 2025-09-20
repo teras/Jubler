@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
@@ -16,7 +16,10 @@ import com.panayotis.jubler.tools.translate.Translator;
 import javax.swing.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.panayotis.jubler.JubFrame.currentWindow;
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -69,5 +72,25 @@ public class Translate extends TimeBaseTool {
     @Override
     protected JComponent constructToolVisuals() {
         return new TranslateGUI(this);
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "translate";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Translate subtitle text using online translation services (format: translate:from_language:to_language:translator)";
+    }
+
+    @Override
+    protected Collection<String> gatherExtendedTimedTags() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        return null;
     }
 }

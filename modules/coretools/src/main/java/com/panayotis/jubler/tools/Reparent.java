@@ -4,12 +4,18 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
+
 import static com.panayotis.jubler.i18n.I18N.__;
+
 import com.panayotis.jubler.os.JIDialog;
+
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import javax.swing.JComponent;
 
 public class Reparent extends Tool {
@@ -73,5 +79,25 @@ public class Reparent extends Tool {
     @Override
     protected JComponent constructVisuals() {
         return new ReparentGUI();
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return null;
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return null;
+    }
+
+    @Override
+    public Collection<String> gatherToolTags() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public String executeParams(Map<String, String> params, boolean debug) {
+        return null;
     }
 }

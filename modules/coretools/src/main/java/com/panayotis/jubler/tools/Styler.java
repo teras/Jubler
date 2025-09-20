@@ -4,15 +4,20 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
-import static com.panayotis.jubler.i18n.I18N.__;
+import com.panayotis.jubler.cmdline.CommandLine;
 import com.panayotis.jubler.subs.SubEntry;
-
 import com.panayotis.jubler.subs.style.SubStyle;
 import com.panayotis.jubler.tools.ToolMenu.Location;
-import javax.swing.JComponent;
+
+import javax.swing.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 public class Styler extends OneByOneTool {
 
@@ -55,5 +60,28 @@ public class Styler extends OneByOneTool {
     @Override
     protected JComponent constructToolVisuals() {
         return new StylerGUI();
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "style";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Apply a specific style to selected subtitle entries (style:style_name)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Collections.singleton("style");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        style = parseStyleParam(args, CommandLine.getSubtitles(null), "style");
+        if (style == null)
+            return "Unable to find style named " + args.get("style");
+        return null;
     }
 }

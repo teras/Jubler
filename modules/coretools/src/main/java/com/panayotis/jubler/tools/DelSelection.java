@@ -4,11 +4,16 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class DelSelection extends OneByOneTool {
@@ -35,5 +40,25 @@ public class DelSelection extends OneByOneTool {
             return true;
         } else
             return false;
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "delete";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Delete selected subtitle entries from the subtitle file (format: delete)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        return null;
     }
 }

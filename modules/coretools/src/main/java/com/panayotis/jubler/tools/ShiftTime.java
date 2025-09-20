@@ -4,13 +4,19 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.media.console.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
+
 import javax.swing.JComponent;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class ShiftTime extends RealTimeTool {
@@ -67,5 +73,32 @@ public class ShiftTime extends RealTimeTool {
     @Override
     protected String getToolTitle() {
         return __("Shift time by absolute value");
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "shift";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Shift subtitle timing by adding or subtracting a fixed time offset (format: shift:sign:hours:minutes:seconds:milliseconds)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Collections.singleton("delta");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        try {
+            double found = parseDoubleParameter(args, "delta");
+            if (Double.isNaN(found)) return "Delta is missing";
+            shift = found;
+            return null;
+        } catch (FilterException e) {
+            return e.getMessage();
+        }
     }
 }

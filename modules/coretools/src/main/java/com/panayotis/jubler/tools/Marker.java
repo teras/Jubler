@@ -4,11 +4,16 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
+
 import javax.swing.JComponent;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class Marker extends OneByOneTool {
@@ -37,5 +42,28 @@ public class Marker extends OneByOneTool {
     @Override
     protected String getToolTitle() {
         return __("Mark region");
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "mark";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Mark selected subtitle entries with a color for visual organization (format: mark:color_index)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Collections.singleton("mark");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        mark = parseMarkParam(args, "mark");
+        if (mark < 0)
+            return "Invalid mark parameter: " + args.get("mark");
+        return null;
     }
 }

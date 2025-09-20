@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.console.TimeSync;
@@ -12,6 +12,11 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 
 import javax.swing.*;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -108,5 +113,40 @@ public class RecodeTime extends RealTimeTool {
     @Override
     protected JComponent constructToolVisuals() {
         return new RecodeTimeGUI();
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "recode";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Recode subtitle timing by applying a scaling factor and center point transformation (format: recode:factor:center)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Arrays.asList("center", "factor", "fromfps", "tofps");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        try {
+            double fromfps = parseDoubleParameter(args, "fromfps");
+            double tofps = parseDoubleParameter(args, "tofps");
+            if (Double.isNaN(fromfps) || Double.isNaN(tofps)) {
+                center = parseDoubleParameter(args, "center");
+                factor = parseDoubleParameter(args, "factor");
+                if (Double.isNaN(center) || Double.isNaN(factor))
+                    return "Invalid recode parameters";
+            } else {
+                center = 0;
+                factor = fromfps / tofps;
+            }
+            return null;
+        } catch (FilterException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

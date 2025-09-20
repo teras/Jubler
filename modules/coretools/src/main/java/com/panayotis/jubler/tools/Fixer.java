@@ -4,14 +4,19 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.time.gui.JTimeRegion;
-import javax.swing.JComponent;
+import com.panayotis.jubler.tools.ToolMenu.Location;
+
+import javax.swing.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class Fixer extends OneByOneTool {
@@ -192,6 +197,70 @@ public class Fixer extends OneByOneTool {
                     sub.getStartTime().setTime(newbegin);
                     sub.getFinishTime().setTime(newbegin + newdur);
                 }
+        }
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "fix";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Fix subtitle timing inconsistencies by adjusting duration, gaps, and overlaps (format: fix:min_duration:max_duration:gap:sort)";
+    }
+
+    @Override
+    protected Collection<String> gatherSelfTags() {
+        return Arrays.asList("mintime", "maxtime", "mincps", "maxcps", "overlap", "gap");
+    }
+
+    @Override
+    protected String applyToolSpecificArguments(Map<String, String> args) {
+        try {
+            min_abs = parseDoubleParameter(args, "mintime");
+            if (Double.isNaN(min_abs))
+                min_abs = -1;
+            max_abs = parseDoubleParameter(args, "maxtime");
+            if (Double.isNaN(max_abs))
+                max_abs = -1;
+            min_cps = parseDoubleParameter(args, "mincps");
+            if (Double.isNaN(min_cps))
+                min_cps = -1;
+            max_cps = parseDoubleParameter(args, "maxcps");
+            if (Double.isNaN(max_cps))
+                max_cps = -1;
+            if (min_abs >= 0 && min_cps >= 0)
+                min_cps = -1;
+            if (max_abs >= 0 && max_cps >= 0)
+                max_cps = -1;
+
+            String overlap = args.get("overlap");
+            if (overlap != null) {
+                switch (overlap) {
+                    case "distribute":
+                        pushmodel = 0;
+                        break;
+                    case "divide":
+                        pushmodel = 1;
+                        break;
+                    case "shift":
+                        pushmodel = 2;
+                        break;
+                    default:
+                        return "Invalid overlap value: " + overlap;
+                }
+                gap = parseDoubleParameter(args, "gap");
+                if (Double.isNaN(gap))
+                    gap = 0;
+                fix = true;
+            } else {
+                fix = false;
+                gap = 0;
+            }
+            return null;
+        } catch (FilterException e) {
+            return e.getMessage();
         }
     }
 }

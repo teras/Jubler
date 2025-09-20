@@ -4,10 +4,14 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
+
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.TreeSet;
 
 public abstract class OneByOneTool extends TimeBaseTool {
 
@@ -28,7 +32,7 @@ public abstract class OneByOneTool extends TimeBaseTool {
     }
 
     protected SubEntry getPreviousEntry() {
-        if (current_id > 0 && current_list.size() > 0)
+        if (current_id > 0 && !current_list.isEmpty())
             return current_list.get(current_id - 1);
         return null;
     }
@@ -40,4 +44,13 @@ public abstract class OneByOneTool extends TimeBaseTool {
     }
 
     protected abstract void affect(SubEntry sub);
+
+    @Override
+    protected final Collection<String> gatherExtendedTimedTags() {
+        Collection<String> tags = new TreeSet<>(Arrays.asList(CommonTags.bymark.name(), CommonTags.bystyle.name()));
+        tags.addAll(gatherSelfTags());
+        return tags;
+    }
+
+    protected abstract Collection<String> gatherSelfTags();
 }

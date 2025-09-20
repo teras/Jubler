@@ -22,10 +22,12 @@ import javax.swing.table.TableColumn;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
-public class Subtitles extends AbstractTableModel {
+public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> {
 
     private static final String[] COLNAME = {__("#"), __("Start"), __("End"), __("Duration"), __("Layer"), __("Style"), __("Cpm"), __("Cps"), __("Subtitle")};
     private static final int FIRST_EDITABLE_COL = COLNAME.length;
@@ -40,7 +42,7 @@ public class Subtitles extends AbstractTableModel {
     /**
      * List of subtitles
      */
-    private ArrayList<SubEntry> sublist;
+    private List<SubEntry> sublist;
     /**
      * List of possible predefined styles
      */
@@ -556,7 +558,7 @@ public class Subtitles extends AbstractTableModel {
     /**
      * @param sublist the sublist to set
      */
-    public void setSublist(ArrayList<SubEntry> sublist) {
+    public void setSublist(List<SubEntry> sublist) {
         this.sublist = sublist;
     }
 
@@ -564,7 +566,7 @@ public class Subtitles extends AbstractTableModel {
         return (j == 0) ? i : gcd(j, i % j);
     }
 
-    private static void rotate(ArrayList<SubEntry> v, int a, int b, int shift) {
+    private static void rotate(List<SubEntry> v, int a, int b, int shift) {
         int size = b - a;
         int r = size - shift;
         int g = gcd(size, r);
@@ -617,5 +619,10 @@ public class Subtitles extends AbstractTableModel {
         rotate(sublist, first, last + 1, shift);
 
         fireTableRowsUpdated(first, last);
+    }
+
+    @Override
+    public Iterator<SubEntry> iterator() {
+        return sublist.iterator();
     }
 }

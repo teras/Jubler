@@ -4,19 +4,24 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
-
-import static com.panayotis.jubler.i18n.I18N.__;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.cmdline.CommandLine;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.time.Time;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.undo.UndoEntry;
+
+import javax.swing.*;
 import java.util.ArrayList;
-import javax.swing.JComponent;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 public class SubJoin extends Tool {
 
@@ -65,8 +70,8 @@ public class SubJoin extends Tool {
             dt = getGap().toSeconds();
 
             SubEntry selected = isPrepend()
-                ? newsubs.joinSubs(other.getSubtitles(), current.getSubtitles(), dt)
-                    :newsubs.joinSubs(current.getSubtitles(), other.getSubtitles(), dt);
+                    ? newsubs.joinSubs(other.getSubtitles(), current.getSubtitles(), dt)
+                    : newsubs.joinSubs(current.getSubtitles(), other.getSubtitles(), dt);
 
             current.setSubs(newsubs);
             current.tableHasChanged(selected);
@@ -79,5 +84,51 @@ public class SubJoin extends Tool {
     @Override
     protected JComponent constructVisuals() {
         return new SubJoinGUI();
+    }
+
+    @Override
+    public String getCommandOptionName() {
+        return "join";
+    }
+
+    @Override
+    public String getCommandLineHelp() {
+        return "Join multiple subtitle files (format: join:file1.srt:file2.srt:...)";
+    }
+
+    @Override
+    public Collection<String> gatherToolTags() {
+        return Arrays.asList("gap", "append");
+    }
+
+    @Override
+    public String executeParams(Map<String, String> params, boolean debug) {
+        try {
+            Subtitles current = CommandLine.getSubtitles(null);
+            Subtitles other = CommandLine.getSubtitles(params.get("append"));
+            if (other == null)
+                return "Unable to locate other subtitle file";
+            double dt = parseDoubleParameter(params, "gap");
+            if (Double.isNaN(dt))
+                dt = 0;
+            double offset = dt + lastElement(current).getFinishTime().toSeconds();
+            other.forEach(it -> {
+                SubEntry se = new SubEntry(it);
+                se.getStartTime().addTime(offset);
+                se.getStartTime().addTime(offset);
+                current.add(se);
+            });
+        } catch (FilterException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    private static SubEntry lastElement(Subtitles subs) {
+        SubEntry lastByTime = subs.elementAt(0);
+        for (SubEntry entry : subs)
+            if (entry.getFinishTime().toSeconds() > lastByTime.getFinishTime().toSeconds())
+                lastByTime = entry;
+        return lastByTime;
     }
 }
