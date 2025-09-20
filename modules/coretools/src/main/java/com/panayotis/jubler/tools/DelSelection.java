@@ -7,6 +7,7 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 import com.panayotis.jubler.JubFrame;
 
@@ -15,6 +16,7 @@ import java.util.Collections;
 import java.util.Map;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.cmdline.CommandLine.getSubtitles;
 
 public class DelSelection extends OneByOneTool {
 
@@ -68,6 +70,8 @@ public class DelSelection extends OneByOneTool {
 
     @Override
     protected String applyToolSpecificArguments(Map<String, String> args) {
+        // Always set subtitles to the current working subtitles
+        subtitles = getSubtitles(null);
         return null;
     }
 }
