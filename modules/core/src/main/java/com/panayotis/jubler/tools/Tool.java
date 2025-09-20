@@ -17,6 +17,9 @@ import com.panayotis.jubler.subs.style.SubStyleList;
 import javax.swing.*;
 import java.util.*;
 
+import static com.panayotis.jubler.os.Escapes.parseParametersWithEscaping;
+import static com.panayotis.jubler.os.Escapes.unescapeParameterValue;
+
 public abstract class Tool implements PluginItem<ToolsManager> {
 
     public static enum CommonTags {
@@ -65,34 +68,38 @@ public abstract class Tool implements PluginItem<ToolsManager> {
 
     @Override
     public final String executeParamsLine(String argument, boolean debug) {
-        // Parse the argument string into an array
-        String[] args;
-        if (argument == null || argument.trim().isEmpty()) {
-            args = new String[0];
-        } else {
-            args = argument.split(":", -1); // -1 to keep empty strings
-        }
-
-        // Convert String[] to Map<String, String> by parsing key=value pairs
+        // Parse the argument string into key=value pairs with escape support
         Map<String, String> paramMap = new HashMap<>();
         Collection<String> validTags = getToolTags();
 
-        for (String arg : args) {
-            if (arg.contains("=")) {
-                int equalIndex = arg.indexOf('=');
-                String key = arg.substring(0, equalIndex);
-                String value = arg.substring(equalIndex + 1);
+        if (argument == null || argument.trim().isEmpty()) {
+            return executeParams(paramMap, debug);
+        }
+
+        // Use enhanced parsing that supports escaping
+        List<String> params = parseParametersWithEscaping(argument);
+
+        for (String param : params) {
+            if (param.contains("=")) {
+                int equalIndex = param.indexOf('=');
+                String key = param.substring(0, equalIndex);
+                String value = param.substring(equalIndex + 1);
+
+                // Unescape the value
+                value = unescapeParameterValue(value);
+
                 // Validate key against tool tags
                 if (!validTags.contains(key)) {
                     return "Invalid parameter: " + key + ". Valid parameters are: " + String.join(", ", validTags);
                 }
                 paramMap.put(key, value);
-            } else if (!arg.trim().isEmpty()) {
-                return "Invalid parameter format: " + arg + ". Expected format: key=value";
+            } else if (!param.trim().isEmpty()) {
+                return "Invalid parameter format: " + param + ". Expected format: key=value";
             }
         }
         return executeParams(paramMap, debug);
     }
+
 
     /**
      * Execute the tool from command line with parsed arguments.

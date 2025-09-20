@@ -144,20 +144,59 @@ public final class CommandLine implements PluginContext {
         }
     }
 
+    /**
+     * Remove tagged subtitle from memory
+     */
+    private static void removeTaggedSubtitles(String removeTag) {
+        if (removeTag == null || removeTag.trim().isEmpty()) {
+            System.err.println("ERROR: Tag cannot be empty for --remove command.");
+            System.exit(1);
+        }
+
+        Subtitles taggedSubtitles = getSubtitles(removeTag);
+        if (taggedSubtitles == null) {
+            System.err.println("ERROR: No subtitles found with tag '" + removeTag + "' to remove");
+            System.exit(1);
+        }
+
+        removeSubtitles(removeTag);
+
+        if (debug) {
+            System.out.println("Removed subtitles with tag '" + removeTag + "' from memory");
+        }
+    }
+
+    /**
+     * Create a new empty subtitle file in memory.
+     */
+    private static void createNewSubtitles(String ignored) {
+        // Create a new empty Subtitles object
+        Subtitles newSubs = new Subtitles();
+        // Set it as the default subtitle file
+        addSubtitles(null, newSubs);
+
+        if (debug) {
+            System.out.println("Created new empty subtitle file in memory");
+        }
+    }
+
     public void start(String[] args) {
         List<String> remaining = new Args("jubler", "Subtitle Editor")
                 .defhelp("--help", "-h")
                 .def("--load", CommandLine::loadSubtitles, "Load subtitle file (format: file or :tag:file) - use tags to load multiple files or leave it empty for the base subtitle file where all actions are performed")
                 .def("--save", CommandLine::saveSubtitles, "Save subtitle file (format: file or :tag:file) - use tags to save specific files")
+                .def("--execute", it -> executeTool(it, debug), "Execute tool with name and parameters (e.g., name:param1:param2)")
+                .def("--remove", CommandLine::removeTaggedSubtitles, "Remove tagged subtitle from memory (format: tag) - null tag name is not allowed")
                 .def("--swap", CommandLine::swapSubtitles, "Swap tagged subtitle with default (format: tag)")
+                .def("--new", CommandLine::createNewSubtitles, "Create a new empty subtitle file in memory")
                 .def("--debug", CommandLine::configDebug, "Enable debugging output")
-                .def("--tool", it -> executeTool(it, debug), "Execute tool with name and parameters (e.g., name:param1:param2)")
                 .def("--list-tools", CmdTools::listTools, "List all available tools")
                 .def("--help-tool", CmdTools::showToolHelp, "Show detailed help for a specific tool")
                 .alias("--save", "-s")
                 .alias("--load", "-l")
-                .alias("--tool", "-t")
-                .multi("--load", "--save", "--tool")
+                .alias("--execute", "-x")
+                .alias("--remove", "-r")
+                .multi("--load", "--save", "--swap", "--remove", "--execute")
                 .error(ErrorStrategy.PRINT_HELP_AND_EXIT)
                 .parse(args);
         if (!remaining.isEmpty()) {

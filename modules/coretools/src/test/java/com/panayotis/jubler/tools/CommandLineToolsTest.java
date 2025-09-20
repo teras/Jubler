@@ -272,16 +272,28 @@ class CommandLineToolsTest {
             return new File(resource.getFile());
         }
 
+        // Try to find in core test resources (where subtitle test files are located)
+        File coreTestFile = new File("../core/src/test/resources/" + path);
+        if (coreTestFile.exists()) {
+            return coreTestFile;
+        }
+
         // Try current module test resources
-        File localTestFile = new File("modules/coretools/src/test/resources/" + path);
+        File localTestFile = new File("src/test/resources/" + path);
         if (localTestFile.exists()) {
             return localTestFile;
         }
 
-        // Try to find in core test resources (where subtitle test files are located)
-        File coreTestFile = new File("modules/core/src/test/resources/" + path);
-        if (coreTestFile.exists()) {
-            return coreTestFile;
+        // Try absolute path from project root
+        File absoluteCoreTestFile = new File("modules/core/src/test/resources/" + path);
+        if (absoluteCoreTestFile.exists()) {
+            return absoluteCoreTestFile;
+        }
+
+        // Try from root directory when running from coretools
+        File rootTestFile = new File("../../modules/core/src/test/resources/" + path);
+        if (rootTestFile.exists()) {
+            return rootTestFile;
         }
 
         fail("Test resource file not found: " + path);

@@ -8,6 +8,8 @@ package  com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
+import com.panayotis.jubler.tools.cmdline.AddSubtitle;
+import com.panayotis.jubler.tools.cmdline.SortSubtitles;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,7 +33,9 @@ public class CoreTools implements PluginCollection {
                 new SplitEntries(),
                 new DelSelection(),
                 new Marker(),
-                new Styler()
+                new Styler(),
+                new AddSubtitle(),
+                new SortSubtitles()
         );
     }
 

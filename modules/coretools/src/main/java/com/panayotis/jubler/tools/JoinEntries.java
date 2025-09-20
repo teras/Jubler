@@ -18,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.util.Map;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.cmdline.CommandLine.getSubtitles;
 
 public class JoinEntries extends TimeBaseTool {
 
@@ -73,6 +74,8 @@ public class JoinEntries extends TimeBaseTool {
 
     @Override
     protected String applyToolSpecificArguments(Map<String, String> args) {
+        // Always set subtitles to the current working subtitles
+        subtitles = getSubtitles(null);
         return null;
     }
 }

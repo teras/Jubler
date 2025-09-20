@@ -64,4 +64,91 @@ public final class Escapes {
         }
         return out.toString();
     }
+
+    /**
+     * Parse command line parameters from a string, respecting escaped characters.
+     * Supports escaping of : and = characters using backslash for command line tool parameters.
+     *
+     * @param input the parameter string to parse (e.g., "key1=value1:key2=val\\:ue2")
+     * @return list of parameter strings split on unescaped colons
+     */
+    public static java.util.List<String> parseParametersWithEscaping(String input) {
+        java.util.List<String> result = new java.util.ArrayList<>();
+        StringBuilder current = new StringBuilder();
+        boolean escaped = false;
+
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+
+            if (escaped) {
+                // Previous character was backslash, add this character literally
+                current.append(c);
+                escaped = false;
+            } else if (c == '\\') {
+                // This might be an escape character
+                escaped = true;
+            } else if (c == ':') {
+                // Parameter separator - end current parameter
+                result.add(current.toString());
+                current = new StringBuilder();
+            } else {
+                // Regular character
+                current.append(c);
+            }
+        }
+
+        // Add the last parameter
+        if (current.length() > 0) {
+            result.add(current.toString());
+        }
+
+        return result;
+    }
+
+    /**
+     * Unescape special characters in command line parameter values.
+     * Converts \: to :, \= to =, and \\ to \ for command line tool parameters.
+     *
+     * @param value the parameter value to unescape
+     * @return the unescaped value
+     */
+    public static String unescapeParameterValue(String value) {
+        if (value == null || !value.contains("\\")) {
+            return value;
+        }
+
+        StringBuilder result = new StringBuilder();
+        boolean escaped = false;
+
+        for (int i = 0; i < value.length(); i++) {
+            char c = value.charAt(i);
+
+            if (escaped) {
+                // Previous character was backslash
+                switch (c) {
+                    case ':':
+                    case '=':
+                    case '\\':
+                        result.append(c);
+                        break;
+                    default:
+                        // Not a special escape sequence, keep the backslash
+                        result.append('\\').append(c);
+                        break;
+                }
+                escaped = false;
+            } else if (c == '\\') {
+                escaped = true;
+            } else {
+                result.append(c);
+            }
+        }
+
+        // Handle trailing backslash
+        if (escaped) {
+            result.append('\\');
+        }
+
+        return result.toString();
+    }
 }

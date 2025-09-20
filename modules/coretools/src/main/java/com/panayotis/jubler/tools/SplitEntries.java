@@ -16,6 +16,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.cmdline.CommandLine.getSubtitles;
 
 public class SplitEntries extends OneByOneTool {
 
@@ -38,17 +39,27 @@ public class SplitEntries extends OneByOneTool {
 
         while (tk.hasMoreTokens())
             tokens.add(tk.nextToken());
+
+        // If there are no newlines (no tokens), nothing to split - leave subtitle unchanged
+        if (tokens.isEmpty()) {
+            return;
+        }
+
         from = sub.getStartTime().toSeconds();
         for (String subtext : tokens) {
             upto = from + delta * subtext.length();
             newsubs.add(new SubEntry(from, upto, subtext));
             from = upto + 0.001;
         }
-        sub.setStartTime(newsubs.elementAt(0).getStartTime());
-        sub.setFinishTime(newsubs.elementAt(0).getFinishTime());
-        sub.setText(newsubs.elementAt(0).getText());
-        newsubs.remove(0);
-        subtitles.insertSubs(sub, newsubs);
+
+        // Only proceed if we have split entries
+        if (newsubs.size() > 0) {
+            sub.setStartTime(newsubs.elementAt(0).getStartTime());
+            sub.setFinishTime(newsubs.elementAt(0).getFinishTime());
+            sub.setText(newsubs.elementAt(0).getText());
+            newsubs.remove(0);
+            subtitles.insertSubs(sub, newsubs);
+        }
     }
 
     @Override
@@ -78,6 +89,8 @@ public class SplitEntries extends OneByOneTool {
 
     @Override
     protected String applyToolSpecificArguments(Map<String, String> args) {
+        // Always set subtitles to the current working subtitles
+        subtitles = getSubtitles(null);
         return null;
     }
 }
