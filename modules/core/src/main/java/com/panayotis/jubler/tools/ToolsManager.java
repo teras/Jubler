@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools;
+package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.JExternalToolsOptions;
@@ -33,7 +33,8 @@ public class ToolsManager implements PluginContext {
     }
 
     public static void add(Tool tool) {
-        tools.computeIfAbsent(tool.menu.location, k -> new ArrayList<>()).add(tool);
+        if (tool != null && tool.menu != null)
+            tools.computeIfAbsent(tool.menu.location, k -> new ArrayList<>()).add(tool);
     }
 
     public static void register(JubFrame current) {
