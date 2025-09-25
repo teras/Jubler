@@ -18,6 +18,11 @@ script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 dist_dir=$script_dir/dist
 valid_targets=("windows" "linux" "generic" "macos" "all")
 
+# KPacker configuration
+kpacker_bin="$HOME/Works/System/bin/arch/linux-x86_64/kpacker"
+jubler_source="$script_dir/modules/installer/target/jubler/lib"
+jubler_icon="$script_dir/resources/logo/newlogo.svg"
+
 display_help() {
     echo -e "This is a helper script for building Jubler:"
     echo -e "  ${GREEN}version X.Y.Z${NC}           Update Jubler version."
@@ -29,9 +34,7 @@ display_help() {
     echo -e "Available build targets:"
     (IFS=,; echo -e "  ${GREEN}${valid_targets[*]}${NC}")
     echo
-    echo -e "Additional parameters for specific targets:"
-    echo -e "  ${GREEN}notarize${NC}               Perform notarization for MacOS target."
-    echo -e "  ${GREEN}nosign${NC}                 Skip signing for Windows and MacOS targets."
+    echo -e "Note: Signing and notarization are always performed when configured."
 }
 
 version_action() {
@@ -58,20 +61,34 @@ version_action() {
 build_windows() {
     echo -e "${GREEN}Building for Windows...${NC}"
     cd "$script_dir"
-    # Check if extra arguments are provided
-    NOSIGN=$(if [[ $* == *"nosign"* ]]; then echo ",nosign"; else echo ""; fi)
-    mvn clean install -Pdist,win64${NOSIGN}
-    cd "$script_dir/modules/installer/target" || exit
-    if [ -e Jubler-*.x32.exe ]; then
-        echo -e "${GREEN}Copying x32 EXE file to dist.${NC}"
-        cp Jubler-*.x32.exe "$dist_dir/"
+
+    # Build Jubler JAR first if needed
+    if [ ! -d "$jubler_source" ]; then
+        mvn clean install
     fi
-    if [ -e Jubler-*.x64.exe ]; then
-        echo -e "${GREEN}Copying x64 EXE file to dist.${NC}"
-        cp Jubler-*.x64.exe "$dist_dir/"
+
+    # Get version from POM
+    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+    # Use separate temp directory for build all mode
+    local output_dir="$dist_dir"
+    if [ "$build_all_mode" = "true" ]; then
+        output_dir="$dist_dir/temp_windows"
     fi
-    if [ ! -e Jubler-*.x32.exe ] && [ ! -e Jubler-*.x64.exe ]; then
-        echo -e "${RED}Error:${NC} Could not find x32 or x64 EXE file for Jubler."
+
+    # Use KPacker to create Windows installer
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=WindowsX64 --icon="$jubler_icon"
+
+    # Move result to final location if in build all mode
+    if [ "$build_all_mode" = "true" ]; then
+        mv "$output_dir"/Jubler-*-x64.exe "$dist_dir/"
+        rm -rf "$output_dir"
+    fi
+
+    if [ -e "$dist_dir"/Jubler-*-x64.exe ]; then
+        echo -e "${GREEN}Windows installer created successfully.${NC}"
+    else
+        echo -e "${RED}Error:${NC} Could not create Windows installer."
         exit 1
     fi
 }
@@ -79,13 +96,34 @@ build_windows() {
 build_linux() {
     echo -e "${GREEN}Building for Linux...${NC}"
     cd "$script_dir"
-    mvn clean install -Pdist,linux
-    cd "$script_dir/modules/installer/target" || exit
-    if [ -e Jubler-*.appimage ]; then
-        echo -e "${GREEN}Copying AppImage file to dist.${NC}"
-        cp Jubler-*.appimage "$dist_dir/"
+
+    # Build Jubler JAR first if needed
+    if [ ! -d "$jubler_source" ]; then
+        mvn clean install
+    fi
+
+    # Get version from POM
+    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+    # Use separate temp directory for build all mode
+    local output_dir="$dist_dir"
+    if [ "$build_all_mode" = "true" ]; then
+        output_dir="$dist_dir/temp_linux"
+    fi
+
+    # Use KPacker to create Linux x64 AppImage
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxX64 --icon="$jubler_icon"
+
+    # Move result to final location if in build all mode
+    if [ "$build_all_mode" = "true" ]; then
+        mv "$output_dir"/Jubler-*-x86_64.AppImage "$dist_dir/"
+        rm -rf "$output_dir"
+    fi
+
+    if [ -e "$dist_dir"/Jubler-*-x86_64.AppImage ]; then
+        echo -e "${GREEN}Linux AppImage created successfully.${NC}"
     else
-        echo -e "${RED}Error:${NC} Could not find AppImage file for Jubler."
+        echo -e "${RED}Error:${NC} Could not create Linux AppImage."
         exit 1
     fi
 }
@@ -93,37 +131,71 @@ build_linux() {
 build_generic() {
     echo -e "${GREEN}Building for Generic...${NC}"
     cd "$script_dir"
-    mvn clean install -Pdist,generic
-    cd "$script_dir/modules/installer/target" || exit
-    if [ -e Jubler-*.tar.bz2 ]; then
-        echo -e "${GREEN}Copying TAR.BZ2 file to dist.${NC}"
-        cp Jubler-*.tar.bz2 "$dist_dir/"
+
+    # Build Jubler JAR first if needed
+    if [ ! -d "$jubler_source" ]; then
+        mvn clean install
+    fi
+
+    # Get version from POM
+    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+    # Use separate temp directory for build all mode
+    local output_dir="$dist_dir"
+    if [ "$build_all_mode" = "true" ]; then
+        output_dir="$dist_dir/temp_generic"
+    fi
+
+    # Use KPacker to create Generic package
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=Generic --icon="$jubler_icon"
+
+    # Move result to final location if in build all mode
+    if [ "$build_all_mode" = "true" ]; then
+        mv "$output_dir"/Jubler-*.tar.gz "$dist_dir/"
+        rm -rf "$output_dir"
+    fi
+
+    if [ -e "$dist_dir"/Jubler-*.tar.gz ]; then
+        echo -e "${GREEN}Generic package created successfully.${NC}"
     else
-        echo -e "${RED}Error:${NC} Could not find TAR.BZ2 file for Jubler."
+        echo -e "${RED}Error:${NC} Could not create Generic package."
         exit 1
     fi
-    cd $script_dir
 }
 
 build_macos() {
     echo -e "${GREEN}Building for MacOS...${NC}"
     cd "$script_dir"
-    # Check if extra arguments are provided
-    NOTARIZE=$(if [[ $* == *"notarize"* ]]; then echo ",notarize"; else echo ""; fi)
-    NOSIGN=$(if [[ $* == *"nosign"* ]]; then echo ",nosign"; else echo ""; fi)
-    mvn clean install -Pdist,macos${NOTARIZE}${NOSIGN}
-    cd "$script_dir/modules/installer/target" || exit
-    if [ -e Jubler-*.dmg ]; then
-        echo -e "${GREEN}Copying DMG file to dist.${NC}"
-        cp Jubler-*.dmg "$dist_dir/"
+
+    # Build Jubler JAR first if needed
+    if [ ! -d "$jubler_source" ]; then
+        mvn clean install
+    fi
+
+    # Get version from POM
+    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+    # Use separate temp directory for build all mode
+    local output_dir="$dist_dir"
+    if [ "$build_all_mode" = "true" ]; then
+        output_dir="$dist_dir/temp_macos"
+    fi
+
+    # Use KPacker to create macOS DMG with template
+    dmg_template="$script_dir/modules/installer/resources/dmg_mac.zip"
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --dmg-template="$dmg_template"
+
+    # Move result to final location if in build all mode
+    if [ "$build_all_mode" = "true" ]; then
+        mv "$output_dir"/Jubler-*.dmg "$dist_dir/"
+        rm -rf "$output_dir"
+    fi
+
+    if [ -e "$dist_dir"/Jubler-*.dmg ]; then
+        echo -e "${GREEN}macOS DMG created successfully.${NC}"
     else
-        if [ -e Jubler-*.zip ]; then
-            echo -e "${GREEN}Copying ZIP file to dist.${NC}"
-            cp Jubler-*.zip "$dist_dir/"
-        else
-            echo -e "${RED}Error:${NC} Could not find DMG or ZIP file for Jubler."
-            exit 1
-        fi
+        echo -e "${RED}Error:${NC} Could not create macOS DMG."
+        exit 1
     fi
 }
 
@@ -154,10 +226,19 @@ build_action() {
     targets=$2
     IFS=',' read -ra target_array <<< "$targets"
 
+    # Set build_all_mode if "all" is in the targets
+    build_all_mode="false"
+    for target in "${target_array[@]}"; do
+        if [ "$target" = "all" ]; then
+            build_all_mode="true"
+            break
+        fi
+    done
+
     for target in "${target_array[@]}"; do
         case "$target" in
             "windows")
-                build_windows "$@"
+                build_windows
                 ;;
             "linux")
                 build_linux
@@ -166,11 +247,11 @@ build_action() {
                 build_generic
                 ;;
             "macos")
-                build_macos "$@"
+                build_macos
                 ;;
             "all")
-                build_windows "$@"
-                build_macos "$@"
+                build_windows
+                build_macos
                 build_generic
                 build_linux
                 ;;
