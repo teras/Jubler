@@ -1,0 +1,17 @@
+{
+  "schema": "https://schemas.signpath.io/signing-policy/v1",
+  "artifacts": [
+    {
+      "path": "Jubler-*-x64.exe",
+      "steps": [
+        {
+          "sign": {
+            "authenticode": {
+              "certificate": "Jubler Code Signing Certificate"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

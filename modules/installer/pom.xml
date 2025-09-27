@@ -73,6 +73,7 @@
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
+                        <phase>install</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>

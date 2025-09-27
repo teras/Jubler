@@ -1,0 +1,265 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 8.0.1)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Mark as prerelease (alpha)'
+        required: true
+        type: boolean
+        default: true
+      auto_release:
+        description: 'Automatically create GitHub release'
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+env:
+  JAVA_VERSION: '11'
+  MAVEN_OPTS: '-Xmx1024m'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      artifacts: ${{ steps.build.outputs.artifacts }}
+      artifact-id: ${{ steps.upload.outputs.artifact-id }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: 'temurin'
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+
+    - name: Determine version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          VERSION="${{ github.event.inputs.version }}"
+        elif [ "${{ github.ref_type }}" = "tag" ]; then
+          VERSION="${GITHUB_REF#refs/tags/v}"
+        else
+          # For push to master, use version from pom.xml
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Building version: $VERSION"
+
+    - name: Set project version
+      run: |
+        ./make.sh version ${{ steps.version.outputs.version }}
+
+    - name: Build Jubler JAR
+      run: |
+        mvn clean install -DskipTests
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver: docker-container
+
+    - name: Set up tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y curl wget
+
+
+    - name: Download and setup KPacker
+      run: |
+        mkdir -p $HOME/Works/System/bin/arch/linux-x86_64
+
+        # Download KPacker binary
+        wget -O $HOME/Works/System/bin/arch/linux-x86_64/kpacker https://github.com/teras/KPacker/releases/download/v0.1/kpacker
+        chmod +x $HOME/Works/System/bin/arch/linux-x86_64/kpacker
+
+        # Test KPacker
+        echo "Testing KPacker..."
+        $HOME/Works/System/bin/arch/linux-x86_64/kpacker --help
+
+    - name: Build artifacts
+      id: build
+      run: |
+        # Set environment to force KPacker to use proper Docker configuration
+        export DOCKER_BUILDKIT=1
+        export DOCKER_CLI_EXPERIMENTAL=enabled
+        export BUILDX_NO_DEFAULT_ATTESTATIONS=1
+
+        # Build Windows artifact with KPacker
+        echo "Building Windows artifact..."
+        echo "KPacker command will be:"
+        echo "$HOME/Works/System/bin/arch/linux-x86_64/kpacker --source=modules/installer/target/jubler/lib --out=dist --name=Jubler --version=9.0.0-ALPHA --mainjar=jubler.jar --target=WindowsX64 --icon=resources/logo/newlogo.svg --skip-chown"
+        ./make.sh build windows
+
+        # List created artifacts
+        echo "📦 Created artifacts:"
+        ls -la dist/
+
+        # Export artifact list
+        echo "artifacts<<EOF" >> $GITHUB_OUTPUT
+        ls -la dist/
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Upload artifacts
+      id: upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: jubler-artifacts-${{ steps.version.outputs.version }}
+        path: dist/Jubler-${{ steps.version.outputs.version }}-x64.exe
+        retention-days: 30
+
+
+  sign-windows:
+    needs: build
+    runs-on: windows-latest
+    if: github.repository_owner == 'teras' # Replace with your username
+    environment: ${{ github.event.inputs.prerelease == 'false' && 'production' || 'test' }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Prepare signed artifact directory
+      run: New-Item -ItemType Directory -Force -Path "dist-signed"
+
+    - name: Submit SignPath signing request
+      id: signpath
+      uses: SignPath/github-action-submit-signing-request@v1
+      with:
+        api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+        organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+        project-slug: Jubler
+        signing-policy-slug: ${{ github.event.inputs.prerelease == 'false' && 'release-signing' || 'test-signing' }}
+        artifact-configuration-slug: jubler-exe-in-zip
+        github-artifact-id: ${{ needs.build.outputs.artifact-id }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        output-artifact-directory: dist-signed
+
+    - name: List signed artifact
+      run: |
+        Get-ChildItem -Path "dist-signed"
+
+    - name: Upload signed artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: jubler-signed-artifacts-${{ needs.build.outputs.version }}
+        path: dist-signed/*
+        retention-days: 30
+
+  release:
+    needs: [build, sign-windows]
+    runs-on: ubuntu-latest
+    if: always() && (needs.build.result == 'success') && (github.event.inputs.auto_release == 'true' || github.event_name == 'push')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download unsigned artifacts (fallback)
+      uses: actions/download-artifact@v4
+      with:
+        name: jubler-artifacts-${{ needs.build.outputs.version }}
+        path: dist/
+
+    - name: Download signed artifacts (if available)
+      uses: actions/download-artifact@v4
+      if: needs.sign-windows.result == 'success'
+      with:
+        name: jubler-signed-artifacts-${{ needs.build.outputs.version }}
+        path: dist-signed/
+
+    - name: Prepare release artifacts
+      run: |
+        mkdir -p release-artifacts
+
+        # Use signed artifacts if available, otherwise use unsigned
+        if [ -d "dist-signed" ] && [ "$(ls -A dist-signed)" ]; then
+          echo "Using signed artifacts"
+          cp dist-signed/* release-artifacts/ || true
+          # Copy non-Windows artifacts from unsigned dist
+          cp dist/*.AppImage release-artifacts/ 2>/dev/null || true
+          cp dist/*.tar.gz release-artifacts/ 2>/dev/null || true
+          cp dist/*.dmg release-artifacts/ 2>/dev/null || true
+        else
+          echo "Using unsigned artifacts"
+          cp dist/* release-artifacts/
+        fi
+
+        ls -la release-artifacts/
+
+    - name: Set prerelease flag
+      id: prerelease
+      run: |
+        # Always publish Actions builds as prereleases so they stay off the front page
+        echo "prerelease=true" >> $GITHUB_OUTPUT
+
+    - name: Publish pre-release
+      uses: ncipollo/release-action@v1
+      with:
+        tag: "v${{ needs.build.outputs.version }}"
+        name: "Jubler v${{ needs.build.outputs.version }} (Alpha)"
+        draft: false
+        prerelease: ${{ steps.prerelease.outputs.prerelease }}
+        allowUpdates: true
+        removeArtifacts: true
+        makeLatest: false
+        artifacts: release-artifacts/*
+        artifactErrorsFailBuild: true
+        body: |
+          🎉 **Jubler v${{ needs.build.outputs.version }}** is here!
+
+          ⚠️ **This is an alpha release** - Please test thoroughly before using in production.
+
+          ## Downloads
+
+          - **Windows**: `Jubler-${{ needs.build.outputs.version }}-x64.exe` ${{ needs.sign-windows.result == 'success' && '🔒 *Digitally Signed*' || '' }}
+          - **Linux**: `Jubler-${{ needs.build.outputs.version }}-x86_64.AppImage`
+          - **macOS**: `Jubler-${{ needs.build.outputs.version }}.dmg`
+          - **Generic**: `Jubler-${{ needs.build.outputs.version }}.tar.gz`
+          - **JAR Package**: `Jubler-${{ needs.build.outputs.version }}-jars.zip` *(Always available)*
+
+          ## What's Changed
+
+          ${{ github.event.head_commit.message || 'See release notes above for detailed changes.' }}
+
+          ---
+
+          **Note**: If platform-specific installers fail to build, JAR package is always available as a fallback.
+
+          **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ needs.build.outputs.version }}...HEAD
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+  cleanup:
+    needs: [build, sign-windows, release]
+    runs-on: ubuntu-latest
+    if: always() && (needs.release.result == 'success' || needs.release.result == 'skipped')
+
+    steps:
+    - name: Delete unsigned artifacts only
+      uses: geekyeggo/delete-artifact@v5
+      with:
+        name: jubler-artifacts-${{ needs.build.outputs.version }}
+        failOnError: false
