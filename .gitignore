@@ -2,10 +2,7 @@
 build/
 /dist/
 ^_support/
-target/
 *.iml
 .idea/
 .vagrant/
-modules/installer/secret/code-signing.p12
-modules/installer/secret/apple-keysign.p12
-upload
+.gradle/

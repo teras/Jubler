@@ -20,7 +20,7 @@ valid_targets=("windows" "linux" "generic" "macos" "all")
 
 # KPacker configuration
 kpacker_bin="$HOME/Works/System/bin/arch/linux-x86_64/kpacker"
-jubler_source="$script_dir/modules/installer/target/jubler/lib"
+jubler_source="$script_dir/build/jubler/lib"
 jubler_icon="$script_dir/resources/logo/newlogo.svg"
 
 display_help() {
@@ -49,7 +49,12 @@ version_action() {
     fi
     local version=$2
     cd $script_dir
-    mvn versions:set -DnewVersion=$version -DgenerateBackupPoms=false -DprocessAllModules
+
+    # Update version in build.gradle.kts
+    sed -i "s/^version = \".*\"/version = \"$version\"/" build.gradle.kts
+
+    echo -e "${GREEN}Version updated to $version in build.gradle.kts${NC}"
+
 #    mkdir -p "$dist_dir/"
 #    if [ ! -e "$dist_dir/.Komac.jar" ]; then
 #        wget -O "$dist_dir/.Komac.jar" https://github.com/russellbanks/Komac/releases/download/v1.11.0/Komac-1.11.0-all.jar
@@ -62,25 +67,25 @@ build_windows() {
     echo -e "${GREEN}Building for Windows...${NC}"
     cd "$script_dir"
 
-    # Build Jubler JAR first if needed
+    # Build Jubler distribution first if needed
     if [ ! -d "$jubler_source" ]; then
-        mvn clean install
+        gradle clean assembleDistribution
     fi
 
-    # Get version from POM
-    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    # Get version from build.gradle.kts
+    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
 
-    # Use separate temp directory for build all mode
+    # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
-    if [ "$build_all_mode" = "true" ]; then
+    if [ "$build_multi_mode" = "true" ]; then
         output_dir="$dist_dir/temp_windows"
     fi
 
     # Use KPacker to create Windows installer
     "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=WindowsX64 --icon="$jubler_icon"
 
-    # Move result to final location if in build all mode
-    if [ "$build_all_mode" = "true" ]; then
+    # Move result to final location if in multi-target build mode
+    if [ "$build_multi_mode" = "true" ]; then
         mv "$output_dir"/Jubler-*-x64.exe "$dist_dir/"
         rm -rf "$output_dir"
     fi
@@ -97,25 +102,25 @@ build_linux() {
     echo -e "${GREEN}Building for Linux...${NC}"
     cd "$script_dir"
 
-    # Build Jubler JAR first if needed
+    # Build Jubler distribution first if needed
     if [ ! -d "$jubler_source" ]; then
-        mvn clean install
+        gradle clean assembleDistribution
     fi
 
-    # Get version from POM
-    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    # Get version from build.gradle.kts
+    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
 
-    # Use separate temp directory for build all mode
+    # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
-    if [ "$build_all_mode" = "true" ]; then
+    if [ "$build_multi_mode" = "true" ]; then
         output_dir="$dist_dir/temp_linux"
     fi
 
     # Use KPacker to create Linux x64 AppImage
     "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxX64 --icon="$jubler_icon"
 
-    # Move result to final location if in build all mode
-    if [ "$build_all_mode" = "true" ]; then
+    # Move result to final location if in multi-target build mode
+    if [ "$build_multi_mode" = "true" ]; then
         mv "$output_dir"/Jubler-*-x86_64.AppImage "$dist_dir/"
         rm -rf "$output_dir"
     fi
@@ -132,25 +137,25 @@ build_generic() {
     echo -e "${GREEN}Building for Generic...${NC}"
     cd "$script_dir"
 
-    # Build Jubler JAR first if needed
+    # Build Jubler distribution first if needed
     if [ ! -d "$jubler_source" ]; then
-        mvn clean install
+        gradle clean assembleDistribution
     fi
 
-    # Get version from POM
-    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    # Get version from build.gradle.kts
+    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
 
-    # Use separate temp directory for build all mode
+    # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
-    if [ "$build_all_mode" = "true" ]; then
+    if [ "$build_multi_mode" = "true" ]; then
         output_dir="$dist_dir/temp_generic"
     fi
 
     # Use KPacker to create Generic package
     "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=Generic --icon="$jubler_icon"
 
-    # Move result to final location if in build all mode
-    if [ "$build_all_mode" = "true" ]; then
+    # Move result to final location if in multi-target build mode
+    if [ "$build_multi_mode" = "true" ]; then
         mv "$output_dir"/Jubler-*.tar.gz "$dist_dir/"
         rm -rf "$output_dir"
     fi
@@ -167,28 +172,31 @@ build_macos() {
     echo -e "${GREEN}Building for MacOS...${NC}"
     cd "$script_dir"
 
-    # Build Jubler JAR first if needed
+    # Build Jubler distribution first if needed
     if [ ! -d "$jubler_source" ]; then
-        mvn clean install
+        gradle clean assembleDistribution
     fi
 
-    # Get version from POM
-    version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+    # Get version from build.gradle.kts
+    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
 
-    # Use separate temp directory for build all mode
+    # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
-    if [ "$build_all_mode" = "true" ]; then
+    if [ "$build_multi_mode" = "true" ]; then
         output_dir="$dist_dir/temp_macos"
     fi
 
     # Use KPacker to create macOS DMG with template
-    dmg_template="$script_dir/modules/installer/resources/dmg_mac.zip"
+    dmg_template="$script_dir/resources/installer/platform/dmg_mac.zip"
     "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --dmg-template="$dmg_template"
 
-    # Move result to final location if in build all mode
-    if [ "$build_all_mode" = "true" ]; then
+    # Move result to final location if in multi-target build mode
+    if [ "$build_multi_mode" = "true" ]; then
         mv "$output_dir"/Jubler-*.dmg "$dist_dir/"
         rm -rf "$output_dir"
+    else
+        # Clean up intermediate .app directory when building single target
+        rm -rf "$dist_dir"/Jubler.app
     fi
 
     if [ -e "$dist_dir"/Jubler-*.dmg ]; then
@@ -200,8 +208,9 @@ build_macos() {
 }
 
 clean_action() {
-    mvn clean
+    gradle clean
     rm -rf "$dist_dir/"
+    rm -rf "$script_dir/build/"
 }
 
 check_headers() {
@@ -226,11 +235,14 @@ build_action() {
     targets=$2
     IFS=',' read -ra target_array <<< "$targets"
 
-    # Set build_all_mode if "all" is in the targets
-    build_all_mode="false"
+    # Set build_multi_mode if multiple targets are specified (including "all")
+    build_multi_mode="false"
+    if [ "${#target_array[@]}" -gt 1 ]; then
+        build_multi_mode="true"
+    fi
     for target in "${target_array[@]}"; do
         if [ "$target" = "all" ]; then
-            build_all_mode="true"
+            build_multi_mode="true"
             break
         fi
     done
