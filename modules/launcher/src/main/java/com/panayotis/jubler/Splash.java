@@ -57,6 +57,16 @@ public class Splash extends JFrame {
         AffineTransform t = g2.getTransform();
         t.scale(scale, scale);
         g2.setTransform(t);
+
+        // Draw background
+        g2.setColor(new Color(235, 240, 235));
+        g2.fillRect(0, 0, 320, 320);
+
+        // Draw outline
+        g2.setColor(new Color(150, 150, 150));
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRect(1, 1, 318, 318);
+
         Bird.draw(g2);
         if (r != null) {
             Runnable r2 = r;
