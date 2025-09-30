@@ -31,8 +31,8 @@ public class JublerTheme implements PluginCollection, PluginItem<JubFrame> {
     public static void init() {
         Enhancer e = EnhancerManager.getDefault();
         e.setProposedSystemScaling(Options.getScaling());
-        e.setModernLookAndFeel(Options.getThemeVariation());
         e.blendWindowTitle(true);
+        e.setModernLookAndFeel(Options.getThemeVariation());
 
         e.registerAbout(StaticJubler::showAbout);
         e.registerPreferences(() -> {
