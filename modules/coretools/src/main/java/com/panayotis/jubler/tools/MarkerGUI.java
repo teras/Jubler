@@ -28,7 +28,7 @@ public class MarkerGUI extends JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        ColSel = new javax.swing.JComboBox();
+        ColSel = new javax.swing.JComboBox<>();
 
         setToolTipText("Select the color to use in order to mark the area");
         setLayout(new java.awt.BorderLayout());
@@ -41,7 +41,7 @@ public class MarkerGUI extends JPanel {
         add(ColSel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JComboBox ColSel;
+    javax.swing.JComboBox<String> ColSel;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

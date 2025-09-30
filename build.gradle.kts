@@ -25,6 +25,7 @@ subprojects {
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
+        options.compilerArgs.addAll(listOf("-Xlint:all", "-Xlint:-serial"))
     }
 
     group = rootProject.group
@@ -36,9 +37,6 @@ subprojects {
 val allRuntimeDependencies by configurations.creating {
     isCanBeResolved = true
     isCanBeConsumed = false
-    subprojects.forEach { subproject ->
-        extendsFrom(subproject.configurations.getByName("runtimeClasspath"))
-    }
 }
 
 tasks.register<Copy>("copyDependencies") {
@@ -48,7 +46,9 @@ tasks.register<Copy>("copyDependencies") {
     dependsOn(subprojects.map { it.tasks.named("jar") })
 
     // Collect runtime classpath from all modules
-    from(allRuntimeDependencies)
+    subprojects.forEach { subproject ->
+        from(subproject.configurations.getByName("runtimeClasspath"))
+    }
     into(layout.buildDirectory.dir("jubler/lib"))
 
     exclude("**/jupidator-project-*.jar", "**/project-*.jar")

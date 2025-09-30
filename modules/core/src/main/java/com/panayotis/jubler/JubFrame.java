@@ -2638,7 +2638,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         for (int i = 0; i < list.size(); i++) {
             JMenuItem item = new JMenuItem(list.getNameAt(i));
             if (i <= 9 && add_shortkey)
-                item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0 + i, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() | java.awt.event.InputEvent.ALT_MASK));
+                item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0 + i, SystemDependent.getDefaultKeyModifier() | java.awt.event.InputEvent.ALT_DOWN_MASK));
             menu.add(item);
             item.addActionListener(listener);
         }

@@ -57,7 +57,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
 
         ExtSelectorP = new javax.swing.JPanel();
         SelectorL = new javax.swing.JLabel();
-        PList = new javax.swing.JComboBox();
+        PList = new javax.swing.JComboBox<>();
         ParamsP = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
@@ -134,7 +134,7 @@ public class JExternalOptions extends JPanel implements OptionsHolder {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ExtSelectorP;
-    private javax.swing.JComboBox PList;
+    private javax.swing.JComboBox<String> PList;
     private javax.swing.JPanel ParamsP;
     private javax.swing.JLabel SelectorL;
     // End of variables declaration//GEN-END:variables

@@ -52,7 +52,7 @@ public class JPasterGUI extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         SpinP = new javax.swing.JPanel();
         ChColor = new javax.swing.JCheckBox();
-        ColSel = new javax.swing.JComboBox();
+        ColSel = new javax.swing.JComboBox<>();
 
         setLayout(new java.awt.GridLayout(0, 1));
 
@@ -79,7 +79,7 @@ public class JPasterGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_ChColorActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ChColor;
-    private javax.swing.JComboBox ColSel;
+    private javax.swing.JComboBox<String> ColSel;
     private javax.swing.JPanel SpinP;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables

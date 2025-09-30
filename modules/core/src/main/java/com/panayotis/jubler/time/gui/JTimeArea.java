@@ -90,7 +90,7 @@ public abstract class JTimeArea extends JPanel {
 
         SubCP = new javax.swing.JPanel();
         ChSubColorB = new javax.swing.JCheckBox();
-        ChSubColorC = new javax.swing.JComboBox();
+        ChSubColorC = new javax.swing.JComboBox<>();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -107,7 +107,7 @@ public abstract class JTimeArea extends JPanel {
         });
         SubCP.add(ChSubColorB, java.awt.BorderLayout.WEST);
 
-        ChSubColorC.setModel(new javax.swing.DefaultComboBoxModel(SubEntry.MarkNames));
+        ChSubColorC.setModel(new javax.swing.DefaultComboBoxModel<>(SubEntry.MarkNames));
         ChSubColorC.setEnabled(false);
         SubCP.add(ChSubColorC, java.awt.BorderLayout.CENTER);
 
@@ -120,7 +120,7 @@ public abstract class JTimeArea extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ChSubColorB;
-    private javax.swing.JComboBox ChSubColorC;
+    private javax.swing.JComboBox<String> ChSubColorC;
     protected javax.swing.JPanel SubCP;
     // End of variables declaration//GEN-END:variables
 }

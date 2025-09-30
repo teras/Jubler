@@ -14,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 
-public class TriComboBox extends JComboBox implements TriObject {
+public class TriComboBox extends JComboBox<Object> implements TriObject {
 
     /**
      * Creates a new instance of TriComboBox

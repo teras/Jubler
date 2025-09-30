@@ -21,7 +21,7 @@ import static com.panayotis.jubler.cmdline.CommandLine.getSubtitles;
 public class SplitEntries extends OneByOneTool {
 
     public SplitEntries() {
-        super(true, new ToolMenu(__("Split entries"), "TSE", Location.CONTENTTOOL, KeyEvent.VK_MINUS, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Split entries"), "TSE", Location.CONTENTTOOL, KeyEvent.VK_MINUS, InputEvent.CTRL_DOWN_MASK));
     }
 
     @Override

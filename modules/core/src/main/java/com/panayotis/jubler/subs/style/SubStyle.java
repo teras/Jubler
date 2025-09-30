@@ -13,7 +13,7 @@ import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SubStyle implements Comparable {
+public class SubStyle implements Comparable<SubStyle> {
 
     public static enum Direction {
 
@@ -204,7 +204,8 @@ public class SubStyle implements Comparable {
         }
     }
 
-    public int compareTo(Object o) {
-        return Name.compareTo(((SubStyle) o).Name);
+    @Override
+    public int compareTo(SubStyle o) {
+        return Name.compareTo(o.Name);
     }
 }

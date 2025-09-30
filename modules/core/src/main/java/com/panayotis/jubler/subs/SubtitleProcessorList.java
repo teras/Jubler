@@ -361,7 +361,7 @@ public class SubtitleProcessorList extends ArrayList<SubtitlePatternProcessor> {
                         DEBUG.logger.log(Level.SEVERE, msg);
                         throw new Exception(msg);
                     }//if (is_empty)
-                    Object new_object = Class.forName(class_name).newInstance();
+                    Object new_object = Class.forName(class_name).getDeclaredConstructor().newInstance();
                     ps.setTargetObject(new_object);
                     setCreateNewObject(false);
                     setCreatedRecord(new_object);

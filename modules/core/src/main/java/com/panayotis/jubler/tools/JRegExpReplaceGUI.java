@@ -36,7 +36,7 @@ public class JRegExpReplaceGUI extends JPanel {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        TextList = new javax.swing.JList();
+        TextList = new javax.swing.JList<>();
         EditB = new javax.swing.JButton();
 
         setBorder(SystemDependent.getBorder(__("Regular expressions to be executed")));
@@ -84,7 +84,7 @@ public class JRegExpReplaceGUI extends JPanel {
     }//GEN-LAST:event_EditBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton EditB;
-    private javax.swing.JList TextList;
+    private javax.swing.JList<String> TextList;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -53,6 +53,7 @@ public class PluginManager {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends PluginContext> void callPluginListeners(T caller) {
         ArrayList<PluginItem<?>> list = pluginList.get(caller.getClass());
         if (list != null)

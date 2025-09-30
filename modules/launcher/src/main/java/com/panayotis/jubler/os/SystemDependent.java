@@ -85,21 +85,21 @@ public class SystemDependent {
         String openBraces = withBraces ? "[" : "";
         String closeBraces = withBraces ? "]" : "";
         StringBuilder res = new StringBuilder();
-        if ((keymods & KeyEvent.META_MASK) != 0)
+        if ((keymods & KeyEvent.META_DOWN_MASK) != 0)
             res.append(openBraces).append(IS_MACOSX ? "\u2318" : "Meta").append(closeBraces).append("+");
-        if ((keymods & KeyEvent.ALT_MASK) != 0)
+        if ((keymods & KeyEvent.ALT_DOWN_MASK) != 0)
             res.append(openBraces).append(IS_MACOSX ? "\u2325" : "Alt").append(closeBraces).append("+");
-        if ((keymods & KeyEvent.CTRL_MASK) != 0)
+        if ((keymods & KeyEvent.CTRL_DOWN_MASK) != 0)
             res.append(openBraces).append(IS_MACOSX ? "\u2303" : "Ctrl").append(closeBraces).append("+");
-        if ((keymods & KeyEvent.SHIFT_MASK) != 0)
+        if ((keymods & KeyEvent.SHIFT_DOWN_MASK) != 0)
             res.append(openBraces).append(IS_MACOSX ? "\u21e7" : "Shift").append(closeBraces).append("+");
         return res.length() > 0 ? res.substring(0, res.length() - 1) : "";
     }
 
     public static int getDefaultKeyModifier() {
         if (IS_MACOSX)
-            return KeyEvent.META_MASK;
-        return KeyEvent.CTRL_MASK;
+            return KeyEvent.META_DOWN_MASK;
+        return KeyEvent.CTRL_DOWN_MASK;
     }
 
     public static int getBundleOrFileID() {
@@ -258,10 +258,10 @@ public class SystemDependent {
     public static KeyStroke getUpDownKeystroke(boolean down) {
         if (IS_MACOSX)
             return KeyStroke.getKeyStroke(down ? KeyEvent.VK_DOWN : KeyEvent.VK_UP,
-                    InputEvent.CTRL_MASK | InputEvent.ALT_MASK);
+                    InputEvent.CTRL_DOWN_MASK | InputEvent.ALT_DOWN_MASK);
         else
             return KeyStroke.getKeyStroke(down ? KeyEvent.VK_DOWN : KeyEvent.VK_UP,
-                    InputEvent.CTRL_MASK);
+                    InputEvent.CTRL_DOWN_MASK);
     }
 
     public static String getAssetExtension() {

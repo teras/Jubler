@@ -54,7 +54,7 @@ public class IncompatibleRecordTypeException extends Exception {
      * @param source The source of differences.
      * @param target The target of differences.
      */
-    public IncompatibleRecordTypeException(Class source, Class target) {
+    public IncompatibleRecordTypeException(Class<?> source, Class<?> target) {
         super(source.getName() + "\n" + __("and") + "\n" + target.getName());
     }
 }//end public class IncompatibleRecordType extends Exception

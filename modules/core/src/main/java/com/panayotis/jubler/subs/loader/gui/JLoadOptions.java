@@ -18,20 +18,21 @@ import javax.swing.JComboBox;
 public class JLoadOptions extends JFileOptions {
 
     private JRateChooser CFPS;
-    private JComboBox[] CEnc;
+    private JComboBox<String>[] CEnc;
 
     /**
      * Creates new form JLoadPrefs
      */
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public JLoadOptions() {
         super();
         CEnc = new JComboBox[3];
         for (int i = 0; i < CEnc.length; i++)
-            CEnc[i] = new JComboBox(AvailEncodings);
+            CEnc[i] = new JComboBox<>(AvailEncodings);
         CFPS = new JRateChooser();
         initComponents();
         for (int i = 0; i < CEnc.length; i++) {
-            CEnc[i] = new JComboBox(AvailEncodings);
+            CEnc[i] = new JComboBox<>(AvailEncodings);
             EncodingsP.add(CEnc[i]);
         }
         FPSPanel.add(CFPS, BorderLayout.CENTER);

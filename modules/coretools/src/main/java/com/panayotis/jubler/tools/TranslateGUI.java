@@ -22,12 +22,12 @@ public class TranslateGUI extends JPanel {
         initComponents();
         String[] names = tool.getTranslators().getNamesList();
         if (names != null) {
-            TransMachine.setModel(new DefaultComboBoxModel(names));
+            TransMachine.setModel(new DefaultComboBoxModel<>(names));
 
-            FromLang.setModel(new DefaultComboBoxModel(tool.getCurrentTranslator().getSourceLanguages()));
+            FromLang.setModel(new DefaultComboBoxModel<>(tool.getCurrentTranslator().getSourceLanguages()));
             FromLang.setSelectedItem(tool.getCurrentTranslator().getDefaultSourceLanguage());
 
-            ToLang.setModel(new DefaultComboBoxModel(tool.getCurrentTranslator().getDestinationLanguagesFor((Language) FromLang.getSelectedItem())));
+            ToLang.setModel(new DefaultComboBoxModel<>(tool.getCurrentTranslator().getDestinationLanguagesFor((Language) FromLang.getSelectedItem())));
             ToLang.setSelectedItem(tool.getCurrentTranslator().getDefaultDestinationLanguage());
         }
     }
@@ -42,7 +42,7 @@ public class TranslateGUI extends JPanel {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        TransMachine = new javax.swing.JComboBox();
+        TransMachine = new javax.swing.JComboBox<>();
         configureB = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -50,7 +50,7 @@ public class TranslateGUI extends JPanel {
         FromLang = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        ToLang = new javax.swing.JComboBox();
+        ToLang = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -135,8 +135,8 @@ public class TranslateGUI extends JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JComboBox<Language> FromLang;
-    javax.swing.JComboBox ToLang;
-    private javax.swing.JComboBox TransMachine;
+    javax.swing.JComboBox<Language> ToLang;
+    private javax.swing.JComboBox<String> TransMachine;
     private javax.swing.JButton configureB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

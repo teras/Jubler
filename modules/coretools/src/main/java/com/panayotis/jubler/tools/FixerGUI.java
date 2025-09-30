@@ -41,7 +41,7 @@ public class FixerGUI extends JPanel {
         jPanel7 = new javax.swing.JPanel();
         FixT = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
-        PushModelB = new javax.swing.JComboBox();
+        PushModelB = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         GapB = new javax.swing.JCheckBox();
         GapNum = new JFormattedTextField( new DecimalFormat("#######") );
@@ -78,7 +78,7 @@ public class FixerGUI extends JPanel {
         jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        PushModelB.setModel(new javax.swing.DefaultComboBoxModel(new String[] {
+        PushModelB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
             __("Evenly distribute subtitles"),
             __("Equally divide overriding duration"),
             __("Shift subtitles")
@@ -141,7 +141,7 @@ public class FixerGUI extends JPanel {
     public javax.swing.JFormattedTextField GapNum;
     private javax.swing.JPanel MaxTimeP;
     private javax.swing.JPanel MinTimeP;
-    javax.swing.JComboBox PushModelB;
+    javax.swing.JComboBox<String> PushModelB;
     javax.swing.JCheckBox SortB;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

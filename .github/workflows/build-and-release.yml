@@ -27,8 +27,7 @@ permissions:
   contents: write
 
 env:
-  JAVA_VERSION: '11'
-  MAVEN_OPTS: '-Xmx1024m'
+  JAVA_VERSION: '17'
 
 jobs:
   build:
@@ -48,34 +47,26 @@ jobs:
         java-version: ${{ env.JAVA_VERSION }}
         distribution: 'temurin'
 
-    - name: Cache Maven dependencies
+    - name: Cache Gradle dependencies
       uses: actions/cache@v4
       with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: ${{ runner.os }}-gradle-
 
     - name: Determine version
       id: version
       run: |
-        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-          VERSION="${{ github.event.inputs.version }}"
-        elif [ "${{ github.ref_type }}" = "tag" ]; then
-          VERSION="${GITHUB_REF#refs/tags/v}"
-        else
-          # For push to master, use version from pom.xml
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-        fi
+        # Use version from build.gradle.kts
+        VERSION=$(grep '^version = ' build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Building version: $VERSION"
 
-    - name: Set project version
-      run: |
-        ./make.sh version ${{ steps.version.outputs.version }}
-
     - name: Build Jubler JAR
       run: |
-        mvn clean install -DskipTests
+        gradle build -x test
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3

@@ -17,12 +17,12 @@ import java.util.stream.Collectors;
  */
 public class GenericsUtils {
 
-    public static Class getTypeArgument(Field field, int index) {
+    public static Class<?> getTypeArgument(Field field, int index) {
         try {
             return getClass(((ParameterizedType) field.getGenericType()).getActualTypeArguments()[index]);
         } catch (Throwable t1) {
             try {
-                return (Class) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[index];
+                return (Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[index];
             } catch (Throwable t2) {
                 DEBUG.debug(t2);
                 return null;
@@ -30,10 +30,10 @@ public class GenericsUtils {
         }
     }
 
-    public static Class getTypeArgument(Type type, int index) {
+    public static Class<?> getTypeArgument(Type type, int index) {
         try {
             if (type instanceof Class)
-                return (Class) type;
+                return (Class<?>) type;
             if (type instanceof ParameterizedType) {
                 return getClass(((ParameterizedType) type).getActualTypeArguments()[index]);
             }

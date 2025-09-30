@@ -140,10 +140,10 @@ public class JTimeFullSelection extends JTimeArea {
         bySelection = new javax.swing.JRadioButton();
         jPanel6 = new javax.swing.JPanel();
         byColor = new javax.swing.JRadioButton();
-        ColorSel = new javax.swing.JComboBox();
+        ColorSel = new javax.swing.JComboBox<>();
         StylePanel = new javax.swing.JPanel();
         byStyle = new javax.swing.JRadioButton();
-        StyleSel = new javax.swing.JComboBox();
+        StyleSel = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         byRange = new javax.swing.JRadioButton();
         TimePanel = new javax.swing.JPanel();
@@ -183,7 +183,7 @@ public class JTimeFullSelection extends JTimeArea {
         });
         jPanel6.add(byColor);
 
-        ColorSel.setModel(new javax.swing.DefaultComboBoxModel(SubEntry.MarkNames));
+        ColorSel.setModel(new javax.swing.DefaultComboBoxModel<>(SubEntry.MarkNames));
         ColorSel.setToolTipText(__("The subtitle color to use for selection"));
         ColorSel.setEnabled(false);
         jPanel6.add(ColorSel);
@@ -261,10 +261,10 @@ public class JTimeFullSelection extends JTimeArea {
     }//GEN-LAST:event_bySelectionActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox ColorSel;
+    private javax.swing.JComboBox<String> ColorSel;
     private javax.swing.JPanel SelectionPanel;
     private javax.swing.JPanel StylePanel;
-    private javax.swing.JComboBox StyleSel;
+    private javax.swing.JComboBox<SubStyle> StyleSel;
     private javax.swing.JPanel TimePanel;
     private javax.swing.ButtonGroup Type;
     protected javax.swing.JRadioButton byColor;

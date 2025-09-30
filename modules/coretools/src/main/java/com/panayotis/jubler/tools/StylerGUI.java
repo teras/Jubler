@@ -6,6 +6,7 @@
 
 package  com.panayotis.jubler.tools;
 
+import com.panayotis.jubler.subs.style.SubStyle;
 import javax.swing.JPanel;
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -24,7 +25,7 @@ public class StylerGUI extends JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        StyleSel = new javax.swing.JComboBox();
+        StyleSel = new javax.swing.JComboBox<>();
 
         setToolTipText("Select the color to use in order to mark the area");
         setLayout(new java.awt.BorderLayout());
@@ -37,7 +38,7 @@ public class StylerGUI extends JPanel {
         add(StyleSel, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JComboBox StyleSel;
+    javax.swing.JComboBox<SubStyle> StyleSel;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

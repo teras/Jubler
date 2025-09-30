@@ -10,19 +10,6 @@ import java.awt.*;
 
 import static java.awt.Cursor.*;
 
-enum MouseLocation {
-    OUT(getPredefinedCursor(DEFAULT_CURSOR)), // The mouse is positioned over an empty area
-    IN(getPredefinedCursor(HAND_CURSOR)), // The mouse is positioned over a subtitle entry
-    LEFT(getPredefinedCursor(W_RESIZE_CURSOR)), // The mouse is positioned over the start of a subtitle entry
-    RIGHT(getPredefinedCursor(E_RESIZE_CURSOR)); // The mouse is positioned over the end of a subtitle entry
-
-    final Cursor cursor;
-
-    MouseLocation(Cursor cursor) {
-        this.cursor = cursor;
-    }
-}
-
 class MouseResult {
 
     final MouseLocation location;
@@ -47,26 +34,5 @@ class MouseResult {
             else
                 component.setCursor(MouseLocation.IN.cursor);
         }
-    }
-}
-
-class SubInfo {
-
-    final int pos;
-    double startPercent, endPercent;
-    private final double initialStartPercent, initialEndPercent;
-
-    public SubInfo(int p, double s, double e) {
-        pos = p;
-        startPercent = initialStartPercent = s;
-        endPercent = initialEndPercent = e;
-    }
-
-    public void setDeltaStartPercent(double delta) {
-        startPercent = initialStartPercent + delta;
-    }
-
-    public void setDeltaEndPercent(double delta) {
-        endPercent = initialEndPercent + delta;
     }
 }

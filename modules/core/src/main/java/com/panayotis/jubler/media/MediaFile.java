@@ -122,6 +122,14 @@ public class MediaFile {
         return super.equals(o);
     }
 
+    @Override
+    public int hashCode() {
+        int result = vfile != null ? vfile.hashCode() : 0;
+        result = 31 * result + (afile != null ? afile.hashCode() : 0);
+        result = 31 * result + (cfile != null ? cfile.hashCode() : 0);
+        return result;
+    }
+
     public VideoFile getVideoFile() {
         return vfile;
     }

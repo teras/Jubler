@@ -23,7 +23,7 @@ import static com.panayotis.jubler.cmdline.CommandLine.getSubtitles;
 public class JoinEntries extends TimeBaseTool {
 
     public JoinEntries() {
-        super(true, new ToolMenu(__("Join entries"), "TJE", Location.CONTENTTOOL, KeyEvent.VK_EQUALS, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Join entries"), "TJE", Location.CONTENTTOOL, KeyEvent.VK_EQUALS, InputEvent.CTRL_DOWN_MASK));
     }
 
     @Override

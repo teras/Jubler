@@ -218,8 +218,8 @@ public class JStyleEditor extends javax.swing.JDialog {
         Save = new javax.swing.JButton();
         FontP = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        FontSize = new javax.swing.JComboBox();
-        FontName = new javax.swing.JComboBox();
+        FontSize = new javax.swing.JComboBox<>();
+        FontName = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         Bold = new javax.swing.JToggleButton();
         Italic = new javax.swing.JToggleButton();
@@ -235,7 +235,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         Advanced = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
-        BorderStyle = new javax.swing.JComboBox();
+        BorderStyle = new javax.swing.JComboBox<>();
         jPanel10 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         BorderSize = new javax.swing.JSpinner();
@@ -800,14 +800,14 @@ public class JStyleEditor extends javax.swing.JDialog {
     private javax.swing.JSpinner Angle;
     private javax.swing.JToggleButton Bold;
     private javax.swing.JSpinner BorderSize;
-    private javax.swing.JComboBox BorderStyle;
+    private javax.swing.JComboBox<String> BorderStyle;
     private javax.swing.JButton CancelB;
     private javax.swing.JButton Clone;
     private javax.swing.JButton Delete;
     private javax.swing.JPanel DirtyIndicator;
-    private javax.swing.JComboBox FontName;
+    private javax.swing.JComboBox<String> FontName;
     private javax.swing.JPanel FontP;
-    private javax.swing.JComboBox FontSize;
+    private javax.swing.JComboBox<Integer> FontSize;
     private javax.swing.JToggleButton Italic;
     private javax.swing.JPanel JDirPanel;
     private javax.swing.JSpinner LeftMargin;

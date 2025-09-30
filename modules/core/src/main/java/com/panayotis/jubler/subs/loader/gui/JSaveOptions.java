@@ -71,7 +71,7 @@ public class JSaveOptions extends JFileOptions {
         FPSPanelL = new javax.swing.JLabel();
         ControlsP = new javax.swing.JPanel();
         CEncP = new javax.swing.JPanel();
-        CEnc = new javax.swing.JComboBox(AvailEncodings);
+        CEnc = new javax.swing.JComboBox<>(AvailEncodings);
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
         setLayout(new java.awt.BorderLayout());
@@ -98,7 +98,7 @@ public class JSaveOptions extends JFileOptions {
         add(ControlsP, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox CEnc;
+    private javax.swing.JComboBox<String> CEnc;
     private javax.swing.JLabel CEncL;
     private javax.swing.JPanel CEncP;
     private javax.swing.JPanel ControlsP;

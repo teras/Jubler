@@ -62,14 +62,14 @@ public enum StyleType {
                 } catch (NumberFormatException e) {
                 }
                 DEBUG.debug("Error while parsing integral number " + val);
-                return new Integer(0);
+                return Integer.valueOf(0);
             case FORMAT_REAL:
                 try {
                     return ((Number) val).floatValue();
                 } catch (NumberFormatException e) {
                 }
                 DEBUG.debug("Error while parsing real number " + val);
-                return new Double(0f);
+                return Double.valueOf(0f);
         }
         return val;
     }

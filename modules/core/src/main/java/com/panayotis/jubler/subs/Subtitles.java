@@ -465,7 +465,7 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
         return is_text_type;
     }//end public boolean isTextType()
 
-    public boolean isRequiredToConvert(Class new_class) {
+    public boolean isRequiredToConvert(Class<?> new_class) {
         boolean is_required = false;
         try {
             for (SubEntry entry : sublist) {
@@ -498,7 +498,7 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
      * conversions are required, false otherwise.
      */
     @SuppressWarnings("UseSpecificCatch")
-    public boolean convert(Class target_class) {
+    public boolean convert(Class<?> target_class) {
         HeaderedTypeSubtitle target_hdr_sub;
 
         /**
@@ -523,7 +523,7 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
                 /**
                  * Create a new instance of the target using its class name.
                  */
-                SubEntry target_entry = (SubEntry) Class.forName(target_class_name).newInstance();
+                SubEntry target_entry = (SubEntry) Class.forName(target_class_name).getDeclaredConstructor().newInstance();
 
                 /**
                  * Check to see if the target created is an instance of headered

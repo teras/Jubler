@@ -26,7 +26,7 @@ public class ShortcutsModel extends AbstractTableModel {
 
     private final static String colnames[] = {__("Command"), __("Key")};
     private final static int DEFAULT_MOD = SystemDependent.getDefaultKeyModifier();
-    private final static int DISABLED_MOD = ~(KeyEvent.CTRL_MASK | KeyEvent.CTRL_DOWN_MASK);
+    private final static int DISABLED_MOD = ~(KeyEvent.CTRL_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK);
     //
     private ArrayList<MenuItem> current, original, undo;
     private int buffer_mod = 0;
@@ -116,13 +116,13 @@ public class ShortcutsModel extends AbstractTableModel {
     private int getModifierKey(int id) {
         switch (id) {
             case KeyEvent.VK_META:
-                return KeyEvent.META_MASK;
+                return KeyEvent.META_DOWN_MASK;
             case KeyEvent.VK_ALT:
-                return KeyEvent.ALT_MASK;
+                return KeyEvent.ALT_DOWN_MASK;
             case KeyEvent.VK_CONTROL:
-                return KeyEvent.CTRL_MASK;
+                return KeyEvent.CTRL_DOWN_MASK;
             case KeyEvent.VK_SHIFT:
-                return KeyEvent.SHIFT_MASK;
+                return KeyEvent.SHIFT_DOWN_MASK;
         }
         return -1;
     }
@@ -354,7 +354,7 @@ public class ShortcutsModel extends AbstractTableModel {
             }
 
             private static int getSysAccelerator(int newmod) {
-                if ((newmod & KeyEvent.CTRL_MASK) != 0) {
+                if ((newmod & KeyEvent.CTRL_DOWN_MASK) != 0) {
                     newmod &= DISABLED_MOD;
                     newmod |= DEFAULT_MOD;
                 }

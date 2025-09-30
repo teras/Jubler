@@ -24,7 +24,7 @@ public class SynchronizeGUI extends JPanel {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        JubSelector = new javax.swing.JComboBox();
+        JubSelector = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         OffsetS = new javax.swing.JSpinner();
@@ -64,7 +64,7 @@ public class SynchronizeGUI extends JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     javax.swing.JCheckBox InTextS;
     javax.swing.JCheckBox InTimeS;
-    javax.swing.JComboBox JubSelector;
+    javax.swing.JComboBox<String> JubSelector;
     javax.swing.JSpinner OffsetS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

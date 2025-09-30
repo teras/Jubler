@@ -65,7 +65,7 @@ public class JRateChooser extends JPanel {
     private void initComponents() {
 
         FromFPSB = new javax.swing.JButton();
-        FPSChooser = new javax.swing.JComboBox();
+        FPSChooser = new javax.swing.JComboBox<>();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -80,7 +80,7 @@ public class JRateChooser extends JPanel {
         add(FromFPSB, java.awt.BorderLayout.EAST);
 
         FPSChooser.setEditable(true);
-        FPSChooser.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15", "20", "23.976", "24", "25", "29.97", "30" }));
+        FPSChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "15", "20", "23.976", "24", "25", "29.97", "30" }));
         FPSChooser.setSelectedItem("25");
         FPSChooser.setToolTipText(__("Frames per second"));
         FPSChooser.addActionListener(new java.awt.event.ActionListener() {
@@ -116,7 +116,7 @@ public class JRateChooser extends JPanel {
             FPSChooser.setSelectedItem(fps);
     }//GEN-LAST:event_FromFPSBFPSBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox FPSChooser;
+    private javax.swing.JComboBox<String> FPSChooser;
     private javax.swing.JButton FromFPSB;
     // End of variables declaration//GEN-END:variables
 }

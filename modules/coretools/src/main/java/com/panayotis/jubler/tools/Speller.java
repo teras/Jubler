@@ -23,7 +23,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 public class Speller extends TimeBaseTool {
 
     public Speller() {
-        super(true, new ToolMenu(__("Spell check"), "TLL", Location.CONTENTTOOL, KeyEvent.VK_T, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Spell check"), "TLL", Location.CONTENTTOOL, KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK));
     }
 
     @Override

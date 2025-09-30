@@ -77,7 +77,7 @@ public abstract class SubFormat implements PluginItem<AvailSubFormats> {
     public SubFormat newInstance() {
         SubFormat new_one = null;
         try {
-            new_one = (SubFormat) Class.forName(getClass().getName()).newInstance();
+            new_one = (SubFormat) Class.forName(getClass().getName()).getDeclaredConstructor().newInstance();
         } catch (Exception ex) {
             DEBUG.logger.log(Level.SEVERE, ex.toString());
         }//end try/catch

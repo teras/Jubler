@@ -230,4 +230,9 @@ public class SubFile {
             return savefile.equals(((SubFile) o).savefile);
         return false;
     }
+
+    @Override
+    public int hashCode() {
+        return savefile != null ? savefile.hashCode() : 0;
+    }
 }

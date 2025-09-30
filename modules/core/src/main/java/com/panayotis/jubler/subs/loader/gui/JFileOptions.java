@@ -27,13 +27,13 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
     public static final String[] AvailEncodings;
 
     static {
-        SortedMap encs = Charset.availableCharsets();
+        SortedMap<String, Charset> encs = Charset.availableCharsets();
         AvailEncodings = new String[encs.size()];
         int pos;
         String item;
 
         pos = 0;
-        for (Iterator it = encs.keySet().iterator(); it.hasNext();) {
+        for (Iterator<String> it = encs.keySet().iterator(); it.hasNext();) {
             item = it.next().toString();
             AvailEncodings[pos++] = item;
         }
@@ -54,7 +54,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
         initComponents();
     }
 
-    protected void setListItem(JComboBox comp, String value) {
+    protected void setListItem(JComboBox<String> comp, String value) {
         comp.setSelectedItem(value);
         if (!comp.getSelectedItem().toString().equals(value))
             comp.setSelectedItem("US-ASCII");

@@ -56,7 +56,7 @@ public class ASpellOptions extends JExtBasicOptions {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        LangList = new javax.swing.JList();
+        LangList = new javax.swing.JList<>();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -143,7 +143,7 @@ public class ASpellOptions extends JExtBasicOptions {
     public ASpellDict getLanguage() {
         int which = LangList.getSelectedIndex();
         if (which >= 0)
-            return (ASpellDict) LangList.getModel().getElementAt(which);
+            return LangList.getModel().getElementAt(which);
         return null;
     }
 
@@ -154,7 +154,7 @@ public class ASpellOptions extends JExtBasicOptions {
         return language.lang;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList LangList;
+    private javax.swing.JList<ASpellDict> LangList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

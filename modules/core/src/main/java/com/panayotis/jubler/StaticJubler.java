@@ -7,6 +7,7 @@
 package  com.panayotis.jubler;
 
 import com.panayotis.jubler.os.JIDialog;
+import com.panayotis.jubler.os.SystemDependent;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -189,7 +190,7 @@ public class StaticJubler {
         JMenuItem item = new JMenuItem(text);
         item.setEnabled(enabled);
         if (counter >= 0)
-            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0 + counter, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+            item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0 + counter, SystemDependent.getDefaultKeyModifier()));
 
         final boolean isclone_f = isclone;
         final String text_f = text;

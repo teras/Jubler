@@ -31,4 +31,11 @@ public class StyleoverEvent {
         StyleoverEvent e = (StyleoverEvent) value;
         return e.value.equals(value) && e.position == position;
     }
+
+    @Override
+    public int hashCode() {
+        int result = value != null ? value.hashCode() : 0;
+        result = 31 * result + position;
+        return result;
+    }
 }

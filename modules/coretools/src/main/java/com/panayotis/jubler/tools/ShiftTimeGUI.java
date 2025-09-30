@@ -34,17 +34,17 @@ public class ShiftTimeGUI extends JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        CSign = new javax.swing.JComboBox();
+        CSign = new javax.swing.JComboBox<>();
 
         setBorder(SystemDependent.getBorder(__("Shift Subtitles")));
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        CSign.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " + ", " - " }));
+        CSign.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " + ", " - " }));
         CSign.setToolTipText(__("Either increase or decrease the time"));
         add(CSign, java.awt.BorderLayout.WEST);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JComboBox CSign;
+    javax.swing.JComboBox<String> CSign;
     // End of variables declaration//GEN-END:variables
 }

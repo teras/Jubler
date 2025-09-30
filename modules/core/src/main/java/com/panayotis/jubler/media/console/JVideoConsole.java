@@ -250,6 +250,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
     private final static int SUBREC_ABORT = 3;
 
     /* The procedure of subtitle recording. */
+    @SuppressWarnings("fallthrough")
     private void setSubRecStatus(int status) {
         switch (status) {
             case SUBREC_BEGIN:
@@ -277,7 +278,7 @@ public class JVideoConsole extends JDialog implements PlayerFeedback {
                     diagram.repaint();
                     parent.setDisableConsoleUpdate(false);
                 }
-
+                // fall through
             case SUBREC_ABORT:  // This part is executed by SUBREC_FINALIZE too !
                 checkValid(view.pause(false));
                 SubShow.setEditable(false);

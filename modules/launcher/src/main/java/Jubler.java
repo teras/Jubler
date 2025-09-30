@@ -27,7 +27,7 @@ public class Jubler {
         Thread.currentThread().setContextClassLoader(cl);
         try {
             Class<?> launcherClass = Class.forName(baseClass, true, cl);
-            Object launcher = launcherClass.newInstance();
+            Object launcher = launcherClass.getDeclaredConstructor().newInstance();
             launcherClass.getMethod("start", String[].class).invoke(launcher, (Object) args);
             if (isGUI)
                 SwingUtilities.invokeLater(Splash::finish);

@@ -164,7 +164,7 @@ public class Share implements CommonDef {
      * @param l collections to test
      * @return true of the collection is null or size is 0, false otherwise.
      */
-    public static boolean isEmpty(Collection l) {
+    public static boolean isEmpty(Collection<?> l) {
         return isNull(l) || (l.size() == 0);
     }
 
@@ -433,7 +433,7 @@ public class Share implements CommonDef {
         return value;
     }//end public static int parseInt(String data, int default_value)    
 
-    public static boolean isSameClass(Class c1, Class c2) {
+    public static boolean isSameClass(Class<?> c1, Class<?> c2) {
         try {
             String name1 = c1.getName();
             String name2 = c2.getName();

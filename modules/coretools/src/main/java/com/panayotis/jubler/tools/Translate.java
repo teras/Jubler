@@ -30,7 +30,7 @@ public class Translate extends TimeBaseTool {
     private Translator trans;
 
     public Translate() {
-        super(true, new ToolMenu(__("Translate"), "TTM", Location.CONTENTTOOL, KeyEvent.VK_E, InputEvent.CTRL_MASK));
+        super(true, new ToolMenu(__("Translate"), "TTM", Location.CONTENTTOOL, KeyEvent.VK_E, InputEvent.CTRL_DOWN_MASK));
     }
 
     @Override

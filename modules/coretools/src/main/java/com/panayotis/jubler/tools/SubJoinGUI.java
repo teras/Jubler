@@ -38,7 +38,7 @@ public class SubJoinGUI extends JPanel {
 
         Position = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        SubWindow = new javax.swing.JComboBox();
+        SubWindow = new javax.swing.JComboBox<>();
         RPrepend = new javax.swing.JRadioButton();
         RAppend = new javax.swing.JRadioButton();
         TShift = new javax.swing.JPanel();
@@ -74,7 +74,7 @@ public class SubJoinGUI extends JPanel {
     private javax.swing.ButtonGroup Position;
     javax.swing.JRadioButton RAppend;
     javax.swing.JRadioButton RPrepend;
-    javax.swing.JComboBox SubWindow;
+    javax.swing.JComboBox<String> SubWindow;
     private javax.swing.JPanel TShift;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables

@@ -16,7 +16,7 @@ public class SubEv implements Comparable<SubEv> {
         this.start = start;
     }
 
-    public boolean equals(Comparable other) {
+    public boolean equals(Comparable<?> other) {
         return compareTo((SubEv) other) == 0;
     }
 

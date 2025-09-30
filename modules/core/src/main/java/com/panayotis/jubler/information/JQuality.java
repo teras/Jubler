@@ -60,7 +60,7 @@ public class JQuality extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         ErrorColL = new javax.swing.JLabel();
-        ErrorColC = new javax.swing.JComboBox();
+        ErrorColC = new javax.swing.JComboBox<>();
         jPanel13 = new javax.swing.JPanel();
         spaceCharsC = new javax.swing.JCheckBox();
         newlineCharsC = new javax.swing.JCheckBox();
@@ -103,7 +103,7 @@ public class JQuality extends javax.swing.JDialog {
         ErrorColL.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 12));
         jPanel11.add(ErrorColL, java.awt.BorderLayout.WEST);
 
-        ErrorColC.setModel(new javax.swing.DefaultComboBoxModel(SubEntry.MarkNames));
+        ErrorColC.setModel(new javax.swing.DefaultComboBoxModel<>(SubEntry.MarkNames));
         ErrorColC.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ErrorColCActionPerformed(evt);
@@ -254,7 +254,7 @@ public class JQuality extends javax.swing.JDialog {
     }//GEN-LAST:event_otherCharsCActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox ErrorColC;
+    private javax.swing.JComboBox<String> ErrorColC;
     private javax.swing.JLabel ErrorColL;
     private javax.swing.JLabel FillPercentL;
     private javax.swing.JTextField FillPercentT;

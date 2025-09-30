@@ -34,7 +34,7 @@ public class JUnsaved extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        UnsavedL = new JList(unsaved);
+        UnsavedL = new JList<>(unsaved);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -49,7 +49,7 @@ public class JUnsaved extends javax.swing.JPanel {
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList UnsavedL;
+    private javax.swing.JList<String> UnsavedL;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

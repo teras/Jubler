@@ -633,7 +633,7 @@ public class JImage implements CommonDef {
         Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
         if (!writers.hasNext())
             throw new IllegalStateException("No writers found");
-        ImageWriter writer = (ImageWriter) writers.next();
+        ImageWriter writer = writers.next();
         // Create the ImageWriteParam to compress the image.
         ImageWriteParam param = writer.getDefaultWriteParam();
         param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);

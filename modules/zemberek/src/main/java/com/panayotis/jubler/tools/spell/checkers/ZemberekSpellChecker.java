@@ -56,13 +56,13 @@ public class ZemberekSpellChecker extends SpellChecker implements PluginCollecti
     @SuppressWarnings("unchecked")
     public void start() throws ExtProgramException {
         try {
-            Class zemberekClass = Class.forName("net.zemberek.erisim.Zemberek");
-            Class dilAyarlariClass = Class.forName("net.zemberek.yapi.DilAyarlari");
-            Class turkiyeTurkcesiClass = Class.forName("net.zemberek.tr.yapi.TurkiyeTurkcesi");
+            Class<?> zemberekClass = Class.forName("net.zemberek.erisim.Zemberek");
+            Class<?> dilAyarlariClass = Class.forName("net.zemberek.yapi.DilAyarlari");
+            Class<?> turkiyeTurkcesiClass = Class.forName("net.zemberek.tr.yapi.TurkiyeTurkcesi");
             kelimeDenetle = zemberekClass.getDeclaredMethod("kelimeDenetle", String.class);
             oner = zemberekClass.getDeclaredMethod("oner", String.class);
-            Constructor zemberekConstructor = zemberekClass.getDeclaredConstructor(dilAyarlariClass);
-            Object turkiyeTurkcesi = turkiyeTurkcesiClass.newInstance();
+            Constructor<?> zemberekConstructor = zemberekClass.getDeclaredConstructor(dilAyarlariClass);
+            Object turkiyeTurkcesi = turkiyeTurkcesiClass.getDeclaredConstructor().newInstance();
             zemberek = zemberekConstructor.newInstance(turkiyeTurkcesi);
             return;
         } catch (Throwable t) {

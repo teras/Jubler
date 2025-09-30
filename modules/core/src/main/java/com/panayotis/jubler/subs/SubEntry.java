@@ -908,9 +908,8 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
             current_text = b.toString();
             setText(current_text);
         } catch (Exception ex) {
-        } finally {
-            return is_added;
         }
+        return is_added;
     }//end public void appendTextLine(String line)
 
     public boolean isOneWord() {

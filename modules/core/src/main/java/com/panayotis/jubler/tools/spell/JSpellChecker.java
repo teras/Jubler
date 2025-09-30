@@ -184,7 +184,7 @@ public class JSpellChecker extends JDialog {
         jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        SugList = new javax.swing.JList();
+        SugList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Check spelling");
@@ -439,7 +439,7 @@ public class JSpellChecker extends JDialog {
     private javax.swing.JTextPane Sentence;
     private javax.swing.JLabel Spacer;
     private javax.swing.JButton StopB;
-    private javax.swing.JList SugList;
+    private javax.swing.JList<String> SugList;
     private javax.swing.JPanel SuggestionsPanel;
     private javax.swing.JButton Unknown;
     private javax.swing.JPanel WordPanel;

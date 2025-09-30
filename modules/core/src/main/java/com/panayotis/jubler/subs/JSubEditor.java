@@ -59,7 +59,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private final static Color INFOC_E = new Color(255, 84, 53);
 
     private static final String TOOLTIP = "<b>" + __("How to navigate with keyboard") + "</b><br/>"
-            + "- " + __("Change focus from Text area to Editor with {0}+D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_MASK, true).trim()) + "<br/>"
+            + "- " + __("Change focus from Text area to Editor with {0}+D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_DOWN_MASK, true).trim()) + "<br/>"
             + "- " + __("Change focus from one timing to the other with the [ENTER] key") + "<br/>"
             + "- " + __("Change the currently selected lock with [PAGE-UP]/[PAGE-DOWN] keys") + "<br/>"
             + "- " + __("Add/substract timing values with [ARROW-UP]/[ARROW-DOWN] keys") + "<br/>"
@@ -582,7 +582,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         ShowStyleB = new javax.swing.JToggleButton();
         ToolsLockB = new javax.swing.JToggleButton();
         jPanel6 = new javax.swing.JPanel();
-        StyleListC = new javax.swing.JComboBox();
+        StyleListC = new javax.swing.JComboBox<>();
         EditB = new javax.swing.JButton();
         crossP = new javax.swing.JPanel();
         supportL = new javax.swing.JLabel();
@@ -1104,7 +1104,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel PSFinish;
     private javax.swing.JPanel PSStart;
     private javax.swing.JToggleButton ShowStyleB;
-    private javax.swing.JComboBox StyleListC;
+    private javax.swing.JComboBox<SubStyle> StyleListC;
     public javax.swing.JPanel StyleP;
     private javax.swing.JTextPane SubText;
     private javax.swing.JToggleButton TimeB;
