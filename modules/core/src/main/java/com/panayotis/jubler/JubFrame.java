@@ -6,7 +6,6 @@
 
 package com.panayotis.jubler;
 
-import com.panayotis.jubler.information.HelpBrowser;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.information.JQuality;
 import com.panayotis.jubler.media.MediaFile;
@@ -99,8 +98,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     boolean disable_consoles_update = false;
     /* Whether this file needs saving or not */
     private boolean unsaved_data = false;
-    /* Help browser */
-    private static final HelpBrowser faqbrowse;
     /* Window frame icon */
     public final static List<Image> FrameIcons;
 
@@ -113,7 +110,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
          * initialize. */
         /* prefs = new JPreferences(); */
         prefs = null;
-        faqbrowse = new HelpBrowser("help/jubler-faq.html");
         FrameIcons = Theme.findFrameImages("logo");
         fdialog = new JSubFileDialog();
     }
@@ -1375,7 +1371,11 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }// </editor-fold>//GEN-END:initComponents
 
     private void FAQHMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FAQHMActionPerformed
-        faqbrowse.setVisible(true);
+        try {
+            Desktop.getDesktop().browse(new URI("https://jubler.org/faq.html"));
+        } catch (Exception e) {
+            DEBUG.debug("Error opening FAQ URL: " + e.getMessage());
+        }
     }//GEN-LAST:event_FAQHMActionPerformed
 
     private void QuitFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_QuitFMActionPerformed

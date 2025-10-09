@@ -88,14 +88,6 @@ tasks.register<Copy>("copyResources") {
         include("*.json")
         into("lib/i18n")
     }
-    from("resources/help/cache") {
-        include("jubler-faq.html")
-        into("lib/help")
-    }
-    from("resources/help") {
-        include("question.png")
-        into("lib/help")
-    }
     from(".") {
         include("README.md")
     }
