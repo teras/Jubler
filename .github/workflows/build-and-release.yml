@@ -30,12 +30,11 @@ env:
   JAVA_VERSION: '17'
 
 jobs:
-  build:
+  # Prepare and cache common build artifacts
+  prepare:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.version.outputs.version }}
-      artifacts: ${{ steps.build.outputs.artifacts }}
-      artifact-id: ${{ steps.upload.outputs.artifact-id }}
 
     steps:
     - name: Checkout code
@@ -64,20 +63,114 @@ jobs:
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Building version: $VERSION"
 
-    - name: Build Jubler JAR
+    - name: Build Jubler distribution
       run: |
-        gradle build -x test
+        gradle clean assembleDistribution
+
+    - name: Upload build artifacts for platform packaging
+      uses: actions/upload-artifact@v4
+      with:
+        name: jubler-base-build-${{ steps.version.outputs.version }}
+        path: build/jubler/
+        retention-days: 1
+
+  # Parallel build matrix for all platforms
+  build-platform:
+    needs: prepare
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - name: generic
+            artifact: "Jubler-*.tar.gz"
+            display: "Generic (tar.gz)"
+          - name: linux
+            artifact: "Jubler-*-x86_64.AppImage"
+            display: "Linux AppImage"
+          - name: macos
+            artifact: "Jubler-*.dmg"
+            display: "macOS DMG"
+          - name: windows
+            artifact: "Jubler-*-x64.exe"
+            display: "Windows Installer"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download base build
+      uses: actions/download-artifact@v4
+      with:
+        name: jubler-base-build-${{ needs.prepare.outputs.version }}
+        path: build/jubler/
 
     - name: Set up Docker Buildx
+      if: matrix.target.name == 'windows'
       uses: docker/setup-buildx-action@v3
       with:
         driver: docker-container
 
-    - name: Set up tools
+    - name: Set up tools and HFS+ support
       run: |
-        sudo apt-get update
-        sudo apt-get install -y curl wget
+        echo "===== Initial system info ====="
+        uname -r
+        echo ""
 
+        echo "===== Installing packages ====="
+        sudo apt-get update
+        sudo apt-get install -y curl wget hfsplus hfsprogs hfsutils
+
+        echo ""
+        echo "===== Installing linux-modules-extra (contains HFS+ module) ====="
+        KERNEL_VERSION=$(uname -r)
+        echo "Current kernel: $KERNEL_VERSION"
+
+        # Install modules-extra FIRST before trying to load
+        sudo apt-get install -y "linux-modules-extra-${KERNEL_VERSION}" || {
+          echo "❌ Failed to install linux-modules-extra-${KERNEL_VERSION}"
+          echo "Available linux-modules-extra packages:"
+          apt-cache search linux-modules-extra | grep -E "^linux-modules-extra-.*generic" | head -5
+          exit 1
+        }
+
+        echo ""
+        echo "===== Checking if HFS+ module file exists ====="
+        if find /lib/modules/${KERNEL_VERSION} -name "hfsplus.ko*" 2>/dev/null | grep -q .; then
+          echo "✅ HFS+ module file found:"
+          find /lib/modules/${KERNEL_VERSION} -name "hfsplus.ko*"
+        else
+          echo "❌ HFS+ module file NOT found"
+          exit 1
+        fi
+
+        echo ""
+        echo "===== Loading HFS+ module ====="
+        if sudo modprobe hfsplus; then
+          echo "✅ HFS+ module loaded successfully"
+        else
+          echo "❌ Failed to load HFS+ module"
+          dmesg | tail -20
+          exit 1
+        fi
+
+        echo ""
+        echo "===== Verification ====="
+        echo "Loaded modules:"
+        lsmod | grep hfsplus || { echo "❌ Module not in lsmod"; exit 1; }
+
+        echo ""
+        echo "Available filesystems:"
+        cat /proc/filesystems | grep hfs || { echo "❌ HFS not in /proc/filesystems"; exit 1; }
+
+        echo ""
+        echo "✅ HFS+ support confirmed and ready"
+
+    - name: Install kpartx (for GPT partition support)
+      run: |
+        echo "===== Installing kpartx for GPT partition handling ====="
+        sudo apt-get install -y kpartx
+        echo "✅ kpartx installed"
 
     - name: Download and setup KPacker
       run: |
@@ -91,40 +184,272 @@ jobs:
         echo "Testing KPacker..."
         $HOME/Works/System/bin/arch/linux-x86_64/kpacker --help
 
-    - name: Build artifacts
+    - name: Build ${{ matrix.target.display }}
       id: build
       run: |
-        # Set environment to force KPacker to use proper Docker configuration
+        # Set environment for Docker/KPacker
         export DOCKER_BUILDKIT=1
         export DOCKER_CLI_EXPERIMENTAL=enabled
         export BUILDX_NO_DEFAULT_ATTESTATIONS=1
 
-        # Build Windows artifact with KPacker
-        echo "Building Windows artifact..."
-        echo "KPacker command will be:"
-        echo "$HOME/Works/System/bin/arch/linux-x86_64/kpacker --source=modules/installer/target/jubler/lib --out=dist --name=Jubler --version=9.0.0-ALPHA --mainjar=jubler.jar --target=WindowsX64 --icon=resources/logo/newlogo.svg --skip-chown"
-        ./make.sh build windows
+        # Build the platform target
+        echo "Building ${{ matrix.target.name }} artifact..."
+        ./make.sh build ${{ matrix.target.name }}
 
         # List created artifacts
         echo "📦 Created artifacts:"
-        ls -la dist/
+        ls -lah dist/
 
-        # Export artifact list
-        echo "artifacts<<EOF" >> $GITHUB_OUTPUT
-        ls -la dist/
-        echo "EOF" >> $GITHUB_OUTPUT
+        # Find the created artifact
+        ARTIFACT_PATH=$(ls dist/${{ matrix.target.artifact }} 2>/dev/null | head -1)
+        if [ -z "$ARTIFACT_PATH" ]; then
+          echo "❌ Error: Artifact not found matching pattern: ${{ matrix.target.artifact }}"
+          exit 1
+        fi
+        echo "artifact_path=$ARTIFACT_PATH" >> $GITHUB_OUTPUT
+        echo "✅ Successfully created: $ARTIFACT_PATH"
 
-    - name: Upload artifacts
+    - name: Upload ${{ matrix.target.display }} artifact
       id: upload
       uses: actions/upload-artifact@v4
       with:
-        name: jubler-artifacts-${{ steps.version.outputs.version }}
-        path: dist/Jubler-${{ steps.version.outputs.version }}-x64.exe
+        name: jubler-${{ matrix.target.name }}-${{ needs.prepare.outputs.version }}
+        path: ${{ steps.build.outputs.artifact_path }}
         retention-days: 30
 
+  sign-macos:
+    needs: [prepare, build-platform]
+    runs-on: macos-latest
+    if: github.repository_owner == 'teras' # Replace with your username
+    environment: ${{ github.event.inputs.prerelease == 'false' && 'production' || 'test' }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download macOS build
+      uses: actions/download-artifact@v4
+      with:
+        name: jubler-macos-${{ needs.prepare.outputs.version }}
+        path: dist/
+
+    - name: Sign and compress macOS DMG
+      env:
+        MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+        MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+        APPLE_NOTARY_JSON: ${{ secrets.APPLE_NOTARY_JSON }}
+      run: |
+        # Find the uncompressed DMG
+        DMG_FILE=$(ls dist/Jubler-*.dmg | head -1)
+        if [ -z "$DMG_FILE" ]; then
+          echo "❌ Error: DMG file not found"
+          exit 1
+        fi
+
+        echo "📦 Found DMG: $DMG_FILE"
+
+         # Setup signing certificate (required)
+         if [ -z "$MACOS_CERTIFICATE" ]; then
+           echo "❌ Error: MACOS_CERTIFICATE secret is not configured"
+           exit 1
+         fi
+
+         echo "🔐 Setting up code signing certificate..."
+
+          # Generate random keychain password (temporary, only for this job)
+          KEYCHAIN_PWD=$(openssl rand -base64 32)
+
+          # Create keychain
+          security create-keychain -p "$KEYCHAIN_PWD" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "$KEYCHAIN_PWD" build.keychain
+          security set-keychain-settings -t 3600 -u build.keychain
+
+          # Import certificate
+          echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
+          security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PWD" build.keychain
+
+          # Find certificate identity
+          IDENTITY=$(security find-identity -v -p codesigning build.keychain | grep "Developer ID Application" | head -1 | awk '{print $2}')
+          echo "✅ Certificate identity: $IDENTITY"
+
+           # Mount DMG
+           echo "📀 Mounting DMG..."
+           hdiutil attach "$DMG_FILE" -mountpoint /Volumes/Jubler
+
+           # Check for resource forks and extended attributes
+           echo "🔍 Checking for resource forks and extended attributes..."
+           echo "Files with extended attributes:"
+           find /Volumes/Jubler/Jubler.app -type f -exec ls -la@ {} \; | grep -v "^[^@]*$" | head -20
+           echo ""
+           echo "Common extended attributes found:"
+           xattr -r /Volumes/Jubler/Jubler.app | head -20
+           echo ""
+           echo "Checking for quarantine attributes:"
+           xattr -d com.apple.quarantine /Volumes/Jubler/Jubler.app 2>/dev/null || echo "No quarantine attributes found"
+
+           # Clean extended attributes and resource forks
+           echo "🧹 Cleaning extended attributes and resource forks..."
+           xattr -cr /Volumes/Jubler/Jubler.app
+
+           # Verify cleanup
+           echo "✅ Verifying cleanup..."
+           if xattr -r /Volumes/Jubler/Jubler.app | grep -q .; then
+             echo "⚠️  Some extended attributes remain:"
+             xattr -r /Volumes/Jubler/Jubler.app
+           else
+             echo "✅ All extended attributes removed"
+           fi
+
+           # Sign all binaries in the .app bundle
+           echo "✍️  Signing app bundle contents..."
+           find /Volumes/Jubler/Jubler.app -type f \( -name "*.dylib" -o -name "*.jnilib" -o -perm +111 \) -exec codesign --force --sign "$IDENTITY" --timestamp --options runtime {} \; || true
+
+           # Sign native libraries inside JAR files
+           echo "✍️  Signing native libraries inside JAR files..."
+           # Create temporary directory for JAR extraction
+           TEMP_DIR=$(mktemp -d)
+           trap "rm -rf $TEMP_DIR" EXIT
+
+           # Find and sign libraries in JAR files
+           find /Volumes/Jubler/Jubler.app -name "*.jar" -type f | while read -r jar_file; do
+             echo "Processing JAR: $jar_file"
+
+             # Check if JAR contains native libraries
+             if unzip -l "$jar_file" | grep -q "\.dylib\|\.jnilib\|\.so$"; then
+               echo "Found native libraries in: $jar_file"
+
+               # Extract entire JAR to temp directory
+               JAR_TEMP="$TEMP_DIR/$(basename "$jar_file" .jar)"
+               mkdir -p "$JAR_TEMP"
+               unzip -q "$jar_file" -d "$JAR_TEMP"
+
+               # Sign any native libraries found
+               find "$JAR_TEMP" -type f \( -name "*.dylib" -o -name "*.jnilib" -o -name "*.so" \) | while read -r lib_file; do
+                 echo "Signing library: $lib_file"
+                 codesign --force --sign "$IDENTITY" --timestamp --options runtime "$lib_file" || echo "Failed to sign $lib_file"
+               done
+
+               # Recreate JAR with signed libraries
+               echo "Recreating JAR with signed libraries: $jar_file"
+               (cd "$JAR_TEMP" && jar -cf "$jar_file" .) || echo "Failed to recreate JAR: $jar_file"
+
+               # Clean up
+               rm -rf "$JAR_TEMP"
+             fi
+           done
+
+           # Clean up temp directory
+           rm -rf "$TEMP_DIR"
+
+           # Sign the app bundle
+          echo "✍️  Signing app bundle..."
+          codesign --force --deep --sign "$IDENTITY" --timestamp --options runtime /Volumes/Jubler/Jubler.app
+
+          # Verify signature
+          codesign --verify --deep --strict --verbose=2 /Volumes/Jubler/Jubler.app
+
+          # Unmount
+          echo "📤 Unmounting DMG..."
+          hdiutil detach /Volumes/Jubler
+
+         # Sign the DMG itself
+         echo "✍️  Signing DMG..."
+         codesign --force --sign "$IDENTITY" --timestamp "$DMG_FILE"
+
+         # Always compress DMG (convert to read-only compressed format)
+         echo "🗜️  Compressing DMG..."
+         COMPRESSED_DMG="${DMG_FILE%.dmg}-compressed.dmg"
+         hdiutil convert "$DMG_FILE" -format UDZO -o "$COMPRESSED_DMG"
+         rm "$DMG_FILE"
+         mv "$COMPRESSED_DMG" "$DMG_FILE"
+
+         echo "✅ DMG compressed successfully"
+
+    - name: Upload signed macOS DMG
+      uses: actions/upload-artifact@v4
+      with:
+        name: jubler-signed-macos-${{ needs.prepare.outputs.version }}
+        path: dist/*.dmg
+        retention-days: 30
+
+    - name: Notarize macOS DMG
+      env:
+        APPLE_NOTARY_JSON: ${{ secrets.APPLE_NOTARY_JSON }}
+      run: |
+         # Find the DMG file
+         DMG_FILE=$(ls dist/Jubler-*.dmg | head -1)
+         if [ -z "$DMG_FILE" ]; then
+           echo "❌ Error: DMG file not found"
+           exit 1
+         fi
+
+         # Notarize (required)
+         if [ -z "$APPLE_NOTARY_JSON" ]; then
+           echo "❌ Error: APPLE_NOTARY_JSON secret is not configured"
+           exit 1
+         fi
+
+         echo "📮 Notarizing with Apple (API Key)..."
+
+           # Parse JSON and extract values
+           APPLE_API_ISSUER=$(echo "$APPLE_NOTARY_JSON" | grep -o '"issuer_id"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"issuer_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+           APPLE_API_KEY_ID=$(echo "$APPLE_NOTARY_JSON" | grep -o '"key_id"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"key_id"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+           APPLE_API_KEY=$(echo "$APPLE_NOTARY_JSON" | grep -o '"private_key"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"private_key"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
+
+           echo "  Issuer ID: $APPLE_API_ISSUER"
+           echo "  Key ID: $APPLE_API_KEY_ID"
+
+           # Create private key file
+           mkdir -p ~/private_keys
+           echo "-----BEGIN PRIVATE KEY-----" > ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
+           echo "$APPLE_API_KEY" >> ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
+           echo "-----END PRIVATE KEY-----" >> ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
+           chmod 600 ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
+
+           # Submit for notarization
+           NOTARY_OUTPUT=$(xcrun notarytool submit "$DMG_FILE" \
+             --key ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8 \
+             --key-id "$APPLE_API_KEY_ID" \
+             --issuer "$APPLE_API_ISSUER" \
+             --wait)
+
+           echo "$NOTARY_OUTPUT"
+
+           # Extract submission ID for log retrieval
+           SUBMISSION_ID=$(echo "$NOTARY_OUTPUT" | grep "id:" | head -1 | awk '{print $2}')
+           echo "Submission ID: $SUBMISSION_ID"
+
+           # Get detailed notarization logs if submission failed
+           if echo "$NOTARY_OUTPUT" | grep -q "Invalid"; then
+             echo "❌ Notarization failed. Fetching detailed logs..."
+             xcrun notarytool log "$SUBMISSION_ID" \
+               --key ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8 \
+               --key-id "$APPLE_API_KEY_ID" \
+               --issuer "$APPLE_API_ISSUER"
+           fi
+
+           # Clean up API key
+           rm -rf ~/private_keys
+
+           # Staple notarization ticket
+           echo "📎 Stapling notarization ticket..."
+           xcrun stapler staple "$DMG_FILE"
+
+         echo "✅ Notarization complete"
+
+    - name: Re-upload notarized macOS DMG
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: jubler-signed-macos-${{ needs.prepare.outputs.version }}
+        path: dist/*.dmg
+        retention-days: 30
+        overwrite: 'true'
 
   sign-windows:
-    needs: build
+    needs: [prepare, build-platform]
     runs-on: windows-latest
     if: github.repository_owner == 'teras' # Replace with your username
     environment: ${{ github.event.inputs.prerelease == 'false' && 'production' || 'test' }}
@@ -133,8 +458,33 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Download Windows build
+      uses: actions/download-artifact@v4
+      with:
+        name: jubler-windows-${{ needs.prepare.outputs.version }}
+        path: dist/
+
     - name: Prepare signed artifact directory
       run: New-Item -ItemType Directory -Force -Path "dist-signed"
+
+    - name: Get Windows artifact ID
+      id: get-artifact
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: context.runId,
+          });
+          const windowsArtifact = artifacts.data.artifacts.find(a =>
+            a.name === `jubler-windows-${{ needs.prepare.outputs.version }}`
+          );
+          if (!windowsArtifact) {
+            core.setFailed('Windows artifact not found');
+            return;
+          }
+          core.setOutput('artifact-id', windowsArtifact.id);
 
     - name: Submit SignPath signing request
       id: signpath
@@ -145,7 +495,7 @@ jobs:
         project-slug: Jubler
         signing-policy-slug: ${{ github.event.inputs.prerelease == 'false' && 'release-signing' || 'test-signing' }}
         artifact-configuration-slug: jubler-exe-in-zip
-        github-artifact-id: ${{ needs.build.outputs.artifact-id }}
+        github-artifact-id: ${{ steps.get-artifact.outputs.artifact-id }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
         output-artifact-directory: dist-signed
 
@@ -153,104 +503,143 @@ jobs:
       run: |
         Get-ChildItem -Path "dist-signed"
 
-    - name: Upload signed artifacts
+    - name: Upload signed Windows installer
       uses: actions/upload-artifact@v4
       with:
-        name: jubler-signed-artifacts-${{ needs.build.outputs.version }}
+        name: jubler-signed-windows-${{ needs.prepare.outputs.version }}
         path: dist-signed/*
         retention-days: 30
 
   release:
-    needs: [build, sign-windows]
+    needs: [prepare, build-platform, sign-macos, sign-windows]
     runs-on: ubuntu-latest
-    if: always() && (needs.build.result == 'success') && (github.event.inputs.auto_release == 'true' || github.event_name == 'push')
+    if: always() && needs.prepare.result == 'success' && needs.build-platform.result == 'success' && (github.event.inputs.auto_release == 'true' || github.event_name == 'push')
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Download unsigned artifacts (fallback)
+    - name: Download all platform artifacts
       uses: actions/download-artifact@v4
       with:
-        name: jubler-artifacts-${{ needs.build.outputs.version }}
-        path: dist/
-
-    - name: Download signed artifacts (if available)
-      uses: actions/download-artifact@v4
-      if: needs.sign-windows.result == 'success'
-      with:
-        name: jubler-signed-artifacts-${{ needs.build.outputs.version }}
-        path: dist-signed/
+        pattern: jubler-*-${{ needs.prepare.outputs.version }}
+        path: artifacts/
+        merge-multiple: false
 
     - name: Prepare release artifacts
       run: |
         mkdir -p release-artifacts
 
-        # Use signed artifacts if available, otherwise use unsigned
-        if [ -d "dist-signed" ] && [ "$(ls -A dist-signed)" ]; then
-          echo "Using signed artifacts"
-          cp dist-signed/* release-artifacts/ || true
-          # Copy non-Windows artifacts from unsigned dist
-          cp dist/*.AppImage release-artifacts/ 2>/dev/null || true
-          cp dist/*.tar.gz release-artifacts/ 2>/dev/null || true
-          cp dist/*.dmg release-artifacts/ 2>/dev/null || true
+        echo "📦 Downloaded artifacts:"
+        ls -laR artifacts/
+
+        # Copy all platform builds
+        echo "Copying platform artifacts..."
+        cp artifacts/jubler-generic-*/* release-artifacts/ 2>/dev/null || echo "⚠️  No generic artifacts"
+        cp artifacts/jubler-linux-*/* release-artifacts/ 2>/dev/null || echo "⚠️  No Linux artifacts"
+
+        # Use signed macOS artifact if available, otherwise use unsigned
+        if [ -d "artifacts/jubler-signed-macos-${{ needs.prepare.outputs.version }}" ] && [ "$(ls -A artifacts/jubler-signed-macos-${{ needs.prepare.outputs.version }})" ]; then
+          echo "✅ Using signed macOS artifact"
+          cp artifacts/jubler-signed-macos-*/* release-artifacts/ 2>/dev/null || echo "⚠️  No signed macOS artifacts"
         else
-          echo "Using unsigned artifacts"
-          cp dist/* release-artifacts/
+          echo "⚠️  Using unsigned macOS artifact (signing may have failed or been skipped)"
+          cp artifacts/jubler-macos-*/* release-artifacts/ 2>/dev/null || echo "⚠️  No macOS artifacts"
         fi
 
-        ls -la release-artifacts/
+        # Use signed Windows artifact if available, otherwise use unsigned
+        if [ -d "artifacts/jubler-signed-windows-${{ needs.prepare.outputs.version }}" ] && [ "$(ls -A artifacts/jubler-signed-windows-${{ needs.prepare.outputs.version }})" ]; then
+          echo "✅ Using signed Windows artifact"
+          cp artifacts/jubler-signed-windows-*/* release-artifacts/ 2>/dev/null || echo "⚠️  No signed Windows artifacts"
+        else
+          echo "⚠️  Using unsigned Windows artifact (signing may have failed or been skipped)"
+          cp artifacts/jubler-windows-*/* release-artifacts/ 2>/dev/null || echo "⚠️  No Windows artifacts"
+        fi
+
+        echo "📋 Final release artifacts:"
+        ls -lah release-artifacts/
 
     - name: Set prerelease flag
       id: prerelease
       run: |
-        # Always publish Actions builds as prereleases so they stay off the front page
-        echo "prerelease=true" >> $GITHUB_OUTPUT
+        # Check if version contains ALPHA, BETA, or RC
+        VERSION="${{ needs.prepare.outputs.version }}"
+        if [[ "$VERSION" =~ (ALPHA|BETA|RC) ]]; then
+          echo "prerelease=true" >> $GITHUB_OUTPUT
+          echo "Marking as prerelease: $VERSION"
+        else
+          # Use input if provided, otherwise default to false for stable releases
+          PRERELEASE="${{ github.event.inputs.prerelease }}"
+          echo "prerelease=${PRERELEASE:-false}" >> $GITHUB_OUTPUT
+        fi
 
-    - name: Publish pre-release
+    - name: Publish release
       uses: ncipollo/release-action@v1
       with:
-        tag: "v${{ needs.build.outputs.version }}"
-        name: "Jubler v${{ needs.build.outputs.version }} (Alpha)"
+        tag: "v${{ needs.prepare.outputs.version }}"
+        name: "Jubler v${{ needs.prepare.outputs.version }}"
         draft: false
         prerelease: ${{ steps.prerelease.outputs.prerelease }}
         allowUpdates: true
         removeArtifacts: true
-        makeLatest: false
+        makeLatest: ${{ steps.prerelease.outputs.prerelease == 'false' }}
         artifacts: release-artifacts/*
-        artifactErrorsFailBuild: true
+        artifactErrorsFailBuild: false
         body: |
-          🎉 **Jubler v${{ needs.build.outputs.version }}** is here!
+          🎉 **Jubler v${{ needs.prepare.outputs.version }}** is here!
 
-          ⚠️ **This is an alpha release** - Please test thoroughly before using in production.
+          ${{ contains(needs.prepare.outputs.version, 'ALPHA') && '⚠️ **This is an alpha release** - Please test thoroughly before using in production.' || '' }}
+          ${{ contains(needs.prepare.outputs.version, 'BETA') && '⚠️ **This is a beta release** - Please report any issues you encounter.' || '' }}
 
           ## Downloads
 
-          - **Windows**: `Jubler-${{ needs.build.outputs.version }}-x64.exe` ${{ needs.sign-windows.result == 'success' && '🔒 *Digitally Signed*' || '' }}
-          - **Linux**: `Jubler-${{ needs.build.outputs.version }}-x86_64.AppImage`
-          - **macOS**: `Jubler-${{ needs.build.outputs.version }}.dmg`
-          - **Generic**: `Jubler-${{ needs.build.outputs.version }}.tar.gz`
-          - **JAR Package**: `Jubler-${{ needs.build.outputs.version }}-jars.zip` *(Always available)*
+          - **Windows**: `Jubler-${{ needs.prepare.outputs.version }}-x64.exe` ${{ needs.sign-windows.result == 'success' && '🔒 *Digitally Signed*' || '' }}
+          - **Linux**: `Jubler-${{ needs.prepare.outputs.version }}-x86_64.AppImage`
+          - **macOS**: `Jubler-${{ needs.prepare.outputs.version }}.dmg` ${{ needs.sign-macos.result == 'success' && '🔒 *Code Signed & Notarized*' || '' }}
+          - **Generic**: `Jubler-${{ needs.prepare.outputs.version }}.tar.gz` *(Cross-platform JAR package)*
+
+          ## Installation Instructions
+
+          ### Windows
+          Download and run the `.exe` installer. Windows may show a SmartScreen warning for unsigned builds.
+
+          ### Linux
+          ```bash
+          chmod +x Jubler-${{ needs.prepare.outputs.version }}-x86_64.AppImage
+          ./Jubler-${{ needs.prepare.outputs.version }}-x86_64.AppImage
+          ```
+
+          ### macOS
+          Download and open the `.dmg` file, then drag Jubler to your Applications folder.
+
+          ### Generic (All Platforms)
+          Requires Java 8 or later:
+          ```bash
+          tar -xzf Jubler-${{ needs.prepare.outputs.version }}.tar.gz
+          cd Jubler-${{ needs.prepare.outputs.version }}
+          java -jar lib/jubler.jar
+          ```
 
           ## What's Changed
 
-          ${{ github.event.head_commit.message || 'See release notes above for detailed changes.' }}
+          ${{ github.event.head_commit.message || 'See commit history for detailed changes.' }}
 
           ---
 
-          **Note**: If platform-specific installers fail to build, JAR package is always available as a fallback.
-
-          **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ needs.build.outputs.version }}...HEAD
+          **Full Changelog**: https://github.com/${{ github.repository }}/commits/v${{ needs.prepare.outputs.version }}
         token: ${{ secrets.GITHUB_TOKEN }}
 
   cleanup:
-    needs: [build, sign-windows, release]
+    needs: [prepare, build-platform, sign-macos, sign-windows, release]
     runs-on: ubuntu-latest
     if: always() && (needs.release.result == 'success' || needs.release.result == 'skipped')
 
     steps:
-    - name: Delete unsigned artifacts only
+    - name: Delete temporary build artifacts
       uses: geekyeggo/delete-artifact@v5
       with:
-        name: jubler-artifacts-${{ needs.build.outputs.version }}
+        name: |
+          jubler-base-build-${{ needs.prepare.outputs.version }}
+          jubler-windows-${{ needs.prepare.outputs.version }}
+          jubler-macos-${{ needs.prepare.outputs.version }}
         failOnError: false

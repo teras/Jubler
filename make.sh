@@ -21,7 +21,7 @@ valid_targets=("windows" "linux" "generic" "macos" "all")
 # KPacker configuration
 kpacker_bin="$HOME/Works/System/bin/arch/linux-x86_64/kpacker"
 jubler_source="$script_dir/build/jubler/lib"
-jubler_icon="$script_dir/resources/logo/newlogo.svg"
+jubler_icon="$script_dir/resources/logo/logo.svg"
 
 display_help() {
     echo -e "This is a helper script for building Jubler:"
@@ -186,9 +186,10 @@ build_macos() {
         output_dir="$dist_dir/temp_macos"
     fi
 
-    # Use KPacker to create macOS DMG with template
-    dmg_template="$script_dir/resources/installer/platform/dmg_mac.zip"
-    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --dmg-template="$dmg_template"
+    # Use KPacker to create macOS DMG with template (uncompressed for CI/CD signing)
+    # KPacker auto-detects CI/CD environment and uses sudo when needed
+    dmg_template="$script_dir/resources/installer/dmg_mac.zip"
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --dmg-template="$dmg_template" --no-dmg-compress
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -200,7 +201,7 @@ build_macos() {
     fi
 
     if [ -e "$dist_dir"/Jubler-*.dmg ]; then
-        echo -e "${GREEN}macOS DMG created successfully.${NC}"
+        echo -e "${GREEN}macOS DMG (uncompressed) created successfully.${NC}"
     else
         echo -e "${RED}Error:${NC} Could not create macOS DMG."
         exit 1
