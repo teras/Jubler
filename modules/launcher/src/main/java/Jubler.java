@@ -10,13 +10,16 @@ import com.panayotis.jubler.os.DynamicClassLoader;
 import com.panayotis.jubler.os.ExceptionHandler;
 
 import javax.swing.*;
+import java.util.Arrays;
 
 public class Jubler {
 
     public static void main(String[] args) {
         /* Before the slightest code execution, we HAVE to grab uncaught exceptions */
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        if (args.length > 0)
+        boolean smartCLI = false;
+        if (args != null) for (String arg : args) smartCLI = smartCLI || arg.startsWith("--");
+        if (smartCLI)
             initApplication("com.panayotis.jubler.cmdline.CommandLine", args, false);  // Skip GUI for test mode
         else
             Splash.launch(() -> initApplication("com.panayotis.jubler.Launcher", args, true));
