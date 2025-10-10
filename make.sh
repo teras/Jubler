@@ -22,6 +22,10 @@ valid_targets=("windows" "linux" "generic" "macos" "all")
 kpacker_bin="$HOME/Works/System/bin/arch/linux-x86_64/kpacker"
 jubler_source="$script_dir/build/jubler/lib"
 jubler_icon="$script_dir/resources/logo/logo.svg"
+installer_icon="$script_dir/resources/logo/installer.svg"
+subfile_icon="$script_dir/resources/logo/subfile.svg"
+document_extensions="srt,vtt,ass,ssa,ttml,dfxp,itt,txt,sub,stl,xml,sbv"
+document_name="Jubler subtitle file"
 
 display_help() {
     echo -e "This is a helper script for building Jubler:"
@@ -63,6 +67,7 @@ version_action() {
 #    java -jar $dist_dir/.Komac.jar update --version=$version
 }
 
+
 build_windows() {
     echo -e "${GREEN}Building for Windows...${NC}"
     cd "$script_dir"
@@ -82,7 +87,7 @@ build_windows() {
     fi
 
     # Use KPacker to create Windows installer
-    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=WindowsX64 --icon="$jubler_icon"
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=WindowsX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -117,7 +122,7 @@ build_linux() {
     fi
 
     # Use KPacker to create Linux x64 AppImage
-    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxX64 --icon="$jubler_icon"
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -152,7 +157,7 @@ build_generic() {
     fi
 
     # Use KPacker to create Generic package
-    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=Generic --icon="$jubler_icon"
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=Generic --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -189,7 +194,7 @@ build_macos() {
     # Use KPacker to create macOS DMG with template (uncompressed for CI/CD signing)
     # KPacker auto-detects CI/CD environment and uses sudo when needed
     dmg_template="$script_dir/resources/installer/dmg_mac.zip"
-    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --dmg-template="$dmg_template" --no-dmg-compress
+    "$kpacker_bin" --source="$jubler_source" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --install-icon="$installer_icon" --dmg-template="$dmg_template" --no-dmg-compress --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
