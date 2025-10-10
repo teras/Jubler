@@ -99,11 +99,70 @@ tasks.register<Copy>("copyResources") {
     into(layout.buildDirectory.dir("jubler"))
 }
 
+tasks.register<Copy>("copyPlatformExtras") {
+    group = "distribution"
+    description = "Copies platform-specific native libraries to distribution directories"
+
+    dependsOn("copyDependencies", "copyModuleJars", "copyResources")
+
+    from("resources/installer/extra/linux64/lib") {
+        into("jubler-linux64/lib")
+    }
+    from("resources/installer/extra/macos/lib") {
+        into("jubler-macos/lib")
+    }
+    from("resources/installer/extra/win64/lib") {
+        into("jubler-win64/lib")
+    }
+
+    from(layout.buildDirectory.dir("jubler/lib")) {
+        into("jubler-linux64/lib")
+    }
+    from(layout.buildDirectory.dir("jubler/lib")) {
+        into("jubler-macos/lib")
+    }
+    from(layout.buildDirectory.dir("jubler/lib")) {
+        into("jubler-win64/lib")
+    }
+    from(layout.buildDirectory.dir("jubler/lib")) {
+        into("jubler-generic/lib")
+    }
+
+    from(layout.buildDirectory.file("jubler/README.md")) {
+        into("jubler-linux64")
+    }
+    from(layout.buildDirectory.file("jubler/LICENCE.txt")) {
+        into("jubler-linux64")
+    }
+    from(layout.buildDirectory.file("jubler/README.md")) {
+        into("jubler-macos")
+    }
+    from(layout.buildDirectory.file("jubler/LICENCE.txt")) {
+        into("jubler-macos")
+    }
+    from(layout.buildDirectory.file("jubler/README.md")) {
+        into("jubler-win64")
+    }
+    from(layout.buildDirectory.file("jubler/LICENCE.txt")) {
+        into("jubler-win64")
+    }
+    from(layout.buildDirectory.file("jubler/README.md")) {
+        into("jubler-generic")
+    }
+    from(layout.buildDirectory.file("jubler/LICENCE.txt")) {
+        into("jubler-generic")
+    }
+
+    into(layout.buildDirectory)
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 tasks.register("assembleDistribution") {
     group = "distribution"
     description = "Assembles the complete Jubler distribution (equivalent to 'mvn clean install -P generic -DskipTests')"
 
-    dependsOn("copyDependencies", "copyModuleJars", "copyResources")
+    dependsOn("copyDependencies", "copyModuleJars", "copyResources", "copyPlatformExtras")
 }
 
 // Platform-specific distribution profiles
