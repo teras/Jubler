@@ -34,6 +34,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -106,6 +108,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Download base build
       uses: actions/download-artifact@v4
@@ -234,6 +238,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Download macOS build
       uses: actions/download-artifact@v4
@@ -465,6 +471,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Download Windows build
       uses: actions/download-artifact@v4
@@ -526,6 +534,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Download all platform artifacts
       uses: actions/download-artifact@v4
@@ -567,7 +577,7 @@ jobs:
         echo "📋 Final release artifacts:"
         ls -lah release-artifacts/
 
-     - name: Set prerelease flag
+    - name: Set prerelease flag
       id: prerelease
       run: |
         # Always mark as prerelease (alpha)
@@ -586,48 +596,7 @@ jobs:
         makeLatest: false
         artifacts: release-artifacts/*
         artifactErrorsFailBuild: false
-        body: |
-          🎉 **Jubler v${{ needs.prepare.outputs.version }}** is here!
-
-          ${{ contains(needs.prepare.outputs.version, 'ALPHA') && '⚠️ **This is an alpha release** - Please test thoroughly before using in production.' || '' }}
-          ${{ contains(needs.prepare.outputs.version, 'BETA') && '⚠️ **This is a beta release** - Please report any issues you encounter.' || '' }}
-
-          ## Downloads
-
-          - **Windows**: `Jubler-${{ needs.prepare.outputs.version }}-x64.exe` ${{ needs.sign-windows.result == 'success' && '🔒 *Digitally Signed*' || '' }}
-          - **Linux**: `Jubler-${{ needs.prepare.outputs.version }}-x86_64.AppImage`
-          - **macOS**: `Jubler-${{ needs.prepare.outputs.version }}.dmg` ${{ needs.sign-macos.result == 'success' && '🔒 *Code Signed & Notarized*' || '' }}
-          - **Generic**: `Jubler-${{ needs.prepare.outputs.version }}.tar.gz` *(Cross-platform JAR package)*
-
-          ## Installation Instructions
-
-          ### Windows
-          Download and run the `.exe` installer. Windows may show a SmartScreen warning for unsigned builds.
-
-          ### Linux
-          ```bash
-          chmod +x Jubler-${{ needs.prepare.outputs.version }}-x86_64.AppImage
-          ./Jubler-${{ needs.prepare.outputs.version }}-x86_64.AppImage
-          ```
-
-          ### macOS
-          Download and open the `.dmg` file, then drag Jubler to your Applications folder.
-
-          ### Generic (All Platforms)
-          Requires Java 8 or later:
-          ```bash
-          tar -xzf Jubler-${{ needs.prepare.outputs.version }}.tar.gz
-          cd Jubler-${{ needs.prepare.outputs.version }}
-          java -jar lib/jubler.jar
-          ```
-
-          ## What's Changed
-
-          ${{ github.event.head_commit.message || 'See commit history for detailed changes.' }}
-
-          ---
-
-          **Full Changelog**: https://github.com/${{ github.repository }}/commits/v${{ needs.prepare.outputs.version }}
+        bodyFile: .github/release-template.md
         token: ${{ secrets.GITHUB_TOKEN }}
 
   cleanup:

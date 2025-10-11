@@ -1,0 +1,16 @@
+- Dark theme support throughout the application with complete light and dark mode theming
+- Migrated to Gradle build system with GitHub Actions CI/CD for automated builds and releases
+- Added WebVTT subtitle format support
+- Improved XML-based subtitle formats (TTML, DFXP) with enhanced millisecond precision
+- Modernized toolbar icons and user interface elements
+- Quality control metrics added to the information dialog
+- CPS (characters-per-second) display directly in the subtitle table
+- Command-line tools for automated workflows and terminal operations
+- Subtitle preview enhanced with shift/alt key support and snapping functionality
+- Significantly improved HiDPI scaling support across all platforms
+- Unified preferences system with import/export capabilities, consolidating all settings in one location
+- Selection ranges now remembered across sessions
+- Improved external tool integration (FFmpeg, YouTube)
+- Enhanced regular expression search capabilities
+- Better security for Azure Translate key storage
+- Fixed compilation warnings, null pointer exceptions, and statistics display issues

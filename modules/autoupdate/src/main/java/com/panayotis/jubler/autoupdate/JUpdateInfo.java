@@ -93,10 +93,11 @@ public class JUpdateInfo extends javax.swing.JDialog {
                 + "<br/>" + __("New version is") + " <b>" + AutoUpdater.newerVersions.get(0).version + "</b><br/><br/>"
                 + "Changes:<br/>");
         for (VersionData it : AutoUpdater.newerVersions) {
+            String formattedDescription = formatDescription(it.description);
             txt.append("  <div class=\"entry\">\n" +
                     "    <div class=\"version\">" + it.version + "</div>\n" +
                     "    <div class=\"text\">\n" +
-                    "      <p>" + it.description + "</p>\n" +
+                    "      " + formattedDescription + "\n" +
                     "    </div>\n" +
                     "  </div>\n");
         }
@@ -184,6 +185,31 @@ public class JUpdateInfo extends javax.swing.JDialog {
     private void OKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKBActionPerformed
         setVisible(false);
     }//GEN-LAST:event_OKBActionPerformed
+
+    private static String formatDescription(String description) {
+        if (description == null || description.isEmpty())
+            return "";
+        
+        // Check if description contains markdown bullet lists
+        if (description.contains("\n- ") || description.startsWith("- ")) {
+            // New format: markdown lists
+            StringBuilder html = new StringBuilder("<ul style=\"margin-left: 0; padding-left: 15px;\">\n");
+            String[] lines = description.split("\n");
+            
+            for (String line : lines) {
+                String trimmed = line.trim();
+                if (trimmed.startsWith("- ")) {
+                    html.append("<li>").append(trimmed.substring(2)).append("</li>\n");
+                }
+            }
+            
+            html.append("</ul>");
+            return html.toString();
+        } else {
+            // Old format: plain text
+            return "<p>" + description.replace("\n", "<br/>") + "</p>";
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton OKB;

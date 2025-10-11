@@ -153,7 +153,6 @@ public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
 
     private void showVersions(List<VersionData> releases) {
         VersionData current = new VersionData(JAbout.getCurrentVersion());
-//        VersionData current = new VersionData("5.0.0");
         List<VersionData> newer = releases.stream().filter(it -> current.compareTo(it) > 0).collect(Collectors.toList());
         if (!newer.isEmpty())
             SwingUtilities.invokeLater(() -> syncInvoke(newer));
