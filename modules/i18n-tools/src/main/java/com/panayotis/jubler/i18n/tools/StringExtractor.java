@@ -42,10 +42,10 @@ public class StringExtractor {
 
         System.out.println("Found " + strings.size() + " unique translatable strings");
 
-        // Create source map (English -> English)
+        // Create source map (English -> empty string)
         Map<String, String> sourceMap = new LinkedHashMap<>();
         for (String s : strings) {
-            sourceMap.put(s, s);
+            sourceMap.put(s, "");
         }
 
         // Write to jubler-source.json
