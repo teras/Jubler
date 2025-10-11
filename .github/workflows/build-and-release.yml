@@ -12,11 +12,6 @@ on:
         description: 'Version to release (e.g., 8.0.1)'
         required: true
         type: string
-      prerelease:
-        description: 'Mark as prerelease (alpha)'
-        required: true
-        type: boolean
-        default: true
       auto_release:
         description: 'Automatically create GitHub release'
         required: true
@@ -58,14 +53,27 @@ jobs:
     - name: Determine version
       id: version
       run: |
-        # Use version from build.gradle.kts
-        VERSION=$(grep '^version = ' build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
+        # Use version from latest git tag, fallback to build.gradle.kts if no tags exist
+        git fetch --tags
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+        
+        if [ -n "$LATEST_TAG" ]; then
+          # Remove 'v' or 'V' prefix if present
+          VERSION=${LATEST_TAG#v}
+          VERSION=${VERSION#V}
+          echo "Using version from git tag: $VERSION"
+        else
+          # Fallback to build.gradle.kts
+          VERSION=$(grep '^version = ' build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
+          echo "No git tags found, using version from build.gradle.kts: $VERSION"
+        fi
+        
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Building version: $VERSION"
 
     - name: Build Jubler distribution
       run: |
-        gradle clean assembleDistribution
+        gradle clean assembleDistribution -Pversion=${{ steps.version.outputs.version }}
 
     - name: Upload build artifacts for platform packaging
       uses: actions/upload-artifact@v4
@@ -221,7 +229,7 @@ jobs:
     needs: [prepare, build-platform]
     runs-on: macos-latest
     if: github.repository_owner == 'teras' # Replace with your username
-    environment: ${{ github.event.inputs.prerelease == 'false' && 'production' || 'test' }}
+    environment: test
 
     steps:
     - name: Checkout code
@@ -452,7 +460,7 @@ jobs:
     needs: [prepare, build-platform]
     runs-on: windows-latest
     if: github.repository_owner == 'teras' # Replace with your username
-    environment: ${{ github.event.inputs.prerelease == 'false' && 'production' || 'test' }}
+    environment: test
 
     steps:
     - name: Checkout code
@@ -493,7 +501,7 @@ jobs:
         api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
         organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
         project-slug: Jubler
-        signing-policy-slug: ${{ github.event.inputs.prerelease == 'false' && 'release-signing' || 'test-signing' }}
+        signing-policy-slug: test-signing
         artifact-configuration-slug: jubler-exe-in-zip
         github-artifact-id: ${{ steps.get-artifact.outputs.artifact-id }}
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -559,19 +567,12 @@ jobs:
         echo "📋 Final release artifacts:"
         ls -lah release-artifacts/
 
-    - name: Set prerelease flag
+     - name: Set prerelease flag
       id: prerelease
       run: |
-        # Check if version contains ALPHA, BETA, or RC
-        VERSION="${{ needs.prepare.outputs.version }}"
-        if [[ "$VERSION" =~ (ALPHA|BETA|RC) ]]; then
-          echo "prerelease=true" >> $GITHUB_OUTPUT
-          echo "Marking as prerelease: $VERSION"
-        else
-          # Use input if provided, otherwise default to false for stable releases
-          PRERELEASE="${{ github.event.inputs.prerelease }}"
-          echo "prerelease=${PRERELEASE:-false}" >> $GITHUB_OUTPUT
-        fi
+        # Always mark as prerelease (alpha)
+        echo "prerelease=true" >> $GITHUB_OUTPUT
+        echo "Marking as prerelease (alpha): ${{ needs.prepare.outputs.version }}"
 
     - name: Publish release
       uses: ncipollo/release-action@v1
@@ -582,7 +583,7 @@ jobs:
         prerelease: ${{ steps.prerelease.outputs.prerelease }}
         allowUpdates: true
         removeArtifacts: true
-        makeLatest: ${{ steps.prerelease.outputs.prerelease == 'false' }}
+        makeLatest: false
         artifacts: release-artifacts/*
         artifactErrorsFailBuild: false
         body: |

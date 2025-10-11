@@ -1,9 +1,13 @@
+import java.util.concurrent.TimeUnit
+
 plugins {
     java
 }
 
 group = "com.panayotis.jubler"
-version = "9.0.0-ALPHA"
+version = (project.findProperty("version") as String?)
+    ?.takeIf { it.isNotEmpty() && it != "unspecified" }
+    ?: getVersionFromGit()
 
 val longVersion by extra("7.0.1.0")
 val releaseVersion by extra("1325")
@@ -179,3 +183,21 @@ val arm32Dist: String by project.extra { "" }
 val arm64Dist: String by project.extra { "" }
 
 val makeappExt = if (System.getProperty("os.name").lowercase().contains("mac")) "mac" else "linux"
+
+fun getVersionFromGit(): String {
+    val process = ProcessBuilder("git", "describe", "--tags", "--abbrev=0")
+        .directory(rootProject.projectDir)
+        .redirectOutput(ProcessBuilder.Redirect.PIPE)
+        .redirectError(ProcessBuilder.Redirect.PIPE)
+        .start()
+
+    process.waitFor(5, TimeUnit.SECONDS)
+
+    if (process.exitValue() == 0) {
+        val gitTag = process.inputStream.bufferedReader().readText().trim()
+        return gitTag.removePrefix("v").removePrefix("V")
+    } else {
+        val error = process.errorStream.bufferedReader().readText()
+        throw GradleException("Failed to get version from git tag: $error")
+    }
+}
