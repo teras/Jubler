@@ -1131,7 +1131,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         HelpM.setText(__("&Help"));
 
-        DonationsHM.setText(__("Donations"));
+        DonationsHM.setText(__("Donation"));
         DonationsHM.setName("ignore"); // NOI18N
         DonationsHM.addActionListener(formListener);
         HelpM.add(DonationsHM);

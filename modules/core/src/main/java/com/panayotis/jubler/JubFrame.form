@@ -1191,7 +1191,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="DonationsHM">
               <Properties>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="__(&quot;Donations&quot;)" type="code"/>
+                  <Connection code="__(&quot;Donation&quot;)" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="ignore" noResource="true"/>
               </Properties>

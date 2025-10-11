@@ -55,6 +55,8 @@ public class Options {
     private static final String TIMESTAMP_TOOLTIPS_DISABLED = "ui.tooltips.timestamp.disabled";
     private static ThemeVariation themeVariation;
     private static final String USE_THEME_VARIATION = "ui.theme.variation";
+    private static String language;
+    private static final String LANGUAGE_TAG = "ui.language";
 
     static {
         errorColor = JublerPrefs.getInt(ERRORCOLOR_TAG, 1);
@@ -76,6 +78,7 @@ public class Options {
         } catch (Exception e) {
             themeVariation = ThemeVariation.AUTO;
         }
+        language = JublerPrefs.getString(LANGUAGE_TAG, "auto");
     }
 
     static {
@@ -183,6 +186,15 @@ public class Options {
     public static void setThemeVariation(ThemeVariation variation) {
         JublerPrefs.set(USE_THEME_VARIATION, variation.name());
         themeVariation = variation;
+    }
+
+    public static String getLanguage() {
+        return language;
+    }
+
+    public static void setLanguage(String lang) {
+        JublerPrefs.set(LANGUAGE_TAG, lang);
+        language = lang;
     }
 
     public static void setErrorColor(int newcolor) {

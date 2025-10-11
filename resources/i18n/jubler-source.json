@@ -168,7 +168,7 @@
   "Display/hide subtitle timings": "",
   "Do not use this": "",
   "Do you want to quit without saving?": "",
-  "Donations": "",
+  "Donation": "",
   "Duration": "",
   "Duration in milliseconds": "",
   "Duration of the subtitle": "",
@@ -700,5 +700,7 @@
   "{0} executable was not found.": "",
   "{0} options": "",
   "{0} path": "",
-  "{0} plugin": ""
+  "{0} plugin": "",
+  "Automatic": "",
+  "Language": ""
 }

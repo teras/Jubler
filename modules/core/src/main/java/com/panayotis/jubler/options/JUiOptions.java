@@ -19,6 +19,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
     private float oldScaling = Float.POSITIVE_INFINITY;
     private boolean oldTooltipsDisabled;
     private ThemeVariation oldThemeVariation;
+    private String oldLanguage;
 
     /**
      * Creates new form JExternalToolsOptions
@@ -27,6 +28,34 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         initComponents();
         for (ThemeVariation v : ThemeVariation.values())
             themesC.addItem(v);
+        
+        languageC.addItem(new LanguageOption("auto", __("Automatic"), "flag-global"));
+        languageC.insertItemAt(null, 1);
+        languageC.addItem(new LanguageOption("cs", "Čeština", "flag-cs"));
+        languageC.addItem(new LanguageOption("de", "Deutsch", "flag-de"));
+        languageC.addItem(new LanguageOption("el", "Ελληνικά", "flag-el"));
+        languageC.addItem(new LanguageOption("en", "English", "flag-en"));
+        languageC.addItem(new LanguageOption("es", "Español", "flag-es"));
+        languageC.addItem(new LanguageOption("fr", "Français", "flag-fr"));
+        languageC.addItem(new LanguageOption("it", "Italiano", "flag-it"));
+        languageC.addItem(new LanguageOption("nl", "Nederlands", "flag-nl"));
+        languageC.addItem(new LanguageOption("pt", "Português", "flag-pt"));
+        languageC.addItem(new LanguageOption("sr", "Српски", "flag-sr"));
+        languageC.addItem(new LanguageOption("tr", "Türkçe", "flag-tr"));
+        
+        languageC.setRenderer(new LanguageCellRenderer());
+        
+        languageC.addActionListener(e -> {
+            if (languageC.getSelectedItem() == null) {
+                for (int i = 0; i < languageC.getItemCount(); i++) {
+                    if (languageC.getItemAt(i) != null) {
+                        languageC.setSelectedIndex(i);
+                        break;
+                    }
+                }
+            }
+        });
+        
         if (!SystemDependent.shouldSupportChangeScaling()) {
             layoutP.remove(scalingP);
             layoutP.remove(scalingF);
@@ -38,9 +67,18 @@ public class JUiOptions extends JPanel implements OptionsHolder {
     public void loadPreferences() {
         oldTooltipsDisabled = Options.isTimestampTooltipsDisabled();
         oldThemeVariation = Options.getThemeVariation();
+        oldLanguage = Options.getLanguage();
 
         tooltipsC.setSelected(oldTooltipsDisabled);
         themesC.setSelectedItem(oldThemeVariation);
+        
+        for (int i = 0; i < languageC.getItemCount(); i++) {
+            LanguageOption option = languageC.getItemAt(i);
+            if (option != null && option.getCode().equals(oldLanguage)) {
+                languageC.setSelectedIndex(i);
+                break;
+            }
+        }
 
         if (SystemDependent.shouldSupportChangeScaling()) {
             float scaling = Options.getScaling();
@@ -55,6 +93,14 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         boolean shouldShowMessage = false;
         Options.setTimestampTooltipsDisabled(tooltipsC.isSelected());
         Options.setThemeVariation((ThemeVariation) themesC.getSelectedItem());
+        
+        LanguageOption selectedLanguage = (LanguageOption) languageC.getSelectedItem();
+        if (selectedLanguage != null) {
+            Options.setLanguage(selectedLanguage.getCode());
+            if (!oldLanguage.equals(selectedLanguage.getCode()))
+                shouldShowMessage = true;
+        }
+        
         if (oldTooltipsDisabled != tooltipsC.isSelected() || oldThemeVariation != themesC.getSelectedItem())
             shouldShowMessage = true;
         if (SystemDependent.shouldSupportChangeScaling()) {
@@ -115,6 +161,10 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         themesC = new javax.swing.JComboBox<>();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16), new java.awt.Dimension(0, 16));
+        jPanel8 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        languageC = new javax.swing.JComboBox<>();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -145,6 +195,15 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         jPanel7.add(themesC, java.awt.BorderLayout.CENTER);
 
         layoutP.add(jPanel7);
+        layoutP.add(filler3);
+
+        jPanel8.setLayout(new java.awt.BorderLayout(8, 0));
+
+        jLabel2.setText(__("Language"));
+        jPanel8.add(jLabel2, java.awt.BorderLayout.WEST);
+        jPanel8.add(languageC, java.awt.BorderLayout.CENTER);
+
+        layoutP.add(jPanel8);
 
         add(layoutP, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -153,9 +212,13 @@ public class JUiOptions extends JPanel implements OptionsHolder {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JComboBox<LanguageOption> languageC;
     private javax.swing.JPanel layoutP;
     private javax.swing.Box.Filler scalingF;
     private javax.swing.JTextField scalingFactorT;

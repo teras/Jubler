@@ -7,6 +7,7 @@
 package  com.panayotis.jubler.i18n;
 
 import com.eclipsesource.json.Json;
+import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.os.DEBUG;
 
 import java.io.File;
@@ -28,7 +29,15 @@ public class I18N {
     }
 
     private static void populateLanguage() {
-        String ls = Locale.getDefault().getLanguage();
+        String selectedLang = JublerPrefs.getString("ui.language", "auto");
+        
+        String ls;
+        if ("auto".equals(selectedLang)) {
+            ls = Locale.getDefault().getLanguage();
+        } else {
+            ls = selectedLang;
+        }
+        
         if (!ls.equals("en")) {
             String ll = ls + "_" + Locale.getDefault().getCountry();
             for (String p : new String[]{
