@@ -110,13 +110,13 @@ tasks.register<Copy>("copyPlatformExtras") {
     dependsOn("copyDependencies", "copyModuleJars", "copyResources")
 
     from("resources/installer/extra/linux64/lib") {
-        into("jubler-linux64/lib")
+        into("jubler-linux64/lib/lib")
     }
     from("resources/installer/extra/macos/lib") {
-        into("jubler-macos/lib")
+        into("jubler-macos/lib/lib")
     }
     from("resources/installer/extra/win64/lib") {
-        into("jubler-win64/lib")
+        into("jubler-win64/lib/lib")
     }
 
     from(layout.buildDirectory.dir("jubler/lib")) {

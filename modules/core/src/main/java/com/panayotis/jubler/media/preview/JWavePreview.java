@@ -136,8 +136,11 @@ public class JWavePreview extends JPanel implements DecoderListener {
         /* Create new panels */
         panels = new WavePanel[audio.channels()];
         for (int i = 0; i < panels.length; i++) {
-            panels[i] = new WavePanel(audio.getChannel(i), background[i % 2]);
-            add(panels[i]);
+            float[][] channel = audio.getChannel(i);
+            if (channel != null) {
+                panels[i] = new WavePanel(channel, background[i % 2]);
+                add(panels[i]);
+            }
         }
         validate();
     }
