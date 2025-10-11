@@ -41,7 +41,12 @@ public class I18N {
                 File json = new File(AppPath, p);
                 if (json.isFile()) {
                     try {
-                        Json.parse(new FileReader(json)).asObject().forEach(member -> transl.put(member.getName(), member.getValue().asString()));
+                        Json.parse(new FileReader(json)).asObject().forEach(member -> {
+                            String value = member.getValue().asString();
+                            if (!value.isEmpty()) {
+                                transl.put(member.getName(), value);
+                            }
+                        });
                         DEBUG.debug("Using language " + json.getName().substring(0, json.getName().length() - 5));
                         return;
                     } catch (Exception ignored) {

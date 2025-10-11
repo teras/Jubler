@@ -13,7 +13,8 @@ include(
     ":vlcj-jubler",
     ":zemberek",
     ":azuretranslate",
-    ":autoupdate"
+    ":autoupdate",
+    ":i18n-tools"
 )
 
 // Map module names to their actual directory paths
@@ -28,3 +29,4 @@ project(":vlcj-jubler").projectDir = file("modules/vlcj-jubler")
 project(":zemberek").projectDir = file("modules/zemberek")
 project(":azuretranslate").projectDir = file("modules/azuretranslate")
 project(":autoupdate").projectDir = file("modules/autoupdate")
+project(":i18n-tools").projectDir = file("modules/i18n-tools")

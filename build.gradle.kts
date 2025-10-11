@@ -43,10 +43,12 @@ tasks.register<Copy>("copyDependencies") {
     group = "distribution"
     description = "Copies all dependencies to distribution directory"
 
-    dependsOn(subprojects.map { it.tasks.named("jar") })
+    // Exclude i18n-tools - it's a build-time utility, not part of the runtime distribution
+    val distributionProjects = subprojects.filter { it.name != "i18n-tools" }
+    dependsOn(distributionProjects.map { it.tasks.named("jar") })
 
-    // Collect runtime classpath from all modules
-    subprojects.forEach { subproject ->
+    // Collect runtime classpath from all modules (excluding i18n-tools)
+    distributionProjects.forEach { subproject ->
         from(subproject.configurations.getByName("runtimeClasspath"))
     }
     into(layout.buildDirectory.dir("jubler/lib"))
@@ -66,9 +68,11 @@ tasks.register<Copy>("copyModuleJars") {
     group = "distribution"
     description = "Copies all module JARs to distribution directory"
 
-    dependsOn(subprojects.map { it.tasks.named("jar") })
+    // Exclude i18n-tools - it's a build-time utility, not part of the runtime distribution
+    val distributionProjects = subprojects.filter { it.name != "i18n-tools" }
+    dependsOn(distributionProjects.map { it.tasks.named("jar") })
 
-    subprojects.forEach { subproject ->
+    distributionProjects.forEach { subproject ->
         from(subproject.tasks.named("jar"))
     }
 
