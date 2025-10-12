@@ -80,8 +80,8 @@ build_windows() {
         gradle clean assembleDistribution
     fi
 
-    # Get version from build.gradle.kts
-    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
+    # Get version from environment variable or build.gradle.kts
+    version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
     # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
@@ -115,8 +115,8 @@ build_linux() {
         gradle clean assembleDistribution
     fi
 
-    # Get version from build.gradle.kts
-    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
+    # Get version from environment variable or build.gradle.kts
+    version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
     # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
@@ -150,8 +150,8 @@ build_generic() {
         gradle clean assembleDistribution
     fi
 
-    # Get version from build.gradle.kts
-    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
+    # Get version from environment variable or build.gradle.kts
+    version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
     # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
@@ -185,8 +185,8 @@ build_macos() {
         gradle clean assembleDistribution
     fi
 
-    # Get version from build.gradle.kts
-    version=$(grep '^version = ' build.gradle.kts | cut -d'"' -f2)
+    # Get version from environment variable or build.gradle.kts
+    version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
     # Use separate temp directory for multi-target build mode
     local output_dir="$dist_dir"
