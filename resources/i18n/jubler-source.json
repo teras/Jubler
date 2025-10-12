@@ -41,6 +41,7 @@
   "Armenian": "",
   "Author": "",
   "Author of this subtitle file": "",
+  "Automatic": "",
   "Automatic location of {0} executable": "",
   "Automatically compute based on FPS": "",
   "Automatically search for the executable": "",
@@ -198,6 +199,7 @@
   "Error": "",
   "Error found": "",
   "Error in videofile selection": "",
+  "Error while creating cache": "",
   "Error while initializing video player": "",
   "Error while loading file": "",
   "Error while loading file {0}": "",
@@ -315,6 +317,7 @@
   "Jubler needs {0} executable\nto continue with the requested action.": "",
   "Key": "",
   "Korean": "",
+  "Language": "",
   "Language to use": "",
   "Large number of files in one directory could\n": "",
   "Last entry": "",
@@ -700,7 +703,5 @@
   "{0} executable was not found.": "",
   "{0} options": "",
   "{0} path": "",
-  "{0} plugin": "",
-  "Automatic": "",
-  "Language": ""
+  "{0} plugin": ""
 }

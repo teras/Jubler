@@ -199,6 +199,7 @@
   "Error": "Hata",
   "Error found": "Hata bulundu",
   "Error in videofile selection": "Video dosyası seçiminde hata",
+  "Error while creating cache": "Önbellek oluşturulurken hata",
   "Error while initializing video player": "Video oynatıcı başlatılırken hata",
   "Error while loading file": "Dosya yüklenirken hata oluştu",
   "Error while loading file {0}": "{0} dosyası yüklenirken hata oluştu",

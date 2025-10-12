@@ -57,9 +57,14 @@ public abstract class NativeDecoderCore implements DecoderInterface, NativeDecod
             cacher = null;  // Needed early, to "tip" the system that cache creating has been finished
             setInterruptStatus(false);
 
-            if (!status)
-                JIDialog.error(null, __("Error while loading file {0}", af.getPath()), "Error while creating cache");
             feedback.stopCacheCreation();
+            if (!status) {
+                cf.delete();
+                final String errorPath = af.getPath();
+                javax.swing.SwingUtilities.invokeLater(() ->
+                    JIDialog.error(null, __("Error while loading file {0}", errorPath), __("Error while creating cache"))
+                );
+            }
         });
         cacher.start();
 

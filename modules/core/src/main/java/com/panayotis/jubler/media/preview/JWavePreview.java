@@ -75,20 +75,28 @@ public class JWavePreview extends JPanel implements DecoderListener {
     }
 
     public void startCacheCreation() {
-        add(loader);
-        loader.setVisible(true);
-        loader.setValue(0);
-        setEnabled(false);
+        SwingUtilities.invokeLater(() -> {
+            add(loader);
+            loader.setVisible(true);
+            loader.setValue(0);
+            setEnabled(false);
+            revalidate();
+            repaint();
+        });
     }
 
     public void stopCacheCreation() {
-        remove(loader);
-        loader.setVisible(false);
-        setEnabled(true);
+        SwingUtilities.invokeLater(() -> {
+            remove(loader);
+            loader.setVisible(false);
+            setEnabled(true);
+            revalidate();
+            repaint();
+        });
     }
 
     public void updateCacheCreation(float state) {
-        loader.setValue((int) (state * 100));
+        SwingUtilities.invokeLater(() -> loader.setValue((int) (state * 100)));
     }
 
     public void updateMediaFile(MediaFile mfile) {

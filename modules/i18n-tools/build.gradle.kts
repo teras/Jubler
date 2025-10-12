@@ -3,6 +3,10 @@ plugins {
     id("application")
 }
 
+repositories {
+    mavenCentral()
+}
+
 application {
     mainClass.set("com.panayotis.jubler.i18n.tools.I18nTools")
 }

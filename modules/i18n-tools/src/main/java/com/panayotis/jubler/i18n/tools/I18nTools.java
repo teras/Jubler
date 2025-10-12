@@ -48,8 +48,12 @@ public class I18nTools {
     private static File findProjectRoot() {
         File current = new File(".").getAbsoluteFile();
         while (current != null) {
-            if (new File(current, "settings.gradle.kts").exists()) {
-                return current;
+            File settingsFile = new File(current, "settings.gradle.kts");
+            if (settingsFile.exists()) {
+                File modulesDir = new File(current, "modules");
+                if (modulesDir.exists() && modulesDir.isDirectory()) {
+                    return current;
+                }
             }
             current = current.getParentFile();
         }

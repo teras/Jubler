@@ -2291,7 +2291,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             BasicPanel.remove(SubSplitPane);
             BasicPanel.add(SubsTableScrollPane, CENTER);
         }
-        validate();
+        revalidate();
+        repaint();
     }
 
     public void closeWindow(boolean unsave_check, boolean keep_application_alive) {

@@ -199,6 +199,7 @@
   "Error": "Chyba",
   "Error found": "Nalezena chyba",
   "Error in videofile selection": "Chyba ve výběru video souboru",
+  "Error while creating cache": "Chyba při vytváření mezipaměti",
   "Error while initializing video player": "Chyba při inicializaci video přehrávače",
   "Error while loading file": "Chyba při načítání souboru",
   "Error while loading file {0}": "Chyba při načítání souboru {0}",

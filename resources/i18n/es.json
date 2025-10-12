@@ -199,6 +199,7 @@
   "Error": "Error",
   "Error found": "Error encontrado",
   "Error in videofile selection": "Error en la selección del fichero de vídeo",
+  "Error while creating cache": "Error al crear caché",
   "Error while initializing video player": "Error al inicializar el reproductor de vídeo",
   "Error while loading file": "Error al cargar el fichero",
   "Error while loading file {0}": "Error al cargar el fichero {0}",

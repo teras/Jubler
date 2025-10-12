@@ -199,6 +199,7 @@
   "Error": "Greška",
   "Error found": "Pronađena greška",
   "Error in videofile selection": "Greska u izboru video fajla",
+  "Error while creating cache": "Greška pri kreiranju keša",
   "Error while initializing video player": "Greška pri inicijalizaciji video plejera",
   "Error while loading file": "Greška pri učitavanju datoteke",
   "Error while loading file {0}": "Greska pri ucitavanju fajla {0}",

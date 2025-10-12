@@ -199,6 +199,7 @@
   "Error": "Fout",
   "Error found": "Fout gevonden",
   "Error in videofile selection": "Fout in video bestandsselectie",
+  "Error while creating cache": "Fout bij aanmaken cache",
   "Error while initializing video player": "Fout bij opstarten video afspeler",
   "Error while loading file": "Fout tijdens het laden van het bestand",
   "Error while loading file {0}": "Fout bij laden bestand {0}",
