@@ -289,9 +289,9 @@ jobs:
           IDENTITY=$(security find-identity -v -p codesigning build.keychain | grep "Developer ID Application" | head -1 | awk '{print $2}')
           echo "✅ Certificate identity: $IDENTITY"
 
-           # Mount DMG
+           # Mount DMG without allowing Finder to interfere (nobrowse prevents Finder windows)
            echo "📀 Mounting DMG..."
-           hdiutil attach "$DMG_FILE" -mountpoint /Volumes/Jubler
+           hdiutil attach "$DMG_FILE" -mountpoint /Volumes/Jubler -nobrowse
 
            # Check for resource forks and extended attributes
            echo "🔍 Checking for resource forks and extended attributes..."
@@ -362,25 +362,25 @@ jobs:
           echo "✍️  Signing app bundle..."
           codesign --force --deep --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist /Volumes/Jubler/Jubler.app
 
-          # Verify signature
-          codesign --verify --deep --strict --verbose=2 /Volumes/Jubler/Jubler.app
+           # Verify signature
+           codesign --verify --deep --strict --verbose=2 /Volumes/Jubler/Jubler.app
 
-          # Unmount
-          echo "📤 Unmounting DMG..."
-          hdiutil detach /Volumes/Jubler
+           # Unmount
+           echo "📤 Unmounting DMG..."
+           hdiutil detach /Volumes/Jubler -force
 
-         # Sign the DMG itself
-         echo "✍️  Signing DMG..."
-         codesign --force --sign "$IDENTITY" --timestamp "$DMG_FILE"
+          # Sign the DMG itself
+          echo "✍️  Signing DMG..."
+          codesign --force --sign "$IDENTITY" --timestamp "$DMG_FILE"
 
-         # Always compress DMG (convert to read-only compressed format)
-         echo "🗜️  Compressing DMG..."
-         COMPRESSED_DMG="${DMG_FILE%.dmg}-compressed.dmg"
-         hdiutil convert "$DMG_FILE" -format UDZO -o "$COMPRESSED_DMG"
-         rm "$DMG_FILE"
-         mv "$COMPRESSED_DMG" "$DMG_FILE"
+          # Always compress DMG (convert to read-only compressed format)
+          echo "🗜️  Compressing DMG..."
+          COMPRESSED_DMG="${DMG_FILE%.dmg}-compressed.dmg"
+          hdiutil convert "$DMG_FILE" -format UDZO -o "$COMPRESSED_DMG"
+          rm "$DMG_FILE"
+          mv "$COMPRESSED_DMG" "$DMG_FILE"
 
-         echo "✅ DMG compressed successfully"
+          echo "✅ DMG compressed successfully"
 
     - name: Upload signed macOS DMG
       uses: actions/upload-artifact@v4
