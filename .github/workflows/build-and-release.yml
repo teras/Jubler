@@ -316,9 +316,9 @@ jobs:
              echo "✅ All extended attributes removed"
            fi
 
-           # Sign all binaries in the .app bundle
+           # Sign all binaries in the .app bundle with entitlements
            echo "✍️  Signing app bundle contents..."
-           find /Volumes/Jubler/Jubler.app -type f \( -name "*.dylib" -o -name "*.jnilib" -o -perm +111 \) -exec codesign --force --sign "$IDENTITY" --timestamp --options runtime {} \; || true
+           find /Volumes/Jubler/Jubler.app -type f \( -name "*.dylib" -o -name "*.jnilib" -o -perm +111 \) -exec codesign --force --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist {} \; || true
 
            # Sign native libraries inside JAR files
            echo "✍️  Signing native libraries inside JAR files..."
@@ -339,10 +339,10 @@ jobs:
                mkdir -p "$JAR_TEMP"
                unzip -q "$jar_file" -d "$JAR_TEMP"
 
-               # Sign any native libraries found
+               # Sign any native libraries found with entitlements
                find "$JAR_TEMP" -type f \( -name "*.dylib" -o -name "*.jnilib" -o -name "*.so" \) | while read -r lib_file; do
                  echo "Signing library: $lib_file"
-                 codesign --force --sign "$IDENTITY" --timestamp --options runtime "$lib_file" || echo "Failed to sign $lib_file"
+                 codesign --force --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist "$lib_file" || echo "Failed to sign $lib_file"
                done
 
                # Recreate JAR with signed libraries
@@ -357,9 +357,9 @@ jobs:
            # Clean up temp directory
            rm -rf "$TEMP_DIR"
 
-           # Sign the app bundle
+           # Sign the app bundle with entitlements
           echo "✍️  Signing app bundle..."
-          codesign --force --deep --sign "$IDENTITY" --timestamp --options runtime /Volumes/Jubler/Jubler.app
+          codesign --force --deep --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist /Volumes/Jubler/Jubler.app
 
           # Verify signature
           codesign --verify --deep --strict --verbose=2 /Volumes/Jubler/Jubler.app
