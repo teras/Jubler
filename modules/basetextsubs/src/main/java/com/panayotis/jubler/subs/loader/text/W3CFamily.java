@@ -1395,6 +1395,11 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
         StringBuilder text = new StringBuilder();
         extractTextWithBreaks(element, text);
 
+        // Remove trailing whitespace at the very end
+        while (text.length() > 0 && text.charAt(text.length() - 1) == ' ') {
+            text.setLength(text.length() - 1);
+        }
+
         // Normalize whitespace for web-based format
         String result = text.toString();
         result = normalizeTtmlSpaces(result);
@@ -1404,13 +1409,30 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
 
     /**
      * Recursively extract text content, converting <br/> elements to newlines
+     * Normalizes whitespace per XML/HTML rules: collapse whitespace, trim text nodes
      */
     private void extractTextWithBreaks(org.w3c.dom.Node node, StringBuilder text) {
         if (node.getNodeType() == org.w3c.dom.Node.TEXT_NODE) {
-            text.append(node.getTextContent());
+            String content = node.getTextContent();
+            
+            // Normalize whitespace per XML/HTML rules:
+            // - Convert all whitespace (newlines, tabs, multiple spaces) to single spaces
+            // - Preserve significant spaces between words
+            content = content.replaceAll("\\s+", " ");
+            
+            // Trim leading space only if we're at the start
+            if (text.length() == 0 || text.charAt(text.length() - 1) == '\n') {
+                content = content.replaceAll("^ ", "");
+            }
+            
+            text.append(content);
         } else if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
             Element element = (Element) node;
             if ("br".equals(element.getTagName())) {
+                // Remove trailing space before BR
+                while (text.length() > 0 && text.charAt(text.length() - 1) == ' ') {
+                    text.setLength(text.length() - 1);
+                }
                 text.append("\n");
             } else {
                 // Process child nodes
@@ -1424,19 +1446,24 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
 
     /**
      * Normalize TTML spaces according to spec
+     * Note: Most whitespace normalization is done in extractTextWithBreaks,
+     * this is a final cleanup pass
      */
     private String normalizeTtmlSpaces(String text) {
         if (text == null) return null;
 
-        // Split into lines to handle each line separately
+        // Split into lines (separated by semantic <br/> newlines)
         String[] lines = text.split("\n", -1);
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < lines.length; i++) {
             String line = lines[i];
 
-            // Collapse multiple consecutive spaces to single space
+            // Final cleanup: collapse any remaining multiple spaces
             line = line.replaceAll("  +", " ");
+            
+            // Trim leading/trailing spaces from each line
+            line = line.trim();
 
             // Add the processed line
             result.append(line);
