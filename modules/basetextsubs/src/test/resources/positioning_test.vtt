@@ -1,0 +1,19 @@
+WEBVTT
+
+00:00:01.000 --> 00:00:03.000 line:20%
+Top positioned subtitle
+
+00:00:04.000 --> 00:00:06.000 line:80%
+Bottom positioned subtitle
+
+00:00:07.000 --> 00:00:09.000
+Default position subtitle
+
+00:00:10.000 --> 00:00:12.000 line:10%
+Another top subtitle
+
+00:00:13.000 --> 00:00:15.000 line:50%
+Center positioned subtitle
+
+00:00:16.000 --> 00:00:18.000 line:90%
+Near bottom subtitle

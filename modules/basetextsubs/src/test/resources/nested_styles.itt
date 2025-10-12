@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt xmlns="http://www.w3.org/ns/ttml" 
+    xmlns:tts="http://www.w3.org/ns/ttml#styling" 
+    xmlns:ttp="http://www.w3.org/ns/ttml#parameter"
+    xmlns:ttm="http://www.w3.org/ns/ttml#metadata"
+    ttp:timeBase="smpte" 
+    ttp:dropMode="nonDrop" 
+    ttp:frameRate="30"
+    xml:lang="en-US">
+  <head>
+    <metadata>
+      <ttm:title>Nested Styles Test</ttm:title>
+    </metadata>
+    <styling>
+      <style xml:id="normal" tts:fontFamily="sansSerif" tts:color="white"/>
+    </styling>
+    <layout>
+      <region xml:id="bottom" tts:origin="10% 80%" tts:extent="80% 15%"/>
+    </layout>
+  </head>
+  <body>
+    <div>
+      <!-- Simple nested: italic containing bold -->
+      <p begin="00:00:01:00" end="00:00:03:00">
+        <span tts:fontStyle="italic">Italic with <span tts:fontWeight="bold">bold nested</span> inside</span>
+      </p>
+      
+      <!-- Multiple nesting levels -->
+      <p begin="00:00:04:00" end="00:00:06:00">
+        <span tts:fontStyle="italic">Level1 <span tts:fontWeight="bold">Level2 <span tts:textDecoration="underline">Level3</span></span></span>
+      </p>
+      
+      <!-- Nested with different colors -->
+      <p begin="00:00:07:00" end="00:00:09:00">
+        <span tts:color="#ff0000">Red <span tts:fontWeight="bold">bold-red <span tts:fontStyle="italic">bold-italic-red</span></span></span>
+      </p>
+      
+      <!-- Multiple separate spans at same level -->
+      <p begin="00:00:10:00" end="00:00:12:00">
+        <span tts:fontWeight="bold">Bold</span> and <span tts:fontStyle="italic">italic</span> separate
+      </p>
+      
+      <!-- Nested with line break -->
+      <p begin="00:00:13:00" end="00:00:15:00">
+        <span tts:fontStyle="italic">Before break<br/>After <span tts:fontWeight="bold">bold</span> break</span>
+      </p>
+      
+      <!-- Complex: multiple attributes on outer span -->
+      <p begin="00:00:16:00" end="00:00:18:00">
+        <span tts:fontStyle="italic" tts:color="#00ff00">Green italic <span tts:fontWeight="bold">plus bold</span> text</span>
+      </p>
+    </div>
+  </body>
+</tt>

@@ -18,7 +18,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 import static com.panayotis.jubler.subs.style.StyleType.*;
 
@@ -35,6 +38,8 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
     protected double effectiveFrameRate = 30.0; // Default fallback
     protected boolean frameRateDetected = false;
     protected DropMode detectedDropMode = DropMode.NON_DROP;
+    
+    protected Map<String, RegionInfo> regionMap = new java.util.HashMap<>();
 
     /**
      * Time base specification for TTML documents
@@ -129,6 +134,55 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
         NONE,                    // No restrictions (full TTML)
         SINGLE_DIV,              // Only one div allowed (ITT)
         LIMITED_REGIONS;         // Limited regions (DFXP)
+    }
+
+    protected static class RegionInfo {
+        String id;
+        String origin;
+        String extent;
+        String displayAlign;
+        String writingMode;
+
+        RegionInfo(String id) {
+            this.id = id;
+        }
+
+        public float getOriginY() {
+            if (origin == null) return 80.0f;
+            String[] parts = origin.trim().split("\\s+");
+            if (parts.length >= 2) {
+                String yValue = parts[1].replace("%", "").trim();
+                try {
+                    return Float.parseFloat(yValue);
+                } catch (NumberFormatException e) {
+                    return 80.0f;
+                }
+            }
+            return 80.0f;
+        }
+
+        public SubStyle.Direction getDirection() {
+            float yPos = getOriginY();
+            
+            if (displayAlign != null) {
+                switch (displayAlign.toLowerCase()) {
+                    case "before":
+                        return SubStyle.Direction.TOP;
+                    case "center":
+                        return SubStyle.Direction.CENTER;
+                    case "after":
+                        return SubStyle.Direction.BOTTOM;
+                }
+            }
+            
+            if (yPos <= 25) {
+                return SubStyle.Direction.TOP;
+            } else if (yPos >= 75) {
+                return SubStyle.Direction.BOTTOM;
+            } else {
+                return SubStyle.Direction.CENTER;
+            }
+        }
     }
 
     // Abstract methods that each format must implement
@@ -230,6 +284,108 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
         return doc.getElementsByTagName("style");
     }
 
+    protected void parseRegions(Document doc) {
+        regionMap.clear();
+        NodeList regionElements = doc.getElementsByTagName("region");
+        
+        for (int i = 0; i < regionElements.getLength(); i++) {
+            Element regionElement = (Element) regionElements.item(i);
+            String regionId = regionElement.getAttribute("xml:id");
+            
+            if (regionId.isEmpty()) {
+                regionId = regionElement.getAttribute("id");
+            }
+            
+            if (!regionId.isEmpty()) {
+                RegionInfo region = new RegionInfo(regionId);
+                region.origin = regionElement.getAttributeNS(TTML_STYLING_NS, "origin");
+                if (region.origin == null || region.origin.isEmpty()) {
+                    region.origin = regionElement.getAttribute("tts:origin");
+                }
+                region.extent = regionElement.getAttributeNS(TTML_STYLING_NS, "extent");
+                if (region.extent == null || region.extent.isEmpty()) {
+                    region.extent = regionElement.getAttribute("tts:extent");
+                }
+                region.displayAlign = regionElement.getAttributeNS(TTML_STYLING_NS, "displayAlign");
+                if (region.displayAlign == null || region.displayAlign.isEmpty()) {
+                    region.displayAlign = regionElement.getAttribute("tts:displayAlign");
+                }
+                region.writingMode = regionElement.getAttributeNS(TTML_STYLING_NS, "writingMode");
+                if (region.writingMode == null || region.writingMode.isEmpty()) {
+                    region.writingMode = regionElement.getAttribute("tts:writingMode");
+                }
+                
+                regionMap.put(regionId, region);
+            }
+        }
+    }
+
+    @Override
+    protected void parseStyles() {
+        super.parseStyles();
+        parseRegions(document);
+    }
+
+    @Override
+    protected SubEntry parseSubtitleElement(Element element) {
+        SubEntry entry = super.parseSubtitleElement(element);
+        
+        if (entry != null) {
+            if (entry.getStyle() == null && subtitle_list != null && subtitle_list.getStyleList() != null && !subtitle_list.getStyleList().isEmpty()) {
+                entry.setStyle(subtitle_list.getStyleList().get(0));
+            }
+            
+            String regionId = element.getAttribute("region");
+            if (!regionId.isEmpty() && regionMap.containsKey(regionId)) {
+                RegionInfo region = regionMap.get(regionId);
+                SubStyle.Direction direction = region.getDirection();
+                if (entry.getStyle() != null) {
+                    SubStyle newStyle = new SubStyle(entry.getStyle());
+                    newStyle.set(StyleType.DIRECTION, direction);
+                    entry.setStyle(newStyle);
+                }
+            }
+        }
+        
+        return entry;
+    }
+
+    @Override
+    protected void applyXMLStylesToSubStyle(Element styleElement, SubStyle style) {
+        // Parse TTML style attributes (tts: prefix using namespace)
+        String fontFamily = styleElement.getAttributeNS(TTML_STYLING_NS, "fontFamily");
+        String fontSize = styleElement.getAttributeNS(TTML_STYLING_NS, "fontSize");
+        String color = styleElement.getAttributeNS(TTML_STYLING_NS, "color");
+        String fontWeight = styleElement.getAttributeNS(TTML_STYLING_NS, "fontWeight");
+        String fontStyle = styleElement.getAttributeNS(TTML_STYLING_NS, "fontStyle");
+        String textDecoration = styleElement.getAttributeNS(TTML_STYLING_NS, "textDecoration");
+
+        if (!fontFamily.isEmpty() && isFontAllowed(fontFamily)) {
+            style.set(StyleType.FONTNAME, fontFamily);
+        }
+        if (!fontSize.isEmpty()) {
+            Integer size = parseFontSize(fontSize);
+            if (size != null) {
+                style.set(StyleType.FONTSIZE, size);
+            }
+        }
+        if (!color.isEmpty()) {
+            Color parsedColor = parseColor(color);
+            if (parsedColor != null) {
+                style.set(StyleType.PRIMARY, new AlphaColor(parsedColor, 255));
+            }
+        }
+        if ("bold".equals(fontWeight)) {
+            style.set(StyleType.BOLD, true);
+        }
+        if ("italic".equals(fontStyle)) {
+            style.set(StyleType.ITALIC, true);
+        }
+        if ("underline".equals(textDecoration)) {
+            style.set(StyleType.UNDERLINE, true);
+        }
+    }
+    
     protected Map.Entry<String, SubStyle> parseStyleDefinition(Element styleElement) {
         String styleId = styleElement.getAttribute("xml:id");
         if (styleId.isEmpty()) {
@@ -238,12 +394,12 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
 
         SubStyle style = new SubStyle(styleId);
 
-        // Parse TTML style attributes
-        String fontFamily = styleElement.getAttribute("tts:fontFamily");
-        String fontSize = styleElement.getAttribute("tts:fontSize");
-        String color = styleElement.getAttribute("tts:color");
-        String fontWeight = styleElement.getAttribute("tts:fontWeight");
-        String fontStyle = styleElement.getAttribute("tts:fontStyle");
+        // Parse TTML style attributes using namespace
+        String fontFamily = styleElement.getAttributeNS(TTML_STYLING_NS, "fontFamily");
+        String fontSize = styleElement.getAttributeNS(TTML_STYLING_NS, "fontSize");
+        String color = styleElement.getAttributeNS(TTML_STYLING_NS, "color");
+        String fontWeight = styleElement.getAttributeNS(TTML_STYLING_NS, "fontWeight");
+        String fontStyle = styleElement.getAttributeNS(TTML_STYLING_NS, "fontStyle");
 
         if (!fontFamily.isEmpty() && isFontAllowed(fontFamily)) {
             style.set(StyleType.FONTNAME, fontFamily);
@@ -1736,8 +1892,257 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
 
     @Override
     protected TextWithStyles extractTextWithStyles(Element element) {
-        String text = getTextContent(element);
-        return new TextWithStyles(text);  // TODO: Add inline style parsing later
+        TextBuilder builder = new TextBuilder();
+        extractTextAndStylesFromDOM(element, builder);
+        
+        // Final cleanup: remove trailing whitespace at the very end
+        builder.trimTrailingSpace();
+        
+        // Note: We don't call normalizeTtmlSpaces() here because it would change
+        // the text length and invalidate the StyleRange positions.
+        // Whitespace normalization happens during extraction in extractTextAndStylesFromDOM().
+        
+        return new TextWithStyles(builder.getText(), builder.getStyleRanges());
+    }
+    
+    /**
+     * Helper class to build text and track inline styles during DOM traversal
+     */
+    private static class TextBuilder {
+        private final StringBuilder text = new StringBuilder();
+        private final List<StyleRange> styleRanges = new ArrayList<>();
+        private final Stack<StyleState> styleStack = new Stack<>();
+        
+        /**
+         * Current style state for nested spans
+         */
+        private static class StyleState {
+            Boolean italic;
+            Boolean bold;
+            Boolean underline;
+            Color color;
+            Integer fontSize;
+            String fontName;
+            int startPos;
+            
+            StyleState(int startPos) {
+                this.startPos = startPos;
+            }
+            
+            StyleState copy() {
+                StyleState copy = new StyleState(startPos);
+                copy.italic = this.italic;
+                copy.bold = this.bold;
+                copy.underline = this.underline;
+                copy.color = this.color;
+                copy.fontSize = this.fontSize;
+                copy.fontName = this.fontName;
+                return copy;
+            }
+            
+            boolean hasAnyStyle() {
+                return italic != null || bold != null || underline != null || 
+                       color != null || fontSize != null || fontName != null;
+            }
+        }
+        
+        int getCurrentPosition() {
+            return text.length();
+        }
+        
+        void appendText(String content) {
+            text.append(content);
+        }
+        
+        void appendNewline() {
+            text.append('\n');
+        }
+        
+        void trimTrailingSpace() {
+            while (text.length() > 0 && text.charAt(text.length() - 1) == ' ') {
+                text.setLength(text.length() - 1);
+            }
+        }
+        
+        void pushStyle(Boolean italic, Boolean bold, Boolean underline, 
+                      Color color, Integer fontSize, String fontName) {
+            StyleState state = new StyleState(getCurrentPosition());
+            
+            // Inherit from parent if we have one
+            if (!styleStack.isEmpty()) {
+                StyleState parent = styleStack.peek();
+                state.italic = italic != null ? italic : parent.italic;
+                state.bold = bold != null ? bold : parent.bold;
+                state.underline = underline != null ? underline : parent.underline;
+                state.color = color != null ? color : parent.color;
+                state.fontSize = fontSize != null ? fontSize : parent.fontSize;
+                state.fontName = fontName != null ? fontName : parent.fontName;
+            } else {
+                state.italic = italic;
+                state.bold = bold;
+                state.underline = underline;
+                state.color = color;
+                state.fontSize = fontSize;
+                state.fontName = fontName;
+            }
+            
+            styleStack.push(state);
+        }
+        
+        void popStyle() {
+            if (!styleStack.isEmpty()) {
+                StyleState state = styleStack.pop();
+                int endPos = getCurrentPosition();
+                
+                // Only create StyleRange if there's actual content and style
+                if (endPos > state.startPos && state.hasAnyStyle()) {
+                    StyleRange range = new StyleRange(state.startPos, endPos);
+                    
+                    // Only set styles that are explicitly true (not just inherited)
+                    // This avoids adding redundant font/color info that matches defaults
+                    if (Boolean.TRUE.equals(state.italic)) {
+                        range.italic = state.italic;
+                    }
+                    if (Boolean.TRUE.equals(state.bold)) {
+                        range.bold = state.bold;
+                    }
+                    if (Boolean.TRUE.equals(state.underline)) {
+                        range.underline = state.underline;
+                    }
+                    
+                    // For color/fontSize/fontName, only include if they were explicitly set
+                    // (not inherited from parent span)
+                    range.color = state.color;
+                    range.fontSize = state.fontSize;
+                    range.fontName = state.fontName;
+                    
+                    styleRanges.add(range);
+                }
+            }
+        }
+        
+        String getText() {
+            return text.toString();
+        }
+        
+        List<StyleRange> getStyleRanges() {
+            return styleRanges;
+        }
+    }
+    
+    /**
+     * Recursively extract text and inline styles from DOM tree
+     * This combines text extraction with style tracking in a single pass
+     */
+    private void extractTextAndStylesFromDOM(org.w3c.dom.Node node, TextBuilder builder) {
+        if (node.getNodeType() == org.w3c.dom.Node.TEXT_NODE) {
+            String content = node.getTextContent();
+            
+            // Normalize whitespace per XML/HTML rules
+            content = content.replaceAll("\\s+", " ");
+            
+            // Trim leading space if at start or after newline
+            if (builder.getCurrentPosition() == 0 || 
+                (builder.text.length() > 0 && builder.text.charAt(builder.text.length() - 1) == '\n')) {
+                content = content.replaceAll("^ ", "");
+            }
+            
+            builder.appendText(content);
+            
+        } else if (node.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
+            Element element = (Element) node;
+            String tagName = element.getTagName();
+            
+            if ("br".equals(tagName)) {
+                // Handle line break
+                builder.trimTrailingSpace();
+                builder.appendNewline();
+                
+            } else if ("span".equals(tagName)) {
+                // Parse inline styles from span element
+                Boolean italic = null;
+                Boolean bold = null;
+                Boolean underline = null;
+                Color color = null;
+                Integer fontSize = null;
+                String fontName = null;
+                
+                // Check for style reference (e.g., style="italic")
+                String styleRef = element.getAttribute("style");
+                if (!styleRef.isEmpty() && styleMap.containsKey(styleRef)) {
+                    SubStyle refStyle = styleMap.get(styleRef);
+                    italic = (Boolean) refStyle.get(StyleType.ITALIC);
+                    bold = (Boolean) refStyle.get(StyleType.BOLD);
+                    underline = (Boolean) refStyle.get(StyleType.UNDERLINE);
+                    
+                    Object primaryColor = refStyle.get(StyleType.PRIMARY);
+                    if (primaryColor instanceof AlphaColor) {
+                        color = (Color) primaryColor;  // AlphaColor extends Color
+                    }
+                    
+                    // Note: We intentionally DON'T include fontSize/fontName from style references
+                    // because these are usually just defaults (e.g., all styles have fontSize=16)
+                    // and including them creates unnecessary font tags in the output.
+                    // Only include them if they're specified as direct tts: attributes below.
+                    // fontSize = (Integer) refStyle.get(StyleType.FONTSIZE);
+                    // fontName = (String) refStyle.get(StyleType.FONTNAME);
+                }
+                
+                // Check for direct tts: attributes (override style reference)
+                String fontStyle = element.getAttributeNS(TTML_STYLING_NS, "fontStyle");
+                if (!fontStyle.isEmpty()) {
+                    italic = "italic".equals(fontStyle);
+                }
+                
+                String fontWeight = element.getAttributeNS(TTML_STYLING_NS, "fontWeight");
+                if (!fontWeight.isEmpty()) {
+                    bold = "bold".equals(fontWeight);
+                }
+                
+                String textDecoration = element.getAttributeNS(TTML_STYLING_NS, "textDecoration");
+                if (!textDecoration.isEmpty()) {
+                    underline = "underline".equals(textDecoration);
+                }
+                
+                String colorStr = element.getAttributeNS(TTML_STYLING_NS, "color");
+                if (!colorStr.isEmpty()) {
+                    Color parsedColor = parseColor(colorStr);
+                    if (parsedColor != null) {
+                        color = parsedColor;
+                    }
+                }
+                
+                String fontSizeStr = element.getAttributeNS(TTML_STYLING_NS, "fontSize");
+                if (!fontSizeStr.isEmpty()) {
+                    Integer parsedSize = parseFontSize(fontSizeStr);
+                    if (parsedSize != null) {
+                        fontSize = parsedSize;
+                    }
+                }
+                
+                String fontFamilyStr = element.getAttributeNS(TTML_STYLING_NS, "fontFamily");
+                if (!fontFamilyStr.isEmpty()) {
+                    fontName = fontFamilyStr;
+                }
+                
+                // Push style state and process children
+                builder.pushStyle(italic, bold, underline, color, fontSize, fontName);
+                
+                org.w3c.dom.NodeList children = node.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    extractTextAndStylesFromDOM(children.item(i), builder);
+                }
+                
+                builder.popStyle();
+                
+            } else {
+                // For other elements (like <p>, <div>), just process children
+                org.w3c.dom.NodeList children = node.getChildNodes();
+                for (int i = 0; i < children.getLength(); i++) {
+                    extractTextAndStylesFromDOM(children.item(i), builder);
+                }
+            }
+        }
     }
 
     @Override

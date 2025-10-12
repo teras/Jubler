@@ -31,6 +31,8 @@ import com.panayotis.jubler.subs.SubEntry;
  */
 public class ITT extends W3CFamily {
 
+    private static final String REGION_HEIGHT = "15%";
+
     // Implement abstract methods with Apple ITT specifications
 
     @Override
@@ -155,9 +157,33 @@ public class ITT extends W3CFamily {
     }
 
     @Override
+    protected void generateDefaultRegions(Element layout) {
+        org.w3c.dom.Document doc = layout.getOwnerDocument();
+        
+        Element topRegion = doc.createElement("region");
+        topRegion.setAttribute("xml:id", "top");
+        topRegion.setAttribute("tts:displayAlign", "before");
+        topRegion.setAttribute("tts:extent", "100% " + REGION_HEIGHT);
+        topRegion.setAttribute("tts:origin", "0% 0%");
+        topRegion.setAttribute("tts:writingMode", "lrtb");
+        addCustomRegionAttributes(topRegion);
+        layout.appendChild(topRegion);
+    }
+
+    @Override
     protected void addCustomSubtitleAttributes(Element p, SubEntry sub, int index) {
-        // ITT might need additional Apple-specific subtitle attributes
-        // For example, future iTunes extensions could be added here
+        com.panayotis.jubler.subs.style.SubStyle.Direction direction = 
+            (com.panayotis.jubler.subs.style.SubStyle.Direction) sub.getStyle().get(com.panayotis.jubler.subs.style.StyleType.DIRECTION);
+        
+        if (direction != null) {
+            switch (direction) {
+                case TOP:
+                case TOPLEFT:
+                case TOPRIGHT:
+                    p.setAttribute("region", "top");
+                    break;
+            }
+        }
     }
 
 

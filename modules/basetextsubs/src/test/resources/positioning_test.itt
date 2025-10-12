@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<tt xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns="http://www.w3.org/ns/ttml" xml:lang="en" ttp:dropMode="nonDrop" ttp:frameRate="24" ttp:timeBase="smpte">
+  <head>
+    <styling>
+      <style xml:id="normal" tts:color="white" tts:fontFamily="sansSerif" tts:fontSize="100%"/>
+    </styling>
+    <layout>
+      <region xml:id="top" tts:displayAlign="before" tts:extent="100% 15%" tts:origin="0% 0%" tts:writingMode="lrtb"/>
+      <region xml:id="bottom" tts:displayAlign="after" tts:extent="100% 15%" tts:origin="0% 85%" tts:writingMode="lrtb"/>
+    </layout>
+  </head>
+  <body style="normal">
+    <div>
+      <p begin="00:00:01:00" end="00:00:03:00" region="top">Top positioned subtitle</p>
+      <p begin="00:00:04:00" end="00:00:06:00" region="bottom">Bottom positioned subtitle</p>
+      <p begin="00:00:07:00" end="00:00:09:00">Default position subtitle</p>
+      <p begin="00:00:10:00" end="00:00:12:00" region="top">Another top subtitle</p>
+      <p begin="00:00:13:00" end="00:00:15:00" region="bottom">Another bottom subtitle</p>
+    </div>
+  </body>
+</tt>

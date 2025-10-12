@@ -260,28 +260,36 @@ public class WebVTT extends SimpleStyledTextSubFormat {
      */
     private void applyLineSetting(SubEntry entry, String lineValue) {
         try {
+            if (entry.getStyle() == null) {
+                return;
+            }
+            
             if (lineValue.contains("%")) {
                 // Percentage-based positioning
                 String numericValue = lineValue.replace("%", "").trim();
                 float linePercent = Float.parseFloat(numericValue);
 
+                SubStyle newStyle = new SubStyle(entry.getStyle());
                 // Map line percentage to Jubler's vertical positioning
                 if (linePercent <= 25) {
                     // Top positioning
-                    entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.TOP);
+                    newStyle.set(StyleType.DIRECTION, SubStyle.Direction.TOP);
                 } else if (linePercent >= 75) {
                     // Bottom positioning (default)
-                    entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.BOTTOM);
+                    newStyle.set(StyleType.DIRECTION, SubStyle.Direction.BOTTOM);
                 } else {
                     // Middle positioning
-                    entry.getStyle().set(StyleType.DIRECTION, SubStyle.Direction.CENTER);
+                    newStyle.set(StyleType.DIRECTION, SubStyle.Direction.CENTER);
                 }
+                entry.setStyle(newStyle);
             } else {
                 // Line number-based positioning
                 int lineNumber = Integer.parseInt(lineValue);
                 // Map line numbers to vertical margins
                 int verticalMargin = Math.max(0, lineNumber * 5);
-                entry.getStyle().set(StyleType.VERTICAL, verticalMargin);
+                SubStyle newStyle = new SubStyle(entry.getStyle());
+                newStyle.set(StyleType.VERTICAL, verticalMargin);
+                entry.setStyle(newStyle);
             }
         } catch (NumberFormatException e) {
             DEBUG.debug("Error parsing WebVTT line: " + lineValue);
@@ -401,6 +409,28 @@ public class WebVTT extends SimpleStyledTextSubFormat {
         str.append(sub.getStartTime().getSeconds('.'));
         str.append(" --> ");
         str.append(sub.getFinishTime().getSeconds('.'));
+        
+        SubStyle.Direction direction = (SubStyle.Direction) sub.getStyle().get(StyleType.DIRECTION);
+        if (direction != null) {
+            switch (direction) {
+                case TOP:
+                case TOPLEFT:
+                case TOPRIGHT:
+                    str.append(" line:10%");
+                    break;
+                case CENTER:
+                case LEFT:
+                case RIGHT:
+                    str.append(" line:50%");
+                    break;
+                case BOTTOM:
+                case BOTTOMLEFT:
+                case BOTTOMRIGHT:
+                default:
+                    break;
+            }
+        }
+        
         str.append("\n");
         // Convert newlines to <br/> tags for WebVTT format
         String text = rebuildSubText(sub);

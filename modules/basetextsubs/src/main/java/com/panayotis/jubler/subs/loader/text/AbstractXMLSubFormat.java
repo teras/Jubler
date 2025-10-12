@@ -323,6 +323,10 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
         if (range.fontSize != null) {
             entry.addOverStyle(StyleType.FONTSIZE, range.fontSize, range.start);
         }
+        
+        if (range.fontName != null) {
+            entry.addOverStyle(StyleType.FONTNAME, range.fontName, range.start);
+        }
     }
 
     // Utility methods for XML processing
@@ -598,6 +602,7 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
         public Boolean underline;
         public Color color;
         public Integer fontSize;
+        public String fontName;
 
         public StyleRange(int start, int end) {
             this.start = start;
