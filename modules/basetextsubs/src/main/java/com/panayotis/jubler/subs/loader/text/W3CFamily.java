@@ -30,6 +30,11 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
 
     // TTML namespace constants
     private static final String TTML_STYLING_NS = "http://www.w3.org/ns/ttml#styling";
+    
+    // Frame rate information extracted from document
+    protected double effectiveFrameRate = 30.0; // Default fallback
+    protected boolean frameRateDetected = false;
+    protected DropMode detectedDropMode = DropMode.NON_DROP;
 
     /**
      * Time base specification for TTML documents
@@ -1139,6 +1144,60 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
     }
 
     /**
+     * Detect frame rate from document attributes
+     */
+    protected void detectFrameRate() {
+        frameRateDetected = true;
+        
+        if (document == null) {
+            return;
+        }
+        
+        try {
+            Element root = document.getDocumentElement();
+            String frameRateStr = root.getAttribute("ttp:frameRate");
+            String multiplierStr = root.getAttribute("ttp:frameRateMultiplier");
+            String dropModeStr = root.getAttribute("ttp:dropMode");
+            
+            // Detect drop mode
+            if (dropModeStr != null && !dropModeStr.isEmpty()) {
+                if ("dropNTSC".equalsIgnoreCase(dropModeStr)) {
+                    detectedDropMode = DropMode.DROP_NTSC;
+                } else if ("dropPAL".equalsIgnoreCase(dropModeStr)) {
+                    detectedDropMode = DropMode.DROP_PAL;
+                } else {
+                    detectedDropMode = DropMode.NON_DROP;
+                }
+            }
+            
+            if (frameRateStr != null && !frameRateStr.isEmpty()) {
+                double baseFrameRate = Double.parseDouble(frameRateStr);
+                
+                // Apply multiplier if present (e.g., "1000 1001" for 29.97fps)
+                if (multiplierStr != null && !multiplierStr.isEmpty()) {
+                    String[] parts = multiplierStr.trim().split("\\s+");
+                    if (parts.length == 2) {
+                        double numerator = Double.parseDouble(parts[0]);
+                        double denominator = Double.parseDouble(parts[1]);
+                        effectiveFrameRate = baseFrameRate * (numerator / denominator);
+                    } else {
+                        effectiveFrameRate = baseFrameRate;
+                    }
+                } else {
+                    effectiveFrameRate = baseFrameRate;
+                }
+                
+                com.panayotis.jubler.os.DEBUG.debug("Detected frame rate: " + effectiveFrameRate + " fps, drop mode: " + detectedDropMode);
+            } else if (getTimeBase() == TimeBase.SMPTE) {
+                // SMPTE timebase without frameRate defined is an error
+                com.panayotis.jubler.os.DEBUG.debug("ERROR: SMPTE timebase specified but ttp:frameRate not defined. Using default " + effectiveFrameRate + " fps");
+            }
+        } catch (Exception e) {
+            com.panayotis.jubler.os.DEBUG.debug("Error detecting frame rate: " + e.getMessage());
+        }
+    }
+
+    /**
      * Format time as SMPTE timecode (HH:MM:SS:FF)
      */
     protected String formatSMPTETimeCode(Time time) {
@@ -1146,7 +1205,7 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
         int hours = totalMilliseconds / 3600000;
         int minutes = (totalMilliseconds % 3600000) / 60000;
         int seconds = (totalMilliseconds % 60000) / 1000;
-        int frames = ((totalMilliseconds % 1000) * 30) / 1000;  // Convert ms to frames at 30fps
+        int frames = (int) Math.round(((totalMilliseconds % 1000) * effectiveFrameRate) / 1000.0);
 
         return String.format("%02d:%02d:%02d:%02d", hours, minutes, seconds, frames);
     }
@@ -1186,12 +1245,19 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
      * Parse TTML time format
      */
     protected Time parseTime(String timeStr) {
+        // Ensure frame rate is detected before parsing times
+        if (!frameRateDetected && getTimeBase() == TimeBase.SMPTE) {
+            detectFrameRate();
+        }
+        
         if (timeStr == null || timeStr.isEmpty()) {
             return new Time(0);
         }
 
         // Handle different time formats based on timebase
-        if (getTimeBase() == TimeBase.SMPTE && timeStr.contains(":") && timeStr.split(":").length == 4) {
+        // SMPTE format uses : or ; for frames: HH:MM:SS:FF or HH:MM:SS;FF
+        String normalizedTime = timeStr.replace(';', ':');
+        if (getTimeBase() == TimeBase.SMPTE && normalizedTime.contains(":") && normalizedTime.split(":").length == 4) {
             return parseSMPTETime(timeStr);
         } else {
             return parseMediaTime(timeStr);
@@ -1199,10 +1265,19 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
     }
 
     /**
-     * Parse SMPTE time format (HH:MM:SS:FF)
+     * Parse SMPTE time format (HH:MM:SS:FF or HH:MM:SS;FF)
+     * 
+     * SMPTE standards:
+     * - Semicolon (;) separator = drop-frame timecode (e.g., 00:00:47;19)
+     * - Colon (:) separator = non-drop-frame timecode (e.g., 00:00:21:11)
      */
     protected Time parseSMPTETime(String timeStr) {
-        String[] parts = timeStr.split(":");
+        // Detect drop-frame mode from separator
+        boolean isDropFrame = timeStr.contains(";");
+        
+        // Normalize to colon separator for parsing
+        String normalizedTime = timeStr.replace(';', ':');
+        String[] parts = normalizedTime.split(":");
         if (parts.length == 4) {
             try {
                 int hours = Integer.parseInt(parts[0]);
@@ -1210,16 +1285,67 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
                 int seconds = Integer.parseInt(parts[2]);
                 int frames = Integer.parseInt(parts[3]);
 
-                // Convert frames to milliseconds (assuming 30fps)
-                int millis = (frames * 1000) / 30;
+                // Convert SMPTE timecode to milliseconds
+                int totalMillis;
+                if (isDropFrame) {
+                    totalMillis = convertDropFrameToMillis(hours, minutes, seconds, frames);
+                } else {
+                    totalMillis = convertNonDropFrameToMillis(hours, minutes, seconds, frames);
+                }
 
-                return new Time(String.valueOf(hours), String.valueOf(minutes),
-                              String.valueOf(seconds), String.valueOf(millis));
+                // Time constructor expects seconds, not milliseconds
+                return new Time(totalMillis / 1000.0);
             } catch (NumberFormatException e) {
                 return new Time(0);
             }
         }
         return new Time(0);
+    }
+    
+    /**
+     * Convert non-drop-frame SMPTE timecode to milliseconds
+     */
+    protected int convertNonDropFrameToMillis(int hours, int minutes, int seconds, int frames) {
+        // Calculate total frame count
+        // For non-drop-frame, frame rate is the nominal rate (e.g., 24, 30)
+        int nominalFrameRate = (int) Math.round(effectiveFrameRate);
+        long totalFrames = (long)(hours * 3600 + minutes * 60 + seconds) * nominalFrameRate + frames;
+        
+        // Convert total frames to milliseconds using effective frame rate
+        return (int) Math.round((totalFrames * 1000.0) / effectiveFrameRate);
+    }
+    
+    /**
+     * Convert drop-frame SMPTE timecode to milliseconds (NTSC)
+     * 
+     * Drop-frame timecode accounts for the fact that 29.97 fps is not exactly 30 fps.
+     * To keep timecode synchronized with real time, frame numbers 0 and 1 are dropped
+     * (skipped in the display) at the start of every minute, except for minutes divisible by 10.
+     * 
+     * The drop-frame timecode is just a labeling scheme - frames aren't actually dropped from
+     * the video, just from the timecode display. We need to calculate the actual frame number.
+     */
+    protected int convertDropFrameToMillis(int hours, int minutes, int seconds, int frames) {
+        // For drop-frame, nominal frame rate is 30 fps
+        int nominalFrameRate = 30;
+        
+        // Total number of minutes
+        int totalMinutes = hours * 60 + minutes;
+        
+        // Calculate how many frames have been "dropped" (skipped in numbering) up to this point
+        // 2 frames are dropped per minute, except every 10th minute
+        int droppedFrames = 0;
+        if (totalMinutes > 0) {
+            droppedFrames = 2 * (totalMinutes - (totalMinutes / 10));
+        }
+        
+        // Calculate the actual frame number (accounting for dropped frame numbers)
+        // The timecode shows a frame number, but some numbers were skipped, so the actual
+        // frame number is less than what simple calculation would suggest
+        long actualFrameNumber = (long)(totalMinutes * 60 * nominalFrameRate) + (seconds * nominalFrameRate) + frames - droppedFrames;
+        
+        // Convert actual frame number to milliseconds using effective frame rate
+        return (int) Math.round((actualFrameNumber * 1000.0) / effectiveFrameRate);
     }
 
     /**
