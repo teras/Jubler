@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.os;
+package com.panayotis.jubler.os;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -45,9 +45,9 @@ public class SystemFileFinder {
     }
 
     private static boolean loadLibraryImpl(String name) {
-        File libfile = isJarBased
-                ? findFile("lib" + File.separator + SystemDependent.mapLibraryName(name))
-                : findFile("../../../installer/extra/linux64/lib/" + SystemDependent.mapLibraryName(name));
+        File libfile = findFile("lib/" + SystemDependent.mapLibraryName(name));
+        if (libfile == null)
+            libfile = findFile("../../../resources/installer/extra/linux64/lib/" + SystemDependent.mapLibraryName(name));
         if (libfile != null)
             try {
                 System.load(libfile.getAbsolutePath());
