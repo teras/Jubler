@@ -520,11 +520,25 @@ jobs:
       run: |
         Get-ChildItem -Path "dist-signed"
 
+    - name: Package signed EXE in ZIP for release
+      run: |
+        New-Item -ItemType Directory -Force -Path "dist-signed-zip"
+        $signedExe = Get-ChildItem -Path "dist-signed" -Filter "*.exe" | Select-Object -First 1
+        if (-not $signedExe) {
+          Write-Error "Signed EXE not found in dist-signed"
+          exit 1
+        }
+        Write-Host "Packaging signed EXE: $($signedExe.Name)"
+        $zipName = "$($signedExe.BaseName).zip"
+        Compress-Archive -Path $signedExe.FullName -DestinationPath "dist-signed-zip/$zipName" -Force
+        Write-Host "Created: dist-signed-zip/$zipName"
+        Get-ChildItem -Path "dist-signed-zip"
+
     - name: Upload signed Windows installer
       uses: actions/upload-artifact@v4
       with:
         name: jubler-signed-windows-${{ needs.prepare.outputs.version }}
-        path: dist-signed/*
+        path: dist-signed-zip/*
         retention-days: 30
 
   release:
