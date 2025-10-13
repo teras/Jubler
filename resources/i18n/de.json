@@ -631,7 +631,7 @@
   "To": "Nach",
   "Tool name": "Werkzeugname",
   "Tools lock": "Werkzeugsperre",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Werkzeugsperre. Wenn Werkzeuge gesperrt sind, werden sie mit Standardparametern auf den ausgewählten Untertiteln ausgeführt",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Werkzeugsperre.<br>Wenn gesperrt, werden Werkzeuge mit Standardparametern ausgeführt,<br>ohne Aufforderung zur Konfiguration",
   "Top": "Oben",
   "Top left": "Oben links",
   "Top right": "Oben rechts",

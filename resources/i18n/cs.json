@@ -631,7 +631,7 @@
   "To": "Do",
   "Tool name": "Název nástroje",
   "Tools lock": "Zámek nástrojů",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Zámek nástrojů. Když jsou nástroje zamčeny, budou spuštěny s výchozími parametry na vybraných titulcích",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Zámek nástrojů.<br>Když jsou zamčeny, nástroje běží s výchozími parametry,<br>bez dotazu na konfiguraci",
   "Top": "Nahoru",
   "Top left": "Doleva nahoru",
   "Top right": "Doprava nahoru",

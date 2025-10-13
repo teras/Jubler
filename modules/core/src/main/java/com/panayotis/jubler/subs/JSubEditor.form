@@ -605,7 +605,7 @@
                       <Connection code="Theme.loadIcon(&quot;opentool&quot;)" type="code"/>
                     </Property>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="__(&quot;Tools lock. When tools are locked, will be run with default parameters on the selected subtitles&quot;)" type="code"/>
+                      <Connection code="__(&quot;&lt;html&gt;Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration&quot;)" type="code"/>
                     </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>

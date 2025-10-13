@@ -631,7 +631,7 @@
   "To": "Προς",
   "Tool name": "Όνομα εργαλείου",
   "Tools lock": "Κλείδωμα εργαλείων",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Κλειδωμένα εργαλεία. Όταν τα εργαλεία έχουν κλειδώσει, θα εκτελούνται με τις προκαθορισμένες παραμέτρους στου επιλεγμένους υποτίτλους",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Κλείδωμα εργαλείων.<br>Όταν είναι κλειδωμένα, τα εργαλεία εκτελούνται με προκαθορισμένες παραμέτρους,<br>χωρίς να ζητούν ρύθμιση",
   "Top": "Πάνω",
   "Top left": "Πάνω αριστερά",
   "Top right": "Πάνω δεξιά",

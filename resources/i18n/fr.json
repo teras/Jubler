@@ -631,7 +631,7 @@
   "To": "Vers",
   "Tool name": "Nom de l'outil",
   "Tools lock": "Vérouiller",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Verrouillage des outils Lorsque les outils sont verrouillés, seront exécutés avec les paramètres par défaut sur les sous-titres sélectionnés",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Verrouillage des outils.<br>Lorsqu'ils sont verrouillés, les outils s'exécutent avec les paramètres par défaut,<br>sans demander de configuration",
   "Top": "Haut",
   "Top left": "Haut gauche",
   "Top right": "Haut droit",

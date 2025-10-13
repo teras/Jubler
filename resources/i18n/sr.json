@@ -631,7 +631,7 @@
   "To": "Do",
   "Tool name": "Ime alata",
   "Tools lock": "Zaključavanje alata",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Zaključavanje alata. Kada su alati zaključani, biće pokrenuti sa podrazumevanim parametrima na izabranim titlovima",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Zaključavanje alata.<br>Kada su zaključani, alati se pokreću sa podrazumevanim parametrima,<br>bez traženja konfiguracije",
   "Top": "Gore",
   "Top left": "Gore levo",
   "Top right": "Gore desno",

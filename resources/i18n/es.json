@@ -631,7 +631,7 @@
   "To": "Hasta",
   "Tool name": "Nombre de herramienta",
   "Tools lock": "Bloqueo de herramientas",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Bloqueo de herramientas. Cuando las herramientas están bloqueadas, se ejecutarán con parámetros predeterminados en los subtítulos seleccionados",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Bloqueo de herramientas.<br>Cuando están bloqueadas, las herramientas se ejecutan con parámetros predeterminados,<br>sin solicitar configuración",
   "Top": "Arriba",
   "Top left": "Arriba-Izquierda",
   "Top right": "Arriba-Derecha",

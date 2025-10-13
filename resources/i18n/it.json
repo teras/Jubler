@@ -631,7 +631,7 @@
   "To": "A",
   "Tool name": "Nome strumento",
   "Tools lock": "Blocco strumenti",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Blocco strumenti. Quando gli strumenti sono bloccati, verranno eseguiti con parametri predefiniti sui sottotitoli selezionati",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Blocco strumenti.<br>Quando sono bloccati, gli strumenti vengono eseguiti con parametri predefiniti,<br>senza richiedere configurazione",
   "Top": "In alto",
   "Top left": "In alto a sinistra",
   "Top right": "In alto a destra",

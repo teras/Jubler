@@ -631,7 +631,7 @@
   "To": "Para",
   "Tool name": "Nome da ferramenta",
   "Tools lock": "Bloqueio de ferramentas",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Bloqueio de ferramentas. Quando as ferramentas estão bloqueadas, serão executadas com parâmetros padrão nas legendas selecionadas",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Bloqueio de ferramentas.<br>Quando bloqueadas, as ferramentas são executadas com parâmetros padrão,<br>sem solicitar configuração",
   "Top": "Superior",
   "Top left": "Superior esquerdo",
   "Top right": "Superior direito",

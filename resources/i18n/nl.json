@@ -631,7 +631,7 @@
   "To": "Naar",
   "Tool name": "Toolnaam",
   "Tools lock": "Gereedschap vergrendelen",
-  "Tools lock. When tools are locked, will be run with default parameters on the selected subtitles": "Gereedschap vergrendeling. Wanneer gereedschap vergrendeld is, wordt het uitgevoerd met standaardparameters op de geselecteerde ondertitels",
+  "<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration": "<html>Gereedschap vergrendeling.<br>Wanneer vergrendeld, wordt gereedschap uitgevoerd met standaardparameters,<br>zonder om configuratie te vragen",
   "Top": "Boven",
   "Top left": "Boven links",
   "Top right": "Boven rechts",

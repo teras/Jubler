@@ -839,7 +839,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jToolBar1.add(ShowStyleB);
 
         ToolsLockB.setIcon(Theme.loadIcon("opentool"));
-        ToolsLockB.setToolTipText(__("Tools lock. When tools are locked, will be run with default parameters on the selected subtitles"));
+        ToolsLockB.setToolTipText(__("<html>Tools lock.<br>When locked, tools run with default parameters,<br>without prompting for configuration"));
         ToolsLockB.setFocusable(false);
         ToolsLockB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         ToolsLockB.setSelectedIcon(Theme.loadIcon("lockedtool"));
