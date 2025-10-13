@@ -26,7 +26,8 @@ public class ShortcutsModel extends AbstractTableModel {
 
     private final static String colnames[] = {__("Command"), __("Key")};
     private final static int DEFAULT_MOD = SystemDependent.getDefaultKeyModifier();
-    private final static int DISABLED_MOD = ~(KeyEvent.CTRL_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK);
+    @SuppressWarnings("deprecation")
+    private final static int DISABLED_MOD = ~(KeyEvent.CTRL_MASK | KeyEvent.CTRL_DOWN_MASK);
     //
     private ArrayList<MenuItem> current, original, undo;
     private int buffer_mod = 0;
@@ -353,8 +354,9 @@ public class ShortcutsModel extends AbstractTableModel {
                 return (mod.isEmpty() ? "" : mod + "+") + KeyEvent.getKeyText(key);
             }
 
+            @SuppressWarnings("deprecation")
             private static int getSysAccelerator(int newmod) {
-                if ((newmod & KeyEvent.CTRL_DOWN_MASK) != 0) {
+                if ((newmod & KeyEvent.CTRL_MASK) != 0) {
                     newmod &= DISABLED_MOD;
                     newmod |= DEFAULT_MOD;
                 }
