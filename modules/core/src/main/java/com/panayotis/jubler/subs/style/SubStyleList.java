@@ -42,10 +42,16 @@ public class SubStyleList extends ArrayList<SubStyle> implements NameList {
 
     public int getStyleIndex(SubEntry entry) {
         SubStyle style = entry.getStyle();
-        int res;
-        if (style == null || (res = indexOf(style)) < 0) {
+        if (style == null) {
             entry.setStyle(get(0));
             return 0;
+        }
+        int res = indexOf(style);
+        if (res < 0) {
+            res = findStyleIndex(style.Name);
+            if (res < 0) {
+                res = 0;
+            }
         }
         return res;
     }

@@ -637,7 +637,7 @@ public abstract class AbstractXMLSubFormat extends AbstractGenericTextSubFormat 
 
         } catch (Exception e) {
             DEBUG.debug("Error generating XML subtitle: " + e.getMessage());
-            throw new java.io.IOException("Failed to save XML subtitle: " + e.getMessage());
+            throw new java.io.IOException("Failed to save XML subtitle: " + e.getMessage(), e);
         }
     }
 

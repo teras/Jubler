@@ -202,8 +202,15 @@ public class WebVTT extends SimpleStyledTextSubFormat {
                 return; // Unknown align value
         }
 
-        // Apply as style override
-        entry.getStyle().set(StyleType.DIRECTION, direction);
+        SubStyle baseStyle = entry.getStyle();
+        if (baseStyle == null && subtitle_list != null && subtitle_list.getStyleList() != null && !subtitle_list.getStyleList().isEmpty()) {
+            baseStyle = subtitle_list.getStyleList().get(0);
+        }
+        if (baseStyle != null) {
+            SubStyle newStyle = new SubStyle(baseStyle);
+            newStyle.set(StyleType.DIRECTION, direction);
+            entry.setStyle(newStyle);
+        }
     }
 
     /**
@@ -260,7 +267,11 @@ public class WebVTT extends SimpleStyledTextSubFormat {
      */
     private void applyLineSetting(SubEntry entry, String lineValue) {
         try {
-            if (entry.getStyle() == null) {
+            SubStyle baseStyle = entry.getStyle();
+            if (baseStyle == null && subtitle_list != null && subtitle_list.getStyleList() != null && !subtitle_list.getStyleList().isEmpty()) {
+                baseStyle = subtitle_list.getStyleList().get(0);
+            }
+            if (baseStyle == null) {
                 return;
             }
             
@@ -269,7 +280,7 @@ public class WebVTT extends SimpleStyledTextSubFormat {
                 String numericValue = lineValue.replace("%", "").trim();
                 float linePercent = Float.parseFloat(numericValue);
 
-                SubStyle newStyle = new SubStyle(entry.getStyle());
+                SubStyle newStyle = new SubStyle(baseStyle);
                 // Map line percentage to Jubler's vertical positioning
                 if (linePercent <= 25) {
                     // Top positioning
@@ -287,7 +298,7 @@ public class WebVTT extends SimpleStyledTextSubFormat {
                 int lineNumber = Integer.parseInt(lineValue);
                 // Map line numbers to vertical margins
                 int verticalMargin = Math.max(0, lineNumber * 5);
-                SubStyle newStyle = new SubStyle(entry.getStyle());
+                SubStyle newStyle = new SubStyle(baseStyle);
                 newStyle.set(StyleType.VERTICAL, verticalMargin);
                 entry.setStyle(newStyle);
             }

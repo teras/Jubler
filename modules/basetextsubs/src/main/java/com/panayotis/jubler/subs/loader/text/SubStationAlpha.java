@@ -151,7 +151,94 @@ public class SubStationAlpha extends GenericStyledTextSubFormat {
         entry.setMarginV(m.group(14).trim());
         entry.setEffect(m.group(15).trim());
         parseSubText(entry);
+        parseASSOverrideTags(entry);
         return entry;
+    }
+    
+    /**
+     * Parse ASS override tags like {\an7} for alignment
+     */
+    protected void parseASSOverrideTags(SubEntry entry) {
+        String text = entry.getText();
+        if (text == null || text.isEmpty()) return;
+        
+        // Find the LAST alignment override tag (it's the one that matters)
+        SubStyle.Direction overrideDirection = null;
+        
+        // Match {\an#} tags (modern ASS, numpad layout)
+        java.util.regex.Pattern anPattern = java.util.regex.Pattern.compile("\\{[^}]*\\\\an([1-9])");
+        java.util.regex.Matcher anMatcher = anPattern.matcher(text);
+        int lastAnPos = -1;
+        int lastAnValue = -1;
+        while (anMatcher.find()) {
+            if (anMatcher.start() > lastAnPos) {
+                lastAnPos = anMatcher.start();
+                lastAnValue = Integer.parseInt(anMatcher.group(1));
+            }
+        }
+        
+        // Match {\a#} tags (legacy SSA)
+        java.util.regex.Pattern aPattern = java.util.regex.Pattern.compile("\\{[^}]*\\\\a([0-9]+)");
+        java.util.regex.Matcher aMatcher = aPattern.matcher(text);
+        int lastAPos = -1;
+        int lastAValue = -1;
+        while (aMatcher.find()) {
+            if (aMatcher.start() > lastAPos) {
+                lastAPos = aMatcher.start();
+                lastAValue = Integer.parseInt(aMatcher.group(1));
+            }
+        }
+        
+        // Use whichever tag appears last in the text
+        if (lastAnPos > lastAPos && lastAnValue != -1) {
+            overrideDirection = convertAnToDirection(lastAnValue);
+        } else if (lastAValue != -1) {
+            overrideDirection = convertLegacyAToDirection(lastAValue);
+        }
+        
+        // Apply as overstyle if different from style
+        if (overrideDirection != null && entry.getStyle() != null) {
+            SubStyle.Direction styleDirection = (SubStyle.Direction) entry.getStyle().get(DIRECTION);
+            if (overrideDirection != styleDirection) {
+                entry.setOverStyle(DIRECTION, overrideDirection, 0, text.length());
+            }
+        }
+    }
+    
+    /**
+     * Convert \an# (numpad layout) to Direction
+     */
+    private SubStyle.Direction convertAnToDirection(int value) {
+        switch (value) {
+            case 1: return SubStyle.Direction.BOTTOMLEFT;
+            case 2: return SubStyle.Direction.BOTTOM;
+            case 3: return SubStyle.Direction.BOTTOMRIGHT;
+            case 4: return SubStyle.Direction.LEFT;
+            case 5: return SubStyle.Direction.CENTER;
+            case 6: return SubStyle.Direction.RIGHT;
+            case 7: return SubStyle.Direction.TOPLEFT;
+            case 8: return SubStyle.Direction.TOP;
+            case 9: return SubStyle.Direction.TOPRIGHT;
+            default: return null;
+        }
+    }
+    
+    /**
+     * Convert legacy \a# to Direction
+     */
+    private SubStyle.Direction convertLegacyAToDirection(int value) {
+        switch (value) {
+            case 1: return SubStyle.Direction.BOTTOMLEFT;
+            case 2: return SubStyle.Direction.BOTTOM;
+            case 3: return SubStyle.Direction.BOTTOMRIGHT;
+            case 5: return SubStyle.Direction.TOPLEFT;
+            case 6: return SubStyle.Direction.TOP;
+            case 7: return SubStyle.Direction.TOPRIGHT;
+            case 9: return SubStyle.Direction.LEFT;
+            case 10: return SubStyle.Direction.CENTER;
+            case 11: return SubStyle.Direction.RIGHT;
+            default: return null;
+        }
     }
 
     protected void appendSubEntry(SubEntry sub, StringBuilder str) {
@@ -170,8 +257,68 @@ public class SubStationAlpha extends GenericStyledTextSubFormat {
         str.append(",").append(sub.getName()).append(',');
         str.append(sub.getMarginL()).append(',').append(sub.getMarginR()).append(',').append(sub.getMarginV()).append(',');
         str.append(sub.getEffect()).append(',');
-        str.append(rebuildSubText(sub).replace("\n", "\\N"));
+        str.append(rebuildSubTextWithOverrides(sub).replace("\n", "\\N"));
         str.append("\n");
+    }
+    
+    /**
+     * Rebuild subtitle text with ASS override tags
+     */
+    protected String rebuildSubTextWithOverrides(SubEntry sub) {
+        String text = rebuildSubText(sub);
+        
+        // Strip existing alignment override tags
+        text = stripAlignmentTags(text);
+        
+        // Check if there's a Direction overstyle
+        if (sub.getStyle() != null && sub.getStyleovers() != null) {
+            com.panayotis.jubler.subs.style.event.AbstractStyleover[] overstyles = sub.getStyleovers();
+            if (overstyles[DIRECTION.ordinal()] != null) {
+                SubStyle.Direction styleDirection = (SubStyle.Direction) sub.getStyle().get(DIRECTION);
+                Object overrideValue = overstyles[DIRECTION.ordinal()].getValue(0, text.length(), styleDirection, text);
+                
+                if (overrideValue != null && overrideValue != styleDirection) {
+                    SubStyle.Direction overrideDirection = (SubStyle.Direction) overrideValue;
+                    int anValue = convertDirectionToAn(overrideDirection);
+                    if (anValue != -1) {
+                        text = "{\\an" + anValue + "}" + text;
+                    }
+                }
+            }
+        }
+        
+        return text;
+    }
+    
+    /**
+     * Strip existing alignment override tags from text
+     */
+    protected String stripAlignmentTags(String text) {
+        // Remove {\an#} tags
+        text = text.replaceAll("\\{([^}]*)\\\\an[1-9]([^}]*)\\}", "{$1$2}");
+        // Remove {\a#} tags (legacy)
+        text = text.replaceAll("\\{([^}]*)\\\\a[0-9]+([^}]*)\\}", "{$1$2}");
+        // Remove empty {} blocks
+        text = text.replaceAll("\\{\\s*\\}", "");
+        return text;
+    }
+    
+    /**
+     * Convert Direction to \an# value (numpad layout)
+     */
+    private int convertDirectionToAn(SubStyle.Direction direction) {
+        switch (direction) {
+            case BOTTOMLEFT: return 1;
+            case BOTTOM: return 2;
+            case BOTTOMRIGHT: return 3;
+            case LEFT: return 4;
+            case CENTER: return 5;
+            case RIGHT: return 6;
+            case TOPLEFT: return 7;
+            case TOP: return 8;
+            case TOPRIGHT: return 9;
+            default: return -1;
+        }
     }
 
     private String timeformat(Time t) {

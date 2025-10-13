@@ -1,0 +1,36 @@
+[Script Info]
+Title: Complex ASS Alignment Test
+ScriptType: v4.00+
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
+Style: TopLeft,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,7,10,10,10,1
+Style: Center,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,10,10,10,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,No override - uses style default (bottom-center)
+Dialogue: 0,0:00:04.00,0:00:06.00,Default,,0,0,0,,{\an1}Bottom-left override
+Dialogue: 0,0:00:07.00,0:00:09.00,Default,,0,0,0,,{\an2}Bottom-center override (same as style)
+Dialogue: 0,0:00:10.00,0:00:12.00,Default,,0,0,0,,{\an3}Bottom-right override
+Dialogue: 0,0:00:13.00,0:00:15.00,Default,,0,0,0,,{\an4}Left override
+Dialogue: 0,0:00:16.00,0:00:18.00,Default,,0,0,0,,{\an5}Center override
+Dialogue: 0,0:00:19.00,0:00:21.00,Default,,0,0,0,,{\an6}Right override
+Dialogue: 0,0:00:22.00,0:00:24.00,Default,,0,0,0,,{\an7}Top-left override
+Dialogue: 0,0:00:25.00,0:00:27.00,Default,,0,0,0,,{\an8}Top-center override
+Dialogue: 0,0:00:28.00,0:00:30.00,Default,,0,0,0,,{\an9}Top-right override
+Dialogue: 0,0:00:31.00,0:00:33.00,Default,,0,0,0,,{\an1}First tag {\an9}last tag wins
+Dialogue: 0,0:00:34.00,0:00:36.00,Default,,0,0,0,,Text with {\an7}tag in {\i1}middle{\i0} of line
+Dialogue: 0,0:00:37.00,0:00:39.00,Default,,0,0,0,,{\i1}{\an8}Multiple tags at start{\i0}
+Dialogue: 0,0:00:40.00,0:00:42.00,Default,,0,0,0,,{\a1}Legacy \a1 tag (bottom-left)
+Dialogue: 0,0:00:43.00,0:00:45.00,Default,,0,0,0,,{\a5}Legacy \a5 tag (top-left)
+Dialogue: 0,0:00:46.00,0:00:48.00,Default,,0,0,0,,{\a10}Legacy \a10 tag (center)
+Dialogue: 0,0:00:49.00,0:00:51.00,TopLeft,,0,0,0,,No override - uses TopLeft style
+Dialogue: 0,0:00:52.00,0:00:54.00,TopLeft,,0,0,0,,{\an2}Override TopLeft style to bottom-center
+Dialogue: 0,0:00:55.00,0:00:57.00,Center,,0,0,0,,No override - uses Center style
+Dialogue: 0,0:00:58.00,0:01:00.00,Center,,0,0,0,,{\an9}Override Center style to top-right
+Dialogue: 0,0:01:01.00,0:01:03.00,Default,,0,0,0,,{\an7}{\a9}Mix legacy and new (new wins)
+Dialogue: 0,0:01:04.00,0:01:06.00,Default,,0,0,0,,Empty tag {\an}should be ignored
+Dialogue: 0,0:01:07.00,0:01:09.00,Default,,0,0,0,,{\an0}Invalid number should be ignored
+Dialogue: 0,0:01:10.00,0:01:12.00,Default,,0,0,0,,{\an10}Out of range should be ignored

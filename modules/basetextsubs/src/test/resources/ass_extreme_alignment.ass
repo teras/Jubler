@@ -1,0 +1,60 @@
+[Script Info]
+Title: Extreme ASS Alignment Test - Multiple Styles with Overrides
+ScriptType: v4.00+
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,2,10,10,10,1
+Style: TopLeft,Arial,20,&H00FFFF00,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,7,10,10,10,1
+Style: TopCenter,Arial,20,&H0000FF00,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,8,10,10,10,1
+Style: TopRight,Arial,20,&H000000FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,9,10,10,10,1
+Style: MiddleLeft,Arial,20,&H00FF00FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,4,10,10,10,1
+Style: MiddleCenter,Arial,20,&H00FFFF00,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,5,10,10,10,1
+Style: MiddleRight,Arial,20,&H00FF0000,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,6,10,10,10,1
+Style: BottomLeft,Arial,20,&H0000FFFF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,1,10,10,10,1
+Style: BottomRight,Arial,20,&H00FF00FF,&H000000FF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,2,2,3,10,10,10,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,Default style with no override (alignment 2 = BOTTOM)
+Dialogue: 0,0:00:04.00,0:00:06.00,TopLeft,,0,0,0,,TopLeft style with no override (alignment 7 = TOPLEFT)
+Dialogue: 0,0:00:07.00,0:00:09.00,TopCenter,,0,0,0,,TopCenter style with no override (alignment 8 = TOP)
+Dialogue: 0,0:00:10.00,0:00:12.00,TopRight,,0,0,0,,TopRight style with no override (alignment 9 = TOPRIGHT)
+Dialogue: 0,0:00:13.00,0:00:15.00,MiddleLeft,,0,0,0,,MiddleLeft style with no override (alignment 4 = LEFT)
+Dialogue: 0,0:00:16.00,0:00:18.00,MiddleCenter,,0,0,0,,MiddleCenter style with no override (alignment 5 = CENTER)
+Dialogue: 0,0:00:19.00,0:00:21.00,MiddleRight,,0,0,0,,MiddleRight style with no override (alignment 6 = RIGHT)
+Dialogue: 0,0:00:22.00,0:00:24.00,BottomLeft,,0,0,0,,BottomLeft style with no override (alignment 1 = BOTTOMLEFT)
+Dialogue: 0,0:00:25.00,0:00:27.00,BottomRight,,0,0,0,,BottomRight style with no override (alignment 3 = BOTTOMRIGHT)
+Dialogue: 0,0:00:28.00,0:00:30.00,Default,,0,0,0,,{\an7}Default style (2) overridden to TOPLEFT (7)
+Dialogue: 0,0:00:31.00,0:00:33.00,TopLeft,,0,0,0,,{\an3}TopLeft style (7) overridden to BOTTOMRIGHT (3)
+Dialogue: 0,0:00:34.00,0:00:36.00,MiddleCenter,,0,0,0,,{\an1}MiddleCenter style (5) overridden to BOTTOMLEFT (1)
+Dialogue: 0,0:00:37.00,0:00:39.00,BottomRight,,0,0,0,,{\an8}BottomRight style (3) overridden to TOP (8)
+Dialogue: 0,0:00:40.00,0:00:42.00,Default,,0,0,0,,{\an2}Default style (2) "overridden" to same (2) - should be optimized out
+Dialogue: 0,0:00:43.00,0:00:45.00,TopLeft,,0,0,0,,{\an7}TopLeft style (7) "overridden" to same (7) - should be optimized out
+Dialogue: 0,0:00:46.00,0:00:48.00,MiddleCenter,,0,0,0,,{\an5}MiddleCenter style (5) "overridden" to same (5) - should be optimized out
+Dialogue: 0,0:00:49.00,0:00:51.00,Default,,0,0,0,,{\an1}{\an9}Multiple overrides - last one wins (9 = TOPRIGHT)
+Dialogue: 0,0:00:52.00,0:00:54.00,TopRight,,0,0,0,,{\an4}{\an6}TopRight style (9) with multiple overrides - last wins (6 = RIGHT)
+Dialogue: 0,0:00:55.00,0:00:57.00,MiddleLeft,,0,0,0,,{\an8}{\an2}{\an5}MiddleLeft style (4) with three overrides - last wins (5 = CENTER)
+Dialogue: 0,0:00:58.00,0:01:00.00,Default,,0,0,0,,{\i1}{\an7}Formatting + alignment at start
+Dialogue: 0,0:01:01.00,0:01:03.00,TopCenter,,0,0,0,,{\an5}{\b1}{\i1}Multiple formats + alignment
+Dialogue: 0,0:01:04.00,0:01:06.00,BottomLeft,,0,0,0,,Text {\an9}with alignment in middle of text
+Dialogue: 0,0:01:07.00,0:01:09.00,MiddleRight,,0,0,0,,Start {\an2}middle {\an7}multiple in text - last wins (7 = TOPLEFT)
+Dialogue: 0,0:01:10.00,0:01:12.00,Default,,0,0,0,,{\a5}Legacy \a5 tag (TOPLEFT) on Default style (2)
+Dialogue: 0,0:01:13.00,0:01:15.00,TopRight,,0,0,0,,{\a1}Legacy \a1 tag (BOTTOMLEFT) on TopRight style (9)
+Dialogue: 0,0:01:16.00,0:01:18.00,MiddleCenter,,0,0,0,,{\a10}Legacy \a10 tag (CENTER) on MiddleCenter style (5) - should be optimized
+Dialogue: 0,0:01:19.00,0:01:21.00,Default,,0,0,0,,{\a5}{\an9}Legacy then modern - modern wins (9 = TOPRIGHT)
+Dialogue: 0,0:01:22.00,0:01:24.00,TopLeft,,0,0,0,,{\an4}{\a7}Modern then legacy - legacy wins (7 = TOPRIGHT via legacy)
+Dialogue: 0,0:01:25.00,0:01:27.00,BottomRight,,0,0,0,,{\i1}{\b1}{\an8}{\u1}Alignment surrounded by formatting tags
+Dialogue: 0,0:01:28.00,0:01:30.00,MiddleLeft,,0,0,0,,{\an6}Override {\i1}with {\b1}other{\b0} tags{\i0} mixed in
+Dialogue: 0,0:01:31.00,0:01:33.00,Default,,0,0,0,,{\c&H00FF00&}{\an7}Color + alignment override
+Dialogue: 0,0:01:34.00,0:01:36.00,TopCenter,,0,0,0,,{\fs24}{\an1}{\fn Comic Sans MS}Size + alignment + font
+Dialogue: 0,0:01:37.00,0:01:39.00,BottomLeft,,0,0,0,,{\an1}Same as style but with tag - should NOT be optimized (1 = BOTTOMLEFT)
+Dialogue: 0,0:01:40.00,0:01:42.00,MiddleRight,,0,0,0,,Empty override {\an}should be ignored
+Dialogue: 0,0:01:43.00,0:01:45.00,TopRight,,0,0,0,,{\an0}Invalid alignment (0) should be ignored
+Dialogue: 0,0:01:46.00,0:01:48.00,Default,,0,0,0,,{\an10}Out of range alignment (10) should be ignored
+Dialogue: 0,0:01:49.00,0:01:51.00,MiddleCenter,,0,0,0,,{\a99}Invalid legacy alignment (99) should be ignored
+Dialogue: 0,0:01:52.00,0:01:54.00,TopLeft,,0,0,0,,No tag but TopLeft style switches to Default then back to TopLeft
+Dialogue: 0,0:01:52.00,0:01:54.00,Default,,0,0,0,,Simultaneous subtitle with Default style
+Dialogue: 0,0:01:52.00,0:01:54.00,BottomRight,,0,0,0,,Simultaneous subtitle with BottomRight style
+Dialogue: 0,0:01:55.00,0:01:57.00,TopLeft,,0,0,0,,{\an9}{\an1}{\an5}{\an3}{\an7}Chain of 5 overrides - last wins (7 = TOPLEFT)
+Dialogue: 0,0:01:58.00,0:02:00.00,Default,,0,0,0,,{\an3}First override {\an5}second override in text - last wins (5 = CENTER)

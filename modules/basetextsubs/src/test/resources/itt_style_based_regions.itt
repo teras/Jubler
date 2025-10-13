@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt xml:lang="en" xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling">
+  <head>
+    <layout>
+      <!-- All 9 regions defined -->
+      <region xml:id="topleft" tts:origin="10% 10%" tts:extent="80% 15%" tts:textAlign="start" tts:displayAlign="before"/>
+      <region xml:id="top" tts:origin="10% 10%" tts:extent="80% 15%" tts:textAlign="center" tts:displayAlign="before"/>
+      <region xml:id="topright" tts:origin="10% 10%" tts:extent="80% 15%" tts:textAlign="end" tts:displayAlign="before"/>
+      <region xml:id="left" tts:origin="10% 40%" tts:extent="80% 20%" tts:textAlign="start" tts:displayAlign="center"/>
+      <region xml:id="center" tts:origin="10% 40%" tts:extent="80% 20%" tts:textAlign="center" tts:displayAlign="center"/>
+      <region xml:id="right" tts:origin="10% 40%" tts:extent="80% 20%" tts:textAlign="end" tts:displayAlign="center"/>
+      <region xml:id="bottomleft" tts:origin="10% 80%" tts:extent="80% 15%" tts:textAlign="start" tts:displayAlign="after"/>
+      <region xml:id="bottom" tts:origin="10% 80%" tts:extent="80% 15%" tts:textAlign="center" tts:displayAlign="after"/>
+      <region xml:id="bottomright" tts:origin="10% 80%" tts:extent="80% 15%" tts:textAlign="end" tts:displayAlign="after"/>
+    </layout>
+    <styling>
+      <!-- Base style has TOPLEFT direction -->
+      <style xml:id="defaultStyle" tts:fontFamily="Arial" tts:fontSize="20px" tts:color="#FFFFFF"/>
+    </styling>
+  </head>
+  <body>
+    <div>
+      <!-- Subtitle with TOPLEFT (matches base style BOTTOM after loading, but has region) -->
+      <p xml:id="sub1" begin="00:00:01.000" end="00:00:03.000" region="topleft">TopLeft - matches style, will have no overstyle</p>
+      
+      <!-- Subtitle with BOTTOM (differs from base style) -->
+      <p xml:id="sub2" begin="00:00:04.000" end="00:00:06.000" region="bottom">Bottom - differs from style, needs overstyle and region</p>
+      
+      <!-- Subtitle with no region (uses base style) -->
+      <p xml:id="sub3" begin="00:00:07.000" end="00:00:09.000">No region - uses base style (BOTTOM)</p>
+      
+      <!-- Subtitle with CENTER (differs from base style) -->
+      <p xml:id="sub4" begin="00:00:10.000" end="00:00:12.000" region="center">Center - differs from style, needs overstyle and region</p>
+      
+      <!-- Another TOPLEFT (matches base style) -->
+      <p xml:id="sub5" begin="00:00:13.000" end="00:00:15.000" region="topleft">Another TopLeft - matches style</p>
+    </div>
+  </body>
+</tt>

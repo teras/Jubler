@@ -11,6 +11,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.style.StyleType;
 import com.panayotis.jubler.subs.style.SubStyle;
+import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.time.Time;
 import org.w3c.dom.Document;
@@ -141,10 +142,25 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
         String origin;
         String extent;
         String displayAlign;
+        String textAlign;
         String writingMode;
 
         RegionInfo(String id) {
             this.id = id;
+        }
+
+        public float getOriginX() {
+            if (origin == null) return 0.0f;
+            String[] parts = origin.trim().split("\\s+");
+            if (parts.length >= 1) {
+                String xValue = parts[0].replace("%", "").trim();
+                try {
+                    return Float.parseFloat(xValue);
+                } catch (NumberFormatException e) {
+                    return 0.0f;
+                }
+            }
+            return 0.0f;
         }
 
         public float getOriginY() {
@@ -161,27 +177,92 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
             return 80.0f;
         }
 
-        public SubStyle.Direction getDirection() {
+        private String getVerticalPosition() {
             float yPos = getOriginY();
             
             if (displayAlign != null) {
                 switch (displayAlign.toLowerCase()) {
                     case "before":
-                        return SubStyle.Direction.TOP;
+                        return "top";
                     case "center":
-                        return SubStyle.Direction.CENTER;
+                        return "center";
                     case "after":
-                        return SubStyle.Direction.BOTTOM;
+                        return "bottom";
                 }
             }
             
-            if (yPos <= 25) {
-                return SubStyle.Direction.TOP;
-            } else if (yPos >= 75) {
-                return SubStyle.Direction.BOTTOM;
+            if (yPos < 33) {
+                return "top";
+            } else if (yPos < 67) {
+                return "center";
             } else {
-                return SubStyle.Direction.CENTER;
+                return "bottom";
             }
+        }
+
+        private String getHorizontalPosition() {
+            if (textAlign != null) {
+                switch (textAlign.toLowerCase()) {
+                    case "left":
+                    case "start":
+                        return "left";
+                    case "center":
+                        return "center";
+                    case "right":
+                    case "end":
+                        return "right";
+                }
+            }
+            
+            float xPos = getOriginX();
+            if (xPos <= 5) {
+                return "center";
+            } else if (xPos < 33) {
+                return "left";
+            } else if (xPos < 67) {
+                return "center";
+            } else {
+                return "right";
+            }
+        }
+
+        public SubStyle.Direction getDirection() {
+            String vertical = getVerticalPosition();
+            String horizontal = getHorizontalPosition();
+            
+            if (vertical.equals("top")) {
+                if (horizontal.equals("left")) return SubStyle.Direction.TOPLEFT;
+                if (horizontal.equals("right")) return SubStyle.Direction.TOPRIGHT;
+                return SubStyle.Direction.TOP;
+            } else if (vertical.equals("center")) {
+                if (horizontal.equals("left")) return SubStyle.Direction.LEFT;
+                if (horizontal.equals("right")) return SubStyle.Direction.RIGHT;
+                return SubStyle.Direction.CENTER;
+            } else {
+                if (horizontal.equals("left")) return SubStyle.Direction.BOTTOMLEFT;
+                if (horizontal.equals("right")) return SubStyle.Direction.BOTTOMRIGHT;
+                return SubStyle.Direction.BOTTOM;
+            }
+        }
+
+        public int getLeftMargin() {
+            String horizontal = getHorizontalPosition();
+            float xPos = getOriginX();
+            
+            if (horizontal.equals("left") || horizontal.equals("center")) {
+                return Math.max(0, Math.min(100, (int) xPos));
+            }
+            return 20;
+        }
+
+        public int getRightMargin() {
+            String horizontal = getHorizontalPosition();
+            float xPos = getOriginX();
+            
+            if (horizontal.equals("right")) {
+                return Math.max(0, Math.min(100, (int) (100 - xPos)));
+            }
+            return 20;
         }
     }
 
@@ -310,6 +391,10 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
                 if (region.displayAlign == null || region.displayAlign.isEmpty()) {
                     region.displayAlign = regionElement.getAttribute("tts:displayAlign");
                 }
+                region.textAlign = regionElement.getAttributeNS(TTML_STYLING_NS, "textAlign");
+                if (region.textAlign == null || region.textAlign.isEmpty()) {
+                    region.textAlign = regionElement.getAttribute("tts:textAlign");
+                }
                 region.writingMode = regionElement.getAttributeNS(TTML_STYLING_NS, "writingMode");
                 if (region.writingMode == null || region.writingMode.isEmpty()) {
                     region.writingMode = regionElement.getAttribute("tts:writingMode");
@@ -339,10 +424,24 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
             if (!regionId.isEmpty() && regionMap.containsKey(regionId)) {
                 RegionInfo region = regionMap.get(regionId);
                 SubStyle.Direction direction = region.getDirection();
-                if (entry.getStyle() != null) {
-                    SubStyle newStyle = new SubStyle(entry.getStyle());
-                    newStyle.set(StyleType.DIRECTION, direction);
-                    entry.setStyle(newStyle);
+                int leftMargin = region.getLeftMargin();
+                int rightMargin = region.getRightMargin();
+                
+                SubStyle baseStyle = entry.getStyle();
+                if (baseStyle != null) {
+                    SubStyle.Direction styleDirection = (SubStyle.Direction) baseStyle.get(StyleType.DIRECTION);
+                    Integer styleLeftMargin = (Integer) baseStyle.get(StyleType.LEFTMARGIN);
+                    Integer styleRightMargin = (Integer) baseStyle.get(StyleType.RIGHTMARGIN);
+                    
+                    if (direction != styleDirection) {
+                        entry.setOverStyle(StyleType.DIRECTION, direction, 0, entry.getText().length());
+                    }
+                    if (leftMargin != styleLeftMargin) {
+                        entry.setOverStyle(StyleType.LEFTMARGIN, leftMargin, 0, entry.getText().length());
+                    }
+                    if (rightMargin != styleRightMargin) {
+                        entry.setOverStyle(StyleType.RIGHTMARGIN, rightMargin, 0, entry.getText().length());
+                    }
                 }
             }
         }
@@ -478,7 +577,7 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
         generateStylingSection(head, subs);
 
         // Add layout section
-        generateLayoutSection(head);
+        generateLayoutSection(head, subs);
 
         // Create body section
         Element body = doc.createElement("body");
@@ -640,21 +739,223 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
     /**
      * Generate the layout section
      */
-    protected void generateLayoutSection(Element head) {
+    protected void generateLayoutSection(Element head, Subtitles subs) {
         Document doc = head.getOwnerDocument();
         Element layout = doc.createElement("layout");
         head.appendChild(layout);
 
-        // Generate default regions
-        generateDefaultRegions(layout);
+        // Collect used directions from subtitles
+        java.util.Set<SubStyle.Direction> usedDirections = collectUsedDirections(subs);
+
+        // Generate regions on-demand based on used directions
+        generateRegionsOnDemand(layout, usedDirections, subs);
 
         // Allow subclasses to add additional regions
         addAdditionalRegions(layout);
     }
 
     /**
-     * Generate default regions based on format requirements
+     * Collect directions that differ from their subtitle's style (need regions)
+     * Only directions that are overridden via overstyles should be collected
      */
+    protected java.util.Set<SubStyle.Direction> collectUsedDirections(Subtitles subs) {
+        java.util.Set<SubStyle.Direction> directions = new java.util.HashSet<>();
+        for (int i = 0; i < subs.size(); i++) {
+            SubEntry entry = subs.elementAt(i);
+            SubStyle style = entry.getStyle();
+            if (style != null) {
+                SubStyle.Direction baseDirection = (SubStyle.Direction) style.get(StyleType.DIRECTION);
+                
+                AbstractStyleover[] overstyles = entry.getStyleovers();
+                if (overstyles != null && overstyles[StyleType.DIRECTION.ordinal()] != null) {
+                    Object overrideValue = overstyles[StyleType.DIRECTION.ordinal()].getValue(0, entry.getText().length(), baseDirection, entry.getText());
+                    if (overrideValue != null) {
+                        SubStyle.Direction effectiveDirection = (SubStyle.Direction) overrideValue;
+                        if (effectiveDirection != baseDirection) {
+                            directions.add(effectiveDirection);
+                        }
+                    }
+                }
+            }
+        }
+        return directions;
+    }
+
+    /**
+     * Generate regions on-demand based on used directions
+     * Only directions that differ from their subtitle's style need regions
+     */
+    protected void generateRegionsOnDemand(Element layout, java.util.Set<SubStyle.Direction> usedDirections, Subtitles subs) {
+        Document doc = layout.getOwnerDocument();
+
+        for (SubStyle.Direction direction : usedDirections) {
+            Element region = createRegionForDirection(doc, direction, subs);
+            if (region != null) {
+                layout.appendChild(region);
+            }
+        }
+    }
+
+    /**
+     * Create a region element for a specific direction
+     */
+    protected Element createRegionForDirection(Document doc, SubStyle.Direction direction, Subtitles subs) {
+        if (direction == null) return null;
+
+        Element region = doc.createElement("region");
+        String regionId = getRegionIdForDirection(direction);
+        region.setAttribute("xml:id", regionId);
+
+        // Get margins for this direction from subtitles
+        int leftMargin = getMarginForDirection(direction, subs, true);
+        int rightMargin = getMarginForDirection(direction, subs, false);
+
+        // Calculate origin based on direction and margins
+        String originX = calculateOriginX(direction, leftMargin, rightMargin);
+        String originY = calculateOriginY(direction);
+        region.setAttribute("tts:origin", originX + " " + originY);
+
+        // Set extent
+        region.setAttribute("tts:extent", "100% 15%");
+
+        // Set displayAlign
+        region.setAttribute("tts:displayAlign", getDisplayAlignForDirection(direction));
+
+        // Set textAlign
+        region.setAttribute("tts:textAlign", getTextAlignForDirection(direction));
+
+        // Allow subclasses to add custom attributes
+        addCustomRegionAttributes(region);
+
+        return region;
+    }
+
+    /**
+     * Get region ID for a direction
+     */
+    protected String getRegionIdForDirection(SubStyle.Direction direction) {
+        switch (direction) {
+            case TOP: return "top";
+            case TOPLEFT: return "topleft";
+            case TOPRIGHT: return "topright";
+            case CENTER: return "center";
+            case LEFT: return "left";
+            case RIGHT: return "right";
+            case BOTTOM: return "bottom";
+            case BOTTOMLEFT: return "bottomleft";
+            case BOTTOMRIGHT: return "bottomright";
+            default: return "bottom";
+        }
+    }
+
+    /**
+     * Get margin value for a direction from subtitles
+     */
+    protected int getMarginForDirection(SubStyle.Direction direction, Subtitles subs, boolean isLeft) {
+        int defaultMargin = 20;
+        
+        for (int i = 0; i < subs.size(); i++) {
+            SubEntry entry = subs.elementAt(i);
+            SubStyle style = entry.getStyle();
+            if (style != null) {
+                SubStyle.Direction entryDirection = (SubStyle.Direction) style.get(StyleType.DIRECTION);
+                if (entryDirection == direction) {
+                    Integer margin = (Integer) style.get(isLeft ? StyleType.LEFTMARGIN : StyleType.RIGHTMARGIN);
+                    if (margin != null) {
+                        return margin;
+                    }
+                }
+            }
+        }
+        
+        return defaultMargin;
+    }
+
+    /**
+     * Calculate origin X coordinate
+     */
+    protected String calculateOriginX(SubStyle.Direction direction, int leftMargin, int rightMargin) {
+        switch (direction) {
+            case TOPLEFT:
+            case LEFT:
+            case BOTTOMLEFT:
+                return Math.max(0, Math.min(100, leftMargin)) + "%";
+            
+            case TOPRIGHT:
+            case RIGHT:
+            case BOTTOMRIGHT:
+                return Math.max(0, Math.min(100, 100 - rightMargin)) + "%";
+            
+            default:
+                return leftMargin + "%";
+        }
+    }
+
+    /**
+     * Calculate origin Y coordinate
+     */
+    protected String calculateOriginY(SubStyle.Direction direction) {
+        switch (direction) {
+            case TOP:
+            case TOPLEFT:
+            case TOPRIGHT:
+                return "15%";
+            
+            case CENTER:
+            case LEFT:
+            case RIGHT:
+                return "50%";
+            
+            default:
+                return "85%";
+        }
+    }
+
+    /**
+     * Get displayAlign for direction
+     */
+    protected String getDisplayAlignForDirection(SubStyle.Direction direction) {
+        switch (direction) {
+            case TOP:
+            case TOPLEFT:
+            case TOPRIGHT:
+                return "before";
+            
+            case CENTER:
+            case LEFT:
+            case RIGHT:
+                return "center";
+            
+            default:
+                return "after";
+        }
+    }
+
+    /**
+     * Get textAlign for direction
+     */
+    protected String getTextAlignForDirection(SubStyle.Direction direction) {
+        switch (direction) {
+            case TOPLEFT:
+            case LEFT:
+            case BOTTOMLEFT:
+                return "left";
+            
+            case TOPRIGHT:
+            case RIGHT:
+            case BOTTOMRIGHT:
+                return "right";
+            
+            default:
+                return "center";
+        }
+    }
+
+    /**
+     * Generate default regions based on format requirements
+     * @deprecated Use generateRegionsOnDemand instead
+     */
+    @Deprecated
     protected void generateDefaultRegions(Element layout) {
         Document doc = layout.getOwnerDocument();
 
@@ -729,21 +1030,21 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
     protected void createStandardRegions(Element layout) {
         Document doc = layout.getOwnerDocument();
 
-        // Bottom region (default)
-        Element bottomRegion = doc.createElement("region");
-        bottomRegion.setAttribute("xml:id", "bottom");
-        bottomRegion.setAttribute("tts:origin", "10% 80%");
-        bottomRegion.setAttribute("tts:extent", "80% 15%");
-        bottomRegion.setAttribute("tts:displayAlign", "after");
-        layout.appendChild(bottomRegion);
-
-        // Top region for additional flexibility
+        // Top region
         Element topRegion = doc.createElement("region");
         topRegion.setAttribute("xml:id", "top");
         topRegion.setAttribute("tts:origin", "10% 10%");
         topRegion.setAttribute("tts:extent", "80% 15%");
         topRegion.setAttribute("tts:displayAlign", "before");
         layout.appendChild(topRegion);
+
+        // Center region
+        Element centerRegion = doc.createElement("region");
+        centerRegion.setAttribute("xml:id", "center");
+        centerRegion.setAttribute("tts:origin", "10% 42.5%");
+        centerRegion.setAttribute("tts:extent", "80% 15%");
+        centerRegion.setAttribute("tts:displayAlign", "center");
+        layout.appendChild(centerRegion);
     }
 
     /**
@@ -840,10 +1141,12 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
     }
 
     /**
-     * Apply region attributes to subtitle element
+     * Apply region attributes to subtitle element - can be overridden by subclasses
+     * Default implementation does nothing - region handling is in addCustomSubtitleAttributes
      */
     protected void applySubtitleRegionAttributes(Element p, SubEntry sub, int index) {
-        p.setAttribute("region", getSubtitleRegionReference(sub, index));
+        // Default implementation does nothing
+        // Region attributes are set in addCustomSubtitleAttributes based on Direction
     }
 
     /**
@@ -1198,7 +1501,24 @@ public abstract class W3CFamily extends AbstractXMLSubFormat {
      * Add custom subtitle attributes - override in subclasses if needed
      */
     protected void addCustomSubtitleAttributes(Element p, SubEntry sub, int index) {
-        // Default implementation does nothing - subclasses can override
+        SubStyle style = sub.getStyle();
+        if (style == null) return;
+        
+        SubStyle.Direction styleDirection = (SubStyle.Direction) style.get(StyleType.DIRECTION);
+        SubStyle.Direction effectiveDirection = styleDirection;
+        
+        AbstractStyleover[] overstyles = sub.getStyleovers();
+        if (overstyles != null && overstyles[StyleType.DIRECTION.ordinal()] != null) {
+            Object overrideValue = overstyles[StyleType.DIRECTION.ordinal()].getValue(0, sub.getText().length(), styleDirection, sub.getText());
+            if (overrideValue != null && overrideValue != styleDirection) {
+                effectiveDirection = (SubStyle.Direction) overrideValue;
+            }
+        }
+        
+        if (effectiveDirection != styleDirection || (effectiveDirection != null && effectiveDirection != SubStyle.Direction.BOTTOM)) {
+            String regionId = getRegionIdForDirection(effectiveDirection);
+            p.setAttribute("region", regionId);
+        }
     }
 
     /**

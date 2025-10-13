@@ -31,7 +31,7 @@ public class AdvancedSubStation extends SubStationAlpha {
      * Creates a new instance of SubFormat
      */
     static {
-        testpat = Pattern.compile("(?i)(?s)\\[Script Info\\].*?\\[v4(\\+ Styles)|( Styles\\+)\\].*?"
+        testpat = Pattern.compile("(?i)(?s)\\[Script Info\\].*?\\[v4(?:(\\+ Styles)|( Styles\\+))\\].*?"
                 + "Dialogue:.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?" + nl);
 
         styles = Pattern.compile("(?i)Style:(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?),(.*?)" + nl);

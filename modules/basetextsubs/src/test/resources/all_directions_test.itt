@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<tt xmlns:ttp="http://www.w3.org/ns/ttml#parameter" xmlns:tts="http://www.w3.org/ns/ttml#styling" xmlns="http://www.w3.org/ns/ttml" xml:lang="en" ttp:dropMode="nonDrop" ttp:frameRate="24" ttp:timeBase="smpte">
+  <head>
+    <styling>
+      <style xml:id="normal" tts:color="white" tts:fontFamily="sansSerif" tts:fontSize="100%"/>
+    </styling>
+    <layout>
+      <region xml:id="topleft" tts:displayAlign="before" tts:extent="100% 15%" tts:origin="0% 15%" tts:textAlign="left" tts:writingMode="lrtb"/>
+      <region xml:id="top" tts:displayAlign="before" tts:extent="100% 15%" tts:origin="0% 15%" tts:textAlign="center" tts:writingMode="lrtb"/>
+      <region xml:id="topright" tts:displayAlign="before" tts:extent="100% 15%" tts:origin="0% 15%" tts:textAlign="right" tts:writingMode="lrtb"/>
+      <region xml:id="left" tts:displayAlign="center" tts:extent="100% 15%" tts:origin="0% 50%" tts:textAlign="left" tts:writingMode="lrtb"/>
+      <region xml:id="center" tts:displayAlign="center" tts:extent="100% 15%" tts:origin="0% 50%" tts:textAlign="center" tts:writingMode="lrtb"/>
+      <region xml:id="right" tts:displayAlign="center" tts:extent="100% 15%" tts:origin="0% 50%" tts:textAlign="right" tts:writingMode="lrtb"/>
+      <region xml:id="bottomleft" tts:displayAlign="after" tts:extent="100% 15%" tts:origin="0% 85%" tts:textAlign="left" tts:writingMode="lrtb"/>
+      <region xml:id="bottomcenter" tts:displayAlign="after" tts:extent="100% 15%" tts:origin="0% 85%" tts:textAlign="center" tts:writingMode="lrtb"/>
+      <region xml:id="bottomright" tts:displayAlign="after" tts:extent="100% 15%" tts:origin="0% 85%" tts:textAlign="right" tts:writingMode="lrtb"/>
+    </layout>
+  </head>
+  <body style="normal">
+    <div>
+      <p begin="00:00:01:00" end="00:00:02:00" region="topleft">Top Left</p>
+      <p begin="00:00:02:00" end="00:00:03:00" region="top">Top Center</p>
+      <p begin="00:00:03:00" end="00:00:04:00" region="topright">Top Right</p>
+      <p begin="00:00:04:00" end="00:00:05:00" region="left">Center Left</p>
+      <p begin="00:00:05:00" end="00:00:06:00" region="center">Center</p>
+      <p begin="00:00:06:00" end="00:00:07:00" region="right">Center Right</p>
+      <p begin="00:00:07:00" end="00:00:08:00" region="bottomleft">Bottom Left</p>
+      <p begin="00:00:08:00" end="00:00:09:00" region="bottomcenter">Bottom Center (explicit)</p>
+      <p begin="00:00:09:00" end="00:00:10:00" region="bottomright">Bottom Right</p>
+      <p begin="00:00:10:00" end="00:00:11:00">No region (uses default style = BOTTOM)</p>
+    </div>
+  </body>
+</tt>

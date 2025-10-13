@@ -27,7 +27,7 @@ import java.util.Collection;
 
 public abstract class AbstractGenericTextSubFormat extends SubFormat {
 
-    protected static final String nl = "\\\n";
+    protected static final String nl = "\\r?\\n";
     protected static final String sp = "[ \\t]*";
     protected Subtitles subtitle_list;
 

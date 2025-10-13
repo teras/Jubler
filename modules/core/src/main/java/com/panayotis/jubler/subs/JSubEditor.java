@@ -143,8 +143,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         }
         showStyle();
         if (overstyle != null) {
-            int pos = SubText.getCaretPosition();
-            overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), pos, pos, entry.getText());
+            overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), 0, 0, entry.getText());
         }
     }
 

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt xml:lang="en" xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling">
+  <head>
+    <layout>
+      <region xml:id="default_bottom" tts:origin="10% 80%" tts:extent="80% 15%" tts:textAlign="center" tts:displayAlign="after"/>
+      <region xml:id="topleft" tts:origin="5% 5%" tts:extent="30% 15%" tts:textAlign="start" tts:displayAlign="before"/>
+      <region xml:id="top" tts:origin="35% 5%" tts:extent="30% 15%" tts:textAlign="center" tts:displayAlign="before"/>
+      <region xml:id="topright" tts:origin="65% 5%" tts:extent="30% 15%" tts:textAlign="end" tts:displayAlign="before"/>
+      <region xml:id="left" tts:origin="5% 42.5%" tts:extent="30% 15%" tts:textAlign="start" tts:displayAlign="center"/>
+      <region xml:id="center" tts:origin="35% 42.5%" tts:extent="30% 15%" tts:textAlign="center" tts:displayAlign="center"/>
+      <region xml:id="right" tts:origin="65% 42.5%" tts:extent="30% 15%" tts:textAlign="end" tts:displayAlign="center"/>
+      <region xml:id="bottomleft" tts:origin="5% 80%" tts:extent="30% 15%" tts:textAlign="start" tts:displayAlign="after"/>
+      <region xml:id="bottom" tts:origin="35% 80%" tts:extent="30% 15%" tts:textAlign="center" tts:displayAlign="after"/>
+      <region xml:id="bottomright" tts:origin="65% 80%" tts:extent="30% 15%" tts:textAlign="end" tts:displayAlign="after"/>
+      <region xml:id="custom_top" tts:origin="20% 10%" tts:extent="60% 15%" tts:textAlign="center" tts:displayAlign="before"/>
+      <region xml:id="custom_center" tts:origin="20% 40%" tts:extent="60% 20%" tts:textAlign="center" tts:displayAlign="center"/>
+    </layout>
+    <styling>
+      <style xml:id="defaultStyle" tts:fontFamily="Arial" tts:fontSize="20px" tts:color="#FFFFFF"/>
+      <style xml:id="topLeftStyle" tts:fontFamily="Arial" tts:fontSize="20px" tts:color="#FFFF00"/>
+      <style xml:id="topCenterStyle" tts:fontFamily="Arial" tts:fontSize="20px" tts:color="#00FF00"/>
+      <style xml:id="bottomRightStyle" tts:fontFamily="Arial" tts:fontSize="20px" tts:color="#FF00FF"/>
+      <style xml:id="centerStyle" tts:fontFamily="Arial" tts:fontSize="20px" tts:color="#00FFFF"/>
+    </styling>
+  </head>
+  <body>
+    <div>
+      <!-- No region specified - should use default (BOTTOM) -->
+      <p xml:id="sub1" begin="00:00:01.000" end="00:00:03.000">No region - default to BOTTOM</p>
+      
+      <!-- Explicit default region -->
+      <p xml:id="sub2" begin="00:00:04.000" end="00:00:06.000" region="default_bottom">Explicit default_bottom region</p>
+      
+      <!-- All 9 standard positions -->
+      <p xml:id="sub3" begin="00:00:07.000" end="00:00:09.000" region="topleft">TopLeft region</p>
+      <p xml:id="sub4" begin="00:00:10.000" end="00:00:12.000" region="top">Top region</p>
+      <p xml:id="sub5" begin="00:00:13.000" end="00:00:15.000" region="topright">TopRight region</p>
+      <p xml:id="sub6" begin="00:00:16.000" end="00:00:18.000" region="left">Left region</p>
+      <p xml:id="sub7" begin="00:00:19.000" end="00:00:21.000" region="center">Center region</p>
+      <p xml:id="sub8" begin="00:00:22.000" end="00:00:24.000" region="right">Right region</p>
+      <p xml:id="sub9" begin="00:00:25.000" end="00:00:27.000" region="bottomleft">BottomLeft region</p>
+      <p xml:id="sub10" begin="00:00:28.000" end="00:00:30.000" region="bottom">Bottom region (explicit, not default)</p>
+      <p xml:id="sub11" begin="00:00:31.000" end="00:00:33.000" region="bottomright">BottomRight region</p>
+      
+      <!-- Custom regions that should still map correctly -->
+      <p xml:id="sub12" begin="00:00:34.000" end="00:00:36.000" region="custom_top">Custom top region (center + top = TOP)</p>
+      <p xml:id="sub13" begin="00:00:37.000" end="00:00:39.000" region="custom_center">Custom center region (center + center = CENTER)</p>
+      
+      <!-- Same region used by multiple subtitles -->
+      <p xml:id="sub14" begin="00:00:40.000" end="00:00:42.000" region="topleft">First subtitle with topleft</p>
+      <p xml:id="sub15" begin="00:00:43.000" end="00:00:45.000" region="topleft">Second subtitle with topleft</p>
+      <p xml:id="sub16" begin="00:00:46.000" end="00:00:48.000" region="topleft">Third subtitle with topleft</p>
+      
+      <!-- Regions with styles -->
+      <p xml:id="sub17" begin="00:00:49.000" end="00:00:51.000" region="topleft" style="topLeftStyle">TopLeft region + topLeftStyle</p>
+      <p xml:id="sub18" begin="00:00:52.000" end="00:00:54.000" region="top" style="topCenterStyle">Top region + topCenterStyle</p>
+      <p xml:id="sub19" begin="00:00:55.000" end="00:00:57.000" region="bottomright" style="bottomRightStyle">BottomRight region + bottomRightStyle</p>
+      <p xml:id="sub20" begin="00:00:58.000" end="00:01:00.000" region="center" style="centerStyle">Center region + centerStyle</p>
+      
+      <!-- Style applied but using different region -->
+      <p xml:id="sub21" begin="00:01:01.000" end="00:01:03.000" region="bottomright" style="topLeftStyle">BottomRight region with topLeftStyle (region wins)</p>
+      <p xml:id="sub22" begin="00:01:04.000" end="00:01:06.000" region="topleft" style="bottomRightStyle">TopLeft region with bottomRightStyle (region wins)</p>
+      
+      <!-- Simultaneous subtitles with different regions -->
+      <p xml:id="sub23" begin="00:01:07.000" end="00:01:09.000" region="topleft">Simultaneous 1 - TopLeft</p>
+      <p xml:id="sub24" begin="00:01:07.000" end="00:01:09.000" region="topright">Simultaneous 2 - TopRight</p>
+      <p xml:id="sub25" begin="00:01:07.000" end="00:01:09.000" region="bottom">Simultaneous 3 - Bottom</p>
+      
+      <!-- Mixed formatting and regions -->
+      <p xml:id="sub26" begin="00:01:10.000" end="00:01:12.000" region="top"><span tts:fontWeight="bold">Bold text</span> in top region</p>
+      <p xml:id="sub27" begin="00:01:13.000" end="00:01:15.000" region="center"><span tts:fontStyle="italic">Italic text</span> in center region</p>
+      <p xml:id="sub28" begin="00:01:16.000" end="00:01:18.000" region="bottomleft"><span tts:color="#FF0000">Red text</span> in bottomleft region</p>
+      
+      <!-- Nested spans with region -->
+      <p xml:id="sub29" begin="00:01:19.000" end="00:01:21.000" region="topright">
+        <span tts:fontWeight="bold">Bold <span tts:fontStyle="italic">and italic</span> text</span> in topright
+      </p>
+      
+      <!-- Multiple lines in one subtitle with region -->
+      <p xml:id="sub30" begin="00:01:22.000" end="00:01:24.000" region="left">
+        First line<br/>
+        Second line<br/>
+        Third line
+      </p>
+      
+      <!-- Very long text with region -->
+      <p xml:id="sub32" begin="00:01:28.000" end="00:01:30.000" region="center">This is a very long subtitle text that spans multiple words and might wrap to multiple lines depending on the display size and configuration but should still maintain its center region alignment throughout</p>
+      
+      <!-- Transition between regions -->
+      <p xml:id="sub33" begin="00:01:31.000" end="00:01:33.000" region="topleft">Starting in topleft</p>
+      <p xml:id="sub34" begin="00:01:33.500" end="00:01:35.500" region="topright">Moving to topright</p>
+      <p xml:id="sub35" begin="00:01:36.000" end="00:01:38.000" region="bottom">Ending in bottom</p>
+      
+      <!-- All regions used in sequence -->
+      <p xml:id="sub36" begin="00:01:39.000" end="00:01:40.000" region="topleft">1-TopLeft</p>
+      <p xml:id="sub37" begin="00:01:40.000" end="00:01:41.000" region="top">2-Top</p>
+      <p xml:id="sub38" begin="00:01:41.000" end="00:01:42.000" region="topright">3-TopRight</p>
+      <p xml:id="sub39" begin="00:01:42.000" end="00:01:43.000" region="left">4-Left</p>
+      <p xml:id="sub40" begin="00:01:43.000" end="00:01:44.000" region="center">5-Center</p>
+      <p xml:id="sub41" begin="00:01:44.000" end="00:01:45.000" region="right">6-Right</p>
+      <p xml:id="sub42" begin="00:01:45.000" end="00:01:46.000" region="bottomleft">7-BottomLeft</p>
+      <p xml:id="sub43" begin="00:01:46.000" end="00:01:47.000" region="bottom">8-Bottom</p>
+      <p xml:id="sub44" begin="00:01:47.000" end="00:01:48.000" region="bottomright">9-BottomRight</p>
+    </div>
+  </body>
+</tt>

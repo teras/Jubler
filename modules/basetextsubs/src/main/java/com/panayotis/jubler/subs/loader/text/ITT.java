@@ -153,38 +153,7 @@ public class ITT extends W3CFamily {
     @Override
     protected void addCustomRegionAttributes(Element region) {
         // ITT uses specific region setup for Apple compatibility
-        region.setAttribute("tts:textAlign", "center");
+        region.setAttribute("tts:writingMode", "lrtb");
     }
-
-    @Override
-    protected void generateDefaultRegions(Element layout) {
-        org.w3c.dom.Document doc = layout.getOwnerDocument();
-        
-        Element topRegion = doc.createElement("region");
-        topRegion.setAttribute("xml:id", "top");
-        topRegion.setAttribute("tts:displayAlign", "before");
-        topRegion.setAttribute("tts:extent", "100% " + REGION_HEIGHT);
-        topRegion.setAttribute("tts:origin", "0% 0%");
-        topRegion.setAttribute("tts:writingMode", "lrtb");
-        addCustomRegionAttributes(topRegion);
-        layout.appendChild(topRegion);
-    }
-
-    @Override
-    protected void addCustomSubtitleAttributes(Element p, SubEntry sub, int index) {
-        com.panayotis.jubler.subs.style.SubStyle.Direction direction = 
-            (com.panayotis.jubler.subs.style.SubStyle.Direction) sub.getStyle().get(com.panayotis.jubler.subs.style.StyleType.DIRECTION);
-        
-        if (direction != null) {
-            switch (direction) {
-                case TOP:
-                case TOPLEFT:
-                case TOPRIGHT:
-                    p.setAttribute("region", "top");
-                    break;
-            }
-        }
-    }
-
 
 }
