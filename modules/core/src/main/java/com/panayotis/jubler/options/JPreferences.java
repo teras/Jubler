@@ -103,6 +103,7 @@ public class JPreferences extends javax.swing.JDialog {
         SavePrefsP = new javax.swing.JPanel();
         SavePrefsB = new javax.swing.JButton();
         LoadPrefsB = new javax.swing.JButton();
+        ResetPrefsB = new javax.swing.JButton();
 
         setTitle(__("Jubler Preferences"));
         setModal(true);
@@ -134,7 +135,7 @@ public class JPreferences extends javax.swing.JDialog {
         LowerP.add(ButtonsP, java.awt.BorderLayout.EAST);
 
         SavePrefsP.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 16, 6, 0));
-        SavePrefsP.setLayout(new java.awt.GridLayout(1, 2, 4, 0));
+        SavePrefsP.setLayout(new java.awt.GridLayout(1, 3, 4, 0));
 
         SavePrefsB.setText(__("Export"));
         SavePrefsB.addActionListener(new java.awt.event.ActionListener() {
@@ -151,6 +152,14 @@ public class JPreferences extends javax.swing.JDialog {
             }
         });
         SavePrefsP.add(LoadPrefsB);
+
+        ResetPrefsB.setText(__("Reset"));
+        ResetPrefsB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ResetPrefsBActionPerformed(evt);
+            }
+        });
+        SavePrefsP.add(ResetPrefsB);
 
         LowerP.add(SavePrefsP, java.awt.BorderLayout.WEST);
 
@@ -196,12 +205,34 @@ public class JPreferences extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_SavePrefsBActionPerformed
 
+    private void ResetPrefsBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetPrefsBActionPerformed
+        int result = JOptionPane.showConfirmDialog(this,
+                __("This will delete all preferences and reset them to defaults.") + "\n" +
+                __("You will need to exit Jubler for the changes to take full effect.") + "\n\n" +
+                __("Are you sure you want to continue?"),
+                __("Reset Preferences"),
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (result == JOptionPane.YES_OPTION) {
+            String error = JublerPrefs.resetPrefs();
+            if (error != null)
+                JOptionPane.showMessageDialog(this, error, __("Error"), JOptionPane.ERROR_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(this,
+                        __("All preferences have been reset to defaults.") + "\n" +
+                        __("Please exit Jubler and restart it to apply the changes."),
+                        __("Success"),
+                        JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_ResetPrefsBActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AcceptB;
     private javax.swing.JPanel ButtonsP;
     private javax.swing.JButton CancelB;
     private javax.swing.JButton LoadPrefsB;
     private javax.swing.JPanel LowerP;
+    private javax.swing.JButton ResetPrefsB;
     private javax.swing.JButton SavePrefsB;
     private javax.swing.JPanel SavePrefsP;
     // End of variables declaration//GEN-END:variables

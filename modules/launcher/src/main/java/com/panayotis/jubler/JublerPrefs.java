@@ -96,6 +96,17 @@ public final class JublerPrefs {
         }
     }
 
+    public static String resetPrefs() {
+        try {
+            prefs.clear();
+            prefs.flush();
+            return null;
+        } catch (Exception e) {
+            DEBUG.debug(e);
+            return e.toString();
+        }
+    }
+
     public static void dump() {
         try {
             for (String key : prefs.keys()) {
