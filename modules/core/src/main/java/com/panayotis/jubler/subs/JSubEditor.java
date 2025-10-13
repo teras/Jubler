@@ -886,7 +886,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         supportL.setFont(supportL.getFont().deriveFont(supportL.getFont().getSize()+2f));
         supportL.setIcon(Theme.loadIcon("vlc"));
-        supportL.setText(__("Help Bring VLC Support to Jubler"));
+        supportL.setText(__("Help bring VLC and Apple Silicon support to Jubler"));
         supportL.setIconTextGap(6);
         crossP.add(supportL, java.awt.BorderLayout.CENTER);
 

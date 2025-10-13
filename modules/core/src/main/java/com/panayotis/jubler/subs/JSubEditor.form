@@ -706,7 +706,7 @@
               <Connection code="Theme.loadIcon(&quot;vlc&quot;)" type="code"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="__(&quot;Help Bring VLC Support to Jubler&quot;)" type="code"/>
+              <Connection code="__(&quot;Help bring VLC and Apple Silicon support to Jubler&quot;)" type="code"/>
             </Property>
             <Property name="iconTextGap" type="int" value="6"/>
           </Properties>
