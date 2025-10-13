@@ -33,11 +33,11 @@ public class JAlphaIcon implements Icon {
     }
 
     public int getIconHeight() {
-        return scale(14);
+        return scale(28);
     }
 
     public int getIconWidth() {
-        return scale(26);
+        return scale(28);
     }
 
     public void paintIcon(Component c, Graphics g, int x, int y) {

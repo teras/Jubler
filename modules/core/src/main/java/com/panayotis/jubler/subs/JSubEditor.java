@@ -142,6 +142,10 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
             setEnabled(true);
         }
         showStyle();
+        if (overstyle != null) {
+            int pos = SubText.getCaretPosition();
+            overstyle.updateVisualData(entry.getStyle(), entry.getStyleovers(), pos, pos, entry.getText());
+        }
     }
 
     private void refreshStyles() {
@@ -291,7 +295,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         TimeB.setEnabled(enabled);
         FontB.setEnabled(enabled);
-        ColorB.setEnabled(enabled);
         DetachB.setEnabled(enabled);
         MetricsB.setEnabled(enabled);
         TrashB.setEnabled(enabled);
@@ -575,7 +578,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jSeparator1 = new javax.swing.JToolBar.Separator();
         TimeB = new javax.swing.JToggleButton();
         FontB = new javax.swing.JToggleButton();
-        ColorB = new javax.swing.JToggleButton();
         MetricsB = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
         TrashB = new javax.swing.JButton();
@@ -781,32 +783,19 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         jToolBar1.add(TimeB);
 
         FontB.setIcon(Theme.loadIcon("font"));
+        FontB.setSelected(true);
         FontB.setToolTipText(__("Display/hide font attributes"));
         FontB.setActionCommand("font");
         FontB.setFocusable(false);
         FontB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         FontB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        SystemDependent.setCommandButtonStyle(FontB, "middle");
+        SystemDependent.setCommandButtonStyle(FontB, "last");
         FontB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 panelsetVisible(evt);
             }
         });
         jToolBar1.add(FontB);
-
-        ColorB.setIcon(Theme.loadIcon("color"));
-        ColorB.setToolTipText(__("Display/hide color attributes"));
-        ColorB.setActionCommand("color");
-        ColorB.setFocusable(false);
-        ColorB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        ColorB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        SystemDependent.setCommandButtonStyle(ColorB, "last");
-        ColorB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                panelsetVisible(evt);
-            }
-        });
-        jToolBar1.add(ColorB);
 
         MetricsB.setIcon(Theme.loadIcon("sizes"));
         MetricsB.setToolTipText(__("Display/hide metric attributes"));
@@ -1083,7 +1072,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     };
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel CPSL;
-    private javax.swing.JToggleButton ColorB;
     public javax.swing.JLabel CompactL;
     public javax.swing.JButton DetachB;
     public javax.swing.JLabel DurationL;

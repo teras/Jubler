@@ -522,6 +522,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="Theme.loadIcon(&quot;font&quot;)" type="code"/>
                     </Property>
+                    <Property name="selected" type="boolean" value="true"/>
                     <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="__(&quot;Display/hide font attributes&quot;)" type="code"/>
                     </Property>
@@ -534,27 +535,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="panelsetVisible"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setCommandButtonStyle(FontB, &quot;middle&quot;);"/>
-                  </AuxValues>
-                </Component>
-                <Component class="javax.swing.JToggleButton" name="ColorB">
-                  <Properties>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="Theme.loadIcon(&quot;color&quot;)" type="code"/>
-                    </Property>
-                    <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="__(&quot;Display/hide color attributes&quot;)" type="code"/>
-                    </Property>
-                    <Property name="actionCommand" type="java.lang.String" value="color"/>
-                    <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="horizontalTextPosition" type="int" value="0"/>
-                    <Property name="verticalTextPosition" type="int" value="3"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="panelsetVisible"/>
-                  </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setCommandButtonStyle(ColorB, &quot;last&quot;);"/>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="SystemDependent.setCommandButtonStyle(FontB, &quot;last&quot;);"/>
                   </AuxValues>
                 </Component>
                 <Component class="javax.swing.JToggleButton" name="MetricsB">

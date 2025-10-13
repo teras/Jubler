@@ -12,6 +12,7 @@ import com.panayotis.jubler.subs.style.event.AbstractStyleover;
 import com.panayotis.jubler.subs.style.gui.AlphaColor;
 import com.panayotis.jubler.subs.style.gui.JAlphaIcon;
 import com.panayotis.jubler.subs.style.gui.tri.*;
+import com.panayotis.jubler.theme.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,28 +56,49 @@ public class JOverStyles extends javax.swing.JPanel {
         SystemDependent.setCommandButtonStyle((AbstractButton) visuals[5], "last");
         ((AbstractButton) visuals[5]).setToolTipText(__("Strikethrough"));
 
+        TextAttP.add(Box.createHorizontalStrut(18));
 
-        ColorP.add((JComponent) (visuals[6] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
-        ColorP.add((JComponent) (visuals[7] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
-        ColorP.add((JComponent) (visuals[8] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
-        ColorP.add((JComponent) (visuals[9] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent)));
+        visuals[6] = new TriColorButton(new AlphaColor(Color.WHITE, 255), parent);
+        visuals[7] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent);
+        visuals[8] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent);
+        visuals[9] = new TriColorButton(new AlphaColor(Color.WHITE, 180), parent);
+        
         for (int i = 6; i < 10; i++) {
-            SystemDependent.setColorButtonStyle((AbstractButton) visuals[i], "only");
+            ((AbstractButton) visuals[i]).setText("");
+            SystemDependent.setColorButtonStyle((AbstractButton) visuals[i], "first");
             ((AbstractButton) visuals[i]).setToolTipText(__(TriColorButton.tooltips[i - 6]));
         }
 
-
         for (int i = 10; i < visuals.length; i++)
             visuals[i] = new TriDummy();
+
+        for (int i = 0; i < visuals.length; i++)
+            visuals[i].setStyle(StyleType.values()[i]);
+
+        JPanel colorButtonPanel = new JPanel(new CardLayout());
+        colorButtonPanel.setOpaque(false);
+        for (int i = 6; i < 10; i++) {
+            colorButtonPanel.add((JComponent) visuals[i], String.valueOf(i));
+        }
+
+        TriObject[] allColors = new TriObject[]{visuals[6], visuals[7], visuals[8], visuals[9]};
+        TriColorPickerButton colorPickerBtn = new TriColorPickerButton(parent, colorButtonPanel, allColors);
+        SystemDependent.setCommandButtonStyle(colorPickerBtn, "first");
+        
+        for (int i = 6; i < 10; i++) {
+            SystemDependent.setColorButtonStyle((AbstractButton) visuals[i], "last");
+        }
+        
+        TextAttP.add(colorPickerBtn);
+        TextAttP.add(colorButtonPanel);
+
+        TextAttP.add(Box.createHorizontalStrut(18));
 
         TextAttP.add((JComponent) (visuals[DIRECTION.ordinal()] = new TriDirectionButton(parent)));
         SystemDependent.setToolBarButtonStyle((AbstractButton) visuals[DIRECTION.ordinal()], "only");
         ((AbstractButton) visuals[DIRECTION.ordinal()]).setToolTipText(__("Alignment"));
 
-        for (int i = 0; i < visuals.length; i++)
-            visuals[i].setStyle(StyleType.values()[i]);
-
-        FontP.setVisible(false);
+        FontP.setVisible(true);
         ColorP.setVisible(false);
 
         this.parent = parent;
@@ -132,7 +154,7 @@ public class JOverStyles extends javax.swing.JPanel {
 
         TextAttP.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0));
         TextAttP.setOpaque(false);
-        TextAttP.setLayout(new java.awt.GridLayout(1, 0));
+        TextAttP.setLayout(new javax.swing.BoxLayout(TextAttP, javax.swing.BoxLayout.X_AXIS));
         FontP.add(TextAttP, java.awt.BorderLayout.EAST);
 
         add(FontP);
