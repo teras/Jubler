@@ -529,7 +529,7 @@ jobs:
           exit 1
         }
         Write-Host "Packaging signed EXE: $($signedExe.Name)"
-        $zipName = "$($signedExe.BaseName).zip"
+        $zipName = "$($signedExe.BaseName)-Windows.zip"
         Compress-Archive -Path $signedExe.FullName -DestinationPath "dist-signed-zip/$zipName" -Force
         Write-Host "Created: dist-signed-zip/$zipName"
         Get-ChildItem -Path "dist-signed-zip"

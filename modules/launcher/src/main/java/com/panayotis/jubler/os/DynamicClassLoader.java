@@ -22,14 +22,12 @@ public class DynamicClassLoader extends URLClassLoader {
         if (directory == null || !directory.exists())
             return;
         File[] files = directory.listFiles();
-        if (files == null || files.length == 0)
-            return;
-        for (File f : files) {
+        if (files != null) for (File f : files) {
             if (f.isFile() && f.getName().toLowerCase().endsWith(".jar")) {
                 try {
                     addURL(f.toURI().toURL());
-                } catch (MalformedURLException ignore) {
-                    ignore.printStackTrace();
+                } catch (MalformedURLException ex) {
+                    DEBUG.debug(ex);
                 }
             }
         }
