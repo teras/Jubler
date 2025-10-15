@@ -185,7 +185,7 @@ val arm64Dist: String by project.extra { "" }
 val makeappExt = if (System.getProperty("os.name").lowercase().contains("mac")) "mac" else "linux"
 
 fun getVersionFromGit(): String {
-    val process = ProcessBuilder("git", "describe", "--tags", "--abbrev=0")
+    val process = ProcessBuilder("git", "describe", "--tags", "--abbrev=0", "--match", "v[0-9]*")
         .directory(rootProject.projectDir)
         .redirectOutput(ProcessBuilder.Redirect.PIPE)
         .redirectError(ProcessBuilder.Redirect.PIPE)

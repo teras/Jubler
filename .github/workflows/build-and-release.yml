@@ -1,20 +1,15 @@
 name: Build and Release
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - 'v*'
   workflow_dispatch:
     inputs:
       version:
         description: 'Version to release (e.g., 8.0.1)'
-        required: true
+        required: false
         type: string
       auto_release:
         description: 'Automatically create GitHub release'
-        required: true
+        required: false
         type: boolean
         default: false
 
@@ -55,21 +50,28 @@ jobs:
     - name: Determine version
       id: version
       run: |
-        # Use version from latest git tag, fallback to build.gradle.kts if no tags exist
-        git fetch --tags
-        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-        
-        if [ -n "$LATEST_TAG" ]; then
-          # Remove 'v' or 'V' prefix if present
-          VERSION=${LATEST_TAG#v}
-          VERSION=${VERSION#V}
-          echo "Using version from git tag: $VERSION"
+        INPUT_VERSION="${{ github.event.inputs.version }}"
+
+        if [ -n "$INPUT_VERSION" ]; then
+          VERSION="$INPUT_VERSION"
+          echo "Using version from manual input: $VERSION"
         else
-          # Fallback to build.gradle.kts
-          VERSION=$(grep '^version = ' build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
-          echo "No git tags found, using version from build.gradle.kts: $VERSION"
+          # Use version from latest git tag, fallback to build.gradle.kts if no tags exist
+          git fetch --tags
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+
+          if [ -n "$LATEST_TAG" ]; then
+            # Remove 'v' or 'V' prefix if present
+            VERSION=${LATEST_TAG#v}
+            VERSION=${VERSION#V}
+            echo "Using version from git tag: $VERSION"
+          else
+            # Fallback to build.gradle.kts
+            VERSION=$(grep '^version = ' build.gradle.kts | head -1 | sed 's/.*"\(.*\)".*/\1/')
+            echo "No git tags found, using version from build.gradle.kts: $VERSION"
+          fi
         fi
-        
+
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "Building version: $VERSION"
 
