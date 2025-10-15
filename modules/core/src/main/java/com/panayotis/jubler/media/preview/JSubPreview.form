@@ -32,17 +32,26 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="frame">
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JFramePreview()"/>
-          </AuxValues>
+        <Container class="javax.swing.JPanel" name="FramePanel">
+          <Properties>
+            <Property name="opaque" type="boolean" value="false"/>
+          </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout$JSplitPaneConstraintsDescription">
               <JSplitPaneConstraints position="top"/>
             </Constraint>
           </Constraints>
 
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JPanel" name="frame">
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="Center"/>
+                </Constraint>
+              </Constraints>
+            </Component>
+          </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="MainPanel">
           <Properties>
@@ -276,7 +285,7 @@
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="jSeparator2">
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="AudioPlay">
+                <Component class="javax.swing.JButton" name="AudioPlay">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="Theme.loadIcon(&quot;playback&quot;)" type="code"/>
@@ -285,9 +294,6 @@
                       <Connection code="__(&quot;Play current subtitle&quot;)" type="code"/>
                     </Property>
                     <Property name="focusable" type="boolean" value="false"/>
-                    <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new DefaultButtonModel()" type="code"/>
-                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AudioPlayActionPerformed"/>
@@ -308,7 +314,7 @@
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="jSeparator3">
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="NewSub">
+                <Component class="javax.swing.JButton" name="NewSub">
                   <Properties>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code="Theme.loadIcon(&quot;newsub&quot;)" type="code"/>
@@ -318,9 +324,6 @@
                     </Property>
                     <Property name="focusable" type="boolean" value="false"/>
                     <Property name="horizontalTextPosition" type="int" value="0"/>
-                    <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="new DefaultButtonModel()" type="code"/>
-                    </Property>
                     <Property name="verticalTextPosition" type="int" value="3"/>
                   </Properties>
                   <Events>

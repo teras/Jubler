@@ -43,15 +43,27 @@ public class JSubPreview extends javax.swing.JPanel {
     private JubFrame parent;
     private boolean ignore_slider_changes = false;
     private boolean ignore_zoomfactor_changes = false;
-    /* Here we store the start/end/videoduration values of the window*/
     private ViewWindow view;
     private MediaFile last_media_file = null;
+    private final JFramePreview framePreview;
+    private JEmbeddedPreviewControls embeddedControls;
 
     /**
      * Creates new form JSubPreview
      */
     public JSubPreview(JubFrame parent) {
         initComponents();
+        framePreview = new JFramePreview();
+        FramePanel.remove(frame);
+        FramePanel.setLayout(new BorderLayout());
+        
+        FramePanel.add(framePreview, BorderLayout.CENTER);
+        
+        embeddedControls = new JEmbeddedPreviewControls();
+        FramePanel.add(embeddedControls, BorderLayout.SOUTH);
+        
+        FramePanel.revalidate();
+        FramePanel.repaint();
 
         view = new ViewWindow();
         timecaption = new JRuler(view);
@@ -84,7 +96,7 @@ public class JSubPreview extends javax.swing.JPanel {
         timeline.windowHasChanged(subid);
         wave.setTime(view.getStart(), view.getStart() + view.getDuration());
         if (subid != null && subid.length > 0)
-            ((JFramePreview) frame).setSubEntry(parent.getSubtitles().elementAt(subid[0]));
+            framePreview.setSubEntry(parent.getSubtitles().elementAt(subid[0]));
         timecaption.repaint();
 
         ignore_slider_changes = false;
@@ -142,7 +154,7 @@ public class JSubPreview extends javax.swing.JPanel {
         last_media_file = mfile;
 
         wave.updateMediaFile(mfile);
-        ((JFramePreview) frame).updateMediaFile(mfile);
+        framePreview.updateMediaFile(mfile);
     }
 
     public void setEnabled(boolean status) {
@@ -151,8 +163,8 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     public void forceRepaintFrame() {
-        ((JFramePreview) frame).destroySubImage();
-        frame.repaint();
+        framePreview.destroySubImage();
+        framePreview.repaint();
     }
 
     public DecoderListener getDecoderListener() {
@@ -176,7 +188,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
     public Point getFrameLocation() {
         try {
-            return frame.getLocationOnScreen();
+            return framePreview.getLocationOnScreen();
         } catch (IllegalComponentStateException ignored) {
         }
         return parent.getLocationOnScreen();
@@ -207,7 +219,8 @@ public class JSubPreview extends javax.swing.JPanel {
 
         CursorGroup = new javax.swing.ButtonGroup();
         previewSplitPane = new javax.swing.JSplitPane();
-        frame = new JFramePreview();
+        FramePanel = new javax.swing.JPanel();
+        frame = new javax.swing.JPanel();
         MainPanel = new javax.swing.JPanel();
         AudioPanel = new javax.swing.JPanel();
         BottomPanel = new javax.swing.JPanel();
@@ -225,15 +238,19 @@ public class JSubPreview extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JToolBar.Separator();
         Snap = new javax.swing.JToggleButton();
         jSeparator2 = new javax.swing.JToolBar.Separator();
-        AudioPlay = new javax.swing.JToggleButton();
+        AudioPlay = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        NewSub = new javax.swing.JToggleButton();
+        NewSub = new javax.swing.JButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
 
-        previewSplitPane.setTopComponent(frame);
+        FramePanel.setOpaque(false);
+        FramePanel.setLayout(new java.awt.BorderLayout());
+        FramePanel.add(frame, java.awt.BorderLayout.CENTER);
+
+        previewSplitPane.setTopComponent(FramePanel);
 
         MainPanel.setOpaque(false);
         MainPanel.setLayout(new java.awt.BorderLayout());
@@ -334,7 +351,6 @@ public class JSubPreview extends javax.swing.JPanel {
         AudioPlay.setIcon(Theme.loadIcon("playback"));
         AudioPlay.setToolTipText(__("Play current subtitle"));
         AudioPlay.setFocusable(false);
-        AudioPlay.setModel(new DefaultButtonModel());
         AudioPlay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AudioPlayActionPerformed(evt);
@@ -348,7 +364,6 @@ public class JSubPreview extends javax.swing.JPanel {
         NewSub.setToolTipText(__("New subtitle after current one"));
         NewSub.setFocusable(false);
         NewSub.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        NewSub.setModel(new DefaultButtonModel());
         NewSub.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         NewSub.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -401,16 +416,21 @@ public class JSubPreview extends javax.swing.JPanel {
         timeline.setSnap(Snap.isSelected());
     }//GEN-LAST:event_SnapActionPerformed
 
+    public double getSubtitleDelaySeconds() {
+        return embeddedControls.getSubtitleDelaySeconds();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;
-    public javax.swing.JToggleButton AudioPlay;
+    public javax.swing.JButton AudioPlay;
     private javax.swing.JPanel BottomPanel;
     private javax.swing.ButtonGroup CursorGroup;
     private javax.swing.JPanel EditorPanel;
+    private javax.swing.JPanel FramePanel;
     private javax.swing.JPanel InfoPanel;
     public javax.swing.JPanel MainPanel;
     public javax.swing.JToggleButton MaxWave;
-    public javax.swing.JToggleButton NewSub;
+    public javax.swing.JButton NewSub;
     private javax.swing.JToggleButton Snap;
     private javax.swing.JLabel TimePosL;
     private javax.swing.JPanel TimelineP;
