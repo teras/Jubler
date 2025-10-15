@@ -15,6 +15,7 @@ public class DynamicClassLoader extends URLClassLoader {
 
     public DynamicClassLoader() {
         super(new URL[]{}, DynamicClassLoader.class.getClassLoader());
+        loadJarsFromDirectory(SystemFileFinder.AppPath);
         loadJarsFromDirectory(new File(SystemDependent.getAppSupportDirPath(), "plugins"));
     }
 

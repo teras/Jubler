@@ -9,10 +9,11 @@ package com.panayotis.jubler.subs.style.gui;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.style.gui.tri.TriColorPickerButton;
 import com.panayotis.jubler.subs.style.gui.tri.TriObject;
-import static com.panayotis.jubler.i18n.I18N.__;
 
 import javax.swing.*;
 import java.awt.*;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 public class JColorPickerDialog extends JWindow {
 
@@ -36,9 +37,16 @@ public class JColorPickerDialog extends JWindow {
             BorderFactory.createEmptyBorder(4, 4, 4, 4)
         ));
         panel.setBackground(UIManager.getColor("Panel.background"));
-        
+        panel.setFocusable(true);
+        panel.setRequestFocusEnabled(true);
+        panel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                setVisible(false);
+            }
+        });
+
         add(panel);
-        
+
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
             }
@@ -46,7 +54,7 @@ public class JColorPickerDialog extends JWindow {
                 setVisible(false);
             }
         });
-        
+
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 setVisible(false);
@@ -56,9 +64,9 @@ public class JColorPickerDialog extends JWindow {
 
     private void updatePanel() {
         panel.removeAll();
-        
+
         String[] labels = {__("Primary"), __("Secondary"), __("Outline"), __("Shadow")};
-        
+
         for (int i = 0; i < allButtons.length; i++) {
             final int index = i;
             JLabel label = new JLabel(labels[i]);
@@ -70,6 +78,7 @@ public class JColorPickerDialog extends JWindow {
                     if (index != currentIndex) {
                         pickerButton.switchToColor(index);
                     }
+                    currentIndex = index;
                     setVisible(false);
                 }
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -84,7 +93,7 @@ public class JColorPickerDialog extends JWindow {
             });
             panel.add(label);
         }
-        
+
         pack();
     }
 
@@ -97,6 +106,8 @@ public class JColorPickerDialog extends JWindow {
         Point location = component.getLocationOnScreen();
         setLocation(location.x, location.y + component.getHeight());
         setVisible(true);
-        requestFocus();
+        if (!panel.requestFocusInWindow()) {
+            panel.requestFocus();
+        }
     }
 }
