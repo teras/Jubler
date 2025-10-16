@@ -7,7 +7,7 @@
 package  com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
-import com.panayotis.jubler.media.console.TimeSync;
+import com.panayotis.jubler.media.TimeSync;
 import com.panayotis.jubler.time.gui.JTimeFullSelection;
 
 public abstract class RealTimeTool extends OneByOneTool {

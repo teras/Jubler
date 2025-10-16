@@ -7,8 +7,8 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.preview.decoders.AudioPreview;
-import com.panayotis.jubler.media.preview.decoders.DecoderListener;
+import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
+import com.panayotis.jubler.media.preview.decoders.AudioPreview.AudioStateCallback;
 import com.panayotis.jubler.subs.SubEntry;
 
 import javax.swing.*;
@@ -17,17 +17,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import static com.panayotis.jubler.media.preview.JFramePreview.DT;
+import static com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry.DT;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
-public class JWavePreview extends JPanel implements DecoderListener {
+public class JWavePreview extends JPanel implements AudioStateCallback {
 
     private final static Color[] background = {new Color(0, 20, 0), new Color(0, 20, 20)};
     private final static Color bordercolor = Color.WHITE;
     private final static Color basecolor = Color.LIGHT_GRAY;
     private WavePanel[] panels;
     private final JSubTimeline timeline;
-    private static final AudioPreview demoaudio = new AudioPreview(1, 1000);
+    private static final AudioPreviewOld demoaudio = new AudioPreviewOld(1, 1000);
     private MediaFile mfile;
     private final JAudioLoader loader;
     private double start_time = -1, end_time = -1;
@@ -126,7 +126,7 @@ public class JWavePreview extends JPanel implements DecoderListener {
     }
 
     private void updateWave() {
-        AudioPreview audio;
+        AudioPreviewOld audio;
         if (isEnabled() && mfile != null)
             audio = mfile.getAudioPreview(start_time, end_time);
         else

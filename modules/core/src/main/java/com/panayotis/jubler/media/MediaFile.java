@@ -8,12 +8,11 @@ package  com.panayotis.jubler.media;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
+import com.panayotis.jubler.media.preview.decoders.AudioPreview.AudioStateCallback;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
-import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
-import com.panayotis.jubler.media.preview.decoders.DecoderListener;
-import com.panayotis.jubler.media.preview.decoders.FFmpegCore;
+import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Frame;
@@ -28,8 +27,6 @@ public class MediaFile {
 
     private CacheFile cfile;   /* Cache file */
 
-    /* Decoder framework to display frames, audio clips etc. */
-    private DecoderInterface decoder;
     /**
      * File chooser dialog for video
      */
@@ -50,7 +47,6 @@ public class MediaFile {
         vfile = vf;
         afile = af;
         cfile = cf;
-        decoder = new FFmpegCore();
         videoselector = new JVideofileSelector();
     }
 
@@ -88,7 +84,7 @@ public class MediaFile {
 
     public void guessMediaFiles(Subtitles subs) {
         if (!isValid(vfile)) {
-            vfile = VideoFile.guessFile(subs, new VideoFileFilter(), decoder);
+            vfile = VideoFile.guessFile(subs, new VideoFileFilter());
             if (!isValid(afile))
                 setAudioFileUnused();
             if (!isValid(cfile))
@@ -142,15 +138,11 @@ public class MediaFile {
         return cfile;
     }
 
-    public DecoderInterface getDecoder() {
-        return decoder;
-    }
-
     public void setVideoFile(File vf) {
         if (vf == null || (!vf.exists()))
             return;
 
-        vfile = new VideoFile(vf, decoder);
+        vfile = new VideoFile(vf);
 
         if (afile.isSameAsVideo())
             setAudioFile(vfile);
@@ -170,7 +162,7 @@ public class MediaFile {
         updateCacheFile(cf);
 
         /* Set audio file, from the cache file */
-        String audioname = AudioPreview.getNameFromCache(cf);
+        String audioname = AudioPreviewOld.getNameFromCache(cf);
         if (audioname != null) {
             AudioFile newafile = new AudioFile(cf.getParent(), audioname, vfile);
             if (newafile.exists())
@@ -189,12 +181,12 @@ public class MediaFile {
             int point = strippedfilename.lastIndexOf('.');
             if (point < 0)
                 point = strippedfilename.length();
-            cf = new File(System.getProperty("java.io.tmpdir") + File.separator + strippedfilename.substring(0, point) + AudioPreview.getExtension());
+            cf = new File(System.getProperty("java.io.tmpdir") + File.separator + strippedfilename.substring(0, point) + AudioPreviewOld.getExtension());
         } else {
             int point = cf.getPath().lastIndexOf('.');
             if (point < 0)
                 point = cf.getPath().length();
-            cf = new File(cf.getPath().substring(0, point) + AudioPreview.getExtension());
+            cf = new File(cf.getPath().substring(0, point) + AudioPreviewOld.getExtension());
         }
         if (cfile != null && cfile.getPath().equals(cf.getPath()))
             return;   // Same cache
@@ -209,11 +201,11 @@ public class MediaFile {
     }
 
     /* Decoder actions */
-    public boolean initAudioCache(DecoderListener listener) {
+    public boolean initAudioCache(AudioStateCallback listener) {
         return decoder.initAudioCache(afile, cfile, listener);
     }
 
-    public AudioPreview getAudioPreview(double from, double to) {
+    public AudioPreviewOld getAudioPreview(double from, double to) {
         return decoder.getAudioPreview(cfile, from, to);
     }
 

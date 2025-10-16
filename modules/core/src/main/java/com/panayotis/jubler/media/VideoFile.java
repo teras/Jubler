@@ -4,21 +4,16 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.media;
+package com.panayotis.jubler.media;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
-import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.filters.MediaFileFilter;
-import com.panayotis.jubler.media.preview.decoders.DecoderInterface;
-import com.panayotis.jubler.options.Options;
-import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
-import java.io.BufferedReader;
+
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import static com.panayotis.jubler.i18n.I18N.__;
 
 public class VideoFile extends File {
 
@@ -37,13 +32,13 @@ public class VideoFile extends File {
     /**
      * Creates a new instance of VideoFile
      */
-    public VideoFile(String vfile, DecoderInterface decoder) {
+    public VideoFile(String vfile) {
         super(vfile);
-        getVideoProperties(decoder);
+        PreviewProviderRegistry.initAudioPreview().retrieveInformation(this);
     }
 
-    public VideoFile(File vf, DecoderInterface decoder) {
-        this(vf.getPath(), decoder);
+    public VideoFile(File vf) {
+        this(vf.getPath());
     }
 
     public void setInformation(int width, int height, float length, float fps) {
@@ -69,57 +64,11 @@ public class VideoFile extends File {
         return fps;
     }
 
-    public void getVideoProperties(DecoderInterface decoder) {
-        if (decoder != null)
-            decoder.retrieveInformation(this);
-        if (width < 0) {
-
-            /* Use MPlayer if no decoder is valid */
-            String cmd[] = {JublerPrefs.getString("player.mplayer.path", "mplayer"), "-vo", "null", "-ao", "null", "-identify", "-endpos", "0", getPath()};
-            Process proc;
-            try {
-                proc = Runtime.getRuntime().exec(cmd);
-                BufferedReader infopipe = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-                String line;
-                while ((line = infopipe.readLine()) != null) {
-                    if (line.startsWith("ID_VIDEO_HEIGHT"))
-                        height = Math.round(getValue(line.substring(line.indexOf('=') + 1)));
-                    if (line.startsWith("ID_VIDEO_WIDTH"))
-                        width = Math.round(getValue(line.substring(line.indexOf('=') + 1)));
-                    if (line.startsWith("ID_VIDEO_FPS"))
-                        fps = getValue(line.substring(line.indexOf('=') + 1));
-                    if (line.startsWith("ID_LENGTH")) {
-                        length = getValue(line.substring(line.indexOf('=') + 1));
-                        break;
-                    }
-                }
-                proc.destroy();
-            } catch (IOException ex) {
-                length = fps = height = width = INVALID;
-            }
-        }
-        if (width < 0) {
-            height = DEFAULT_HEIGHT;
-            width = DEFAULT_WIDTH;
-            length = DEFAULT_LENGTH;
-            fps = DEFAULT_FPS;
-            DEBUG.debug("Could not retrieve actual video properties. Using defaults.");
-        }
-    }
-
-    private static float getValue(String info) {
-        try {
-            return Float.parseFloat(info);
-        } catch (NumberFormatException e) {
-        }
-        return 0;
-    }
-
     /* The following function is used in order to guess the filename of the avi/audio/jacache based
      *  on the name of the original file */
-    public static VideoFile guessFile(Subtitles subs, MediaFileFilter filter, DecoderInterface decoder) {
+    public static VideoFile guessFile(Subtitles subs, MediaFileFilter filter) {
         File dir;   /* the parent directory of the subtitle */
-        File files[];   /* List of video files in the same directory as the subtitle */
+        File[] files;   /* List of video files in the same directory as the subtitle */
         int matchcount;  /* best match so far */
         File match;     /* best file match so far */
         String subfilename, curfilename;    /* Subtitles filename (in lowercase) & file in the same directory */
@@ -134,7 +83,7 @@ public class VideoFile extends File {
 
         dir = subfile.getParentFile();
         if (dir == null)
-            return new VideoFile(subfile.getPath() + "." + filter.getExtensions()[0], decoder);
+            return new VideoFile(subfile.getPath() + "." + filter.getExtensions()[0]);
 
 
         subfilename = subfile.getPath().toLowerCase();
@@ -158,8 +107,8 @@ public class VideoFile extends File {
                     }
                 }
             if (match != null)
-                return new VideoFile(match.getPath(), decoder);
+                return new VideoFile(match.getPath());
         }
-        return new VideoFile(subfile.getPath() + filter.getExtensions()[0], decoder);
+        return new VideoFile(subfile.getPath() + filter.getExtensions()[0]);
     }
 }

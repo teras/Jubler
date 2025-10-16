@@ -6,6 +6,7 @@
 
 package com.panayotis.jubler.media.preview;
 
+import com.panayotis.jubler.media.preview.decoders.VideoPreview;
 import com.panayotis.jubler.theme.Theme;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ import static com.panayotis.jubler.os.UIUtils.scale;
 public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
     private boolean previewPlaying = false;
+    private VideoPreview player = null;
     private final JPopupMenu speedPopup = new JPopupMenu();
     private final JPopupMenu volumePopup = new JPopupMenu();
     private final JPopupMenu delayPopup = new JPopupMenu();
@@ -37,6 +39,30 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     public JEmbeddedPreviewControls() {
         initComponents();
         initializeControls();
+    }
+
+    public void setPlayer(VideoPreview player) {
+        this.player = player;
+        
+        if (player != null) {
+            player.setPlayerStateCallback(new VideoPreview.VideoStateCallback() {
+                @Override
+                public void onPlayingStateChanged(boolean playing) {
+                    previewPlaying = playing;
+                    updatePlayPauseIcon();
+                }
+
+                @Override
+                public void onFinished() {
+                    previewPlaying = false;
+                    updatePlayPauseIcon();
+                }
+
+                @Override
+                public void onTimeChanged(long timeMs) {
+                }
+            });
+        }
     }
 
     private void initializeControls() {
@@ -219,15 +245,25 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {
         updateSpeedTooltip();
-        if (!speedSlider.getValueIsAdjusting())
+        if (!speedSlider.getValueIsAdjusting()) {
             hideSliderPopups();
+            if (player != null) {
+                float[] speeds = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f};
+                int idx = Math.max(0, Math.min(speeds.length - 1, speedSlider.getValue()));
+                player.setSpeed(speeds[idx]);
+            }
+        }
         speedSlider.repaint();
     }
 
     private void volumeSliderStateChanged(javax.swing.event.ChangeEvent evt) {
         updateVolumeTooltip();
-        if (!volumeSlider.getValueIsAdjusting())
+        if (!volumeSlider.getValueIsAdjusting()) {
             hideSliderPopups();
+            if (player != null) {
+                player.setVolume(volumeSlider.getValue() * 10);
+            }
+        }
         volumeSlider.repaint();
     }
 
@@ -321,14 +357,23 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         previewPlaying = !previewPlaying;
         updatePlayPauseIcon();
         hideSliderPopups();
+        if (player != null) {
+            player.togglePlayPause();
+        }
     }//GEN-LAST:event_PlayPauseButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
         hideSliderPopups();
+        if (player != null) {
+            player.skip(-10000);
+        }
     }//GEN-LAST:event_BackButtonActionPerformed
 
     private void ForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForwardButtonActionPerformed
         hideSliderPopups();
+        if (player != null) {
+            player.skip(10000);
+        }
     }//GEN-LAST:event_ForwardButtonActionPerformed
 
     private void VolumeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolumeButtonActionPerformed

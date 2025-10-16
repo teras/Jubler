@@ -6,3 +6,6 @@ build/
 .idea/
 .vagrant/
 .gradle/
+
+# Old code reference directories
+*-old/

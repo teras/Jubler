@@ -8,7 +8,9 @@ package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.preview.decoders.DecoderListener;
+import com.panayotis.jubler.media.preview.decoders.AudioPreview.AudioStateCallback;
+import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
+import com.panayotis.jubler.media.preview.decoders.VideoPreview;
 import com.panayotis.jubler.options.AutoSaveOptions;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
@@ -45,7 +47,7 @@ public class JSubPreview extends javax.swing.JPanel {
     private boolean ignore_zoomfactor_changes = false;
     private ViewWindow view;
     private MediaFile last_media_file = null;
-    private final JFramePreview framePreview;
+    private final VideoPreview framePreview;
     private JEmbeddedPreviewControls embeddedControls;
 
     /**
@@ -53,15 +55,16 @@ public class JSubPreview extends javax.swing.JPanel {
      */
     public JSubPreview(JubFrame parent) {
         initComponents();
-        framePreview = new JFramePreview();
+        framePreview = PreviewProviderRegistry.initVideoPreview();
         FramePanel.remove(frame);
         FramePanel.setLayout(new BorderLayout());
-        
-        FramePanel.add(framePreview, BorderLayout.CENTER);
-        
+
+        FramePanel.add(framePreview.getPreviewComponent(), BorderLayout.CENTER);
+
         embeddedControls = new JEmbeddedPreviewControls();
+        embeddedControls.setPlayer(framePreview);
         FramePanel.add(embeddedControls, BorderLayout.SOUTH);
-        
+
         FramePanel.revalidate();
         FramePanel.repaint();
 
@@ -122,16 +125,15 @@ public class JSubPreview extends javax.swing.JPanel {
         if (subid.length == 0) {
             min = 0d;
             max = 0d;
-        } else
-            for (int i = 0; i < subid.length; i++) {
-                entry = subs.elementAt(subid[i]);
-                val = entry.getStartTime().toSeconds();
-                if (min > val)
-                    min = val;
-                val = entry.getFinishTime().toSeconds();
-                if (max < val)
-                    max = val;
-            }
+        } else for (int j : subid) {
+            entry = subs.elementAt(j);
+            val = entry.getStartTime().toSeconds();
+            if (min > val)
+                min = val;
+            val = entry.getFinishTime().toSeconds();
+            if (max < val)
+                max = val;
+        }
         /* Although we have a minimum duration in ViewWindow, this is too small.
          * When displaying subtitles for the first time make sure we display a generous amount of time */
         view.setWindow(min, max, true);
@@ -164,10 +166,10 @@ public class JSubPreview extends javax.swing.JPanel {
 
     public void forceRepaintFrame() {
         framePreview.destroySubImage();
-        framePreview.repaint();
+        framePreview.getPreviewComponent().repaint();
     }
 
-    public DecoderListener getDecoderListener() {
+    public AudioStateCallback getDecoderListener() {
         return wave;
     }
 

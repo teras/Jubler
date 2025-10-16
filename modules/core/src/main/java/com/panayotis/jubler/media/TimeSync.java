@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.media.console;
+package com.panayotis.jubler.media;
 
 public class TimeSync {
 

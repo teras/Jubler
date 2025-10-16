@@ -7,7 +7,7 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
-import com.panayotis.jubler.media.console.TimeSync;
+import com.panayotis.jubler.media.TimeSync;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.ToolMenu.Location;
 
@@ -15,7 +15,6 @@ import javax.swing.*;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 import static com.panayotis.jubler.i18n.I18N.__;

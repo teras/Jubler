@@ -11,8 +11,6 @@ import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.options.JUiOptions;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.LoaderThread;
-import com.panayotis.jubler.os.SystemDependent;
-import com.panayotis.jubler.os.UIUtils;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
