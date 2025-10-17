@@ -2,7 +2,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/teras/Jubler)
 ![GitHub all releases](https://img.shields.io/github/downloads/teras/Jubler/total)
-![GitHub](https://img.shields.io/github/license/teras/Jubler)
+![GitHub](https://img.shields.io/github/license/teras/Jubler?v=2)
 ![Java](https://img.shields.io/badge/Java-8+-orange)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-blue)
 ![GitHub Release Date](https://img.shields.io/github/release-date/teras/Jubler)
