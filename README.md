@@ -1,6 +1,13 @@
 ## Jubler - a subtitle editor
 
-(C) 2005-2024 Panayotis Katsaloulis
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/teras/Jubler)
+![GitHub all releases](https://img.shields.io/github/downloads/teras/Jubler/total)
+![GitHub](https://img.shields.io/github/license/teras/Jubler)
+![Java](https://img.shields.io/badge/Java-8+-orange)
+![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-blue)
+![GitHub Release Date](https://img.shields.io/github/release-date/teras/Jubler)
+
+(C) 2005-2025 Panayotis Katsaloulis
 panayotis@panayotis.com
 
 
@@ -76,4 +83,9 @@ other case go to the Jubler installation directory and issue the following
 command:
   java -jar Jubler.jar
 On some systems a double click is enough to start the application.
+
+
+### Credits
+
+Free code signing on Windows provided by <a href="https://signpath.io/">SignPath.io</a>, certificate by <a href="https://signpath.org/">SignPath Foundation</a>
 
