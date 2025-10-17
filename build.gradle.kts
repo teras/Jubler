@@ -100,7 +100,7 @@ tasks.register<Copy>("copyResources") {
         include("README.md")
     }
     from(".") {
-        include("LICENCE")
+        include("LICENSE")
         rename { "LICENCE.txt" }
     }
 

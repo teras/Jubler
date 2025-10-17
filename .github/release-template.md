@@ -1,8 +1,3 @@
-- Subtitle preview enhanced with shift/alt key support and snapping functionality
-- Added WebVTT subtitle format, alongside XML-based subtitle formats (ITT, TTML, DFXP)
-- Command-line tools for automated workflows and terminal operations
-- Dark theme support
-- Unified preferences system with import/export/reset capabilities
-- Quality control metrics updated, with CPS (characters-per-second) display directly in the subtitle table
-- Enhanced regular expression search capabilities
-- Improve Azure Translate implementation
+THIS IS AN ALPHA VERSION
+
+NOT FOR PRODUCTION OR REDISTRIBUTION - USE WITH CARE
