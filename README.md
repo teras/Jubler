@@ -2,7 +2,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/teras/Jubler)
 ![GitHub all releases](https://img.shields.io/github/downloads/teras/Jubler/total)
-![GitHub](https://img.shields.io/github/license/teras/Jubler)
+![GitHub](https://img.shields.io/github/license/teras/Jubler?v=2)
 ![Java](https://img.shields.io/badge/Java-8+-orange)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-blue)
 ![GitHub Release Date](https://img.shields.io/github/release-date/teras/Jubler)
@@ -17,10 +17,9 @@ Jubler is a tool to edit text-based subtitles. It can be used an an
 authoring software for new subtitles or as a tool to convert,
 transform, correct and refine existing subtitles.
 
-It is open source under a liberal (GNU) public licence. It is written
-in Java 5.0 (a.k.a. Java 1.5.0 ) in order to be really multi-platform.
-It has been tested under Linux (Intel 32 & 64 bit), Windows (XP and 
-Vista) and Mac OS X (PPC and Intel). 
+It is free and open source software licensed under the GNU Affero General
+Public License v3 (AGPL-3.0). It is written in Java 8 in order to be
+really multi-platform. It has been tested under Linux, Windows, and macOS. 
 
 
 ### Features
