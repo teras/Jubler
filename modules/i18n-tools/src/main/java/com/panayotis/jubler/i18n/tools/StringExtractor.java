@@ -13,9 +13,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,8 +42,8 @@ public class StringExtractor {
 
         System.out.println("Found " + strings.size() + " unique translatable strings");
 
-        // Create source map (English -> empty string)
-        Map<String, String> sourceMap = new LinkedHashMap<>();
+        // Create source map (English -> empty string) - TreeMap keeps it sorted
+        Map<String, String> sourceMap = new TreeMap<>();
         for (String s : strings) {
             sourceMap.put(s, "");
         }
