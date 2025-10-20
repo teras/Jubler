@@ -213,12 +213,13 @@ public abstract class GenericStyledTextSubFormat extends AbstractTextSubFormat {
         if (!events.isEmpty() && !getStylePairs().isEmpty()) {
             /* If there are style pairs, then we need to add the opening and closing tags */
             Set<String> alreadyHandled = new HashSet<>();
+            List<SubEv> newEvents = new ArrayList<>();
             for (SubEv cev : events) {
                 String tag = cev.value;
                 if (alreadyHandled.contains(tag)) break;
                 String reverse = getStylePairs().get(tag);
                 if (reverse != null) {  // found missing closing tag
-                    events.add(new SubEv(reverse, btxt.length()));
+                    newEvents.add(new SubEv(reverse, btxt.length()));
                     alreadyHandled.add(tag);
                     alreadyHandled.add(reverse);
                 } else {
@@ -229,6 +230,7 @@ public abstract class GenericStyledTextSubFormat extends AbstractTextSubFormat {
                     }
                 }
             }
+            events.addAll(newEvents);
         }
 
         for (SubEv cevent : events) {

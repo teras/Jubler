@@ -4,9 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.gui;
-
-import static com.panayotis.jubler.i18n.I18N.__;
+package com.panayotis.jubler.subs.loader.gui;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.DEBUG;
@@ -16,16 +14,21 @@ import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.AvailSubFormats;
 import com.panayotis.jubler.subs.loader.SubFormat;
-import java.awt.BorderLayout;
-import java.awt.Frame;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
+
+import static com.panayotis.jubler.i18n.I18N.__;
+import static com.panayotis.jubler.subs.SubFile.basic_format;
 
 public class JSubFileDialog extends javax.swing.JDialog {
 
+    private static File lastDirectory = initializeDefaultDirectory();
     private boolean isAccepted;
     private JFileOptions jload;
     private JFileOptions jsave;
@@ -33,26 +36,40 @@ public class JSubFileDialog extends javax.swing.JDialog {
     public JSubFileDialog() {
         super((Frame) null, true);
         initComponents();
-        addFilters(Availabilities.formats);
         chooser.setAcceptAllFileFilterUsed(false);
         jload = new JLoadOptions();
         jsave = new JSaveOptions();
     }
 
-    private SubFile showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
-        if (subs != null)
-            chooser.setFileFilter(findFileFiler(subs.getSubFile().getFormat()));
-        jopt.updateVisuals(subs, mfile);
+    private static File initializeDefaultDirectory() {
         String default_dir = FileCommunicator.getDefaultDirPath();
         File default_dir_file = new File(default_dir);
-        boolean is_valid = (default_dir_file.isDirectory()
-                && default_dir_file.canRead());
-        default_dir_file = (is_valid)
-                ? new File(default_dir, "Untitled")
-                : new File("Untitled");
+        boolean is_valid = (default_dir_file.isDirectory() && default_dir_file.canRead());
+        return is_valid ? default_dir_file : new File("");
+    }
 
-        //DEBUG.logger.log(Level.INFO, "default_file:" + default_dir_file);
-        chooser.setSelectedFile(default_dir_file);
+    private SubFile showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
+        jopt.updateVisuals(subs, mfile);
+
+        // Set the filter first for save dialog - this must happen before setting selected file
+        if (subs == null) { // load
+            // Load dialog - empty filename
+            chooser.setSelectedFile(new File(lastDirectory, ""));
+            addFilters(Availabilities.formats, null);
+        } else { // save
+            chooser.setSelectedFile(subs.getSubFile().getStrippedFile());
+            addFilters(Availabilities.formats, subs.getSubFile().getFormat());
+        }
+
+        // Set current directory to last used directory
+        chooser.setCurrentDirectory(lastDirectory);
+
+        // Set selected file based on dialog type
+        if (subs == null) {
+        } else {
+            // Save dialog - set file AFTER filter is set
+        }
+
         getContentPane().removeAll();
         getContentPane().add(chooser, BorderLayout.CENTER);
         getContentPane().add(jopt, BorderLayout.NORTH);
@@ -74,29 +91,40 @@ public class JSubFileDialog extends javax.swing.JDialog {
                 sfile.setFile(selected_file);
             }
 
-            JFileFilter flt = (JFileFilter) chooser.getFileFilter();
-            if (flt != null) {
-                SubFormat format_handler = flt.getFormatHandler();
-                if (format_handler != null) {
-                    format_handler = format_handler.newInstance();
-                    if (format_handler != null)
-                        sfile.setFormat(format_handler);
-                }
-            }
+            sfile.setFormat(findFormat(true));
+
             jopt.applyOptions(sfile);
             if (subs != null) // Only in Save
                 sfile.updateFileByType();
-            FileCommunicator.setDefaultDir(chooser.getCurrentDirectory());
+
+            // Remember the current directory for next time
+            File currentDir = chooser.getCurrentDirectory();
+            // If it's a file, get its parent directory
+            if (currentDir.isFile()) {
+                currentDir = currentDir.getParentFile();
+            }
+            lastDirectory = currentDir;
+            FileCommunicator.setDefaultDir(currentDir);
         } catch (Exception ex) {
             sfile = new SubFile();
         }
         return sfile;
     }
 
+    private SubFormat findFormat(boolean newInstance) {
+        JFileFilter flt = (JFileFilter) chooser.getFileFilter();
+        if (flt != null) {
+            SubFormat format_handler = flt.getFormatHandler();
+            if (format_handler != null)
+                return newInstance ? format_handler.newInstance() : format_handler;
+        }
+        return basic_format;
+    }
+
     public SubFile getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
         setTitle(__("Save Subtitles"));
         chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        chooser.setSelectedFile(subs.getSubFile().getStrippedFile());
+        // Don't set selected file here - let showDialog do it after setting the filter
         return showDialog(parent, subs, mfile, jsave);
     }
 
@@ -126,8 +154,41 @@ public class JSubFileDialog extends javax.swing.JDialog {
 
     private void chooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooserActionPerformed
         isAccepted = evt.getActionCommand().equals(JFileChooser.APPROVE_SELECTION);
+
+        // Check if file exists when saving and ask for confirmation
+        if (isAccepted && chooser.getDialogType() == JFileChooser.SAVE_DIALOG) {
+            File selectedFile = chooser.getSelectedFile();
+            if (selectedFile == null)
+                return;
+
+            File fileToCheck = selectedFile;
+            String extension = findFormat(false).getExtension();
+            String fileName = selectedFile.getName();
+
+            if (extension != null && !fileName.toLowerCase().endsWith("." + extension.toLowerCase())) {
+                // File doesn't have the correct extension, append it
+                fileToCheck = new File(selectedFile.getParentFile(), fileName + "." + extension);
+            }
+
+            if (fileToCheck.exists()) {
+                int result = JOptionPane.showConfirmDialog(
+                        this,
+                        __("File already exists. Do you want to overwrite it?"),
+                        __("Confirm Overwrite"),
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE
+                );
+
+                if (result != JOptionPane.YES_OPTION) {
+                    isAccepted = false;
+                    return; // Don't close the dialog, let user choose a different file
+                }
+            }
+        }
+
         setVisible(false);
     }//GEN-LAST:event_chooserActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser chooser;
     // End of variables declaration//GEN-END:variables
@@ -195,31 +256,18 @@ public class JSubFileDialog extends javax.swing.JDialog {
         return ok;
     }//end public boolean setFilter(SubFormat format)
 
-    public boolean addFilters(SubFormat[] format_list) {
-        boolean ok = false;
+    public boolean addFilters(AvailSubFormats format_list, SubFormat target) {
         try {
-            chooser.addChoosableFileFilter(new JFileFilter());
-            for (int i = 0; i < format_list.length; i++) {
-                SubFormat format = format_list[i];
-                JFileFilter filter = makeFilter(format);
-                chooser.addChoosableFileFilter(filter);
-            }//end for(SubFormat format: format_list)
-            ok = true;
-        } catch (Exception ex) {
-            DEBUG.logger.log(Level.WARNING, ex.toString());
-        }
-        return ok;
-    }//end public boolean addFilters(SubFormat[] format)
-
-    public boolean addFilters(AvailSubFormats format_list) {
-        boolean ok = false;
-        try {
-            int size = format_list.size();
-            SubFormat[] array = format_list.getFormats().toArray(new SubFormat[size]);
-            ok = addFilters(array);
+            ArrayList<SubFormat> formats = format_list.getFormats();
+            if (target != null) {
+                formats.remove(target);
+                formats.add(0, target);
+            }
+            formats.forEach(it -> chooser.addChoosableFileFilter(makeFilter(it)));
+            return true;
         } catch (Exception ignored) {
+            return false;
         }
-        return ok;
     }//end public boolean addFilters(ArrayList<SubFormat> format_list)
 
     public JFileFilter findFileFiler(SubFormat format) {
@@ -231,7 +279,7 @@ public class JSubFileDialog extends javax.swing.JDialog {
                 SubFormat fmt = found_filter.getFormatHandler();
                 boolean is_found = ((format == fmt)
                         || (format.getDescription() + format.getExtension()).equals(
-                                (fmt.getDescription() + fmt.getExtension())));
+                        (fmt.getDescription() + fmt.getExtension())));
                 if (is_found)
                     break;//end if (is_found)
             }//end for (FileFilter flt : filter_list)
