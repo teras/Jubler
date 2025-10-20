@@ -8,14 +8,17 @@ package com.panayotis.jubler.i18n.tools;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class TranslationMerger {
 
@@ -46,7 +49,7 @@ public class TranslationMerger {
         File langFile = new File(i18nDir, lang + ".json");
         Map<String, String> existing = readJson(langFile);
 
-        Map<String, String> merged = new LinkedHashMap<>();
+        Map<String, String> merged = new TreeMap<>();
         int newStrings = 0;
         int keptTranslations = 0;
         int removedStrings = existing.size();
@@ -76,16 +79,26 @@ public class TranslationMerger {
 
     private static Map<String, String> readJson(File file) {
         if (!file.exists()) {
-            return new LinkedHashMap<>();
+            return new TreeMap<>();
         }
 
-        try {
-            String json = Files.readString(file.toPath());
-            Gson gson = new Gson();
-            return gson.fromJson(json, new TypeToken<LinkedHashMap<String, String>>() {}.getType());
+        // Use streaming API to handle duplicate keys gracefully
+        // TreeMap will keep the last value for duplicate keys
+        Map<String, String> result = new TreeMap<>();
+
+        try (JsonReader reader = new JsonReader(new FileReader(file))) {
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String key = reader.nextName();
+                String value = reader.peek() == JsonToken.NULL ? "" : reader.nextString();
+                // If key already exists, this will replace it (keeping the last occurrence)
+                result.put(key, value);
+            }
+            reader.endObject();
+            return result;
         } catch (IOException e) {
             System.err.println("Error reading " + file + ": " + e.getMessage());
-            return new LinkedHashMap<>();
+            return new TreeMap<>();
         }
     }
 
