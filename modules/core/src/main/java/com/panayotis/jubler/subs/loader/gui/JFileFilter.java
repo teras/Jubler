@@ -4,9 +4,10 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.gui;
+package com.panayotis.jubler.subs.loader.gui;
 
 import com.panayotis.jubler.subs.loader.SubFormat;
+
 import java.io.File;
 
 /**
@@ -18,11 +19,6 @@ public class JFileFilter extends javax.swing.filechooser.FileFilter implements j
     final String desc;
     final String ext;
     private SubFormat formatHandler = null;
-
-    public JFileFilter() {
-        desc = "All files";
-        ext = "*";
-    }
 
     public JFileFilter(String ext, String desc, SubFormat formatHandler) {
         this.desc = desc;

@@ -4,7 +4,7 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.subs.loader.gui;
+package com.panayotis.jubler.subs.loader.gui;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -13,6 +13,7 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.nio.charset.Charset;
@@ -33,8 +34,8 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
         String item;
 
         pos = 0;
-        for (Iterator<String> it = encs.keySet().iterator(); it.hasNext();) {
-            item = it.next().toString();
+        for (String s : encs.keySet()) {
+            item = s.toString();
             AvailEncodings[pos++] = item;
         }
     }
@@ -615,218 +616,147 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
     public void actionPerformed(java.awt.event.ActionEvent evt) {
         if (evt.getSource() == UTF_8) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == UTF_16) {
+        } else if (evt.getSource() == UTF_16) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == UTF_32) {
+        } else if (evt.getSource() == UTF_32) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_1) {
+        } else if (evt.getSource() == ISO_8859_1) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_15) {
+        } else if (evt.getSource() == ISO_8859_15) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1252) {
+        } else if (evt.getSource() == windows_1252) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM850) {
+        } else if (evt.getSource() == IBM850) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacRoman) {
+        } else if (evt.getSource() == MacRoman) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_14) {
+        } else if (evt.getSource() == ISO_8859_14) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_7) {
+        } else if (evt.getSource() == ISO_8859_7) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1253) {
+        } else if (evt.getSource() == windows_1253) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacGreek) {
+        } else if (evt.getSource() == MacGreek) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacIcelandic) {
+        } else if (evt.getSource() == MacIcelandic) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_10) {
+        } else if (evt.getSource() == ISO_8859_10) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_3) {
+        } else if (evt.getSource() == ISO_8859_3) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_4) {
+        } else if (evt.getSource() == ISO_8859_4) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_13) {
+        } else if (evt.getSource() == ISO_8859_13) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1257) {
+        } else if (evt.getSource() == windows_1257) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_2) {
+        } else if (evt.getSource() == ISO_8859_2) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1250) {
+        } else if (evt.getSource() == windows_1250) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM852) {
+        } else if (evt.getSource() == IBM852) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacCE) {
+        } else if (evt.getSource() == MacCE) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacCroatian) {
+        } else if (evt.getSource() == MacCroatian) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_5) {
+        } else if (evt.getSource() == ISO_8859_5) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1251) {
+        } else if (evt.getSource() == windows_1251) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM855) {
+        } else if (evt.getSource() == IBM855) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM866) {
+        } else if (evt.getSource() == IBM866) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacCyrillic) {
+        } else if (evt.getSource() == MacCyrillic) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacUkraine) {
+        } else if (evt.getSource() == MacUkraine) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == KOI8_R) {
+        } else if (evt.getSource() == KOI8_R) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_16) {
+        } else if (evt.getSource() == ISO_8859_16) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacRomania) {
+        } else if (evt.getSource() == MacRomania) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_2022_CN) {
+        } else if (evt.getSource() == ISO_2022_CN) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == GB2312) {
+        } else if (evt.getSource() == GB2312) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == GBK) {
+        } else if (evt.getSource() == GBK) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == GB18030) {
+        } else if (evt.getSource() == GB18030) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == HZ) {
+        } else if (evt.getSource() == HZ) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == Big5) {
+        } else if (evt.getSource() == Big5) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == Big5_HKSCS) {
+        } else if (evt.getSource() == Big5_HKSCS) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == EUC_TW) {
+        } else if (evt.getSource() == EUC_TW) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_2022_JP) {
+        } else if (evt.getSource() == ISO_2022_JP) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == EUC_JP) {
+        } else if (evt.getSource() == EUC_JP) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == Shift_JIS) {
+        } else if (evt.getSource() == Shift_JIS) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_2022_KR) {
+        } else if (evt.getSource() == ISO_2022_KR) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == EUC_KR) {
+        } else if (evt.getSource() == EUC_KR) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == UHC) {
+        } else if (evt.getSource() == UHC) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == Johab) {
+        } else if (evt.getSource() == Johab) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ARMSCII_8) {
+        } else if (evt.getSource() == ARMSCII_8) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == GEOSTD_8) {
+        } else if (evt.getSource() == GEOSTD_8) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_11) {
+        } else if (evt.getSource() == ISO_8859_11) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_874) {
+        } else if (evt.getSource() == windows_874) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == TIS_620) {
+        } else if (evt.getSource() == TIS_620) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_9) {
+        } else if (evt.getSource() == ISO_8859_9) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1254) {
+        } else if (evt.getSource() == windows_1254) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM857) {
+        } else if (evt.getSource() == IBM857) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacTurkish) {
+        } else if (evt.getSource() == MacTurkish) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1258) {
+        } else if (evt.getSource() == windows_1258) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == TCVN) {
+        } else if (evt.getSource() == TCVN) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == VISCII) {
+        } else if (evt.getSource() == VISCII) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == VPS) {
+        } else if (evt.getSource() == VPS) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacDevanagari) {
+        } else if (evt.getSource() == MacDevanagari) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacGujarati) {
+        } else if (evt.getSource() == MacGujarati) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacGurmukhi) {
+        } else if (evt.getSource() == MacGurmukhi) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_6) {
+        } else if (evt.getSource() == ISO_8859_6) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1256) {
+        } else if (evt.getSource() == windows_1256) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM864) {
+        } else if (evt.getSource() == IBM864) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacArabic) {
+        } else if (evt.getSource() == MacArabic) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacFarsi) {
+        } else if (evt.getSource() == MacFarsi) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == ISO_8859_8) {
+        } else if (evt.getSource() == ISO_8859_8) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == windows_1255) {
+        } else if (evt.getSource() == windows_1255) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == IBM862) {
+        } else if (evt.getSource() == IBM862) {
             JFileOptions.this.selectPreEncodings(evt);
-        }
-        else if (evt.getSource() == MacHebrew) {
+        } else if (evt.getSource() == MacHebrew) {
             JFileOptions.this.selectPreEncodings(evt);
         }
     }
@@ -862,6 +792,7 @@ public abstract class JFileOptions extends JPanel implements ActionListener, Mou
             enc = "x-" + enc;
         setPreEncoding(enc);
     }//GEN-LAST:event_selectPreEncodings
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ARMSCII_8;
     private javax.swing.JMenu Arabic;

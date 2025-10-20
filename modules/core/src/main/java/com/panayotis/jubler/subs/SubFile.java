@@ -28,7 +28,7 @@ public class SubFile {
     };
     private final static String basic_fileencoding = basic_encodings[0];
     private final static float basic_FPS = 25f;
-    private final static SubFormat basic_format;
+    public final static SubFormat basic_format;
 
     /* Mutable default values - used only in load/save dialogs */
     private static String[] def_encodings = new String[basic_encodings.length];

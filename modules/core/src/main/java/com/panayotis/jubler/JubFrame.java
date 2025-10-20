@@ -63,10 +63,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     public static JublerList windows;
     private static ArrayList<SubEntry> copybuffer;
     public static JPreferences prefs;
-    /**
-     * File chooser dialog to open/ save subtitles
-     */
-    public static JSubFileDialog fdialog;
+
     /*
      * Where the subtitles for this window is stored
      */
@@ -111,7 +108,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         /* prefs = new JPreferences(); */
         prefs = null;
         FrameIcons = Theme.findFrameImages("logo");
-        fdialog = new JSubFileDialog();
     }
 
     /**
@@ -1787,7 +1783,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }//GEN-LAST:event_CurrentTTMActionPerformed
 
     private void SaveAsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsFMActionPerformed
-        saveFile(fdialog.getSaveFile(this, subs, mfile));
+        saveFile(new JSubFileDialog().getSaveFile(this, subs, mfile));
         changeTableRowHeightForTextTypeSubs();
     }//GEN-LAST:event_SaveAsFMActionPerformed
 
@@ -1809,7 +1805,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
     private void OpenFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenFMActionPerformed
         MediaFile mf = new MediaFile();
-        JubFrame newj = loadFileFromHere(fdialog.getLoadFile(this, mf), false);
+        JubFrame newj = loadFileFromHere(new JSubFileDialog().getLoadFile(this, mf), false);
         if (newj != null)
             newj.mfile = mf;
     }//GEN-LAST:event_OpenFMActionPerformed
