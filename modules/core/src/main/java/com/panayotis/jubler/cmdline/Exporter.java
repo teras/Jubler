@@ -52,6 +52,8 @@ public class Exporter {
 
         } catch (Exception e) {
             System.err.println("ERROR: Exception during saving: " + e.getMessage());
+            if (debug)
+                e.printStackTrace();
             System.exit(1);
         }
     }
