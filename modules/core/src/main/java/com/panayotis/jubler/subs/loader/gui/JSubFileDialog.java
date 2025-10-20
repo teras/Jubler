@@ -185,12 +185,6 @@ public class JSubFileDialog extends javax.swing.JDialog {
     private javax.swing.JFileChooser chooser;
     // End of variables declaration//GEN-END:variables
 
-    private JFileFilter makeFilter(SubFormat format) {
-        String desc = format.getDescription();
-        String ext = format.getExtension();
-        return new JFileFilter(ext, desc, format);
-    }
-
     public boolean setFilters(FileFilter[] list) {
         boolean ok = false;
         try {
@@ -220,45 +214,19 @@ public class JSubFileDialog extends javax.swing.JDialog {
         return ok;
     }//end public boolean setFilters(FileFilter[] list)
 
-    public boolean setFilters(SubFormat[] format_list) {
-        boolean ok = false;
-        Vector<FileFilter> vector = new Vector<FileFilter>();
+    private void addFilters(SubFormat target) {
         try {
-            for (int i = 0; i < format_list.length; i++) {
-                SubFormat format = format_list[i];
-                JFileFilter filter = makeFilter(format);
-                vector.add(filter);
-            }//end for(SubFormat format: format_list)
-            ok = this.setFilters(vector);
-        } catch (Exception ex) {
-            DEBUG.logger.log(Level.WARNING, ex.toString());
-        }
-        return ok;
-    }//end public boolean setFilter()
-
-    public boolean setFilter(SubFormat format) {
-        boolean ok = false;
-        try {
-            JFileFilter filter = makeFilter(format);
-            chooser.setFileFilter(filter);
-            ok = true;
-        } catch (Exception ex) {
-            DEBUG.logger.log(Level.WARNING, ex.toString());
-        }
-        return ok;
-    }//end public boolean setFilter(SubFormat format)
-
-    private boolean addFilters(SubFormat target) {
-        try {
-            ArrayList<SubFormat> formats = Availabilities.formats.getFormats();
-            if (target != null) {
-                formats.removeIf(f -> f.getName().equals(target.getName()));
-                formats.add(0, target);
-            }
-            formats.forEach(it -> chooser.addChoosableFileFilter(makeFilter(it)));
-            return true;
+            ArrayList<JFileFilter> filters = new ArrayList<>();
+            if (target != null)
+                filters.add(0, new JFileFilter(target));
+            else
+                filters.add(new JFileFilter());
+            Availabilities.formats.getFormats().forEach(it -> {
+                if (target == null || !target.getName().equals(it.getName()))
+                    filters.add(new JFileFilter(it));
+            });
+            filters.forEach(it -> chooser.addChoosableFileFilter(it));
         } catch (Exception ignored) {
-            return false;
         }
     }//end public boolean addFilters(ArrayList<SubFormat> format_list)
 
