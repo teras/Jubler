@@ -1,3 +1,1 @@
-THIS IS AN ALPHA VERSION
-
-NOT FOR PRODUCTION OR REDISTRIBUTION - USE WITH CARE
+Fix SRT subtitle save, when styles are present
