@@ -1,4 +1,4 @@
-## Jubler - a subtitle editor
+## Jubler - Subtitle Editor
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/teras/Jubler)
 ![GitHub all releases](https://img.shields.io/github/downloads/teras/Jubler/total)
@@ -7,84 +7,94 @@
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-blue)
 ![GitHub Release Date](https://img.shields.io/github/release-date/teras/Jubler)
 
+Jubler is a free and open source subtitle editor for creating, editing, and converting text-based subtitles. Written in Java for cross-platform compatibility, it provides tools for authoring new subtitles and refining existing ones with video preview, quality validation, and extensive format support.
+
 (C) 2005-2025 Panayotis Katsaloulis
 panayotis@panayotis.com
 
+Licensed under the GNU Affero General Public License v3 (AGPL-3.0)
 
-### General
+---
 
-Jubler is a tool to edit text-based subtitles. It can be used an an
-authoring software for new subtitles or as a tool to convert,
-transform, correct and refine existing subtitles.
+## Features
 
-It is free and open source software licensed under the GNU Affero General
-Public License v3 (AGPL-3.0). It is written in Java 8 in order to be
-really multi-platform. It has been tested under Linux, Windows, and macOS. 
+### Subtitle Formats
+- **20+ formats supported** including SubRip (SRT), Advanced SubStation Alpha (ASS/SSA), WebVTT, MicroDVD, SubViewer, MPL2, Spruce DVD Maestro, TTML, ITT, DFXP, and YouTube subtitles
+- **Universal encoding support** (UTF-8, UTF-16, and all Java platform encodings)
+- **Character and paragraph-level styling** for formats that support it (ASS/SSA, SRT)
+- **Format conversion** between all supported types
 
+### Video Integration
+- **FFmpeg integration** for frame preview and audio waveform visualization
+- **MPlayer support** for video playback
+- **Real-time subtitle editing** while watching video
+- **Interactive timeline** with draggable subtitle blocks
+- **Two-point synchronization** for timing alignment
+- **Enhanced preview controls** with shift/alt key support and snapping
 
-### Features
+### Editing Tools
+- **Time manipulation** - shift, frame rate conversion, round timing
+- **Content operations** - split/join entries, split/join files
+- **Text processing** - spell checker, find & replace with regex support
+- **Smart time fixer** with overlap detection and resolution
+- **Translation mode** for side-by-side subtitle translation
+- **Undo/redo** with full history
+- **Auto-save and recovery**
 
-#### General features
+### Quality Control
+- **Subtitle validation** with configurable quality rules
+- **CPS (characters-per-second) metrics** displayed in subtitle table
+- **TED guidelines compliance** checking
+- **Color-coded validation** to highlight issues
+- **Statistics and analysis** tools
 
-* It supports Advanced SubStation, SubStation Alpha, SubRip,
-  SubViewer (1 and 2), MicroDVD, MPL2 and Spruce DVD Maestro
-  file formats, although it is easy to extend it to support
-  other file types.
-* All encodings supported by Java platform are also supported here
-  (like UTF-8). The user is able to select a list of preferred
-  encodings in order to load the localized subtitle files.
-* GUI internationalization support through gettext utilities.
-* Styles are supported (when saving in SubStation formats or SRT).
-  These styles are either specific either per subtitle or per character.
-* Translating mode (parent & child editors) is supported
-* Graphical preview of the subtitles using the FFmpeg library.
-  Current frame, waveform preview and waveform listening is supported.
-* Graphically display of subtitles, which can be moved and resized.
-* Play the subtitles file using a video player (mplayer). While in
-  playing mode the user is able to freely edit the subtitles (and
-  inform the player for this change) or add a new subtitle in real
-  time
-* Mark subtitles with different colors, either when editing or real
-  time when playing the video
-* Automatically mark any subtitles above a given threshold size
-* Spell checking, with support for dictionary selection
-* Test the subtitles on the movie and navigate with a full graphical
-  interface
-* Select areas in the movie just in time and add new subtitles
-* Easy installation under all platforms.
-  
-#### Key editing features:
+### User Interface
+- **HiDPI support** with adjustable scaling
+- **Dark theme** available
+- **Customizable keyboard shortcuts**
+- **Multi-language interface** with i18n support
+- **Color marking** for organizing subtitle groups
 
-* Editing individual subtitles
-* Splitting
-* Joining
-* Time shifting
-* Frame rate conversion automatically, by user request or using a
-  free user factor
-* Fixing time inconsistencies such as overlapping with an
-  optimization algorithm
-* Undo & redo
-* Cut, copy, paste, delete areas according to time & color patterns
-* Clear areas used for hearing impaired
+### Automation
+- **Command-line tools** for batch processing
+- **Plugin system** for extensibility
+- **External tool integration**
+- **Azure Translator support** for automated translation
+
+---
+
+## Getting Started
 
 ### Requirements
+- Java 8 or higher (often bundled with distribution)
+- Optional: MPlayer for video preview
+- Optional: ASpell for spell checking
 
-* Java version 1.8
-* MPlayer to view subtitles
-* ASpell to spell-check the subtitles
+### Installation
 
+Download binaries from the [releases page](https://github.com/teras/Jubler/releases):
+- Windows, macOS, and Linux installers
+- Linux AppImage
+- Generic cross-platform package
 
-### How to run
+Or build from source (see [BUILD_AND_RUN.md](BUILD_AND_RUN.md))
 
-If you have downloaded the binary distribution, the installer should have
-created an link to your "Start" menu and (possibly) on your desktop. In any
-other case go to the Jubler installation directory and issue the following
-command:
-  java -jar Jubler.jar
-On some systems a double click is enough to start the application.
+### Running
 
+Launch from your application menu or desktop shortcut. You can also run manually:
+```bash
+java -jar Jubler.jar
+```
 
-### Credits
+---
 
-Free code signing on Windows provided by <a href="https://signpath.io/">SignPath.io</a>, certificate by <a href="https://signpath.org/">SignPath Foundation</a>
+## Contributing
+
+Jubler is an open source project that welcomes contributions. Whether you're fixing bugs, adding features, improving documentation, or translating the interface, your help is appreciated.
+
+---
+
+## Credits
+
+Free code signing on Windows provided by [SignPath.io](https://signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
 

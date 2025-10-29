@@ -1,5 +1,20 @@
 ### Jubler Changelog
 
+#### 9.0.1
+
+Fix SRT subtitle save, when styles are present
+
+#### 9.0.0
+
+- Subtitle preview enhanced with shift/alt key support and snapping functionality
+- Added WebVTT subtitle format, alongside XML-based subtitle formats (ITT, TTML, DFXP)
+- Command-line tools for automated workflows and terminal operations
+- Dark theme support
+- Unified preferences system with import/export/reset capabilities
+- Quality control metrics updated, with CPS (characters-per-second) display directly in the subtitle table
+- Enhanced regular expression search capabilities
+- Improve Azure Translate implementation
+
 #### 8.0.0
 
 Redesigned HiDPI UI with editable scaling. Reintroduced Auto-translate with Azure. Support YouTube subtitles.
