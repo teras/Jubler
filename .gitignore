@@ -6,3 +6,10 @@ build/
 .idea/
 .vagrant/
 .gradle/
+
+# Flatpak build artifacts
+build-dir/
+.flatpak-builder/
+repo/
+*.flatpak
+flatpak-build.log

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.panayotis.jubler</id>
+  <name>Jubler</name>
+  <summary>Subtitle editor for text-based subtitles</summary>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-only</project_license>
+
+  <developer id="com.panayotis">
+    <name>Panayotis Katsaloulis</name>
+  </developer>
+
+  <description>
+    <p>
+      Jubler is a tool to edit text-based subtitles. It can be used as authoring software for new subtitles
+      or as a tool to convert, transform, correct and refine existing subtitles.
+    </p>
+    <p>Features include:</p>
+    <ul>
+      <li>Support for multiple subtitle formats: SubRip (SRT), SubStation Alpha (SSA/ASS), SubViewer, MicroDVD, MPL2, and more</li>
+      <li>Graphical preview with FFmpeg integration for video playback and waveform display</li>
+      <li>Spell checking with support for multiple dictionaries</li>
+      <li>Advanced editing tools: split, join, time shift, frame rate conversion</li>
+      <li>Style support for character and subtitle formatting when using SubStation or SRT formats</li>
+      <li>Translation mode with parent and child editors for creating translated subtitles</li>
+      <li>Color marking for subtitles to highlight specific sections</li>
+      <li>Automatic marking of subtitles exceeding size thresholds</li>
+      <li>Fix time inconsistencies and overlapping subtitles with optimization algorithms</li>
+      <li>Full undo/redo support</li>
+      <li>Support for all Java platform encodings including UTF-8</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">com.panayotis.jubler.desktop</launchable>
+
+  <url type="homepage">https://jubler.org</url>
+  <url type="bugtracker">https://github.com/teras/Jubler/issues</url>
+
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/teras/Jubler/master/resources/screenshots/main.png</image>
+      <caption>Main subtitle editing interface</caption>
+    </screenshot>
+  </screenshots>
+
+  <releases>
+    <release version="9.0.1" date="2025-10-29"/>
+  </releases>
+
+  <content_rating type="oars-1.1"/>
+</component>
