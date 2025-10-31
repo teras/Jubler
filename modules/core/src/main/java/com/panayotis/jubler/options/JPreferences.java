@@ -27,8 +27,8 @@ public class JPreferences extends javax.swing.JDialog {
      */
     public JOptionTabs Tabs;
     /* Shortcuts to panels */
-    private JExternalOptions jplay;
-    private JExternalOptions jspell;
+    private JPlayerOptions jplay;
+    private JSpellerOptions jspell;
     private JShortcutsOptions jcut;
     private JExternalToolsOptions jext;
     private boolean dialog_status;
@@ -42,8 +42,8 @@ public class JPreferences extends javax.swing.JDialog {
         super(jub);
 
         Tabs = new JOptionTabs(this);
-        Tabs.addTab(jplay = new JExternalOptions(new AvailExternals(ExternalVideoPlayer.family, __("Player"), "player_pref")));
-        Tabs.addTab(jspell = new JExternalOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref")));
+        Tabs.addTab(jplay = new JPlayerOptions(new AvailExternals(ExternalVideoPlayer.family, __("Player"), "player_pref")));
+        Tabs.addTab(jspell = new JSpellerOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Tabs.addTab(jext = new JExternalToolsOptions());
         Options.loadSystemPreferences(this);
