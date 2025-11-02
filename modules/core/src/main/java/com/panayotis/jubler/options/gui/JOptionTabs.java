@@ -11,12 +11,14 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 public class JOptionTabs extends JPanel {
 
-    private ArrayList<TabPage> tabs;
+    private Map<Class<? extends TabPage>, TabPage> tabs;
     JToggleButton first;
     private Window parent;
 
@@ -25,11 +27,25 @@ public class JOptionTabs extends JPanel {
      */
     public JOptionTabs(Window parent) {
         initComponents();
-        tabs = new ArrayList<TabPage>();
+        tabs = new LinkedHashMap<>();
         this.parent = parent;
     }
 
+    /**
+     * Add a new tab to the preferences dialog.
+     * If a tab of the same class is already registered, this method
+     * silently ignores the duplicate.
+     *
+     * @param page The tab page to add
+     */
     public void addTab(TabPage page) {
+        if (page == null)
+            return;
+
+        Class<? extends TabPage> tabClass = page.getClass();
+        if (tabs.containsKey(tabClass))
+            return;
+
         JToggleButton selector = new JToggleButton(page.getTabName(), page.getTabIcon());
         selector.setActionCommand(Integer.toString(tabs.size()));
         selector.setToolTipText(page.getTabTooltip());
@@ -45,7 +61,7 @@ public class JOptionTabs extends JPanel {
         if (first == null)
             first = selector;
         TabsBG.add(selector);
-        tabs.add(page);
+        tabs.put(tabClass, page);
 
         selector.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,22 +77,12 @@ public class JOptionTabs extends JPanel {
     }
 
     public ArrayList<TabPage> getTabArray() {
-        return tabs;
+        return new ArrayList<>(tabs.values());
     }
 
     public void initTabs() {
         first.doClick();
         parent.pack();
-    }
-
-    public JPanel getTab() {
-        remove(Tabs);
-        Tabs.revalidate();
-        return Tabs;
-    }
-
-    public void putTabBack() {
-        add(Tabs, BorderLayout.CENTER);
     }
 
     /**

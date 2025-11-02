@@ -7,5 +7,9 @@ build/
 .vagrant/
 .gradle/
 
-# Old code reference directories
-*-old/
+# Flatpak build artifacts
+build-dir/
+.flatpak-builder/
+repo/
+*.flatpak
+flatpak-build.log
