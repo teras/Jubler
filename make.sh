@@ -34,6 +34,7 @@ display_help() {
     echo -e "This is a helper script for building Jubler:"
     echo -e "  ${GREEN}version X.Y.Z${NC}           Update Jubler version."
     echo -e "  ${GREEN}build TARGET1[,TARGET2]${NC} Build Jubler for the list of provided targets."
+    echo -e "  ${GREEN}winget X.Y.Z [--submit]${NC} Update WinGet manifest (dry-run by default)."
     echo -e "  ${GREEN}clean${NC}                   Clean build files."
     echo -e "  ${GREEN}headers${NC}                 Check header files for copyright notice."
     echo -e "  ${GREEN}--help${NC}                  Display information about this script."
@@ -61,13 +62,39 @@ version_action() {
     sed -i "s/^version = \".*\"/version = \"$version\"/" build.gradle.kts
 
     echo -e "${GREEN}Version updated to $version in build.gradle.kts${NC}"
+}
 
-#    mkdir -p "$dist_dir/"
-#    if [ ! -e "$dist_dir/.Komac.jar" ]; then
-#        wget -O "$dist_dir/.Komac.jar" https://github.com/russellbanks/Komac/releases/download/v1.11.0/Komac-1.11.0-all.jar
-#    fi
-#    cd resources/winget/jubler/manifests/j/Jubler/
-#    java -jar $dist_dir/.Komac.jar update --version=$version
+winget_action() {
+    if [ $# -lt 2 ]; then
+        echo -e "${RED}Error:${NC} Missing version argument for 'winget'. Usage: ./make.sh winget X.Y.Z [--submit]"
+        exit 1
+    fi
+
+    local version=$2
+    local submit_flag=""
+
+    if [ "${3:-}" = "--submit" ]; then
+        submit_flag="--submit"
+    fi
+
+    # Check if komac is installed
+    if ! command -v komac &> /dev/null; then
+        echo -e "${RED}Error:${NC} komac is not installed. Install it with: cargo install komac"
+        exit 1
+    fi
+
+    local installer_url="https://github.com/teras/Jubler/releases/download/v${version}/Jubler-${version}-x64.exe"
+
+    echo -e "${GREEN}Updating WinGet manifest for Jubler.App version ${version}...${NC}"
+    echo -e "Installer URL: ${installer_url}"
+
+    if [ -n "$submit_flag" ]; then
+        echo -e "${GREEN}Will submit PR to microsoft/winget-pkgs${NC}"
+        komac update Jubler.App --version "$version" --urls "$installer_url" --submit
+    else
+        echo -e "Dry run mode (use --submit to create PR)"
+        komac update Jubler.App --version "$version" --urls "$installer_url" --dry-run
+    fi
 }
 
 
@@ -307,6 +334,9 @@ case "$1" in
         ;;
     "clean")
         clean_action
+        ;;
+    "winget")
+        winget_action "$@"
         ;;
     *)
         echo -e "${RED}Error:${NC} Unknown parameter. Use --help for information."
