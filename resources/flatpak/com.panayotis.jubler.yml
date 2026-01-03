@@ -11,6 +11,12 @@ runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.openjdk17
+add-extensions:
+  org.freedesktop.Platform.ffmpeg-full:
+    version: '25.08'
+    directory: lib/ffmpeg
+    add-ld-path: .
+    autodelete: false
 command: jubler
 
 finish-args:
@@ -27,38 +33,46 @@ modules:
     build-commands:
       - /usr/lib/sdk/openjdk17/install.sh
 
+  - name: libvlc
+    config-opts:
+      - BUILDCC=gcc
+      - --disable-lua
+      - --disable-a52
+      - --disable-qt
+      - --disable-ncurses
+      - --disable-udev
+    sources:
+      - type: archive
+        url: https://get.videolan.org/vlc/3.0.22/vlc-3.0.22.tar.xz
+        sha256: e2cc1cf0ae0902a09da5a37c249a8a4e4b5ec4dc095443b8e1493c6a7cc138ea
+      - type: patch
+        path: vlc-ignore-time-for-cache.patch
+
   - name: jubler
     buildsystem: simple
     build-commands:
-      - install -d /app/bin /app/lib /app/lib/lib
+      - install -d /app/bin /app/lib /app/lib/ffmpeg
       - cp -r lib/* /app/lib/
-      - install -Dm755 libffdecode_64.so /app/lib/lib/libffdecode_64.so
       - install -Dm755 jubler /app/bin/jubler
       - install -Dm644 com.panayotis.jubler.desktop /app/share/applications/com.panayotis.jubler.desktop
       - install -Dm644 com.panayotis.jubler.metainfo.xml /app/share/metainfo/com.panayotis.jubler.metainfo.xml
       - install -Dm644 logo.svg /app/share/icons/hicolor/scalable/apps/com.panayotis.jubler.svg
     sources:
-      - type: archive
-        url: https://github.com/teras/Jubler/releases/download/v9.0.1/Jubler-9.0.1-generic.tar.gz
-        sha256: d4e85793b8439b3bbd71d061433a239bfeae1d8645c8674deb41821630714330
+      # For local testing, use the built distribution
+      - type: dir
+        path: ../../build/jubler
 
       - type: file
-        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/flatpak/com.panayotis.jubler.desktop
-        sha256: 5ae3197539d5db96365f8dbe379626424fbf053131caec9151117c93b3f42983
+        path: com.panayotis.jubler.desktop
 
       - type: file
-        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/flatpak/com.panayotis.jubler.metainfo.xml
-        sha256: e13ecfd06684fd2220bf0cd8de732b45365874feae182b71080c0a77331268a6
+        path: com.panayotis.jubler.metainfo.xml
 
       - type: file
-        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/logo/logo.svg
-        sha256: 3e1b51caa9a4351b44515ed09e560053a0bfb71f33030acafd57bc4b6d6b0372
-
-      - type: file
-        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/installer/extra/linux64/lib/libffdecode_64.so
-        sha256: 8e81dc3f7bacf5552cc66fefe94570e4047c8f3316d96ae6198cb9fc4800f837
+        path: ../logo/logo.svg
 
       - type: script
         dest-filename: jubler
         commands:
+          - export PATH="/app/lib/ffmpeg/bin:$PATH"
           - exec /app/jre/bin/java -jar /app/lib/jubler.jar "$@"
