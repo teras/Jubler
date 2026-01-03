@@ -9,7 +9,6 @@ package com.panayotis.jubler;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.information.JQuality;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.console.JVideoConsole;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.ShortcutsModel;
@@ -85,7 +84,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     /* The following pointer points to the connected jubler window
      * (used for translating) */
     public JubFrame jparent;
-    private final ArrayList<JVideoConsole> connected_consoles;
     /* the last changed subtitle - used for undo */
     private SubEntry last_changed_sub = null;
     /* Control variable to ensure that no feedback will be given when explicit change the
@@ -127,7 +125,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         subs = null;
         mfile = new MediaFile();
-        connected_consoles = new ArrayList<JVideoConsole>();
 
         undo = new UndoList(this);
 
@@ -296,8 +293,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowStyleP = new javax.swing.JCheckBoxMenuItem();
         ShowCPMP = new javax.swing.JCheckBoxMenuItem();
         ShowCPSP = new javax.swing.JCheckBoxMenuItem();
-        jSeparator11 = new javax.swing.JSeparator();
-        PlayVideoP = new javax.swing.JMenuItem();
         SubsTableScrollPane = new javax.swing.JScrollPane();
         SubTable = new JTable() {
             public void columnMarginChanged(ChangeEvent e) {
@@ -325,7 +320,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         jSeparator14 = new javax.swing.JToolBar.Separator();
         SortTB = new javax.swing.JButton();
         jSeparator15 = new javax.swing.JToolBar.Separator();
-        TestTB = new javax.swing.JButton();
         PreviewTB = new javax.swing.JButton();
         OrientationTB = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
@@ -402,9 +396,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         UndoEM = new javax.swing.JMenuItem();
         RedoEM = new javax.swing.JMenuItem();
         ToolsM = new javax.swing.JMenu();
-        TestTM = new javax.swing.JMenu();
-        BeginningTTM = new javax.swing.JMenuItem();
-        CurrentTTM = new javax.swing.JMenuItem();
         PreviewM = new javax.swing.JMenu();
         EnablePreviewC = new javax.swing.JCheckBoxMenuItem();
         jSeparator12 = new javax.swing.JSeparator();
@@ -503,11 +494,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ShowColP.add(ShowCPSP);
 
         SubsPop.add(ShowColP);
-        SubsPop.add(jSeparator11);
-
-        PlayVideoP.setText(__("Test video"));
-        PlayVideoP.addActionListener(formListener);
-        SubsPop.add(PlayVideoP);
 
         SubsTableScrollPane.setPreferredSize(new java.awt.Dimension(600, 450));
 
@@ -666,18 +652,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         JublerTools.add(SortTB);
         JublerTools.add(jSeparator15);
 
-        TestTB.setIcon(Theme.loadIcon("test"));
-        TestTB.setToolTipText(__("Test subtitles from current position"));
-        TestTB.setEnabled(false);
-        TestTB.setFocusable(false);
-        TestTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        TestTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        SystemDependent.setToolBarButtonStyle(TestTB, "first");
-        TestTB.addActionListener(formListener);
-        JublerTools.add(TestTB);
-
         PreviewTB.setModel(new ToggleButtonModel());
-        SystemDependent.setToolBarButtonStyle(PreviewTB, "middle");
+        SystemDependent.setToolBarButtonStyle(PreviewTB, "first");
         PreviewTB.setIcon(Theme.loadIcon("previewc"));
         PreviewTB.setToolTipText(__("Enable preview"));
         PreviewTB.setEnabled(false);
@@ -1078,23 +1054,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         ToolsM.setText(__("&Tools"));
 
-        TestTM.setText(__("Test video"));
-        TestTM.setEnabled(false);
-
-        BeginningTTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
-        BeginningTTM.setText(__("From the beginning"));
-        BeginningTTM.setName("TTB"); // NOI18N
-        BeginningTTM.addActionListener(formListener);
-        TestTM.add(BeginningTTM);
-
-        CurrentTTM.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F9, 0));
-        CurrentTTM.setText(__("From current position"));
-        CurrentTTM.setName("TTC"); // NOI18N
-        CurrentTTM.addActionListener(formListener);
-        TestTM.add(CurrentTTM);
-
-        ToolsM.add(TestTM);
-
         PreviewM.setText(__("Preview"));
         PreviewM.setEnabled(false);
 
@@ -1188,8 +1147,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
                 JubFrame.this.RedoEMActionPerformed(evt);
             } else if (evt.getSource() == SortTB) {
                 JubFrame.this.SortTBActionPerformed(evt);
-            } else if (evt.getSource() == TestTB) {
-                JubFrame.this.CurrentTTMActionPerformed(evt);
             } else if (evt.getSource() == PreviewTB) {
                 JubFrame.this.PreviewTBCurrentTTMActionPerformed(evt);
             } else if (evt.getSource() == OrientationTB) {
@@ -1226,8 +1183,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
                 JubFrame.this.showTableColumn(evt);
             } else if (evt.getSource() == ShowCPSP) {
                 JubFrame.this.showTableColumn(evt);
-            } else if (evt.getSource() == PlayVideoP) {
-                JubFrame.this.CurrentTTMActionPerformed(evt);
             } else if (evt.getSource() == FileNFM) {
                 JubFrame.this.FileNFMActionPerformed(evt);
             } else if (evt.getSource() == ChildNFM) {
@@ -1322,10 +1277,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
                 JubFrame.this.UndoEMActionPerformed(evt);
             } else if (evt.getSource() == RedoEM) {
                 JubFrame.this.RedoEMActionPerformed(evt);
-            } else if (evt.getSource() == BeginningTTM) {
-                JubFrame.this.BeginningTTMActionPerformed(evt);
-            } else if (evt.getSource() == CurrentTTM) {
-                JubFrame.this.CurrentTTMActionPerformed(evt);
             } else if (evt.getSource() == EnablePreviewC) {
                 JubFrame.this.EnablePreviewCActionPerformed(evt);
             } else if (evt.getSource() == MaxWaveC) {
@@ -1770,22 +1721,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         StaticJubler.showAbout();
     }//GEN-LAST:event_AboutHMActionPerformed
 
-    private void BeginningTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BeginningTTMActionPerformed
-        testVideo(new Time(0d));
-    }//GEN-LAST:event_BeginningTTMActionPerformed
-
-    private void CurrentTTMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CurrentTTMActionPerformed
-        Time t;
-
-        int row = SubTable.getSelectedRow();
-        if (row < 0)
-            t = new Time(0d);
-        else
-            t = subs.elementAt(row).getStartTime();
-
-        testVideo(t);
-    }//GEN-LAST:event_CurrentTTMActionPerformed
-
     private void SaveAsFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveAsFMActionPerformed
         saveFile(fdialog.getSaveFile(this, subs, mfile));
         changeTableRowHeightForTextTypeSubs();
@@ -1915,14 +1850,12 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenuItem AllSEM;
     private javax.swing.JPanel BasicPanel;
     private javax.swing.JMenuItem BeforeIEM;
-    private javax.swing.JMenuItem BeginningTTM;
     private javax.swing.JMenuItem BottomGEM;
     private javax.swing.JMenuItem ChildNFM;
     private javax.swing.JMenuItem CloseFM;
     private javax.swing.JMenuItem CopyEM;
     private javax.swing.JMenuItem CopyP;
     private javax.swing.JButton CopyTB;
-    private javax.swing.JMenuItem CurrentTTM;
     private javax.swing.JMenuItem CutEM;
     private javax.swing.JMenuItem CutP;
     private javax.swing.JButton CutTB;
@@ -1970,7 +1903,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenuItem PinkMEM;
     private javax.swing.JMenuItem PinkMP;
     private javax.swing.JMenuItem PlayAudioC;
-    private javax.swing.JMenuItem PlayVideoP;
     public javax.swing.JMenuItem PrefsFM;
     private javax.swing.JMenu PreviewM;
     private javax.swing.JButton PreviewTB;
@@ -2020,8 +1952,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JTable SubTable;
     private javax.swing.JPopupMenu SubsPop;
     private javax.swing.JScrollPane SubsTableScrollPane;
-    private javax.swing.JButton TestTB;
-    private javax.swing.JMenu TestTM;
     private javax.swing.JMenuItem TimeSEM;
     public javax.swing.JCheckBoxMenuItem ToolsLockEM;
     public javax.swing.JMenu ToolsM;
@@ -2034,7 +1964,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.Box.Filler filler2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
-    private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JToolBar.Separator jSeparator13;
     private javax.swing.JToolBar.Separator jSeparator14;
@@ -2182,30 +2111,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         return work;
     }
 
-    private void testVideo(Time t) {
-        if (!mfile.validateMediaFile(subs, false, this))
-            return;
-        JVideoConsole console = JVideoConsole.initialize(this, prefs.getVideoPlayer());
-        if (console == null) {
-            JIDialog.info(this, __("No valid players where registered!"), __("Error while initializing video player"));
-            return;
-        }
-        connected_consoles.add(console);
-        console.start(mfile, subs, new Time(((long) t.toSeconds()) - 2));
-    }
-
-    public void removeConsole(JVideoConsole cons) {
-        connected_consoles.remove(cons);
-    }
-
-    private void updateConsoles(double t) {
-        if (disable_consoles_update)
-            return;
-        for (int i = 0; i < connected_consoles.size(); i++)
-            connected_consoles.get(i).setTime(t);
-    }
-
-
     /* Use this method when a new file is created */
     private void enableSaveControls() {
         undo.invalidateSaveMark();
@@ -2241,7 +2146,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         CopyTB.setEnabled(true);
         PasteTB.setEnabled(true);
         SortTB.setEnabled(true);
-        TestTB.setEnabled(true);
         PreviewTB.setEnabled(true);
 
         if (asNewWindow)
@@ -2299,10 +2203,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         if (isUnsaved() && unsave_check)
             if (!JIDialog.question(this, __("Subtitles are not saved.\nDo you really want to close this window?"), __("Quit confirmation")))
                 return;
-
-        /* Close all running consoles */
-        for (JVideoConsole c : connected_consoles)
-            c.requestQuit();
 
         /* Clean up previewers */
         preview.setEnabled(false);
@@ -2604,7 +2504,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             jparent.setSelectedSub(jparent.subs.findSubEntry(newtime, true), true);
         }
 
-        updateConsoles(sel.getStartTime().toSeconds());
         subeditor.focusOnText();
         subeditor.updateMetrics(sel);
         subeditor.ignoreSubChanges(false);

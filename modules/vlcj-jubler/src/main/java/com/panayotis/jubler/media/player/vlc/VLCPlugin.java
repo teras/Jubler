@@ -7,6 +7,7 @@
 package com.panayotis.jubler.media.player.vlc;
 
 import com.panayotis.jubler.Launcher;
+import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.media.preview.decoders.VideoPreview;
 import com.panayotis.jubler.plugins.PluginCollection;
@@ -41,5 +42,6 @@ public class VLCPlugin implements PluginCollection, PluginItem<Launcher>, Suppli
     @Override
     public void execPlugin(Launcher caller) {
         PreviewProviderRegistry.registerVideo(this);
+        PreviewProviderRegistry.registerAudio(FFmpegAudioPreview::new);
     }
 }

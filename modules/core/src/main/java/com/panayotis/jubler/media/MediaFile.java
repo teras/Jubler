@@ -13,6 +13,7 @@ import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
+import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Frame;
@@ -26,6 +27,8 @@ public class MediaFile {
     private AudioFile afile;   /* Audio file - prossibly same as video file */
 
     private CacheFile cfile;   /* Cache file */
+
+    private AudioPreview decoder;  /* Audio/video decoder - lazy initialized */
 
     /**
      * File chooser dialog for video
@@ -48,6 +51,18 @@ public class MediaFile {
         afile = af;
         cfile = cf;
         videoselector = new JVideofileSelector();
+    }
+
+    private AudioPreview getDecoder() {
+        if (decoder == null) {
+            try {
+                decoder = PreviewProviderRegistry.initAudioPreview();
+            } catch (IllegalArgumentException e) {
+                // No audio preview provider available
+                return null;
+            }
+        }
+        return decoder;
     }
 
     public boolean validateMediaFile(Subtitles subs, boolean force_new, Frame frame) {
@@ -202,30 +217,37 @@ public class MediaFile {
 
     /* Decoder actions */
     public boolean initAudioCache(AudioStateCallback listener) {
-        return decoder.initAudioCache(afile, cfile, listener);
+        AudioPreview d = getDecoder();
+        return d != null && d.initAudioCache(afile, cfile, listener);
     }
 
     public AudioPreviewOld getAudioPreview(double from, double to) {
-        return decoder.getAudioPreview(cfile, from, to);
+        AudioPreview d = getDecoder();
+        return d != null ? d.getAudioPreview(cfile, from, to) : null;
     }
 
     public void closeAudioCache() {
-        if (cfile != null)
-            decoder.closeAudioCache(cfile);
+        AudioPreview d = getDecoder();
+        if (cfile != null && d != null)
+            d.closeAudioCache(cfile);
     }
 
     public Image getFrame(double time, float resize) {
         if (vfile == null)
             return null;
-        return decoder.getFrame(vfile, time, resize);
+        AudioPreview d = getDecoder();
+        return d != null ? d.getFrame(vfile, time, resize) : null;
     }
 
     public void playAudioClip(double from, double to) {
-        if (afile != null)
-            decoder.playAudioClip(afile, from, to);
+        AudioPreview d = getDecoder();
+        if (afile != null && d != null)
+            d.playAudioClip(afile, from, to);
     }
 
     public void interruptCacheCreation(boolean status) {
-        decoder.setInterruptStatus(status);
+        AudioPreview d = getDecoder();
+        if (d != null)
+            d.setInterruptStatus(status);
     }
 }

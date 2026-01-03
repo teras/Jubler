@@ -34,7 +34,12 @@ public class VideoFile extends File {
      */
     public VideoFile(String vfile) {
         super(vfile);
-        PreviewProviderRegistry.initAudioPreview().retrieveInformation(this);
+        // TODO: Audio preview provider initialization needs proper handling
+        try {
+            PreviewProviderRegistry.initAudioPreview().retrieveInformation(this);
+        } catch (IllegalArgumentException e) {
+            // No audio preview provider available - use defaults
+        }
     }
 
     public VideoFile(File vf) {
