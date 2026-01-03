@@ -1,6 +1,13 @@
+# Jubler Flatpak manifest
+#
+# To update for a new release:
+#   1. Update RELEASE tag in archive URL (e.g., v9.0.2)
+#   2. Replace GIT_REF in all raw.githubusercontent URLs: 67b4a81c -> v9.0.2
+#   3. Recalculate sha256 hashes for changed files
+#
 app-id: com.panayotis.jubler
 runtime: org.freedesktop.Platform
-runtime-version: '24.08'
+runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.openjdk17
@@ -26,12 +33,7 @@ modules:
       - install -d /app/bin /app/lib /app/lib/lib
       - cp -r lib/* /app/lib/
       - install -Dm755 libffdecode_64.so /app/lib/lib/libffdecode_64.so
-      - |
-        cat > /app/bin/jubler << 'EOF'
-        #!/bin/sh
-        exec /app/jre/bin/java -jar /app/lib/jubler.jar "$@"
-        EOF
-      - chmod +x /app/bin/jubler
+      - install -Dm755 jubler /app/bin/jubler
       - install -Dm644 com.panayotis.jubler.desktop /app/share/applications/com.panayotis.jubler.desktop
       - install -Dm644 com.panayotis.jubler.metainfo.xml /app/share/metainfo/com.panayotis.jubler.metainfo.xml
       - install -Dm644 logo.svg /app/share/icons/hicolor/scalable/apps/com.panayotis.jubler.svg
@@ -41,13 +43,22 @@ modules:
         sha256: d4e85793b8439b3bbd71d061433a239bfeae1d8645c8674deb41821630714330
 
       - type: file
-        path: com.panayotis.jubler.desktop
+        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/flatpak/com.panayotis.jubler.desktop
+        sha256: 5ae3197539d5db96365f8dbe379626424fbf053131caec9151117c93b3f42983
 
       - type: file
-        path: com.panayotis.jubler.metainfo.xml
+        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/flatpak/com.panayotis.jubler.metainfo.xml
+        sha256: e13ecfd06684fd2220bf0cd8de732b45365874feae182b71080c0a77331268a6
 
       - type: file
-        path: ../logo/logo.svg
+        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/logo/logo.svg
+        sha256: 3e1b51caa9a4351b44515ed09e560053a0bfb71f33030acafd57bc4b6d6b0372
 
       - type: file
-        path: ../installer/extra/linux64/lib/libffdecode_64.so
+        url: https://raw.githubusercontent.com/teras/Jubler/67b4a81c/resources/installer/extra/linux64/lib/libffdecode_64.so
+        sha256: 8e81dc3f7bacf5552cc66fefe94570e4047c8f3316d96ae6198cb9fc4800f837
+
+      - type: script
+        dest-filename: jubler
+        commands:
+          - exec /app/jre/bin/java -jar /app/lib/jubler.jar "$@"
