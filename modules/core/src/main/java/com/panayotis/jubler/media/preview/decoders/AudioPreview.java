@@ -10,8 +10,6 @@ import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.media.VideoFile;
 
-import java.awt.Image;
-
 public interface AudioPreview {
     interface AudioStateCallback {
 
@@ -36,8 +34,6 @@ public interface AudioPreview {
     void closeAudioCache(CacheFile cache);
 
     AudioPreviewOld getAudioPreview(CacheFile cache, double from, double to);
-
-    Image getFrame(VideoFile video, double time, float resize);
 
     void retrieveInformation(VideoFile vfile);
 

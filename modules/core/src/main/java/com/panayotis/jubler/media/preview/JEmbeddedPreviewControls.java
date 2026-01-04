@@ -32,7 +32,7 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     private final JLabel speedValueLabel = createSliderValueLabel();
     private final JLabel volumeValueLabel = createSliderValueLabel();
     private final JLabel delayValueLabel = createSliderValueLabel();
-    private final JLabel timeLabel = new JLabel("00:00.00");
+    private final JLabel timeLabel = new JLabel("00:00.0");
     private static final String[] SPEED_LEVEL_LABELS = {"0.25x", "0.5x", "0.75x", "1x", "1.25x", "1.5x", "2x"};
     private static final int DELAY_RANGE_TENTHS = 20;
     private double subtitleDelaySeconds = 0d;
@@ -224,12 +224,12 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         long hours = totalSeconds / 3600;
         long minutes = (totalSeconds % 3600) / 60;
         long seconds = totalSeconds % 60;
-        long centis = (timeMs % 1000) / 10;
+        long tenths = (timeMs % 1000) / 100;
         String text;
         if (hours > 0) {
-            text = String.format("%d:%02d:%02d.%02d", hours, minutes, seconds, centis);
+            text = String.format("%d:%02d:%02d.%d", hours, minutes, seconds, tenths);
         } else {
-            text = String.format("%02d:%02d.%02d", minutes, seconds, centis);
+            text = String.format("%02d:%02d.%d", minutes, seconds, tenths);
         }
         timeLabel.setText(text);
     }

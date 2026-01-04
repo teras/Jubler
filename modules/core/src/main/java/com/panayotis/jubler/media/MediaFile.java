@@ -17,7 +17,6 @@ import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
 import java.awt.Frame;
-import java.awt.Image;
 import java.io.File;
 
 public class MediaFile {
@@ -230,13 +229,6 @@ public class MediaFile {
         AudioPreview d = getDecoder();
         if (cfile != null && d != null)
             d.closeAudioCache(cfile);
-    }
-
-    public Image getFrame(double time, float resize) {
-        if (vfile == null)
-            return null;
-        AudioPreview d = getDecoder();
-        return d != null ? d.getFrame(vfile, time, resize) : null;
     }
 
     public void playAudioClip(double from, double to) {

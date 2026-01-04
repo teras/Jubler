@@ -14,7 +14,6 @@ import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
 
 import com.panayotis.jubler.os.DEBUG;
 
-import java.awt.Image;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -271,46 +270,6 @@ public class FFmpegAudioPreview implements AudioPreview {
             return new AudioPreviewOld(data);
 
         } catch (IOException e) {
-            DEBUG.debug(e);
-            return null;
-        }
-    }
-
-    @Override
-    public Image getFrame(VideoFile video, double time, float resize) {
-        // Use FFmpeg to extract a frame
-        if (video == null || !video.exists())
-            return null;
-
-        String ffmpeg = findFFmpeg();
-        if (ffmpeg == null)
-            return null;
-
-        try {
-            ProcessBuilder pb = new ProcessBuilder(
-                    ffmpeg,
-                    "-ss", String.valueOf(time),
-                    "-i", video.getAbsolutePath(),
-                    "-vframes", "1",
-                    "-f", "image2pipe",
-                    "-vcodec", "png",
-                    "-"
-            );
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
-
-            Image image = javax.imageio.ImageIO.read(process.getInputStream());
-            process.waitFor();
-
-            if (image != null && resize != 1.0f) {
-                int newWidth = (int) (image.getWidth(null) * resize);
-                int newHeight = (int) (image.getHeight(null) * resize);
-                return image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-            }
-
-            return image;
-
-        } catch (Exception e) {
             DEBUG.debug(e);
             return null;
         }
