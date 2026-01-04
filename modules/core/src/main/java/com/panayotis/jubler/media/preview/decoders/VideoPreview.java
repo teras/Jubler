@@ -57,8 +57,11 @@ public interface VideoPreview {
 
     double getTime();
 
-    default void seek(int seconds) {
-        skip(seconds * 1000L);
+    default long getDuration() {
+        return 0;
+    }
+
+    default void seek(long timeMs) {
     }
 
     default void delaySubs(float seconds) {

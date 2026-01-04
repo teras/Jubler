@@ -244,8 +244,12 @@ public class VLCPreview implements VideoPreview {
     }
 
     @Override
-    public void seek(int seconds) {
-        long timeMs = seconds * 1000L;
+    public long getDuration() {
+        return mediaPlayer.status().length();
+    }
+
+    @Override
+    public void seek(long timeMs) {
         mediaPlayer.controls().setTime(timeMs);
         notifyTimeChanged(timeMs);
     }

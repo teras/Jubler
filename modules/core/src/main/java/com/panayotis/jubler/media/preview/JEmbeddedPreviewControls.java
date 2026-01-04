@@ -26,13 +26,15 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     private final JPopupMenu speedPopup = new JPopupMenu();
     private final JPopupMenu volumePopup = new JPopupMenu();
     private final JPopupMenu delayPopup = new JPopupMenu();
+    private final JPopupMenu timePopup = new JPopupMenu();
     private final JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, 6, 3);
-    private final JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0, 10, 5);
+    private final JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0, 10, 10);
     private final JSlider delaySlider = new JSlider(JSlider.VERTICAL);
+    private final JSlider timeSlider = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
     private final JLabel speedValueLabel = createSliderValueLabel();
     private final JLabel volumeValueLabel = createSliderValueLabel();
     private final JLabel delayValueLabel = createSliderValueLabel();
-    private final JLabel timeLabel = new JLabel("00:00.0");
+    private final JButton timeButton = new JButton("0:00:00.0");
     private static final String[] SPEED_LEVEL_LABELS = {"0.25x", "0.5x", "0.75x", "1x", "1.25x", "1.5x", "2x"};
     private static final int DELAY_RANGE_TENTHS = 20;
     private double subtitleDelaySeconds = 0d;
@@ -61,20 +63,23 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
                 @Override
                 public void onTimeChanged(long timeMs) {
-                    updateTimeLabel(timeMs);
+                    updateTimeDisplay(timeMs);
                 }
             });
         }
     }
 
     private void initializeControls() {
-        // Setup time label on the right
-        timeLabel.setBorder(new EmptyBorder(0, scale(8), 0, scale(8)));
-        add(timeLabel, BorderLayout.EAST);
+        // Setup time button in the toolbar, pushed to the right
+        timeButton.setFocusable(false);
+        timeButton.addActionListener(evt -> toggleTimePopup());
+        ControlBar.add(Box.createHorizontalGlue());
+        ControlBar.add(timeButton);
 
         enableInstantTooltip(VolumeButton);
         enableInstantTooltip(SpeedButton);
         enableInstantTooltip(DelayButton);
+        enableInstantTooltip(timeButton);
 
         PlayPauseButton.setToolTipText(__("Play/Pause video playback"));
         BackButton.setToolTipText(__("Go backwards by 10 seconds"));
@@ -110,9 +115,17 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         prepareDelaySliderRange();
         delayPopup.add(createSliderPanel(delaySlider, delayValueLabel, loadIconForPopup("delay")));
 
+        timeSlider.setPaintTicks(true);
+        timeSlider.setMajorTickSpacing(100);
+        timeSlider.setMinorTickSpacing(10);
+        timeSlider.setPreferredSize(new Dimension(scale(300), scale(32)));
+        timeSlider.addChangeListener(evt -> timeSliderStateChanged(evt));
+        timePopup.add(createTimePanel());
+
         updateSpeedTooltip();
         updateVolumeTooltip();
         updateDelayTooltip();
+        updateTimeTooltip();
     }
 
     private JPanel createSliderPanel(JSlider slider, JLabel valueLabel, Icon icon) {
@@ -143,6 +156,60 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         JLabel label = new JLabel();
         label.setHorizontalAlignment(SwingConstants.CENTER);
         return label;
+    }
+
+    private JPanel createTimePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setOpaque(false);
+        timeSlider.setOpaque(false);
+        panel.add(timeSlider, BorderLayout.CENTER);
+        return panel;
+    }
+
+    private void toggleTimePopup() {
+        if (timePopup.isVisible()) {
+            timePopup.setVisible(false);
+            return;
+        }
+        hideSliderPopups();
+        prepareTimeSliderRange();
+        // Set popup width to match video preview width
+        JComponent previewComponent = player != null ? player.getPreviewComponent() : null;
+        int previewWidth = previewComponent != null ? previewComponent.getWidth() : this.getWidth();
+        timeSlider.setPreferredSize(new Dimension(previewWidth, scale(32)));
+        timePopup.pack();
+        // Calculate position: align with preview's left edge, below the button
+        Point buttonPosInPreview = SwingUtilities.convertPoint(timeButton, 0, 0, previewComponent);
+        int x = -buttonPosInPreview.x;
+        int y = timeButton.getHeight();
+        timePopup.show(timeButton, x, y);
+    }
+
+    private void prepareTimeSliderRange() {
+        if (player != null) {
+            long duration = player.getDuration();
+            long currentTime = (long) (player.getTime() * 1000);
+            if (duration > 0) {
+                timeSlider.setMaximum((int) duration);
+            }
+            timeSlider.setValue((int) currentTime);
+        }
+    }
+
+    private void timeSliderStateChanged(javax.swing.event.ChangeEvent evt) {
+        if (player != null) {
+            long timeMs = timeSlider.getValue();
+            updateTimeDisplay(timeMs);
+            player.seek(timeMs);
+            if (!timeSlider.getValueIsAdjusting()) {
+                hideSliderPopups();
+            }
+        }
+        timeSlider.repaint();
+    }
+
+    private void updateTimeTooltip() {
+        timeButton.setToolTipText(__("Click to seek to any position"));
     }
 
     private void enableInstantTooltip(AbstractButton button) {
@@ -219,19 +286,14 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         delayValueLabel.setText(value);
     }
 
-    private void updateTimeLabel(long timeMs) {
+    private void updateTimeDisplay(long timeMs) {
         long totalSeconds = timeMs / 1000;
         long hours = totalSeconds / 3600;
         long minutes = (totalSeconds % 3600) / 60;
         long seconds = totalSeconds % 60;
         long tenths = (timeMs % 1000) / 100;
-        String text;
-        if (hours > 0) {
-            text = String.format("%d:%02d:%02d.%d", hours, minutes, seconds, tenths);
-        } else {
-            text = String.format("%02d:%02d.%d", minutes, seconds, tenths);
-        }
-        timeLabel.setText(text);
+        String text = String.format("%d:%02d:%02d.%d", hours, minutes, seconds, tenths);
+        timeButton.setText(text);
     }
 
     private void toggleSliderPopup(AbstractButton source, JPopupMenu popup) {
@@ -250,6 +312,7 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         speedPopup.setVisible(false);
         volumePopup.setVisible(false);
         delayPopup.setVisible(false);
+        timePopup.setVisible(false);
     }
 
     private void prepareDelaySliderRange() {
