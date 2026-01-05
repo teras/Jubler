@@ -29,11 +29,67 @@ public class FFmpegAudioPreview implements AudioPreview {
     private static final int RESOLUTION = 1000;  // Output samples per second
 
     private volatile boolean interrupted = false;
+    private volatile boolean cacheCreationInProgress = false;
 
     // Cached paths - null means not checked yet, empty string means not found
     private static String cachedFFmpegPath = null;
     private static String cachedFFplayPath = null;
     private static boolean userWarned = false;
+
+    // Media information from ffprobe
+    private static class MediaInfo {
+        double duration = 0;
+        int width = 0;
+        int height = 0;
+        float fps = 0;
+    }
+
+    private MediaInfo probeMedia(File file) {
+        MediaInfo info = new MediaInfo();
+        String ffprobe = findFFprobe();
+        if (ffprobe == null)
+            return info;
+
+        try {
+            ProcessBuilder pb = new ProcessBuilder(
+                    ffprobe,
+                    "-v", "quiet",
+                    "-print_format", "flat",
+                    "-show_format",
+                    "-show_streams",
+                    file.getAbsolutePath()
+            );
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.contains("width="))
+                        info.width = parseIntValue(line);
+                    else if (line.contains("height="))
+                        info.height = parseIntValue(line);
+                    else if (line.contains("format.duration="))
+                        info.duration = parseDoubleValue(line);
+                    else if (line.contains("r_frame_rate="))
+                        info.fps = parseFpsValue(line);
+                }
+            }
+
+            process.waitFor();
+        } catch (Exception e) {
+            DEBUG.debug(e);
+        }
+
+        return info;
+    }
+
+    private String findFFprobe() {
+        String ffmpeg = findFFmpegPath();
+        if (ffmpeg == null)
+            return null;
+        return ffmpeg.replace("ffmpeg", "ffprobe");
+    }
 
     /**
      * Check for FFmpeg tools and warn user if missing.
@@ -70,7 +126,7 @@ public class FFmpegAudioPreview implements AudioPreview {
     @Override
     public boolean isDecoderValid() {
         checkToolsAndWarn();
-        return findFFmpeg() != null;
+        return findFFmpegPath() != null;
     }
 
     @Override
@@ -78,61 +134,93 @@ public class FFmpegAudioPreview implements AudioPreview {
         if (afile == null || cfile == null)
             return false;
 
-        String ffmpeg = findFFmpeg();
-        if (ffmpeg == null) {
-            DEBUG.debug("FFmpeg not found");
+        // Check if cache already exists and is valid
+        if (isCacheValid(cfile)) {
+            return true;
+        }
+
+        // Don't start another thread if one is already running
+        if (cacheCreationInProgress) {
             return false;
         }
 
-        interrupted = false;
-        if (callback != null)
-            callback.startCacheCreation();
-
-        try {
-            // Run FFmpeg to extract audio at 8kHz, stereo, signed 16-bit little-endian
-            ProcessBuilder pb = new ProcessBuilder(
-                    ffmpeg,
-                    "-i", afile.getAbsolutePath(),
-                    "-vn",                    // no video
-                    "-ac", "2",               // stereo
-                    "-ar", String.valueOf(SAMPLE_RATE),
-                    "-f", "s16le",            // raw signed 16-bit little-endian
-                    "-"                       // stdout
-            );
-            pb.redirectErrorStream(false);
-            Process process = pb.start();
-
-            // Read stderr in background to get duration info
-            Thread stderrThread = new Thread(() -> {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        // Could parse duration here for progress
-                        DEBUG.debug("FFmpeg: " + line);
-                    }
-                } catch (IOException e) {
-                    // Ignore
-                }
-            });
-            stderrThread.setDaemon(true);
-            stderrThread.start();
-
-            // Process audio data and write cache
-            boolean success = processAudioStream(process.getInputStream(), cfile, afile.getName(), callback);
-
-            process.waitFor();
-            return success && !interrupted;
-
-        } catch (Exception e) {
-            DEBUG.debug(e);
+        String ffmpeg = findFFmpegPath();
+        if (ffmpeg == null)
             return false;
-        } finally {
+
+        // Run FFmpeg in background thread
+        cacheCreationInProgress = true;
+        interrupted = false;
+
+        Thread cacheThread = new Thread(() -> {
             if (callback != null)
-                callback.stopCacheCreation();
+                SwingUtilities.invokeLater(callback::startCacheCreation);
+
+            try {
+                // First probe the file to get duration
+                MediaInfo info = probeMedia(afile);
+                long totalSamples = (long) (info.duration * RESOLUTION);
+
+                // Run FFmpeg to extract audio at 8kHz, stereo, signed 16-bit little-endian
+                ProcessBuilder pb = new ProcessBuilder(
+                        ffmpeg,
+                        "-i", afile.getAbsolutePath(),
+                        "-vn",                    // no video
+                        "-ac", "2",               // stereo
+                        "-ar", String.valueOf(SAMPLE_RATE),
+                        "-f", "s16le",            // raw signed 16-bit little-endian
+                        "-"                       // stdout
+                );
+                pb.redirectErrorStream(false);
+                Process process = pb.start();
+
+                // Drain stderr in background to prevent blocking
+                Thread stderrThread = new Thread(() -> {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            DEBUG.debug("FFmpeg: " + line);
+                        }
+                    } catch (IOException e) {
+                        // Ignore
+                    }
+                });
+                stderrThread.setDaemon(true);
+                stderrThread.start();
+
+                // Process audio data and write cache
+                processAudioStream(process.getInputStream(), cfile, afile.getName(), callback, totalSamples);
+
+                process.waitFor();
+
+            } catch (Exception e) {
+                DEBUG.debug(e);
+            } finally {
+                cacheCreationInProgress = false;
+                if (callback != null)
+                    SwingUtilities.invokeLater(callback::stopCacheCreation);
+            }
+        }, "FFmpeg-AudioCache");
+        cacheThread.setDaemon(true);
+        cacheThread.start();
+
+        return false; // Cache not ready yet
+    }
+
+    private boolean isCacheValid(CacheFile cfile) {
+        if (cfile == null || !cfile.exists() || cfile.length() < 20)
+            return false;
+
+        try (RandomAccessFile raf = new RandomAccessFile(cfile, "r")) {
+            byte[] magic = new byte[7];
+            raf.readFully(magic);
+            return new String(magic).equals("JACACHE");
+        } catch (IOException e) {
+            return false;
         }
     }
 
-    private boolean processAudioStream(InputStream input, CacheFile cfile, String originalName, AudioStateCallback callback) {
+    private boolean processAudioStream(InputStream input, CacheFile cfile, String originalName, AudioStateCallback callback, long totalSamples) {
         try (DataInputStream dis = new DataInputStream(new BufferedInputStream(input));
              DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(cfile)))) {
 
@@ -146,12 +234,9 @@ public class FFmpegAudioPreview implements AudioPreview {
             // Buffer for reading samples: 8 samples * 2 channels * 2 bytes = 32 bytes per ms
             byte[] buffer = new byte[SAMPLES_PER_MS * 2 * 2];
             int bytesRead;
-            long totalBytesRead = 0;
             int windowCount = 0;
 
             while ((bytesRead = dis.read(buffer)) > 0 && !interrupted) {
-                totalBytesRead += bytesRead;
-
                 // Process one millisecond window
                 int samplesRead = bytesRead / 4;  // 4 bytes per stereo sample
 
@@ -184,8 +269,9 @@ public class FFmpegAudioPreview implements AudioPreview {
 
                 // Update progress every 1000 windows (1 second)
                 if (callback != null && windowCount % 1000 == 0) {
-                    // Estimate progress based on bytes read
-                    callback.updateCacheCreation(windowCount / 1000.0f);
+                    float progress = totalSamples > 0 ? (float) windowCount / totalSamples : 0;
+                    final float p = Math.min(1.0f, progress);
+                    SwingUtilities.invokeLater(() -> callback.updateCacheCreation(p));
                 }
             }
 
@@ -245,20 +331,22 @@ public class FFmpegAudioPreview implements AudioPreview {
             if (numSamples <= 0)
                 return null;
 
-            // Seek to start position
+            // Read all samples at once into memory
             raf.seek(headerEnd + (long) startSample * bytesPerSample);
+            byte[] buffer = new byte[numSamples * bytesPerSample];
+            raf.readFully(buffer);
 
-            // Read samples and resample to AudioPreviewOld.length (1000)
+            // Resample to AudioPreviewOld.length (1000)
             float[] data = new float[AudioPreviewOld.length * channels * 2];
             double step = (double) numSamples / AudioPreviewOld.length;
 
             for (int i = 0; i < AudioPreviewOld.length; i++) {
-                int samplePos = startSample + (int) (i * step);
-                raf.seek(headerEnd + (long) samplePos * bytesPerSample);
+                int sampleIdx = (int) (i * step);
+                int bufferOffset = sampleIdx * bytesPerSample;
 
                 for (int ch = 0; ch < channels; ch++) {
-                    int maxPeak = raf.readByte();
-                    int minPeak = raf.readByte();
+                    int maxPeak = buffer[bufferOffset + ch * 2];
+                    int minPeak = buffer[bufferOffset + ch * 2 + 1];
 
                     // Convert from -128..127 to 0.0..1.0
                     int dataIdx = (i * channels + ch) * 2;
@@ -280,47 +368,12 @@ public class FFmpegAudioPreview implements AudioPreview {
         if (vfile == null || !vfile.exists())
             return;
 
-        String ffmpeg = findFFmpeg();
-        if (ffmpeg == null)
-            return;
-
-        // Use ffprobe or ffmpeg to get video info
-        try {
-            // Try ffprobe first
-            String ffprobe = ffmpeg.replace("ffmpeg", "ffprobe");
-            ProcessBuilder pb = new ProcessBuilder(
-                    ffprobe,
-                    "-v", "quiet",
-                    "-print_format", "flat",
-                    "-show_streams",
-                    vfile.getAbsolutePath()
-            );
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
-
-            int width = 320, height = 240;
-            float duration = 60, fps = 25;
-
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.contains("width="))
-                        width = parseIntValue(line);
-                    else if (line.contains("height="))
-                        height = parseIntValue(line);
-                    else if (line.contains("duration="))
-                        duration = parseFloatValue(line);
-                    else if (line.contains("r_frame_rate="))
-                        fps = parseFpsValue(line);
-                }
-            }
-
-            process.waitFor();
-            vfile.setInformation(width, height, duration, fps);
-
-        } catch (Exception e) {
-            DEBUG.debug(e);
-        }
+        MediaInfo info = probeMedia(vfile);
+        int width = info.width > 0 ? info.width : 320;
+        int height = info.height > 0 ? info.height : 240;
+        float duration = info.duration > 0 ? (float) info.duration : 60;
+        float fps = info.fps > 0 ? info.fps : 25;
+        vfile.setInformation(width, height, duration, fps);
     }
 
     @Override
@@ -328,7 +381,7 @@ public class FFmpegAudioPreview implements AudioPreview {
         if (audio == null || !audio.exists())
             return;
 
-        String ffplay = findFFplay();
+        String ffplay = findFFplayPath();
         if (ffplay == null)
             return;
 
@@ -348,14 +401,6 @@ public class FFmpegAudioPreview implements AudioPreview {
         } catch (Exception e) {
             DEBUG.debug(e);
         }
-    }
-
-    private String findFFplay() {
-        return findFFplayPath();
-    }
-
-    private String findFFmpeg() {
-        return findFFmpegPath();
     }
 
     /**
@@ -419,19 +464,21 @@ public class FFmpegAudioPreview implements AudioPreview {
         return null;
     }
 
+    private String extractValue(String line) {
+        return line.substring(line.indexOf('=') + 1).replace("\"", "").trim();
+    }
+
     private int parseIntValue(String line) {
         try {
-            String value = line.substring(line.indexOf('=') + 1).replace("\"", "").trim();
-            return Integer.parseInt(value);
+            return Integer.parseInt(extractValue(line));
         } catch (Exception e) {
             return 0;
         }
     }
 
-    private float parseFloatValue(String line) {
+    private double parseDoubleValue(String line) {
         try {
-            String value = line.substring(line.indexOf('=') + 1).replace("\"", "").trim();
-            return Float.parseFloat(value);
+            return Double.parseDouble(extractValue(line));
         } catch (Exception e) {
             return 0;
         }
@@ -439,7 +486,7 @@ public class FFmpegAudioPreview implements AudioPreview {
 
     private float parseFpsValue(String line) {
         try {
-            String value = line.substring(line.indexOf('=') + 1).replace("\"", "").trim();
+            String value = extractValue(line);
             if (value.contains("/")) {
                 String[] parts = value.split("/");
                 return Float.parseFloat(parts[0]) / Float.parseFloat(parts[1]);

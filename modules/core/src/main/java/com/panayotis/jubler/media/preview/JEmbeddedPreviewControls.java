@@ -35,9 +35,12 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     private final JLabel volumeValueLabel = createSliderValueLabel();
     private final JLabel delayValueLabel = createSliderValueLabel();
     private final JButton timeButton = new JButton("0:00:00.0");
-    private static final String[] SPEED_LEVEL_LABELS = {"0.25x", "0.5x", "0.75x", "1x", "1.25x", "1.5x", "2x"};
+    private static final float[] SPEED_VALUES = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f};
     private static final int DELAY_RANGE_TENTHS = 20;
     private double subtitleDelaySeconds = 0d;
+    private long cachedDuration = 0;
+    private long cachedTimeMs = 0;
+    private boolean ignoringSliderChange = false;
 
     public JEmbeddedPreviewControls() {
         initComponents();
@@ -63,7 +66,15 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
                 @Override
                 public void onTimeChanged(long timeMs) {
+                    cachedTimeMs = timeMs;
                     updateTimeDisplay(timeMs);
+                }
+
+                @Override
+                public void onDurationAvailable(long durationMs) {
+                    cachedDuration = durationMs;
+                    ControlBar.setEnabled(true);
+                    setControlBarChildrenEnabled(true);
                 }
             });
         }
@@ -75,6 +86,9 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         timeButton.addActionListener(evt -> toggleTimePopup());
         ControlBar.add(Box.createHorizontalGlue());
         ControlBar.add(timeButton);
+
+        // Disable controls until video is loaded
+        setControlBarChildrenEnabled(false);
 
         enableInstantTooltip(VolumeButton);
         enableInstantTooltip(SpeedButton);
@@ -115,9 +129,7 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         prepareDelaySliderRange();
         delayPopup.add(createSliderPanel(delaySlider, delayValueLabel, loadIconForPopup("delay")));
 
-        timeSlider.setPaintTicks(true);
-        timeSlider.setMajorTickSpacing(100);
-        timeSlider.setMinorTickSpacing(10);
+        timeSlider.setPaintTicks(false);
         timeSlider.setPreferredSize(new Dimension(scale(300), scale(32)));
         timeSlider.addChangeListener(evt -> timeSliderStateChanged(evt));
         timePopup.add(createTimePanel());
@@ -166,6 +178,13 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         return panel;
     }
 
+    private void setControlBarChildrenEnabled(boolean enabled) {
+        for (Component comp : ControlBar.getComponents()) {
+            comp.setEnabled(enabled);
+        }
+        timeButton.setEnabled(enabled);
+    }
+
     private void toggleTimePopup() {
         if (timePopup.isVisible()) {
             timePopup.setVisible(false);
@@ -173,39 +192,40 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         }
         hideSliderPopups();
         prepareTimeSliderRange();
-        // Set popup width to match video preview width
-        JComponent previewComponent = player != null ? player.getPreviewComponent() : null;
-        int previewWidth = previewComponent != null ? previewComponent.getWidth() : this.getWidth();
-        timeSlider.setPreferredSize(new Dimension(previewWidth, scale(32)));
+        // Set popup width to match this panel's width
+        int panelWidth = this.getWidth();
+        timeSlider.setPreferredSize(new Dimension(panelWidth, scale(32)));
         timePopup.pack();
-        // Calculate position: align with preview's left edge, below the button
-        Point buttonPosInPreview = SwingUtilities.convertPoint(timeButton, 0, 0, previewComponent);
-        int x = -buttonPosInPreview.x;
+        // Calculate position: align with this panel's left edge, below the button
+        Point buttonPosInPanel = SwingUtilities.convertPoint(timeButton, 0, 0, this);
+        int x = -buttonPosInPanel.x;
         int y = timeButton.getHeight();
         timePopup.show(timeButton, x, y);
     }
 
     private void prepareTimeSliderRange() {
-        if (player != null) {
-            long duration = player.getDuration();
-            long currentTime = (long) (player.getTime() * 1000);
-            if (duration > 0) {
-                timeSlider.setMaximum((int) duration);
-            }
-            timeSlider.setValue((int) currentTime);
-        }
+        // Use cached values to avoid blocking VLC calls
+        // Keep slider at 0-1000 range and scale values to avoid performance issues
+        ignoringSliderChange = true;
+        int scaledValue = cachedDuration > 0 ? (int) ((cachedTimeMs * 1000) / cachedDuration) : 0;
+        timeSlider.setValue(scaledValue);
+        ignoringSliderChange = false;
+    }
+
+    private long sliderValueToTimeMs(int sliderValue) {
+        return cachedDuration > 0 ? (sliderValue * cachedDuration) / 1000 : 0;
     }
 
     private void timeSliderStateChanged(javax.swing.event.ChangeEvent evt) {
-        if (player != null) {
-            long timeMs = timeSlider.getValue();
-            updateTimeDisplay(timeMs);
-            player.seek(timeMs);
-            if (!timeSlider.getValueIsAdjusting()) {
-                hideSliderPopups();
-            }
+        if (ignoringSliderChange || player == null) {
+            return;
         }
-        timeSlider.repaint();
+        long timeMs = sliderValueToTimeMs(timeSlider.getValue());
+        updateTimeDisplay(timeMs);
+        if (!timeSlider.getValueIsAdjusting()) {
+            player.seek(timeMs);
+            hideSliderPopups();
+        }
     }
 
     private void updateTimeTooltip() {
@@ -248,9 +268,13 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         setButtonIcons(PlayPauseButton, previewPlaying ? "pause" : "play");
     }
 
+    private int getSpeedIndex() {
+        return Math.max(0, Math.min(SPEED_VALUES.length - 1, speedSlider.getValue()));
+    }
+
     private String getSpeedValueLabel() {
-        int idx = Math.max(0, Math.min(SPEED_LEVEL_LABELS.length - 1, speedSlider.getValue()));
-        return SPEED_LEVEL_LABELS[idx];
+        float speed = SPEED_VALUES[getSpeedIndex()];
+        return speed == (int) speed ? (int) speed + "x" : speed + "x";
     }
 
     private void updateSpeedTooltip() {
@@ -331,11 +355,8 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         updateSpeedTooltip();
         if (!speedSlider.getValueIsAdjusting()) {
             hideSliderPopups();
-            if (player != null) {
-                float[] speeds = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f};
-                int idx = Math.max(0, Math.min(speeds.length - 1, speedSlider.getValue()));
-                player.setSpeed(speeds[idx]);
-            }
+            if (player != null)
+                player.setSpeed(SPEED_VALUES[getSpeedIndex()]);
         }
         speedSlider.repaint();
     }

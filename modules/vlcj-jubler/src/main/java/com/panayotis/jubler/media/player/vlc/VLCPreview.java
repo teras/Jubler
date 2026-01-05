@@ -65,14 +65,13 @@ public class VLCPreview implements VideoPreview {
                 if (mediaPlayerComponent.isShowing() && mediaPlayerComponent.isDisplayable()) {
                     // Component just became visible, load video
                     SwingUtilities.invokeLater(() -> {
-                        if (mfile != null && mfile.getVideoFile() != null) {
+                        if (hasVideo()) {
                             // Stop any existing playback first to ensure clean state
                             if (mediaPlayer.status().isPlayable()) {
                                 mediaPlayer.controls().stop();
                             }
-                            String videoPath = mfile.getVideoFile().getPath();
                             pendingInitialSeek = true;
-                            mediaPlayer.media().play(videoPath);
+                            mediaPlayer.media().play(getVideoPath());
                         }
                     });
                 } else {
@@ -105,6 +104,7 @@ public class VLCPreview implements VideoPreview {
                             mediaPlayer.controls().setTime(timeMs);
                         }
                         notifyTimeChanged(timeMs);
+                        notifyDuration();
                     });
                     return; // Don't notify callback during initialization
                 }
@@ -151,22 +151,20 @@ public class VLCPreview implements VideoPreview {
         return mediaPlayerComponent;
     }
 
-    public Dimension getMinimumSize() {
-        return new Dimension(160, 120);
+    private boolean hasVideo() {
+        return mfile != null && mfile.getVideoFile() != null;
     }
 
-    public Dimension getPreferredSize() {
-        return new Dimension(400, 256);
+    private String getVideoPath() {
+        return hasVideo() ? mfile.getVideoFile().getPath() : null;
     }
 
     @Override
     public void updateMediaFile(MediaFile mfile) {
         this.mfile = mfile;
-        if (mfile != null && mfile.getVideoFile() != null && mediaPlayerComponent.isShowing()) {
-            String videoPath = mfile.getVideoFile().getPath();
+        if (hasVideo() && mediaPlayerComponent.isShowing()) {
             pendingInitialSeek = true;
-            mediaPlayer.media().play(videoPath);
-            // The playing event handler will pause and seek to subtitle position
+            mediaPlayer.media().play(getVideoPath());
         }
     }
 
@@ -180,18 +178,14 @@ public class VLCPreview implements VideoPreview {
     @Override
     public void setSubEntry(SubEntry entry) {
         sub = entry;
-        if (sub != null && mfile != null && mfile.getVideoFile() != null && mediaPlayerComponent.isShowing()) {
+        if (sub != null && hasVideo() && mediaPlayerComponent.isShowing()) {
             long timeMs = (long) (sub.getStartTime().toSeconds() * 1000);
             if (!mediaPlayer.status().isPlayable()) {
-                // Video not loaded yet, load it now
-                String videoPath = mfile.getVideoFile().getPath();
                 pendingInitialSeek = true;
-                mediaPlayer.media().play(videoPath);
+                mediaPlayer.media().play(getVideoPath());
             } else {
-                // Video already loaded, just seek
-                if (mediaPlayer.status().isPlaying()) {
+                if (mediaPlayer.status().isPlaying())
                     mediaPlayer.controls().pause();
-                }
                 mediaPlayer.controls().setTime(timeMs);
                 notifyTimeChanged(timeMs);
             }
@@ -204,14 +198,18 @@ public class VLCPreview implements VideoPreview {
         }
     }
 
+    private void notifyDuration() {
+        if (callback != null) {
+            callback.onDurationAvailable(mediaPlayer.status().length());
+        }
+    }
+
     @Override
     public void play() {
-        if (mediaPlayer.status().isPlayable()) {
+        if (mediaPlayer.status().isPlayable())
             mediaPlayer.controls().play();
-        } else if (mfile != null && mfile.getVideoFile() != null) {
-            String videoPath = mfile.getVideoFile().getPath();
-            mediaPlayer.media().play(videoPath);
-        }
+        else if (hasVideo())
+            mediaPlayer.media().play(getVideoPath());
     }
 
     @Override
@@ -221,16 +219,10 @@ public class VLCPreview implements VideoPreview {
 
     @Override
     public void togglePlayPause() {
-        if (mediaPlayer.status().isPlaying()) {
+        if (mediaPlayer.status().isPlaying())
             mediaPlayer.controls().pause();
-        } else {
-            if (mediaPlayer.status().isPlayable()) {
-                mediaPlayer.controls().play();
-            } else if (mfile != null && mfile.getVideoFile() != null) {
-                String videoPath = mfile.getVideoFile().getPath();
-                mediaPlayer.media().play(videoPath);
-            }
-        }
+        else
+            play();
     }
 
     @Override

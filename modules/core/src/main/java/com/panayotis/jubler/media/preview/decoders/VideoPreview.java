@@ -18,6 +18,7 @@ public interface VideoPreview {
         void onPlayingStateChanged(boolean playing);
         void onFinished();
         void onTimeChanged(long timeMs);
+        void onDurationAvailable(long durationMs);
     }
 
     JComponent getPreviewComponent();
