@@ -1,3 +1,35 @@
+
+<div align="right">
+  <details>
+    <summary >🌐 Language</summary>
+    <div>
+      <div align="center">
+        <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=en">English</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=zh-CN">简体中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=zh-TW">繁體中文</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=ja">日本語</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=ko">한국어</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=hi">हिन्दी</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=th">ไทย</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=fr">Français</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=de">Deutsch</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=es">Español</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=it">Italiano</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=ru">Русский</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=pt">Português</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=nl">Nederlands</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=pl">Polski</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=ar">العربية</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=fa">فارسی</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=tr">Türkçe</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=vi">Tiếng Việt</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=id">Bahasa Indonesia</a>
+        | <a href="https://openaitx.github.io/view.html?user=teras&project=Jubler&lang=as">অসমীয়া</
+      </div>
+    </div>
+  </details>
+</div>
+
 ## Jubler - Subtitle Editor
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/teras/Jubler)
