@@ -13,18 +13,18 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class AudioPreviewOld {
+public class AudioPreviewData {
 
     public static final int nameoffset = 11;
     public static final int length = 1000;
     /* channels, position, positive/negative */
     private float[][][] cache;
 
-    public AudioPreviewOld(int channels, int length) {
+    public AudioPreviewData(int channels, int length) {
         cache = new float[channels][length][2];
     }
 
-    public AudioPreviewOld(float[] data) {
+    public AudioPreviewData(float[] data) {
         if (data == null)
             throw new NullPointerException(__("Trying to initialize audio preview with null data"));
         if ((data.length % (length * 2)) != 0)
@@ -89,7 +89,7 @@ public class AudioPreviewOld {
         } catch (IOException e) {
             DEBUG.debug(e);
         }
-        if (name.equals(""))
+        if (name != null && name.isEmpty())
             name = null;
         return name;
     }

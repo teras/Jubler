@@ -94,10 +94,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
      * selected subtitle.
      * It is used when deliberately change the selection in order to make the active subtitle visible */
     private boolean ignore_table_selections = false;
-    /* This flag is used to refrain from updating the video console. This is used
-     * when the videoconsole itself has performed this change and we dont want it
-     * to have back this event */
-    boolean disable_consoles_update = false;
+    /* True while the current selection change is driven by video playback. The
+     * preview must not seek the player back in that case (it would loop), and the
+     * subtitle editor must not steal keyboard focus. */
+    private boolean playback_driven_selection = false;
     /* Whether this file needs saving or not */
     private boolean unsaved_data = false;
     /* Window frame icon */
@@ -2210,6 +2210,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         /* Clean up previewers */
         preview.setEnabled(false);
+        preview.release();
 
         windows.remove(this);
         for (JubFrame w : windows)
@@ -2372,10 +2373,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         return subeditor.ToolsLockB.isSelected();
     }
 
-    public void setDisableConsoleUpdate(boolean status) {
-        disable_consoles_update = status;
-    }
-
     public Subtitles getSubtitles() {
         return subs;
     }
@@ -2407,17 +2404,6 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
     public int getSelectedRowIdx() {
         return SubTable.getSelectedRow();
-    }
-
-    public SubEntry matchSubtitle(double d) {
-        int which = subs.findSubEntry(d, false);
-        if (which >= 0) {
-            setDisableConsoleUpdate(true);
-            setSelectedSub(which, true);
-            setDisableConsoleUpdate(false);
-            return subs.elementAt(which);
-        }
-        return null;
     }
 
     /* Change the selected sub
@@ -2500,6 +2486,34 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         return ret;
     }
 
+    /** True while a selection change is being driven by video playback, so the
+     * preview can skip seeking the player (avoiding a feedback loop). */
+    public boolean isPlaybackDrivenSelection() {
+        return playback_driven_selection;
+    }
+
+    /**
+     * Follow the playing subtitle: select the subtitle that is currently active
+     * during playback, or clear the selection when playback is in a gap
+     * ({@code idx < 0}). The change does not seek the player back, since it
+     * originates from the player itself.
+     */
+    public void followPlaybackSelection(int idx) {
+        if (!EnablePreviewC.isSelected())
+            return;
+        playback_driven_selection = true;
+        try {
+            if (idx < 0) {
+                ignore_table_selections = true;
+                SubTable.clearSelection();
+                ignore_table_selections = false;
+            } else
+                setSelectedSub(idx, true);
+        } finally {
+            playback_driven_selection = false;
+        }
+    }
+
     /* Use this method in order to display the data of a subtitle
      * down to the subtitle display area. It is used e.g. when the
      * user clicks on a table row */
@@ -2522,7 +2536,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             jparent.setSelectedSub(jparent.subs.findSubEntry(newtime, true), true);
         }
 
-        subeditor.focusOnText();
+        if (!playback_driven_selection)
+            subeditor.focusOnText();
         subeditor.updateMetrics(sel);
         subeditor.ignoreSubChanges(false);
     }

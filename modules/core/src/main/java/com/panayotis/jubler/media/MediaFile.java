@@ -12,7 +12,7 @@ import com.panayotis.jubler.media.preview.decoders.AudioPreview.AudioStateCallba
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
-import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
+import com.panayotis.jubler.media.preview.decoders.AudioPreviewData;
 import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.Subtitles;
@@ -176,7 +176,7 @@ public class MediaFile {
         updateCacheFile(cf);
 
         /* Set audio file, from the cache file */
-        String audioname = AudioPreviewOld.getNameFromCache(cf);
+        String audioname = AudioPreviewData.getNameFromCache(cf);
         if (audioname != null) {
             AudioFile newafile = new AudioFile(cf.getParent(), audioname, vfile);
             if (newafile.exists())
@@ -195,12 +195,12 @@ public class MediaFile {
             int point = strippedfilename.lastIndexOf('.');
             if (point < 0)
                 point = strippedfilename.length();
-            cf = new File(System.getProperty("java.io.tmpdir") + File.separator + strippedfilename.substring(0, point) + AudioPreviewOld.getExtension());
+            cf = new File(System.getProperty("java.io.tmpdir") + File.separator + strippedfilename.substring(0, point) + AudioPreviewData.getExtension());
         } else {
             int point = cf.getPath().lastIndexOf('.');
             if (point < 0)
                 point = cf.getPath().length();
-            cf = new File(cf.getPath().substring(0, point) + AudioPreviewOld.getExtension());
+            cf = new File(cf.getPath().substring(0, point) + AudioPreviewData.getExtension());
         }
         if (cfile != null && cfile.getPath().equals(cf.getPath()))
             return;   // Same cache
@@ -220,7 +220,7 @@ public class MediaFile {
         return d != null && d.initAudioCache(afile, cfile, listener);
     }
 
-    public AudioPreviewOld getAudioPreview(double from, double to) {
+    public AudioPreviewData getAudioPreview(double from, double to) {
         AudioPreview d = getDecoder();
         return d != null ? d.getAudioPreview(cfile, from, to) : null;
     }

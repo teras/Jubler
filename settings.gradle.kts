@@ -9,7 +9,6 @@ include(
     ":coretools",
     ":coretheme",
     ":aspell",
-    ":mplayer",
     ":vlcj-jubler",
     ":zemberek",
     ":azuretranslate",
@@ -23,7 +22,6 @@ project(":basetextsubs").projectDir = file("modules/basetextsubs")
 project(":coretools").projectDir = file("modules/coretools")
 project(":coretheme").projectDir = file("modules/coretheme")
 project(":aspell").projectDir = file("modules/aspell")
-project(":mplayer").projectDir = file("modules/mplayer")
 project(":vlcj-jubler").projectDir = file("modules/vlcj-jubler")
 project(":zemberek").projectDir = file("modules/zemberek")
 project(":azuretranslate").projectDir = file("modules/azuretranslate")

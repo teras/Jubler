@@ -7,7 +7,7 @@
 package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
+import com.panayotis.jubler.media.preview.decoders.AudioPreviewData;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview.AudioStateCallback;
 import com.panayotis.jubler.subs.SubEntry;
 
@@ -27,7 +27,7 @@ public class JWavePreview extends JPanel implements AudioStateCallback {
     private final static Color basecolor = Color.LIGHT_GRAY;
     private WavePanel[] panels;
     private final JSubTimeline timeline;
-    private static final AudioPreviewOld demoaudio = new AudioPreviewOld(1, 1000);
+    private static final AudioPreviewData demoaudio = new AudioPreviewData(1, 1000);
     private MediaFile mfile;
     private final JAudioLoader loader;
     private double start_time = -1, end_time = -1;
@@ -126,7 +126,7 @@ public class JWavePreview extends JPanel implements AudioStateCallback {
     }
 
     private void updateWave() {
-        AudioPreviewOld audio;
+        AudioPreviewData audio;
         if (isEnabled() && mfile != null)
             audio = mfile.getAudioPreview(start_time, end_time);
         else

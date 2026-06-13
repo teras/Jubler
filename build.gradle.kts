@@ -173,6 +173,14 @@ tasks.register("assembleDistribution") {
     dependsOn("copyDependencies", "copyModuleJars", "copyResources", "copyPlatformExtras")
 }
 
+// The root project has no sources, so its `jar` task produces an empty archive in
+// build/libs. copyPlatformExtras writes into the whole build/ directory, which overlaps
+// that location. Declare the ordering so Gradle 9's strict validation doesn't fail when
+// `build` and `assembleDistribution` are requested in the same invocation.
+tasks.named("jar") {
+    mustRunAfter("copyPlatformExtras")
+}
+
 // Platform-specific distribution profiles
 val macDist: String by project.extra { "" }
 val win32Dist: String by project.extra { "" }

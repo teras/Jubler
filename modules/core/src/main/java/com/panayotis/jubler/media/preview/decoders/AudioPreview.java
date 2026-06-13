@@ -33,7 +33,7 @@ public interface AudioPreview {
 
     void closeAudioCache(CacheFile cache);
 
-    AudioPreviewOld getAudioPreview(CacheFile cache, double from, double to);
+    AudioPreviewData getAudioPreview(CacheFile cache, double from, double to);
 
     void retrieveInformation(VideoFile vfile);
 

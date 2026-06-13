@@ -34,12 +34,21 @@ public class VideoFile extends File {
      */
     public VideoFile(String vfile) {
         super(vfile);
-        // TODO: Audio preview provider initialization needs proper handling
         try {
             PreviewProviderRegistry.initAudioPreview().retrieveInformation(this);
         } catch (IllegalArgumentException e) {
-            // No audio preview provider available - use defaults
+            // No preview provider available
         }
+        /* Make sure we always have usable values, even when no provider is
+         * present or the probe could not run (e.g. the file does not exist
+         * yet). Otherwise consumers such as the ASS/SSA writers would emit
+         * invalid PlayResX/PlayResY (-1) headers. */
+        if (width < 0 || height < 0 || length < 0 || fps < 0)
+            setInformation(
+                    width < 0 ? DEFAULT_WIDTH : width,
+                    height < 0 ? DEFAULT_HEIGHT : height,
+                    length < 0 ? DEFAULT_LENGTH : length,
+                    fps < 0 ? DEFAULT_FPS : fps);
     }
 
     public VideoFile(File vf) {

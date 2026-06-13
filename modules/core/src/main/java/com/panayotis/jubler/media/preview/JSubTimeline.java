@@ -224,6 +224,11 @@ public class JSubTimeline extends JPanel {
                 entry.setStartTime(new Time(view.getStart() + view.getDuration() * info.startPercent + offset_time));
                 entry.setFinishTime(new Time(view.getStart() + view.getDuration() * info.endPercent + offset_time));
             }
+            /* Notify the table model of the time changes so the table cells and
+             * the video preview subtitles are refreshed (a direct SubEntry time
+             * change does not fire a model event on its own). */
+            for (int pos : sel)
+                parent.getSubtitles().fireTableRowsUpdated(pos, pos);
         }
         dataHasChanged = false;
         parent.setSelectedSub(sel, true);

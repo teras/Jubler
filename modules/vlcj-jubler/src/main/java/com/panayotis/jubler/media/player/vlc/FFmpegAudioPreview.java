@@ -10,7 +10,7 @@ import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
-import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
+import com.panayotis.jubler.media.preview.decoders.AudioPreviewData;
 
 import com.panayotis.jubler.os.DEBUG;
 
@@ -34,6 +34,7 @@ public class FFmpegAudioPreview implements AudioPreview {
     // Cached paths - null means not checked yet, empty string means not found
     private static String cachedFFmpegPath = null;
     private static String cachedFFplayPath = null;
+    private static String cachedFFprobePath = null;
     private static boolean userWarned = false;
 
     // Media information from ffprobe
@@ -84,11 +85,19 @@ public class FFmpegAudioPreview implements AudioPreview {
         return info;
     }
 
-    private String findFFprobe() {
-        String ffmpeg = findFFmpegPath();
-        if (ffmpeg == null)
-            return null;
-        return ffmpeg.replace("ffmpeg", "ffprobe");
+    /**
+     * Find FFprobe path with caching. Resolved independently of ffmpeg so a
+     * custom install directory containing the substring "ffmpeg" does not
+     * corrupt the derived path.
+     * @return path to ffprobe, or null if not found
+     */
+    private static synchronized String findFFprobe() {
+        if (cachedFFprobePath != null)
+            return cachedFFprobePath.isEmpty() ? null : cachedFFprobePath;
+
+        String result = searchForTool("ffprobe");
+        cachedFFprobePath = (result == null) ? "" : result;
+        return result;
     }
 
     /**
@@ -236,7 +245,12 @@ public class FFmpegAudioPreview implements AudioPreview {
             int bytesRead;
             int windowCount = 0;
 
-            while ((bytesRead = dis.read(buffer)) > 0 && !interrupted) {
+            // Fill exactly one 1 ms window per iteration. InputStream.read(byte[])
+            // may return a short count mid-stream, which would make a window cover
+            // less than 1 ms while still being stored as one — the rest of the
+            // waveform would then drift out of sync. readFully avoids that; a short
+            // final read at end of stream is a legitimate partial window.
+            while (!interrupted && (bytesRead = readFully(dis, buffer)) > 0) {
                 // Process one millisecond window
                 int samplesRead = bytesRead / 4;  // 4 bytes per stereo sample
 
@@ -284,6 +298,20 @@ public class FFmpegAudioPreview implements AudioPreview {
         }
     }
 
+    /**
+     * Read until {@code buf} is full or the stream ends. Unlike
+     * {@link InputStream#read(byte[])} this never returns a short count
+     * mid-stream, so each audio window stays aligned to exactly 1 ms.
+     * @return number of bytes read — {@code buf.length} for a full window, less
+     *         only for the final partial window at end of stream, 0 at EOF.
+     */
+    private static int readFully(InputStream in, byte[] buf) throws IOException {
+        int total = 0, n;
+        while (total < buf.length && (n = in.read(buf, total, buf.length - total)) >= 0)
+            total += n;
+        return total;
+    }
+
     @Override
     public void setInterruptStatus(boolean interrupt) {
         this.interrupted = interrupt;
@@ -300,7 +328,7 @@ public class FFmpegAudioPreview implements AudioPreview {
     }
 
     @Override
-    public AudioPreviewOld getAudioPreview(CacheFile cache, double from, double to) {
+    public AudioPreviewData getAudioPreview(CacheFile cache, double from, double to) {
         if (cache == null || !cache.exists())
             return null;
 
@@ -336,11 +364,11 @@ public class FFmpegAudioPreview implements AudioPreview {
             byte[] buffer = new byte[numSamples * bytesPerSample];
             raf.readFully(buffer);
 
-            // Resample to AudioPreviewOld.length (1000)
-            float[] data = new float[AudioPreviewOld.length * channels * 2];
-            double step = (double) numSamples / AudioPreviewOld.length;
+            // Resample to AudioPreviewData.length (1000)
+            float[] data = new float[AudioPreviewData.length * channels * 2];
+            double step = (double) numSamples / AudioPreviewData.length;
 
-            for (int i = 0; i < AudioPreviewOld.length; i++) {
+            for (int i = 0; i < AudioPreviewData.length; i++) {
                 int sampleIdx = (int) (i * step);
                 int bufferOffset = sampleIdx * bytesPerSample;
 
@@ -355,7 +383,7 @@ public class FFmpegAudioPreview implements AudioPreview {
                 }
             }
 
-            return new AudioPreviewOld(data);
+            return new AudioPreviewData(data);
 
         } catch (IOException e) {
             DEBUG.debug(e);
@@ -370,7 +398,7 @@ public class FFmpegAudioPreview implements AudioPreview {
 
         MediaInfo info = probeMedia(vfile);
         int width = info.width > 0 ? info.width : 320;
-        int height = info.height > 0 ? info.height : 240;
+        int height = info.height > 0 ? info.height : 288;
         float duration = info.duration > 0 ? (float) info.duration : 60;
         float fps = info.fps > 0 ? info.fps : 25;
         vfile.setInformation(width, height, duration, fps);
@@ -381,22 +409,45 @@ public class FFmpegAudioPreview implements AudioPreview {
         if (audio == null || !audio.exists())
             return;
 
+        String ffmpeg = findFFmpegPath();
         String ffplay = findFFplayPath();
-        if (ffplay == null)
+        if (ffmpeg == null || ffplay == null)
             return;
 
         try {
-            ProcessBuilder pb = new ProcessBuilder(
-                    ffplay,
-                    "-nodisp",
-                    "-autoexit",
+            // ffplay's own -ss is an input (keyframe) seek: on a video file it lands on the
+            // previous *video* keyframe, and a GOP can be many seconds long, so the clip
+            // would start far too early (the stop point is correct, only the start is wrong).
+            // Extract the exact slice with an accurate ffmpeg seek first, then play that file.
+            // Two separate steps (instead of a pipe) keep the behaviour predictable across
+            // Windows/Linux/macOS on both Intel and ARM - no stdin streaming, no pipe buffers.
+            final File clip = File.createTempFile("jubler-clip", ".wav");
+            final Process extractor = new ProcessBuilder(
+                    ffmpeg, "-v", "error", "-y",
+                    "-accurate_seek",
                     "-ss", String.valueOf(from),
                     "-t", String.valueOf(to - from),
-                    audio.getAbsolutePath()
-            );
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
-            // Don't wait - let it play in background
+                    "-i", audio.getAbsolutePath(),
+                    "-vn", clip.getAbsolutePath()
+            ).inheritIO().start();
+
+            // Wait for the extraction, then play, then clean up - all off the EDT.
+            Thread runner = new Thread(() -> {
+                try {
+                    if (extractor.waitFor() == 0 && clip.length() > 0) {
+                        Process player = new ProcessBuilder(
+                                ffplay, "-nodisp", "-autoexit", clip.getAbsolutePath()
+                        ).inheritIO().start();
+                        player.waitFor();
+                    }
+                } catch (Exception ignored) {
+                    // interrupted or a process failed - nothing to recover
+                } finally {
+                    clip.delete();
+                }
+            }, "audio-clip");
+            runner.setDaemon(true);
+            runner.start();
 
         } catch (Exception e) {
             DEBUG.debug(e);

@@ -14,30 +14,44 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Locale;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.os.UIUtils.scale;
 
 public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
+    /**
+     * Listener notified when the user toggles one of the two synchronization
+     * point buttons. The owner captures the current subtitle/time pair and,
+     * once both points are set, re-times the subtitles.
+     */
+    public interface SyncListener {
+        void onSyncPointToggled(int index, boolean selected);
+    }
+
+    /**
+     * Listener notified of playback progress so the owner can follow the
+     * currently playing subtitle. Fired on every player time update; the owner
+     * is responsible for acting only when the active subtitle actually changes.
+     */
+    public interface PlaybackObserver {
+        void onPlaybackProgress(long timeMs, boolean playing);
+    }
+
     private boolean previewPlaying = false;
     private VideoPreview player = null;
+    private SyncListener syncListener = null;
+    private PlaybackObserver playbackObserver = null;
     private final JPopupMenu speedPopup = new JPopupMenu();
     private final JPopupMenu volumePopup = new JPopupMenu();
-    private final JPopupMenu delayPopup = new JPopupMenu();
     private final JPopupMenu timePopup = new JPopupMenu();
     private final JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, 6, 3);
     private final JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0, 10, 10);
-    private final JSlider delaySlider = new JSlider(JSlider.VERTICAL);
     private final JSlider timeSlider = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
     private final JLabel speedValueLabel = createSliderValueLabel();
     private final JLabel volumeValueLabel = createSliderValueLabel();
-    private final JLabel delayValueLabel = createSliderValueLabel();
     private final JButton timeButton = new JButton("0:00:00.0");
     private static final float[] SPEED_VALUES = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f};
-    private static final int DELAY_RANGE_TENTHS = 20;
-    private double subtitleDelaySeconds = 0d;
     private long cachedDuration = 0;
     private long cachedTimeMs = 0;
     private boolean ignoringSliderChange = false;
@@ -45,6 +59,27 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     public JEmbeddedPreviewControls() {
         initComponents();
         initializeControls();
+    }
+
+    public void setSyncListener(SyncListener listener) {
+        this.syncListener = listener;
+    }
+
+    public void setPlaybackObserver(PlaybackObserver observer) {
+        this.playbackObserver = observer;
+    }
+
+    public boolean isPlaying() {
+        return previewPlaying;
+    }
+
+    public void setSyncButtonSelected(int index, boolean selected) {
+        (index == 1 ? Sync1Button : Sync2Button).setSelected(selected);
+    }
+
+    public void resetSyncButtons() {
+        Sync1Button.setSelected(false);
+        Sync2Button.setSelected(false);
     }
 
     public void setPlayer(VideoPreview player) {
@@ -68,6 +103,8 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
                 public void onTimeChanged(long timeMs) {
                     cachedTimeMs = timeMs;
                     updateTimeDisplay(timeMs);
+                    if (playbackObserver != null)
+                        playbackObserver.onPlaybackProgress(timeMs, previewPlaying);
                 }
 
                 @Override
@@ -92,19 +129,28 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
         enableInstantTooltip(VolumeButton);
         enableInstantTooltip(SpeedButton);
-        enableInstantTooltip(DelayButton);
         enableInstantTooltip(timeButton);
 
         PlayPauseButton.setToolTipText(__("Play/Pause video playback"));
+        BackLongButton.setToolTipText(__("Go backwards by 30 seconds"));
         BackButton.setToolTipText(__("Go backwards by 10 seconds"));
         ForwardButton.setToolTipText(__("Go forwards by 10 seconds"));
+        ForwardLongButton.setToolTipText(__("Go forwards by 30 seconds"));
+
+        String syncHelp = "\n" + __("Select a subtitle, seek the video to where it should appear, then click here.")
+                + "\n" + __("When both points are set, subtitles are shifted or stretched to match.");
+        Sync1Button.setToolTipText(__("Mark first synchronization point") + syncHelp);
+        Sync2Button.setToolTipText(__("Mark second synchronization point") + syncHelp);
 
         updatePlayPauseIcon();
+        setButtonIcons(BackLongButton, "bbmovie");
         setButtonIcons(BackButton, "bmovie");
         setButtonIcons(ForwardButton, "fmovie");
+        setButtonIcons(ForwardLongButton, "ffmovie");
         setButtonIcons(VolumeButton, "audio");
         setButtonIcons(SpeedButton, "speed");
-        setButtonIcons(DelayButton, "delay");
+        setButtonIcons(Sync1Button, "syncl");
+        setButtonIcons(Sync2Button, "syncr");
 
         speedSlider.setMajorTickSpacing(3);
         speedSlider.setMinorTickSpacing(1);
@@ -122,13 +168,6 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         volumeSlider.addChangeListener(evt -> volumeSliderStateChanged(evt));
         volumePopup.add(createSliderPanel(volumeSlider, volumeValueLabel, loadIconForPopup("audio")));
 
-        delaySlider.setPaintTicks(true);
-        delaySlider.setSnapToTicks(true);
-        delaySlider.setPreferredSize(new Dimension(scale(48), scale(160)));
-        delaySlider.addChangeListener(evt -> delaySliderStateChanged(evt));
-        prepareDelaySliderRange();
-        delayPopup.add(createSliderPanel(delaySlider, delayValueLabel, loadIconForPopup("delay")));
-
         timeSlider.setPaintTicks(false);
         timeSlider.setPreferredSize(new Dimension(scale(300), scale(32)));
         timeSlider.addChangeListener(evt -> timeSliderStateChanged(evt));
@@ -136,7 +175,6 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
         updateSpeedTooltip();
         updateVolumeTooltip();
-        updateDelayTooltip();
         updateTimeTooltip();
     }
 
@@ -297,19 +335,6 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         volumeValueLabel.setText(value);
     }
 
-    private String getDelayValueLabel() {
-        double offset = delaySlider.getValue() / 10.0d;
-        return String.format(Locale.getDefault(), "%+.1fs", offset);
-    }
-
-    private void updateDelayTooltip() {
-        String value = getDelayValueLabel();
-        String text = __("Change subtitle delay on the fly ({0})", value);
-        DelayButton.setToolTipText(text);
-        delaySlider.setToolTipText(text);
-        delayValueLabel.setText(value);
-    }
-
     private void updateTimeDisplay(long timeMs) {
         long totalSeconds = timeMs / 1000;
         long hours = totalSeconds / 3600;
@@ -326,8 +351,6 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
             return;
         }
         hideSliderPopups();
-        if (popup == delayPopup)
-            prepareDelaySliderRange();
         int x = (source.getWidth() - popup.getPreferredSize().width) / 2;
         popup.show(source, x, 0);
     }
@@ -335,20 +358,7 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     private void hideSliderPopups() {
         speedPopup.setVisible(false);
         volumePopup.setVisible(false);
-        delayPopup.setVisible(false);
         timePopup.setVisible(false);
-    }
-
-    private void prepareDelaySliderRange() {
-        int center = (int) Math.round(subtitleDelaySeconds * 10);
-        int min = center - DELAY_RANGE_TENTHS;
-        int max = center + DELAY_RANGE_TENTHS;
-        delaySlider.setMinimum(min);
-        delaySlider.setMaximum(max);
-        delaySlider.setValue(center);
-        delaySlider.setMajorTickSpacing(10);
-        delaySlider.setMinorTickSpacing(1);
-        updateDelayTooltip();
     }
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {
@@ -372,18 +382,6 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         volumeSlider.repaint();
     }
 
-    private void delaySliderStateChanged(javax.swing.event.ChangeEvent evt) {
-        subtitleDelaySeconds = delaySlider.getValue() / 10.0d;
-        updateDelayTooltip();
-        if (!delaySlider.getValueIsAdjusting())
-            hideSliderPopups();
-        delaySlider.repaint();
-    }
-
-    public double getSubtitleDelaySeconds() {
-        return subtitleDelaySeconds;
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -391,12 +389,16 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         ControlBar = new javax.swing.JToolBar();
         PlayPauseButton = new javax.swing.JButton();
         controlSeparator1 = new javax.swing.JToolBar.Separator();
+        BackLongButton = new javax.swing.JButton();
         BackButton = new javax.swing.JButton();
         ForwardButton = new javax.swing.JButton();
+        ForwardLongButton = new javax.swing.JButton();
         controlSeparator2 = new javax.swing.JToolBar.Separator();
         VolumeButton = new javax.swing.JButton();
         SpeedButton = new javax.swing.JButton();
-        DelayButton = new javax.swing.JButton();
+        controlSeparator3 = new javax.swing.JToolBar.Separator();
+        Sync1Button = new javax.swing.JToggleButton();
+        Sync2Button = new javax.swing.JToggleButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -414,6 +416,14 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         ControlBar.add(PlayPauseButton);
         ControlBar.add(controlSeparator1);
 
+        BackLongButton.setFocusable(false);
+        BackLongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackLongButtonActionPerformed(evt);
+            }
+        });
+        ControlBar.add(BackLongButton);
+
         BackButton.setFocusable(false);
         BackButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -429,6 +439,14 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
             }
         });
         ControlBar.add(ForwardButton);
+
+        ForwardLongButton.setFocusable(false);
+        ForwardLongButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ForwardLongButtonActionPerformed(evt);
+            }
+        });
+        ControlBar.add(ForwardLongButton);
         ControlBar.add(controlSeparator2);
 
         VolumeButton.setFocusable(false);
@@ -446,14 +464,23 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
             }
         });
         ControlBar.add(SpeedButton);
+        ControlBar.add(controlSeparator3);
 
-        DelayButton.setFocusable(false);
-        DelayButton.addActionListener(new java.awt.event.ActionListener() {
+        Sync1Button.setFocusable(false);
+        Sync1Button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DelayButtonActionPerformed(evt);
+                Sync1ButtonActionPerformed(evt);
             }
         });
-        ControlBar.add(DelayButton);
+        ControlBar.add(Sync1Button);
+
+        Sync2Button.setFocusable(false);
+        Sync2Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Sync2ButtonActionPerformed(evt);
+            }
+        });
+        ControlBar.add(Sync2Button);
 
         add(ControlBar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -466,6 +493,13 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
             player.togglePlayPause();
         }
     }//GEN-LAST:event_PlayPauseButtonActionPerformed
+
+    private void BackLongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackLongButtonActionPerformed
+        hideSliderPopups();
+        if (player != null) {
+            player.skip(-30000);
+        }
+    }//GEN-LAST:event_BackLongButtonActionPerformed
 
     private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
         hideSliderPopups();
@@ -481,6 +515,13 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_ForwardButtonActionPerformed
 
+    private void ForwardLongButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForwardLongButtonActionPerformed
+        hideSliderPopups();
+        if (player != null) {
+            player.skip(30000);
+        }
+    }//GEN-LAST:event_ForwardLongButtonActionPerformed
+
     private void VolumeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VolumeButtonActionPerformed
         toggleSliderPopup(VolumeButton, volumePopup);
     }//GEN-LAST:event_VolumeButtonActionPerformed
@@ -489,20 +530,32 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         toggleSliderPopup(SpeedButton, speedPopup);
     }//GEN-LAST:event_SpeedButtonActionPerformed
 
-    private void DelayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelayButtonActionPerformed
-        toggleSliderPopup(DelayButton, delayPopup);
-    }//GEN-LAST:event_DelayButtonActionPerformed
+    private void Sync1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sync1ButtonActionPerformed
+        hideSliderPopups();
+        if (syncListener != null)
+            syncListener.onSyncPointToggled(1, Sync1Button.isSelected());
+    }//GEN-LAST:event_Sync1ButtonActionPerformed
+
+    private void Sync2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sync2ButtonActionPerformed
+        hideSliderPopups();
+        if (syncListener != null)
+            syncListener.onSyncPointToggled(2, Sync2Button.isSelected());
+    }//GEN-LAST:event_Sync2ButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackButton;
+    private javax.swing.JButton BackLongButton;
     private javax.swing.JToolBar ControlBar;
-    private javax.swing.JButton DelayButton;
     private javax.swing.JButton ForwardButton;
+    private javax.swing.JButton ForwardLongButton;
     private javax.swing.JButton PlayPauseButton;
     private javax.swing.JButton SpeedButton;
+    private javax.swing.JToggleButton Sync1Button;
+    private javax.swing.JToggleButton Sync2Button;
     private javax.swing.JButton VolumeButton;
     private javax.swing.JToolBar.Separator controlSeparator1;
     private javax.swing.JToolBar.Separator controlSeparator2;
+    private javax.swing.JToolBar.Separator controlSeparator3;
     // End of variables declaration//GEN-END:variables
 }

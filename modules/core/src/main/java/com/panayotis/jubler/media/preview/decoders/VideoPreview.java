@@ -30,10 +30,6 @@ public interface VideoPreview {
 
     void setEnabled(boolean enabled);
 
-    void play();
-
-    void pause();
-
     void togglePlayPause();
 
     void skip(long milliseconds);
@@ -44,29 +40,14 @@ public interface VideoPreview {
 
     void release();
 
-    void destroySubImage();
-
-    void setResize(float resize);
-
     Point getLocationOnScreen();
-
-    default boolean isPlaying() {
-        return false;
-    }
 
     default void setPlayerStateCallback(VideoStateCallback callback) {
     }
 
     double getTime();
 
-    default long getDuration() {
-        return 0;
-    }
-
     default void seek(long timeMs) {
-    }
-
-    default void delaySubs(float seconds) {
     }
 
     default void setSubtitles(Subtitles subs, MediaFile mfile) {

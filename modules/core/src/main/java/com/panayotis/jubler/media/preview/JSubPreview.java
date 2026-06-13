@@ -8,14 +8,18 @@ package com.panayotis.jubler.media.preview;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.TimeSync;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview.AudioStateCallback;
 import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.media.preview.decoders.VideoPreview;
 import com.panayotis.jubler.options.AutoSaveOptions;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.time.Time;
+import com.panayotis.jubler.tools.RealTimeTool;
+import com.panayotis.jubler.tools.ToolsManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,21 +53,50 @@ public class JSubPreview extends javax.swing.JPanel {
     private MediaFile last_media_file = null;
     private final VideoPreview framePreview;
     private JEmbeddedPreviewControls embeddedControls;
+    private TimeSync sync1 = null;
+    private TimeSync sync2 = null;
+    private final javax.swing.Timer subtitleRefreshTimer;
+    /* Index of the subtitle the table is following during playback. Used to
+     * trigger a selection change only when the active subtitle actually changes,
+     * instead of on every player time update. */
+    private int lastPlaybackIndex = Integer.MIN_VALUE;
 
     /**
      * Creates new form JSubPreview
      */
     public JSubPreview(JubFrame parent) {
         initComponents();
-        framePreview = PreviewProviderRegistry.initVideoPreview();
+
+        /* The video provider relies on a native library (libvlc). If it is
+         * missing or fails to initialize we must degrade gracefully instead of
+         * preventing the whole main window from being constructed. */
+        VideoPreview fp;
+        try {
+            fp = PreviewProviderRegistry.initVideoPreview();
+        } catch (Throwable t) {
+            DEBUG.debug(t);
+            fp = null;
+        }
+        framePreview = fp;
+
         FramePanel.remove(frame);
         FramePanel.setLayout(new BorderLayout());
 
-        FramePanel.add(framePreview.getPreviewComponent(), BorderLayout.CENTER);
+        if (framePreview != null) {
+            FramePanel.add(framePreview.getPreviewComponent(), BorderLayout.CENTER);
 
-        embeddedControls = new JEmbeddedPreviewControls();
-        embeddedControls.setPlayer(framePreview);
-        FramePanel.add(embeddedControls, BorderLayout.SOUTH);
+            embeddedControls = new JEmbeddedPreviewControls();
+            embeddedControls.setPlayer(framePreview);
+            embeddedControls.setSyncListener(this::onSyncPointToggled);
+            embeddedControls.setPlaybackObserver(this::onPlaybackProgress);
+            FramePanel.add(embeddedControls, BorderLayout.SOUTH);
+        } else {
+            JLabel unavailable = new JLabel(__("Video preview unavailable: VLC could not be initialized"), SwingConstants.CENTER);
+            FramePanel.add(unavailable, BorderLayout.CENTER);
+        }
+
+        subtitleRefreshTimer = new javax.swing.Timer(300, e -> doRefreshSubtitles());
+        subtitleRefreshTimer.setRepeats(false);
 
         FramePanel.revalidate();
         FramePanel.repaint();
@@ -98,7 +131,11 @@ public class JSubPreview extends javax.swing.JPanel {
 
         timeline.windowHasChanged(subid);
         wave.setTime(view.getStart(), view.getStart() + view.getDuration());
-        if (subid != null && subid.length > 0)
+        /* Skip the video seek when the selection originates from playback itself,
+         * otherwise following the playing subtitle would yank the player back to
+         * the subtitle start on every change (a feedback loop). */
+        if (framePreview != null && subid != null && subid.length > 0
+                && !parent.isPlaybackDrivenSelection())
             framePreview.setSubEntry(parent.getSubtitles().elementAt(subid[0]));
         timecaption.repaint();
 
@@ -156,16 +193,141 @@ public class JSubPreview extends javax.swing.JPanel {
         last_media_file = mfile;
 
         wave.updateMediaFile(mfile);
-        framePreview.updateMediaFile(mfile);
+        if (framePreview != null)
+            framePreview.updateMediaFile(mfile);
         refreshSubtitles();
     }
 
     /**
-     * Refresh subtitles in video preview. Call this when subtitle content changes.
+     * Refresh subtitles in the video preview. Call this when subtitle content
+     * changes. Coalesced through a short timer so that rapid table-model events
+     * (e.g. while typing or after a tool runs) do not re-serialize the whole
+     * document to disk on every single change.
      */
     public void refreshSubtitles() {
-        if (last_media_file != null)
-            framePreview.setSubtitles(parent.getSubtitles(), last_media_file);
+        /* The subtitle list may have been re-indexed; drop the cached follow
+         * index so the next playback tick re-evaluates the active subtitle. */
+        lastPlaybackIndex = Integer.MIN_VALUE;
+        if (framePreview != null && last_media_file != null)
+            subtitleRefreshTimer.restart();
+    }
+
+    /**
+     * Called on every player time update while a video is loaded. Selects the
+     * subtitle that is active at the current playback position (or clears the
+     * selection when playback is in a gap), but only when that subtitle actually
+     * changes — not on every tick. The selection is applied without seeking the
+     * player back, since the change originates from playback.
+     */
+    private void onPlaybackProgress(long timeMs, boolean playing) {
+        if (!playing)
+            return;
+        Subtitles subs = parent.getSubtitles();
+        if (subs == null || subs.size() == 0)
+            return;
+        double seconds = timeMs / 1000.0;
+        /* Fast path: if the subtitle we are already following still contains the
+         * current time it is still the active one, so skip the O(n) scan and all
+         * the (expensive) selection/seek work entirely. */
+        if (lastPlaybackIndex >= 0 && lastPlaybackIndex < subs.size()
+                && subs.elementAt(lastPlaybackIndex).isInTime(seconds))
+            return;
+        int idx = findActiveSub(subs, seconds, lastPlaybackIndex);
+        if (idx == lastPlaybackIndex)
+            return;
+        lastPlaybackIndex = idx;
+        parent.followPlaybackSelection(idx);
+    }
+
+    /**
+     * Find the subtitle active at the given time, starting the search at the
+     * last followed index. Playback advances in time, so the next active
+     * subtitle is almost always just ahead: we scan forward from the hint first,
+     * then backward towards the start (to also cover backward seeks). The whole
+     * list is still covered, so the result is correct regardless of ordering;
+     * the hint only makes the common forward case fast. Returns -1 when no
+     * subtitle is active (a gap).
+     */
+    private int findActiveSub(Subtitles subs, double seconds, int hint) {
+        int n = subs.size();
+        int from = (hint >= 0 && hint < n) ? hint : 0;
+        for (int i = from; i < n; i++)
+            if (subs.elementAt(i).isInTime(seconds))
+                return i;
+        for (int i = from - 1; i >= 0; i--)
+            if (subs.elementAt(i).isInTime(seconds))
+                return i;
+        return -1;
+    }
+
+    private void doRefreshSubtitles() {
+        if (framePreview == null || last_media_file == null)
+            return;
+        framePreview.setSubtitles(parent.getSubtitles(), last_media_file);
+        /* A time change moves the subtitle, so after reloading the subtitle file
+         * re-seek to the current selection — otherwise the preview keeps showing
+         * the old position, because the seek that ran on the edit happened before
+         * this (debounced) reload. Skip while playing so playback is never
+         * interrupted. */
+        if (!isPreviewPlaying()) {
+            SubEntry[] sel = parent.getSelectedSubs();
+            if (sel != null && sel.length > 0)
+                framePreview.setSubEntry(sel[0]);
+        }
+    }
+
+    private boolean isPreviewPlaying() {
+        return embeddedControls != null && embeddedControls.isPlaying();
+    }
+
+    /**
+     * Called when the user toggles one of the two synchronization point buttons
+     * in the video controls. Captures the pairing between the selected
+     * subtitle's nominal time and the current playback position. When both
+     * points are set, re-times the subtitles using a shift (when both points
+     * have the same offset) or a linear stretch otherwise.
+     */
+    private void onSyncPointToggled(int index, boolean selected) {
+        if (framePreview == null)
+            return;
+        if (!selected) {
+            if (index == 1)
+                sync1 = null;
+            else
+                sync2 = null;
+            return;
+        }
+
+        SubEntry[] selectedSubs = parent.getSelectedSubs();
+        if (selectedSubs == null || selectedSubs.length == 0) {
+            DEBUG.beep();
+            embeddedControls.setSyncButtonSelected(index, false);
+            return;
+        }
+
+        double subStart = selectedSubs[0].getStartTime().toSeconds();
+        double videoTime = framePreview.getTime();
+        TimeSync sync = new TimeSync(subStart, videoTime - subStart);
+        if (index == 1)
+            sync1 = sync;
+        else
+            sync2 = sync;
+
+        if (sync1 != null && sync2 != null)
+            applySyncMarks();
+    }
+
+    private void applySyncMarks() {
+        RealTimeTool tool = sync1.isEqualDiff(sync2) ? ToolsManager.getShifter() : ToolsManager.getRecoder();
+        if (tool == null || !tool.setValues(sync1, sync2))
+            DEBUG.beep();
+        else {
+            tool.updateData(parent);
+            tool.execute(parent);
+        }
+        sync1 = null;
+        sync2 = null;
+        embeddedControls.resetSyncButtons();
     }
 
     public void setEnabled(boolean status) {
@@ -173,9 +335,23 @@ public class JSubPreview extends javax.swing.JPanel {
         wave.setEnabled(status);
     }
 
+    /**
+     * Release native resources held by the video preview (the embedded VLC
+     * player and its temporary subtitle file). Call when the owning window is
+     * being closed.
+     */
+    public void release() {
+        subtitleRefreshTimer.stop();
+        if (framePreview != null)
+            framePreview.release();
+    }
+
     public void forceRepaintFrame() {
-        framePreview.destroySubImage();
-        framePreview.getPreviewComponent().repaint();
+        /* The embedded player renders subtitles from an exported file, so a
+         * style change is reflected by re-exporting the current subtitles. */
+        refreshSubtitles();
+        if (framePreview != null)
+            framePreview.getPreviewComponent().repaint();
     }
 
     public AudioStateCallback getDecoderListener() {
@@ -198,10 +374,11 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     public Point getFrameLocation() {
-        try {
-            return framePreview.getLocationOnScreen();
-        } catch (IllegalComponentStateException ignored) {
-        }
+        if (framePreview != null)
+            try {
+                return framePreview.getLocationOnScreen();
+            } catch (IllegalComponentStateException ignored) {
+            }
         return parent.getLocationOnScreen();
     }
 
@@ -426,10 +603,6 @@ public class JSubPreview extends javax.swing.JPanel {
     private void SnapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SnapActionPerformed
         timeline.setSnap(Snap.isSelected());
     }//GEN-LAST:event_SnapActionPerformed
-
-    public double getSubtitleDelaySeconds() {
-        return embeddedControls.getSubtitleDelaySeconds();
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel AudioPanel;

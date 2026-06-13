@@ -32,7 +32,6 @@ document_name="Jubler subtitle file"
 
 display_help() {
     echo -e "This is a helper script for building Jubler:"
-    echo -e "  ${GREEN}version X.Y.Z${NC}           Update Jubler version."
     echo -e "  ${GREEN}build TARGET1[,TARGET2]${NC} Build Jubler for the list of provided targets."
     echo -e "  ${GREEN}winget X.Y.Z [--submit]${NC} Update WinGet manifest (dry-run by default)."
     echo -e "  ${GREEN}clean${NC}                   Clean build files."
@@ -43,25 +42,6 @@ display_help() {
     (IFS=,; echo -e "  ${GREEN}${valid_targets[*]}${NC}")
     echo
     echo -e "Note: Signing and notarization are always performed when configured."
-}
-
-version_action() {
-    local version=$2
-    if [ $# -lt 2 ]; then
-        echo -e "${RED}Error:${NC} Missing argument for 'version'. Provide a value in X.Y.Z form."
-        exit 1
-    fi
-    if ! [[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9_]+)?$ ]]; then
-        echo -e "${RED}Error:${NC} Invalid version format."
-        exit 1
-    fi
-    local version=$2
-    cd $script_dir
-
-    # Update version in build.gradle.kts
-    sed -i "s/^version = \".*\"/version = \"$version\"/" build.gradle.kts
-
-    echo -e "${GREEN}Version updated to $version in build.gradle.kts${NC}"
 }
 
 winget_action() {
@@ -322,9 +302,6 @@ fi
 case "$1" in
     "--help")
         display_help
-        ;;
-    "version")
-        version_action "$@"
         ;;
     "build")
         build_action "$@"

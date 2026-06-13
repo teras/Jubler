@@ -44,6 +44,14 @@
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="controlSeparator1">
                 </Component>
+                <Component class="javax.swing.JButton" name="BackLongButton">
+                  <Properties>
+                    <Property name="focusable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BackLongButtonActionPerformed"/>
+                  </Events>
+                </Component>
                 <Component class="javax.swing.JButton" name="BackButton">
                   <Properties>
                     <Property name="focusable" type="boolean" value="false"/>
@@ -58,6 +66,14 @@
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ForwardButtonActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="ForwardLongButton">
+                  <Properties>
+                    <Property name="focusable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ForwardLongButtonActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="controlSeparator2">
@@ -78,12 +94,22 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SpeedButtonActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="DelayButton">
+                <Component class="javax.swing.JToolBar$Separator" name="controlSeparator3">
+                </Component>
+                <Component class="javax.swing.JToggleButton" name="Sync1Button">
                   <Properties>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DelayButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Sync1ButtonActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JToggleButton" name="Sync2Button">
+                  <Properties>
+                    <Property name="focusable" type="boolean" value="false"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Sync2ButtonActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

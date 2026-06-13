@@ -14,6 +14,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
+import uk.co.caprica.vlcj.media.TrackType;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
@@ -26,6 +27,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class VLCPreview implements VideoPreview {
 
@@ -38,12 +41,33 @@ public class VLCPreview implements VideoPreview {
     private boolean pendingInitialSeek = false;
     private boolean wasPlayingBeforeSeek = false;
     private File tempSubFile = null;
+    private String lastSubContent = null;
+    private final javax.swing.Timer nudgeFallbackTimer;
+    private final javax.swing.Timer repauseTimer;
+    private volatile boolean nudging = false;
+    private volatile boolean pendingNudge = false;
+    private boolean savedMute = false;
+    private volatile boolean released = false;
+    private int volume = 100; // desired output volume (libvlc starts muted on some systems)
 
     public VLCPreview() {
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
         mediaPlayerComponent.setPreferredSize(new Dimension(400, 256));
         mediaPlayerComponent.setMinimumSize(new Dimension(160, 120));
         mediaPlayer = mediaPlayerComponent.mediaPlayer();
+
+        /* After a paused seek, the subtitle for the new position is not composited
+         * onto the displayed frame until playback actually renders it, so we briefly
+         * resume playback (muted) and pause again (the "nudge"). The nudge must start
+         * only once the seek/reload has settled — but VLC does NOT emit timeChanged
+         * while paused. Instead it emits buffering(100) when a paused seek lands and
+         * elementaryStreamSelected(TEXT) when a reloaded subtitle file is ready; we
+         * trigger the nudge on those events (see initializePlayerEvents). This timer
+         * is only a fallback in case neither event arrives. */
+        nudgeFallbackTimer = new javax.swing.Timer(500, e -> fireNudgeIfPending());
+        nudgeFallbackTimer.setRepeats(false);
+        repauseTimer = new javax.swing.Timer(150, e -> endPausedNudge());
+        repauseTimer.setRepeats(false);
 
         mediaPlayerComponent.addComponentListener(new ComponentAdapter() {
             @Override
@@ -60,16 +84,18 @@ public class VLCPreview implements VideoPreview {
                     validationTarget.validate();
                 }
                 // Force VLC to redraw when resized while paused
-                if (!mediaPlayer.status().isPlaying()) {
-                    long currentTime = mediaPlayer.status().time();
-                    mediaPlayer.controls().setTime(currentTime);
-                }
+                recompositePausedFrame();
             }
 
         });
 
         // Use HierarchyListener to detect when component becomes showing/hidden
         mediaPlayerComponent.addHierarchyListener(e -> {
+            // After release() the native player is gone; disposing the window still
+            // fires a hidden event, and touching the player here would be a
+            // use-after-free (libvlc_media_player_stop SIGSEGV).
+            if (released)
+                return;
             if ((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0) {
                 if (mediaPlayerComponent.isShowing() && mediaPlayerComponent.isDisplayable()) {
                     // Component just became visible, load video
@@ -103,11 +129,15 @@ public class VLCPreview implements VideoPreview {
         mediaPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
             @Override
             public void playing(MediaPlayer mp) {
+                if (nudging)
+                    return; // brief internal resume to composite subtitles; ignore
                 // Handle initial seek when preview is first shown
                 if (pendingInitialSeek) {
                     pendingInitialSeek = false;
                     boolean shouldPause = !wasPlayingBeforeSeek;
                     SwingUtilities.invokeLater(() -> {
+                        if (released)
+                            return; // window closed before this deferred seek ran
                         if (shouldPause)
                             mediaPlayer.controls().pause();
                         long timeMs = 0;
@@ -121,6 +151,12 @@ public class VLCPreview implements VideoPreview {
                     if (shouldPause)
                         return; // Don't notify callback if pausing
                 }
+                // Real playback is starting (not the nudge, not the initial paused load):
+                // libvlc may have started muted, so ensure audio is actually audible.
+                if (released)
+                    return; // window closed: native player already released
+                mediaPlayer.audio().setMute(false);
+                mediaPlayer.audio().setVolume(volume);
                 if (callback != null) {
                     SwingUtilities.invokeLater(() -> callback.onPlayingStateChanged(true));
                 }
@@ -128,6 +164,8 @@ public class VLCPreview implements VideoPreview {
 
             @Override
             public void paused(MediaPlayer mp) {
+                if (nudging)
+                    return;
                 if (callback != null) {
                     SwingUtilities.invokeLater(() -> callback.onPlayingStateChanged(false));
                 }
@@ -152,9 +190,31 @@ public class VLCPreview implements VideoPreview {
 
             @Override
             public void timeChanged(MediaPlayer mp, long newTime) {
+                if (nudging)
+                    return;
                 if (callback != null) {
-                    SwingUtilities.invokeLater(() -> callback.onTimeChanged(newTime));
+                    SwingUtilities.invokeLater(() -> {
+                        if (released)
+                            return; // window closed before this deferred update ran
+                        callback.onTimeChanged(newTime);
+                    });
                 }
+            }
+
+            @Override
+            public void buffering(MediaPlayer mp, float newCache) {
+                // A paused seek does not emit timeChanged, but buffering reaches
+                // 100 once the new position is ready: that is our cue to nudge.
+                if (pendingNudge && newCache >= 100f)
+                    SwingUtilities.invokeLater(() -> fireNudgeIfPending());
+            }
+
+            @Override
+            public void elementaryStreamSelected(MediaPlayer mp, TrackType type, int id) {
+                // A reloaded subtitle file is ready once its text stream is
+                // selected; nudge so the new subtitles composite onto the frame.
+                if (pendingNudge && type == TrackType.TEXT)
+                    SwingUtilities.invokeLater(() -> fireNudgeIfPending());
             }
         });
     }
@@ -202,6 +262,7 @@ public class VLCPreview implements VideoPreview {
             } else {
                 mediaPlayer.controls().setTime(timeMs);
                 notifyTimeChanged(timeMs);
+                forcePausedRedrawAfterSeek();
             }
         }
     }
@@ -218,17 +279,11 @@ public class VLCPreview implements VideoPreview {
         }
     }
 
-    @Override
-    public void play() {
+    private void play() {
         if (mediaPlayer.status().isPlayable())
             mediaPlayer.controls().play();
         else if (hasVideo())
             mediaPlayer.media().play(getVideoPath());
-    }
-
-    @Override
-    public void pause() {
-        mediaPlayer.controls().pause();
     }
 
     @Override
@@ -240,24 +295,15 @@ public class VLCPreview implements VideoPreview {
     }
 
     @Override
-    public boolean isPlaying() {
-        return mediaPlayer.status().isPlaying();
-    }
-
-    @Override
     public double getTime() {
         return mediaPlayer.status().time() / 1000.0;
-    }
-
-    @Override
-    public long getDuration() {
-        return mediaPlayer.status().length();
     }
 
     @Override
     public void seek(long timeMs) {
         mediaPlayer.controls().setTime(timeMs);
         notifyTimeChanged(timeMs);
+        forcePausedRedrawAfterSeek();
     }
 
     @Override
@@ -266,12 +312,7 @@ public class VLCPreview implements VideoPreview {
         long newTime = Math.max(0, currentTime + milliseconds);
         mediaPlayer.controls().setTime(newTime);
         notifyTimeChanged(newTime);
-    }
-
-    @Override
-    public void delaySubs(float seconds) {
-        long delayMicros = (long) (seconds * 1000000);
-        mediaPlayer.subpictures().setDelay(delayMicros);
+        forcePausedRedrawAfterSeek();
     }
 
     @Override
@@ -281,11 +322,15 @@ public class VLCPreview implements VideoPreview {
 
     @Override
     public void setVolume(int volume) {
+        this.volume = volume;
+        mediaPlayer.audio().setMute(false);
         mediaPlayer.audio().setVolume(volume);
     }
 
     @Override
     public void setSubtitles(Subtitles subs, MediaFile mfile) {
+        if (released)
+            return; // a queued debounced refresh must not touch a freed player
         if (subs == null || subs.isEmpty()) {
             // Clear subtitles
             if (tempSubFile != null && tempSubFile.exists()) {
@@ -293,6 +338,8 @@ public class VLCPreview implements VideoPreview {
                 tempSubFile = null;
             }
             mediaPlayer.subpictures().setSubTitleFile((String) null);
+            lastSubContent = null;
+            forcePausedRedrawAfterSeek();
             return;
         }
 
@@ -322,30 +369,107 @@ public class VLCPreview implements VideoPreview {
                 return;
             }
 
+            // Skip reloading VLC when the exported subtitles are byte-for-byte
+            // identical to what is already loaded. The ASS output is deterministic,
+            // so this reliably avoids a needless re-parse and the paused-frame
+            // redraw when an event did not actually change the rendered subtitles.
+            String content = new String(Files.readAllBytes(tempSubFile.toPath()), StandardCharsets.UTF_8);
+            if (content.equals(lastSubContent))
+                return;
+            lastSubContent = content;
+
             // Load subtitles into VLC with UTF-8 encoding
             mediaPlayer.subpictures().setSubTitleFile(tempSubFile.getAbsolutePath());
+            forcePausedRedrawAfterSeek();
 
         } catch (IOException e) {
             System.err.println("VLCPreview: Error creating temp subtitle file: " + e.getMessage());
         }
     }
 
+    /**
+     * Re-composite the current paused frame by re-applying the current time, used
+     * when the video surface is resized while paused. It refreshes an overlay that
+     * is already present for the current frame; it does NOT make a subtitle appear
+     * at a position seeked to while paused — {@link #forcePausedRedrawAfterSeek()}
+     * (the nudge) does that. No-op while playing.
+     */
+    private void recompositePausedFrame() {
+        if (released)
+            return; // a resize/hide during window dispose must not touch a freed player
+        if (mediaPlayer.status().isPlayable() && !mediaPlayer.status().isPlaying()) {
+            long now = mediaPlayer.status().time();
+            if (now >= 0)
+                mediaPlayer.controls().setTime(now);
+        }
+    }
+
+    /**
+     * Briefly resume playback (muted) so VLC composites the subtitle onto the
+     * frame, then pause again. A paused seek displays the video frame but does not
+     * reliably blend the subpicture; only actual playback does. The nudge is short
+     * (~150ms) and muted, and player callbacks are suppressed while it runs so the
+     * UI does not flicker. No-op while already playing.
+     */
+    private void startPausedNudge() {
+        if (nudging || !mediaPlayer.status().isPlayable() || mediaPlayer.status().isPlaying())
+            return;
+        nudging = true;
+        savedMute = mediaPlayer.audio().isMute();
+        mediaPlayer.audio().setMute(true);
+        mediaPlayer.controls().setPause(false); // resume
+        repauseTimer.restart();
+    }
+
+    private void endPausedNudge() {
+        if (released)
+            return; // a queued repause timer must not touch a freed player
+        if (mediaPlayer.status().isPlaying())
+            mediaPlayer.controls().setPause(true);
+        mediaPlayer.audio().setMute(savedMute);
+        nudging = false;
+    }
+
+    /**
+     * Schedule the subtitle re-composite after a paused seek or a subtitle reload.
+     * VLC does not blend the subpicture onto a paused frame on its own, so we nudge
+     * (briefly resume playback) once VLC signals readiness — buffering(100) for a
+     * seek, elementaryStreamSelected(TEXT) for a reload — with a fallback timer if
+     * neither arrives. No-op while playing (playback renders subtitles on its own).
+     */
+    private void forcePausedRedrawAfterSeek() {
+        if (mediaPlayer.status().isPlaying() || !mediaPlayer.status().isPlayable())
+            return;
+        pendingNudge = true;
+        nudgeFallbackTimer.restart();
+    }
+
+    /**
+     * Start the nudge if one is pending. Called when VLC signals the paused seek
+     * has landed (buffering reached 100) or a reloaded subtitle file is ready
+     * (text stream selected), and from the fallback timer. Runs on the EDT.
+     */
+    private void fireNudgeIfPending() {
+        if (released || !pendingNudge)
+            return;
+        pendingNudge = false;
+        nudgeFallbackTimer.stop();
+        startPausedNudge();
+    }
+
     @Override
     public void release() {
+        // Mark released first so the hierarchy listener and timers stop touching the
+        // native player while/after it is being freed.
+        released = true;
+        nudgeFallbackTimer.stop();
+        repauseTimer.stop();
         // Clean up temp file
         if (tempSubFile != null && tempSubFile.exists()) {
             tempSubFile.delete();
             tempSubFile = null;
         }
         mediaPlayerComponent.release();
-    }
-
-    @Override
-    public void destroySubImage() {
-    }
-
-    @Override
-    public void setResize(float resize) {
     }
 
     @Override

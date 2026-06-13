@@ -9,7 +9,7 @@ package  com.panayotis.jubler.media.filters;
 import java.io.File;
 
 import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.media.preview.decoders.AudioPreviewOld;
+import com.panayotis.jubler.media.preview.decoders.AudioPreviewData;
 
 public class AudioFileFilter extends MediaFileFilter {
 
@@ -18,7 +18,7 @@ public class AudioFileFilter extends MediaFileFilter {
 
     static {
         exts = new String[5];
-        exts[0] = AudioPreviewOld.getExtension();
+        exts[0] = AudioPreviewData.getExtension();
         exts[1] = ".wav";
         exts[2] = ".mp3";
         exts[3] = ".ogg";
@@ -34,7 +34,7 @@ public class AudioFileFilter extends MediaFileFilter {
             return true;
         String fname = pathname.getName().toLowerCase();
         if (cachesource != null) {
-            String name = AudioPreviewOld.getNameFromCache(pathname);
+            String name = AudioPreviewData.getNameFromCache(pathname);
             if (name != null && name.equals(cachesource))
                 return true;
             return false;
