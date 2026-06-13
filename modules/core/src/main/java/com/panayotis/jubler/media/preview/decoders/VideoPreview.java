@@ -8,6 +8,7 @@ package com.panayotis.jubler.media.preview.decoders;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.Subtitles;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,5 +67,8 @@ public interface VideoPreview {
     }
 
     default void delaySubs(float seconds) {
+    }
+
+    default void setSubtitles(Subtitles subs, MediaFile mfile) {
     }
 }

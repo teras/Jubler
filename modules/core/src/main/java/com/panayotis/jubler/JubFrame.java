@@ -36,6 +36,8 @@ import javax.swing.JToggleButton.ToggleButtonModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -70,6 +72,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
      * Where the subtitles for this window is stored
      */
     private Subtitles subs;
+    /* Listener for subtitle content changes */
+    private TableModelListener subsChangeListener;
     /*
      * Where the mediafile for this window is stored
      */
@@ -2240,9 +2244,23 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
     public void setSubs(Subtitles newsubs) {
         SubEntry[] selected = getSelectedSubs();
+
+        // Remove listener from old subs
+        if (subs != null && subsChangeListener != null)
+            subs.removeTableModelListener(subsChangeListener);
+
         subs = newsubs;
         subs.updateQuality();
         SubTable.setModel(subs);
+
+        // Create listener if needed and add to new subs
+        if (subsChangeListener == null) {
+            subsChangeListener = e -> {
+                if (EnablePreviewC.isSelected())
+                    preview.refreshSubtitles();
+            };
+        }
+        subs.addTableModelListener(subsChangeListener);
         tableHasChanged(selected);
         ShowNumberP.setSelected(Subtitles.isVisibleColumn(0));
         ShowStartP.setSelected(Subtitles.isVisibleColumn(1));

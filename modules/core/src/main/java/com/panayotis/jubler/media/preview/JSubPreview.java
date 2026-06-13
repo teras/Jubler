@@ -157,6 +157,15 @@ public class JSubPreview extends javax.swing.JPanel {
 
         wave.updateMediaFile(mfile);
         framePreview.updateMediaFile(mfile);
+        refreshSubtitles();
+    }
+
+    /**
+     * Refresh subtitles in video preview. Call this when subtitle content changes.
+     */
+    public void refreshSubtitles() {
+        if (last_media_file != null)
+            framePreview.setSubtitles(parent.getSubtitles(), last_media_file);
     }
 
     public void setEnabled(boolean status) {

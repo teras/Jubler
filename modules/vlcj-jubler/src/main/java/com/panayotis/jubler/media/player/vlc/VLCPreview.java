@@ -8,7 +8,12 @@ package com.panayotis.jubler.media.player.vlc;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.VideoPreview;
+import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.SubFile;
+import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
@@ -19,6 +24,8 @@ import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class VLCPreview implements VideoPreview {
 
@@ -29,6 +36,8 @@ public class VLCPreview implements VideoPreview {
     private VideoStateCallback callback;
     private Container validationTarget;
     private boolean pendingInitialSeek = false;
+    private boolean wasPlayingBeforeSeek = false;
+    private File tempSubFile = null;
 
     public VLCPreview() {
         mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
@@ -70,6 +79,7 @@ public class VLCPreview implements VideoPreview {
                             if (mediaPlayer.status().isPlayable()) {
                                 mediaPlayer.controls().stop();
                             }
+                            wasPlayingBeforeSeek = false; // Initial load, start paused
                             pendingInitialSeek = true;
                             mediaPlayer.media().play(getVideoPath());
                         }
@@ -96,8 +106,10 @@ public class VLCPreview implements VideoPreview {
                 // Handle initial seek when preview is first shown
                 if (pendingInitialSeek) {
                     pendingInitialSeek = false;
+                    boolean shouldPause = !wasPlayingBeforeSeek;
                     SwingUtilities.invokeLater(() -> {
-                        mediaPlayer.controls().pause();
+                        if (shouldPause)
+                            mediaPlayer.controls().pause();
                         long timeMs = 0;
                         if (sub != null) {
                             timeMs = (long) (sub.getStartTime().toSeconds() * 1000);
@@ -106,7 +118,8 @@ public class VLCPreview implements VideoPreview {
                         notifyTimeChanged(timeMs);
                         notifyDuration();
                     });
-                    return; // Don't notify callback during initialization
+                    if (shouldPause)
+                        return; // Don't notify callback if pausing
                 }
                 if (callback != null) {
                     SwingUtilities.invokeLater(() -> callback.onPlayingStateChanged(true));
@@ -163,6 +176,7 @@ public class VLCPreview implements VideoPreview {
     public void updateMediaFile(MediaFile mfile) {
         this.mfile = mfile;
         if (hasVideo() && mediaPlayerComponent.isShowing()) {
+            wasPlayingBeforeSeek = mediaPlayer.status().isPlaying();
             pendingInitialSeek = true;
             mediaPlayer.media().play(getVideoPath());
         }
@@ -180,12 +194,12 @@ public class VLCPreview implements VideoPreview {
         sub = entry;
         if (sub != null && hasVideo() && mediaPlayerComponent.isShowing()) {
             long timeMs = (long) (sub.getStartTime().toSeconds() * 1000);
-            if (!mediaPlayer.status().isPlayable()) {
+            boolean playable = mediaPlayer.status().isPlayable();
+            if (!playable) {
+                wasPlayingBeforeSeek = false; // Video not loaded yet, start paused
                 pendingInitialSeek = true;
                 mediaPlayer.media().play(getVideoPath());
             } else {
-                if (mediaPlayer.status().isPlaying())
-                    mediaPlayer.controls().pause();
                 mediaPlayer.controls().setTime(timeMs);
                 notifyTimeChanged(timeMs);
             }
@@ -271,7 +285,58 @@ public class VLCPreview implements VideoPreview {
     }
 
     @Override
+    public void setSubtitles(Subtitles subs, MediaFile mfile) {
+        if (subs == null || subs.isEmpty()) {
+            // Clear subtitles
+            if (tempSubFile != null && tempSubFile.exists()) {
+                tempSubFile.delete();
+                tempSubFile = null;
+            }
+            mediaPlayer.subpictures().setSubTitleFile((String) null);
+            return;
+        }
+
+        try {
+            // Create or reuse temp file
+            if (tempSubFile == null) {
+                tempSubFile = File.createTempFile("jubler_preview_", ".ass");
+                tempSubFile.deleteOnExit();
+            }
+
+            // Find ASS format
+            SubFormat assFormat = Availabilities.formats.findFromName("AdvancedSubStation");
+            if (assFormat == null) {
+                System.err.println("VLCPreview: ASS format not available");
+                return;
+            }
+
+            // Create SubFile with UTF-8 encoding and ASS format
+            SubFile subFile = new SubFile(tempSubFile, SubFile.EXTENSION_GIVEN);
+            subFile.setEncoding("UTF-8");
+            subFile.setFormat(assFormat);
+
+            // Save subtitles to temp file
+            String error = FileCommunicator.save(subs, subFile, mfile);
+            if (error != null) {
+                System.err.println("VLCPreview: Error saving subtitles: " + error);
+                return;
+            }
+
+            // Load subtitles into VLC with UTF-8 encoding
+            mediaPlayer.subpictures().setSubTitleFile(tempSubFile.getAbsolutePath());
+
+        } catch (IOException e) {
+            System.err.println("VLCPreview: Error creating temp subtitle file: " + e.getMessage());
+        }
+    }
+
+    @Override
     public void release() {
+        // Clean up temp file
+        if (tempSubFile != null && tempSubFile.exists()) {
+            tempSubFile.delete();
+            tempSubFile = null;
+        }
         mediaPlayerComponent.release();
     }
 
