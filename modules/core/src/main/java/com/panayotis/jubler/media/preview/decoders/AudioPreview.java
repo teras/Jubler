@@ -37,5 +37,5 @@ public interface AudioPreview {
 
     void retrieveInformation(VideoFile vfile);
 
-    void playAudioClip(AudioFile audio, double from, double to);
+    void playAudioClip(AudioFile audio, CacheFile cache, double from, double to);
 }

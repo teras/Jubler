@@ -57,6 +57,15 @@ public class Options {
     private static final String USE_THEME_VARIATION = "ui.theme.variation";
     private static String language;
     private static final String LANGUAGE_TAG = "ui.language";
+    private static int audioCacheRate;
+    private static final String AUDIOCACHE_RATE_TAG = "audiocache.rate";
+    private static int audioCacheChannels;
+    private static final String AUDIOCACHE_CHANNELS_TAG = "audiocache.channels";
+    private static boolean audioCacheDeleteOnClose;
+    private static final String AUDIOCACHE_DELETEONCLOSE_TAG = "audiocache.deleteonclose";
+
+    public static final int AUDIOCACHE_DEFAULT_RATE = 16000;
+    public static final int AUDIOCACHE_DEFAULT_CHANNELS = 2;
 
     static {
         errorColor = JublerPrefs.getInt(ERRORCOLOR_TAG, 1);
@@ -79,6 +88,9 @@ public class Options {
             themeVariation = ThemeVariation.AUTO;
         }
         language = JublerPrefs.getString(LANGUAGE_TAG, "auto");
+        audioCacheRate = JublerPrefs.getInt(AUDIOCACHE_RATE_TAG, AUDIOCACHE_DEFAULT_RATE);
+        audioCacheChannels = JublerPrefs.getInt(AUDIOCACHE_CHANNELS_TAG, AUDIOCACHE_DEFAULT_CHANNELS);
+        audioCacheDeleteOnClose = JublerPrefs.getBoolean(AUDIOCACHE_DELETEONCLOSE_TAG, false);
     }
 
     static {
@@ -186,6 +198,30 @@ public class Options {
     public static void setThemeVariation(ThemeVariation variation) {
         JublerPrefs.set(USE_THEME_VARIATION, variation.name());
         themeVariation = variation;
+    }
+
+    public static int getAudioCacheRate() {
+        return audioCacheRate;
+    }
+
+    public static void setAudioCacheRate(int rate) {
+        JublerPrefs.set(AUDIOCACHE_RATE_TAG, audioCacheRate = rate);
+    }
+
+    public static int getAudioCacheChannels() {
+        return audioCacheChannels;
+    }
+
+    public static void setAudioCacheChannels(int channels) {
+        JublerPrefs.set(AUDIOCACHE_CHANNELS_TAG, audioCacheChannels = channels);
+    }
+
+    public static boolean isAudioCacheDeleteOnClose() {
+        return audioCacheDeleteOnClose;
+    }
+
+    public static void setAudioCacheDeleteOnClose(boolean delete) {
+        JublerPrefs.set(AUDIOCACHE_DELETEONCLOSE_TAG, audioCacheDeleteOnClose = delete);
     }
 
     public static String getLanguage() {

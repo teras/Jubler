@@ -234,7 +234,7 @@ public class MediaFile {
     public void playAudioClip(double from, double to) {
         AudioPreview d = getDecoder();
         if (afile != null && d != null)
-            d.playAudioClip(afile, from, to);
+            d.playAudioClip(afile, cfile, from, to);
     }
 
     public void interruptCacheCreation(boolean status) {

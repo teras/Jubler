@@ -29,6 +29,7 @@ public class JPreferences extends javax.swing.JDialog {
     private JSpellerOptions jspell;
     private JShortcutsOptions jcut;
     private JExternalToolsOptions jext;
+    private JPreviewOptions jprev;
     private boolean dialog_status;
 
     private AFileChooser fileChooser;
@@ -43,6 +44,7 @@ public class JPreferences extends javax.swing.JDialog {
         Tabs.addTab(jspell = new JSpellerOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Tabs.addTab(jext = new JExternalToolsOptions());
+        Tabs.addTab(jprev = new JPreviewOptions());
         Options.loadSystemPreferences(this);
 
         initComponents();
