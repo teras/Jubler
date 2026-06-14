@@ -61,7 +61,7 @@ tasks.register<Copy>("copyDependencies") {
 
     // Remove version from jar names (stripVersion equivalent)
     rename { filename ->
-        filename.replace(Regex("-\\d+(\\.\\d+)*(-ALPHA|-BETA|-SNAPSHOT)?\\.jar"), ".jar")
+        filename.replace(Regex("-\\d+(\\.\\d+)*(-[A-Za-z0-9]+)?\\.jar"), ".jar")
     }
 
     // Avoid duplicates
@@ -84,7 +84,7 @@ tasks.register<Copy>("copyModuleJars") {
 
     // Remove version from jar names
     rename { filename ->
-        filename.replace(Regex("-\\d+(\\.\\d+)*(-ALPHA|-BETA|-SNAPSHOT)?\\.jar"), ".jar")
+        filename.replace(Regex("-\\d+(\\.\\d+)*(-[A-Za-z0-9]+)?\\.jar"), ".jar")
     }
 }
 

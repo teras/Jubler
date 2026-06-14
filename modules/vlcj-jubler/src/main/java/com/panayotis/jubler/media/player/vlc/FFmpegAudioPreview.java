@@ -415,8 +415,10 @@ public class FFmpegAudioPreview implements AudioPreview {
             // Extract the exact slice with an accurate ffmpeg seek, then play the
             // resulting WAV. The seek must happen here (not at playback time) so the
             // clip starts precisely: an input seek on a video file lands on the
-            // previous video keyframe, which can be many seconds early. The extracted
-            // WAV is plain PCM, so Java Sound plays it directly - no external player.
+            // previous video keyframe, which can be many seconds early.
+            // Force 16-bit stereo PCM: Java Sound only reliably plays mono/stereo
+            // PCM, so a 5.1/7.1 source would otherwise produce a multi-channel WAV
+            // its mixer cannot open. -ac 2 downmixes; pcm_s16le keeps it 16-bit.
             final File clip = File.createTempFile("jubler-clip", ".wav");
             final Process extractor = new ProcessBuilder(
                     ffmpeg, "-v", "error", "-y",
@@ -424,7 +426,7 @@ public class FFmpegAudioPreview implements AudioPreview {
                     "-ss", String.valueOf(from),
                     "-t", String.valueOf(to - from),
                     "-i", audio.getAbsolutePath(),
-                    "-vn", clip.getAbsolutePath()
+                    "-vn", "-ac", "2", "-c:a", "pcm_s16le", clip.getAbsolutePath()
             ).inheritIO().start();
 
             // Wait for the extraction off the EDT, then hand the clip to Java Sound.

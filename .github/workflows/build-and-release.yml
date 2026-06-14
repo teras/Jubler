@@ -125,6 +125,12 @@ jobs:
         name: jubler-base-build-${{ needs.prepare.outputs.version }}
         path: build/jubler/
 
+    - name: Free up disk space
+      run: |
+        sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost "${AGENT_TOOLSDIRECTORY:-/opt/hostedtoolcache}" 2>/dev/null || true
+        sudo apt-get clean || true
+        df -h /
+
     - name: Set up Docker Buildx
       if: matrix.target.name == 'windows'
       uses: docker/setup-buildx-action@v3
@@ -337,6 +343,17 @@ jobs:
            # Sign all binaries in the .app bundle with entitlements
            echo "✍️  Signing app bundle contents..."
            find /Volumes/Jubler/Jubler.app -type f \( -name "*.dylib" -o -name "*.jnilib" -o -perm +111 \) -exec codesign --force --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist {} \; || true
+
+           # The bundled ffmpeg/ffprobe live under Contents/app (a resource location that
+           # codesign --deep does not reach) and have no extension, so sign them explicitly
+           # with hardened runtime + secure timestamp or notarization rejects them.
+           for tool in ffmpeg ffprobe; do
+             bin="/Volumes/Jubler/Jubler.app/Contents/app/$tool"
+             if [ -f "$bin" ]; then
+               echo "✍️  Signing bundled $tool..."
+               codesign --force --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist "$bin"
+             fi
+           done
 
            # Sign native libraries inside JAR files
            echo "✍️  Signing native libraries inside JAR files..."

@@ -121,8 +121,8 @@ public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
                 return;
             }
             String description = release.getString("body", null);
-            if (description == null) {
-                DEBUG.debug("Description not found");
+            if (description == null || description.trim().isEmpty()) {
+                DEBUG.debug("Description empty - skipping release without notes");
                 return;
             }
 
