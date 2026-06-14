@@ -16,19 +16,38 @@ NC='\033[0m'  # No Color
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 dist_dir=$script_dir/dist
-valid_targets=("windows" "linux" "generic" "macos" "all")
+valid_targets=("windows" "linux" "linux-arm64" "generic" "macos" "macos-arm64" "all")
 
 # KPacker configuration
 kpacker_bin="$HOME/Works/System/bin/arch/linux-x86_64/kpacker"
 jubler_source_generic="$script_dir/build/jubler-generic"
 jubler_source_linux64="$script_dir/build/jubler-linux64"
+jubler_source_linuxarm64="$script_dir/build/jubler-linuxarm64"
 jubler_source_macos="$script_dir/build/jubler-macos"
+jubler_source_macosarm64="$script_dir/build/jubler-macosarm64"
 jubler_source_win64="$script_dir/build/jubler-win64"
+fetch_ffmpeg_script="$script_dir/resources/ffmpeg/fetch-ffmpeg.sh"
 jubler_icon="$script_dir/resources/logo/logo.svg"
 installer_icon="$script_dir/resources/logo/installer.svg"
 subfile_icon="$script_dir/resources/logo/subfile.svg"
 document_extensions="srt,vtt,ass,ssa,ttml,dfxp,itt,txt,sub,stl,xml,sbv"
 document_name="Jubler subtitle file"
+
+# Download and place the ffmpeg + ffprobe executables into a source lib dir so
+# they are bundled next to jubler.jar. Skipped for the generic package (which
+# relies on a system ffmpeg) and when JUBLER_BUNDLE_FFMPEG=false.
+# Args: $1 = KPacker target (WindowsX64|LinuxX64|LinuxArm64|MacX64|MacArm64)
+#       $2 = source lib directory
+embed_ffmpeg() {
+    if [ "${JUBLER_BUNDLE_FFMPEG:-true}" != "true" ]; then
+        return 0
+    fi
+    if [ -x "$2/ffmpeg" ] || [ -f "$2/ffmpeg.exe" ]; then
+        return 0  # already embedded
+    fi
+    echo -e "${GREEN}Embedding ffmpeg ($1)...${NC}"
+    "$fetch_ffmpeg_script" "$1" "$2"
+}
 
 display_help() {
     echo -e "This is a helper script for building Jubler:"
@@ -96,7 +115,8 @@ build_windows() {
         output_dir="$dist_dir/temp_windows"
     fi
 
-    # Use KPacker to create Windows installer
+    # Bundle ffmpeg and create the Windows installer
+    embed_ffmpeg WindowsX64 "$jubler_source_win64/lib"
     "$kpacker_bin" --source="$jubler_source_win64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=WindowsX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
@@ -131,7 +151,8 @@ build_linux() {
         output_dir="$dist_dir/temp_linux"
     fi
 
-    # Use KPacker to create Linux x64 AppImage
+    # Bundle ffmpeg and create the Linux x64 AppImage
+    embed_ffmpeg LinuxX64 "$jubler_source_linux64/lib"
     "$kpacker_bin" --source="$jubler_source_linux64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
@@ -204,6 +225,7 @@ build_macos() {
     # Use KPacker to create macOS DMG with template (uncompressed for CI/CD signing)
     # KPacker auto-detects CI/CD environment and uses sudo when needed
     dmg_template="$script_dir/resources/installer/dmg_mac.zip"
+    embed_ffmpeg MacX64 "$jubler_source_macos/lib"
     "$kpacker_bin" --source="$jubler_source_macos/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --install-icon="$installer_icon" --dmg-template="$dmg_template" --no-dmg-compress --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
@@ -219,6 +241,67 @@ build_macos() {
         echo -e "${GREEN}macOS DMG (uncompressed) created successfully.${NC}"
     else
         echo -e "${RED}Error:${NC} Could not create macOS DMG."
+        exit 1
+    fi
+}
+
+build_linux_arm64() {
+    echo -e "${GREEN}Building for Linux (arm64)...${NC}"
+    cd "$script_dir"
+
+    if [ ! -d "$jubler_source_linuxarm64" ]; then
+        gradle clean assembleDistribution
+    fi
+
+    version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
+
+    local output_dir="$dist_dir"
+    if [ "$build_multi_mode" = "true" ]; then
+        output_dir="$dist_dir/temp_linux_arm64"
+    fi
+
+    # Bundle ffmpeg and create the Linux arm64 AppImage
+    embed_ffmpeg LinuxArm64 "$jubler_source_linuxarm64/lib"
+    "$kpacker_bin" --source="$jubler_source_linuxarm64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxArm64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+
+    if [ "$build_multi_mode" = "true" ]; then
+        mv "$output_dir"/Jubler-*-aarch64.AppImage "$dist_dir/"
+        rm -rf "$output_dir"
+    fi
+
+    if [ -e "$dist_dir"/Jubler-*-aarch64.AppImage ]; then
+        echo -e "${GREEN}Linux arm64 AppImage created successfully.${NC}"
+    else
+        echo -e "${RED}Error:${NC} Could not create Linux arm64 AppImage."
+        exit 1
+    fi
+}
+
+build_macos_arm64() {
+    echo -e "${GREEN}Building for macOS (Apple Silicon)...${NC}"
+    cd "$script_dir"
+
+    if [ ! -d "$jubler_source_macosarm64" ]; then
+        gradle clean assembleDistribution
+    fi
+
+    version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
+
+    # Always use a temp dir: the arm64 DMG is renamed so it does not clash with
+    # the Intel DMG (both are produced as Jubler-<version>.dmg by KPacker).
+    local output_dir="$dist_dir/temp_macos_arm64"
+
+    dmg_template="$script_dir/resources/installer/dmg_mac.zip"
+    embed_ffmpeg MacArm64 "$jubler_source_macosarm64/lib"
+    "$kpacker_bin" --source="$jubler_source_macosarm64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacArm64 --icon="$jubler_icon" --install-icon="$installer_icon" --dmg-template="$dmg_template" --no-dmg-compress --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+
+    mv "$output_dir"/Jubler-*.dmg "$dist_dir/Jubler-${version}-arm64.dmg"
+    rm -rf "$output_dir"
+
+    if [ -e "$dist_dir/Jubler-${version}-arm64.dmg" ]; then
+        echo -e "${GREEN}macOS arm64 DMG (uncompressed) created successfully.${NC}"
+    else
+        echo -e "${RED}Error:${NC} Could not create macOS arm64 DMG."
         exit 1
     fi
 }
@@ -271,17 +354,25 @@ build_action() {
             "linux")
                 build_linux
                 ;;
+            "linux-arm64")
+                build_linux_arm64
+                ;;
             "generic")
                 build_generic
                 ;;
             "macos")
                 build_macos
                 ;;
+            "macos-arm64")
+                build_macos_arm64
+                ;;
             "all")
                 build_windows
                 build_macos
+                build_macos_arm64
                 build_generic
                 build_linux
+                build_linux_arm64
                 ;;
             *)
                 echo -e "${RED}Error:${NC} Unknown build target: $target"

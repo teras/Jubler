@@ -127,7 +127,13 @@ tasks.register<Copy>("copyPlatformExtras") {
         into("jubler-linux64/lib")
     }
     from(layout.buildDirectory.dir("jubler/lib")) {
+        into("jubler-linuxarm64/lib")
+    }
+    from(layout.buildDirectory.dir("jubler/lib")) {
         into("jubler-macos/lib")
+    }
+    from(layout.buildDirectory.dir("jubler/lib")) {
+        into("jubler-macosarm64/lib")
     }
     from(layout.buildDirectory.dir("jubler/lib")) {
         into("jubler-win64/lib")
@@ -143,10 +149,22 @@ tasks.register<Copy>("copyPlatformExtras") {
         into("jubler-linux64")
     }
     from(layout.buildDirectory.file("jubler/README.md")) {
+        into("jubler-linuxarm64")
+    }
+    from(layout.buildDirectory.file("jubler/LICENCE.txt")) {
+        into("jubler-linuxarm64")
+    }
+    from(layout.buildDirectory.file("jubler/README.md")) {
         into("jubler-macos")
     }
     from(layout.buildDirectory.file("jubler/LICENCE.txt")) {
         into("jubler-macos")
+    }
+    from(layout.buildDirectory.file("jubler/README.md")) {
+        into("jubler-macosarm64")
+    }
+    from(layout.buildDirectory.file("jubler/LICENCE.txt")) {
+        into("jubler-macosarm64")
     }
     from(layout.buildDirectory.file("jubler/README.md")) {
         into("jubler-win64")

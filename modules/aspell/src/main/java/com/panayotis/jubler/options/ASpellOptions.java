@@ -7,6 +7,7 @@
 package  com.panayotis.jubler.options;
 
 import com.panayotis.jubler.JublerPrefs;
+import com.panayotis.jubler.os.MissingProgram;
 
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
@@ -36,7 +37,7 @@ public class ASpellOptions extends JExtBasicOptions {
      * Creates new form ASpellOptions
      */
     public ASpellOptions(String family, String name) {
-        super(family, name, name, progname, new String[]{"-?"}, null);
+        super(family, name, name, progname);
         initComponents();
 
         dictionaries = new java.util.Vector<ASpellDict>();
@@ -71,6 +72,16 @@ public class ASpellOptions extends JExtBasicOptions {
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    protected void notifyMissing() {
+        MissingProgram.warn(name,
+                __("ASpell not found"),
+                __("ASpell is required for spell checking, but it could not be found on your system."),
+                __("Install ASpell with Homebrew:\n    brew install aspell\nthen install the dictionaries for the languages you need."),
+                __("Download ASpell for Windows from http://aspell.net/win32/\nand install the dictionaries for the languages you need."),
+                __("Install ASpell with your distribution's package manager, e.g.:\n    Debian/Ubuntu:  sudo apt install aspell aspell-en\n    Fedora:         sudo dnf install aspell\n    Arch:           sudo pacman -S aspell"));
+    }
 
     @Override
     public final void updateOptionsPanel() {

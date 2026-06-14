@@ -100,9 +100,15 @@ jobs:
           - name: linux
             artifact: "Jubler-*-x86_64.AppImage"
             display: "Linux AppImage"
+          - name: linux-arm64
+            artifact: "Jubler-*-aarch64.AppImage"
+            display: "Linux arm64 AppImage"
           - name: macos
             artifact: "Jubler-*.dmg"
             display: "macOS DMG"
+          - name: macos-arm64
+            artifact: "Jubler-*-arm64.dmg"
+            display: "macOS arm64 DMG"
           - name: windows
             artifact: "Jubler-*-x64.exe"
             display: "Windows Installer"
@@ -133,7 +139,7 @@ jobs:
 
         echo "===== Installing packages ====="
         sudo apt-get update
-        sudo apt-get install -y curl wget hfsplus hfsprogs hfsutils
+        sudo apt-get install -y curl wget unzip xz-utils hfsplus hfsprogs hfsutils
 
         echo ""
         echo "===== Installing linux-modules-extra (contains HFS+ module) ====="
@@ -191,7 +197,7 @@ jobs:
         mkdir -p $HOME/Works/System/bin/arch/linux-x86_64
 
         # Download KPacker binary
-        wget -O $HOME/Works/System/bin/arch/linux-x86_64/kpacker https://github.com/teras/KPacker/releases/download/v0.1/kpacker
+        wget -O $HOME/Works/System/bin/arch/linux-x86_64/kpacker https://github.com/teras/KPacker/releases/download/v0.2/kpacker
         chmod +x $HOME/Works/System/bin/arch/linux-x86_64/kpacker
 
         # Test KPacker
@@ -200,6 +206,11 @@ jobs:
 
     - name: Build ${{ matrix.target.display }}
       id: build
+      env:
+        # Pinned arm64 macOS ffmpeg/ffprobe static builds (required only for the
+        # macos-arm64 target). Set these as repository variables.
+        FFMPEG_MACARM64_URL: ${{ vars.FFMPEG_MACARM64_URL }}
+        FFPROBE_MACARM64_URL: ${{ vars.FFPROBE_MACARM64_URL }}
       run: |
         # Set environment for Docker/KPacker
         export DOCKER_BUILDKIT=1
@@ -237,6 +248,10 @@ jobs:
     runs-on: macos-latest
     if: github.repository_owner == 'teras' # Replace with your username
     environment: test
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: [macos, macos-arm64]
 
     steps:
     - name: Checkout code
@@ -247,7 +262,7 @@ jobs:
     - name: Download macOS build
       uses: actions/download-artifact@v4
       with:
-        name: jubler-macos-${{ needs.prepare.outputs.version }}
+        name: jubler-${{ matrix.variant }}-${{ needs.prepare.outputs.version }}
         path: dist/
 
     - name: Sign and compress macOS DMG
@@ -387,7 +402,7 @@ jobs:
     - name: Upload signed macOS DMG
       uses: actions/upload-artifact@v4
       with:
-        name: jubler-signed-macos-${{ needs.prepare.outputs.version }}
+        name: jubler-signed-${{ matrix.variant }}-${{ needs.prepare.outputs.version }}
         path: dist/*.dmg
         retention-days: 30
 
@@ -460,7 +475,7 @@ jobs:
       if: success()
       uses: actions/upload-artifact@v4
       with:
-        name: jubler-signed-macos-${{ needs.prepare.outputs.version }}
+        name: jubler-signed-${{ matrix.variant }}-${{ needs.prepare.outputs.version }}
         path: dist/*.dmg
         retention-days: 30
         overwrite: 'true'

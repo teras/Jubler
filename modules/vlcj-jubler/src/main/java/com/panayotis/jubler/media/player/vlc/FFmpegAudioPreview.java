@@ -13,11 +13,18 @@ import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.AudioPreviewData;
 
 import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.os.MissingProgram;
+import com.panayotis.jubler.os.SystemFileFinder;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent;
 import javax.swing.SwingUtilities;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -33,9 +40,7 @@ public class FFmpegAudioPreview implements AudioPreview {
 
     // Cached paths - null means not checked yet, empty string means not found
     private static String cachedFFmpegPath = null;
-    private static String cachedFFplayPath = null;
     private static String cachedFFprobePath = null;
-    private static boolean userWarned = false;
 
     // Media information from ffprobe
     private static class MediaInfo {
@@ -101,35 +106,26 @@ public class FFmpegAudioPreview implements AudioPreview {
     }
 
     /**
-     * Check for FFmpeg tools and warn user if missing.
-     * Should be called once when preview is first opened.
+     * Check for FFmpeg and warn the user, once per session, if it is missing.
+     * Should be called when preview is first opened.
      */
     public static void checkToolsAndWarn() {
-        if (userWarned)
-            return;
-        userWarned = true;
+        if (findFFmpegPath() == null)
+            warnFFmpegMissing();
+    }
 
-        // Force check both tools
-        String ffmpeg = findFFmpegPath();
-        String ffplay = findFFplayPath();
-
-        StringBuilder missing = new StringBuilder();
-        if (ffmpeg == null || ffmpeg.isEmpty()) {
-            missing.append("ffmpeg");
-        }
-        if (ffplay == null || ffplay.isEmpty()) {
-            if (missing.length() > 0)
-                missing.append(", ");
-            missing.append("ffplay");
-        }
-
-        if (missing.length() > 0) {
-            String message = __("Audio preview requires FFmpeg tools which were not found: {0}\n\n" +
-                    "Please install FFmpeg to enable waveform display and audio playback.", missing.toString());
-            SwingUtilities.invokeLater(() ->
-                    JOptionPane.showMessageDialog(null, message,
-                            __("FFmpeg not found"), JOptionPane.WARNING_MESSAGE));
-        }
+    /**
+     * Tell the user, with operating-system specific instructions, that FFmpeg
+     * is required but missing. Shown at most once per session (see
+     * {@link MissingProgram}).
+     */
+    private static void warnFFmpegMissing() {
+        MissingProgram.warn("FFmpeg",
+                __("FFmpeg not found"),
+                __("FFmpeg is required for the audio waveform and playback, but it could not be found on your system."),
+                __("Install FFmpeg with Homebrew:\n    brew install ffmpeg\nor download it from https://ffmpeg.org/download.html"),
+                __("Download FFmpeg from https://ffmpeg.org/download.html\n(for example the 'gyan.dev' or 'BtbN' builds) and make sure\nffmpeg.exe and ffprobe.exe are reachable through your PATH.\nWith winget:  winget install Gyan.FFmpeg"),
+                __("Install FFmpeg with your distribution's package manager, e.g.:\n    Debian/Ubuntu:  sudo apt install ffmpeg\n    Fedora:         sudo dnf install ffmpeg\n    Arch:           sudo pacman -S ffmpeg"));
     }
 
     @Override
@@ -410,17 +406,17 @@ public class FFmpegAudioPreview implements AudioPreview {
             return;
 
         String ffmpeg = findFFmpegPath();
-        String ffplay = findFFplayPath();
-        if (ffmpeg == null || ffplay == null)
+        if (ffmpeg == null) {
+            warnFFmpegMissing();
             return;
+        }
 
         try {
-            // ffplay's own -ss is an input (keyframe) seek: on a video file it lands on the
-            // previous *video* keyframe, and a GOP can be many seconds long, so the clip
-            // would start far too early (the stop point is correct, only the start is wrong).
-            // Extract the exact slice with an accurate ffmpeg seek first, then play that file.
-            // Two separate steps (instead of a pipe) keep the behaviour predictable across
-            // Windows/Linux/macOS on both Intel and ARM - no stdin streaming, no pipe buffers.
+            // Extract the exact slice with an accurate ffmpeg seek, then play the
+            // resulting WAV. The seek must happen here (not at playback time) so the
+            // clip starts precisely: an input seek on a video file lands on the
+            // previous video keyframe, which can be many seconds early. The extracted
+            // WAV is plain PCM, so Java Sound plays it directly - no external player.
             final File clip = File.createTempFile("jubler-clip", ".wav");
             final Process extractor = new ProcessBuilder(
                     ffmpeg, "-v", "error", "-y",
@@ -431,18 +427,14 @@ public class FFmpegAudioPreview implements AudioPreview {
                     "-vn", clip.getAbsolutePath()
             ).inheritIO().start();
 
-            // Wait for the extraction, then play, then clean up - all off the EDT.
+            // Wait for the extraction off the EDT, then hand the clip to Java Sound.
             Thread runner = new Thread(() -> {
                 try {
-                    if (extractor.waitFor() == 0 && clip.length() > 0) {
-                        Process player = new ProcessBuilder(
-                                ffplay, "-nodisp", "-autoexit", clip.getAbsolutePath()
-                        ).inheritIO().start();
-                        player.waitFor();
-                    }
+                    if (extractor.waitFor() == 0 && clip.length() > 0)
+                        playWav(clip);
+                    else
+                        clip.delete();
                 } catch (Exception ignored) {
-                    // interrupted or a process failed - nothing to recover
-                } finally {
                     clip.delete();
                 }
             }, "audio-clip");
@@ -455,16 +447,30 @@ public class FFmpegAudioPreview implements AudioPreview {
     }
 
     /**
-     * Find FFplay path with caching.
-     * @return path to ffplay, or null if not found
+     * Play a (short) PCM WAV file with Java Sound and delete it once playback
+     * finishes. The clip is fully buffered, which is fine for the brief preview
+     * snippets this is used for.
      */
-    private static synchronized String findFFplayPath() {
-        if (cachedFFplayPath != null)
-            return cachedFFplayPath.isEmpty() ? null : cachedFFplayPath;
-
-        String result = searchForTool("ffplay");
-        cachedFFplayPath = (result == null) ? "" : result;
-        return result;
+    private static void playWav(File clip) {
+        try {
+            AudioInputStream ais = AudioSystem.getAudioInputStream(clip);
+            Clip line = AudioSystem.getClip();
+            line.open(ais);
+            line.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    line.close();
+                    try {
+                        ais.close();
+                    } catch (IOException ignored) {
+                    }
+                    clip.delete();
+                }
+            });
+            line.start();
+        } catch (Exception e) {
+            DEBUG.debug(e);
+            clip.delete();
+        }
     }
 
     /**
@@ -481,17 +487,31 @@ public class FFmpegAudioPreview implements AudioPreview {
     }
 
     /**
-     * Search for an FFmpeg tool in common locations.
-     * @param toolName the tool name (ffmpeg, ffplay, ffprobe)
+     * Search for an FFmpeg tool. Order: the copy bundled next to the application
+     * (present in the self-contained packages), then the platform's usual install
+     * locations, then the system PATH. The macOS locations matter because an app
+     * launched from a .app bundle does not inherit the shell PATH, so Homebrew /
+     * MacPorts paths must be probed explicitly.
+     * @param toolName the tool name (ffmpeg, ffprobe)
      * @return full path if found, null otherwise
      */
     private static String searchForTool(String toolName) {
-        String[] paths = {
-                "/app/lib/ffmpeg/bin/" + toolName,  // Flatpak
-                "/usr/bin/" + toolName,
-                "/usr/local/bin/" + toolName,
-                toolName  // PATH
-        };
+        String os = System.getProperty("os.name").toLowerCase();
+        boolean windows = os.contains("windows");
+        String exe = windows ? toolName + ".exe" : toolName;
+
+        List<String> paths = new ArrayList<>();
+        // Bundled next to the application (self-contained packages)
+        paths.add(new File(SystemFileFinder.AppPath, exe).getAbsolutePath());
+        if (os.startsWith("mac")) {
+            paths.add("/opt/homebrew/bin/" + toolName);  // Apple Silicon Homebrew
+            paths.add("/usr/local/bin/" + toolName);     // Intel Homebrew
+            paths.add("/opt/local/bin/" + toolName);     // MacPorts
+        } else if (!windows) {
+            paths.add("/usr/bin/" + toolName);
+            paths.add("/usr/local/bin/" + toolName);
+        }
+        paths.add(exe);  // PATH
 
         for (String path : paths) {
             try {

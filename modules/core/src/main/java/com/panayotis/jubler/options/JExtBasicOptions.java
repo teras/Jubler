@@ -7,11 +7,12 @@
 package  com.panayotis.jubler.options;
 
 import com.panayotis.jubler.JublerPrefs;
-import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.os.MissingProgram;
 import static com.panayotis.jubler.i18n.I18N.__;
 
-import com.panayotis.jubler.tools.externals.wizard.JWizard;
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 
 public class JExtBasicOptions extends JPanel {
@@ -19,21 +20,17 @@ public class JExtBasicOptions extends JPanel {
     protected String name;
     protected String descriptiveName;
     protected String family;
-    protected String[] testparameters;
-    protected String test_signature;
-    private ArrayList<String> searchname;
+    private final ArrayList<String> searchname;
 
     /**
      * Creates new form MPlay
      */
-    public JExtBasicOptions(String family, String name, String descriptiveName, ArrayList<String> searchname, String[] testparameters, String test_signature) {
+    public JExtBasicOptions(String family, String name, String descriptiveName, ArrayList<String> searchname) {
         super();
 
         this.family = family;
         this.name = name;
         this.descriptiveName = descriptiveName;
-        this.testparameters = testparameters;
-        this.test_signature = test_signature;
         this.searchname = searchname;
 
         initComponents();
@@ -50,46 +47,35 @@ public class JExtBasicOptions extends JPanel {
         BrowserP = new javax.swing.JPanel();
         FilenameT = new javax.swing.JTextField();
         FileL = new javax.swing.JLabel();
-        WizardB = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
         BrowserP.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 8, 0));
         BrowserP.setLayout(new java.awt.BorderLayout());
 
-        FilenameT.setEditable(false);
         FilenameT.setColumns(20);
-        FilenameT.setToolTipText(__("The absolute path of the player. Use the Browse button to change it"));
+        FilenameT.setToolTipText(__("The absolute path of the executable. Leave empty to auto-detect from the system path"));
         BrowserP.add(FilenameT, java.awt.BorderLayout.CENTER);
 
         FileL.setText(__("{0} path", descriptiveName));
         BrowserP.add(FileL, java.awt.BorderLayout.NORTH);
 
-        WizardB.setText(__("Wizard"));
-        WizardB.setToolTipText(__("Start the Wizard, to locate the executable path name"));
-        SystemDependent.setCommandButtonStyle(WizardB, "only");
-        WizardB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                WizardBActionPerformed(evt);
-            }
-        });
-        BrowserP.add(WizardB, java.awt.BorderLayout.EAST);
-
         add(BrowserP, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void WizardBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WizardBActionPerformed
-        searchForExecutable();
-    }//GEN-LAST:event_WizardBActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     protected javax.swing.JPanel BrowserP;
     private javax.swing.JLabel FileL;
     private javax.swing.JTextField FilenameT;
-    private javax.swing.JButton WizardB;
     // End of variables declaration//GEN-END:variables
 
     protected void loadPreferences() {
-        FilenameT.setText(JublerPrefs.getString(family.toLowerCase() + "." + name.toLowerCase() + ".path", ""));
+        String stored = JublerPrefs.getString(family.toLowerCase() + "." + name.toLowerCase() + ".path", "");
+        if (stored.isEmpty()) {
+            String detected = autoDetect();
+            if (detected != null)
+                stored = detected;
+        }
+        FilenameT.setText(stored);
     }
 
     protected void savePreferences() {
@@ -108,27 +94,61 @@ public class JExtBasicOptions extends JPanel {
     protected void updateOptionsPanel() {
     }
 
-    /* Use this method when we want to search for the executable path */
-    private boolean searchForExecutable() {
-        JWizard wiz = new JWizard(name, searchname, testparameters, test_signature, FilenameT.getText());
-        wiz.setVisible(true);
-        String fname = wiz.getExecFilename();
-        if (fname != null) {
-            FilenameT.setText(fname);
-            updateOptionsPanel();
-            return true;
-        }
-        return false;
+    /**
+     * Locate the executable: the currently configured path if it is valid,
+     * otherwise the first candidate name found on the system path or in the
+     * usual install directories. GUI launches (notably a macOS .app) do not
+     * inherit the shell PATH, so the common bin directories are probed too.
+     * @return the executable path, or null if none was found
+     */
+    private String autoDetect() {
+        String current = FilenameT == null ? null : FilenameT.getText();
+        if (current != null && !current.isEmpty() && new File(current).canExecute())
+            return current;
+
+        List<String> dirs = new ArrayList<>();
+        String path = System.getenv("PATH");
+        if (path != null)
+            for (String dir : path.split(File.pathSeparator))
+                if (!dir.isEmpty())
+                    dirs.add(dir);
+        dirs.add("/usr/bin");
+        dirs.add("/usr/local/bin");
+        dirs.add("/opt/homebrew/bin");
+        dirs.add("/opt/local/bin");
+
+        for (String dir : dirs)
+            for (String candidate : searchname) {
+                File f = new File(dir, candidate);
+                if (f.canExecute())
+                    return f.getAbsolutePath();
+            }
+        return null;
     }
 
     /**
-     * Request the executable path and save this information
+     * Tell the user the program is missing. Subclasses override this to give
+     * operating-system specific installation instructions.
+     */
+    protected void notifyMissing() {
+        String msg = __("{0} could not be found on your system. Please install it and set its path in the preferences.", descriptiveName);
+        MissingProgram.warn(name, __("{0} not found", descriptiveName), msg, "", "", "");
+    }
+
+    /**
+     * Make sure the executable path is known: auto-detect it if needed, or warn
+     * the user (with install instructions) when it cannot be found.
+     * @return true if an executable path is available
      */
     public boolean requestExecutable() {
-        boolean found = searchForExecutable();
-        if (found) {
+        String found = autoDetect();
+        if (found != null) {
+            FilenameT.setText(found);
             savePreferences();
+            updateOptionsPanel();
+            return true;
         }
-        return found;
+        notifyMissing();
+        return false;
     }
 }

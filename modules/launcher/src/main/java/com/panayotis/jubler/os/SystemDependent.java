@@ -6,8 +6,6 @@
 
 package com.panayotis.jubler.os;
 
-import com.panayotis.jubler.tools.externals.ExtPath;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -16,8 +14,6 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class SystemDependent {
 
@@ -100,71 +96,6 @@ public class SystemDependent {
         if (IS_MACOSX)
             return KeyEvent.META_DOWN_MASK;
         return KeyEvent.CTRL_DOWN_MASK;
-    }
-
-    public static int getBundleOrFileID() {
-        if (IS_MACOSX)
-            return ExtPath.BUNDLE_ONLY;
-        return ExtPath.FILE_ONLY;
-    }
-
-    /* This method is valid only under Mac OSX.
-     * It uses Spotlight to find a desired application.
-     * Under other platforms does not do anything
-     */
-    public static void appendSpotlightApplication(String name, ArrayList<ExtPath> res) {
-        if (!IS_MACOSX)
-            return;
-        if (name == null)
-            return;
-        Process proc = null;
-        String[] cmd = new String[2];
-        cmd[0] = "mdfind";
-        cmd[1] = "kMDItemDisplayName == '" + name + "*'";   // Use this trick to avoid spaces problems inside the filename
-        try {
-            String line;
-            proc = Runtime.getRuntime().exec(cmd);
-            proc.waitFor();
-            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            while ((line = in.readLine()) != null)
-                if (line.endsWith(".app"))
-                    res.add(new ExtPath(line, ExtPath.BUNDLE_ONLY));
-        } catch (Exception ex) {
-        }
-    }
-
-    public static void appendLocateApplication(String name, ArrayList<ExtPath> res) {
-        if (IS_WINDOWS)
-            return;
-        if (name == null)
-            return;
-
-        name = name.toLowerCase();
-        Process proc = null;
-        String[] cmd = new String[2];
-        cmd[0] = "locate";
-        cmd[1] = name;
-        try {
-            String line;
-            proc = Runtime.getRuntime().exec(cmd);
-            BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            while ((line = in.readLine()) != null)
-                if (line.endsWith(File.separator + name))
-                    res.add(new ExtPath(line, ExtPath.FILE_ONLY));
-        } catch (Exception ex) {
-        }
-    }
-
-    public static void appendPathApplication(ArrayList<ExtPath> res) {
-        StringTokenizer st = new StringTokenizer(System.getenv("PATH"), File.pathSeparator);
-        while (st.hasMoreTokens())
-            res.add(new ExtPath(st.nextToken(), 1));
-
-        // Add some system dependent paths
-        res.add(new ExtPath("/sw/bin", 1));
-        res.add(new ExtPath("/usr/local/bin", 1));
-        res.add(new ExtPath("C:\\Program Files", 3));
-        res.add(new ExtPath(System.getProperty("user.home"), 3));
     }
 
     /* A dirty dirty dirty trick to be able to find the actual canWrite attribute under Windows */
