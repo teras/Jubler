@@ -1,4 +1,3 @@
-^resources/ffmpeg/libraries
 build/
 /dist/
 ^_support/

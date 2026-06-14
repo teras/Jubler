@@ -42,6 +42,6 @@ public class VLCPlugin implements PluginCollection, PluginItem<Launcher>, Suppli
     @Override
     public void execPlugin(Launcher caller) {
         PreviewProviderRegistry.registerVideo(this);
-        PreviewProviderRegistry.registerAudio(FFmpegAudioPreview::new);
+        PreviewProviderRegistry.registerAudio(VLCAudioPreview::new);
     }
 }

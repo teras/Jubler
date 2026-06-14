@@ -125,12 +125,6 @@ jobs:
         name: jubler-base-build-${{ needs.prepare.outputs.version }}
         path: build/jubler/
 
-    - name: Free up disk space
-      run: |
-        sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost "${AGENT_TOOLSDIRECTORY:-/opt/hostedtoolcache}" 2>/dev/null || true
-        sudo apt-get clean || true
-        df -h /
-
     - name: Set up Docker Buildx
       if: matrix.target.name == 'windows'
       uses: docker/setup-buildx-action@v3
@@ -145,7 +139,7 @@ jobs:
 
         echo "===== Installing packages ====="
         sudo apt-get update
-        sudo apt-get install -y curl wget unzip xz-utils hfsplus hfsprogs hfsutils
+        sudo apt-get install -y curl wget hfsplus hfsprogs hfsutils
 
         echo ""
         echo "===== Installing linux-modules-extra (contains HFS+ module) ====="
@@ -212,11 +206,6 @@ jobs:
 
     - name: Build ${{ matrix.target.display }}
       id: build
-      env:
-        # Pinned arm64 macOS ffmpeg/ffprobe static builds (required only for the
-        # macos-arm64 target). Set these as repository variables.
-        FFMPEG_MACARM64_URL: ${{ vars.FFMPEG_MACARM64_URL }}
-        FFPROBE_MACARM64_URL: ${{ vars.FFPROBE_MACARM64_URL }}
       run: |
         # Set environment for Docker/KPacker
         export DOCKER_BUILDKIT=1
@@ -344,14 +333,14 @@ jobs:
            echo "✍️  Signing app bundle contents..."
            find /Volumes/Jubler/Jubler.app -type f \( -name "*.dylib" -o -name "*.jnilib" -o -perm +111 \) -exec codesign --force --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist {} \; || true
 
-           # The bundled ffmpeg/ffprobe live under Contents/app (a resource location that
-           # codesign --deep does not reach) and have no extension, so sign them explicitly
-           # with hardened runtime + secure timestamp or notarization rejects them.
-           for tool in ffmpeg ffprobe; do
-             bin="/Volumes/Jubler/Jubler.app/Contents/app/$tool"
-             if [ -f "$bin" ]; then
-               echo "✍️  Signing bundled $tool..."
-               codesign --force --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist "$bin"
+           # Re-sign every Mach-O binary regardless of name/location. codesign --deep
+           # does not reach helpers buried in non-standard locations (e.g. the JRE's
+           # Contents/runtime/.../lib/jspawnhelper), so notarization would reject them
+           # as unsigned / no-timestamp / no-hardened-runtime.
+           echo "✍️  Signing every Mach-O binary (incl. JRE helpers)..."
+           find /Volumes/Jubler/Jubler.app -type f | while read -r f; do
+             if file "$f" | grep -q "Mach-O"; then
+               codesign --force --sign "$IDENTITY" --timestamp --options runtime --entitlements resources/macos-entitlements.plist "$f" 2>/dev/null || echo "  could not sign $f"
              fi
            done
 

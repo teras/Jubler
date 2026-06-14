@@ -25,8 +25,7 @@ Licensed under the GNU Affero General Public License v3 (AGPL-3.0)
 - **Format conversion** between all supported types
 
 ### Video Integration
-- **FFmpeg integration** for frame preview and audio waveform visualization
-- **MPlayer support** for video playback
+- **VLC-based** frame preview, audio waveform and video playback
 - **Real-time subtitle editing** while watching video
 - **Interactive timeline** with draggable subtitle blocks
 - **Two-point synchronization** for timing alignment

@@ -28,7 +28,7 @@ public class MissingProgram {
      * Warn the user, at most once per program per session, that an external
      * program is missing, showing how to install it on the current platform.
      *
-     * @param programName        dedup key (e.g. "FFmpeg")
+     * @param programName        dedup key (e.g. "VLC")
      * @param title              dialog title
      * @param description        what the program is needed for
      * @param macInstructions    install instructions shown on macOS

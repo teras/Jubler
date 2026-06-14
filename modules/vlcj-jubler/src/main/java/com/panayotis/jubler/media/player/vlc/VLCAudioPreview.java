@@ -14,13 +14,21 @@ import com.panayotis.jubler.media.preview.decoders.AudioPreviewData;
 
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.MissingProgram;
-import com.panayotis.jubler.os.SystemFileFinder;
+
+import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.media.Media;
+import uk.co.caprica.vlcj.media.MediaEventAdapter;
+import uk.co.caprica.vlcj.media.MediaParsedStatus;
+import uk.co.caprica.vlcj.media.VideoTrackInfo;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -29,7 +37,14 @@ import javax.swing.SwingUtilities;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
-public class FFmpegAudioPreview implements AudioPreview {
+/**
+ * Audio preview (waveform + metadata + snippet playback) backed entirely by
+ * libvlc through vlcj/JNA - no external ffmpeg/ffprobe. The waveform PCM is
+ * produced by a libvlc {@code sout} transcode (faster than realtime), media
+ * metadata comes from libvlc parsing, and snippet playback is an audio-only
+ * play with a precise from/to seek (no video-keyframe alignment).
+ */
+public class VLCAudioPreview implements AudioPreview {
 
     private static final int SAMPLE_RATE = 8000;  // 8kHz extraction
     private static final int SAMPLES_PER_MS = SAMPLE_RATE / 1000;  // 8 samples per ms
@@ -38,11 +53,37 @@ public class FFmpegAudioPreview implements AudioPreview {
     private volatile boolean interrupted = false;
     private volatile boolean cacheCreationInProgress = false;
 
-    // Cached paths - null means not checked yet, empty string means not found
-    private static String cachedFFmpegPath = null;
-    private static String cachedFFprobePath = null;
+    // Single shared libvlc factory for all audio operations (parse, transcode, play).
+    private static MediaPlayerFactory factory;
+    private static boolean factoryChecked = false;
 
-    // Media information from ffprobe
+    private static synchronized MediaPlayerFactory factory() {
+        if (!factoryChecked) {
+            factoryChecked = true;
+            try {
+                factory = new MediaPlayerFactory();
+            } catch (Throwable t) {
+                DEBUG.debug(t);
+                factory = null;
+            }
+        }
+        return factory;
+    }
+
+    /**
+     * Tell the user, with operating-system specific instructions, that VLC is
+     * required but missing. Shown at most once per session (see {@link MissingProgram}).
+     */
+    private static void warnVLCMissing() {
+        MissingProgram.warn("VLC",
+                __("VLC not found"),
+                __("VLC is required for the video preview and audio waveform, but it could not be found on your system."),
+                __("Install VLC with Homebrew:\n    brew install --cask vlc\nor download it from https://www.videolan.org/vlc/"),
+                __("Download VLC from https://www.videolan.org/vlc/\nand install it."),
+                __("Install VLC with your distribution's package manager, e.g.:\n    Debian/Ubuntu:  sudo apt install vlc\n    Fedora:         sudo dnf install vlc\n    Arch:           sudo pacman -S vlc"));
+    }
+
+    // Media information from libvlc parsing
     private static class MediaInfo {
         double duration = 0;
         int width = 0;
@@ -52,86 +93,48 @@ public class FFmpegAudioPreview implements AudioPreview {
 
     private MediaInfo probeMedia(File file) {
         MediaInfo info = new MediaInfo();
-        String ffprobe = findFFprobe();
-        if (ffprobe == null)
+        MediaPlayerFactory f = factory();
+        if (f == null)
             return info;
 
+        Media media = f.media().newMedia(file.getAbsolutePath());
+        if (media == null)
+            return info;
         try {
-            ProcessBuilder pb = new ProcessBuilder(
-                    ffprobe,
-                    "-v", "quiet",
-                    "-print_format", "flat",
-                    "-show_format",
-                    "-show_streams",
-                    file.getAbsolutePath()
-            );
-            pb.redirectErrorStream(true);
-            Process process = pb.start();
-
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.contains("width="))
-                        info.width = parseIntValue(line);
-                    else if (line.contains("height="))
-                        info.height = parseIntValue(line);
-                    else if (line.contains("format.duration="))
-                        info.duration = parseDoubleValue(line);
-                    else if (line.contains("r_frame_rate="))
-                        info.fps = parseFpsValue(line);
+            CountDownLatch parsed = new CountDownLatch(1);
+            media.events().addMediaEventListener(new MediaEventAdapter() {
+                @Override
+                public void mediaParsedChanged(Media m, MediaParsedStatus newStatus) {
+                    parsed.countDown();
                 }
-            }
+            });
+            media.parsing().parse();
+            parsed.await(10, TimeUnit.SECONDS);
 
-            process.waitFor();
+            long durMs = media.info().duration();
+            if (durMs > 0)
+                info.duration = durMs / 1000.0;
+            for (VideoTrackInfo vt : media.info().videoTracks()) {
+                info.width = vt.width();
+                info.height = vt.height();
+                if (vt.frameRateBase() > 0)
+                    info.fps = (float) vt.frameRate() / vt.frameRateBase();
+                break;
+            }
         } catch (Exception e) {
             DEBUG.debug(e);
+        } finally {
+            media.release();
         }
-
         return info;
-    }
-
-    /**
-     * Find FFprobe path with caching. Resolved independently of ffmpeg so a
-     * custom install directory containing the substring "ffmpeg" does not
-     * corrupt the derived path.
-     * @return path to ffprobe, or null if not found
-     */
-    private static synchronized String findFFprobe() {
-        if (cachedFFprobePath != null)
-            return cachedFFprobePath.isEmpty() ? null : cachedFFprobePath;
-
-        String result = searchForTool("ffprobe");
-        cachedFFprobePath = (result == null) ? "" : result;
-        return result;
-    }
-
-    /**
-     * Check for FFmpeg and warn the user, once per session, if it is missing.
-     * Should be called when preview is first opened.
-     */
-    public static void checkToolsAndWarn() {
-        if (findFFmpegPath() == null)
-            warnFFmpegMissing();
-    }
-
-    /**
-     * Tell the user, with operating-system specific instructions, that FFmpeg
-     * is required but missing. Shown at most once per session (see
-     * {@link MissingProgram}).
-     */
-    private static void warnFFmpegMissing() {
-        MissingProgram.warn("FFmpeg",
-                __("FFmpeg not found"),
-                __("FFmpeg is required for the audio waveform and playback, but it could not be found on your system."),
-                __("Install FFmpeg with Homebrew:\n    brew install ffmpeg\nor download it from https://ffmpeg.org/download.html"),
-                __("Download FFmpeg from https://ffmpeg.org/download.html\n(for example the 'gyan.dev' or 'BtbN' builds) and make sure\nffmpeg.exe and ffprobe.exe are reachable through your PATH.\nWith winget:  winget install Gyan.FFmpeg"),
-                __("Install FFmpeg with your distribution's package manager, e.g.:\n    Debian/Ubuntu:  sudo apt install ffmpeg\n    Fedora:         sudo dnf install ffmpeg\n    Arch:           sudo pacman -S ffmpeg"));
     }
 
     @Override
     public boolean isDecoderValid() {
-        checkToolsAndWarn();
-        return findFFmpegPath() != null;
+        if (factory() != null)
+            return true;
+        warnVLCMissing();
+        return false;
     }
 
     @Override
@@ -149,11 +152,12 @@ public class FFmpegAudioPreview implements AudioPreview {
             return false;
         }
 
-        String ffmpeg = findFFmpegPath();
-        if (ffmpeg == null)
+        MediaPlayerFactory f = factory();
+        if (f == null) {
+            warnVLCMissing();
             return false;
+        }
 
-        // Run FFmpeg in background thread
         cacheCreationInProgress = true;
         interrupted = false;
 
@@ -161,55 +165,76 @@ public class FFmpegAudioPreview implements AudioPreview {
             if (callback != null)
                 SwingUtilities.invokeLater(callback::startCacheCreation);
 
+            File raw = null;
             try {
-                // First probe the file to get duration
+                // Probe for duration (used to scale the progress bar)
                 MediaInfo info = probeMedia(afile);
                 long totalSamples = (long) (info.duration * RESOLUTION);
 
-                // Run FFmpeg to extract audio at 8kHz, stereo, signed 16-bit little-endian
-                ProcessBuilder pb = new ProcessBuilder(
-                        ffmpeg,
-                        "-i", afile.getAbsolutePath(),
-                        "-vn",                    // no video
-                        "-ac", "2",               // stereo
-                        "-ar", String.valueOf(SAMPLE_RATE),
-                        "-f", "s16le",            // raw signed 16-bit little-endian
-                        "-"                       // stdout
-                );
-                pb.redirectErrorStream(false);
-                Process process = pb.start();
-
-                // Drain stderr in background to prevent blocking
-                Thread stderrThread = new Thread(() -> {
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            DEBUG.debug("FFmpeg: " + line);
-                        }
-                    } catch (IOException e) {
-                        // Ignore
+                // Transcode the whole file to raw 8kHz stereo s16le via libvlc (fast)
+                raw = File.createTempFile("jubler-wave", ".raw");
+                if (transcodeToRaw(f, afile.getAbsolutePath(), raw) && !interrupted)
+                    try (InputStream in = new FileInputStream(raw)) {
+                        processAudioStream(in, cfile, afile.getName(), callback, totalSamples);
                     }
-                });
-                stderrThread.setDaemon(true);
-                stderrThread.start();
-
-                // Process audio data and write cache
-                processAudioStream(process.getInputStream(), cfile, afile.getName(), callback, totalSamples);
-
-                process.waitFor();
-
             } catch (Exception e) {
                 DEBUG.debug(e);
             } finally {
+                if (raw != null)
+                    raw.delete();
                 cacheCreationInProgress = false;
                 if (callback != null)
                     SwingUtilities.invokeLater(callback::stopCacheCreation);
             }
-        }, "FFmpeg-AudioCache");
+        }, "VLC-AudioCache");
         cacheThread.setDaemon(true);
         cacheThread.start();
 
         return false; // Cache not ready yet
+    }
+
+    /**
+     * Transcode {@code srcPath} to a raw signed-16-bit-little-endian, 8kHz,
+     * stereo PCM stream written to {@code dst}, using a headless libvlc
+     * {@code sout} pipeline. Blocks until libvlc finishes, errors, or the
+     * operation is interrupted. Runs faster than realtime (no audio clock).
+     * @return true if the transcode completed normally
+     */
+    private boolean transcodeToRaw(MediaPlayerFactory f, String srcPath, File dst) {
+        // Forward slashes work on every platform and avoid sout-chain parsing surprises.
+        String out = dst.getAbsolutePath().replace('\\', '/');
+        String sout = ":sout=#transcode{acodec=s16l,channels=2,samplerate=" + SAMPLE_RATE
+                + "}:standard{access=file,mux=raw,dst=" + out + "}";
+
+        MediaPlayer player = f.mediaPlayers().newMediaPlayer();
+        CountDownLatch done = new CountDownLatch(1);
+        final boolean[] ok = {false};
+        player.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+            @Override
+            public void finished(MediaPlayer mp) {
+                ok[0] = true;
+                done.countDown();
+            }
+
+            @Override
+            public void error(MediaPlayer mp) {
+                done.countDown();
+            }
+        });
+        try {
+            if (!player.media().play(srcPath, sout, ":sout-keep", ":no-sout-video"))
+                return false;
+            while (!interrupted && !done.await(150, TimeUnit.MILLISECONDS)) {
+                // wait for the transcode to finish (or for an interrupt)
+            }
+            if (interrupted)
+                player.controls().stop();
+            return ok[0] && !interrupted;
+        } catch (InterruptedException e) {
+            return false;
+        } finally {
+            player.release();
+        }
     }
 
     private boolean isCacheValid(CacheFile cfile) {
@@ -405,57 +430,94 @@ public class FFmpegAudioPreview implements AudioPreview {
         if (audio == null || !audio.exists())
             return;
 
-        String ffmpeg = findFFmpegPath();
-        if (ffmpeg == null) {
-            warnFFmpegMissing();
+        MediaPlayerFactory f = factory();
+        if (f == null) {
+            warnVLCMissing();
             return;
         }
 
-        try {
-            // Extract the exact slice with an accurate ffmpeg seek, then play the
-            // resulting WAV. The seek must happen here (not at playback time) so the
-            // clip starts precisely: an input seek on a video file lands on the
-            // previous video keyframe, which can be many seconds early.
-            // Force 16-bit stereo PCM: Java Sound only reliably plays mono/stereo
-            // PCM, so a 5.1/7.1 source would otherwise produce a multi-channel WAV
-            // its mixer cannot open. -ac 2 downmixes; pcm_s16le keeps it 16-bit.
-            final File clip = File.createTempFile("jubler-clip", ".wav");
-            final Process extractor = new ProcessBuilder(
-                    ffmpeg, "-v", "error", "-y",
-                    "-accurate_seek",
-                    "-ss", String.valueOf(from),
-                    "-t", String.valueOf(to - from),
-                    "-i", audio.getAbsolutePath(),
-                    "-vn", "-ac", "2", "-c:a", "pcm_s16le", clip.getAbsolutePath()
-            ).inheritIO().start();
-
-            // Wait for the extraction off the EDT, then hand the clip to Java Sound.
-            Thread runner = new Thread(() -> {
-                try {
-                    if (extractor.waitFor() == 0 && clip.length() > 0)
-                        playWav(clip);
-                    else
-                        clip.delete();
-                } catch (Exception ignored) {
+        // Extract the exact [from, to] slice to a temp WAV (libvlc sout, precise
+        // because it has no audio clock), then play that bounded WAV with Java Sound -
+        // exactly the old approach, only libvlc instead of ffmpeg for the extraction.
+        // A finite clip cannot overrun, so the snippet never bleeds into the next
+        // subtitle (playing the original with :stop-time overshoots its buffer).
+        Thread runner = new Thread(() -> {
+            File clip = null;
+            try {
+                clip = File.createTempFile("jubler-clip", ".wav");
+                if (extractClip(f, audio.getAbsolutePath(), from, to, clip) && clip.length() > 0)
+                    playWav(clip, to - from);
+                else
                     clip.delete();
-                }
-            }, "audio-clip");
-            runner.setDaemon(true);
-            runner.start();
+            } catch (Exception e) {
+                DEBUG.debug(e);
+                if (clip != null)
+                    clip.delete();
+            }
+        }, "audio-clip");
+        runner.setDaemon(true);
+        runner.start();
+    }
 
-        } catch (Exception e) {
-            DEBUG.debug(e);
+    // libvlc's :stop-time drops the last audio block before the boundary, cutting
+    // the clip a constant ~50ms short. We over-extract by this margin and trim the
+    // tail back to the exact frame count in playWav; :start-time is sample-accurate,
+    // so frame 0 == from and the trimmed clip is exactly [from, to].
+    private static final double TAIL_MARGIN = 0.5;
+
+    /**
+     * Transcode the {@code [from, to]} slice of {@code srcPath} to a stereo 16-bit
+     * PCM WAV at {@code dst} via a headless libvlc sout pipeline, blocking until it
+     * finishes. {@code :start-time} lands exactly at {@code from}; the tail is
+     * over-extracted by {@link #TAIL_MARGIN} and trimmed to the exact length in
+     * {@link #playWav} (libvlc cuts {@code :stop-time} ~50ms early on its own).
+     */
+    private boolean extractClip(MediaPlayerFactory f, String srcPath, double from, double to, File dst) {
+        String out = dst.getAbsolutePath().replace('\\', '/');
+        String sout = ":sout=#transcode{acodec=s16l,channels=2}:standard{access=file,mux=wav,dst=" + out + "}";
+        MediaPlayer player = f.mediaPlayers().newMediaPlayer();
+        CountDownLatch done = new CountDownLatch(1);
+        final boolean[] ok = {false};
+        player.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+            @Override
+            public void finished(MediaPlayer mp) {
+                ok[0] = true;
+                done.countDown();
+            }
+
+            @Override
+            public void error(MediaPlayer mp) {
+                done.countDown();
+            }
+        });
+        try {
+            if (!player.media().play(srcPath, sout, ":sout-keep", ":no-sout-video",
+                    ":start-time=" + from, ":stop-time=" + (to + TAIL_MARGIN)))
+                return false;
+            done.await(30, TimeUnit.SECONDS);
+            return ok[0];
+        } catch (InterruptedException e) {
+            return false;
+        } finally {
+            player.release();
         }
     }
 
     /**
-     * Play a (short) PCM WAV file with Java Sound and delete it once playback
-     * finishes. The clip is fully buffered, which is fine for the brief preview
-     * snippets this is used for.
+     * Play a (short) PCM WAV clip with Java Sound and delete it once playback
+     * finishes. The clip is over-extracted by {@link #TAIL_MARGIN}; we bound the
+     * stream to exactly {@code durationSeconds} of frames so playback stops
+     * precisely at the requested end (the clip is fully buffered, fine for these
+     * brief snippets).
      */
-    private static void playWav(File clip) {
+    private static void playWav(File clip, double durationSeconds) {
         try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(clip);
+            AudioInputStream full = AudioSystem.getAudioInputStream(clip);
+            AudioFormat fmt = full.getFormat();
+            long exactFrames = Math.round(durationSeconds * fmt.getFrameRate());
+            if (full.getFrameLength() > 0)
+                exactFrames = Math.min(exactFrames, full.getFrameLength());
+            AudioInputStream ais = new AudioInputStream(full, fmt, exactFrames);
             Clip line = AudioSystem.getClip();
             line.open(ais);
             line.addLineListener(event -> {
@@ -472,101 +534,6 @@ public class FFmpegAudioPreview implements AudioPreview {
         } catch (Exception e) {
             DEBUG.debug(e);
             clip.delete();
-        }
-    }
-
-    /**
-     * Find FFmpeg path with caching.
-     * @return path to ffmpeg, or null if not found
-     */
-    private static synchronized String findFFmpegPath() {
-        if (cachedFFmpegPath != null)
-            return cachedFFmpegPath.isEmpty() ? null : cachedFFmpegPath;
-
-        String result = searchForTool("ffmpeg");
-        cachedFFmpegPath = (result == null) ? "" : result;
-        return result;
-    }
-
-    /**
-     * Search for an FFmpeg tool. Order: the copy bundled next to the application
-     * (present in the self-contained packages), then the platform's usual install
-     * locations, then the system PATH. The macOS locations matter because an app
-     * launched from a .app bundle does not inherit the shell PATH, so Homebrew /
-     * MacPorts paths must be probed explicitly.
-     * @param toolName the tool name (ffmpeg, ffprobe)
-     * @return full path if found, null otherwise
-     */
-    private static String searchForTool(String toolName) {
-        String os = System.getProperty("os.name").toLowerCase();
-        boolean windows = os.contains("windows");
-        String exe = windows ? toolName + ".exe" : toolName;
-
-        List<String> paths = new ArrayList<>();
-        // Bundled next to the application (self-contained packages)
-        paths.add(new File(SystemFileFinder.AppPath, exe).getAbsolutePath());
-        if (os.startsWith("mac")) {
-            paths.add("/opt/homebrew/bin/" + toolName);  // Apple Silicon Homebrew
-            paths.add("/usr/local/bin/" + toolName);     // Intel Homebrew
-            paths.add("/opt/local/bin/" + toolName);     // MacPorts
-        } else if (!windows) {
-            paths.add("/usr/bin/" + toolName);
-            paths.add("/usr/local/bin/" + toolName);
-        }
-        paths.add(exe);  // PATH
-
-        for (String path : paths) {
-            try {
-                ProcessBuilder pb = new ProcessBuilder(path, "-version");
-                pb.redirectErrorStream(true);
-                Process p = pb.start();
-                // Drain the output to prevent blocking
-                try (InputStream is = p.getInputStream()) {
-                    while (is.read() != -1) { /* drain */ }
-                }
-                int exitCode = p.waitFor();
-                if (exitCode == 0) {
-                    DEBUG.debug("Found " + toolName + " at: " + path);
-                    return path;
-                }
-            } catch (Exception e) {
-                // Try next
-            }
-        }
-        DEBUG.debug(toolName + " not found in any standard location");
-        return null;
-    }
-
-    private String extractValue(String line) {
-        return line.substring(line.indexOf('=') + 1).replace("\"", "").trim();
-    }
-
-    private int parseIntValue(String line) {
-        try {
-            return Integer.parseInt(extractValue(line));
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
-    private double parseDoubleValue(String line) {
-        try {
-            return Double.parseDouble(extractValue(line));
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
-    private float parseFpsValue(String line) {
-        try {
-            String value = extractValue(line);
-            if (value.contains("/")) {
-                String[] parts = value.split("/");
-                return Float.parseFloat(parts[0]) / Float.parseFloat(parts[1]);
-            }
-            return Float.parseFloat(value);
-        } catch (Exception e) {
-            return 25;
         }
     }
 }
