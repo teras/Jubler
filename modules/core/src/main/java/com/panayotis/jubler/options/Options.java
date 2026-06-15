@@ -63,6 +63,8 @@ public class Options {
     private static final String AUDIOCACHE_CHANNELS_TAG = "audiocache.channels";
     private static boolean audioCacheDeleteOnClose;
     private static final String AUDIOCACHE_DELETEONCLOSE_TAG = "audiocache.deleteonclose";
+    private static boolean videoPreviewHardware;
+    private static final String VIDEOPREVIEW_HARDWARE_TAG = "videopreview.hardware";
 
     public static final int AUDIOCACHE_DEFAULT_RATE = 16000;
     public static final int AUDIOCACHE_DEFAULT_CHANNELS = 2;
@@ -91,6 +93,7 @@ public class Options {
         audioCacheRate = JublerPrefs.getInt(AUDIOCACHE_RATE_TAG, AUDIOCACHE_DEFAULT_RATE);
         audioCacheChannels = JublerPrefs.getInt(AUDIOCACHE_CHANNELS_TAG, AUDIOCACHE_DEFAULT_CHANNELS);
         audioCacheDeleteOnClose = JublerPrefs.getBoolean(AUDIOCACHE_DELETEONCLOSE_TAG, false);
+        videoPreviewHardware = JublerPrefs.getBoolean(VIDEOPREVIEW_HARDWARE_TAG, false);
     }
 
     static {
@@ -222,6 +225,14 @@ public class Options {
 
     public static void setAudioCacheDeleteOnClose(boolean delete) {
         JublerPrefs.set(AUDIOCACHE_DELETEONCLOSE_TAG, audioCacheDeleteOnClose = delete);
+    }
+
+    public static boolean isVideoPreviewHardware() {
+        return videoPreviewHardware;
+    }
+
+    public static void setVideoPreviewHardware(boolean hardware) {
+        JublerPrefs.set(VIDEOPREVIEW_HARDWARE_TAG, videoPreviewHardware = hardware);
     }
 
     public static String getLanguage() {

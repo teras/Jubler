@@ -10,6 +10,7 @@ import com.panayotis.jubler.Launcher;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.media.preview.decoders.VideoPreview;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 
@@ -43,5 +44,7 @@ public class VLCPlugin implements PluginCollection, PluginItem<Launcher>, Suppli
     public void execPlugin(Launcher caller) {
         PreviewProviderRegistry.registerVideo(this);
         PreviewProviderRegistry.registerAudio(VLCAudioPreview::new);
+        DEBUG.debug("VLC video preview rendering: "
+                + (VLCPreview.isHardwareActive() ? "hardware (embedded surface)" : "software (callback)"));
     }
 }

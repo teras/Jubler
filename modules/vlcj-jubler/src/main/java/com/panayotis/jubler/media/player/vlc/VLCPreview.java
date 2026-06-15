@@ -8,7 +8,9 @@ package com.panayotis.jubler.media.player.vlc;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.preview.decoders.VideoPreview;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.SubFile;
@@ -17,6 +19,7 @@ import com.panayotis.jubler.subs.loader.SubFormat;
 import uk.co.caprica.vlcj.media.TrackType;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
+import uk.co.caprica.vlcj.player.component.CallbackMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
@@ -34,10 +37,11 @@ public class VLCPreview implements VideoPreview {
 
     private MediaFile mfile;
     private SubEntry sub = null;
-    private EmbeddedMediaPlayerComponent mediaPlayerComponent;
+    private final boolean hardware;
+    private final JComponent mediaPlayerComponent;
     private EmbeddedMediaPlayer mediaPlayer;
-    private VideoStateCallback callback;
     private Container validationTarget;
+    private VideoStateCallback callback;
     private boolean pendingInitialSeek = false;
     private boolean wasPlayingBeforeSeek = false;
     private File tempSubFile = null;
@@ -50,11 +54,39 @@ public class VLCPreview implements VideoPreview {
     private volatile boolean released = false;
     private int volume = 100; // desired output volume (libvlc starts muted on some systems)
 
+    /**
+     * Whether the preview uses the hardware-accelerated embedded surface: the user
+     * opted in AND the platform supports it (not macOS). Single source of truth for
+     * the component choice below and for the line logged at plugin install time.
+     */
+    public static boolean isHardwareActive() {
+        return Options.isVideoPreviewHardware() && SystemDependent.isHardwareVideoPreviewSupported();
+    }
+
     public VLCPreview() {
-        mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+        // Default: software (callback) rendering. The user may opt into hardware
+        // acceleration in the Preview options, but only where it can actually work
+        // (not macOS, where the embedded surface renders black).
+        hardware = isHardwareActive();
+        if (hardware) {
+            // Embedded (native) rendering: libvlc draws directly onto a native video
+            // surface, which allows hardware-accelerated decoding; VLC's own video
+            // output composites the subtitles. Smoother for very high-res sources, at
+            // the cost of the per-platform native surface (hence the macOS exclusion).
+            EmbeddedMediaPlayerComponent component = new EmbeddedMediaPlayerComponent();
+            mediaPlayer = component.mediaPlayer();
+            mediaPlayerComponent = component;
+        } else {
+            // Callback (direct) rendering: libvlc decodes into a memory buffer that vlcj
+            // paints on a lightweight Swing component. Works on every platform (required
+            // on macOS) and forces software decode so subtitles blend into the frame.
+            // Platform-specific libvlc options live in SystemDependent.getVLCVideoOptions().
+            CallbackMediaPlayerComponent component = new CallbackMediaPlayerComponent(SystemDependent.getVLCVideoOptions());
+            mediaPlayer = component.mediaPlayer();
+            mediaPlayerComponent = component;
+        }
         mediaPlayerComponent.setPreferredSize(new Dimension(400, 256));
         mediaPlayerComponent.setMinimumSize(new Dimension(160, 120));
-        mediaPlayer = mediaPlayerComponent.mediaPlayer();
 
         /* After a paused seek, the subtitle for the new position is not composited
          * onto the displayed frame until playback actually renders it, so we briefly
@@ -72,21 +104,22 @@ public class VLCPreview implements VideoPreview {
         mediaPlayerComponent.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                // Force validation for proper X11 heavyweight Canvas resize
-                if (validationTarget == null) {
-                    JRootPane rootPane = SwingUtilities.getRootPane(mediaPlayerComponent);
-                    if (rootPane != null) {
-                        validationTarget = rootPane.getContentPane();
+                if (hardware) {
+                    // The heavyweight native video surface needs an explicit validation
+                    // pass to resize correctly (notably on X11).
+                    if (validationTarget == null) {
+                        JRootPane rootPane = SwingUtilities.getRootPane(mediaPlayerComponent);
+                        if (rootPane != null)
+                            validationTarget = rootPane.getContentPane();
                     }
-                }
-                if (validationTarget != null) {
-                    validationTarget.invalidate();
-                    validationTarget.validate();
+                    if (validationTarget != null) {
+                        validationTarget.invalidate();
+                        validationTarget.validate();
+                    }
                 }
                 // Force VLC to redraw when resized while paused
                 recompositePausedFrame();
             }
-
         });
 
         // Use HierarchyListener to detect when component becomes showing/hidden
@@ -469,7 +502,10 @@ public class VLCPreview implements VideoPreview {
             tempSubFile.delete();
             tempSubFile = null;
         }
-        mediaPlayerComponent.release();
+        if (mediaPlayerComponent instanceof CallbackMediaPlayerComponent)
+            ((CallbackMediaPlayerComponent) mediaPlayerComponent).release();
+        else if (mediaPlayerComponent instanceof EmbeddedMediaPlayerComponent)
+            ((EmbeddedMediaPlayerComponent) mediaPlayerComponent).release();
     }
 
     @Override

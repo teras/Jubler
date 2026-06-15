@@ -6,6 +6,7 @@
 
 package com.panayotis.jubler.options;
 
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.theme.Theme;
 
 import javax.swing.*;
@@ -31,6 +32,11 @@ public class JPreviewOptions extends JPanel implements OptionsHolder {
         (Options.getAudioCacheRate() == 22050 ? rate22C : rate16C).setSelected(true);
         (Options.getAudioCacheChannels() == 1 ? monoC : stereoC).setSelected(true);
         deleteOnCloseC.setSelected(Options.isAudioCacheDeleteOnClose());
+        hardwareC.setSelected(Options.isVideoPreviewHardware());
+        if (!SystemDependent.isHardwareVideoPreviewSupported()) {
+            hardwareC.setEnabled(false);
+            hardwareC.setToolTipText(__("Not available on macOS"));
+        }
         updateSizeLabel();
     }
 
@@ -39,6 +45,15 @@ public class JPreviewOptions extends JPanel implements OptionsHolder {
         Options.setAudioCacheRate(rate22C.isSelected() ? 22050 : 16000);
         Options.setAudioCacheChannels(monoC.isSelected() ? 1 : 2);
         Options.setAudioCacheDeleteOnClose(deleteOnCloseC.isSelected());
+        // Don't clobber the stored value on platforms where it cannot apply (macOS).
+        if (SystemDependent.isHardwareVideoPreviewSupported()) {
+            boolean changed = hardwareC.isSelected() != Options.isVideoPreviewHardware();
+            Options.setVideoPreviewHardware(hardwareC.isSelected());
+            // The preview component (software callback vs hardware embedded surface) is
+            // chosen when the preview is created, so a change needs a restart to apply.
+            if (changed)
+                JOptionPane.showMessageDialog(null, __("Please exit Jubler and restart it to apply the changes."));
+        }
     }
 
     /**
@@ -91,6 +106,7 @@ public class JPreviewOptions extends JPanel implements OptionsHolder {
         monoC = new javax.swing.JRadioButton();
         sizeL = new javax.swing.JLabel();
         deleteOnCloseC = new javax.swing.JCheckBox();
+        hardwareC = new javax.swing.JCheckBox();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -167,6 +183,15 @@ public class JPreviewOptions extends JPanel implements OptionsHolder {
         gridBagConstraints.insets = new java.awt.Insets(20, 8, 8, 8);
         layoutP.add(deleteOnCloseC, gridBagConstraints);
 
+        hardwareC.setText(__("Use hardware acceleration for the video preview"));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(20, 8, 8, 8);
+        layoutP.add(hardwareC, gridBagConstraints);
+
         add(layoutP, java.awt.BorderLayout.NORTH);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -174,6 +199,7 @@ public class JPreviewOptions extends JPanel implements OptionsHolder {
     private javax.swing.ButtonGroup channelsBG;
     private javax.swing.JLabel channelsL;
     private javax.swing.JCheckBox deleteOnCloseC;
+    private javax.swing.JCheckBox hardwareC;
     private javax.swing.JPanel layoutP;
     private javax.swing.JRadioButton monoC;
     private javax.swing.JRadioButton rate16C;

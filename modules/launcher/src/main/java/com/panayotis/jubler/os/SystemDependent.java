@@ -77,6 +77,47 @@ public class SystemDependent {
         return !IS_MACOSX;
     }
 
+    /**
+     * Platform-specific libvlc options for the inline video preview (vlcj callback /
+     * image-buffer rendering, used on every platform). Returned as command-line libvlc
+     * arguments for the MediaPlayerFactory.
+     * <p>
+     * All platforms must force SOFTWARE decoding. In the callback (vmem) path VLC builds
+     * the subtitle/OSD blend against the decode chroma; a hardware decoder hands back an
+     * opaque GPU surface the CPU blender cannot draw onto ("no matching alpha blending
+     * routine"), so subtitles silently vanish. Software decode keeps frames in a
+     * CPU-blendable chroma so VLC burns the subtitles into the frames we receive. There
+     * is no hardware-accel-preserving option for this path in VLC 3.0.x.
+     * <p>
+     * The option differs per platform (no single one covers all):
+     * <ul>
+     * <li>macOS: {@code --no-videotoolbox} (VideoToolbox is a separate module that
+     *     {@code --avcodec-hw=none} does NOT disable). Verified on macOS arm64 /
+     *     VLC 3.0.23 / vlcj 4.7.3.</li>
+     * <li>Windows (DXVA2/D3D11VA) and Linux (VAAPI/VDPAU): {@code --avcodec-hw=none}.
+     *     Harmless no-op when no hardware decoder is active.</li>
+     * </ul>
+     * TODO (next session): verify Windows/Linux on real machines. If the factory
+     * argument is ignored there, pass {@code :avcodec-hw=none} as a media option on
+     * play() instead (vlcj #1139). Confirm via libvlc -vv that HW decode is off
+     * (no "Using DXVA2/D3D11VA/VAAPI/VDPAU" line) and subtitles render.
+     */
+    public static String[] getVLCVideoOptions() {
+        if (IS_MACOSX)
+            return new String[]{"--no-videotoolbox"};
+        return new String[]{"--avcodec-hw=none"};
+    }
+
+    /**
+     * Whether the optional hardware-accelerated video preview (embedded native video
+     * surface) can work on this platform. On macOS the heavyweight embedded AWT Canvas
+     * renders black, so only the software callback path is usable there; the hardware
+     * option is therefore offered on Linux and Windows only.
+     */
+    public static boolean isHardwareVideoPreviewSupported() {
+        return !IS_MACOSX;
+    }
+
     public static String getKeyMods(int keymods, boolean withBraces) {
         String openBraces = withBraces ? "[" : "";
         String closeBraces = withBraces ? "]" : "";
