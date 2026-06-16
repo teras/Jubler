@@ -213,6 +213,21 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     /**
+     * Reload the preview subtitle file into the player NOW, bypassing the debounce.
+     * Used right after a wave-preview move changes subtitle times: the move then
+     * re-selects the subtitle, which seeks/nudges the video preview, and that nudge
+     * must see the new timings — otherwise it composites against the stale subtitle
+     * file and the moved subtitle is not active at its new position. Does not seek
+     * itself; the following selection does that.
+     */
+    public void reloadSubtitlesNow() {
+        lastPlaybackIndex = Integer.MIN_VALUE;
+        subtitleRefreshTimer.stop();
+        if (framePreview != null && last_media_file != null)
+            framePreview.setSubtitles(parent.getSubtitles(), last_media_file);
+    }
+
+    /**
      * Called on every player time update while a video is loaded. Selects the
      * subtitle that is active at the current playback position (or clears the
      * selection when playback is in a gap), but only when that subtitle actually

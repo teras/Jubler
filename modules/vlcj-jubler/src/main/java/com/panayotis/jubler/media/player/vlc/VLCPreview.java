@@ -50,7 +50,9 @@ public class VLCPreview implements VideoPreview {
     private final javax.swing.Timer repauseTimer;
     private volatile boolean nudging = false;
     private volatile boolean pendingNudge = false;
-    private boolean savedMute = false;
+    /** The position the nudge must land on: re-applied as a seek-while-playing (which is
+     *  reliable, unlike a paused seek on Windows) once playback actually resumes. */
+    private volatile long nudgeTargetMs = 0;
     private volatile boolean released = false;
     private int volume = 100; // desired output volume (libvlc starts muted on some systems)
 
@@ -96,9 +98,14 @@ public class VLCPreview implements VideoPreview {
          * elementaryStreamSelected(TEXT) when a reloaded subtitle file is ready; we
          * trigger the nudge on those events (see initializePlayerEvents). This timer
          * is only a fallback in case neither event arrives. */
-        nudgeFallbackTimer = new javax.swing.Timer(500, e -> fireNudgeIfPending());
-        nudgeFallbackTimer.setRepeats(false);
-        repauseTimer = new javax.swing.Timer(150, e -> endPausedNudge());
+        // Repeating: on a plain subtitle click there is no subtitle reload, so the
+        // elementaryStreamSelected(TEXT) cue never fires and buffering(100) is
+        // unreliable on Windows for a paused seek. Retrying every 150ms makes the
+        // nudge (and thus the frame/subtitle update) deterministic and responsive;
+        // it stops as soon as the nudge actually runs (see fireNudgeIfPending).
+        nudgeFallbackTimer = new javax.swing.Timer(150, e -> fireNudgeIfPending());
+        nudgeFallbackTimer.setRepeats(true);
+        repauseTimer = new javax.swing.Timer(350, e -> endPausedNudge());
         repauseTimer.setRepeats(false);
 
         mediaPlayerComponent.addComponentListener(new ComponentAdapter() {
@@ -162,8 +169,17 @@ public class VLCPreview implements VideoPreview {
         mediaPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
             @Override
             public void playing(MediaPlayer mp) {
-                if (nudging)
+                if (nudging) {
+                    // The nudge resumed playback so we can seek RELIABLY: a paused seek is
+                    // frequently dropped on Windows, but a seek while playing always lands.
+                    // Re-apply the target now that playback is truly running. Deferred to the
+                    // EDT: calling libvlc from this native event-callback thread deadlocks.
+                    SwingUtilities.invokeLater(() -> {
+                        if (!released && nudging)
+                            mediaPlayer.controls().setTime(nudgeTargetMs);
+                    });
                     return; // brief internal resume to composite subtitles; ignore
+                }
                 // Handle initial seek when preview is first shown
                 if (pendingInitialSeek) {
                     pendingInitialSeek = false;
@@ -233,6 +249,8 @@ public class VLCPreview implements VideoPreview {
             @Override
             public void timeChanged(MediaPlayer mp, long newTime) {
                 if (nudging)
+                    // Playback is advancing through the target frame so the decoder paints it
+                    // and composites the subtitle; the wall-clock repause timer ends the nudge.
                     return;
                 if (callback != null) {
                     SwingUtilities.invokeLater(() -> {
@@ -241,6 +259,22 @@ public class VLCPreview implements VideoPreview {
                         callback.onTimeChanged(newTime);
                     });
                 }
+            }
+
+            @Override
+            public void lengthChanged(MediaPlayer mp, long newLength) {
+                // Enable the playback controls as soon as libvlc reports the media
+                // length, independently of the one-shot initial-seek path (which can
+                // be missed on Windows, leaving the controls disabled forever).
+                // onDurationAvailable is idempotent.
+                if (newLength <= 0)
+                    return;
+                if (callback != null)
+                    SwingUtilities.invokeLater(() -> {
+                        if (released)
+                            return;
+                        callback.onDurationAvailable(newLength);
+                    });
             }
 
             @Override
@@ -296,17 +330,32 @@ public class VLCPreview implements VideoPreview {
         sub = entry;
         if (sub != null && hasVideo() && mediaPlayerComponent.isShowing()) {
             long timeMs = (long) (sub.getStartTime().toSeconds() * 1000);
-            boolean playable = mediaPlayer.status().isPlayable();
-            if (!playable) {
+            if (!mediaPlayer.status().isPlayable()) {
                 wasPlayingBeforeSeek = false; // Video not loaded yet, start paused
                 pendingInitialSeek = true;
                 mediaPlayer.media().play(getVideoPath());
             } else {
-                mediaPlayer.controls().setTime(timeMs);
-                notifyTimeChanged(timeMs);
-                forcePausedRedrawAfterSeek();
+                requestFrameAt(timeMs);
             }
         }
+    }
+
+    /**
+     * Seek the (paused) preview to timeMs and make sure the new frame and its subtitle
+     * get composited. Coalesces rapid calls (e.g. quickly clicking several subtitles):
+     * if a nudge is already running we are mid-playback, so we just re-seek to the new
+     * target — reliable while playing — and extend the play window, so it settles on the
+     * final frame and never re-mutes or re-captures audio. Otherwise it schedules a fresh
+     * nudge in the normal (paused) way.
+     */
+    private void requestFrameAt(long timeMs) {
+        nudgeTargetMs = timeMs;
+        mediaPlayer.controls().setTime(timeMs);
+        notifyTimeChanged(timeMs);
+        if (nudging)
+            repauseTimer.restart(); // extend the current muted-play window to the new target
+        else
+            forcePausedRedrawAfterSeek();
     }
 
     private void notifyTimeChanged(long timeMs) {
@@ -343,18 +392,14 @@ public class VLCPreview implements VideoPreview {
 
     @Override
     public void seek(long timeMs) {
-        mediaPlayer.controls().setTime(timeMs);
-        notifyTimeChanged(timeMs);
-        forcePausedRedrawAfterSeek();
+        requestFrameAt(timeMs);
     }
 
     @Override
     public void skip(long milliseconds) {
         long currentTime = mediaPlayer.status().time();
         long newTime = Math.max(0, currentTime + milliseconds);
-        mediaPlayer.controls().setTime(newTime);
-        notifyTimeChanged(newTime);
-        forcePausedRedrawAfterSeek();
+        requestFrameAt(newTime);
     }
 
     @Override
@@ -450,25 +495,36 @@ public class VLCPreview implements VideoPreview {
      * Briefly resume playback (muted) so VLC composites the subtitle onto the
      * frame, then pause again. A paused seek displays the video frame but does not
      * reliably blend the subpicture; only actual playback does. The nudge is short
-     * (~150ms) and muted, and player callbacks are suppressed while it runs so the
-     * UI does not flicker. No-op while already playing.
+     * (the repause timer ends it) and muted, and player callbacks are suppressed
+     * while it runs so the UI does not flicker. No-op while already playing.
      */
     private void startPausedNudge() {
-        if (nudging || !mediaPlayer.status().isPlayable() || mediaPlayer.status().isPlaying())
+        if (!mediaPlayer.status().isPlayable() || mediaPlayer.status().isPlaying())
             return;
+        // Resume playback (muted) for a brief wall-clock window. While playing we re-seek
+        // to the target (see the playing() handler) - a seek-while-playing lands reliably,
+        // unlike a paused seek which Windows often drops - so the decoder actually paints
+        // the target frame and composites its subtitle. The repause timer then pauses again.
+        // We do NOT save/restore a mute state: the preview has no user-mute (only a volume
+        // slider), so the desired state after a nudge is always audible at the set volume.
+        // Reading isMute() here would also be racy - a rapid second click could capture the
+        // nudge's own muted state and leave the audio stuck muted.
         nudging = true;
-        savedMute = mediaPlayer.audio().isMute();
         mediaPlayer.audio().setMute(true);
-        mediaPlayer.controls().setPause(false); // resume
+        mediaPlayer.controls().play();
         repauseTimer.restart();
     }
 
     private void endPausedNudge() {
         if (released)
             return; // a queued repause timer must not touch a freed player
+        if (!nudging)
+            return; // already ended
         if (mediaPlayer.status().isPlaying())
             mediaPlayer.controls().setPause(true);
-        mediaPlayer.audio().setMute(savedMute);
+        // Restore the audible state at the user's chosen volume (the nudge muted it).
+        mediaPlayer.audio().setMute(false);
+        mediaPlayer.audio().setVolume(volume);
         nudging = false;
     }
 
@@ -480,7 +536,12 @@ public class VLCPreview implements VideoPreview {
      * neither arrives. No-op while playing (playback renders subtitles on its own).
      */
     private void forcePausedRedrawAfterSeek() {
-        if (mediaPlayer.status().isPlaying() || !mediaPlayer.status().isPlayable())
+        if (!mediaPlayer.status().isPlayable())
+            return;
+        // Bail only if the user is GENUINELY playing (playback composites subtitles
+        // itself). A transient isPlaying() caused by an in-flight nudge must NOT abort
+        // scheduling, or a click landing in that window would never update the frame.
+        if (mediaPlayer.status().isPlaying() && !nudging)
             return;
         pendingNudge = true;
         nudgeFallbackTimer.restart();
@@ -492,8 +553,21 @@ public class VLCPreview implements VideoPreview {
      * (text stream selected), and from the fallback timer. Runs on the EDT.
      */
     private void fireNudgeIfPending() {
-        if (released || !pendingNudge)
+        if (released || !pendingNudge) {
+            nudgeFallbackTimer.stop();
             return;
+        }
+        if (!mediaPlayer.status().isPlayable())
+            return; // media not ready yet; the repeating timer retries
+        if (mediaPlayer.status().isPlaying()) {
+            // Our own nudge is still running -> retry on the next tick; a genuine
+            // play means no nudge is needed -> drop it and stop retrying.
+            if (!nudging) {
+                pendingNudge = false;
+                nudgeFallbackTimer.stop();
+            }
+            return;
+        }
         pendingNudge = false;
         nudgeFallbackTimer.stop();
         startPausedNudge();

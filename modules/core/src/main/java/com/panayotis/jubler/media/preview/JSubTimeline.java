@@ -229,6 +229,11 @@ public class JSubTimeline extends JPanel {
              * change does not fire a model event on its own). */
             for (int pos : sel)
                 parent.getSubtitles().fireTableRowsUpdated(pos, pos);
+            /* Reload the preview's subtitle file immediately (not via the debounced
+             * refresh) so the re-selection below seeks/nudges the video against the
+             * NEW timings; otherwise the moved subtitle is not active at its new
+             * start and the frame shows no subtitle until the debounce fires. */
+            parent.getSubPreview().reloadSubtitlesNow();
         }
         dataHasChanged = false;
         parent.setSelectedSub(sel, true);
