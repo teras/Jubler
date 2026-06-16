@@ -27,6 +27,7 @@ import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import javax.sound.sampled.AudioFormat;
@@ -47,32 +48,34 @@ import static com.panayotis.jubler.i18n.I18N.__;
  */
 public class VLCAudioPreview implements AudioPreview {
 
-    // === JACACHE format ===
-    // Header layout (same byte positions as the historical waveform cache, so the
-    // filename stays at offset 11 for AudioPreviewData.getNameFromCache):
-    //   off 0 : "JACACHE"   magic (7)
-    //   off 7 : version      byte (= 2)             distinguishes PCM from the old v1 peaks
-    //   off 8 : channels     byte (real count)
-    //   off 9 : sampleRate   unsigned short (2)     PCM samples/sec (covers up to 65535 Hz)
-    //   off 11: filename     writeUTF
-    //   off ..: raw interleaved s16le PCM, to EOF
+    // === Cache format: a standard WAV (RIFF/WAVE, PCM s16le) ===
+    // libvlc's wav muxer writes the COMPLETE, self-describing file (RIFF header +
+    // `fmt ` + `data` chunks, then raw interleaved s16le PCM). We add nothing of our
+    // own - it is a bit-for-bit valid WAV, only named ".jacache" to keep it out of the
+    // user's audio-file namespace.
     //
-    // The body changed from min/max peaks (v1) to the complete decoded audio-only
-    // PCM stream (v2), so that:
-    //   - snippet playback [from,to] is a pure byte-offset slice (sample-exact, no seek);
-    //   - the waveform preview is derived from that same PCM on the fly.
-    // s16le (2 bytes/sample) is implicit, as it always was. channels + sampleRate are
-    // read back from the header, so a built cache always plays correctly even if the
-    // user later changes the quality preference (only new caches use the new setting).
-    // The quality/size trade-off is CONFIGURABLE via Options.getAudioCacheRate /
-    // getAudioCacheChannels. Old v1 peaks caches fail the version check and are
-    // transparently regenerated; a PCM cache built at a different quality fails the
-    // rate/channels check and is likewise regenerated.
+    // Why WAV (not a custom header + appended PCM): on Windows libvlc's file output
+    // TRUNCATES the file on open and ignores append, so a header we pre-write is wiped
+    // and the PCM lands at offset 0. Letting libvlc write the whole WAV from offset 0
+    // is exactly what works on every platform.
     //
-    // Size = rate * channels * 2 bytes/s. At 16000 Hz stereo (default) that is
-    // ~64 KB/s ≈ 230 MB/h (2 h ≈ 460 MB). 22050 stereo is ~1.4x that.
-    private static final int PCM_BYTES = 2;     // bytes per sample (s16le)
-    private static final int CACHE_VERSION = 2; // bumped from the v1 peaks format
+    // Self-describing: channels + sample rate come from the `fmt ` chunk, so a built
+    // cache reads back correctly even after the quality preference changes (a cache at
+    // a different rate/channels fails the isCacheValid check and is regenerated). Old
+    // JACACHE files (no "RIFF"/"WAVE") likewise fail and are regenerated.
+    //
+    // Completeness: the wav muxer writes placeholder sizes up front and PATCHES the
+    // RIFF/`data` sizes only on a clean close. A premature end (crash/kill) leaves the
+    // data size at 0, which readHeader rejects -> the partial cache is regenerated. No
+    // custom completion marker is needed.
+    //
+    // Snippet playback [from,to] is a pure byte-offset slice of the `data` chunk
+    // (sample-exact, no seek); the waveform peaks are derived from the same PCM.
+    //
+    // Size = rate * channels * 2 bytes/s. At 16000 Hz stereo (default) ~64 KB/s
+    // ≈ 230 MB/h (2 h ≈ 460 MB). The 32-bit WAV size fields cap a cache at ~4 GB
+    // (~18 h @16k stereo), far beyond any real subtitle media.
+    private static final int PCM_BYTES = 2;     // bytes per sample (s16le); required
 
     private volatile boolean interrupted = false;
     private volatile boolean cacheCreationInProgress = false;
@@ -204,12 +207,14 @@ public class VLCAudioPreview implements AudioPreview {
                 MediaInfo info = probeMedia(afile);
                 long totalBytes = (long) (info.duration * rate) * channels * PCM_BYTES;
 
-                // Write the header, then let libvlc append the decoded PCM straight
-                // into the cache file (single pass - no temp file, no second copy).
-                long headerLen = writeHeader(cfile, afile.getName(), rate, channels);
-                if (headerLen > 0)
-                    done = transcodeInto(f, afile.getAbsolutePath(), cfile, rate, channels, callback, totalBytes, headerLen)
-                            && !interrupted;
+                // Remove any stale/invalid cache up front (an old JACACHE file, a cache
+                // at a different quality, or a partial WAV from a previous crash) so we
+                // never leave an unusable file behind. libvlc then writes a fresh,
+                // complete WAV straight into the cache - single pass, no temp file.
+                if (cfile.exists())
+                    cfile.delete();
+                done = transcodeInto(f, afile.getAbsolutePath(), cfile, rate, channels, callback, totalBytes)
+                        && !interrupted;
             } catch (Exception e) {
                 DEBUG.debug(e);
             } finally {
@@ -241,21 +246,21 @@ public class VLCAudioPreview implements AudioPreview {
     }
 
     /**
-     * Decode the whole audio track of {@code srcPath} to s16le PCM at
-     * {@code rate}/{@code channels} and append it straight into {@code cfile} (which
-     * already holds the header), via a headless libvlc {@code sout} pipeline using
-     * {@code access=file{append}}. Single pass - the PCM is written directly to the
-     * final cache, with no temp file and no second copy. Runs faster than realtime;
-     * reports live progress by polling the growing file. Blocks until libvlc
-     * finishes, errors, or the operation is interrupted.
+     * Decode the whole audio track of {@code srcPath} to a standard PCM s16le WAV at
+     * {@code rate}/{@code channels}, written straight to {@code cfile} by a headless
+     * libvlc {@code sout} pipeline ({@code mux=wav}, plain {@code access=file}). libvlc
+     * writes the entire self-describing WAV from offset 0 - the only scheme that works
+     * on Windows, where file output truncates-on-open and ignores append. Single pass,
+     * no temp file. Runs faster than realtime; reports live progress by polling the
+     * growing file. Blocks until libvlc finishes, errors, or the operation is interrupted.
      * @return true if the transcode completed normally
      */
     private boolean transcodeInto(MediaPlayerFactory f, String srcPath, File cfile, int rate, int channels,
-                                  AudioStateCallback callback, long totalBytes, long headerLen) {
+                                  AudioStateCallback callback, long totalBytes) {
         // Forward slashes work on every platform and avoid sout-chain parsing surprises.
         String out = cfile.getAbsolutePath().replace('\\', '/');
         String sout = ":sout=#transcode{acodec=s16l,channels=" + channels + ",samplerate=" + rate
-                + "}:standard{access=file{append},mux=raw,dst=" + out + "}";
+                + "}:standard{access=file,mux=wav,dst=" + out + "}";
 
         MediaPlayer player = f.mediaPlayers().newMediaPlayer();
         CountDownLatch done = new CountDownLatch(1);
@@ -277,8 +282,11 @@ public class VLCAudioPreview implements AudioPreview {
                 return false;
             while (!interrupted && !done.await(150, TimeUnit.MILLISECONDS)) {
                 // Live progress: how much PCM has been written into the cache so far.
+                // The WAV header libvlc writes first is ~44 bytes; subtracting that
+                // approximate constant is good enough for a progress bar (it is only
+                // cosmetic and clamped to [0, 0.99] below).
                 if (callback != null && totalBytes > 0) {
-                    long pcm = cfile.length() - headerLen;
+                    long pcm = cfile.length() - 44;
                     final float p = Math.max(0f, Math.min(0.99f, (float) pcm / totalBytes));
                     SwingUtilities.invokeLater(() -> callback.updateCacheCreation(p));
                 }
@@ -294,14 +302,13 @@ public class VLCAudioPreview implements AudioPreview {
     }
 
     /**
-     * A cache is usable only if it is a current (version 2) PCM cache whose stored
-     * sample rate and channel count match the CURRENT option values. Old v1 peaks
-     * caches (rejected by the version check in {@link #readHeader}), PCM caches built
-     * at a different quality, or unreadable files are all treated as invalid and
-     * regenerated at the configured quality.
+     * A cache is usable only if it is a complete 16-bit PCM WAV (see {@link #readHeader})
+     * whose stored sample rate and channel count match the CURRENT option values. Old
+     * JACACHE files, non-PCM or partial WAVs, caches built at a different quality, or
+     * unreadable files are all treated as invalid and regenerated at the configured quality.
      */
     private boolean isCacheValid(CacheFile cfile) {
-        if (cfile == null || !cfile.exists() || cfile.length() < 20)
+        if (cfile == null || !cfile.exists() || cfile.length() < 44)
             return false;
 
         try (RandomAccessFile raf = new RandomAccessFile(cfile, "r")) {
@@ -314,72 +321,81 @@ public class VLCAudioPreview implements AudioPreview {
         }
     }
 
-    /**
-     * Write the JACACHE header to {@code cfile} (truncating any previous content);
-     * {@link #transcodeInto} then appends the decoded PCM right after it.
-     *
-     * Header layout (big-endian where multi-byte):
-     * <pre>
-     *   off  0 : "JACACHE"        magic (7 bytes)
-     *   off  7 : version          byte (= 2)
-     *   off  8 : channels         byte (real channel count)
-     *   off  9 : sampleRate       short, unsigned (PCM samples per second)
-     *   off 11 : filename         writeUTF  ← MUST stay at offset 11:
-     *                                         AudioPreviewData.getNameFromCache
-     *                                         seeks here to read the audio name.
-     *   ...... : raw interleaved s16le PCM (appended later), to EOF
-     * </pre>
-     * A byte offset into the PCM body maps exactly to a sample position (see
-     * {@link #playAudioClip}). s16le (2 bytes per sample) is implicit, as it always was.
-     * @return the header length in bytes, or -1 on error
-     */
-    private static long writeHeader(CacheFile cfile, String originalName, int rate, int channels) {
-        try (DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(cfile)))) {
-            dos.writeBytes("JACACHE");           // Magic (7 bytes)
-            dos.writeByte(CACHE_VERSION);        // Version (2)
-            dos.writeByte(channels);             // Channels (real count)
-            dos.writeShort(rate);                // PCM sample rate
-            dos.writeUTF(originalName);          // Original filename (at offset 11)
-            dos.flush();
-        } catch (IOException e) {
-            DEBUG.debug(e);
-            return -1;
-        }
-        return cfile.length();
-    }
-
     /** Decoded header fields plus the file offset where PCM data starts. */
     private static class CacheHeader {
         int channels;
         int rate;
         int sampleBytes;
-        long dataStart;   // byte offset of the first PCM sample
-        long dataBytes;   // number of PCM bytes available
+        long dataStart;   // byte offset of the first PCM sample (start of the `data` chunk body)
+        long dataBytes;   // number of PCM bytes available (the `data` chunk size)
     }
 
     /**
-     * Read and validate a JACACHE PCM (version 2) header from an already-open file.
-     * Leaves the file pointer at the start of the PCM body. Returns {@code null} if
-     * the file is not a current PCM cache - in particular an old v1 peaks cache fails
-     * the version check here, so it is never misread as PCM and is regenerated.
+     * Parse and validate the cache as a standard PCM WAV (RIFF/WAVE). Walks the chunks
+     * to locate {@code fmt } (channels, sample rate, bits) and {@code data} (PCM offset
+     * and size). Returns {@code null} - i.e. "invalid, regenerate" - for anything that
+     * is not a complete 16-bit PCM WAV: an old JACACHE file (no "RIFF"/"WAVE"), a non-PCM
+     * or non-16-bit format, or a premature/partial file whose libvlc placeholder data
+     * size is 0 or larger than the file actually holds.
+     * <p>
+     * {@code dataBytes} is the {@code data} chunk size (not file-length minus offset),
+     * so any chunks libvlc might write after {@code data} are never misread as PCM.
      */
     private static CacheHeader readHeader(RandomAccessFile raf) throws IOException {
-        if (raf.length() < 13)
+        long fileLen = raf.length();
+        if (fileLen < 44)
             return null;
-        byte[] magic = new byte[7];
-        raf.readFully(magic);
-        if (!new String(magic).equals("JACACHE"))
+        byte[] riff = new byte[12];
+        raf.seek(0);
+        raf.readFully(riff);
+        if (!(riff[0] == 'R' && riff[1] == 'I' && riff[2] == 'F' && riff[3] == 'F'
+                && riff[8] == 'W' && riff[9] == 'A' && riff[10] == 'V' && riff[11] == 'E'))
             return null;
-        int version = raf.readUnsignedByte();
-        if (version != CACHE_VERSION)
+
+        int channels = 0, rate = 0, bits = 0;
+        long dataStart = -1, dataSize = -1;
+        byte[] hdr = new byte[8];
+        long pos = 12;
+        while (pos + 8 <= fileLen) {
+            raf.seek(pos);
+            raf.readFully(hdr);
+            String id = new String(hdr, 0, 4, StandardCharsets.US_ASCII);
+            long size = (hdr[4] & 0xffL) | ((hdr[5] & 0xffL) << 8)
+                    | ((hdr[6] & 0xffL) << 16) | ((hdr[7] & 0xffL) << 24);
+            long body = pos + 8;
+            if (id.equals("fmt ") && size >= 16) {
+                byte[] fmt = new byte[16];
+                raf.seek(body);
+                raf.readFully(fmt);
+                int format = (fmt[0] & 0xff) | ((fmt[1] & 0xff) << 8);
+                channels = (fmt[2] & 0xff) | ((fmt[3] & 0xff) << 8);
+                rate = (fmt[4] & 0xff) | ((fmt[5] & 0xff) << 8)
+                        | ((fmt[6] & 0xff) << 16) | ((fmt[7] & 0xff) << 24);
+                bits = (fmt[14] & 0xff) | ((fmt[15] & 0xff) << 8);
+                if (format != 1)   // 1 = uncompressed PCM; anything else, regenerate
+                    return null;
+            } else if (id.equals("data")) {
+                dataStart = body;
+                dataSize = size;
+                break;
+            }
+            pos = body + size + (size & 1L);   // RIFF chunks are word-aligned
+        }
+
+        if (dataStart < 0 || channels <= 0 || rate <= 0 || bits != 16)
             return null;
+        // Completeness: libvlc patches the `data` size only on a clean close, so a
+        // premature end leaves it at 0 (placeholder); a value past EOF means truncation.
+        // Either way the cache is unusable and must be regenerated.
+        if (dataSize <= 0 || dataStart + dataSize > fileLen)
+            return null;
+
         CacheHeader h = new CacheHeader();
-        h.channels = raf.readUnsignedByte();
-        h.rate = raf.readUnsignedShort();   // PCM sample rate (samples/sec)
-        h.sampleBytes = PCM_BYTES;          // s16le, implicit
-        raf.readUTF();                      // filename
-        h.dataStart = raf.getFilePointer();
-        h.dataBytes = raf.length() - h.dataStart;
+        h.channels = channels;
+        h.rate = rate;
+        h.sampleBytes = bits / 8;   // 16-bit -> 2, == PCM_BYTES
+        h.dataStart = dataStart;
+        h.dataBytes = dataSize;
         return h;
     }
 

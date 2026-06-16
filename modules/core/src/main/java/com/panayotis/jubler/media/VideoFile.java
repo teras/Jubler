@@ -12,6 +12,8 @@ import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.subs.Subtitles;
 
 import java.io.File;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -23,32 +25,65 @@ public class VideoFile extends File {
     private final static int DEFAULT_LENGTH = 60;
     private final static int DEFAULT_FPS = 25;
     private final static int INVALID = -1;
-    /* Various video file properties */
-    private int width = INVALID;
-    private int height = INVALID;
-    private float length = INVALID;
-    private float fps = INVALID;
+    /* Various video file properties (volatile: written by the background probe
+     * thread below, read by the EDT and others). */
+    private volatile int width = INVALID;
+    private volatile int height = INVALID;
+    private volatile float length = INVALID;
+    private volatile float fps = INVALID;
+
+    /* Counts down once the background probe has settled the values above (or there
+     * is nothing to probe). Lets a loader wait for the real values - off the EDT -
+     * before they are read, without ever blocking construction. */
+    private final CountDownLatch infoReady = new CountDownLatch(1);
 
     /**
-     * Creates a new instance of VideoFile
+     * Creates a new instance of VideoFile.
+     * <p>
+     * Media information (dimensions, fps, duration) is probed on a background
+     * thread and applied when ready, so construction NEVER blocks: the probe can
+     * take up to several seconds (libvlc parse) and must never freeze the UI. Until
+     * it completes the getters return sensible defaults. A loader that needs the real
+     * values before reading them (e.g. before saving ASS PlayResX/Y) waits via
+     * {@link #awaitInfo(long)} on a worker, with an on-screen indicator - never on the EDT.
      */
     public VideoFile(String vfile) {
         super(vfile);
-        try {
-            PreviewProviderRegistry.initAudioPreview().retrieveInformation(this);
-        } catch (IllegalArgumentException e) {
-            // No preview provider available
+        // Usable values immediately; the background probe overwrites them when ready.
+        setInformation(DEFAULT_WIDTH, DEFAULT_HEIGHT, DEFAULT_LENGTH, DEFAULT_FPS);
+        if (!exists()) {
+            infoReady.countDown(); // nothing to probe (e.g. a guessed candidate path)
+            return;
         }
-        /* Make sure we always have usable values, even when no provider is
-         * present or the probe could not run (e.g. the file does not exist
-         * yet). Otherwise consumers such as the ASS/SSA writers would emit
-         * invalid PlayResX/PlayResY (-1) headers. */
-        if (width < 0 || height < 0 || length < 0 || fps < 0)
-            setInformation(
-                    width < 0 ? DEFAULT_WIDTH : width,
-                    height < 0 ? DEFAULT_HEIGHT : height,
-                    length < 0 ? DEFAULT_LENGTH : length,
-                    fps < 0 ? DEFAULT_FPS : fps);
+        Thread probe = new Thread(() -> {
+            try {
+                PreviewProviderRegistry.initAudioPreview().retrieveInformation(this);
+            } catch (IllegalArgumentException e) {
+                // No preview provider available; the defaults above stand.
+            } finally {
+                infoReady.countDown();
+            }
+        }, "VideoFile-probe");
+        probe.setDaemon(true);
+        probe.start();
+    }
+
+    /** Whether the background media probe has finished (real values are in place). */
+    public boolean isInfoReady() {
+        return infoReady.getCount() == 0;
+    }
+
+    /**
+     * Wait up to {@code timeoutMs} for the background media probe to finish, so the
+     * dimensions/fps/length are the real values rather than the construction-time
+     * defaults. MUST be called off the EDT (e.g. from a SwingWorker): it blocks.
+     */
+    public void awaitInfo(long timeoutMs) {
+        try {
+            infoReady.await(timeoutMs, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public VideoFile(File vf) {

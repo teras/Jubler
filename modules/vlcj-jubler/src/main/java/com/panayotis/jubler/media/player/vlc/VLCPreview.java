@@ -186,13 +186,22 @@ public class VLCPreview implements VideoPreview {
                 }
                 // Real playback is starting (not the nudge, not the initial paused load):
                 // libvlc may have started muted, so ensure audio is actually audible.
+                // These libvlc calls MUST NOT run on this native event-callback thread:
+                // libvlc fires the event while holding an internal lock, so re-entering
+                // libvlc from here deadlocks against any other thread already inside it
+                // (e.g. the EDT doing controls().setTime() on a subtitle click). Defer to
+                // the EDT, where calling libvlc is safe, so the callback returns at once
+                // and releases the lock.
                 if (released)
                     return; // window closed: native player already released
-                mediaPlayer.audio().setMute(false);
-                mediaPlayer.audio().setVolume(volume);
-                if (callback != null) {
-                    SwingUtilities.invokeLater(() -> callback.onPlayingStateChanged(true));
-                }
+                SwingUtilities.invokeLater(() -> {
+                    if (released)
+                        return; // window closed before this deferred update ran
+                    mediaPlayer.audio().setMute(false);
+                    mediaPlayer.audio().setVolume(volume);
+                    if (callback != null)
+                        callback.onPlayingStateChanged(true);
+                });
             }
 
             @Override

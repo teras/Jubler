@@ -34,10 +34,13 @@ public class AudioFileFilter extends MediaFileFilter {
             return true;
         String fname = pathname.getName().toLowerCase();
         if (cachesource != null) {
-            String name = AudioPreviewData.getNameFromCache(pathname);
-            if (name != null && name.equals(cachesource))
-                return true;
-            return false;
+            // The waveform cache is named "<media-basename>.jacache" (see
+            // MediaFile.updateCacheFile). Show only the cache belonging to this
+            // media, matched by that filename convention (the cache is a standard
+            // WAV internally and no longer embeds the source name).
+            int dot = cachesource.lastIndexOf('.');
+            String base = (dot < 0 ? cachesource : cachesource.substring(0, dot)).toLowerCase();
+            return fname.equals(base + AudioPreviewData.getExtension());
         }
 
         for (int i = 0; i < exts.length; i++)

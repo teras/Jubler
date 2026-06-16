@@ -6,16 +6,10 @@
 
 package  com.panayotis.jubler.media.preview.decoders;
 
-import com.panayotis.jubler.os.DEBUG;
 import static com.panayotis.jubler.i18n.I18N.__;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 
 public class AudioPreviewData {
 
-    public static final int nameoffset = 11;
     public static final int length = 1000;
     /* channels, position, positive/negative */
     private float[][][] cache;
@@ -47,51 +41,8 @@ public class AudioPreviewData {
         return cache[which];
     }
 
-    /* Use this static method to check if a specific file is a regular file or an audio cache */
-    public static boolean isAudioPreview(File cfile) {
-        if (cfile == null)
-            return false;
-
-        if ((!cfile.exists()) || cfile.length() < 10)
-            return false;
-
-        StringBuilder header = new StringBuilder();
-        RandomAccessFile file;
-        try {
-            file = new RandomAccessFile(cfile, "r");
-            for (int i = 0; i < 7; i++)
-                header.append((char) file.readByte());
-            file.close();
-        } catch (IOException e) {
-            DEBUG.debug(e);
-        }
-
-        if (header.toString().equals("JACACHE"))
-            return true;
-        return false;
-    }
-
     public static String getExtension() {
         return ".jacache";
-    }
-
-    public static String getNameFromCache(File cf) {
-        if (!isAudioPreview(cf))
-            return null;
-
-        String name = null;
-        RandomAccessFile file;
-        try {
-            file = new RandomAccessFile(cf, "r");
-            file.seek(nameoffset);
-            name = file.readUTF().trim();
-            file.close();
-        } catch (IOException e) {
-            DEBUG.debug(e);
-        }
-        if (name != null && name.isEmpty())
-            name = null;
-        return name;
     }
 
     public void normalize() {
