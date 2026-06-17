@@ -1001,9 +1001,19 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     }//GEN-LAST:event_ToolsLockBActionPerformed
 
     private void loadAnnouncements() {
+        // 1) Instant: the last cached announcements if any, otherwise the static offline banner.
+        java.util.List<Announcement> initial = Announcement.cached();
+        if (initial != null && !initial.isEmpty())
+            populateAnnouncements(initial);
+        else
+            showStaticOffline();
+        // 2) Refresh over the network (off the EDT); replace only if the source was reached.
         new Thread(() -> {
-            java.util.List<Announcement> items = Announcement.fetch(ANNOUNCE_URL);
-            SwingUtilities.invokeLater(() -> populateAnnouncements(items));
+            java.util.List<Announcement> fresh = Announcement.fetch(ANNOUNCE_URL);
+            SwingUtilities.invokeLater(() -> {
+                if (fresh != null)
+                    populateAnnouncements(fresh);
+            });
         }, "Announcements").start();
     }
 
@@ -1011,11 +1021,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         if (crossP == null)
             return;
         if (items == null) {
-            // The source could not be reached (offline): keep a static call-to-action
-            // using the bundled VLC icon, since no remote icon can be downloaded.
-            fillCrossP(buildRow(Theme.loadIcon("vlc"),
-                    __("VLC & Apple Silicon support has arrived — and still needs you"),
-                    "https://jubler.org/supportvlc.html"));
+            showStaticOffline();
             return;
         }
         if (items.isEmpty()) {
@@ -1026,6 +1032,15 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         for (int i = 0; i < rows.length; i++)
             rows[i] = buildRow(items.get(i).icon, items.get(i).text, items.get(i).url);
         fillCrossP(rows);
+    }
+
+    /** Static call-to-action with the bundled VLC icon, shown before any cached/remote content. */
+    private void showStaticOffline() {
+        if (crossP == null)
+            return;
+        fillCrossP(buildRow(Theme.loadIcon("vlc"),
+                __("VLC & Apple Silicon support has arrived — and still needs you"),
+                "https://jubler.org/supportvlc.html"));
     }
 
     private void fillCrossP(JPanel... rows) {

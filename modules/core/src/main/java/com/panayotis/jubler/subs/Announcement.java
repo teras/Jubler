@@ -28,18 +28,20 @@ import java.util.Set;
 /**
  * A single dynamic announcement shown in the support banner of {@link JSubEditor}.
  * The announcements are fetched from a remote, tab-separated text file with up to
- * three columns per line: text, icon URL, redirect URL.
+ * three columns per line: text, icon URL, redirect URL. Icons must be SVG.
  * <p>
- * Icons must be SVG (rendered through {@link FlatSVGIcon}, so they stay crisp at any
- * DPI). Downloaded icons are cached on disk under the application support directory
- * ({@code <AppSupport>/announce}). After every successful fetch, cached icons no
- * longer referenced by the announcements are pruned.
+ * Caching follows a stale-while-revalidate scheme under {@code <AppSupport>/announce}:
+ * both the raw text and the downloaded SVG icons are cached. {@link #cached()} returns
+ * the last successful result instantly with no network (icons read from disk only),
+ * for showing something immediately at startup; {@link #fetch(String)} then refreshes
+ * over the network, updating the cache and pruning icons no longer referenced.
  */
 public final class Announcement {
 
     private static final int TIMEOUT = 5000;
     private static final int ICON_HEIGHT = 22;
     private static final File CACHE_DIR = new File(SystemDependent.getAppSupportDirPath(), "announce");
+    private static final String TEXT_CACHE_NAME = "announce.txt";
 
     public final String text;
     public final ImageIcon icon;
@@ -52,23 +54,38 @@ public final class Announcement {
     }
 
     /**
-     * Fetch and parse the announcements from the given remote source. Each non-empty,
-     * non-comment ('#') line yields one announcement. Columns are separated by TAB:
-     * text [TAB icon-url [TAB redirect-url]]. Icons and redirect URLs are optional.
-     * <p>
-     * This performs network access and must be called off the Event Dispatch Thread.
+     * Refresh over the network. On success the raw text and icons are cached and stale
+     * icons pruned. Must be called off the EDT.
      *
-     * @return the list of announcements (possibly empty) on a successful fetch, or
-     * {@code null} if the source could not be reached. An empty list means the source
-     * was reached but holds no announcements; in that case the on-disk icon cache is
-     * fully pruned, whereas a {@code null} result leaves the cache untouched.
+     * @return the announcements (possibly empty) on success, or {@code null} if the
+     * source could not be reached (in which case the cache is left untouched).
      */
     public static List<Announcement> fetch(String source) {
         byte[] data = download(source);
         if (data == null)
             return null;
-        List<Announcement> out = new ArrayList<>();
-        Set<String> keep = new HashSet<>();
+        save(textCache(), data);
+        return parse(data, true);
+    }
+
+    /**
+     * The last successfully fetched announcements, read from the on-disk cache with no
+     * network access (icons loaded from disk only). EDT-safe and instant.
+     *
+     * @return the cached announcements, or {@code null} if nothing is cached.
+     */
+    public static List<Announcement> cached() {
+        File tc = textCache();
+        if (!tc.isFile())
+            return null;
+        byte[] data = readFile(tc);
+        return data == null ? null : parse(data, false);
+    }
+
+    private static List<Announcement> parse(byte[] data, boolean online) {
+        List<Announcement> out = new ArrayList<Announcement>();
+        Set<String> keep = new HashSet<String>();
+        keep.add(TEXT_CACHE_NAME);
         for (String line : new String(data, StandardCharsets.UTF_8).split("\n")) {
             line = line.trim();
             if (line.isEmpty() || line.startsWith("#"))
@@ -83,28 +100,28 @@ public final class Announcement {
             if (!iconUrl.isEmpty()) {
                 File cached = cacheFile(iconUrl);
                 keep.add(cached.getName());
-                icon = loadIcon(iconUrl, cached);
+                icon = loadIcon(iconUrl, cached, online);
             }
             out.add(new Announcement(text, icon, redirect.isEmpty() ? null : redirect));
         }
-        pruneCache(keep);
+        if (online)
+            pruneCache(keep);
         return out;
     }
 
-    private static ImageIcon loadIcon(String iconUrl, File cached) {
+    private static ImageIcon loadIcon(String iconUrl, File cached, boolean online) {
         try {
             byte[] bytes;
-            if (cached.isFile()) {
-                bytes = readAll(new FileInputStream(cached));
-            } else {
+            if (cached.isFile())
+                bytes = readFile(cached);
+            else if (online) {
                 bytes = download(iconUrl);
-                if (bytes == null)
-                    return null;
-                CACHE_DIR.mkdirs();
-                try (FileOutputStream out = new FileOutputStream(cached)) {
-                    out.write(bytes);
-                }
-            }
+                if (bytes != null)
+                    save(cached, bytes);
+            } else
+                bytes = null; // offline and not cached
+            if (bytes == null)
+                return null;
             FlatSVGIcon icon = new FlatSVGIcon(new ByteArrayInputStream(bytes));
             int height = icon.getIconHeight();
             if (height > 0 && height != ICON_HEIGHT)
@@ -124,6 +141,10 @@ public final class Announcement {
             if (!keep.contains(f.getName()))
                 //noinspection ResultOfMethodCallIgnored
                 f.delete();
+    }
+
+    private static File textCache() {
+        return new File(CACHE_DIR, TEXT_CACHE_NAME);
     }
 
     private static File cacheFile(String url) {
@@ -151,6 +172,26 @@ public final class Announcement {
             return readAll(connection.getInputStream());
         } catch (Exception e) {
             DEBUG.debug("Could not fetch announcement resource: " + source);
+            return null;
+        }
+    }
+
+    private static void save(File f, byte[] data) {
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            CACHE_DIR.mkdirs();
+            try (FileOutputStream out = new FileOutputStream(f)) {
+                out.write(data);
+            }
+        } catch (Exception e) {
+            DEBUG.debug("Could not cache announcement file: " + f);
+        }
+    }
+
+    private static byte[] readFile(File f) {
+        try {
+            return readAll(new FileInputStream(f));
+        } catch (Exception e) {
             return null;
         }
     }
