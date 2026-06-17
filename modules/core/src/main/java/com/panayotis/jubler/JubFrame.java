@@ -120,6 +120,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
      * Creates new form
      */
     @SuppressWarnings({"LeakingThisInConstructor", "OverridableMethodCallInConstructor"})
+    /* Shown once per application run, on the empty central area of the very first window */
+    private static boolean celebrationShown = false;
+    private JCelebrationPanel celebration;
+
     public JubFrame() {
         //a new instance always first got the focus, so set the currentWindow
         //to this reference immediately
@@ -172,6 +176,12 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         StaticJubler.putWindowPosition(this);
 
         PluginManager.getManager().callPluginListeners(this);
+
+        /* The very first window of this run gets the anniversary celebration in its empty area */
+        if (!celebrationShown) {
+            celebrationShown = true;
+            showCelebration();
+        }
     }
 
     @SuppressWarnings({"OverridableMethodCallInConstructor"})
@@ -2155,6 +2165,31 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         if (asNewWindow)
             setSelectedSub(0, true);
         subeditor.removeHelpWanted();
+        stopCelebration();
+    }
+
+    private void showCelebration() {
+        celebration = new JCelebrationPanel();
+        BasicPanel.remove(SubsTableScrollPane);
+        BasicPanel.add(celebration, CENTER);
+        celebration.start();
+        BasicPanel.revalidate();
+        BasicPanel.repaint();
+    }
+
+    private void stopCelebration() {
+        if (celebration == null)
+            return;
+        celebration.stop();
+        BasicPanel.remove(celebration);
+        celebration = null;
+        if (EnablePreviewC.isSelected()) {
+            BasicPanel.add(SubSplitPane, CENTER);
+            SubSplitPane.setBottomComponent(SubsTableScrollPane);
+        } else
+            BasicPanel.add(SubsTableScrollPane, CENTER);
+        BasicPanel.revalidate();
+        BasicPanel.repaint();
     }
 
     public void enablePreview(boolean status) {
@@ -2211,6 +2246,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         /* Clean up previewers */
         preview.setEnabled(false);
         preview.release();
+        stopCelebration();
 
         windows.remove(this);
         for (JubFrame w : windows)
