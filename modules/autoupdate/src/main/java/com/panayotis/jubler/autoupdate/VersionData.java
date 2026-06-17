@@ -12,17 +12,37 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class VersionData implements Comparable<VersionData> {
-    private static final Pattern pattern = Pattern.compile("^([\\d]+)\\.([\\d]+)\\.([\\d]+)(-[\\w]+)?$");
+    private static final Pattern pattern = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)(?:[-.]([a-z]+)\\.?(\\d+)?)?$");
     public final String version;
     public final String url;
     public final String description;
     private final int[] parts;
+    private final String suffixLabel;   // null = final release (no pre-release suffix)
+    private final int suffixNum;        // numeric part of the suffix (0 when absent)
 
     public VersionData(String version, String url, String description) {
-        this.version = version.toLowerCase().startsWith("v") ? version.substring(1) : version;
+        String v = version.toLowerCase().startsWith("v") ? version.substring(1) : version;
+        this.version = v;
         this.url = url;
-        this.parts = getParts(this.version);
         this.description = description.trim();
+        int[] p = new int[3];
+        String label = null;
+        int num = 0;
+        try {
+            Matcher matcher = pattern.matcher(v.toLowerCase());
+            if (matcher.matches()) {
+                for (int i = 0; i < p.length; i++)
+                    p[i] = Integer.parseInt(matcher.group(i + 1));
+                label = matcher.group(4);   // null when there is no suffix
+                if (matcher.group(5) != null)
+                    num = Integer.parseInt(matcher.group(5));
+            }
+        } catch (Exception e) {
+            DEBUG.debug(e);
+        }
+        this.parts = p;
+        this.suffixLabel = label;
+        this.suffixNum = num;
     }
 
     public VersionData(String version) {
@@ -36,7 +56,16 @@ public class VersionData implements Comparable<VersionData> {
             if (diff != 0)
                 return -diff;
         }
-        return 0;
+        // Same major.minor.patch: a final release outranks any pre-release suffix,
+        // otherwise compare the suffix label alphabetically (alpha < beta < gamma < rc ...)
+        // and then its number naturally (alpha2 < alpha10).
+        if (suffixLabel == null && other.suffixLabel == null) return 0;
+        if (suffixLabel == null) return -1;          // this is final -> other is not newer
+        if (other.suffixLabel == null) return 1;     // other is final -> other is newer
+        int labelDiff = suffixLabel.compareTo(other.suffixLabel);
+        if (labelDiff != 0)
+            return -labelDiff;
+        return other.suffixNum - suffixNum;
     }
 
     @Override
@@ -58,22 +87,5 @@ public class VersionData implements Comparable<VersionData> {
     @Override
     public String toString() {
         return "VersionUrl{" + version + '}';
-    }
-
-    private static int[] getParts(String version) {
-        int[] result = new int[3];
-        try {
-            Matcher matcher = pattern.matcher(version);
-            if (matcher.matches()) {
-                for (int i = 0; i < result.length; i++) {
-                    String part = matcher.group(i + 1);
-                    if (part != null)
-                        result[i] = Integer.parseInt(part);
-                }
-            }
-        } catch (Exception e) {
-            DEBUG.debug(e);
-        }
-        return result;
     }
 }
