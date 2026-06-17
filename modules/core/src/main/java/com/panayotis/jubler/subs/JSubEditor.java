@@ -10,6 +10,7 @@ import com.formdev.flatlaf.FlatLaf;
 import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.options.Options;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.os.UIUtils;
@@ -57,6 +58,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
     private final static Color INFOC = Options.getThemeVariation().isDark() ? Color.WHITE : Color.BLACK;
     private final static Color INFOC_E = new Color(255, 84, 53);
+
+    private final static String ANNOUNCE_URL = "https://raw.githubusercontent.com/teras/jubler/master/announce.txt";
 
     private static final String TOOLTIP = "<b>" + __("How to navigate with keyboard") + "</b><br/>"
             + "- " + __("Change focus from Text area to Editor with {0}+D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_DOWN_MASK, true).trim()) + "<br/>"
@@ -126,6 +129,8 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         sedit = new JStyleEditor(parent);
         setEnabled(false);
+
+        loadAnnouncements();
     }
 
     public void setData(SubEntry entry) {
@@ -586,9 +591,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         StyleListC = new javax.swing.JComboBox<>();
         EditB = new javax.swing.JButton();
         crossP = new javax.swing.JPanel();
-        supportL = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        supportB = new javax.swing.JButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -883,27 +885,6 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         crossP.setBackground(FlatLaf.isLafDark() ? new Color(96, 79, 32) : new Color(244,227,174));
         crossP.setLayout(new java.awt.BorderLayout());
-
-        supportL.setFont(supportL.getFont().deriveFont(supportL.getFont().getSize()+2f));
-        supportL.setIcon(Theme.loadIcon("vlc"));
-        supportL.setText(__("Help bring VLC and Apple Silicon support to Jubler"));
-        supportL.setIconTextGap(6);
-        crossP.add(supportL, java.awt.BorderLayout.CENTER);
-
-        jPanel5.setOpaque(false);
-        jPanel5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        supportB.setFont(supportB.getFont().deriveFont(supportB.getFont().getSize()-1f));
-        supportB.setText(__("more..."));
-        supportB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                supportBActionPerformed(evt);
-            }
-        });
-        jPanel5.add(supportB);
-
-        crossP.add(jPanel5, java.awt.BorderLayout.EAST);
-
         add(crossP, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -1019,13 +1000,79 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
         parent.ToolsLockEM.setSelected(ToolsLockB.isSelected());
     }//GEN-LAST:event_ToolsLockBActionPerformed
 
-    @SuppressWarnings("UseSpecificCatch")
-    private void supportBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_supportBActionPerformed
-        try {
-            Desktop.getDesktop().browse(new URI("https://jubler.org/supportvlc.html"));
-        } catch (Exception ex) {
+    private void loadAnnouncements() {
+        new Thread(() -> {
+            java.util.List<Announcement> items = Announcement.fetch(ANNOUNCE_URL);
+            SwingUtilities.invokeLater(() -> populateAnnouncements(items));
+        }, "Announcements").start();
+    }
+
+    private void populateAnnouncements(java.util.List<Announcement> items) {
+        if (crossP == null)
+            return;
+        if (items == null) {
+            // The source could not be reached (offline): keep a static call-to-action
+            // using the bundled VLC icon, since no remote icon can be downloaded.
+            fillCrossP(buildRow(Theme.loadIcon("vlc"),
+                    __("VLC & Apple Silicon support has arrived — and still needs you"),
+                    "https://jubler.org/supportvlc.html"));
+            return;
         }
-    }//GEN-LAST:event_supportBActionPerformed
+        if (items.isEmpty()) {
+            removeHelpWanted();
+            return;
+        }
+        JPanel[] rows = new JPanel[items.size()];
+        for (int i = 0; i < rows.length; i++)
+            rows[i] = buildRow(items.get(i).icon, items.get(i).text, items.get(i).url);
+        fillCrossP(rows);
+    }
+
+    private void fillCrossP(JPanel... rows) {
+        crossP.removeAll();
+        crossP.setLayout(new BoxLayout(crossP, BoxLayout.Y_AXIS));
+        Color separator = FlatLaf.isLafDark() ? new Color(255, 255, 255, 40) : new Color(0, 0, 0, 40);
+        for (int i = 0; i < rows.length; i++) {
+            if (i < rows.length - 1)
+                rows[i].setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, separator));
+            crossP.add(rows[i]);
+        }
+        crossP.revalidate();
+        crossP.repaint();
+    }
+
+    private JPanel buildRow(ImageIcon icon, String text, String url) {
+        JPanel row = new JPanel(new BorderLayout());
+        row.setOpaque(false);
+
+        JLabel label = new JLabel(text);
+        label.setFont(label.getFont().deriveFont(label.getFont().getSize() + 2f));
+        if (icon != null) {
+            label.setIcon(icon);
+            label.setIconTextGap(6);
+        }
+        row.add(label, BorderLayout.CENTER);
+
+        if (url != null) {
+            JButton more = new JButton(__("more..."));
+            more.setFont(more.getFont().deriveFont(more.getFont().getSize() - 1f));
+            more.addActionListener(e -> openURL(url));
+            JPanel buttonP = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            buttonP.setOpaque(false);
+            buttonP.add(more);
+            row.add(buttonP, BorderLayout.EAST);
+        }
+        return row;
+    }
+
+    @SuppressWarnings("UseSpecificCatch")
+    private void openURL(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception ex) {
+            DEBUG.debug(ex);
+        }
+    }
 
     public void changeStyle(StyleType type, Object value) {
         parent.subTextChanged();    // We need this for the undo function
@@ -1104,15 +1151,12 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private javax.swing.JPanel crossP;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JButton supportB;
-    private javax.swing.JLabel supportL;
     private javax.swing.JPopupMenu textEditPopup;
     // End of variables declaration//GEN-END:variables
 
