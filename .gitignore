@@ -12,4 +12,3 @@ build-dir/
 repo/
 *.flatpak
 flatpak-build.log
-TODO-vlc-ffmpeg-bindings.md

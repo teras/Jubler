@@ -7,18 +7,29 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
-import com.panayotis.jubler.options.JExternalToolsOptions;
 import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.tools.ToolMenu.Location;
-import com.panayotis.jubler.tools.externals.ExternalTool;
+import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.tools.externals.Recipe;
+import com.panayotis.jubler.tools.externals.RecipeParam;
+import com.panayotis.jubler.tools.externals.RecipeResolver;
+import com.panayotis.jubler.tools.externals.RecipeSecrets;
+import com.panayotis.jubler.tools.externals.Recipes;
+import com.panayotis.jubler.tools.externals.gui.JRecipeProgress;
+import com.panayotis.jubler.tools.externals.gui.JRecipeRunDialog;
 
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ToolsManager implements PluginContext {
 
@@ -71,23 +82,84 @@ public class ToolsManager implements PluginContext {
 
     private static void updateExternals(final JubFrame jubler) {
         JMenu externalsM = jubler.ExternalsM;
-        for (Component menuItem : externalsM.getMenuComponents())
-            externalsM.remove(menuItem);
+        externalsM.removeAll();
         int i = 0;
-        for (final ExternalTool tool : JExternalToolsOptions.getList()) {
-            JMenuItem menuItem = new JMenuItem(tool.getName());
+        for (final Recipe recipe : Recipes.getList()) {
+            JMenuItem menuItem = new JMenuItem(recipe.getName());
+            menuItem.putClientProperty("recipe", recipe);
             menuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    tool.exec(jubler);
+                    runRecipe(jubler, recipe);
                 }
             });
             menuItem.setName("EXT" + (i++));
             externalsM.add(menuItem);
         }
+        installAvailabilityListener(externalsM);
+    }
+
+    /* Evaluate availability on-show (not live): disable recipes whose executable is missing. */
+    private static void installAvailabilityListener(final JMenu externalsM) {
+        if (Boolean.TRUE.equals(externalsM.getClientProperty("recipeAvailListener")))
+            return;
+        externalsM.putClientProperty("recipeAvailListener", Boolean.TRUE);
+        externalsM.addMenuListener(new MenuListener() {
+            @Override
+            public void menuSelected(MenuEvent e) {
+                for (Component c : externalsM.getMenuComponents())
+                    if (c instanceof JMenuItem) {
+                        Object r = ((JMenuItem) c).getClientProperty("recipe");
+                        if (r instanceof Recipe)
+                            c.setEnabled(RecipeResolver.isAvailable((Recipe) r));
+                    }
+            }
+
+            @Override
+            public void menuDeselected(MenuEvent e) {
+            }
+
+            @Override
+            public void menuCanceled(MenuEvent e) {
+            }
+        });
+    }
+
+    private static void runRecipe(JubFrame jubler, Recipe recipe) {
+        Map<String, String> values;
+        List<SubEntry> scope = null;
+        JubFrame secondary = null;
+        if (JRecipeRunDialog.needsPrompt(recipe, jubler)) {
+            JRecipeRunDialog dialog = new JRecipeRunDialog(jubler, jubler, recipe);
+            if (!dialog.showRun())
+                return;
+            values = dialog.getValues();
+            scope = dialog.getScope();
+            secondary = dialog.getSecondary();
+        } else {
+            values = resolveDefaults(recipe);
+        }
+        new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, values, scope, secondary);
+    }
+
+    private static Map<String, String> resolveDefaults(Recipe recipe) {
+        Map<String, String> values = new HashMap<>();
+        for (RecipeParam p : recipe.getParams()) {
+            if (p.isPersistent()) {
+                String stored = recipe.getStoredValue(p.getKey());
+                values.put(p.getKey(), stored == null ? p.getDefaultValue()
+                        : (p.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
+            } else if (p.getType() == RecipeParam.Type.CHECKBOX) {
+                values.put(p.getKey(), Boolean.parseBoolean(p.getDefaultValue()) ? p.getCheckedValue() : "");
+            } else {
+                values.put(p.getKey(), p.getDefaultValue());
+            }
+        }
+        return values;
     }
 
     public static void updateExternals() {
+        Recipes.load();
         for (final JubFrame jubler : JubFrame.windows)
             updateExternals(jubler);
     }

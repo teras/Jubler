@@ -1062,6 +1062,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         JLabel label = new JLabel(text);
         label.setFont(label.getFont().deriveFont(label.getFont().getSize() + 2f));
+        label.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
         if (icon != null) {
             label.setIcon(icon);
             label.setIconTextGap(6);

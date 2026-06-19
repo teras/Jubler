@@ -41,7 +41,7 @@ public class ShortcutsModel extends AbstractTableModel {
         for (int i = 0; i < bar.getMenuCount(); i++) {
             if (i > 0)
                 original.add(null);  // Add "---" between menus
-            addMenuList("" + i, bar.getMenu(i));
+            addMenuList("", bar.getMenu(i));
         }
         String err = isValidCodes();
         if (err != null)
@@ -147,7 +147,11 @@ public class ShortcutsModel extends AbstractTableModel {
         if (modifier > 0)
             buffer_mod |= modifier;
         else if (isValidKey(keyid)) {
+            if (current_id < 0 || current_id >= current.size())
+                return;
             MenuItem old = current.get(current_id);
+            if (old == null)   // a "---" separator row, not assignable
+                return;
             current.set(current_id, new MenuItem(old.menuname, old.tag, new MenuItem.Shortcut(keyid, buffer_mod)));
             fireTableRowsUpdated(current_id, current_id);
         }
@@ -160,8 +164,10 @@ public class ShortcutsModel extends AbstractTableModel {
     }
 
     public void removeShortcut() {
-        if (current_id >= 0) {
+        if (current_id >= 0 && current_id < current.size()) {
             MenuItem old = current.get(current_id);
+            if (old == null)   // a "---" separator row
+                return;
             current.set(current_id, new MenuItem(old.menuname, old.tag, new MenuItem.Shortcut()));
             fireTableRowsUpdated(current_id, current_id);
         }
@@ -239,20 +245,29 @@ public class ShortcutsModel extends AbstractTableModel {
             JMenu item = bar.getMenu(i);
             String text = item.getText();
             int carret = text.indexOf('&');
-            if (carret >= 0) {
-                char mnemchar = Character.toLowerCase(text.charAt(carret + 1));
-                int mnemonic = KeyEvent.VK_A;
-                if (mnemchar < 'a' || mnemchar > 'z') {
-                    mnemonic += Character.toLowerCase(text.charAt(carret + 2)) - 'a';
-                    text = text.substring(0, carret) + text.charAt(carret + 1) + text.substring(carret + 3);
-                } else {
-                    mnemonic += mnemchar - 'a';
-                    text = text.substring(0, carret) + text.substring(carret + 1);
-                }
-                item.setText(text);
-                item.setMnemonic(mnemonic);
-                item.setDisplayedMnemonicIndex(carret);
+            if (carret < 0)
+                continue;
+            if (carret + 1 >= text.length()) {   // a trailing '&' with no letter: just drop the marker
+                item.setText(text.substring(0, carret));
+                continue;
             }
+            char mnemchar = Character.toLowerCase(text.charAt(carret + 1));
+            int mnemonic = KeyEvent.VK_A;
+            if (mnemchar < 'a' || mnemchar > 'z') {
+                // Non-latin: the next char must be the corresponding latin accelerator key.
+                if (carret + 2 >= text.length()) {   // malformed: keep the displayed char, no mnemonic
+                    item.setText(text.substring(0, carret) + text.substring(carret + 1));
+                    continue;
+                }
+                mnemonic += Character.toLowerCase(text.charAt(carret + 2)) - 'a';
+                text = text.substring(0, carret) + text.charAt(carret + 1) + text.substring(carret + 3);
+            } else {
+                mnemonic += mnemchar - 'a';
+                text = text.substring(0, carret) + text.substring(carret + 1);
+            }
+            item.setText(text);
+            item.setMnemonic(mnemonic);
+            item.setDisplayedMnemonicIndex(carret);
         }
     }
 
