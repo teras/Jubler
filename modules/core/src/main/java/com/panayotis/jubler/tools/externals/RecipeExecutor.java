@@ -21,12 +21,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -48,21 +51,32 @@ public final class RecipeExecutor {
      * @param jubler      current window (source of %i, media, apply-back target)
      * @param recipe      the recipe to run
      * @param paramValues resolved param values, keyed by param key (may be empty)
-     * @param scope       affected entries for %i / patch apply-back; null = all
-     * @param secondary   window providing %j; may be null
-     * @param monitor     UI sink (log / cancel / finished)
+     * @param scope            affected entries for %i / patch apply-back; null = all
+     * @param windowSelections selected window per WINDOW param key (its content is serialized to temp); may be empty
+     * @param monitor          UI sink (log / cancel / finished)
      */
     public static void execute(JubFrame jubler, Recipe recipe, Map<String, String> paramValues,
-                               List<SubEntry> scope, JubFrame secondary, RecipeMonitor monitor) {
+                               List<SubEntry> scope, Map<String, JubFrame> windowSelections, RecipeMonitor monitor) {
         File tempDir = null;
         try {
             SubFormat format = recipe.getFormat();
             String ext = format.getExtension();
             String command = recipe.getCommand();
 
+            File exe = RecipeResolver.resolve(recipe.getPath());
+            if (exe == null) {
+                String info = recipe.getInstallInfo();
+                String msg = __("Executable not found: {0}", recipe.getPath());
+                monitor.finished(false, info == null || info.isEmpty() ? msg : msg + "\n\n" + info);
+                return;
+            }
+
             tempDir = File.createTempFile("jubler_", "_recipe").getAbsoluteFile();
             tempDir.delete();
-            tempDir.mkdirs();
+            if (!tempDir.mkdirs()) {
+                monitor.finished(false, __("Could not create a temporary working folder."));
+                return;
+            }
 
             /* ---- %i : the affected subset, in ascending order ---- */
             Subtitles full = jubler.getSubtitles();
@@ -81,6 +95,7 @@ public final class RecipeExecutor {
             }
             SubFile inputFile = new SubFile(new File(tempDir, "input." + ext), SubFile.EXTENSION_GIVEN);
             inputFile.setFormat(format);
+            inputFile.setEncoding("UTF-8");
             String err = FileCommunicator.save(input, inputFile, null);
             if (err != null) {
                 monitor.finished(false, err);
@@ -91,22 +106,29 @@ public final class RecipeExecutor {
             boolean hasOutput = command.contains("%o");
             SubFile outputFile = hasOutput ? new SubFile(new File(tempDir, "output." + ext), SubFile.EXTENSION_GIVEN) : inputFile;
             outputFile.setFormat(format);
+            outputFile.setEncoding("UTF-8");
 
-            /* ---- %j : secondary window ---- */
-            String jPath = null;
-            if (command.contains("%j")) {
-                if (secondary == null) {
-                    monitor.finished(false, __("This recipe needs a second subtitle window (%j) but none was selected."));
+            /* ---- WINDOW params: serialize each selected window's content to temp (wire format) ---- */
+            Map<String, String> values = new LinkedHashMap<>();
+            if (paramValues != null)
+                values.putAll(paramValues);
+            for (RecipeParam p : recipe.getParams()) {
+                if (p.getType() != RecipeParam.Type.WINDOW || !command.contains("%" + p.getKey()))
+                    continue;
+                JubFrame win = windowSelections == null ? null : windowSelections.get(p.getKey());
+                if (win == null) {
+                    monitor.finished(false, __("This recipe needs another subtitle window ({0}) but none is available.", p.getLabel()));
                     return;
                 }
-                SubFile secFile = new SubFile(new File(tempDir, "secondary." + ext), SubFile.EXTENSION_GIVEN);
-                secFile.setFormat(format);
-                String serr = FileCommunicator.save(new Subtitles(secondary.getSubtitles()), secFile, null);
-                if (serr != null) {
-                    monitor.finished(false, serr);
+                SubFile wf = new SubFile(new File(tempDir, "window_" + p.getKey() + "." + ext), SubFile.EXTENSION_GIVEN);
+                wf.setFormat(format);
+                wf.setEncoding("UTF-8");
+                String werr = FileCommunicator.save(new Subtitles(win.getSubtitles()), wf, null);
+                if (werr != null) {
+                    monitor.finished(false, werr);
                     return;
                 }
-                jPath = secFile.getSaveFile().getAbsolutePath();
+                values.put(p.getKey(), wf.getSaveFile().getAbsolutePath());
             }
 
             /* ---- %a / %v : media ---- */
@@ -128,14 +150,22 @@ public final class RecipeExecutor {
             }
 
             /* ---- build & run ---- */
-            List<String> commandLine = buildCommandLine(recipe, paramValues,
-                    recipe.getPath(),
+            List<String> commandLine = buildCommandLine(recipe, values,
+                    exe.getAbsolutePath(),
                     inputFile.getSaveFile().getAbsolutePath(),
-                    jPath, aPath, vPath,
+                    aPath, vPath,
                     outputFile.getSaveFile().getAbsolutePath());
             if (commandLine.isEmpty()) {
                 monitor.finished(false, __("Empty command."));
                 return;
+            }
+            // Windows cannot CreateProcess a .bat/.cmd directly; run it through the command interpreter.
+            if (RecipeResolver.isWindows() && isBatch(commandLine.get(0))) {
+                List<String> wrapped = new ArrayList<>();
+                wrapped.add("cmd.exe");
+                wrapped.add("/c");
+                wrapped.addAll(commandLine);
+                commandLine = wrapped;
             }
 
             monitor.log(__("Executing command:"));
@@ -145,10 +175,14 @@ public final class RecipeExecutor {
             ProcessBuilder builder = new ProcessBuilder(commandLine);
             builder.directory(tempDir);
             builder.redirectErrorStream(true);
+            // GUI launches (notably a macOS .app) inherit a minimal PATH; give the child the augmented one
+            // so the tool itself and any sub-tools it calls (e.g. ffmpeg) resolve.
+            builder.environment().put("PATH", RecipeResolver.augmentedPath());
             Process process = builder.start();
             monitor.setProcess(process);
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     monitor.log(line);
@@ -158,7 +192,7 @@ public final class RecipeExecutor {
             }
             int exit;
             if (monitor.isCancelled()) {
-                process.destroy();
+                killProcessTree(process);
                 monitor.finished(false, __("Cancelled."));
                 return;
             } else {
@@ -175,12 +209,65 @@ public final class RecipeExecutor {
                 monitor.finished(false, applyError);
                 return;
             }
-            FileCommunicator.deleteRecursive(tempDir);
             monitor.finished(true, __("Done."));
         } catch (Exception e) {
             DEBUG.debug(e);
             monitor.finished(false, e.getClass().getSimpleName() + ": " + e.getMessage());
+        } finally {
+            if (tempDir != null)
+                FileCommunicator.deleteRecursive(tempDir);
         }
+    }
+
+    /** A Windows batch script that the OS won't launch without an interpreter. */
+    private static boolean isBatch(String path) {
+        String p = path.toLowerCase();
+        return p.endsWith(".bat") || p.endsWith(".cmd");
+    }
+
+    /**
+     * Terminate the process and, on a Java 9+ runtime, its whole descendant tree (so a
+     * {@code cmd /c python ...} wrapper does not leave the real worker behind). Compiled for
+     * Java 8 via reflection: on a Java 8 runtime it gracefully degrades to destroying the
+     * top-level process only.
+     */
+    private static void killProcessTree(Process process) {
+        List<Object> descendants = collectDescendants(process);   // collect BEFORE the parent dies
+        process.destroy();
+        try {
+            if (!process.waitFor(3, TimeUnit.SECONDS))
+                process.destroyForcibly();
+        } catch (InterruptedException e) {
+            process.destroyForcibly();
+            Thread.currentThread().interrupt();
+        }
+        try {
+            java.lang.reflect.Method destroyForcibly =
+                    Class.forName("java.lang.ProcessHandle").getMethod("destroyForcibly");
+            for (Object handle : descendants)
+                try {
+                    destroyForcibly.invoke(handle);
+                } catch (Exception ignored) {
+                }
+        } catch (Throwable ignored) {
+            // Java 8 runtime: no ProcessHandle, nothing more to do.
+        }
+    }
+
+    /** The descendant ProcessHandles via reflection (Java 9+); empty on a Java 8 runtime. */
+    private static List<Object> collectDescendants(Process process) {
+        List<Object> result = new ArrayList<>();
+        try {
+            Object handle = Process.class.getMethod("toHandle").invoke(process);
+            Object stream = Class.forName("java.lang.ProcessHandle").getMethod("descendants").invoke(handle);
+            java.util.Iterator<?> it = (java.util.Iterator<?>)
+                    Class.forName("java.util.stream.BaseStream").getMethod("iterator").invoke(stream);
+            while (it.hasNext())
+                result.add(it.next());
+        } catch (Throwable ignored) {
+            // Java 8 runtime or unavailable: parent-only termination.
+        }
+        return result;
     }
 
     /* Scope sorted ascending by natural index; entries not in the model are dropped. */
@@ -199,32 +286,28 @@ public final class RecipeExecutor {
     }
 
     /**
-     * Build the argument list. System placeholders ({@code %x %i %j %a %v %o}) substitute
-     * in place and never split a token (paths may contain spaces). A token that is exactly
-     * {@code %<key>} for a defined param expands through the param's formatter and is split
-     * on whitespace (so multi-word flags become separate args and empty values vanish).
+     * Build the argument list. The template is tokenized honoring quotes (so a literal path
+     * with spaces, written between quotes, stays one argument). System placeholders
+     * ({@code %x %i %a %v %o}) substitute in place and never split a token. A token that is
+     * exactly {@code %<key>} for a defined param expands through {@link #appendParam}: the user
+     * value is always a single argument; only author text (formatter / checkbox value) splits.
      */
     static List<String> buildCommandLine(Recipe recipe, Map<String, String> paramValues,
-                                         String x, String i, String j, String a, String v, String o) {
+                                         String x, String i, String a, String v, String o) {
         List<String> out = new ArrayList<>();
-        for (String token : recipe.getCommand().trim().split("\\s+")) {
+        for (String token : tokenize(recipe.getCommand())) {
             if (token.isEmpty())
                 continue;
             if (token.length() > 1 && token.charAt(0) == '%') {
                 RecipeParam param = findParam(recipe, token.substring(1));
                 if (param != null) {
-                    String value = paramValues == null ? null : paramValues.get(param.getKey());
-                    String fragment = param.format(value);
-                    for (String piece : fragment.trim().split("\\s+"))
-                        if (!piece.isEmpty())
-                            out.add(piece);
+                    appendParam(out, param, paramValues == null ? null : paramValues.get(param.getKey()));
                     continue;
                 }
             }
             String t = token
                     .replace("%x", nz(x))
                     .replace("%i", nz(i))
-                    .replace("%j", nz(j))
                     .replace("%a", nz(a))
                     .replace("%v", nz(v))
                     .replace("%o", nz(o));
@@ -232,6 +315,61 @@ public final class RecipeExecutor {
                 out.add(t);
         }
         return out;
+    }
+
+    /**
+     * Append a param's contribution. Empty values vanish (optional flags disappear). The user
+     * value is always a SINGLE argument (paths/keys may contain spaces); only author-provided
+     * text — a formatter or a checkbox's checked value — is split into separate flags.
+     */
+    private static void appendParam(List<String> out, RecipeParam param, String value) {
+        if (value == null || value.isEmpty())
+            return;
+        String formatter = param.getFormatter();
+        if (formatter != null && !formatter.isEmpty()) {
+            for (String piece : formatter.trim().split("\\s+"))
+                if (!piece.isEmpty())
+                    out.add(piece.replace("%VALUE", value));
+        } else if (param.getType() == RecipeParam.Type.CHECKBOX) {
+            for (String piece : value.trim().split("\\s+"))
+                if (!piece.isEmpty())
+                    out.add(piece);
+        } else {
+            out.add(value);
+        }
+    }
+
+    /** Split a command template on whitespace, honoring single/double quotes so a quoted path with spaces stays one token. */
+    private static List<String> tokenize(String s) {
+        List<String> tokens = new ArrayList<>();
+        StringBuilder cur = new StringBuilder();
+        boolean inTok = false;
+        char quote = 0;
+        for (int k = 0; k < s.length(); k++) {
+            char c = s.charAt(k);
+            if (quote != 0) {
+                if (c == quote)
+                    quote = 0;
+                else
+                    cur.append(c);
+                inTok = true;
+            } else if (c == '"' || c == '\'') {
+                quote = c;
+                inTok = true;
+            } else if (Character.isWhitespace(c)) {
+                if (inTok) {
+                    tokens.add(cur.toString());
+                    cur.setLength(0);
+                    inTok = false;
+                }
+            } else {
+                cur.append(c);
+                inTok = true;
+            }
+        }
+        if (inTok)
+            tokens.add(cur.toString());
+        return tokens;
     }
 
     private static String nz(String s) {

@@ -48,7 +48,7 @@ class JCatalogChooser extends JDialog {
         content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         content.add(new JLabel(__("Select the recipes to import:")), BorderLayout.NORTH);
         JScrollPane scroll = new JScrollPane(list);
-        scroll.setPreferredSize(new Dimension(360, 240));
+        scroll.setPreferredSize(new Dimension(540, 240));
         content.add(scroll, BorderLayout.CENTER);
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -66,6 +66,21 @@ class JCatalogChooser extends JDialog {
         setContentPane(content);
         pack();
         setLocationRelativeTo(parent);
+    }
+
+    /** Replace the shown recipes (e.g. when a fresh fetch arrives), keeping any selection by name. */
+    void setRecipes(List<Recipe> recipes) {
+        Recipe sel = list.getSelectedValue();
+        String selName = sel == null ? null : sel.getName();
+        model.clear();
+        for (Recipe r : recipes)
+            model.addElement(r);
+        if (selName != null)
+            for (int i = 0; i < model.size(); i++)
+                if (selName.equals(model.get(i).getName())) {
+                    list.setSelectedIndex(i);
+                    break;
+                }
     }
 
     List<Recipe> choose() {

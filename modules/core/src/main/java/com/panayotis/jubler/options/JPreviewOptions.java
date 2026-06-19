@@ -74,12 +74,12 @@ public class JPreviewOptions extends JPanel implements OptionsHolder {
 
     @Override
     public String getTabName() {
-        return "Preview";
+        return __("Preview");
     }
 
     @Override
     public String getTabTooltip() {
-        return "Configure audio/video preview parameters";
+        return __("Configure audio/video preview parameters");
     }
 
     @Override

@@ -128,18 +128,18 @@ public class ToolsManager implements PluginContext {
     private static void runRecipe(JubFrame jubler, Recipe recipe) {
         Map<String, String> values;
         List<SubEntry> scope = null;
-        JubFrame secondary = null;
+        Map<String, JubFrame> windowSelections = java.util.Collections.emptyMap();
         if (JRecipeRunDialog.needsPrompt(recipe, jubler)) {
             JRecipeRunDialog dialog = new JRecipeRunDialog(jubler, jubler, recipe);
             if (!dialog.showRun())
                 return;
             values = dialog.getValues();
             scope = dialog.getScope();
-            secondary = dialog.getSecondary();
+            windowSelections = dialog.getWindowSelections();
         } else {
             values = resolveDefaults(recipe);
         }
-        new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, values, scope, secondary);
+        new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, values, scope, windowSelections);
     }
 
     private static Map<String, String> resolveDefaults(Recipe recipe) {

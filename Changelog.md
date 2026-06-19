@@ -1,5 +1,12 @@
 ### Jubler Changelog
 
+#### 10.0.0
+
+- Replaced the aging MPlayer and ffdecode/ffmpeg components with VLC (libvlc) for video preview, frame preview, audio waveform, media metadata and sample-exact snippet playback
+- Native Apple Silicon (arm64) support — no Rosetta required, future-proof against Apple dropping Rosetta 2
+- Modern codec and container support across Windows, macOS and Linux
+- Numerous stability fixes across Windows, macOS and Linux
+
 #### 9.0.1
 
 Fix SRT subtitle save, when styles are present

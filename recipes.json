@@ -20,11 +20,18 @@
   {
     "name": "Sync to another subtitle (ffsubsync)",
     "path": "ffsubsync",
-    "command": "%x %j -i %i %gss -o %o",
+    "command": "%x %ref -i %i %gss -o %o",
     "format": "SubRip",
     "output": "PATCH_TIMING",
-    "install": "ffsubsync re-times a subtitle against a correctly-timed reference subtitle (the 'other window').\nInstall:\n  macOS:   brew install ffmpeg ; pip install ffsubsync\n  Linux:   sudo apt install ffmpeg ; pip install ffsubsync\n  Windows: install ffmpeg, then  pip install ffsubsync",
+    "install": "ffsubsync re-times a subtitle against a correctly-timed reference subtitle (another open window).\nInstall:\n  macOS:   brew install ffmpeg ; pip install ffsubsync\n  Linux:   sudo apt install ffmpeg ; pip install ffsubsync\n  Windows: install ffmpeg, then  pip install ffsubsync",
     "params": [
+      {
+        "key": "ref",
+        "label": "Reference subtitle",
+        "help": "The correctly-timed subtitle window to sync against",
+        "type": "WINDOW",
+        "persistent": false
+      },
       {
         "key": "gss",
         "label": "Large offset search",
@@ -47,10 +54,18 @@
   {
     "name": "Sync to another subtitle (alass)",
     "path": "alass",
-    "command": "%x %j %i %o",
+    "command": "%x %ref %i %o",
     "format": "SubRip",
     "output": "PATCH_TIMING",
-    "install": "alass re-times a subtitle against a correctly-timed reference subtitle (the 'other window').\nInstall:\n  macOS/Linux: build from source (github.com/kaegi/alass) or use a package (AUR: alass).\n  Windows:     download the prebuilt alass-cli.exe.",
-    "params": []
+    "install": "alass re-times a subtitle against a correctly-timed reference subtitle (another open window).\nInstall:\n  macOS/Linux: build from source (github.com/kaegi/alass) or use a package (AUR: alass).\n  Windows:     download the prebuilt alass-cli.exe.",
+    "params": [
+      {
+        "key": "ref",
+        "label": "Reference subtitle",
+        "help": "The correctly-timed subtitle window to sync against",
+        "type": "WINDOW",
+        "persistent": false
+      }
+    ]
   }
 ]

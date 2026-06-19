@@ -85,7 +85,7 @@ public class RecipeTest {
         values.put("lang", "");                   // empty -> whole flag must vanish
 
         List<String> cmd = RecipeExecutor.buildCommandLine(r, values,
-                r.getPath(), "/tmp/in.srt", null, "/tmp/au dio.wav", null, "/tmp/out.srt");
+                r.getPath(), "/tmp/in.srt", "/tmp/au dio.wav", null, "/tmp/out.srt");
 
         // %x kept whole (space), %model -> "-m base" (two args), %lang dropped, %a kept whole, %o kept
         assertEquals(Arrays.asList(

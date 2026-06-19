@@ -9,6 +9,7 @@ package com.panayotis.jubler.tools.externals.gui;
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.loader.SubFormat;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.tools.externals.OutputMode;
 import com.panayotis.jubler.tools.externals.Recipe;
 import com.panayotis.jubler.tools.externals.RecipeParam;
@@ -17,6 +18,7 @@ import com.panayotis.jubler.tools.externals.RecipeResolver;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -38,8 +40,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Window;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -72,6 +78,12 @@ public class JRecipeEditor extends JDialog {
         this.recipe = recipe;
         this.snapshot = Recipe.fromJsonString(recipe.toJsonString(false));
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                doCancel();
+            }
+        });
 
         JPanel content = new JPanel(new BorderLayout(0, 8));
         content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -82,7 +94,7 @@ public class JRecipeEditor extends JDialog {
 
         loadFromRecipe();
         pack();
-        setMinimumSize(new Dimension(640, getHeight()));
+        setMinimumSize(new Dimension(580, getHeight()));
         setLocationRelativeTo(parent);
     }
 
@@ -108,7 +120,8 @@ public class JRecipeEditor extends JDialog {
             execLine.setOpaque(false);
             execLine.add(pathT, BorderLayout.CENTER);
             execLine.add(browseB, BorderLayout.EAST);
-            addRow(p, row++, __("Executable:"), execLine);
+            addRow(p, row++, __("Executable:"), execLine, new InfoButton(__("Executable"),
+                    __("The program to run. Type a name found on the system PATH, or use Browse to pick a file. When it cannot be found, the recipe is shown in red here and disabled in the menu.")));
 
             JPanel statusLine = new JPanel(new BorderLayout(6, 0));
             statusLine.setOpaque(false);
@@ -116,14 +129,17 @@ public class JRecipeEditor extends JDialog {
             statusLine.add(infoB, BorderLayout.EAST);
             addRow(p, row++, "", statusLine);
 
-            commandT.setToolTipText("<html>%x " + __("executable") + " · %i " + __("input")
-                    + " · %j " + __("second window") + " · %a " + __("audio") + " · %v " + __("video")
-                    + " · %o " + __("output") + "</html>");
-            addRow(p, row++, __("Command:"), commandT);
+            addRow(p, row++, __("Command:"), commandT, new InfoButton(__("Command"),
+                    __("The command template. Placeholders: {0}.",
+                            "<br>%x = " + __("executable") + "<br>%i = " + __("input")
+                                    + "<br>%a = " + __("audio") + "<br>%v = " + __("video") + "<br>%o = " + __("output")
+                                    + "<br>%&lt;key&gt; = " + __("each parameter"))));
         }
 
-        addRow(p, row++, __("Wire format:"), formatC);
-        addRow(p, row++, __("Result:"), resultC);
+        addRow(p, row++, __("Wire format:"), formatC, new InfoButton(__("Wire format"),
+                __("The subtitle format used to pass data to the tool (%i/%j) and read it back (%o). SRT is preferred; choose ASS only when the tool needs styles or karaoke timing.")));
+        addRow(p, row++, __("Result:"), resultC, new InfoButton(__("Result"),
+                __("How the tool's output is applied: replace the whole subtitle (new or current window), or update only the text / only the timing / both — matched line by line.")));
 
         SubFormat[] formats = Availabilities.formats.getFormats().toArray(new SubFormat[0]);
         for (SubFormat f : formats)
@@ -170,21 +186,15 @@ public class JRecipeEditor extends JDialog {
         detail.setOnKeyChanged(paramList::repaint);
 
         JScrollPane listScroll = new JScrollPane(paramList);
-        listScroll.setPreferredSize(new Dimension(180, 200));
+        listScroll.setPreferredSize(new Dimension(300, 200));
 
-        JButton addB = small("+");
-        JButton remB = small("−");
-        JButton upB = small("∧");
-        JButton dnB = small("∨");
+        JButton addB = iconButton("plus", __("Add"));
+        JButton remB = iconButton("minus", __("Remove"));
         addB.addActionListener(e -> addParam());
         remB.addActionListener(e -> removeParam());
-        upB.addActionListener(e -> moveParam(-1));
-        dnB.addActionListener(e -> moveParam(1));
         JPanel listButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
         listButtons.add(addB);
         listButtons.add(remB);
-        listButtons.add(upB);
-        listButtons.add(dnB);
 
         JPanel left = new JPanel(new BorderLayout());
         left.add(listScroll, BorderLayout.CENTER);
@@ -199,11 +209,7 @@ public class JRecipeEditor extends JDialog {
         JPanel p = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton cancel = new JButton(__("Cancel"));
         JButton ok = new JButton(__("OK"));
-        cancel.addActionListener(e -> {
-            recipe.copyFrom(snapshot);
-            accepted = false;
-            dispose();
-        });
+        cancel.addActionListener(e -> doCancel());
         ok.addActionListener(e -> {
             String error = validateRecipe();
             if (error != null) {
@@ -218,12 +224,20 @@ public class JRecipeEditor extends JDialog {
         return p;
     }
 
+    private void doCancel() {
+        recipe.copyFrom(snapshot);
+        accepted = false;
+        dispose();
+    }
+
     /* ===================== actions ===================== */
 
     private void addParam() {
-        RecipeParam p = new RecipeParam(uniqueKey(), RecipeParam.Type.TEXTBOX);
+        int n = nextParamIndex();
+        RecipeParam p = new RecipeParam("p" + n, RecipeParam.Type.TEXTBOX);
+        p.setLabel(__("Parameter {0}", n));
         recipe.addParam(p);
-        paramModel.addElement(p);
+        sortModel();
         paramList.setSelectedValue(p, true);
     }
 
@@ -239,25 +253,22 @@ public class JRecipeEditor extends JDialog {
             detail.setParam(null);
     }
 
-    private void moveParam(int delta) {
-        int idx = paramList.getSelectedIndex();
-        int to = idx + delta;
-        if (idx < 0 || to < 0 || to >= paramModel.getSize())
-            return;
-        RecipeParam p = paramModel.get(idx);
-        paramModel.remove(idx);
-        paramModel.add(to, p);
-        recipe.getParams().remove(idx);
-        recipe.getParams().add(to, p);
-        paramList.setSelectedIndex(to);
+    /* Params are referenced by key, so list order is irrelevant — show them alphabetically. */
+    private void sortModel() {
+        RecipeParam selected = paramList.getSelectedValue();
+        List<RecipeParam> items = new ArrayList<>(recipe.getParams());
+        items.sort(Comparator.comparing(rp -> rp.getKey().toLowerCase()));
+        paramModel.clear();
+        for (RecipeParam rp : items)
+            paramModel.addElement(rp);
+        if (selected != null)
+            paramList.setSelectedValue(selected, true);
     }
 
-    private String uniqueKey() {
-        for (int i = 1; ; i++) {
-            String candidate = "param" + i;
-            if (!recipe.keysExcept(null).contains(candidate))
-                return candidate;
-        }
+    private int nextParamIndex() {
+        for (int i = 1; ; i++)
+            if (!recipe.keysExcept(null).contains("p" + i))
+                return i;
     }
 
     private void browseExecutable() {
@@ -308,9 +319,7 @@ public class JRecipeEditor extends JDialog {
         if (recipe.getFormat() != null)
             formatC.setSelectedItem(recipe.getFormat());
         resultC.setSelectedItem(recipe.getOutputMode());
-        paramModel.clear();
-        for (RecipeParam p : recipe.getParams())
-            paramModel.addElement(p);
+        sortModel();
         if (!paramModel.isEmpty())
             paramList.setSelectedIndex(0);
         updateStatus();
@@ -334,13 +343,23 @@ public class JRecipeEditor extends JDialog {
         });
     }
 
-    private static JButton small(String text) {
-        JButton b = new JButton(text);
-        b.setMargin(new Insets(0, 6, 0, 6));
+    private static JButton iconButton(String icon, String tooltip) {
+        JButton b = new JButton();
+        ImageIcon base = Theme.loadIcon(icon);
+        if (base != null)
+            b.setIcon(new ImageIcon(base.getImage().getScaledInstance(24, 24, Image.SCALE_SMOOTH)));
+        else
+            b.setText(tooltip);
+        b.setToolTipText(tooltip);
+        b.setMargin(new Insets(2, 6, 2, 6));
         return b;
     }
 
     private static void addRow(JPanel p, int row, String label, Component field) {
+        addRow(p, row, label, field, null);
+    }
+
+    private static void addRow(JPanel p, int row, String label, Component field, InfoButton info) {
         GridBagConstraints lg = new GridBagConstraints();
         lg.gridx = 0;
         lg.gridy = row;
@@ -354,5 +373,13 @@ public class JRecipeEditor extends JDialog {
         fg.weightx = 1.0;
         fg.insets = new Insets(3, 0, 3, 4);
         p.add(field, fg);
+        if (info != null) {
+            GridBagConstraints ig = new GridBagConstraints();
+            ig.gridx = 2;
+            ig.gridy = row;
+            ig.fill = GridBagConstraints.VERTICAL;
+            ig.insets = new Insets(3, 0, 3, 2);
+            p.add(info, ig);
+        }
     }
 }

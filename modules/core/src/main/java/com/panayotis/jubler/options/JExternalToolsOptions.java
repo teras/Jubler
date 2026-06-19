@@ -18,6 +18,7 @@ import com.panayotis.jubler.tools.externals.gui.JRecipeEditor;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
@@ -28,6 +29,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -65,10 +68,10 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     private JPanel buildButtons() {
         JPanel south = new JPanel(new BorderLayout());
 
-        JPanel edit = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton addB = new JButton("+ " + __("Add"));
-        JButton removeB = new JButton("- " + __("Remove"));
-        JButton editB = new JButton(__("Edit…"));
+        JPanel edit = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 4));
+        JButton addB = iconButton("plus", __("Add"));
+        JButton removeB = iconButton("minus", __("Remove"));
+        JButton editB = iconButton("edit", __("Edit…"));
         addB.addActionListener(e -> addRecipe());
         removeB.addActionListener(e -> removeSelected());
         editB.addActionListener(e -> editSelected());
@@ -77,7 +80,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         edit.add(editB);
 
         JPanel share = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton fetchB = new JButton(__("Fetch…"));
+        JButton fetchB = new JButton(__("Fetch from GitHub…"));
         JButton loadB = new JButton(__("Load…"));
         JButton saveB = new JButton(__("Save…"));
         fetchB.setToolTipText(__("Download shared recipes from the Jubler GitHub"));
@@ -91,6 +94,18 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         south.add(edit, BorderLayout.WEST);
         south.add(share, BorderLayout.EAST);
         return south;
+    }
+
+    private static JButton iconButton(String icon, String tooltip) {
+        JButton b = new JButton();
+        ImageIcon base = Theme.loadIcon(icon);
+        if (base != null)
+            b.setIcon(new ImageIcon(base.getImage().getScaledInstance(28, 28, Image.SCALE_SMOOTH)));
+        else
+            b.setText(tooltip);
+        b.setToolTipText(tooltip);
+        b.setMargin(new Insets(4, 8, 4, 8));
+        return b;
     }
 
     /* ===================== actions ===================== */
@@ -162,24 +177,35 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     }
 
     private void fetchFromGitHub() {
-        List<Recipe> fetched = RecipeCatalog.cached();
-        if (fetched != null && !fetched.isEmpty())
-            offerCatalog(fetched);
-        new Thread(() -> {
-            List<Recipe> fresh = RecipeCatalog.fetch();
-            if (fresh != null && !fresh.isEmpty())
-                SwingUtilities.invokeLater(() -> offerCatalog(fresh));
-            else if (fetched == null)
-                SwingUtilities.invokeLater(() ->
-                        JIDialog.info(this, __("No shared recipes available (offline?)."), __("Fetch recipes")));
-        }, "RecipeCatalog").start();
+        Window owner = SwingUtilities.getWindowAncestor(this);
+        List<Recipe> cached = RecipeCatalog.cached();
+        if (cached != null && !cached.isEmpty()) {
+            // Show the cached catalog at once, then refresh the same dialog in place.
+            JCatalogChooser chooser = new JCatalogChooser(owner, cached);
+            new Thread(() -> {
+                List<Recipe> fresh = RecipeCatalog.fetch();
+                if (fresh != null && !fresh.isEmpty())
+                    SwingUtilities.invokeLater(() -> chooser.setRecipes(fresh));
+            }, "RecipeCatalog").start();
+            importChosen(chooser.choose());
+        } else {
+            // Nothing cached: fetch first, then show a single dialog (or report offline).
+            new Thread(() -> {
+                List<Recipe> fresh = RecipeCatalog.fetch();
+                SwingUtilities.invokeLater(() -> {
+                    if (fresh != null && !fresh.isEmpty())
+                        importChosen(new JCatalogChooser(owner, fresh).choose());
+                    else
+                        JIDialog.info(this, __("No shared recipes available (offline?)."), __("Fetch recipes"));
+                });
+            }, "RecipeCatalog").start();
+        }
     }
 
-    private void offerCatalog(List<Recipe> available) {
-        JCatalogChooser chooser = new JCatalogChooser(SwingUtilities.getWindowAncestor(this), available);
-        for (Recipe chosen : chooser.choose()) {
-            Recipes.getList().add(chosen);
-            model.addElement(chosen);
+    private void importChosen(List<Recipe> chosen) {
+        for (Recipe r : chosen) {
+            Recipes.getList().add(r);
+            model.addElement(r);
         }
         recipeList.repaint();
     }
@@ -226,12 +252,12 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
     @Override
     public String getTabName() {
-        return "Externals";
+        return __("Externals");
     }
 
     @Override
     public String getTabTooltip() {
-        return "Configure external tools";
+        return __("Configure external tools");
     }
 
     @Override

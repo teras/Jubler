@@ -123,12 +123,12 @@ public class JUiOptions extends JPanel implements OptionsHolder {
 
     @Override
     public String getTabName() {
-        return "UI Options";
+        return __("UI Options");
     }
 
     @Override
     public String getTabTooltip() {
-        return "Configure UI related parameters";
+        return __("Configure UI related parameters");
     }
 
     @Override

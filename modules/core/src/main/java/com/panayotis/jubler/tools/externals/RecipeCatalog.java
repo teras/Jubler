@@ -90,8 +90,14 @@ public final class RecipeCatalog {
         try {
             HttpURLConnection connection = (HttpURLConnection) new URL(source).openConnection();
             connection.setRequestMethod("GET");
+            connection.setRequestProperty("User-Agent", "Jubler");
+            connection.setInstanceFollowRedirects(true);
             connection.setConnectTimeout(TIMEOUT);
             connection.setReadTimeout(TIMEOUT);
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                DEBUG.debug("Recipe catalog fetch returned HTTP " + connection.getResponseCode());
+                return null;
+            }
             try (InputStream in = connection.getInputStream()) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 byte[] buffer = new byte[8192];

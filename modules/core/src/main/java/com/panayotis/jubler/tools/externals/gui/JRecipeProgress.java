@@ -64,9 +64,9 @@ public class JRecipeProgress extends JDialog implements RecipeMonitor {
 
     /** Start the recipe on a worker thread and block on the modal dialog. */
     public void execute(JubFrame jubler, Recipe recipe, Map<String, String> values,
-                        List<SubEntry> scope, JubFrame secondary) {
+                        List<SubEntry> scope, Map<String, JubFrame> windowSelections) {
         Thread worker = new Thread(
-                () -> RecipeExecutor.execute(jubler, recipe, values, scope, secondary, this),
+                () -> RecipeExecutor.execute(jubler, recipe, values, scope, windowSelections, this),
                 "Recipe " + recipe.getName());
         worker.start();
         setVisible(true);

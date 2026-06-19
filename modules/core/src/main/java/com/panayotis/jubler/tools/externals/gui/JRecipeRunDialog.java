@@ -14,6 +14,7 @@ import com.panayotis.jubler.tools.externals.RecipeSecrets;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -21,6 +22,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -32,8 +34,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -50,7 +55,6 @@ public class JRecipeRunDialog extends JDialog {
     private final JubFrame jubler;
     private final Map<RecipeParam, JComponent> widgets = new LinkedHashMap<>();
     private final JComboBox<String> scopeC = new JComboBox<>();
-    private JComboBox<JubFrame> secondaryC;
     private boolean accepted = false;
 
     public JRecipeRunDialog(Window parent, JubFrame jubler, Recipe recipe) {
@@ -64,16 +68,18 @@ public class JRecipeRunDialog extends JDialog {
         int row = 0;
 
         for (RecipeParam p : recipe.getParams()) {
-            if (p.isPersistent())
+            // A window selection is inherently per-run (a window can't be a stored value).
+            if (p.isPersistent() && p.getType() != RecipeParam.Type.WINDOW)
                 continue;
             JComponent w = widgetFor(p);
             widgets.put(p, w);
-            addRow(form, row++, p.getLabel() + ":", w, p.getHelp());
-        }
-
-        if (recipe.getCommand().contains("%j")) {
-            secondaryC = new JComboBox<>(new DefaultComboBoxModel<>(otherWindows().toArray(new JubFrame[0])));
-            addRow(form, row++, __("Other window:"), secondaryC, "");
+            if (w instanceof JCheckBox) {
+                // The whole row toggles: the label is the checkbox's own text and it spans the full width.
+                ((JCheckBox) w).setText(p.getLabel());
+                addCheckboxRow(form, row++, (JCheckBox) w, p.getHelp());
+            } else {
+                addRow(form, row++, p.getLabel() + ":", w, p.getHelp());
+            }
         }
 
         scopeC.addItem(__("All subtitles"));
@@ -108,10 +114,8 @@ public class JRecipeRunDialog extends JDialog {
     /** True if there's anything worth asking before running (else just run with defaults/all). */
     public static boolean needsPrompt(Recipe recipe, JubFrame jubler) {
         for (RecipeParam p : recipe.getParams())
-            if (!p.isPersistent())
+            if (!p.isPersistent() || p.getType() == RecipeParam.Type.WINDOW)
                 return true;
-        if (recipe.getCommand().contains("%j"))
-            return true;
         return jubler.getSelectedRows().length > 0;
     }
 
@@ -126,7 +130,10 @@ public class JRecipeRunDialog extends JDialog {
     public Map<String, String> getValues() {
         Map<String, String> values = new LinkedHashMap<>();
         for (RecipeParam p : recipe.getParams()) {
-            if (p.isPersistent()) {
+            if (p.getType() == RecipeParam.Type.WINDOW) {
+                // Resolved by the executor (the selected window's content is serialized to temp).
+                values.put(p.getKey(), "");
+            } else if (p.isPersistent()) {
                 String stored = recipe.getStoredValue(p.getKey());
                 values.put(p.getKey(), stored == null ? p.getDefaultValue()
                         : (p.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
@@ -137,6 +144,19 @@ public class JRecipeRunDialog extends JDialog {
         return values;
     }
 
+    /** Selected window per per-run WINDOW param (its content is serialized by the executor). */
+    public Map<String, JubFrame> getWindowSelections() {
+        Map<String, JubFrame> sel = new LinkedHashMap<>();
+        for (RecipeParam p : recipe.getParams()) {
+            if (p.getType() != RecipeParam.Type.WINDOW)
+                continue;
+            JComponent w = widgets.get(p);
+            if (w instanceof JComboBox)
+                sel.put(p.getKey(), (JubFrame) ((JComboBox<?>) w).getSelectedItem());
+        }
+        return sel;
+    }
+
     public List<SubEntry> getScope() {
         if (scopeC.getSelectedIndex() <= 0)
             return null;   // all
@@ -145,10 +165,6 @@ public class JRecipeRunDialog extends JDialog {
         for (SubEntry e : sel)
             list.add(e);
         return list;
-    }
-
-    public JubFrame getSecondary() {
-        return secondaryC == null ? null : (JubFrame) secondaryC.getSelectedItem();
     }
 
     /* ===================== widgets ===================== */
@@ -184,9 +200,25 @@ public class JRecipeRunDialog extends JDialog {
                 return new JPasswordField(20);
             }
             case WINDOW: {
-                return new JComboBox<>(new DefaultComboBoxModel<>(otherWindows().toArray(new JubFrame[0])));
+                JComboBox<JubFrame> c = new JComboBox<>(new DefaultComboBoxModel<>(otherWindows().toArray(new JubFrame[0])));
+                c.setRenderer(windowRenderer());
+                return c;
             }
-            case LANGUAGE:
+            case LANGUAGE: {
+                JComboBox<String> c = new JComboBox<>(languageCodes());
+                c.setRenderer(new DefaultListCellRenderer() {
+                    @Override
+                    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean sel, boolean foc) {
+                        super.getListCellRendererComponent(list, value, index, sel, foc);
+                        if (value != null)
+                            setText(languageLabel(value.toString()));
+                        return this;
+                    }
+                });
+                if (!p.getDefaultValue().isEmpty())
+                    c.setSelectedItem(p.getDefaultValue());
+                return c;
+            }
             case TEXTBOX:
             default:
                 return new JTextField(p.getDefaultValue(), 20);
@@ -205,22 +237,14 @@ public class JRecipeRunDialog extends JDialog {
                 return ((JTextField) ((JPanel) w).getClientProperty("field")).getText();
             case SECRET:
                 return new String(((JPasswordField) w).getPassword());
-            case WINDOW: {
-                JubFrame win = (JubFrame) ((JComboBox<JubFrame>) w).getSelectedItem();
-                return windowPath(win);
+            case LANGUAGE: {
+                Object lang = ((JComboBox<String>) w).getSelectedItem();
+                return lang == null ? "" : lang.toString();
             }
-            case LANGUAGE:
             case TEXTBOX:
             default:
                 return ((JTextField) w).getText();
         }
-    }
-
-    private static String windowPath(JubFrame win) {
-        if (win == null || win.getSubtitles() == null || win.getSubtitles().getSubFile() == null
-                || win.getSubtitles().getSubFile().getSaveFile() == null)
-            return "";
-        return win.getSubtitles().getSubFile().getSaveFile().getPath();
     }
 
     private List<JubFrame> otherWindows() {
@@ -229,6 +253,58 @@ public class JRecipeRunDialog extends JDialog {
             if (w != jubler)
                 list.add(w);
         return list;
+    }
+
+    /** Show a window by its subtitle file name (not the frame's toString). */
+    private static String windowName(JubFrame win) {
+        if (win != null && win.getSubtitles() != null && win.getSubtitles().getSubFile() != null
+                && win.getSubtitles().getSubFile().getSaveFile() != null)
+            return win.getSubtitles().getSubFile().getSaveFile().getName();
+        return __("Untitled");
+    }
+
+    private static DefaultListCellRenderer windowRenderer() {
+        return new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean sel, boolean foc) {
+                super.getListCellRendererComponent(list, value, index, sel, foc);
+                if (value instanceof JubFrame)
+                    setText(windowName((JubFrame) value));
+                return this;
+            }
+        };
+    }
+
+    /** ISO 639 language codes, sorted by their display name in the current locale. */
+    private static String[] languageCodes() {
+        String[] codes = Locale.getISOLanguages();
+        Arrays.sort(codes, Comparator.comparing(c -> languageLabel(c).toLowerCase()));
+        return codes;
+    }
+
+    private static String languageLabel(String code) {
+        String name = new Locale(code).getDisplayLanguage();
+        return name == null || name.isEmpty() ? code : name + " (" + code + ")";
+    }
+
+    private static void addCheckboxRow(JPanel p, int row, JCheckBox box, String help) {
+        GridBagConstraints fg = new GridBagConstraints();
+        fg.gridx = 0;
+        fg.gridy = row;
+        fg.gridwidth = 2;
+        fg.fill = GridBagConstraints.HORIZONTAL;
+        fg.weightx = 1.0;
+        fg.anchor = GridBagConstraints.LINE_START;
+        fg.insets = new Insets(3, 4, 3, 4);
+        p.add(box, fg);
+        if (help != null && !help.isEmpty()) {
+            GridBagConstraints ig = new GridBagConstraints();
+            ig.gridx = 2;
+            ig.gridy = row;
+            ig.fill = GridBagConstraints.VERTICAL;
+            ig.insets = new Insets(3, 0, 3, 2);
+            p.add(new InfoButton(box.getText(), help), ig);
+        }
     }
 
     private static void addRow(JPanel p, int row, String label, Component field, String help) {
@@ -244,8 +320,14 @@ public class JRecipeRunDialog extends JDialog {
         fg.fill = GridBagConstraints.HORIZONTAL;
         fg.weightx = 1.0;
         fg.insets = new Insets(3, 0, 3, 4);
-        if (field instanceof JComponent && help != null && !help.isEmpty())
-            ((JComponent) field).setToolTipText(help);
         p.add(field, fg);
+        if (help != null && !help.isEmpty()) {
+            GridBagConstraints ig = new GridBagConstraints();
+            ig.gridx = 2;
+            ig.gridy = row;
+            ig.fill = GridBagConstraints.VERTICAL;
+            ig.insets = new Insets(3, 0, 3, 2);
+            p.add(new InfoButton(label.endsWith(":") ? label.substring(0, label.length() - 1) : label, help), ig);
+        }
     }
 }

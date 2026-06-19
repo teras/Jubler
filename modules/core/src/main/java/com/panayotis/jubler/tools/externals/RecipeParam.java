@@ -30,7 +30,7 @@ public class RecipeParam {
                 case TEXTBOX:
                     return __("Text");
                 case COMBOBOX:
-                    return __("Choice");
+                    return __("Dropdown");
                 case CHECKBOX:
                     return __("Checkbox");
                 case PATH:
@@ -43,6 +43,28 @@ public class RecipeParam {
                     return __("Secret");
                 default:
                     return name();
+            }
+        }
+
+        /** A short explanation of what this input type does, shown in the Type info popup. */
+        public String getDescription() {
+            switch (this) {
+                case TEXTBOX:
+                    return __("A free-text field the user types into.");
+                case COMBOBOX:
+                    return __("A drop-down list of predefined choices.");
+                case CHECKBOX:
+                    return __("An on/off box that adds a fixed value to the command when checked.");
+                case PATH:
+                    return __("A file or folder picker with a Browse button.");
+                case LANGUAGE:
+                    return __("A language selector that emits the ISO language code.");
+                case WINDOW:
+                    return __("A drop-down of other open subtitle windows; that window's subtitles are saved to a temporary file and passed to the tool.");
+                case SECRET:
+                    return __("A password field; stored encrypted and excluded from shared recipes.");
+                default:
+                    return "";
             }
         }
 
@@ -209,11 +231,8 @@ public class RecipeParam {
     public static String validateKey(String candidate, Collection<String> existing) {
         if (candidate == null || candidate.length() < 2)
             return __("Key must be at least 2 characters (single-character keys are reserved).");
-        for (int i = 0; i < candidate.length(); i++) {
-            char c = candidate.charAt(i);
-            if (!Character.isLetterOrDigit(c) && c != '_')
-                return __("Key may only contain letters, digits and underscore.");
-        }
+        if (!candidate.matches("[a-zA-Z][a-zA-Z0-9]*"))
+            return __("Key must start with a letter and contain only letters and digits.");
         if (existing != null && existing.contains(candidate))
             return __("A parameter with this key already exists.");
         return null;
