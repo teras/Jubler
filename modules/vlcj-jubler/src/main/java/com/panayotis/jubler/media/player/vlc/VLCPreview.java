@@ -418,17 +418,12 @@ public class VLCPreview implements VideoPreview {
     public void setSubtitles(Subtitles subs, MediaFile mfile) {
         if (released)
             return; // a queued debounced refresh must not touch a freed player
-        if (subs == null || subs.isEmpty()) {
-            // Clear subtitles
-            if (tempSubFile != null && tempSubFile.exists()) {
-                tempSubFile.delete();
-                tempSubFile = null;
-            }
-            mediaPlayer.subpictures().setSubTitleFile((String) null);
-            lastSubContent = null;
-            forcePausedRedrawAfterSeek();
-            return;
-        }
+        if (subs == null)
+            return; // no document to render; leave the player as-is
+        // An empty subtitle list is NOT cleared via setSubTitleFile(null): vlcj's
+        // NativeUri does new File(null) on a null path and NPEs. Instead it falls
+        // through and is exported below as a valid, dialogue-less ASS file, which
+        // VLC loads and renders as "no subtitle" - the same visible result, no crash.
 
         try {
             // Create or reuse temp file

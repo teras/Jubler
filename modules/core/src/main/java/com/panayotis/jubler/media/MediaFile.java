@@ -255,6 +255,22 @@ public class MediaFile {
         updateCacheFile(vfile);
     }
 
+    /**
+     * Attach an already-known video file to a fresh media bundle, skipping the
+     * guess/selection step that {@link #validateMediaFile} performs. Used by
+     * "New from video file", where the user has explicitly picked the video, so
+     * there is nothing to guess and no selection dialog to show. Audio tracks the
+     * video and the cache is set up accordingly. The video's real dimensions/fps
+     * are probed in the background (see {@link VideoFile}); callers that need them
+     * immediately must await via the standard preview path.
+     */
+    public void setNewVideoFile(File vf) {
+        if (vf == null || !vf.exists())
+            return;
+        vfile = new VideoFile(vf);
+        setAudioFileUnused();
+    }
+
     /* Decoder actions */
     public boolean initAudioCache(AudioStateCallback listener) {
         AudioPreview d = getDecoder();

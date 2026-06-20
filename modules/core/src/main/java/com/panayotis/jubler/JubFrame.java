@@ -9,6 +9,7 @@ package com.panayotis.jubler;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.information.JQuality;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.JPreferences;
 import com.panayotis.jubler.options.ShortcutsModel;
@@ -343,6 +344,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         NewFM = new javax.swing.JMenu();
         FileNFM = new javax.swing.JMenuItem();
         ChildNFM = new javax.swing.JMenuItem();
+        FromVideoNFM = new javax.swing.JMenuItem();
         OpenFM = new javax.swing.JMenuItem();
         RevertFM = new javax.swing.JMenuItem();
         RecentsFM = new javax.swing.JMenu();
@@ -714,6 +716,11 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         ChildNFM.setName("FNC"); // NOI18N
         ChildNFM.addActionListener(formListener);
         NewFM.add(ChildNFM);
+
+        FromVideoNFM.setText(__("From video file"));
+        FromVideoNFM.setName("FNV"); // NOI18N
+        FromVideoNFM.addActionListener(formListener);
+        NewFM.add(FromVideoNFM);
 
         FileM.add(NewFM);
 
@@ -1201,6 +1208,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
                 JubFrame.this.FileNFMActionPerformed(evt);
             } else if (evt.getSource() == ChildNFM) {
                 JubFrame.this.ChildNFMActionPerformed(evt);
+            } else if (evt.getSource() == FromVideoNFM) {
+                JubFrame.this.FromVideoNFMActionPerformed(evt);
             } else if (evt.getSource() == OpenFM) {
                 JubFrame.this.OpenFMActionPerformed(evt);
             } else if (evt.getSource() == RevertFM) {
@@ -1649,6 +1658,47 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         StaticJubler.updateRecents();
     }//GEN-LAST:event_FileNFMActionPerformed
 
+    private void FromVideoNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromVideoNFMActionPerformed
+        JFileChooser fc = new JFileChooser(FileCommunicator.getDefaultDirPath());
+        fc.setDialogTitle(__("New from video file"));
+        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fc.setFileFilter(new VideoFileFilter());
+        if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+            return;
+        File video = fc.getSelectedFile();
+        if (video == null || !video.exists())
+            return;
+
+        JubFrame curjubler;
+        if (subs == null)
+            curjubler = this;
+        else
+            curjubler = new JubFrame();
+        curjubler.setVisible(true);
+
+        curjubler.setUnsaved(true);
+        // Start with an empty subtitle list (no placeholder line): this is just a
+        // media-attached canvas for a tool to fill in. The proposed save name follows
+        // the video (movie.mkv -> movie.<format>), so a tool that produces the subtitle
+        // (e.g. extract/transcribe, REPLACE_CURRENT) has a properly-named document to
+        // drop its result into.
+        Subtitles s = new Subtitles();
+        s.setSubFile(new SubFile(stripExtension(video), SubFile.EXTENSION_OMMITED));
+        curjubler.setSubs(s);
+        curjubler.getMediaFile().setNewVideoFile(video);
+        curjubler.enableSaveControls();
+        curjubler.showInfo();
+        StaticJubler.updateRecents();
+    }//GEN-LAST:event_FromVideoNFMActionPerformed
+
+    private static File stripExtension(File f) {
+        String name = f.getName();
+        int dot = name.lastIndexOf('.');
+        if (dot <= 0)
+            return f;
+        return new File(f.getParentFile(), name.substring(0, dot));
+    }
+
     private void UndoEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoEMActionPerformed
         undo.applyDoCommand(subs, true, SubTable.getSelectedRows());
     }//GEN-LAST:event_UndoEMActionPerformed
@@ -1885,6 +1935,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     private javax.swing.JMenuItem FAQHM;
     private javax.swing.JMenu FileM;
     private javax.swing.JMenuItem FileNFM;
+    private javax.swing.JMenuItem FromVideoNFM;
     private javax.swing.JMenu FocusEM;
     private javax.swing.JMenu GoEM;
     private javax.swing.JMenu HelpM;
