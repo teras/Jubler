@@ -7,7 +7,6 @@
     "command": "%x %v -i %i %gss -o %o",
     "format": "SubRip",
     "output": "PATCH_TIMING",
-    "install": "ffsubsync re-times a subtitle against the video's speech.\nInstall:\n  macOS:   brew install ffmpeg ; pip install ffsubsync\n  Linux:   sudo apt install ffmpeg ; pip install ffsubsync\n  Windows: install ffmpeg, then  pip install ffsubsync\nMake sure 'ffsubsync' is on your PATH (or pick it with Browse).",
     "params": [
       {
         "key": "gss",
@@ -27,7 +26,6 @@
     "command": "%x %ref -i %i %gss -o %o",
     "format": "SubRip",
     "output": "PATCH_TIMING",
-    "install": "ffsubsync re-times a subtitle against a correctly-timed reference subtitle (another open window).\nInstall:\n  macOS:   brew install ffmpeg ; pip install ffsubsync\n  Linux:   sudo apt install ffmpeg ; pip install ffsubsync\n  Windows: install ffmpeg, then  pip install ffsubsync",
     "params": [
       {
         "key": "ref",
@@ -54,7 +52,6 @@
     "command": "%x %v %i %o",
     "format": "SubRip",
     "output": "PATCH_TIMING",
-    "install": "alass re-times a subtitle against the video, handling offset, framerate drift and scene splits.\nInstall:\n  macOS/Linux: build from source (github.com/kaegi/alass) or use a package (AUR: alass).\n  Windows:     download the prebuilt alass-cli.exe.\nMake sure the binary ('alass' or 'alass-cli') is on your PATH (or pick it with Browse).",
     "params": []
   },
   {
@@ -65,7 +62,6 @@
     "command": "%x %ref %i %o",
     "format": "SubRip",
     "output": "PATCH_TIMING",
-    "install": "alass re-times a subtitle against a correctly-timed reference subtitle (another open window).\nInstall:\n  macOS/Linux: build from source (github.com/kaegi/alass) or use a package (AUR: alass).\n  Windows:     download the prebuilt alass-cli.exe.",
     "params": [
       {
         "key": "ref",

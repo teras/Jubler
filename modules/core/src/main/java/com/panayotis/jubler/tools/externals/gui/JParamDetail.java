@@ -17,7 +17,9 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.BorderLayout;
@@ -25,6 +27,10 @@ import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.function.BiConsumer;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -40,8 +46,9 @@ public class JParamDetail extends JPanel {
     private final JTextField helpT = new JTextField();
     private final JComboBox<RecipeParam.Type> typeC = new JComboBox<>(RecipeParam.Type.values());
     private final JCheckBox persistentB = new JCheckBox(__("Persistent"));
-    private final JLabel valueL = new JLabel(__("Stored value:"));
-    private final JTextField valueT = new JTextField();
+    private final JPasswordField valueT = new JPasswordField();
+    private final char defaultEcho = valueT.getEchoChar();
+    private final JToggleButton revealBtn = SecretField.revealToggle(valueT);
     private InfoButton valueInfo;
 
     private final CardLayout cards = new CardLayout();
@@ -79,9 +86,14 @@ public class JParamDetail extends JPanel {
             + "<br>" + __("If the value is empty, the whole formatter is skipped (optional flags disappear).")
             + "<br>" + __("Without a formatter, the raw value is used as-is.");
 
+    /** Every row label and the panels holding them, so all GridBag layouts can share one label-column width. */
+    private final List<JLabel> formLabels = new ArrayList<>();
+    private final Set<JPanel> formPanels = new LinkedHashSet<>();
+
     private RecipeParam param;
     private Recipe recipe;
     private boolean loading = false;
+    private boolean secretDirty = false;
     private Runnable onKeyChanged;
 
     public JParamDetail() {
@@ -99,6 +111,7 @@ public class JParamDetail extends JPanel {
         empty.setOpaque(false);
         add(empty, "empty");
         add(content, "content");
+        alignFormLabels();
         setParam(null);
     }
 
@@ -120,14 +133,21 @@ public class JParamDetail extends JPanel {
         addRow(p, 2, __("Help:"), helpT, new InfoButton(__("Help"),
                 __("Extra explanation shown to the user (behind an info button) next to this field when the recipe runs.")));
         addRow(p, 3, __("Type:"), typeC, new InfoButton(__("Type"), this::typeHelp));
-        GridBagConstraints g = gbc(1, 4);
-        g.gridwidth = 1;
-        p.add(persistentB, g);
-        p.add(new InfoButton(__("Persistent"),
-                __("If on, the value is set once here in the configuration and is not asked on every run (e.g. an API key or a default). If off, the user is asked each run.")), infoGbc(4));
-        valueInfo = new InfoButton(__("Stored value"),
-                __("The value kept for this persistent parameter. Secret values are stored encrypted and are never included when you save or share the recipe."));
-        addRow(p, 5, valueL, valueT, valueInfo);
+        // The "Persistent" checkbox doubles as the label for the stored value: check it to keep a permanent
+        // value (asked once, not on every run); the field on the right holds that value.
+        GridBagConstraints pg = new GridBagConstraints();
+        pg.gridx = 0;
+        pg.gridy = 4;
+        pg.anchor = GridBagConstraints.LINE_END;
+        pg.insets = new Insets(2, 4, 2, 4);
+        p.add(persistentB, pg);
+        JPanel valuePanel = new JPanel(new BorderLayout(4, 0));
+        valuePanel.setOpaque(false);
+        valuePanel.add(valueT, BorderLayout.CENTER);
+        valuePanel.add(revealBtn, BorderLayout.EAST);   // eye toggle, shown only for secrets
+        p.add(valuePanel, gbc(1, 4));
+        valueInfo = new InfoButton(__("Persistent"), this::valueHelp);
+        p.add(valueInfo, infoGbc(4));
 
         bindText(keyT, (par, v) -> {
             par.setKey(v);
@@ -139,13 +159,28 @@ public class JParamDetail extends JPanel {
         typeC.addActionListener(e -> {
             if (loading || param == null)
                 return;
-            param.setType((RecipeParam.Type) typeC.getSelectedItem());
+            RecipeParam.Type oldType = param.getType();
+            RecipeParam.Type newType = (RecipeParam.Type) typeC.getSelectedItem();
+            if (newType == oldType)
+                return;
+            // If secret-ness changed, re-encode the stored value (plain<->encrypted) before switching.
+            boolean secretnessChanged = (oldType == RecipeParam.Type.SECRET) != (newType == RecipeParam.Type.SECRET);
+            if (secretnessChanged && param.isPersistent()
+                    && !RecipeSecrets.recodeForSecretChange(recipe, param.getKey(), newType == RecipeParam.Type.SECRET)) {
+                loading = true;                       // could not convert -> revert the dropdown, keep old type/value
+                typeC.setSelectedItem(oldType);
+                loading = false;
+                return;
+            }
+            param.setType(newType);
+            reloadValueField();
+            updateSecretMask();
             showCard();
         });
         persistentB.addActionListener(e -> {
             if (!loading && param != null) {
                 param.setPersistent(persistentB.isSelected());
-                updateValueVisibility();
+                updateValueEnabled();
             }
         });
         valueT.getDocument().addDocumentListener(new DocumentListener() {
@@ -159,6 +194,13 @@ public class JParamDetail extends JPanel {
 
             public void changedUpdate(DocumentEvent e) {
                 storeValue();
+            }
+        });
+        // Secrets use an expensive PBKDF2 encrypt; commit once on focus loss, not on every keystroke.
+        valueT.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                commitSecret();
             }
         });
         return p;
@@ -175,7 +217,7 @@ public class JParamDetail extends JPanel {
         bindText(tbFormatter, RecipeParam::setFormatter);
 
         JPanel cb = card();
-        addRow(cb, 0, __("Choices (| separated):"), cbChoices, new InfoButton(__("Choices"),
+        addRow(cb, 0, __("Choices:"), cbChoices, new InfoButton(__("Choices"),
                 __("The list of options offered to the user, separated by | (for example: tiny|base|small).")));
         addRow(cb, 1, __("Default:"), cbDefault);
         addRow(cb, 2, __("Formatter:"), cbFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
@@ -185,7 +227,7 @@ public class JParamDetail extends JPanel {
         bindText(cbFormatter, RecipeParam::setFormatter);
 
         JPanel chk = card();
-        addRow(chk, 0, __("Value when checked:"), chkChecked, new InfoButton(__("Value when checked"),
+        addRow(chk, 0, __("Value:"), chkChecked, new InfoButton(__("Value when checked"),
                 __("The text added to the command line when the box is checked. Nothing is added when it is unchecked.")));
         GridBagConstraints g = gbc(1, 1);
         chk.add(chkDefault, g);
@@ -217,7 +259,8 @@ public class JParamDetail extends JPanel {
         pathBrowse.addActionListener(e -> browsePath());
 
         JPanel lang = card();
-        addRow(lang, 0, __("Default (ISO code, e.g. en):"), langDefault);
+        addRow(lang, 0, __("ISO default:"), langDefault, new InfoButton(__("ISO default"),
+                __("The pre-selected language, as a 2-letter ISO 639 code (for example en, fr, de).")));
         addRow(lang, 1, __("Formatter:"), langFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
         cardHost.add(lang, RecipeParam.Type.LANGUAGE.name());
         bindText(langDefault, RecipeParam::setDefaultValue);
@@ -245,7 +288,9 @@ public class JParamDetail extends JPanel {
     }
 
     public void setParam(RecipeParam param) {
+        commitSecret();          // flush the previous param's pending secret before switching
         this.param = param;
+        secretDirty = false;
         loading = true;
         boolean active = param != null;
         outer.show(this, active ? "content" : "empty");
@@ -271,7 +316,8 @@ public class JParamDetail extends JPanel {
             secFormatter.setText(param.getFormatter());
             String stored = recipe == null ? null : recipe.getStoredValue(param.getKey());
             valueT.setText(stored == null ? "" : (param.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
-            updateValueVisibility();
+            updateValueEnabled();
+            updateSecretMask();
             showCard();
         }
         loading = false;
@@ -288,24 +334,76 @@ public class JParamDetail extends JPanel {
         return general;
     }
 
+    /** What "Persistent" + the stored value mean, then a blank line, then the part that differs by secret/non-secret. */
+    private String valueHelp() {
+        String general = __("If on, the value is set once here in the configuration and is not asked on every run (e.g. an API key or a default). If off, the user is asked each run.");
+        boolean secret = param != null && param.isSecret();
+        String specific = secret
+                ? __("Because this is a secret, it is stored encrypted and is never included when you save or share the recipe.")
+                : __("It is stored as plain text and is included when you save or share the recipe.");
+        return general + "<br><br>" + specific;
+    }
+
     private void showCard() {
         if (param != null)
             cards.show(cardHost, param.getType().name());
     }
 
-    private void updateValueVisibility() {
-        boolean show = param != null && param.isPersistent();
-        valueL.setVisible(show);
-        valueT.setVisible(show);
-        if (valueInfo != null)
-            valueInfo.setVisible(show);
+    /** The stored value field is editable only when "Persistent" is checked (the info button stays available). */
+    private void updateValueEnabled() {
+        valueT.setEnabled(param != null && param.isPersistent());
+    }
+
+    /** Re-read the stored value into the field after a type change (decrypting if it is now a secret). */
+    private void reloadValueField() {
+        loading = true;
+        String stored = recipe == null ? null : recipe.getStoredValue(param.getKey());
+        valueT.setText(stored == null ? "" : (param.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
+        loading = false;
+    }
+
+    /** Mask the stored value (and show the eye toggle) only for Secret params; plain text for everything else. */
+    private void updateSecretMask() {
+        boolean secret = param != null && param.isSecret();
+        revealBtn.setVisible(secret);
+        revealBtn.setSelected(false);   // start masked whenever the param/type changes
+        valueT.setEchoChar(secret ? defaultEcho : (char) 0);
+    }
+
+    /**
+     * Make the header and every card share one label-column width: set the GridBag column-0 minimum
+     * to the widest label. The labels keep their natural size and stay right-aligned (LINE_END), so the
+     * fields sit right after each label as usual — only the column is shared so everything lines up.
+     */
+    private void alignFormLabels() {
+        int max = 0;
+        for (JLabel l : formLabels)
+            max = Math.max(max, l.getPreferredSize().width);
+        for (JPanel p : formPanels)
+            ((GridBagLayout) p.getLayout()).columnWidths = new int[]{max, 0, 0};
     }
 
     private void storeValue() {
         if (loading || param == null || recipe == null || !param.isPersistent())
             return;
-        String text = valueT.getText();
-        recipe.setStoredValue(param.getKey(), param.isSecret() ? RecipeSecrets.encrypt(text) : text);
+        if (param.isSecret()) {
+            secretDirty = true;   // defer the costly encrypt to focus loss / flush
+            return;
+        }
+        recipe.setStoredValue(param.getKey(), new String(valueT.getPassword()));
+    }
+
+    /** Encrypt and store the secret value once (called on focus loss and before leaving the param). */
+    private void commitSecret() {
+        if (loading || !secretDirty || param == null || recipe == null || !param.isPersistent() || !param.isSecret())
+            return;
+        recipe.setStoredValue(param.getKey(), RecipeSecrets.encrypt(new String(valueT.getPassword())));
+        secretDirty = false;
+    }
+
+    /** Flush any pending secret edit (call before the editor accepts/closes). */
+    public void flush() {
+        commitSecret();
     }
 
     /* ===================== helpers ===================== */
@@ -337,15 +435,17 @@ public class JParamDetail extends JPanel {
         return p;
     }
 
-    private static void addRow(JPanel p, int row, String label, java.awt.Component field) {
+    private void addRow(JPanel p, int row, String label, java.awt.Component field) {
         addRow(p, row, new JLabel(label), field, null);
     }
 
-    private static void addRow(JPanel p, int row, String label, java.awt.Component field, InfoButton info) {
+    private void addRow(JPanel p, int row, String label, java.awt.Component field, InfoButton info) {
         addRow(p, row, new JLabel(label), field, info);
     }
 
-    private static void addRow(JPanel p, int row, JLabel label, java.awt.Component field, InfoButton info) {
+    private void addRow(JPanel p, int row, JLabel label, java.awt.Component field, InfoButton info) {
+        formLabels.add(label);
+        formPanels.add(p);
         GridBagConstraints lg = new GridBagConstraints();
         lg.gridx = 0;
         lg.gridy = row;

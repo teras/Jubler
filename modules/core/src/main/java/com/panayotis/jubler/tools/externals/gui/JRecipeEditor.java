@@ -67,7 +67,6 @@ public class JRecipeEditor extends JDialog {
     private final JTextField pathT = new JTextField();
     private final JButton browseB = new JButton(__("Browse"));
     private final JLabel statusL = new JLabel(" ");
-    private final JButton infoB = new JButton(__("Install info"));
     private final JTextField commandT = new JTextField();
     private final JComboBox<SubFormat> formatC = new JComboBox<>();
     private final JComboBox<OutputMode> resultC = new JComboBox<>(OutputMode.values());
@@ -75,6 +74,7 @@ public class JRecipeEditor extends JDialog {
     private final DefaultListModel<RecipeParam> paramModel = new DefaultListModel<>();
     private final JList<RecipeParam> paramList = new JList<>(paramModel);
     private final JParamDetail detail = new JParamDetail();
+    private JButton remParamB;
 
     public JRecipeEditor(Window parent, Recipe recipe) {
         super(parent, __("Edit recipe"), ModalityType.APPLICATION_MODAL);
@@ -134,11 +134,7 @@ public class JRecipeEditor extends JDialog {
             addRow(p, row++, __("Executable:"), execLine, new InfoButton(__("Executable"),
                     __("The program to run. Type a name found on the system PATH, or use Browse to pick a file. When it cannot be found, the recipe is shown in red here and disabled in the menu.")));
 
-            JPanel statusLine = new JPanel(new BorderLayout(6, 0));
-            statusLine.setOpaque(false);
-            statusLine.add(statusL, BorderLayout.CENTER);
-            statusLine.add(infoB, BorderLayout.EAST);
-            addRow(p, row++, "", statusLine);
+            addRow(p, row++, "", statusL);
 
             addRow(p, row++, __("Command:"), commandT, new InfoButton(__("Command"),
                     __("The command template. Placeholders: {0}.",
@@ -174,7 +170,6 @@ public class JRecipeEditor extends JDialog {
         });
         bindText(commandT, recipe::setCommand);
         browseB.addActionListener(e -> browseExecutable());
-        infoB.addActionListener(e -> showInstallInfo());
         formatC.addActionListener(e -> {
             Object f = formatC.getSelectedItem();
             if (f instanceof SubFormat)
@@ -193,8 +188,10 @@ public class JRecipeEditor extends JDialog {
         detail.setRecipe(recipe);
         paramList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         paramList.addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting())
+            if (!e.getValueIsAdjusting()) {
                 detail.setParam(paramList.getSelectedValue());
+                remParamB.setEnabled(paramList.getSelectedValue() != null);
+            }
         });
         detail.setOnKeyChanged(paramList::repaint);
 
@@ -202,12 +199,13 @@ public class JRecipeEditor extends JDialog {
         listScroll.setPreferredSize(new Dimension(300, 200));
 
         JButton addB = iconButton("plus", __("Add"));
-        JButton remB = iconButton("minus", __("Remove"));
+        remParamB = iconButton("minus", __("Remove"));
+        remParamB.setEnabled(false);   // nothing selected yet
         addB.addActionListener(e -> addParam());
-        remB.addActionListener(e -> removeParam());
+        remParamB.addActionListener(e -> removeParam());
         JPanel listButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 2));
         listButtons.add(addB);
-        listButtons.add(remB);
+        listButtons.add(remParamB);
 
         JPanel left = new JPanel(new BorderLayout());
         left.add(listScroll, BorderLayout.CENTER);
@@ -224,6 +222,7 @@ public class JRecipeEditor extends JDialog {
         JButton ok = new JButton(__("OK"));
         cancel.addActionListener(e -> doCancel());
         ok.addActionListener(e -> {
+            detail.flush();   // commit any pending secret edit (deferred from per-keystroke)
             String error = validateRecipe();
             if (error != null) {
                 JIDialog.error(this, error, __("Invalid recipe"));
@@ -294,22 +293,14 @@ public class JRecipeEditor extends JDialog {
         }
     }
 
-    private void showInstallInfo() {
-        String info = recipe.getInstallInfo();
-        JIDialog.info(this, info.isEmpty() ? __("No install information provided for this recipe.") : info,
-                __("How to install"));
-    }
-
     private void updateStatus() {
         if (recipe.isInProcess()) {
             statusL.setText(" ");
-            infoB.setVisible(false);
             return;
         }
         boolean ok = RecipeResolver.isAvailable(recipe);
         statusL.setForeground(ok ? new Color(0, 128, 0) : Color.RED);
         statusL.setText(ok ? __("Found") : "⚠ " + __("Executable not found"));
-        infoB.setVisible(!ok);
     }
 
     private String validateRecipe() {

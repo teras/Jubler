@@ -26,7 +26,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Window;
 import java.net.URI;
 import java.util.ArrayList;
@@ -66,13 +65,13 @@ class JCatalogChooser extends JDialog {
         });
 
         // Globe button: opens the selected recipe's web page; disabled when it has none.
+        // The icon keeps its native aspect ratio (it is a 4:3 globe, like the flags — not square).
         ImageIcon globe = Theme.loadIcon("flag-global");
         if (globe != null)
-            urlB.setIcon(new ImageIcon(globe.getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH)));
+            urlB.setIcon(new ImageIcon(globe.getImage().getScaledInstance(-1, 24, Image.SCALE_SMOOTH)));
         else
             urlB.setText("🌐");
         urlB.setToolTipText(__("Open the recipe's web page"));
-        urlB.setMargin(new Insets(2, 6, 2, 6));
         urlB.setEnabled(false);
         urlB.addActionListener(e -> openUrl());
 
@@ -83,26 +82,30 @@ class JCatalogChooser extends JDialog {
         scroll.setPreferredSize(new Dimension(540, 240));
         JScrollPane previewScroll = new JScrollPane(descPreview);
         previewScroll.setBorder(BorderFactory.createTitledBorder(__("What it does")));
-        JPanel globeWrap = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        globeWrap.add(urlB);
-        JPanel previewPanel = new JPanel(new BorderLayout(6, 0));
-        previewPanel.add(previewScroll, BorderLayout.CENTER);
-        previewPanel.add(globeWrap, BorderLayout.EAST);
         JPanel listAndPreview = new JPanel(new BorderLayout(0, 8));
         listAndPreview.add(scroll, BorderLayout.CENTER);
-        listAndPreview.add(previewPanel, BorderLayout.SOUTH);
+        listAndPreview.add(previewScroll, BorderLayout.SOUTH);
         content.add(listAndPreview, BorderLayout.CENTER);
 
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        // Bottom row: globe on the left, Cancel/Import on the right (same height).
+        JPanel buttons = new JPanel(new BorderLayout());
+        JPanel leftButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        leftButtons.add(urlB);
+        JPanel rightButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
         JButton cancel = new JButton(__("Cancel"));
         JButton ok = new JButton(__("Import"));
+        // Match the globe button's height to the text buttons and give it some breathing room.
+        int h = cancel.getPreferredSize().height;
+        urlB.setPreferredSize(new Dimension(Math.round(h * 1.5f), h));
         cancel.addActionListener(e -> dispose());
         ok.addActionListener(e -> {
             accepted = true;
             dispose();
         });
-        buttons.add(cancel);
-        buttons.add(ok);
+        rightButtons.add(cancel);
+        rightButtons.add(ok);
+        buttons.add(leftButtons, BorderLayout.WEST);
+        buttons.add(rightButtons, BorderLayout.EAST);
         content.add(buttons, BorderLayout.SOUTH);
         updatePreview();
 

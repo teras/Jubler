@@ -229,13 +229,14 @@ public abstract class Tool implements PluginItem<ToolsManager> {
     }
 
     /**
-     * Parse color name to mark index using SubEntry.MarkNames.
+     * Parse a color name to a mark index. Uses the locale-independent {@link SubEntry#MarkColorKeys}
+     * (e.g. "pink", "lightgreen") so a command-line parameter means the same thing regardless of the
+     * UI language — the translated {@link SubEntry#MarkNames} must not be used here.
      */
     private static int parseColorToMarkIndex(String colorParam) {
         String targetColor = colorParam.toLowerCase().trim().replace(" ", "");
-        // Search through the MarkNames array to find matching color
-        for (int i = 0; i < SubEntry.MarkNames.length; i++)
-            if (targetColor.equals(SubEntry.MarkNames[i].toLowerCase().replace(" ", "")))
+        for (int i = 0; i < SubEntry.MarkColorKeys.length; i++)
+            if (targetColor.equals(SubEntry.MarkColorKeys[i]))
                 return i;
         return -1; // Not found
     }

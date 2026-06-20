@@ -50,7 +50,6 @@ public class Recipe {
     private String command;         // template with %x %i %j %a %v %o and %<key> params
     private SubFormat format;       // wire format for %i/%j/%o
     private OutputMode outputMode;
-    private String installInfo;     // shown when the executable is missing
     private final List<RecipeParam> params = new ArrayList<>();
     /* Stored values of persistent params (secret values held encrypted). */
     private final Map<String, String> values = new LinkedHashMap<>();
@@ -68,7 +67,6 @@ public class Recipe {
         this.command = "%x --input %i --output %o";
         this.format = null;
         this.outputMode = OutputMode.REPLACE_NEW;
-        this.installInfo = "";
     }
 
     public Recipe(String name, String path, String command, SubFormat format) {
@@ -147,14 +145,6 @@ public class Recipe {
         this.outputMode = outputMode == null ? OutputMode.REPLACE_NEW : outputMode;
     }
 
-    public String getInstallInfo() {
-        return installInfo == null ? "" : installInfo;
-    }
-
-    public void setInstallInfo(String installInfo) {
-        this.installInfo = installInfo;
-    }
-
     public List<RecipeParam> getParams() {
         return params;
     }
@@ -195,7 +185,6 @@ public class Recipe {
         this.command = clone.command;
         this.format = clone.format;
         this.outputMode = clone.outputMode;
-        this.installInfo = clone.installInfo;
         this.params.clear();
         this.params.addAll(clone.params);
         this.values.clear();
@@ -226,18 +215,14 @@ public class Recipe {
     public JsonObject toJson(boolean forSharing) {
         JsonObject o = new JsonObject();
         o.add("name", name);
-        if (!getDescription().isEmpty())
-            o.add("description", getDescription());
-        if (!getUrl().isEmpty())
-            o.add("url", getUrl());
+        o.add("description", getDescription());
+        o.add("url", getUrl());
         if (isInProcess())
             o.add("module", module);
         o.add("path", getPath());
         o.add("command", getCommand());
         o.add("format", getFormat() == null ? "" : getFormat().getName());
         o.add("output", getOutputMode().name());
-        if (!getInstallInfo().isEmpty())
-            o.add("install", getInstallInfo());
         JsonArray arr = Json.array();
         for (RecipeParam p : params)
             arr.add(p.toJson());
@@ -277,7 +262,6 @@ public class Recipe {
                 r.setFormat(fmt);
         }
         r.setOutputMode(OutputMode.fromName(o.getString("output", "REPLACE_NEW"), OutputMode.REPLACE_NEW));
-        r.setInstallInfo(o.getString("install", ""));
         JsonValue arr = o.get("params");
         if (arr != null && arr.isArray())
             for (JsonValue v : arr.asArray())

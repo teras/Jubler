@@ -89,7 +89,12 @@ public class JRecipeRunDialog extends JDialog {
         // nothing to pick; PATCH works on a subset, so we offer the standard subtitle picker.
         JPanel center = new JPanel(new BorderLayout(0, 8));
         center.setBorder(BorderFactory.createEmptyBorder(10, 10, 6, 10));
-        center.add(form, BorderLayout.NORTH);
+        // Wrap the per-run params in their own titled group (like the subtitle picker), so the two
+        // sections never blur together. No params -> no group at all.
+        if (!widgets.isEmpty()) {
+            form.setBorder(BorderFactory.createTitledBorder(__("Parameters")));
+            center.add(form, BorderLayout.NORTH);
+        }
         if (recipe.getOutputMode().isPatch()) {
             selectionArea = new JTimeFullSelection();
             selectionArea.updateData(jubler.getSubtitles(), jubler.getSelectedRows());
@@ -217,7 +222,12 @@ public class JRecipeRunDialog extends JDialog {
                 return line;
             }
             case SECRET: {
-                return new JPasswordField(20);
+                JPasswordField pwd = new JPasswordField(20);
+                JPanel line = new JPanel(new BorderLayout(4, 0));
+                line.add(pwd, BorderLayout.CENTER);
+                line.add(SecretField.revealToggle(pwd), BorderLayout.EAST);
+                line.putClientProperty("field", pwd);
+                return line;
             }
             case WINDOW: {
                 JComboBox<JubFrame> c = new JComboBox<>(new DefaultComboBoxModel<>(otherWindows().toArray(new JubFrame[0])));
@@ -256,7 +266,7 @@ public class JRecipeRunDialog extends JDialog {
             case PATH:
                 return ((JTextField) ((JPanel) w).getClientProperty("field")).getText();
             case SECRET:
-                return new String(((JPasswordField) w).getPassword());
+                return new String(((JPasswordField) ((JPanel) w).getClientProperty("field")).getPassword());
             case LANGUAGE: {
                 Object lang = ((JComboBox<String>) w).getSelectedItem();
                 return lang == null ? "" : lang.toString();

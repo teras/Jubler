@@ -13,6 +13,7 @@ import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.tools.ToolsManager;
 import com.panayotis.jubler.tools.externals.Recipe;
 import com.panayotis.jubler.tools.externals.RecipeCatalog;
+import com.panayotis.jubler.tools.externals.RecipeSecrets;
 import com.panayotis.jubler.tools.externals.Recipes;
 import com.panayotis.jubler.tools.externals.gui.JRecipeEditor;
 
@@ -28,6 +29,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Insets;
@@ -35,6 +37,7 @@ import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.URI;
 import java.util.List;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -49,6 +52,8 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
     private final DefaultListModel<Recipe> model = new DefaultListModel<>();
     private final JList<Recipe> recipeList = new JList<>(model);
+    private final JButton urlB = new JButton();
+    private JButton removeB, editB;
 
     public JExternalToolsOptions() {
         setLayout(new BorderLayout(0, 6));
@@ -61,8 +66,13 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
                     editSelected();
             }
         });
+        recipeList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting())
+                updateButtons();
+        });
         add(new JScrollPane(recipeList), BorderLayout.CENTER);
         add(buildButtons(), BorderLayout.SOUTH);
+        updateButtons();
     }
 
     private JPanel buildButtons() {
@@ -70,23 +80,38 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
         JPanel edit = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 4));
         JButton addB = iconButton("plus", __("Add"));
-        JButton removeB = iconButton("minus", __("Remove"));
-        JButton editB = iconButton("edit", __("Edit…"));
+        removeB = iconButton("minus", __("Remove"));
+        editB = iconButton("edit", __("Edit…"));
+        // Globe: opens the selected recipe's web page; keeps its native 4:3 aspect, disabled when there is none.
+        ImageIcon globe = Theme.loadIcon("flag-global");
+        if (globe != null)
+            urlB.setIcon(new ImageIcon(globe.getImage().getScaledInstance(-1, 28, Image.SCALE_SMOOTH)));
+        else
+            urlB.setText("🌐");
+        urlB.setToolTipText(__("Open the recipe's web page"));
+        urlB.setMargin(new Insets(4, 8, 4, 8));
+        urlB.setEnabled(false);
         addB.addActionListener(e -> addRecipe());
         removeB.addActionListener(e -> removeSelected());
         editB.addActionListener(e -> editSelected());
+        urlB.addActionListener(e -> openSelectedUrl());
         edit.add(addB);
         edit.add(removeB);
+        edit.add(urlB);
         edit.add(editB);
 
         JPanel share = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton pinB = new JButton(__("Change PIN…"));
         JButton fetchB = new JButton(__("Fetch from GitHub…"));
         JButton loadB = new JButton(__("Load…"));
         JButton saveB = new JButton(__("Save…"));
+        pinB.setToolTipText(__("Change the PIN that protects secret values"));
         fetchB.setToolTipText(__("Download shared recipes from the Jubler GitHub"));
+        pinB.addActionListener(e -> RecipeSecrets.changePin(this));
         fetchB.addActionListener(e -> fetchFromGitHub());
         loadB.addActionListener(e -> loadFromFile());
         saveB.addActionListener(e -> saveToFile());
+        share.add(pinB);
         share.add(fetchB);
         share.add(loadB);
         share.add(saveB);
@@ -124,8 +149,30 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
     private void editSelected() {
         Recipe recipe = recipeList.getSelectedValue();
-        if (recipe != null && openEditor(recipe))
+        if (recipe != null && openEditor(recipe)) {
             recipeList.repaint();
+            updateButtons();   // the URL may have changed in the editor
+        }
+    }
+
+    /** Remove/Edit need a selection; the globe additionally needs the recipe to have a URL. */
+    private void updateButtons() {
+        Recipe sel = recipeList.getSelectedValue();
+        removeB.setEnabled(sel != null);
+        editB.setEnabled(sel != null);
+        urlB.setEnabled(sel != null && !sel.getUrl().isEmpty());
+    }
+
+    /** Open the selected recipe's web page in the default browser. */
+    private void openSelectedUrl() {
+        Recipe sel = recipeList.getSelectedValue();
+        if (sel == null || sel.getUrl().isEmpty())
+            return;
+        try {
+            Desktop.getDesktop().browse(URI.create(sel.getUrl()));
+        } catch (Exception e) {
+            DEBUG.debug(e);
+        }
     }
 
     private boolean openEditor(Recipe recipe) {

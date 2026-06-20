@@ -75,6 +75,8 @@ public class SubEntry implements Comparable<SubEntry>, Cloneable, CommonDef {
 
     /* Markings */
     public static final String[] MarkNames = {__("None"), __("Pink"), __("Yellow"), __("Cyan"), __("Orange"), __("Light Green")};
+    /** Locale-independent color keys (parallel to {@link #MarkNames}) for the command line, so parsing never depends on the UI language. */
+    public static final String[] MarkColorKeys = {"none", "pink", "yellow", "cyan", "orange", "lightgreen"};
     protected Time start, finish;
     private String subtext;
     private int mark;

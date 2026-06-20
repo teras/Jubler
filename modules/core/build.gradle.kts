@@ -11,6 +11,7 @@ dependencies {
     implementation("com.panayotis:arjs:0.3.3")
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.3")
 }
 
 tasks.test {

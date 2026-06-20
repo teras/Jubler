@@ -63,11 +63,10 @@ public final class RecipeExecutor {
             String ext = format.getExtension();
             String command = recipe.getCommand();
 
+            // The menu disables recipes whose executable is missing, so this is just a defensive guard.
             File exe = RecipeResolver.resolve(recipe.getPath());
             if (exe == null) {
-                String info = recipe.getInstallInfo();
-                String msg = __("Executable not found: {0}", recipe.getPath());
-                monitor.finished(false, info == null || info.isEmpty() ? msg : msg + "\n\n" + info);
+                monitor.finished(false, __("Executable not found: {0}", recipe.getPath()));
                 return;
             }
 

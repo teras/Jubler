@@ -29,7 +29,6 @@ public class RecipeTest {
         r.setPath("whisper-cli");
         r.setCommand("%x %model %lang -f %a -o %o");
         r.setOutputMode(OutputMode.REPLACE_NEW);
-        r.setInstallInfo("brew install whisper-cpp");
 
         RecipeParam model = new RecipeParam("model", RecipeParam.Type.COMBOBOX);
         model.setChoices("tiny|base|small");
@@ -46,13 +45,22 @@ public class RecipeTest {
         assertEquals("Transcribe", back.getName());
         assertEquals("whisper-cli", back.getPath());
         assertEquals(OutputMode.REPLACE_NEW, back.getOutputMode());
-        assertEquals("brew install whisper-cpp", back.getInstallInfo());
         assertEquals(2, back.getParams().size());
         RecipeParam bm = back.getParams().get(0);
         assertEquals("model", bm.getKey());
         assertEquals("base", bm.getDefaultValue());
         assertEquals("-m %VALUE", bm.getFormatter());
         assertTrue(bm.isPersistent());
+    }
+
+    @Test
+    void descriptionAndUrlRoundTrip() {
+        Recipe r = new Recipe("Sync");
+        r.setDescription("Re-times this subtitle.");
+        r.setUrl("https://github.com/kaegi/alass");
+        Recipe back = Recipe.fromJsonString(r.toJsonString(false));
+        assertEquals("Re-times this subtitle.", back.getDescription());
+        assertEquals("https://github.com/kaegi/alass", back.getUrl());
     }
 
     @Test
