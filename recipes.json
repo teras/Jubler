@@ -79,7 +79,7 @@
     "path": "ffmpeg",
     "command": "%x -y -i %v %track -c:s srt %o",
     "format": "SubRip",
-    "output": "REPLACE_CURRENT",
+    "output": "REPLACE",
     "params": [
       {
         "key": "track",

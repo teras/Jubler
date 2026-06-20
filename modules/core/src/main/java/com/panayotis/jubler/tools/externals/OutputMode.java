@@ -16,10 +16,14 @@ import static com.panayotis.jubler.i18n.I18N.__;
  * existing entries by index (the {@code Synchronize} mechanism).</p>
  */
 public enum OutputMode {
-    REPLACE_NEW, REPLACE_CURRENT, PATCH_TEXT, PATCH_TIMING, PATCH_BOTH;
+    REPLACE, PATCH_TEXT, PATCH_TIMING, PATCH_BOTH;
 
     public boolean isPatch() {
         return this == PATCH_TEXT || this == PATCH_TIMING || this == PATCH_BOTH;
+    }
+
+    public boolean isReplace() {
+        return this == REPLACE;
     }
 
     public boolean patchText() {
@@ -30,16 +34,10 @@ public enum OutputMode {
         return this == PATCH_TIMING || this == PATCH_BOTH;
     }
 
-    public boolean replaceInNewWindow() {
-        return this == REPLACE_NEW;
-    }
-
     public String getLabel() {
         switch (this) {
-            case REPLACE_NEW:
-                return __("Replace (new window)");
-            case REPLACE_CURRENT:
-                return __("Replace (current window)");
+            case REPLACE:
+                return __("Replace");
             case PATCH_TEXT:
                 return __("Update text");
             case PATCH_TIMING:

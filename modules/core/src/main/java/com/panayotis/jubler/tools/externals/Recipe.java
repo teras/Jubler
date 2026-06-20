@@ -66,7 +66,7 @@ public class Recipe {
         this.path = "";
         this.command = "%x --input %i --output %o";
         this.format = null;
-        this.outputMode = OutputMode.REPLACE_NEW;
+        this.outputMode = OutputMode.REPLACE;
     }
 
     public Recipe(String name, String path, String command, SubFormat format) {
@@ -142,7 +142,7 @@ public class Recipe {
     }
 
     public void setOutputMode(OutputMode outputMode) {
-        this.outputMode = outputMode == null ? OutputMode.REPLACE_NEW : outputMode;
+        this.outputMode = outputMode == null ? OutputMode.REPLACE : outputMode;
     }
 
     public List<RecipeParam> getParams() {
@@ -261,7 +261,7 @@ public class Recipe {
             if (fmt != null)
                 r.setFormat(fmt);
         }
-        r.setOutputMode(OutputMode.fromName(o.getString("output", "REPLACE_NEW"), OutputMode.REPLACE_NEW));
+        r.setOutputMode(OutputMode.fromName(o.getString("output", "REPLACE"), OutputMode.REPLACE));
         JsonValue arr = o.get("params");
         if (arr != null && arr.isArray())
             for (JsonValue v : arr.asArray())

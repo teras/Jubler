@@ -1677,12 +1677,13 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         curjubler.setVisible(true);
 
         curjubler.setUnsaved(true);
-        // Start with an empty subtitle list (no placeholder line): this is just a
-        // media-attached canvas for a tool to fill in. The proposed save name follows
-        // the video (movie.mkv -> movie.<format>), so a tool that produces the subtitle
-        // (e.g. extract/transcribe, REPLACE_CURRENT) has a properly-named document to
-        // drop its result into.
+        // Start like a normal "New" (one empty placeholder line): a media-attached canvas
+        // for a tool to fill in. The proposed save name follows the video (movie.mkv ->
+        // movie.<format>), so a tool that produces the subtitle (e.g. extract/transcribe,
+        // REPLACE) has a properly-named document to drop its result into. A single empty
+        // line counts as "nothing to keep", so the run dialog defaults to "Replace this file".
         Subtitles s = new Subtitles();
+        s.add(new SubEntry(new Time(0), new Time(5), ""));
         s.setSubFile(new SubFile(stripExtension(video), SubFile.EXTENSION_OMMITED));
         curjubler.setSubs(s);
         curjubler.getMediaFile().setNewVideoFile(video);

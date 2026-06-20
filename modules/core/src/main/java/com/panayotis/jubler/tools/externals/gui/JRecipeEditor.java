@@ -146,7 +146,7 @@ public class JRecipeEditor extends JDialog {
         addRow(p, row++, __("Wire format:"), formatC, new InfoButton(__("Wire format"),
                 __("The subtitle format used to pass data to the tool (%i/%j) and read it back (%o). SRT is preferred; choose ASS only when the tool needs styles or karaoke timing.")));
         addRow(p, row++, __("Result:"), resultC, new InfoButton(__("Result"),
-                __("How the tool's output is applied: replace the whole subtitle (new or current window), or update only the text / only the timing / both — matched line by line.")));
+                __("How the tool's output is applied: replace the whole subtitle, or update only the text / only the timing / both — matched line by line. For Replace, the user picks per run whether to overwrite this window or open a new one.")));
 
         SubFormat[] formats = Availabilities.formats.getFormats().toArray(new SubFormat[0]);
         for (SubFormat f : formats)

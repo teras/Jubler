@@ -8,6 +8,7 @@ package com.panayotis.jubler.tools.externals.gui;
 
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.subs.SubEntry;
+import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.tools.externals.Recipe;
 import com.panayotis.jubler.tools.externals.RecipeParam;
 import com.panayotis.jubler.tools.externals.RecipeSecrets;
@@ -26,7 +27,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
@@ -59,6 +59,8 @@ public class JRecipeRunDialog extends JDialog {
     private final Map<RecipeParam, JComponent> widgets = new LinkedHashMap<>();
     /* Range/colour/style/selection picker — present only for PATCH recipes (REPLACE works on all). */
     private final JTimeFullSelection selectionArea;
+    /* "Replace this file" — present only for REPLACE recipes (unchecked = open a new window). */
+    private final JCheckBox replaceCheck;
     private boolean accepted = false;
 
     public JRecipeRunDialog(Window parent, JubFrame jubler, Recipe recipe) {
@@ -99,8 +101,15 @@ public class JRecipeRunDialog extends JDialog {
             selectionArea = new JTimeFullSelection();
             selectionArea.updateData(jubler.getSubtitles(), jubler.getSelectedRows());
             center.add(selectionArea, BorderLayout.CENTER);
+            replaceCheck = null;
         } else {
+            // REPLACE: let the user pick, per run, whether to overwrite this file or open a new
+            // window. Default to overwrite only when this document has nothing worth keeping
+            // (no subtitles, or a single empty placeholder line — e.g. "New from video file").
             selectionArea = null;
+            replaceCheck = new JCheckBox(__("Replace this file"), defaultReplaceInCurrent(jubler));
+            replaceCheck.setToolTipText(__("When unchecked, the result opens in a new window"));
+            center.add(replaceCheck, BorderLayout.CENTER);
         }
 
         JPanel buttons = new JPanel(new BorderLayout());
@@ -116,26 +125,37 @@ public class JRecipeRunDialog extends JDialog {
         right.add(ok);
         buttons.add(right, BorderLayout.EAST);
 
-        JPanel content = new JPanel(new BorderLayout());
+        // Pin description + center to the top so the widgets always keep their preferred
+        // size. The content CENTER is deliberately left empty: any extra space from the user
+        // resizing the window collects there (blank), instead of stretching the time picker
+        // or other widgets, which is what happened when `center` itself sat in CENTER.
+        JPanel top = new JPanel(new BorderLayout());
         if (!recipe.getDescription().isEmpty())
-            content.add(buildDescription(recipe.getDescription()), BorderLayout.NORTH);
-        content.add(center, BorderLayout.CENTER);
+            top.add(buildDescription(recipe.getDescription()), BorderLayout.NORTH);
+        top.add(center, BorderLayout.CENTER);
+
+        JPanel content = new JPanel(new BorderLayout());
+        content.add(top, BorderLayout.NORTH);
         content.add(buttons, BorderLayout.SOUTH);
         setContentPane(content);
         pack();
         setLocationRelativeTo(parent);
     }
 
-    /** A read-only, word-wrapped banner at the top of the dialog showing the recipe's note. */
+    /**
+     * A read-only, word-wrapped banner at the top of the dialog showing the recipe's note.
+     * Uses an HTML label with a fixed wrap width so its preferred size is deterministic — a
+     * plain wrapping JTextArea reports an unstable preferred width, which made the initial
+     * pack() come out sometimes too narrow and sometimes too wide.
+     */
     private static JComponent buildDescription(String text) {
-        JTextArea area = new JTextArea(text);
-        area.setEditable(false);
-        area.setLineWrap(true);
-        area.setWrapStyleWord(true);
-        area.setOpaque(false);
-        area.setFocusable(false);
-        area.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
-        return area;
+        JLabel label = new JLabel("<html><body style='width:460px'>" + escapeHtml(text) + "</body></html>");
+        label.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        return label;
+    }
+
+    private static String escapeHtml(String s) {
+        return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
     }
 
     /** True if there's anything worth asking before running (else just run with defaults/all). */
@@ -145,7 +165,25 @@ public class JRecipeRunDialog extends JDialog {
         for (RecipeParam p : recipe.getParams())
             if (!p.isPersistent() || p.getType() == RecipeParam.Type.WINDOW)
                 return true;
-        return recipe.getOutputMode().isPatch();
+        // PATCH shows the scope picker; REPLACE shows the replace-vs-new-window checkbox.
+        return recipe.getOutputMode().isPatch() || recipe.getOutputMode().isReplace();
+    }
+
+    /**
+     * Default for the "Replace this file" checkbox: overwrite the current window only when it
+     * holds nothing worth keeping — an empty document, or a single empty placeholder line (as
+     * produced by "New from video file"). Otherwise the result should open in a new window.
+     */
+    public static boolean defaultReplaceInCurrent(JubFrame jubler) {
+        Subtitles s = jubler.getSubtitles();
+        if (s == null || s.isEmpty())
+            return true;
+        return s.size() == 1 && s.elementAt(0).getText().trim().isEmpty();
+    }
+
+    /** For REPLACE recipes: whether to overwrite this window (true) or open a new one (false). */
+    public boolean getReplaceInCurrent() {
+        return replaceCheck != null && replaceCheck.isSelected();
     }
 
     public boolean showRun() {

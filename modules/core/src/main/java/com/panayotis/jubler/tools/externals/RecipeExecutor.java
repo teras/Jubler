@@ -53,10 +53,12 @@ public final class RecipeExecutor {
      * @param paramValues resolved param values, keyed by param key (may be empty)
      * @param scope            affected entries for %i / patch apply-back; null = all
      * @param windowSelections selected window per WINDOW param key (its content is serialized to temp); may be empty
+     * @param replaceInCurrent for REPLACE recipes: true = overwrite this window, false = open a new one (ignored by PATCH)
      * @param monitor          UI sink (log / cancel / finished)
      */
     public static void execute(JubFrame jubler, Recipe recipe, Map<String, String> paramValues,
-                               List<SubEntry> scope, Map<String, JubFrame> windowSelections, RecipeMonitor monitor) {
+                               List<SubEntry> scope, Map<String, JubFrame> windowSelections,
+                               boolean replaceInCurrent, RecipeMonitor monitor) {
         File tempDir = null;
         try {
             SubFormat format = recipe.getFormat();
@@ -203,7 +205,7 @@ public final class RecipeExecutor {
             }
 
             /* ---- apply-back (on EDT) ---- */
-            String applyError = applyOnEDT(jubler, recipe, outputFile, ordered);
+            String applyError = applyOnEDT(jubler, recipe, outputFile, ordered, replaceInCurrent);
             if (applyError != null) {
                 monitor.finished(false, applyError);
                 return;
@@ -382,9 +384,9 @@ public final class RecipeExecutor {
         return null;
     }
 
-    private static String applyOnEDT(JubFrame jubler, Recipe recipe, SubFile outputFile, List<SubEntry> ordered) {
+    private static String applyOnEDT(JubFrame jubler, Recipe recipe, SubFile outputFile, List<SubEntry> ordered, boolean replaceInCurrent) {
         AtomicReference<String> result = new AtomicReference<>();
-        Runnable task = () -> result.set(applyOutput(jubler, recipe, outputFile, ordered));
+        Runnable task = () -> result.set(applyOutput(jubler, recipe, outputFile, ordered, replaceInCurrent));
         try {
             if (SwingUtilities.isEventDispatchThread())
                 task.run();
@@ -397,7 +399,7 @@ public final class RecipeExecutor {
     }
 
     /** Apply the tool output back. Returns null on success, or an i18n error message. */
-    private static String applyOutput(JubFrame jubler, Recipe recipe, SubFile outputFile, List<SubEntry> ordered) {
+    private static String applyOutput(JubFrame jubler, Recipe recipe, SubFile outputFile, List<SubEntry> ordered, boolean replaceInCurrent) {
         OutputMode mode = recipe.getOutputMode();
         Subtitles result = new Subtitles(outputFile);
         String data = FileCommunicator.load(outputFile);
@@ -426,15 +428,15 @@ public final class RecipeExecutor {
             return null;
         }
 
-        // REPLACE
+        // REPLACE: the user chose (per run) whether to overwrite this window or open a new one.
         result.setSubFile(jubler.getSubtitles().getSubFile());
-        if (mode.replaceInNewWindow()) {
-            new JubFrame(result);
-        } else {
+        if (replaceInCurrent) {
             jubler.getUndoList().addUndo(new UndoEntry(jubler.getSubtitles(), recipe.getName()));
             jubler.getUndoList().invalidateSaveMark();
             jubler.setSubs(result);
             jubler.showInfo();
+        } else {
+            new JubFrame(result);
         }
         return null;
     }

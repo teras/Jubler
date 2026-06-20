@@ -28,7 +28,7 @@ public class RecipeTest {
         Recipe r = new Recipe("Transcribe");
         r.setPath("whisper-cli");
         r.setCommand("%x %model %lang -f %a -o %o");
-        r.setOutputMode(OutputMode.REPLACE_NEW);
+        r.setOutputMode(OutputMode.REPLACE);
 
         RecipeParam model = new RecipeParam("model", RecipeParam.Type.COMBOBOX);
         model.setChoices("tiny|base|small");
@@ -44,7 +44,7 @@ public class RecipeTest {
         Recipe back = Recipe.fromJsonString(r.toJsonString(false));
         assertEquals("Transcribe", back.getName());
         assertEquals("whisper-cli", back.getPath());
-        assertEquals(OutputMode.REPLACE_NEW, back.getOutputMode());
+        assertEquals(OutputMode.REPLACE, back.getOutputMode());
         assertEquals(2, back.getParams().size());
         RecipeParam bm = back.getParams().get(0);
         assertEquals("model", bm.getKey());
@@ -109,8 +109,8 @@ public class RecipeTest {
         assertTrue(OutputMode.PATCH_BOTH.patchTiming());
         assertTrue(OutputMode.PATCH_TEXT.patchText());
         assertFalse(OutputMode.PATCH_TEXT.patchTiming());
-        assertTrue(OutputMode.REPLACE_NEW.replaceInNewWindow());
-        assertFalse(OutputMode.REPLACE_CURRENT.replaceInNewWindow());
-        assertFalse(OutputMode.REPLACE_NEW.isPatch());
+        assertTrue(OutputMode.REPLACE.isReplace());
+        assertFalse(OutputMode.REPLACE.isPatch());
+        assertFalse(OutputMode.PATCH_BOTH.isReplace());
     }
 }

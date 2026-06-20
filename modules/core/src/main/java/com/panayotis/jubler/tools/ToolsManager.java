@@ -129,6 +129,7 @@ public class ToolsManager implements PluginContext {
         Map<String, String> values;
         List<SubEntry> scope = null;
         Map<String, JubFrame> windowSelections = java.util.Collections.emptyMap();
+        boolean replaceInCurrent;
         if (JRecipeRunDialog.needsPrompt(recipe, jubler)) {
             JRecipeRunDialog dialog = new JRecipeRunDialog(jubler, jubler, recipe);
             if (!dialog.showRun())
@@ -136,10 +137,12 @@ public class ToolsManager implements PluginContext {
             values = dialog.getValues();
             scope = dialog.getScope();
             windowSelections = dialog.getWindowSelections();
+            replaceInCurrent = dialog.getReplaceInCurrent();
         } else {
             values = resolveDefaults(recipe);
+            replaceInCurrent = JRecipeRunDialog.defaultReplaceInCurrent(jubler);
         }
-        new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, values, scope, windowSelections);
+        new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, values, scope, windowSelections, replaceInCurrent);
     }
 
     private static Map<String, String> resolveDefaults(Recipe recipe) {
