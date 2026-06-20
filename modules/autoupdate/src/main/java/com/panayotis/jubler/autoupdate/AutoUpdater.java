@@ -76,19 +76,28 @@ public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
             } catch (Exception e) {
-                DEBUG.debug(e);
+                logNetworkError(e);
                 return;
             }
             JsonValue releases;
             try (Reader in = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 releases = Json.parse(in);
             } catch (Exception e) {
-                DEBUG.debug(e);
+                logNetworkError(e);
                 return;
             }
             if (releases.isArray())
                 showVersions(findReleases(releases.asArray()));
         }).start();
+    }
+
+    /** Offline / connectivity failures are expected; log them quietly instead of a full stack trace. */
+    private static void logNetworkError(Exception e) {
+        if (e instanceof java.net.UnknownHostException || e instanceof java.net.ConnectException
+                || e instanceof java.net.SocketException || e instanceof java.net.SocketTimeoutException)
+            DEBUG.debug("Auto-update check skipped (offline): " + e.getMessage());
+        else
+            DEBUG.debug(e);
     }
 
     @Override

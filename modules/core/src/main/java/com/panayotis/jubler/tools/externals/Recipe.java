@@ -43,6 +43,8 @@ public class Recipe {
     }
 
     private String name;
+    private String description;      // optional note shown to the user on the run dialog
+    private String url;              // optional homepage/help link, offered when browsing the catalog
     private String module;          // null => external command; non-null => in-process module (read-only)
     private String path;            // executable: bare name (PATH lookup) or absolute path
     private String command;         // template with %x %i %j %a %v %o and %<key> params
@@ -59,6 +61,8 @@ public class Recipe {
 
     public Recipe(String name) {
         this.name = name;
+        this.description = "";
+        this.url = "";
         this.module = null;
         this.path = "";
         this.command = "%x --input %i --output %o";
@@ -81,6 +85,22 @@ public class Recipe {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description == null ? "" : description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url == null ? "" : url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getModule() {
@@ -168,6 +188,8 @@ public class Recipe {
     public void copyFrom(Recipe other) {
         Recipe clone = Recipe.fromJsonString(other.toJsonString(false));
         this.name = clone.name;
+        this.description = clone.description;
+        this.url = clone.url;
         this.module = clone.module;
         this.path = clone.path;
         this.command = clone.command;
@@ -204,6 +226,10 @@ public class Recipe {
     public JsonObject toJson(boolean forSharing) {
         JsonObject o = new JsonObject();
         o.add("name", name);
+        if (!getDescription().isEmpty())
+            o.add("description", getDescription());
+        if (!getUrl().isEmpty())
+            o.add("url", getUrl());
         if (isInProcess())
             o.add("module", module);
         o.add("path", getPath());
@@ -239,6 +265,8 @@ public class Recipe {
 
     public static Recipe fromJson(JsonObject o) {
         Recipe r = new Recipe(o.getString("name", "Recipe"));
+        r.setDescription(o.getString("description", ""));
+        r.setUrl(o.getString("url", ""));
         r.setModule(o.getString("module", null));
         r.setPath(o.getString("path", ""));
         r.setCommand(o.getString("command", "%x --input %i --output %o"));

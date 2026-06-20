@@ -1,6 +1,8 @@
 [
   {
     "name": "Sync to video (ffsubsync)",
+    "description": "Re-times this subtitle so it matches the attached video's speech.",
+    "url": "https://github.com/smacke/ffsubsync",
     "path": "ffsubsync",
     "command": "%x %v -i %i %gss -o %o",
     "format": "SubRip",
@@ -19,6 +21,8 @@
   },
   {
     "name": "Sync to another subtitle (ffsubsync)",
+    "description": "Re-times this subtitle to match a correctly-timed reference subtitle open in another window.",
+    "url": "https://github.com/smacke/ffsubsync",
     "path": "ffsubsync",
     "command": "%x %ref -i %i %gss -o %o",
     "format": "SubRip",
@@ -44,6 +48,8 @@
   },
   {
     "name": "Sync to video (alass)",
+    "description": "Re-times this subtitle against the attached video, correcting offset, framerate drift and scene splits.",
+    "url": "https://github.com/kaegi/alass",
     "path": "alass",
     "command": "%x %v %i %o",
     "format": "SubRip",
@@ -53,6 +59,8 @@
   },
   {
     "name": "Sync to another subtitle (alass)",
+    "description": "Re-times this subtitle to match a correctly-timed reference subtitle open in another window.",
+    "url": "https://github.com/kaegi/alass",
     "path": "alass",
     "command": "%x %ref %i %o",
     "format": "SubRip",

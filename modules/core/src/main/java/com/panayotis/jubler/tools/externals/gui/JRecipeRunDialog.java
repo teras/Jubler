@@ -11,6 +11,7 @@ import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.tools.externals.Recipe;
 import com.panayotis.jubler.tools.externals.RecipeParam;
 import com.panayotis.jubler.tools.externals.RecipeSecrets;
+import com.panayotis.jubler.time.gui.JTimeFullSelection;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
@@ -25,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
@@ -44,17 +46,19 @@ import java.util.Map;
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- * Per-run dialog: auto-generated widgets for the recipe's <b>per-run</b> params, plus a
- * scope selector and (when the command needs {@code %j}) an "other window" picker.
- * Persistent params are taken from config (stored values) and are not asked here, which
- * removes the old popup-in-popup.
+ * Per-run dialog: an optional description banner, auto-generated widgets for the recipe's
+ * <b>per-run</b> params, and — for PATCH recipes only — the standard subtitle picker
+ * ({@link JTimeFullSelection}). The recipe's {@link com.panayotis.jubler.tools.externals.OutputMode}
+ * decides the scope (REPLACE = all, PATCH = a chosen subset), not the user. Persistent params are
+ * taken from config (stored values) and are not asked here, which removes the old popup-in-popup.
  */
 public class JRecipeRunDialog extends JDialog {
 
     private final Recipe recipe;
     private final JubFrame jubler;
     private final Map<RecipeParam, JComponent> widgets = new LinkedHashMap<>();
-    private final JComboBox<String> scopeC = new JComboBox<>();
+    /* Range/colour/style/selection picker — present only for PATCH recipes (REPLACE works on all). */
+    private final JTimeFullSelection selectionArea;
     private boolean accepted = false;
 
     public JRecipeRunDialog(Window parent, JubFrame jubler, Recipe recipe) {
@@ -64,7 +68,6 @@ public class JRecipeRunDialog extends JDialog {
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel form = new JPanel(new GridBagLayout());
-        form.setBorder(BorderFactory.createEmptyBorder(10, 10, 6, 10));
         int row = 0;
 
         for (RecipeParam p : recipe.getParams()) {
@@ -82,13 +85,18 @@ public class JRecipeRunDialog extends JDialog {
             }
         }
 
-        scopeC.addItem(__("All subtitles"));
-        boolean hasSelection = jubler.getSelectedRows().length > 0;
-        if (hasSelection)
-            scopeC.addItem(__("Selected rows only"));
-        addRow(form, row++, __("Apply to:"), scopeC, "");
-        if (hasSelection)
-            scopeC.setSelectedIndex(1);
+        // The recipe (not the user) chooses the mode: REPLACE applies to everything, so there is
+        // nothing to pick; PATCH works on a subset, so we offer the standard subtitle picker.
+        JPanel center = new JPanel(new BorderLayout(0, 8));
+        center.setBorder(BorderFactory.createEmptyBorder(10, 10, 6, 10));
+        center.add(form, BorderLayout.NORTH);
+        if (recipe.getOutputMode().isPatch()) {
+            selectionArea = new JTimeFullSelection();
+            selectionArea.updateData(jubler.getSubtitles(), jubler.getSelectedRows());
+            center.add(selectionArea, BorderLayout.CENTER);
+        } else {
+            selectionArea = null;
+        }
 
         JPanel buttons = new JPanel(new BorderLayout());
         JPanel right = new JPanel();
@@ -104,19 +112,35 @@ public class JRecipeRunDialog extends JDialog {
         buttons.add(right, BorderLayout.EAST);
 
         JPanel content = new JPanel(new BorderLayout());
-        content.add(form, BorderLayout.CENTER);
+        if (!recipe.getDescription().isEmpty())
+            content.add(buildDescription(recipe.getDescription()), BorderLayout.NORTH);
+        content.add(center, BorderLayout.CENTER);
         content.add(buttons, BorderLayout.SOUTH);
         setContentPane(content);
         pack();
         setLocationRelativeTo(parent);
     }
 
+    /** A read-only, word-wrapped banner at the top of the dialog showing the recipe's note. */
+    private static JComponent buildDescription(String text) {
+        JTextArea area = new JTextArea(text);
+        area.setEditable(false);
+        area.setLineWrap(true);
+        area.setWrapStyleWord(true);
+        area.setOpaque(false);
+        area.setFocusable(false);
+        area.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+        return area;
+    }
+
     /** True if there's anything worth asking before running (else just run with defaults/all). */
     public static boolean needsPrompt(Recipe recipe, JubFrame jubler) {
+        if (!recipe.getDescription().isEmpty())
+            return true;
         for (RecipeParam p : recipe.getParams())
             if (!p.isPersistent() || p.getType() == RecipeParam.Type.WINDOW)
                 return true;
-        return jubler.getSelectedRows().length > 0;
+        return recipe.getOutputMode().isPatch();
     }
 
     public boolean showRun() {
@@ -158,13 +182,9 @@ public class JRecipeRunDialog extends JDialog {
     }
 
     public List<SubEntry> getScope() {
-        if (scopeC.getSelectedIndex() <= 0)
-            return null;   // all
-        SubEntry[] sel = jubler.getSelectedSubs();
-        List<SubEntry> list = new ArrayList<>();
-        for (SubEntry e : sel)
-            list.add(e);
-        return list;
+        if (selectionArea == null)
+            return null;   // REPLACE recipe: applies to all subtitles
+        return selectionArea.getAffectedSubs();
     }
 
     /* ===================== widgets ===================== */

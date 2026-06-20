@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
@@ -61,6 +62,8 @@ public class JRecipeEditor extends JDialog {
     private boolean accepted = false;
 
     private final JTextField nameT = new JTextField();
+    private final JTextArea descT = new JTextArea(2, 20);
+    private final JTextField urlT = new JTextField();
     private final JTextField pathT = new JTextField();
     private final JButton browseB = new JButton(__("Browse"));
     private final JLabel statusL = new JLabel(" ");
@@ -111,6 +114,14 @@ public class JRecipeEditor extends JDialog {
         int row = 0;
         addRow(p, row++, __("Name:"), nameT);
 
+        descT.setLineWrap(true);
+        descT.setWrapStyleWord(true);
+        JScrollPane descScroll = new JScrollPane(descT);
+        addRow(p, row++, __("Description:"), descScroll, new InfoButton(__("Description"),
+                __("An optional note shown to the user on the run dialog (e.g. what the tool does or what to prepare).")));
+        addRow(p, row++, __("URL:"), urlT, new InfoButton(__("URL"),
+                __("An optional web page (homepage or help) for this recipe; a globe button next to it in the catalog opens it.")));
+
         if (recipe.isInProcess()) {
             JLabel badge = new JLabel(__("In-process module: {0}", recipe.getModule()));
             badge.setFont(badge.getFont().deriveFont(Font.ITALIC));
@@ -155,6 +166,8 @@ public class JRecipeEditor extends JDialog {
         });
 
         bindText(nameT, recipe::setName);
+        bindText(descT, recipe::setDescription);
+        bindText(urlT, recipe::setUrl);
         bindText(pathT, v -> {
             recipe.setPath(v);
             updateStatus();
@@ -314,6 +327,8 @@ public class JRecipeEditor extends JDialog {
 
     private void loadFromRecipe() {
         nameT.setText(recipe.getName());
+        descT.setText(recipe.getDescription());
+        urlT.setText(recipe.getUrl());
         pathT.setText(recipe.getPath());
         commandT.setText(recipe.getCommand());
         if (recipe.getFormat() != null)
@@ -327,7 +342,7 @@ public class JRecipeEditor extends JDialog {
 
     /* ===================== helpers ===================== */
 
-    private void bindText(JTextField field, java.util.function.Consumer<String> setter) {
+    private void bindText(javax.swing.text.JTextComponent field, java.util.function.Consumer<String> setter) {
         field.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
                 setter.accept(field.getText());

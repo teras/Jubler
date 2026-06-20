@@ -116,7 +116,8 @@ public class JRecipeProgress extends JDialog implements RecipeMonitor {
         SwingUtilities.invokeLater(() -> {
             finished = true;
             progress.stop(success);
-            progress.setStatus((success ? "" : __("Failed") + ": ") + (message == null ? "" : message));
+            String msg = message == null ? "" : message;
+            progress.setStatus(success ? msg : __("Failed: {0}", msg));
             setTitle(recipeName + " — " + (success ? __("Success") : __("Failure")));
             actionB.setEnabled(true);
             actionB.setText(__("Close"));

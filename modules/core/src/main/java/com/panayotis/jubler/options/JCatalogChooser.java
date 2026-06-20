@@ -6,21 +6,29 @@
 
 package com.panayotis.jubler.options;
 
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.tools.externals.Recipe;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Window;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +43,8 @@ class JCatalogChooser extends JDialog {
 
     private final JList<Recipe> list;
     private final DefaultListModel<Recipe> model = new DefaultListModel<>();
+    private final JTextArea descPreview = new JTextArea(3, 40);
+    private final JButton urlB = new JButton();
     private boolean accepted = false;
 
     JCatalogChooser(Window parent, List<Recipe> available) {
@@ -44,12 +54,44 @@ class JCatalogChooser extends JDialog {
             model.addElement(r);
         list = new JList<>(model);
 
+        // Preview the highlighted recipe's description, so the user knows what it does before importing.
+        descPreview.setEditable(false);
+        descPreview.setLineWrap(true);
+        descPreview.setWrapStyleWord(true);
+        descPreview.setOpaque(false);
+        descPreview.setFocusable(false);
+        list.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting())
+                updatePreview();
+        });
+
+        // Globe button: opens the selected recipe's web page; disabled when it has none.
+        ImageIcon globe = Theme.loadIcon("flag-global");
+        if (globe != null)
+            urlB.setIcon(new ImageIcon(globe.getImage().getScaledInstance(22, 22, Image.SCALE_SMOOTH)));
+        else
+            urlB.setText("🌐");
+        urlB.setToolTipText(__("Open the recipe's web page"));
+        urlB.setMargin(new Insets(2, 6, 2, 6));
+        urlB.setEnabled(false);
+        urlB.addActionListener(e -> openUrl());
+
         JPanel content = new JPanel(new BorderLayout(0, 8));
         content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         content.add(new JLabel(__("Select the recipes to import:")), BorderLayout.NORTH);
         JScrollPane scroll = new JScrollPane(list);
         scroll.setPreferredSize(new Dimension(540, 240));
-        content.add(scroll, BorderLayout.CENTER);
+        JScrollPane previewScroll = new JScrollPane(descPreview);
+        previewScroll.setBorder(BorderFactory.createTitledBorder(__("What it does")));
+        JPanel globeWrap = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        globeWrap.add(urlB);
+        JPanel previewPanel = new JPanel(new BorderLayout(6, 0));
+        previewPanel.add(previewScroll, BorderLayout.CENTER);
+        previewPanel.add(globeWrap, BorderLayout.EAST);
+        JPanel listAndPreview = new JPanel(new BorderLayout(0, 8));
+        listAndPreview.add(scroll, BorderLayout.CENTER);
+        listAndPreview.add(previewPanel, BorderLayout.SOUTH);
+        content.add(listAndPreview, BorderLayout.CENTER);
 
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton cancel = new JButton(__("Cancel"));
@@ -62,6 +104,7 @@ class JCatalogChooser extends JDialog {
         buttons.add(cancel);
         buttons.add(ok);
         content.add(buttons, BorderLayout.SOUTH);
+        updatePreview();
 
         setContentPane(content);
         pack();
@@ -81,6 +124,32 @@ class JCatalogChooser extends JDialog {
                     list.setSelectedIndex(i);
                     break;
                 }
+        updatePreview();
+    }
+
+    /** Show the highlighted recipe's description (or a hint when there is none / nothing selected). */
+    private void updatePreview() {
+        Recipe sel = list.getSelectedValue();
+        if (sel == null)
+            descPreview.setText(__("Select a recipe to see what it does."));
+        else if (sel.getDescription().isEmpty())
+            descPreview.setText(__("No description provided."));
+        else
+            descPreview.setText(sel.getDescription());
+        descPreview.setCaretPosition(0);
+        urlB.setEnabled(sel != null && !sel.getUrl().isEmpty());
+    }
+
+    /** Open the selected recipe's web page in the default browser. */
+    private void openUrl() {
+        Recipe sel = list.getSelectedValue();
+        if (sel == null || sel.getUrl().isEmpty())
+            return;
+        try {
+            Desktop.getDesktop().browse(URI.create(sel.getUrl()));
+        } catch (Exception e) {
+            DEBUG.debug(e);
+        }
     }
 
     List<Recipe> choose() {

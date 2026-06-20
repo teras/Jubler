@@ -88,16 +88,16 @@ public class JReplaceList extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.GridLayout(0, 1, 0, 2));
 
-        jLabel1.setText("★: " + __("Whether this entry is used or not"));
+        jLabel1.setText(__("★: Whether this entry is used or not"));
         jPanel2.add(jLabel1);
 
-        jLabel2.setText(__("Pattern") + ": " + __("The RegEx pattern to use"));
+        jLabel2.setText(__("Pattern: The RegEx pattern to use"));
         jPanel2.add(jLabel2);
 
-        jLabel3.setText(__("Replacement") + ": " + __("The replacement text"));
+        jLabel3.setText(__("Replacement: The replacement text"));
         jPanel2.add(jLabel3);
 
-        jLabel4.setText("⎋: " + __("Parse texts as Java escaped codes (i.e. unescape sequences like \\n \\t etc.)"));
+        jLabel4.setText(__("⎋: Parse texts as Java escaped codes (i.e. unescape sequences like \\n \\t etc.)"));
         jPanel2.add(jLabel4);
 
         add(jPanel2, java.awt.BorderLayout.SOUTH);
