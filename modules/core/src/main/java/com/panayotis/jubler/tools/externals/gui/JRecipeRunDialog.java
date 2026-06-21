@@ -7,6 +7,7 @@
 package com.panayotis.jubler.tools.externals.gui;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.media.preview.decoders.SubtitleStreamInfo;
 import com.panayotis.jubler.subs.SubEntry;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.tools.externals.Recipe;
@@ -56,6 +57,8 @@ public class JRecipeRunDialog extends JDialog {
 
     private final Recipe recipe;
     private final JubFrame jubler;
+    /* Subtitle streams of the attached video, probed off the EDT before this dialog was built (may be empty). */
+    private final List<SubtitleStreamInfo> videoStreams;
     private final Map<RecipeParam, JComponent> widgets = new LinkedHashMap<>();
     /* Range/colour/style/selection picker — present only for PATCH recipes (REPLACE works on all). */
     private final JTimeFullSelection selectionArea;
@@ -64,17 +67,23 @@ public class JRecipeRunDialog extends JDialog {
     private boolean accepted = false;
 
     public JRecipeRunDialog(Window parent, JubFrame jubler, Recipe recipe) {
+        this(parent, jubler, recipe, java.util.Collections.emptyList());
+    }
+
+    public JRecipeRunDialog(Window parent, JubFrame jubler, Recipe recipe, List<SubtitleStreamInfo> videoStreams) {
         super(parent, recipe.getName(), ModalityType.APPLICATION_MODAL);
         this.recipe = recipe;
         this.jubler = jubler;
+        this.videoStreams = videoStreams == null ? java.util.Collections.emptyList() : videoStreams;
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel form = new JPanel(new GridBagLayout());
         int row = 0;
 
         for (RecipeParam p : recipe.getParams()) {
-            // A window selection is inherently per-run (a window can't be a stored value).
-            if (p.isPersistent() && p.getType() != RecipeParam.Type.WINDOW)
+            // Per-run types (window / video subtitle) depend on live context, so they are always
+            // asked even if marked persistent; everything else persistent comes from config.
+            if (p.isPersistent() && !p.isPerRun())
                 continue;
             JComponent w = widgetFor(p);
             widgets.put(p, w);
@@ -163,7 +172,7 @@ public class JRecipeRunDialog extends JDialog {
         if (!recipe.getDescription().isEmpty())
             return true;
         for (RecipeParam p : recipe.getParams())
-            if (!p.isPersistent() || p.getType() == RecipeParam.Type.WINDOW)
+            if (!p.isPersistent() || p.isPerRun())
                 return true;
         // PATCH shows the scope picker; REPLACE shows the replace-vs-new-window checkbox.
         return recipe.getOutputMode().isPatch() || recipe.getOutputMode().isReplace();
@@ -200,7 +209,7 @@ public class JRecipeRunDialog extends JDialog {
             if (p.getType() == RecipeParam.Type.WINDOW) {
                 // Resolved by the executor (the selected window's content is serialized to temp).
                 values.put(p.getKey(), "");
-            } else if (p.isPersistent()) {
+            } else if (p.isPersistent() && !p.isPerRun()) {
                 String stored = recipe.getStoredValue(p.getKey());
                 values.put(p.getKey(), stored == null ? p.getDefaultValue()
                         : (p.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
@@ -272,6 +281,24 @@ public class JRecipeRunDialog extends JDialog {
                 c.setRenderer(windowRenderer());
                 return c;
             }
+            case VIDEO_SUBTITLE: {
+                // The recipe declares which streams it can use (text / image / any); list only those.
+                List<SubtitleStreamInfo> streams = filterStreams(videoStreams, p.getAccept());
+                if (!streams.isEmpty()) {
+                    JComboBox<Object> c = new JComboBox<>(new DefaultComboBoxModel<>(streams.toArray()));
+                    c.setRenderer(subtitleStreamRenderer());
+                    SubtitleStreamInfo def = pickDefaultStream(streams, p.getDefaultValue());
+                    if (def != null)
+                        c.setSelectedItem(def);
+                    return c;
+                }
+                // Nothing the recipe can use: still a drop-down (never a free-text box), but disabled
+                // and showing why it's empty (no video, no streams, or only the wrong kind).
+                JComboBox<Object> c = new JComboBox<>(new Object[]{__("No suitable subtitle streams found")});
+                c.setRenderer(subtitleStreamRenderer());
+                c.setEnabled(false);
+                return c;
+            }
             case LANGUAGE: {
                 JComboBox<String> c = new JComboBox<>(languageCodes());
                 c.setRenderer(new DefaultListCellRenderer() {
@@ -309,6 +336,10 @@ public class JRecipeRunDialog extends JDialog {
                 Object lang = ((JComboBox<String>) w).getSelectedItem();
                 return lang == null ? "" : lang.toString();
             }
+            case VIDEO_SUBTITLE: {
+                Object stream = ((JComboBox<?>) w).getSelectedItem();
+                return stream instanceof SubtitleStreamInfo ? ((SubtitleStreamInfo) stream).getField(p.getField()) : "";
+            }
             case TEXTBOX:
             default:
                 return ((JTextField) w).getText();
@@ -341,6 +372,56 @@ public class JRecipeRunDialog extends JDialog {
                 return this;
             }
         };
+    }
+
+    /* ===================== video subtitle stream picker ===================== */
+
+    /** Keep only the streams this param accepts: {@code text} (convertible), {@code image} (bitmap), or all. */
+    private static List<SubtitleStreamInfo> filterStreams(List<SubtitleStreamInfo> all, String accept) {
+        if (all == null || all.isEmpty() || !("text".equals(accept) || "image".equals(accept)))
+            return all == null ? java.util.Collections.emptyList() : all;
+        boolean wantText = "text".equals(accept);
+        List<SubtitleStreamInfo> kept = new ArrayList<>();
+        for (SubtitleStreamInfo s : all)
+            if (s.isExtractable() == wantText)
+                kept.add(s);
+        return kept;
+    }
+
+    /** The author's preferred stream by index (its default value), else the first listed. */
+    private static SubtitleStreamInfo pickDefaultStream(List<SubtitleStreamInfo> streams, String defaultValue) {
+        if (defaultValue != null && !defaultValue.trim().isEmpty())
+            for (SubtitleStreamInfo s : streams)
+                if (Integer.toString(s.getIndex()).equals(defaultValue.trim()))
+                    return s;
+        return streams.isEmpty() ? null : streams.get(0);
+    }
+
+    private static DefaultListCellRenderer subtitleStreamRenderer() {
+        return new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean sel, boolean foc) {
+                super.getListCellRendererComponent(list, value, index, sel, foc);
+                if (value instanceof SubtitleStreamInfo)
+                    setText(subtitleStreamLabel((SubtitleStreamInfo) value));
+                return this;
+            }
+        };
+    }
+
+    /** e.g. {@code "#0  eng — Text [Forced]"} or {@code "#1  eng — BD PGS subtitles (image)"}. */
+    private static String subtitleStreamLabel(SubtitleStreamInfo s) {
+        StringBuilder b = new StringBuilder("#").append(s.getIndex()).append("  ");
+        b.append(s.getLanguage().isEmpty() ? __("unknown") : s.getLanguage());
+        String fmt = s.isExtractable() ? __("Text")
+                : (s.getCodecDescription().isEmpty() ? s.getCodecName() : s.getCodecDescription());
+        if (!fmt.isEmpty())
+            b.append(" — ").append(fmt);
+        if (!s.getTitle().isEmpty())
+            b.append(" [").append(s.getTitle()).append(']');
+        if (!s.isExtractable())
+            b.append(" (").append(__("image")).append(')');
+        return b.toString();
     }
 
     /** ISO 639 language codes, sorted by their display name in the current locale. */

@@ -7,6 +7,9 @@
 package com.panayotis.jubler.tools;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.media.VideoFile;
+import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
+import com.panayotis.jubler.media.preview.decoders.SubtitleStreamInfo;
 import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.tools.ToolMenu.Location;
@@ -126,23 +129,46 @@ public class ToolsManager implements PluginContext {
     }
 
     private static void runRecipe(JubFrame jubler, Recipe recipe) {
-        Map<String, String> values;
-        List<SubEntry> scope = null;
-        Map<String, JubFrame> windowSelections = java.util.Collections.emptyMap();
-        boolean replaceInCurrent;
-        if (JRecipeRunDialog.needsPrompt(recipe, jubler)) {
-            JRecipeRunDialog dialog = new JRecipeRunDialog(jubler, jubler, recipe);
-            if (!dialog.showRun())
-                return;
-            values = dialog.getValues();
-            scope = dialog.getScope();
-            windowSelections = dialog.getWindowSelections();
-            replaceInCurrent = dialog.getReplaceInCurrent();
-        } else {
-            values = resolveDefaults(recipe);
-            replaceInCurrent = JRecipeRunDialog.defaultReplaceInCurrent(jubler);
+        if (!JRecipeRunDialog.needsPrompt(recipe, jubler)) {
+            Map<String, String> values = resolveDefaults(recipe);
+            new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, values, null,
+                    java.util.Collections.emptyMap(), JRecipeRunDialog.defaultReplaceInCurrent(jubler));
+            return;
         }
-        new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, values, scope, windowSelections, replaceInCurrent);
+        // A subtitle-stream picker needs the attached video's streams. Parsing the media can take a
+        // moment, so probe off the EDT (with a wait cursor) and only then open the populated dialog —
+        // never block the UI thread building it.
+        VideoFile vf = usesVideoSubtitle(recipe) && jubler.getMediaFile() != null
+                ? jubler.getMediaFile().getVideoFile() : null;
+        if (vf == null) {
+            promptAndExecute(jubler, recipe, java.util.Collections.<SubtitleStreamInfo>emptyList());
+            return;
+        }
+        final VideoFile fvf = vf;
+        jubler.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        new Thread(() -> {
+            final List<SubtitleStreamInfo> streams = PreviewProviderRegistry.probeSubtitleStreams(fvf);
+            SwingUtilities.invokeLater(() -> {
+                jubler.setCursor(Cursor.getDefaultCursor());
+                promptAndExecute(jubler, recipe, streams);
+            });
+        }, "recipe-subtitle-probe").start();
+    }
+
+    private static boolean usesVideoSubtitle(Recipe recipe) {
+        for (RecipeParam p : recipe.getParams())
+            if (p.getType() == RecipeParam.Type.VIDEO_SUBTITLE)
+                return true;
+        return false;
+    }
+
+    /** Show the (populated) run dialog and, if accepted, launch the recipe. Runs on the EDT. */
+    private static void promptAndExecute(JubFrame jubler, Recipe recipe, List<SubtitleStreamInfo> streams) {
+        JRecipeRunDialog dialog = new JRecipeRunDialog(jubler, jubler, recipe, streams);
+        if (!dialog.showRun())
+            return;
+        new JRecipeProgress(jubler, recipe.getName()).execute(jubler, recipe, dialog.getValues(),
+                dialog.getScope(), dialog.getWindowSelections(), dialog.getReplaceInCurrent());
     }
 
     private static Map<String, String> resolveDefaults(Recipe recipe) {

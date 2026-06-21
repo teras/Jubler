@@ -74,21 +74,21 @@
   },
   {
     "name": "Extract subtitles from video (ffmpeg)",
-    "description": "Extracts an embedded subtitle track from the attached video and loads it into this window. Start with New → From video file, then run this.",
+    "description": "Extracts an embedded subtitle track from the attached video and loads it into this window.",
     "url": "https://ffmpeg.org",
     "path": "ffmpeg",
-    "command": "%x -y -i %v %track -c:s srt %o",
+    "command": "%x -y -i %v -map 0:s:%track -c:s srt %o",
     "format": "SubRip",
     "output": "REPLACE",
     "params": [
       {
         "key": "track",
-        "label": "Subtitle track",
-        "help": "Index of the embedded subtitle stream to extract (0 = first)",
-        "type": "TEXTBOX",
+        "label": "Subtitle stream",
+        "help": "Which embedded subtitle to extract. The list is read from the video and shows only text subtitles, since image-based ones (PGS/DVD) cannot be converted to text.",
+        "type": "VIDEO_SUBTITLE",
         "persistent": false,
         "default": "0",
-        "formatter": "-map 0:s:%VALUE"
+        "accept": "text"
       }
     ]
   }

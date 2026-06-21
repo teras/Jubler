@@ -23,7 +23,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 public class RecipeParam {
 
     public enum Type {
-        TEXTBOX, COMBOBOX, CHECKBOX, PATH, LANGUAGE, WINDOW, SECRET;
+        TEXTBOX, COMBOBOX, CHECKBOX, PATH, LANGUAGE, WINDOW, VIDEO_SUBTITLE, SECRET;
 
         public String getLabel() {
             switch (this) {
@@ -39,6 +39,8 @@ public class RecipeParam {
                     return __("Language");
                 case WINDOW:
                     return __("Window");
+                case VIDEO_SUBTITLE:
+                    return __("Subtitle stream");
                 case SECRET:
                     return __("Secret");
                 default:
@@ -61,6 +63,8 @@ public class RecipeParam {
                     return __("A language selector that emits the ISO language code.");
                 case WINDOW:
                     return __("A drop-down of other open subtitle windows; that window's subtitles are saved to a temporary file and passed to the tool.");
+                case VIDEO_SUBTITLE:
+                    return __("A drop-down of the subtitle streams embedded in the attached video; the chosen stream's index (or id/language) is passed to the tool.");
                 case SECRET:
                     return __("A password field; stored encrypted and excluded from shared recipes.");
                 default:
@@ -91,9 +95,10 @@ public class RecipeParam {
     /* Type-specific fields (each used only by the relevant type) */
     private String defaultValue;    // TextBox, ComboBox, Path, Language
     private String choices;         // ComboBox ('|'-separated)
-    private String formatter;       // any: e.g. "-m %VALUE"; skipped when value empty
     private boolean folder;         // Path
     private String checkedValue;    // CheckBox: emitted when checked
+    private String field;           // VideoSubtitle: which stream property to emit (index|id|language)
+    private String accept;          // VideoSubtitle: which streams to list (text|image|any)
 
     public RecipeParam() {
         this("param", Type.TEXTBOX);
@@ -106,10 +111,11 @@ public class RecipeParam {
         this.help = "";
         this.defaultValue = "";
         this.choices = "";
-        this.formatter = "";
         this.checkedValue = "";
         this.persistent = false;
         this.folder = false;
+        this.field = "index";
+        this.accept = "any";
     }
 
     public String getKey() {
@@ -173,14 +179,6 @@ public class RecipeParam {
         return c.isEmpty() ? new String[0] : c.split("\\s*\\|\\s*");
     }
 
-    public String getFormatter() {
-        return formatter == null ? "" : formatter;
-    }
-
-    public void setFormatter(String formatter) {
-        this.formatter = formatter;
-    }
-
     public boolean isFolder() {
         return folder;
     }
@@ -197,22 +195,31 @@ public class RecipeParam {
         this.checkedValue = checkedValue;
     }
 
-    public boolean isSecret() {
-        return type == Type.SECRET;
+    /** Which property of the chosen subtitle stream is emitted: {@code index} (default), {@code id} or {@code language}. */
+    public String getField() {
+        return field == null || field.isEmpty() ? "index" : field;
     }
 
-    /**
-     * Apply this param's formatter to a resolved value. Returns an empty string when
-     * the value is empty (so optional flags don't appear with no argument); otherwise
-     * applies the {@code %VALUE} formatter, or the raw value if no formatter is set.
-     */
-    public String format(String value) {
-        if (value == null || value.isEmpty())
-            return "";
-        String f = getFormatter();
-        if (f.isEmpty())
-            return value;
-        return f.replace("%VALUE", value);
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    /** Which subtitle streams to list: {@code text} (convertible to text), {@code image} (bitmap/OCR), or {@code any} (default). */
+    public String getAccept() {
+        return accept == null || accept.isEmpty() ? "any" : accept;
+    }
+
+    public void setAccept(String accept) {
+        this.accept = accept;
+    }
+
+    /** True for types resolved per run from live context (open windows, the attached video), never from a stored value. */
+    public boolean isPerRun() {
+        return type == Type.WINDOW || type == Type.VIDEO_SUBTITLE;
+    }
+
+    public boolean isSecret() {
+        return type == Type.SECRET;
     }
 
     @Override
@@ -251,12 +258,14 @@ public class RecipeParam {
             o.add("default", getDefaultValue());
         if (!getChoices().isEmpty())
             o.add("choices", getChoices());
-        if (!getFormatter().isEmpty())
-            o.add("formatter", getFormatter());
         if (folder)
             o.add("folder", true);
         if (!getCheckedValue().isEmpty())
             o.add("checkedValue", getCheckedValue());
+        if (type == Type.VIDEO_SUBTITLE && !getField().equals("index"))
+            o.add("field", getField());
+        if (type == Type.VIDEO_SUBTITLE && !getAccept().equals("any"))
+            o.add("accept", getAccept());
         return o;
     }
 
@@ -268,9 +277,10 @@ public class RecipeParam {
         p.setPersistent(o.getBoolean("persistent", false));
         p.setDefaultValue(o.getString("default", ""));
         p.setChoices(o.getString("choices", ""));
-        p.setFormatter(o.getString("formatter", ""));
         p.setFolder(o.getBoolean("folder", false));
         p.setCheckedValue(o.getString("checkedValue", ""));
+        p.setField(o.getString("field", "index"));
+        p.setAccept(o.getString("accept", "any"));
         return p;
     }
 }

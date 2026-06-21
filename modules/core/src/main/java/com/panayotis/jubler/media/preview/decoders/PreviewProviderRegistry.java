@@ -38,4 +38,23 @@ public class PreviewProviderRegistry {
                 -> new IllegalArgumentException(__("Unable to find an audio preview provider")));
         return audioPreviewSupplier.get();
     }
+
+    /**
+     * Best-effort probe of a video's embedded subtitle streams. Never throws and never requires a
+     * provider: returns an empty list when no preview provider is registered, no video is given, or
+     * the probe fails — so callers can quietly fall back to manual entry.
+     */
+    public static List<SubtitleStreamInfo> probeSubtitleStreams(com.panayotis.jubler.media.VideoFile vfile) {
+        if (vfile == null)
+            return Collections.emptyList();
+        Supplier<AudioPreview> supplier = audioProviders.stream().findFirst().orElse(null);
+        if (supplier == null)
+            return Collections.emptyList();
+        try {
+            List<SubtitleStreamInfo> streams = supplier.get().getSubtitleStreams(vfile);
+            return streams == null ? Collections.emptyList() : streams;
+        } catch (Throwable t) {
+            return Collections.emptyList();
+        }
+    }
 }

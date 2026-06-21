@@ -10,6 +10,9 @@ import com.panayotis.jubler.media.AudioFile;
 import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.media.VideoFile;
 
+import java.util.Collections;
+import java.util.List;
+
 public interface AudioPreview {
     interface AudioStateCallback {
 
@@ -38,4 +41,13 @@ public interface AudioPreview {
     void retrieveInformation(VideoFile vfile);
 
     void playAudioClip(AudioFile audio, CacheFile cache, double from, double to);
+
+    /**
+     * The embedded subtitle streams of the given video, in container order (so the index of
+     * each entry matches ffmpeg's {@code -map 0:s:N}). Default is empty: a provider that cannot
+     * enumerate streams simply returns nothing and callers fall back to manual entry.
+     */
+    default List<SubtitleStreamInfo> getSubtitleStreams(VideoFile vfile) {
+        return Collections.emptyList();
+    }
 }

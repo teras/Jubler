@@ -61,13 +61,16 @@ public class JRecipeEditor extends JDialog {
     private final Recipe snapshot;
     private boolean accepted = false;
 
-    private final JTextField nameT = new JTextField();
-    private final JTextArea descT = new JTextArea(2, 20);
-    private final JTextField urlT = new JTextField();
-    private final JTextField pathT = new JTextField();
+    // A bounded preferred width so a long value (command, url, …) can't stretch the whole dialog;
+    // the fields still fill/grow horizontally when the user resizes the window.
+    private static final int FIELD_COLUMNS = 32;
+    private final JTextField nameT = new JTextField(FIELD_COLUMNS);
+    private final JTextArea descT = new JTextArea(2, FIELD_COLUMNS);
+    private final JTextField urlT = new JTextField(FIELD_COLUMNS);
+    private final JTextField pathT = new JTextField(FIELD_COLUMNS);
     private final JButton browseB = new JButton(__("Browse"));
     private final JLabel statusL = new JLabel(" ");
-    private final JTextField commandT = new JTextField();
+    private final JTextField commandT = new JTextField(FIELD_COLUMNS);
     private final JComboBox<SubFormat> formatC = new JComboBox<>();
     private final JComboBox<OutputMode> resultC = new JComboBox<>(OutputMode.values());
 
@@ -322,6 +325,10 @@ public class JRecipeEditor extends JDialog {
         urlT.setText(recipe.getUrl());
         pathT.setText(recipe.getPath());
         commandT.setText(recipe.getCommand());
+        // setText parks the caret at the end, scrolling long values out of view; show the start.
+        for (JTextField f : new JTextField[]{nameT, urlT, pathT, commandT})
+            f.setCaretPosition(0);
+        descT.setCaretPosition(0);
         if (recipe.getFormat() != null)
             formatC.setSelectedItem(recipe.getFormat());
         resultC.setSelectedItem(recipe.getOutputMode());

@@ -11,6 +11,7 @@ import com.panayotis.jubler.media.CacheFile;
 import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.media.preview.decoders.AudioPreview;
 import com.panayotis.jubler.media.preview.decoders.AudioPreviewData;
+import com.panayotis.jubler.media.preview.decoders.SubtitleStreamInfo;
 import com.panayotis.jubler.options.Options;
 
 import com.panayotis.jubler.os.DEBUG;
@@ -20,6 +21,7 @@ import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.media.Media;
 import uk.co.caprica.vlcj.media.MediaEventAdapter;
 import uk.co.caprica.vlcj.media.MediaParsedStatus;
+import uk.co.caprica.vlcj.media.TextTrackInfo;
 import uk.co.caprica.vlcj.media.VideoTrackInfo;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
@@ -28,6 +30,8 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import javax.sound.sampled.AudioFormat;
@@ -157,6 +161,50 @@ public class VLCAudioPreview implements AudioPreview {
             media.release();
         }
         return info;
+    }
+
+    /**
+     * libvlc fourcc for its single "text subtitles with various tags" bucket — every text format
+     * (SubRip, ASS/SSA, MOV text, …) is reported under this one codec. Bitmap subtitles report a
+     * different fourcc (e.g. {@code spu } = DVD, {@code bdpg} = BD PGS) and cannot become text.
+     */
+    private static final int TEXT_SUBTITLE_FOURCC = 0x74627573; // 'subt'
+
+    @Override
+    public List<SubtitleStreamInfo> getSubtitleStreams(VideoFile vfile) {
+        List<SubtitleStreamInfo> result = new ArrayList<>();
+        if (vfile == null)
+            return result;
+        MediaPlayerFactory f = factory();
+        if (f == null)
+            return result;
+        Media media = f.media().newMedia(vfile.getAbsolutePath());
+        if (media == null)
+            return result;
+        try {
+            CountDownLatch parsed = new CountDownLatch(1);
+            media.events().addMediaEventListener(new MediaEventAdapter() {
+                @Override
+                public void mediaParsedChanged(Media m, MediaParsedStatus newStatus) {
+                    parsed.countDown();
+                }
+            });
+            media.parsing().parse();
+            parsed.await(15, TimeUnit.SECONDS);
+            // textTracks() is in container order, so the position == ffmpeg's -map 0:s:N index.
+            // id() is the container track id, used as-is by mkvextract. language() is whatever the
+            // muxer wrote (sometimes "eng", sometimes "English") — kept verbatim for display.
+            int index = 0;
+            for (TextTrackInfo t : media.info().textTracks())
+                result.add(new SubtitleStreamInfo(index++, t.id(), t.language(),
+                        t.codecName(), t.codecDescription(), t.description(),
+                        t.codec() == TEXT_SUBTITLE_FOURCC));
+        } catch (Exception e) {
+            DEBUG.debug(e);
+        } finally {
+            media.release();
+        }
+        return result;
     }
 
     @Override

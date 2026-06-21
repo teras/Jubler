@@ -41,12 +41,15 @@ import static com.panayotis.jubler.i18n.I18N.__;
  */
 public class JParamDetail extends JPanel {
 
-    private final JTextField keyT = new JTextField();
-    private final JTextField labelT = new JTextField();
-    private final JTextField helpT = new JTextField();
+    // A bounded preferred width so a long help/default value can't stretch the whole dialog;
+    // the fields still fill/grow horizontally when the user resizes the window.
+    private static final int FIELD_COLUMNS = 32;
+    private final JTextField keyT = new JTextField(FIELD_COLUMNS);
+    private final JTextField labelT = new JTextField(FIELD_COLUMNS);
+    private final JTextField helpT = new JTextField(FIELD_COLUMNS);
     private final JComboBox<RecipeParam.Type> typeC = new JComboBox<>(RecipeParam.Type.values());
     private final JCheckBox persistentB = new JCheckBox(__("Persistent"));
-    private final JPasswordField valueT = new JPasswordField();
+    private final JPasswordField valueT = new JPasswordField(FIELD_COLUMNS);
     private final char defaultEcho = valueT.getEchoChar();
     private final JToggleButton revealBtn = SecretField.revealToggle(valueT);
     private InfoButton valueInfo;
@@ -58,33 +61,22 @@ public class JParamDetail extends JPanel {
     private final CardLayout outer = new CardLayout();
 
     // TextBox
-    private final JTextField tbDefault = new JTextField();
-    private final JTextField tbFormatter = new JTextField();
+    private final JTextField tbDefault = new JTextField(FIELD_COLUMNS);
     // ComboBox
-    private final JTextField cbChoices = new JTextField();
-    private final JTextField cbDefault = new JTextField();
-    private final JTextField cbFormatter = new JTextField();
+    private final JTextField cbChoices = new JTextField(FIELD_COLUMNS);
+    private final JTextField cbDefault = new JTextField(FIELD_COLUMNS);
     // CheckBox
-    private final JTextField chkChecked = new JTextField();
+    private final JTextField chkChecked = new JTextField(FIELD_COLUMNS);
     private final JCheckBox chkDefault = new JCheckBox(__("Checked by default"));
     // Path
-    private final JTextField pathDefault = new JTextField();
+    private final JTextField pathDefault = new JTextField(FIELD_COLUMNS);
     private final JButton pathBrowse = new JButton(__("Browse"));
     private final JCheckBox pathFolder = new JCheckBox(__("Is folder"));
-    private final JTextField pathFormatter = new JTextField();
     // Language
-    private final JTextField langDefault = new JTextField();
-    private final JTextField langFormatter = new JTextField();
-    // Window
-    private final JTextField winFormatter = new JTextField();
-    // Secret
-    private final JTextField secFormatter = new JTextField();
-
-    private static final String FORMATTER_HELP =
-            __("Optional. Defines how the value is turned into command argument(s).")
-            + "<br>" + __("Use {0} as a placeholder for the value, e.g. {1}.", "%VALUE", "<code>-m %VALUE</code>")
-            + "<br>" + __("If the value is empty, the whole formatter is skipped (optional flags disappear).")
-            + "<br>" + __("Without a formatter, the raw value is used as-is.");
+    private final JTextField langDefault = new JTextField(FIELD_COLUMNS);
+    // Video subtitle
+    private final JComboBox<String> vsAccept = new JComboBox<>(new String[]{"any", "text", "image"});
+    private final JComboBox<String> vsField = new JComboBox<>(new String[]{"index", "id", "language"});
 
     /** Every row label and the panels holding them, so all GridBag layouts can share one label-column width. */
     private final List<JLabel> formLabels = new ArrayList<>();
@@ -211,20 +203,16 @@ public class JParamDetail extends JPanel {
 
         JPanel tb = card();
         addRow(tb, 0, __("Default:"), tbDefault);
-        addRow(tb, 1, __("Formatter:"), tbFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
         cardHost.add(tb, RecipeParam.Type.TEXTBOX.name());
         bindText(tbDefault, RecipeParam::setDefaultValue);
-        bindText(tbFormatter, RecipeParam::setFormatter);
 
         JPanel cb = card();
         addRow(cb, 0, __("Choices:"), cbChoices, new InfoButton(__("Choices"),
                 __("The list of options offered to the user, separated by | (for example: tiny|base|small).")));
         addRow(cb, 1, __("Default:"), cbDefault);
-        addRow(cb, 2, __("Formatter:"), cbFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
         cardHost.add(cb, RecipeParam.Type.COMBOBOX.name());
         bindText(cbChoices, RecipeParam::setChoices);
         bindText(cbDefault, RecipeParam::setDefaultValue);
-        bindText(cbFormatter, RecipeParam::setFormatter);
 
         JPanel chk = card();
         addRow(chk, 0, __("Value:"), chkChecked, new InfoButton(__("Value when checked"),
@@ -248,10 +236,8 @@ public class JParamDetail extends JPanel {
         path.add(pathFolder, gf);
         path.add(new InfoButton(__("Is folder"),
                 __("If on, the Browse button lets the user pick a folder instead of a file.")), infoGbc(1));
-        addRow(path, 2, __("Formatter:"), pathFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
         cardHost.add(path, RecipeParam.Type.PATH.name());
         bindText(pathDefault, RecipeParam::setDefaultValue);
-        bindText(pathFormatter, RecipeParam::setFormatter);
         pathFolder.addActionListener(e -> {
             if (!loading && param != null)
                 param.setFolder(pathFolder.isSelected());
@@ -261,20 +247,27 @@ public class JParamDetail extends JPanel {
         JPanel lang = card();
         addRow(lang, 0, __("ISO default:"), langDefault, new InfoButton(__("ISO default"),
                 __("The pre-selected language, as a 2-letter ISO 639 code (for example en, fr, de).")));
-        addRow(lang, 1, __("Formatter:"), langFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
         cardHost.add(lang, RecipeParam.Type.LANGUAGE.name());
         bindText(langDefault, RecipeParam::setDefaultValue);
-        bindText(langFormatter, RecipeParam::setFormatter);
 
-        JPanel win = card();
-        addRow(win, 0, __("Formatter:"), winFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
-        cardHost.add(win, RecipeParam.Type.WINDOW.name());
-        bindText(winFormatter, RecipeParam::setFormatter);
+        cardHost.add(card(), RecipeParam.Type.WINDOW.name());
 
-        JPanel sec = card();
-        addRow(sec, 0, __("Formatter:"), secFormatter, new InfoButton(__("Formatter"), FORMATTER_HELP));
-        cardHost.add(sec, RecipeParam.Type.SECRET.name());
-        bindText(secFormatter, RecipeParam::setFormatter);
+        JPanel vs = card();
+        addRow(vs, 0, __("Show:"), vsAccept, new InfoButton(__("Show"),
+                __("Which streams to list: only text subtitles (convertible to text), only image subtitles (PGS/DVD, for OCR tools), or all of them.")));
+        addRow(vs, 1, __("Emit:"), vsField, new InfoButton(__("Emit"),
+                __("Which property of the chosen subtitle stream is passed to the tool: its index (0,1,2… for ffmpeg -map 0:s:N), its container id (for mkvextract), or its language code.")));
+        cardHost.add(vs, RecipeParam.Type.VIDEO_SUBTITLE.name());
+        vsAccept.addActionListener(e -> {
+            if (!loading && param != null)
+                param.setAccept((String) vsAccept.getSelectedItem());
+        });
+        vsField.addActionListener(e -> {
+            if (!loading && param != null)
+                param.setField((String) vsField.getSelectedItem());
+        });
+
+        cardHost.add(card(), RecipeParam.Type.SECRET.name());
     }
 
     private void browsePath() {
@@ -301,24 +294,24 @@ public class JParamDetail extends JPanel {
             typeC.setSelectedItem(param.getType());
             persistentB.setSelected(param.isPersistent());
             tbDefault.setText(param.getDefaultValue());
-            tbFormatter.setText(param.getFormatter());
             cbChoices.setText(param.getChoices());
             cbDefault.setText(param.getDefaultValue());
-            cbFormatter.setText(param.getFormatter());
             chkChecked.setText(param.getCheckedValue());
             chkDefault.setSelected(Boolean.parseBoolean(param.getDefaultValue()));
             pathDefault.setText(param.getDefaultValue());
             pathFolder.setSelected(param.isFolder());
-            pathFormatter.setText(param.getFormatter());
             langDefault.setText(param.getDefaultValue());
-            langFormatter.setText(param.getFormatter());
-            winFormatter.setText(param.getFormatter());
-            secFormatter.setText(param.getFormatter());
+            vsAccept.setSelectedItem(param.getAccept());
+            vsField.setSelectedItem(param.getField());
             String stored = recipe == null ? null : recipe.getStoredValue(param.getKey());
             valueT.setText(stored == null ? "" : (param.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
             updateValueEnabled();
             updateSecretMask();
             showCard();
+            // setText leaves the caret at the end, scrolling long values out of view; show the start.
+            for (JTextField f : new JTextField[]{keyT, labelT, helpT, valueT, tbDefault,
+                    cbChoices, cbDefault, chkChecked, pathDefault, langDefault})
+                f.setCaretPosition(0);
         }
         loading = false;
     }

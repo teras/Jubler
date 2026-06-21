@@ -27,18 +27,16 @@ public class RecipeTest {
     void jsonRoundTrip() {
         Recipe r = new Recipe("Transcribe");
         r.setPath("whisper-cli");
-        r.setCommand("%x %model %lang -f %a -o %o");
+        r.setCommand("%x -m %model -l %lang -f %a -o %o");
         r.setOutputMode(OutputMode.REPLACE);
 
         RecipeParam model = new RecipeParam("model", RecipeParam.Type.COMBOBOX);
         model.setChoices("tiny|base|small");
         model.setDefaultValue("base");
-        model.setFormatter("-m %VALUE");
         model.setPersistent(true);
         r.addParam(model);
 
         RecipeParam lang = new RecipeParam("lang", RecipeParam.Type.LANGUAGE);
-        lang.setFormatter("-l %VALUE");
         r.addParam(lang);
 
         Recipe back = Recipe.fromJsonString(r.toJsonString(false));
@@ -49,7 +47,7 @@ public class RecipeTest {
         RecipeParam bm = back.getParams().get(0);
         assertEquals("model", bm.getKey());
         assertEquals("base", bm.getDefaultValue());
-        assertEquals("-m %VALUE", bm.getFormatter());
+        assertEquals("tiny|base|small", bm.getChoices());
         assertTrue(bm.isPersistent());
     }
 
@@ -79,28 +77,72 @@ public class RecipeTest {
     void commandLineBuilding() {
         Recipe r = new Recipe("t");
         r.setPath("/opt/whisper cli/whisper");   // path with a space -> must stay one arg
-        r.setCommand("%x %model %lang -f %a -o %o");
+        r.setCommand("%x -m %model -l %lang -f %a -o %o");
 
         RecipeParam model = new RecipeParam("model", RecipeParam.Type.COMBOBOX);
-        model.setFormatter("-m %VALUE");
         r.addParam(model);
         RecipeParam lang = new RecipeParam("lang", RecipeParam.Type.LANGUAGE);
-        lang.setFormatter("-l %VALUE");
         r.addParam(lang);
 
         Map<String, String> values = new HashMap<>();
         values.put("model", "base");
-        values.put("lang", "");                   // empty -> whole flag must vanish
+        values.put("lang", "");                   // empty value -> kept as an empty argument, not dropped
 
         List<String> cmd = RecipeExecutor.buildCommandLine(r, values,
                 r.getPath(), "/tmp/in.srt", "/tmp/au dio.wav", null, "/tmp/out.srt");
 
-        // %x kept whole (space), %model -> "-m base" (two args), %lang dropped, %a kept whole, %o kept
+        // The template fixes the slots: %x and %a stay whole despite their spaces; %model -> its value;
+        // %lang empty -> an empty argument in its slot (the "-l" flag stays put).
         assertEquals(Arrays.asList(
                 "/opt/whisper cli/whisper",
                 "-m", "base",
+                "-l", "",
                 "-f", "/tmp/au dio.wav",
                 "-o", "/tmp/out.srt"), cmd);
+    }
+
+    @Test
+    void embeddedPlaceholderStaysOneArgument() {
+        // mkvextract-style: a param value glued to %o inside one token must expand in place,
+        // yielding a single "id:output" argument.
+        Recipe r = new Recipe("extract");
+        r.setPath("mkvextract");
+        r.setCommand("%x %v tracks %track:%o");
+
+        RecipeParam track = new RecipeParam("track", RecipeParam.Type.VIDEO_SUBTITLE);
+        r.addParam(track);
+
+        Map<String, String> values = new HashMap<>();
+        values.put("track", "3");
+
+        List<String> cmd = RecipeExecutor.buildCommandLine(r, values,
+                "mkvextract", "/tmp/in.srt", null, "/movies/a film.mkv", "/tmp/out.srt");
+
+        assertEquals(Arrays.asList(
+                "mkvextract",
+                "/movies/a film.mkv",
+                "tracks",
+                "3:/tmp/out.srt"), cmd);
+    }
+
+    @Test
+    void checkboxValueSplitsIntoFlags() {
+        Recipe r = new Recipe("c");
+        r.setPath("tool");
+        r.setCommand("%x %opt -o %o");
+
+        RecipeParam opt = new RecipeParam("opt", RecipeParam.Type.CHECKBOX);
+        r.addParam(opt);
+
+        Map<String, String> on = new HashMap<>();
+        on.put("opt", "--foo --bar");             // author text -> splits into two flags
+        assertEquals(Arrays.asList("tool", "--foo", "--bar", "-o", "/tmp/out.srt"),
+                RecipeExecutor.buildCommandLine(r, on, "tool", "/tmp/in.srt", null, null, "/tmp/out.srt"));
+
+        Map<String, String> off = new HashMap<>();
+        off.put("opt", "");                       // unchecked -> contributes nothing
+        assertEquals(Arrays.asList("tool", "-o", "/tmp/out.srt"),
+                RecipeExecutor.buildCommandLine(r, off, "tool", "/tmp/in.srt", null, null, "/tmp/out.srt"));
     }
 
     @Test

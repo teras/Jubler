@@ -29,6 +29,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -286,12 +288,17 @@ public final class RecipeExecutor {
         return ordered;
     }
 
+    /** {@code %} followed by a placeholder name: a system letter (x i a v o) or a param key. */
+    private static final Pattern PLACEHOLDER = Pattern.compile("%([A-Za-z][A-Za-z0-9]*)");
+
     /**
-     * Build the argument list. The template is tokenized honoring quotes (so a literal path
-     * with spaces, written between quotes, stays one argument). System placeholders
-     * ({@code %x %i %a %v %o}) substitute in place and never split a token. A token that is
-     * exactly {@code %<key>} for a defined param expands through {@link #appendParam}: the user
-     * value is always a single argument; only author text (formatter / checkbox value) splits.
+     * Build the argument list. The template alone fixes how many arguments there are and where
+     * they split: it is tokenized once (honoring quotes, so a quoted path with spaces stays one
+     * argument), before any value exists. A token that is exactly {@code %<key>} for a defined
+     * param expands through {@link #appendParam} (a checkbox emits its words as separate flags;
+     * every other type emits its value as a single argument, kept even when empty). Any other
+     * token has its placeholders — system ({@code %x %i %a %v %o}) and embedded {@code %<key>}
+     * params — substituted in place and stays a single argument.
      */
     static List<String> buildCommandLine(Recipe recipe, Map<String, String> paramValues,
                                          String x, String i, String a, String v, String o) {
@@ -306,38 +313,59 @@ public final class RecipeExecutor {
                     continue;
                 }
             }
-            String t = token
-                    .replace("%x", nz(x))
-                    .replace("%i", nz(i))
-                    .replace("%a", nz(a))
-                    .replace("%v", nz(v))
-                    .replace("%o", nz(o));
-            if (!t.isEmpty())
-                out.add(t);
+            out.add(substitute(token, recipe, paramValues, x, i, a, v, o));
         }
         return out;
     }
 
     /**
-     * Append a param's contribution. Empty values vanish (optional flags disappear). The user
-     * value is always a SINGLE argument (paths/keys may contain spaces); only author-provided
-     * text — a formatter or a checkbox's checked value — is split into separate flags.
+     * Append a standalone {@code %<key>} param's contribution. A checkbox is author text: its
+     * value splits on whitespace into separate flags, and contributes nothing when unchecked.
+     * Every other type is a user value: exactly one argument, kept even when empty — the template
+     * already decided this slot exists, so an empty value yields an empty argument, never a vanished
+     * one (a value's own spaces never create extra arguments).
      */
     private static void appendParam(List<String> out, RecipeParam param, String value) {
-        if (value == null || value.isEmpty())
-            return;
-        String formatter = param.getFormatter();
-        if (formatter != null && !formatter.isEmpty()) {
-            for (String piece : formatter.trim().split("\\s+"))
-                if (!piece.isEmpty())
-                    out.add(piece.replace("%VALUE", value));
-        } else if (param.getType() == RecipeParam.Type.CHECKBOX) {
+        if (param.getType() == RecipeParam.Type.CHECKBOX) {
+            if (value == null || value.isEmpty())
+                return;
             for (String piece : value.trim().split("\\s+"))
                 if (!piece.isEmpty())
                     out.add(piece);
-        } else {
-            out.add(value);
+            return;
         }
+        out.add(value == null ? "" : value);
+    }
+
+    /**
+     * Replace every placeholder embedded in a token: a system letter ({@code %x %i %a %v %o}) or a
+     * defined param key ({@code %<key>}). An unknown {@code %name} is left as-is. The result is a
+     * single argument; an empty replacement collapses to empty text, it does not split the token.
+     */
+    private static String substitute(String token, Recipe recipe, Map<String, String> values,
+                                     String x, String i, String a, String v, String o) {
+        Matcher m = PLACEHOLDER.matcher(token);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            String name = m.group(1);
+            String rep;
+            if (name.length() == 1) {
+                switch (name.charAt(0)) {
+                    case 'x': rep = nz(x); break;
+                    case 'i': rep = nz(i); break;
+                    case 'a': rep = nz(a); break;
+                    case 'v': rep = nz(v); break;
+                    case 'o': rep = nz(o); break;
+                    default: rep = null;
+                }
+            } else {
+                RecipeParam param = findParam(recipe, name);
+                rep = param == null ? null : nz(values == null ? null : values.get(name));
+            }
+            m.appendReplacement(sb, Matcher.quoteReplacement(rep == null ? m.group() : rep));
+        }
+        m.appendTail(sb);
+        return sb.toString();
     }
 
     /** Split a command template on whitespace, honoring single/double quotes so a quoted path with spaces stays one token. */
