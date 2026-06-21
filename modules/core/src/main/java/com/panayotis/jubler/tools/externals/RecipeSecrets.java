@@ -71,27 +71,27 @@ public final class RecipeSecrets {
     }
 
     /**
-     * Re-encode a persistent param's stored value when its secret-ness changes (plain↔encrypted).
-     * Returns false if it could not be done (e.g. PIN cancelled or wrong) — the caller must then
-     * keep the old type so nothing is lost or corrupted.
+     * Re-encode a param's {@code default} value in place when its secret-ness changes: a non-secret
+     * holds it as plain text, a secret holds it encrypted. Returns false only when it could not be
+     * done (PIN cancelled or wrong) — the caller then keeps the old type so the value is never lost.
      */
-    public static boolean recodeForSecretChange(Recipe recipe, String key, boolean nowSecret) {
-        if (recipe == null || !recipe.hasStoredValue(key))
-            return true;   // nothing stored to convert
-        String stored = recipe.getStoredValue(key);
+    public static boolean recodeForSecretChange(RecipeParam param, boolean nowSecret) {
+        String value = param.getDefaultValue();
+        if (value.isEmpty())
+            return true;                        // nothing to convert
         if (nowSecret) {
-            String encrypted = encrypt(stored);
+            String encrypted = encrypt(value);
             if (encrypted.isEmpty())
-                return false;   // PIN cancelled (stored was non-empty, so empty means failure)
-            recipe.setStoredValue(key, encrypted);
+                return false;                   // PIN cancelled (value was non-empty)
+            param.setDefaultValue(encrypted);
         } else {
-            String plain = tryDecrypt(stored);
+            String plain = tryDecrypt(value);
             if (plain == null) {
                 JOptionPane.showMessageDialog(null,
                         __("Cannot convert this value: wrong or missing PIN."), __("PIN"), JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-            recipe.setStoredValue(key, plain);
+            param.setDefaultValue(plain);
         }
         return true;
     }
@@ -123,7 +123,7 @@ public final class RecipeSecrets {
     private static boolean anySecretStored() {
         for (Recipe r : Recipes.getList())
             for (RecipeParam p : r.getParams())
-                if (p.isSecret() && r.hasStoredValue(p.getKey()))
+                if (p.isSecret() && !p.getDefaultValue().isEmpty())
                     return true;
         return false;
     }
@@ -133,7 +133,7 @@ public final class RecipeSecrets {
      * are no secrets yet, it simply (re)sets the session PIN. Returns true on success.
      */
     public static boolean changePin(Component parent) {
-        List<Object[]> secrets = new ArrayList<>();   // {recipe, key, decrypted}
+        List<Object[]> secrets = new ArrayList<>();   // {param, decrypted}
         boolean hasSecrets = anySecretStored();
         if (hasSecrets) {
             String current = pin();
@@ -141,14 +141,14 @@ public final class RecipeSecrets {
                 return false;
             for (Recipe r : Recipes.getList())
                 for (RecipeParam p : r.getParams())
-                    if (p.isSecret() && r.hasStoredValue(p.getKey())) {
-                        Optional<String> d = Encryption.decrypt(r.getStoredValue(p.getKey()), current);
+                    if (p.isSecret() && !p.getDefaultValue().isEmpty()) {
+                        Optional<String> d = Encryption.decrypt(p.getDefaultValue(), current);
                         if (!d.isPresent()) {
                             sessionPin = null;
                             JOptionPane.showMessageDialog(parent, __("Wrong PIN."), __("Change PIN"), JOptionPane.WARNING_MESSAGE);
                             return false;
                         }
-                        secrets.add(new Object[]{r, p.getKey(), d.get()});
+                        secrets.add(new Object[]{p, d.get()});
                     }
         }
         String next = promptNewPin(__("Choose a new PIN:"));
@@ -157,7 +157,7 @@ public final class RecipeSecrets {
         sessionPin = next;
         if (!secrets.isEmpty()) {
             for (Object[] s : secrets)
-                ((Recipe) s[0]).setStoredValue((String) s[1], Encryption.encrypt((String) s[2], next).orElse(""));
+                ((RecipeParam) s[0]).setDefaultValue(Encryption.encrypt((String) s[1], next).orElse(""));
             Recipes.save();
         }
         JOptionPane.showMessageDialog(parent, __("PIN changed."), __("Change PIN"), JOptionPane.INFORMATION_MESSAGE);

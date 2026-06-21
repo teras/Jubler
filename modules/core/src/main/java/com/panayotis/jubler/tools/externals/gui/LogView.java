@@ -36,8 +36,11 @@ public class LogView extends JPanel {
         setOpaque(false);
         setLayout(new BorderLayout());
         area.setEditable(false);
-        area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-        area.setLineWrap(false);
+        area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 14));
+        // Wrap long lines at the view width (break on words, falling back to characters for very long
+        // tokens such as file paths), so nothing runs off the right edge.
+        area.setLineWrap(true);
+        area.setWrapStyleWord(true);
 
         JPanel header = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         header.setOpaque(false);

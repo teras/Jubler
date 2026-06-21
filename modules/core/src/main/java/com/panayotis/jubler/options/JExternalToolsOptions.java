@@ -195,10 +195,13 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
             return;
         try {
-            Recipe recipe = Recipes.loadFromFile(fc.getSelectedFile());
-            Recipes.getList().add(recipe);
-            model.addElement(recipe);
-            recipeList.setSelectedValue(recipe, true);
+            List<Recipe> loaded = Recipes.loadFromFile(fc.getSelectedFile());
+            for (Recipe recipe : loaded) {
+                Recipes.getList().add(recipe);
+                model.addElement(recipe);
+            }
+            if (!loaded.isEmpty())
+                recipeList.setSelectedValue(loaded.get(loaded.size() - 1), true);
         } catch (Exception e) {
             DEBUG.debug(e);
             JIDialog.error(this, __("Could not load recipe: {0}", e.getMessage()), __("Error"));

@@ -174,10 +174,8 @@ public class ToolsManager implements PluginContext {
     private static Map<String, String> resolveDefaults(Recipe recipe) {
         Map<String, String> values = new HashMap<>();
         for (RecipeParam p : recipe.getParams()) {
-            if (p.isPersistent()) {
-                String stored = recipe.getStoredValue(p.getKey());
-                values.put(p.getKey(), stored == null ? p.getDefaultValue()
-                        : (p.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
+            if (p.isSecret() && !p.getDefaultValue().isEmpty()) {
+                values.put(p.getKey(), RecipeSecrets.decrypt(p.getDefaultValue()));
             } else if (p.getType() == RecipeParam.Type.CHECKBOX) {
                 values.put(p.getKey(), Boolean.parseBoolean(p.getDefaultValue()) ? p.getCheckedValue() : "");
             } else {

@@ -81,9 +81,9 @@ public class JRecipeRunDialog extends JDialog {
         int row = 0;
 
         for (RecipeParam p : recipe.getParams()) {
-            // Per-run types (window / video subtitle) depend on live context, so they are always
-            // asked even if marked persistent; everything else persistent comes from config.
-            if (p.isPersistent() && !p.isPerRun())
+            // A secret with a stored (encrypted) default is used silently; everything else is asked,
+            // including a secret with no default (entered live each run).
+            if (p.isSecret() && !p.getDefaultValue().isEmpty())
                 continue;
             JComponent w = widgetFor(p);
             widgets.put(p, w);
@@ -172,7 +172,7 @@ public class JRecipeRunDialog extends JDialog {
         if (!recipe.getDescription().isEmpty())
             return true;
         for (RecipeParam p : recipe.getParams())
-            if (!p.isPersistent() || p.isPerRun())
+            if (!(p.isSecret() && !p.getDefaultValue().isEmpty()))
                 return true;
         // PATCH shows the scope picker; REPLACE shows the replace-vs-new-window checkbox.
         return recipe.getOutputMode().isPatch() || recipe.getOutputMode().isReplace();
@@ -202,17 +202,15 @@ public class JRecipeRunDialog extends JDialog {
 
     /* ===================== results ===================== */
 
-    /** Resolved values for ALL params (per-run from widgets, persistent from stored config). */
+    /** Resolved values for ALL params (asked ones from widgets, stored secrets decrypted from config). */
     public Map<String, String> getValues() {
         Map<String, String> values = new LinkedHashMap<>();
         for (RecipeParam p : recipe.getParams()) {
             if (p.getType() == RecipeParam.Type.WINDOW) {
                 // Resolved by the executor (the selected window's content is serialized to temp).
                 values.put(p.getKey(), "");
-            } else if (p.isPersistent() && !p.isPerRun()) {
-                String stored = recipe.getStoredValue(p.getKey());
-                values.put(p.getKey(), stored == null ? p.getDefaultValue()
-                        : (p.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
+            } else if (p.isSecret() && !p.getDefaultValue().isEmpty()) {
+                values.put(p.getKey(), RecipeSecrets.decrypt(p.getDefaultValue()));
             } else {
                 values.put(p.getKey(), readWidget(p, widgets.get(p)));
             }

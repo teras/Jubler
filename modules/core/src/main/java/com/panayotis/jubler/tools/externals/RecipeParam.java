@@ -14,7 +14,8 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  * A typed parameter of a {@link Recipe}. The author defines it (key/label/type and
- * type-specific fields); the user fills it at run time (per-run) or once (persistent).
+ * type-specific fields); the user fills it at run time. A secret may instead carry a stored
+ * (encrypted) value, in which case it is used silently rather than asked for.
  *
  * <p>The {@code key} is referenced in the command template as {@code %<key>}. It must be
  * at least 2 characters so it can never collide with the single-character system
@@ -66,7 +67,7 @@ public class RecipeParam {
                 case VIDEO_SUBTITLE:
                     return __("A drop-down of the subtitle streams embedded in the attached video; the chosen stream's index (or id/language) is passed to the tool.");
                 case SECRET:
-                    return __("A password field; stored encrypted and excluded from shared recipes.");
+                    return __("A masked password field. Store it once (encrypted, never shared) to reuse it silently, or leave it unstored to be asked for it live on every run.");
                 default:
                     return "";
             }
@@ -90,10 +91,9 @@ public class RecipeParam {
     private String label;
     private String help;
     private Type type;
-    private boolean persistent;
 
     /* Type-specific fields (each used only by the relevant type) */
-    private String defaultValue;    // TextBox, ComboBox, Path, Language
+    private String defaultValue;    // TextBox, ComboBox, Path, Language; for Secret held encrypted
     private String choices;         // ComboBox ('|'-separated)
     private boolean folder;         // Path
     private String checkedValue;    // CheckBox: emitted when checked
@@ -112,7 +112,6 @@ public class RecipeParam {
         this.defaultValue = "";
         this.choices = "";
         this.checkedValue = "";
-        this.persistent = false;
         this.folder = false;
         this.field = "index";
         this.accept = "any";
@@ -148,14 +147,6 @@ public class RecipeParam {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public boolean isPersistent() {
-        return persistent;
-    }
-
-    public void setPersistent(boolean persistent) {
-        this.persistent = persistent;
     }
 
     public String getDefaultValue() {
@@ -247,14 +238,14 @@ public class RecipeParam {
 
     /* ===================== Serialization ===================== */
 
-    public JsonObject toJson() {
+    public JsonObject toJson(boolean forSharing) {
         JsonObject o = new JsonObject();
         o.add("key", key);
         o.add("label", label == null ? "" : label);
         o.add("help", getHelp());
         o.add("type", type.name());
-        o.add("persistent", persistent);
-        if (!getDefaultValue().isEmpty())
+        // A secret's default is held encrypted; it is never exported when sharing the recipe.
+        if (!getDefaultValue().isEmpty() && !(forSharing && type == Type.SECRET))
             o.add("default", getDefaultValue());
         if (!getChoices().isEmpty())
             o.add("choices", getChoices());
@@ -274,7 +265,6 @@ public class RecipeParam {
                 Type.fromName(o.getString("type", "TEXTBOX"), Type.TEXTBOX));
         p.setLabel(o.getString("label", ""));
         p.setHelp(o.getString("help", ""));
-        p.setPersistent(o.getBoolean("persistent", false));
         p.setDefaultValue(o.getString("default", ""));
         p.setChoices(o.getString("choices", ""));
         p.setFolder(o.getBoolean("folder", false));

@@ -6,16 +6,17 @@
 
 package com.panayotis.jubler.tools.externals.gui;
 
-import com.panayotis.jubler.tools.externals.Recipe;
 import com.panayotis.jubler.tools.externals.RecipeParam;
 import com.panayotis.jubler.tools.externals.RecipeSecrets;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -23,6 +24,7 @@ import javax.swing.JToggleButton;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.CardLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -32,12 +34,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
- * Detail editor for a single {@link RecipeParam}: common header (key/label/help/type/
- * persistent) plus a type-specific card. Edits write straight into the bound param.
+ * Detail editor for a single {@link RecipeParam}: common header (key/label/help/type, plus a
+ * stored-value row shown only for secrets) and a type-specific card. Edits write straight into
+ * the bound param.
  */
 public class JParamDetail extends JPanel {
 
@@ -48,11 +52,10 @@ public class JParamDetail extends JPanel {
     private final JTextField labelT = new JTextField(FIELD_COLUMNS);
     private final JTextField helpT = new JTextField(FIELD_COLUMNS);
     private final JComboBox<RecipeParam.Type> typeC = new JComboBox<>(RecipeParam.Type.values());
-    private final JCheckBox persistentB = new JCheckBox(__("Persistent"));
-    private final JPasswordField valueT = new JPasswordField(FIELD_COLUMNS);
-    private final char defaultEcho = valueT.getEchoChar();
-    private final JToggleButton revealBtn = SecretField.revealToggle(valueT);
-    private InfoButton valueInfo;
+    // A secret is just a default value held encrypted: the Secret card shows it masked, with a reveal
+    // toggle. Filled -> used silently at run time; left empty -> asked for live on every run.
+    private final JPasswordField secretT = new JPasswordField(FIELD_COLUMNS);
+    private final JToggleButton revealBtn = SecretField.revealToggle(secretT);
 
     private final CardLayout cards = new CardLayout();
     private final JPanel cardHost = new JPanel(cards);
@@ -83,7 +86,6 @@ public class JParamDetail extends JPanel {
     private final Set<JPanel> formPanels = new LinkedHashSet<>();
 
     private RecipeParam param;
-    private Recipe recipe;
     private boolean loading = false;
     private boolean secretDirty = false;
     private Runnable onKeyChanged;
@@ -111,10 +113,6 @@ public class JParamDetail extends JPanel {
         this.onKeyChanged = r;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
-
     private JPanel buildHeader() {
         JPanel p = new JPanel(new GridBagLayout());
         p.setOpaque(false);
@@ -125,21 +123,6 @@ public class JParamDetail extends JPanel {
         addRow(p, 2, __("Help:"), helpT, new InfoButton(__("Help"),
                 __("Extra explanation shown to the user (behind an info button) next to this field when the recipe runs.")));
         addRow(p, 3, __("Type:"), typeC, new InfoButton(__("Type"), this::typeHelp));
-        // The "Persistent" checkbox doubles as the label for the stored value: check it to keep a permanent
-        // value (asked once, not on every run); the field on the right holds that value.
-        GridBagConstraints pg = new GridBagConstraints();
-        pg.gridx = 0;
-        pg.gridy = 4;
-        pg.anchor = GridBagConstraints.LINE_END;
-        pg.insets = new Insets(2, 4, 2, 4);
-        p.add(persistentB, pg);
-        JPanel valuePanel = new JPanel(new BorderLayout(4, 0));
-        valuePanel.setOpaque(false);
-        valuePanel.add(valueT, BorderLayout.CENTER);
-        valuePanel.add(revealBtn, BorderLayout.EAST);   // eye toggle, shown only for secrets
-        p.add(valuePanel, gbc(1, 4));
-        valueInfo = new InfoButton(__("Persistent"), this::valueHelp);
-        p.add(valueInfo, infoGbc(4));
 
         bindText(keyT, (par, v) -> {
             par.setKey(v);
@@ -151,45 +134,55 @@ public class JParamDetail extends JPanel {
         typeC.addActionListener(e -> {
             if (loading || param == null)
                 return;
+            commitSecret();   // flush a pending secret edit before converting
             RecipeParam.Type oldType = param.getType();
             RecipeParam.Type newType = (RecipeParam.Type) typeC.getSelectedItem();
             if (newType == oldType)
                 return;
-            // If secret-ness changed, re-encode the stored value (plain<->encrypted) before switching.
+            String origDefault = param.getDefaultValue();
+            String origChecked = param.getCheckedValue();
+            // One value, shared across types: a checkbox carries it in checkedValue, every other type
+            // in default. Move it into default so it travels through one path (incl. secret re-encoding).
+            if (oldType == RecipeParam.Type.CHECKBOX) {
+                param.setDefaultValue(param.getCheckedValue());
+                param.setCheckedValue("");
+            }
+            // Crossing the secret boundary re-encodes that value (plain <-> encrypted); if it can't
+            // (PIN cancelled), restore everything and keep the old type so nothing is lost.
             boolean secretnessChanged = (oldType == RecipeParam.Type.SECRET) != (newType == RecipeParam.Type.SECRET);
-            if (secretnessChanged && param.isPersistent()
-                    && !RecipeSecrets.recodeForSecretChange(recipe, param.getKey(), newType == RecipeParam.Type.SECRET)) {
-                loading = true;                       // could not convert -> revert the dropdown, keep old type/value
+            if (secretnessChanged
+                    && !RecipeSecrets.recodeForSecretChange(param, newType == RecipeParam.Type.SECRET)) {
+                param.setDefaultValue(origDefault);
+                param.setCheckedValue(origChecked);
+                loading = true;
                 typeC.setSelectedItem(oldType);
                 loading = false;
                 return;
             }
             param.setType(newType);
-            reloadValueField();
-            updateSecretMask();
-            showCard();
-        });
-        persistentB.addActionListener(e -> {
-            if (!loading && param != null) {
-                param.setPersistent(persistentB.isSelected());
-                updateValueEnabled();
+            // A checkbox holds the value in checkedValue; its own default is the checked state, so it
+            // starts unchecked after the move.
+            if (newType == RecipeParam.Type.CHECKBOX) {
+                param.setCheckedValue(param.getDefaultValue());
+                param.setDefaultValue("");
             }
+            setParam(param);   // repopulate every field consistently for the new type
         });
-        valueT.getDocument().addDocumentListener(new DocumentListener() {
+        secretT.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) {
-                storeValue();
+                markSecretDirty();
             }
 
             public void removeUpdate(DocumentEvent e) {
-                storeValue();
+                markSecretDirty();
             }
 
             public void changedUpdate(DocumentEvent e) {
-                storeValue();
+                markSecretDirty();
             }
         });
-        // Secrets use an expensive PBKDF2 encrypt; commit once on focus loss, not on every keystroke.
-        valueT.addFocusListener(new java.awt.event.FocusAdapter() {
+        // The secret default uses an expensive PBKDF2 encrypt; commit once on focus loss, not per keystroke.
+        secretT.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
                 commitSecret();
@@ -253,11 +246,13 @@ public class JParamDetail extends JPanel {
         cardHost.add(card(), RecipeParam.Type.WINDOW.name());
 
         JPanel vs = card();
-        addRow(vs, 0, __("Show:"), vsAccept, new InfoButton(__("Show"),
-                __("Which streams to list: only text subtitles (convertible to text), only image subtitles (PGS/DVD, for OCR tools), or all of them.")));
-        addRow(vs, 1, __("Emit:"), vsField, new InfoButton(__("Emit"),
-                __("Which property of the chosen subtitle stream is passed to the tool: its index (0,1,2… for ffmpeg -map 0:s:N), its container id (for mkvextract), or its language code.")));
+        addRow(vs, 0, __("Show:"), vsAccept, new InfoButton(__("Show"), showHelp()));
+        addRow(vs, 1, __("Emit:"), vsField, new InfoButton(__("Emit"), emitHelp()));
         cardHost.add(vs, RecipeParam.Type.VIDEO_SUBTITLE.name());
+        // Show translated labels while the model keeps the canonical keys (any/text/image, index/id/
+        // language), so what is stored and used at run time stays unchanged.
+        vsAccept.setRenderer(keyLabelRenderer(JParamDetail::acceptLabel));
+        vsField.setRenderer(keyLabelRenderer(JParamDetail::fieldLabel));
         vsAccept.addActionListener(e -> {
             if (!loading && param != null)
                 param.setAccept((String) vsAccept.getSelectedItem());
@@ -267,7 +262,68 @@ public class JParamDetail extends JPanel {
                 param.setField((String) vsField.getSelectedItem());
         });
 
-        cardHost.add(card(), RecipeParam.Type.SECRET.name());
+        JPanel sec = card();
+        JPanel secLine = new JPanel(new BorderLayout(4, 0));
+        secLine.setOpaque(false);
+        secLine.add(secretT, BorderLayout.CENTER);
+        secLine.add(revealBtn, BorderLayout.EAST);   // eye toggle to reveal the masked secret
+        addRow(sec, 0, __("Secret:"), secLine, new InfoButton(__("Secret"),
+                __("Fill this to store the secret here, encrypted; it is never included when you save or share the recipe.")
+                + "<br><br>" + __("Leave it empty to be asked for the secret live on every run (nothing is stored).")));
+        cardHost.add(sec, RecipeParam.Type.SECRET.name());
+    }
+
+    /** A combo renderer that shows a translated label for each canonical key (the model keeps the key). */
+    private static DefaultListCellRenderer keyLabelRenderer(Function<String, String> label) {
+        return new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean sel, boolean foc) {
+                super.getListCellRendererComponent(list, value, index, sel, foc);
+                if (value != null)
+                    setText(label.apply(value.toString()));
+                return this;
+            }
+        };
+    }
+
+    /** "Show" info: each line reuses the same option label shown in the dropdown, so wording stays in sync. */
+    private static String showHelp() {
+        return __("Which streams to list:")
+                + "<br>• <b>" + acceptLabel("any") + "</b>"
+                + "<br>• <b>" + acceptLabel("text") + "</b> — " + __("convertible to text")
+                + "<br>• <b>" + acceptLabel("image") + "</b> — " + __("bitmap (PGS/DVD), for OCR tools");
+    }
+
+    /** "Emit" info: each line reuses the same option label shown in the dropdown, so wording stays in sync. */
+    private static String emitHelp() {
+        return __("Which property of the chosen stream is passed to the tool:")
+                + "<br>• <b>" + fieldLabel("index") + "</b> — " + __("0, 1, 2… (ffmpeg -map 0:s:N)")
+                + "<br>• <b>" + fieldLabel("id") + "</b> — " + __("for mkvextract")
+                + "<br>• <b>" + fieldLabel("language") + "</b>";
+    }
+
+    /** Translated label for a VIDEO_SUBTITLE "Show" key (any/text/image). */
+    private static String acceptLabel(String key) {
+        switch (key) {
+            case "text":
+                return __("Text subtitles");
+            case "image":
+                return __("Image subtitles");
+            default:
+                return __("All subtitles");
+        }
+    }
+
+    /** Translated label for a VIDEO_SUBTITLE "Emit" key (index/id/language). */
+    private static String fieldLabel(String key) {
+        switch (key) {
+            case "id":
+                return __("Container id");
+            case "language":
+                return __("Language code");
+            default:
+                return __("Stream index");
+        }
     }
 
     private void browsePath() {
@@ -292,7 +348,6 @@ public class JParamDetail extends JPanel {
             labelT.setText(param.getLabel());
             helpT.setText(param.getHelp());
             typeC.setSelectedItem(param.getType());
-            persistentB.setSelected(param.isPersistent());
             tbDefault.setText(param.getDefaultValue());
             cbChoices.setText(param.getChoices());
             cbDefault.setText(param.getDefaultValue());
@@ -303,13 +358,10 @@ public class JParamDetail extends JPanel {
             langDefault.setText(param.getDefaultValue());
             vsAccept.setSelectedItem(param.getAccept());
             vsField.setSelectedItem(param.getField());
-            String stored = recipe == null ? null : recipe.getStoredValue(param.getKey());
-            valueT.setText(stored == null ? "" : (param.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
-            updateValueEnabled();
-            updateSecretMask();
+            secretT.setText(param.isSecret() ? RecipeSecrets.decrypt(param.getDefaultValue()) : "");
             showCard();
             // setText leaves the caret at the end, scrolling long values out of view; show the start.
-            for (JTextField f : new JTextField[]{keyT, labelT, helpT, valueT, tbDefault,
+            for (JTextField f : new JTextField[]{keyT, labelT, helpT, secretT, tbDefault,
                     cbChoices, cbDefault, chkChecked, pathDefault, langDefault})
                 f.setCaretPosition(0);
         }
@@ -327,40 +379,10 @@ public class JParamDetail extends JPanel {
         return general;
     }
 
-    /** What "Persistent" + the stored value mean, then a blank line, then the part that differs by secret/non-secret. */
-    private String valueHelp() {
-        String general = __("If on, the value is set once here in the configuration and is not asked on every run (e.g. an API key or a default). If off, the user is asked each run.");
-        boolean secret = param != null && param.isSecret();
-        String specific = secret
-                ? __("Because this is a secret, it is stored encrypted and is never included when you save or share the recipe.")
-                : __("It is stored as plain text and is included when you save or share the recipe.");
-        return general + "<br><br>" + specific;
-    }
-
+    /** What the secret's stored value means: fill to store (encrypted), or leave empty to be asked live. */
     private void showCard() {
         if (param != null)
             cards.show(cardHost, param.getType().name());
-    }
-
-    /** The stored value field is editable only when "Persistent" is checked (the info button stays available). */
-    private void updateValueEnabled() {
-        valueT.setEnabled(param != null && param.isPersistent());
-    }
-
-    /** Re-read the stored value into the field after a type change (decrypting if it is now a secret). */
-    private void reloadValueField() {
-        loading = true;
-        String stored = recipe == null ? null : recipe.getStoredValue(param.getKey());
-        valueT.setText(stored == null ? "" : (param.isSecret() ? RecipeSecrets.decrypt(stored) : stored));
-        loading = false;
-    }
-
-    /** Mask the stored value (and show the eye toggle) only for Secret params; plain text for everything else. */
-    private void updateSecretMask() {
-        boolean secret = param != null && param.isSecret();
-        revealBtn.setVisible(secret);
-        revealBtn.setSelected(false);   // start masked whenever the param/type changes
-        valueT.setEchoChar(secret ? defaultEcho : (char) 0);
     }
 
     /**
@@ -376,21 +398,18 @@ public class JParamDetail extends JPanel {
             ((GridBagLayout) p.getLayout()).columnWidths = new int[]{max, 0, 0};
     }
 
-    private void storeValue() {
-        if (loading || param == null || recipe == null || !param.isPersistent())
+    private void markSecretDirty() {
+        if (loading || param == null || !param.isSecret())
             return;
-        if (param.isSecret()) {
-            secretDirty = true;   // defer the costly encrypt to focus loss / flush
-            return;
-        }
-        recipe.setStoredValue(param.getKey(), new String(valueT.getPassword()));
+        secretDirty = true;   // defer the costly encrypt to focus loss / flush
     }
 
-    /** Encrypt and store the secret value once (called on focus loss and before leaving the param). */
+    /** Encrypt the secret into the param's default once (on focus loss and before leaving the param). */
     private void commitSecret() {
-        if (loading || !secretDirty || param == null || recipe == null || !param.isPersistent() || !param.isSecret())
+        if (loading || !secretDirty || param == null || !param.isSecret())
             return;
-        recipe.setStoredValue(param.getKey(), RecipeSecrets.encrypt(new String(valueT.getPassword())));
+        String text = new String(secretT.getPassword());
+        param.setDefaultValue(text.isEmpty() ? "" : RecipeSecrets.encrypt(text));
         secretDirty = false;
     }
 

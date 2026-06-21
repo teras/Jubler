@@ -188,7 +188,6 @@ public class JRecipeEditor extends JDialog {
         JPanel p = new JPanel(new BorderLayout(8, 0));
         p.setBorder(BorderFactory.createTitledBorder(__("Parameters")));
 
-        detail.setRecipe(recipe);
         paramList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         paramList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {

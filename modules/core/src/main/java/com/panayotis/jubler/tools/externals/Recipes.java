@@ -6,6 +6,8 @@
 
 package com.panayotis.jubler.tools.externals;
 
+import com.eclipsesource.json.Json;
+import com.eclipsesource.json.JsonValue;
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.plugins.Availabilities;
@@ -110,8 +112,18 @@ public final class Recipes {
         Files.write(file.toPath(), recipe.toJsonString(true).getBytes(StandardCharsets.UTF_8));
     }
 
-    public static Recipe loadFromFile(File file) throws IOException {
+    /** Load one or more recipes from a file holding either a single recipe object or an array of them. */
+    public static List<Recipe> loadFromFile(File file) throws IOException {
         String json = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-        return Recipe.fromJsonString(json);
+        JsonValue parsed = Json.parse(json);
+        List<Recipe> out = new ArrayList<>();
+        if (parsed.isArray()) {
+            for (JsonValue v : parsed.asArray())
+                if (v.isObject())
+                    out.add(Recipe.fromJson(v.asObject()));
+        } else if (parsed.isObject()) {
+            out.add(Recipe.fromJson(parsed.asObject()));
+        }
+        return out;
     }
 }

@@ -33,7 +33,6 @@ public class RecipeTest {
         RecipeParam model = new RecipeParam("model", RecipeParam.Type.COMBOBOX);
         model.setChoices("tiny|base|small");
         model.setDefaultValue("base");
-        model.setPersistent(true);
         r.addParam(model);
 
         RecipeParam lang = new RecipeParam("lang", RecipeParam.Type.LANGUAGE);
@@ -48,7 +47,24 @@ public class RecipeTest {
         assertEquals("model", bm.getKey());
         assertEquals("base", bm.getDefaultValue());
         assertEquals("tiny|base|small", bm.getChoices());
-        assertTrue(bm.isPersistent());
+    }
+
+    @Test
+    void secretDefaultKeptLocallyButNeverShared() {
+        Recipe r = new Recipe("t");
+        r.setPath("tool");
+        RecipeParam key = new RecipeParam("apikey", RecipeParam.Type.SECRET);
+        key.setDefaultValue("ENC_BLOB");   // stands in for the encrypted secret
+        r.addParam(key);
+
+        // Persisting to prefs keeps it (held encrypted) so the secret survives a restart.
+        Recipe local = Recipe.fromJsonString(r.toJsonString(false));
+        assertEquals("ENC_BLOB", local.getParams().get(0).getDefaultValue());
+
+        // Sharing strips it so the secret is never leaked; the param itself stays.
+        Recipe shared = Recipe.fromJsonString(r.toJsonString(true));
+        assertEquals(1, shared.getParams().size());
+        assertEquals("", shared.getParams().get(0).getDefaultValue());
     }
 
     @Test
