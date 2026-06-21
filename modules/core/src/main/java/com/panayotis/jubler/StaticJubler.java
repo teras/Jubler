@@ -137,6 +137,16 @@ public class StaticJubler {
             updateMenus(j);
     }
 
+    /** Push an existing file (e.g. a chosen video) to the front of the recent list and refresh the menus. */
+    public static void addRecentFile(File f) {
+        if (f == null || !f.exists())
+            return;
+        SubFile sf = new SubFile(f, SubFile.EXTENSION_GIVEN);
+        recent_files.remove(sf);
+        recent_files.push(sf);
+        updateRecents();
+    }
+
     public static void updateRecents() {
         /* Get filenames of all files */
         Subtitles subs;

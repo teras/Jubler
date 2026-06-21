@@ -112,13 +112,17 @@ public class JRecipeRunDialog extends JDialog {
             center.add(selectionArea, BorderLayout.CENTER);
             replaceCheck = null;
         } else {
-            // REPLACE: let the user pick, per run, whether to overwrite this file or open a new
-            // window. Default to overwrite only when this document has nothing worth keeping
-            // (no subtitles, or a single empty placeholder line — e.g. "New from video file").
+            // REPLACE: when this document holds nothing worth keeping (no subtitles, or a single empty
+            // placeholder line — e.g. "New from video file"), silently reuse it; there is no choice to
+            // make. Otherwise offer to overwrite this window or open a new one (default: new window).
             selectionArea = null;
-            replaceCheck = new JCheckBox(__("Replace this file"), defaultReplaceInCurrent(jubler));
-            replaceCheck.setToolTipText(__("When unchecked, the result opens in a new window"));
-            center.add(replaceCheck, BorderLayout.CENTER);
+            if (defaultReplaceInCurrent(jubler)) {
+                replaceCheck = null;
+            } else {
+                replaceCheck = new JCheckBox(__("Replace this file"), false);
+                replaceCheck.setToolTipText(__("When unchecked, the result opens in a new window"));
+                center.add(replaceCheck, BorderLayout.CENTER);
+            }
         }
 
         JPanel buttons = new JPanel(new BorderLayout());
@@ -174,8 +178,11 @@ public class JRecipeRunDialog extends JDialog {
         for (RecipeParam p : recipe.getParams())
             if (!(p.isSecret() && !p.getDefaultValue().isEmpty()))
                 return true;
-        // PATCH shows the scope picker; REPLACE shows the replace-vs-new-window checkbox.
-        return recipe.getOutputMode().isPatch() || recipe.getOutputMode().isReplace();
+        // PATCH always shows the scope picker. REPLACE only asks when there's content to protect
+        // (replace-vs-new-window); on the empty/placeholder pattern it just reuses the window.
+        if (recipe.getOutputMode().isPatch())
+            return true;
+        return recipe.getOutputMode().isReplace() && !defaultReplaceInCurrent(jubler);
     }
 
     /**
@@ -192,7 +199,9 @@ public class JRecipeRunDialog extends JDialog {
 
     /** For REPLACE recipes: whether to overwrite this window (true) or open a new one (false). */
     public boolean getReplaceInCurrent() {
-        return replaceCheck != null && replaceCheck.isSelected();
+        // A null checkbox in REPLACE mode means the empty/placeholder pattern: reuse the current window.
+        // (In PATCH mode this value is ignored by the executor.)
+        return replaceCheck == null || replaceCheck.isSelected();
     }
 
     public boolean showRun() {

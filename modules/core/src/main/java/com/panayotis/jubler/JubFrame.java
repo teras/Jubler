@@ -265,7 +265,9 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             jub.showInfo();
             StaticJubler.updateRecents();
             /* The user wants to clone current file */
-        } else
+        } else if (new VideoFileFilter().accept(sfile.getSaveFile()))
+            newFromVideo(sfile.getSaveFile());   // a recent video reopens as "New from video file"
+        else
             loadFileFromHere(sfile, false);
     }
 
@@ -1643,11 +1645,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }//GEN-LAST:event_CutEMActionPerformed
 
     private void FileNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FileNFMActionPerformed
-        JubFrame curjubler;
-        if (subs == null)
-            curjubler = this;
-        else
-            curjubler = new JubFrame();
+        JubFrame curjubler = isEmptyCanvas() ? this : new JubFrame();
         curjubler.setVisible(true);
 
         curjubler.setUnsaved(true);
@@ -1668,12 +1666,19 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         File video = fc.getSelectedFile();
         if (video == null || !video.exists())
             return;
+        FileCommunicator.setDefaultDir(fc.getCurrentDirectory());   // remember the folder for next time
+        newFromVideo(video);
+    }//GEN-LAST:event_FromVideoNFMActionPerformed
 
-        JubFrame curjubler;
-        if (subs == null)
-            curjubler = this;
-        else
-            curjubler = new JubFrame();
+    /**
+     * Open a fresh placeholder document attached to {@code video} (reusing an empty canvas, else a new
+     * window) and remember the video in the recent-files list, where it is told apart from subtitles by
+     * its extension. Shared by the "New from video file" menu and reopening such a recent entry.
+     */
+    public void newFromVideo(File video) {
+        if (video == null || !video.exists())
+            return;
+        JubFrame curjubler = isEmptyCanvas() ? this : new JubFrame();
         curjubler.setVisible(true);
 
         curjubler.setUnsaved(true);
@@ -1689,8 +1694,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         curjubler.getMediaFile().setNewVideoFile(video);
         curjubler.enableSaveControls();
         curjubler.showInfo();
-        StaticJubler.updateRecents();
-    }//GEN-LAST:event_FromVideoNFMActionPerformed
+        StaticJubler.addRecentFile(video);
+    }
 
     private static File stripExtension(File f) {
         String name = f.getName();
@@ -1698,6 +1703,22 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         if (dot <= 0)
             return f;
         return new File(f.getParentFile(), name.substring(0, dot));
+    }
+
+    /** True when the document has no real subtitle content: empty, or a single empty placeholder line. */
+    public boolean isEmptyContent() {
+        return subs == null || subs.isEmpty()
+                || (subs.size() == 1 && subs.elementAt(0).getText().trim().isEmpty());
+    }
+
+    /**
+     * True when this window holds nothing worth keeping — no subtitle content AND no video attached.
+     * Such a blank canvas is reused in place rather than spawning yet another empty window; once a
+     * video has been picked, the canvas is kept and a new window opens.
+     */
+    private boolean isEmptyCanvas() {
+        boolean noVideo = getMediaFile() == null || getMediaFile().getVideoFile() == null;
+        return isEmptyContent() && noVideo;
     }
 
     private void UndoEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoEMActionPerformed

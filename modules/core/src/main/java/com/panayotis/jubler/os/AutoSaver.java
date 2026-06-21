@@ -40,10 +40,11 @@ public class AutoSaver {
             for (File current : dir.listFiles(new AutoSubFileFilter()))
                 current.renameTo(new File(olds, current.getName()));
 
-            /* Autosave unsaved files */
+            /* Autosave unsaved files that actually hold content (skip empty/placeholder canvases, so
+               nothing empty gets restored after a crash) */
             Subtitles subs;
             for (JubFrame j : JubFrame.windows)
-                if (j.isUnsaved()) {
+                if (j.isUnsaved() && !j.isEmptyContent()) {
                     subs = j.getSubtitles();
                     String fname = AUTOSAVEPREFIX
                             + String.format("%04x", rnd.nextInt() & 0xffff)
