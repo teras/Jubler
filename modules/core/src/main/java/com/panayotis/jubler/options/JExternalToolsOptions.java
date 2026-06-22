@@ -13,10 +13,12 @@ import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.tools.ToolsManager;
 import com.panayotis.jubler.tools.externals.Recipe;
 import com.panayotis.jubler.tools.externals.RecipeCatalog;
+import com.panayotis.jubler.tools.externals.RecipeResolver;
 import com.panayotis.jubler.tools.externals.RecipeSecrets;
 import com.panayotis.jubler.tools.externals.Recipes;
 import com.panayotis.jubler.tools.externals.gui.JRecipeEditor;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -29,6 +31,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -59,6 +63,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         setLayout(new BorderLayout(0, 6));
 
         recipeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        recipeList.setCellRenderer(new AvailabilityRenderer());
         recipeList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -131,6 +136,28 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         b.setToolTipText(tooltip);
         b.setMargin(new Insets(4, 8, 4, 8));
         return b;
+    }
+
+    /**
+     * Paints recipes whose tool cannot be found in red, with a ⚠ note naming the missing
+     * executable, so the user sees at a glance which recipes can't run. The check is a cheap
+     * filesystem lookup ({@link RecipeResolver#isAvailable}), fine to run per row.
+     */
+    private static class AvailabilityRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (value instanceof Recipe) {
+                Recipe r = (Recipe) value;
+                if (!RecipeResolver.isAvailable(r)) {
+                    setText(r.getName() + "   ⚠");
+                    if (!isSelected)
+                        setForeground(Color.RED);
+                }
+            }
+            return this;
+        }
     }
 
     /* ===================== actions ===================== */

@@ -45,8 +45,9 @@ public class Recipe {
     private String url;              // optional homepage/help link, offered when browsing the catalog
     private String module;          // null => external command; non-null => in-process module (read-only)
     private String path;            // executable: bare name (PATH lookup) or absolute path
-    private String command;         // template with %x %i %j %a %v %o and %<key> params
+    private String command;         // template with %x %i %a %v %w %o and %<key> params
     private SubFormat format;       // wire format for %i/%j/%o
+    private boolean outputFolder;   // false: %o is the exact output file; true: %o is a directory the tool writes its own-named file into (e.g. whisper --output_dir)
     private OutputMode outputMode;
     private final List<RecipeParam> params = new ArrayList<>();
 
@@ -62,6 +63,7 @@ public class Recipe {
         this.path = "";
         this.command = "%x --input %i --output %o";
         this.format = null;
+        this.outputFolder = false;
         this.outputMode = OutputMode.REPLACE;
     }
 
@@ -133,6 +135,14 @@ public class Recipe {
         this.format = format;
     }
 
+    public boolean isOutputFolder() {
+        return outputFolder;
+    }
+
+    public void setOutputFolder(boolean outputFolder) {
+        this.outputFolder = outputFolder;
+    }
+
     public OutputMode getOutputMode() {
         return outputMode;
     }
@@ -163,6 +173,7 @@ public class Recipe {
         this.path = clone.path;
         this.command = clone.command;
         this.format = clone.format;
+        this.outputFolder = clone.outputFolder;
         this.outputMode = clone.outputMode;
         this.params.clear();
         this.params.addAll(clone.params);
@@ -199,6 +210,8 @@ public class Recipe {
         o.add("path", getPath());
         o.add("command", getCommand());
         o.add("format", getFormat() == null ? "" : getFormat().getName());
+        if (outputFolder)
+            o.add("outputFolder", true);
         o.add("output", getOutputMode().name());
         JsonArray arr = Json.array();
         for (RecipeParam p : params)
@@ -224,6 +237,7 @@ public class Recipe {
             if (fmt != null)
                 r.setFormat(fmt);
         }
+        r.setOutputFolder(o.getBoolean("outputFolder", false));
         r.setOutputMode(OutputMode.fromName(o.getString("output", "REPLACE"), OutputMode.REPLACE));
         JsonValue arr = o.get("params");
         if (arr != null && arr.isArray())

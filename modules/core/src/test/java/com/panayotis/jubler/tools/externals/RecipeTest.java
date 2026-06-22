@@ -42,6 +42,7 @@ public class RecipeTest {
         assertEquals("Transcribe", back.getName());
         assertEquals("whisper-cli", back.getPath());
         assertEquals(OutputMode.REPLACE, back.getOutputMode());
+        assertFalse(back.isOutputFolder());   // default: %o is an exact file
         assertEquals(2, back.getParams().size());
         RecipeParam bm = back.getParams().get(0);
         assertEquals("model", bm.getKey());
@@ -65,6 +66,16 @@ public class RecipeTest {
         Recipe shared = Recipe.fromJsonString(r.toJsonString(true));
         assertEquals(1, shared.getParams().size());
         assertEquals("", shared.getParams().get(0).getDefaultValue());
+    }
+
+    @Test
+    void outputFolderRoundTrip() {
+        Recipe r = new Recipe("whisper");
+        r.setOutputFolder(true);
+        Recipe back = Recipe.fromJsonString(r.toJsonString(false));
+        assertTrue(back.isOutputFolder());
+        // also survives a share export (it leaks nothing sensitive)
+        assertTrue(Recipe.fromJsonString(r.toJsonString(true)).isOutputFolder());
     }
 
     @Test
@@ -105,7 +116,7 @@ public class RecipeTest {
         values.put("lang", "");                   // empty value -> kept as an empty argument, not dropped
 
         List<String> cmd = RecipeExecutor.buildCommandLine(r, values,
-                r.getPath(), "/tmp/in.srt", "/tmp/au dio.wav", null, "/tmp/out.srt");
+                r.getPath(), "/tmp/in.srt", "/tmp/au dio.wav", null, null, "/tmp/out.srt");
 
         // The template fixes the slots: %x and %a stay whole despite their spaces; %model -> its value;
         // %lang empty -> an empty argument in its slot (the "-l" flag stays put).
@@ -132,13 +143,37 @@ public class RecipeTest {
         values.put("track", "3");
 
         List<String> cmd = RecipeExecutor.buildCommandLine(r, values,
-                "mkvextract", "/tmp/in.srt", null, "/movies/a film.mkv", "/tmp/out.srt");
+                "mkvextract", "/tmp/in.srt", null, "/movies/a film.mkv", null, "/tmp/out.srt");
 
         assertEquals(Arrays.asList(
                 "mkvextract",
                 "/movies/a film.mkv",
                 "tracks",
                 "3:/tmp/out.srt"), cmd);
+    }
+
+    @Test
+    void wavPlaceholderStaysOneArgument() {
+        // whisper.cpp-style: %w is the decoded-audio WAV (the libvlc cache). Like %a, its own spaces
+        // never split it; %o in folder mode is a directory the tool writes its own-named file into.
+        Recipe r = new Recipe("wc");
+        r.setPath("whisper-cli");
+        r.setCommand("%x -m %model -f %w -osrt -of %o/subs");
+
+        RecipeParam model = new RecipeParam("model", RecipeParam.Type.PATH);
+        r.addParam(model);
+
+        Map<String, String> values = new HashMap<>();
+        values.put("model", "/models/ggml-small.bin");
+
+        List<String> cmd = RecipeExecutor.buildCommandLine(r, values,
+                "whisper-cli", "/tmp/in.srt", null, null, "/cache/A Movie.jacache", "/tmp/out");
+
+        assertEquals(Arrays.asList(
+                "whisper-cli",
+                "-m", "/models/ggml-small.bin",
+                "-f", "/cache/A Movie.jacache",
+                "-osrt", "-of", "/tmp/out/subs"), cmd);
     }
 
     @Test
@@ -153,12 +188,18 @@ public class RecipeTest {
         Map<String, String> on = new HashMap<>();
         on.put("opt", "--foo --bar");             // author text -> splits into two flags
         assertEquals(Arrays.asList("tool", "--foo", "--bar", "-o", "/tmp/out.srt"),
-                RecipeExecutor.buildCommandLine(r, on, "tool", "/tmp/in.srt", null, null, "/tmp/out.srt"));
+                RecipeExecutor.buildCommandLine(r, on, "tool", "/tmp/in.srt", null, null, null, "/tmp/out.srt"));
 
         Map<String, String> off = new HashMap<>();
         off.put("opt", "");                       // unchecked -> contributes nothing
         assertEquals(Arrays.asList("tool", "-o", "/tmp/out.srt"),
-                RecipeExecutor.buildCommandLine(r, off, "tool", "/tmp/in.srt", null, null, "/tmp/out.srt"));
+                RecipeExecutor.buildCommandLine(r, off, "tool", "/tmp/in.srt", null, null, null, "/tmp/out.srt"));
+
+        // Author text is tokenized like the template: quotes group a spaced value into one argument.
+        Map<String, String> quoted = new HashMap<>();
+        quoted.put("opt", "--name \"John Doe\" --flag");
+        assertEquals(Arrays.asList("tool", "--name", "John Doe", "--flag", "-o", "/tmp/out.srt"),
+                RecipeExecutor.buildCommandLine(r, quoted, "tool", "/tmp/in.srt", null, null, null, "/tmp/out.srt"));
     }
 
     @Test

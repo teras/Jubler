@@ -20,6 +20,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -71,6 +72,7 @@ public class JRecipeEditor extends JDialog {
     private final JButton browseB = new JButton(__("Browse"));
     private final JLabel statusL = new JLabel(" ");
     private final JTextField commandT = new JTextField(FIELD_COLUMNS);
+    private final JCheckBox folderC = new JCheckBox(__("%o is a folder the tool writes into"));
     private final JComboBox<SubFormat> formatC = new JComboBox<>();
     private final JComboBox<OutputMode> resultC = new JComboBox<>(OutputMode.values());
 
@@ -142,8 +144,14 @@ public class JRecipeEditor extends JDialog {
             addRow(p, row++, __("Command:"), commandT, new InfoButton(__("Command"),
                     __("The command template. Placeholders: {0}.",
                             "<br>%x = " + __("executable") + "<br>%i = " + __("input")
-                                    + "<br>%a = " + __("audio") + "<br>%v = " + __("video") + "<br>%o = " + __("output")
+                                    + "<br>%a = " + __("audio") + "<br>%v = " + __("video")
+                                    + "<br>%w = " + __("audio as a WAV (needs the audio preview)")
+                                    + "<br>%o = " + __("output")
                                     + "<br>%&lt;key&gt; = " + __("each parameter"))));
+
+            addRow(p, row++, "", folderC, new InfoButton(__("Output folder"),
+                    __("Tick this when the tool cannot write to an exact output file but instead writes its own-named file into a folder you give it (e.g. whisper --output_dir). Jubler then passes %o as a fresh empty folder and loads whatever subtitle the tool leaves there.")));
+            folderC.addActionListener(e -> recipe.setOutputFolder(folderC.isSelected()));
         }
 
         addRow(p, row++, __("Wire format:"), formatC, new InfoButton(__("Wire format"),
@@ -324,6 +332,7 @@ public class JRecipeEditor extends JDialog {
         urlT.setText(recipe.getUrl());
         pathT.setText(recipe.getPath());
         commandT.setText(recipe.getCommand());
+        folderC.setSelected(recipe.isOutputFolder());
         // setText parks the caret at the end, scrolling long values out of view; show the start.
         for (JTextField f : new JTextField[]{nameT, urlT, pathT, commandT})
             f.setCaretPosition(0);

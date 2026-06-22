@@ -13,6 +13,7 @@ import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.tools.externals.Recipe;
 import com.panayotis.jubler.tools.externals.RecipeParam;
 import com.panayotis.jubler.tools.externals.RecipeSecrets;
+import com.panayotis.jubler.tools.externals.RecipeValues;
 import com.panayotis.jubler.time.gui.JTimeFullSelection;
 
 import javax.swing.BorderFactory;
@@ -60,6 +61,8 @@ public class JRecipeRunDialog extends JDialog {
     /* Subtitle streams of the attached video, probed off the EDT before this dialog was built (may be empty). */
     private final List<SubtitleStreamInfo> videoStreams;
     private final Map<RecipeParam, JComponent> widgets = new LinkedHashMap<>();
+    /* Last values the user entered for this recipe, to pre-fill the widgets (cache > default > empty). */
+    private final Map<String, String> cached;
     /* Range/colour/style/selection picker — present only for PATCH recipes (REPLACE works on all). */
     private final JTimeFullSelection selectionArea;
     /* "Replace this file" — present only for REPLACE recipes (unchecked = open a new window). */
@@ -75,6 +78,7 @@ public class JRecipeRunDialog extends JDialog {
         this.recipe = recipe;
         this.jubler = jubler;
         this.videoStreams = videoStreams == null ? java.util.Collections.emptyList() : videoStreams;
+        this.cached = RecipeValues.get(recipe.getName());
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         JPanel form = new JPanel(new GridBagLayout());
@@ -206,7 +210,46 @@ public class JRecipeRunDialog extends JDialog {
 
     public boolean showRun() {
         setVisible(true);
+        if (accepted)
+            RecipeValues.put(recipe.getName(), cacheableValues());
         return accepted;
+    }
+
+    /** Pre-fill value for a param: the user's last value if remembered, else the author default. */
+    private String initial(RecipeParam p) {
+        String c = cached.get(p.getKey());
+        return c != null ? c : p.getDefaultValue();
+    }
+
+    /** Pre-fill state for a checkbox: remembered (non-empty = checked) else the author default. */
+    private boolean initialChecked(RecipeParam p) {
+        String c = cached.get(p.getKey());
+        return c != null ? !c.isEmpty() : Boolean.parseBoolean(p.getDefaultValue());
+    }
+
+    /**
+     * The values worth remembering for next time: plain user settings only. Secrets are never
+     * stored (they live encrypted in the recipe); WINDOW and VIDEO_SUBTITLE are tied to the
+     * current context, so remembering them across runs/videos would be misleading.
+     */
+    private Map<String, String> cacheableValues() {
+        Map<String, String> out = new LinkedHashMap<>();
+        for (RecipeParam p : recipe.getParams()) {
+            switch (p.getType()) {
+                case TEXTBOX:
+                case COMBOBOX:
+                case PATH:
+                case LANGUAGE:
+                case CHECKBOX:
+                    JComponent w = widgets.get(p);
+                    if (w != null)
+                        out.put(p.getKey(), readWidget(p, w));
+                    break;
+                default:
+                    break;   // SECRET, WINDOW, VIDEO_SUBTITLE are not remembered
+            }
+        }
+        return out;
     }
 
     /* ===================== results ===================== */
@@ -252,17 +295,17 @@ public class JRecipeRunDialog extends JDialog {
         switch (p.getType()) {
             case COMBOBOX: {
                 JComboBox<String> c = new JComboBox<>(p.getChoiceList());
-                c.setSelectedItem(p.getDefaultValue());
+                c.setSelectedItem(initial(p));
                 return c;
             }
             case CHECKBOX: {
                 JCheckBox c = new JCheckBox();
-                c.setSelected(Boolean.parseBoolean(p.getDefaultValue()));
+                c.setSelected(initialChecked(p));
                 return c;
             }
             case PATH: {
                 JPanel line = new JPanel(new BorderLayout(4, 0));
-                JTextField t = new JTextField(p.getDefaultValue(), 20);
+                JTextField t = new JTextField(initial(p), 20);
                 JButton b = new JButton(__("Browse"));
                 b.addActionListener(e -> {
                     JFileChooser fc = new JFileChooser();
@@ -317,13 +360,14 @@ public class JRecipeRunDialog extends JDialog {
                         return this;
                     }
                 });
-                if (!p.getDefaultValue().isEmpty())
-                    c.setSelectedItem(p.getDefaultValue());
+                String li = initial(p);
+                if (!li.isEmpty())
+                    c.setSelectedItem(li);
                 return c;
             }
             case TEXTBOX:
             default:
-                return new JTextField(p.getDefaultValue(), 20);
+                return new JTextField(initial(p), 20);
         }
     }
 

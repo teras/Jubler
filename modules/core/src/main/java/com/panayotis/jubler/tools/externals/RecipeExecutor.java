@@ -105,11 +105,26 @@ public final class RecipeExecutor {
                 return;
             }
 
-            /* ---- %o : output file (or in-place on %i) ---- */
+            /* ---- %o : the exact output file, or (folder mode) a directory the tool writes its own-named file into ---- */
             boolean hasOutput = command.contains("%o");
-            SubFile outputFile = hasOutput ? new SubFile(new File(tempDir, "output." + ext), SubFile.EXTENSION_GIVEN) : inputFile;
-            outputFile.setFormat(format);
-            outputFile.setEncoding("UTF-8");
+            boolean folderMode = hasOutput && recipe.isOutputFolder();
+            File outDir = null;
+            SubFile outputFile;
+            String oPath;
+            if (!hasOutput) {
+                outputFile = inputFile;                       // tool edits %i in place
+                oPath = null;
+            } else if (folderMode) {
+                outDir = new File(tempDir, "out");
+                outDir.mkdirs();
+                outputFile = null;                            // resolved after the run (the tool names the file)
+                oPath = outDir.getAbsolutePath();
+            } else {
+                outputFile = new SubFile(new File(tempDir, "output." + ext), SubFile.EXTENSION_GIVEN);
+                outputFile.setFormat(format);
+                outputFile.setEncoding("UTF-8");
+                oPath = outputFile.getSaveFile().getAbsolutePath();
+            }
 
             /* ---- WINDOW params: serialize each selected window's content to temp (wire format) ---- */
             Map<String, String> values = new LinkedHashMap<>();
@@ -152,12 +167,26 @@ public final class RecipeExecutor {
                 vPath = media.getVideoFile().getPath();
             }
 
+            /* ---- %w : the decoded audio as a WAV (the libvlc waveform cache), for tools that cannot
+                   demux a video container themselves (e.g. whisper.cpp). It is the SAME cache the audio
+                   preview builds; we never transcode here. If it is not there yet, ask the user to make
+                   the preview first rather than silently doing a slow decode mid-run. ---- */
+            String wPath = null;
+            if (command.contains("%w")) {
+                File wav = media == null ? null : media.getCacheFile();
+                if (!isReadableWav(wav)) {
+                    monitor.finished(false, __("This recipe needs the audio preview, which has not been generated yet. Open the audio preview for this video first, then run the recipe again."));
+                    return;
+                }
+                wPath = wav.getAbsolutePath();
+            }
+
             /* ---- build & run ---- */
             List<String> commandLine = buildCommandLine(recipe, values,
                     exe.getAbsolutePath(),
                     inputFile.getSaveFile().getAbsolutePath(),
-                    aPath, vPath,
-                    outputFile.getSaveFile().getAbsolutePath());
+                    aPath, vPath, wPath,
+                    oPath);
             if (commandLine.isEmpty()) {
                 monitor.finished(false, __("Empty command."));
                 return;
@@ -181,6 +210,18 @@ public final class RecipeExecutor {
             // GUI launches (notably a macOS .app) inherit a minimal PATH; give the child the augmented one
             // so the tool itself and any sub-tools it calls (e.g. ffmpeg) resolve.
             builder.environment().put("PATH", RecipeResolver.augmentedPath());
+            // Python block-buffers stdout when it is a pipe (not a TTY), so progress would only appear at the
+            // end in big bursts. Force unbuffered output so each line streams live to the log (e.g. whisper
+            // segments, ffsubsync progress). Harmless to non-Python tools.
+            //
+            // !!! DESIGN DEBT — pragmatic stopgap, NOT the right long-term design. !!!
+            // This bakes a Python-specific assumption into a deliberately TOOL-AGNOSTIC executor. Do NOT pile up
+            // more per-tool env hacks here. When the next buffering/env need arises, fix it properly instead:
+            //   - a per-recipe `env` map (data-driven: the recipe JSON declares its own env vars, applied here
+            //     generically — keeps the executor free of any tool knowledge), or
+            //   - a PTY so any tool line-buffers naturally and tqdm `\r` progress bars become visible too
+            //     (Java has no native pty -> needs JNA/helper, with cross-platform cost).
+            builder.environment().put("PYTHONUNBUFFERED", "1");
             Process process = builder.start();
             monitor.setProcess(process);
 
@@ -204,6 +245,17 @@ public final class RecipeExecutor {
             if (exit != 0) {
                 monitor.finished(false, __("Tool failed (exit code {0}).", exit));
                 return;
+            }
+
+            /* ---- folder mode: pick up the subtitle file the tool named and wrote ---- */
+            if (folderMode) {
+                File produced = pickProducedSubtitle(outDir, ext);
+                if (produced == null) {
+                    monitor.finished(false, __("The tool produced no subtitle file in its output folder."));
+                    return;
+                }
+                outputFile = new SubFile(produced, SubFile.EXTENSION_GIVEN);
+                outputFile.setEncoding("UTF-8");
             }
 
             /* ---- apply-back (on EDT) ---- */
@@ -288,7 +340,7 @@ public final class RecipeExecutor {
         return ordered;
     }
 
-    /** {@code %} followed by a placeholder name: a system letter (x i a v o) or a param key. */
+    /** {@code %} followed by a placeholder name: a system letter (x i a v w o) or a param key. */
     private static final Pattern PLACEHOLDER = Pattern.compile("%([A-Za-z][A-Za-z0-9]*)");
 
     /**
@@ -297,11 +349,11 @@ public final class RecipeExecutor {
      * argument), before any value exists. A token that is exactly {@code %<key>} for a defined
      * param expands through {@link #appendParam} (a checkbox emits its words as separate flags;
      * every other type emits its value as a single argument, kept even when empty). Any other
-     * token has its placeholders — system ({@code %x %i %a %v %o}) and embedded {@code %<key>}
+     * token has its placeholders — system ({@code %x %i %a %v %w %o}) and embedded {@code %<key>}
      * params — substituted in place and stays a single argument.
      */
     static List<String> buildCommandLine(Recipe recipe, Map<String, String> paramValues,
-                                         String x, String i, String a, String v, String o) {
+                                         String x, String i, String a, String v, String w, String o) {
         List<String> out = new ArrayList<>();
         for (String token : tokenize(recipe.getCommand())) {
             if (token.isEmpty())
@@ -313,37 +365,36 @@ public final class RecipeExecutor {
                     continue;
                 }
             }
-            out.add(substitute(token, recipe, paramValues, x, i, a, v, o));
+            out.add(substitute(token, recipe, paramValues, x, i, a, v, w, o));
         }
         return out;
     }
 
     /**
-     * Append a standalone {@code %<key>} param's contribution. A checkbox is author text: its
-     * value splits on whitespace into separate flags, and contributes nothing when unchecked.
-     * Every other type is a user value: exactly one argument, kept even when empty — the template
-     * already decided this slot exists, so an empty value yields an empty argument, never a vanished
-     * one (a value's own spaces never create extra arguments).
+     * Append a standalone {@code %<key>} param's contribution. One rule governs both kinds of text:
+     * author-written command text is tokenized, user-supplied runtime values are not. A checkbox value
+     * is author text (fixed flags), so it goes through the very same quote-aware {@link #tokenize} as the
+     * command template — whitespace splits arguments, quotes group, and an unchecked box contributes
+     * nothing. Every other type is an opaque user value: exactly one argument, kept even when empty —
+     * the template already decided this slot exists, so an empty value yields an empty argument, never a
+     * vanished one (and a value's own spaces never create extra arguments).
      */
     private static void appendParam(List<String> out, RecipeParam param, String value) {
         if (param.getType() == RecipeParam.Type.CHECKBOX) {
-            if (value == null || value.isEmpty())
-                return;
-            for (String piece : value.trim().split("\\s+"))
-                if (!piece.isEmpty())
-                    out.add(piece);
+            if (value != null && !value.isEmpty())
+                out.addAll(tokenize(value));
             return;
         }
         out.add(value == null ? "" : value);
     }
 
     /**
-     * Replace every placeholder embedded in a token: a system letter ({@code %x %i %a %v %o}) or a
+     * Replace every placeholder embedded in a token: a system letter ({@code %x %i %a %v %w %o}) or a
      * defined param key ({@code %<key>}). An unknown {@code %name} is left as-is. The result is a
      * single argument; an empty replacement collapses to empty text, it does not split the token.
      */
     private static String substitute(String token, Recipe recipe, Map<String, String> values,
-                                     String x, String i, String a, String v, String o) {
+                                     String x, String i, String a, String v, String w, String o) {
         Matcher m = PLACEHOLDER.matcher(token);
         StringBuffer sb = new StringBuffer();
         while (m.find()) {
@@ -355,6 +406,7 @@ public final class RecipeExecutor {
                     case 'i': rep = nz(i); break;
                     case 'a': rep = nz(a); break;
                     case 'v': rep = nz(v); break;
+                    case 'w': rep = nz(w); break;
                     case 'o': rep = nz(o); break;
                     default: rep = null;
                 }
@@ -403,6 +455,48 @@ public final class RecipeExecutor {
 
     private static String nz(String s) {
         return s == null ? "" : s;
+    }
+
+    /** True if {@code f} is a present, non-trivial RIFF/WAVE file (the libvlc waveform cache is exactly that). */
+    private static boolean isReadableWav(File f) {
+        if (f == null || !f.isFile() || f.length() < 44)
+            return false;
+        try (java.io.InputStream in = new java.io.FileInputStream(f)) {
+            byte[] h = new byte[12];
+            if (in.read(h) < 12)
+                return false;
+            return h[0] == 'R' && h[1] == 'I' && h[2] == 'F' && h[3] == 'F'
+                    && h[8] == 'W' && h[9] == 'A' && h[10] == 'V' && h[11] == 'E';
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /** Subtitle file extensions we recognize when collecting a folder-mode tool's output. */
+    private static final Set<String> SUBTITLE_EXTS = new HashSet<>(java.util.Arrays.asList(
+            "srt", "ass", "ssa", "vtt", "sub", "ttml", "dfxp", "itt", "xml", "sbv", "stl", "smi"));
+
+    /**
+     * After a folder-mode run, return the subtitle file the tool produced in {@code dir}.
+     * Prefers the recipe's wire-format extension, then any recognized subtitle file; null if none.
+     */
+    private static File pickProducedSubtitle(File dir, String preferredExt) {
+        File[] files = dir == null ? null : dir.listFiles(File::isFile);
+        if (files == null || files.length == 0)
+            return null;
+        String pref = preferredExt == null ? "" : preferredExt.toLowerCase();
+        for (File f : files)
+            if (extension(f.getName()).equals(pref))
+                return f;
+        for (File f : files)
+            if (SUBTITLE_EXTS.contains(extension(f.getName())))
+                return f;
+        return null;
+    }
+
+    private static String extension(String name) {
+        int dot = name.lastIndexOf('.');
+        return dot < 0 ? "" : name.substring(dot + 1).toLowerCase();
     }
 
     private static RecipeParam findParam(Recipe recipe, String key) {
