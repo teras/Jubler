@@ -1,2 +1,0 @@
-# Jubler announcements: text<TAB>icon-url<TAB>redirect-url  (icon must be an SVG)
-VLC & Apple Silicon support has arrived — and still needs you	https://raw.githubusercontent.com/teras/jubler/master/resources/logo/others/vlc.svg	https://jubler.org/supportvlc.html

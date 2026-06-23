@@ -607,8 +607,8 @@ jobs:
     - name: Set prerelease flag
       id: prerelease
       run: |
-        echo "prerelease=false" >> $GITHUB_OUTPUT
-        echo "Marking as final release: ${{ needs.prepare.outputs.version }}"
+        echo "prerelease=true" >> $GITHUB_OUTPUT
+        echo "Marking as pre-release: ${{ needs.prepare.outputs.version }}"
 
     - name: Publish release
       uses: ncipollo/release-action@v1
@@ -619,7 +619,7 @@ jobs:
         prerelease: ${{ steps.prerelease.outputs.prerelease }}
         allowUpdates: true
         removeArtifacts: true
-        makeLatest: true
+        makeLatest: false
         artifacts: release-artifacts/*
         artifactErrorsFailBuild: false
         bodyFile: .github/release-template.md

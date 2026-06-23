@@ -59,7 +59,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
     private final static Color INFOC = Options.getThemeVariation().isDark() ? Color.WHITE : Color.BLACK;
     private final static Color INFOC_E = new Color(255, 84, 53);
 
-    private final static String ANNOUNCE_URL = "https://raw.githubusercontent.com/teras/jubler/master/announce.txt";
+    private final static String ANNOUNCE_URL = "https://jubler.org/announce.txt";
 
     private static final String TOOLTIP = "<b>" + __("How to navigate with keyboard") + "</b><br/>"
             + "- " + __("Change focus from Text area to Editor with {0}+D (default binding)", SystemDependent.getKeyMods(KeyEvent.META_DOWN_MASK, true).trim()) + "<br/>"

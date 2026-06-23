@@ -48,7 +48,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  * Preferences tab for external-tool recipes: a list with Add / Remove / Edit and the
- * sharing actions Fetch (from GitHub) / Load / Save (single recipe ↔ file). Each recipe
+ * sharing actions Fetch (online) / Load / Save (single recipe ↔ file). Each recipe
  * is edited in a single-window {@link JRecipeEditor}. The dialog-level Export / Import /
  * Reset (in {@code JPreferences}) operate on all preferences and are untouched here.
  */
@@ -107,13 +107,13 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
 
         JPanel share = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton pinB = new JButton(__("Change PIN…"));
-        JButton fetchB = new JButton(__("Fetch from GitHub…"));
+        JButton fetchB = new JButton(__("Fetch online…"));
         JButton loadB = new JButton(__("Load…"));
         JButton saveB = new JButton(__("Save…"));
         pinB.setToolTipText(__("Change the PIN that protects secret values"));
-        fetchB.setToolTipText(__("Download shared recipes from the Jubler GitHub"));
+        fetchB.setToolTipText(__("Download the latest shared recipes"));
         pinB.addActionListener(e -> RecipeSecrets.changePin(this));
-        fetchB.addActionListener(e -> fetchFromGitHub());
+        fetchB.addActionListener(e -> fetchShared());
         loadB.addActionListener(e -> loadFromFile());
         saveB.addActionListener(e -> saveToFile());
         share.add(pinB);
@@ -253,7 +253,7 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         }
     }
 
-    private void fetchFromGitHub() {
+    private void fetchShared() {
         Window owner = SwingUtilities.getWindowAncestor(this);
         List<Recipe> cached = RecipeCatalog.cached();
         if (cached != null && !cached.isEmpty()) {

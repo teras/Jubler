@@ -5,7 +5,9 @@
 - Replaced the aging MPlayer and ffdecode/ffmpeg components with VLC (libvlc) for video preview, frame preview, audio waveform, media metadata and sample-exact snippet playback
 - Native Apple Silicon (arm64) support — no Rosetta required, future-proof against Apple dropping Rosetta 2
 - Modern codec and container support across Windows, macOS and Linux
+- External tool integration: run command-line tools — AI transcription (whisper / faster-whisper / whisper.cpp), subtitle sync and more — directly on your subtitles, audio or video, via configurable recipes
 - Numerous stability fixes across Windows, macOS and Linux
+- Create a new subtitle project directly from a video file
 
 #### 9.0.1
 

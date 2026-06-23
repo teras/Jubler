@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Fetches a catalog of shared recipes (a JSON array) from the Jubler GitHub, using the
+ * Fetches a catalog of shared recipes (a JSON array) from jubler.org, using the
  * same stale-while-revalidate pattern as {@code Announcement}: {@link #cached()} reads
  * the on-disk copy instantly; {@link #fetch()} refreshes it from the network (off the
  * EDT) and falls back to the cache when offline. This is the ONLY thing we ever
@@ -32,7 +32,7 @@ public final class RecipeCatalog {
 
     private static final int TIMEOUT = 5000;
     private static final String CATALOG_URL =
-            "https://raw.githubusercontent.com/teras/jubler/master/recipes.json";
+            "https://jubler.org/recipes.json";
     private static final File CACHE_FILE =
             new File(SystemDependent.getAppSupportDirPath(), "recipes" + File.separator + "catalog.json");
 
