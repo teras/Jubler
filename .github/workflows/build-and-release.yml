@@ -1,6 +1,9 @@
 name: Build and Release
 
 on:
+  push:
+    tags:
+      - 'v[0-9]*'
   workflow_dispatch:
     inputs:
       version:
@@ -604,9 +607,8 @@ jobs:
     - name: Set prerelease flag
       id: prerelease
       run: |
-        # Always mark as prerelease (alpha)
-        echo "prerelease=true" >> $GITHUB_OUTPUT
-        echo "Marking as prerelease (alpha): ${{ needs.prepare.outputs.version }}"
+        echo "prerelease=false" >> $GITHUB_OUTPUT
+        echo "Marking as final release: ${{ needs.prepare.outputs.version }}"
 
     - name: Publish release
       uses: ncipollo/release-action@v1
@@ -617,7 +619,7 @@ jobs:
         prerelease: ${{ steps.prerelease.outputs.prerelease }}
         allowUpdates: true
         removeArtifacts: true
-        makeLatest: false
+        makeLatest: true
         artifacts: release-artifacts/*
         artifactErrorsFailBuild: false
         bodyFile: .github/release-template.md
