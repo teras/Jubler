@@ -858,6 +858,7 @@ public final class JSubEditor extends JPanel implements StyleChangeListener, Doc
 
         StyleP.add(jPanel8, java.awt.BorderLayout.CENTER);
 
+        jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 20));
         jPanel6.setOpaque(false);
         jPanel6.setLayout(new java.awt.BorderLayout());
 
