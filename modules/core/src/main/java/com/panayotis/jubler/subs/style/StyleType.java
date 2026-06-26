@@ -17,7 +17,7 @@ import static com.panayotis.jubler.subs.loader.format.StyledFormat.*;
 public enum StyleType {
 
     FONTNAME(FORMAT_STRING, "Arial"),
-    FONTSIZE(FORMAT_INTEGRAL, Integer.valueOf(24)),
+    FONTSIZE(FORMAT_INTEGRAL, Integer.valueOf(24)),    // format-agnostic "core" size; ASS/SSA scale it to PlayResY on save/load
     BOLD(FORMAT_FLAG, Boolean.valueOf(false)),
     ITALIC(FORMAT_FLAG, Boolean.valueOf(false)),
     UNDERLINE(FORMAT_FLAG, Boolean.valueOf(false)),

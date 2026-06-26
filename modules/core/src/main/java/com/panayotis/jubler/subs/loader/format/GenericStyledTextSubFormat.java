@@ -53,7 +53,8 @@ public abstract class GenericStyledTextSubFormat extends AbstractTextSubFormat {
     /* Get the dictionary of the supported styles */
     protected abstract Collection<StyledFormat> getStylesDictionary();
 
-    /* Since ASS/SSA uses OS/2 font metrics, we need to recalculate the font size with a factor */
+    /* Bridges the model's format-agnostic "core" font size and a format's own units.
+       1 means write/read verbatim; ASS/SSA override it with a resolution factor. */
     protected float getFontFactor() {
         return 1;
     }

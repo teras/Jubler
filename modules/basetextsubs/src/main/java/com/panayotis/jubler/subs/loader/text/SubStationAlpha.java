@@ -29,9 +29,16 @@ import com.panayotis.jubler.subs.style.gui.AlphaColor;
 public class SubStationAlpha extends GenericStyledTextSubFormat {
 
     private static final Pattern pat, testpat;
-    private static final Pattern title, author, source, comments, styles, stylepattern;
+    private static final Pattern title, author, source, comments, styles, stylepattern, playresy;
     private static final ArrayList<StyledFormat> styles_dict;
     protected static final HashMap<String, Direction> ssa_directions;
+
+    /** Reference height the format-agnostic "core" font size is defined against (core/REF = height ratio, i.e. 24 ≙ height/16). */
+    private static final int FONT_REF = 384;
+    /** PlayResY assumed when a file declares none - libass' default, so legacy SSA keeps its on-screen proportion. */
+    private static final int FONT_DEFAULT_RES = 288;
+    /** PlayResY/FONT_REF for the file currently being read or written; drives {@link #getFontFactor()}. */
+    private float fontFactor = 1f;
 
     /*
      * Creates a new instance of SubFormat
@@ -44,6 +51,7 @@ public class SubStationAlpha extends GenericStyledTextSubFormat {
         testpat = Pattern.compile("(?i)(?s)\\[Script Info\\].*?\\[V4 Styles\\].*?"
                 + "Dialogue:.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?,.*?" + nl);
 
+        playresy = Pattern.compile("(?i)PlayResY:" + sp + "(\\d+)");
         title = Pattern.compile("(?i)Title:" + sp + "(.*?)" + nl);
         author = Pattern.compile("(?i)Original Script:" + sp + "(.*?)" + nl);
         source = Pattern.compile("(?i)Update Details:" + sp + "(.*?)" + nl);
@@ -112,7 +120,24 @@ public class SubStationAlpha extends GenericStyledTextSubFormat {
 
     @Override
     protected float getFontFactor() {
-        return 1.3f;
+        // ASS/SSA font sizes live in PlayRes units (resolution-relative). The model
+        // keeps a format-agnostic "core" size; this factor (PlayResY/FONT_REF, set on
+        // load from the parsed header and on save from the video) bridges the two, for
+        // both style-level sizes and inline \fs overrides.
+        return fontFactor;
+    }
+
+    /** PlayResY declared in the [Script Info] header, or the libass default if absent. */
+    private int parsePlayResY(String input) {
+        Matcher m = playresy.matcher(input);
+        if (m.find())
+            try {
+                int y = Integer.parseInt(m.group(1).trim());
+                if (y > 0)
+                    return y;
+            } catch (NumberFormatException ignored) {
+            }
+        return FONT_DEFAULT_RES;
     }
 
     protected ArrayList<StyledFormat> getStylesDictionary() {
@@ -134,6 +159,7 @@ public class SubStationAlpha extends GenericStyledTextSubFormat {
     @Override
     protected String initLoader(String input) {
         input = super.initLoader(input);
+        fontFactor = parsePlayResY(input) / (float) FONT_REF;
         getStyles(input);
         updateAttributes(input, title, author, source, comments);
         return input;
@@ -347,10 +373,20 @@ public class SubStationAlpha extends GenericStyledTextSubFormat {
         header.append("\nScriptType: v4.00").append(getExtraVersion());
         header.append("\nCollisions: Normal\n");
 
+        int videoH = 0, videoW = 0;
         if (media != null && media.getVideoFile() != null) {
-            header.append("PlayResX: ").append(media.getVideoFile().getWidth());
-            header.append("\nPlayResY: ").append(media.getVideoFile().getHeight()).append('\n');
+            videoH = media.getVideoFile().getHeight();
+            videoW = media.getVideoFile().getWidth();
         }
+        // Always emit PlayResX/Y so the file is self-consistent: the style font sizes
+        // below are scaled to this height. With a video we use its real size; without
+        // one we fall back to the reference height (core sizes written verbatim) on a
+        // neutral 16:9 canvas.
+        int playResY = videoH > 0 ? videoH : FONT_REF;
+        int playResX = videoW > 0 ? videoW : Math.round(playResY * 16f / 9f);
+        fontFactor = playResY / (float) FONT_REF;
+        header.append("PlayResX: ").append(playResX);
+        header.append("\nPlayResY: ").append(playResY).append('\n');
 
         header.append("PlayDepth: 0\nTimer: 100,0000\n");
 
