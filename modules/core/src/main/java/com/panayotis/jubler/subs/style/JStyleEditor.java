@@ -65,7 +65,12 @@ public class JStyleEditor extends javax.swing.JDialog {
         BorderStyle.addItem(__("Outline"));
         BorderStyle.addItem(__("Opaque box"));
 
-        for (String name : SubStyle.FontNames)
+        // System fonts plus the common cross-platform names, so well-known fonts
+        // (Arial, Times New Roman, ...) are always selectable even when not installed.
+        java.util.TreeSet<String> fontset = new java.util.TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        fontset.addAll(java.util.Arrays.asList(SubStyle.FontNames));
+        fontset.addAll(java.util.Arrays.asList(WebSafeFonts.COMMON));
+        for (String name : fontset)
             FontName.addItem(name);
         for (Integer size : SubStyle.FontSizes)
             FontSize.addItem(size);
@@ -150,6 +155,16 @@ public class JStyleEditor extends javax.swing.JDialog {
         current.set(DIRECTION, jdir.getDirection());
     }
 
+    /** Add a font name to the picker if it is not already there (case-insensitive). */
+    private void ensureFontOffered(String name) {
+        if (name == null || name.isEmpty())
+            return;
+        for (int i = 0; i < FontName.getItemCount(); i++)
+            if (name.equalsIgnoreCase(FontName.getItemAt(i)))
+                return;
+        FontName.addItem(name);
+    }
+
     private void setValues() {
         ignore_values_change = true;
 
@@ -164,6 +179,15 @@ public class JStyleEditor extends javax.swing.JDialog {
             Delete.setEnabled(true);
             Save.setEnabled(false);
         }
+
+        // Make sure every font the document actually uses is offered (even if not
+        // installed here), so it is shown and selected instead of silently falling
+        // back to the first list entry - which would corrupt the style on save.
+        SubStyleList styleList = parent.getSubtitles().getStyleList();
+        if (styleList != null)
+            for (SubStyle s : styleList)
+                ensureFontOffered((String) s.get(FONTNAME));
+        ensureFontOffered((String) current.get(FONTNAME));
 
         FontName.getModel().setSelectedItem(current.get(FONTNAME));
         FontSize.getModel().setSelectedItem(current.get(FONTSIZE));
@@ -750,7 +774,7 @@ public class JStyleEditor extends javax.swing.JDialog {
         set.addAttribute(StyleConstants.Underline, current.get(UNDERLINE));
         set.addAttribute(StyleConstants.StrikeThrough, current.get(STRIKETHROUGH));
         set.addAttribute(StyleConstants.Foreground, current.get(PRIMARY));
-        set.addAttribute(StyleConstants.FontFamily, current.get(FONTNAME));
+        set.addAttribute(StyleConstants.FontFamily, WebSafeFonts.renderFamily((String) current.get(FONTNAME)));
         set.addAttribute(StyleConstants.FontSize, scale((int)current.get(FONTSIZE) ));
         TestText.setBackground((Color) current.get(SHADOW));
         TestText.getStyledDocument().setParagraphAttributes(0, 1, set, true);

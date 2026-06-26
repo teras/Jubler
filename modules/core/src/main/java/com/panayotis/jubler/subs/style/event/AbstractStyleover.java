@@ -14,6 +14,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.panayotis.jubler.subs.style.WebSafeFonts;
+
 import static com.panayotis.jubler.os.UIUtils.scale;
 
 public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entry> {
@@ -358,6 +360,7 @@ public abstract class AbstractStyleover extends ArrayList<AbstractStyleover.Entr
             doc.setParagraphAttributes(from, length, set, false);
         } else {
             if (type == StyleConstants.FontSize) value = scale((int) value);
+            if (type == StyleConstants.FontFamily) value = WebSafeFonts.renderFamily((String) value);
             set.addAttribute(type, value);
             doc.setCharacterAttributes(from, length, set, false);
         }
