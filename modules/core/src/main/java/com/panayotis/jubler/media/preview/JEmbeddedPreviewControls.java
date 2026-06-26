@@ -44,17 +44,20 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     private PlaybackObserver playbackObserver = null;
     private final JPopupMenu speedPopup = new JPopupMenu();
     private final JPopupMenu volumePopup = new JPopupMenu();
-    private final JPopupMenu timePopup = new JPopupMenu();
     private final JSlider speedSlider = new JSlider(JSlider.VERTICAL, 0, 6, 3);
     private final JSlider volumeSlider = new JSlider(JSlider.VERTICAL, 0, 10, 10);
     private final JSlider timeSlider = new JSlider(JSlider.HORIZONTAL, 0, 1000, 0);
     private final JLabel speedValueLabel = createSliderValueLabel();
     private final JLabel volumeValueLabel = createSliderValueLabel();
-    private final JButton timeButton = new JButton("0:00:00.0");
+    private final JLabel timeLabel = new JLabel("0:00:00.0");
     private static final float[] SPEED_VALUES = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f};
     private long cachedDuration = 0;
-    private long cachedTimeMs = 0;
     private boolean ignoringSliderChange = false;
+    /* Live scrubbing: seek the video continuously while the slider is dragged,
+     * but throttle the libvlc seeks so a fast drag does not flood the player with
+     * dozens of setTime() calls per second. */
+    private static final int SCRUB_THROTTLE_MS = 80;
+    private long lastScrubSeekMs = 0;
 
     public JEmbeddedPreviewControls() {
         initComponents();
@@ -101,8 +104,8 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
                 @Override
                 public void onTimeChanged(long timeMs) {
-                    cachedTimeMs = timeMs;
                     updateTimeDisplay(timeMs);
+                    updateSeekSliderPosition(timeMs);
                     if (playbackObserver != null)
                         playbackObserver.onPlaybackProgress(timeMs, previewPlaying);
                 }
@@ -118,18 +121,14 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     }
 
     private void initializeControls() {
-        // Setup time button in the toolbar, pushed to the right
-        timeButton.setFocusable(false);
-        timeButton.addActionListener(evt -> toggleTimePopup());
-        ControlBar.add(Box.createHorizontalGlue());
-        ControlBar.add(timeButton);
+        // Always-visible seek bar above the control buttons
+        add(createSeekPanel(), BorderLayout.NORTH);
 
         // Disable controls until video is loaded
         setControlBarChildrenEnabled(false);
 
         enableInstantTooltip(VolumeButton);
         enableInstantTooltip(SpeedButton);
-        enableInstantTooltip(timeButton);
 
         PlayPauseButton.setToolTipText(__("Play/Pause video playback"));
         BackLongButton.setToolTipText(__("Go backwards by 30 seconds"));
@@ -168,14 +167,25 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         volumeSlider.addChangeListener(evt -> volumeSliderStateChanged(evt));
         volumePopup.add(createSliderPanel(volumeSlider, volumeValueLabel, loadIconForPopup("audio")));
 
-        timeSlider.setPaintTicks(false);
-        timeSlider.setPreferredSize(new Dimension(scale(300), scale(32)));
-        timeSlider.addChangeListener(evt -> timeSliderStateChanged(evt));
-        timePopup.add(createTimePanel());
-
         updateSpeedTooltip();
         updateVolumeTooltip();
-        updateTimeTooltip();
+    }
+
+    private JPanel createSeekPanel() {
+        timeSlider.setPaintTicks(false);
+        timeSlider.setOpaque(false);
+        timeSlider.setFocusable(false);
+        timeSlider.setPreferredSize(new Dimension(scale(300), scale(24)));
+        timeSlider.setToolTipText(__("Drag to move through the video"));
+        timeSlider.addChangeListener(evt -> timeSliderStateChanged(evt));
+
+        JPanel panel = new JPanel(new BorderLayout(scale(8), 0));
+        panel.setOpaque(false);
+        panel.setBorder(new EmptyBorder(0, scale(8), 0, scale(8)));
+        panel.add(timeSlider, BorderLayout.CENTER);
+        timeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        panel.add(timeLabel, BorderLayout.EAST);
+        return panel;
     }
 
     private JPanel createSliderPanel(JSlider slider, JLabel valueLabel, Icon icon) {
@@ -208,46 +218,12 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         return label;
     }
 
-    private JPanel createTimePanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setOpaque(false);
-        timeSlider.setOpaque(false);
-        panel.add(timeSlider, BorderLayout.CENTER);
-        return panel;
-    }
-
     private void setControlBarChildrenEnabled(boolean enabled) {
         for (Component comp : ControlBar.getComponents()) {
             comp.setEnabled(enabled);
         }
-        timeButton.setEnabled(enabled);
-    }
-
-    private void toggleTimePopup() {
-        if (timePopup.isVisible()) {
-            timePopup.setVisible(false);
-            return;
-        }
-        hideSliderPopups();
-        prepareTimeSliderRange();
-        // Set popup width to match this panel's width
-        int panelWidth = this.getWidth();
-        timeSlider.setPreferredSize(new Dimension(panelWidth, scale(32)));
-        timePopup.pack();
-        // Calculate position: align with this panel's left edge, below the button
-        Point buttonPosInPanel = SwingUtilities.convertPoint(timeButton, 0, 0, this);
-        int x = -buttonPosInPanel.x;
-        int y = timeButton.getHeight();
-        timePopup.show(timeButton, x, y);
-    }
-
-    private void prepareTimeSliderRange() {
-        // Use cached values to avoid blocking VLC calls
-        // Keep slider at 0-1000 range and scale values to avoid performance issues
-        ignoringSliderChange = true;
-        int scaledValue = cachedDuration > 0 ? (int) ((cachedTimeMs * 1000) / cachedDuration) : 0;
-        timeSlider.setValue(scaledValue);
-        ignoringSliderChange = false;
+        timeSlider.setEnabled(enabled);
+        timeLabel.setEnabled(enabled);
     }
 
     private long sliderValueToTimeMs(int sliderValue) {
@@ -260,14 +236,18 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         }
         long timeMs = sliderValueToTimeMs(timeSlider.getValue());
         updateTimeDisplay(timeMs);
-        if (!timeSlider.getValueIsAdjusting()) {
+        if (timeSlider.getValueIsAdjusting()) {
+            // Mid-drag: seek live, but no more often than the throttle interval.
+            long now = System.currentTimeMillis();
+            if (now - lastScrubSeekMs >= SCRUB_THROTTLE_MS) {
+                lastScrubSeekMs = now;
+                player.seek(timeMs);
+            }
+        } else {
+            // Drag finished (or a click on the track): land precisely on the target.
             player.seek(timeMs);
             hideSliderPopups();
         }
-    }
-
-    private void updateTimeTooltip() {
-        timeButton.setToolTipText(__("Click to seek to any position"));
     }
 
     private void enableInstantTooltip(AbstractButton button) {
@@ -342,7 +322,16 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         long seconds = totalSeconds % 60;
         long tenths = (timeMs % 1000) / 100;
         String text = String.format("%d:%02d:%02d.%d", hours, minutes, seconds, tenths);
-        timeButton.setText(text);
+        timeLabel.setText(text);
+    }
+
+    private void updateSeekSliderPosition(long timeMs) {
+        // Follow playback, but never fight the user while dragging the slider
+        if (timeSlider.getValueIsAdjusting())
+            return;
+        ignoringSliderChange = true;
+        timeSlider.setValue(cachedDuration > 0 ? (int) ((timeMs * 1000) / cachedDuration) : 0);
+        ignoringSliderChange = false;
     }
 
     private void toggleSliderPopup(AbstractButton source, JPopupMenu popup) {
@@ -358,7 +347,6 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     private void hideSliderPopups() {
         speedPopup.setVisible(false);
         volumePopup.setVisible(false);
-        timePopup.setVisible(false);
     }
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {
