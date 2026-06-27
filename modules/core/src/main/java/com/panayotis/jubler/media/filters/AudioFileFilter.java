@@ -17,12 +17,7 @@ public class AudioFileFilter extends MediaFileFilter {
     private String cachesource = null;
 
     static {
-        exts = new String[5];
-        exts[0] = AudioPreviewData.getExtension();
-        exts[1] = ".wav";
-        exts[2] = ".mp3";
-        exts[3] = ".ogg";
-        exts[4] = ".ac3";
+        exts = new String[]{AudioPreviewData.getExtension(), ".wav", ".mp3", ".ogg", ".ac3", ".m4a", ".flac", ".aac"};
     }
 
     public String[] getExtensions() {

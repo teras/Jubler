@@ -6,11 +6,13 @@
 
 package  com.panayotis.jubler.media;
 
+import com.panayotis.jubler.media.filters.AnyMediaFileFilter;
 import com.panayotis.jubler.media.filters.AudioFileFilter;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemDependent;
 import java.io.File;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import static com.panayotis.jubler.i18n.I18N.__;
@@ -21,6 +23,8 @@ public class JVideofileSelector extends javax.swing.JPanel {
     private JFileChooser fdialog;
     private AudioFileFilter afilter;
     private VideoFileFilter vfilter;
+    private AnyMediaFileFilter mediafilter;
+    private JButton okButton;
 
     /**
      * Creates new form PlayerOptions
@@ -29,8 +33,10 @@ public class JVideofileSelector extends javax.swing.JPanel {
         initComponents();
         vfilter = new VideoFileFilter();
         afilter = new AudioFileFilter();
+        mediafilter = new AnyMediaFileFilter();
 
         fdialog = new JFileChooser();
+        fdialog.addChoosableFileFilter(mediafilter);
         fdialog.addChoosableFileFilter(vfilter);
         fdialog.addChoosableFileFilter(afilter);
         fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -38,7 +44,9 @@ public class JVideofileSelector extends javax.swing.JPanel {
     }
 
     private void updateFiles() {
-        VFName.setText(mfile.getVideoFile().getPath());
+        /* Show a path only when the file actually exists: a guessed candidate (e.g.
+         * "subtitle.avi") that is not on disk must not look like a valid selection. */
+        VFName.setText(existingPath(mfile.getVideoFile()));
 
         if (mfile.getAudioFile().isSameAsVideo()) {
             AFName.setText("");
@@ -46,13 +54,37 @@ public class JVideofileSelector extends javax.swing.JPanel {
             ExternalAudioB.setSelected(false);
             AudioBrowse.setEnabled(false);
         } else {
-            AFName.setText(mfile.getAudioFile().getPath());
+            AFName.setText(existingPath(mfile.getAudioFile()));
             AFName.setEnabled(true);
             ExternalAudioB.setSelected(true);
             AudioBrowse.setEnabled(true);
         }
 
         CFName.setText(mfile.getCacheFile().getPath());
+        revalidateOk();
+    }
+
+    private static String existingPath(File f) {
+        return (f != null && f.exists()) ? f.getPath() : "";
+    }
+
+    /**
+     * Receive the dialog's OK button so the selection can gate it: OK is allowed only
+     * when the chosen media file exists (and, when a separate audio stream is used,
+     * that file exists too). The cache is generated, so its existence is not required.
+     */
+    public void bindOkButton(JButton ok) {
+        this.okButton = ok;
+        revalidateOk();
+    }
+
+    private void revalidateOk() {
+        if (okButton == null)
+            return;
+        boolean mediaOk = mfile != null && mfile.getVideoFile() != null && mfile.getVideoFile().exists();
+        boolean audioOk = mfile == null || mfile.getAudioFile() == null
+                || mfile.getAudioFile().isSameAsVideo() || mfile.getAudioFile().exists();
+        okButton.setEnabled(mediaOk && audioOk);
     }
 
     public void setEnabled(boolean status) {
@@ -213,7 +245,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
 
     private void VideoBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoBrowseActionPerformed
         fdialog.setSelectedFile(mfile.getVideoFile());
-        fdialog.setFileFilter(vfilter);
+        fdialog.setFileFilter(mediafilter);
         if (fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
             return;
         FileCommunicator.setDefaultDir(fdialog.getCurrentDirectory());

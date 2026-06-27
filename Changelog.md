@@ -8,6 +8,7 @@
 - External tool integration: run command-line tools — AI transcription (whisper / faster-whisper / whisper.cpp), subtitle sync and more — directly on your subtitles, audio or video, via configurable recipes
 - Numerous stability fixes across Windows, macOS and Linux
 - Create a new subtitle project directly from a video file
+- Audio-only media supported in preview
 
 #### 9.0.1
 
