@@ -55,6 +55,13 @@ public class JSubPreview extends javax.swing.JPanel {
     private JEmbeddedPreviewControls embeddedControls;
     private TimeSync sync1 = null;
     private TimeSync sync2 = null;
+    /* While the pipette is armed, the next subtitle the user picks is captured
+     * as a synchronization point instead of seeking the video to it. */
+    private boolean grabMode = false;
+    /* Whether playback was running when the pipette was armed. We only resume
+     * after a capture/cancel if we were the ones who paused it — if the video
+     * was already stopped (or not playing), it must stay stopped. */
+    private boolean resumeAfterGrab = false;
     private final javax.swing.Timer subtitleRefreshTimer;
     /* Index of the subtitle the table is following during playback. Used to
      * trigger a selection change only when the active subtitle actually changes,
@@ -87,7 +94,7 @@ public class JSubPreview extends javax.swing.JPanel {
 
             embeddedControls = new JEmbeddedPreviewControls();
             embeddedControls.setPlayer(framePreview);
-            embeddedControls.setSyncListener(this::onSyncPointToggled);
+            embeddedControls.setPipetteListener(this::onPipetteClicked);
             embeddedControls.setPlaybackObserver(this::onPlaybackProgress);
             FramePanel.add(embeddedControls, BorderLayout.SOUTH);
         } else {
@@ -143,6 +150,14 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     public void subsHaveChanged(int[] subid) {
+        /* The pipette is armed and the user just picked a subtitle: capture it
+         * as a synchronization point and leave the video exactly where it is
+         * (do not seek/move the preview window to the picked subtitle). */
+        if (grabMode && subid != null && subid.length > 0) {
+            captureGrabPoint(subid[0]);
+            return;
+        }
+
         double min = Double.MAX_VALUE, max = 0d;
         SubEntry entry;
         double val;
@@ -296,40 +311,75 @@ public class JSubPreview extends javax.swing.JPanel {
     }
 
     /**
-     * Called when the user toggles one of the two synchronization point buttons
-     * in the video controls. Captures the pairing between the selected
-     * subtitle's nominal time and the current playback position. When both
-     * points are set, re-times the subtitles using a shift (when both points
-     * have the same offset) or a linear stretch otherwise.
+     * Called on every click of the synchronization pipette. The pipette stays
+     * active (red) for the whole two-point session: the first click pauses the
+     * video and arms the capture; picking a subtitle records a point and
+     * resumes playback (the pipette stays red); the next click pauses again for
+     * the second point. The session ends — and the pipette returns to idle —
+     * only when the second point is captured, or when the pipette is clicked
+     * again while armed (which cancels).
      */
-    private void onSyncPointToggled(int index, boolean selected) {
+    private void onPipetteClicked() {
         if (framePreview == null)
             return;
-        if (!selected) {
-            if (index == 1)
-                sync1 = null;
-            else
-                sync2 = null;
+        if (grabMode) {
+            /* Searching (armed and waiting for a pick): a second click cancels
+             * the whole session and returns to idle. */
+            grabMode = false;
+            sync1 = null;
+            sync2 = null;
+            embeddedControls.setPipetteState(JEmbeddedPreviewControls.PipetteState.IDLE);
+            if (resumeAfterGrab)
+                embeddedControls.resumePreview();
             return;
         }
+        /* Idle or after a captured point: arm for the next point — freeze the
+         * video and show the "searching" icon so the user picks the subtitle
+         * that belongs at this moment. Remember whether it was playing so we
+         * only resume later if we actually paused it. */
+        grabMode = true;
+        resumeAfterGrab = embeddedControls.isPlaying();
+        embeddedControls.setPipetteState(JEmbeddedPreviewControls.PipetteState.SEARCHING);
+        embeddedControls.pausePreview();
+        /* Clear the table selection so the very next subtitle click registers as
+         * a selection change — otherwise re-clicking the already-selected
+         * subtitle (e.g. the one auto-followed during playback) would fire no
+         * event and capture nothing. */
+        parent.setSelectedSub((int[]) null, false);
+    }
 
-        SubEntry[] selectedSubs = parent.getSelectedSubs();
-        if (selectedSubs == null || selectedSubs.length == 0) {
-            DEBUG.beep();
-            embeddedControls.setSyncButtonSelected(index, false);
+    /**
+     * Capture the subtitle the user picked while the pipette was armed as a
+     * synchronization point: it pairs the subtitle's nominal start time with
+     * the current (frozen) video position. The video is NOT moved — after the
+     * first point playback simply resumes from where it was so the user can
+     * hunt for the second moment, and the pipette stays active. When both
+     * points are set, the subtitles are re-timed using a shift (equal offsets)
+     * or a linear stretch otherwise, and the pipette returns to idle.
+     */
+    private void captureGrabPoint(int row) {
+        Subtitles subs = parent.getSubtitles();
+        if (subs == null || row < 0 || row >= subs.size())
             return;
-        }
-
-        double subStart = selectedSubs[0].getStartTime().toSeconds();
+        double subStart = subs.elementAt(row).getStartTime().toSeconds();
         double videoTime = framePreview.getTime();
         TimeSync sync = new TimeSync(subStart, videoTime - subStart);
-        if (index == 1)
+        if (sync1 == null)
             sync1 = sync;
         else
             sync2 = sync;
 
+        grabMode = false;
         if (sync1 != null && sync2 != null)
             applySyncMarks();
+        else {
+            /* First point captured: show the full (red) pipette and resume
+             * playback (only if it was playing) so the user can find the
+             * second moment. */
+            embeddedControls.setPipetteState(JEmbeddedPreviewControls.PipetteState.CAPTURED);
+            if (resumeAfterGrab)
+                embeddedControls.resumePreview();
+        }
     }
 
     private void applySyncMarks() {
@@ -342,7 +392,7 @@ public class JSubPreview extends javax.swing.JPanel {
         }
         sync1 = null;
         sync2 = null;
-        embeddedControls.resetSyncButtons();
+        embeddedControls.setPipetteState(JEmbeddedPreviewControls.PipetteState.IDLE);
     }
 
     public void setEnabled(boolean status) {

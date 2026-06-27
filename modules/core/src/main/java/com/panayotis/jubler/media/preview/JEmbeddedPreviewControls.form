@@ -96,20 +96,12 @@
                 </Component>
                 <Component class="javax.swing.JToolBar$Separator" name="controlSeparator3">
                 </Component>
-                <Component class="javax.swing.JToggleButton" name="Sync1Button">
+                <Component class="javax.swing.JButton" name="PipetteButton">
                   <Properties>
                     <Property name="focusable" type="boolean" value="false"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Sync1ButtonActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JToggleButton" name="Sync2Button">
-                  <Properties>
-                    <Property name="focusable" type="boolean" value="false"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Sync2ButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PipetteButtonActionPerformed"/>
                   </Events>
                 </Component>
               </SubComponents>

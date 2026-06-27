@@ -21,13 +21,27 @@ import static com.panayotis.jubler.os.UIUtils.scale;
 public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
     /**
-     * Listener notified when the user toggles one of the two synchronization
-     * point buttons. The owner captures the current subtitle/time pair and,
-     * once both points are set, re-times the subtitles.
+     * Listener notified each time the user clicks the synchronization pipette.
+     * The owner runs the sync state machine: a click pauses playback and waits
+     * for a subtitle to be picked; it captures the subtitle/time pair and, once
+     * two points are collected, re-times the subtitles. The pipette's visual
+     * state is driven back by the owner via {@link #setPipetteState}.
      */
-    public interface SyncListener {
-        void onSyncPointToggled(int index, boolean selected);
+    public interface PipetteListener {
+        void onPipetteClicked();
     }
+
+    /**
+     * Visual state of the synchronization pipette.
+     * <ul>
+     *   <li>{@code IDLE} — no session in progress (blue, empty pipette).</li>
+     *   <li>{@code SEARCHING} — armed and paused, waiting for the user to pick
+     *       a subtitle (pipette with a question mark).</li>
+     *   <li>{@code CAPTURED} — a first point has been taken and playback
+     *       resumed, waiting for the next one (red, full pipette).</li>
+     * </ul>
+     */
+    public enum PipetteState {IDLE, SEARCHING, CAPTURED}
 
     /**
      * Listener notified of playback progress so the owner can follow the
@@ -40,7 +54,8 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
 
     private boolean previewPlaying = false;
     private VideoPreview player = null;
-    private SyncListener syncListener = null;
+    private PipetteListener pipetteListener = null;
+    private PipetteState pipetteState = PipetteState.IDLE;
     private PlaybackObserver playbackObserver = null;
     private final JPopupMenu speedPopup = new JPopupMenu();
     private final JPopupMenu volumePopup = new JPopupMenu();
@@ -64,8 +79,8 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         initializeControls();
     }
 
-    public void setSyncListener(SyncListener listener) {
-        this.syncListener = listener;
+    public void setPipetteListener(PipetteListener listener) {
+        this.pipetteListener = listener;
     }
 
     public void setPlaybackObserver(PlaybackObserver observer) {
@@ -76,13 +91,30 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         return previewPlaying;
     }
 
-    public void setSyncButtonSelected(int index, boolean selected) {
-        (index == 1 ? Sync1Button : Sync2Button).setSelected(selected);
+    /**
+     * Set the pipette's visual state. Driven entirely by the owner as the
+     * synchronization session progresses; the button never changes it on its
+     * own.
+     */
+    public void setPipetteState(PipetteState state) {
+        pipetteState = state;
+        updatePipetteIcon();
     }
 
-    public void resetSyncButtons() {
-        Sync1Button.setSelected(false);
-        Sync2Button.setSelected(false);
+    public void pausePreview() {
+        if (player != null && previewPlaying) {
+            previewPlaying = false;
+            updatePlayPauseIcon();
+            player.togglePlayPause();
+        }
+    }
+
+    public void resumePreview() {
+        if (player != null && !previewPlaying) {
+            previewPlaying = true;
+            updatePlayPauseIcon();
+            player.togglePlayPause();
+        }
     }
 
     public void setPlayer(VideoPreview player) {
@@ -136,10 +168,9 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         ForwardButton.setToolTipText(__("Go forwards by 10 seconds"));
         ForwardLongButton.setToolTipText(__("Go forwards by 30 seconds"));
 
-        String syncHelp = "\n" + __("Select a subtitle, seek the video to where it should appear, then click here.")
-                + "\n" + __("When both points are set, subtitles are shifted or stretched to match.");
-        Sync1Button.setToolTipText(__("Mark first synchronization point") + syncHelp);
-        Sync2Button.setToolTipText(__("Mark second synchronization point") + syncHelp);
+        PipetteButton.setToolTipText(__("Synchronize subtitles using the video")
+                + "\n" + __("Play the video. Click to pause at the right moment, then pick the subtitle that belongs there.")
+                + "\n" + __("Repeat for a second point; the subtitles are then shifted or stretched to match."));
 
         updatePlayPauseIcon();
         setButtonIcons(BackLongButton, "bbmovie");
@@ -148,8 +179,7 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         setButtonIcons(ForwardLongButton, "ffmovie");
         setButtonIcons(VolumeButton, "audio");
         setButtonIcons(SpeedButton, "speed");
-        setButtonIcons(Sync1Button, "syncl");
-        setButtonIcons(Sync2Button, "syncr");
+        updatePipetteIcon();
 
         speedSlider.setMajorTickSpacing(3);
         speedSlider.setMinorTickSpacing(1);
@@ -286,6 +316,21 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         setButtonIcons(PlayPauseButton, previewPlaying ? "pause" : "play");
     }
 
+    private void updatePipetteIcon() {
+        String icon;
+        switch (pipetteState) {
+            case SEARCHING:
+                icon = "textpickask";
+                break;
+            case CAPTURED:
+                icon = "textpickfull";
+                break;
+            default:
+                icon = "textpick";
+        }
+        setButtonIcons(PipetteButton, icon);
+    }
+
     private int getSpeedIndex() {
         return Math.max(0, Math.min(SPEED_VALUES.length - 1, speedSlider.getValue()));
     }
@@ -385,8 +430,7 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         VolumeButton = new javax.swing.JButton();
         SpeedButton = new javax.swing.JButton();
         controlSeparator3 = new javax.swing.JToolBar.Separator();
-        Sync1Button = new javax.swing.JToggleButton();
-        Sync2Button = new javax.swing.JToggleButton();
+        PipetteButton = new javax.swing.JButton();
 
         setOpaque(false);
         setLayout(new java.awt.BorderLayout());
@@ -454,21 +498,13 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         ControlBar.add(SpeedButton);
         ControlBar.add(controlSeparator3);
 
-        Sync1Button.setFocusable(false);
-        Sync1Button.addActionListener(new java.awt.event.ActionListener() {
+        PipetteButton.setFocusable(false);
+        PipetteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Sync1ButtonActionPerformed(evt);
+                PipetteButtonActionPerformed(evt);
             }
         });
-        ControlBar.add(Sync1Button);
-
-        Sync2Button.setFocusable(false);
-        Sync2Button.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Sync2ButtonActionPerformed(evt);
-            }
-        });
-        ControlBar.add(Sync2Button);
+        ControlBar.add(PipetteButton);
 
         add(ControlBar, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -518,17 +554,11 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
         toggleSliderPopup(SpeedButton, speedPopup);
     }//GEN-LAST:event_SpeedButtonActionPerformed
 
-    private void Sync1ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sync1ButtonActionPerformed
+    private void PipetteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PipetteButtonActionPerformed
         hideSliderPopups();
-        if (syncListener != null)
-            syncListener.onSyncPointToggled(1, Sync1Button.isSelected());
-    }//GEN-LAST:event_Sync1ButtonActionPerformed
-
-    private void Sync2ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Sync2ButtonActionPerformed
-        hideSliderPopups();
-        if (syncListener != null)
-            syncListener.onSyncPointToggled(2, Sync2Button.isSelected());
-    }//GEN-LAST:event_Sync2ButtonActionPerformed
+        if (pipetteListener != null)
+            pipetteListener.onPipetteClicked();
+    }//GEN-LAST:event_PipetteButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -539,8 +569,7 @@ public class JEmbeddedPreviewControls extends javax.swing.JPanel {
     private javax.swing.JButton ForwardLongButton;
     private javax.swing.JButton PlayPauseButton;
     private javax.swing.JButton SpeedButton;
-    private javax.swing.JToggleButton Sync1Button;
-    private javax.swing.JToggleButton Sync2Button;
+    private javax.swing.JButton PipetteButton;
     private javax.swing.JButton VolumeButton;
     private javax.swing.JToolBar.Separator controlSeparator1;
     private javax.swing.JToolBar.Separator controlSeparator2;
