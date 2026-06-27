@@ -131,7 +131,7 @@ public class JVideofileSelector extends javax.swing.JPanel {
         jPanel2.setOpaque(false);
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        VFileL.setText(__("Use the following video file"));
+        VFileL.setText(__("Use the following audio/video file"));
         jPanel2.add(VFileL, java.awt.BorderLayout.NORTH);
 
         jPanel1.setOpaque(false);
@@ -139,11 +139,11 @@ public class JVideofileSelector extends javax.swing.JPanel {
 
         VFName.setEditable(false);
         VFName.setColumns(40);
-        VFName.setToolTipText(__("Filename of the video file. Use the \"Browse\" button to change it."));
+        VFName.setToolTipText(__("Filename of the audio/video file. Use the \"Browse\" button to change it."));
         jPanel1.add(VFName, java.awt.BorderLayout.CENTER);
 
         VideoBrowse.setText(__("Browse"));
-        VideoBrowse.setToolTipText(__("Change the video filename"));
+        VideoBrowse.setToolTipText(__("Change the audio/video filename"));
         SystemDependent.setCommandButtonStyle(VideoBrowse, "only");
         VideoBrowse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

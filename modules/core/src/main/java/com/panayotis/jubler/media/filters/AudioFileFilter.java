@@ -17,7 +17,8 @@ public class AudioFileFilter extends MediaFileFilter {
     private String cachesource = null;
 
     static {
-        exts = new String[]{AudioPreviewData.getExtension(), ".wav", ".mp3", ".ogg", ".ac3", ".m4a", ".flac", ".aac"};
+        // .jacache is intentionally omitted; it is matched only in cache-checking mode (see accept()).
+        exts = new String[]{".wav", ".mp3", ".ogg", ".ac3", ".m4a", ".flac", ".aac"};
     }
 
     public String[] getExtensions() {

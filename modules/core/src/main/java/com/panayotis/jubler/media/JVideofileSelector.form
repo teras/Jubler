@@ -34,7 +34,7 @@
         <Component class="javax.swing.JLabel" name="VFileL">
           <Properties>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="__(&quot;Use the following video file&quot;)" type="code"/>
+              <Connection code="__(&quot;Use the following audio/video file&quot;)" type="code"/>
             </Property>
           </Properties>
           <Constraints>
@@ -60,7 +60,7 @@
                 <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="40"/>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="__(&quot;Filename of the video file. Use the \&quot;Browse\&quot; button to change it.&quot;)" type="code"/>
+                  <Connection code="__(&quot;Filename of the audio/video file. Use the \&quot;Browse\&quot; button to change it.&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Constraints>
@@ -75,7 +75,7 @@
                   <Connection code="__(&quot;Browse&quot;)" type="code"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code="__(&quot;Change the video filename&quot;)" type="code"/>
+                  <Connection code="__(&quot;Change the audio/video filename&quot;)" type="code"/>
                 </Property>
               </Properties>
               <Events>
