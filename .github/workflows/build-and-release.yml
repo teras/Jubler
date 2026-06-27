@@ -445,7 +445,7 @@ jobs:
            # Create private key file
            mkdir -p ~/private_keys
            echo "-----BEGIN PRIVATE KEY-----" > ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
-           echo "$APPLE_API_KEY" >> ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
+           echo "$APPLE_API_KEY" | fold -w 64 >> ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
            echo "-----END PRIVATE KEY-----" >> ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
            chmod 600 ~/private_keys/AuthKey_${APPLE_API_KEY_ID}.p8
 
