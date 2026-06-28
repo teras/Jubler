@@ -51,16 +51,20 @@ public final class JCelebrationPanel extends JPanel implements ActionListener {
 
     private final String[] msgs = {
             "Version 10", "21 Years",
-            "All grown up", "Finally legal", "21 years of perfect timing",
+            "All grown up", "21 years of perfect timing",
             "Still perfectly in sync", "Coming of age, frame by frame",
             "Always on cue", "Caption this moment",
-            "Roll the credits", "Every second counts"};
+            "Roll the credits", "Every second counts",
+            "Reading between the lines", "Fluent in every language",
+            "Down to the millisecond", "Press play on 21"};
     private final Color[] msgColors = {
             new Color(70, 200, 255), new Color(255, 195, 50),
-            new Color(255, 90, 200), new Color(255, 130, 40), new Color(110, 255, 150),
+            new Color(255, 90, 200), new Color(110, 255, 150),
             new Color(170, 120, 255), new Color(255, 110, 90),
             new Color(70, 230, 200), new Color(255, 180, 120),
-            new Color(255, 100, 140), new Color(120, 255, 230)};
+            new Color(255, 100, 140), new Color(120, 255, 230),
+            new Color(255, 130, 40), new Color(140, 210, 255),
+            new Color(200, 255, 90), new Color(255, 120, 220)};
     private int formStep = 0;                       // how many messages shown so far
     private final List<Integer> bag = new ArrayList<Integer>(); // shuffled pool drawn after the first two
     private static final int FORM_INTERVAL = 230;
