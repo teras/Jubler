@@ -1,4 +1,2 @@
 version=${project.version}
-longversion=${long.version}
-release=${release.version}
 packaged=false

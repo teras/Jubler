@@ -1,0 +1,15 @@
+[versions]
+junitJupiter = "5.9.3"
+junitPlatformLauncher = "1.9.3"
+appenh = "0.8.0"
+minimalJson = "0.9.5"
+vlcj = "4.7.3"
+arjs = "0.3.3"
+
+[libraries]
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junitJupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junitPlatformLauncher" }
+appenh = { module = "com.panayotis:appenh", version.ref = "appenh" }
+minimal-json = { module = "com.eclipsesource.minimal-json:minimal-json", version.ref = "minimalJson" }
+vlcj = { module = "uk.co.caprica:vlcj", version.ref = "vlcj" }
+arjs = { module = "com.panayotis:arjs", version.ref = "arjs" }

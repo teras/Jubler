@@ -1,10 +1,10 @@
 plugins {
-    java
+    id("jubler.java-conventions")
 }
 
 dependencies {
     implementation(project(":core"))
-    implementation("com.panayotis:appenh:0.8.0") {
+    implementation(libs.appenh) {
         exclude(group = "com.panayotis", module = "loadlib")
     }
 }

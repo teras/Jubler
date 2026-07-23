@@ -1,5 +1,5 @@
 plugins {
-    java
+    id("jubler.java-conventions")
 }
 
 dependencies {

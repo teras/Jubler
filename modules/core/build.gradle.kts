@@ -1,17 +1,17 @@
 plugins {
-    java
+    id("jubler.java-conventions")
 }
 
 dependencies {
-    implementation("com.eclipsesource.minimal-json:minimal-json:${rootProject.extra["jsonVersion"]}")
+    implementation(libs.minimal.json)
     implementation(project(":launcher"))
-    implementation("com.panayotis:appenh:0.8.0") {
+    implementation(libs.appenh) {
         exclude(group = "com.panayotis", module = "loadlib")
     }
-    implementation("com.panayotis:arjs:0.3.3")
+    implementation(libs.arjs)
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.9.3")
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 tasks.test {

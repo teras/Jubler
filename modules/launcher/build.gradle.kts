@@ -1,5 +1,5 @@
 plugins {
-    java
+    id("jubler.java-conventions")
 }
 
 tasks.jar {
@@ -9,13 +9,14 @@ tasks.jar {
 }
 
 tasks.processResources {
-    // Filter version.prop with project properties
-    // Use filter to manually replace property references
+    // Substitute the real project version (derived from the git tag) into version.prop.
+    // Captured as a provider so the version is resolved lazily at execution time, without the
+    // filter action reaching back to `Task.project` (which is disallowed under the configuration cache).
+    val appVersion = providers.provider { project.version.toString() }
+    inputs.property("appVersion", appVersion)
     filesMatching("**/version.prop") {
         filter { line ->
-            line.replace("\${project.version}", project.version.toString())
-                .replace("\${long.version}", rootProject.extra["longVersion"].toString())
-                .replace("\${release.version}", rootProject.extra["releaseVersion"].toString())
+            line.replace("\${project.version}", appVersion.get())
         }
     }
 }

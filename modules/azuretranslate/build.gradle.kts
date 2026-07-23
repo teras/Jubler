@@ -1,9 +1,7 @@
 plugins {
-    java
+    id("jubler.plugin-conventions")
 }
 
 dependencies {
-    implementation(project(":launcher"))
-    implementation(project(":core"))
-    implementation("com.eclipsesource.minimal-json:minimal-json:${rootProject.extra["jsonVersion"]}")
+    implementation(libs.minimal.json)
 }

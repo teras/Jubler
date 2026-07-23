@@ -37,13 +37,10 @@ gradle :core:compileJava     # quick compile check while developing
 
 - `lib/jubler.jar` — launcher (main entry point), plus the module and dependency jars
 - `lib/i18n/` — translations
-- `lib/help/` — help resources
 - `README.md`, `LICENCE.txt`
 
-## Version bump
+## Versioning
 
-```bash
-./make.sh version X.Y.Z
-```
-
-See `make.sh` for other helpers (`clean`, `headers`).
+The version is derived automatically from the latest `v*` git tag (e.g. tag `v10.0.0` builds
+version `10.0.0`); there is no manual version-bump command. See `make.sh` for the available helpers
+(`build`, `winget`, `clean`, `headers`).

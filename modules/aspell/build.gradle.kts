@@ -1,8 +1,3 @@
 plugins {
-    java
-}
-
-dependencies {
-    implementation(project(":launcher"))
-    implementation(project(":core"))
+    id("jubler.plugin-conventions")
 }
