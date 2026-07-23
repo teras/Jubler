@@ -31,7 +31,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import javax.sound.sampled.AudioFormat;
@@ -164,11 +167,21 @@ public class VLCAudioPreview implements AudioPreview {
     }
 
     /**
-     * libvlc fourcc for its single "text subtitles with various tags" bucket — every text format
-     * (SubRip, ASS/SSA, MOV text, …) is reported under this one codec. Bitmap subtitles report a
-     * different fourcc (e.g. {@code spu } = DVD, {@code bdpg} = BD PGS) and cannot become text.
+     * libvlc fourccs of text-based subtitle codecs. Contrary to what the demuxers' shared "subt"
+     * bucket suggests, each text format keeps its own fourcc: SubRip is {@code subt}, ASS/SSA is
+     * {@code ssa }, MP4 timed text (mov_text) is {@code tx3g}, QuickTime text {@code qtxt},
+     * WebVTT {@code wvtt}, TTML {@code stpp}, USF {@code usf }. Bitmap subtitles report others
+     * (e.g. {@code spu } = DVD, {@code bdpg} = BD PGS) and cannot become text.
      */
-    private static final int TEXT_SUBTITLE_FOURCC = 0x74627573; // 'subt'
+    private static final Set<Integer> TEXT_SUBTITLE_FOURCCS = new HashSet<>(Arrays.asList(
+            fourcc("subt"), fourcc("ssa "), fourcc("tx3g"), fourcc("qtxt"),
+            fourcc("wvtt"), fourcc("stpp"), fourcc("usf ")));
+
+    /** Pack a 4-character code the way libvlc does (little-endian: first char in the low byte). */
+    private static int fourcc(String code) {
+        return (code.charAt(0) & 0xFF) | (code.charAt(1) & 0xFF) << 8
+                | (code.charAt(2) & 0xFF) << 16 | (code.charAt(3) & 0xFF) << 24;
+    }
 
     @Override
     public List<SubtitleStreamInfo> getSubtitleStreams(VideoFile vfile) {
@@ -198,7 +211,7 @@ public class VLCAudioPreview implements AudioPreview {
             for (TextTrackInfo t : media.info().textTracks())
                 result.add(new SubtitleStreamInfo(index++, t.id(), t.language(),
                         t.codecName(), t.codecDescription(), t.description(),
-                        t.codec() == TEXT_SUBTITLE_FOURCC));
+                        TEXT_SUBTITLE_FOURCCS.contains(t.codec())));
         } catch (Exception e) {
             DEBUG.debug(e);
         } finally {
