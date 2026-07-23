@@ -20,6 +20,9 @@ valid_targets=("windows" "linux" "linux-arm64" "generic" "macos" "macos-arm64" "
 
 # KPacker configuration
 kpacker_bin="$HOME/Works/System/bin/arch/linux-x86_64/kpacker"
+if [ ! -x "$kpacker_bin" ]; then
+    kpacker_bin=$(command -v kpacker || true)
+fi
 jubler_source_generic="$script_dir/build/jubler-generic"
 jubler_source_linux64="$script_dir/build/jubler-linux64"
 jubler_source_linuxarm64="$script_dir/build/jubler-linuxarm64"
