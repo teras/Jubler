@@ -12,12 +12,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -36,16 +39,26 @@ import java.util.Random;
 public final class JCelebrationPanel extends JPanel implements ActionListener {
 
     private static final double BASE = 1000.0; // logical units along the short side
+    private static final double SCENE_SHORT = 600.0; // offscreen pixels along the short side
+    private static final double SCENE_SCALE = SCENE_SHORT / BASE; // logical -> scene pixel factor
 
     private final Random rnd = new Random();
-    private final Timer timer = new Timer(16, this);
+    private final Timer timer = new Timer(16, this); // ~60fps
     private final List<Rocket> rockets = new ArrayList<Rocket>();
     private final List<Particle> particles = new ArrayList<Particle>();
     private final List<Confetti> confetti = new ArrayList<Confetti>();
 
-    private BufferedImage trail, frame;
+    // Pre-rendered glow sprites keyed by quantized color and size; life-based alpha
+    // is applied at draw time through the composite so the cache stays small.
+    private final Map<Integer, BufferedImage> glowCache = new HashMap<Integer, BufferedImage>();
+    // SRC_OVER composites cached per alpha bucket (alpha>>3) to avoid per-particle allocation.
+    private final AlphaComposite[] alphaCache = new AlphaComposite[33];
+
+    private BufferedImage scene, bg;    // persistent scene buffer + cached background gradient
     private boolean seeded = false;
     private int tick = 0;
+    private int stepsSincePaint = 0;    // physics steps run since the last paint (drives the fade)
+    private double stepAcc = 0;         // fractional-step accumulator used while unfocused
 
     private final Font baseFont = new Font("SansSerif", Font.BOLD, 24);
 
@@ -109,10 +122,42 @@ public final class JCelebrationPanel extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (getWidth() <= 0 || getHeight() <= 0) return;
+        if (!sceneVisible()) return; // pause while hidden or minimized
         if (!seeded) {
             for (int i = 0; i < 140; i++) confetti.add(newConfetti(true));
             seeded = true;
         }
+        // Full 60fps while focused; drop to 40fps otherwise but keep the 60Hz physics cadence
+        // via a fractional accumulator (1.5 steps/tick -> alternating 1 and 2 steps).
+        int steps;
+        if (windowFocused()) {
+            timer.setDelay(16);
+            stepAcc = 0;
+            steps = 1;
+        } else {
+            timer.setDelay(25);
+            stepAcc += 1.5;
+            steps = (int) stepAcc;
+            stepAcc -= steps;
+        }
+        for (int i = 0; i < steps; i++) step();
+        stepsSincePaint += steps;
+        repaint();
+    }
+
+    private boolean windowFocused() {
+        Window w = SwingUtilities.getWindowAncestor(this);
+        return w != null && w.isFocused();
+    }
+
+    /** True while the panel is on screen and its window is not iconified. */
+    private boolean sceneVisible() {
+        if (!isShowing()) return false;
+        Window w = SwingUtilities.getWindowAncestor(this);
+        return !(w instanceof Frame) || (((Frame) w).getExtendedState() & Frame.ICONIFIED) == 0;
+    }
+
+    private void step() {
         tick++;
         if (tick % FORM_INTERVAL == 1)
             launchRocket(wLog() / 2, hLog() * 0.45, nextMsg());
@@ -121,7 +166,6 @@ public final class JCelebrationPanel extends JPanel implements ActionListener {
         updateRockets();
         updateParticles();
         updateConfetti();
-        repaint();
     }
 
     /**
@@ -310,59 +354,124 @@ public final class JCelebrationPanel extends JPanel implements ActionListener {
         int w = getWidth(), h = getHeight();
         if (w <= 0 || h <= 0) return;
 
-        int sw = (int) Math.round(wLog());
-        int sh = (int) Math.round(hLog());
+        int sw = (int) Math.round(wLog() * SCENE_SCALE);
+        int sh = (int) Math.round(hLog() * SCENE_SCALE);
         if (sw < 1 || sh < 1) return;
-        if (trail == null || trail.getWidth() != sw || trail.getHeight() != sh) {
-            trail = new BufferedImage(sw, sh, BufferedImage.TYPE_INT_ARGB);
-            frame = new BufferedImage(sw, sh, BufferedImage.TYPE_INT_RGB);
+        if (scene == null || scene.getWidth() != sw || scene.getHeight() != sh) {
+            bg = new BufferedImage(sw, sh, BufferedImage.TYPE_INT_RGB);
+            Graphics2D bgg = bg.createGraphics();
+            bgg.setPaint(new GradientPaint(0, 0, new Color(22, 10, 42), 0, sh, new Color(6, 3, 14)));
+            bgg.fillRect(0, 0, sw, sh);
+            bgg.dispose();
+            scene = new BufferedImage(sw, sh, BufferedImage.TYPE_INT_RGB);
+            Graphics2D sg0 = scene.createGraphics();
+            sg0.drawImage(bg, 0, 0, null); // start on the full gradient, not black
+            sg0.dispose();
+            stepsSincePaint = 0;
         }
 
-        // 1) persistent fireworks trail (scene/logical coordinates)
-        Graphics2D b = trail.createGraphics();
-        b.setComposite(AlphaComposite.getInstance(AlphaComposite.DST_OUT, 0.14f));
-        b.setColor(Color.BLACK);
-        b.fillRect(0, 0, sw, sh);
-        b.setComposite(AlphaComposite.SrcOver);
-        b.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        for (Rocket r : rockets) drawGlow(b, r.x, r.y, 5f, r.color, 255);
-        for (Particle p : particles) {
-            int a = (int) (clamp01(p.life) * 255);
-            if (p.glitter && rnd.nextDouble() < 0.25) a = (int) (a * 0.4);
-            drawGlow(b, p.x, p.y, p.size, p.color, a);
+        // 1) advance the persistent scene buffer. Drawing the gradient over it with SRC_OVER at
+        // the fade alpha is equivalent to the old "DST_OUT fade then compose over gradient": every
+        // pixel decays toward the gradient, so trails fade identically (8-bit rounding may leave a
+        // ~1-2 level ghost, the same class of artifact as the old DST_OUT rounding). Glow sprites
+        // are pre-rendered at scene resolution and blitted 1:1; logical coords are mapped in drawGlow.
+        int n = stepsSincePaint;
+        stepsSincePaint = 0;
+        if (n > 0) {
+            Graphics2D sg = scene.createGraphics();
+            sg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fadeAlpha(n)));
+            sg.drawImage(bg, 0, 0, null);
+            sg.setComposite(AlphaComposite.SrcOver);
+            for (Rocket r : rockets) drawGlow(sg, r.x, r.y, 5f, r.color, 255);
+            for (Particle p : particles) {
+                int a = (int) (clamp01(p.life) * 255);
+                if (p.glitter && rnd.nextDouble() < 0.25) a = (int) (a * 0.4);
+                drawGlow(sg, p.x, p.y, p.size, p.color, a);
+            }
+            sg.dispose();
         }
-        b.dispose();
 
-        // 2) compose the frame at scene resolution
-        Graphics2D fr = frame.createGraphics();
-        fr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        fr.setPaint(new GradientPaint(0, 0, new Color(22, 10, 42), 0, sh, new Color(6, 3, 14)));
-        fr.fillRect(0, 0, sw, sh);
-        fr.drawImage(trail, 0, 0, null);
-        for (Confetti c : confetti) {
-            Graphics2D cg = (Graphics2D) fr.create();
-            cg.translate(c.x, c.y);
-            cg.rotate(c.angle);
-            cg.setColor(c.color);
-            cg.fillRect((int) (-c.w / 2), (int) (-c.h / 2), (int) c.w, (int) c.h);
-            cg.dispose();
-        }
-        fr.dispose();
-
-        // 3) one scaled blit to the panel
+        // 2) upscale the scene to the panel, then draw confetti on top in window coordinates so
+        // they leave no trail (not part of the persistent buffer) and stay crisp (drawn with AA,
+        // not through the bilinear upscale).
         Graphics2D screen = (Graphics2D) g;
         screen.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        screen.drawImage(frame, 0, 0, w, h, null);
+        screen.drawImage(scene, 0, 0, w, h, null);
+        double sc = s();
+        screen.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        AffineTransform saved = screen.getTransform();
+        for (Confetti c : confetti) {
+            screen.translate(c.x * sc, c.y * sc);
+            screen.rotate(c.angle);
+            screen.setColor(c.color);
+            screen.fillRect((int) (-c.w / 2 * sc), (int) (-c.h / 2 * sc), (int) (c.w * sc), (int) (c.h * sc));
+            screen.setTransform(saved);
+        }
+    }
+
+    /** Fade fraction for n elapsed physics steps: 1 - 0.86^n (0.14 for 1, 0.2604 for 2). */
+    private float fadeAlpha(int n) {
+        if (n <= 1) return 0.14f;
+        if (n == 2) return 0.2604f;
+        return (float) (1 - Math.pow(0.86, n));
     }
 
     private void drawGlow(Graphics2D g, double x, double y, float size, Color c, int alpha) {
         alpha = Math.max(0, Math.min(255, alpha));
+        if (alpha == 0) return;
+        BufferedImage sprite = glowSprite(c, size);
+        double half = sprite.getWidth() / 2.0;
+        Composite old = g.getComposite();
+        g.setComposite(srcOver(alpha));
+        g.drawImage(sprite, (int) Math.round(x * SCENE_SCALE - half), (int) Math.round(y * SCENE_SCALE - half), null);
+        g.setComposite(old);
+    }
+
+    private AlphaComposite srcOver(int alpha) {
+        int i = alpha >> 3; // 0..31 (255 -> 31)
+        AlphaComposite ac = alphaCache[i];
+        if (ac == null) {
+            ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, Math.min(255, i * 8 + 4) / 255f);
+            alphaCache[i] = ac;
+        }
+        return ac;
+    }
+
+    /** A halo+core glow sprite for the color/size bucket, rendered once and cached. */
+    private BufferedImage glowSprite(Color c, float size) {
+        int rq = c.getRed() >> 5, gq = c.getGreen() >> 5, bq = c.getBlue() >> 5; // 8 levels/channel
+        int sq = Math.max(1, Math.round(size * 2f));                              // 0.5-unit buckets
+        int key = ((sq * 8 + rq) * 8 + gq) * 8 + bq;
+        BufferedImage img = glowCache.get(key);
+        if (img == null) {
+            img = renderGlow(rq * 32 + 16, gq * 32 + 16, bq * 32 + 16, sq / 2f);
+            glowCache.put(key, img);
+        }
+        return img;
+    }
+
+    /**
+     * Draws the glow at scene resolution and full opacity so per-particle alpha can come from
+     * the composite: a dim halo (alpha 255/6) and a brightened core (alpha 255) matching the old
+     * direct draw. The logical size is pre-multiplied by SCENE_SCALE so sprites blit 1:1.
+     */
+    private BufferedImage renderGlow(int r, int gr, int bl, float size) {
+        r = Math.min(255, r);
+        gr = Math.min(255, gr);
+        bl = Math.min(255, bl);
+        size *= (float) SCENE_SCALE;
         float halo = size * 3f;
-        g.setColor(new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha / 6));
-        g.fill(new Ellipse2D.Double(x - halo, y - halo, halo * 2, halo * 2));
-        Color core = new Color(Math.min(255, c.getRed() + 70), Math.min(255, c.getGreen() + 70), Math.min(255, c.getBlue() + 70), alpha);
-        g.setColor(core);
-        g.fill(new Ellipse2D.Double(x - size, y - size, size * 2, size * 2));
+        int dim = (int) Math.ceil(halo * 2f) + 2;
+        BufferedImage img = new BufferedImage(dim, dim, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = img.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        double cx = dim / 2.0, cy = dim / 2.0;
+        g.setColor(new Color(r, gr, bl, 255 / 6));
+        g.fill(new Ellipse2D.Double(cx - halo, cy - halo, halo * 2, halo * 2));
+        g.setColor(new Color(Math.min(255, r + 70), Math.min(255, gr + 70), Math.min(255, bl + 70), 255));
+        g.fill(new Ellipse2D.Double(cx - size, cy - size, size * 2, size * 2));
+        g.dispose();
+        return img;
     }
 
     private double clamp01(double v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
