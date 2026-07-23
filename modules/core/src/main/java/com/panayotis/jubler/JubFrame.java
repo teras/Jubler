@@ -1692,6 +1692,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         s.setSubFile(new SubFile(stripExtension(video), SubFile.EXTENSION_OMMITED));
         curjubler.setSubs(s);
         curjubler.getMediaFile().setNewVideoFile(video);
+        curjubler.mediaChanged();
         curjubler.enableSaveControls();
         curjubler.showInfo();
         StaticJubler.addRecentFile(video);
@@ -2219,8 +2220,9 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             c.setEnabled(true);
         for (Component c : ToolsM.getMenuComponents())
             c.setEnabled(true);
+        ToolsManager.updateToolsAvailability(this);
         updateStyleMenu();
-        ToolsManager.setFileToolsStatus(windows.get(0), windows.size() > 1);
+        ToolsManager.updateToolsAvailability(windows.get(0));
         if (asNewWindow) {
             UndoEM.setEnabled(false);
             RedoEM.setEnabled(false);
@@ -2307,8 +2309,14 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             BasicPanel.remove(SubSplitPane);
             BasicPanel.add(SubsTableScrollPane, CENTER);
         }
+        mediaChanged();
         revalidate();
         repaint();
+    }
+
+    /** Re-evaluate media-dependent tool availability after the attached video/media changed. */
+    public void mediaChanged() {
+        ToolsManager.updateToolsAvailability(this);
     }
 
     public void closeWindow(boolean unsave_check, boolean keep_application_alive) {
@@ -2326,7 +2334,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             if (w.jparent == this)
                 w.jparent = null;
         if (windows.size() == 1)
-            ToolsManager.setFileToolsStatus(windows.get(0), false);
+            ToolsManager.updateToolsAvailability(windows.get(0));
         StaticJubler.updateRecents();
 
         if (windows.isEmpty())
@@ -2347,7 +2355,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             windows.add(this);
             if (windows.size() > 1)
                 for (int i = 0; i < windows.size(); i++)
-                    ToolsManager.setFileToolsStatus(windows.get(i), true);
+                    ToolsManager.updateToolsAvailability(windows.get(i));
         }
         StaticJubler.updateRecents();
     }

@@ -26,6 +26,12 @@ public class Reparent extends Tool {
         super(new ToolMenu(__("Reparent"), "TPA", ToolMenu.Location.FILETOOL, 0, 0));
     }
 
+    /* Reparenting needs at least one other open document to parent onto. */
+    @Override
+    public boolean isAvailable(JubFrame current) {
+        return JubFrame.windows != null && JubFrame.windows.size() > 1;
+    }
+
     @Override
     public void updateData(JubFrame current) {
         ReparentGUI vis = (ReparentGUI) getVisuals();

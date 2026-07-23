@@ -51,6 +51,39 @@ public class ToolsManager implements PluginContext {
             tools.computeIfAbsent(tool.menu.location, k -> new ArrayList<>()).add(tool);
     }
 
+    /**
+     * The single owner of Tools-menu item availability. Re-evaluate each registered tool for
+     * {@code frame} and enable/disable its menu item accordingly. Items are located by the name carried
+     * from {@link ToolMenu#name}. A tool item is enabled only when the frame actually holds a document
+     * <em>and</em> the tool reports itself {@link Tool#isAvailable(JubFrame) available} — so before any
+     * document is loaded every item stays disabled, exactly as when items are first created. Cheap and
+     * idempotent; called when a document is enabled, on every media change, and whenever windows open or
+     * close (window-count is what governs Join/Reparent).
+     */
+    public static void updateToolsAvailability(JubFrame frame) {
+        boolean hasDocument = frame.getSubtitles() != null;
+        for (ArrayList<Tool> group : tools.values())
+            for (Tool tool : group) {
+                JMenuItem item = findMenuItem(frame, tool.menu == null ? null : tool.menu.name);
+                if (item != null)
+                    item.setEnabled(hasDocument && tool.isAvailable(frame));
+            }
+    }
+
+    /*
+     * Only the Tools menu is scanned: that is where availability-driven items live (our media tool,
+     * Join/Reparent). The Edit sub-menus (Delete/Mark/Style) manage their own item state, so they are
+     * deliberately left untouched to preserve existing behaviour.
+     */
+    private static JMenuItem findMenuItem(JubFrame frame, String name) {
+        if (name == null || frame.ToolsM == null)
+            return null;
+        for (Component c : frame.ToolsM.getMenuComponents())
+            if (c instanceof JMenuItem && name.equals(c.getName()))
+                return (JMenuItem) c;
+        return null;
+    }
+
     public static void register(JubFrame current) {
         // Backup existing tools menu
         Component[] oldtools = current.ToolsM.getMenuComponents();
@@ -66,7 +99,7 @@ public class ToolsManager implements PluginContext {
             for (Tool tool : tools.get(Location.CONTENTTOOL))
                 addMenu(current, current.ToolsM, tool);
             current.ToolsM.add(new JSeparator());
-            setFileToolsStatus(current, false);
+            updateToolsAvailability(current);
 
             /* Populate edit menu */
             for (Tool tool : tools.get(Location.DELETE))
@@ -204,27 +237,6 @@ public class ToolsManager implements PluginContext {
                 tool.execute(current);
             }
         });
-    }
-
-    /*
-     * Join and Reparent are in the first block of menu, or else this code will break,
-     * since it searches for the first separator item
-     */
-    public static void setFileToolsStatus(JubFrame current, boolean status) {
-        JMenuItem Join = null;
-        JMenuItem Reparent = null;
-        for (Component item : current.ToolsM.getMenuComponents())
-            if (item instanceof JMenuItem) {
-                if ("TJO".equals(((JMenuItem) item).getName()))
-                    Join = (JMenuItem) item;
-                else if ("TPA".equals(((JMenuItem) item).getName()))
-                    Reparent = (JMenuItem) item;
-            } else
-                break;
-        if (Join != null)
-            Join.setEnabled(status);
-        if (Reparent != null)
-            Reparent.setEnabled(status);
     }
 
     public static RealTimeTool getRecoder() {

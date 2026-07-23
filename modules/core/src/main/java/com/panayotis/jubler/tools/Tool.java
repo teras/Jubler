@@ -39,6 +39,15 @@ public abstract class Tool implements PluginItem<ToolsManager> {
 
     public abstract boolean execute(JubFrame current);
 
+    /**
+     * Whether this tool is currently usable for the given frame. Re-evaluated by
+     * {@link ToolsManager#updateToolsAvailability(JubFrame)} when a document is enabled and whenever the
+     * frame's media changes, so the menu item can enable/disable live. Defaults to always available.
+     */
+    public boolean isAvailable(JubFrame current) {
+        return true;
+    }
+
     public final JComponent getVisuals() {
         if (visuals == null)
             visuals = constructVisuals();

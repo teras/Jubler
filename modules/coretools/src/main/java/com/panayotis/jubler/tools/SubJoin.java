@@ -28,7 +28,13 @@ public class SubJoin extends Tool {
     private ArrayList<JubFrame> privlist = new ArrayList<JubFrame>();
 
     public SubJoin() {
-        super(new ToolMenu("Join files", "TJO", Location.FILETOOL, 0, 0));
+        super(new ToolMenu(__("Join files"), "TJO", Location.FILETOOL, 0, 0));
+    }
+
+    /* Joining needs at least one other open document. */
+    @Override
+    public boolean isAvailable(JubFrame current) {
+        return JubFrame.windows != null && JubFrame.windows.size() > 1;
     }
 
     public boolean isPrepend() {
