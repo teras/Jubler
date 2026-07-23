@@ -12,6 +12,7 @@ include(
     ":vlcj-jubler",
     ":zemberek",
     ":azuretranslate",
+    ":subdownload",
     ":autoupdate"
 )
 
@@ -25,6 +26,7 @@ project(":aspell").projectDir = file("modules/aspell")
 project(":vlcj-jubler").projectDir = file("modules/vlcj-jubler")
 project(":zemberek").projectDir = file("modules/zemberek")
 project(":azuretranslate").projectDir = file("modules/azuretranslate")
+project(":subdownload").projectDir = file("modules/subdownload")
 project(":autoupdate").projectDir = file("modules/autoupdate")
 
 // i18n-tools is a standalone build tool, not part of the main build
