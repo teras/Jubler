@@ -87,11 +87,6 @@ build_windows() {
     echo -e "${GREEN}Building for Windows...${NC}"
     cd "$script_dir"
 
-    # Build Jubler distribution first if needed
-    if [ ! -d "$jubler_source_win64" ]; then
-        gradle clean assembleDistribution
-    fi
-
     # Get version from environment variable or build.gradle.kts
     version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
@@ -121,11 +116,6 @@ build_windows() {
 build_linux() {
     echo -e "${GREEN}Building for Linux...${NC}"
     cd "$script_dir"
-
-    # Build Jubler distribution first if needed
-    if [ ! -d "$jubler_source_linux64" ]; then
-        gradle clean assembleDistribution
-    fi
 
     # Get version from environment variable or build.gradle.kts
     version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
@@ -157,11 +147,6 @@ build_generic() {
     echo -e "${GREEN}Building for Generic...${NC}"
     cd "$script_dir"
 
-    # Build Jubler distribution first if needed
-    if [ ! -d "$jubler_source_generic" ]; then
-        gradle clean assembleDistribution
-    fi
-
     # Get version from environment variable or build.gradle.kts
     version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
@@ -191,11 +176,6 @@ build_generic() {
 build_macos() {
     echo -e "${GREEN}Building for MacOS...${NC}"
     cd "$script_dir"
-
-    # Build Jubler distribution first if needed
-    if [ ! -d "$jubler_source_macos" ]; then
-        gradle clean assembleDistribution
-    fi
 
     # Get version from environment variable or build.gradle.kts
     version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
@@ -232,10 +212,6 @@ build_linux_arm64() {
     echo -e "${GREEN}Building for Linux (arm64)...${NC}"
     cd "$script_dir"
 
-    if [ ! -d "$jubler_source_linuxarm64" ]; then
-        gradle clean assembleDistribution
-    fi
-
     version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
     local output_dir="$dist_dir"
@@ -262,10 +238,6 @@ build_linux_arm64() {
 build_macos_arm64() {
     echo -e "${GREEN}Building for macOS (Apple Silicon)...${NC}"
     cd "$script_dir"
-
-    if [ ! -d "$jubler_source_macosarm64" ]; then
-        gradle clean assembleDistribution
-    fi
 
     version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
@@ -326,6 +298,14 @@ build_action() {
             break
         fi
     done
+
+    # Regenerate the Jubler distribution fresh, exactly once per invocation.
+    # gradle assembleDistribution produces every build/jubler-* platform dir in one
+    # go, so a single build here serves all requested targets (single, multi or "all")
+    # while guaranteeing every packaged installer is built from current code.
+    echo -e "${GREEN}Building Jubler distribution...${NC}"
+    cd "$script_dir"
+    gradle clean assembleDistribution
 
     for target in "${target_array[@]}"; do
         case "$target" in

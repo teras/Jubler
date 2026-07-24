@@ -15,8 +15,21 @@ import java.util.List;
  */
 public interface SubtitleProvider {
 
+    /** How a provider relates a search to the loaded video file. */
+    enum HashSupport {
+        /** Matches only by a text title; never uses the video hash. */
+        TEXT_ONLY,
+        /** Can match either by text or by the video hash; the user chooses. */
+        HASH_OPTIONAL
+    }
+
     /** Human-readable name shown in the provider dropdown. */
     String getName();
+
+    /** @return how this provider relates a search to the loaded video file. Defaults to text-only. */
+    default HashSupport hashSupport() {
+        return HashSupport.TEXT_ONLY;
+    }
 
     /** @return false for keyless providers, so the UI can hide the Configure control and never prompt. */
     default boolean needsConfiguration() {
@@ -41,10 +54,9 @@ public interface SubtitleProvider {
      * Free, metadata-only search. Implementations must run on a background thread (the caller guarantees
      * this) and honour interruption/disconnection when the search is superseded.
      *
-     * @param query        free-text title query
-     * @param languageCode ISO 639-1 language code, or empty for any language
+     * @param req the search parameters (text query, language, hash preference and video file)
      */
-    List<Candidate> search(String query, String languageCode) throws ProviderException;
+    List<Candidate> search(SearchRequest req) throws ProviderException;
 
     /**
      * Fetch and decode exactly this candidate into subtitle bytes (plus the payload's content-type for

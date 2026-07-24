@@ -44,6 +44,11 @@ class OpenSubtitlesProvider implements SubtitleProvider {
     }
 
     @Override
+    public HashSupport hashSupport() {
+        return HashSupport.HASH_OPTIONAL;
+    }
+
+    @Override
     public void cancelSearch() {
         HttpURLConnection c = searchConn.getAndSet(null);
         if (c != null)
@@ -101,10 +106,46 @@ class OpenSubtitlesProvider implements SubtitleProvider {
     }
 
     @Override
-    public List<Candidate> search(String query, String languageCode) throws ProviderException {
-        StringBuilder url = new StringBuilder(BASE).append("/subtitles?query=").append(encode(query));
+    public List<Candidate> search(SearchRequest req) throws ProviderException {
+        // A TreeMap keeps the query parameters in canonical (alphabetical) order — e.g. episode_number <
+        // languages < moviehash < query < season_number < type — which OpenSubtitles expects (the docs ask
+        // clients to send sorted parameters) for consistent, redirect-free, cache-friendly request URLs.
+        java.util.TreeMap<String, String> params = new java.util.TreeMap<>();
+        String languageCode = req.languageCode();
         if (languageCode != null && !languageCode.isEmpty())
-            url.append("&languages=").append(languageCode.toLowerCase());
+            params.put("languages", languageCode.toLowerCase());
+        if (req.useHash()) {
+            String hash;
+            try {
+                hash = MovieHash.of(req.video());
+            } catch (IOException e) {
+                throw new ProviderException(ProviderException.Kind.NETWORK,
+                        __("Could not read the video file to compute its fingerprint."), e);
+            }
+            if (hash == null)
+                throw new ProviderException(ProviderException.Kind.NETWORK,
+                        __("The video file is too small to fingerprint."));
+            params.put("moviehash", hash);
+        } else {
+            // Text search: split any season/episode out of the query so the show title alone goes into
+            // "query" while the season/episode become their own params. Implemented per the OpenSubtitles
+            // REST /subtitles docs, which for TV episodes expect season_number, episode_number and
+            // type=episode (see https://opensubtitles.stoplight.io/docs/opensubtitles-api).
+            Episode ep = parseEpisode(req.query());
+            params.put("query", encode(ep.title));
+            if (ep.season >= 0) {
+                params.put("season_number", String.valueOf(ep.season));
+                if (ep.episode >= 0)
+                    params.put("episode_number", String.valueOf(ep.episode));
+                params.put("type", "episode");
+            }
+        }
+        StringBuilder url = new StringBuilder(BASE).append("/subtitles");
+        char sep = '?';
+        for (Map.Entry<String, String> e : params.entrySet()) {
+            url.append(sep).append(e.getKey()).append('=').append(e.getValue());
+            sep = '&';
+        }
         Http.Response resp;
         try {
             resp = Http.get(url.toString(), headers(), searchConn);
@@ -200,6 +241,43 @@ class OpenSubtitlesProvider implements SubtitleProvider {
 
     private static String networkMessage(IOException e) {
         return __("Network error: {0}", String.valueOf(e.getMessage()));
+    }
+
+    // Season/episode split out of a free-text query. season/episode are -1 when absent.
+    private static final class Episode {
+        final String title;
+        final int season;
+        final int episode;
+
+        Episode(String title, int season, int episode) {
+            this.title = title;
+            this.season = season;
+            this.episode = episode;
+        }
+    }
+
+    // Local (not shared) parser for the common TV-episode notations in a text query:
+    // "SxxEyy" (S04E01, s4e1), "4x01", and "Season 4 Episode 1" (episode optional). The matched
+    // token is stripped from the returned title so only the show name reaches the "query" param.
+    private static Episode parseEpisode(String query) {
+        String q = query == null ? "" : query;
+        java.util.regex.Matcher m;
+        m = java.util.regex.Pattern.compile("(?i)\\bS(\\d{1,2})[ ._-]?E(\\d{1,3})\\b").matcher(q);
+        if (m.find())
+            return new Episode(strip(q, m), Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
+        m = java.util.regex.Pattern.compile("(?i)\\b(\\d{1,2})x(\\d{1,3})\\b").matcher(q);
+        if (m.find())
+            return new Episode(strip(q, m), Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
+        m = java.util.regex.Pattern.compile("(?i)\\bseason\\s*(\\d{1,2})(?:\\s*episode\\s*(\\d{1,3}))?\\b").matcher(q);
+        if (m.find()) {
+            int ep = m.group(2) == null ? -1 : Integer.parseInt(m.group(2));
+            return new Episode(strip(q, m), Integer.parseInt(m.group(1)), ep);
+        }
+        return new Episode(q.trim(), -1, -1);
+    }
+
+    private static String strip(String q, java.util.regex.Matcher m) {
+        return (q.substring(0, m.start()) + " " + q.substring(m.end())).replaceAll("\\s+", " ").trim();
     }
 
     private static String encode(String s) {

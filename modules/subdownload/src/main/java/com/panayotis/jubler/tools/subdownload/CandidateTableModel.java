@@ -15,7 +15,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
 /** Read-only table of search hits; selection carries no side effects. */
 class CandidateTableModel extends AbstractTableModel {
 
-    private final String[] columns = {__("Release"), __("Language"), __("Downloads"), __("Rating"), __("State")};
+    private final String[] columns = {__("Release"), __("Language"), __("Downloads"), __("Rating")};
     private final List<Candidate> rows = new ArrayList<>();
 
     void setCandidates(List<Candidate> candidates) {
@@ -31,12 +31,6 @@ class CandidateTableModel extends AbstractTableModel {
 
     Candidate get(int row) {
         return row >= 0 && row < rows.size() ? rows.get(row) : null;
-    }
-
-    void rowChanged(Candidate candidate) {
-        int idx = rows.indexOf(candidate);
-        if (idx >= 0)
-            fireTableRowsUpdated(idx, idx);
     }
 
     @Override
@@ -71,21 +65,6 @@ class CandidateTableModel extends AbstractTableModel {
                 return c.getDownloads();
             case 3:
                 return c.getRating();
-            case 4:
-                return stateLabel(c.getState());
-            default:
-                return "";
-        }
-    }
-
-    private static String stateLabel(Candidate.State state) {
-        switch (state) {
-            case DOWNLOADING:
-                return __("downloading…");
-            case DOWNLOADED:
-                return __("downloaded");
-            case FAILED:
-                return __("failed");
             default:
                 return "";
         }

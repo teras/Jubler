@@ -12,10 +12,6 @@ package com.panayotis.jubler.tools.subdownload;
  */
 public class Candidate {
 
-    public enum State {
-        UNTRIED, DOWNLOADING, DOWNLOADED, FAILED
-    }
-
     private final SubtitleProvider provider;
     private final String releaseName;
     private final String language;
@@ -23,8 +19,6 @@ public class Candidate {
     private final String rating;
     private final String handle;   // e.g. OpenSubtitles file_id, or a SubDL relative url
     private final String fileHint; // preferred file name / extension hint, may be empty
-
-    private State state = State.UNTRIED;
 
     public Candidate(SubtitleProvider provider, String releaseName, String language,
                      String downloads, String rating, String handle, String fileHint) {
@@ -63,13 +57,5 @@ public class Candidate {
 
     public String getFileHint() {
         return fileHint;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
     }
 }

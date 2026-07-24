@@ -10,10 +10,15 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.VideoFile;
+import com.panayotis.jubler.os.DEBUG;
+import com.panayotis.jubler.theme.Theme;
 import com.panayotis.jubler.tools.translate.Language;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -39,11 +44,13 @@ public class SubDownloadFrame extends JFrame {
 
     private final JubFrame owner;
     private final SubtitleProvider[] providers = {
-            new OpenSubtitlesProvider(), new SubDLProvider(), new GestdownProvider(), new PodnapisiProvider()};
+            new SubSourceProvider(), new OpenSubtitlesProvider(), new SubDLProvider(),
+            new GestdownProvider()};
 
     private final JComboBox<String> providerBox = new JComboBox<>();
     private final JComboBox<Language> languageBox = new JComboBox<>(DownloadLanguages.list());
     private final JTextField queryField = new JTextField(24);
+    private final JCheckBox hashCheck = new JCheckBox(__("Match by video hash"));
     private final JButton searchButton = new JButton(__("Search"));
     private final JButton configButton = new JButton(__("Configure…"));
     private final JButton downloadButton = new JButton(__("Download & preview"));
@@ -60,6 +67,9 @@ public class SubDownloadFrame extends JFrame {
     private SubtitleProvider searchingProvider;
     private int searchSerial;
     private boolean downloading;
+
+    /** For HASH_OPTIONAL providers only: the user's last explicit hash-vs-text choice, remembered per window. */
+    private boolean hashPreferred = false;
 
     /** Open (or focus, if already open) the downloader for the given frame. */
     public static void openFor(JubFrame owner) {
@@ -90,6 +100,7 @@ public class SubDownloadFrame extends JFrame {
         owner.addWindowListener(ownerWatcher);
 
         pack();
+        setSize(new Dimension(1180, 640));
         setLocationRelativeTo(owner);
     }
 
@@ -124,8 +135,15 @@ public class SubDownloadFrame extends JFrame {
         top.add(languageBox, g);
         g.gridwidth = 1;
 
-        g.gridx = 0;
+        g.gridx = 1;
         g.gridy = 2;
+        g.gridwidth = 2;
+        g.fill = GridBagConstraints.HORIZONTAL;
+        top.add(hashCheck, g);
+        g.gridwidth = 1;
+
+        g.gridx = 0;
+        g.gridy = 3;
         g.fill = GridBagConstraints.NONE;
         top.add(new JLabel(__("Search")), g);
         g.gridx = 1;
@@ -137,9 +155,28 @@ public class SubDownloadFrame extends JFrame {
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getSelectionModel().addListSelectionListener(e -> updateDownloadEnabled());
+        // The icon headers carry no text, so surface the full localized column name as a header tooltip.
+        table.setTableHeader(new JTableHeader(table.getColumnModel()) {
+            @Override
+            public String getToolTipText(MouseEvent e) {
+                int viewCol = columnAtPoint(e.getPoint());
+                if (viewCol < 0)
+                    return null;
+                int modelCol = table.convertColumnIndexToModel(viewCol);
+                return modelCol >= 1 && modelCol <= 3 ? model.getColumnName(modelCol) : null;
+            }
+        });
+        configureColumns();
         JScrollPane scroll = new JScrollPane(table);
-        scroll.setPreferredSize(new Dimension(560, 240));
+        scroll.setPreferredSize(new Dimension(900, 420));
 
+        // The status/error line must never dictate the window width: give it a zero preferred/minimum
+        // width so pack() ignores its (possibly very long) message. In its BorderLayout.CENTER cell it
+        // still stretches to fill the leftover row width and clips overflow with an ellipsis; the full
+        // text stays reachable via the tooltip (see showInfo/showError).
+        int statusHeight = status.getPreferredSize().height;
+        status.setMinimumSize(new Dimension(0, statusHeight));
+        status.setPreferredSize(new Dimension(0, statusHeight));
         JPanel bottom = new JPanel(new BorderLayout(8, 0));
         bottom.setBorder(BorderFactory.createEmptyBorder(4, 8, 8, 8));
         bottom.add(status, BorderLayout.CENTER);
@@ -156,13 +193,28 @@ public class SubDownloadFrame extends JFrame {
         downloadButton.addActionListener(e -> startDownload());
         providerBox.addActionListener(e -> {
             updateConfigEnabled();
+            updateHashControls();
             JublerPrefs.set(PREF_PROVIDER, currentProvider().getName());
         });
         languageBox.addActionListener(e -> persistLanguage());
+        hashCheck.addActionListener(e -> {
+            if (currentProvider().hashSupport() == SubtitleProvider.HashSupport.HASH_OPTIONAL)
+                hashPreferred = hashCheck.isSelected();
+            updateHashControls();
+        });
+        // Re-evaluate the hash controls when the window regains focus: the user may have opened or closed a
+        // video in the owner frame meanwhile, which flips whether hashing is available.
+        addWindowFocusListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowGainedFocus(WindowEvent e) {
+                updateHashControls();
+            }
+        });
 
         getRootPane().setDefaultButton(searchButton);
         updateConfigEnabled();
         updateDownloadEnabled();
+        updateHashControls();
     }
 
     /** Keyless providers need no key: hide the Configure control so it never prompts. */
@@ -174,15 +226,129 @@ public class SubDownloadFrame extends JFrame {
         return providers[Math.max(0, providerBox.getSelectedIndex())];
     }
 
+    private VideoFile currentVideo() {
+        MediaFile m = owner.getMediaFile();
+        return m == null ? null : m.getVideoFile();
+    }
+
+    private boolean hasVideo() {
+        VideoFile v = currentVideo();
+        return v != null && v.isFile();
+    }
+
+    /**
+     * Sync the "Match by video hash" checkbox and the query field to the selected provider and whether a
+     * video is open. TEXT_ONLY providers force the box off; the HASH_OPTIONAL provider offers it only when a
+     * video is open, honouring the user's remembered choice. When hashing is on, the free-text query is
+     * irrelevant, so the query field is disabled.
+     */
+    private void updateHashControls() {
+        SubtitleProvider.HashSupport support = currentProvider().hashSupport();
+        boolean hasVideo = hasVideo();
+        switch (support) {
+            case HASH_OPTIONAL:
+                hashCheck.setEnabled(hasVideo);
+                hashCheck.setSelected(hasVideo && hashPreferred);
+                break;
+            case TEXT_ONLY:
+                hashCheck.setEnabled(false);
+                hashCheck.setSelected(false);
+                break;
+        }
+        queryField.setEnabled(!hashCheck.isSelected());
+    }
+
     private void updateDownloadEnabled() {
         downloadButton.setEnabled(!downloading && table.getSelectedRow() >= 0);
+    }
+
+    /**
+     * Column layout: Release (Έκδοση) holds long release names, so it is the only stretchy column — it
+     * absorbs every extra pixel when the window widens. The other three are narrow and fixed (max == pref):
+     * with zero slack they never grow, so all the slack falls to Release under the default resize policy.
+     * Their headers are icons (see {@link #installIconHeaders()}), so they can be narrow.
+     */
+    private void configureColumns() {
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+        javax.swing.table.TableColumnModel cols = table.getColumnModel();
+        cols.getColumn(0).setPreferredWidth(420);       // Release / Έκδοση — stretches
+        fixColumnWidth(cols.getColumn(1), 90);          // Language / Γλώσσα (globe icon) — fits a language name
+        fixColumnWidth(cols.getColumn(2), 78);          // Downloads / Λήψεις (download icon) — fits multi-digit counts
+        fixColumnWidth(cols.getColumn(3), 78);          // Rating / Βαθμολογία (star icon)
+        centerColumn(cols.getColumn(2));                // numbers sit under the centred icon
+        centerColumn(cols.getColumn(3));
+        installIconHeaders();
+    }
+
+    /**
+     * The three narrow columns render an SVG glyph instead of their (truncation-prone Greek) header text:
+     * globe for Language, download arrow for Downloads, star for Rating. The full localized name stays
+     * reachable through the header tooltip (see the JTableHeader override in {@link #buildUI()}).
+     */
+    private void installIconHeaders() {
+        TableCellRenderer base = table.getTableHeader().getDefaultRenderer();
+        setIconHeader(1, "flag-global", base);
+        setIconHeader(2, "download", base);
+        setIconHeader(3, "star", base);
+    }
+
+    private void setIconHeader(int column, String iconName, TableCellRenderer base) {
+        Icon icon = Theme.loadIcon(iconName);
+        table.getColumnModel().getColumn(column).setHeaderRenderer(new IconHeaderRenderer(base, icon));
+    }
+
+    /** Pin a column to a fixed width so it neither grows nor donates the row's slack. */
+    private static void fixColumnWidth(javax.swing.table.TableColumn column, int width) {
+        column.setPreferredWidth(width);
+        column.setMaxWidth(width);
+    }
+
+    /** Centre a numeric column's cell text so it sits under its centred icon header. */
+    private static void centerColumn(javax.swing.table.TableColumn column) {
+        javax.swing.table.DefaultTableCellRenderer renderer = new javax.swing.table.DefaultTableCellRenderer();
+        renderer.setHorizontalAlignment(SwingConstants.CENTER);
+        column.setCellRenderer(renderer);
+    }
+
+    /**
+     * Draws a column header as a centred icon with no text, delegating to the L&F's default header
+     * renderer for background/border/state so it stays visually consistent with the text headers.
+     */
+    private static class IconHeaderRenderer implements TableCellRenderer {
+        private final TableCellRenderer base;
+        private final Icon icon;
+
+        IconHeaderRenderer(TableCellRenderer base, Icon icon) {
+            this.base = base;
+            this.icon = icon;
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
+            Component c = base.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+            if (c instanceof JLabel) {
+                JLabel label = (JLabel) c;
+                label.setText(null);
+                label.setIcon(icon);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+            }
+            return c;
+        }
     }
 
     /* ---- Search ---- */
 
     private void startSearch() {
-        String query = sanitizeQuery(queryField.getText());
-        if (query.isEmpty()) {
+        updateHashControls();
+        boolean useHash = hashCheck.isSelected();
+        VideoFile video = currentVideo();
+        if (useHash && (video == null || !video.isFile())) {
+            showError(__("Open a video first to match by hash."));
+            return;
+        }
+        String query = useHash ? "" : sanitizeQuery(queryField.getText());
+        if (!useHash && query.isEmpty()) {
             showError(__("Enter something to search for."));
             return;
         }
@@ -200,7 +366,7 @@ public class SubDownloadFrame extends JFrame {
             searchWorker.cancel(true);
         }
         final int mySerial = ++searchSerial;
-        final String languageCode = selectedLanguageCode();
+        final SearchRequest req = new SearchRequest(query, selectedLanguageCode(), useHash, video);
 
         searchingProvider = provider;
         searchButton.setEnabled(false);
@@ -209,7 +375,7 @@ public class SubDownloadFrame extends JFrame {
         searchWorker = new SwingWorker<List<Candidate>, Void>() {
             @Override
             protected List<Candidate> doInBackground() throws Exception {
-                return provider.search(query, languageCode);
+                return provider.search(req);
             }
 
             @Override
@@ -264,8 +430,6 @@ public class SubDownloadFrame extends JFrame {
 
         downloading = true;
         updateDownloadEnabled();
-        candidate.setState(Candidate.State.DOWNLOADING);
-        model.rowChanged(candidate);
         showInfo(__("Downloading…"));
 
         final java.util.concurrent.atomic.AtomicReference<String> contentType = new java.util.concurrent.atomic.AtomicReference<>();
@@ -284,8 +448,6 @@ public class SubDownloadFrame extends JFrame {
                     File file = get();
                     applyAndReport(candidate, file, false, contentType.get());
                 } catch (Exception ex) {
-                    candidate.setState(Candidate.State.FAILED);
-                    model.rowChanged(candidate);
                     reportFailure(ex);
                 }
                 updateDownloadEnabled();
@@ -299,12 +461,8 @@ public class SubDownloadFrame extends JFrame {
                 candidate.getProvider().getName(), contentType);
         if (error == null) {
             cache.put(candidate, file);
-            candidate.setState(Candidate.State.DOWNLOADED);
-            model.rowChanged(candidate);
             showInfo(fromCache ? __("Applied from cache.") : __("Downloaded and applied."));
         } else {
-            candidate.setState(Candidate.State.FAILED);
-            model.rowChanged(candidate);
             showError(error);
         }
     }
@@ -312,6 +470,10 @@ public class SubDownloadFrame extends JFrame {
     /** Show a background failure as a plain factual message (providers already word their own errors). */
     private void reportFailure(Exception ex) {
         Throwable cause = ex instanceof java.util.concurrent.ExecutionException ? ex.getCause() : ex;
+        // Expected provider errors carry a clean message (logged by showError below); dumping their stack
+        // trace too is redundant noise. Keep full traces only for unexpected/programming errors.
+        if (cause != null && !(cause instanceof ProviderException))
+            DEBUG.debug(cause);
         if (cause instanceof ProviderException) {
             showError(cause.getMessage());
             return;
@@ -323,12 +485,19 @@ public class SubDownloadFrame extends JFrame {
 
     private void showInfo(String text) {
         status.setForeground(UIManager.getColor("Label.foreground"));
-        status.setText(text);
+        setStatusText(text);
     }
 
     private void showError(String text) {
         status.setForeground(new Color(0xB0, 0x30, 0x30));
+        setStatusText(text);
+        DEBUG.debug(text); // mirror every user-facing error into Jubler's log/console
+    }
+
+    /** Set the status line, mirroring the full message into the tooltip so a clipped line stays readable. */
+    private void setStatusText(String text) {
         status.setText(text);
+        status.setToolTipText(text == null || text.trim().isEmpty() ? null : text);
     }
 
     private String selectedLanguageCode() {

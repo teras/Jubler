@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
@@ -93,11 +95,24 @@ class SubDLProvider implements SubtitleProvider {
     }
 
     @Override
-    public List<Candidate> search(String query, String languageCode) throws ProviderException {
+    public List<Candidate> search(SearchRequest req) throws ProviderException {
+        String query = req.query();
+        String languageCode = req.languageCode();
+        // SubDL matches TV episodes by a plain show title plus separate season/episode params; baking
+        // "S04E01" into film_name makes it look for a title literally named that and it finds nothing.
+        Episode ep = parseEpisode(query);
+        String filmName = ep != null && !ep.title.isEmpty() ? ep.title : query;
         StringBuilder url = new StringBuilder(BASE)
                 .append("?api_key=").append(encode(apiKey))
-                .append("&film_name=").append(encode(query))
+                .append("&film_name=").append(encode(filmName))
                 .append("&subs_per_page=30");
+        if (ep != null) {
+            url.append("&type=tv").append("&season_number=").append(ep.season);
+            if (ep.episode >= 0)
+                url.append("&episode_number=").append(ep.episode);
+            else
+                url.append("&full_season=1");
+        }
         if (languageCode != null && !languageCode.isEmpty())
             url.append("&languages=").append(languageCode.toUpperCase());
         Http.Response resp;
@@ -116,6 +131,10 @@ class SubDLProvider implements SubtitleProvider {
                 if (!error.isEmpty())
                     DEBUG.debug("SubDL search error: " + error);
                 String lower = error.toLowerCase();
+                // "can't find movie or tv" simply means the title/season/episode combination matched
+                // nothing; treat it as an empty result set rather than an error dialog.
+                if (lower.contains("can't find") || lower.contains("cant find") || lower.contains("find movie or tv"))
+                    return new ArrayList<>();
                 // SubDL rejects some titles server-side for their characters; rephrase into something the
                 // user can act on instead of surfacing the raw (confusing) server text.
                 if (lower.contains("unsafe") || lower.contains("film name"))
@@ -172,6 +191,52 @@ class SubDLProvider implements SubtitleProvider {
             return URLEncoder.encode(s == null ? "" : s, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             return "";
+        }
+    }
+
+    // Local season/episode parsing (kept private to this provider on purpose). Recognises S04E01,
+    // "Season 4 Episode 1" (episode optional) and 4x01, stripping the marker from the show title.
+    private static final Pattern EP_SXXEXX = Pattern.compile("(?i)\\bS(\\d{1,2})\\s*E(\\d{1,3})\\b");
+    private static final Pattern EP_WORDS = Pattern.compile("(?i)\\bSeason\\s+(\\d{1,2})(?:\\s+(?:Episode|Ep)\\s*(\\d{1,3}))?\\b");
+    private static final Pattern EP_NXN = Pattern.compile("\\b(\\d{1,2})x(\\d{1,3})\\b");
+
+    private static Episode parseEpisode(String query) {
+        if (query == null)
+            return null;
+        Matcher m = EP_SXXEXX.matcher(query);
+        if (m.find())
+            return episodeFrom(query, m.start(), m.end(), m.group(1), m.group(2));
+        m = EP_WORDS.matcher(query);
+        if (m.find())
+            return episodeFrom(query, m.start(), m.end(), m.group(1), m.group(2));
+        m = EP_NXN.matcher(query);
+        if (m.find())
+            return episodeFrom(query, m.start(), m.end(), m.group(1), m.group(2));
+        return null;
+    }
+
+    private static Episode episodeFrom(String query, int start, int end, String season, String episode) {
+        int s = Integer.parseInt(season);
+        int e = episode == null || episode.isEmpty() ? -1 : Integer.parseInt(episode);
+        String title = cleanTitle(query.substring(0, start));
+        if (title.isEmpty())
+            title = cleanTitle(query.substring(end));
+        return new Episode(title, s, e);
+    }
+
+    private static String cleanTitle(String s) {
+        return s.replaceAll("[._]+", " ").replaceAll("\\s+", " ").trim();
+    }
+
+    private static final class Episode {
+        final String title;
+        final int season;
+        final int episode;
+
+        Episode(String title, int season, int episode) {
+            this.title = title;
+            this.season = season;
+            this.episode = episode;
         }
     }
 }

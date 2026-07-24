@@ -74,7 +74,9 @@ class GestdownProvider implements SubtitleProvider {
     }
 
     @Override
-    public List<Candidate> search(String query, String languageCode) throws ProviderException {
+    public List<Candidate> search(SearchRequest req) throws ProviderException {
+        String query = req.query();
+        String languageCode = req.languageCode();
         EpisodeQuery ep = EpisodeQuery.parse(query);
         if (ep == null || ep.title.isEmpty())
             throw new ProviderException(ProviderException.Kind.NETWORK,
