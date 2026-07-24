@@ -44,8 +44,7 @@ public class SubDownloadFrame extends JFrame {
 
     private final JubFrame owner;
     private final SubtitleProvider[] providers = {
-            new SubSourceProvider(), new OpenSubtitlesProvider(), new SubDLProvider(),
-            new GestdownProvider()};
+            new SubSourceProvider(), new OpenSubtitlesProvider(), new SubDLProvider()};
 
     private final JComboBox<String> providerBox = new JComboBox<>();
     private final JComboBox<Language> languageBox = new JComboBox<>(DownloadLanguages.list());

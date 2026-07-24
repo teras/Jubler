@@ -60,13 +60,6 @@ class SubSourceProvider implements SubtitleProvider {
             LANG_TOKENS.put(p[0], p[1]);
     }
 
-    // Season/episode markers in the user's free-text query, tried in order (e.g. "S01E02",
-    // "Season 1 Episode 2", "1x02"); group 1 is the season, group 2 the episode.
-    private static final Pattern[] QUERY_EPISODE = {
-            Pattern.compile("(?i)\\bS(\\d{1,2})E(\\d{1,3})\\b"),
-            Pattern.compile("(?i)\\bSeason\\s+(\\d{1,2})\\s+Episode\\s+(\\d{1,3})\\b"),
-            Pattern.compile("(?i)\\b(\\d{1,2})x(\\d{1,3})\\b")
-    };
     // Season/episode markers in a subtitle's release name. SxxEyy (with an optional "-Ezz"/"-zz"
     // range for packs), NxNN, or a season-only token (whole-season pack such as "S01" or "Season 4").
     private static final Pattern REL_SXXEYY = Pattern.compile("(?i)S(\\d{1,2})E(\\d{1,3})(?:\\s*-\\s*E?(\\d{1,3}))?");
@@ -144,8 +137,8 @@ class SubSourceProvider implements SubtitleProvider {
         // Split the query into a bare title plus optional season/episode. Resolving the title with the
         // SxxEyy tokens stripped makes the show name match cleanly; the parsed numbers pick and filter
         // the requested episode below.
-        Query q = parseQuery(req.query());
-        TitleMatch title = resolveTitle(q.title.isEmpty() ? req.query() : q.title);
+        QueryParse q = QueryParse.of(req.query());
+        TitleMatch title = resolveTitle(q.title().isEmpty() ? req.query() : q.title());
         List<Candidate> out = new ArrayList<>();
         if (title == null)
             return out;
@@ -154,8 +147,8 @@ class SubSourceProvider implements SubtitleProvider {
         // season's subtitles; otherwise list the whole title as before. The listing also returns every
         // language at once (SubSource matches languages server-side only on its own exact names), so we
         // fetch all and filter by the requested code below.
-        boolean bySeason = title.series && q.season != null;
-        String url = SEARCH_BASE + "/subtitles/" + title.slug + (bySeason ? "/season-" + q.season : "");
+        boolean bySeason = title.series && q.hasSeason();
+        String url = SEARCH_BASE + "/subtitles/" + title.slug + (bySeason ? "/season-" + q.season() : "");
         Http.Response resp;
         try {
             resp = Http.get(url, headers(), searchConn);
@@ -171,7 +164,7 @@ class SubSourceProvider implements SubtitleProvider {
 
         String token = languageCode == null || languageCode.isEmpty()
                 ? null : LANG_TOKENS.get(languageCode.toLowerCase());
-        boolean filterEpisode = title.series && q.season != null && q.episode != null;
+        boolean filterEpisode = title.series && q.hasEpisode();
         try {
             JsonValue subsVal = Json.parse(resp.text()).asObject().get("subtitles");
             if (subsVal == null || !subsVal.isArray())
@@ -185,7 +178,7 @@ class SubSourceProvider implements SubtitleProvider {
                 if (id == 0)
                     continue;
                 String releaseInfo = sub.getString("release_info", sub.getString("caption", "?"));
-                if (filterEpisode && !matchesEpisode(releaseInfo, q.season, q.episode))
+                if (filterEpisode && !matchesEpisode(releaseInfo, q.season(), q.episode()))
                     continue;
                 String release = htmlUnescape(releaseInfo);
                 String rating = sub.getString("rating", "");
@@ -209,35 +202,6 @@ class SubSourceProvider implements SubtitleProvider {
             this.slug = slug;
             this.series = series;
         }
-    }
-
-    /** A parsed query: the bare title plus an optional season and episode (null when not present). */
-    private static final class Query {
-        final String title;
-        final Integer season;
-        final Integer episode;
-
-        Query(String title, Integer season, Integer episode) {
-            this.title = title;
-            this.season = season;
-            this.episode = episode;
-        }
-    }
-
-    /** Extract a season/episode marker from the free-text query and return the title with it stripped. */
-    private static Query parseQuery(String raw) {
-        String q = raw == null ? "" : raw;
-        Integer season = null, episode = null;
-        for (Pattern p : QUERY_EPISODE) {
-            Matcher m = p.matcher(q);
-            if (m.find()) {
-                season = Integer.parseInt(m.group(1));
-                episode = Integer.parseInt(m.group(2));
-                q = q.substring(0, m.start()) + " " + q.substring(m.end());
-                break;
-            }
-        }
-        return new Query(q.replaceAll("\\s+", " ").trim(), season, episode);
     }
 
     /**

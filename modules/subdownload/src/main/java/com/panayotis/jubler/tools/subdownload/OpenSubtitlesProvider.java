@@ -131,12 +131,12 @@ class OpenSubtitlesProvider implements SubtitleProvider {
             // "query" while the season/episode become their own params. Implemented per the OpenSubtitles
             // REST /subtitles docs, which for TV episodes expect season_number, episode_number and
             // type=episode (see https://opensubtitles.stoplight.io/docs/opensubtitles-api).
-            Episode ep = parseEpisode(req.query());
-            params.put("query", encode(ep.title));
-            if (ep.season >= 0) {
-                params.put("season_number", String.valueOf(ep.season));
-                if (ep.episode >= 0)
-                    params.put("episode_number", String.valueOf(ep.episode));
+            QueryParse ep = QueryParse.of(req.query());
+            params.put("query", encode(ep.title()));
+            if (ep.hasSeason()) {
+                params.put("season_number", String.valueOf(ep.season()));
+                if (ep.hasEpisode())
+                    params.put("episode_number", String.valueOf(ep.episode()));
                 params.put("type", "episode");
             }
         }
@@ -241,43 +241,6 @@ class OpenSubtitlesProvider implements SubtitleProvider {
 
     private static String networkMessage(IOException e) {
         return __("Network error: {0}", String.valueOf(e.getMessage()));
-    }
-
-    // Season/episode split out of a free-text query. season/episode are -1 when absent.
-    private static final class Episode {
-        final String title;
-        final int season;
-        final int episode;
-
-        Episode(String title, int season, int episode) {
-            this.title = title;
-            this.season = season;
-            this.episode = episode;
-        }
-    }
-
-    // Local (not shared) parser for the common TV-episode notations in a text query:
-    // "SxxEyy" (S04E01, s4e1), "4x01", and "Season 4 Episode 1" (episode optional). The matched
-    // token is stripped from the returned title so only the show name reaches the "query" param.
-    private static Episode parseEpisode(String query) {
-        String q = query == null ? "" : query;
-        java.util.regex.Matcher m;
-        m = java.util.regex.Pattern.compile("(?i)\\bS(\\d{1,2})[ ._-]?E(\\d{1,3})\\b").matcher(q);
-        if (m.find())
-            return new Episode(strip(q, m), Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
-        m = java.util.regex.Pattern.compile("(?i)\\b(\\d{1,2})x(\\d{1,3})\\b").matcher(q);
-        if (m.find())
-            return new Episode(strip(q, m), Integer.parseInt(m.group(1)), Integer.parseInt(m.group(2)));
-        m = java.util.regex.Pattern.compile("(?i)\\bseason\\s*(\\d{1,2})(?:\\s*episode\\s*(\\d{1,3}))?\\b").matcher(q);
-        if (m.find()) {
-            int ep = m.group(2) == null ? -1 : Integer.parseInt(m.group(2));
-            return new Episode(strip(q, m), Integer.parseInt(m.group(1)), ep);
-        }
-        return new Episode(q.trim(), -1, -1);
-    }
-
-    private static String strip(String q, java.util.regex.Matcher m) {
-        return (q.substring(0, m.start()) + " " + q.substring(m.end())).replaceAll("\\s+", " ").trim();
     }
 
     private static String encode(String s) {
