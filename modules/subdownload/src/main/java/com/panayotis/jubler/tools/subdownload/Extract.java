@@ -19,7 +19,7 @@ import java.util.zip.ZipInputStream;
  * bounded by a hard size cap and picks a subtitle-looking entry by extension; entry names are never used
  * as filesystem paths, so archive path traversal is a non-issue.
  */
-final class Extract {
+public final class Extract {
 
     private static final int MAX_EXTRACTED = 8 * 1024 * 1024; // 8 MiB cap on the decoded subtitle
 
@@ -31,7 +31,7 @@ final class Extract {
     }
 
     /** @return the raw subtitle bytes, or throws {@link ProviderException.Kind#PARSE} if none found. */
-    static byte[] subtitleBytes(byte[] payload) throws ProviderException {
+    public static byte[] subtitleBytes(byte[] payload) throws ProviderException {
         if (payload == null || payload.length == 0)
             throw new ProviderException(ProviderException.Kind.PARSE, "Empty download");
         try {

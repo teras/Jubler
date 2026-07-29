@@ -13,6 +13,9 @@ include(
     ":zemberek",
     ":azuretranslate",
     ":subdownload",
+    ":subdownload-subsource",
+    ":subdownload-opensubtitles",
+    ":subdownload-subdl",
     ":autoupdate"
 )
 
@@ -27,6 +30,9 @@ project(":vlcj-jubler").projectDir = file("modules/vlcj-jubler")
 project(":zemberek").projectDir = file("modules/zemberek")
 project(":azuretranslate").projectDir = file("modules/azuretranslate")
 project(":subdownload").projectDir = file("modules/subdownload")
+project(":subdownload-subsource").projectDir = file("modules/subdownload-subsource")
+project(":subdownload-opensubtitles").projectDir = file("modules/subdownload-opensubtitles")
+project(":subdownload-subdl").projectDir = file("modules/subdownload-subdl")
 project(":autoupdate").projectDir = file("modules/autoupdate")
 
 // i18n-tools is a standalone build tool, not part of the main build

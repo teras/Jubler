@@ -27,7 +27,14 @@ public class PluginManager {
     }
 
     private PluginManager(boolean terminalOnly, boolean debug) {
-        Iterator<PluginCollection> sl = ServiceLoader.load(PluginCollection.class, getClass().getClassLoader()).iterator();
+        // Use the thread context classloader (set by the launcher to the DynamicClassLoader that globs both
+        // the bundled lib/ and the user plugins directory). getClass().getClassLoader() would be wrong when
+        // the app is launched with lib/ on the system classpath (e.g. the AppImage): parent-first delegation
+        // then loads PluginManager from the system classloader, which cannot see the external plugins dir.
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        if (loader == null)
+            loader = getClass().getClassLoader();
+        Iterator<PluginCollection> sl = ServiceLoader.load(PluginCollection.class, loader).iterator();
         List<PluginCollection> pluginCollections = new ArrayList<>();
         while (sl.hasNext())
             pluginCollections.add(sl.next());

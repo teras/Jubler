@@ -29,7 +29,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
  * SubDL API (api.subdl.com) provider. A free API key allows generous daily requests; downloads are plain
  * zip fetches from dl.subdl.com with no extra quota beyond the request budget.
  */
-class SubDLProvider implements SubtitleProvider {
+public class SubDLProvider extends BaseSubtitleProvider {
 
     private static final String BASE = "https://api.subdl.com/api/v1/subtitles";
     private static final String DOWNLOAD_BASE = "https://dl.subdl.com";
@@ -41,6 +41,11 @@ class SubDLProvider implements SubtitleProvider {
     @Override
     public String getName() {
         return "SubDL";
+    }
+
+    @Override
+    public int priority() {
+        return 30;
     }
 
     @Override

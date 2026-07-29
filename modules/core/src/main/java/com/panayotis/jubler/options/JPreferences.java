@@ -10,6 +10,7 @@ import com.panayotis.appenh.AFileChooser;
 import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.gui.JOptionTabs;
+import com.panayotis.jubler.os.PluginRegistry;
 import com.panayotis.jubler.tools.externals.AvailExternals;
 import com.panayotis.jubler.tools.spell.SpellChecker;
 
@@ -30,6 +31,7 @@ public class JPreferences extends javax.swing.JDialog {
     private JShortcutsOptions jcut;
     private JExternalToolsOptions jext;
     private JPreviewOptions jprev;
+    private JPluginsOptions jplug;
     private boolean dialog_status;
 
     private AFileChooser fileChooser;
@@ -45,6 +47,8 @@ public class JPreferences extends javax.swing.JDialog {
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Tabs.addTab(jext = new JExternalToolsOptions());
         Tabs.addTab(jprev = new JPreviewOptions());
+        if (PluginRegistry.hasPlugins())
+            Tabs.addTab(jplug = new JPluginsOptions());
         Options.loadSystemPreferences(this);
 
         initComponents();

@@ -36,7 +36,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
  * a full English language name (e.g. {@code english}, {@code chinese_bg_code}), so the requested ISO 639-1 code
  * is matched against that name here rather than sent to the server.
  */
-class SubSourceProvider implements SubtitleProvider {
+public class SubSourceProvider extends BaseSubtitleProvider {
 
     private static final String SEARCH_BASE = "https://api.subsource.net/v1";
     private static final String API_BASE = "https://api.subsource.net/api/v1";
@@ -72,6 +72,11 @@ class SubSourceProvider implements SubtitleProvider {
     @Override
     public String getName() {
         return "SubSource";
+    }
+
+    @Override
+    public int priority() {
+        return 10;
     }
 
     @Override

@@ -30,7 +30,7 @@ import static com.panayotis.jubler.i18n.I18N.__;
  * OpenSubtitles.com REST API (api.opensubtitles.com/api/v1) provider. Search is free; download costs one
  * daily-quota unit (~5/day on free accounts). Only the Api-Key and a User-Agent are sent — no login.
  */
-class OpenSubtitlesProvider implements SubtitleProvider {
+public class OpenSubtitlesProvider extends BaseSubtitleProvider {
 
     private static final String BASE = "https://api.opensubtitles.com/api/v1";
     private static final String KEY_PREF = "subdownload.opensubtitles.enckey";
@@ -41,6 +41,11 @@ class OpenSubtitlesProvider implements SubtitleProvider {
     @Override
     public String getName() {
         return "OpenSubtitles";
+    }
+
+    @Override
+    public int priority() {
+        return 20;
     }
 
     @Override

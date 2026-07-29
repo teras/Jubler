@@ -10,12 +10,12 @@ package com.panayotis.jubler.tools.subdownload;
  * The result of a provider download: the decoded subtitle bytes (after any gzip/zip extraction) plus the
  * HTTP {@code Content-Type} of the fetched payload, kept for diagnostics when parsing later fails.
  */
-final class DownloadData {
+public final class DownloadData {
 
-    final byte[] data;
-    final String contentType;
+    public final byte[] data;
+    public final String contentType;
 
-    DownloadData(byte[] data, String contentType) {
+    public DownloadData(byte[] data, String contentType) {
         this.data = data;
         this.contentType = contentType;
     }

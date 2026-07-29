@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  * or stripping the marker would leave an empty title, the whole (trimmed) query is returned as plain text.
  * Boundaries are checked with explicit "not a letter/digit" look-arounds rather than relying on {@code \\b}.
  */
-final class QueryParse {
+public final class QueryParse {
 
     // A — SxxExx, matched anywhere. Season 1-2 digits (not part of a 3-digit run), an optional single
     // separator, then episode 1-3 digits (not part of a longer run). The look-behind keeps it off the tail
@@ -61,30 +61,30 @@ final class QueryParse {
     }
 
     /** The cleaned show title; equals the original (trimmed) query when no marker was recognized. */
-    String title() {
+    public String title() {
         return title;
     }
 
     /** The parsed season, or null when none was recognized. */
-    Integer season() {
+    public Integer season() {
         return season;
     }
 
     /** The parsed episode, or null when none was recognized. */
-    Integer episode() {
+    public Integer episode() {
         return episode;
     }
 
-    boolean hasSeason() {
+    public boolean hasSeason() {
         return season != null;
     }
 
-    boolean hasEpisode() {
+    public boolean hasEpisode() {
         return season != null && episode != null;
     }
 
     /** Parse a raw search-box query into a title plus optional season/episode. Never returns null. */
-    static QueryParse of(String raw) {
+    public static QueryParse of(String raw) {
         String q = raw == null ? "" : raw.trim();
         if (q.isEmpty())
             return new QueryParse(raw == null ? "" : raw, null, null);

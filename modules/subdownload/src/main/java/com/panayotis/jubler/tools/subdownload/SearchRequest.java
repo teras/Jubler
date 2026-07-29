@@ -13,33 +13,33 @@ import com.panayotis.jubler.media.VideoFile;
  * match by the video file's hash instead of text, and the video file to hash (may be null when not matching
  * by hash).
  */
-final class SearchRequest {
+public final class SearchRequest {
 
     private final String query;
     private final String languageCode;
     private final boolean useHash;
     private final VideoFile video;
 
-    SearchRequest(String query, String languageCode, boolean useHash, VideoFile video) {
+    public SearchRequest(String query, String languageCode, boolean useHash, VideoFile video) {
         this.query = query;
         this.languageCode = languageCode;
         this.useHash = useHash;
         this.video = video;
     }
 
-    String query() {
+    public String query() {
         return query;
     }
 
-    String languageCode() {
+    public String languageCode() {
         return languageCode;
     }
 
-    boolean useHash() {
+    public boolean useHash() {
         return useHash;
     }
 
-    VideoFile video() {
+    public VideoFile video() {
         return video;
     }
 }

@@ -43,8 +43,8 @@ public class SubDownloadFrame extends JFrame {
     private static final String PREF_PROVIDER = "subdownload.provider";
 
     private final JubFrame owner;
-    private final SubtitleProvider[] providers = {
-            new SubSourceProvider(), new OpenSubtitlesProvider(), new SubDLProvider()};
+    /** Providers discovered from the installed plugin jars, in stable priority order. */
+    private final List<SubtitleProvider> providers = new AvailSubtitleProviders();
 
     private final JComboBox<String> providerBox = new JComboBox<>();
     private final JComboBox<Language> languageBox = new JComboBox<>(DownloadLanguages.list());
@@ -222,7 +222,7 @@ public class SubDownloadFrame extends JFrame {
     }
 
     private SubtitleProvider currentProvider() {
-        return providers[Math.max(0, providerBox.getSelectedIndex())];
+        return providers.get(Math.max(0, providerBox.getSelectedIndex()));
     }
 
     private VideoFile currentVideo() {
@@ -532,8 +532,8 @@ public class SubDownloadFrame extends JFrame {
         String remembered = JublerPrefs.getString(PREF_PROVIDER, "");
         if (remembered.isEmpty())
             return;
-        for (int i = 0; i < providers.length; i++)
-            if (providers[i].getName().equals(remembered)) {
+        for (int i = 0; i < providers.size(); i++)
+            if (providers.get(i).getName().equals(remembered)) {
                 providerBox.setSelectedIndex(i);
                 return;
             }

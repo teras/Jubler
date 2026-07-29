@@ -7,9 +7,11 @@
 package com.panayotis.jubler.tools.subdownload;
 
 import com.panayotis.jubler.JubFrame;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.tools.Tool;
 import com.panayotis.jubler.tools.ToolMenu;
 import com.panayotis.jubler.tools.ToolMenu.Location;
+import com.panayotis.jubler.tools.ToolsManager;
 
 import javax.swing.*;
 import java.util.Collection;
@@ -26,6 +28,22 @@ public class SubDownloadTool extends Tool {
 
     public SubDownloadTool() {
         super(new ToolMenu(__("Download subtitles…"), "TDL", Location.FILETOOL, 0, 0));
+    }
+
+    /**
+     * Register the Tools-menu entry only when at least one provider plugin is installed. With an empty
+     * registry there is nothing to search, so the item never joins the menu (it stays hidden rather than
+     * appearing as a permanently dead entry).
+     */
+    @Override
+    public void execPlugin(ToolsManager caller) {
+        int providers = new AvailSubtitleProviders().size();
+        if (providers > 0) {
+            DEBUG.debug("Subtitle downloader: " + providers + " provider(s) available");
+            super.execPlugin(caller);
+        } else {
+            DEBUG.debug("Subtitle downloader: no providers installed");
+        }
     }
 
     @Override

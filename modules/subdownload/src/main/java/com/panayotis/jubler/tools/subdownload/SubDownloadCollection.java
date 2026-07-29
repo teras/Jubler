@@ -12,8 +12,6 @@ import com.panayotis.jubler.plugins.PluginItem;
 import java.util.Collection;
 import java.util.Collections;
 
-import static com.panayotis.jubler.i18n.I18N.__;
-
 public class SubDownloadCollection implements PluginCollection {
 
     @Override
@@ -23,6 +21,17 @@ public class SubDownloadCollection implements PluginCollection {
 
     @Override
     public String getCollectionName() {
-        return __("Subtitle downloader");
+        // Not localized on purpose: this name is only ever emitted to the log (never shown in the UI).
+        return "Subtitle downloader";
+    }
+
+    /**
+     * Sort after the core tools (priority 0) so the downloader entry always lands at the end of the
+     * File-tools group in the Tools menu — right after Synchronize — instead of wherever plugin
+     * discovery order happens to place it.
+     */
+    @Override
+    public int priority() {
+        return 100;
     }
 }
