@@ -97,7 +97,7 @@ build_windows() {
     fi
 
     # Use KPacker to create the Windows installer
-    "$kpacker_bin" --source="$jubler_source_win64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=WindowsX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+    "$kpacker_bin" --source="$jubler_source_win64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --single-classpath --target=WindowsX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -127,7 +127,7 @@ build_linux() {
     fi
 
     # Use KPacker to create the Linux x64 AppImage
-    "$kpacker_bin" --source="$jubler_source_linux64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+    "$kpacker_bin" --source="$jubler_source_linux64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --single-classpath --target=LinuxX64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -157,7 +157,7 @@ build_generic() {
     fi
 
     # Use KPacker to create Generic package
-    "$kpacker_bin" --source="$jubler_source_generic/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=Generic --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+    "$kpacker_bin" --source="$jubler_source_generic/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --single-classpath --target=Generic --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -189,7 +189,7 @@ build_macos() {
     # Use KPacker to create macOS DMG with template (uncompressed for CI/CD signing)
     # KPacker auto-detects CI/CD environment and uses sudo when needed
     dmg_template="$script_dir/resources/installer/dmg_mac.zip"
-    "$kpacker_bin" --source="$jubler_source_macos/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacX64 --icon="$jubler_icon" --install-icon="$installer_icon" --dmg-template="$dmg_template" --no-dmg-compress --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+    "$kpacker_bin" --source="$jubler_source_macos/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --single-classpath --target=MacX64 --icon="$jubler_icon" --install-icon="$installer_icon" --dmg-template="$dmg_template" --no-dmg-compress --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     # Move result to final location if in multi-target build mode
     if [ "$build_multi_mode" = "true" ]; then
@@ -220,7 +220,7 @@ build_linux_arm64() {
     fi
 
     # Use KPacker to create the Linux arm64 AppImage
-    "$kpacker_bin" --source="$jubler_source_linuxarm64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=LinuxArm64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+    "$kpacker_bin" --source="$jubler_source_linuxarm64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --single-classpath --target=LinuxArm64 --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     if [ "$build_multi_mode" = "true" ]; then
         mv "$output_dir"/Jubler-*-aarch64.AppImage "$dist_dir/"
@@ -246,7 +246,7 @@ build_macos_arm64() {
     local output_dir="$dist_dir/temp_macos_arm64"
 
     dmg_template="$script_dir/resources/installer/dmg_mac.zip"
-    "$kpacker_bin" --source="$jubler_source_macosarm64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --target=MacArm64 --icon="$jubler_icon" --install-icon="$installer_icon" --dmg-template="$dmg_template" --no-dmg-compress --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
+    "$kpacker_bin" --source="$jubler_source_macosarm64/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --single-classpath --target=MacArm64 --icon="$jubler_icon" --install-icon="$installer_icon" --dmg-template="$dmg_template" --no-dmg-compress --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
 
     mv "$output_dir"/Jubler-*.dmg "$dist_dir/Jubler-${version}-arm64.dmg"
     rm -rf "$output_dir"

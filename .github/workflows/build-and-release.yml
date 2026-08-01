@@ -200,7 +200,7 @@ jobs:
         mkdir -p $HOME/Works/System/bin/arch/linux-x86_64
 
         # Download KPacker binary
-        wget -O $HOME/Works/System/bin/arch/linux-x86_64/kpacker https://github.com/teras/KPacker/releases/download/v0.2/kpacker
+        wget -O $HOME/Works/System/bin/arch/linux-x86_64/kpacker https://github.com/teras/KPacker/releases/download/v0.3/kpacker
         chmod +x $HOME/Works/System/bin/arch/linux-x86_64/kpacker
 
         # Test KPacker

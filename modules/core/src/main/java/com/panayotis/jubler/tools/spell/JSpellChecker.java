@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -44,7 +45,20 @@ public class JSpellChecker extends JDialog {
                 checker.start();
                 break;
             } catch (Exception ex) {
+                ex.printStackTrace();
+                
                 if (!(ex.getCause() instanceof IOException)) {
+                    String errorMsg = ex.getMessage();
+                    if (errorMsg == null || errorMsg.isEmpty()) {
+                        errorMsg = ex.getClass().getSimpleName();
+                        if (ex.getCause() != null) {
+                            errorMsg += ": " + ex.getCause().getMessage();
+                        }
+                    }
+                    JOptionPane.showMessageDialog(parent,
+                        __("Unable to start spell checker:\n{0}", errorMsg),
+                        __("Spell Checker Error"),
+                        JOptionPane.ERROR_MESSAGE);
                     stop();
                     return;
                 } else if (!checker.getOptionsPanel().requestExecutable()) {
@@ -101,8 +115,25 @@ public class JSpellChecker extends JDialog {
         /* If the current error list is empty, refill it with next error bunch */
         while (errors.isEmpty() && ((++pos_in_list) < textlist.size())) {
             /* Get next (multi)line of text */
-            errors = checker.checkSpelling(textlist.get(pos_in_list).getText());
-            updateKnownErrors();
+            try {
+                errors = checker.checkSpelling(textlist.get(pos_in_list).getText());
+                updateKnownErrors();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                String errorMsg = ex.getMessage();
+                if (errorMsg == null || errorMsg.isEmpty()) {
+                    errorMsg = ex.getClass().getSimpleName();
+                    if (ex.getCause() != null) {
+                        errorMsg += ": " + ex.getCause().getMessage();
+                    }
+                }
+                JOptionPane.showMessageDialog(this,
+                    __("Error while checking spelling:\n{0}", errorMsg),
+                    __("Spell Checker Error"),
+                    JOptionPane.ERROR_MESSAGE);
+                stop();
+                return;
+            }
         }
         if (errors.isEmpty()) {
             /* No more entries found, exiting spell checker */
@@ -463,10 +494,11 @@ public class JSpellChecker extends JDialog {
     private void stop() {
         if (checker != null)
             checker.stop();
-        if (!isVisible())
-            return; /* we have already hidden this dialog */
-        setVisible(false);
-        dispose();
+        boolean wasVisible = isVisible();
+        if (wasVisible) {
+            setVisible(false);
+            dispose();
+        }
         String msg = __("Number of affected words: {0}", count_changes);
         if (count_changes == 0)
             msg = __("No changes have been done");

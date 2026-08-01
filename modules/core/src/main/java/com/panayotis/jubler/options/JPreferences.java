@@ -11,8 +11,6 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.os.PluginRegistry;
-import com.panayotis.jubler.tools.externals.AvailExternals;
-import com.panayotis.jubler.tools.spell.SpellChecker;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +25,6 @@ public class JPreferences extends javax.swing.JDialog {
      */
     public JOptionTabs Tabs;
     /* Shortcuts to panels */
-    private JSpellerOptions jspell;
     private JShortcutsOptions jcut;
     private JExternalToolsOptions jext;
     private JPreviewOptions jprev;
@@ -43,7 +40,6 @@ public class JPreferences extends javax.swing.JDialog {
         super(jub);
 
         Tabs = new JOptionTabs(this);
-        Tabs.addTab(jspell = new JSpellerOptions(new AvailExternals(SpellChecker.family, __("Speller"), "spellcheck_pref")));
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
         Tabs.addTab(jext = new JExternalToolsOptions());
         Tabs.addTab(jprev = new JPreviewOptions());
@@ -55,10 +51,6 @@ public class JPreferences extends javax.swing.JDialog {
         add(Tabs, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
-    }
-
-    public SpellChecker getSpellChecker() {
-        return (SpellChecker) jspell.getObject();
     }
 
     public void setMenuShortcuts(JMenuBar bar) {

@@ -7,9 +7,11 @@
 package  com.panayotis.jubler.options;
 
 import com.panayotis.jubler.JublerPrefs;
+import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.os.MissingProgram;
 import static com.panayotis.jubler.i18n.I18N.__;
 
+import java.awt.Window;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +94,21 @@ public class JExtBasicOptions extends JPanel {
 
     /* Use this method every time an update to the panel is needed */
     protected void updateOptionsPanel() {
+    }
+
+    /**
+     * Refresh this panel, populate it from preferences, and show it in a modal Configure dialog; on accept the
+     * new values are persisted. Lets a caller outside the options package (e.g. a tool's Configure button)
+     * pop up the panel without the load/save/update hooks having to be public.
+     */
+    public boolean configureInDialog(Window parent, String title) {
+        updateOptionsPanel();
+        loadPreferences();
+        if (JIDialog.action(parent, this, title)) {
+            savePreferences();
+            return true;
+        }
+        return false;
     }
 
     /**

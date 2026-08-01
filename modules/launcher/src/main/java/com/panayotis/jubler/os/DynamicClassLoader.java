@@ -25,10 +25,16 @@ public class DynamicClassLoader extends URLClassLoader {
     public DynamicClassLoader() {
         super(new URL[]{}, DynamicClassLoader.class.getClassLoader());
         loadBundledJars(SystemFileFinder.AppPath);
+        loadBundledJars(new File(SystemDependent.getAppSupportDirPath(), "langpacks"));
         loadUserPlugins(new File(SystemDependent.getAppSupportDirPath(), "plugins"));
     }
 
-    /** Bundled {@code lib/} jars are part of the application: always loaded, silently. */
+    /**
+     * Bundled jars that are part of the application and always loaded, silently: the {@code lib/}
+     * jars, plus the {@code langpacks/} jars the application itself downloaded (e.g. spell-check
+     * language packs). Unlike {@code plugins/}, these are trusted (fetched by us, not dropped in by
+     * the user), so they carry no descriptor and are not gated behind the Plugins page.
+     */
     private void loadBundledJars(File directory) {
         if (directory == null || !directory.exists())
             return;
