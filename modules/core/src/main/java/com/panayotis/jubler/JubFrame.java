@@ -9,6 +9,7 @@ package com.panayotis.jubler;
 import com.panayotis.jubler.information.JInformation;
 import com.panayotis.jubler.information.JQuality;
 import com.panayotis.jubler.media.MediaFile;
+import com.panayotis.appenh.AFileChooser;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.JPreferences;
@@ -1679,16 +1680,17 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }//GEN-LAST:event_FileNFMActionPerformed
 
     private void FromVideoNFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FromVideoNFMActionPerformed
-        JFileChooser fc = new JFileChooser(FileCommunicator.getDefaultDirPath());
-        fc.setDialogTitle(__("New from video file"));
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fc.setFileFilter(new VideoFileFilter());
-        if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
-            return;
-        File video = fc.getSelectedFile();
+        VideoFileFilter vfilter = new VideoFileFilter();
+        File video = new AFileChooser()
+                .parent(JubFrame.this)
+                .title(__("New from video file"))
+                .directory(new File(FileCommunicator.getDefaultDirPath()))
+                .mode(AFileChooser.FileSelectionMode.FilesOnly)
+                .filter(vfilter.getExtensions(), vfilter.getDescription())
+                .loadSingle();
         if (video == null || !video.exists())
             return;
-        FileCommunicator.setDefaultDir(fc.getCurrentDirectory());   // remember the folder for next time
+        FileCommunicator.setDefaultDir(video.getParentFile());   // remember the folder for next time
         newFromVideo(video);
     }//GEN-LAST:event_FromVideoNFMActionPerformed
 

@@ -71,6 +71,7 @@ public class JPreferences extends javax.swing.JDialog {
     private AFileChooser getFileChooser() {
         if (fileChooser == null)
             fileChooser = new AFileChooser()
+                    .parent(this)
                     .mode(AFileChooser.FileSelectionMode.FilesOnly)
                     .filter("xml", __("XML files"))
                     .forceExtension(true)

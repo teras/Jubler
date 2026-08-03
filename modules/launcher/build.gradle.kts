@@ -5,6 +5,10 @@ plugins {
 tasks.jar {
     manifest {
         attributes["Main-Class"] = "Jubler"
+        // Let appenh reflect the X11 window id out of the Swing peer, so the xdg-desktop-portal
+        // file dialog can be parented/centered on the app window (see PortalFileChooser#parentToken).
+        // Honored by `java -jar`; a no-op off Linux/X11.
+        attributes["Add-Opens"] = "java.desktop/java.awt java.desktop/sun.awt java.desktop/sun.awt.X11"
     }
 }
 

@@ -6,246 +6,104 @@
 
 package com.panayotis.jubler.subs.loader.gui;
 
+import com.panayotis.appenh.AFileChooser;
 import com.panayotis.jubler.media.MediaFile;
-import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
-import java.awt.*;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Frame;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Vector;
-import java.util.logging.Level;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 import static com.panayotis.jubler.subs.SubFile.basic_format;
 
-public class JSubFileDialog extends javax.swing.JDialog {
+/**
+ * Subtitle open/save dialogs, backed by appenh {@link AFileChooser} (native/portal-ready, with a
+ * Swing fallback today). On save the chosen subtitle format comes from the selected filter; encoding
+ * and FPS are document properties (set via the encoding bar / Information tab), so the dialog needs
+ * no accessory panel.
+ */
+public class JSubFileDialog {
 
     private static File lastDirectory = initializeDefaultDirectory();
-    private boolean isAccepted;
-    private final JFileOptions jload;
-    private final JFileOptions jsave;
-
-    public JSubFileDialog() {
-        super((Frame) null, true);
-        initComponents();
-        chooser.setAcceptAllFileFilterUsed(false);
-        jload = new JLoadOptions();
-        jsave = new JSaveOptions();
-    }
 
     private static File initializeDefaultDirectory() {
-        String default_dir = FileCommunicator.getDefaultDirPath();
-        File default_dir_file = new File(default_dir);
-        boolean is_valid = (default_dir_file.isDirectory() && default_dir_file.canRead());
-        return is_valid ? default_dir_file : new File("");
-    }
-
-    private SubFile showDialog(Frame parent, Subtitles subs, MediaFile mfile, JFileOptions jopt) {
-        jopt.updateVisuals(subs, mfile);
-
-        // Set the filter first for save dialog - this must happen before setting selected file
-        if (subs == null) { // load
-            // Load dialog - empty filename
-            chooser.setSelectedFile(new File(lastDirectory, ""));
-            addFilters(null);
-        } else { // save
-            chooser.setSelectedFile(subs.getSubFile().getStrippedFile());
-            addFilters(subs.getSubFile().getFormat());
-        }
-
-        // Set current directory to last used directory
-        chooser.setCurrentDirectory(lastDirectory);
-
-        getContentPane().removeAll();
-        getContentPane().add(chooser, BorderLayout.CENTER);
-        if (jopt.getComponentCount() > 0)   // skip an empty accessory (e.g. the load panel)
-            getContentPane().add(jopt, BorderLayout.NORTH);
-        pack();
-        setLocationRelativeTo(parent);
-        setVisible(true);
-
-        if (!isAccepted)
-            return null;
-
-        SubFile sfile;
-        try {
-            File selected_file = chooser.getSelectedFile();
-
-            if (subs == null) // Load
-                sfile = new SubFile(selected_file, SubFile.EXTENSION_GIVEN);
-            else {   // Save
-                sfile = new SubFile(subs.getSubFile());
-                sfile.setFile(selected_file);
-            }
-
-            sfile.setFormat(findFormat(true));
-
-            jopt.applyOptions(sfile);
-            if (subs != null) // Only in Save
-                sfile.updateFileByType();
-
-            // Remember the current directory for next time
-            File currentDir = chooser.getCurrentDirectory();
-            // If it's a file, get its parent directory
-            if (currentDir.isFile()) {
-                currentDir = currentDir.getParentFile();
-            }
-            lastDirectory = currentDir;
-            FileCommunicator.setDefaultDir(currentDir);
-        } catch (Exception ex) {
-            sfile = new SubFile();
-        }
-        return sfile;
-    }
-
-    private SubFormat findFormat(boolean newInstance) {
-        JFileFilter flt = (JFileFilter) chooser.getFileFilter();
-        if (flt != null) {
-            SubFormat format_handler = flt.getFormatHandler();
-            if (format_handler != null)
-                return newInstance ? format_handler.newInstance() : format_handler;
-        }
-        return basic_format;
-    }
-
-    public SubFile getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
-        setTitle(__("Save Subtitles"));
-        chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        // Don't set selected file here - let showDialog do it after setting the filter
-        return showDialog(parent, subs, mfile, jsave);
+        File dir = new File(FileCommunicator.getDefaultDirPath());
+        return dir.isDirectory() && dir.canRead() ? dir : new File(System.getProperty("user.home"));
     }
 
     public SubFile getLoadFile(Frame parent, MediaFile mfile) {
-        setTitle(__("Load Subtitles"));
-        chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        return showDialog(parent, null, mfile, jload);
+        AFileChooser fc = new AFileChooser()
+                .parent(parent)
+                .title(__("Load Subtitles"))
+                .loadButtonTitle(__("Load Subtitles"))
+                .directory(lastDirectory)
+                .mode(AFileChooser.FileSelectionMode.FilesOnly);
+        for (SubFormat f : Availabilities.formats.getFormats())
+            fc.filter(f.getExtension(), f.getName());
+        File file = fc.loadSingle();
+        if (file == null)
+            return null;
+        rememberDir(file);
+        return new SubFile(file, SubFile.EXTENSION_GIVEN);   // format is auto-detected on load
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
+    public SubFile getSaveFile(Frame parent, Subtitles subs, MediaFile mfile) {
+        SubFormat current = subs.getSubFile().getFormat();
+        AFileChooser fc = new AFileChooser()
+                .parent(parent)
+                .title(__("Save Subtitles"))
+                .saveButtonTitle(__("Save Subtitles"))
+                .directory(lastDirectory)
+                .file(subs.getSubFile().getStrippedFile().getName());
+        fc.filter(current.getExtension(), current.getName());   // the document's format first
+        for (SubFormat f : Availabilities.formats.getFormats())
+            if (!f.getName().equals(current.getName()))
+                fc.filter(f.getExtension(), f.getName());
 
-        chooser = new javax.swing.JFileChooser();
-
-        chooser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chooserActionPerformed(evt);
+        while (true) {
+            File chosen = fc.save();
+            if (chosen == null)
+                return null;
+            SubFile sfile = new SubFile(subs.getSubFile());   // carries the document's encoding + FPS
+            sfile.setFile(chosen);
+            sfile.setFormat(formatFor(fc.selectedFilter(), current));
+            sfile.updateFileByType();   // normalise the extension to the chosen format
+            File out = sfile.getSaveFile();
+            if (!out.exists() || confirmOverwrite(parent, out)) {
+                rememberDir(out);
+                return sfile;
             }
-        });
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void chooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooserActionPerformed
-        isAccepted = evt.getActionCommand().equals(JFileChooser.APPROVE_SELECTION);
-
-        // Check if file exists when saving and ask for confirmation
-        if (isAccepted && chooser.getDialogType() == JFileChooser.SAVE_DIALOG) {
-            File selectedFile = chooser.getSelectedFile();
-            if (selectedFile == null)
-                return;
-
-            File fileToCheck = selectedFile;
-            String extension = findFormat(false).getExtension();
-            String fileName = selectedFile.getName();
-
-            if (extension != null && !fileName.toLowerCase().endsWith("." + extension.toLowerCase())) {
-                // File doesn't have the correct extension, append it
-                fileToCheck = new File(selectedFile.getParentFile(), fileName + "." + extension);
-            }
-
-            if (fileToCheck.exists()) {
-                int result = JOptionPane.showConfirmDialog(
-                        this,
-                        __("File already exists. Do you want to overwrite it?"),
-                        __("Confirm Overwrite"),
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE
-                );
-
-                if (result != JOptionPane.YES_OPTION) {
-                    isAccepted = false;
-                    return; // Don't close the dialog, let user choose a different file
-                }
-            }
+            // overwrite declined → reopen the save dialog
         }
+    }
 
-        setVisible(false);
-    }//GEN-LAST:event_chooserActionPerformed
+    /* Map the filter the user selected back to a subtitle format (filter description == format name). */
+    private static SubFormat formatFor(FileNameExtensionFilter selected, SubFormat fallback) {
+        if (selected != null)
+            for (SubFormat f : Availabilities.formats.getFormats())
+                if (f.getName().equals(selected.getDescription()))
+                    return f.newInstance();
+        return (fallback == null ? basic_format : fallback).newInstance();
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JFileChooser chooser;
-    // End of variables declaration//GEN-END:variables
+    private static boolean confirmOverwrite(Frame parent, File file) {
+        return JOptionPane.showConfirmDialog(parent,
+                __("File already exists. Do you want to overwrite it?"),
+                __("Confirm Overwrite"),
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION;
+    }
 
-    public boolean setFilters(FileFilter[] list) {
-        boolean ok = false;
-        try {
-            for (int i = 0; i < list.length; i++) {
-                FileFilter fl = list[i];
-                boolean is_first_item = (i == 0);
-                if (is_first_item)
-                    chooser.setFileFilter(fl);
-                else
-                    chooser.addChoosableFileFilter(fl);//end if
-            }//end for(int i=0; i < list.length; i++)
-        } catch (Exception ex) {
-            DEBUG.logger.log(Level.WARNING, ex.toString());
+    private static void rememberDir(File file) {
+        File dir = file.isDirectory() ? file : file.getParentFile();
+        if (dir != null) {
+            lastDirectory = dir;
+            FileCommunicator.setDefaultDir(dir);
         }
-        return ok;
-    }//public setFilters(FileFilter[] list)
-
-    public boolean setFilters(Vector<FileFilter> list) {
-        boolean ok = false;
-        try {
-            int len = list.size();
-            FileFilter[] array = list.toArray(new FileFilter[len]);
-            ok = this.setFilters(array);
-        } catch (Exception ex) {
-            DEBUG.logger.log(Level.WARNING, ex.toString());
-        }
-        return ok;
-    }//end public boolean setFilters(FileFilter[] list)
-
-    private void addFilters(SubFormat target) {
-        try {
-            ArrayList<JFileFilter> filters = new ArrayList<>();
-            if (target != null)
-                filters.add(0, new JFileFilter(target));
-            else
-                filters.add(new JFileFilter());
-            Availabilities.formats.getFormats().forEach(it -> {
-                if (target == null || !target.getName().equals(it.getName()))
-                    filters.add(new JFileFilter(it));
-            });
-            filters.forEach(it -> chooser.addChoosableFileFilter(it));
-        } catch (Exception ignored) {
-        }
-    }//end public boolean addFilters(ArrayList<SubFormat> format_list)
-
-    public JFileFilter findFileFiler(SubFormat format) {
-        JFileFilter found_filter = null;
-        try {
-            FileFilter[] filter_list = chooser.getChoosableFileFilters();
-            for (FileFilter flt : filter_list) {
-                found_filter = (JFileFilter) flt;
-                SubFormat fmt = found_filter.getFormatHandler();
-                boolean is_found = ((format == fmt)
-                        || (format.getDescription() + format.getExtension()).equals(
-                        (fmt.getDescription() + fmt.getExtension())));
-                if (is_found)
-                    break;//end if (is_found)
-            }//end for (FileFilter flt : filter_list)
-        } catch (Exception ex) {
-        }
-        return found_filter;
-    }//end public JFileFilter findFileFiler(SubFormat format)
+    }
 }

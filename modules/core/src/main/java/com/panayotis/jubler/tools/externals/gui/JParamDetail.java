@@ -14,7 +14,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
+import com.panayotis.appenh.AFileChooser;
+import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -327,12 +328,14 @@ public class JParamDetail extends JPanel {
     }
 
     private void browsePath() {
-        JFileChooser fc = new JFileChooser();
-        fc.setFileSelectionMode(pathFolder.isSelected() ? JFileChooser.DIRECTORIES_ONLY : JFileChooser.FILES_ONLY);
-        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            pathDefault.setText(fc.getSelectedFile().getAbsolutePath());
+        File sel = new AFileChooser()
+                .parent(this)
+                .mode(pathFolder.isSelected() ? AFileChooser.FileSelectionMode.DirectoriesOnly : AFileChooser.FileSelectionMode.FilesOnly)
+                .loadSingle();
+        if (sel != null) {
+            pathDefault.setText(sel.getAbsolutePath());
             if (param != null)
-                param.setDefaultValue(fc.getSelectedFile().getAbsolutePath());
+                param.setDefaultValue(sel.getAbsolutePath());
         }
     }
 

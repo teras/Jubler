@@ -24,7 +24,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
+import com.panayotis.appenh.AFileChooser;
+import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -308,10 +309,12 @@ public class JRecipeRunDialog extends JDialog {
                 JTextField t = new JTextField(initial(p), 20);
                 JButton b = new JButton(__("Browse"));
                 b.addActionListener(e -> {
-                    JFileChooser fc = new JFileChooser();
-                    fc.setFileSelectionMode(p.isFolder() ? JFileChooser.DIRECTORIES_ONLY : JFileChooser.FILES_ONLY);
-                    if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
-                        t.setText(fc.getSelectedFile().getAbsolutePath());
+                    File sel = new AFileChooser()
+                            .parent(b)
+                            .mode(p.isFolder() ? AFileChooser.FileSelectionMode.DirectoriesOnly : AFileChooser.FileSelectionMode.FilesOnly)
+                            .loadSingle();
+                    if (sel != null)
+                        t.setText(sel.getAbsolutePath());
                 });
                 line.add(t, BorderLayout.CENTER);
                 line.add(b, BorderLayout.EAST);

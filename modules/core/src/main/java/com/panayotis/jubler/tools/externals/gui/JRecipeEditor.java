@@ -23,7 +23,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
+import com.panayotis.appenh.AFileChooser;
+import java.io.File;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -294,11 +295,14 @@ public class JRecipeEditor extends JDialog {
     }
 
     private void browseExecutable() {
-        JFileChooser fc = new JFileChooser();
-        fc.setDialogTitle(__("Select executable"));
-        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            pathT.setText(fc.getSelectedFile().getAbsolutePath());
-            recipe.setPath(fc.getSelectedFile().getAbsolutePath());
+        File sel = new AFileChooser()
+                .parent(this)
+                .title(__("Select executable"))
+                .mode(AFileChooser.FileSelectionMode.FilesOnly)
+                .loadSingle();
+        if (sel != null) {
+            pathT.setText(sel.getAbsolutePath());
+            recipe.setPath(sel.getAbsolutePath());
             updateStatus();
         }
     }

@@ -6,6 +6,7 @@
 
 package  com.panayotis.jubler.media;
 
+import com.panayotis.appenh.AFileChooser;
 import com.panayotis.jubler.media.filters.AnyMediaFileFilter;
 import com.panayotis.jubler.media.filters.AudioFileFilter;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
@@ -13,14 +14,12 @@ import com.panayotis.jubler.os.FileCommunicator;
 import com.panayotis.jubler.os.SystemDependent;
 import java.io.File;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
 public class JVideofileSelector extends javax.swing.JPanel {
 
     private MediaFile mfile;
-    private JFileChooser fdialog;
     private AudioFileFilter afilter;
     private VideoFileFilter vfilter;
     private AnyMediaFileFilter mediafilter;
@@ -34,13 +33,16 @@ public class JVideofileSelector extends javax.swing.JPanel {
         vfilter = new VideoFileFilter();
         afilter = new AudioFileFilter();
         mediafilter = new AnyMediaFileFilter();
+    }
 
-        fdialog = new JFileChooser();
-        fdialog.addChoosableFileFilter(mediafilter);
-        fdialog.addChoosableFileFilter(vfilter);
-        fdialog.addChoosableFileFilter(afilter);
-        fdialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        fdialog.setSelectedFile(new File(FileCommunicator.getDefaultDirPath(), "."));
+    /** A file chooser starting at the given file's folder (or the default dir), files only. */
+    private AFileChooser chooserAt(File current) {
+        File dir = current != null && current.getParentFile() != null && current.getParentFile().isDirectory()
+                ? current.getParentFile() : new File(FileCommunicator.getDefaultDirPath());
+        AFileChooser fc = new AFileChooser().parent(this).directory(dir).mode(AFileChooser.FileSelectionMode.FilesOnly);
+        if (current != null && current.getName() != null && !current.getName().isEmpty())
+            fc.file(current.getName());
+        return fc;
     }
 
     private void updateFiles() {
@@ -213,23 +215,23 @@ public class JVideofileSelector extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CacheBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CacheBrowseActionPerformed
-        fdialog.setSelectedFile(mfile.getCacheFile());
-        afilter.setCheckForValidCache(mfile.getVideoFile());
-        fdialog.setFileFilter(afilter);
-        if (fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+        File f = chooserAt(mfile.getCacheFile())
+                .filter(afilter.getExtensions(), afilter.getDescription())
+                .loadSingle();
+        if (f == null)
             return;
-        FileCommunicator.setDefaultDir(fdialog.getCurrentDirectory());
-        mfile.setCacheFile(fdialog.getSelectedFile());
+        FileCommunicator.setDefaultDir(f.getParentFile());
+        mfile.setCacheFile(f);
         updateFiles();
     }//GEN-LAST:event_CacheBrowseActionPerformed
 
     private void AudioBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AudioBrowseActionPerformed
-        fdialog.setSelectedFile(mfile.getAudioFile());
-        afilter.setCheckForValidCache(null);
-        fdialog.setFileFilter(afilter);
-        if (fdialog.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            mfile.setAudioFile(fdialog.getSelectedFile());
-            FileCommunicator.setDefaultDir(fdialog.getCurrentDirectory());
+        File f = chooserAt(mfile.getAudioFile())
+                .filter(afilter.getExtensions(), afilter.getDescription())
+                .loadSingle();
+        if (f != null) {
+            mfile.setAudioFile(f);
+            FileCommunicator.setDefaultDir(f.getParentFile());
         }
         updateFiles();
     }//GEN-LAST:event_AudioBrowseActionPerformed
@@ -244,12 +246,15 @@ public class JVideofileSelector extends javax.swing.JPanel {
     }//GEN-LAST:event_ExternalAudioBActionPerformed
 
     private void VideoBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_VideoBrowseActionPerformed
-        fdialog.setSelectedFile(mfile.getVideoFile());
-        fdialog.setFileFilter(mediafilter);
-        if (fdialog.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+        File f = chooserAt(mfile.getVideoFile())
+                .filter(mediafilter.getExtensions(), mediafilter.getDescription())
+                .filter(vfilter.getExtensions(), vfilter.getDescription())
+                .filter(afilter.getExtensions(), afilter.getDescription())
+                .loadSingle();
+        if (f == null)
             return;
-        FileCommunicator.setDefaultDir(fdialog.getCurrentDirectory());
-        mfile.setVideoFile(fdialog.getSelectedFile());
+        FileCommunicator.setDefaultDir(f.getParentFile());
+        mfile.setVideoFile(f);
         updateFiles();
     }//GEN-LAST:event_VideoBrowseActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables

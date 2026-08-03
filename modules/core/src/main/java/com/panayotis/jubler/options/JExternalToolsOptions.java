@@ -23,13 +23,12 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
+import com.panayotis.appenh.AFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -218,11 +217,11 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
     }
 
     private void loadFromFile() {
-        JFileChooser fc = recipeChooser(__("Load recipe"));
-        if (fc.showOpenDialog(this) != JFileChooser.APPROVE_OPTION)
+        File selected = recipeChooser(__("Load recipe")).loadSingle();
+        if (selected == null)
             return;
         try {
-            List<Recipe> loaded = Recipes.loadFromFile(fc.getSelectedFile());
+            List<Recipe> loaded = Recipes.loadFromFile(selected);
             for (Recipe recipe : loaded) {
                 Recipes.getList().add(recipe);
                 model.addElement(recipe);
@@ -241,12 +240,13 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
             JIDialog.info(this, __("Select a recipe to save."), __("Save recipe"));
             return;
         }
-        JFileChooser fc = recipeChooser(__("Save recipe"));
-        fc.setSelectedFile(new File(sanitize(recipe.getName()) + ".json"));
-        if (fc.showSaveDialog(this) != JFileChooser.APPROVE_OPTION)
+        File selected = recipeChooser(__("Save recipe"))
+                .file(sanitize(recipe.getName()) + ".json")
+                .save();
+        if (selected == null)
             return;
         try {
-            Recipes.saveToFile(recipe, withJsonExtension(fc.getSelectedFile()));
+            Recipes.saveToFile(recipe, withJsonExtension(selected));
         } catch (Exception e) {
             DEBUG.debug(e);
             JIDialog.error(this, __("Could not save recipe: {0}", e.getMessage()), __("Error"));
@@ -287,11 +287,13 @@ public class JExternalToolsOptions extends JPanel implements OptionsHolder {
         recipeList.repaint();
     }
 
-    private JFileChooser recipeChooser(String title) {
-        JFileChooser fc = new JFileChooser(FileCommunicator.getDefaultDirPath());
-        fc.setDialogTitle(title);
-        fc.setFileFilter(new FileNameExtensionFilter(__("Recipe files") + " (*.json)", "json"));
-        return fc;
+    private AFileChooser recipeChooser(String title) {
+        return new AFileChooser()
+                .parent(this)
+                .title(title)
+                .directory(new File(FileCommunicator.getDefaultDirPath()))
+                .mode(AFileChooser.FileSelectionMode.FilesOnly)
+                .filter("json", __("Recipe files") + " (*.json)");
     }
 
     private static File withJsonExtension(File f) {
