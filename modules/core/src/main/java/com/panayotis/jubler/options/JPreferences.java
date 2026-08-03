@@ -11,6 +11,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.gui.JOptionTabs;
 import com.panayotis.jubler.os.PluginRegistry;
+import com.panayotis.jubler.os.SystemDependent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +42,8 @@ public class JPreferences extends javax.swing.JDialog {
 
         Tabs = new JOptionTabs(this);
         Tabs.addTab(jcut = new JShortcutsOptions(jub.JublerMenuBar));
-        Tabs.addTab(jext = new JExternalToolsOptions());
+        if (!SystemDependent.isFlatpak())   // external tools can't run in the sandbox
+            Tabs.addTab(jext = new JExternalToolsOptions());
         Tabs.addTab(jprev = new JPreviewOptions());
         if (PluginRegistry.hasPlugins())
             Tabs.addTab(jplug = new JPluginsOptions());

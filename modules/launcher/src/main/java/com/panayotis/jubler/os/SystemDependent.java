@@ -20,12 +20,20 @@ public class SystemDependent {
     protected static final boolean IS_LINUX;
     protected static final boolean IS_WINDOWS;
     protected static final boolean IS_MACOSX;
+    private static final boolean IS_FLATPAK;
 
     static {
         String OS = System.getProperty("os.name").toLowerCase();
         IS_LINUX = OS.contains("linux");
         IS_WINDOWS = OS.contains("windows");
         IS_MACOSX = OS.startsWith("mac");
+        // The Flatpak runtime always drops a /.flatpak-info into the sandbox.
+        IS_FLATPAK = IS_LINUX && new File("/.flatpak-info").exists();
+    }
+
+    /** True when running inside a Flatpak sandbox; used to gate host-only behaviour. */
+    public static boolean isFlatpak() {
+        return IS_FLATPAK;
     }
 
     public static int getSliderLOffset() {

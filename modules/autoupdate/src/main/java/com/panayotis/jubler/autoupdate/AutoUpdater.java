@@ -69,6 +69,8 @@ public class AutoUpdater implements PluginCollection, PluginItem<Launcher> {
 
     @Override
     public void execPlugin(Launcher caller) {
+        if (SystemDependent.isFlatpak())
+            return;   // updates are delivered by Flathub inside the sandbox
         new Thread(() -> {
             HttpURLConnection connection;
             try {

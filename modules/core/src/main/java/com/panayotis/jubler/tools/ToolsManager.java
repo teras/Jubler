@@ -10,6 +10,7 @@ import com.panayotis.jubler.JubFrame;
 import com.panayotis.jubler.media.VideoFile;
 import com.panayotis.jubler.media.preview.decoders.PreviewProviderRegistry;
 import com.panayotis.jubler.media.preview.decoders.SubtitleStreamInfo;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
 import com.panayotis.jubler.tools.ToolMenu.Location;
@@ -118,6 +119,11 @@ public class ToolsManager implements PluginContext {
 
     private static void updateExternals(final JubFrame jubler) {
         JMenu externalsM = jubler.ExternalsM;
+        if (SystemDependent.isFlatpak()) {
+            // External tools (recipes) can't run in the sandbox — parked for v1; hide the whole menu.
+            externalsM.setVisible(false);
+            return;
+        }
         externalsM.removeAll();
         int i = 0;
         for (final Recipe recipe : Recipes.getList()) {

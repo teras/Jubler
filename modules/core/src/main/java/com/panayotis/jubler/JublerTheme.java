@@ -11,6 +11,7 @@ import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.options.JUiOptions;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.LoaderThread;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.PluginCollection;
 import com.panayotis.jubler.plugins.PluginItem;
 import com.panayotis.jubler.subs.JSubEditorDialog;
@@ -44,7 +45,10 @@ public class JublerTheme implements PluginCollection, PluginItem<JubFrame> {
         e.registerFileOpen(file -> LoaderThread.getLoader().addSubtitle(file.getAbsolutePath()));
         SwingUtilities.invokeLater(() -> {
             e.setApplicationImages(JubFrame.getFrameIcons().toArray(new Image[0]));
-            e.registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
+            // In the Flatpak sandbox the .desktop + icons are shipped by the package; registering
+            // into ~/.local/share (xdg-icon-resource/gio) is pointless and hits a read-only path.
+            if (!SystemDependent.isFlatpak())
+                e.registerApplication("Jubler", "Jubler is a tool to edit text-based subtitles", "AudioVideo", "Java", "TextTools", "AudioVideoEditing");
         });
     }
 

@@ -146,6 +146,9 @@ public class MediaFile {
 
     public void guessMediaFiles(Subtitles subs) {
         if (!isValid(vfile)) {
+            // guessFile only ever sees what the process can read, so in the Flatpak sandbox a
+            // single-file portal grant already yields no sibling match (auto-fish is prevented for
+            // free); it still returns a non-null placeholder VideoFile, which the rest of the flow needs.
             vfile = VideoFile.guessFile(subs, new VideoFileFilter());
             if (!isValid(afile))
                 setAudioFileUnused();
