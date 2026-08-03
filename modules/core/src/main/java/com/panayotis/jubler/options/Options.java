@@ -10,16 +10,10 @@ import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.appenh.ThemeVariation;
 import com.panayotis.jubler.JublerPrefs;
 import com.panayotis.jubler.options.gui.TabPage;
-import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.subs.SubFile;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Enumeration;
-import java.util.Properties;
 import java.util.Stack;
 
 @SuppressWarnings("UseSpecificCatch")
@@ -102,7 +96,6 @@ public class Options {
     }
 
     static {
-        updateConfigFile();
         migrateDefaultEncoding();   // must run before the defaults are read below
         defaultEncoding8bit = JublerPrefs.getString(DEFAULT_ENCODING_8BIT_TAG, "ISO-8859-1");
         if (!isSingleByteCharset(defaultEncoding8bit))   // the floor must always decode → single-byte
@@ -182,39 +175,6 @@ public class Options {
         JublerPrefs.set(DEFAULT_ENCODING_8BIT_TAG, single == null ? "ISO-8859-1" : single);
         if (cjk != null)
             JublerPrefs.set(DEFAULT_ENCODING_CJK_TAG, cjk);
-    }
-
-    private static void updateConfigFile() {
-        File oldConfigPath = new File(SystemDependent.getObsoleteConfigPath());
-        if (!oldConfigPath.isFile())
-            return;
-        try {
-            Properties opts = new Properties();
-            opts.loadFromXML(Files.newInputStream(oldConfigPath.toPath()));
-            Enumeration<?> names = opts.propertyNames();
-            while (names.hasMoreElements()) {
-                String key = names.nextElement().toString();
-                JublerPrefs.set(key.toLowerCase(), opts.getProperty(key));
-            }
-            oldConfigPath.delete();
-            JublerPrefs.set("system.preferences.version", null);
-
-            Path dir = Paths.get(System.getProperty("user.home") + File.separator + ".jubler");
-            Files.walkFileTree(dir, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Files.delete(file);
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    Files.delete(dir);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        } catch (IOException ignore) {
-        }
     }
 
     public static void loadSystemPreferences(JPreferences prefs) {

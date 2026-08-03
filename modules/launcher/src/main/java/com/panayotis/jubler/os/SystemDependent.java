@@ -183,16 +183,6 @@ public class SystemDependent {
         return ret;
     }
 
-    public static String getObsoleteConfigPath() {
-        String home = System.getProperty("user.home") + File.separator;
-        if (IS_WINDOWS)
-            return System.getenv("APPDATA") + "\\Jubler\\config.txt";
-        if (IS_MACOSX)
-            return home + "Library/Preferences/com.panayotis.jubler.config";
-        else
-            return home + ".jubler/config";
-    }
-
     public static String getLogPath() {
         String home = System.getProperty("user.home") + File.separator;
         if (IS_WINDOWS)
