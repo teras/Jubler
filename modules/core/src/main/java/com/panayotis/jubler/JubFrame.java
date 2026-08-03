@@ -12,7 +12,9 @@ import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.media.filters.VideoFileFilter;
 import com.panayotis.jubler.media.preview.JSubPreview;
 import com.panayotis.jubler.options.JPreferences;
+import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.options.ShortcutsModel;
+import com.panayotis.jubler.subs.loader.gui.JEncodingBar;
 import com.panayotis.jubler.os.*;
 import com.panayotis.jubler.plugins.PluginContext;
 import com.panayotis.jubler.plugins.PluginManager;
@@ -124,6 +126,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     /* Shown once per application run, on the empty central area of the very first window */
     private static boolean celebrationShown = false;
     private JCelebrationPanel celebration;
+    /* Transient encoding-override bar, shown above the table after load (see JEncodingBar) */
+    private final JEncodingBar encodingBar;
 
     public JubFrame() {
         //a new instance always first got the focus, so set the currentWindow
@@ -138,6 +142,9 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         undo = new UndoList(this);
 
         initComponents();
+
+        encodingBar = new JEncodingBar(this::reloadFromBar, this::closeEncodingBar);
+        BasicPanel.add(encodingBar, java.awt.BorderLayout.NORTH);
         NewVersionTB.setVisible(false);
         PreviewTB.setToolTipText(__("Right mouse click to bring selected row into view"));
         PreviewTB.addMouseListener(new MouseAdapter() {
@@ -1470,12 +1477,27 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         UndoEntry entry = new UndoEntry(subs, __("Change information"));
 
         info.setVisible(true);
+        if (!info.isAccepted())   // Cancel / window close discards everything
+            return;
         subs.setAttribs(info.getAttribs());
+
+        /* Encoding/FPS here are plain save-time properties (no re-decode); FPS only for frame-based formats */
+        SubFile sf = subs.getSubFile();
+        boolean supportsFps = sf.getFormat().supportsFPS();
+        boolean fileChanged = !sf.getEncoding().equals(info.getSelectedEncoding())
+                || (supportsFps && sf.getFPS() != info.getSelectedFPS());
+        sf.setEncoding(info.getSelectedEncoding());
+        if (supportsFps)
+            sf.setFPS(info.getSelectedFPS());
+        Options.rememberEncoding(info.getSelectedEncoding());
+
         subs.updateQuality();
         tableHasChanged(getSelectedSubs());
 
         if (!subs.getAttribs().equals(oldattr))
             undo.addUndo(entry);
+        else if (fileChanged)
+            setUnsaved(true);
     }//GEN-LAST:event_InfoFMActionPerformed
 
     private void StepwiseREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepwiseREMActionPerformed
@@ -2145,6 +2167,41 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         showInfo();
     }
 
+    /**
+     * Re-read the currently loaded file with the encoding and FPS chosen in the bar, from the
+     * buffered bytes (no disk access). Picking a Unicode charset is transient; picking an 8-bit one
+     * is also remembered as the new default ({@link Options#rememberEncoding} ignores Unicode and
+     * routes single-byte vs CJK to their slots, which is what makes the persistence conditional). FPS
+     * matters for frame-based formats, which are re-parsed from the same bytes.
+     */
+    private void reloadFromBar() {
+        if (subs == null)
+            return;
+        byte[] bytes = subs.getLoadedBytes();
+        if (bytes == null)
+            return;
+        String enc = encodingBar.getEncoding();
+        String data = FileCommunicator.decodeFrom(bytes, enc, false);
+        if (data == null)
+            return;  // unknown/illegal charset - ignore, keep the current view
+        SubFile sfile = subs.getSubFile();
+        sfile.setEncoding(enc);
+        if (sfile.getFormat().supportsFPS())
+            sfile.setFPS(encodingBar.getFPSValue());
+        Options.rememberEncoding(enc);
+        Subtitles newsubs = new Subtitles(sfile);
+        newsubs.populate(sfile, data, false);
+        newsubs.setLoadedBytes(bytes);
+        setSubs(newsubs);
+    }
+
+    /** Hide the encoding bar and release the buffered bytes; called on the first edit. */
+    public void closeEncodingBar() {
+        encodingBar.hideBar();
+        if (subs != null)
+            subs.releaseLoadedBytes();
+    }
+
     public JubFrame loadFile(SubFile sfile, boolean force_into_same_window) {
         String data;
         Subtitles newsubs;
@@ -2163,11 +2220,15 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         /* Initialize Subtitles */
         newsubs = new Subtitles(sfile);
 
-        data = FileCommunicator.load(sfile);  // Read data and set current encoding
+        /* Read the bytes once, detect the encoding, and keep the bytes so the encoding bar can
+         * re-decode without touching the disk again (sandbox-safe). */
+        byte[] rawBytes = FileCommunicator.loadRawBytes(sfile.getSaveFile());
+        data = rawBytes == null ? null : FileCommunicator.detectAndDecode(sfile, rawBytes, true);
         if (data == null) {
             JIDialog.error(this, __("Could not load file. Possibly an encoding error."), __("Error while loading file"));
             return null;
         }
+        newsubs.setLoadedBytes(rawBytes);
         /* Strip autosave prefix from filename */
         if (is_autoload) {
             // Set as a new file... make sure to keep original file name
@@ -2191,6 +2252,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         else
             work.undo.setSaveMark();
         work.setSubs(newsubs);
+        work.encodingBar.showFor(newsubs.getSubFile().getEncoding(), work.mfile, newsubs);
         work.enableWindowControls(true);
         work.showInfo();
         work.SaveFM.setEnabled(true);

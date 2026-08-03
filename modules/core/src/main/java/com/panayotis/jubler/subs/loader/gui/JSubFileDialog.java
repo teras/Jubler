@@ -65,7 +65,8 @@ public class JSubFileDialog extends javax.swing.JDialog {
 
         getContentPane().removeAll();
         getContentPane().add(chooser, BorderLayout.CENTER);
-        getContentPane().add(jopt, BorderLayout.NORTH);
+        if (jopt.getComponentCount() > 0)   // skip an empty accessory (e.g. the load panel)
+            getContentPane().add(jopt, BorderLayout.NORTH);
         pack();
         setLocationRelativeTo(parent);
         setVisible(true);

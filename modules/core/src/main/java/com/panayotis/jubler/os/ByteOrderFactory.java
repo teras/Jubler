@@ -6,10 +6,6 @@
 
 package  com.panayotis.jubler.os;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 public class ByteOrderFactory {
 
     private final static ByteOrder[] orders;
@@ -45,26 +41,13 @@ public class ByteOrderFactory {
         }
     }
 
-    public static String getEncoding(File f) {
-        if (f.length() < ByteOrder.MaxSize)
+    /** Detect a Unicode BOM at the start of already-read bytes; returns null when none matches. */
+    public static String getEncoding(byte[] buffer) {
+        if (buffer == null || buffer.length < ByteOrder.MaxSize)
             return null;
-        byte[] buffer = new byte[ByteOrder.MaxSize];
-        FileInputStream in = null;
-        try {
-            in = new FileInputStream(f);
-            in.read(buffer);
-            for (int i = 0; i < orders.length; i++)
-                if (orders[i].match(buffer)) {
-                    in.close();
-                    return orders[i].encoding;
-                }
-        } catch (IOException ex) {
-        } finally {
-            try {
-                in.close();
-            } catch (IOException ex) {
-            }
-        }
+        for (ByteOrder order : orders)
+            if (order.match(buffer))
+                return order.encoding;
         return null;
     }
 }

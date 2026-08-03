@@ -15,13 +15,24 @@ import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.TotalSubMetrics;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.nio.charset.Charset;
 
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class JInformation extends JDialog {
 
     private final Subtitles subs;
     private final MediaFile media;
+    /* Plain drop-downs only (no presets menu, no media link) — the encoding bar carries the smart
+     * widgets; here they are just the last-resort save-time properties. */
+    private final JComboBox<String> encCombo = new JComboBox<>(Charset.availableCharsets().keySet().toArray(new String[0]));
+    private final JComboBox<String> fpsCombo = new JComboBox<>(new String[]{"15", "20", "23.976", "24", "25", "29.97", "30"});
+    /* Only when the user presses OK are the changes applied; Cancel / window-close discards them. */
+    private boolean accepted = false;
 
     /**
      * Creates new form JProperties
@@ -42,7 +53,6 @@ public class JInformation extends JDialog {
         AuthorT.setText(attr.author);
         SourceT.setText(attr.source);
         CommentsT.setText(attr.comments);
-        FilePathT.setText(parent.getSubtitles().getSubFile().getStrippedFile().getPath());
 
         NumberT.setText(Integer.toString(parent.getSubtitles().size()));
         TotalSubMetrics m = parent.getSubtitles().getTotalMetrics();
@@ -68,12 +78,61 @@ public class JInformation extends JDialog {
 
         VSelectorP.add(parent.getMediaFile().videoselector, BorderLayout.CENTER);
 
+        // Encoding + FPS of the subtitle file, editable after the transient encoding bar is gone.
+        // Here they are plain document (save-time) properties — no re-decode; changing them only
+        // affects the next save. Plain lists only, no smart widgets.
+        encCombo.setSelectedItem(subs.getSubFile().getEncoding());
+        boolean supportsFps = subs.getSubFile().getFormat().supportsFPS();
+        JPanel encFpsP = new JPanel(new GridLayout(supportsFps ? 2 : 1, 2, 4, 2));
+        encFpsP.setOpaque(false);
+        encFpsP.add(new JLabel(__("Encoding")));
+        encFpsP.add(encCombo);
+        if (supportsFps) {   // FPS is meaningless for time-based formats — don't show it at all
+            fpsCombo.setEditable(true);
+            fpsCombo.setSelectedItem(trimFps(subs.getSubFile().getFPS()));
+            encFpsP.add(new JLabel(__("FPS")));
+            encFpsP.add(fpsCombo);
+        }
+        SubFileInfoP.add(encFpsP, BorderLayout.CENTER);
+
+        javax.swing.JButton cancelB = new javax.swing.JButton(__("Cancel"));
+        cancelB.addActionListener(e -> {
+            accepted = false;
+            setVisible(false);
+        });
+        jPanel5.add(cancelB, 0);   // to the left of OK
+
         pack();
         setLocationRelativeTo(parent);
     }
 
+    /** True only if the user confirmed with OK; false on Cancel or window close. */
+    public boolean isAccepted() {
+        return accepted;
+    }
+
     public SubAttribs getAttribs() {
         return new SubAttribs(TitleT.getText(), AuthorT.getText(), SourceT.getText(), CommentsT.getText());
+    }
+
+    /** The charset chosen on the Media tab — the document's save charset. */
+    public String getSelectedEncoding() {
+        Object sel = encCombo.getSelectedItem();
+        return sel == null ? subs.getSubFile().getEncoding() : sel.toString();
+    }
+
+    /** The FPS chosen on the Media tab — used for frame-based output. */
+    public float getSelectedFPS() {
+        try {
+            return Float.parseFloat(fpsCombo.getSelectedItem().toString().trim());
+        } catch (Exception e) {
+            return subs.getSubFile().getFPS();
+        }
+    }
+
+    /* Show whole-number FPS without a trailing ".0" so it matches the preset list. */
+    private static String trimFps(float fps) {
+        return fps == Math.rint(fps) ? Integer.toString((int) fps) : Float.toString(fps);
     }
 
     /**
@@ -101,8 +160,6 @@ public class JInformation extends JDialog {
         MediaP = new javax.swing.JPanel();
         VSelectorP = new javax.swing.JPanel();
         SubFileInfoP = new javax.swing.JPanel();
-        FilePathL = new javax.swing.JLabel();
-        FilePathT = new javax.swing.JTextField();
         StatsP = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
@@ -218,13 +275,6 @@ public class JInformation extends JDialog {
         SubFileInfoP.setOpaque(false);
         SubFileInfoP.setLayout(new java.awt.BorderLayout());
 
-        FilePathL.setText(__("Subtitle File"));
-        SubFileInfoP.add(FilePathL, java.awt.BorderLayout.WEST);
-
-        FilePathT.setEditable(false);
-        FilePathT.setToolTipText(__("The file of this subtitle"));
-        SubFileInfoP.add(FilePathT, java.awt.BorderLayout.SOUTH);
-
         VSelectorP.add(SubFileInfoP, java.awt.BorderLayout.NORTH);
 
         MediaP.add(VSelectorP, java.awt.BorderLayout.NORTH);
@@ -339,6 +389,7 @@ public class JInformation extends JDialog {
     }//GEN-LAST:event_PTabsStateChanged
 
     private void OKBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKBActionPerformed
+        accepted = true;
         setVisible(false);
     }//GEN-LAST:event_OKBActionPerformed
 
@@ -346,8 +397,6 @@ public class JInformation extends JDialog {
     private javax.swing.JLabel AuthorL;
     private javax.swing.JTextField AuthorT;
     private javax.swing.JTextArea CommentsT;
-    private javax.swing.JLabel FilePathL;
-    private javax.swing.JTextField FilePathT;
     private javax.swing.JPanel InfoP;
     private javax.swing.JLabel MaxCPSL;
     private javax.swing.JLabel MaxCPST;

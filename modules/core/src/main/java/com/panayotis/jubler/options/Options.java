@@ -15,6 +15,7 @@ import com.panayotis.jubler.subs.SubFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Enumeration;
@@ -65,6 +66,10 @@ public class Options {
     private static final String AUDIOCACHE_DELETEONCLOSE_TAG = "audiocache.deleteonclose";
     private static boolean videoPreviewHardware;
     private static final String VIDEOPREVIEW_HARDWARE_TAG = "videopreview.hardware";
+    private static String defaultEncoding8bit;
+    private static final String DEFAULT_ENCODING_8BIT_TAG = "default.encoding.8bit";
+    private static String defaultEncodingCjk;
+    private static final String DEFAULT_ENCODING_CJK_TAG = "default.encoding.cjk";
 
     public static final int AUDIOCACHE_DEFAULT_RATE = 16000;
     public static final int AUDIOCACHE_DEFAULT_CHANNELS = 2;
@@ -98,7 +103,85 @@ public class Options {
 
     static {
         updateConfigFile();
+        migrateDefaultEncoding();   // must run before the defaults are read below
+        defaultEncoding8bit = JublerPrefs.getString(DEFAULT_ENCODING_8BIT_TAG, "ISO-8859-1");
+        if (!isSingleByteCharset(defaultEncoding8bit))   // the floor must always decode → single-byte
+            defaultEncoding8bit = "ISO-8859-1";
+        defaultEncodingCjk = JublerPrefs.getString(DEFAULT_ENCODING_CJK_TAG, null);
 //        JublerPrefs.dump();
+    }
+
+    /**
+     * True for the self-identifying Unicode charsets (UTF-8/16/32) — found automatically (UTF-8 by
+     * strict validation, UTF-16/32 by BOM), so they are never remembered.
+     */
+    public static boolean isUnicodeCharset(String name) {
+        if (name == null)
+            return false;
+        String u = name.toUpperCase();
+        return u.startsWith("UTF-") || u.startsWith("UTF8") || u.startsWith("UTF16")
+                || u.startsWith("UTF32") || u.startsWith("X-UTF") || u.equals("UTF");
+    }
+
+    /** True for genuine single-byte charsets (one byte per character) — they always decode any bytes. */
+    public static boolean isSingleByteCharset(String name) {
+        try {
+            return Charset.forName(name).newEncoder().maxBytesPerChar() == 1f;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /** The remembered single-byte charset — the always-succeeding floor of the load-time auto-detect. */
+    public static String getDefaultEncoding8bit() {
+        return defaultEncoding8bit;
+    }
+
+    /** The remembered multi-byte CJK charset, or null if none — tried (strict) before the floor. */
+    public static String getDefaultEncodingCjk() {
+        return defaultEncodingCjk;
+    }
+
+    /**
+     * Remember a chosen charset and persist it, routed to the right slot: a genuine single-byte
+     * charset becomes the floor, a multi-byte CJK charset becomes the CJK hint. Unicode is ignored
+     * (self-identifying) — this is what makes the bar's persistence conditional: picking UTF is
+     * transient, picking any non-Unicode charset sticks in its slot.
+     */
+    public static void rememberEncoding(String enc) {
+        if (enc == null || enc.isEmpty() || isUnicodeCharset(enc))
+            return;
+        if (isSingleByteCharset(enc)) {
+            defaultEncoding8bit = enc;
+            JublerPrefs.set(DEFAULT_ENCODING_8BIT_TAG, enc);
+        } else {
+            defaultEncodingCjk = enc;
+            JublerPrefs.set(DEFAULT_ENCODING_CJK_TAG, enc);
+        }
+    }
+
+    /**
+     * One-time preferences migration: split the legacy {@code default.encoding1/2/3} triplet into the
+     * two slots — first single-byte entry → floor (else ISO-8859-1), first multi-byte CJK entry → CJK
+     * hint (if any). Idempotent; the old keys are left untouched so a downgrade still works.
+     */
+    private static void migrateDefaultEncoding() {
+        if (JublerPrefs.getString(DEFAULT_ENCODING_8BIT_TAG, null) != null)
+            return;
+        String single = null, cjk = null;
+        for (int i = 1; i <= 3; i++) {
+            String e = JublerPrefs.getString("default.encoding" + i, null);
+            if (e == null || isUnicodeCharset(e))
+                continue;
+            if (isSingleByteCharset(e)) {
+                if (single == null)
+                    single = e;
+            } else if (cjk == null)
+                cjk = e;
+        }
+        JublerPrefs.set(DEFAULT_ENCODING_8BIT_TAG, single == null ? "ISO-8859-1" : single);
+        if (cjk != null)
+            JublerPrefs.set(DEFAULT_ENCODING_CJK_TAG, cjk);
     }
 
     private static void updateConfigFile() {

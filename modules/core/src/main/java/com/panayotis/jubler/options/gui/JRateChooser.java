@@ -49,6 +49,11 @@ public class JRateChooser extends JPanel {
         return FPSChooser.getSelectedItem().toString();
     }
 
+    /** Notify {@code r} whenever the chosen FPS changes (typed, picked, or read from the video). */
+    public void addChangeListener(Runnable r) {
+        FPSChooser.addActionListener(e -> r.run());
+    }
+
     @Override
     public void setEnabled(boolean value) {
         super.setEnabled(value);

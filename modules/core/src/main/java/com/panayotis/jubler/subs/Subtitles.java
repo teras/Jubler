@@ -49,6 +49,10 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
     private final SubStyleList styles;
     /* The file representation of this subtitle */
     private SubFile subfile;
+    /* Raw bytes as read from disk, kept only so the encoding bar can re-decode instantly (and
+     * sandbox-safe, without re-reading a possibly one-shot portal handle). Released on the first
+     * edit — past that a re-decode would discard changes, so encoding becomes a save-only property. */
+    private byte[] loadedBytes;
 
     /* Methods related to JTable */
     public static void setVisibleColumn(int which, boolean how) {
@@ -354,6 +358,21 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
 
     public void setSubFile(SubFile sfile) {
         subfile = sfile;
+    }
+
+    /** Keep the raw bytes read at load time, so the encoding bar can re-decode without disk access. */
+    public void setLoadedBytes(byte[] bytes) {
+        loadedBytes = bytes;
+    }
+
+    /** The raw bytes as read from disk, or null once released (after the first edit). */
+    public byte[] getLoadedBytes() {
+        return loadedBytes;
+    }
+
+    /** Drop the buffered bytes; called on the first edit, after which encoding is save-only. */
+    public void releaseLoadedBytes() {
+        loadedBytes = null;
     }
 
 

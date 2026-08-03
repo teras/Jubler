@@ -21,17 +21,11 @@ public class SubFile {
 
     public static final boolean EXTENSION_GIVEN = true;
     public static final boolean EXTENSION_OMMITED = false;
-    private final static String[] basic_encodings = {
-            "UTF-8",
-            "ISO-8859-1",
-            "UTF-16"
-    };
-    private final static String basic_fileencoding = basic_encodings[0];
+    private final static String basic_fileencoding = "UTF-8";
     private final static float basic_FPS = 25f;
     public final static SubFormat basic_format;
 
-    /* Mutable default values - used only in load/save dialogs */
-    private static String[] def_encodings = new String[basic_encodings.length];
+    /* Mutable default value - used only in the save/load dialogs */
     private static float def_FPS;
 
     /* Current values */
@@ -42,8 +36,6 @@ public class SubFile {
     private File savefile_noext;
 
     static {
-        for (int i = 0; i < def_encodings.length; i++)
-            setDefaultEncoding(i, JublerPrefs.getString("default.encoding" + (i + 1), null));
         setDefaultFPS(JublerPrefs.getString("default.fps", null));
         SubFormat f = Availabilities.formats.findFromName("AdvancedSubStation");
         if (f == null)
@@ -53,28 +45,8 @@ public class SubFile {
         basic_format = f;
     }
 
-    public static String getBasicEncoding(int i) {
-        return basic_encodings[i];
-    }
-
     public static void saveDefaultOptions() {
-        for (int i = 0; i < def_encodings.length; i++)
-            JublerPrefs.set("default.encoding" + (i + 1), getDefaultEncoding(i));
         JublerPrefs.set("default.fps", Float.toString(getDefaultFPS()));
-    }
-
-    public static void setDefaultEncoding(int i, String enc) {
-        if (enc == null)
-            enc = basic_encodings[i];
-        def_encodings[i] = enc;
-    }
-
-    public static int getDefaultEncodingSize() {
-        return def_encodings.length;
-    }
-
-    public static String getDefaultEncoding(int i) {
-        return def_encodings[i];
     }
 
     public static void setDefaultFPS(String fps) {

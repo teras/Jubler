@@ -7,7 +7,6 @@
 package  com.panayotis.jubler.subs.loader.gui;
 
 import com.panayotis.jubler.options.gui.JRateChooser;
-import java.awt.BorderLayout;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 import com.panayotis.jubler.media.MediaFile;
@@ -15,47 +14,38 @@ import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 
+/**
+ * Save accessory: only the (optional) FPS chooser for frame-based formats. Encoding is no longer
+ * chosen here — it is the document's current encoding, corrected through the encoding bar
+ * ({@link JEncodingBar}).
+ */
 public class JSaveOptions extends JFileOptions {
 
     private JRateChooser CFPS;
 
-    /**
-     * Creates new form JSavePrefs
-     */
     public JSaveOptions() {
         super();
         CFPS = new JRateChooser();
         initComponents();
-        ControlsP.add(CFPS, BorderLayout.CENTER);
+        ControlsP.add(CFPS);
     }
 
     public void updateVisuals(Subtitles subs, MediaFile mfile) {
-        setUnicodeVisible(true);
-        CEncP.add(getPresetsButton(), BorderLayout.EAST);
-
         CFPS.setDataFiles(mfile, subs);
         CFPS.setFPS(subs.getSubFile().getFPS());
-        setListItem(CEnc, subs.getSubFile().getEncoding());
-
-        updateVisualFPS(subs.getSubFile().getFormat().getDescription());  // Set if FPS controls are visible - should be called AFTER CFormat initialization
+        updateVisualFPS(subs.getSubFile().getFormat().getDescription());
     }
 
     protected void applyOptions(SubFile sfile) {
         super.applyOptions(sfile);
         sfile.setFPS(CFPS.getFPSValue());
-        sfile.setEncoding(CEnc.getSelectedItem().toString());
     }
 
-
-    /* Execute this method whenever the output format is changed (or this panel is displayed */
+    /* Execute this method whenever the output format is changed (or this panel is displayed) */
     private void updateVisualFPS(String format_desc) {
         boolean supports_fps = Availabilities.formats.findFromDescription(format_desc).supportsFPS();
         FPSPanelL.setVisible(supports_fps);
         CFPS.setVisible(supports_fps);
-    }
-
-    public void setPreEncoding(String enc) {
-        setListItem(CEnc, enc);
     }
 
     /**
@@ -67,20 +57,13 @@ public class JSaveOptions extends JFileOptions {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        CEncL = new javax.swing.JLabel();
         FPSPanelL = new javax.swing.JLabel();
         ControlsP = new javax.swing.JPanel();
-        CEncP = new javax.swing.JPanel();
-        CEnc = new javax.swing.JComboBox<>(AvailEncodings);
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 0, 4));
         setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setLayout(new java.awt.GridLayout(1, 3));
-
-        CEncL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        CEncL.setText(__("Encoding"));
-        jPanel1.add(CEncL);
+        jPanel1.setLayout(new java.awt.GridLayout(1, 1));
 
         FPSPanelL.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         FPSPanelL.setText(__("FPS"));
@@ -88,19 +71,10 @@ public class JSaveOptions extends JFileOptions {
 
         add(jPanel1, java.awt.BorderLayout.NORTH);
 
-        ControlsP.setLayout(new java.awt.GridLayout(1, 3));
-
-        CEncP.setLayout(new java.awt.BorderLayout());
-        CEncP.add(CEnc, java.awt.BorderLayout.CENTER);
-
-        ControlsP.add(CEncP);
-
+        ControlsP.setLayout(new java.awt.GridLayout(1, 1));
         add(ControlsP, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CEnc;
-    private javax.swing.JLabel CEncL;
-    private javax.swing.JPanel CEncP;
     private javax.swing.JPanel ControlsP;
     private javax.swing.JLabel FPSPanelL;
     private javax.swing.JPanel jPanel1;
