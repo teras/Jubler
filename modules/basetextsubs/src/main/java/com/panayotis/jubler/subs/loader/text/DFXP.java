@@ -140,6 +140,6 @@ public class DFXP extends W3CFamily {
 
     @Override
     public String getExtendedName() {
-        return "DFXP (TTML - Timed Text Markup Language)";
+        return "DFXP (TTML - Timed Text ML)";
     }
 }

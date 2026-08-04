@@ -138,6 +138,6 @@ public class TTML extends W3CFamily {
 
     @Override
     public String getExtendedName() {
-        return "TTML (Timed Text Markup Language)";
+        return "TTML (Timed Text ML)";
     }
 }

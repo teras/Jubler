@@ -34,7 +34,7 @@ public class UndoList extends Stack<UndoEntry> {
         jub.setDoText(null, false);
         jub.resetUndoMark();
         jub.setUnsaved(true);
-        jub.closeEncodingBar();   // first edit: drop the transient encoding bar and its byte buffer
+        jub.autoHideEncodingBar();   // first edit: drop the transient encoding bar and its byte buffer
         jub.showInfo();
 
         /* We can't just call tableHasChanged here, because the table hasn't changed yet! */

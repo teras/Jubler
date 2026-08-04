@@ -127,8 +127,10 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     /* Shown once per application run, on the empty central area of the very first window */
     private static boolean celebrationShown = false;
     private JCelebrationPanel celebration;
-    /* Transient encoding-override bar, shown above the table after load (see JEncodingBar) */
+    /* Encoding/FPS/format bar, shown above the table after load (see JEncodingBar) */
     private final JEncodingBar encodingBar;
+    /* Toolbar toggle that shows/hides the encoding bar (geardocument icon) */
+    private final javax.swing.JToggleButton EncodingTB = new javax.swing.JToggleButton();
 
     public JubFrame() {
         //a new instance always first got the focus, so set the currentWindow
@@ -144,8 +146,17 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
 
         initComponents();
 
-        encodingBar = new JEncodingBar(this::reloadFromBar, this::closeEncodingBar);
+        encodingBar = new JEncodingBar(this::reloadFromBar, this::applyFormatFromBar);
         BasicPanel.add(encodingBar, java.awt.BorderLayout.NORTH);
+        EncodingTB.setIcon(Theme.loadIcon("geardocument"));
+        EncodingTB.setToolTipText(__("Encoding, frame rate and subtitle format"));
+        EncodingTB.setEnabled(false);
+        EncodingTB.setFocusable(false);
+        EncodingTB.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        EncodingTB.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        SystemDependent.setToolBarButtonStyle(EncodingTB, "only");
+        EncodingTB.addActionListener(e -> toggleEncodingBar());
+        JublerTools.add(EncodingTB, JublerTools.getComponentIndex(InfoTB));
         NewVersionTB.setVisible(false);
         PreviewTB.setToolTipText(__("Right mouse click to bring selected row into view"));
         PreviewTB.addMouseListener(new MouseAdapter() {
@@ -1460,15 +1471,18 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         JubFrame curjubler = new JubFrame();
         curjubler.setVisible(true);
 
-        Subtitles s = new Subtitles(subs);
+        Subtitles s = new Subtitles(subs);   // inherits the parent's format, encoding and FPS
         for (int i = 0; i < s.size(); i++)
             s.elementAt(i).setText("");
+        s.setLoadedBytes(new byte[0]);   // empty "armed" buffer: shows the bar now, auto-hides on first edit
         curjubler.setSubs(s);
         curjubler.subs.getSubFile().appendToFilename(__("_child"));
         curjubler.setUnsaved(true);
         curjubler.showInfo();
         curjubler.jparent = this;
         curjubler.enableSaveControls();
+        curjubler.encodingBar.showFor(s.getSubFile().getEncoding(), curjubler.mfile, s);
+        curjubler.EncodingTB.setSelected(true);
         StaticJubler.updateRecents();
     }//GEN-LAST:event_ChildNFMActionPerformed
 
@@ -1482,23 +1496,11 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             return;
         subs.setAttribs(info.getAttribs());
 
-        /* Encoding/FPS here are plain save-time properties (no re-decode); FPS only for frame-based formats */
-        SubFile sf = subs.getSubFile();
-        boolean supportsFps = sf.getFormat().supportsFPS();
-        boolean fileChanged = !sf.getEncoding().equals(info.getSelectedEncoding())
-                || (supportsFps && sf.getFPS() != info.getSelectedFPS());
-        sf.setEncoding(info.getSelectedEncoding());
-        if (supportsFps)
-            sf.setFPS(info.getSelectedFPS());
-        Options.rememberEncoding(info.getSelectedEncoding());
-
         subs.updateQuality();
         tableHasChanged(getSelectedSubs());
 
         if (!subs.getAttribs().equals(oldattr))
             undo.addUndo(entry);
-        else if (fileChanged)
-            setUnsaved(true);
     }//GEN-LAST:event_InfoFMActionPerformed
 
     private void StepwiseREMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StepwiseREMActionPerformed
@@ -1674,8 +1676,11 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         curjubler.setUnsaved(true);
         Subtitles s = new Subtitles();
         s.add(new SubEntry(new Time(0), new Time(5), ""));
+        s.setLoadedBytes(new byte[0]);   // empty "armed" buffer: shows the bar now, auto-hides on first edit (no re-decode)
         curjubler.setSubs(s);
         curjubler.enableSaveControls();
+        curjubler.encodingBar.showFor(s.getSubFile().getEncoding(), curjubler.mfile, s);
+        curjubler.EncodingTB.setSelected(true);
         StaticJubler.updateRecents();
     }//GEN-LAST:event_FileNFMActionPerformed
 
@@ -1714,11 +1719,14 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         Subtitles s = new Subtitles();
         s.add(new SubEntry(new Time(0), new Time(5), ""));
         s.setSubFile(new SubFile(stripExtension(video), SubFile.EXTENSION_OMMITED));
+        s.setLoadedBytes(new byte[0]);   // empty "armed" buffer: shows the bar now, auto-hides on first edit
         curjubler.setSubs(s);
         curjubler.getMediaFile().setNewVideoFile(video);
         curjubler.mediaChanged();
         curjubler.enableSaveControls();
         curjubler.showInfo();
+        curjubler.encodingBar.showFor(s.getSubFile().getEncoding(), curjubler.mfile, s);
+        curjubler.EncodingTB.setSelected(true);
         StaticJubler.addRecentFile(video);
     }
 
@@ -2180,8 +2188,8 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         if (subs == null)
             return;
         byte[] bytes = subs.getLoadedBytes();
-        if (bytes == null)
-            return;
+        if (bytes == null || bytes.length == 0)
+            return;   // no source bytes to re-decode (e.g. a New document keeps an empty armed buffer)
         String enc = encodingBar.getEncoding();
         String data = FileCommunicator.decodeFrom(bytes, enc, false);
         if (data == null)
@@ -2197,11 +2205,52 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         setSubs(newsubs);
     }
 
-    /** Hide the encoding bar and release the buffered bytes; called on the first edit. */
+    /** Explicitly hide the encoding bar (its own close button) and release the buffered bytes. */
     public void closeEncodingBar() {
         encodingBar.hideBar();
         if (subs != null)
             subs.releaseLoadedBytes();
+        EncodingTB.setSelected(false);
+    }
+
+    /**
+     * Auto-hide on edit: only while the raw bytes are still cached (the initial live-decode phase).
+     * Once they are released we've already passed the auto-hide, so a bar the user re-opened via the
+     * toolbar toggle is left as-is. The presence of the cached bytes is itself the "armed" flag.
+     */
+    public void autoHideEncodingBar() {
+        if (subs == null || subs.getLoadedBytes() == null)
+            return;
+        closeEncodingBar();
+    }
+
+    /** Toolbar toggle: show the bar (reflecting the document's current properties) or hide it. */
+    private void toggleEncodingBar() {
+        if (subs == null)
+            return;
+        if (encodingBar.isVisible())
+            closeEncodingBar();
+        else {
+            encodingBar.showFor(subs.getSubFile().getEncoding(), mfile, subs);
+            EncodingTB.setSelected(true);
+        }
+    }
+
+    /**
+     * Apply a format picked from the bar as a document property: set the format and re-derive the
+     * filename extension so the title (format name + path) reflects it. Done without an undo entry, so
+     * it does not trip the first-edit auto-hide — the bar stays open while the user picks a format.
+     */
+    private void applyFormatFromBar(SubFormat fmt) {
+        if (subs == null || fmt == null)
+            return;
+        SubFile sf = subs.getSubFile();
+        if (sf.getFormat() != null && sf.getFormat().getName().equals(fmt.getName()))
+            return;
+        sf.setFormat(fmt.newInstance());
+        sf.updateFileByType();   // re-derive the extension so the shown path matches the new type
+        setUnsaved(true);
+        showInfo();
     }
 
     public JubFrame loadFile(SubFile sfile, boolean force_into_same_window) {
@@ -2255,6 +2304,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
             work.undo.setSaveMark();
         work.setSubs(newsubs);
         work.encodingBar.showFor(newsubs.getSubFile().getEncoding(), work.mfile, newsubs);
+        work.EncodingTB.setSelected(true);
         work.enableWindowControls(true);
         work.showInfo();
         work.SaveFM.setEnabled(true);
@@ -2293,6 +2343,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         }
 
         SaveTB.setEnabled(true);
+        EncodingTB.setEnabled(true);
         InfoTB.setEnabled(true);
         QualityTB.setEnabled(true);
         CutTB.setEnabled(true);

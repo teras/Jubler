@@ -15,22 +15,13 @@ import com.panayotis.jubler.subs.SubAttribs;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.TotalSubMetrics;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.nio.charset.Charset;
 
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 public class JInformation extends JDialog {
 
     private final Subtitles subs;
     private final MediaFile media;
-    /* Plain drop-downs only (no presets menu, no media link) — the encoding bar carries the smart
-     * widgets; here they are just the last-resort save-time properties. */
-    private final JComboBox<String> encCombo = new JComboBox<>(Charset.availableCharsets().keySet().toArray(new String[0]));
-    private final JComboBox<String> fpsCombo = new JComboBox<>(new String[]{"15", "20", "23.976", "24", "25", "29.97", "30"});
     /* Only when the user presses OK are the changes applied; Cancel / window-close discards them. */
     private boolean accepted = false;
 
@@ -77,23 +68,8 @@ public class JInformation extends JDialog {
         MaxDurationT.setText(Float.toString(m.maxduration) + "s");
 
         VSelectorP.add(parent.getMediaFile().videoselector, BorderLayout.CENTER);
-
-        // Encoding + FPS of the subtitle file, editable after the transient encoding bar is gone.
-        // Here they are plain document (save-time) properties — no re-decode; changing them only
-        // affects the next save. Plain lists only, no smart widgets.
-        encCombo.setSelectedItem(subs.getSubFile().getEncoding());
-        boolean supportsFps = subs.getSubFile().getFormat().supportsFPS();
-        JPanel encFpsP = new JPanel(new GridLayout(supportsFps ? 2 : 1, 2, 4, 2));
-        encFpsP.setOpaque(false);
-        encFpsP.add(new JLabel(__("Encoding")));
-        encFpsP.add(encCombo);
-        if (supportsFps) {   // FPS is meaningless for time-based formats — don't show it at all
-            fpsCombo.setEditable(true);
-            fpsCombo.setSelectedItem(trimFps(subs.getSubFile().getFPS()));
-            encFpsP.add(new JLabel(__("FPS")));
-            encFpsP.add(fpsCombo);
-        }
-        SubFileInfoP.add(encFpsP, BorderLayout.CENTER);
+        // Encoding, FPS and format now live solely on the post-load bar (toggled from the toolbar),
+        // so they are no longer duplicated here.
 
         javax.swing.JButton cancelB = new javax.swing.JButton(__("Cancel"));
         cancelB.addActionListener(e -> {
@@ -113,26 +89,6 @@ public class JInformation extends JDialog {
 
     public SubAttribs getAttribs() {
         return new SubAttribs(TitleT.getText(), AuthorT.getText(), SourceT.getText(), CommentsT.getText());
-    }
-
-    /** The charset chosen on the Media tab — the document's save charset. */
-    public String getSelectedEncoding() {
-        Object sel = encCombo.getSelectedItem();
-        return sel == null ? subs.getSubFile().getEncoding() : sel.toString();
-    }
-
-    /** The FPS chosen on the Media tab — used for frame-based output. */
-    public float getSelectedFPS() {
-        try {
-            return Float.parseFloat(fpsCombo.getSelectedItem().toString().trim());
-        } catch (Exception e) {
-            return subs.getSubFile().getFPS();
-        }
-    }
-
-    /* Show whole-number FPS without a trailing ".0" so it matches the preset list. */
-    private static String trimFps(float fps) {
-        return fps == Math.rint(fps) ? Integer.toString((int) fps) : Float.toString(fps);
     }
 
     /**

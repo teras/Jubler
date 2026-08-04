@@ -10,33 +10,41 @@ import static com.panayotis.jubler.i18n.I18N.__;
 
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.options.gui.JRateChooser;
+import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.Subtitles;
+import com.panayotis.jubler.subs.loader.SubFormat;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.function.Consumer;
 
 /**
- * Transient bar shown above the subtitle table right after a file is loaded, mirroring the bottom
- * edit bar. It hosts the shared {@link JEncodingChooser} and (only for frame-based formats) an FPS
- * chooser: changing either re-reads the buffered bytes and re-parses in place. The bar is closed
- * either explicitly (round red button) or on the first edit, after which encoding/FPS become plain
- * document properties.
+ * Bar shown above the subtitle table, mirroring the bottom edit bar. It hosts the shared
+ * {@link JEncodingChooser}, an FPS chooser and a subtitle-format chooser — all plain document
+ * properties. Right after a load, while the raw bytes are still cached, changing encoding or FPS
+ * re-parses the buffered bytes in place (live re-decode); once the bytes are released (first edit or
+ * explicit close) it stops re-decoding and the choosers simply reflect/edit the document properties.
+ * The bar auto-appears on load and auto-hides on the first edit, but can be toggled open again from
+ * the toolbar, in which case it stays open.
  */
 public class JEncodingBar extends JPanel {
 
     private final JEncodingChooser chooser = new JEncodingChooser();
     private final JRateChooser rate = new JRateChooser();
-    private final JPanel fpsPanel;
+    private final JComboBox<SubFormat> format = new JComboBox<>();
+    private final JLabel fpsLabel = new JLabel(__("FPS") + ":");
     private boolean updating;
 
-    public JEncodingBar(Runnable onReload, Runnable onClose) {
+    public JEncodingBar(Runnable onReload, Consumer<SubFormat> onFormat) {
         super(new BorderLayout());
         chooser.setChangeListener(enc -> {
             if (!updating)
@@ -46,31 +54,42 @@ public class JEncodingBar extends JPanel {
             if (!updating)
                 onReload.run();
         });
+        for (SubFormat f : Availabilities.formats.getFormats())
+            format.addItem(f);   // shown via SubFormat.toString() (extended name + extension)
+        format.addActionListener(e -> {
+            if (!updating) {
+                SubFormat sel = (SubFormat) format.getSelectedItem();
+                setFpsEnabled(sel != null && sel.supportsFPS());
+                onFormat.accept(sel);
+            }
+        });
 
         setOpaque(true);
         setBackground(rowColor());
         setBorder(BorderFactory.createEmptyBorder(3, 12, 3, 8));
 
-        JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
+        // One shared row: every field fills vertically, so the bare format combo takes the same height
+        // as the encoding/FPS choosers (which are stretched taller by their sibling icon buttons) —
+        // the row height drives it, with no hardcoded sizes.
+        JPanel left = new JPanel(new GridBagLayout());
         left.setOpaque(false);
-        left.add(new JLabel(__("Encoding") + ":"));
-        left.add(chooser);
-
-        fpsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
-        fpsPanel.setOpaque(false);
-        fpsPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));   // space between the two groups
-        fpsPanel.add(new JLabel(__("FPS") + ":"));
-        fpsPanel.add(rate);
-        left.add(fpsPanel);
-
-        // Wrap so BorderLayout.EAST does not stretch the button vertically — keep it square/round.
-        JPanel closeWrap = new JPanel(new GridBagLayout());
-        closeWrap.setOpaque(false);
-        closeWrap.add(closeButton(onClose));
+        GridBagConstraints g = new GridBagConstraints();
+        g.gridy = 0;
+        g.fill = GridBagConstraints.VERTICAL;
+        addField(left, g, 0, new JLabel(__("Encoding") + ":"), chooser);
+        addField(left, g, 20, fpsLabel, rate);
+        addField(left, g, 20, new JLabel(__("Format") + ":"), format);
 
         add(left, BorderLayout.WEST);
-        add(closeWrap, BorderLayout.EAST);
         setVisible(false);
+    }
+
+    /** Add a "Label: field" pair to the shared row, with a left gap before the label. */
+    private static void addField(JPanel row, GridBagConstraints g, int leftGap, JLabel label, JComponent field) {
+        g.insets = new Insets(0, leftGap, 0, 4);
+        row.add(label, g);
+        g.insets = new Insets(0, 0, 0, 0);
+        row.add(field, g);
     }
 
     /** A subtle blue tint over the current theme's panel colour, so it reads on both light and dark. */
@@ -83,31 +102,40 @@ public class JEncodingBar extends JPanel {
                 : new Color(0xD3, 0xE6, 0xF8);            // light theme: soft light blue
     }
 
-    /** Plain button to dismiss the bar (native look-and-feel, hover/pressed for free). */
-    private static JButton closeButton(Runnable onClose) {
-        JButton b = new JButton(__("Hide"));
-        b.setFocusable(false);
-        b.addActionListener(e -> onClose.run());
-        return b;
-    }
-
     /**
-     * Show the bar set to the given (detected) encoding and, for frame-based formats, the document
-     * FPS. The FPS group is hidden entirely for time-based formats where FPS is meaningless.
+     * Show the bar reflecting the document's current encoding, FPS and format. FPS is always visible;
+     * the format chooser is populated on construction and merely selects the document's format here
+     * (it does not yet drive save — that wiring comes later).
      */
     public void showFor(String encoding, MediaFile mfile, Subtitles subs) {
         updating = true;
         chooser.setEncoding(encoding);
-        boolean fps = subs.getSubFile().getFormat().supportsFPS();
-        fpsPanel.setVisible(fps);
-        if (fps) {
-            rate.setDataFiles(mfile, subs);
-            rate.setFPS(subs.getSubFile().getFPS());
-        }
+        SubFormat current = subs.getSubFile().getFormat();
+        selectFormat(current);
+        rate.setDataFiles(mfile, subs);
+        rate.setFPS(subs.getSubFile().getFPS());
+        setFpsEnabled(current != null && current.supportsFPS());
         updating = false;
         setVisible(true);
         revalidate();
         repaint();
+    }
+
+    /** Grey out the FPS group (kept visible) for formats where frame rate is meaningless. */
+    private void setFpsEnabled(boolean enabled) {
+        fpsLabel.setEnabled(enabled);
+        rate.setEnabled(enabled);
+    }
+
+    /** Select the combo item matching the document's format (by name), without firing a reload. */
+    private void selectFormat(SubFormat current) {
+        if (current == null)
+            return;
+        for (int i = 0; i < format.getItemCount(); i++)
+            if (format.getItemAt(i).getName().equals(current.getName())) {
+                format.setSelectedIndex(i);
+                return;
+            }
     }
 
     public String getEncoding() {

@@ -9,24 +9,23 @@ package com.panayotis.jubler.subs.loader.gui;
 import com.panayotis.appenh.AFileChooser;
 import com.panayotis.jubler.media.MediaFile;
 import com.panayotis.jubler.os.FileCommunicator;
+import com.panayotis.jubler.os.SystemDependent;
 import com.panayotis.jubler.plugins.Availabilities;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 import com.panayotis.jubler.subs.loader.SubFormat;
 
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.Frame;
 import java.io.File;
 
 import static com.panayotis.jubler.i18n.I18N.__;
-import static com.panayotis.jubler.subs.SubFile.basic_format;
 
 /**
  * Subtitle open/save dialogs, backed by appenh {@link AFileChooser} (native/portal-ready, with a
- * Swing fallback today). On save the chosen subtitle format comes from the selected filter; encoding
- * and FPS are document properties (set via the encoding bar / Information tab), so the dialog needs
- * no accessory panel.
+ * Swing fallback today). The subtitle format is a document property chosen on the encoding bar, so
+ * the save dialog only offers the document's current format and needs no accessory panel; encoding
+ * and FPS are likewise document properties set on that bar.
  */
 public class JSubFileDialog {
 
@@ -60,20 +59,23 @@ public class JSubFileDialog {
                 .title(__("Save Subtitles"))
                 .saveButtonTitle(__("Save Subtitles"))
                 .directory(lastDirectory)
-                .file(subs.getSubFile().getStrippedFile().getName());
-        fc.filter(current.getExtension(), current.getName());   // the document's format first
-        for (SubFormat f : Availabilities.formats.getFormats())
-            if (!f.getName().equals(current.getName()))
-                fc.filter(f.getExtension(), f.getName());
+                // Suggest the name already carrying the document format's extension.
+                .file(subs.getSubFile().getStrippedFile().getName() + "." + current.getExtension());
+        // The format is chosen up-front on the encoding bar, so the dialog offers only that one filter.
+        // Nothing here has to map a filter back to a format, which also sidesteps the Flatpak portal's
+        // inability to tie the chosen filter to a file extension (xdg-desktop-portal#496).
+        fc.filter(current.getExtension(), current.getName());
 
         while (true) {
             File chosen = fc.save();
             if (chosen == null)
                 return null;
-            SubFile sfile = new SubFile(subs.getSubFile());   // carries the document's encoding + FPS
+            SubFile sfile = new SubFile(subs.getSubFile());   // carries the document's format, encoding + FPS
             sfile.setFile(chosen);
-            sfile.setFormat(formatFor(fc.selectedFilter(), current));
-            sfile.updateFileByType();   // normalise the extension to the chosen format
+            // In the sandbox the portal grants exactly the picked path, so keep it verbatim; elsewhere
+            // normalise the extension to the document's format.
+            if (!SystemDependent.isFlatpak())
+                sfile.updateFileByType();
             File out = sfile.getSaveFile();
             if (!out.exists() || confirmOverwrite(parent, out)) {
                 rememberDir(out);
@@ -81,15 +83,6 @@ public class JSubFileDialog {
             }
             // overwrite declined → reopen the save dialog
         }
-    }
-
-    /* Map the filter the user selected back to a subtitle format (filter description == format name). */
-    private static SubFormat formatFor(FileNameExtensionFilter selected, SubFormat fallback) {
-        if (selected != null)
-            for (SubFormat f : Availabilities.formats.getFormats())
-                if (f.getName().equals(selected.getDescription()))
-                    return f.newInstance();
-        return (fallback == null ? basic_format : fallback).newInstance();
     }
 
     private static boolean confirmOverwrite(Frame parent, File file) {
