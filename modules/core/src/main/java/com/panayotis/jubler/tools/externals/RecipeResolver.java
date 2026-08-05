@@ -36,7 +36,10 @@ public final class RecipeResolver {
     private static volatile List<String> shellDirs;
 
     static {
-        if (!isWindows())
+        // Skip under Flatpak: external tools/recipes are disabled in the sandbox, and $SHELL is the
+        // host login shell (e.g. /usr/bin/fish) which is not executable inside it — the probe would
+        // only fail with a noisy "Permission denied".
+        if (!isWindows() && !SystemDependent.isFlatpak())
             new Thread(RecipeResolver::computeShellDirs, "RecipeResolver-PATH").start();
     }
 
