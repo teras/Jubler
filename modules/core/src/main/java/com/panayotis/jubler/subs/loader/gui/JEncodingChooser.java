@@ -25,8 +25,8 @@ import java.util.function.Consumer;
  * Reusable encoding picker: a charset combo plus a "presets" button that opens a region-grouped
  * menu of the common encodings. This is the single home of the control that used to live inside the
  * load/save dialogs (as ~900 lines of generated NetBeans code); it is now built data-driven from the
- * category tables below. Region and sub-menu labels are passed through {@code __("literal")} inline
- * so the i18n extractor still sees them.
+ * category tables below. Region and sub-menu labels are wrapped in the translation call with string
+ * literals inline so the i18n extractor still sees them.
  */
 public class JEncodingChooser extends JPanel {
 
