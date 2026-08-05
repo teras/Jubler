@@ -4,19 +4,21 @@
  * This file is part of Jubler.
  */
 
-package com.panayotis.jubler.options;
+package com.panayotis.jubler.tools;
 
-import com.panayotis.jubler.tools.hunspell.HunspellDictInfo;
-import com.panayotis.jubler.tools.hunspell.HunspellDictManager;
+import com.panayotis.jubler.tools.spell.SpellChecker;
+import com.panayotis.jubler.tools.spell.SpellLanguage;
 
 import javax.swing.*;
 import java.awt.*;
 
 import static com.panayotis.jubler.i18n.I18N.__;
 
-public class HunspellDownloadProgressDialog extends JDialog {
+/** Modal progress while a {@link SpellChecker} downloads one language; works with any checker. */
+class LanguageDownloadProgressDialog extends JDialog {
 
-    private final HunspellDictInfo language;
+    private final SpellChecker checker;
+    private final SpellLanguage language;
     private JProgressBar progressBar;
     private JLabel statusLabel;
     private JButton cancelButton;
@@ -24,11 +26,12 @@ public class HunspellDownloadProgressDialog extends JDialog {
     private boolean successful = false;
     private Thread downloadThread;
 
-    public HunspellDownloadProgressDialog(Window parent, HunspellDictInfo language) {
-        super(parent, __("Downloading Language"), Dialog.ModalityType.APPLICATION_MODAL);
+    LanguageDownloadProgressDialog(Window parent, SpellChecker checker, SpellLanguage language) {
+        super(parent, __("Downloading Language"), ModalityType.APPLICATION_MODAL);
+        this.checker = checker;
         this.language = language;
         initComponents();
-        setSize(450, 150);
+        setSize(460, 150);
         setLocationRelativeTo(parent);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         startDownload();
@@ -37,39 +40,36 @@ public class HunspellDownloadProgressDialog extends JDialog {
     private void initComponents() {
         setLayout(new BorderLayout(10, 10));
 
-        JPanel contentPanel = new JPanel();
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JPanel content = new JPanel();
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+        content.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        statusLabel = new JLabel(__("Downloading {0}...", language.getName()));
+        statusLabel = new JLabel(__("Downloading {0}…", language.getName()));
         statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        contentPanel.add(statusLabel);
-        contentPanel.add(Box.createVerticalStrut(10));
+        content.add(statusLabel);
+        content.add(Box.createVerticalStrut(10));
 
         progressBar = new JProgressBar(0, 100);
         progressBar.setStringPainted(true);
         progressBar.setAlignmentX(Component.LEFT_ALIGNMENT);
-        contentPanel.add(progressBar);
+        content.add(progressBar);
 
-        add(contentPanel, BorderLayout.CENTER);
+        add(content, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         cancelButton = new JButton(__("Cancel"));
         cancelButton.addActionListener(e -> onCancel());
-        buttonPanel.add(cancelButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+        buttons.add(cancelButton);
+        add(buttons, BorderLayout.SOUTH);
     }
 
     private void startDownload() {
         downloadThread = new Thread(() -> {
             try {
-                HunspellDictManager.downloadDict(language, new HunspellDictManager.DownloadProgressListener() {
+                checker.downloadLanguage(language, new SpellChecker.DownloadProgress() {
                     @Override
                     public void onProgress(int percent, long downloaded, long total) {
-                        SwingUtilities.invokeLater(() -> {
-                            progressBar.setValue(percent);
-                            statusLabel.setText(__("Downloading {0}...", language.getName()));
-                        });
+                        SwingUtilities.invokeLater(() -> progressBar.setValue(percent));
                     }
 
                     @Override
@@ -95,14 +95,14 @@ public class HunspellDownloadProgressDialog extends JDialog {
                     dispose();
                 });
             }
-        });
+        }, "Language-download");
         downloadThread.start();
     }
 
     private void onCancel() {
         cancelled = true;
         cancelButton.setEnabled(false);
-        statusLabel.setText(__("Cancelling..."));
+        statusLabel.setText(__("Cancelling…"));
         new Thread(() -> {
             try {
                 if (downloadThread != null)
@@ -110,10 +110,10 @@ public class HunspellDownloadProgressDialog extends JDialog {
             } catch (InterruptedException ignored) {
             }
             SwingUtilities.invokeLater(this::dispose);
-        }).start();
+        }, "Language-download-cancel").start();
     }
 
-    public boolean wasSuccessful() {
+    boolean wasSuccessful() {
         return successful;
     }
 }

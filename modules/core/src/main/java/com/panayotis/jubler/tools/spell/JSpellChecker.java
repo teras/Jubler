@@ -4,92 +4,125 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools.spell;
+package com.panayotis.jubler.tools.spell;
 
 import com.panayotis.jubler.os.JIDialog;
 import com.panayotis.jubler.subs.SubEntry;
-import java.awt.Color;
-import java.util.ArrayList;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import com.panayotis.jubler.theme.Theme;
+
+import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-
-import static com.panayotis.jubler.i18n.I18N.__;
-import com.panayotis.jubler.theme.Theme;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.panayotis.jubler.i18n.I18N.__;
+
+/**
+ * The spell-check dialog: walks the misspellings one by one, showing each in its sentence context with
+ * suggested replacements. A single "apply to all occurrences" toggle collapses the old ignore/ignore-all
+ * and replace/replace-all button pairs into two buttons.
+ */
 public class JSpellChecker extends JDialog {
 
-    int count_changes;
-    private JFrame jparent;
+    private final JFrame jparent;
     private SpellChecker checker;
     private List<SubEntry> textlist;
-    private int pos_in_list;
+    private int pos_in_list = -1;
+    private int count_changes = 0;
     private List<String> ignored;
     private Map<String, String> replaced;
-    private List<SpellError> errors;
+    private List<SpellError> errors;   // null until a successful start(); findNextWord() then no-ops
+    private String current;
 
-    /**
-     * Creates new form JSpellChecker
-     */
+    private JTextPane contextPane;
+    private JLabel wordLabel;
+    private JTextField replaceField;
+    private JList<String> sugList;
+    private JCheckBox allBox;
+    private JButton addButton;
+    private JButton replaceButton;
+
     public JSpellChecker(JFrame parent, SpellChecker checker, List<SubEntry> list) {
-        super(parent, true);
+        super(parent, __("Check spelling"), true);
+        this.jparent = parent;
 
-        while (true)
-            try {
-                checker.start();
-                break;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                
-                if (!(ex.getCause() instanceof IOException)) {
-                    String errorMsg = ex.getMessage();
-                    if (errorMsg == null || errorMsg.isEmpty()) {
-                        errorMsg = ex.getClass().getSimpleName();
-                        if (ex.getCause() != null) {
-                            errorMsg += ": " + ex.getCause().getMessage();
-                        }
-                    }
-                    JOptionPane.showMessageDialog(parent,
-                        __("Unable to start spell checker:\n{0}", errorMsg),
-                        __("Spell Checker Error"),
-                        JOptionPane.ERROR_MESSAGE);
-                    stop();
-                    return;
-                } else if (!checker.getOptionsPanel().requestExecutable()) {
-                    stop();
-                    return;
-                }
-            }
+        try {
+            checker.start();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(parent,
+                    __("Unable to start spell checker:\n{0}", describe(ex)),
+                    __("Spell Checker Error"), JOptionPane.ERROR_MESSAGE);
+            checker.stop();
+            return;   // errors stays null -> findNextWord() is a no-op, the dialog is never shown
+        }
 
-        initComponents();
-        jparent = parent;
-        textlist = list;
         this.checker = checker;
-        count_changes = 0;
-        pos_in_list = -1;
+        this.textlist = list;
+        this.errors = new ArrayList<>();
+        this.ignored = new ArrayList<>();
+        this.replaced = new HashMap<>();
 
-        errors = new ArrayList<SpellError>();
-        ignored = new ArrayList<String>();
-        replaced = new HashMap<String, String>();
-
+        buildUI();
         if (!checker.supportsInsert())
-            InsertB.setEnabled(false);
+            addButton.setVisible(false);
     }
 
-    /* Use this method to remove from error list possible known errors */
+    /* ===================== walking the misspellings ===================== */
+
+    public void findNextWord() {
+        if (errors == null)   // start() failed; nothing to do
+            return;
+
+        if (!errors.isEmpty())
+            errors.remove(0);
+        updateKnownErrors();
+
+        while (errors.isEmpty() && ((++pos_in_list) < textlist.size())) {
+            try {
+                errors = checker.checkSpelling(textlist.get(pos_in_list).getText());
+                updateKnownErrors();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this,
+                        __("Error while checking spelling:\n{0}", describe(ex)),
+                        __("Spell Checker Error"), JOptionPane.ERROR_MESSAGE);
+                stop();
+                return;
+            }
+        }
+        if (errors.isEmpty()) {
+            stop();
+            return;
+        }
+
+        SpellError mistake = errors.get(0);
+        current = mistake.original;
+        wordLabel.setText(mistake.original);
+        sugList.setListData(mistake.alternatives.toArray(new String[0]));
+        setSentence(textlist.get(pos_in_list).getText().replace('\n', '|'), mistake.position, mistake.original.length());
+
+        if (sugList.getModel().getSize() > 0)
+            sugList.setSelectedIndex(0);
+        else
+            replaceField.setText(mistake.original);
+
+        setVisible(true);
+    }
+
+    /* Drop from the current error list the words the user already chose to ignore or replace. */
     private void updateKnownErrors() {
         for (int i = errors.size() - 1; i >= 0; i--) {
-            String original = errors.get(i).original; /* Get the misspelled word */
-            if (ignored.indexOf(original) >= 0) /* The user said to ignore it */
-
+            String original = errors.get(i).original;
+            if (ignored.contains(original))
                 errors.remove(i);
-            else if (replaced.containsKey(original)) { /* The user said to replace it */
+            else if (replaced.containsKey(original)) {
                 count_changes++;
                 replaceText(replaced.get(original), i);
                 errors.remove(i);
@@ -97,353 +130,23 @@ public class JSpellChecker extends JDialog {
         }
     }
 
-    public void findNextWord() {
-        /* If the system is not properly initialized, means we should NOT spell check */
-        if (errors == null)
-            return;
-
-        /* Remove last error - if any.
-         * We need to do it here, since some methods require the last error
-         * to be the first in the list of possible errors.
-         */
-        if (!errors.isEmpty())
-            errors.remove(0);
-
-        /* Make sure that the remaining errors are not known ones */
-        updateKnownErrors();
-
-        /* If the current error list is empty, refill it with next error bunch */
-        while (errors.isEmpty() && ((++pos_in_list) < textlist.size())) {
-            /* Get next (multi)line of text */
-            try {
-                errors = checker.checkSpelling(textlist.get(pos_in_list).getText());
-                updateKnownErrors();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                String errorMsg = ex.getMessage();
-                if (errorMsg == null || errorMsg.isEmpty()) {
-                    errorMsg = ex.getClass().getSimpleName();
-                    if (ex.getCause() != null) {
-                        errorMsg += ": " + ex.getCause().getMessage();
-                    }
-                }
-                JOptionPane.showMessageDialog(this,
-                    __("Error while checking spelling:\n{0}", errorMsg),
-                    __("Spell Checker Error"),
-                    JOptionPane.ERROR_MESSAGE);
-                stop();
-                return;
-            }
-        }
-        if (errors.isEmpty()) {
-            /* No more entries found, exiting spell checker */
-            stop();
-            return;
-        }
-
-        /* For convenience, get a pointer for this error */
-        SpellError mistake = errors.get(0);
-
-        Unknown.setText(mistake.original);  /* set the text of the mistaken word */
-        SugList.setListData(mistake.alternatives);  /* set the list of spell suggestions */
-        setSentence(textlist.get(pos_in_list).getText().replace('\n', '|'), mistake.position, mistake.original.length());
-
-        /* use a default suggestion */
-        if (SugList.getModel().getSize() > 0)
-            SugList.setSelectedIndex(0);
-        else
-            Replace.setText(mistake.original);
-
-        /* Make this dialog visible, if it is not already */
-        setVisible(true);
-    }
-
     private void setSentence(String txt, int pos, int len) {
-        Sentence.setText(txt);
-
-        /* Change color of error to red */
+        contextPane.setText(txt);
         SimpleAttributeSet set = new SimpleAttributeSet();
         set.addAttribute(StyleConstants.ColorConstants.Foreground, Color.RED);
-        Sentence.getStyledDocument().setCharacterAttributes(pos, len, set, true);
+        StyleConstants.setBold(set, true);
+        contextPane.getStyledDocument().setCharacterAttributes(pos, len, set, true);
     }
 
     private void useSuggestedWord() {
-        int which = SugList.getSelectedIndex();
+        int which = sugList.getSelectedIndex();
         if (which < 0) {
-            if (SugList.getModel().getSize() == 0)
-                return;
-            SugList.setSelectedIndex(0);
+            if (sugList.getModel().getSize() > 0)
+                sugList.setSelectedIndex(0);
             return;
         }
-        Replace.setText(SugList.getModel().getElementAt(which).toString());
+        replaceField.setText(sugList.getModel().getElementAt(which));
     }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        IconPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
-        WordPanel = new javax.swing.JPanel();
-        Sentence = new javax.swing.JTextPane();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jPanel10 = new javax.swing.JPanel();
-        Unknown = new javax.swing.JButton();
-        Replace = new javax.swing.JTextField();
-        ButtonsPanel = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        IgnoreB = new javax.swing.JButton();
-        AIgnoreB = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        ReplaceB = new javax.swing.JButton();
-        AReplaceB = new javax.swing.JButton();
-        jPanel8 = new javax.swing.JPanel();
-        InsertB = new javax.swing.JButton();
-        Spacer = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        StopB = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        SuggestionsPanel = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        SugList = new javax.swing.JList<>();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setTitle("Check spelling");
-        setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
-
-        IconPanel.setLayout(new java.awt.BorderLayout());
-
-        jLabel1.setIcon(Theme.loadIcon("spellcheck"));
-        jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 1, 1, 1));
-        IconPanel.add(jLabel1, java.awt.BorderLayout.NORTH);
-
-        getContentPane().add(IconPanel, java.awt.BorderLayout.WEST);
-
-        jPanel1.setLayout(new java.awt.BorderLayout(0, 10));
-
-        WordPanel.setLayout(new java.awt.BorderLayout());
-
-        Sentence.setEditable(false);
-        Sentence.setBackground(javax.swing.UIManager.getDefaults().getColor("Button.background"));
-        Sentence.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        Sentence.setToolTipText(__("The context of the misspelled word"));
-        Sentence.setAutoscrolls(false);
-        Sentence.setFocusable(false);
-        WordPanel.add(Sentence, java.awt.BorderLayout.NORTH);
-
-        jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jPanel9.setLayout(new java.awt.GridLayout(2, 0));
-
-        jLabel4.setText(__("Current word") + " ");
-        jPanel9.add(jLabel4);
-
-        jLabel5.setText(__("Replace with") + " ");
-        jPanel9.add(jLabel5);
-
-        jPanel7.add(jPanel9, java.awt.BorderLayout.WEST);
-
-        jPanel10.setLayout(new java.awt.GridLayout(2, 0));
-
-        Unknown.setBackground(java.awt.Color.white);
-        Unknown.setText(" ");
-        Unknown.setToolTipText(__("The misspelled word we need to change"));
-        Unknown.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        Unknown.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Unknown.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UnknownActionPerformed(evt);
-            }
-        });
-        jPanel10.add(Unknown);
-
-        Replace.setToolTipText(__("The word to change the misspelled word into"));
-        Replace.setPreferredSize(new java.awt.Dimension(20, 19));
-        jPanel10.add(Replace);
-
-        jPanel7.add(jPanel10, java.awt.BorderLayout.CENTER);
-
-        WordPanel.add(jPanel7, java.awt.BorderLayout.CENTER);
-
-        jPanel1.add(WordPanel, java.awt.BorderLayout.NORTH);
-
-        ButtonsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        ButtonsPanel.setLayout(new javax.swing.BoxLayout(ButtonsPanel, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel3.setLayout(new java.awt.GridLayout(2, 1));
-
-        IgnoreB.setText(__("Ignore"));
-        IgnoreB.setToolTipText(__("Ignore this word"));
-        IgnoreB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                IgnoreBActionPerformed(evt);
-            }
-        });
-        jPanel3.add(IgnoreB);
-
-        AIgnoreB.setText(__("Always ignore"));
-        AIgnoreB.setToolTipText(__("Ignore all instances of this word"));
-        AIgnoreB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AIgnoreBActionPerformed(evt);
-            }
-        });
-        jPanel3.add(AIgnoreB);
-
-        ButtonsPanel.add(jPanel3);
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 0, 8, 0));
-        jPanel4.setLayout(new java.awt.GridLayout(2, 1));
-
-        ReplaceB.setText(__("Replace"));
-        ReplaceB.setToolTipText(__("Replace this word"));
-        ReplaceB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ReplaceBActionPerformed(evt);
-            }
-        });
-        jPanel4.add(ReplaceB);
-
-        AReplaceB.setText(__("Always replace"));
-        AReplaceB.setToolTipText(__("Replace all instances of this word"));
-        AReplaceB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AReplaceBActionPerformed(evt);
-            }
-        });
-        jPanel4.add(AReplaceB);
-
-        ButtonsPanel.add(jPanel4);
-
-        jPanel8.setLayout(new java.awt.BorderLayout());
-
-        InsertB.setText(__("Insert current"));
-        InsertB.setToolTipText(__("Insert this current word in spellers dictionary"));
-        InsertB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InsertBActionPerformed(evt);
-            }
-        });
-        jPanel8.add(InsertB, java.awt.BorderLayout.NORTH);
-
-        Spacer.setText(" ");
-        jPanel8.add(Spacer, java.awt.BorderLayout.CENTER);
-
-        jPanel2.setLayout(new java.awt.BorderLayout());
-
-        StopB.setText(__("Stop"));
-        StopB.setToolTipText(__("Finish spell checking"));
-        StopB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                StopBActionPerformed(evt);
-            }
-        });
-        jPanel2.add(StopB, java.awt.BorderLayout.CENTER);
-
-        jLabel3.setText(" ");
-        jPanel2.add(jLabel3, java.awt.BorderLayout.SOUTH);
-
-        jPanel8.add(jPanel2, java.awt.BorderLayout.PAGE_END);
-
-        ButtonsPanel.add(jPanel8);
-
-        jPanel1.add(ButtonsPanel, java.awt.BorderLayout.EAST);
-
-        SuggestionsPanel.setLayout(new java.awt.BorderLayout());
-
-        jPanel6.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 0, 2, 0));
-        jPanel6.setLayout(new java.awt.BorderLayout());
-
-        jLabel2.setText(__("Suggestions"));
-        jLabel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jPanel6.add(jLabel2, java.awt.BorderLayout.NORTH);
-
-        SugList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        SugList.setToolTipText(__("Suggested words to change the given word to"));
-        SugList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                SugListValueChanged(evt);
-            }
-        });
-        SugList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                SugListMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(SugList);
-
-        jPanel6.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        SuggestionsPanel.add(jPanel6, java.awt.BorderLayout.CENTER);
-
-        jPanel1.add(SuggestionsPanel, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void UnknownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UnknownActionPerformed
-        Replace.setText(Unknown.getText());
-    }//GEN-LAST:event_UnknownActionPerformed
-
-    private void SugListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_SugListValueChanged
-        useSuggestedWord();
-    }//GEN-LAST:event_SugListValueChanged
-
-    private void SugListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_SugListMouseClicked
-        useSuggestedWord();
-    }//GEN-LAST:event_SugListMouseClicked
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        stop();
-    }//GEN-LAST:event_formWindowClosing
-
-    private void IgnoreBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IgnoreBActionPerformed
-        findNextWord();
-    }//GEN-LAST:event_IgnoreBActionPerformed
-
-    private void AIgnoreBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AIgnoreBActionPerformed
-        ignored.add(Unknown.getText());
-        findNextWord();
-    }//GEN-LAST:event_AIgnoreBActionPerformed
-
-    private void ReplaceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReplaceBActionPerformed
-        replaceText(Replace.getText(), 0);
-        count_changes++;
-        findNextWord();
-    }//GEN-LAST:event_ReplaceBActionPerformed
-
-    private void AReplaceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AReplaceBActionPerformed
-        replaceText(Replace.getText(), 0);
-        count_changes++;
-        replaced.put(Unknown.getText(), Replace.getText());
-        findNextWord();
-    }//GEN-LAST:event_AReplaceBActionPerformed
-
-    private void InsertBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InsertBActionPerformed
-        checker.insertWord(Unknown.getText());
-        findNextWord();
-    }//GEN-LAST:event_InsertBActionPerformed
-
-    private void StopBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StopBActionPerformed
-        stop();
-    }//GEN-LAST:event_StopBActionPerformed
 
     private void replaceText(String txt, int index) {
         int pos = errors.get(index).position;
@@ -453,55 +156,175 @@ public class JSpellChecker extends JDialog {
         String news = olds.substring(0, pos) + txt + olds.substring(pos + len);
         textlist.get(pos_in_list).setText(news);
 
-        int dlength = txt.length() - errors.get(index).original.length(); /* size differences */
-        for (int i = index + 1; i < errors.size(); i++) /* Propagate size differences to following errors (if any) */
-
+        int dlength = txt.length() - len;   // propagate the size change to the errors that follow
+        for (int i = index + 1; i < errors.size(); i++)
             errors.get(i).position += dlength;
     }
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AIgnoreB;
-    private javax.swing.JButton AReplaceB;
-    private javax.swing.JPanel ButtonsPanel;
-    private javax.swing.JPanel IconPanel;
-    private javax.swing.JButton IgnoreB;
-    private javax.swing.JButton InsertB;
-    private javax.swing.JTextField Replace;
-    private javax.swing.JButton ReplaceB;
-    private javax.swing.JTextPane Sentence;
-    private javax.swing.JLabel Spacer;
-    private javax.swing.JButton StopB;
-    private javax.swing.JList<String> SugList;
-    private javax.swing.JPanel SuggestionsPanel;
-    private javax.swing.JButton Unknown;
-    private javax.swing.JPanel WordPanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
-    // End of variables declaration//GEN-END:variables
+
+    /* ===================== actions ===================== */
+
+    private void onIgnore() {
+        if (allBox.isSelected())
+            ignored.add(current);
+        findNextWord();
+    }
+
+    private void onReplace() {
+        replaceText(replaceField.getText(), 0);
+        count_changes++;
+        if (allBox.isSelected())
+            replaced.put(current, replaceField.getText());
+        findNextWord();
+    }
+
+    private void onAddToDictionary() {
+        checker.insertWord(current);
+        findNextWord();
+    }
 
     private void stop() {
         if (checker != null)
             checker.stop();
-        boolean wasVisible = isVisible();
-        if (wasVisible) {
+        if (isVisible()) {
             setVisible(false);
             dispose();
         }
-        String msg = __("Number of affected words: {0}", count_changes);
-        if (count_changes == 0)
-            msg = __("No changes have been done");
+        String msg = count_changes == 0
+                ? __("No changes have been done")
+                : __("Number of affected words: {0}", count_changes);
         JIDialog.info(jparent, msg, __("Speller changes"));
+    }
+
+    private static String describe(Exception ex) {
+        String msg = ex.getMessage();
+        if (msg == null || msg.isEmpty()) {
+            msg = ex.getClass().getSimpleName();
+            if (ex.getCause() != null)
+                msg += ": " + ex.getCause().getMessage();
+        }
+        return msg;
+    }
+
+    /* ===================== UI ===================== */
+
+    private void buildUI() {
+        setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                stop();
+            }
+        });
+
+        JPanel content = new JPanel(new BorderLayout(0, 12));
+        content.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+
+        content.add(buildHeader(), BorderLayout.NORTH);
+        content.add(buildSuggestions(), BorderLayout.CENTER);
+        content.add(buildActions(), BorderLayout.SOUTH);
+
+        setContentPane(content);
+        setMinimumSize(new Dimension(460, 460));
+        pack();
+        setLocationRelativeTo(jparent);
+    }
+
+    private JComponent buildHeader() {
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+
+        contextPane = new JTextPane();
+        contextPane.setEditable(false);
+        contextPane.setFocusable(false);
+        contextPane.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEtchedBorder(),
+                BorderFactory.createEmptyBorder(6, 8, 6, 8)));
+        contextPane.setToolTipText(__("The context of the misspelled word"));
+        contextPane.setAlignmentX(LEFT_ALIGNMENT);
+        header.add(contextPane);
+        header.add(Box.createVerticalStrut(12));
+
+        JPanel wordRow = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
+        wordRow.setAlignmentX(LEFT_ALIGNMENT);
+        JLabel icon = new JLabel(Theme.loadIcon("spellcheck"));
+        wordRow.add(icon);
+        JPanel wordText = new JPanel();
+        wordText.setLayout(new BoxLayout(wordText, BoxLayout.Y_AXIS));
+        wordText.add(new JLabel(__("Not in dictionary")));
+        wordLabel = new JLabel(" ");
+        wordLabel.setFont(wordLabel.getFont().deriveFont(Font.BOLD, wordLabel.getFont().getSize2D() + 3f));
+        wordText.add(wordLabel);
+        wordRow.add(wordText);
+        header.add(wordRow);
+
+        header.add(Box.createVerticalStrut(12));
+
+        JPanel replaceRow = new JPanel(new BorderLayout(8, 0));
+        replaceRow.setAlignmentX(LEFT_ALIGNMENT);
+        replaceRow.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        replaceRow.add(new JLabel(__("Replace with")), BorderLayout.WEST);
+        replaceField = new JTextField();
+        replaceField.setToolTipText(__("The word to change the misspelled word into"));
+        replaceRow.add(replaceField, BorderLayout.CENTER);
+        header.add(replaceRow);
+
+        return header;
+    }
+
+    private JComponent buildSuggestions() {
+        JPanel panel = new JPanel(new BorderLayout(0, 6));
+        panel.add(new JLabel(__("Suggestions")), BorderLayout.NORTH);
+
+        sugList = new JList<>();
+        sugList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        sugList.setToolTipText(__("Suggested words to change the given word to"));
+        sugList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting())
+                useSuggestedWord();
+        });
+        sugList.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2)
+                    onReplace();
+            }
+        });
+        panel.add(new JScrollPane(sugList), BorderLayout.CENTER);
+        return panel;
+    }
+
+    private JComponent buildActions() {
+        JPanel south = new JPanel(new BorderLayout(0, 10));
+
+        allBox = new JCheckBox(__("Apply to all occurrences of this word"));
+        south.add(allBox, BorderLayout.NORTH);
+
+        JPanel bar = new JPanel(new BorderLayout());
+        addButton = new JButton(__("Add to dictionary"));
+        addButton.setToolTipText(__("Add this word to the speller's dictionary"));
+        addButton.addActionListener(e -> onAddToDictionary());
+        bar.add(addButton, BorderLayout.WEST);
+
+        JButton ignoreButton = new JButton(__("Ignore"));
+        ignoreButton.setToolTipText(__("Skip this word"));
+        ignoreButton.addActionListener(e -> onIgnore());
+
+        replaceButton = new JButton(__("Replace"));
+        replaceButton.setToolTipText(__("Replace this word with the text above"));
+        replaceButton.addActionListener(e -> onReplace());
+
+        JButton doneButton = new JButton(__("Done"));
+        doneButton.setToolTipText(__("Finish spell checking"));
+        doneButton.addActionListener(e -> stop());
+
+        JPanel right = new JPanel(new FlowLayout(FlowLayout.RIGHT, 6, 0));
+        right.add(ignoreButton);
+        right.add(replaceButton);
+        right.add(doneButton);
+        bar.add(right, BorderLayout.EAST);
+
+        south.add(bar, BorderLayout.SOUTH);
+        getRootPane().setDefaultButton(replaceButton);
+        return south;
     }
 }

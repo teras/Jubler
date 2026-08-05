@@ -7,6 +7,8 @@
 package com.panayotis.jubler.tools.hunspell;
 
 import com.panayotis.jubler.os.SystemDependent;
+import com.panayotis.jubler.tools.spell.SpellChecker;
+import com.panayotis.jubler.tools.spell.SpellLanguage;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -120,9 +122,9 @@ public class HunspellDictManager {
     }
 
     /** Installed = the built-in English plus any downloaded .dic/.aff pair found on disk. */
-    public static List<HunspellDictInfo> getInstalledDicts() {
-        List<HunspellDictInfo> installed = new ArrayList<>();
-        installed.add(new HunspellDictInfo(BUILTIN_CODE, displayName(BUILTIN_CODE), true));
+    public static List<SpellLanguage> getInstalledDicts() {
+        List<SpellLanguage> installed = new ArrayList<>();
+        installed.add(new SpellLanguage(BUILTIN_CODE, displayName(BUILTIN_CODE), true));
 
         File[] dics = getDictsDir().listFiles((d, n) -> n.endsWith(".dic"));
         if (dics != null) {
@@ -134,21 +136,21 @@ public class HunspellDictManager {
             }
             codes.sort(String::compareToIgnoreCase);
             for (String code : codes)
-                installed.add(new HunspellDictInfo(code, displayName(code), false));
+                installed.add(new SpellLanguage(code, displayName(code), false));
         }
         return installed;
     }
 
     /** Available for download = the known languages minus the ones already installed. */
-    public static List<HunspellDictInfo> getAvailableDicts() {
+    public static List<SpellLanguage> getAvailableDicts() {
         List<String> installedCodes = new ArrayList<>();
-        for (HunspellDictInfo i : getInstalledDicts())
+        for (SpellLanguage i : getInstalledDicts())
             installedCodes.add(i.getCode());
 
-        List<HunspellDictInfo> available = new ArrayList<>();
+        List<SpellLanguage> available = new ArrayList<>();
         for (Map.Entry<String, String> e : KNOWN_LANGUAGES.entrySet())
             if (!installedCodes.contains(e.getKey()))
-                available.add(new HunspellDictInfo(e.getKey(), e.getValue(), false));
+                available.add(new SpellLanguage(e.getKey(), e.getValue(), false));
         return available;
     }
 
@@ -157,7 +159,7 @@ public class HunspellDictManager {
     }
 
     /** Download the .dic and .aff for the given language, atomically (temp files then rename). */
-    public static void downloadDict(HunspellDictInfo dict, DownloadProgressListener listener) throws IOException {
+    public static void downloadDict(SpellLanguage dict, SpellChecker.DownloadProgress listener) throws IOException {
         String code = dict.getCode();
         File dicTmp = new File(getDictsDir(), code + ".dic.tmp");
         File affTmp = new File(getDictsDir(), code + ".aff.tmp");
@@ -176,7 +178,7 @@ public class HunspellDictManager {
     }
 
     /** Remove a downloaded language. The built-in English cannot be removed. */
-    public static boolean deleteDict(HunspellDictInfo dict) {
+    public static boolean deleteDict(SpellLanguage dict) {
         if (BUILTIN_CODE.equals(dict.getCode()))
             return false;
         boolean ok = dicFile(dict.getCode()).delete();
@@ -184,7 +186,7 @@ public class HunspellDictManager {
         return ok;
     }
 
-    private static void downloadFile(String urlString, File target, DownloadProgressListener listener) throws IOException {
+    private static void downloadFile(String urlString, File target, SpellChecker.DownloadProgress listener) throws IOException {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -221,10 +223,5 @@ public class HunspellDictManager {
             while ((n = in.read(buf)) != -1)
                 out.write(buf, 0, n);
         }
-    }
-
-    public interface DownloadProgressListener {
-        void onProgress(int percent, long downloaded, long total);
-        boolean isCancelled();
     }
 }

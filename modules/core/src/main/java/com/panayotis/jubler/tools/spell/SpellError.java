@@ -4,21 +4,21 @@
  * This file is part of Jubler.
  */
 
-package  com.panayotis.jubler.tools.spell;
+package com.panayotis.jubler.tools.spell;
 
-@SuppressWarnings("UseOfObsoleteCollectionType")
+import java.util.List;
+
+/** A single misspelling: the offending word, where it starts in the checked text, and suggested fixes. */
 public class SpellError {
 
+    /** Offset of the word in the checked text; shifted as earlier errors get replaced, hence mutable. */
     public int position;
-    public String original;
-    public java.util.Vector<String> alternatives;
+    public final String original;
+    public final List<String> alternatives;
 
-    /**
-     * Creates a new instance of SpellMistake
-     */
-    public SpellError(int position, String original, java.util.Vector<String> alts) {
+    public SpellError(int position, String original, List<String> alternatives) {
         this.position = position;
         this.original = original;
-        alternatives = alts;
+        this.alternatives = alternatives;
     }
 }
