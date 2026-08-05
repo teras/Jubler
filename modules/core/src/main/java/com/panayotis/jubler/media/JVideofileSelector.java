@@ -62,12 +62,12 @@ public class JVideofileSelector extends javax.swing.JPanel {
             AudioBrowse.setEnabled(true);
         }
 
-        CFName.setText(mfile.getCacheFile().getPath());
+        CFName.setText(SystemDependent.displayPath(mfile.getCacheFile()));
         revalidateOk();
     }
 
     private static String existingPath(File f) {
-        return (f != null && f.exists()) ? f.getPath() : "";
+        return (f != null && f.exists()) ? SystemDependent.displayPath(f) : "";
     }
 
     /**

@@ -39,6 +39,7 @@ display_help() {
     echo -e "This is a helper script for building Jubler:"
     echo -e "  ${GREEN}build TARGET1[,TARGET2]${NC} Build Jubler for the list of provided targets."
     echo -e "  ${GREEN}winget X.Y.Z [--submit]${NC} Update WinGet manifest (dry-run by default)."
+    echo -e "  ${GREEN}flatpak [--release]${NC}     Generate the manifest from its template and build (local, or release archive)."
     echo -e "  ${GREEN}clean${NC}                   Clean build files."
     echo -e "  ${GREEN}headers${NC}                 Check header files for copyright notice."
     echo -e "  ${GREEN}--help${NC}                  Display information about this script."
@@ -344,6 +345,82 @@ build_action() {
     done
 }
 
+# Generate the Flatpak manifest from resources/flatpak/com.panayotis.jubler.yml.in and build it.
+# The template holds everything shared; only the app-source block is stamped here — a local build
+# dir (fast iteration) or a GitHub release archive (reproducible, for Flathub). The generated
+# manifest and its assets live in build/flatpak/ (volatile, git-ignored); nothing else diverges.
+flatpak_action() {
+    local mode="local"
+    local install_flag="--install"
+    local arch=""
+    shift   # drop "flatpak"
+    for arg in "$@"; do
+        case "$arg" in
+            --release) mode="release" ;;
+            --no-install) install_flag="" ;;
+            --arch=*) arch="${arg#--arch=}" ;;   # e.g. --arch=aarch64 (needs qemu binfmt on a foreign host)
+        esac
+    done
+
+    cd "$script_dir"
+    local version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
+
+    echo -e "${GREEN}Building Jubler distribution for Flatpak...${NC}"
+    gradle assembleDistribution
+
+    local tpl="$script_dir/resources/flatpak/com.panayotis.jubler.yml.in"
+    local gendir="$script_dir/build/flatpak"
+    local manifest="$gendir/com.panayotis.jubler.yml"
+
+    rm -rf "$gendir"
+    mkdir -p "$gendir"
+    # Assets the manifest references by bare name, so the generated manifest needs no ".." paths.
+    cp "$script_dir/resources/flatpak/com.panayotis.jubler.desktop" "$gendir/"
+    cp "$script_dir/resources/flatpak/com.panayotis.jubler.metainfo.xml" "$gendir/"
+    cp "$script_dir/resources/flatpak/vlc-ignore-time-for-cache.patch" "$gendir/"
+    cp "$script_dir/resources/logo/logo.svg" "$gendir/logo.svg"
+
+    local block="$gendir/.appsource"
+    if [ "$mode" = "release" ]; then
+        mkdir -p "$script_dir/dist"
+        local tarball="$script_dir/dist/jubler-${version}.tar.gz"
+        tar -C "$script_dir/build" --transform "s,^jubler,jubler-${version}," -czf "$tarball" jubler
+        local hash
+        hash=$(sha256sum "$tarball" | awk '{print $1}')
+        cat > "$block" <<EOF
+      # Built distribution, shipped as a GitHub release asset (reproducible: URL + sha256).
+      - type: archive
+        url: https://github.com/panayotis/Jubler/releases/download/v${version}/jubler-${version}.tar.gz
+        sha256: ${hash}
+EOF
+    else
+        cat > "$block" <<'EOF'
+      # Local testing: the freshly built distribution (sibling of this generated manifest dir).
+      - type: dir
+        path: ../jubler
+EOF
+    fi
+
+    # Stamp the @@APP_SOURCE@@ placeholder line with the chosen source block.
+    sed "/^@@APP_SOURCE@@$/{
+r $block
+d
+}" "$tpl" > "$manifest"
+    rm -f "$block"
+    echo -e "${GREEN}Generated manifest:${NC} $manifest"
+
+    if [ "$mode" = "release" ]; then
+        echo -e "${GREEN}Release tarball:${NC} $tarball"
+        echo -e "Manifest is ready; publish the tarball as the v${version} release asset, then build on Flathub."
+        return 0
+    fi
+
+    flatpak-builder --user $install_flag --force-clean --disable-rofiles-fuse \
+        ${arch:+--arch=$arch} \
+        --state-dir="$script_dir/.flatpak-builder" \
+        "$script_dir/build/flatpak-build" "$manifest"
+}
+
 # Check if the script is called with an argument
 if [ $# -eq 0 ]; then
     echo -e "${RED}Error:${NC} Missing parameter. Use --help for information."
@@ -366,6 +443,9 @@ case "$1" in
         ;;
     "winget")
         winget_action "$@"
+        ;;
+    "flatpak")
+        flatpak_action "$@"
         ;;
     *)
         echo -e "${RED}Error:${NC} Unknown parameter. Use --help for information."

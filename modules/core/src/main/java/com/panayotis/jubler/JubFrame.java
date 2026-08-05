@@ -1850,6 +1850,12 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }//GEN-LAST:event_formWindowClosing
 
     private void SaveFMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveFMActionPerformed
+        if (SystemDependent.isFlatpak() && !SystemDependent.isPortalGranted(subs.getSubFile().getSaveFile())) {
+            // The sandbox can only write where the portal granted access; if the current target is not
+            // a granted document (changed name/format, or never saved), route to Save As for a fresh grant.
+            SaveAsFMActionPerformed(evt);
+            return;
+        }
         saveFile(new SubFile(subs.getSubFile()));
     }//GEN-LAST:event_SaveFMActionPerformed
 
@@ -2581,7 +2587,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         if (f != null) {
             SubFormat fmt = sf.getFormat();
             String format_name = (fmt == null) ? __("Unknown format") : fmt.getName();
-            String title = format_name + " - " + f.getPath();
+            String title = format_name + " - " + SystemDependent.displayPath(f);
             if (isUnsaved()) {
                 title = "*" + title;
                 getRootPane().putClientProperty("windowModified", Boolean.TRUE);

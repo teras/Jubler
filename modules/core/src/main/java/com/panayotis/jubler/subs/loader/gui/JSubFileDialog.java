@@ -72,10 +72,13 @@ public class JSubFileDialog {
                 return null;
             SubFile sfile = new SubFile(subs.getSubFile());   // carries the document's format, encoding + FPS
             sfile.setFile(chosen);
-            // In the sandbox the portal grants exactly the picked path, so keep it verbatim; elsewhere
-            // normalise the extension to the document's format.
-            if (!SystemDependent.isFlatpak())
-                sfile.updateFileByType();
+            if (SystemDependent.isFlatpak()) {
+                // The portal's native save dialog already grants exactly this path and has run its own
+                // overwrite prompt, so accept it verbatim and write straight away.
+                rememberDir(sfile.getSaveFile());
+                return sfile;
+            }
+            sfile.updateFileByType();   // normalise the extension to the document's format
             File out = sfile.getSaveFile();
             if (!out.exists() || confirmOverwrite(parent, out)) {
                 rememberDir(out);

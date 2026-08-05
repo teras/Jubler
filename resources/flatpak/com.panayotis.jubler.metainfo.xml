@@ -20,8 +20,8 @@
     <p>Key Features:</p>
     <ul>
       <li>20+ subtitle formats including SubRip (SRT), Advanced SubStation Alpha (ASS/SSA), WebVTT, MicroDVD, SubViewer, MPL2, TTML, ITT, DFXP, and YouTube subtitles</li>
-      <li>FFmpeg integration for frame preview and audio waveform visualization</li>
-      <li>MPlayer support for video playback with real-time subtitle editing</li>
+      <li>VLC-based video preview, frame preview and audio waveform visualization</li>
+      <li>Live video playback synced with subtitle editing</li>
       <li>Interactive timeline with draggable subtitle blocks and two-point synchronization</li>
       <li>Enhanced preview controls with shift/alt key support and snapping functionality</li>
       <li>Comprehensive editing tools: time shift, frame rate conversion, split/join entries and files, spell checker, regex find &amp; replace</li>

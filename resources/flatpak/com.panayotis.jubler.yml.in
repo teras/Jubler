@@ -1,0 +1,118 @@
+# Jubler Flatpak manifest TEMPLATE.
+#
+# Do not build this file directly — it is not valid on its own. `make.sh flatpak [--release]`
+# stamps the app-source placeholder line below (local build dir vs a GitHub release archive), copies
+# the referenced assets next to the generated manifest, and writes the real manifest into build/ (a
+# volatile, git-ignored location). Everything else lives here once, shared by both build modes.
+app-id: com.panayotis.jubler
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk21
+command: jubler
+
+finish-args:
+  - --share=ipc
+  - --socket=x11
+  - --socket=pulseaudio
+  - --device=dri
+  - --share=network
+
+modules:
+  # libass gives VLC styled ASS/SSA subtitle rendering (Jubler feeds an .ass overlay to the preview);
+  # its deps (freetype, fontconfig, fribidi, harfbuzz) are already in the runtime.
+  - name: libass
+    config-opts:
+      - --disable-static
+    sources:
+      - type: archive
+        url: https://github.com/libass/libass/releases/download/0.17.3/libass-0.17.3.tar.xz
+        sha256: eae425da50f0015c21f7b3a9c7262a910f0218af469e22e2931462fed3c50959
+
+  # libebml + libmatroska give VLC its native MKV demuxer (chapters, attachments/embedded fonts);
+  # basic MKV also works via ffmpeg's avformat, but the native demuxer is more capable.
+  - name: libebml
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_SHARED_LIBS=ON
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5   # SDK ships CMake 4.x, which rejects the lib's old minimum
+    sources:
+      - type: archive
+        url: https://dl.matroska.org/downloads/libebml/libebml-1.4.5.tar.xz
+        sha256: 4971640b0592da29c2d426f303e137a9b0b3d07e1b81d069c1e56a2f49ab221b
+
+  - name: libmatroska
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DBUILD_SHARED_LIBS=ON
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5   # SDK ships CMake 4.x, which rejects the lib's old minimum
+    sources:
+      - type: archive
+        url: https://dl.matroska.org/downloads/libmatroska/libmatroska-1.7.1.tar.xz
+        sha256: 572a3033b8d93d48a6a858e514abce4b2f7a946fe1f02cbfeca39bfd703018b3
+
+  - name: libvlc
+    config-opts:
+      - BUILDCC=gcc
+      - --disable-lua
+      - --disable-a52
+      - --disable-qt
+      - --disable-ncurses
+      - --disable-udev
+      - --enable-libass   # fail the build if libass is missing, so subtitles never silently break again
+    sources:
+      - type: archive
+        url: https://get.videolan.org/vlc/3.0.22/vlc-3.0.22.tar.xz
+        sha256: e2cc1cf0ae0902a09da5a37c249a8a4e4b5ec4dc095443b8e1493c6a7cc138ea
+      - type: patch
+        path: vlc-ignore-time-for-cache.patch
+
+  # Slim JRE via jlink instead of the extension's install.sh (which copies the whole module image).
+  # JDK 21 to match the runtime the desktop installers ship (jre repo make_template.sh = Temurin 21).
+  # Module set: jdk.unsupported for vlcj/JNA sun.misc.Unsafe, jdk.charsets for legacy subtitle encodings,
+  # and jdk.net + jdk.security.auth for the dbus-java portal file chooser (SO_PEERCRED on the unix-socket
+  # transport + SASL credential auth on the session bus) — without them PortalFileChooser fails to load
+  # and appenh silently falls back to the Swing chooser, which in the sandbox only sees the tmpfs.
+  # Native commands are kept (we launch /app/jre/bin/java). Placed after the vlc stack so JRE tweaks
+  # don't invalidate the (expensive) libvlc build cache.
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - |
+        /usr/lib/sdk/openjdk21/jvm/openjdk-21/bin/jlink \
+          --module-path /usr/lib/sdk/openjdk21/jvm/openjdk-21/jmods \
+          --add-modules java.datatransfer,java.desktop,java.logging,java.prefs,java.rmi,java.xml,jdk.charsets,jdk.crypto.ec,jdk.net,jdk.security.auth,jdk.unsupported \
+          --output /app/jre \
+          --no-header-files --no-man-pages --strip-debug --strip-java-debug-attributes \
+          --exclude-files '**/module-info.class' --compress=zip-9
+
+  - name: jubler
+    buildsystem: simple
+    build-commands:
+      - install -d /app/bin /app/lib
+      - cp -r lib/* /app/lib/
+      - install -Dm755 jubler /app/bin/jubler
+      - install -Dm644 com.panayotis.jubler.desktop /app/share/applications/com.panayotis.jubler.desktop
+      - install -Dm644 com.panayotis.jubler.metainfo.xml /app/share/metainfo/com.panayotis.jubler.metainfo.xml
+      - install -Dm644 logo.svg /app/share/icons/hicolor/scalable/apps/com.panayotis.jubler.svg
+      # Regenerate the libvlc plugin cache last, so its mtimes match the installed plugins
+      # (avoids "stale plugins cache" rescans + noise on every launch).
+      - /app/lib/vlc/vlc-cache-gen /app/lib/vlc/plugins
+    sources:
+@@APP_SOURCE@@
+      - type: file
+        path: com.panayotis.jubler.desktop
+      - type: file
+        path: com.panayotis.jubler.metainfo.xml
+      - type: file
+        path: logo.svg
+      - type: script
+        dest-filename: jubler
+        commands:
+          - export LD_LIBRARY_PATH="/app/lib:$LD_LIBRARY_PATH"
+          # java.util.prefs defaults to $HOME/.java, but $HOME is an ephemeral tmpfs in the sandbox
+          # (no --filesystem=home) so settings vanish on exit. Point it at the persistent XDG config dir.
+          - exec /app/jre/bin/java -Djava.util.prefs.userRoot="${XDG_CONFIG_HOME:-$HOME/.config}" -jar /app/lib/jubler.jar "$@"

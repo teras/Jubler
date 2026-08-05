@@ -19,7 +19,6 @@ version = explicitVersion ?: object {
 
 allprojects {
     repositories {
-        mavenLocal()   // TODO: drop once appenh 0.8.1 is published to Maven Central
         mavenCentral()
     }
 }

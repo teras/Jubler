@@ -183,40 +183,40 @@ public class StaticJubler {
             /* Add clone entry */
             recent_menu.removeAll();
             if (j.getSubtitles() != null) {
-                recent_menu.add(addNewMenu(__("Clone current"), true, true, j, -1));
+                recent_menu.add(addNewMenu(__("Clone current"), null, true, true, j, -1));
                 recent_menu.add(new JSeparator());
             }
             if (menulist.size() == 0)
-                recent_menu.add(addNewMenu(__("-Not any recent items-"), false, false, j, -1));
+                recent_menu.add(addNewMenu(__("-Not any recent items-"), null, false, false, j, -1));
             else {
                 int counter = 1;
-                for (int i = menulist.size() - 1; i >= 0; i--)
-                    recent_menu.add(addNewMenu(menulist.get(i).getSaveFile().getPath(), false, true, j, counter++));
+                for (int i = menulist.size() - 1; i >= 0; i--) {
+                    SubFile sf = menulist.get(i);
+                    recent_menu.add(addNewMenu(SystemDependent.displayPath(sf.getSaveFile()), sf, false, true, j, counter++));
+                }
             }
         }
     }
 
-    private static JMenuItem addNewMenu(String text, boolean isclone, boolean enabled, JubFrame jub, int counter) {
+    private static JMenuItem addNewMenu(String text, SubFile file, boolean isclone, boolean enabled, JubFrame jub, int counter) {
         JMenuItem item = new JMenuItem(text);
         item.setEnabled(enabled);
         if (counter >= 0)
             item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_0 + counter, SystemDependent.getDefaultKeyModifier()));
 
         final boolean isclone_f = isclone;
-        final String text_f = text;
+        // A reference to the recent already held in memory (recent_files); it carries the full file +
+        // encoding/FPS/format, so the item's label can be anything (name-only under Flatpak).
+        final SubFile file_f = file;
         final JubFrame jub_f = jub;
         item.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (isclone_f)
                     jub_f.recentMenuCallback(null);
-                else {
-                    SubFile prototype = new SubFile(new File(text_f), SubFile.EXTENSION_GIVEN);
-                    int where = recent_files.indexOf(prototype);
-                    if (where >= 0)
-                        jub_f.recentMenuCallback(recent_files.get(where));
-                    else
-                        JIDialog.error(jub_f, "Unable to load recent item", "Error");
-                }
+                else if (file_f != null)
+                    jub_f.recentMenuCallback(file_f);
+                else
+                    JIDialog.error(jub_f, "Unable to load recent item", "Error");
             }
         });
         return item;

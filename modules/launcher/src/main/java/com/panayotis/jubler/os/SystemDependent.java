@@ -14,6 +14,8 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class SystemDependent {
 
@@ -34,6 +36,44 @@ public class SystemDependent {
     /** True when running inside a Flatpak sandbox; used to gate host-only behaviour. */
     public static boolean isFlatpak() {
         return IS_FLATPAK;
+    }
+
+    /**
+     * The real host path of a file the user granted through the xdg-desktop-portal, read from the
+     * {@code user.document-portal.host-path} xattr the document portal stamps on doc-store files.
+     * Returns null when the file is not a portal-granted document (or we are not in a Flatpak sandbox,
+     * or the file does not exist). Doubles as a "do we already hold write permission for this path?"
+     * check — a granted file carries the xattr, a never-granted sibling / new file does not.
+     */
+    public static String hostPath(File f) {
+        if (f == null || !IS_FLATPAK)
+            return null;
+        try {
+            Object v = Files.getAttribute(f.toPath(), "user:document-portal.host-path");
+            if (v instanceof byte[])
+                return new String((byte[]) v, StandardCharsets.UTF_8);
+        } catch (Exception ignored) {   // no such xattr / missing file / unsupported -> not granted
+        }
+        return null;
+    }
+
+    /** Whether the portal has already granted access to this exact file (see {@link #hostPath}). */
+    public static boolean isPortalGranted(File f) {
+        return hostPath(f) != null;
+    }
+
+    /**
+     * The label to show for a file in the UI. For a Flatpak portal-granted file the real host path is
+     * recovered from the doc-store xattr and shown; a not-yet-granted file (e.g. a new/unsaved doc)
+     * shows just its name; outside the sandbox the full path. Null-safe (returns an empty string).
+     */
+    public static String displayPath(File f) {
+        if (f == null)
+            return "";
+        String host = hostPath(f);
+        if (host != null)
+            return host;
+        return IS_FLATPAK ? f.getName() : f.getPath();
     }
 
     public static int getSliderLOffset() {
@@ -198,7 +238,7 @@ public class SystemDependent {
         if (IS_MACOSX)
             return home + "Library/Logs/Jubler.log";
         else
-            return home + ".local/share/jubler/Jubler.log";
+            return getAppSupportDirPath() + File.separator + "Jubler.log";   // honours the XDG redirect under Flatpak
     }
 
     /**
@@ -212,6 +252,14 @@ public class SystemDependent {
             return System.getenv("APPDATA") + "\\Jubler";
         if (IS_MACOSX)
             return home + "Library/Application Support/Jubler";
+        // In the Flatpak sandbox $HOME is an ephemeral tmpfs, so use the persistent per-app XDG data
+        // dir instead — this is where drop-in plugins and downloaded packs must live to survive a
+        // restart (and where the user can drop plugin jars from the host).
+        if (IS_FLATPAK) {
+            String xdg = System.getenv("XDG_DATA_HOME");
+            if (xdg != null && !xdg.trim().isEmpty())
+                return xdg + File.separator + "jubler";
+        }
         return home + ".local/share/jubler";
     }
 

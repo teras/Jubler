@@ -142,7 +142,10 @@ public class ASpell extends SpellChecker implements PluginCollection, PluginItem
     }
 
     public void execPlugin(AvailExternals l) {
-        if (l.getType().equals(family))
+        // Only advertise ASpell when its binary is actually present (it is absent in the Flatpak
+        // sandbox, and may be uninstalled on desktop) — otherwise it offers a spell checker that
+        // can never start. LanguageTool remains available as the bundled, Java-based alternative.
+        if (l.getType().equals(family) && opts.isAvailable())
             l.add(this);
     }
 
