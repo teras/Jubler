@@ -2441,7 +2441,7 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }
 
     public void closeWindow(boolean unsave_check, boolean keep_application_alive) {
-        if (isUnsaved() && unsave_check)
+        if (isUnsaved() && unsave_check && !isEmptyContent())
             if (!JIDialog.question(this, __("Subtitles are not saved.\nDo you really want to close this window?"), __("Quit confirmation")))
                 return;
 

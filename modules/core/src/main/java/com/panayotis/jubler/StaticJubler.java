@@ -111,7 +111,7 @@ public class StaticJubler {
         @SuppressWarnings("UseOfObsoleteCollectionType")
         java.util.Vector<String> unsaved = new java.util.Vector<String>();
         for (JubFrame j : JubFrame.windows)
-            if (j.isUnsaved())
+            if (j.isUnsaved() && !j.isEmptyContent())
                 unsaved.add(j.getSubtitles().getSubFile().getStrippedFile().getName());
         if (unsaved.size() > 0)
             if (!JIDialog.question(null, new JUnsaved(unsaved), __("Quit Jubler")))
