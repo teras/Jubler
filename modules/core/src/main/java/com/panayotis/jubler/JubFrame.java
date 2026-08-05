@@ -1745,13 +1745,16 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }
 
     /**
-     * True when this window holds nothing worth keeping — no subtitle content AND no video attached.
-     * Such a blank canvas is reused in place rather than spawning yet another empty window; once a
-     * video has been picked, the canvas is kept and a new window opens.
+     * True when this window holds no subtitle at all and is safe to reuse in place rather than
+     * spawning yet another empty window: a brand-new window that has never been loaded
+     * ({@code subs == null}, e.g. the initial startup window) or one with zero entries. A placeholder
+     * that already carries a line — even a single empty one, as "New" / "New from video" create —
+     * does count as content, so a further "New" opens its own window instead of silently replacing it.
+     * Guarded by no video attached (once a video has been picked, the canvas is kept).
      */
     private boolean isEmptyCanvas() {
         boolean noVideo = getMediaFile() == null || getMediaFile().getVideoFile() == null;
-        return isEmptyContent() && noVideo;
+        return noVideo && (subs == null || subs.isEmpty());
     }
 
     private void UndoEMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UndoEMActionPerformed
