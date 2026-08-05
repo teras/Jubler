@@ -8,7 +8,6 @@ include(
     ":basetextsubs",
     ":coretools",
     ":coretheme",
-    ":aspell",
     // ":languagetool",  // set aside in favour of the lighter Hunspell speller (kept in-tree, not built)
     ":hunspell-jubler",
     ":vlcj-jubler",
@@ -27,7 +26,6 @@ project(":core").projectDir = file("modules/core")
 project(":basetextsubs").projectDir = file("modules/basetextsubs")
 project(":coretools").projectDir = file("modules/coretools")
 project(":coretheme").projectDir = file("modules/coretheme")
-project(":aspell").projectDir = file("modules/aspell")
 // project(":languagetool").projectDir = file("modules/languagetool")  // set aside, see include() above
 project(":hunspell-jubler").projectDir = file("modules/hunspell-jubler")
 project(":vlcj-jubler").projectDir = file("modules/vlcj-jubler")

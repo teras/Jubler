@@ -153,15 +153,6 @@ public class JExtBasicOptions extends JPanel {
     }
 
     /**
-     * Whether the executable can be located (configured path or on the system PATH / usual install
-     * dirs), with no side effects — used to gate a tool's self-registration so it does not advertise
-     * itself when the backing program is absent (e.g. aspell inside the Flatpak sandbox).
-     */
-    public boolean isAvailable() {
-        return autoDetect() != null;
-    }
-
-    /**
      * Make sure the executable path is known: auto-detect it if needed, or warn
      * the user (with install instructions) when it cannot be found.
      * @return true if an executable path is available
