@@ -6,6 +6,7 @@ minimalJson = "0.9.5"
 vlcj = "4.7.3"
 arjs = "0.3.3"
 languagetool = "6.5"
+hunspell = "2.1.2"
 slf4j = "2.0.7"
 dbus = "5.1.0"
 
@@ -18,6 +19,7 @@ vlcj = { module = "uk.co.caprica:vlcj", version.ref = "vlcj" }
 arjs = { module = "com.panayotis:arjs", version.ref = "arjs" }
 languagetool-core = { module = "org.languagetool:languagetool-core", version.ref = "languagetool" }
 languagetool-en = { module = "org.languagetool:language-en", version.ref = "languagetool" }
+hunspell = { module = "com.gitlab.dumonts:hunspell", version.ref = "hunspell" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
 dbus-core = { module = "com.github.hypfvieh:dbus-java-core", version.ref = "dbus" }
 dbus-transport-unixsocket = { module = "com.github.hypfvieh:dbus-java-transport-native-unixsocket", version.ref = "dbus" }
