@@ -4,6 +4,7 @@ junitPlatformLauncher = "1.9.3"
 appenh = "0.8.2"
 minimalJson = "0.9.5"
 vlcj = "4.7.3"
+jna = "5.17.0"
 arjs = "0.3.3"
 languagetool = "6.5"
 hunspell = "2.1.2"
@@ -16,6 +17,8 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 appenh = { module = "com.panayotis:appenh", version.ref = "appenh" }
 minimal-json = { module = "com.eclipsesource.minimal-json:minimal-json", version.ref = "minimalJson" }
 vlcj = { module = "uk.co.caprica:vlcj", version.ref = "vlcj" }
+jna = { module = "net.java.dev.jna:jna", version.ref = "jna" }
+jna-platform = { module = "net.java.dev.jna:jna-platform", version.ref = "jna" }
 arjs = { module = "com.panayotis:arjs", version.ref = "arjs" }
 languagetool-core = { module = "org.languagetool:languagetool-core", version.ref = "languagetool" }
 languagetool-en = { module = "org.languagetool:language-en", version.ref = "languagetool" }
