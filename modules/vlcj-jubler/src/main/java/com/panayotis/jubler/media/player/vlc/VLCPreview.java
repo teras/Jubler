@@ -70,22 +70,35 @@ public class VLCPreview implements VideoPreview {
         // acceleration in the Preview options, but only where it can actually work
         // (not macOS, where the embedded surface renders black).
         hardware = isHardwareActive();
-        if (hardware) {
-            // Embedded (native) rendering: libvlc draws directly onto a native video
-            // surface, which allows hardware-accelerated decoding; VLC's own video
-            // output composites the subtitles. Smoother for very high-res sources, at
-            // the cost of the per-platform native surface (hence the macOS exclusion).
-            EmbeddedMediaPlayerComponent component = new EmbeddedMediaPlayerComponent();
-            mediaPlayer = component.mediaPlayer();
-            mediaPlayerComponent = component;
-        } else {
-            // Callback (direct) rendering: libvlc decodes into a memory buffer that vlcj
-            // paints on a lightweight Swing component. Works on every platform (required
-            // on macOS) and forces software decode so subtitles blend into the frame.
-            // Platform-specific libvlc options live in SystemDependent.getVLCVideoOptions().
-            CallbackMediaPlayerComponent component = new CallbackMediaPlayerComponent(SystemDependent.getVLCVideoOptions());
-            mediaPlayer = component.mediaPlayer();
-            mediaPlayerComponent = component;
+        try {
+            if (hardware) {
+                // Embedded (native) rendering: libvlc draws directly onto a native video
+                // surface, which allows hardware-accelerated decoding; VLC's own video
+                // output composites the subtitles. Smoother for very high-res sources, at
+                // the cost of the per-platform native surface (hence the macOS exclusion).
+                EmbeddedMediaPlayerComponent component = new EmbeddedMediaPlayerComponent();
+                mediaPlayer = component.mediaPlayer();
+                mediaPlayerComponent = component;
+            } else {
+                // Callback (direct) rendering: libvlc decodes into a memory buffer that vlcj
+                // paints on a lightweight Swing component. Works on every platform (required
+                // on macOS) and forces software decode so subtitles blend into the frame.
+                // Platform-specific libvlc options live in SystemDependent.getVLCVideoOptions().
+                CallbackMediaPlayerComponent component = new CallbackMediaPlayerComponent(SystemDependent.getVLCVideoOptions());
+                mediaPlayer = component.mediaPlayer();
+                mediaPlayerComponent = component;
+            }
+        } catch (Throwable t) {
+            // Constructing a vlcj component is what loads libvlc; a failure here means it is
+            // missing, or present but incompatible (e.g. an Intel VLC on Apple Silicon, where
+            // dlopen fails). Tell the user how to fix it, then rethrow so JSubPreview degrades
+            // to its "unavailable" placeholder instead of the whole window failing to build.
+            VLCMissing.warn();
+            if (t instanceof Error)
+                throw (Error) t;
+            if (t instanceof RuntimeException)
+                throw (RuntimeException) t;
+            throw new RuntimeException(t);
         }
         mediaPlayerComponent.setPreferredSize(new Dimension(400, 256));
         mediaPlayerComponent.setMinimumSize(new Dimension(160, 120));

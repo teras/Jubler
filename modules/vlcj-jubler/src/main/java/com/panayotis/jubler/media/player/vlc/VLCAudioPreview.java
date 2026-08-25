@@ -15,7 +15,6 @@ import com.panayotis.jubler.media.preview.decoders.SubtitleStreamInfo;
 import com.panayotis.jubler.options.Options;
 
 import com.panayotis.jubler.os.DEBUG;
-import com.panayotis.jubler.os.MissingProgram;
 
 import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
 import uk.co.caprica.vlcj.media.Media;
@@ -43,8 +42,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 import javax.swing.SwingUtilities;
-
-import static com.panayotis.jubler.i18n.I18N.__;
 
 /**
  * Audio preview (waveform + metadata + snippet playback) backed entirely by
@@ -105,19 +102,6 @@ public class VLCAudioPreview implements AudioPreview {
             }
         }
         return factory;
-    }
-
-    /**
-     * Tell the user, with operating-system specific instructions, that VLC is
-     * required but missing. Shown at most once per session (see {@link MissingProgram}).
-     */
-    private static void warnVLCMissing() {
-        MissingProgram.warn("VLC",
-                __("VLC not found"),
-                __("VLC is required for the video preview and audio waveform, but it could not be found on your system."),
-                __("Install VLC with Homebrew:\n    brew install --cask vlc\nor download it from https://www.videolan.org/vlc/"),
-                __("Download VLC from https://www.videolan.org/vlc/\nand install it."),
-                __("Install VLC with your distribution's package manager, e.g.:\n    Debian/Ubuntu:  sudo apt install vlc\n    Fedora:         sudo dnf install vlc\n    Arch:           sudo pacman -S vlc"));
     }
 
     // Media information from libvlc parsing
@@ -224,7 +208,7 @@ public class VLCAudioPreview implements AudioPreview {
     public boolean isDecoderValid() {
         if (factory() != null)
             return true;
-        warnVLCMissing();
+        VLCMissing.warn();
         return false;
     }
 
@@ -245,7 +229,7 @@ public class VLCAudioPreview implements AudioPreview {
 
         MediaPlayerFactory f = factory();
         if (f == null) {
-            warnVLCMissing();
+            VLCMissing.warn();
             return false;
         }
 
