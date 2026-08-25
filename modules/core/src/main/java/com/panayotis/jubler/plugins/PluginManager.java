@@ -27,6 +27,18 @@ public class PluginManager {
     }
 
     private PluginManager(boolean terminalOnly, boolean debug) {
+        // Native libraries reached through JNA (libvlc via vlcj, and any other plugin with
+        // native code) exchange strings as UTF-8. On Windows the JVM default charset is a
+        // legacy code page (e.g. windows-1252), so without this JNA would encode a non-ASCII
+        // path in that code page: libvlc then could not create the audio-waveform cache next
+        // to a video whose folder has non-Latin characters, and the waveform and "Play current
+        // subtitle" failed silently (issue #61). Set once here, before any plugin's native code
+        // runs (this constructor is the single point both the GUI and CLI paths load plugins
+        // through); JNA reads jna.encoding fresh on every call, so this covers later native
+        // calls too. An explicit -Djna.encoding on the command line still wins.
+        if (System.getProperty("jna.encoding") == null)
+            System.setProperty("jna.encoding", "UTF-8");
+
         // Use the thread context classloader (set by the launcher to the DynamicClassLoader that globs both
         // the bundled lib/ and the user plugins directory). getClass().getClassLoader() would be wrong when
         // the app is launched with lib/ on the system classpath (e.g. the AppImage): parent-first delegation

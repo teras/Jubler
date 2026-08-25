@@ -321,7 +321,7 @@ public class VLCAudioPreview implements AudioPreview {
         // Forward slashes work on every platform and avoid sout-chain parsing surprises.
         String out = cfile.getAbsolutePath().replace('\\', '/');
         String sout = ":sout=#transcode{acodec=s16l,channels=" + channels + ",samplerate=" + rate
-                + "}:standard{access=file,mux=wav,dst=" + out + "}";
+                + "}:standard{access=file,mux=wav,dst=" + chainQuote(out) + "}";
 
         MediaPlayer player = f.mediaPlayers().newMediaPlayer();
         CountDownLatch done = new CountDownLatch(1);
@@ -335,6 +335,10 @@ public class VLCAudioPreview implements AudioPreview {
 
             @Override
             public void error(MediaPlayer mp) {
+                // The waveform/snippet cache build failed inside libvlc. This used to be
+                // fully silent (issue #61: no waveform, no "Play current subtitle"); log
+                // the source and target so a broken cache path is diagnosable.
+                DEBUG.debug("VLC audio-cache transcode failed for " + srcPath + " -> " + out);
                 done.countDown();
             }
         });
@@ -360,6 +364,25 @@ public class VLCAudioPreview implements AudioPreview {
         } finally {
             player.release();
         }
+    }
+
+    /**
+     * Quote a value for safe inclusion inside a libvlc sout config-chain
+     * ({@code module{opt=value,...}}). libvlc's chain parser ends an UNQUOTED value at a
+     * chain metacharacter - {@code ,} (next option), {@code &#125;} (end of module) or {@code &#123;} -
+     * so a cache path containing one (the cache is named after the video, e.g.
+     * {@code Movie, The.jacache}) would be truncated and the transcode target become
+     * wrong. Double-quoting keeps the whole path intact; the three characters libvlc
+     * treats as escapable inside a quoted value ({@code \} {@code "} {@code '}) are backslash-escaped.
+     * (A plain space, by contrast, survives an unquoted value, and non-ASCII paths are
+     * handled by forcing {@code jna.encoding=UTF-8} at startup - see issue #61.)
+     */
+    private static String chainQuote(String value) {
+        String escaped = value
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("'", "\\'");
+        return "\"" + escaped + "\"";
     }
 
     /**
