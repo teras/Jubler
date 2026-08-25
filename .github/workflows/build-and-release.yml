@@ -59,8 +59,10 @@ jobs:
           VERSION="$INPUT_VERSION"
           echo "Using version from manual input: $VERSION"
         else
-          # Use version from latest git tag, fallback to build.gradle.kts if no tags exist
-          git fetch --tags
+          # Use version from latest git tag, fallback to build.gradle.kts if no tags exist.
+          # --force: on a tag-triggered run the checkout already has this tag, so a plain
+          # fetch aborts with "would clobber existing tag" and fails the step under bash -e.
+          git fetch --tags --force
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
 
           if [ -n "$LATEST_TAG" ]; then
