@@ -43,6 +43,11 @@ public class PlainText extends AbstractTextSubFormat {
         return "txt";
     }
 
+    @Override
+    public boolean isLastResort() {
+        return true;
+    }
+
     public String getName() {
         return "PlainText";
     }

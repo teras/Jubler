@@ -41,6 +41,16 @@ public abstract class SubFormat implements PluginItem<AvailSubFormats> {
         return getName();
     }
 
+    /**
+     * Catch-all plain-text formats (they match almost any text and assign arbitrary timing) return true, so
+     * detection treats them as the very last resort: a file is parsed as plain text only when no structured
+     * format recognises its content, even when the file's extension (e.g. a provider-supplied ".txt" on an
+     * actual SubRip download) would otherwise route straight to one of them.
+     */
+    public boolean isLastResort() {
+        return false;
+    }
+
     public String getDescription() {
         return getExtendedName() + "  (*." + getExtension() + ")";
     }

@@ -99,6 +99,11 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
             File file = sfile.getSaveFile();
             String ext = Share.getFileExtension(file, false);
             SubFormat foundFormat = Availabilities.formats.findFromExtension(ext);
+            // Never trust the extension for a catch-all plain-text format: fall through to content-based
+            // detection (loadByPattern) so a structured format is preferred, and plain text stays the last
+            // resort. This is what lets a SubRip download the provider labelled ".txt" load as SubRip.
+            if (foundFormat != null && foundFormat.isLastResort())
+                foundFormat = null;
             if (foundFormat != null) {
                 SubFormat format = foundFormat.newInstance();
                 format.updateFormat(sfile);
@@ -125,23 +130,36 @@ public class Subtitles extends AbstractTableModel implements Iterable<SubEntry> 
 
     private Subtitles loadByPattern(SubFile sfile, String data, boolean debug) {
         Subtitles load = null;
-        SubFormat format = null;
-        AvailSubFormats formatlist = new AvailSubFormats();
         try {
             File file = sfile.getSaveFile();
-            while (load == null && formatlist.hasMoreElements()) {
-                format = formatlist.nextElement().newInstance();
-                format.updateFormat(sfile);
-                load = format.parse(data, sfile.getFPS(), file, debug);
-                if (load != null && load.size() < 1)
-                    load = null;//end if (load != null && load.size() < 1)
-            }//end while (load == null && formatlist.hasMoreElements())
-            if (format != null)
-                sfile.setFormat(format);//end if (format != null)
+            AvailSubFormats formatlist = new AvailSubFormats();
+            // Two passes so the catch-all plain-text formats stay the very last resort: a structured
+            // format is always preferred, and content like a SubRip file (whose blank lines also satisfy
+            // the greedy plain-text matcher, which is registered before SubRip alphabetically) is parsed as
+            // plain text only when no structured format recognises it.
+            load = tryFormatsByPattern(sfile, data, file, debug, formatlist, false);
+            if (load == null)
+                load = tryFormatsByPattern(sfile, data, file, debug, formatlist, true);
         } catch (Exception ignored) {
         }
         return load;
-    }//end private Subtitles loadByFileExtension()
+    }//end private Subtitles loadByPattern()
+
+    private Subtitles tryFormatsByPattern(SubFile sfile, String data, File file, boolean debug,
+                                          AvailSubFormats formatlist, boolean lastResort) {
+        for (SubFormat available : formatlist.getFormats()) {
+            if (available.isLastResort() != lastResort)
+                continue;
+            SubFormat format = available.newInstance();
+            format.updateFormat(sfile);
+            Subtitles load = format.parse(data, sfile.getFPS(), file, debug);
+            if (load != null && load.size() >= 1) {
+                sfile.setFormat(format);
+                return load;
+            }
+        }
+        return null;
+    }
 
     /* @data loaded file with proper encoding
      * @f file pointer, in case we need to directly read the original file

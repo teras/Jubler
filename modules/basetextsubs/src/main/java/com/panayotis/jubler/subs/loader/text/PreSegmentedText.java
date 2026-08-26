@@ -84,6 +84,11 @@ public class PreSegmentedText extends AbstractGenericTextSubFormat {
     }
 
     @Override
+    public boolean isLastResort() {
+        return true;
+    }
+
+    @Override
     public String getName() {
         return "PreSegmentedText";
     }
