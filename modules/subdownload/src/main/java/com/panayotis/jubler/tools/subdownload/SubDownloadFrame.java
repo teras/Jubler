@@ -17,11 +17,13 @@ import com.panayotis.jubler.tools.translate.Language;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -166,6 +168,7 @@ public class SubDownloadFrame extends JFrame {
             }
         });
         configureColumns();
+        installSorter();
         JScrollPane scroll = new JScrollPane(table);
         scroll.setPreferredSize(new Dimension(900, 420));
 
@@ -280,6 +283,43 @@ public class SubDownloadFrame extends JFrame {
     }
 
     /**
+     * Make the header click-to-sort. The default is unsorted, so results stay in the order the provider
+     * returned them; clicking a column's header sorts by it — Downloads and Rating numerically, Release and
+     * Language by case-insensitive text — and a second click reverses the direction. Row selection already
+     * maps through {@link JTable#convertRowIndexToModel(int)}, so sorting never mis-targets a download.
+     */
+    private void installSorter() {
+        TableRowSorter<CandidateTableModel> sorter = new TableRowSorter<>(model);
+        sorter.setComparator(0, String.CASE_INSENSITIVE_ORDER);
+        sorter.setComparator(1, String.CASE_INSENSITIVE_ORDER);
+        sorter.setComparator(2, NUMERIC);   // Downloads
+        sorter.setComparator(3, NUMERIC);   // Rating
+        sorter.setSortsOnUpdates(true);
+        table.setRowSorter(sorter);         // no initial sort keys → the untouched view is provider order
+    }
+
+    /** Order the numeric columns by value, not lexically ("1018" must sort above "232"); blanks sort lowest. */
+    private static final Comparator<String> NUMERIC = (a, b) -> Double.compare(numericValue(a), numericValue(b));
+
+    private static double numericValue(String s) {
+        if (s == null)
+            return -1;
+        StringBuilder digits = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (Character.isDigit(c) || c == '.')
+                digits.append(c);
+            else if (digits.length() > 0)
+                break;   // stop at the first gap after the leading number, so "8.5/10" reads as 8.5
+        }
+        try {
+            return digits.length() == 0 ? -1 : Double.parseDouble(digits.toString());
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    /**
      * The three narrow columns render an SVG glyph instead of their (truncation-prone Greek) header text:
      * globe for Language, download arrow for Downloads, star for Rating. The full localized name stays
      * reachable through the header tooltip (see the JTableHeader override in {@link #buildUI()}).
@@ -328,11 +368,45 @@ public class SubDownloadFrame extends JFrame {
             Component c = base.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             if (c instanceof JLabel) {
                 JLabel label = (JLabel) c;
+                // The default renderer parks the ascending/descending sort arrow in the icon slot when this
+                // is the active sort column; keep it beside our glyph instead of overwriting it, so an icon
+                // column shows the same sort indicator a text column would.
+                Icon sortArrow = label.getIcon();
                 label.setText(null);
-                label.setIcon(icon);
+                label.setIcon(sortArrow == null ? icon : new CompositeIcon(icon, sortArrow, 4));
                 label.setHorizontalAlignment(SwingConstants.CENTER);
             }
             return c;
+        }
+    }
+
+    /** Draws two icons side by side (a column glyph and, when sorted, the header's sort arrow). */
+    private static final class CompositeIcon implements Icon {
+        private final Icon left;
+        private final Icon right;
+        private final int gap;
+
+        CompositeIcon(Icon left, Icon right, int gap) {
+            this.left = left;
+            this.right = right;
+            this.gap = gap;
+        }
+
+        @Override
+        public int getIconWidth() {
+            return left.getIconWidth() + gap + right.getIconWidth();
+        }
+
+        @Override
+        public int getIconHeight() {
+            return Math.max(left.getIconHeight(), right.getIconHeight());
+        }
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            int h = getIconHeight();
+            left.paintIcon(c, g, x, y + (h - left.getIconHeight()) / 2);
+            right.paintIcon(c, g, x + left.getIconWidth() + gap, y + (h - right.getIconHeight()) / 2);
         }
     }
 
