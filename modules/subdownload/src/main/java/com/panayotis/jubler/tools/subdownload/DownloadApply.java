@@ -86,10 +86,15 @@ final class DownloadApply {
                 + " size=" + rawBytes.length
                 + " entries=" + result.size());
 
-        // Keep the current document's save path/format, but carry over the encoding actually detected for
-        // the download, so the encoding bar opens showing what the text was decoded as (not the old doc's).
+        // Adopt the current document's save location, but show and save the download in its OWN detected
+        // format and encoding — not the empty document's default (AdvancedSubStation). This is what makes the
+        // encoding bar open on the subtitle's native format (e.g. SubRip for an .srt), like File→Open does.
         SubFile targetSubFile = jubler.getSubtitles().getSubFile();
         targetSubFile.setEncoding(subFile.getEncoding());
+        if (subFile.getFormat() != null) {
+            targetSubFile.setFormat(subFile.getFormat());
+            targetSubFile.updateFileByType();   // keep the save-name extension in step with the format
+        }
         result.setSubFile(targetSubFile);
         jubler.getUndoList().addUndo(new UndoEntry(jubler.getSubtitles(), __("Download: {0}", label)));
         jubler.getUndoList().invalidateSaveMark();
