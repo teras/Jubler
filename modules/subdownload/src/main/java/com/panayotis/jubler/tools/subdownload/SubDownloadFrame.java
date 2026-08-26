@@ -531,7 +531,7 @@ public class SubDownloadFrame extends JFrame {
     /** Apply an already-downloaded file to the owner document (EDT), updating row state and status. */
     private void applyAndReport(Candidate candidate, File file, boolean fromCache, String contentType) {
         String error = DownloadApply.applyFile(owner, file, candidate.getReleaseName(),
-                candidate.getProvider().getName(), contentType);
+                candidate.getProvider().getName(), contentType, candidate.getFileHint());
         if (error == null) {
             cache.put(candidate, file);
             showInfo(fromCache ? __("Applied from cache.") : __("Downloaded and applied."));

@@ -2233,6 +2233,19 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
         closeEncodingBar();
     }
 
+    /**
+     * Arm and show the encoding bar for the current document, exactly as a fresh load does. Callers that
+     * bring in a document from bytes (e.g. a subtitle download) use this so the user can re-interpret the
+     * encoding from the buffered bytes, just like File→Open. Requires the bytes to be already attached via
+     * {@link Subtitles#setLoadedBytes(byte[])}.
+     */
+    public void showEncodingBar() {
+        if (subs == null)
+            return;
+        encodingBar.showFor(subs.getSubFile().getEncoding(), mfile, subs);
+        EncodingTB.setSelected(true);
+    }
+
     /** Toolbar toggle: show the bar (reflecting the document's current properties) or hide it. */
     private void toggleEncodingBar() {
         if (subs == null)

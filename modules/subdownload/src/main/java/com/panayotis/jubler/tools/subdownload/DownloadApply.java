@@ -45,18 +45,22 @@ final class DownloadApply {
 
     /**
      * Parse {@code file} and replace the current document. Must run on the EDT. Returns null on success
-     * or an i18n error message (in which case the document is left untouched). {@code providerName} and
-     * {@code contentType} are used only for diagnostics logged when decoding fails.
+     * or an i18n error message (in which case the document is left untouched). {@code providerName},
+     * {@code contentType} and {@code fileHint} are used only for the diagnostics logged for every download,
+     * so a subtitle that arrives but is mis-detected (e.g. an SRT parsed as plain text) can be traced.
      */
-    static String applyFile(JubFrame jubler, File file, String label, String providerName, String contentType) {
+    static String applyFile(JubFrame jubler, File file, String label, String providerName, String contentType, String fileHint) {
         // EXTENSION_GIVEN keeps the real path: the no-arg SubFile(file) uses EXTENSION_OMMITED, which
         // rewrites the save file to "<name>.<default-format-ext>" (e.g. .ass) — a path that does not
         // exist, so the load silently returns nothing. This is the same constructor File→Open relies on.
         SubFile subFile = new SubFile(file, SubFile.EXTENSION_GIVEN);
         Subtitles result = new Subtitles(subFile);
-        // FileCommunicator.load is the same charset-detecting path File→Open uses (honours the user's
-        // configured encodings), so a Windows-1252/1253 subtitle loads rather than failing on UTF-8.
-        String data = FileCommunicator.load(subFile);
+        // Read the bytes once and detect+decode the same charset-detecting way File→Open does (honours the
+        // user's configured encodings, so a Windows-1252/1253 subtitle loads rather than failing on UTF-8),
+        // but keep the raw bytes so the encoding bar can re-interpret a mis-detected download without a
+        // re-download — exactly as JubFrame.loadFile does for opened files.
+        byte[] rawBytes = FileCommunicator.loadRawBytes(file);
+        String data = rawBytes == null ? null : FileCommunicator.detectAndDecode(subFile, rawBytes, true);
         if (data == null) {
             logDecodeFailure(providerName, contentType, file);
             return __("Could not read the downloaded subtitle.");
@@ -66,11 +70,31 @@ final class DownloadApply {
             logDecodeFailure(providerName, contentType, file);
             return __("The download was not recognized as a subtitle.");
         }
+        result.setLoadedBytes(rawBytes);
 
-        result.setSubFile(jubler.getSubtitles().getSubFile());
+        // Trace what actually arrived and how it was interpreted: provider, the provider's own file-name
+        // hint, the temp file (whose extension drove format detection), the detected format/encoding, and
+        // the size/entry count. This surfaces a mis-detection (e.g. an SRT that got a ".txt" hint and was
+        // parsed as PlainText/PreSegmentedText) without the user having to re-download.
+        String detectedFormat = subFile.getFormat() == null ? "?" : subFile.getFormat().getName();
+        DEBUG.debug("Subtitle download applied: provider=" + providerName
+                + " fileHint=" + fileHint
+                + " tempFile=" + file.getName()
+                + " contentType=" + contentType
+                + " format=" + detectedFormat
+                + " encoding=" + subFile.getEncoding()
+                + " size=" + rawBytes.length
+                + " entries=" + result.size());
+
+        // Keep the current document's save path/format, but carry over the encoding actually detected for
+        // the download, so the encoding bar opens showing what the text was decoded as (not the old doc's).
+        SubFile targetSubFile = jubler.getSubtitles().getSubFile();
+        targetSubFile.setEncoding(subFile.getEncoding());
+        result.setSubFile(targetSubFile);
         jubler.getUndoList().addUndo(new UndoEntry(jubler.getSubtitles(), __("Download: {0}", label)));
         jubler.getUndoList().invalidateSaveMark();
         jubler.setSubs(result);
+        jubler.showEncodingBar();
         jubler.showInfo();
         return null;
     }
