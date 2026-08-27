@@ -37,9 +37,12 @@ final class Secrets {
     }
 
     static String requestPin(Window parent) {
-        JPasswordField pwd = new JPasswordField();
-        int option = JOptionPane.showConfirmDialog(parent, pwd,
-                __("Enter a PIN to encrypt/decrypt your subtitle provider keys"), OK_CANCEL_OPTION, PLAIN_MESSAGE);
+        JPasswordField pwd = new JPasswordField(16);
+        // Put the explanatory sentence in the dialog BODY and keep a short window title: a long sentence as
+        // the title just gets clipped to "…" by the window manager, since the dialog is only as wide as the
+        // little PIN field.
+        Object message = new Object[]{__("Enter a PIN to encrypt/decrypt your subtitle provider keys"), pwd};
+        int option = JOptionPane.showConfirmDialog(parent, message, __("PIN"), OK_CANCEL_OPTION, PLAIN_MESSAGE);
         return option != OK_OPTION || pwd.getPassword().length == 0 ? "" : new String(pwd.getPassword());
     }
 
