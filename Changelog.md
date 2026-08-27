@@ -1,5 +1,16 @@
 ### Jubler Changelog
 
+#### 10.1.0
+
+- Subtitle downloader: search and fetch subtitles from OpenSubtitles, SubDL and SubSource, with video-hash matching and TV-episode support
+- Extensible provider system for the downloader, with optional drop-in plugins gated behind a Plugins preferences page
+- New Hunspell spell checker replacing aspell, with a bundled English dictionary and on-demand downloads for other languages; reworked check dialog and an up-front language bar with a language manager
+- Post-load encoding/FPS/format bar that auto-detects the character set on every load and becomes the single place to change encoding, frame rate and subtitle format
+- Native file dialogs on Linux through the xdg-desktop-portal chooser, with a Swing fallback
+- Flatpak support, with sandbox-aware behaviour and persistent app data
+- Clearer warnings when VLC cannot be loaded, distinguishing a missing install from an incompatible one
+- Fixes for videos in non-ASCII or comma-containing paths (audio waveform cache and playback)
+
 #### 10.0.0
 
 - Replaced the aging MPlayer and ffdecode/ffmpeg components with VLC (libvlc) for video preview, frame preview, audio waveform, media metadata and sample-exact snippet playback
