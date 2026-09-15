@@ -2187,31 +2187,45 @@ public class JubFrame extends JFrame implements WindowFocusListener, PluginConte
     }
 
     /**
-     * Re-read the currently loaded file with the encoding and FPS chosen in the bar, from the
-     * buffered bytes (no disk access). Picking a Unicode charset is transient; picking an 8-bit one
-     * is also remembered as the new default ({@link Options#rememberEncoding} ignores Unicode and
-     * routes single-byte vs CJK to their slots, which is what makes the persistence conditional). FPS
-     * matters for frame-based formats, which are re-parsed from the same bytes.
+     * Apply the encoding and FPS chosen in the bar. Both are plain document properties that drive
+     * Save, so they are always committed to the {@link SubFile} here — whether or not the raw load
+     * bytes are still buffered. Picking a Unicode charset is transient; picking an 8-bit one is also
+     * remembered as the new default ({@link Options#rememberEncoding} ignores Unicode and routes
+     * single-byte vs CJK to their slots, which is what makes the persistence conditional).
+     * <p>
+     * As a convenience, while the raw bytes are still cached (the initial armed window) and they are
+     * valid in the chosen charset, the buffered bytes are re-decoded in place so the view reflects the
+     * new charset (live re-interpret, like File→Open; FPS matters for frame-based formats, re-parsed
+     * from the same bytes). If the bytes are gone (after the first edit) or are not valid in the chosen
+     * charset, the current text is kept and the new charset simply becomes the output encoding — so an
+     * 8-bit file can still be re-saved as UTF-8. That last case marks the document unsaved, since the
+     * property change is otherwise not reflected in the table.
      */
     private void reloadFromBar() {
         if (subs == null)
             return;
-        byte[] bytes = subs.getLoadedBytes();
-        if (bytes == null || bytes.length == 0)
-            return;   // no source bytes to re-decode (e.g. a New document keeps an empty armed buffer)
         String enc = encodingBar.getEncoding();
-        String data = FileCommunicator.decodeFrom(bytes, enc, false);
-        if (data == null)
-            return;  // unknown/illegal charset - ignore, keep the current view
+        if (enc == null)
+            return;
         SubFile sfile = subs.getSubFile();
+        boolean changed = !enc.equals(sfile.getEncoding())
+                || (sfile.getFormat().supportsFPS() && sfile.getFPS() != encodingBar.getFPSValue());
         sfile.setEncoding(enc);
         if (sfile.getFormat().supportsFPS())
             sfile.setFPS(encodingBar.getFPSValue());
         Options.rememberEncoding(enc);
-        Subtitles newsubs = new Subtitles(sfile);
-        newsubs.populate(sfile, data, false);
-        newsubs.setLoadedBytes(bytes);
-        setSubs(newsubs);
+
+        byte[] bytes = subs.getLoadedBytes();
+        String data = (bytes != null && bytes.length > 0)
+                ? FileCommunicator.decodeFrom(bytes, enc, false) : null;
+        if (data != null) {
+            Subtitles newsubs = new Subtitles(sfile);
+            newsubs.populate(sfile, data, false);
+            newsubs.setLoadedBytes(bytes);
+            setSubs(newsubs);
+        } else if (changed) {
+            setUnsaved(true);
+        }
     }
 
     /** Explicitly hide the encoding bar (its own close button) and release the buffered bytes. */
