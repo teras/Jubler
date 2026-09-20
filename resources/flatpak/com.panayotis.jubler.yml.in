@@ -6,7 +6,7 @@
 # volatile, git-ignored location). Everything else lives here once, shared by both build modes.
 app-id: com.panayotis.jubler
 runtime: org.freedesktop.Platform
-runtime-version: '25.08'
+runtime-version: '26.08'
 sdk: org.freedesktop.Sdk
 sdk-extensions:
   - org.freedesktop.Sdk.Extension.openjdk21
@@ -54,6 +54,21 @@ modules:
         url: https://dl.matroska.org/downloads/libmatroska/libmatroska-1.7.1.tar.xz
         sha256: 572a3033b8d93d48a6a858e514abce4b2f7a946fe1f02cbfeca39bfd703018b3
 
+  # VLC 3.0.x does not build against the FFmpeg 8 the runtime ships, so carry our own, as
+  # upstream's flathub/org.videolan.VLC does. Decoding only; Jubler never encodes.
+  # Drop this module once VLC supports FFmpeg 8 and the runtime's copy can be shared again.
+  - name: ffmpeg
+    config-opts:
+      - --enable-pic
+      - --enable-shared
+      - --disable-static
+      - --disable-doc
+      - --disable-programs
+    sources:
+      - type: archive
+        url: https://ffmpeg.org/releases/ffmpeg-7.1.5.tar.xz
+        sha256: de668509caf9e35e3cd162473441fdb29538c6d96ed080292b3cf9e6fc5d558f
+
   - name: libvlc
     config-opts:
       - BUILDCC=gcc
@@ -62,6 +77,9 @@ modules:
       - --disable-qt
       - --disable-ncurses
       - --disable-udev
+      # Experimental GStreamer decoder, picked up only because the SDK carries the headers. Decoding
+      # goes through avcodec, and its sources no longer compile against current gst-plugins-base.
+      - --disable-gst-decode
       - --enable-libass   # fail the build if libass is missing, so subtitles never silently break again
     sources:
       - type: archive
@@ -69,6 +87,18 @@ modules:
         sha256: e2cc1cf0ae0902a09da5a37c249a8a4e4b5ec4dc095443b8e1493c6a7cc138ea
       - type: patch
         path: vlc-ignore-time-for-cache.patch
+    # Keep only what Jubler loads through JNA: the shared libraries and the plugin tree. VLC's
+    # `make install` also drops its own binaries, desktop entry, AppStream metadata, icon set,
+    # translations and documentation into the prefix — carrying another application's metadata puts
+    # a stray VLC entry in the user's menu and gives the bundle a second AppStream component, which
+    # Flathub rejects. Written as a keep-list rather than a remove-list so a future VLC that installs
+    # something new is covered too. The licence texts stay: we redistribute the code.
+    # Done in post-install, not in `cleanup`, because cleanup is applied at the end of the whole
+    # build and would take our own icon and metadata down with it.
+    post-install:
+      - rm -rf /app/bin /app/include
+      - find /app/lib -mindepth 1 -maxdepth 1 ! -name 'lib*.so*' ! -name vlc -exec rm -rf {} +
+      - find /app/share -mindepth 1 -maxdepth 1 ! -name licenses -exec rm -rf {} +
 
   # Slim JRE via jlink instead of the extension's install.sh (which copies the whole module image).
   # JDK 21 to match the runtime the desktop installers ship (jre repo make_template.sh = Temurin 21).
@@ -95,20 +125,17 @@ modules:
       - install -d /app/bin /app/lib
       - cp -r lib/* /app/lib/
       - install -Dm755 jubler /app/bin/jubler
-      - install -Dm644 com.panayotis.jubler.desktop /app/share/applications/com.panayotis.jubler.desktop
-      - install -Dm644 com.panayotis.jubler.metainfo.xml /app/share/metainfo/com.panayotis.jubler.metainfo.xml
-      - install -Dm644 logo.svg /app/share/icons/hicolor/scalable/apps/com.panayotis.jubler.svg
+      # The desktop metadata travels inside the distribution, under lib/flatpak/, so that Flathub
+      # receives it from the upstream project instead of as copies added to the submission.
+      - install -Dm644 lib/flatpak/com.panayotis.jubler.desktop /app/share/applications/com.panayotis.jubler.desktop
+      - install -Dm644 lib/flatpak/com.panayotis.jubler.metainfo.xml /app/share/metainfo/com.panayotis.jubler.metainfo.xml
+      - install -Dm644 lib/flatpak/icon.svg /app/share/icons/hicolor/scalable/apps/com.panayotis.jubler.svg
+      - rm -rf /app/lib/flatpak   # it is packaging metadata, not something to keep on the classpath
       # Regenerate the libvlc plugin cache last, so its mtimes match the installed plugins
       # (avoids "stale plugins cache" rescans + noise on every launch).
       - /app/lib/vlc/vlc-cache-gen /app/lib/vlc/plugins
     sources:
 @@APP_SOURCE@@
-      - type: file
-        path: com.panayotis.jubler.desktop
-      - type: file
-        path: com.panayotis.jubler.metainfo.xml
-      - type: file
-        path: logo.svg
       - type: script
         dest-filename: jubler
         commands:

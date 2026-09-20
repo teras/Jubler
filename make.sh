@@ -144,6 +144,109 @@ build_linux() {
     fi
 }
 
+# Emit the AppStream <release> element for one Changelog.md section. The changelog keeps a flat
+# list — one level of "- " bullets, optionally preceded by plain lines — which maps one to one onto
+# the <ul>/<li> and <p> that AppStream allows (it has no nested lists). Plain lines are joined into a
+# paragraph until a blank line; `code` and **bold** become the <code> and <em> AppStream accepts.
+changelog_release_xml() {
+    awk -v ver="$1" -v date="$2" '
+        function inline(s) {
+            gsub(/&/, "\\&amp;", s); gsub(/</, "\\&lt;", s); gsub(/>/, "\\&gt;", s)
+            while (match(s, /`[^`]+`/))
+                s = substr(s, 1, RSTART - 1) "<code>" substr(s, RSTART + 1, RLENGTH - 2) "</code>" substr(s, RSTART + RLENGTH)
+            while (match(s, /\*\*[^*]+\*\*/))
+                s = substr(s, 1, RSTART - 1) "<em>" substr(s, RSTART + 2, RLENGTH - 4) "</em>" substr(s, RSTART + RLENGTH)
+            return s
+        }
+        function end_p() { if (para != "") { print "        <p>" inline(para) "</p>"; para = "" } }
+        function end_ul() { if (inlist) { print "        </ul>"; inlist = 0 } }
+        /^#### / { if (open) exit; if ($2 == ver) { open = 1
+            print "    <release version=\"" ver "\" date=\"" date "\">"; print "      <description>" }
+            next }
+        !open { next }
+        { line = $0; sub(/^[ \t]+/, "", line); sub(/[ \t]+$/, "", line) }
+        line == "" { end_p(); next }
+        line ~ /^[-*] / { end_p(); if (!inlist) { print "        <ul>"; inlist = 1 }
+            print "          <li>" inline(substr(line, 3)) "</li>"; next }
+        { end_ul(); para = (para == "" ? line : para " " line) }
+        END { if (open) { end_p(); end_ul(); print "      </description>"; print "    </release>" } }
+    ' "$script_dir/Changelog.md"
+}
+
+# The <release> list for the metainfo: the version being built, then the earlier feature releases
+# (X.Y.0), four entries in all — the store reads the shown version from the first one, so a patch
+# release must still lead. Dates come from the release tags, so nothing is typed by hand; a version
+# not tagged yet, such as a local build ahead of its release, is dated today.
+flatpak_releases_xml() {
+    local base="${1%%-*}" picked=0 found=0 v date
+    local versions
+    versions=$(awk '/^#### [0-9]/ { print $2 }' "$script_dir/Changelog.md")
+    if ! grep -qx "$base" <<< "$versions"; then
+        echo -e "${RED}Error:${NC} Changelog.md has no '#### $base' section — Flathub requires release notes." >&2
+        exit 1
+    fi
+    for v in $versions; do
+        if [ "$found" = 0 ]; then
+            [ "$v" = "$base" ] || continue     # sections newer than the one being built
+            found=1
+            date=$(git -C "$script_dir" for-each-ref --format='%(creatordate:short)' "refs/tags/v$v")
+            [ -n "$date" ] || date=$(date +%F)
+        else
+            [[ "$v" =~ ^[0-9]+\.[0-9]+(\.0)?$ ]] || continue
+            date=$(git -C "$script_dir" for-each-ref --format='%(creatordate:short)' "refs/tags/v$v")
+            [ -n "$date" ] || continue         # an old release without a tag cannot be dated honestly
+        fi
+        changelog_release_xml "$v" "$date"
+        picked=$((picked + 1))
+        if [ "$picked" -ge 4 ]; then break; fi
+    done
+}
+
+# Stage the Linux desktop metadata inside a distribution directory, as lib/flatpak/, so the release
+# tarball carries it. Flathub requires the desktop file, metainfo and icon to be part of the upstream
+# project rather than copies added to the submission pull request, and that tarball is what the
+# manifest builds from. The icon is derived from the desktop logo here instead of being kept as a
+# second file, so it cannot drift from it: artwork that runs to the canvas edge renders oversized
+# beside its neighbours in an app grid, which the quality guidelines call out. Only the drawing is
+# scaled — no path is touched, and the desktop installers keep the original edge-to-edge logo.
+stage_flatpak_metadata() {
+    local dest="$1/lib/flatpak" version="$2"
+    mkdir -p "$dest"
+    cp "$script_dir/resources/flatpak/com.panayotis.jubler.desktop" "$dest/"
+
+    # The metainfo is a template: its release notes come from Changelog.md and its screenshots are
+    # read at the release tag, so a release needs nothing edited by hand. An untagged local build
+    # points the screenshots at the current commit instead.
+    local ref="v${version%%-*}" releases="$dest/.releases"
+    git -C "$script_dir" rev-parse -q --verify "refs/tags/$ref" > /dev/null \
+        || ref=$(git -C "$script_dir" rev-parse --short=8 HEAD)
+    flatpak_releases_xml "$version" > "$releases"
+    sed -e "s|@@SCREENSHOT_REF@@|$ref|g" -e "/^@@RELEASES@@$/{
+r $releases
+d
+}" "$script_dir/resources/flatpak/com.panayotis.jubler.metainfo.xml.in" > "$dest/com.panayotis.jubler.metainfo.xml"
+    rm -f "$releases"
+    if grep -q "@@" "$dest/com.panayotis.jubler.metainfo.xml"; then
+        echo -e "${RED}Error:${NC} unfilled placeholder left in the generated metainfo."
+        exit 1
+    fi
+
+    local logo="$script_dir/resources/logo/logo.svg"
+    local icon_scale=0.84375        # leaves ~8% of the canvas free per side
+    local viewbox offset
+    viewbox=$(sed -n 's/.*viewBox="\([^"]*\)".*/\1/p' "$logo" | head -1)
+    # Scaling happens about the origin, so shift by (1-scale) * centre to keep the drawing centred.
+    offset=$(echo "$viewbox" | awk -v s=$icon_scale '{printf "%.3f", (1-s)*($1+$3/2)}')
+    sed -e "0,/<svg /s|\(<svg [^>]*>\)|\1\n <g transform=\"translate($offset,$offset) scale($icon_scale)\">|" \
+        -e "s|</svg>| </g>\n</svg>|" \
+        "$logo" > "$dest/icon.svg"
+    # sed on XML is only safe while the logo keeps its shape, so refuse to ship a silently unwrapped icon.
+    if ! grep -q "scale($icon_scale)" "$dest/icon.svg" || ! grep -q "^ </g>$" "$dest/icon.svg"; then
+        echo -e "${RED}Error:${NC} Could not wrap $logo for the Flatpak icon — has its markup changed?"
+        exit 1
+    fi
+}
+
 build_generic() {
     echo -e "${GREEN}Building for Generic...${NC}"
     cd "$script_dir"
@@ -156,6 +259,8 @@ build_generic() {
     if [ "$build_multi_mode" = "true" ]; then
         output_dir="$dist_dir/temp_generic"
     fi
+
+    stage_flatpak_metadata "$jubler_source_generic" "$version"
 
     # Use KPacker to create Generic package
     "$kpacker_bin" --source="$jubler_source_generic/lib" --out="$output_dir" --name=Jubler --version="$version" --mainjar=jubler.jar --single-classpath --target=Generic --icon="$jubler_icon" --install-icon="$installer_icon" --document-extensions="$document_extensions" --document-name="$document_name" --document-icon="$subfile_icon"
@@ -365,8 +470,14 @@ flatpak_action() {
     cd "$script_dir"
     local version=${JUBLER_VERSION:-$(gradle properties -q | grep "^version:" | awk '{print $2}')}
 
-    echo -e "${GREEN}Building Jubler distribution for Flatpak...${NC}"
-    gradle assembleDistribution
+    # Release mode consumes the published generic tarball, so nothing needs building locally.
+    if [ "$mode" = "local" ]; then
+        echo -e "${GREEN}Building Jubler distribution for Flatpak...${NC}"
+        gradle assembleDistribution
+        # Local builds consume build/jubler directly, so it needs the same metadata that
+        # build_generic stages into the release tarball.
+        stage_flatpak_metadata "$script_dir/build/jubler" "$version"
+    fi
 
     local tpl="$script_dir/resources/flatpak/com.panayotis.jubler.yml.in"
     local gendir="$script_dir/build/flatpak"
@@ -374,23 +485,26 @@ flatpak_action() {
 
     rm -rf "$gendir"
     mkdir -p "$gendir"
-    # Assets the manifest references by bare name, so the generated manifest needs no ".." paths.
-    cp "$script_dir/resources/flatpak/com.panayotis.jubler.desktop" "$gendir/"
-    cp "$script_dir/resources/flatpak/com.panayotis.jubler.metainfo.xml" "$gendir/"
+    # The only asset the manifest still references by bare name: the desktop file, metainfo and icon
+    # now travel inside the distribution itself (see stage_flatpak_metadata), so that a Flathub
+    # submission carries no copies of them.
     cp "$script_dir/resources/flatpak/vlc-ignore-time-for-cache.patch" "$gendir/"
-    cp "$script_dir/resources/logo/logo.svg" "$gendir/logo.svg"
 
     local block="$gendir/.appsource"
     if [ "$mode" = "release" ]; then
-        mkdir -p "$script_dir/dist"
-        local tarball="$script_dir/dist/jubler-${version}.tar.gz"
-        tar -C "$script_dir/build" --transform "s,^jubler,jubler-${version}," -czf "$tarball" jubler
+        # The generic release asset already is the distribution: a Jubler/ root holding lib/ and the
+        # launcher, so flatpak-builder's default strip-components=1 lands exactly on lib/.
+        local url="https://github.com/teras/Jubler/releases/download/v${version}/Jubler-${version}-generic.tar.gz"
+        echo -e "${GREEN}Hashing release asset:${NC} $url"
         local hash
-        hash=$(sha256sum "$tarball" | awk '{print $1}')
+        hash=$(curl -fsSL "$url" | sha256sum | awk '{print $1}') || {
+            echo -e "${RED}Error:${NC} Could not download $url — is the v${version} release published?"
+            exit 1
+        }
         cat > "$block" <<EOF
-      # Built distribution, shipped as a GitHub release asset (reproducible: URL + sha256).
+      # Published generic release asset (reproducible: URL + sha256).
       - type: archive
-        url: https://github.com/panayotis/Jubler/releases/download/v${version}/jubler-${version}.tar.gz
+        url: ${url}
         sha256: ${hash}
 EOF
     else
@@ -410,8 +524,7 @@ d
     echo -e "${GREEN}Generated manifest:${NC} $manifest"
 
     if [ "$mode" = "release" ]; then
-        echo -e "${GREEN}Release tarball:${NC} $tarball"
-        echo -e "Manifest is ready; publish the tarball as the v${version} release asset, then build on Flathub."
+        echo -e "Manifest is ready; copy it and its assets into the Flathub repository."
         return 0
     fi
 

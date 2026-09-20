@@ -7,7 +7,6 @@
 - New Hunspell spell checker replacing aspell, with a bundled English dictionary and on-demand downloads for other languages; reworked check dialog and an up-front language bar with a language manager
 - Post-load encoding/FPS/format bar that auto-detects the character set on every load and becomes the single place to change encoding, frame rate and subtitle format
 - Native file dialogs on Linux through the xdg-desktop-portal chooser, with a Swing fallback
-- Flatpak support, with sandbox-aware behaviour and persistent app data
 - Clearer warnings when VLC cannot be loaded, distinguishing a missing install from an incompatible one
 - Fixes for videos in non-ASCII or comma-containing paths (audio waveform cache and playback)
 
