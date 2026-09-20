@@ -8,7 +8,7 @@ jna = "5.17.0"
 arjs = "0.3.3"
 languagetool = "6.5"
 hunspell = "2.1.2"
-slf4j = "2.0.7"
+slf4j = "2.0.13"
 dbus = "5.1.0"
 
 [libraries]

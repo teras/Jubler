@@ -9,6 +9,11 @@ tasks.jar {
         // file dialog can be parented/centered on the app window (see PortalFileChooser#parentToken).
         // Honored by `java -jar`; a no-op off Linux/X11.
         attributes["Add-Opens"] = "java.desktop/java.awt java.desktop/sun.awt java.desktop/sun.awt.X11"
+        // JNA loads libvlc and the other native libraries through System::load, which JDK 24+ treats as
+        // a restricted method: without this the runtime prints a "restricted method has been called"
+        // warning at every start, and a future release would block the call outright.
+        // Honored by `java -jar`, ignored by older JDKs.
+        attributes["Enable-Native-Access"] = "ALL-UNNAMED"
     }
 }
 

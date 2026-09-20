@@ -15,6 +15,11 @@ dependencies {
     implementation(libs.dbus.core)
     runtimeOnly(libs.dbus.transport.unixsocket)
 
+    // dbus-java logs through SLF4J. Without a provider on the classpath SLF4J prints its "No SLF4J
+    // providers were found" banner at every start and silently drops the messages, so ship the simple
+    // provider; it writes to stderr and is muted below INFO by default.
+    runtimeOnly(libs.slf4j.simple)
+
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
