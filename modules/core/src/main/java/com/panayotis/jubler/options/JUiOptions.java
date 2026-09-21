@@ -84,7 +84,7 @@ public class JUiOptions extends JPanel implements OptionsHolder {
             float scaling = Options.getScaling();
             if (oldScaling == Float.POSITIVE_INFINITY)
                 oldScaling = scaling;
-            scalingFactorT.setText(Double.toString(scaling));
+            scalingFactorT.setText(Float.toString(Math.round(scaling * 100) / 100f));
         }
     }
 
@@ -106,9 +106,16 @@ public class JUiOptions extends JPanel implements OptionsHolder {
         if (SystemDependent.shouldSupportChangeScaling()) {
             try {
                 float newScaling = Float.parseFloat(scalingFactorT.getText());
-                Options.setScaling(newScaling);
-                if (Math.abs(newScaling - oldScaling) > 0.1)
-                    shouldShowMessage = true;
+                // Store only what the user actually typed: saving the value unconditionally would
+                // freeze whatever default the running version proposed, and the next time the
+                // scaling logic improves it would never reach anybody who once opened this dialog.
+                // The field shows a rounded number, so anything below its precision is what was
+                // already there, not an edit.
+                if (Math.abs(newScaling - oldScaling) >= 0.005) {
+                    Options.setScaling(newScaling);
+                    if (Math.abs(newScaling - oldScaling) > 0.1)
+                        shouldShowMessage = true;
+                }
             } catch (Exception ignored) {
             }
         }

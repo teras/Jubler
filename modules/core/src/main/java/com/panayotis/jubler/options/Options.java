@@ -45,7 +45,8 @@ public class Options {
     private static final String MINDURATION_TAG = "options.minduration";
     private static final String SYSTEM_LASTFILE = "system.lastfile";
     private static float scaling;
-    private static final String SCALING_TAG = "ui.scaling.factor";
+    private static final String SCALING_TAG = "ui.scaling.extra";
+    private static final String OLD_SCALING_TAG = "ui.scaling.factor";
     private static boolean timestampTooltipsDisabled;
     private static final String TIMESTAMP_TOOLTIPS_DISABLED = "ui.tooltips.timestamp.disabled";
     private static ThemeVariation themeVariation;
@@ -80,7 +81,12 @@ public class Options {
         maxCPS = JublerPrefs.getInt(MAXCPS_TAG, 21);
         maxDuration = JublerPrefs.getFloat(MAXDURATION_TAG, 7);
         minDuration = JublerPrefs.getFloat(MINDURATION_TAG, 1);
-        scaling = JublerPrefs.getFloat(SCALING_TAG, Math.max(1f, EnhancerManager.getDefault().getDPI() / 96f));
+        // The scaling stored here is what the interface should be enlarged by on top of whatever
+        // the system already does. Up to 10.1 it meant the total scale instead, which double
+        // scaled the interface wherever the system scales on its own, so the old key is abandoned
+        // and removed: everybody starts from the value the current platform actually asks for.
+        JublerPrefs.set(OLD_SCALING_TAG, (String) null);
+        scaling = JublerPrefs.getFloat(SCALING_TAG, EnhancerManager.getDefault().getRecommendedScaling());
         timestampTooltipsDisabled = JublerPrefs.getBoolean(TIMESTAMP_TOOLTIPS_DISABLED, false);
         String theme = JublerPrefs.getString(USE_THEME_VARIATION, ThemeVariation.AUTO.name());
         try {

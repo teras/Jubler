@@ -9,6 +9,7 @@ package com.panayotis.jubler;
 import com.panayotis.appenh.Enhancer;
 import com.panayotis.appenh.EnhancerManager;
 import com.panayotis.jubler.options.JUiOptions;
+import com.panayotis.jubler.os.DEBUG;
 import com.panayotis.jubler.options.Options;
 import com.panayotis.jubler.os.LoaderThread;
 import com.panayotis.jubler.os.SystemDependent;
@@ -29,6 +30,13 @@ public class JublerTheme implements PluginCollection, PluginItem<JubFrame> {
 
     public static void init() {
         Enhancer e = EnhancerManager.getDefault();
+        // Interface size is the most common thing to be reported as wrong, and it depends on
+        // three numbers that are invisible once the application is running.
+        DEBUG.debug("UI scaling: java " + System.getProperty("java.version")
+                + ", screen " + e.getDPI() + " dpi"
+                + ", system scaling " + e.getSystemScaling()
+                + ", recommended " + e.getRecommendedScaling()
+                + ", using " + Options.getScaling());
         e.setProposedSystemScaling(Options.getScaling());
         e.blendWindowTitle(true);
         e.setModernLookAndFeel(Options.getThemeVariation());
