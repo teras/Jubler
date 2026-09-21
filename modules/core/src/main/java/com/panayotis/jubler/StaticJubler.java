@@ -19,7 +19,13 @@ import com.panayotis.jubler.rmi.JublerServer;
 import com.panayotis.jubler.subs.SubFile;
 import com.panayotis.jubler.subs.Subtitles;
 
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
+import java.awt.geom.Area;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -33,6 +39,8 @@ import javax.swing.KeyStroke;
 
 public class StaticJubler {
 
+    private static final int DEFAULT_WIDTH = 800;
+    private static final int DEFAULT_HEIGHT = 600;
     private static final int SCREEN_DELTAX = 24;
     private static final int SCREEN_DELTAY = 24;
     /* */
@@ -63,10 +71,74 @@ public class StaticJubler {
         if (screen_width <= 0)
             return;
 
+        Rectangle bounds = fitToScreen(new Rectangle(screen_x, screen_y, screen_width, screen_height));
         new_window.setLocationByPlatform(false);
-        new_window.setBounds(screen_x, screen_y, screen_width, screen_height);
+        new_window.setBounds(bounds);
         new_window.setExtendedState(screen_state);
         jumpWindowPosition(true);
+    }
+
+    /**
+     * Bring a stored window geometry back into a screen that currently exists. The stored one was
+     * written by a possibly very different setup: a monitor that has since been unplugged, another
+     * resolution or scaling, or another machine sharing the same preferences. Restoring it as is
+     * can leave the window larger than the screen, or completely outside it, with no way to reach
+     * its title bar. The same applies to the offset every new window is given, which walks off the
+     * screen after enough of them are opened.
+     */
+    private static Rectangle fitToScreen(Rectangle wanted) {
+        try {
+            // Every size limit lives here. A stored geometry can be too small to work with just as
+            // easily as it can be too big to fit; the screen gets the last word further down, so
+            // on a small screen this minimum gives way rather than push the window out of reach.
+            wanted = new Rectangle(wanted);
+            wanted.width = Math.max(wanted.width, DEFAULT_WIDTH);
+            wanted.height = Math.max(wanted.height, DEFAULT_HEIGHT);
+
+            if (GraphicsEnvironment.isHeadless())
+                return wanted;
+            GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            // Leave alone anything that is already fully visible, even when it lies across two
+            // screens: that is a placement the user is free to choose, and moving it would be as
+            // annoying as the case being fixed here.
+            Area outside = new Area(wanted);
+            for (GraphicsDevice device : env.getScreenDevices())
+                outside.subtract(new Area(device.getDefaultConfiguration().getBounds()));
+            if (outside.isEmpty())
+                return wanted;
+
+            // The screen showing most of the window is the one the user left it on. When none of
+            // them does, that screen is gone and the primary one takes over.
+            GraphicsConfiguration screen = env.getDefaultScreenDevice().getDefaultConfiguration();
+            int covered = 0;
+            for (GraphicsDevice device : env.getScreenDevices()) {
+                GraphicsConfiguration conf = device.getDefaultConfiguration();
+                Rectangle common = conf.getBounds().intersection(wanted);
+                int area = common.isEmpty() ? 0 : common.width * common.height;
+                if (area > covered) {
+                    covered = area;
+                    screen = conf;
+                }
+            }
+
+            Rectangle area = screen.getBounds();
+            Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(screen);
+            area.x += insets.left;
+            area.y += insets.top;
+            area.width -= insets.left + insets.right;
+            area.height -= insets.top + insets.bottom;
+            if (area.width <= 0 || area.height <= 0)
+                return wanted;
+
+            Rectangle fit = new Rectangle(wanted);
+            fit.width = Math.min(fit.width, area.width);
+            fit.height = Math.min(fit.height, area.height);
+            fit.x = Math.min(Math.max(fit.x, area.x), area.x + area.width - fit.width);
+            fit.y = Math.min(Math.max(fit.y, area.y), area.y + area.height - fit.height);
+            return fit;
+        } catch (Throwable t) {
+            return wanted;
+        }
     }
 
     public static void jumpWindowPosition(boolean forth) {
@@ -97,10 +169,13 @@ public class StaticJubler {
         screen_width = values[2];
         screen_height = values[3];
         screen_state = values[4];
-        if (screen_width < 800)
-            screen_width = 800;
-        if (screen_height < 600)
-            screen_height = 600;
+        // Nothing stored yet, or a line that could not be read: start from the default size. How
+        // that size then has to bend to fit the screen is decided in fitToScreen, together with
+        // every other limit.
+        if (screen_width <= 0 || screen_height <= 0) {
+            screen_width = DEFAULT_WIDTH;
+            screen_height = DEFAULT_HEIGHT;
+        }
     }
 
     public static void showAbout() {
