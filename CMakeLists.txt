@@ -57,6 +57,28 @@ target_compile_definitions(jubler-qt PRIVATE
     JUBLER_PACKAGED=$<BOOL:${JUBLER_PACKAGED}>)
 # The installed program is "jubler", as the Java build's launcher.
 set_target_properties(jubler-qt PROPERTIES OUTPUT_NAME jubler)
+if(WIN32)
+    # The executable's icon and version information, and no console window.
+    string(REGEX MATCHALL "[0-9]+" _jubler_ver_parts "${JUBLER_VERSION_STRING}")
+    list(APPEND _jubler_ver_parts 0 0 0 0)
+    list(SUBLIST _jubler_ver_parts 0 3 _jubler_ver_parts)
+    list(JOIN _jubler_ver_parts "," JUBLER_WIN_VERSION)
+    string(APPEND JUBLER_WIN_VERSION ",0")
+    string(TIMESTAMP JUBLER_YEAR "%Y")
+    set(JUBLER_WIN_ICON "${CMAKE_CURRENT_SOURCE_DIR}/packaging/windows/jubler.ico")
+    configure_file(packaging/windows/jubler.rc.in ${CMAKE_CURRENT_BINARY_DIR}/jubler.rc @ONLY)
+    target_sources(jubler-qt PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/jubler.rc)
+    set_target_properties(jubler-qt PROPERTIES WIN32_EXECUTABLE ON)
+endif()
+if(APPLE)
+    # Jubler.app (the icons are added by packaging/macos/make-dmg.sh).
+    string(TIMESTAMP JUBLER_YEAR "%Y")
+    configure_file(packaging/macos/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist @ONLY)
+    set_target_properties(jubler-qt PROPERTIES
+        OUTPUT_NAME Jubler
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_BINARY_DIR}/Info.plist)
+endif()
 target_link_libraries(jubler-qt PRIVATE
     jubler-core
     Qt6::Widgets

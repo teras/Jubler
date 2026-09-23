@@ -29,6 +29,7 @@
 #endif
 
 #include "app/AppContext.h"
+#include "app/DesktopIntegration.h"
 #include "app/Theme.h"
 #include "app/media/AppMediaFile.h"
 #include "app/tools/TranslateDialogs.h"
@@ -47,6 +48,17 @@
 #include "core/os/SystemDependent.h"
 #include "core/subs/SubFile.h"
 #include "core/subs/Subtitles.h"
+
+#ifdef Q_OS_WIN
+// Only AttachConsole: without the GDI macros (ERROR, …) and min/max.
+#define WIN32_LEAN_AND_MEAN
+#define NOGDI
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <cstdio>
+#include <windows.h>
+#endif
 
 namespace {
 
@@ -173,6 +185,16 @@ int main(int argc, char *argv[]) {
     for (int i = 1; i < argc; ++i) args.append(QString::fromLocal8Bit(argv[i]));
 
     if (CommandLine::isCommandLineInvocation(args)) {
+#ifdef Q_OS_WIN
+        // A GUI program has no console of its own: the command line writes to
+        // the one it was started from — unless its output already goes
+        // somewhere (a pipe, a file), which it keeps.
+        const HANDLE stdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        if ((stdOut == nullptr || stdOut == INVALID_HANDLE_VALUE) && AttachConsole(ATTACH_PARENT_PROCESS)) {
+            std::freopen("CONOUT$", "w", stdout);
+            std::freopen("CONOUT$", "w", stderr);
+        }
+#endif
         QCoreApplication app(argc, argv);
         std::setlocale(LC_NUMERIC, "C");
         QCoreApplication::setApplicationName(QStringLiteral("Jubler"));
@@ -280,6 +302,7 @@ int main(int argc, char *argv[]) {
         openFiles(args + std::exchange(g_pendingFiles, {}));
         openFiles(AutoSaver::getAutoSaveListOnLoad());
         AutoUpdater::checkAtStartup();
+        DesktopIntegration::registerAppImage();
         AutoSaver::launch([]() {
             QList<AutoSaver::Candidate> out;
             for (MainWindow *w : AppContext::windows())

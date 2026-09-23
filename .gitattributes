@@ -1,0 +1,2 @@
+# Test fixtures are exact bytes (some carry CR LF on purpose): never converted on checkout.
+tests/fixtures/** -text

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- (c) 2005-2026 by Panayotis Katsaloulis
+     SPDX-License-Identifier: AGPL-3.0-only
+     This file is part of Jubler. -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>LSMinimumSystemVersion</key>
+  <string>15.0</string>
+  <key>CFBundleDevelopmentRegion</key>
+  <string>English</string>
+  <key>CFBundleAllowMixedLocalizations</key>
+  <true/>
+  <key>CFBundleExecutable</key>
+  <string>Jubler</string>
+  <key>CFBundleIconFile</key>
+  <string>Jubler.icns</string>
+  <key>CFBundleIdentifier</key>
+  <string>com.panayotis.jubler</string>
+  <key>CFBundleInfoDictionaryVersion</key>
+  <string>6.0</string>
+  <key>CFBundleName</key>
+  <string>Jubler</string>
+  <key>CFBundlePackageType</key>
+  <string>APPL</string>
+  <key>CFBundleShortVersionString</key>
+  <string>@JUBLER_VERSION_STRING@</string>
+  <key>CFBundleSignature</key>
+  <string>????</string>
+  <key>LSApplicationCategoryType</key>
+  <string>public.app-category.video</string>
+  <key>CFBundleVersion</key>
+  <string>@JUBLER_VERSION_STRING@</string>
+  <key>NSHumanReadableCopyright</key>
+  <string>© 2005-@JUBLER_YEAR@ Panayotis Katsaloulis</string>
+  <key>NSHighResolutionCapable</key>
+  <true/>
+  <key>NSPrincipalClass</key>
+  <string>NSApplication</string>
+  <key>NSDocumentsFolderUsageDescription</key>
+  <string>Jubler needs access to your Documents folder to save and open files.</string>
+  <key>NSDesktopFolderUsageDescription</key>
+  <string>Jubler needs access to your Desktop folder to save and open files.</string>
+  <key>NSDownloadsFolderUsageDescription</key>
+  <string>Jubler needs access to your Downloads folder to open files.</string>
+  <key>NSRemovableVolumesUsageDescription</key>
+  <string>Jubler needs access to removable volumes to save and open files.</string>
+  <key>NSNetworkVolumesUsageDescription</key>
+  <string>Jubler needs access to network volumes to save and open files.</string>
+  <key>CFBundleDocumentTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleTypeName</key>
+      <string>Jubler subtitle file</string>
+      <key>CFBundleTypeIconFile</key>
+      <string>JublerDocument.icns</string>
+      <key>CFBundleTypeExtensions</key>
+      <array>
+        <string>srt</string>
+        <string>vtt</string>
+        <string>ass</string>
+        <string>ssa</string>
+        <string>ttml</string>
+        <string>dfxp</string>
+        <string>itt</string>
+        <string>txt</string>
+        <string>sub</string>
+        <string>stl</string>
+        <string>xml</string>
+        <string>sbv</string>
+      </array>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>LSHandlerRank</key>
+      <string>Default</string>
+    </dict>
+  </array>
+</dict>
+</plist>

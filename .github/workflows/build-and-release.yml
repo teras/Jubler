@@ -1,0 +1,252 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  # The version, from the latest "v<version>" tag (as CMake reads it).
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Determine version
+        id: version
+        run: |
+          git fetch --tags --force
+          TAG=$(git describe --tags --abbrev=0 --match 'v[0-9]*')
+          VERSION=${TAG#v}
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Building version: $VERSION"
+
+  # Build and test on Linux, and check that every source file carries its header.
+  test:
+    needs: prepare
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    steps:
+      - name: Install build dependencies
+        run: |
+          pacman -Syu --noconfirm --needed git base-devel cmake ninja pkgconf python \
+            qt6-base qt6-svg qt6-tools mpv ffmpeg hunspell openssl zlib
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check source headers
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          tools/check-headers.sh
+      - name: Build
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  # Linux AppImages, x86_64 and aarch64 (packaging/linux/make-appimage.sh).
+  appimage:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runs-on: ubuntu-latest, arch: x86_64 }
+          - { runs-on: ubuntu-24.04-arm, arch: aarch64 }
+    runs-on: ${{ matrix.runs-on }}
+    container: ghcr.io/pkgforge-dev/archlinux:latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Prepare the container
+        uses: pkgforge-dev/anylinux-setup-action@v5
+      - name: Build the AppImage
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          sh packaging/linux/make-appimage.sh "${{ needs.prepare.outputs.version }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: jubler-appimage-${{ matrix.arch }}-${{ needs.prepare.outputs.version }}
+          path: dist/Jubler-*.AppImage
+          retention-days: 7
+
+  # macOS disk images, Apple Silicon and Intel, macOS 15 or newer: built, signed,
+  # notarized and stapled by packaging/macos/make-dmg.sh.
+  macos:
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runs-on: macos-15, suffix: '-arm64', name: arm64 }
+          - { runs-on: macos-15-intel, suffix: '', name: x86_64 }
+    runs-on: ${{ matrix.runs-on }}
+    environment: test
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Install build dependencies
+        run: brew install qt mpv hunspell openssl pkgconf ninja librsvg
+      - name: Build, sign and notarize
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          APPLE_NOTARY_JSON: ${{ secrets.APPLE_NOTARY_JSON }}
+        run: bash packaging/macos/make-dmg.sh "${{ needs.prepare.outputs.version }}" "${{ matrix.suffix }}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: jubler-macos-${{ matrix.name }}-${{ needs.prepare.outputs.version }}
+          path: dist/Jubler-*.dmg
+          retention-days: 7
+
+  # Windows x64: MSYS2 UCRT64 build, the files it loads collected by deploy.sh,
+  # the Inno Setup installer (the SignPath job signs it).
+  windows:
+    needs: prepare
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: >-
+            git
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-ninja
+            mingw-w64-ucrt-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-qt6-base
+            mingw-w64-ucrt-x86_64-qt6-svg
+            mingw-w64-ucrt-x86_64-qt6-tools
+            mingw-w64-ucrt-x86_64-qt6-translations
+            mingw-w64-ucrt-x86_64-mpv
+            mingw-w64-ucrt-x86_64-ffmpeg
+            mingw-w64-ucrt-x86_64-hunspell
+            mingw-w64-ucrt-x86_64-openssl
+            mingw-w64-ucrt-x86_64-zlib
+            mingw-w64-ucrt-x86_64-ntldd
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Build
+        run: |
+          # pkg-config as in the local cross build: the MSYS2 root as sysroot,
+          # put before every folder a .pc file names — written with ${prefix} or
+          # literally as "/ucrt64/…" (FFmpeg's, mujs's) — instead of pkgconf's
+          # own relocation, which moves only ${prefix} and hands CMake MSYS
+          # paths it cannot resolve for the rest.
+          ROOT=$(cygpath -m /)
+          export PKG_CONFIG_DONT_DEFINE_PREFIX=1
+          export PKG_CONFIG_SYSROOT_DIR="$ROOT"
+          export PKG_CONFIG_SYSTEM_INCLUDE_PATH="$ROOT$MINGW_PREFIX/include"
+          export PKG_CONFIG_SYSTEM_LIBRARY_PATH="$ROOT$MINGW_PREFIX/lib"
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+      - name: Collect the application files
+        run: bash packaging/windows/deploy.sh build dist/app
+      - name: The collected files are enough
+        shell: pwsh
+        run: |
+          # Without MSYS2 on the PATH, as on the user's machine.
+          $env:PATH = "C:\Windows\System32;C:\Windows"
+          $out = & dist\app\jubler.exe --list-tools 2>&1 | Out-String
+          Write-Output $out
+          Write-Output "exit code: $LASTEXITCODE"
+          if ($out -notmatch 'Available tools') { throw "jubler.exe did not run from the collected files" }
+      - name: Installer
+        shell: pwsh
+        run: |
+          $version = "${{ needs.prepare.outputs.version }}"
+          $numeric = (($version -split '-')[0] + '.0')
+          Copy-Item packaging\windows\*.ico dist\
+          Copy-Item packaging\windows\jubler.iss dist\
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /Qp "/DAppVersion=$version" "/DAppNumericVersion=$numeric" /DSourceDir=app dist\jubler.iss
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed" }
+          Get-ChildItem dist\Jubler-*-x64.exe
+      - uses: actions/upload-artifact@v7
+        with:
+          name: jubler-windows-${{ needs.prepare.outputs.version }}
+          path: dist/Jubler-*-x64.exe
+          retention-days: 7
+
+  # The Windows installer signed through SignPath (the Java release's project,
+  # policy and artifact configuration: the installer inside the uploaded artifact).
+  sign-windows:
+    needs: [prepare, windows]
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Find the installer artifact
+        id: artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ID=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts" \
+               --jq '.artifacts[] | select(.name == "jubler-windows-${{ needs.prepare.outputs.version }}") | .id')
+          [ -n "$ID" ] || { echo "error: the installer artifact is missing"; exit 1; }
+          echo "id=$ID" >> "$GITHUB_OUTPUT"
+      - name: Sign
+        uses: signpath/github-action-submit-signing-request@v3
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: Jubler
+          signing-policy-slug: release-signing
+          artifact-configuration-slug: jubler-exe-in-zip
+          github-artifact-id: ${{ steps.artifact.outputs.id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+      - uses: actions/upload-artifact@v7
+        with:
+          name: jubler-windows-signed-${{ needs.prepare.outputs.version }}
+          path: signed/Jubler-*-x64.exe
+          retention-days: 7
+
+  # A tag makes the GitHub release: every package, all of them signed where the
+  # platform signs (never a fallback to an unsigned file: any failure above stops it).
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [prepare, test, appimage, macos, sign-windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+      - name: Collect the release files
+        run: |
+          V="${{ needs.prepare.outputs.version }}"
+          mkdir -p release
+          cp artifacts/jubler-windows-signed-$V/Jubler-*-x64.exe release/
+          cp artifacts/jubler-macos-*-$V/Jubler-*.dmg release/
+          cp artifacts/jubler-appimage-*-$V/Jubler-*.AppImage release/
+          ls -la release
+          test "$(ls release | wc -l)" = 5
+          python3 packaging/release-notes.py "$V" > release-notes.md
+      - uses: ncipollo/release-action@v1
+        with:
+          tag: v${{ needs.prepare.outputs.version }}
+          name: Jubler v${{ needs.prepare.outputs.version }}
+          # Every release is a pre-release, as the Java's were (the user's decision).
+          prerelease: true
+          makeLatest: false
+          allowUpdates: true
+          removeArtifacts: true
+          artifacts: release/*
+          artifactErrorsFailBuild: true
+          bodyFile: release-notes.md
