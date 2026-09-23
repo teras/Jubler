@@ -1,0 +1,1 @@
+{ "name": "Example plugin", "description": "Shows every extension point: a tool, a command-line tool, a format, a translator, a spell checker, events and a Preferences page." }

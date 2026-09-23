@@ -1,0 +1,19 @@
+[INFORMATION]
+[TITLE]A title
+[AUTHOR]An author
+[SOURCE]A source
+[FILEPATH]
+[DELAY]0
+[COMMENT]line one|line two
+[END INFORMATION]
+[SUBTITLE]
+[COLF]&HFFFFFF,[STYLE]bd,[SIZE]18,[FONT]Arial
+00:00:00.00,00:00:01.23
+First at zero
+
+00:00:01.50,00:00:03.99
+Two lines[br]second line
+
+10:00:00.00,10:00:01.99
+ten hours Ελληνικά
+

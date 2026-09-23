@@ -2,45 +2,47 @@
 
 ## Prerequisites
 
-- Java 8 or higher
-- Gradle (use the system `gradle`)
+- A C++17 compiler and CMake 3.19 or newer
+- Qt 6: Core, Gui, Widgets, OpenGLWidgets, Network, Svg, Concurrent, Xml and LinguistTools
+- libmpv, and the development files of the FFmpeg libraries it links (libavformat, libavcodec, libavutil,
+  libswresample). The headers must be the same major versions libmpv uses; CMake checks this.
+- hunspell, libcrypto (OpenSSL) and zlib
+- pkg-config
 
 ## Build & run
 
 ```bash
-gradle build                 # compile all modules, run tests, produce jars
-gradle assembleDistribution  # full runnable distribution in build/jubler/
-java -jar build/jubler/lib/jubler.jar
+cmake -S . -B build
+cmake --build build -j8
+./build/jubler
 ```
 
 With arguments:
 
 ```bash
-java -jar build/jubler/lib/jubler.jar --help
-java -jar build/jubler/lib/jubler.jar --load subtitle.srt
-java -jar build/jubler/lib/jubler.jar --convert input.ass output.srt
+./build/jubler subtitle.srt
+./build/jubler --help
+./build/jubler --list-tools
+./build/jubler --load input.ass --save output.srt
 ```
 
 ## Common tasks
 
 ```bash
-gradle clean build           # clean rebuild
-gradle build -x test         # skip tests
-gradle test                  # tests only
-gradle :core:build           # build a single module
-gradle :core:compileJava     # quick compile check while developing
+ctest --test-dir build                  # run the tests
+cmake -S . -B build -DJUBLER_BUILD_APP=OFF   # only the core library and the tests
+tools/i18n-tools.py update              # after changing user-visible strings
 ```
 
-## Distribution layout
+The interface strings are the English ones in the source (`__("…")`); `tools/i18n-tools.py update` collects them
+into `resources/i18n-src/*.json`, where the translations live, and regenerates the Qt `.ts` files.
 
-`gradle assembleDistribution` produces `build/jubler/`:
+## Installation layout (Linux)
 
-- `lib/jubler.jar` — launcher (main entry point), plus the module and dependency jars
-- `lib/i18n/` — translations
-- `README.md`, `LICENCE.txt`
+`cmake --install build` installs the `jubler` executable together with its desktop entry, AppStream metadata,
+MIME types for the subtitle formats and the icon.
 
 ## Versioning
 
-The version is derived automatically from the latest `v*` git tag (e.g. tag `v10.0.0` builds
-version `10.0.0`); there is no manual version-bump command. See `make.sh` for the available helpers
-(`build`, `winget`, `clean`, `headers`).
+The version is derived automatically from the latest `v*` git tag (e.g. tag `v10.0.0` builds version `10.0.0`);
+there is no manual version-bump step.

@@ -3,13 +3,16 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/teras/Jubler)
 ![GitHub all releases](https://img.shields.io/github/downloads/teras/Jubler/total)
 ![GitHub](https://img.shields.io/github/license/teras/Jubler?v=2)
-![Java](https://img.shields.io/badge/Java-8+-orange)
+![C++](https://img.shields.io/badge/C%2B%2B-17-blue)
+![Qt](https://img.shields.io/badge/Qt-6-green)
 ![Platform](https://img.shields.io/badge/platform-Linux%20%7C%20macOS%20%7C%20Windows-blue)
 ![GitHub Release Date](https://img.shields.io/github/release-date/teras/Jubler)
 
-Jubler is a free and open source subtitle editor for creating, editing, and converting text-based subtitles. Written in Java for cross-platform compatibility, it provides tools for authoring new subtitles and refining existing ones with video preview, quality validation, and extensive format support.
+Jubler is a free and open source subtitle editor for creating, editing, and converting text-based subtitles. It provides tools for authoring new subtitles and refining existing ones with video preview, quality validation, and extensive format support.
 
-(C) 2005-2025 Panayotis Katsaloulis
+Jubler is written in C++ with Qt 6, and uses libmpv for video and audio. Up to version 10.0.0 it was a Java application; that code lives on the [`java`](https://github.com/teras/Jubler/tree/java) branch.
+
+(C) 2005-2026 Panayotis Katsaloulis
 panayotis@panayotis.com
 
 Licensed under the GNU Affero General Public License v3 (AGPL-3.0)
@@ -19,17 +22,18 @@ Licensed under the GNU Affero General Public License v3 (AGPL-3.0)
 ## Features
 
 ### Subtitle Formats
-- **20+ formats supported** including SubRip (SRT), Advanced SubStation Alpha (ASS/SSA), WebVTT, MicroDVD, SubViewer, MPL2, Spruce DVD Maestro, TTML, ITT, DFXP, and YouTube subtitles
-- **Universal encoding support** (UTF-8, UTF-16, and all Java platform encodings)
+- **20+ formats supported** including SubRip (SRT), Advanced SubStation Alpha (ASS/SSA), WebVTT, MicroDVD, SubViewer, MPL2, Spruce DVD Maestro, TTML, DFXP, ITT, QuickTime Texttrack, Adobe Encore and YouTube subtitles
+- **Encoding detection** on every load, with UTF-8, UTF-16 and the legacy code pages
 - **Character and paragraph-level styling** for formats that support it (ASS/SSA, SRT)
 - **Format conversion** between all supported types
+- **Import of the text subtitles embedded** in video files
 
 ### Video Integration
-- **VLC-based** frame preview, audio waveform and video playback
+- **mpv-based** video preview with hardware decoding, audio waveform and video key frames
 - **Real-time subtitle editing** while watching video
 - **Interactive timeline** with draggable subtitle blocks
 - **Two-point synchronization** for timing alignment
-- **Enhanced preview controls** with shift/alt key support and snapping
+- **Play the current subtitle** straight from the player
 
 ### Editing Tools
 - **Time manipulation** - shift, frame rate conversion, round timing
@@ -47,43 +51,42 @@ Licensed under the GNU Affero General Public License v3 (AGPL-3.0)
 - **Color-coded validation** to highlight issues
 - **Statistics and analysis** tools
 
+### Subtitles and Languages
+- **Subtitle search and download** from OpenSubtitles, SubDL and SubSource, with video-hash matching
+- **Hunspell spell checker** with a bundled English dictionary and other languages downloaded on demand
+- **Azure Translator support** for automated translation
+
 ### User Interface
 - **HiDPI support** with adjustable scaling
 - **Dark theme** available
 - **Customizable keyboard shortcuts**
-- **Multi-language interface** with i18n support
+- **Multi-language interface**
 - **Color marking** for organizing subtitle groups
+- **Preferences of the Java version** offered for import on the first run
 
 ### Automation
 - **Command-line tools** for batch processing
-- **Plugin system** for extensibility
-- **External tool integration**
-- **Azure Translator support** for automated translation
+- **External tool integration** - run command-line tools (speech recognition, sync and more) on the open subtitles, audio or video
+- **Plugin system** for subtitle download providers (see [docs/PLUGINS.md](docs/PLUGINS.md))
 
 ---
 
 ## Getting Started
 
-### Requirements
-- Java 8 or higher (often bundled with distribution)
-- Optional: MPlayer for video preview
-- Optional: ASpell for spell checking
-
 ### Installation
 
-Download binaries from the [releases page](https://github.com/teras/Jubler/releases):
-- Windows, macOS, and Linux installers
-- Linux AppImage
-- Generic cross-platform package
+Download binaries from the [releases page](https://github.com/teras/Jubler/releases).
 
 Or build from source (see [BUILD_AND_RUN.md](BUILD_AND_RUN.md))
 
 ### Running
 
-Launch from your application menu or desktop shortcut. You can also run manually:
+Launch from your application menu or desktop shortcut. You can also run it from a terminal, with the subtitle files to open:
 ```bash
-java -jar Jubler.jar
+jubler subtitle.srt
 ```
+
+`jubler --help` lists the command-line options, and `jubler --list-tools` the tools available for batch processing.
 
 ---
 
@@ -96,4 +99,3 @@ Jubler is an open source project that welcomes contributions. Whether you're fix
 ## Credits
 
 Free code signing on Windows provided by [SignPath.io](https://signpath.io/), certificate by [SignPath Foundation](https://signpath.org/)
-

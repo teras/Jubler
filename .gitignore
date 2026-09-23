@@ -1,14 +1,57 @@
+# CMake build trees
 build/
-/dist/
-^_support/
-*.iml
-.idea/
-.vagrant/
-.gradle/
+build-*/
+cmake-build-*/
+out/
+CMakeCache.txt
+CMakeFiles/
+CMakeUserPresets.json
+cmake_install.cmake
+CTestTestfile.cmake
+Testing/
+compile_commands.json
+_deps/
 
-# Flatpak build artifacts
-build-dir/
-.flatpak-builder/
-repo/
-*.flatpak
-flatpak-build.log
+# Qt generated sources
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*_autogen/
+*.qm
+.qmake.stash
+
+# Compiled objects and binaries
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+jubler-qt
+test_formats
+
+# IDEs and editors
+.idea/
+.vscode/
+.cache/
+*.iml
+*.user
+*.user.*
+.qtc_clangd/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Stray directory created by an unexpanded "$HOME" path
+/$HOME/
+
+# Port notes: kept out of the repository
+/docs/port/
+__pycache__/

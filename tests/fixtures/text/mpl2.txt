@@ -1,0 +1,5 @@
+[0][12] First at zero
+[15][40]Two lines|second line
+[50][50] zero duration
+[65][80] Ελληνικά 日本 😀
+[360005][360020] ten hours [bracket] {brace}

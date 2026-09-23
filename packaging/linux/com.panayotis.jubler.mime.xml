@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Subtitle extensions Jubler opens that shared-mime-info does not know. -->
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="text/x-sbv">
+    <comment>YouTube SubViewer subtitles</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.sbv"/>
+  </mime-type>
+  <mime-type type="application/ttml+xml">
+    <comment>Timed Text Markup Language subtitles</comment>
+    <sub-class-of type="application/xml"/>
+    <glob pattern="*.ttml"/>
+    <glob pattern="*.itt"/>
+    <glob pattern="*.dfxp"/>
+  </mime-type>
+  <!-- Spruce DVDMaestro subtitles. "*.stl" is also claimed by model/stl (3D models): with equal glob
+       weights the content decides (text here, ASCII STL starts with "solid"). -->
+  <mime-type type="text/x-spruce-stl">
+    <comment>Spruce subtitles</comment>
+    <sub-class-of type="text/plain"/>
+    <glob pattern="*.stl"/>
+  </mime-type>
+</mime-info>
