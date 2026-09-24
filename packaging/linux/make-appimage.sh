@@ -26,5 +26,9 @@ export DESKTOP=/usr/share/applications/com.panayotis.jubler.desktop
 export ICON=/usr/share/icons/hicolor/scalable/apps/com.panayotis.jubler.svg
 
 quick-sharun /usr/bin/jubler
+# Qt's GTK 3 theme stays (GNOME and the other GTK desktops get their look and
+# dialogs from it); KDE's theme is not carried, so there the dialogs come
+# through the desktop portal (see main.cpp), whose theme must be present.
+[ -e AppDir/lib/qt6/plugins/platformthemes/libqxdgdesktopportal.so ] || { echo "error: no portal platform theme" >&2; exit 1; }
 quick-sharun --make-appimage
 quick-sharun --test "./dist/$OUTNAME"

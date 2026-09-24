@@ -5,6 +5,12 @@ on:
     tags:
       - 'v[0-9]*'
   workflow_dispatch:
+    inputs:
+      packages:
+        description: 'Which packages to build (a test run; a release needs a tag)'
+        type: choice
+        options: [all, appimage, macos, windows]
+        default: all
 
 permissions:
   contents: write
@@ -55,6 +61,7 @@ jobs:
   # Linux AppImages, x86_64 and aarch64 (packaging/linux/make-appimage.sh).
   appimage:
     needs: prepare
+    if: github.event_name == 'push' || inputs.packages == 'all' || inputs.packages == 'appimage'
     strategy:
       fail-fast: false
       matrix:
@@ -83,6 +90,7 @@ jobs:
   # notarized and stapled by packaging/macos/make-dmg.sh.
   macos:
     needs: prepare
+    if: github.event_name == 'push' || inputs.packages == 'all' || inputs.packages == 'macos'
     strategy:
       fail-fast: false
       matrix:
@@ -113,6 +121,7 @@ jobs:
   # the Inno Setup installer (the SignPath job signs it).
   windows:
     needs: prepare
+    if: github.event_name == 'push' || inputs.packages == 'all' || inputs.packages == 'windows'
     runs-on: windows-latest
     defaults:
       run:

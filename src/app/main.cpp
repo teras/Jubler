@@ -205,6 +205,14 @@ int main(int argc, char *argv[]) {
         return CommandLine::run(args, out, err);
     }
 
+#ifdef Q_OS_LINUX
+    // The AppImage carries Qt's GTK theme (GNOME and the GTK desktops use it by
+    // themselves) but not KDE's: on KDE its dialogs come from the desktop
+    // through the portal (as the Java's did), unless the user chose a theme.
+    if (!qEnvironmentVariableIsEmpty("APPIMAGE") && !qEnvironmentVariableIsSet("QT_QPA_PLATFORMTHEME")
+        && qEnvironmentVariable("XDG_CURRENT_DESKTOP").split(QLatin1Char(':')).contains(QStringLiteral("KDE"), Qt::CaseInsensitive))
+        qputenv("QT_QPA_PLATFORMTHEME", "xdgdesktopportal");
+#endif
     // The UI scaling preference must reach Qt before the application exists.
     QCoreApplication::setApplicationName(QStringLiteral("Jubler"));
     const bool firstRun = !Prefs::storeExists();
