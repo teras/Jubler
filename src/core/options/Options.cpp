@@ -49,6 +49,10 @@ const QString LANGUAGE_TAG = QStringLiteral("ui.language");
 const QString VIDEOPREVIEW_HARDWARE_TAG = QStringLiteral("videopreview.hardware");
 const QString DEFAULT_ENCODING_8BIT_TAG = QStringLiteral("default.encoding.8bit");
 const QString DEFAULT_ENCODING_CJK_TAG = QStringLiteral("default.encoding.cjk");
+const QString LATIN1_DEFAULT_MIGRATED_TAG = QStringLiteral("default.encoding.8bit.latin1migrated");
+// windows-1252 is ISO-8859-1 plus the ’ “ ” … œ € of 0x80–0x9F, where
+// ISO-8859-1 has only control characters no subtitle holds.
+const QString DEFAULT_8BIT = QStringLiteral("windows-1252");
 
 struct State {
     int errorColor = 1;
@@ -63,7 +67,7 @@ struct State {
     ThemeVariation themeVariation = ThemeVariation::AUTO;
     QString language = QStringLiteral("auto");
     bool videoPreviewHardware = false;
-    QString defaultEncoding8bit = QStringLiteral("ISO-8859-1");
+    QString defaultEncoding8bit = DEFAULT_8BIT;
     QString defaultEncodingCjk;
     bool loaded = false;
 };
@@ -92,9 +96,19 @@ void migrateDefaultEncoding() {
         } else if (cjk.isNull())
             cjk = e;
     }
-    Prefs::set(DEFAULT_ENCODING_8BIT_TAG, single.isNull() ? QStringLiteral("ISO-8859-1") : single);
+    Prefs::set(DEFAULT_ENCODING_8BIT_TAG, single.isNull() ? DEFAULT_8BIT : single);
     if (!cjk.isNull())
         Prefs::set(DEFAULT_ENCODING_CJK_TAG, cjk);
+}
+
+// ISO-8859-1 was the default up to 10.1: a remembered one becomes
+// windows-1252 once. Chosen again later, it stays.
+void migrateLatin1Default() {
+    if (Prefs::getBoolean(LATIN1_DEFAULT_MIGRATED_TAG, false))
+        return;
+    if (isLatin1Charset(Prefs::getString(DEFAULT_ENCODING_8BIT_TAG, QString())))
+        Prefs::set(DEFAULT_ENCODING_8BIT_TAG, DEFAULT_8BIT);
+    Prefs::set(LATIN1_DEFAULT_MIGRATED_TAG, true);
 }
 }  // namespace
 
@@ -120,9 +134,10 @@ void load() {
     s.language = Prefs::getString(LANGUAGE_TAG, QStringLiteral("auto"));
     s.videoPreviewHardware = Prefs::getBoolean(VIDEOPREVIEW_HARDWARE_TAG, false);
     migrateDefaultEncoding();
-    s.defaultEncoding8bit = Prefs::getString(DEFAULT_ENCODING_8BIT_TAG, QStringLiteral("ISO-8859-1"));
+    migrateLatin1Default();
+    s.defaultEncoding8bit = Prefs::getString(DEFAULT_ENCODING_8BIT_TAG, DEFAULT_8BIT);
     if (!isSingleByteCharset(s.defaultEncoding8bit))  // the floor must always decode → single-byte
-        s.defaultEncoding8bit = QStringLiteral("ISO-8859-1");
+        s.defaultEncoding8bit = DEFAULT_8BIT;
     s.defaultEncodingCjk = Prefs::getString(DEFAULT_ENCODING_CJK_TAG, QString());
 }
 
@@ -137,6 +152,12 @@ bool isUnicodeCharset(const QString &name) {
 bool isSingleByteCharset(const QString &name) {
     // Java: Charset.forName(name).newEncoder().maxBytesPerChar() == 1.
     return !isUnicodeCharset(name) && Charsets::isSingleByte(name);
+}
+
+bool isLatin1Charset(const QString &name) {
+    if (name.isEmpty()) return false;
+    const QString c = Charsets::canonicalName(name);
+    return !c.isEmpty() && c == Charsets::canonicalName(QStringLiteral("ISO-8859-1"));
 }
 
 #define OPT_SIMPLE(TYPE, GETTER, SETTER, FIELD, TAG) \

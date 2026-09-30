@@ -51,8 +51,10 @@ bool isVideoPreviewHardware(); void setVideoPreviewHardware(bool);   // "videopr
 // --- Encodings ---------------------------------------------------------------
 bool isUnicodeCharset(const QString &name);
 bool isSingleByteCharset(const QString &name);
+// ISO-8859-1 under any of its names.
+bool isLatin1Charset(const QString &name);
 // Default legacy encodings used by the auto-detector: an 8-bit single-byte
-// charset ("default.encoding.8bit", ISO-8859-1) and an optional multi-byte
+// charset ("default.encoding.8bit", windows-1252) and an optional multi-byte
 // one ("default.encoding.cjk").
 QString getDefaultEncoding8bit();
 QString getDefaultEncodingCjk();  // null when unset

@@ -1,0 +1,21 @@
+1
+00:00:01,000 --> 00:00:03,500
+Alors, c’est tout ?
+Oui, c’est tout.
+
+2
+00:00:04,000 --> 00:00:06,200
+Je connais ce quartier par cœur.
+
+3
+00:00:07,000 --> 00:00:09,800
+Il m’a dit : « Attends-moi… »
+et puis il est parti.
+
+4
+00:00:10,500 --> 00:00:12,900
+“Deux cafés”, ça fait 3 €.
+
+5
+00:00:13,500 --> 00:00:15,000
+Ça n’a pas d’importance, Hélène.

@@ -23,6 +23,7 @@
 
 static QString g_fixtures;
 static void testEncodingDetection();
+static void testLatin1DefaultMigration();
 static void testTextFromAnySource();
 static void testSaveLoadFile();
 static void testAlignmentFixtures();
@@ -461,6 +462,7 @@ static void testSubStationParity() {
 
 static void testEncodingDetection() {
     SubFile sf(QStringLiteral("/tmp/enc.srt"), SubFile::EXTENSION_GIVEN);
+    CHECK_EQ(Options::getDefaultEncoding8bit(), QStringLiteral("windows-1252"), "8-bit default of a fresh install");
     // UTF-8 with BOM
     QByteArray bom = QByteArray("\xEF\xBB\xBF") + QString::fromUtf8("1\n00:00:01,000 --> 00:00:02,000\nΓειά\n").toUtf8();
     QString t = FileCommunicator::detectAndDecode(sf, bom, false);
@@ -486,6 +488,57 @@ static void testEncodingDetection() {
     CHECK_EQ(t, QStringLiteral("hi\n\n"), "UTF-16 decoded");
     CHECK(FileCommunicator::detectAndDecode(sf, QByteArray(), false).isNull(), "unreadable → null");
     Prefs::set(QStringLiteral("default.encoding.8bit"), QStringLiteral("ISO-8859-1"));
+    Options::load();
+    CHECK_EQ(Options::getDefaultEncoding8bit(), QStringLiteral("ISO-8859-1"), "ISO-8859-1 chosen after the migration stays");
+    // An ISO-8859-1 floor: bytes 0x80–0x9F make it windows-1252 (a French
+    // file of the Java's users: the ’ of "c’est" is 0x92, œ is 0x9C).
+    const QByteArray cp1252("Alors, c\x92" "est tout.\r\nPar c\x9cur, \xe9t\xe9.\r\n");
+    t = FileCommunicator::detectAndDecode(sf, cp1252, false);
+    CHECK_EQ(sf.getEncoding(), QStringLiteral("windows-1252"), "Latin-1 floor with 0x80–0x9F → windows-1252");
+    CHECK_EQ(t, QString::fromUtf8("Alors, c’est tout.\nPar cœur, été.\n\n"), "’ and œ read");
+    t = FileCommunicator::detectAndDecode(sf, QByteArray("Par coeur, \xe9t\xe9.\n"), false);
+    CHECK_EQ(sf.getEncoding(), QStringLiteral("ISO-8859-1"), "a plain Latin-1 file keeps the floor");
+    CHECK_EQ(t, QString::fromUtf8("Par coeur, été.\n\n"), "Latin-1 read");
+    // Picked explicitly (the encoding bar), ISO-8859-1 is ISO-8859-1.
+    CHECK(FileCommunicator::decodeFrom(cp1252, QStringLiteral("ISO-8859-1"), false).contains(QChar(0x92)), "explicit ISO-8859-1 is real Latin-1");
+    Charsets::EncodeStatus st = Charsets::EncodeStatus::Ok;
+    CHECK(Charsets::encode(QString::fromUtf8("cœur c’est"), QStringLiteral("windows-1252"), &st) == QByteArray("c\x9cur c\x92" "est"), "œ and ’ written in windows-1252");
+    CHECK(st == Charsets::EncodeStatus::Ok, "windows-1252 maps œ and ’");
+    // A whole windows-1252 file (’ “ ” … œ €) under the ISO-8859-1 floor:
+    // read right, and it saves again without an unmappable character.
+    QString fmt;
+    auto fr = load(QStringLiteral("windows1252_french.srt"), &fmt);
+    CHECK_EQ(fr->getSubFile().getEncoding(), QStringLiteral("windows-1252"), "fixture read as windows-1252");
+    CHECK_EQ(fr->size(), 5, "fixture subtitles");
+    if (fr->size() == 5) {
+        CHECK_EQ(fr->get(0)->getText(), QString::fromUtf8("Alors, c’est tout ?\nOui, c’est tout."), "’ read");
+        CHECK_EQ(fr->get(1)->getText(), QString::fromUtf8("Je connais ce quartier par cœur."), "œ read");
+        CHECK_EQ(fr->get(2)->getText(), QString::fromUtf8("Il m’a dit : « Attends-moi… »\net puis il est parti."), "… read");
+        CHECK_EQ(fr->get(3)->getText(), QString::fromUtf8("“Deux cafés”, ça fait 3 €."), "“ ” € read");
+    }
+    const QString out = QStringLiteral("/tmp/jubler-qt-test-cp1252-%1.srt").arg(QCoreApplication::applicationPid());
+    SubFile target(fr->getSubFile());
+    target.setFile(out);
+    CHECK(FileCommunicator::save(*fr, target, nullptr).isNull(), "fixture saved in windows-1252");
+    QFile::remove(out);
+}
+
+// ISO-8859-1 was the 8-bit default up to 10.1: once, a remembered one becomes
+// windows-1252 (a Java import brings it back and is migrated as well).
+static void testLatin1DefaultMigration() {
+    Prefs::remove(QStringLiteral("default.encoding.8bit.latin1migrated"));
+    Prefs::set(QStringLiteral("default.encoding.8bit"), QStringLiteral("ISO-8859-1"));
+    Options::load();
+    CHECK_EQ(Options::getDefaultEncoding8bit(), QStringLiteral("windows-1252"), "remembered ISO-8859-1 → windows-1252");
+    Prefs::remove(QStringLiteral("default.encoding.8bit.latin1migrated"));
+    Prefs::set(QStringLiteral("default.encoding.8bit"), QStringLiteral("latin1"));
+    Options::load();
+    CHECK_EQ(Options::getDefaultEncoding8bit(), QStringLiteral("windows-1252"), "any name of ISO-8859-1");
+    Prefs::remove(QStringLiteral("default.encoding.8bit.latin1migrated"));
+    Prefs::set(QStringLiteral("default.encoding.8bit"), QStringLiteral("ISO-8859-7"));
+    Options::load();
+    CHECK_EQ(Options::getDefaultEncoding8bit(), QStringLiteral("ISO-8859-7"), "another charset is left alone");
+    Prefs::set(QStringLiteral("default.encoding.8bit"), QStringLiteral("windows-1252"));
     Options::load();
 }
 
@@ -724,6 +777,7 @@ int main(int argc, char **argv) {
     testFontScaling();
     testSubStationParity();
     testEncodingDetection();
+    testLatin1DefaultMigration();
     testTextFromAnySource();
     testSaveLoadFile();
     testCorpusAndRegressions();

@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include "core/os/Charsets.h"
+#include <algorithm>
 #include <stdexcept>
 
 #include "core/formats/SubFormat.h"
@@ -83,7 +84,13 @@ QString detectAndDecode(SubFile &sfile, const QByteArray &bytes, bool debug) {
     const QString cjk = Options::getDefaultEncodingCjk();
     if (!cjk.isEmpty())
         steps.append({QStringLiteral("CJK: ") + cjk, cjk, true});
-    steps.append({QStringLiteral("8-bit floor: ") + Options::getDefaultEncoding8bit(), Options::getDefaultEncoding8bit(), false});
+    // An ISO-8859-1 floor reads bytes 0x80–0x9F as control characters, where
+    // a file almost always means windows-1252 (’ “ ” … œ €): then it is that.
+    QString floor = Options::getDefaultEncoding8bit();
+    if (Options::isLatin1Charset(floor)
+            && std::any_of(bytes.begin(), bytes.end(), [](char c) { return uchar(c) >= 0x80 && uchar(c) <= 0x9F; }))
+        floor = QStringLiteral("windows-1252");
+    steps.append({QStringLiteral("8-bit floor: ") + floor, floor, false});
     for (const Step &s : steps) {
         const QString text = decodeFrom(bytes, s.encoding, s.strict);
         if (!text.isNull()) {
