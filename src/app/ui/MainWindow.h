@@ -150,6 +150,8 @@ protected:
     void dragEnterEvent(QDragEnterEvent *e) override;
     void dropEvent(QDropEvent *e) override;
     bool eventFilter(QObject *obj, QEvent *e) override;
+    void openTopMenu(QMenu *menu, bool keyboard);
+    bool topMenuEvent(QMenu *menu, QEvent *e);
     void showEvent(QShowEvent *e) override;
 
 private:
@@ -234,6 +236,8 @@ private:
     QShortcut *videoEscape_ = nullptr;
     QToolBar *toolbar_;
     QMenuBar *menus_ = nullptr;
+    QAction *menuAnchor_ = nullptr;   // the toolbar separator after the menu buttons
+    QList<std::pair<QMenu *, QToolButton *>> menuButtons_;   // the menus as toolbar buttons (not on macOS)
     QToolBar *newsBar_ = nullptr;   // "New version!" at the end of the toolbar row
     QMenu *popup_;
     QMenu *recentMenu_, *styleMenu_, *stylePopup_, *deleteMenu_, *markMenu_, *markPopup_, *columnsMenu_, *columnsPopup_, *toolsMenu_, *previewMenu_, *externalsMenu_;

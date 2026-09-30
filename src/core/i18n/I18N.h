@@ -30,18 +30,6 @@ inline QString fixMnemonic(QString s) {
 }
 }  // namespace i18n_detail
 
-// The Latin helper letter of a translated "&<non-Latin><Latin>" title (the
-// "A" of "&ΑAρχείο"), or a null QChar: Alt+<helper> opens the menu with a
-// Latin keyboard layout too, as in the Java build.
-inline QChar latinMnemonic(const char *text) {
-    const QString s = QCoreApplication::translate("jubler", text);
-    const int i = s.indexOf(QLatin1Char('&'));
-    if (i < 0 || i + 2 >= s.length()) return QChar();
-    const QChar shown = s[i + 1], helper = s[i + 2];
-    const bool shownLatin = shown.unicode() < 128 && shown.isLetter();
-    return !shownLatin && shown.isLetter() && helper.unicode() < 128 && helper.isLetter() ? helper.toUpper() : QChar();
-}
-
 inline QString __(const char *text) {
     const QString t = QCoreApplication::translate("jubler", text);
     return t.contains(QLatin1Char('&')) ? i18n_detail::fixMnemonic(t) : t;

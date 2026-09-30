@@ -35,6 +35,7 @@
 #include <QSplitter>
 #include <QStackedWidget>
 #include <QToolBar>
+#include <QTimer>
 #include <QToolButton>
 #include <QUrl>
 #include <QVBoxLayout>
@@ -102,12 +103,14 @@ void MainWindow::init() {
 #ifdef Q_OS_MACOS
     menus_ = menuBar();   // the screen menu bar
 #else
-    // The menus share the toolbar's row (the window keeps its native title
-    // bar). The window's own menu bar is an empty hidden placeholder: styles
+    // The menus are shown as icon buttons in the toolbar's row (the window
+    // keeps its native title bar); this menu bar only owns them and is never
+    // shown. The window's own menu bar is an empty hidden placeholder: styles
     // such as Breeze call QMainWindow::menuBar() while polishing, which would
     // otherwise create a visible empty one.
     menus_ = new QMenuBar(this);
     menus_->setNativeMenuBar(false);   // never the Plasma global menu (as the Java)
+    menus_->hide();
     auto *placeholder = new QMenuBar(this);
     placeholder->setNativeMenuBar(false);
     setMenuBar(placeholder);
@@ -116,13 +119,6 @@ void MainWindow::init() {
     buildToolbar();
     buildLayout();
     buildMenus();
-#ifndef Q_OS_MACOS
-    // Exactly as big as the menus. A QMenuBar is made to span a whole window
-    // (it grows in both directions): in the toolbar it took the free room, and
-    // its menus sat at the top of the stretched row. At its own size the
-    // toolbar centres it like any other widget.
-    menus_->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-#endif
     buildPopup();
     ToolRunner::registerMenus(this, toolsMenu_, deleteMenu_, markMenu_, styleMenu_);
     addPluginTools();
@@ -236,8 +232,7 @@ void MainWindow::buildToolbar() {
     toolbar_->setIconSize(Theme::naturalSize(QStringLiteral("new")));   // the SVGs' own size (32), as the Java
     toolbar_->layout()->setSpacing(2);   // room between the tight buttons
 #ifndef Q_OS_MACOS
-    toolbar_->addWidget(menus_);
-    toolbar_->addSeparator();
+    menuAnchor_ = toolbar_->addSeparator();   // the menu buttons go in front of it (buildMenus)
 #endif
     auto tb = [&](const QString &icon, const QString &tip, std::function<void()> fn, bool enabled = true) {
         QAction *a = toolbar_->addAction(Theme::icon(icon), tip);
@@ -488,17 +483,27 @@ void MainWindow::buildMenus() {
     addMenuAction(help, __("FAQ"), IGNORED, QKeySequence(), [this]() { helpUrl(QStringLiteral("https://jubler.org/faq.html")); }, true);
     addMenuAction(help, __("About"), QStringLiteral("HAB"), QKeySequence(Qt::CTRL | Qt::Key_Slash), []() { AppContext::showAbout(); }, true)
         ->setMenuRole(QAction::AboutRole);
-    // Non-Latin menu titles ("&ΑAρχείο"): Alt+<Latin helper> opens them as well.
-    const std::pair<const char *, QMenu *> tops[] = {{"&File", file}, {"&Edit", edit}, {"&Tools", toolsMenu_}, {"&Help", help}};
-    for (const auto &[source, menu] : tops) {
-        const QChar latin = latinMnemonic(source);
-        if (latin.isNull()) continue;
-        auto *sc = new QShortcut(QKeySequence(Qt::ALT | Qt::Key(latin.unicode())), this);
-        const auto open = [this, menu = menu]() { menus_->setActiveAction(menu->menuAction()); };
-        connect(sc, &QShortcut::activated, this, open);
-        // With a Greek layout the same key also matches the title's own mnemonic.
-        connect(sc, &QShortcut::activatedAmbiguously, this, open);
+#ifndef Q_OS_MACOS
+    // The menus as text buttons at the start of the toolbar, as tall as the
+    // other tool buttons. Plain buttons (no menu attached, so styles draw no
+    // drop-down arrow): a press opens the menu through openTopMenu. The menu
+    // items' shortcuts stay active because the menus' actions are also on
+    // this (visible) window, not only on the hidden menu bar.
+    for (QMenu *menu : {file, edit, toolsMenu_, help}) {
+        addAction(menu->menuAction());
+        auto *b = new QToolButton(toolbar_);
+        b->setText(QString(menu->title()).remove(QLatin1Char('&')));
+        b->setToolButtonStyle(Qt::ToolButtonTextOnly);
+        b->setAutoRaise(true);
+        b->setFixedHeight(toolbar_->iconSize().height() + 6);
+        toolbar_->insertWidget(menuAnchor_, b);
+        b->installEventFilter(this);      // a press opens the menu
+        menu->installEventFilter(this);   // Left/Right and hovering move between the menus, as in a menu bar
+        menu->setNoReplayFor(b);          // a click on the button while its menu is open only closes it
+        connect(menu, &QMenu::aboutToHide, b, [b]() { b->setDown(false); });
+        menuButtons_.append({menu, b});
     }
+#endif
     for (QMenu *m : editSubmenus_) m->setEnabled(false);
     previewMenu_->setEnabled(false);
     externalsMenu_->setEnabled(false);
@@ -1711,7 +1716,54 @@ void MainWindow::makeDraggable(QWidget *w) {
         if (qobject_cast<QLabel *>(child) || child->metaObject() == &QWidget::staticMetaObject) child->installEventFilter(this);
 }
 
+// Opens a top-level menu below its toolbar button. From the keyboard the menu
+// starts on its first item, as a menu bar does.
+void MainWindow::openTopMenu(QMenu *menu, bool keyboard) {
+    for (const auto &[m, button] : menuButtons_) {
+        if (m != menu) continue;
+        button->setDown(true);
+        menu->popup(button->mapToGlobal(QPoint(0, button->height())));
+        if (!keyboard) return;
+        for (QAction *a : menu->actions())
+            if (a->isEnabled() && !a->isSeparator() && a->isVisible()) { menu->setActiveAction(a); break; }
+        return;
+    }
+}
+
+// Keyboard and hovering between the top-level menus while one is open, as a
+// menu bar does: Left/Right move to the neighbour (Right still opens the
+// item's own submenu), the mouse over another menu button switches to it.
+bool MainWindow::topMenuEvent(QMenu *menu, QEvent *e) {
+    int idx = -1;
+    for (int i = 0; i < menuButtons_.size(); ++i)
+        if (menuButtons_[i].first == menu) idx = i;
+    if (idx < 0 || !menu->isVisible()) return false;
+    int to = -1;
+    bool keyboard = false;
+    if (e->type() == QEvent::KeyPress) {
+        const int key = static_cast<QKeyEvent *>(e)->key();
+        if (key == Qt::Key_Left) to = idx - 1;
+        else if (key == Qt::Key_Right && !(menu->activeAction() && menu->activeAction()->menu() && menu->activeAction()->isEnabled())) to = idx + 1;
+        keyboard = true;
+    } else if (e->type() == QEvent::MouseMove) {
+        const QPoint gp = static_cast<QMouseEvent *>(e)->globalPosition().toPoint();
+        for (int i = 0; i < menuButtons_.size(); ++i) {
+            QToolButton *b = menuButtons_[i].second;
+            if (i != idx && b->isVisible() && b->rect().contains(b->mapFromGlobal(gp))) to = i;
+        }
+    }
+    if (to < 0) return false;
+    to = (to + int(menuButtons_.size())) % int(menuButtons_.size());
+    menu->hide();
+    openTopMenu(menuButtons_[to].first, keyboard);
+    return true;
+}
+
 bool MainWindow::eventFilter(QObject *obj, QEvent *e) {
+    if (auto *menu = qobject_cast<QMenu *>(obj); menu && topMenuEvent(menu, e)) return true;
+    if (e->type() == QEvent::MouseButtonPress && static_cast<QMouseEvent *>(e)->button() == Qt::LeftButton)
+        for (const auto &[menu, button] : menuButtons_)
+            if (obj == button) { openTopMenu(menu, false); return true; }
     auto *w = qobject_cast<QWidget *>(obj);
     if (w && e->type() == QEvent::MouseButtonPress) {
         auto *me = static_cast<QMouseEvent *>(e);
