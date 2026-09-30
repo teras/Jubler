@@ -301,12 +301,22 @@ void MainWindow::buildLayout() {
     auto *bl = new QVBoxLayout(basicPanel_);
     bl->setContentsMargins(0, 0, 0, 0);
     bl->setSpacing(0);
+    // A box of its own around a panel whose visibility other code decides:
+    // the maximized video hides the box and leaves that decision alone.
+    auto box = [this](QWidget *panel) {
+        auto *b = new QWidget(basicPanel_);
+        auto *l = new QVBoxLayout(b);
+        l->setContentsMargins(0, 0, 0, 0);
+        l->addWidget(panel);
+        return b;
+    };
     encodingBar_ = new EncodingBar(basicPanel_);
     encodingBar_->hide();
     connect(encodingBar_, &EncodingBar::reloadRequested, this, &MainWindow::reloadFromBar);
     connect(encodingBar_, &EncodingBar::formatSelected, this, &MainWindow::applyFormatFromBar);
     connect(encodingBar_, &EncodingBar::mediaChanged, this, &MainWindow::mediaChanged);
-    bl->addWidget(encodingBar_);
+    encodingBox_ = box(encodingBar_);
+    bl->addWidget(encodingBox_);
 
     table_ = new SubtitleTableView(basicPanel_);
     table_->setModel(model_);
@@ -341,7 +351,8 @@ void MainWindow::buildLayout() {
     makeDraggable(toolbar_);
     makeDraggable(subeditor_->stylePanel());
     sl->addWidget(subeditor_);
-    bl->addWidget(subEditP_);
+    subEditBox_ = box(subEditP_);
+    bl->addWidget(subEditBox_);
     setCentralWidget(basicPanel_);
     setAcceptDrops(true);
 }
@@ -842,7 +853,7 @@ void MainWindow::mediaChanged() {
     updateToolsAvailability();
     // The encoding bar's "FPS from video" and the preview hold the media
     // pointer: re-point them at the current object.
-    if (subs_ && encodingBar_->isVisible())
+    if (subs_ && !encodingBar_->isHidden())
         encodingBar_->showFor(subs_->getSubFile().getEncoding(), mfile_.get(), subs_.get());
     if (preview_->isPreviewEnabled())
         preview_->updateMediaFile(mfile_.get());
@@ -1516,7 +1527,7 @@ void MainWindow::showEncodingBar() {
 
 void MainWindow::toggleEncodingBar() {
     if (!subs_) { tbEncoding_->setChecked(false); return; }
-    if (encodingBar_->isVisible()) closeEncodingBar();
+    if (!encodingBar_->isHidden()) closeEncodingBar();
     else showEncodingBar();
 }
 
@@ -1558,6 +1569,7 @@ void MainWindow::enablePreview(bool status) {
         preview_->show();
         resetPreviewPanels();
     } else {
+        setVideoMaximized(false);
         mfile_->setSelectorEnabled(true);
         mfile_->stopPeaks();
         preview_->setPreviewEnabled(false);
@@ -1567,6 +1579,7 @@ void MainWindow::enablePreview(bool status) {
 }
 
 void MainWindow::setPreviewOrientation(bool horizontal) {
+    setVideoMaximized(false);
     AutoSaveOptions::setPreviewOrientation(horizontal);
     splitter_->setOrientation(horizontal ? Qt::Vertical : Qt::Horizontal);
     preview_->setOrientation(horizontal);
@@ -1586,6 +1599,44 @@ void MainWindow::resetPreviewPanels() {
         }
         splitter_->setSizes(sizes);
     });
+}
+
+void MainWindow::setVideoMaximized(bool on) {
+    if (videoMaximized_ == on) return;
+    videoMaximized_ = on;
+    if (on) {
+        focusBeforeVideo_ = QApplication::focusWidget();
+        splitterState_ = splitter_->saveState();
+        for (QWidget *w : QList<QWidget *>{newsBar_, encodingBox_, subEditBox_, table_})
+            if (w->isVisible()) { hiddenForVideo_.append(w); w->hide(); }
+#ifdef Q_OS_MACOS
+        if (toolbar_->isVisible()) { hiddenForVideo_.append(toolbar_); toolbar_->hide(); }
+#else
+        // The menu bar lives in the toolbar, and a hidden menu bar takes the
+        // shortcuts of its menus along: the toolbar only folds to nothing.
+        toolbarMaxHeight_ = toolbar_->maximumHeight();
+        toolbar_->setMaximumHeight(0);
+#endif
+        preview_->setVideoOnly(true);
+        if (!videoEscape_) {
+            videoEscape_ = new QShortcut(QKeySequence(Qt::Key_Escape), this);
+            connect(videoEscape_, &QShortcut::activated, this, [this]() { setVideoMaximized(false); });
+            // Escape given to a menu entry too: leaving comes first.
+            connect(videoEscape_, &QShortcut::activatedAmbiguously, this, [this]() { setVideoMaximized(false); });
+        }
+        videoEscape_->setEnabled(true);
+    } else {
+        videoEscape_->setEnabled(false);
+#ifndef Q_OS_MACOS
+        toolbar_->setMaximumHeight(toolbarMaxHeight_);
+#endif
+        preview_->setVideoOnly(false);
+        for (QWidget *w : std::as_const(hiddenForVideo_)) w->show();
+        hiddenForVideo_.clear();
+        splitter_->restoreState(splitterState_);
+        if (focusBeforeVideo_ && focusBeforeVideo_->isVisible()) focusBeforeVideo_->setFocus();
+        focusBeforeVideo_ = nullptr;
+    }
 }
 
 void MainWindow::setMaxWaveMenu(bool on) { actMaxWave_->setChecked(on); }
@@ -1609,7 +1660,8 @@ void MainWindow::stopCelebration() {
 }
 
 void MainWindow::setNewVersionCallback(std::function<void(QWidget *)> cb) {
-    newsBar_->show();
+    if (!videoMaximized_) newsBar_->show();
+    else if (!hiddenForVideo_.contains(newsBar_)) hiddenForVideo_.append(newsBar_);   // with the rest
     newsBar_->setMinimumWidth(newsBar_->sizeHint().width());
     if (!newVersionCb_) newVersionCb_ = std::move(cb);
 }

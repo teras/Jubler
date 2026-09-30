@@ -6,11 +6,14 @@
 
 #include "app/media/MpvPlayer.h"
 
+#include <QApplication>
 #include <QMetaObject>
+#include <QMouseEvent>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QStringList>
 #include <cmath>
+#include <utility>
 
 #include <mpv/client.h>
 #include <mpv/render_gl.h>
@@ -361,7 +364,12 @@ void MpvPlayer::playRange(qint64 startMs, qint64 endMs) {
     seek(startMs);
     play();
     if (endMs <= startMs) return;
+    armRange(startMs, endMs);
+}
+
+void MpvPlayer::armRange(qint64 startMs, qint64 endMs) {
     rangeStartMs_ = std::max<qint64>(0, startMs);
+    rangeEndMs_ = endMs;
     rangeActive_ = true;
     setOption("end", QString::number(endMs / 1000.0, 'f', 3));
 }
@@ -374,6 +382,45 @@ void MpvPlayer::pause() {
 
 void MpvPlayer::togglePlayPause() {
     if (playing_) pause(); else play();
+}
+
+void MpvPlayer::mousePressEvent(QMouseEvent *e) {
+    if (e->button() == Qt::LeftButton) {
+        leftPressed_ = true;
+        pressPos_ = e->globalPosition().toPoint();
+        // What a double click puts back: the first click has toggled already.
+        beforeClick_ = {playing_, timeMs_, rangeActive_, rangeStartMs_, rangeEndMs_};
+    }
+    QOpenGLWidget::mousePressEvent(e);
+}
+
+// Only a click: a press that moved away before its release is not one, nor a
+// release whose press went elsewhere (a click that closed a popup). Measured
+// on the screen: a double click moves the picture itself.
+void MpvPlayer::mouseReleaseEvent(QMouseEvent *e) {
+    if (e->button() == Qt::LeftButton && std::exchange(leftPressed_, false) && loaded_
+            && (e->globalPosition().toPoint() - pressPos_).manhattanLength() < QApplication::startDragDistance())
+        togglePlayPause();
+    QOpenGLWidget::mouseReleaseEvent(e);
+}
+
+// The first click has played or paused; the playback goes back to what it was
+// before it (a range included, the place too when it stood still: a Play at
+// the end starts over), as media players leave it. Its release is no click.
+void MpvPlayer::mouseDoubleClickEvent(QMouseEvent *e) {
+    if (e->button() != Qt::LeftButton || !loaded_) {
+        QOpenGLWidget::mouseDoubleClickEvent(e);
+        return;
+    }
+    leftPressed_ = false;
+    if (beforeClick_.playing) {
+        play();
+        if (beforeClick_.range) armRange(beforeClick_.rangeStartMs, beforeClick_.rangeEndMs);
+    } else {
+        pause();
+        seek(beforeClick_.ms);
+    }
+    emit doubleClicked();
 }
 
 void MpvPlayer::scrubTo(qint64 ms) {

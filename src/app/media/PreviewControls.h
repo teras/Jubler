@@ -28,6 +28,7 @@ public:
 
     void setPipetteState(PipetteState s);
     void setPipetteListener(std::function<void()> fn) { pipette_ = std::move(fn); }
+    void setPipetteVisible(bool visible);
     // (timeMs, playing) on every time tick.
     void setPlaybackObserver(std::function<void(qint64, bool)> fn) { observer_ = std::move(fn); }
 

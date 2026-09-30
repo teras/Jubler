@@ -7,6 +7,7 @@
 #pragma once
 
 #include <QOpenGLWidget>
+#include <QPoint>
 #include <QString>
 
 struct mpv_handle;
@@ -70,6 +71,7 @@ signals:
     void mediaLoading(qint64 startMs);   // another file: nothing of the old one holds
     void mediaLoaded();         // the file is open: it can be played and sought
     void rangeEnded(qint64 startMs);   // a played subtitle is over, standing at its start
+    void doubleClicked();       // on the picture, with a media open
 
 public:
     QSize sizeHint() const override { return QSize(400, 256); }
@@ -77,6 +79,10 @@ public:
 protected:
     void initializeGL() override;
     void paintGL() override;
+    // A click on the picture plays or pauses, as in media players.
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
 
 private:
     void handleEvents();
@@ -96,6 +102,8 @@ private:
     bool standsAt(qint64 ms) const;
     // Forget a played range (any navigation of the user's own does).
     void dropRange();
+    // Set the end of a played range on mpv (playRange, after its play()).
+    void armRange(qint64 startMs, qint64 endMs);
     static void onUpdate(void *ctx);
     static void onWakeup(void *ctx);
 
@@ -110,6 +118,10 @@ private:
     bool atEof_ = false;        // paused on the last frame (keep-open)
     bool released_ = false;
     bool loaded_ = false;
+    QPoint pressPos_;           // where the left button went down on the picture (screen)
+    bool leftPressed_ = false;  // ... and has not come up yet
+    struct Playback { bool playing = false; qint64 ms = 0; bool range = false; qint64 rangeStartMs = 0, rangeEndMs = 0; };
+    Playback beforeClick_;      // at that press
     bool loading_ = false;
     bool loadDeferred_ = false;   // until the render context exists
     bool renderImpossible_ = false;   // the context failed: nothing to wait for
@@ -126,6 +138,7 @@ private:
     quint64 seekSerial_ = 0;
     bool rangeActive_ = false;    // an A-B loop of ours is set on mpv
     qint64 rangeStartMs_ = 0;     // where it stands again once the range is over
+    qint64 rangeEndMs_ = 0;
     double frameMs_ = 0;          // one frame of the media, 0 while unknown
     qint64 timeMs_ = 0, durationMs_ = 0;
     int volume_ = 100;

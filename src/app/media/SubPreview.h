@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <QByteArray>
 #include <QList>
 #include <QWidget>
 #include <limits>
@@ -55,6 +56,9 @@ public:
     void reloadSubtitlesNow();
     void setOrientation(bool horizontal);
     void setMaxWave(bool maximized);
+    // The video alone, filling the window: the waveform/timeline side and the
+    // synchronisation button (it picks in the table) hide meanwhile.
+    void setVideoOnly(bool on);
     void setSnapToSubtitle(bool snap);
     void playbackWave();
     void release();
@@ -91,6 +95,7 @@ private:
     PreviewControls *controls_ = nullptr;
     QWidget *framePanel_;
     QSplitter *split_;
+    QByteArray splitState_;   // while the waveform side is hidden
     bool following_ = true;    // the view follows the video position
     QSlider *zoom_;
     QLabel *timePos_;

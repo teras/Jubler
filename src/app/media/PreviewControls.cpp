@@ -168,13 +168,18 @@ PreviewControls::PreviewControls(MpvPlayer *player, QWidget *parent) : QWidget(p
     speedText();
     connect(volumeS_, &QSlider::valueChanged, this, [volumeText]() { volumeText(); });
     connect(speedS_, &QSlider::valueChanged, this, [speedText]() { speedText(); });
-    // Applied when the value settles: drag release, wheel, keys, track clicks (Java !getValueIsAdjusting).
-    auto applyVolume = [this]() { hidePopups(); player_->setVolume(volumeS_->value() * 10); };
-    auto applySpeed = [this]() { hidePopups(); player_->setSpeed(SPEEDS[speedS_->value()]); };
-    connect(volumeS_, &QSlider::valueChanged, this, [this, applyVolume]() { if (!volumeS_->isSliderDown()) applyVolume(); });
-    connect(speedS_, &QSlider::valueChanged, this, [this, applySpeed]() { if (!speedS_->isSliderDown()) applySpeed(); });
-    connect(volumeS_, &QSlider::sliderReleased, this, applyVolume);
-    connect(speedS_, &QSlider::sliderReleased, this, applySpeed);
+    // Heard at once, while dragging too (the Java waited for !getValueIsAdjusting);
+    // the popup closes when the value is settled: drag release, wheel, keys, track clicks.
+    connect(volumeS_, &QSlider::valueChanged, this, [this]() {
+        player_->setVolume(volumeS_->value() * 10);
+        if (!volumeS_->isSliderDown()) hidePopups();
+    });
+    connect(speedS_, &QSlider::valueChanged, this, [this]() {
+        player_->setSpeed(SPEEDS[speedS_->value()]);
+        if (!speedS_->isSliderDown()) hidePopups();
+    });
+    connect(volumeS_, &QSlider::sliderReleased, this, &PreviewControls::hidePopups);
+    connect(speedS_, &QSlider::sliderReleased, this, &PreviewControls::hidePopups);
     bar_->addSeparator();
     pipetteB_ = button(QStringLiteral("textpick"),
                        __("Synchronize subtitles using the video") + QLatin1Char('\n') +
@@ -314,6 +319,8 @@ void PreviewControls::showSliderPopup(QToolButton *button, QMenu *popup) {
     popup->popup(at);
 }
 
+
+void PreviewControls::setPipetteVisible(bool visible) { pipetteB_->setVisible(visible); }
 
 void PreviewControls::setPipetteState(PipetteState s) {
     switch (s) {

@@ -8,8 +8,10 @@
 
 #include <functional>
 
+#include <QByteArray>
 #include <QMainWindow>
 #include <QMap>
+#include <QPointer>
 #include <memory>
 
 #include "app/ui/SubEditor.h"
@@ -24,6 +26,7 @@ class QMenuBar;
 class QToolButton;
 class QLabel;
 class QStackedWidget;
+class QShortcut;
 class SubtitleTableModel;
 class SubtitleTableView;
 class SubPreview;
@@ -131,6 +134,10 @@ public:
     void setPreviewOrientation(bool horizontal);
     void resetPreviewPanels();
     void setMaxWaveMenu(bool on);
+    // The video takes the whole window: everything else hides (the menus'
+    // shortcuts still work, Escape leaves it) and comes back as it was.
+    void setVideoMaximized(bool on);
+    bool isVideoMaximized() const { return videoMaximized_; }
     void setSnapMenu(bool on);
     void addNewSubtitleAfter() { addNewSubtitle(true); }
     void showCelebration();
@@ -218,6 +225,13 @@ private:
     QStackedWidget *centerStack_;
     QWidget *subEditP_;
     QSplitter *splitter_;
+    bool videoMaximized_ = false;
+    QByteArray splitterState_;   // before the video was maximized
+    QList<QWidget *> hiddenForVideo_;   // what the maximized video hid
+    int toolbarMaxHeight_ = 0;   // the toolbar (and its menu bar) folds to nothing meanwhile
+    QPointer<QWidget> focusBeforeVideo_;
+    QWidget *encodingBox_ = nullptr, *subEditBox_ = nullptr;   // what the maximized video hides of them
+    QShortcut *videoEscape_ = nullptr;
     QToolBar *toolbar_;
     QMenuBar *menus_ = nullptr;
     QToolBar *newsBar_ = nullptr;   // "New version!" at the end of the toolbar row

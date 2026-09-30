@@ -66,6 +66,7 @@ void SubPreview::buildUi() {
     player_ = new MpvPlayer(framePanel_);
     if (player_->isValid()) {
         connect(player_, &MpvPlayer::durationAvailable, this, [this]() { mediaDurationChanged(); });
+        connect(player_, &MpvPlayer::doubleClicked, this, [this]() { parent_->setVideoMaximized(!parent_->isVideoMaximized()); });
         player_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         fl->addWidget(player_, 1);
         controls_ = new PreviewControls(player_, framePanel_);
@@ -425,6 +426,14 @@ void SubPreview::setMaxWave(bool maximized) {
     maxWaveB_->setIcon(Theme::icon(maximized ? QStringLiteral("wavemax") : QStringLiteral("wavenorm")));
     parent_->setMaxWaveMenu(maximized);
     wave_->setMaximized(maximized);
+}
+
+void SubPreview::setVideoOnly(bool on) {
+    if (on) splitState_ = split_->saveState();
+    split_->widget(1)->setVisible(!on);
+    if (!on) split_->restoreState(splitState_);
+    // A synchronisation under way stays: it goes on when the table is back.
+    if (controls_) controls_->setPipetteVisible(!on);
 }
 
 void SubPreview::setSnapToSubtitle(bool snap) {
