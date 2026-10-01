@@ -9,8 +9,12 @@
 #include <QApplication>
 #include <QMetaObject>
 #include <QMouseEvent>
+#include <QOffscreenSurface>
 #include <QOpenGLContext>
 #include <QOpenGLFunctions>
+#include <QOpenGLWidget>
+#include <QPainter>
+#include <QVBoxLayout>
 #include <QStringList>
 #include <cmath>
 #include <utility>
@@ -28,7 +32,41 @@ void *getProcAddress(void *, const char *name) {
 }
 }  // namespace
 
-MpvPlayer::MpvPlayer(QWidget *parent) : QOpenGLWidget(parent) {
+// The picture when OpenGL is there: mpv renders into the widget's framebuffer.
+// The clicks on it belong to the player.
+class MpvPlayer::GLView : public QOpenGLWidget {
+public:
+    explicit GLView(MpvPlayer *player) : QOpenGLWidget(player), player_(player) {
+        setAttribute(Qt::WA_TransparentForMouseEvents);
+    }
+
+protected:
+    void initializeGL() override { player_->createRenderContext(true); }
+    void paintGL() override { player_->renderGL(); }
+
+private:
+    MpvPlayer *player_;
+};
+
+bool MpvPlayer::openGLAvailable() {
+    static const bool available = []() {
+        QOpenGLContext gl;
+        QOffscreenSurface surface;
+        if (gl.create()) {
+            surface.setFormat(gl.format());
+            surface.create();
+            if (surface.isValid() && gl.makeCurrent(&surface)) {
+                gl.doneCurrent();
+                return true;
+            }
+        }
+        Debug::debug(QStringLiteral("OpenGL: no usable context"));
+        return false;
+    }();
+    return available;
+}
+
+MpvPlayer::MpvPlayer(QWidget *parent) : QWidget(parent) {
     setMinimumSize(160, 120);
     mpv_ = mpv_create();
     if (!mpv_) {
@@ -62,6 +100,15 @@ MpvPlayer::MpvPlayer(QWidget *parent) : QOpenGLWidget(parent) {
     mpv_observe_property(mpv_, 0, "container-fps", MPV_FORMAT_DOUBLE);
     mpv_request_log_messages(mpv_, "warn");
     mpv_set_wakeup_callback(mpv_, &MpvPlayer::onWakeup, this);
+    if (openGLAvailable()) {
+        glView_ = new GLView(this);
+        auto *layout = new QVBoxLayout(this);
+        layout->setContentsMargins(0, 0, 0, 0);
+        layout->addWidget(glView_);
+    } else {
+        setAttribute(Qt::WA_OpaquePaintEvent);
+        createRenderContext(false);
+    }
 }
 
 MpvPlayer::~MpvPlayer() {
@@ -71,12 +118,12 @@ MpvPlayer::~MpvPlayer() {
 void MpvPlayer::release() {
     if (released_) return;
     released_ = true;
-    makeCurrent();
+    if (glView_) glView_->makeCurrent();
     if (renderCtx_) {
         mpv_render_context_free(renderCtx_);
         renderCtx_ = nullptr;
     }
-    doneCurrent();
+    if (glView_) glView_->doneCurrent();
     if (mpv_) {
         mpv_set_wakeup_callback(mpv_, nullptr, nullptr);
         mpv_terminate_destroy(mpv_);
@@ -84,20 +131,25 @@ void MpvPlayer::release() {
     }
 }
 
-void MpvPlayer::initializeGL() {
+void MpvPlayer::createRenderContext(bool gl) {
     if (!mpv_ || renderCtx_) return;
     mpv_opengl_init_params glInit{getProcAddress, nullptr};
     int advanced = 0;
-    mpv_render_param params[]{
+    mpv_render_param glParams[]{
         {MPV_RENDER_PARAM_API_TYPE, const_cast<char *>(MPV_RENDER_API_TYPE_OPENGL)},
         {MPV_RENDER_PARAM_OPENGL_INIT_PARAMS, &glInit},
         {MPV_RENDER_PARAM_ADVANCED_CONTROL, &advanced},
         {MPV_RENDER_PARAM_INVALID, nullptr},
     };
-    if (mpv_render_context_create(&renderCtx_, mpv_, params) < 0) {
+    mpv_render_param swParams[]{
+        {MPV_RENDER_PARAM_API_TYPE, const_cast<char *>(MPV_RENDER_API_TYPE_SW)},
+        {MPV_RENDER_PARAM_INVALID, nullptr},
+    };
+    if (mpv_render_context_create(&renderCtx_, mpv_, gl ? glParams : swParams) < 0) {
         renderCtx_ = nullptr;
         renderImpossible_ = true;
-        Debug::debug(QStringLiteral("mpv: no usable GL render context; video disabled"));
+        Debug::debug(gl ? QStringLiteral("mpv: no usable GL render context; video disabled")
+                        : QStringLiteral("mpv: no software render context; video disabled"));
         // No picture will ever come, so the player stops waiting for one: without
         // a video output the sound, the clock and everything driven by them go on
         // (the panel shows the notice in place of the frame).
@@ -110,6 +162,7 @@ void MpvPlayer::initializeGL() {
         QMetaObject::invokeMethod(this, &MpvPlayer::renderUnavailable, Qt::QueuedConnection);   // not from inside initializeGL
         return;
     }
+    if (!gl) Debug::debug(QStringLiteral("mpv: no OpenGL; the video is drawn by the software renderer"));
     mpv_render_context_set_update_callback(renderCtx_, &MpvPlayer::onUpdate, this);
     if (loadDeferred_) {
         loadDeferred_ = false;
@@ -118,10 +171,10 @@ void MpvPlayer::initializeGL() {
     }
 }
 
-void MpvPlayer::paintGL() {
+void MpvPlayer::renderGL() {
     if (!renderCtx_) return;
-    const qreal dpr = devicePixelRatioF();
-    mpv_opengl_fbo fbo{int(defaultFramebufferObject()), int(width() * dpr), int(height() * dpr), 0};
+    const qreal dpr = glView_->devicePixelRatioF();
+    mpv_opengl_fbo fbo{int(glView_->defaultFramebufferObject()), int(glView_->width() * dpr), int(glView_->height() * dpr), 0};
     int flipY = 1;
     mpv_render_param params[]{
         {MPV_RENDER_PARAM_OPENGL_FBO, &fbo},
@@ -134,12 +187,41 @@ void MpvPlayer::paintGL() {
     // with attachment names only a framebuffer object accepts. Left unbound, that discard hits the default
     // framebuffer instead (GL_INVALID_ENUM every frame, which mpv then reported as its own error).
     if (QOpenGLContext *glc = QOpenGLContext::currentContext())
-        glc->functions()->glBindFramebuffer(GL_FRAMEBUFFER, defaultFramebufferObject());
+        glc->functions()->glBindFramebuffer(GL_FRAMEBUFFER, glView_->defaultFramebufferObject());
+}
+
+void MpvPlayer::paintEvent(QPaintEvent *) {
+    QPainter p(this);
+    if (!renderCtx_ || glView_) {
+        p.fillRect(rect(), Qt::black);
+        return;
+    }
+    const qreal dpr = devicePixelRatioF();
+    const QSize size(qMax(1, int(width() * dpr)), qMax(1, int(height() * dpr)));
+    if (frame_.size() != size) frame_ = QImage(size, QImage::Format_RGBX8888);
+    int swSize[2]{size.width(), size.height()};
+    size_t stride = size_t(frame_.bytesPerLine());
+    mpv_render_param params[]{
+        {MPV_RENDER_PARAM_SW_SIZE, swSize},
+        {MPV_RENDER_PARAM_SW_FORMAT, const_cast<char *>("rgb0")},   // the bytes of Format_RGBX8888
+        {MPV_RENDER_PARAM_SW_STRIDE, &stride},
+        {MPV_RENDER_PARAM_SW_POINTER, frame_.bits()},
+        {MPV_RENDER_PARAM_INVALID, nullptr},
+    };
+    if (mpv_render_context_render(renderCtx_, params) < 0) {
+        p.fillRect(rect(), Qt::black);
+        return;
+    }
+    frame_.setDevicePixelRatio(dpr);
+    p.drawImage(0, 0, frame_);
 }
 
 void MpvPlayer::onUpdate(void *ctx) {
     // Render thread → GUI thread.
-    QMetaObject::invokeMethod(static_cast<MpvPlayer *>(ctx), [ctx]() { static_cast<MpvPlayer *>(ctx)->update(); }, Qt::QueuedConnection);
+    QMetaObject::invokeMethod(static_cast<MpvPlayer *>(ctx), [ctx]() {
+        auto *player = static_cast<MpvPlayer *>(ctx);
+        if (player->glView_) player->glView_->update(); else player->update();
+    }, Qt::QueuedConnection);
 }
 
 void MpvPlayer::onWakeup(void *ctx) {
@@ -391,7 +473,7 @@ void MpvPlayer::mousePressEvent(QMouseEvent *e) {
         // What a double click puts back: the first click has toggled already.
         beforeClick_ = {playing_, timeMs_, rangeActive_, rangeStartMs_, rangeEndMs_};
     }
-    QOpenGLWidget::mousePressEvent(e);
+    QWidget::mousePressEvent(e);
 }
 
 // Only a click: a press that moved away before its release is not one, nor a
@@ -401,7 +483,7 @@ void MpvPlayer::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() == Qt::LeftButton && std::exchange(leftPressed_, false) && loaded_
             && (e->globalPosition().toPoint() - pressPos_).manhattanLength() < QApplication::startDragDistance())
         togglePlayPause();
-    QOpenGLWidget::mouseReleaseEvent(e);
+    QWidget::mouseReleaseEvent(e);
 }
 
 // The first click has played or paused; the playback goes back to what it was
@@ -409,7 +491,7 @@ void MpvPlayer::mouseReleaseEvent(QMouseEvent *e) {
 // the end starts over), as media players leave it. Its release is no click.
 void MpvPlayer::mouseDoubleClickEvent(QMouseEvent *e) {
     if (e->button() != Qt::LeftButton || !loaded_) {
-        QOpenGLWidget::mouseDoubleClickEvent(e);
+        QWidget::mouseDoubleClickEvent(e);
         return;
     }
     leftPressed_ = false;

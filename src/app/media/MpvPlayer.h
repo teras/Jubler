@@ -6,19 +6,22 @@
 
 #pragma once
 
-#include <QOpenGLWidget>
+#include <QImage>
+#include <QWidget>
 #include <QPoint>
 #include <QString>
 
 struct mpv_handle;
 struct mpv_render_context;
+class QOpenGLWidget;
 
 // The video preview widget: libmpv decodes and renders (render API on a GL
-// context; works on Wayland/X11/macOS/Windows alike), subtitles are drawn by
+// context; works on Wayland/X11/macOS/Windows alike; without OpenGL its
+// software renderer draws into an image instead), subtitles are drawn by
 // libass from a file the preview exports. Port of the user-visible behaviour
 // of `VLCPreview` without the paused-seek "nudge": mpv seeks frame-exactly
 // (hr-seek) and redraws the paused frame when the subtitle file is reloaded.
-class MpvPlayer : public QOpenGLWidget {
+class MpvPlayer : public QWidget {
     Q_OBJECT
 public:
     explicit MpvPlayer(QWidget *parent = nullptr);
@@ -26,6 +29,10 @@ public:
 
     // Whether libmpv could be created at all (false → the preview shows a label).
     bool isValid() const { return mpv_ != nullptr; }
+    // Whether an OpenGL context can be made current here. Without one no
+    // QOpenGLWidget may exist: it moves its whole window onto OpenGL, and a
+    // window that cannot get it is never painted.
+    static bool openGLAvailable();
 
     // Load a media file; playback starts paused at `startMs`.
     void loadMedia(const QString &path, qint64 startMs);
@@ -67,7 +74,7 @@ signals:
     void playingStateChanged(bool playing);
     void timeChanged(qint64 ms);
     void durationAvailable(qint64 ms);
-    void renderUnavailable();   // no GL render context: no video frames
+    void renderUnavailable();   // no render context: no video frames
     void mediaLoading(qint64 startMs);   // another file: nothing of the old one holds
     void mediaLoaded();         // the file is open: it can be played and sought
     void rangeEnded(qint64 startMs);   // a played subtitle is over, standing at its start
@@ -77,14 +84,18 @@ public:
     QSize sizeHint() const override { return QSize(400, 256); }
 
 protected:
-    void initializeGL() override;
-    void paintGL() override;
+    void paintEvent(QPaintEvent *e) override;   // the software renderer's frames
     // A click on the picture plays or pauses, as in media players.
     void mousePressEvent(QMouseEvent *e) override;
     void mouseReleaseEvent(QMouseEvent *e) override;
     void mouseDoubleClickEvent(QMouseEvent *e) override;
 
 private:
+    class GLView;
+    // The render context: OpenGL in `glView_` (from its initializeGL) or, without
+    // OpenGL, the software renderer (from the constructor).
+    void createRenderContext(bool gl);
+    void renderGL();
     void handleEvents();
     void handleEvent(void *event);
     // `serial` comes back with MPV_EVENT_COMMAND_REPLY; 0 for the answers we
@@ -109,6 +120,8 @@ private:
 
     mpv_handle *mpv_ = nullptr;
     mpv_render_context *renderCtx_ = nullptr;
+    QOpenGLWidget *glView_ = nullptr;   // the picture with OpenGL; without it this widget paints `frame_`
+    QImage frame_;
     QString path_, subPath_;
     bool playing_ = false;
     // The pause flag we last set: our intention only. mpv's reports of the flag
