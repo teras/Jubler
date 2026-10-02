@@ -6,6 +6,8 @@
 
 #include "app/ui/CelebrationPanel.h"
 
+#include "core/style/WebSafeFonts.h"
+
 #include <QFontMetrics>
 #include <QLinearGradient>
 #include <QMouseEvent>
@@ -211,7 +213,7 @@ void CelebrationPanel::updateConfetti() {
 
 QList<QPointF> CelebrationPanel::textPoints(const QString &msg) {
     int fontSize = int(BASE * 0.22);
-    QFont font(QStringLiteral("Sans Serif"));
+    QFont font(WebSafeFonts::sansSerif());
     font.setBold(true);
     font.setPixelSize(fontSize);
     QFontMetrics fm(font);

@@ -6,6 +6,7 @@
 
 #include "core/style/WebSafeFonts.h"
 
+#include <QFont>
 #include <QHash>
 #include <QSet>
 
@@ -17,9 +18,21 @@ const QStringList COMMON = {QStringLiteral("Arial"), QStringLiteral("Helvetica")
                             QStringLiteral("Trebuchet MS"), QStringLiteral("Times New Roman"), QStringLiteral("Georgia"),
                             QStringLiteral("Courier New"), QStringLiteral("Comic Sans MS"), QStringLiteral("Impact")};
 
-QString sansSerif() { return QStringLiteral("Sans Serif"); }
-QString serif() { return QStringLiteral("Serif"); }
-QString monospace() { return QStringLiteral("Monospace"); }
+namespace {
+// The platform's family for a generic kind, as Java's logical fonts: the names
+// "Sans Serif", "Serif" and "Monospace" are fontconfig's and mean nothing to
+// macOS or Windows, where Qt would draw them all with the system font.
+QString generic(QFont::StyleHint hint, const char *fallback) {
+    QFont f;
+    f.setStyleHint(hint);
+    const QString family = f.defaultFamily();
+    return family.isEmpty() ? QLatin1String(fallback) : family;
+}
+}  // namespace
+
+QString sansSerif() { static const QString f = generic(QFont::SansSerif, "Sans Serif"); return f; }
+QString serif() { static const QString f = generic(QFont::Serif, "Serif"); return f; }
+QString monospace() { static const QString f = generic(QFont::Monospace, "Monospace"); return f; }
 
 namespace {
 const QHash<QString, QString> &category() {
