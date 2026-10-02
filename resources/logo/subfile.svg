@@ -128,11 +128,11 @@
          id="g2"
          transform="matrix(0.80445134,0,0,0.82020417,165.57782,48.377735)"><path
            id="path3"
-           style="font-family:none;fill:#ffffff;fill-opacity:1;stroke-width:1.92245;stroke-miterlimit:10"
+           style="fill:#ffffff;fill-opacity:1;stroke-width:1.92245;stroke-miterlimit:10"
            d="m -20.599054,1.1223332 c -1.43079,-0.07353 -2.8725,-0.06663 -4.31996,0.02452 H -125.81058 c -14.36492,-0.47437302 -26.36503,13.7065938 -24.69227,28.1584008 0.0844,58.280706 -0.16907,116.572486 0.12689,174.846386 0.99018,13.98665 14.57531,24.39089 27.92019,22.70191 40.245216,-0.0862 80.501266,0.17298 120.7398357,-0.12995 13.6537603,-1.01443 23.8104403,-14.93109 22.1616603,-28.60156 -0.0348,-51.47863 0.0701,-102.97173 -0.0531,-154.441223 C 19.911316,21.360655 0.8627657,2.2253452 -20.599064,1.1223352 Z" /><path
            d="m -127.96666,-1.3426598 c -14.4,0 -26,11.5999998 -26,25.9999998 v 180 c 0,14.4 11.6,26 26,26 H 0.0333357 c 14.4000003,0 26.0000003,-11.6 26.0000003,-26 V 46.713279 c 0,-3.4 -2.6,-6 -6,-6 -3.4,0 -6,2.6 -6,6 V 204.65734 c 0,7.8 -6.2000003,14 -14.0000003,14 H -127.96666 c -7.8,0 -14,-6.2 -14,-14 v -180 c 0,-7.8 6.2,-14 14,-14 h 101.999996 v 14 c 0,14.4 11.6,26 25.9999997,26 H 16.834116 c 3.4,0 9.19922,0 9.19922,-6 0,-12.2 -4.79844,-23.80156 -13.39844,-32.60156 C 3.8348957,3.4557802 -7.7666643,-1.3426598 -19.966664,-1.3426598 Z M -13.966664,11.2589 c 6.7999997,1.2 12.9999997,4.39844 17.9999997,9.39844 5,5 8.1984403,11.2 9.3984403,18 H 0.0333357 c -7.8,0 -13.9999997,-6.2 -13.9999997,-14 z"
            id="path1-7"
-           style="font-family:none;mix-blend-mode:normal;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0"
+           style="mix-blend-mode:normal;fill:#4d4d4d;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-dashoffset:0"
            sodipodi:nodetypes="ssssssssssssssscsssscsscscssc" /></g></g><g
        inkscape:label="Layer 1"
        id="layer1-2"
