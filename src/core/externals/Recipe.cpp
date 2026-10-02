@@ -437,6 +437,7 @@ void startLoginShellProbe() {
         p.start(shell, {QStringLiteral("-lc"), QStringLiteral("echo __JUBLER_PATH__:$PATH")});
         if (!p.waitForFinished(3000)) {
             p.kill();
+            p.waitForFinished();   // kill() only signals it
             Debug::debug(QStringLiteral("Login shell PATH probe timed out"));
             return;
         }
