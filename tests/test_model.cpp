@@ -27,6 +27,15 @@ static void testFloatToString() {
     CHECK_EQ(jc::floatToString(int(2.8f * 10) / 10.0f), QStringLiteral("2.8"), "2.8f");
     CHECK_EQ(jc::floatToString(25.0f), QStringLiteral("25.0"), "whole number keeps .0");
     CHECK_EQ(jc::floatToString(23.976f), QStringLiteral("23.976"), "fps");
+    CHECK_EQ(jc::floatToString(100.0f), QStringLiteral("100.0"), "trailing zeros stay plain");
+    // The C-library way (macOS before 13.3) writes what std::to_chars writes.
+    CHECK_EQ(jc::shortestFloat(100.0f), QStringLiteral("100"), "100");
+    CHECK_EQ(jc::shortestFloat(1e10f), QStringLiteral("1e+10"), "exponent when shorter");
+    CHECK_EQ(jc::shortestFloat(1e-5f), QStringLiteral("1e-05"), "small exponent");
+    CHECK_EQ(jc::shortestFloat(0.1f), QStringLiteral("0.1"), "0.1f");
+    CHECK_EQ(jc::shortestFloat(-0.0f), QStringLiteral("-0"), "negative zero");
+    CHECK_EQ(jc::shortestFloat(276.265625f), QStringLiteral("276.26562"), "exact tie goes to even");
+    CHECK_EQ(jc::shortestFloat(3.4028235e38f), QStringLiteral("3.4028235e+38"), "largest float");
 }
 
 static void testTime() {

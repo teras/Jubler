@@ -6,7 +6,12 @@
 
 #pragma once
 
+#include <algorithm>
 #include <charconv>
+#include <clocale>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #include <QLocale>
 #include <QRegularExpression>
@@ -75,13 +80,38 @@ inline bool isLetterOrDigit(QChar c) {
 inline int roundJava(double v) { return int(std::floor(v + 0.5)); }
 inline long long roundJavaL(double v) { return (long long)std::floor(v + 0.5); }
 
+// What std::to_chars writes for a float, through the C library instead (macOS
+// has to_chars for floats only from 13.3): the fewest significant digits that
+// read back as the same float (printf rounds correctly, ties to even, and strtof
+// reads straight into a float), plainly or with an exponent, whichever is
+// shorter. Both follow the locale's decimal point, which the result swaps for '.'.
+inline QString shortestFloat(float f) {
+    if (std::isnan(f)) return QLatin1String(std::signbit(f) ? "-nan" : "nan");
+    if (std::isinf(f)) return QLatin1String(f < 0 ? "-inf" : "inf");
+    const char point = *std::localeconv()->decimal_point;
+    char sci[48], fixed[80];
+    for (int digits = 1;; ++digits) {
+        std::snprintf(sci, sizeof sci, "%.*e", digits - 1, double(f));
+        if (std::strtof(sci, nullptr) != f && digits < 9)   // 9 digits always read back
+            continue;
+        const int exp = std::atoi(std::strchr(sci, 'e') + 1);
+        std::snprintf(fixed, sizeof fixed, "%.*f", std::max(0, digits - 1 - exp), double(f));
+        QString s = QString::fromLatin1(std::strlen(fixed) <= std::strlen(sci) ? fixed : sci);
+        return s.replace(QLatin1Char(point), QLatin1Char('.'));
+    }
+}
+
 // Java Float.toString(): shortest round-trip text, always with a fraction.
 inline QString floatToString(float f) {
     // The shortest digits of the float itself (QLocale works on the value
     // promoted to double: 2.8f became "2.799999952316284").
+#if defined(__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__) && __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 130300
+    QString s = shortestFloat(f);
+#else
     char buf[32];
     const auto r = std::to_chars(buf, buf + sizeof(buf), f);
     QString s = QString::fromLatin1(buf, int(r.ptr - buf));
+#endif
     if (!s.contains(QLatin1Char('.')) && !s.contains(QLatin1Char('e'), Qt::CaseInsensitive)
         && !s.contains(QLatin1String("inf")) && !s.contains(QLatin1String("nan")))
         s += QLatin1String(".0");

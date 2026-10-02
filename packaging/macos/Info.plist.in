@@ -6,7 +6,7 @@
 <plist version="1.0">
 <dict>
   <key>LSMinimumSystemVersion</key>
-  <string>15.0</string>
+  <string>@JUBLER_MACOS_MIN@</string>
   <key>CFBundleDevelopmentRegion</key>
   <string>English</string>
   <key>CFBundleAllowMixedLocalizations</key>

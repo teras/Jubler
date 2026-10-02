@@ -3,10 +3,14 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # This file is part of Jubler.
 
-# The macOS disk image: Jubler.app built against Homebrew's Qt and mpv (so it
-# needs the macOS version of the build machine, 15 or newer), everything it loads
-# copied into the bundle, signed with the Developer ID, put into the Java
-# release's styled drag-to-Applications image, notarized and stapled.
+# The macOS disk image of the build machine's architecture: Apple Silicon for
+# macOS 13 and newer (every such Mac runs 13) with Qt 6.11, Intel for macOS 12
+# and newer (the Intel Macs that stop at 12) with Qt 6.9, the last Qt for 12.
+# Jubler.app is built with conda-forge's compiler against its Qt (with ICU, which
+# the 8-bit charsets need and qt.io's macOS Qt lacks), libmpv, FFmpeg, hunspell
+# and OpenSSL, everything it loads copied into the bundle, signed with the
+# Developer ID, put into the Java release's styled drag-to-Applications image,
+# notarized and stapled.
 #   make-dmg.sh <version> <arch suffix: "-arm64" or "-x86_64">
 # Signing needs MACOS_CERTIFICATE (base64 .p12), MACOS_CERTIFICATE_PWD and
 # APPLE_NOTARY_JSON ({issuer_id, key_id, private_key}); there is no unsigned result.
@@ -18,16 +22,39 @@ ROOT=$(cd "$(dirname "$0")/../.." && pwd)
 WORK=$ROOT/build-macos
 APP=$WORK/Jubler.app
 DMG=$ROOT/dist/Jubler-$VERSION$SUFFIX.dmg
-QT=$(brew --prefix qt)
+DEPS=$WORK/deps
+case $(uname -m) in
+    arm64) CONDA_PLATFORM=osx-arm64 QT_VERSION=6.11 MACOS_MIN=13.0 ;;
+    *)     CONDA_PLATFORM=osx-64    QT_VERSION=6.9  MACOS_MIN=12.0 ;;
+esac
 
 for v in MACOS_CERTIFICATE MACOS_CERTIFICATE_PWD APPLE_NOTARY_JSON; do
     [ -n "${!v:-}" ] || { echo "error: $v is not set; a release is never left unsigned" >&2; exit 1; }
 done
 
+# --- Libraries that run on that macOS ------------------------------------------
+# The solver takes only packages that declare they run on this macOS; Qt's
+# version is given all the same, since conda-forge declares macOS 11 even for
+# the Qt versions that need 13 or 14. Their libraries use conda-forge's own
+# libc++, so Jubler is compiled with its compiler too: one C++ library in the
+# process.
+mkdir -p "$DEPS"
+curl -fsSL "https://micro.mamba.pm/api/micromamba/$CONDA_PLATFORM/latest" | tar -xj -C "$DEPS" bin/micromamba
+export MAMBA_ROOT_PREFIX=$DEPS/mamba
+CONDA_OVERRIDE_OSX=$MACOS_MIN "$DEPS/bin/micromamba" create -y -p "$DEPS/env" -c conda-forge --override-channels \
+    "qt6-main=$QT_VERSION" mpv ffmpeg hunspell openssl zlib cxx-compiler ninja
+LIBS=$DEPS/env
+
 # --- Build --------------------------------------------------------------------
-cmake -S "$ROOT" -B "$WORK" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=15.0 \
-      -DCMAKE_PREFIX_PATH="$QT"
-cmake --build "$WORK"
+# Only the conda-forge libraries, never what the build machine has in Homebrew.
+# pkgconf: the prefix from where each .pc file lies (conda-forge's hunspell.pc
+# still names its build folder), and only the libraries asked for, not the
+# headers of what they use in turn (glib, Python, ... for mpv).
+export PKG_CONFIG_LIBDIR=$LIBS/lib/pkgconfig
+"$DEPS/bin/micromamba" run -p "$LIBS" cmake -S "$ROOT" -B "$WORK" -G Ninja -DCMAKE_BUILD_TYPE=Release \
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOS_MIN -DCMAKE_PREFIX_PATH="$LIBS" \
+      -DPKG_CONFIG_EXECUTABLE="$(command -v pkgconf)" -DPKG_CONFIG_ARGN="--define-prefix;--maximum-traverse-depth=1"
+"$DEPS/bin/micromamba" run -p "$LIBS" cmake --build "$WORK"
 ctest --test-dir "$WORK" --output-on-failure
 
 # --- Icons, as the Java bundle's: the application's and the documents' ----------
@@ -45,15 +72,30 @@ icns "$ROOT/resources/logo/logo.svg" Jubler
 icns "$ROOT/resources/logo/subfile.svg" JublerDocument
 
 # --- Everything it loads, inside the bundle -----------------------------------
-"$QT/bin/macdeployqt" "$APP" -verbose=1
-# What macdeployqt leaves outside: the non-Qt libraries (Homebrew's lib, then its Cellar for keg-only ones).
-python3 "$ROOT/packaging/macos/bundle-libs.py" "$APP" "$(brew --prefix)/lib" "$(brew --prefix)/Cellar"
+"$LIBS/lib/qt6/bin/macdeployqt" "$APP" -verbose=1
+# What macdeployqt leaves outside: the non-Qt libraries.
+python3 "$ROOT/packaging/macos/bundle-libs.py" "$APP" "$LIBS/lib"
 # Nothing may still point outside the bundle and the system.
 leaks=$(find "$APP" -type f \( -perm +111 -o -name '*.dylib' \) -exec otool -L {} \; 2>/dev/null \
-        | grep -E '^\s+(/opt/homebrew|/usr/local)/' | sort -u || true)
+        | grep -E '^\s+/' | grep -v -E '^\s+(/System/|/usr/lib/)' | sort -u || true)
 if [ -n "$leaks" ]; then
     echo "error: the bundle still loads libraries from outside it:" >&2
     echo "$leaks" >&2
+    exit 1
+fi
+# Nor may anything in it need a newer macOS than the one it promises.
+too_new=$(find "$APP" -type f -print0 | while IFS= read -r -d '' f; do
+    file -b "$f" | grep -q 'Mach-O' || continue
+    otool -arch all -l "$f" | awk -v f="$f" -v min="$MACOS_MIN" '
+        /cmd LC_BUILD_VERSION|cmd LC_VERSION_MIN_MACOSX/ { want = 1 }
+        want && $1 ~ /^(minos|version)$/ {
+            want = 0; split($2, v, "."); split(min, m, ".")
+            if (v[1] + 0 > m[1] + 0 || (v[1] + 0 == m[1] + 0 && v[2] + 0 > m[2] + 0)) print $2, f
+        }'
+done | sort -u)
+if [ -n "$too_new" ]; then
+    echo "error: these need a macOS newer than $MACOS_MIN:" >&2
+    echo "$too_new" >&2
     exit 1
 fi
 "$APP/Contents/MacOS/Jubler" --list-tools | grep -q 'Available tools'

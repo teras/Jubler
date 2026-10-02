@@ -8,10 +8,11 @@ Qt (libmpv, FFmpeg, hunspell and what they load in turn), which macdeployqt does
 not follow reliably when they name each other through @rpath.
 
 Every Mach-O file of the bundle is read with otool; each dependency that points
-outside the bundle (Homebrew) or through an @rpath the bundle cannot satisfy is
-copied into Contents/Frameworks and referred to as @rpath/<name>, and every file
-gets the rpath that reaches Contents/Frameworks from where it lies. Repeated
-until nothing is left to fix. Plugins that need a Qt module Jubler does not ship
+outside the bundle or through an @rpath the bundle cannot satisfy is copied from
+the library folders into Contents/Frameworks and referred to as @rpath/<name>,
+and every file gets the rpath that reaches Contents/Frameworks from where it
+lies. Repeated until nothing is left to fix; then the rpaths into the build
+machine's folders are dropped. Plugins that need a Qt module Jubler does not ship
 (PDF, virtual keyboard) are removed. Finally everything is signed ad hoc, since
 an Apple Silicon Mac does not run a modified, unsigned binary (the release
 signing replaces it).
@@ -78,7 +79,7 @@ def find_library(name):
         candidate = os.path.join(folder, name)
         if os.path.exists(candidate):
             return os.path.realpath(candidate)
-    for folder in search:   # Homebrew keeps each formula's libraries under opt/<formula>/lib
+    for folder in search:   # also in subfolders, as Homebrew's opt/<formula>/lib
         for root, _, files in os.walk(folder):
             if name in files:
                 return os.path.realpath(os.path.join(root, name))
@@ -131,13 +132,20 @@ while changed:
 if missing:
     sys.exit('error: dependencies that cannot be bundled:\n  ' + '\n  '.join(sorted(set(missing))))
 
-# A copied library keeps the id it had in Homebrew (macdeployqt copies without
-# changing it): each one is known by the name it is loaded with.
+# A copied library keeps the id it had where it came from (macdeployqt copies
+# without changing it): each one is known by the name it is loaded with.
 for name in os.listdir(frameworks):
     path = os.path.join(frameworks, name)
     if name.endswith('.dylib') and os.path.isfile(path) and not os.path.islink(path):
         if run('otool', '-D', path).splitlines()[-1].strip() != '@rpath/' + name:
             run('install_name_tool', '-id', '@rpath/' + name, path)
+
+# An absolute rpath points into the build machine (the libraries' folder that
+# CMake linked from): nothing must be looked up there on the user's Mac.
+for path in machos():
+    for rp in rpaths(path):
+        if rp.startswith('/'):
+            run('install_name_tool', '-delete_rpath', rp, path)
 
 # Inside out: codesign refuses a bundle whose contents are not signed yet.
 main = os.path.join(contents, 'MacOS')

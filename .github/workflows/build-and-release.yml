@@ -86,8 +86,9 @@ jobs:
           path: dist/Jubler-*.AppImage
           retention-days: 7
 
-  # macOS disk images, Apple Silicon and Intel, macOS 15 or newer: built, signed,
-  # notarized and stapled by packaging/macos/make-dmg.sh.
+  # macOS disk images, Apple Silicon (macOS 13 or newer) and Intel (macOS 12 or
+  # newer): built, signed, notarized and stapled by packaging/macos/make-dmg.sh
+  # (which fetches Qt and the other libraries itself).
   macos:
     needs: prepare
     if: github.event_name == 'push' || inputs.packages == 'all' || inputs.packages == 'macos'
@@ -104,7 +105,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install build dependencies
-        run: brew install qt mpv hunspell openssl pkgconf ninja librsvg
+        run: brew install pkgconf librsvg
       - name: Build, sign and notarize
         env:
           MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}

@@ -73,6 +73,12 @@ endif()
 if(APPLE)
     # Jubler.app (the icons are added by packaging/macos/make-dmg.sh).
     string(TIMESTAMP JUBLER_YEAR "%Y")
+    # The oldest macOS it runs on: the one it is built for.
+    set(JUBLER_MACOS_MIN "${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    if(NOT JUBLER_MACOS_MIN)
+        execute_process(COMMAND sw_vers -productVersion OUTPUT_VARIABLE JUBLER_MACOS_MIN
+                        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    endif()
     configure_file(packaging/macos/Info.plist.in ${CMAKE_CURRENT_BINARY_DIR}/Info.plist @ONLY)
     set_target_properties(jubler-qt PROPERTIES
         OUTPUT_NAME Jubler

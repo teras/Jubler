@@ -9,6 +9,7 @@
 
 #include "core/options/JavaPrefs.h"
 #include "core/os/SystemDependent.h"
+#include "core/util/JavaCompat.h"
 
 #include <QCoreApplication>
 #include <QFile>
@@ -18,8 +19,6 @@
 #include <QRegularExpression>
 #include <QSettings>
 #include <QTextStream>
-
-#include <charconv>
 
 #include <memory>
 
@@ -61,12 +60,7 @@ QString storePath() {
 }
 
 QString floatString(float value) {
-    char buf[32];
-    const auto r = std::to_chars(buf, buf + sizeof(buf), value);
-    QString s = QString::fromLatin1(buf, int(r.ptr - buf));
-    if (!s.contains(QLatin1Char('.')) && !s.contains(QLatin1Char('e')) && !s.contains(QLatin1String("inf")) && !s.contains(QLatin1String("nan")))
-        s += QLatin1String(".0");
-    return s;
+    return jc::floatToString(value);
 }
 
 void set(const QString &key, float value) {
