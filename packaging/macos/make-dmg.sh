@@ -7,7 +7,7 @@
 # needs the macOS version of the build machine, 15 or newer), everything it loads
 # copied into the bundle, signed with the Developer ID, put into the Java
 # release's styled drag-to-Applications image, notarized and stapled.
-#   make-dmg.sh <version> <arch suffix: "" or "-arm64">
+#   make-dmg.sh <version> <arch suffix: "-arm64" or "-x86_64">
 # Signing needs MACOS_CERTIFICATE (base64 .p12), MACOS_CERTIFICATE_PWD and
 # APPLE_NOTARY_JSON ({issuer_id, key_id, private_key}); there is no unsigned result.
 set -euo pipefail
