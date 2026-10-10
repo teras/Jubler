@@ -1,0 +1,114 @@
+# Jubler Flatpak manifest (the application id of the Java Jubler's Flatpak).
+#
+# Local build, from the repository root:
+#   flatpak-builder --user --install --force-clean <build-dir> packaging/linux/flatpak/com.panayotis.jubler.yml
+# The Jubler module builds the working tree; a Flathub submission replaces that source with the release tag.
+app-id: com.panayotis.jubler
+runtime: org.kde.Platform
+runtime-version: '6.11'
+sdk: org.kde.Sdk
+command: jubler
+
+# Files reach the application only through the portals (open/save dialogs, file manager, drag and drop):
+# a video beside a subtitle is not visible until the user picks it.
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  - --device=dri
+  - --share=network
+
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /share/man
+  - /share/doc
+  - '*.la'
+  - '*.a'
+
+modules:
+  # libmpv and what it needs beyond the runtime. FFmpeg is the runtime's (with the codecs-extra extension
+  # for the patented decoders), so Jubler's own FFmpeg calls and libmpv share one copy.
+  - name: libass
+    config-opts:
+      - --disable-static
+      - --enable-asm
+      - --enable-harfbuzz
+      - --enable-fontconfig
+    sources:
+      - type: git
+        url: https://github.com/libass/libass.git
+        tag: 0.17.5
+
+  - name: zimg
+    config-opts:
+      - --disable-static
+    sources:
+      - type: git
+        url: https://github.com/sekrit-twc/zimg.git
+        tag: release-3.0.6
+
+  - name: libplacebo
+    buildsystem: meson
+    config-opts:
+      - -Dvulkan=enabled
+      - -Dshaderc=enabled
+      - -Ddemos=false
+      - -Dtests=false
+    sources:
+      - type: git
+        url: https://code.videolan.org/videolan/libplacebo.git
+        tag: v7.360.1
+
+  - name: libXpresent
+    buildsystem: autotools
+    sources:
+      - type: git
+        url: https://gitlab.freedesktop.org/xorg/lib/libxpresent.git
+        tag: libXpresent-1.0.2
+
+  - name: mpv
+    buildsystem: meson
+    config-opts:
+      - -Dlibmpv=true
+      - -Dcplayer=false
+      - -Dbuild-date=false
+      - -Dlua=disabled
+      - -Djavascript=disabled
+      - -Dlibarchive=disabled
+      - -Dlibbluray=disabled
+      - -Ddvdnav=disabled
+      - -Dcdda=disabled
+      - -Duchardet=disabled
+      - -Drubberband=disabled
+      - -Dvapoursynth=disabled
+      - -Dplain-gl=enabled
+      - -Dzimg=enabled
+      - -Dlcms2=enabled
+      - -Dpulse=enabled
+      - -Dpipewire=enabled
+      - -Dalsa=enabled
+      - -Dgl=enabled
+      - -Degl=enabled
+      - -Dvaapi=enabled
+      - -Dvulkan=enabled
+      - -Dwayland=enabled
+      - -Dx11=enabled
+    sources:
+      - type: git
+        url: https://github.com/mpv-player/mpv.git
+        tag: v0.41.0
+
+  - name: jubler
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+    sources:
+      - type: dir
+        path: ../../..
+        skip:
+          - build
+          - build-win
+          - cmake-build-debug
+          - .flatpak-builder
