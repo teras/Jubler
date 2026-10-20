@@ -7,6 +7,7 @@
 #include "app/media/AppMediaFile.h"
 #include "app/media/Timeline.h"
 
+#include <QApplication>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QWheelEvent>
@@ -86,7 +87,7 @@ Timeline::Hit Timeline::findAction(const QList<SubInfoPtr> &list, bool selected,
 void Timeline::updateCursor(const Hit &h, bool mouseDown) {
     Qt::CursorShape c = Qt::ArrowCursor;
     switch (h.location) {
-        case MouseLocation::OUT: c = Qt::ArrowCursor; break;
+        case MouseLocation::OUT: c = !ruler_ ? Qt::ArrowCursor : mouseDown ? Qt::ClosedHandCursor : Qt::OpenHandCursor; break;
         case MouseLocation::IN: c = mouseDown ? Qt::SizeAllCursor : Qt::PointingHandCursor; break;
         case MouseLocation::LEFT: c = Qt::SizeHorCursor; break;
         case MouseLocation::RIGHT: c = Qt::SizeHorCursor; break;
@@ -103,6 +104,10 @@ Timeline::Hit Timeline::findAnyAction(int x, bool mouseDown) {
 }
 
 void Timeline::mouseMoveEvent(QMouseEvent *e) {
+    if (panning_) {
+        ruler_->forwardMouseMove(e);
+        return;
+    }
     if (!mouseDown_) {
         findAnyAction(int(e->position().x()), false);
         return;
@@ -172,10 +177,16 @@ void Timeline::mouseMoveEvent(QMouseEvent *e) {
 
 void Timeline::mousePressEvent(QMouseEvent *e) {
     if (e->button() != Qt::LeftButton) return;
+    current_ = findAnyAction(int(e->position().x()), true);
+    if (current_.location == MouseLocation::OUT && ruler_) {
+        panning_ = true;
+        panPressX_ = int(e->position().x());
+        ruler_->forwardMousePress(e);
+        return;
+    }
     mouseDownPixels_ = int(e->position().x());
     mouseDown_ = true;
     view_->setHeld(true);   // the drag is measured on this window
-    current_ = findAnyAction(mouseDownPixels_, true);
     const bool keepSelection = e->modifiers() & Qt::ControlModifier;
     const bool extend = e->modifiers() & Qt::ShiftModifier;
     if (current_.location == MouseLocation::OUT) {
@@ -263,6 +274,20 @@ void Timeline::mousePressEvent(QMouseEvent *e) {
 
 void Timeline::mouseReleaseEvent(QMouseEvent *e) {
     if (e->button() != Qt::LeftButton) return;
+    if (panning_) {
+        panning_ = false;
+        ruler_->forwardMouseRelease(e);
+        findAnyAction(int(e->position().x()), false);
+        const bool click = std::abs(int(e->position().x()) - panPressX_) < QApplication::startDragDistance();
+        if (click && !(e->modifiers() & (Qt::ControlModifier | Qt::ShiftModifier)) && !selected_.isEmpty()) {
+            remaining_.append(selected_);
+            selected_.clear();
+            calcOverlaps();
+            repaintAll();
+            parent_->setSelectedSub({}, true);
+        }
+        return;
+    }
     findAnyAction(int(e->position().x()), false);
     mouseDownPixels_ = -1;
     leftSnap_ = rightSnap_ = -1;

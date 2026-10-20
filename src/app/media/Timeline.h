@@ -19,6 +19,7 @@
 #include "core/subs/Subtitles.h"
 
 class MainWindow;
+class Ruler;
 class Subtitles;
 class SubPreview;
 class WavePreview;
@@ -70,6 +71,8 @@ public:
 
     Timeline(MainWindow *parent, ViewWindow *view, SubPreview *preview, QWidget *widget = nullptr);
     void setWavePreview(WavePreview *w) { wave_ = w; }
+    // Off the subtitles the bar (and the waveform) pans as the ruler does.
+    void setRuler(Ruler *r) { ruler_ = r; }
     void setSnap(bool snap) { snap_ = snap; }
     // Where the video is (seconds; negative: none), drawn as a line.
     void setPlayhead(double seconds) { playhead_ = seconds; update(); }
@@ -123,6 +126,11 @@ private:
     ViewWindow *view_;
     SubPreview *preview_;
     WavePreview *wave_ = nullptr;
+    Ruler *ruler_ = nullptr;
+    // A press off the subtitles: handed to the ruler; a plain click (not
+    // moved) unselects on its release.
+    bool panning_ = false;
+    int panPressX_ = 0;
     bool snap_ = true;
     double playhead_ = -1;
     bool mouseDown_ = false;
@@ -146,6 +154,10 @@ public:
     QSize sizeHint() const override { return QSize(200, height_); }
     // A row click, a seek or play: a throw of the ruler stops.
     void stopInertia() { if (inertia_) inertia_->stop(); }
+    // Forwarded from the bar and the waveform off the subtitles (same width).
+    void forwardMousePress(QMouseEvent *e) { mousePressEvent(e); }
+    void forwardMouseMove(QMouseEvent *e) { mouseMoveEvent(e); }
+    void forwardMouseRelease(QMouseEvent *e) { mouseReleaseEvent(e); }
 
 signals:
     // Dragged: the window should start at `start` seconds.

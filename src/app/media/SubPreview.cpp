@@ -99,6 +99,7 @@ void SubPreview::buildUi() {
     audioCol->setSpacing(0);
     timeline_ = new Timeline(parent_, &view_, this, mainPanel);
     ruler_ = new Ruler(&view_, mainPanel);
+    timeline_->setRuler(ruler_);
     connect(ruler_, &Ruler::wheelTurned, this, [this](QWheelEvent *e) { timeline_->forwardWheel(e); });
     connect(ruler_, &Ruler::panRequested, this, [this](double start) {
         if (!view_.setWindow(start, start + view_.getDuration(), false)) return;   // held under a subtitle drag
